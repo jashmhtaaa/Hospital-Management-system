@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { Table } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 
 interface RadiologyOrder {
@@ -19,9 +30,9 @@ interface RadiologyOrderDetailProps {
 }
 
 /**
- * Radiology order detail component
+ * Radiology order detail component;
  */
-export function RadiologyOrderDetail({ order }: RadiologyOrderDetailProps) {
+export const RadiologyOrderDetail = ({ order }: RadiologyOrderDetailProps) {
   const getPriorityBadge = (priority: string) => {
     switch(priority) {
       case 'routine': return <Badge variant="secondary">Routine</Badge>;
@@ -48,61 +59,61 @@ export function RadiologyOrderDetail({ order }: RadiologyOrderDetailProps) {
         <CardTitle>Radiology Order Details</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-6">;
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Patient Information</h3>
-              <div className="mt-2 space-y-1">
-                <p className="text-base font-medium">{order.patientName}</p>
-                <p className="text-sm text-gray-500">ID: {order.patientId}</p>
+              <h3 className="text-sm font-medium text-gray-500">Patient Information</h3>;
+              <div className="mt-2 space-y-1">;
+                <p className="text-base font-medium">{order.patientName}</p>;
+                <p className="text-sm text-gray-500">ID: {order.patientId}</p>;
               </div>
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Order Information</h3>
-              <div className="mt-2 space-y-1">
-                <p className="text-base font-medium">Order #{order.id}</p>
-                <p className="text-sm text-gray-500">Date: {order.orderDate}</p>
+              <h3 className="text-sm font-medium text-gray-500">Order Information</h3>;
+              <div className="mt-2 space-y-1">;
+                <p className="text-base font-medium">Order #{order.id}</p>;
+                <p className="text-sm text-gray-500">Date: {order.orderDate}</p>;
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Study Type</h3>
-              <p className="mt-2 text-base">{order.studyType}</p>
+              <h3 className="text-sm font-medium text-gray-500">Study Type</h3>;
+              <p className="mt-2 text-base">{order.studyType}</p>;
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Priority</h3>
-              <div className="mt-2">{getPriorityBadge(order.priority)}</div>
+              <h3 className="text-sm font-medium text-gray-500">Priority</h3>;
+              <div className="mt-2">{getPriorityBadge(order.priority)}</div>;
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Status</h3>
-              <div className="mt-2">{getStatusBadge(order.status)}</div>
+              <h3 className="text-sm font-medium text-gray-500">Status</h3>;
+              <div className="mt-2">{getStatusBadge(order.status)}</div>;
             </div>
           </div>
           
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Requested By</h3>
-            <p className="mt-2 text-base">{order.requestedBy}</p>
+            <h3 className="text-sm font-medium text-gray-500">Requested By</h3>;
+            <p className="mt-2 text-base">{order.requestedBy}</p>;
           </div>
           
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Clinical Information</h3>
-            <p className="mt-2 text-base">
-              Patient presented with symptoms requiring radiological investigation.
-              Further clinical details available in patient record.
+            <h3 className="text-sm font-medium text-gray-500">Clinical Information</h3>;
+            <p className="mt-2 text-base">;
+              Patient presented with symptoms requiring radiological investigation.;
+              Further clinical details available in patient record.;
             </p>
           </div>
           
-          <div className="flex justify-end space-x-2">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-              Print Order
+          <div className="flex justify-end space-x-2">;
+            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">;
+              Print Order;
             </button>
-            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-              Update Status
+            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">;
+              Update Status;
             </button>
           </div>
         </div>

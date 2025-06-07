@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const templateService = new TemplateService();
 
 /**
- * POST /api/support-services/marketing/templates/:id/render
- * Render a template with variables
+ * POST /api/support-services/marketing/templates/:id/render;
+ * Render a template with variables;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -29,7 +40,7 @@ export async function POST(
       
       const renderedContent = await templateService.renderTemplate(
         params.id,
-        variables
+        variables;
       );
       
       return NextResponse.json({ renderedContent });

@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Advanced Clinical Documentation Service
- * AI-powered clinical note generation with structured data extraction
+ * Advanced Clinical Documentation Service;
+ * AI-powered clinical note generation with structured data extraction;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -44,36 +55,36 @@ export interface ClinicalDocument {
 }
 
 export enum DocumentType {
-  // Progress Notes
+  // Progress Notes;
   PROGRESS_NOTE = 'PROGRESS_NOTE',
   ADMISSION_NOTE = 'ADMISSION_NOTE',
   DISCHARGE_SUMMARY = 'DISCHARGE_SUMMARY',
   CONSULTATION_NOTE = 'CONSULTATION_NOTE',
   
-  // Procedure Notes
+  // Procedure Notes;
   PROCEDURE_NOTE = 'PROCEDURE_NOTE',
   OPERATIVE_REPORT = 'OPERATIVE_REPORT',
   ANESTHESIA_RECORD = 'ANESTHESIA_RECORD',
   
-  // Nursing Documentation
+  // Nursing Documentation;
   NURSING_NOTE = 'NURSING_NOTE',
   NURSING_ASSESSMENT = 'NURSING_ASSESSMENT',
   MEDICATION_ADMINISTRATION = 'MEDICATION_ADMINISTRATION',
   
-  // Specialty Notes
+  // Specialty Notes;
   PSYCHIATRIC_EVALUATION = 'PSYCHIATRIC_EVALUATION',
   PHYSICAL_THERAPY = 'PHYSICAL_THERAPY',
   SOCIAL_WORK_NOTE = 'SOCIAL_WORK_NOTE',
   
-  // Emergency Department
+  // Emergency Department;
   ED_PHYSICIAN_NOTE = 'ED_PHYSICIAN_NOTE',
   TRIAGE_NOTE = 'TRIAGE_NOTE',
   
-  // Critical Care
+  // Critical Care;
   ICU_NOTE = 'ICU_NOTE',
   VENTILATOR_WEANING = 'VENTILATOR_WEANING',
   
-  // Quality & Safety
+  // Quality & Safety;
   INCIDENT_REPORT = 'INCIDENT_REPORT',
   QUALITY_REVIEW = 'QUALITY_REVIEW',
   MORTALITY_REVIEW = 'MORTALITY_REVIEW',
@@ -92,7 +103,7 @@ export interface DocumentSection {
   sectionType: SectionType;
   title: string;
   content: string;
-  structuredData?: any;
+  structuredData?: unknown;
   required: boolean;
   order: number;
   lastModified: Date;
@@ -100,7 +111,7 @@ export interface DocumentSection {
 }
 
 export enum SectionType {
-  // Clinical Sections
+  // Clinical Sections;
   CHIEF_COMPLAINT = 'CHIEF_COMPLAINT',
   HISTORY_PRESENT_ILLNESS = 'HISTORY_PRESENT_ILLNESS',
   PAST_MEDICAL_HISTORY = 'PAST_MEDICAL_HISTORY',
@@ -110,28 +121,28 @@ export enum SectionType {
   ALLERGIES = 'ALLERGIES',
   REVIEW_OF_SYSTEMS = 'REVIEW_OF_SYSTEMS',
   
-  // Physical Examination
+  // Physical Examination;
   VITAL_SIGNS = 'VITAL_SIGNS',
   GENERAL_APPEARANCE = 'GENERAL_APPEARANCE',
   PHYSICAL_EXAM = 'PHYSICAL_EXAM',
   NEUROLOGICAL_EXAM = 'NEUROLOGICAL_EXAM',
   
-  // Assessment & Plan
+  // Assessment & Plan;
   ASSESSMENT = 'ASSESSMENT',
   PLAN = 'PLAN',
   DIFFERENTIAL_DIAGNOSIS = 'DIFFERENTIAL_DIAGNOSIS',
   
-  // Procedures
+  // Procedures;
   PROCEDURE_DESCRIPTION = 'PROCEDURE_DESCRIPTION',
   COMPLICATIONS = 'COMPLICATIONS',
   POST_PROCEDURE = 'POST_PROCEDURE',
   
-  // Discharge
+  // Discharge;
   DISCHARGE_CONDITION = 'DISCHARGE_CONDITION',
   DISCHARGE_INSTRUCTIONS = 'DISCHARGE_INSTRUCTIONS',
   FOLLOW_UP = 'FOLLOW_UP',
   
-  // Custom
+  // Custom;
   CUSTOM = 'CUSTOM',
 }
 
@@ -166,7 +177,7 @@ export interface MediaMetadata {
   fileSize: number;
   mimeType: string;
   dimensions?: { width: number; height: number };
-  duration?: number; // for video/audio
+  duration?: number; // for video/audio;
   capturedAt?: Date;
   capturedBy?: string;
   equipment?: string;
@@ -176,7 +187,7 @@ export interface StructuredField {
   fieldId: string;
   fieldType: FieldType;
   label: string;
-  value: any;
+  value: unknown;
   unit?: string;
   normalRange?: string;
   validationRules: ValidationRule[];
@@ -201,7 +212,7 @@ export enum FieldType {
 
 export interface ValidationRule {
   type: 'REQUIRED' | 'MIN_LENGTH' | 'MAX_LENGTH' | 'PATTERN' | 'RANGE' | 'CUSTOM';
-  value?: any;
+  value?: unknown;
   message: string;
 }
 
@@ -251,7 +262,7 @@ export interface DocumentMetadata {
   sectionCount: number;
   completionPercentage: number;
   lastAutoSave: Date;
-  timeSpentEditing: number; // minutes
+  timeSpentEditing: number; // minutes;
   revisionCount: number;
   collaborators: string[];
   tags: string[];
@@ -263,27 +274,27 @@ export interface ClinicalConcept {
   concept: string;
   conceptId?: string;
   terminology: 'SNOMED' | 'ICD10' | 'LOINC' | 'RXNORM' | 'CPT';
-  confidence: number; // 0-100
+  confidence: number; // 0-100;
   position: { start: number; end: number };
   context: string;
 }
 
 export interface StructuredClinicalData {
-  // Problems/Diagnoses
+  // Problems/Diagnoses;
   problems: Problem[];
-  // Medications
+  // Medications;
   medications: MedicationEntry[];
-  // Allergies
+  // Allergies;
   allergies: AllergyEntry[];
-  // Vital Signs
+  // Vital Signs;
   vitalSigns: VitalSignEntry[];
-  // Laboratory Results
+  // Laboratory Results;
   labResults: LabResult[];
-  // Procedures
+  // Procedures;
   procedures: ProcedureEntry[];
-  // Social Determinants
+  // Social Determinants;
   socialDeterminants: SocialDeterminant[];
-  // Clinical Assessments
+  // Clinical Assessments;
   assessments: ClinicalAssessment[];
 }
 
@@ -387,7 +398,7 @@ export interface QualityMetrics {
 }
 
 export interface CompletenessMetrics {
-  overallScore: number; // 0-100
+  overallScore: number; // 0-100;
   requiredSectionsComplete: number;
   totalRequiredSections: number;
   missingElements: string[];
@@ -420,11 +431,11 @@ export interface FactualError {
 
 export interface TimelinessMetrics {
   createdWithinTarget: boolean;
-  targetTime: number; // hours
-  actualTime: number; // hours
+  targetTime: number; // hours;
+  actualTime: number; // hours;
   signedWithinTarget: boolean;
-  signatureTargetTime: number; // hours
-  actualSignatureTime: number; // hours
+  signatureTargetTime: number; // hours;
+  actualSignatureTime: number; // hours;
 }
 
 export interface ComplianceMetrics {
@@ -508,7 +519,7 @@ export interface StructuredElement {
   id: string;
   type: FieldType;
   label: string;
-  defaultValue?: any;
+  defaultValue?: unknown;
   options?: string[];
   validationRules: ValidationRule[];
   isRequired: boolean;
@@ -518,7 +529,7 @@ export interface StructuredElement {
 export interface ConditionalRule {
   condition: string;
   operator: 'EQUALS' | 'NOT_EQUALS' | 'CONTAINS' | 'GREATER_THAN' | 'LESS_THAN';
-  value: any;
+  value: unknown;
   action: 'SHOW' | 'HIDE' | 'REQUIRE' | 'DISABLE';
 }
 
@@ -526,7 +537,7 @@ export interface TemplateVariable {
   name: string;
   type: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN';
   source: 'USER_INPUT' | 'PATIENT_DATA' | 'ENCOUNTER_DATA' | 'SYSTEM_DATA';
-  defaultValue?: any;
+  defaultValue?: unknown;
   description: string;
 }
 
@@ -548,7 +559,7 @@ export interface RuleTrigger {
 export interface TriggerCondition {
   field: string;
   operator: string;
-  value: any;
+  value: unknown;
 }
 
 export interface RuleAction {
@@ -559,7 +570,7 @@ export interface RuleAction {
 export interface TemplateUsage {
   totalUsage: number;
   monthlyUsage: number;
-  averageCompletionTime: number; // minutes
+  averageCompletionTime: number; // minutes;
   averageQualityScore: number;
   userSatisfaction: number;
   lastUsed: Date;
@@ -701,45 +712,45 @@ export interface ImplementationBarrier {
   mitigation: string;
 }
 
-@Injectable()
+@Injectable();
 export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObservation> {
   constructor(private prisma: PrismaService) {
     super('DocumentReference');
   }
 
   /**
-   * AI-powered clinical note generation
+   * AI-powered clinical note generation;
    */
   async generateClinicalNote(
     documentType: DocumentType,
     patientId: string,
     encounterId: string,
     templateId?: string,
-    inputData?: any
+    inputData?: unknown;
   ): Promise<ClinicalDocument> {
     const startTime = performance.now();
     
     try {
-      // Get patient data and context
+      // Get patient data and context;
       const [patientData, encounterData, template] = await Promise.all([
         this.getPatientData(patientId),
         this.getEncounterData(encounterId),
         templateId ? this.getTemplate(templateId) : this.getDefaultTemplate(documentType),
       ]);
 
-      // Extract structured clinical data
+      // Extract structured clinical data;
       const structuredData = await this.extractStructuredData(patientData, encounterData, inputData);
 
-      // Generate document content using AI
+      // Generate document content using AI;
       const content = await this.generateDocumentContent(template, structuredData, inputData);
 
-      // Perform quality analysis
+      // Perform quality analysis;
       const qualityMetrics = await this.analyzeDocumentQuality(content, documentType);
 
-      // Check compliance
+      // Check compliance;
       const complianceFlags = await this.checkCompliance(content, documentType, structuredData);
 
-      // Create document
+      // Create document;
       const document: ClinicalDocument = {
         id: `doc-${Date.now()}`,
         documentType,
@@ -768,18 +779,18 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
         relatedDocuments: [],
       };
 
-      // Save document
+      // Save document;
       await this.saveDocument(document);
 
-      // Create FHIR DocumentReference
+      // Create FHIR DocumentReference;
       await this.createFHIRDocumentReference(document);
 
-      // Publish real-time event
+      // Publish real-time event;
       await pubsub.publish(SUBSCRIPTION_EVENTS.CLINICAL_NOTE_CREATED, {
         clinicalNoteCreated: document,
       });
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('clinical_docs.note_generation_time', duration);
       metricsCollector.incrementCounter('clinical_docs.notes_generated', 1, {
@@ -790,51 +801,51 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       return document;
     } catch (error) {
-      console.error('Error generating clinical note:', error);
+
       throw error;
     }
   }
 
   /**
-   * Advanced natural language processing for clinical text
+   * Advanced natural language processing for clinical text;
    */
   async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> {
     try {
-      // Cache check
+      // Cache check;
       const cacheKey = `clinical_concepts:${this.hashText(text)}`;
       const cached = await cacheService.getCachedResult('nlp:', cacheKey);
       if (cached) return cached;
 
       const concepts: ClinicalConcept[] = [];
 
-      // Medical entity recognition
+      // Medical entity recognition;
       const medicalEntities = await this.recognizeMedicalEntities(text);
       
-      // Drug recognition
+      // Drug recognition;
       const medications = await this.extractMedications(text);
       
-      // Diagnosis extraction
+      // Diagnosis extraction;
       const diagnoses = await this.extractDiagnoses(text);
       
-      // Procedure extraction
+      // Procedure extraction;
       const procedures = await this.extractProcedures(text);
       
-      // Symptom extraction
+      // Symptom extraction;
       const symptoms = await this.extractSymptoms(text);
 
-      // Combine all concepts
+      // Combine all concepts;
       concepts.push(
         ...medicalEntities.map(entity => this.entityToConcept(entity, 'SNOMED')),
         ...medications.map(med => this.medicationToConcept(med, 'RXNORM')),
         ...diagnoses.map(diag => this.diagnosisToConcept(diag, 'ICD10')),
         ...procedures.map(proc => this.procedureToConcept(proc, 'CPT')),
-        ...symptoms.map(symp => this.symptomToConcept(symp, 'SNOMED'))
+        ...symptoms.map(symp => this.symptomToConcept(symp, 'SNOMED'));
       );
 
-      // Cache results
-      await cacheService.cacheResult('nlp:', cacheKey, concepts, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('nlp:', cacheKey, concepts, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('clinical_docs.concept_extractions', 1, {
         conceptCount: concepts.length.toString(),
         textLength: text.length.toString(),
@@ -842,16 +853,16 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       return concepts;
     } catch (error) {
-      console.error('Error extracting clinical concepts:', error);
+
       return [];
     }
   }
 
   /**
-   * Real-time documentation compliance monitoring
+   * Real-time documentation compliance monitoring;
    */
   async checkDocumentationCompliance(
-    documentId: string
+    documentId: string;
   ): Promise<{ compliant: boolean; flags: ComplianceFlag[]; score: number }> {
     try {
       const document = await this.getDocument(documentId);
@@ -861,36 +872,36 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       const flags: ComplianceFlag[] = [];
 
-      // Check regulatory compliance
+      // Check regulatory compliance;
       const regulatoryFlags = await this.checkRegulatoryCompliance(document);
       flags.push(...regulatoryFlags);
 
-      // Check institutional compliance
+      // Check institutional compliance;
       const institutionalFlags = await this.checkInstitutionalCompliance(document);
       flags.push(...institutionalFlags);
 
-      // Check specialty-specific compliance
+      // Check specialty-specific compliance;
       const specialtyFlags = await this.checkSpecialtyCompliance(document);
       flags.push(...specialtyFlags);
 
-      // Check quality metrics compliance
+      // Check quality metrics compliance;
       const qualityFlags = await this.checkQualityCompliance(document);
       flags.push(...qualityFlags);
 
-      // Calculate compliance score
+      // Calculate compliance score;
       const score = this.calculateComplianceScore(flags);
       const compliant = score >= 80 && !flags.some(f => f.severity === 'CRITICAL');
 
-      // Update document compliance flags
+      // Update document compliance flags;
       await this.updateDocumentCompliance(documentId, flags);
 
-      // Send alerts for critical issues
+      // Send alerts for critical issues;
       const criticalFlags = flags.filter(f => f.severity === 'CRITICAL');
       if (criticalFlags.length > 0) {
         await this.sendComplianceAlerts(document, criticalFlags);
       }
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('clinical_docs.compliance_checks', 1, {
         documentType: document.documentType,
         compliant: compliant.toString(),
@@ -899,39 +910,39 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       return { compliant, flags, score };
     } catch (error) {
-      console.error('Error checking documentation compliance:', error);
+
       throw error;
     }
   }
 
   /**
-   * Intelligent template recommendation
+   * Intelligent template recommendation;
    */
   async recommendTemplate(
     documentType: DocumentType,
-    patientData: any,
-    encounterData: any,
-    userPreferences?: any
+    patientData: unknown,
+    encounterData: unknown,
+    userPreferences?: unknown;
   ): Promise<DocumentTemplate[]> {
     try {
-      // Get available templates for document type
+      // Get available templates for document type;
       const availableTemplates = await this.getTemplatesByType(documentType);
 
-      // Score templates based on various factors
+      // Score templates based on various factors;
       const scoredTemplates = await Promise.all(
         availableTemplates.map(async (template) => {
           const score = await this.scoreTemplate(template, patientData, encounterData, userPreferences);
           return { template, score };
-        })
+        });
       );
 
-      // Sort by score and return top recommendations
-      const recommendations = scoredTemplates
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 5)
+      // Sort by score and return top recommendations;
+      const recommendations = scoredTemplates;
+        .sort((a, b) => b.score - a.score);
+        .slice(0, 5);
         .map(item => item.template);
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('clinical_docs.template_recommendations', 1, {
         documentType: documentType,
         recommendationCount: recommendations.length.toString(),
@@ -939,37 +950,37 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       return recommendations;
     } catch (error) {
-      console.error('Error recommending templates:', error);
+
       return [];
     }
   }
 
   /**
-   * Advanced voice-to-text clinical documentation
+   * Advanced voice-to-text clinical documentation;
    */
   async processVoiceInput(
     audioData: Buffer,
     documentId: string,
-    sectionId?: string
+    sectionId?: string;
   ): Promise<{ text: string; confidence: number; concepts: ClinicalConcept[] }> {
     try {
-      // Speech-to-text conversion
+      // Speech-to-text conversion;
       const speechResult = await this.convertSpeechToText(audioData);
       
-      // Medical context processing
+      // Medical context processing;
       const processedText = await this.processMedicalSpeech(speechResult.text);
       
-      // Extract clinical concepts
+      // Extract clinical concepts;
       const concepts = await this.extractClinicalConcepts(processedText);
       
-      // Update document with voice input
+      // Update document with voice input;
       if (sectionId) {
         await this.updateDocumentSection(documentId, sectionId, processedText);
       } else {
         await this.appendToDocument(documentId, processedText);
       }
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('clinical_docs.voice_inputs', 1, {
         confidence: Math.round(speechResult.confidence).toString(),
         conceptCount: concepts.length.toString(),
@@ -982,28 +993,28 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
         concepts,
       };
     } catch (error) {
-      console.error('Error processing voice input:', error);
+
       throw error;
     }
   }
 
-  // Private helper methods
+  // Private helper methods;
   private async getPatientData(patientId: string): Promise<any> {
-    // Implementation to fetch comprehensive patient data
+    // Implementation to fetch comprehensive patient data;
     return {};
   }
 
   private async getEncounterData(encounterId: string): Promise<any> {
-    // Implementation to fetch encounter data
+    // Implementation to fetch encounter data;
     return {};
   }
 
   private async extractStructuredData(
-    patientData: any,
-    encounterData: any,
-    inputData?: any
+    patientData: unknown,
+    encounterData: unknown,
+    inputData?: unknown;
   ): Promise<StructuredClinicalData> {
-    // Implementation to extract and structure clinical data
+    // Implementation to extract and structure clinical data;
     return {
       problems: [],
       medications: [],
@@ -1019,9 +1030,9 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   private async generateDocumentContent(
     template: DocumentTemplate | null,
     structuredData: StructuredClinicalData,
-    inputData?: any
+    inputData?: unknown;
   ): Promise<DocumentContent> {
-    // AI-powered content generation implementation
+    // AI-powered content generation implementation;
     return {
       sections: [],
       templates: [],
@@ -1032,9 +1043,9 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
   private async analyzeDocumentQuality(
     content: DocumentContent,
-    documentType: DocumentType
+    documentType: DocumentType;
   ): Promise<QualityMetrics> {
-    // Quality analysis implementation
+    // Quality analysis implementation;
     return {
       completeness: {
         overallScore: 85,
@@ -1068,19 +1079,19 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   }
 
   private hashText(text: string): string {
-    // Simple hash implementation for caching
+    // Simple hash implementation for caching;
     let hash = 0;
     for (let i = 0; i < text.length; i++) {
       const char = text.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
+      hash = hash & hash; // Convert to 32-bit integer;
     }
     return hash.toString();
   }
 
   // Additional helper methods would be implemented here...
 
-  // Required abstract methods
+  // Required abstract methods;
   validate(resource: FHIRObservation): boolean {
     return !!(resource.resourceType && resource.status && resource.code);
   }

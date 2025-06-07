@@ -1,11 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '../../lib/auth';
 import PatientList from '../../components/patient-management/patient-list';
 
-export default async function PatientsPage({
-  searchParams
+export default async const PatientsPage = ({
+  searchParams;
 }: {
   searchParams: { 
     page?: string; 
@@ -19,20 +30,20 @@ export default async function PatientsPage({
     status?: string;
   }
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session) {
     redirect('/login');
   }
   
-  // Parse pagination parameters
+  // Parse pagination parameters;
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
   const limit = searchParams.limit ? parseInt(searchParams.limit) : 10;
   
-  // Build search filters
-  const filters: any = {};
+  // Build search filters;
+  const filters: unknown = {};
   if (searchParams.mrn) filters.mrn = searchParams.mrn;
   if (searchParams.firstName) filters.firstName = searchParams.firstName;
   if (searchParams.lastName) filters.lastName = searchParams.lastName;
@@ -44,21 +55,21 @@ export default async function PatientsPage({
   // Fetch patients data (server-side)
   let initialData;
   try {
-    // Build query parameters
+    // Build query parameters;
     const params = new URLSearchParams();
     params.append('page', page.toString());
     params.append('limit', limit.toString());
     
-    // Add filters if they have values
+    // Add filters if they have values;
     Object.entries(filters).forEach(([key, value]) => {
       if (value) params.append(key, value as string);
     });
     
-    // Fetch patients
+    // Fetch patients;
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients?${params.toString()}`, {
       cache: 'no-store',
       headers: {
-        Cookie: `next-auth.session-token=${session.user.id}`
+        Cookie: `next-auth.session-token=${session.user.id}`;
       }
     });
     
@@ -66,14 +77,14 @@ export default async function PatientsPage({
       initialData = await response.json();
     }
   } catch (error) {
-    console.error('Error pre-fetching patients:', error);
-    // Will let client-side handling take over
+
+    // Will let client-side handling take over;
   }
   
   return (
-    <div className="container mx-auto py-6">
-      <Suspense fallback={<div>Loading patients...</div>}>
-        <PatientList initialData={initialData} />
+    <div className="container mx-auto py-6">;
+      <Suspense fallback={<div>Loading patients...</div>}>;
+        <PatientList initialData={initialData} />;
       </Suspense>
     </div>
   );

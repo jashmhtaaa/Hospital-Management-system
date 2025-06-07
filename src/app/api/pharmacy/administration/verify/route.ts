@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Barcode Verification API for Medication Administration
+ * Barcode Verification API for Medication Administration;
  * 
- * This file implements the API endpoint for verifying medication administration
+ * This file implements the API endpoint for verifying medication administration;
  * using barcode scanning, following the "Five Rights" verification process.
  */
 
@@ -20,7 +31,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
@@ -31,7 +42,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
@@ -42,23 +53,23 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-// Initialize services
+// Initialize services;
 const barcodeService = new BarcodeAdministrationService(
   medicationRepository,
   prescriptionRepository,
-  administrationRepository
+  administrationRepository;
 );
 
 /**
- * POST /api/pharmacy/administration/verify
- * Verify medication administration with barcode scanning
+ * POST /api/pharmacy/administration/verify;
+ * Verify medication administration with barcode scanning;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
     if (!validationResult.success) {
@@ -68,47 +79,47 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Verify the "Five Rights" of medication administration
+    // Verify the "Five Rights" of medication administration;
     const verificationResult = await barcodeService.verifyAdministration(
       data.patientBarcode,
       data.medicationBarcode,
       data.prescriptionId,
       data.administeredDose,
-      data.administeredRoute
+      data.administeredRoute;
     );
 
-    // If verification failed, return error
+    // If verification failed, return error;
     if (!verificationResult.success) {
       return NextResponse.json(
         { 
           error: 'Verification failed', 
           details: verificationResult.errors,
-          verificationResult 
+          verificationResult;
         }, 
         { status: 400 }
       );
     }
 
-    // If verification succeeded but with warnings, include them in response
-    const response: any = { 
+    // If verification succeeded but with warnings, include them in response;
+    const response: unknown = { 
       success: true,
-      verificationResult
+      verificationResult;
     };
 
     if (verificationResult.warnings && verificationResult.warnings.length > 0) {
       response.warnings = verificationResult.warnings;
     }
 
-    // Audit logging
+    // Audit logging;
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'VERIFY',
       resourceType: 'MedicationAdministration',
@@ -118,11 +129,11 @@ export async function POST(req: NextRequest) {
         medicationId: verificationResult.medicationId,
         prescriptionId: data.prescriptionId,
         success: verificationResult.success,
-        warningCount: verificationResult.warnings?.length || 0
+        warningCount: verificationResult.warnings?.length || 0;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     return errorHandler(error, 'Error verifying medication administration');

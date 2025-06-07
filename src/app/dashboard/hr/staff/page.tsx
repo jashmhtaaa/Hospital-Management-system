@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +20,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '@/components/ui/card';
 import { 
   Table, 
@@ -16,7 +28,7 @@ import {
   TableCell, 
   TableHead, 
   TableHeader, 
-  TableRow 
+  TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +37,7 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '@/components/ui/select';
 import { 
   Pagination, 
@@ -33,7 +45,7 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -43,33 +55,33 @@ import {
   UserPlus, 
   Users, 
   Building2, 
-  Briefcase 
+  Briefcase;
 } from 'lucide-react';
 
-export default function StaffManagement() {
+export default const StaffManagement = () {
   const router = useRouter();
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any | null>(null);
   const [search, setSearch] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [positionFilter, setPositionFilter] = useState('');
-  const [departments, setDepartments] = useState([]);
-  const [positions, setPositions] = useState([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [positions, setPositions] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0
+    total: 0;
   });
 
-  // Fetch employees
+  // Fetch employees;
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          take: pagination.take.toString();
         });
         
         if (search) queryParams.append('search', search);
@@ -86,7 +98,7 @@ export default function StaffManagement() {
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total
+          total: data.total;
         }));
       } catch (err) {
         setError(err.message);
@@ -98,37 +110,37 @@ export default function StaffManagement() {
     fetchEmployees();
   }, [search, departmentFilter, positionFilter, pagination.skip, pagination.take]);
 
-  // Fetch departments and positions for filters
+  // Fetch departments and positions for filters;
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        // Fetch departments
+        // Fetch departments;
         const deptResponse = await fetch('/api/hr/departments');
         if (deptResponse.ok) {
           const deptData = await deptResponse.json();
           setDepartments(deptData.departments || []);
         }
         
-        // Fetch positions
+        // Fetch positions;
         const posResponse = await fetch('/api/hr/positions');
         if (posResponse.ok) {
           const posData = await posResponse.json();
           setPositions(posData.positions || []);
         }
       } catch (err) {
-        console.error('Error fetching filters:', err);
+
       }
     };
     
     fetchFilters();
   }, []);
 
-  // Handle pagination
+  // Handle pagination;
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -137,107 +149,107 @@ export default function StaffManagement() {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
 
-  // Handle search
-  const handleSearch = (e) => {
+  // Handle search;
+  const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching
+    // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
-  // Navigate to employee details
-  const handleViewEmployee = (id) => {
+  // Navigate to employee details;
+  const handleViewEmployee = (id: unknown) => {
     router.push(`/dashboard/hr/staff/${id}`);
   };
 
-  // Navigate to add employee form
+  // Navigate to add employee form;
   const handleAddEmployee = () => {
     router.push('/dashboard/hr/staff/new');
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold">Staff Management</h1>
-        <p className="text-muted-foreground">
-          Manage employee profiles, departments, and roles
+    <div className="flex flex-col gap-4 p-4 md:p-8">;
+      <div className="flex flex-col gap-2">;
+        <h1 className="text-3xl font-bold">Staff Management</h1>;
+        <p className="text-muted-foreground">;
+          Manage employee profiles, departments, and roles;
         </p>
       </div>
       
-      <div className="flex flex-col md:flex-row gap-4 justify-between">
-        <div className="flex flex-col md:flex-row gap-2 md:items-center">
-          <form onSubmit={handleSearch} className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
+      <div className="flex flex-col md:flex-row gap-4 justify-between">;
+        <div className="flex flex-col md:flex-row gap-2 md:items-center">;
+          <form onSubmit={handleSearch} className="flex gap-2">;
+            <div className="relative">;
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
+              <Input;
                 type="search"
-                placeholder="Search employees..."
-                className="pl-8 w-full md:w-[300px]"
+                placeholder="Search employees...";
+                className="pl-8 w-full md:w-[300px]";
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button type="submit" variant="secondary">
-              Search
+            <Button type="submit" variant="secondary">;
+              Search;
             </Button>
           </form>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-2">
-          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Filter by Department" />
+        <div className="flex flex-col md:flex-row gap-2">;
+          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
+            <SelectTrigger className="w-full md:w-[200px]">;
+              <SelectValue placeholder="Filter by Department" />;
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Departments</SelectItem>
+              <SelectItem value="">All Departments</SelectItem>;
               {departments.map((dept) => (
-                <SelectItem key={dept.id} value={dept.id}>
+                <SelectItem key={dept.id} value={dept.id}>;
                   {dept.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           
-          <Select value={positionFilter} onValueChange={setPositionFilter}>
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Filter by Position" />
+          <Select value={positionFilter} onValueChange={setPositionFilter}>;
+            <SelectTrigger className="w-full md:w-[200px]">;
+              <SelectValue placeholder="Filter by Position" />;
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Positions</SelectItem>
+              <SelectItem value="">All Positions</SelectItem>;
               {positions.map((pos) => (
-                <SelectItem key={pos.id} value={pos.id}>
+                <SelectItem key={pos.id} value={pos.id}>;
                   {pos.title}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           
-          <Button onClick={handleAddEmployee}>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Add Employee
+          <Button onClick={handleAddEmployee}>;
+            <UserPlus className="mr-2 h-4 w-4" />;
+            Add Employee;
           </Button>
         </div>
       </div>
       
       <Card>
-        <CardHeader className="pb-2">
-          <div className="flex justify-between items-center">
+        <CardHeader className="pb-2">;
+          <div className="flex justify-between items-center">;
             <CardTitle>Employee Directory</CardTitle>
-            <div className="flex gap-2">
+            <div className="flex gap-2">;
               <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/departments')}>
-                <Building2 className="mr-2 h-4 w-4" />
-                Departments
+                <Building2 className="mr-2 h-4 w-4" />;
+                Departments;
               </Button>
               <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/positions')}>
-                <Briefcase className="mr-2 h-4 w-4" />
-                Positions
+                <Briefcase className="mr-2 h-4 w-4" />;
+                Positions;
               </Button>
             </div>
           </div>
@@ -247,16 +259,16 @@ export default function StaffManagement() {
         </CardHeader>
         <CardContent>
           {error ? (
-            <div className="text-center py-4 text-red-500">
+            <div className="text-center py-4 text-red-500">;
               Error: {error}
             </div>
           ) : loading ? (
-            <div className="text-center py-4">
-              Loading...
+            <div className="text-center py-4">;
+              Loading...;
             </div>
           ) : employees.length === 0 ? (
-            <div className="text-center py-4">
-              No employees found. Try adjusting your filters or add a new employee.
+            <div className="text-center py-4">;
+              No employees found. Try adjusting your filters or add a new employee.;
             </div>
           ) : (
             <Table>
@@ -272,7 +284,7 @@ export default function StaffManagement() {
               </TableHeader>
               <TableBody>
                 {employees.map((employee) => (
-                  <TableRow key={employee.id}>
+                  <TableRow key={employee.id}>;
                     <TableCell>{employee.employeeId}</TableCell>
                     <TableCell>
                       {employee.firstName} {employee.lastName}
@@ -281,23 +293,23 @@ export default function StaffManagement() {
                       {employee.department?.name || 'Not Assigned'}
                     </TableCell>
                     <TableCell>
-                      {employee.positions?.length > 0
+                      {employee.positions?.length > 0;
                         ? employee.positions.find(p => p.isPrimary)?.position.title || 
-                          employee.positions[0].position.title
+                          employee.positions[0].position.title;
                         : 'Not Assigned'}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={employee.active ? "success" : "destructive"}>
+                      <Badge variant={employee.active ? "success" : "destructive"}>;
                         {employee.active ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
+                      <Button;
+                        variant="ghost";
+                        size="sm";
                         onClick={() => handleViewEmployee(employee.id)}
                       >
-                        View
+                        View;
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -310,18 +322,18 @@ export default function StaffManagement() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious 
+                <PaginationPrevious;
                   onClick={handlePreviousPage}
                   className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                 />
               </PaginationItem>
               <PaginationItem>
-                <span className="text-sm">
+                <span className="text-sm">;
                   Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take)}
                 </span>
               </PaginationItem>
               <PaginationItem>
-                <PaginationNext 
+                <PaginationNext;
                   onClick={handleNextPage}
                   className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                 />

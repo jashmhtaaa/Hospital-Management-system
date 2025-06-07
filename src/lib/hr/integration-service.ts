@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/hr/auth-integration';
 
 /**
- * Integration service for connecting HR & Asset Management with other HMS modules
+ * Integration service for connecting HR & Asset Management with other HMS modules;
  */
 export class IntegrationService {
   private prisma: PrismaClient;
@@ -13,8 +24,8 @@ export class IntegrationService {
   }
 
   /**
-   * Get employee data for clinical module integration
-   * This provides staff information to clinical modules for assignment
+   * Get employee data for clinical module integration;
+   * This provides staff information to clinical modules for assignment;
    */
   async getEmployeesForClinical() {
     return this.prisma.employee.findMany({
@@ -22,7 +33,7 @@ export class IntegrationService {
         isActive: true,
         positions: {
           some: {
-            endDate: null, // Current positions
+            endDate: null, // Current positions;
             department: {
               type: 'CLINICAL'
             }
@@ -38,7 +49,7 @@ export class IntegrationService {
         phone: true,
         positions: {
           where: {
-            endDate: null
+            endDate: null;
           },
           select: {
             id: true,
@@ -46,7 +57,7 @@ export class IntegrationService {
             department: {
               select: {
                 id: true,
-                name: true
+                name: true;
               }
             }
           }
@@ -54,7 +65,7 @@ export class IntegrationService {
         qualifications: {
           where: {
             expiryDate: {
-              gt: new Date()
+              gt: new Date();
             }
           },
           select: {
@@ -63,7 +74,7 @@ export class IntegrationService {
             name: true,
             issuedBy: true,
             issuedDate: true,
-            expiryDate: true
+            expiryDate: true;
           }
         }
       }
@@ -71,14 +82,14 @@ export class IntegrationService {
   }
 
   /**
-   * Get biomedical equipment data for clinical module integration
-   * This provides equipment information to clinical modules for usage
+   * Get biomedical equipment data for clinical module integration;
+   * This provides equipment information to clinical modules for usage;
    */
   async getBiomedicalEquipmentForClinical() {
     return this.prisma.biomedicalEquipment.findMany({
       where: {
         asset: {
-          status: 'AVAILABLE'
+          status: 'AVAILABLE';
         }
       },
       select: {
@@ -100,7 +111,7 @@ export class IntegrationService {
             department: {
               select: {
                 id: true,
-                name: true
+                name: true;
               }
             }
           }
@@ -110,14 +121,14 @@ export class IntegrationService {
   }
 
   /**
-   * Get asset data for finance module integration
-   * This provides asset information to finance modules for accounting
+   * Get asset data for finance module integration;
+   * This provides asset information to finance modules for accounting;
    */
   async getAssetsForFinance() {
     return this.prisma.asset.findMany({
       where: {
         status: {
-          not: 'DISPOSED'
+          not: 'DISPOSED';
         }
       },
       select: {
@@ -134,23 +145,23 @@ export class IntegrationService {
         department: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         },
-        status: true
+        status: true;
       }
     });
   }
 
   /**
-   * Get payroll data for finance module integration
-   * This provides payroll information to finance modules for accounting
+   * Get payroll data for finance module integration;
+   * This provides payroll information to finance modules for accounting;
    */
   async getPayrollForFinance(periodId: string) {
     return this.prisma.payrollPeriod.findUnique({
       where: {
         id: periodId,
-        status: 'PAID'
+        status: 'PAID';
       },
       select: {
         id: true,
@@ -171,7 +182,7 @@ export class IntegrationService {
                 department: {
                   select: {
                     id: true,
-                    name: true
+                    name: true;
                   }
                 }
               }
@@ -180,7 +191,7 @@ export class IntegrationService {
             grossSalary: true,
             deductions: true,
             netSalary: true,
-            components: true
+            components: true;
           }
         }
       }
@@ -188,8 +199,8 @@ export class IntegrationService {
   }
 
   /**
-   * Get employee attendance for scheduling module integration
-   * This provides attendance information to scheduling modules
+   * Get employee attendance for scheduling module integration;
+   * This provides attendance information to scheduling modules;
    */
   async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {
     return this.prisma.attendance.findMany({
@@ -197,58 +208,58 @@ export class IntegrationService {
         employeeId,
         date: {
           gte: startDate,
-          lte: endDate
+          lte: endDate;
         }
       },
       orderBy: {
-        date: 'asc'
+        date: 'asc';
       }
     });
   }
 
   /**
-   * Get employee leaves for scheduling module integration
-   * This provides leave information to scheduling modules
+   * Get employee leaves for scheduling module integration;
+   * This provides leave information to scheduling modules;
    */
   async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {
     return this.prisma.leave.findMany({
       where: {
         employeeId,
         startDate: {
-          lte: endDate
+          lte: endDate;
         },
         endDate: {
-          gte: startDate
+          gte: startDate;
         },
-        status: 'APPROVED'
+        status: 'APPROVED';
       },
       orderBy: {
-        startDate: 'asc'
+        startDate: 'asc';
       }
     });
   }
 
   /**
-   * Update asset status from clinical module
-   * This allows clinical modules to update equipment status
+   * Update asset status from clinical module;
+   * This allows clinical modules to update equipment status;
    */
   async updateAssetStatusFromClinical(assetId: string, status: 'AVAILABLE' | 'IN_USE' | 'UNDER_MAINTENANCE', notes?: string) {
-    // Get current session for audit
+    // Get current session for audit;
     const session = await getServerSession(authOptions);
     if (!session) {
       throw new Error('Unauthorized');
     }
 
-    // Check if user has permission
+    // Check if user has permission;
     const hasPermission = session.user.roles.some(role => 
-      ['ADMIN', 'CLINICAL_STAFF', 'DOCTOR', 'NURSE'].includes(role)
+      ['ADMIN', 'CLINICAL_STAFF', 'DOCTOR', 'NURSE'].includes(role);
     );
 
     if (!hasPermission) {
       throw new Error('Insufficient permissions');
     }
 
-    // Update asset status
+    // Update asset status;
     return this.prisma.asset.update({
       where: { id: assetId },
       data: {
@@ -259,12 +270,12 @@ export class IntegrationService {
             type: 'STATUS_CHANGE',
             date: new Date(),
             details: {
-              previousStatus: 'UNKNOWN', // Will be replaced in service layer
+              previousStatus: 'UNKNOWN', // Will be replaced in service layer;
               newStatus: status,
               notes,
               updatedBy: session.user.email,
               updatedByName: session.user.name,
-              source: 'CLINICAL_MODULE'
+              source: 'CLINICAL_MODULE';
             }
           }
         }
@@ -273,8 +284,8 @@ export class IntegrationService {
   }
 
   /**
-   * Record maintenance from clinical module
-   * This allows clinical modules to record equipment maintenance
+   * Record maintenance from clinical module;
+   * This allows clinical modules to record equipment maintenance;
    */
   async recordMaintenanceFromClinical(assetId: string, data: {
     maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'CALIBRATION' | 'INSPECTION';
@@ -284,22 +295,22 @@ export class IntegrationService {
     description: string;
     nextMaintenanceDate?: Date;
   }) {
-    // Get current session for audit
+    // Get current session for audit;
     const session = await getServerSession(authOptions);
     if (!session) {
       throw new Error('Unauthorized');
     }
 
-    // Check if user has permission
+    // Check if user has permission;
     const hasPermission = session.user.roles.some(role => 
-      ['ADMIN', 'CLINICAL_STAFF', 'BIOMEDICAL_ENGINEER'].includes(role)
+      ['ADMIN', 'CLINICAL_STAFF', 'BIOMEDICAL_ENGINEER'].includes(role);
     );
 
     if (!hasPermission) {
       throw new Error('Insufficient permissions');
     }
 
-    // Create maintenance record
+    // Create maintenance record;
     const maintenanceRecord = await this.prisma.maintenanceRecord.create({
       data: {
         assetId,
@@ -312,7 +323,7 @@ export class IntegrationService {
       },
     });
 
-    // Create history record
+    // Create history record;
     await this.prisma.assetHistory.create({
       data: {
         assetId,
@@ -324,13 +335,13 @@ export class IntegrationService {
           description: data.description,
           source: 'CLINICAL_MODULE',
           updatedBy: session.user.email,
-          updatedByName: session.user.name
+          updatedByName: session.user.name;
         },
         employeeId: session.user.employeeId || null,
       },
     });
 
-    // Update asset status
+    // Update asset status;
     await this.prisma.asset.update({
       where: { id: assetId },
       data: {
@@ -344,8 +355,8 @@ export class IntegrationService {
   }
 
   /**
-   * Get departments for all modules
-   * This provides department information to all modules
+   * Get departments for all modules;
+   * This provides department information to all modules;
    */
   async getDepartmentsForAllModules() {
     return this.prisma.department.findMany({
@@ -358,7 +369,7 @@ export class IntegrationService {
         parentDepartment: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         }
       }

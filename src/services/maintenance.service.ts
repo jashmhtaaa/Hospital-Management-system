@@ -1,22 +1,32 @@
-import { PrismaClient } from '@prisma/client';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { z } from 'zod';
 
-// Create enums to match Prisma schema
+// Create enums to match Prisma schema;
 export enum MaintenanceRequestStatus {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED';
 }
 
 export enum MaintenanceRequestPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  URGENT = 'URGENT'
+  URGENT = 'URGENT';
 }
 
-// Validation schemas
+// Validation schemas;
 export const createMaintenanceRequestSchema = z.object({
   equipmentId: z.string().optional(),
   description: z.string().min(1, 'Description is required'),
@@ -36,24 +46,24 @@ export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.par
 export type CreateMaintenanceRequestInput = z.infer<typeof createMaintenanceRequestSchema>;
 export type UpdateMaintenanceRequestInput = z.infer<typeof updateMaintenanceRequestSchema>;
 
-// Import prisma client
+// Import prisma client;
 import { prisma } from '../lib/prisma';
 
 /**
- * Service class for managing maintenance requests
+ * Service class for managing maintenance requests;
  */
 export class MaintenanceService {
   /**
-   * Create a new maintenance request
-   * @param data Request data
-   * @returns The created request
+   * Create a new maintenance request;
+   * @param data Request data;
+   * @returns The created request;
    */
   async createRequest(data: CreateMaintenanceRequestInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createMaintenanceRequestSchema.parse(data);
       
-      // Create the request
+      // Create the request;
       const request = await prisma.maintenanceRequest.create({
         data: validatedData,
       });
@@ -68,9 +78,9 @@ export class MaintenanceService {
   }
 
   /**
-   * Get all maintenance requests with optional filtering
-   * @param filters Optional filters for status, priority, equipmentId, or reportedBy
-   * @returns Array of requests matching the filters
+   * Get all maintenance requests with optional filtering;
+   * @param filters Optional filters for status, priority, equipmentId, or reportedBy;
+   * @returns Array of requests matching the filters;
    */
   async getRequests(filters?: {
     status?: string;
@@ -80,7 +90,7 @@ export class MaintenanceService {
     assignedToId?: string;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -123,9 +133,9 @@ export class MaintenanceService {
   }
 
   /**
-   * Get a single maintenance request by ID
-   * @param id Request ID
-   * @returns The request or null if not found
+   * Get a single maintenance request by ID;
+   * @param id Request ID;
+   * @returns The request or null if not found;
    */
   async getRequestById(id: string) {
     try {
@@ -148,20 +158,20 @@ export class MaintenanceService {
   }
 
   /**
-   * Update a maintenance request
-   * @param id Request ID
-   * @param data Updated request data
-   * @returns The updated request
+   * Update a maintenance request;
+   * @param id Request ID;
+   * @param data Updated request data;
+   * @returns The updated request;
    */
   async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Update the request
+      // Update the request;
       const request = await prisma.maintenanceRequest.update({
         where: { id },
         data: updateData,
@@ -185,9 +195,9 @@ export class MaintenanceService {
   }
 
   /**
-   * Delete a maintenance request
-   * @param id Request ID
-   * @returns The deleted request
+   * Delete a maintenance request;
+   * @param id Request ID;
+   * @returns The deleted request;
    */
   async deleteRequest(id: string) {
     try {
@@ -202,10 +212,10 @@ export class MaintenanceService {
   }
 
   /**
-   * Assign a request to a user
-   * @param requestId Request ID
-   * @param userId User ID
-   * @returns The updated request
+   * Assign a request to a user;
+   * @param requestId Request ID;
+   * @param userId User ID;
+   * @returns The updated request;
    */
   async assignRequest(requestId: string, userId: string) {
     try {
@@ -232,9 +242,9 @@ export class MaintenanceService {
   }
 
   /**
-   * Mark a request as completed
-   * @param requestId Request ID
-   * @returns The updated request
+   * Mark a request as completed;
+   * @param requestId Request ID;
+   * @returns The updated request;
    */
   async completeRequest(requestId: string) {
     try {
@@ -261,9 +271,9 @@ export class MaintenanceService {
   }
 
   /**
-   * Cancel a request
-   * @param requestId Request ID
-   * @returns The updated request
+   * Cancel a request;
+   * @param requestId Request ID;
+   * @returns The updated request;
    */
   async cancelRequest(requestId: string) {
     try {
@@ -289,5 +299,5 @@ export class MaintenanceService {
   }
 }
 
-// Export a singleton instance
+// Export a singleton instance;
 export const maintenanceService = new MaintenanceService();

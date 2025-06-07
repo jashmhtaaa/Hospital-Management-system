@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * FHIR R4 DiagnosticReport Resource Implementation
- * Based on HL7 FHIR R4 DiagnosticReport Resource specification
- * Handles lab reports, imaging reports, pathology reports
- * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices
+ * FHIR R4 DiagnosticReport Resource Implementation;
+ * Based on HL7 FHIR R4 DiagnosticReport Resource specification;
+ * Handles lab reports, imaging reports, pathology reports;
+ * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices;
  */
 
 import {
@@ -11,12 +22,12 @@ import {
   FHIRCodeableConcept,
   FHIRReference,
   FHIRPeriod,
-  FHIRAttachment
-} from './types';
+  FHIRAttachment;
+} from './types.ts';
 
 export interface FHIRDiagnosticReportMedia {
   comment?: string;
-  link: FHIRReference; // Media
+  link: FHIRReference; // Media;
 }
 
 export interface FHIRDiagnosticReport extends FHIRBase {
@@ -26,14 +37,14 @@ export interface FHIRDiagnosticReport extends FHIRBase {
   status: 'registered' | 'partial' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'appended' | 'cancelled' | 'entered-in-error' | 'unknown';
   category?: FHIRCodeableConcept[];
   code: FHIRCodeableConcept;
-  subject?: FHIRReference; // Patient | Group | Device | Location
+  subject?: FHIRReference; // Patient | Group | Device | Location;
   encounter?: FHIRReference;
-  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod
-  issued?: string; // instant
+  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod;
+  issued?: string; // instant;
   performer?: FHIRReference[];
   resultsInterpreter?: FHIRReference[];
   specimen?: FHIRReference[];
-  result?: FHIRReference[]; // Observation
+  result?: FHIRReference[]; // Observation;
   imagingStudy?: FHIRReference[];
   media?: FHIRDiagnosticReportMedia[];
   conclusion?: string;
@@ -41,7 +52,7 @@ export interface FHIRDiagnosticReport extends FHIRBase {
   presentedForm?: FHIRAttachment[];
 }
 
-// DiagnosticReport Search Parameters
+// DiagnosticReport Search Parameters;
 export interface FHIRDiagnosticReportSearchParams {
   _id?: string;
   identifier?: string;
@@ -59,10 +70,10 @@ export interface FHIRDiagnosticReportSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR DiagnosticReport operations
+// Helper functions for FHIR DiagnosticReport operations;
 export class FHIRDiagnosticReportUtils {
   /**
-   * Create a basic lab report
+   * Create a basic lab report;
    */
   static createLabReport(data: {
     patientId: string;
@@ -70,7 +81,7 @@ export class FHIRDiagnosticReportUtils {
     encounterId?: string;
     reportCode: string;
     reportName: string;
-    observations: string[]; // Observation IDs
+    observations: string[]; // Observation IDs;
     conclusion?: string;
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
@@ -83,14 +94,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'LAB',
-          display: 'Laboratory'
+          display: 'Laboratory';
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: data.reportCode,
-          display: data.reportName
+          display: data.reportName;
         }]
       },
       subject: {
@@ -117,14 +128,14 @@ export class FHIRDiagnosticReportUtils {
         specimen: data.specimens.map(specId => ({
           reference: `Specimen/${specId}`,
           type: 'Specimen'
-        }))
+        }));
       }),
-      ...(data.conclusion && { conclusion: data.conclusion })
+      ...(data.conclusion && { conclusion: data.conclusion });
     };
   }
 
   /**
-   * Create an imaging report
+   * Create an imaging report;
    */
   static createImagingReport(data: {
     patientId: string;
@@ -146,14 +157,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'RAD',
-          display: 'Radiology'
+          display: 'Radiology';
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: data.studyType,
-          display: data.studyName
+          display: data.studyName;
         }]
       },
       subject: {
@@ -185,13 +196,13 @@ export class FHIRDiagnosticReportUtils {
             reference: `Media/${imageId}`,
             type: 'Media'
           }
-        }))
-      })
+        }));
+      });
     };
   }
 
   /**
-   * Create a pathology report
+   * Create a pathology report;
    */
   static createPathologyReport(data: {
     patientId: string;
@@ -212,14 +223,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'PAT',
-          display: 'Pathology'
+          display: 'Pathology';
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: '60567-5',
-          display: 'Pathology report'
+          display: 'Pathology report';
         }]
       },
       subject: {
@@ -240,14 +251,14 @@ export class FHIRDiagnosticReportUtils {
         `Diagnosis: ${data.diagnosis}`,
         `Gross Description: ${data.grossDescription}`,
         `Microscopic Description: ${data.microscopicDescription}`,
-        `Conclusion: ${data.conclusion}`
+        `Conclusion: ${data.conclusion}`;
       ].join('\n\n'),
       ...(data.encounterId && {
         encounter: {
           reference: `Encounter/${data.encounterId}`,
           type: 'Encounter'
         }
-      })
+      });
     };
   }
 
@@ -303,14 +314,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'CAR',
-          display: 'Cardiology'
+          display: 'Cardiology';
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: study.code,
-          display: study.display
+          display: study.display;
         }]
       },
       subject: {
@@ -329,12 +340,12 @@ export class FHIRDiagnosticReportUtils {
           reference: `Encounter/${data.encounterId}`,
           type: 'Encounter'
         }
-      })
+      });
     };
   }
 
   /**
-   * Get report category display
+   * Get report category display;
    */
   static getCategoryDisplay(report: FHIRDiagnosticReport): string {
     const category = report.category?.[0];
@@ -342,21 +353,21 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Get report code display
+   * Get report code display;
    */
   static getCodeDisplay(report: FHIRDiagnosticReport): string {
     return report.code.coding?.[0]?.display || report.code.text || 'Unknown Report';
   }
 
   /**
-   * Get patient ID from report
+   * Get patient ID from report;
    */
   static getPatientId(report: FHIRDiagnosticReport): string | undefined {
     return report.subject?.reference?.replace('Patient/', '');
   }
 
   /**
-   * Get performer/interpreter from report
+   * Get performer/interpreter from report;
    */
   static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {
     const performer = report.performer?.[0] || report.resultsInterpreter?.[0];
@@ -364,13 +375,13 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Check if report is critical or urgent
+   * Check if report is critical or urgent;
    */
   static isCritical(report: FHIRDiagnosticReport): boolean {
-    // Check for critical keywords in conclusion
+    // Check for critical keywords in conclusion;
     const criticalKeywords = [
       'critical', 'urgent', 'stat', 'emergency', 'acute',
-      'severe', 'abnormal', 'suspicious', 'malignant'
+      'severe', 'abnormal', 'suspicious', 'malignant';
     ];
     
     const conclusion = report.conclusion?.toLowerCase() || '';
@@ -378,7 +389,7 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Get report effective date
+   * Get report effective date;
    */
   static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {
     if (typeof report.effective === 'string') {
@@ -391,7 +402,7 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Format report for display
+   * Format report for display;
    */
   static formatForDisplay(report: FHIRDiagnosticReport): {
     reportName: string;
@@ -415,12 +426,12 @@ export class FHIRDiagnosticReportUtils {
       isCritical: this.isCritical(report),
       hasResults: (report.result?.length || 0) > 0,
       hasImages: (report.media?.length || 0) > 0,
-      conclusion: report.conclusion
+      conclusion: report.conclusion;
     };
   }
 
   /**
-   * Validate FHIR DiagnosticReport resource
+   * Validate FHIR DiagnosticReport resource;
    */
   static validateDiagnosticReport(report: FHIRDiagnosticReport): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
@@ -441,30 +452,30 @@ export class FHIRDiagnosticReportUtils {
       errors.push('subject is required');
     }
 
-    // Validate status values
+    // Validate status values;
     const validStatuses = [
       'registered', 'partial', 'preliminary', 'final', 'amended', 
-      'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown'
+      'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown';
     ];
     if (report.status && !validStatuses.includes(report.status)) {
       errors.push(`status must be one of: ${validStatuses.join(', ')}`);
     }
 
-    // Validate that final reports have results or conclusion
+    // Validate that final reports have results or conclusion;
     if (report.status === 'final' && !report.result && !report.conclusion && !report.presentedForm) {
       errors.push('Final reports must have results, conclusion, or presented form');
     }
 
     return {
       valid: errors.length === 0,
-      errors
+      errors;
     };
   }
 
   /**
-   * Convert HMS lab report to FHIR DiagnosticReport
+   * Convert HMS lab report to FHIR DiagnosticReport;
    */
-  static fromHMSLabReport(hmsLabReport: any): FHIRDiagnosticReport {
+  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {
     return this.createLabReport({
       patientId: hmsLabReport.patientId,
       practitionerId: hmsLabReport.practitionerId || hmsLabReport.orderedBy,
@@ -480,9 +491,9 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Convert HMS imaging report to FHIR DiagnosticReport
+   * Convert HMS imaging report to FHIR DiagnosticReport;
    */
-  static fromHMSImagingReport(hmsImagingReport: any): FHIRDiagnosticReport {
+  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {
     return this.createImagingReport({
       patientId: hmsImagingReport.patientId,
       radiologistId: hmsImagingReport.radiologistId || hmsImagingReport.interpretedBy,
@@ -499,7 +510,7 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Get reports by category
+   * Get reports by category;
    */
   static getReportsByCategory(reports: FHIRDiagnosticReport[]): Record<string, FHIRDiagnosticReport[]> {
     const categorized: Record<string, FHIRDiagnosticReport[]> = {
@@ -513,7 +524,7 @@ export class FHIRDiagnosticReportUtils {
     reports.forEach(report => {
       const category = this.getCategoryDisplay(report);
       const key = Object.keys(categorized).find(k => 
-        k.toLowerCase() === category.toLowerCase()
+        k.toLowerCase() === category.toLowerCase();
       ) || 'Other';
       
       categorized[key].push(report);
@@ -523,14 +534,14 @@ export class FHIRDiagnosticReportUtils {
   }
 
   /**
-   * Get critical reports
+   * Get critical reports;
    */
   static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {
     return reports.filter(report => this.isCritical(report));
   }
 
   /**
-   * Get recent reports
+   * Get recent reports;
    */
   static getRecentReports(reports: FHIRDiagnosticReport[], days = 30): FHIRDiagnosticReport[] {
     const cutoffDate = new Date();
@@ -543,10 +554,10 @@ export class FHIRDiagnosticReportUtils {
   }
 }
 
-// Common diagnostic codes and categories
+// Common diagnostic codes and categories;
 export class FHIRDiagnosticCodes {
   /**
-   * Laboratory panel codes
+   * Laboratory panel codes;
    */
   static readonly LAB_PANELS = {
     COMPREHENSIVE_METABOLIC_PANEL: '24323-8',
@@ -556,11 +567,11 @@ export class FHIRDiagnosticCodes {
     LIVER_FUNCTION_PANEL: '24325-3',
     THYROID_FUNCTION_PANEL: '24108-3',
     COAGULATION_PANEL: '34714-6',
-    URINALYSIS: '24356-8'
+    URINALYSIS: '24356-8';
   };
 
   /**
-   * Imaging study codes
+   * Imaging study codes;
    */
   static readonly IMAGING_STUDIES = {
     CHEST_XRAY: '36643-5',
@@ -571,27 +582,27 @@ export class FHIRDiagnosticCodes {
     ULTRASOUND_ABDOMEN: '24982-1',
     MAMMOGRAPHY: '24604-1',
     ECHOCARDIOGRAM: '34552-0',
-    EKG: '11524-6'
+    EKG: '11524-6';
   };
 
   /**
-   * Pathology report codes
+   * Pathology report codes;
    */
   static readonly PATHOLOGY_REPORTS = {
     SURGICAL_PATHOLOGY: '60567-5',
     CYTOLOGY: '47527-7',
     AUTOPSY: '18743-5',
-    BONE_MARROW: '33717-0'
+    BONE_MARROW: '33717-0';
   };
 
   /**
-   * Get display name for code
+   * Get display name for code;
    */
   static getDisplayName(code: string): string {
     const allCodes = {
       ...this.LAB_PANELS,
       ...this.IMAGING_STUDIES,
-      ...this.PATHOLOGY_REPORTS
+      ...this.PATHOLOGY_REPORTS;
     };
 
     const codeKey = Object.entries(allCodes).find(([_, value]) => value === code)?.[0];

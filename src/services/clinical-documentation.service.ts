@@ -1,28 +1,37 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { PrismaClient, ClinicalDocument, DocumentSection, DocumentSignature, DocumentAmendment } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../lib/core/errors';
+import { BadRequestError, NotFoundError } from '../lib/core/errors';
 import { auditLog } from '../lib/audit';
 import { validatePermission } from '../lib/rbac.service';
-import { encryptSensitiveData } from '../lib/security.service';
 
 const prisma = new PrismaClient();
 
 /**
- * Service for managing clinical documentation
+ * Service for managing clinical documentation;
  */
 export class ClinicalDocumentationService {
   /**
-   * Create a new clinical document
+   * Create a new clinical document;
    * 
-   * @param data Document data
-   * @param userId ID of the user creating the document
-   * @returns Created document
+   * @param data Document data;
+   * @param userId ID of the user creating the document;
+   * @returns Created document;
    */
   async createDocument(data: CreateDocumentDto, userId: string): Promise<ClinicalDocument> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'create');
     
-    // Check if patient exists
+    // Check if patient exists;
     const patient = await prisma.patient.findUnique({
       where: { id: data.patientId }
     });
@@ -31,12 +40,12 @@ export class ClinicalDocumentationService {
       throw new NotFoundError('Patient not found');
     }
 
-    // Generate document number
+    // Generate document number;
     const documentNumber = this.generateDocumentNumber(data.documentType);
     
-    // Create document transaction
+    // Create document transaction;
     const document = await prisma.$transaction(async (tx) => {
-      // Create the document
+      // Create the document;
       const document = await tx.clinicalDocument.create({
         data: {
           documentNumber,
@@ -55,7 +64,7 @@ export class ClinicalDocumentationService {
         }
       });
       
-      // Create document sections if provided
+      // Create document sections if provided;
       if (data.sections && data.sections.length > 0) {
         for (let i = 0; i < data.sections.length; i++) {
           const section = data.sections[i];
@@ -76,7 +85,7 @@ export class ClinicalDocumentationService {
       return document;
     });
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'CREATE',
       resourceType: 'ClinicalDocument',
@@ -93,14 +102,14 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Get a clinical document by ID
+   * Get a clinical document by ID;
    * 
-   * @param id Document ID
-   * @param userId ID of the user requesting the document
-   * @returns Document with sections, signatures, and amendments
+   * @param id Document ID;
+   * @param userId ID of the user requesting the document;
+   * @returns Document with sections, signatures, and amendments;
    */
   async getDocumentById(id: string, userId: string): Promise<DocumentWithRelations> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'read');
     
     const document = await prisma.clinicalDocument.findUnique({
@@ -108,7 +117,7 @@ export class ClinicalDocumentationService {
       include: {
         sections: {
           orderBy: {
-            sectionOrder: 'asc'
+            sectionOrder: 'asc';
           }
         },
         signatures: true,
@@ -120,12 +129,12 @@ export class ClinicalDocumentationService {
       throw new NotFoundError('Document not found');
     }
     
-    // Check if document is confidential and user has permission
+    // Check if document is confidential and user has permission;
     if (document.isConfidential) {
       await validatePermission(userId, 'clinical_documentation', 'read_confidential');
     }
     
-    // Log access
+    // Log access;
     await prisma.documentAccessLog.create({
       data: {
         documentId: id,
@@ -133,12 +142,12 @@ export class ClinicalDocumentationService {
         accessorRole: await this.getUserRole(userId),
         accessDate: new Date(),
         accessType: 'View',
-        ipAddress: null, // Would come from request in a real implementation
-        deviceInfo: null, // Would come from request in a real implementation
+        ipAddress: null, // Would come from request in a real implementation;
+        deviceInfo: null, // Would come from request in a real implementation;
       }
     });
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'READ',
       resourceType: 'ClinicalDocument',
@@ -154,18 +163,18 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Update a clinical document
+   * Update a clinical document;
    * 
-   * @param id Document ID
-   * @param data Updated document data
-   * @param userId ID of the user updating the document
-   * @returns Updated document
+   * @param id Document ID;
+   * @param data Updated document data;
+   * @param userId ID of the user updating the document;
+   * @returns Updated document;
    */
   async updateDocument(id: string, data: UpdateDocumentDto, userId: string): Promise<ClinicalDocument> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'update');
     
-    // Check if document exists
+    // Check if document exists;
     const document = await prisma.clinicalDocument.findUnique({
       where: { id }
     });
@@ -174,14 +183,14 @@ export class ClinicalDocumentationService {
       throw new NotFoundError('Document not found');
     }
     
-    // Only allow updates if document is in Draft or Preliminary status
+    // Only allow updates if document is in Draft or Preliminary status;
     if (!['Draft', 'Preliminary'].includes(document.status)) {
       throw new BadRequestError('Cannot update a finalized document');
     }
     
-    // Update document
+    // Update document;
     const updatedDocument = await prisma.$transaction(async (tx) => {
-      // Update the document
+      // Update the document;
       const updatedDoc = await tx.clinicalDocument.update({
         where: { id },
         data: {
@@ -195,16 +204,16 @@ export class ClinicalDocumentationService {
         }
       });
       
-      // Update sections if provided
+      // Update sections if provided;
       if (data.sections && data.sections.length > 0) {
-        // First, get existing sections
+        // First, get existing sections;
         const existingSections = await tx.documentSection.findMany({
           where: { documentId: id }
         });
         
         for (const section of data.sections) {
           if (section.id) {
-            // Update existing section
+            // Update existing section;
             await tx.documentSection.update({
               where: { id: section.id },
               data: {
@@ -218,7 +227,7 @@ export class ClinicalDocumentationService {
               }
             });
           } else {
-            // Create new section
+            // Create new section;
             await tx.documentSection.create({
               data: {
                 documentId: id,
@@ -234,7 +243,7 @@ export class ClinicalDocumentationService {
         }
       }
       
-      // If status is changing to Final, update finalizedDate and finalizedById
+      // If status is changing to Final, update finalizedDate and finalizedById;
       if (data.status === 'Final' && document.status !== 'Final') {
         await tx.clinicalDocument.update({
           where: { id },
@@ -248,7 +257,7 @@ export class ClinicalDocumentationService {
       return updatedDoc;
     });
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'UPDATE',
       resourceType: 'ClinicalDocument',
@@ -265,18 +274,18 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Sign a clinical document
+   * Sign a clinical document;
    * 
-   * @param id Document ID
-   * @param data Signature data
-   * @param userId ID of the user signing the document
-   * @returns Document signature
+   * @param id Document ID;
+   * @param data Signature data;
+   * @param userId ID of the user signing the document;
+   * @returns Document signature;
    */
   async signDocument(id: string, data: SignDocumentDto, userId: string): Promise<DocumentSignature> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'sign');
     
-    // Check if document exists
+    // Check if document exists;
     const document = await prisma.clinicalDocument.findUnique({
       where: { id }
     });
@@ -285,7 +294,7 @@ export class ClinicalDocumentationService {
       throw new NotFoundError('Document not found');
     }
     
-    // Create document signature
+    // Create document signature;
     const signature = await prisma.documentSignature.create({
       data: {
         documentId: id,
@@ -300,7 +309,7 @@ export class ClinicalDocumentationService {
       }
     });
     
-    // If document status is Preliminary and attestation indicates finalization, update to Final
+    // If document status is Preliminary and attestation indicates finalization, update to Final;
     if (document.status === 'Preliminary' && data.finalize) {
       await prisma.clinicalDocument.update({
         where: { id },
@@ -312,7 +321,7 @@ export class ClinicalDocumentationService {
       });
     }
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'SIGN',
       resourceType: 'ClinicalDocument',
@@ -329,18 +338,18 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Create an amendment to a document
+   * Create an amendment to a document;
    * 
-   * @param id Document ID
-   * @param data Amendment data
-   * @param userId ID of the user creating the amendment
-   * @returns Document amendment
+   * @param id Document ID;
+   * @param data Amendment data;
+   * @param userId ID of the user creating the amendment;
+   * @returns Document amendment;
    */
   async createAmendment(id: string, data: CreateAmendmentDto, userId: string): Promise<DocumentAmendment> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'amend');
     
-    // Check if document exists
+    // Check if document exists;
     const document = await prisma.clinicalDocument.findUnique({
       where: { id }
     });
@@ -349,15 +358,15 @@ export class ClinicalDocumentationService {
       throw new NotFoundError('Document not found');
     }
     
-    // Only allow amendments if document is in Final status
+    // Only allow amendments if document is in Final status;
     if (document.status !== 'Final') {
       throw new BadRequestError('Can only amend finalized documents');
     }
     
-    // Generate amendment number
+    // Generate amendment number;
     const amendmentNumber = `${document.documentNumber}-A${await this.getNextAmendmentNumber(id)}`;
     
-    // Create amendment
+    // Create amendment;
     const amendment = await prisma.documentAmendment.create({
       data: {
         documentId: id,
@@ -373,7 +382,7 @@ export class ClinicalDocumentationService {
       }
     });
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'AMEND',
       resourceType: 'ClinicalDocument',
@@ -391,22 +400,22 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Get patient documents
+   * Get patient documents;
    * 
-   * @param patientId Patient ID
-   * @param filters Filter options
-   * @param userId ID of the user requesting the documents
-   * @returns List of documents
+   * @param patientId Patient ID;
+   * @param filters Filter options;
+   * @param userId ID of the user requesting the documents;
+   * @returns List of documents;
    */
   async getPatientDocuments(
     patientId: string, 
     filters: DocumentFilters, 
-    userId: string
+    userId: string;
   ): Promise<PaginatedResult<ClinicalDocument>> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'read');
     
-    // Check if patient exists
+    // Check if patient exists;
     const patient = await prisma.patient.findUnique({
       where: { id: patientId }
     });
@@ -415,8 +424,8 @@ export class ClinicalDocumentationService {
       throw new NotFoundError('Patient not found');
     }
     
-    // Build filters
-    const where: any = {
+    // Build filters;
+    const where: unknown = {
       patientId,
     };
     
@@ -444,16 +453,16 @@ export class ClinicalDocumentationService {
       }
     }
     
-    // Handle confidential documents
+    // Handle confidential documents;
     const hasConfidentialAccess = await this.hasConfidentialAccess(userId);
     if (!hasConfidentialAccess) {
       where.isConfidential = false;
     }
     
-    // Count total records
+    // Count total records;
     const total = await prisma.clinicalDocument.count({ where });
     
-    // Get paginated results
+    // Get paginated results;
     const page = filters.page || 1;
     const pageSize = filters.pageSize || 20;
     const skip = (page - 1) * pageSize;
@@ -467,7 +476,7 @@ export class ClinicalDocumentationService {
       take: pageSize,
     });
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'LIST',
       resourceType: 'ClinicalDocument',
@@ -491,21 +500,21 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Get document templates
+   * Get document templates;
    * 
-   * @param filters Filter options
-   * @param userId ID of the user requesting the templates
-   * @returns List of document templates
+   * @param filters Filter options;
+   * @param userId ID of the user requesting the templates;
+   * @returns List of document templates;
    */
   async getDocumentTemplates(
     filters: TemplateFilters, 
-    userId: string
+    userId: string;
   ): Promise<PaginatedResult<any>> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'read_templates');
     
-    // Build filters
-    const where: any = {
+    // Build filters;
+    const where: unknown = {
       isActive: true,
     };
     
@@ -517,10 +526,10 @@ export class ClinicalDocumentationService {
       where.specialtyType = filters.specialtyType;
     }
     
-    // Count total records
+    // Count total records;
     const total = await prisma.documentTemplate.count({ where });
     
-    // Get paginated results
+    // Get paginated results;
     const page = filters.page || 1;
     const pageSize = filters.pageSize || 20;
     const skip = (page - 1) * pageSize;
@@ -553,22 +562,22 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Create a document template
+   * Create a document template;
    * 
-   * @param data Template data
-   * @param userId ID of the user creating the template
-   * @returns Created template
+   * @param data Template data;
+   * @param userId ID of the user creating the template;
+   * @returns Created template;
    */
   async createDocumentTemplate(data: CreateTemplateDto, userId: string): Promise<any> {
-    // Validate user permission
+    // Validate user permission;
     await validatePermission(userId, 'clinical_documentation', 'create_templates');
     
-    // Generate template number
+    // Generate template number;
     const templateNumber = this.generateTemplateNumber(data.templateType);
     
-    // Create template transaction
+    // Create template transaction;
     const template = await prisma.$transaction(async (tx) => {
-      // Create the template
+      // Create the template;
       const template = await tx.documentTemplate.create({
         data: {
           templateNumber,
@@ -585,7 +594,7 @@ export class ClinicalDocumentationService {
         }
       });
       
-      // Create template sections if provided
+      // Create template sections if provided;
       if (data.sections && data.sections.length > 0) {
         for (let i = 0; i < data.sections.length; i++) {
           const section = data.sections[i];
@@ -606,7 +615,7 @@ export class ClinicalDocumentationService {
       return template;
     });
     
-    // Audit log
+    // Audit log;
     await auditLog({
       action: 'CREATE',
       resourceType: 'DocumentTemplate',
@@ -622,10 +631,10 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Generate a unique document number
+   * Generate a unique document number;
    * 
-   * @param documentType Document type
-   * @returns Generated document number
+   * @param documentType Document type;
+   * @returns Generated document number;
    */
   private generateDocumentNumber(documentType: string): string {
     const typeCode = documentType.substring(0, 3).toUpperCase();
@@ -635,10 +644,10 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Generate a unique template number
+   * Generate a unique template number;
    * 
-   * @param templateType Template type
-   * @returns Generated template number
+   * @param templateType Template type;
+   * @returns Generated template number;
    */
   private generateTemplateNumber(templateType: string): string {
     const typeCode = templateType.substring(0, 3).toUpperCase();
@@ -648,10 +657,10 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Get the next amendment number for a document
+   * Get the next amendment number for a document;
    * 
-   * @param documentId Document ID
-   * @returns Next amendment number
+   * @param documentId Document ID;
+   * @returns Next amendment number;
    */
   private async getNextAmendmentNumber(documentId: string): Promise<number> {
     const amendments = await prisma.documentAmendment.findMany({
@@ -662,22 +671,22 @@ export class ClinicalDocumentationService {
   }
   
   /**
-   * Get user role
+   * Get user role;
    * 
-   * @param userId User ID
-   * @returns User role
+   * @param userId User ID;
+   * @returns User role;
    */
   private async getUserRole(userId: string): Promise<string> {
-    // In a real implementation, this would query the user's role from the database
-    // For now, we'll return a placeholder
+    // In a real implementation, this would query the user's role from the database;
+    // For now, we'll return a placeholder;
     return 'Doctor';
   }
   
   /**
-   * Check if user has access to confidential documents
+   * Check if user has access to confidential documents;
    * 
-   * @param userId User ID
-   * @returns Whether user has confidential access
+   * @param userId User ID;
+   * @returns Whether user has confidential access;
    */
   private async hasConfidentialAccess(userId: string): Promise<boolean> {
     try {
@@ -689,7 +698,7 @@ export class ClinicalDocumentationService {
   }
 }
 
-// Types
+// Types;
 
 export interface CreateDocumentDto {
   patientId: string;
@@ -791,5 +800,5 @@ export interface DocumentWithRelations extends ClinicalDocument {
   amendments: DocumentAmendment[];
 }
 
-// Export service instance
+// Export service instance;
 export const clinicalDocumentationService = new ClinicalDocumentationService();

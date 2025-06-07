@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,27 +18,27 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const segmentService = new SegmentService();
 
 /**
- * GET /api/support-services/marketing/segments
- * Get all segments with optional filtering
+ * GET /api/support-services/marketing/segments;
+ * Get all segments with optional filtering;
  */
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
       
-      // Parse query parameters
+      // Parse query parameters;
       const filters = {
-        isActive: searchParams.has('isActive') 
-          ? searchParams.get('isActive') === 'true'
+        isActive: searchParams.has('isActive');
+          ? searchParams.get('isActive') === 'true';
           : undefined,
         search: searchParams.get('search') || undefined,
-        page: searchParams.has('page')
-          ? parseInt(searchParams.get('page') || '1', 10)
+        page: searchParams.has('page');
+          ? parseInt(searchParams.get('page') || '1', 10);
           : 1,
-        limit: searchParams.has('limit')
-          ? parseInt(searchParams.get('limit') || '10', 10)
+        limit: searchParams.has('limit');
+          ? parseInt(searchParams.get('limit') || '10', 10);
           : 10,
       };
       
@@ -43,10 +54,10 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/support-services/marketing/segments
- * Create a new segment
+ * POST /api/support-services/marketing/segments;
+ * Create a new segment;
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -55,7 +66,7 @@ export async function POST(request: NextRequest) {
       
       const segment = await segmentService.createSegment(
         data,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(segment, { status: 201 });

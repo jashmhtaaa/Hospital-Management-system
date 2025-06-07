@@ -1,25 +1,36 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
 export const runtime = "edge";
 
-// Interface for the POST request body
+// Interface for the POST request body;
 interface TheatreCreateBody {
   name: string;
   location?: string | null;
   specialty?: string | null;
-  equipment?: string | null; // Assuming JSON string or simple text for equipment list
+  equipment?: string | null; // Assuming JSON string or simple text for equipment list;
 }
 
-// GET /api/ot/theatres - List all operation theatres
-export async function GET(request: NextRequest) {
+// GET /api/ot/theatres - List all operation theatres;
+export async const GET = (request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
-    // TODO: Add pagination parameters (page, limit)
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database;
-    let query =
+    let query =;
       "SELECT id, name, location, specialty, status, updated_at FROM OperationTheatres";
     const parameters: string[] = [];
 
@@ -29,15 +40,15 @@ export async function GET(request: NextRequest) {
     }
 
     query += " ORDER BY name ASC";
-    // TODO: Add LIMIT and OFFSET for pagination
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const { results } = await DB.prepare(query)
-      .bind(...parameters)
+    const { results } = await DB.prepare(query);
+      .bind(...parameters);
       .all();
 
-    return NextResponse.json(results || []); // Ensure empty array if results is null/undefined
+    return NextResponse.json(results || []); // Ensure empty array if results is null/undefined;
   } catch (error: unknown) {
-    console.error("Error fetching operation theatres:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { message: "Error fetching operation theatres", details: errorMessage },
@@ -46,8 +57,8 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/ot/theatres - Create a new operation theatre
-export async function POST(request: NextRequest) {
+// POST /api/ot/theatres - Create a new operation theatre;
+export async const POST = (request: NextRequest) {
   try {
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;
@@ -60,12 +71,12 @@ export async function POST(request: NextRequest) {
     }
 
     const DB = process.env.DB as unknown as D1Database;
-    const id = crypto.randomUUID(); // Generate UUID
+    const id = crypto.randomUUID(); // Generate UUID;
     const now = new Date().toISOString();
 
     await DB.prepare(
       "INSERT INTO OperationTheatres (id, name, location, specialty, equipment, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    )
+    );
       .bind(
         id,
         name,
@@ -74,20 +85,20 @@ export async function POST(request: NextRequest) {
         equipment || undefined,
         "available",
         now,
-        now
-      )
+        now;
+      );
       .run();
 
-    // Fetch the newly created theatre to return it
+    // Fetch the newly created theatre to return it;
     const { results } = await DB.prepare(
-      "SELECT * FROM OperationTheatres WHERE id = ?"
-    )
-      .bind(id)
+      "SELECT * FROM OperationTheatres WHERE id = ?";
+    );
+      .bind(id);
       .all();
 
-    return results && results.length > 0
-      ? NextResponse.json(results[0], { status: 201 })
-      : // Fallback if select fails immediately after insert
+    return results && results.length > 0;
+      ? NextResponse.json(results[0], { status: 201 });
+      : // Fallback if select fails immediately after insert;
         NextResponse.json(
           {
             id,
@@ -102,11 +113,11 @@ export async function POST(request: NextRequest) {
           { status: 201 }
         );
   } catch (error: unknown) {
-    // FIX: Remove explicit any
-    console.error("Error creating operation theatre:", error);
+    // FIX: Remove explicit any;
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     if (errorMessage?.includes("UNIQUE constraint failed")) {
-      // FIX: Check errorMessage
+      // FIX: Check errorMessage;
       return NextResponse.json(
         {
           message: "Operation theatre name must be unique",

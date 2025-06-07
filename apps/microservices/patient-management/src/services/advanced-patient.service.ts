@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Advanced Patient Management Service
- * Comprehensive patient lifecycle management with predictive analytics
+ * Advanced Patient Management Service;
+ * Comprehensive patient lifecycle management with predictive analytics;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -11,7 +22,7 @@ import { cacheService } from '@/lib/cache/redis-cache';
 import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
 
 export interface EnhancedPatient {
-  // Core Demographics
+  // Core Demographics;
   id: string;
   medicalRecordNumber: string;
   externalPatientId?: string;
@@ -25,49 +36,49 @@ export interface EnhancedPatient {
   preferredName?: string;
   preferredPronouns?: string;
   
-  // Contact Information
+  // Contact Information;
   contactInfo: ContactInformation;
   emergencyContacts: EmergencyContact[];
   
-  // Demographics
+  // Demographics;
   demographics: Demographics;
   
-  // Clinical Information
+  // Clinical Information;
   clinicalProfile: ClinicalProfile;
   
-  // Insurance & Financial
+  // Insurance & Financial;
   insurance: InsuranceInformation[];
   financialProfile: FinancialProfile;
   
-  // Care Team & Relationships
+  // Care Team & Relationships;
   careTeam: CareTeamMember[];
   relationships: PatientRelationship[];
   
-  // Preferences & Directives
+  // Preferences & Directives;
   preferences: PatientPreferences;
   advanceDirectives: AdvanceDirective[];
   
-  // Alerts & Flags
+  // Alerts & Flags;
   alerts: PatientAlert[];
   flags: PatientFlag[];
   
-  // Risk Assessments
+  // Risk Assessments;
   riskAssessments: RiskAssessment[];
   
-  // Care Plans
+  // Care Plans;
   carePlans: CarePlan[];
   
-  // Analytics & Insights
+  // Analytics & Insights;
   analytics: PatientAnalytics;
   
-  // Consent & Privacy
+  // Consent & Privacy;
   consents: ConsentRecord[];
   privacySettings: PrivacySettings;
   
-  // Audit Trail
+  // Audit Trail;
   auditTrail: PatientAuditEvent[];
   
-  // System Fields
+  // System Fields;
   status: PatientStatus;
   createdAt: Date;
   updatedAt: Date;
@@ -204,7 +215,7 @@ export interface Demographics {
   citizenship?: string;
   countryOfBirth?: string;
   veteranStatus?: boolean;
-  socialSecurityNumber?: string; // Encrypted
+  socialSecurityNumber?: string; // Encrypted;
   driversLicense?: string;
   passport?: string;
 }
@@ -323,7 +334,7 @@ export enum MedicationStatus {
 }
 
 export interface AdherenceInformation {
-  adherenceRate: number; // 0-100%
+  adherenceRate: number; // 0-100%;
   lastAssessment: Date;
   barriers: string[];
   interventions: string[];
@@ -331,7 +342,7 @@ export interface AdherenceInformation {
 }
 
 export interface EffectivenessRating {
-  rating: number; // 1-10
+  rating: number; // 1-10;
   assessmentDate: Date;
   assessedBy: string;
   notes?: string;
@@ -460,7 +471,7 @@ export interface SubstanceUse {
 export interface ExerciseHabits {
   frequency: string;
   type: string[];
-  duration?: number; // minutes
+  duration?: number; // minutes;
   intensity?: 'LOW' | 'MODERATE' | 'HIGH';
   limitations?: string[];
 }
@@ -470,7 +481,7 @@ export interface DietaryHabits {
   restrictions?: string[];
   allergies?: string[];
   supplements?: string[];
-  waterIntake?: number; // glasses per day
+  waterIntake?: number; // glasses per day;
   calorieIntake?: number;
 }
 
@@ -582,7 +593,7 @@ export interface ChronicCondition {
 }
 
 export interface QualityOfLifeAssessment {
-  score: number; // 0-100
+  score: number; // 0-100;
   assessmentTool: string;
   assessmentDate: Date;
   domains: QoLDomain[];
@@ -616,8 +627,8 @@ export enum DisabilityType {
 }
 
 export interface FunctionalStatus {
-  adlScore: number; // Activities of Daily Living
-  iadlScore: number; // Instrumental Activities of Daily Living
+  adlScore: number; // Activities of Daily Living;
+  iadlScore: number; // Instrumental Activities of Daily Living;
   mobilityStatus: MobilityStatus;
   assistanceNeeded: AssistanceLevel;
   lastAssessment: Date;
@@ -644,8 +655,8 @@ export enum AssistanceLevel {
 
 export interface CognitiveStatus {
   mentalStatus: string;
-  mmseScore?: number; // Mini-Mental State Examination
-  mocaScore?: number; // Montreal Cognitive Assessment
+  mmseScore?: number; // Mini-Mental State Examination;
+  mocaScore?: number; // Montreal Cognitive Assessment;
   memoryStatus: 'NORMAL' | 'MILD_IMPAIRMENT' | 'MODERATE_IMPAIRMENT' | 'SEVERE_IMPAIRMENT';
   orientationStatus: 'ORIENTED' | 'CONFUSED' | 'DISORIENTED';
   decisionMakingCapacity: 'INTACT' | 'IMPAIRED' | 'NEEDS_ASSESSMENT';
@@ -740,7 +751,7 @@ export interface CoverageDetails {
   specialtyCareCoverage: boolean;
   homeHealthCoverage: boolean;
   hospiceCoverage: boolean;
-  dmeCoverage: boolean; // Durable Medical Equipment
+  dmeCoverage: boolean; // Durable Medical Equipment;
   visionCoverage: boolean;
   dentalCoverage: boolean;
   limitations: string[];
@@ -770,13 +781,13 @@ export interface FinancialProfile {
 export interface PaymentHistory {
   totalPaid: number;
   totalCharges: number;
-  averagePaymentTime: number; // days
+  averagePaymentTime: number; // days;
   paymentMethods: PaymentMethod[];
   lastPaymentDate?: Date;
   lastPaymentAmount?: number;
   missedPayments: number;
   onTimePayments: number;
-  paymentScore: number; // 0-100
+  paymentScore: number; // 0-100;
 }
 
 export interface PaymentMethod {
@@ -836,7 +847,7 @@ export interface Guarantor {
   name: string;
   relationship: string;
   contactInfo: ContactInformation;
-  financialResponsibility: number; // percentage
+  financialResponsibility: number; // percentage;
   signatureDate: Date;
   identificationVerified: boolean;
 }
@@ -868,7 +879,7 @@ export interface EligibilityCheck {
   expirationDate?: Date;
   limitations?: string[];
   exclusions?: string[];
-  response: any; // Raw eligibility response
+  response: unknown; // Raw eligibility response;
 }
 
 export interface CareTeamMember {
@@ -948,14 +959,14 @@ export interface AppointmentPreferences {
   preferredProviders: string[];
   preferredLocations: string[];
   reminderPreferences: ReminderPreferences;
-  cancellationNotice: number; // hours
+  cancellationNotice: number; // hours;
   reschedulePreferences: string;
 }
 
 export interface ReminderPreferences {
   enabled: boolean;
   methods: ContactMethod[];
-  advanceNotice: number[]; // hours before appointment
+  advanceNotice: number[]; // hours before appointment;
   customMessage?: string;
 }
 
@@ -1045,7 +1056,7 @@ export enum AdvanceDirectiveType {
   LIVING_WILL = 'LIVING_WILL',
   HEALTHCARE_POWER_OF_ATTORNEY = 'HEALTHCARE_POWER_OF_ATTORNEY',
   DNR_ORDER = 'DNR_ORDER',
-  POLST = 'POLST', // Physician Orders for Life-Sustaining Treatment
+  POLST = 'POLST', // Physician Orders for Life-Sustaining Treatment;
   PSYCHIATRIC_ADVANCE_DIRECTIVE = 'PSYCHIATRIC_ADVANCE_DIRECTIVE',
   ORGAN_DONATION_DIRECTIVE = 'ORGAN_DONATION_DIRECTIVE',
   OTHER = 'OTHER',
@@ -1138,23 +1149,23 @@ export interface AlertAction {
   action: string;
   description: string;
   required: boolean;
-  defaultValue?: any;
+  defaultValue?: unknown;
   options?: string[];
 }
 
 export interface AlertMetadata {
-  severity: number; // 1-10
-  confidence: number; // 0-100
+  severity: number; // 1-10;
+  confidence: number; // 0-100;
   source: string;
   algorithm?: string;
   lastCalculated: Date;
-  calculationFrequency?: string; // how often to recalculate
+  calculationFrequency?: string; // how often to recalculate;
   escalationRules?: EscalationRule[];
 }
 
 export interface EscalationRule {
   condition: string;
-  timeframe: number; // minutes
+  timeframe: number; // minutes;
   escalateTo: string[];
   notificationMethod: ContactMethod[];
 }
@@ -1257,15 +1268,15 @@ export enum RiskLevel {
 
 export interface AssessmentRiskFactor {
   factor: string;
-  value: any;
+  value: unknown;
   weight: number;
-  contribution: number; // percentage of total risk score
+  contribution: number; // percentage of total risk score;
   modifiable: boolean;
 }
 
 export interface ProtectiveFactor {
   factor: string;
-  value: any;
+  value: unknown;
   strength: 'WEAK' | 'MODERATE' | 'STRONG';
   impact: string;
 }
@@ -1291,12 +1302,12 @@ export interface CarePlan {
   category: CarePlanCategory[];
   priority: CarePlanPriority;
   description: string;
-  subject: string; // patient ID
-  encounter?: string; // encounter ID
+  subject: string; // patient ID;
+  encounter?: string; // encounter ID;
   period: DateRange;
   author: string;
   careTeam: string[];
-  addresses: string[]; // condition IDs
+  addresses: string[]; // condition IDs;
   supportingInfo: string[];
   goal: CareGoal[];
   activity: CareActivity[];
@@ -1358,7 +1369,7 @@ export interface CareGoal {
   statusDate: Date;
   statusReason?: string;
   expressedBy?: string;
-  addresses: string[]; // condition IDs
+  addresses: string[]; // condition IDs;
   note: string[];
   outcomeCode: OutcomeCode[];
   outcomeReference: OutcomeReference[];
@@ -1533,7 +1544,7 @@ export interface ScoreMetric {
 export interface ContributingFactor {
   factor: string;
   weight: number;
-  value: any;
+  value: unknown;
   impact: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
 }
 
@@ -1567,7 +1578,7 @@ export enum ModelType {
 export interface ModelFeature {
   feature: string;
   importance: number;
-  value: any;
+  value: unknown;
   category: 'DEMOGRAPHIC' | 'CLINICAL' | 'SOCIAL' | 'BEHAVIORAL' | 'ENVIRONMENTAL';
 }
 
@@ -1696,7 +1707,7 @@ export interface CostCategory {
 }
 
 export interface CostEffectiveness {
-  costPerQALY: number; // Quality-Adjusted Life Year
+  costPerQALY: number; // Quality-Adjusted Life Year;
   costPerOutcome: CostPerOutcome[];
   returnOnInvestment: number;
   avoidedCosts: number;
@@ -1911,10 +1922,10 @@ export interface ConsentRecord {
   category: ConsentCategory[];
   dateTime: Date;
   period?: DateRange;
-  grantor: string; // patient or authorized representative
-  grantee: string[]; // who is receiving the consent
-  manager: string; // who is managing the consent
-  sourceAttachment?: string; // reference to signed consent form
+  grantor: string; // patient or authorized representative;
+  grantee: string[]; // who is receiving the consent;
+  manager: string; // who is managing the consent;
+  sourceAttachment?: string; // reference to signed consent form;
   policy: ConsentPolicy[];
   policyRule?: string;
   securityLabel: SecurityLabel[];
@@ -1980,7 +1991,7 @@ export interface ConsentProvision {
   code?: ConsentCode[];
   dataPeriod?: DateRange;
   data?: ConsentData[];
-  provision?: ConsentProvision[]; // nested provisions
+  provision?: ConsentProvision[]; // nested provisions;
 }
 
 export interface ConsentActor {
@@ -2066,9 +2077,9 @@ export interface DisclosureRestriction {
 }
 
 export interface DataRetentionPreference {
-  retentionPeriod: number; // years
+  retentionPeriod: number; // years;
   autoDelete: boolean;
-  archiveAfter: number; // years
+  archiveAfter: number; // years;
   notifyBeforeDeletion: boolean;
   deletionMethod: 'SECURE_DELETE' | 'ANONYMIZE' | 'ARCHIVE';
   exceptions: string[];
@@ -2179,42 +2190,42 @@ export enum PatientStatus {
   UNKNOWN = 'UNKNOWN',
 }
 
-@Injectable()
+@Injectable();
 export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
   constructor(private prisma: PrismaService) {
     super('Patient');
   }
 
   /**
-   * Create comprehensive patient profile with AI-powered data enrichment
+   * Create comprehensive patient profile with AI-powered data enrichment;
    */
   async createEnhancedPatient(
     patientData: Partial<EnhancedPatient>,
-    sourceSystem?: string
+    sourceSystem?: string;
   ): Promise<EnhancedPatient> {
     const startTime = performance.now();
     
     try {
-      // Generate medical record number
+      // Generate medical record number;
       const mrn = await this.generateMRN();
       
-      // Perform duplicate checking
+      // Perform duplicate checking;
       const duplicateCheck = await this.checkForDuplicates(patientData);
       if (duplicateCheck.possibleDuplicates.length > 0) {
-        // Handle potential duplicates according to business rules
+        // Handle potential duplicates according to business rules;
         await this.handlePotentialDuplicates(duplicateCheck);
       }
 
-      // AI-powered data enrichment
+      // AI-powered data enrichment;
       const enrichedData = await this.enrichPatientData(patientData);
       
-      // Calculate initial risk assessments
+      // Calculate initial risk assessments;
       const initialRiskAssessments = await this.calculateInitialRiskAssessments(enrichedData);
       
-      // Generate analytics
+      // Generate analytics;
       const analytics = await this.generateInitialAnalytics(enrichedData);
 
-      // Create enhanced patient record
+      // Create enhanced patient record;
       const enhancedPatient: EnhancedPatient = {
         id: `patient-${Date.now()}`,
         medicalRecordNumber: mrn,
@@ -2265,21 +2276,21 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
         version: 1,
       };
 
-      // Save to database
+      // Save to database;
       await this.saveEnhancedPatient(enhancedPatient);
 
-      // Create FHIR Patient resource
+      // Create FHIR Patient resource;
       await this.createFHIRPatient(enhancedPatient);
 
-      // Publish real-time event
+      // Publish real-time event;
       await pubsub.publish(SUBSCRIPTION_EVENTS.PATIENT_REGISTERED, {
         patientRegistered: enhancedPatient,
       });
 
-      // Trigger initial care management workflows
+      // Trigger initial care management workflows;
       await this.triggerCareManagementWorkflows(enhancedPatient);
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('patient_management.registration_time', duration);
       metricsCollector.incrementCounter('patient_management.patients_registered', 1, {
@@ -2290,13 +2301,13 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       return enhancedPatient;
     } catch (error) {
-      console.error('Error creating enhanced patient:', error);
+
       throw error;
     }
   }
 
   /**
-   * AI-powered predictive analytics for patient outcomes
+   * AI-powered predictive analytics for patient outcomes;
    */
   async generatePredictiveAnalytics(patientId: string): Promise<PredictiveModel[]> {
     try {
@@ -2307,42 +2318,42 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       const models: PredictiveModel[] = [];
 
-      // Readmission risk prediction
+      // Readmission risk prediction;
       const readmissionModel = await this.predictReadmissionRisk(patient);
       models.push(readmissionModel);
 
-      // Mortality risk prediction
+      // Mortality risk prediction;
       const mortalityModel = await this.predictMortalityRisk(patient);
       models.push(mortalityModel);
 
-      // Length of stay prediction
+      // Length of stay prediction;
       const losModel = await this.predictLengthOfStay(patient);
       models.push(losModel);
 
-      // Cost prediction
+      // Cost prediction;
       const costModel = await this.predictCost(patient);
       models.push(costModel);
 
-      // Disease progression prediction
+      // Disease progression prediction;
       const progressionModels = await this.predictDiseaseProgression(patient);
       models.push(...progressionModels);
 
-      // Treatment response prediction
+      // Treatment response prediction;
       const responseModels = await this.predictTreatmentResponse(patient);
       models.push(...responseModels);
 
-      // Update patient analytics
+      // Update patient analytics;
       await this.updatePatientAnalytics(patientId, { predictiveModels: models });
 
-      // Cache results
+      // Cache results;
       await cacheService.cacheResult(
         'predictive_analytics:',
         patientId,
         models,
-        3600 // 1 hour
+        3600 // 1 hour;
       );
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('patient_management.predictive_analytics', 1, {
         patientId,
         modelCount: models.length.toString(),
@@ -2351,13 +2362,13 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       return models;
     } catch (error) {
-      console.error('Error generating predictive analytics:', error);
+
       throw error;
     }
   }
 
   /**
-   * Real-time patient monitoring with alert generation
+   * Real-time patient monitoring with alert generation;
    */
   async monitorPatientStatus(patientId: string): Promise<PatientAlert[]> {
     try {
@@ -2368,40 +2379,41 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       const alerts: PatientAlert[] = [];
 
-      // Clinical alerts
+      // Clinical alerts;
       const clinicalAlerts = await this.checkClinicalAlerts(patient);
       alerts.push(...clinicalAlerts);
 
-      // Risk-based alerts
+      // Risk-based alerts;
       const riskAlerts = await this.checkRiskBasedAlerts(patient);
       alerts.push(...riskAlerts);
 
-      // Medication alerts
+      // Medication alerts;
       const medicationAlerts = await this.checkMedicationAlerts(patient);
       alerts.push(...medicationAlerts);
 
-      // Care gap alerts
+      // Care gap alerts;
       const careGapAlerts = await this.checkCareGapAlerts(patient);
       alerts.push(...careGapAlerts);
 
-      // Social determinant alerts
+      // Social determinant alerts;
       const socialAlerts = await this.checkSocialDeterminantAlerts(patient);
       alerts.push(...socialAlerts);
 
-      // Financial alerts
+      // Financial alerts;
       const financialAlerts = await this.checkFinancialAlerts(patient);
       alerts.push(...financialAlerts);
 
-      // Update patient alerts
+      // Update patient alerts;
       await this.updatePatientAlerts(patientId, alerts);
 
-      // Process critical alerts
-      const criticalAlerts = alerts.filter(a => a.priority === AlertPriority.CRITICAL || a.priority === AlertPriority.EMERGENCY);
+      // Process critical alerts;
+      const criticalAlerts = alerts.filter(a => a.priority === AlertPriority.CRITICAL ||
+        a.priority === AlertPriority.EMERGENCY);
       if (criticalAlerts.length > 0) {
         await this.processCriticalAlerts(patient, criticalAlerts);
       }
 
-      // Publish real-time updates
+      // Publish real-time updates;
       if (alerts.length > 0) {
         await pubsub.publish(SUBSCRIPTION_EVENTS.CRITICAL_PATIENT_ALERT, {
           criticalPatientAlert: { patientId, alerts },
@@ -2410,12 +2422,12 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       return alerts;
     } catch (error) {
-      console.error('Error monitoring patient status:', error);
+
       throw error;
     }
   }
 
-  // Private helper methods
+  // Private helper methods;
   private async generateMRN(): Promise<string> {
     const prefix = 'MRN';
     const timestamp = Date.now().toString();
@@ -2436,18 +2448,18 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
   }
 
   private async checkForDuplicates(patientData: Partial<EnhancedPatient>): Promise<any> {
-    // Implementation for duplicate detection
+    // Implementation for duplicate detection;
     return { possibleDuplicates: [] };
   }
 
   private async enrichPatientData(patientData: Partial<EnhancedPatient>): Promise<any> {
-    // AI-powered data enrichment implementation
+    // AI-powered data enrichment implementation;
     return patientData;
   }
 
   // Additional helper methods would be implemented here...
 
-  // Required abstract methods
+  // Required abstract methods;
   validate(resource: FHIRPatient): boolean {
     return !!(resource.resourceType && resource.name && resource.name.length > 0);
   }

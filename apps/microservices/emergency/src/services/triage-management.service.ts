@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Advanced Emergency Department Triage Management Service
- * AI-powered triage scoring with real-time capacity management
+ * Advanced Emergency Department Triage Management Service;
+ * AI-powered triage scoring with real-time capacity management;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -32,8 +43,8 @@ export interface EmergencyPatient {
   bedAssignment?: BedAssignment;
   disposition: Disposition;
   status: PatientStatus;
-  waitTime: number; // minutes
-  totalLengthOfStay: number; // minutes
+  waitTime: number; // minutes;
+  totalLengthOfStay: number; // minutes;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -77,10 +88,10 @@ export interface TriageAssessment {
   triageTime: Date;
   chiefComplaint: string;
   presentIllness: string;
-  painScore: number; // 0-10
+  painScore: number; // 0-10;
   triageLevel: TriageLevel;
-  esiScore: number; // Emergency Severity Index 1-5
-  canadianTriageScore: number; // CTAS 1-5
+  esiScore: number; // Emergency Severity Index 1-5;
+  canadianTriageScore: number; // CTAS 1-5;
   aiTriageScore?: AITriageScore;
   vitalSigns: VitalSigns;
   neurologicalAssessment: NeurologicalAssessment;
@@ -95,16 +106,16 @@ export interface TriageAssessment {
 }
 
 export enum TriageLevel {
-  LEVEL_1 = 'LEVEL_1', // Resuscitation - immediate
-  LEVEL_2 = 'LEVEL_2', // Emergent - within 15 minutes
-  LEVEL_3 = 'LEVEL_3', // Urgent - within 30 minutes
-  LEVEL_4 = 'LEVEL_4', // Less urgent - within 60 minutes
-  LEVEL_5 = 'LEVEL_5', // Non-urgent - within 120 minutes
+  LEVEL_1 = 'LEVEL_1', // Resuscitation - immediate;
+  LEVEL_2 = 'LEVEL_2', // Emergent - within 15 minutes;
+  LEVEL_3 = 'LEVEL_3', // Urgent - within 30 minutes;
+  LEVEL_4 = 'LEVEL_4', // Less urgent - within 60 minutes;
+  LEVEL_5 = 'LEVEL_5', // Non-urgent - within 120 minutes;
 }
 
 export interface AITriageScore {
-  score: number; // 0-100
-  confidence: number; // 0-100
+  score: number; // 0-100;
+  confidence: number; // 0-100;
   riskFactors: string[];
   recommendations: string[];
   modelVersion: string;
@@ -116,7 +127,7 @@ export interface VitalSigns {
   patientId: string;
   takenAt: Date;
   takenBy: string;
-  temperature: number; // Celsius
+  temperature: number; // Celsius;
   temperatureMethod: 'ORAL' | 'RECTAL' | 'AXILLARY' | 'TEMPORAL' | 'TYMPANIC';
   systolicBP: number;
   diastolicBP: number;
@@ -125,17 +136,17 @@ export interface VitalSigns {
   oxygenSaturation: number;
   supplementalOxygen?: SupplementalOxygen;
   glucoseLevel?: number;
-  painScore: number; // 0-10
+  painScore: number; // 0-10;
   consciousnessLevel: ConsciousnessLevel;
-  weight?: number; // kg
-  height?: number; // cm
+  weight?: number; // kg;
+  height?: number; // cm;
   bmi?: number;
 }
 
 export interface SupplementalOxygen {
   delivery: 'NASAL_CANNULA' | 'FACE_MASK' | 'NON_REBREATHER' | 'BIPAP' | 'CPAP' | 'MECHANICAL_VENTILATION';
-  flowRate: number; // L/min
-  fiO2: number; // percentage
+  flowRate: number; // L/min;
+  fiO2: number; // percentage;
 }
 
 export enum ConsciousnessLevel {
@@ -157,10 +168,10 @@ export interface NeurologicalAssessment {
 }
 
 export interface GlasgowComaScale {
-  eyeOpening: number; // 1-4
-  verbalResponse: number; // 1-5
-  motorResponse: number; // 1-6
-  totalScore: number; // 3-15
+  eyeOpening: number; // 1-4;
+  verbalResponse: number; // 1-5;
+  motorResponse: number; // 1-6;
+  totalScore: number; // 3-15;
 }
 
 export interface PupilResponse {
@@ -171,13 +182,13 @@ export interface PupilResponse {
 }
 
 export interface PupilExam {
-  size: number; // mm
+  size: number; // mm;
   reaction: 'BRISK' | 'SLUGGISH' | 'NON_REACTIVE';
   shape: 'ROUND' | 'IRREGULAR';
 }
 
 export interface MotorFunction {
-  rightUpper: number; // 0-5 strength scale
+  rightUpper: number; // 0-5 strength scale;
   leftUpper: number;
   rightLower: number;
   leftLower: number;
@@ -223,7 +234,7 @@ export interface AnatomicalArea {
 export interface TraumaInjury {
   type: string;
   description: string;
-  abbrevatedInjuryScale: number; // 1-6
+  abbrevatedInjuryScale: number; // 1-6;
   bodyRegion: string;
 }
 
@@ -235,7 +246,7 @@ export interface RespiratoryAssessment {
   coughPresent: boolean;
   sputumProduction: boolean;
   chestPain: boolean;
-  dyspneaLevel: number; // 0-10
+  dyspneaLevel: number; // 0-10;
   supplementalOxygenRequired: boolean;
 }
 
@@ -261,7 +272,7 @@ export interface CardiovascularAssessment {
   heartRhythm: HeartRhythm;
   heartSounds: HeartSounds;
   peripheralPulses: PeripheralPulses;
-  capillaryRefill: number; // seconds
+  capillaryRefill: number; // seconds;
   skinColor: SkinColor;
   edemaPresent: boolean;
   chestPainPresent: boolean;
@@ -325,7 +336,7 @@ export interface ChestPainCharacteristics {
   quality: string;
   location: string;
   radiation: string[];
-  severity: number; // 0-10
+  severity: number; // 0-10;
   provoking: string[];
   palliating: string[];
   associatedSymptoms: string[];
@@ -423,7 +434,7 @@ export interface BedAssignment {
   bed: string;
   assignedAt: Date;
   assignedBy: string;
-  estimatedDuration?: number; // minutes
+  estimatedDuration?: number; // minutes;
 }
 
 export interface Disposition {
@@ -442,7 +453,7 @@ export enum DispositionType {
   ADMIT_INPATIENT = 'ADMIT_INPATIENT',
   ADMIT_ICU = 'ADMIT_ICU',
   TRANSFER_FACILITY = 'TRANSFER_FACILITY',
-  LEFT_AMA = 'LEFT_AMA', // Against Medical Advice
+  LEFT_AMA = 'LEFT_AMA', // Against Medical Advice;
   LEFT_WITHOUT_TREATMENT = 'LEFT_WITHOUT_TREATMENT',
   DECEASED = 'DECEASED',
   OBSERVATION = 'OBSERVATION',
@@ -486,7 +497,7 @@ export interface StaffingLevels {
 export interface StaffLevel {
   scheduled: number;
   present: number;
-  ratio: number; // patients per staff member
+  ratio: number; // patients per staff member;
   adequate: boolean;
 }
 
@@ -498,43 +509,43 @@ export interface DivertStatus {
   alternativeFacilities?: string[];
 }
 
-@Injectable()
+@Injectable();
 export class TriageManagementService extends FHIRResourceManager<FHIRObservation> {
   constructor(private prisma: PrismaService) {
     super('Observation');
   }
 
   /**
-   * Comprehensive triage assessment with AI scoring
+   * Comprehensive triage assessment with AI scoring;
    */
   async performTriageAssessment(
     patientId: string,
     triageData: Partial<TriageAssessment>,
-    triageNurse: string
+    triageNurse: string;
   ): Promise<TriageAssessment> {
     const startTime = performance.now();
     
     try {
-      // Get patient information
+      // Get patient information;
       const patient = await this.getPatient(patientId);
       if (!patient) {
         throw new Error(`Patient ${patientId} not found`);
       }
 
-      // Perform initial triage scoring
+      // Perform initial triage scoring;
       const esiScore = this.calculateESIScore(triageData);
       const canadianTriageScore = this.calculateCTASScore(triageData);
       
-      // AI-powered triage scoring
+      // AI-powered triage scoring;
       const aiTriageScore = await this.calculateAITriageScore(triageData, patient);
 
-      // Determine triage level based on multiple scoring systems
+      // Determine triage level based on multiple scoring systems;
       const triageLevel = this.determineTriageLevel(esiScore, canadianTriageScore, aiTriageScore);
 
-      // Identify red flags
+      // Identify red flags;
       const redFlags = this.identifyRedFlags(triageData, patient);
 
-      // Determine immediate interventions
+      // Determine immediate interventions;
       const immediateInterventions = this.determineImmediateInterventions(redFlags, triageData);
 
       const assessment: TriageAssessment = {
@@ -561,29 +572,29 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
         immediateInterventions,
       };
 
-      // Save triage assessment
+      // Save triage assessment;
       await this.saveTriageAssessment(assessment);
 
-      // Update patient status and priority
+      // Update patient status and priority;
       await this.updatePatientStatus(patientId, PatientStatus.TRIAGED, triageLevel);
 
-      // Auto-assign to appropriate ED area
+      // Auto-assign to appropriate ED area;
       await this.autoAssignEDArea(patientId, assessment);
 
-      // Create FHIR Observation for triage
+      // Create FHIR Observation for triage;
       await this.createFHIRTriageObservation(assessment);
 
-      // Publish real-time updates
+      // Publish real-time updates;
       await pubsub.publish(SUBSCRIPTION_EVENTS.PATIENT_TRIAGED, {
         patientTriaged: { patientId, assessment },
       });
 
-      // Send critical alerts if necessary
+      // Send critical alerts if necessary;
       if (redFlags.some(flag => flag.severity === 'HIGH')) {
         await this.sendCriticalAlert(patientId, assessment);
       }
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('emergency.triage_assessment_time', duration);
       metricsCollector.incrementCounter('emergency.triage_assessments', 1, {
@@ -594,19 +605,19 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
 
       return assessment;
     } catch (error) {
-      console.error('Error performing triage assessment:', error);
+
       throw error;
     }
   }
 
   /**
-   * Real-time capacity and bed management
+   * Real-time capacity and bed management;
    */
   async getEDCapacityMetrics(): Promise<CapacityMetrics> {
     try {
-      // Try cache first
+      // Try cache first;
       const cached = await cacheService.getCachedResult('ed_capacity:', 'current');
-      if (cached && Date.now() - cached.timestamp.getTime() < 60000) { // 1 minute cache
+      if (cached && Date.now() - cached.timestamp.getTime() < 60000) { // 1 minute cache;
         return cached;
       }
 
@@ -644,31 +655,31 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
         timestamp: new Date(),
       };
 
-      // Cache for 1 minute
+      // Cache for 1 minute;
       await cacheService.cacheResult('ed_capacity:', 'current', metrics, 60);
 
-      // Publish real-time updates
+      // Publish real-time updates;
       await pubsub.publish(SUBSCRIPTION_EVENTS.ED_CAPACITY_ALERT, {
         edCapacityUpdate: metrics,
       });
 
-      // Check for capacity alerts
+      // Check for capacity alerts;
       await this.checkCapacityAlerts(metrics);
 
       return metrics;
     } catch (error) {
-      console.error('Error getting ED capacity metrics:', error);
+
       throw error;
     }
   }
 
   /**
-   * Intelligent bed assignment with priority queuing
+   * Intelligent bed assignment with priority queuing;
    */
   async assignBed(
     patientId: string,
     preferredArea?: EDArea,
-    requiredSpecialtyBed?: string
+    requiredSpecialtyBed?: string;
   ): Promise<BedAssignment | null> {
     try {
       const patient = await this.getPatient(patientId);
@@ -676,38 +687,38 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
         throw new Error(`Patient ${patientId} not found`);
       }
 
-      // Get available beds
+      // Get available beds;
       const availableBeds = await this.getAvailableBeds(preferredArea, requiredSpecialtyBed);
       if (availableBeds.length === 0) {
         return null;
       }
 
-      // Select best bed based on patient needs and priority
+      // Select best bed based on patient needs and priority;
       const selectedBed = await this.selectOptimalBed(patient, availableBeds);
 
-      // Create bed assignment
+      // Create bed assignment;
       const assignment: BedAssignment = {
         bedId: selectedBed.id,
         area: selectedBed.area,
         room: selectedBed.room,
         bed: selectedBed.bedNumber,
         assignedAt: new Date(),
-        assignedBy: 'SYSTEM', // Could be user ID
+        assignedBy: 'SYSTEM', // Could be user ID;
         estimatedDuration: this.estimateBedDuration(patient),
       };
 
-      // Update bed status and patient location
+      // Update bed status and patient location;
       await Promise.all([
         this.updateBedStatus(selectedBed.id, 'OCCUPIED', patientId),
         this.updatePatientLocation(patientId, assignment),
       ]);
 
-      // Publish real-time update
+      // Publish real-time update;
       await pubsub.publish(SUBSCRIPTION_EVENTS.BED_ASSIGNMENT_CHANGED, {
         bedAssignmentChanged: { patientId, assignment },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('emergency.bed_assignments', 1, {
         area: selectedBed.area,
         triageLevel: patient.triageData?.triageLevel || 'UNKNOWN',
@@ -715,25 +726,25 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
 
       return assignment;
     } catch (error) {
-      console.error('Error assigning bed:', error);
+
       throw error;
     }
   }
 
   /**
-   * Advanced patient flow optimization
+   * Advanced patient flow optimization;
    */
   async optimizePatientFlow(): Promise<FlowOptimizationResult> {
     try {
       const metrics = await this.getEDCapacityMetrics();
       
-      // Identify bottlenecks
+      // Identify bottlenecks;
       const bottlenecks = this.identifyBottlenecks(metrics);
       
-      // Generate optimization recommendations
+      // Generate optimization recommendations;
       const recommendations = await this.generateFlowRecommendations(metrics, bottlenecks);
       
-      // Auto-implement low-risk optimizations
+      // Auto-implement low-risk optimizations;
       const implementedActions = await this.implementAutomaticOptimizations(recommendations);
       
       const result: FlowOptimizationResult = {
@@ -745,7 +756,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
         projectedImpact: this.calculateProjectedImpact(recommendations, implementedActions),
       };
 
-      // Record optimization metrics
+      // Record optimization metrics;
       metricsCollector.incrementCounter('emergency.flow_optimizations', 1, {
         bottleneckCount: bottlenecks.length.toString(),
         implementedActions: implementedActions.length.toString(),
@@ -753,15 +764,15 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
 
       return result;
     } catch (error) {
-      console.error('Error optimizing patient flow:', error);
+
       throw error;
     }
   }
 
-  // Private helper methods
+  // Private helper methods;
   private calculateESIScore(triageData: Partial<TriageAssessment>): number {
-    // Emergency Severity Index algorithm implementation
-    let score = 5; // Start with lowest acuity
+    // Emergency Severity Index algorithm implementation;
+    let score = 5; // Start with lowest acuity;
 
     // Life-threatening conditions (ESI 1)
     if (this.hasLifeThreateningCondition(triageData)) {
@@ -787,17 +798,17 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
   }
 
   private calculateCTASScore(triageData: Partial<TriageAssessment>): number {
-    // Canadian Triage and Acuity Scale implementation
-    // Similar logic to ESI but with different criteria
-    return 3; // Placeholder
+    // Canadian Triage and Acuity Scale implementation;
+    // Similar logic to ESI but with different criteria;
+    return 3; // Placeholder;
   }
 
   private async calculateAITriageScore(
     triageData: Partial<TriageAssessment>,
-    patient: any
+    patient: unknown;
   ): Promise<AITriageScore> {
-    // AI model implementation would go here
-    // For now, return a placeholder
+    // AI model implementation would go here;
+    // For now, return a placeholder;
     return {
       score: 75,
       confidence: 85,
@@ -811,9 +822,9 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
   private determineTriageLevel(
     esiScore: number,
     ctasScore: number,
-    aiScore?: AITriageScore
+    aiScore?: AITriageScore;
   ): TriageLevel {
-    // Use the most conservative (highest acuity) score
+    // Use the most conservative (highest acuity) score;
     const conservativeScore = Math.min(esiScore, ctasScore);
     
     switch (conservativeScore) {
@@ -830,10 +841,10 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
     }
   }
 
-  private identifyRedFlags(triageData: Partial<TriageAssessment>, patient: any): RedFlag[] {
+  private identifyRedFlags(triageData: Partial<TriageAssessment>, patient: unknown): RedFlag[] {
     const redFlags: RedFlag[] = [];
 
-    // Airway compromise
+    // Airway compromise;
     if (triageData.respiratoryAssessment?.respiratoryRate! > 30 || 
         triageData.respiratoryAssessment?.oxygenSaturation! < 90) {
       redFlags.push({
@@ -845,7 +856,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
       });
     }
 
-    // Shock indicators
+    // Shock indicators;
     if (triageData.cardiovascularAssessment?.heartRate! > 120 && 
         triageData.cardiovascularAssessment?.bloodPressure?.systolic! < 90) {
       redFlags.push({
@@ -857,7 +868,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
       });
     }
 
-    // Neurological concerns
+    // Neurological concerns;
     if (triageData.neurologicalAssessment?.glasgowComaScale?.totalScore! < 15) {
       redFlags.push({
         category: RedFlagCategory.DISABILITY_NEURO,
@@ -874,11 +885,11 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
   // Additional helper methods would be implemented here...
 
   private async getPatient(id: string): Promise<EmergencyPatient | null> {
-    // Implementation to fetch patient data
-    return null; // Placeholder
+    // Implementation to fetch patient data;
+    return null; // Placeholder;
   }
 
-  // Required abstract methods from FHIRResourceManager
+  // Required abstract methods from FHIRResourceManager;
   validate(resource: FHIRObservation): boolean {
     return !!(resource.resourceType && resource.status && resource.code);
   }
@@ -905,7 +916,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
   }
 }
 
-// Supporting interfaces
+// Supporting interfaces;
 interface FlowOptimizationResult {
   timestamp: Date;
   currentMetrics: CapacityMetrics;
@@ -920,7 +931,7 @@ interface Bottleneck {
   description: string;
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   affectedPatients: number;
-  estimatedDelay: number; // minutes
+  estimatedDelay: number; // minutes;
 }
 
 interface FlowRecommendation {
@@ -940,8 +951,8 @@ interface ImplementedAction {
 }
 
 interface ProjectedImpact {
-  waitTimeReduction: number; // minutes
-  throughputIncrease: number; // percentage
-  satisfactionImprovement: number; // percentage
-  confidenceLevel: number; // percentage
+  waitTimeReduction: number; // minutes;
+  throughputIncrease: number; // percentage;
+  satisfactionImprovement: number; // percentage;
+  confidenceLevel: number; // percentage;
 }

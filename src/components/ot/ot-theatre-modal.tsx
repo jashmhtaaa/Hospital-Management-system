@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -23,18 +34,18 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define Theatre interface
+// Define Theatre interface;
 interface Theatre {
-  id?: string; // Optional for new theatres
+  id?: string; // Optional for new theatres;
   name: string;
   location: string | null;
   specialty: string | null;
   status: string;
-  equipment?: string | null; // Assuming simple text for now
-  updated_at?: string; // Optional
+  equipment?: string | null; // Assuming simple text for now;
+  updated_at?: string; // Optional;
 }
 
-// Define the type for data passed to onSave
+// Define the type for data passed to onSave;
 interface TheatreSaveData {
   name: string;
   location: string | null;
@@ -43,14 +54,14 @@ interface TheatreSaveData {
   equipment: string | null;
 }
 
-// Props for the modal - use defined types
+// Props for the modal - use defined types;
 interface OTTheatreModalProperties {
   trigger: React.ReactNode;
-  theatre?: Theatre; // Use Theatre type
-  onSave: (theatreData: TheatreSaveData) => Promise<void>; // Use TheatreSaveData type
+  theatre?: Theatre; // Use Theatre type;
+  onSave: (theatreData: TheatreSaveData) => Promise<void>; // Use TheatreSaveData type;
 }
 
-export default function OTTheatreModal({
+export default const OTTheatreModal = ({
   trigger,
   theatre,
   onSave,
@@ -66,7 +77,7 @@ export default function OTTheatreModal({
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when theatre prop changes or modal opens
+  // Reset form when theatre prop changes or modal opens;
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -77,13 +88,13 @@ export default function OTTheatreModal({
         equipment: theatre?.equipment || "",
       });
     } else {
-      // Optionally clear form when closed
+      // Optionally clear form when closed;
       // setFormData({ name: "", ... });
     }
   }, [theatre, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
@@ -105,7 +116,7 @@ export default function OTTheatreModal({
         equipment: formData.equipment || null,
       };
 
-      // Replace with actual API call
+      // Replace with actual API call;
       // const url = theatre?.id ? `/api/ot/theatres/${theatre.id}` : `/api/ot/theatres`;
       // const method = theatre?.id ? "PUT" : "POST";
       // const response = await fetch(url, {
@@ -118,11 +129,11 @@ export default function OTTheatreModal({
       //   throw new Error(errorData.message || "Failed to save theatre");
       // }
 
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Saving theatre:", apiData);
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list
+      await onSave(apiData); // Call parent callback to refresh list;
 
       toast({
         title: "Success",
@@ -130,8 +141,8 @@ export default function OTTheatreModal({
       });
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type
-      console.error("Error saving theatre:", error);
+      // Use unknown for error type;
+
       let errorMessage = "Failed to save theatre.";
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -147,99 +158,99 @@ export default function OTTheatreModal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]">;
         <DialogHeader>
           <DialogTitle>
             {theatre ? "Edit Operation Theatre" : "Add New Operation Theatre"}
           </DialogTitle>
           <DialogDescription>
-            Enter the details for the operation theatre.
+            Enter the details for the operation theatre.;
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+        <form onSubmit={handleSubmit}>;
+          <div className="grid gap-4 py-4">;
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="name" className="text-right">;
                 Name *
               </Label>
-              <Input
-                id="name"
-                name="name"
+              <Input;
+                id="name";
+                name="name";
                 value={formData.name}
                 onChange={handleChange}
-                className="col-span-3"
-                required
+                className="col-span-3";
+                required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="location" className="text-right">
-                Location
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="location" className="text-right">;
+                Location;
               </Label>
-              <Input
-                id="location"
-                name="location"
+              <Input;
+                id="location";
+                name="location";
                 value={formData.location || ""}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-3";
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="specialty" className="text-right">
-                Specialty
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="specialty" className="text-right">;
+                Specialty;
               </Label>
-              <Input
-                id="specialty"
-                name="specialty"
+              <Input;
+                id="specialty";
+                name="specialty";
                 value={formData.specialty || ""}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-3";
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="status" className="text-right">
-                Status
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="status" className="text-right">;
+                Status;
               </Label>
-              <Select
-                name="status"
+              <Select;
+                name="status";
                 value={formData.status}
                 onValueChange={(value) => handleSelectChange("status", value)}
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-3">;
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="available">Available</SelectItem>
-                  <SelectItem value="in_use">In Use</SelectItem>
-                  <SelectItem value="maintenance">Maintenance</SelectItem>
-                  <SelectItem value="unavailable">Unavailable</SelectItem>
+                  <SelectItem value="available">Available</SelectItem>;
+                  <SelectItem value="in_use">In Use</SelectItem>;
+                  <SelectItem value="maintenance">Maintenance</SelectItem>;
+                  <SelectItem value="unavailable">Unavailable</SelectItem>;
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="equipment" className="text-right pt-2">
-                Equipment
+            <div className="grid grid-cols-4 items-start gap-4">;
+              <Label htmlFor="equipment" className="text-right pt-2">;
+                Equipment;
               </Label>
-              <Textarea
-                id="equipment"
-                name="equipment"
+              <Textarea;
+                id="equipment";
+                name="equipment";
                 value={formData.equipment || ""}
                 onChange={handleChange}
-                className="col-span-3"
-                placeholder="List key equipment available..."
+                className="col-span-3";
+                placeholder="List key equipment available...";
               />
             </div>
           </div>
           <DialogFooter>
-            <Button
+            <Button;
               type="button"
-              variant="outline"
+              variant="outline";
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              Cancel;
             </Button>
-            <Button type="submit" disabled={isSaving}>
+            <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving..." : "Save Theatre"}
             </Button>
           </DialogFooter>

@@ -1,10 +1,21 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { ContactService } from '../contact.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 import { EncryptionService } from '@/lib/encryption';
 
-// Mock dependencies
+// Mock dependencies;
 jest.mock('@/lib/prisma', () => ({
   contact: {
     create: jest.fn(),
@@ -62,13 +73,13 @@ describe('ContactService', () => {
     };
     
     it('should create a contact successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.create as jest.Mock).mockResolvedValue(mockCreatedContact);
       
-      // Act
+      // Act;
       const result = await service.createContact(mockContactData, mockUserId);
       
-      // Assert
+      // Assert;
       expect(prisma.contact.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           name: mockContactData.name,
@@ -86,41 +97,41 @@ describe('ContactService', () => {
         email: mockCreatedContact.email,
       }));
       
-      // Verify phone was encrypted
+      // Verify phone was encrypted;
       expect(EncryptionService.encryptField).toHaveBeenCalledWith(mockContactData.phone);
     });
     
     it('should throw ValidationError if contact data is invalid', async () => {
-      // Arrange
+      // Arrange;
       const invalidData = {
         ...mockContactData,
-        email: 'invalid-email', // Invalid email format
+        email: 'invalid-email', // Invalid email format;
       };
       
-      // Act & Assert
-      await expect(service.createContact(invalidData, mockUserId))
-        .rejects
+      // Act & Assert;
+      await expect(service.createContact(invalidData, mockUserId));
+        .rejects;
         .toThrow(ValidationError);
     });
     
     it('should throw DatabaseError if database operation fails', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.create as jest.Mock).mockRejectedValue(new Error('Database error'));
       
-      // Act & Assert
-      await expect(service.createContact(mockContactData, mockUserId))
-        .rejects
+      // Act & Assert;
+      await expect(service.createContact(mockContactData, mockUserId));
+        .rejects;
         .toThrow(DatabaseError);
     });
     
     it('should log audit event after creating contact', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.create as jest.Mock).mockResolvedValue(mockCreatedContact);
       
-      // Act
+      // Act;
       await service.createContact(mockContactData, mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'contact.create',
         resourceId: mockCreatedContact.id,
@@ -143,41 +154,41 @@ describe('ContactService', () => {
     };
     
     it('should retrieve a contact by ID', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       
-      // Act
+      // Act;
       const result = await service.getContactById('contact-123');
       
-      // Assert
+      // Assert;
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
         where: { id: 'contact-123' },
         include: expect.any(Object),
       });
       
-      // Verify phone was decrypted
+      // Verify phone was decrypted;
       expect(EncryptionService.decryptField).toHaveBeenCalledWith(mockContact.phone);
       expect(result.phone).not.toContain('encrypted_');
     });
     
     it('should throw NotFoundError if contact does not exist', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(service.getContactById('non-existent-id'))
-        .rejects
+      // Act & Assert;
+      await expect(service.getContactById('non-existent-id'));
+        .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should include FHIR representation when requested', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       
-      // Act
+      // Act;
       const result = await service.getContactById('contact-123', true);
       
-      // Assert
+      // Assert;
       expect(result).toHaveProperty('fhir');
       expect(result.fhir).toHaveProperty('resourceType', 'Person');
       expect(result.fhir).toHaveProperty('id', mockContact.id);
@@ -210,21 +221,21 @@ describe('ContactService', () => {
     ];
     
     it('should retrieve contacts with pagination', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.count as jest.Mock).mockResolvedValue(2);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockContacts);
       
-      // Act
+      // Act;
       const result = await service.getContacts({ page: 1, limit: 10 });
       
-      // Assert
+      // Assert;
       expect(prisma.contact.count).toHaveBeenCalled();
       expect(prisma.contact.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
           take: 10,
           orderBy: { createdAt: 'desc' },
-        })
+        });
       );
       
       expect(result).toEqual({
@@ -248,12 +259,12 @@ describe('ContactService', () => {
         },
       });
       
-      // Verify phones were decrypted
+      // Verify phones were decrypted;
       expect(EncryptionService.decryptField).toHaveBeenCalledTimes(2);
     });
     
     it('should apply filters correctly', async () => {
-      // Arrange
+      // Arrange;
       const filters = {
         status: 'ACTIVE',
         source: 'WEBSITE',
@@ -265,10 +276,10 @@ describe('ContactService', () => {
       (prisma.contact.count as jest.Mock).mockResolvedValue(10);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue([mockContacts[0]]);
       
-      // Act
+      // Act;
       const result = await service.getContacts(filters);
       
-      // Assert
+      // Assert;
       expect(prisma.contact.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
           status: filters.status,
@@ -286,9 +297,9 @@ describe('ContactService', () => {
             status: filters.status,
             source: filters.source,
           }),
-          skip: 5, // (page-1) * limit
+          skip: 5, // (page-1) * limit;
           take: 5,
-        })
+        });
       );
       
       expect(result.pagination).toEqual({
@@ -319,7 +330,7 @@ describe('ContactService', () => {
     };
     
     it('should update a contact successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contact.update as jest.Mock).mockResolvedValue({
         ...mockContact,
@@ -327,10 +338,10 @@ describe('ContactService', () => {
         phone: `encrypted_${updateData.phone}`,
       });
       
-      // Act
+      // Act;
       const result = await service.updateContact('contact-123', updateData, mockUserId);
       
-      // Assert
+      // Assert;
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
         where: { id: 'contact-123' },
       });
@@ -345,25 +356,25 @@ describe('ContactService', () => {
         }),
       });
       
-      // Verify phone was encrypted
+      // Verify phone was encrypted;
       expect(EncryptionService.encryptField).toHaveBeenCalledWith(updateData.phone);
       
-      // Verify returned phone was decrypted
+      // Verify returned phone was decrypted;
       expect(result.phone).toBe(updateData.phone);
     });
     
     it('should throw NotFoundError if contact does not exist', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(service.updateContact('non-existent-id', updateData, mockUserId))
-        .rejects
+      // Act & Assert;
+      await expect(service.updateContact('non-existent-id', updateData, mockUserId));
+        .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after updating contact', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contact.update as jest.Mock).mockResolvedValue({
         ...mockContact,
@@ -371,10 +382,10 @@ describe('ContactService', () => {
         phone: `encrypted_${updateData.phone}`,
       });
       
-      // Act
+      // Act;
       await service.updateContact('contact-123', updateData, mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'contact.update',
         resourceId: 'contact-123',
@@ -401,18 +412,18 @@ describe('ContactService', () => {
     };
     
     it('should add a note to a contact successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactNote.create as jest.Mock).mockResolvedValue(mockNote);
       
-      // Act
+      // Act;
       const result = await service.addContactNote(
         'contact-123',
         'This is a test note',
-        mockUserId
+        mockUserId;
       );
       
-      // Assert
+      // Assert;
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
         where: { id: 'contact-123' },
       });
@@ -429,24 +440,24 @@ describe('ContactService', () => {
     });
     
     it('should throw NotFoundError if contact does not exist', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(service.addContactNote('non-existent-id', 'Test note', mockUserId))
-        .rejects
+      // Act & Assert;
+      await expect(service.addContactNote('non-existent-id', 'Test note', mockUserId));
+        .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after adding note', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactNote.create as jest.Mock).mockResolvedValue(mockNote);
       
-      // Act
+      // Act;
       await service.addContactNote('contact-123', 'This is a test note', mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'contact.note.add',
         resourceId: 'contact-123',
@@ -476,20 +487,20 @@ describe('ContactService', () => {
     };
     
     it('should link a contact to a patient successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
-      // Mock patient service call
+      // Mock patient service call;
       jest.spyOn(service as any, 'getPatientById').mockResolvedValue(mockPatient);
       (prisma.contact.update as jest.Mock).mockResolvedValue(mockUpdatedContact);
       
-      // Act
+      // Act;
       const result = await service.linkContactToPatient(
         'contact-123',
         'patient-123',
-        mockUserId
+        mockUserId;
       );
       
-      // Assert
+      // Assert;
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
         where: { id: 'contact-123' },
       });
@@ -508,36 +519,36 @@ describe('ContactService', () => {
     });
     
     it('should throw NotFoundError if contact does not exist', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(service.linkContactToPatient('non-existent-id', 'patient-123', mockUserId))
-        .rejects
+      // Act & Assert;
+      await expect(service.linkContactToPatient('non-existent-id', 'patient-123', mockUserId));
+        .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should throw NotFoundError if patient does not exist', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       jest.spyOn(service as any, 'getPatientById').mockRejectedValue(new NotFoundError('Patient not found'));
       
-      // Act & Assert
-      await expect(service.linkContactToPatient('contact-123', 'non-existent-id', mockUserId))
-        .rejects
+      // Act & Assert;
+      await expect(service.linkContactToPatient('contact-123', 'non-existent-id', mockUserId));
+        .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after linking patient', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       jest.spyOn(service as any, 'getPatientById').mockResolvedValue(mockPatient);
       (prisma.contact.update as jest.Mock).mockResolvedValue(mockUpdatedContact);
       
-      // Act
+      // Act;
       await service.linkContactToPatient('contact-123', 'patient-123', mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'contact.patient.link',
         resourceId: 'contact-123',

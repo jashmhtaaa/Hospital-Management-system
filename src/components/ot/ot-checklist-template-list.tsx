@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -11,10 +22,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
 import { Edit, Trash2 } from "lucide-react";
 
-// Mock data structure - replace with actual API response type
+// Mock data structure - replace with actual API response type;
 interface ChecklistItem {
   id: string;
   text: string;
@@ -28,7 +39,7 @@ interface ChecklistTemplate {
   updated_at: string;
 }
 
-export default function OTChecklistTemplateList() {
+export default const OTChecklistTemplateList = () {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -39,7 +50,7 @@ export default function OTChecklistTemplateList() {
         setLoading(true);
         setError(undefined);
 
-        // Replace with actual API call
+        // Replace with actual API call;
         // const response = await fetch("/api/ot/checklist-templates");
         // if (!response.ok) {
         //   throw new Error("Failed to fetch checklist templates");
@@ -47,8 +58,8 @@ export default function OTChecklistTemplateList() {
         // const data = await response.json();
         // setTemplates(data);
 
-        // Mock data for demonstration
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
+        // Mock data for demonstration;
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
         const mockData: ChecklistTemplate[] = [
           {
             id: "clt-1",
@@ -136,7 +147,7 @@ export default function OTChecklistTemplateList() {
       }
       case "intra-op": {
         return (
-          <Badge className="bg-yellow-100 text-yellow-800">Intra-Op</Badge>
+          <Badge className="bg-yellow-100 text-yellow-800">Intra-Op</Badge>;
         );
       }
       case "post-op": {
@@ -150,7 +161,7 @@ export default function OTChecklistTemplateList() {
 
   return (
     <Card>
-      <CardContent className="pt-6">
+      <CardContent className="pt-6">;
         {loading && <div>Loading checklist templates...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && (
@@ -166,36 +177,36 @@ export default function OTChecklistTemplateList() {
             <TableBody>
               {templates.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center">
-                    No checklist templates found.
+                  <TableCell colSpan={4} className="text-center">;
+                    No checklist templates found.;
                   </TableCell>
                 </TableRow>
               ) : (
                 templates.map((template) => (
-                  <TableRow key={template.id}>
+                  <TableRow key={template.id}>;
                     <TableCell>{template.name}</TableCell>
                     <TableCell>{getPhaseBadge(template.phase)}</TableCell>
                     <TableCell>{template.items.length}</TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          title="View/Edit Template"
+                      <div className="flex space-x-2">;
+                        <Button;
+                          variant="outline";
+                          size="icon";
+                          title="View/Edit Template";
                         >
-                          <Edit className="h-4 w-4" />
+                          <Edit className="h-4 w-4" />;
                         </Button>
-                        <Button
-                          variant="destructive"
-                          size="icon"
-                          title="Delete Template"
+                        <Button;
+                          variant="destructive";
+                          size="icon";
+                          title="Delete Template";
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />;
                         </Button>
                       </div>
                     </TableCell>
                   </TableRow>
-                ))
+                ));
               )}
             </TableBody>
           </Table>

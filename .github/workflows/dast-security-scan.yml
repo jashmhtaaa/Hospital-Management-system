@@ -102,7 +102,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: 18
           cache: 'npm'
           
       - name: Install Dependencies
@@ -248,7 +248,7 @@ jobs:
         
       - name: Install Nuclei
         run: |
-          wget -q https://github.com/projectdiscovery/nuclei/releases/latest/download/nuclei_linux_amd64.zip
+          wget -q https: //github.com/projectdiscovery/nuclei/releases/latest/download/nuclei_linux_amd64.zip
           unzip nuclei_linux_amd64.zip
           sudo mv nuclei /usr/local/bin/
           nuclei -version
@@ -289,7 +289,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
@@ -450,7 +450,7 @@ jobs:
               high = len([r for r in results if r.get('severity') == 'HIGH'])
               medium = len([r for r in results if r.get('severity') == 'MEDIUM'])
               
-              print(f"\n📊 Healthcare Security Test Results:")
+              print(f"\n📊 Healthcare Security Test Results: ")
               print(f"   Critical: {critical}")
               print(f"   High: {high}")
               print(f"   Medium: {medium}")
@@ -522,9 +522,9 @@ jobs:
               <body>
                   <div class="header">
                       <h1>🏥 HMS Dynamic Application Security Testing (DAST) Report</h1>
-                      <p><strong>Generated:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
-                      <p><strong>Target:</strong> ${{ env.TARGET_URL }}</p>
-                      <p><strong>Scan Type:</strong> Comprehensive DAST Security Assessment</p>
+                      <p><strong>Generated: </strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
+                      <p><strong>Target: </strong> ${{ env.TARGET_URL }}</p>
+                      <p><strong>Scan Type: </strong> Comprehensive DAST Security Assessment</p>
                   </div>
                   
                   <div class="summary">
@@ -606,11 +606,11 @@ jobs:
                   </ol>
                   
                   <h2>📞 Support & Escalation</h2>
-                  <p>For security incidents or questions regarding this report:</p>
+                  <p>For security incidents or questions regarding this report: </p>
                   <ul>
-                      <li><strong>Security Team:</strong> security@hms-enterprise.com</li>
-                      <li><strong>DevSecOps Lead:</strong> devsecops@hms-enterprise.com</li>
-                      <li><strong>Compliance Officer:</strong> compliance@hms-enterprise.com</li>
+                      <li><strong>Security Team: </strong> security@hms-enterprise.com</li>
+                      <li><strong>DevSecOps Lead: </strong> devsecops@hms-enterprise.com</li>
+                      <li><strong>Compliance Officer: </strong> compliance@hms-enterprise.com</li>
                   </ul>
                   
                   <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #dee2e6;">

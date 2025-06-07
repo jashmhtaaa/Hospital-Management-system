@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../services/clinical-documentation.service';
@@ -7,29 +18,28 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../l
 /**
  * GET /api/clinical-documentation/[id]
  * 
- * Get a clinical document by ID
+ * Get a clinical document by ID;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Get session
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Get document
+    // Get document;
     const document = await clinicalDocumentationService.getDocumentById(
       params.id,
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(document);
   } catch (error) {
-    console.error('Error fetching clinical document:', error);
-    
+
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }
@@ -49,33 +59,32 @@ export async function GET(
 /**
  * PUT /api/clinical-documentation/[id]
  * 
- * Update a clinical document
+ * Update a clinical document;
  */
-export async function PUT(
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Get session
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Update document
+    // Update document;
     const document = await clinicalDocumentationService.updateDocument(
       params.id,
       body,
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(document);
   } catch (error) {
-    console.error('Error updating clinical document:', error);
-    
+
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }

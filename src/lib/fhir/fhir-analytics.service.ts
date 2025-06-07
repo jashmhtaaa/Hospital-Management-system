@@ -1,9 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * FHIR Analytics Service
- * Comprehensive data analytics for FHIR resources
+ * FHIR Analytics Service;
+ * Comprehensive data analytics for FHIR resources;
  */
 
-import { FHIRResourceManager, FHIRObservation, FHIR_SYSTEMS } from './fhir-r4-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { cacheService } from '@/lib/cache/redis-cache';
 
@@ -316,17 +326,17 @@ export interface QueryPerformance {
 
 export class FHIRAnalyticsService {
   /**
-   * Get comprehensive FHIR analytics
+   * Get comprehensive FHIR analytics;
    */
   async getAnalytics(timeframe: string = '30d'): Promise<FHIRAnalytics> {
     const startTime = performance.now();
     
     try {
-      // Try cache first
+      // Try cache first;
       const cached = await cacheService.getCachedResult('fhir_analytics:', timeframe);
       if (cached) return cached;
 
-      // Generate comprehensive analytics
+      // Generate comprehensive analytics;
       const [
         resourceCounts,
         resourceGrowth,
@@ -362,33 +372,33 @@ export class FHIRAnalyticsService {
         timestamp: new Date(),
       };
 
-      // Cache analytics
-      await cacheService.cacheResult('fhir_analytics:', timeframe, analytics, 3600); // 1 hour
+      // Cache analytics;
+      await cacheService.cacheResult('fhir_analytics:', timeframe, analytics, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('fhir.analytics_generation_time', duration);
 
       return analytics;
     } catch (error) {
-      console.error('Error generating FHIR analytics:', error);
+
       throw error;
     }
   }
 
   /**
-   * Generate patient-specific analytics from FHIR data
+   * Generate patient-specific analytics from FHIR data;
    */
   async getPatientAnalytics(patientId: string): Promise<PatientFHIRAnalytics> {
     try {
-      // Try cache first
+      // Try cache first;
       const cached = await cacheService.getCachedResult('patient_fhir_analytics:', patientId);
       if (cached) return cached;
 
-      // Get patient FHIR resources
+      // Get patient FHIR resources;
       const resources = await this.getPatientResources(patientId);
 
-      // Generate patient analytics
+      // Generate patient analytics;
       const analytics: PatientFHIRAnalytics = {
         patientId,
         resourceCounts: this.countPatientResources(resources),
@@ -401,32 +411,32 @@ export class FHIRAnalyticsService {
         lastUpdated: new Date(),
       };
 
-      // Cache analytics
-      await cacheService.cacheResult('patient_fhir_analytics:', patientId, analytics, 1800); // 30 minutes
+      // Cache analytics;
+      await cacheService.cacheResult('patient_fhir_analytics:', patientId, analytics, 1800); // 30 minutes;
 
       return analytics;
     } catch (error) {
-      console.error(`Error generating patient FHIR analytics for ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Analyze population health metrics using FHIR data
+   * Analyze population health metrics using FHIR data;
    */
   async getPopulationHealthMetrics(
-    cohortDefinition: CohortDefinition
+    cohortDefinition: CohortDefinition;
   ): Promise<PopulationHealthMetrics> {
     try {
-      // Define cache key based on cohort parameters
+      // Define cache key based on cohort parameters;
       const cacheKey = `population_health:${JSON.stringify(cohortDefinition)}`;
       const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey);
       if (cached) return cached;
 
-      // Build cohort
+      // Build cohort;
       const cohort = await this.buildCohort(cohortDefinition);
 
-      // Generate population health metrics
+      // Generate population health metrics;
       const metrics: PopulationHealthMetrics = {
         cohortSize: cohort.length,
         cohortDefinition,
@@ -441,32 +451,32 @@ export class FHIRAnalyticsService {
         timestamp: new Date(),
       };
 
-      // Cache metrics
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, metrics, 7200); // 2 hours
+      // Cache metrics;
+      await cacheService.cacheResult('fhir_analytics:', cacheKey, metrics, 7200); // 2 hours;
 
       return metrics;
     } catch (error) {
-      console.error('Error generating population health metrics:', error);
+
       throw error;
     }
   }
 
   /**
-   * Identify clinical trends from FHIR data
+   * Identify clinical trends from FHIR data;
    */
   async identifyClinicalTrends(
-    parameters: TrendAnalysisParameters
+    parameters: TrendAnalysisParameters;
   ): Promise<ClinicalTrendReport> {
     try {
-      // Define cache key based on trend parameters
+      // Define cache key based on trend parameters;
       const cacheKey = `clinical_trends:${JSON.stringify(parameters)}`;
       const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey);
       if (cached) return cached;
 
-      // Get data for trend analysis
+      // Get data for trend analysis;
       const data = await this.getTrendData(parameters);
 
-      // Perform trend analysis
+      // Perform trend analysis;
       const trends: ClinicalTrendReport = {
         parameters,
         timeSeries: this.generateTimeSeries(data, parameters),
@@ -480,36 +490,36 @@ export class FHIRAnalyticsService {
         timestamp: new Date(),
       };
 
-      // Cache trend report
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, trends, 7200); // 2 hours
+      // Cache trend report;
+      await cacheService.cacheResult('fhir_analytics:', cacheKey, trends, 7200); // 2 hours;
 
       return trends;
     } catch (error) {
-      console.error('Error identifying clinical trends:', error);
+
       throw error;
     }
   }
 
   /**
-   * Generate comparative analytics between providers or institutions
+   * Generate comparative analytics between providers or institutions;
    */
   async generateComparativeAnalytics(
     entities: string[],
     metrics: string[],
-    timeframe: string
+    timeframe: string;
   ): Promise<ComparativeAnalytics> {
     try {
-      // Define cache key
+      // Define cache key;
       const cacheKey = `comparative:${entities.join('-')}:${metrics.join('-')}:${timeframe}`;
       const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey);
       if (cached) return cached;
 
-      // Get data for each entity
+      // Get data for each entity;
       const entityData = await Promise.all(
-        entities.map(entity => this.getEntityMetrics(entity, metrics, timeframe))
+        entities.map(entity => this.getEntityMetrics(entity, metrics, timeframe));
       );
 
-      // Generate comparative analytics
+      // Generate comparative analytics;
       const analytics: ComparativeAnalytics = {
         entities,
         metrics,
@@ -523,29 +533,29 @@ export class FHIRAnalyticsService {
         visualizationData: this.prepareComparativeVisualizationData(entityData, metrics),
       };
 
-      // Cache analytics
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, analytics, 86400); // 24 hours
+      // Cache analytics;
+      await cacheService.cacheResult('fhir_analytics:', cacheKey, analytics, 86400); // 24 hours;
 
       return analytics;
     } catch (error) {
-      console.error('Error generating comparative analytics:', error);
+
       throw error;
     }
   }
 
-  // Private helper methods
+  // Private helper methods;
   private async getResourceCounts(): Promise<ResourceCount[]> {
-    // Implementation to fetch resource counts
+    // Implementation to fetch resource counts;
     return [];
   }
 
   private async getResourceGrowth(timeframe: string): Promise<ResourceGrowth[]> {
-    // Implementation to analyze resource growth
+    // Implementation to analyze resource growth;
     return [];
   }
 
   private async getPatientStatistics(timeframe: string): Promise<PatientStatistics> {
-    // Implementation to generate patient statistics
+    // Implementation to generate patient statistics;
     return {
       totalPatients: 0,
       activePatients: 0,
@@ -571,22 +581,22 @@ export class FHIRAnalyticsService {
   // Additional helper methods would be implemented here...
 
   private async getPatientResources(patientId: string): Promise<any[]> {
-    // Implementation to fetch patient FHIR resources
+    // Implementation to fetch patient FHIR resources;
     return [];
   }
 
-  private countPatientResources(resources: any[]): ResourceCount[] {
-    // Implementation to count patient resources by type
+  private countPatientResources(resources: unknown[]): ResourceCount[] {
+    // Implementation to count patient resources by type;
     return [];
   }
 
-  private generatePatientTimeline(resources: any[]): TimelineEvent[] {
-    // Implementation to generate patient timeline
+  private generatePatientTimeline(resources: unknown[]): TimelineEvent[] {
+    // Implementation to generate patient timeline;
     return [];
   }
 
-  private async generateClinicalSummary(resources: any[]): Promise<ClinicalSummary> {
-    // Implementation to generate clinical summary
+  private async generateClinicalSummary(resources: unknown[]): Promise<ClinicalSummary> {
+    // Implementation to generate clinical summary;
     return {
       conditions: [],
       medications: [],
@@ -599,35 +609,35 @@ export class FHIRAnalyticsService {
     };
   }
 
-  private analyzeTrends(resources: any[]): ObservationTrend[] {
-    // Implementation to analyze trends
+  private analyzeTrends(resources: unknown[]): ObservationTrend[] {
+    // Implementation to analyze trends;
     return [];
   }
 
-  private async identifyCareGaps(patientId: string, resources: any[]): Promise<CareGap[]> {
-    // Implementation to identify care gaps
+  private async identifyCareGaps(patientId: string, resources: unknown[]): Promise<CareGap[]> {
+    // Implementation to identify care gaps;
     return [];
   }
 
-  private assessResourceQuality(resources: any[]): ResourceQuality[] {
-    // Implementation to assess resource quality
+  private assessResourceQuality(resources: unknown[]): ResourceQuality[] {
+    // Implementation to assess resource quality;
     return [];
   }
 
-  private calculateDataCompleteness(resources: any[]): number {
-    // Implementation to calculate data completeness
+  private calculateDataCompleteness(resources: unknown[]): number {
+    // Implementation to calculate data completeness;
     return 0;
   }
 
   private async buildCohort(definition: CohortDefinition): Promise<any[]> {
-    // Implementation to build cohort based on definition
+    // Implementation to build cohort based on definition;
     return [];
   }
 
   // Additional helper methods would be implemented here...
 }
 
-// Additional interfaces for extended functionality
+// Additional interfaces for extended functionality;
 export interface PatientFHIRAnalytics {
   patientId: string;
   resourceCounts: ResourceCount[];
@@ -773,7 +783,7 @@ export interface Criterion {
   resourceType: string;
   field: string;
   operator: string;
-  value: any;
+  value: unknown;
   timeConstraint?: string;
 }
 
@@ -781,7 +791,7 @@ export interface ObservationCriterion {
   code: string;
   system: string;
   operator: string;
-  value: any;
+  value: unknown;
   unit?: string;
   timeConstraint?: string;
 }
@@ -1125,13 +1135,13 @@ export interface ChartSpecification {
 
 export interface DataSeries {
   name: string;
-  data: any[];
+  data: unknown[];
   type: string;
 }
 
 export interface Annotation {
-  x: any;
-  y: any;
+  x: unknown;
+  y: unknown;
   text: string;
   type: string;
 }

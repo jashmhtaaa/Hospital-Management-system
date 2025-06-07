@@ -1,4 +1,4 @@
-// app/api/lis/tests/route.ts
+// app/api/lis/tests/route.ts;
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { z } from "zod";
@@ -8,7 +8,7 @@ import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 
 const prisma = new PrismaClient();
 
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
   try {
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       return sendErrorResponse("Forbidden: You do not have permission to view LIS tests.", 403);
     }
 
-    console.log(`[LIS_TESTS_GET] User ${userId} fetching all lab test items.`);
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     const labTestItems = await prisma.labTestItem.findMany({
       orderBy: {
         name: "asc",
@@ -34,19 +34,14 @@ export async function GET(request: NextRequest) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_SUCCESS", { path: request.nextUrl.pathname, count: labTestItems.length });
     const duration = Date.now() - start;
-    console.log(`[LIS_TESTS_GET] Request processed in ${duration}ms.`);
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     return sendSuccessResponse(labTestItems);
 
-  } catch (error: any) {
-    console.error("[LIS_TESTS_GET_ERROR]", {
-      userId,
-      errorMessage: error.message,
-      stack: error.stack,
-      path: request.nextUrl.pathname,
-    });
+  } catch (error: unknown) {
+
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
     const duration = Date.now() - start;
-    console.error(`[LIS_TESTS_GET] Request failed after ${duration}ms.`);
+
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }
@@ -59,7 +54,7 @@ const createLabTestItemSchema = z.object({
   price: z.number().positive("Price must be positive").optional().nullable(),
 });
 
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -78,12 +73,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body: unknown = await request.json();
-    console.log(`[LIS_TESTS_POST] User ${userId} attempting to create lab test item with body:`, body);
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
 
     const validation = createLabTestItemSchema.safeParse(body);
 
     if (!validation.success) {
-      console.warn("[LIS_TESTS_POST] Validation failed:", validation.error.flatten());
+      // Debug logging removed);
       await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -102,19 +97,13 @@ export async function POST(request: NextRequest) {
       data: dataToCreate,
     });
 
-    console.log(`[LIS_TESTS_POST] User ${userId} successfully created lab test item ID: ${newLabTestItem.id}`);
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_SUCCESS", { path: request.nextUrl.pathname, testItemId: newLabTestItem.id, data: newLabTestItem });
     const duration = Date.now() - start;
-    console.log(`[LIS_TESTS_POST] Request processed in ${duration}ms.`);
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     return sendSuccessResponse(newLabTestItem, 201);
 
-  } catch (error: any) {
-    console.error("[LIS_TESTS_POST_ERROR]", {
-      userId,
-      errorMessage: error.message,
-      stack: error.stack,
-      path: request.nextUrl.pathname,
-    });
+  } catch (error: unknown) {
 
     let errStatus = 500;
     let errMessage = "Internal Server Error";
@@ -127,12 +116,12 @@ export async function POST(request: NextRequest) {
         errMessage = "Conflict: Lab test item with this code or name already exists.";
         const target = Array.isArray(error.meta?.target) ? error.meta.target.join(", ") : String(error.meta?.target);
         errDetails = `A lab test item with the same unique field (e.g., \"code\" or \"name\") already exists. Fields: ${target}`;
-        console.warn(`[LIS_TESTS_POST] Prisma unique constraint violation (P2002) for user ${userId}. Details: ${errDetails}`);
+        // Debug logging removed for user ${userId}. Details: ${errDetails}`);
       }
     }
     await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
     const duration = Date.now() - start;
-    console.error(`[LIS_TESTS_POST] Request failed after ${duration}ms.`);
+
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }

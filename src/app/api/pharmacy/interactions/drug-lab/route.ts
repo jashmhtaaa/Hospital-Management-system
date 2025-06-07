@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Drug-Lab Interaction API Routes
+ * Drug-Lab Interaction API Routes;
  * 
- * This file implements the API endpoints for checking drug-lab result interactions
+ * This file implements the API endpoints for checking drug-lab result interactions;
  * with severity classification and detailed interaction information.
  */
 
@@ -21,22 +32,22 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-// Initialize services
+// Initialize services;
 const interactionService = new DrugInteractionService(
   medicationRepository,
-  null // No need for prescription repository in this endpoint
+  null // No need for prescription repository in this endpoint;
 );
 
 /**
- * POST /api/pharmacy/interactions/drug-lab
- * Check for drug-lab result interactions
+ * POST /api/pharmacy/interactions/drug-lab;
+ * Check for drug-lab result interactions;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateDrugLabInteractionRequest(data);
     if (!validationResult.success) {
@@ -46,19 +57,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Get patient lab results
+    // Get patient lab results;
     let labResults = data.labResults || [];
     
-    // If patientId is provided, fetch lab results from patient record
+    // If patientId is provided, fetch lab results from patient record;
     if (data.patientId && labResults.length === 0) {
       const patientLabResults = await getPatientLabResults(data.patientId);
       labResults = patientLabResults.map(lr => ({
@@ -66,17 +77,17 @@ export async function POST(req: NextRequest) {
         value: lr.value,
         unit: lr.unit,
         referenceRange: lr.referenceRange,
-        abnormalFlag: lr.abnormalFlag
+        abnormalFlag: lr.abnormalFlag;
       }));
     }
 
-    // Check for drug-lab interactions
+    // Check for drug-lab interactions;
     const interactions = await interactionService.checkDrugLabInteractions(
       data.medicationIds,
-      labResults
+      labResults;
     );
 
-    // Audit logging
+    // Audit logging;
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_LAB',
       resourceType: 'DrugInteraction',
@@ -85,11 +96,11 @@ export async function POST(req: NextRequest) {
       details: {
         medicationIds: data.medicationIds,
         labResultCount: labResults.length,
-        interactionCount: interactions.length
+        interactionCount: interactions.length;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({ 
       interactions,
       metadata: {
@@ -98,7 +109,7 @@ export async function POST(req: NextRequest) {
           critical: interactions.filter(i => i.severity === 'critical').length,
           significant: interactions.filter(i => i.severity === 'significant').length,
           moderate: interactions.filter(i => i.severity === 'moderate').length,
-          minor: interactions.filter(i => i.severity === 'minor').length
+          minor: interactions.filter(i => i.severity === 'minor').length;
         }
       }
     }, { status: 200 });

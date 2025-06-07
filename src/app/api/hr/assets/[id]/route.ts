@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
 
-// GET handler for retrieving a specific asset
-export async function GET(
+// GET handler for retrieving a specific asset;
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -19,7 +30,7 @@ export async function GET(
     
     return NextResponse.json(asset);
   } catch (error) {
-    console.error("Error fetching asset:", error);
+
     return NextResponse.json(
       { error: "Failed to fetch asset", details: error.message },
       { status: 500 }
@@ -27,42 +38,42 @@ export async function GET(
   }
 }
 
-// Schema for asset update
+// Schema for asset update;
 const assetUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   assetType: z.enum(['EQUIPMENT', 'FURNITURE', 'IT', 'VEHICLE', 'BUILDING', 'OTHER'], {
-    errorMap: () => ({ message: "Invalid asset type" })
+    errorMap: () => ({ message: "Invalid asset type" });
   }).optional(),
   serialNumber: z.string().optional(),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
   purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   purchasePrice: z.number().optional(),
   warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   location: z.string().optional(),
   departmentId: z.string().optional().nullable(),
   assignedToId: z.string().optional().nullable(),
   status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
-    errorMap: () => ({ message: "Invalid status" })
+    errorMap: () => ({ message: "Invalid status" });
   }).optional(),
   notes: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
 
-// PUT handler for updating an asset
-export async function PUT(
+// PUT handler for updating an asset;
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Validate request data
+    // Validate request data;
     const validationResult = assetUpdateSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -73,19 +84,19 @@ export async function PUT(
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects
+    // Convert date strings to Date objects;
     const assetData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
       warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined,
     };
     
-    // Update asset
+    // Update asset;
     const asset = await assetService.updateAsset(params.id, assetData);
     
     return NextResponse.json(asset);
   } catch (error) {
-    console.error("Error updating asset:", error);
+
     return NextResponse.json(
       { error: "Failed to update asset", details: error.message },
       { status: 500 }
@@ -93,8 +104,8 @@ export async function PUT(
   }
 }
 
-// DELETE handler for deleting an asset
-export async function DELETE(
+// DELETE handler for deleting an asset;
+export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -103,7 +114,7 @@ export async function DELETE(
     
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error deleting asset:", error);
+
     return NextResponse.json(
       { error: "Failed to delete asset", details: error.message },
       { status: 500 }

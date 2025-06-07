@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Core error handling module for the Financial Management system
- * Provides standardized error classes and formatting utilities
+ * Core error handling module for the Financial Management system;
+ * Provides standardized error classes and formatting utilities;
  */
 
-// Base application error class
+// Base application error class;
 export class AppError extends Error {
   statusCode: number;
   errorCode: string;
@@ -27,7 +38,7 @@ export class AppError extends Error {
   }
 }
 
-// 400 Bad Request - Validation Error
+// 400 Bad Request - Validation Error;
 export class ValidationError extends AppError {
   constructor(
     message = 'Validation failed',
@@ -38,7 +49,7 @@ export class ValidationError extends AppError {
   }
 }
 
-// 401 Unauthorized - Authentication Error
+// 401 Unauthorized - Authentication Error;
 export class AuthenticationError extends AppError {
   constructor(
     message = 'Authentication failed',
@@ -49,7 +60,7 @@ export class AuthenticationError extends AppError {
   }
 }
 
-// 403 Forbidden - Authorization Error
+// 403 Forbidden - Authorization Error;
 export class AuthorizationError extends AppError {
   constructor(
     message = 'Not authorized to perform this action',
@@ -60,7 +71,7 @@ export class AuthorizationError extends AppError {
   }
 }
 
-// 404 Not Found - Resource Not Found Error
+// 404 Not Found - Resource Not Found Error;
 export class NotFoundError extends AppError {
   constructor(
     message = 'Resource not found',
@@ -71,7 +82,7 @@ export class NotFoundError extends AppError {
   }
 }
 
-// 409 Conflict - Resource Conflict Error
+// 409 Conflict - Resource Conflict Error;
 export class ConflictError extends AppError {
   constructor(
     message = 'Resource conflict',
@@ -82,7 +93,7 @@ export class ConflictError extends AppError {
   }
 }
 
-// 422 Unprocessable Entity - Business Logic Error
+// 422 Unprocessable Entity - Business Logic Error;
 export class BusinessLogicError extends AppError {
   constructor(
     message = 'Business logic error',
@@ -93,7 +104,7 @@ export class BusinessLogicError extends AppError {
   }
 }
 
-// 429 Too Many Requests - Rate Limit Error
+// 429 Too Many Requests - Rate Limit Error;
 export class RateLimitError extends AppError {
   constructor(
     message = 'Rate limit exceeded',
@@ -104,7 +115,7 @@ export class RateLimitError extends AppError {
   }
 }
 
-// 500 Internal Server Error - Database Error
+// 500 Internal Server Error - Database Error;
 export class DatabaseError extends AppError {
   constructor(
     message = 'Database error',
@@ -115,7 +126,7 @@ export class DatabaseError extends AppError {
   }
 }
 
-// 502 Bad Gateway - External Service Error
+// 502 Bad Gateway - External Service Error;
 export class ExternalServiceError extends AppError {
   constructor(
     message = 'External service error',
@@ -126,9 +137,9 @@ export class ExternalServiceError extends AppError {
   }
 }
 
-// Domain-specific error classes for financial management
+// Domain-specific error classes for financial management;
 
-// Billing Errors
+// Billing Errors;
 export class BillingError extends BusinessLogicError {
   constructor(
     message = 'Billing operation failed',
@@ -139,7 +150,7 @@ export class BillingError extends BusinessLogicError {
   }
 }
 
-// Invoice Errors
+// Invoice Errors;
 export class InvoiceError extends BusinessLogicError {
   constructor(
     message = 'Invoice operation failed',
@@ -150,7 +161,7 @@ export class InvoiceError extends BusinessLogicError {
   }
 }
 
-// Payment Errors
+// Payment Errors;
 export class PaymentError extends BusinessLogicError {
   constructor(
     message = 'Payment operation failed',
@@ -161,7 +172,7 @@ export class PaymentError extends BusinessLogicError {
   }
 }
 
-// Insurance Errors
+// Insurance Errors;
 export class InsuranceError extends BusinessLogicError {
   constructor(
     message = 'Insurance operation failed',
@@ -172,7 +183,7 @@ export class InsuranceError extends BusinessLogicError {
   }
 }
 
-// Claim Errors
+// Claim Errors;
 export class ClaimError extends BusinessLogicError {
   constructor(
     message = 'Claim operation failed',
@@ -183,7 +194,7 @@ export class ClaimError extends BusinessLogicError {
   }
 }
 
-// Specific financial error types
+// Specific financial error types;
 export class InsufficientFundsError extends PaymentError {
   constructor(
     message = 'Insufficient funds',
@@ -229,8 +240,8 @@ export class BillingCalculationError extends BillingError {
   }
 }
 
-// Error formatting utility
-export function formatError(error: Error) {
+// Error formatting utility;
+export const formatError = (error: Error) {
   const isDev = process.env.NODE_ENV === 'development';
   
   if (error instanceof AppError) {

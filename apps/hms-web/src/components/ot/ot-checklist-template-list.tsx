@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -17,9 +28,9 @@ interface OTChecklistTemplateListProps {
 }
 
 /**
- * Operation Theatre checklist template list component
+ * Operation Theatre checklist template list component;
  */
-export function OTChecklistTemplateList({ templates }: OTChecklistTemplateListProps) {
+export const OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'active': return <Badge variant="success">Active</Badge>;
@@ -48,20 +59,20 @@ export function OTChecklistTemplateList({ templates }: OTChecklistTemplateListPr
           <TableBody>
             {templates.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No checklist templates available
+                <TableCell colSpan={5} className="text-center">;
+                  No checklist templates available;
                 </TableCell>
               </TableRow>
             ) : (
               templates.map((template) => (
-                <TableRow key={template.id}>
-                  <TableCell className="font-medium">{template.name}</TableCell>
+                <TableRow key={template.id}>;
+                  <TableCell className="font-medium">{template.name}</TableCell>;
                   <TableCell>{template.surgeryType}</TableCell>
                   <TableCell>{template.itemCount}</TableCell>
                   <TableCell>{template.lastUpdated}</TableCell>
                   <TableCell>{getStatusBadge(template.status)}</TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Clinical Pathways & Protocols Service
- * Enterprise-grade care pathway management with evidence-based best practices
+ * Clinical Pathways & Protocols Service;
+ * Enterprise-grade care pathway management with evidence-based best practices;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -11,7 +22,7 @@ import { pubsub } from '@/lib/graphql/schema-base';
 import { EncryptionService } from '@/lib/security/encryption.service';
 import { AuditService } from '@/lib/security/audit.service';
 
-// Clinical pathway models
+// Clinical pathway models;
 export interface ClinicalPathway {
   id: string;
   name: string;
@@ -62,7 +73,7 @@ export interface PathwayPhase {
   id: string;
   name: string;
   description: string;
-  estimatedDuration?: number; // days
+  estimatedDuration?: number; // days;
   estimatedDurationRange?: { min: number; max: number };
   durationUnit: 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS';
   sequence: number;
@@ -240,10 +251,10 @@ export interface Approval {
   date: Date;
   level: 'HOSPITAL' | 'DEPARTMENT' | 'SYSTEM';
   comments?: string;
-  reviewCycle: number; // months
+  reviewCycle: number; // months;
 }
 
-// Order set models
+// Order set models;
 export interface OrderSet {
   id: string;
   name: string;
@@ -348,7 +359,7 @@ export interface PrescriptionDefaults {
   refills?: number;
 }
 
-// Patient pathway models
+// Patient pathway models;
 export interface PatientPathway {
   id: string;
   patientId: string;
@@ -481,16 +492,16 @@ export interface PatientPathwayEvaluation {
   recommendations: string[];
   pathwayModifications: string[];
   quality: {
-    adherence: number; // 0-100
-    appropriateness: number; // 0-100
-    outcomes: number; // 0-100
-    patientSatisfaction?: number; // 0-100
-    providerSatisfaction?: number; // 0-100
+    adherence: number; // 0-100;
+    appropriateness: number; // 0-100;
+    outcomes: number; // 0-100;
+    patientSatisfaction?: number; // 0-100;
+    providerSatisfaction?: number; // 0-100;
   };
   notes?: string;
 }
 
-// Quality measure models
+// Quality measure models;
 export interface QualityMeasure {
   id: string;
   name: string;
@@ -577,7 +588,7 @@ export interface MeasureVersion {
   status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED';
 }
 
-// Clinical trial models
+// Clinical trial models;
 export interface ClinicalTrial {
   id: string;
   nctId: string;
@@ -668,13 +679,13 @@ export interface TrialStaff {
   accessLevel: 'FULL' | 'RESTRICTED' | 'VIEW_ONLY';
 }
 
-// Patient trial match models
+// Patient trial match models;
 export interface PatientTrialMatch {
   id: string;
   patientId: string;
   trialId: string;
   matchDate: Date;
-  matchScore: number; // 0-100
+  matchScore: number; // 0-100;
   matchSummary: string;
   matchDetails: MatchCriteria[];
   status: 'NEW' | 'REVIEWED' | 'DISCUSSED' | 'ENROLLED' | 'DECLINED' | 'INELIGIBLE' | 'REFERRED';
@@ -705,7 +716,7 @@ export interface MatchCriteria {
   patientValue?: string;
   trialValue: string;
   match: boolean;
-  confidence: number; // 0-100
+  confidence: number; // 0-100;
   notes?: string;
   dataSources?: string[];
 }
@@ -721,7 +732,7 @@ export interface TrialNotification {
   responseDate?: Date;
 }
 
-@Injectable()
+@Injectable();
 export class ClinicalPathwaysService {
   constructor(
     private prisma: PrismaService,
@@ -730,7 +741,7 @@ export class ClinicalPathwaysService {
   ) {}
 
   /**
-   * Get all clinical pathways
+   * Get all clinical pathways;
    */
   async getAllPathways(filters?: {
     status?: PathwayStatus;
@@ -738,30 +749,30 @@ export class ClinicalPathwaysService {
     condition?: string;
   }): Promise<ClinicalPathway[]> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `pathways:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.status) where.status = filters.status;
       if (filters?.specialty) where.specialty = { has: filters.specialty };
       if (filters?.condition) where.condition = filters.condition;
       
-      // Only return active pathways by default
+      // Only return active pathways by default;
       if (!filters?.status) where.status = PathwayStatus.ACTIVE;
 
-      // Query database
+      // Query database;
       const pathways = await this.prisma.clinicalPathway.findMany({
         where,
         orderBy: { updatedAt: 'desc' },
       });
 
-      // Cache results
-      await cacheService.cacheResult('cdss:', cacheKey, pathways, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('cdss:', cacheKey, pathways, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.pathway_queries', 1, {
         status: filters?.status || 'ACTIVE',
         specialty: filters?.specialty || 'ALL',
@@ -770,50 +781,50 @@ export class ClinicalPathwaysService {
 
       return pathways as ClinicalPathway[];
     } catch (error) {
-      console.error('Error fetching clinical pathways:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get pathway by ID
+   * Get pathway by ID;
    */
   async getPathwayById(id: string): Promise<ClinicalPathway | null> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `pathway:${id}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Query database
+      // Query database;
       const pathway = await this.prisma.clinicalPathway.findUnique({
         where: { id },
       });
 
       if (!pathway) return null;
 
-      // Cache result
-      await cacheService.cacheResult('cdss:', cacheKey, pathway, 3600); // 1 hour
+      // Cache result;
+      await cacheService.cacheResult('cdss:', cacheKey, pathway, 3600); // 1 hour;
 
       return pathway as ClinicalPathway;
     } catch (error) {
-      console.error(`Error fetching pathway ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create new clinical pathway
+   * Create new clinical pathway;
    */
   async createPathway(
     pathway: Omit<ClinicalPathway, 'id' | 'createdAt' | 'updatedAt'>,
-    userId: string
+    userId: string;
   ): Promise<ClinicalPathway> {
     try {
-      // Validate pathway
+      // Validate pathway;
       this.validatePathway(pathway);
 
-      // Create pathway
+      // Create pathway;
       const newPathway = await this.prisma.clinicalPathway.create({
         data: {
           ...pathway,
@@ -823,7 +834,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'CLINICAL_PATHWAY',
@@ -836,46 +847,46 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern('cdss:pathways:*');
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.pathways_created', 1, {
         specialty: pathway.specialty.join(','),
         status: pathway.status,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PATHWAY_CREATED', {
         pathwayCreated: newPathway,
       });
 
       return newPathway as ClinicalPathway;
     } catch (error) {
-      console.error('Error creating clinical pathway:', error);
+
       throw error;
     }
   }
 
   /**
-   * Update clinical pathway
+   * Update clinical pathway;
    */
   async updatePathway(
     id: string,
     updates: Partial<ClinicalPathway>,
-    userId: string
+    userId: string;
   ): Promise<ClinicalPathway> {
     try {
-      // Get current pathway
+      // Get current pathway;
       const currentPathway = await this.getPathwayById(id);
       if (!currentPathway) {
         throw new Error(`Pathway ${id} not found`);
       }
 
-      // Validate updates
+      // Validate updates;
       this.validatePathwayUpdates(updates);
 
-      // Update pathway
+      // Update pathway;
       const updatedPathway = await this.prisma.clinicalPathway.update({
         where: { id },
         data: {
@@ -884,7 +895,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'UPDATE',
         resourceType: 'CLINICAL_PATHWAY',
@@ -898,7 +909,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Update metadata with modification history
+      // Update metadata with modification history;
       if (!updatedPathway.metadata.modificationHistory) {
         updatedPathway.metadata.modificationHistory = [];
       }
@@ -922,33 +933,33 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern(`cdss:pathway:${id}`);
       await cacheService.invalidatePattern('cdss:pathways:*');
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PATHWAY_UPDATED', {
         pathwayUpdated: updatedPathway,
       });
 
       return updatedPathway as ClinicalPathway;
     } catch (error) {
-      console.error(`Error updating pathway ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Enroll patient in pathway
+   * Enroll patient in pathway;
    */
   async enrollPatientInPathway(
     patientId: string,
     pathwayId: string,
     userId: string,
-    encounterId?: string
+    encounterId?: string;
   ): Promise<PatientPathway> {
     try {
-      // Get pathway
+      // Get pathway;
       const pathway = await this.getPathwayById(pathwayId);
       if (!pathway) {
         throw new Error(`Pathway ${pathwayId} not found`);
@@ -958,17 +969,17 @@ export class ClinicalPathwaysService {
         throw new Error(`Pathway ${pathwayId} is not active`);
       }
 
-      // Check patient eligibility
+      // Check patient eligibility;
       const eligibility = await this.checkPatientEligibility(
         patientId,
-        pathway
+        pathway;
       );
 
       if (!eligibility.eligible) {
         throw new Error(`Patient ${patientId} is not eligible for pathway ${pathwayId}: ${eligibility.reasons.join(', ')}`);
       }
 
-      // Create patient pathway
+      // Create patient pathway;
       const patientPathway: PatientPathway = {
         id: `patient-pathway-${Date.now()}`,
         patientId,
@@ -990,12 +1001,12 @@ export class ClinicalPathwaysService {
         evaluations: [],
       };
 
-      // Save patient pathway
+      // Save patient pathway;
       await this.prisma.patientPathway.create({
         data: patientPathway as any,
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'ENROLL',
         resourceType: 'PATIENT_PATHWAY',
@@ -1009,31 +1020,31 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.pathway_enrollments', 1, {
         pathwayId,
         pathwayName: pathway.name,
         specialty: pathway.specialty.join(','),
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PATIENT_PATHWAY_ENROLLED', {
         patientPathwayEnrolled: patientPathway,
       });
 
       return patientPathway;
     } catch (error) {
-      console.error(`Error enrolling patient ${patientId} in pathway ${pathwayId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get patient pathway by ID
+   * Get patient pathway by ID;
    */
   async getPatientPathwayById(id: string): Promise<PatientPathway | null> {
     try {
-      // Query database
+      // Query database;
       const patientPathway = await this.prisma.patientPathway.findUnique({
         where: { id },
       });
@@ -1042,17 +1053,17 @@ export class ClinicalPathwaysService {
 
       return patientPathway as PatientPathway;
     } catch (error) {
-      console.error(`Error fetching patient pathway ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get active pathways for a patient
+   * Get active pathways for a patient;
    */
   async getPatientActivePathways(patientId: string): Promise<PatientPathway[]> {
     try {
-      // Query database
+      // Query database;
       const patientPathways = await this.prisma.patientPathway.findMany({
         where: {
           patientId,
@@ -1063,33 +1074,33 @@ export class ClinicalPathwaysService {
 
       return patientPathways as PatientPathway[];
     } catch (error) {
-      console.error(`Error fetching active pathways for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Update patient pathway
+   * Update patient pathway;
    */
   async updatePatientPathway(
     id: string,
     updates: Partial<PatientPathway>,
-    userId: string
+    userId: string;
   ): Promise<PatientPathway> {
     try {
-      // Get current patient pathway
+      // Get current patient pathway;
       const currentPathway = await this.getPatientPathwayById(id);
       if (!currentPathway) {
         throw new Error(`Patient pathway ${id} not found`);
       }
 
-      // Update patient pathway
+      // Update patient pathway;
       const updatedPathway = await this.prisma.patientPathway.update({
         where: { id },
         data: updates as any,
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'UPDATE',
         resourceType: 'PATIENT_PATHWAY',
@@ -1104,20 +1115,20 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PATIENT_PATHWAY_UPDATED', {
         patientPathwayUpdated: updatedPathway,
       });
 
       return updatedPathway as PatientPathway;
     } catch (error) {
-      console.error(`Error updating patient pathway ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Complete activity in patient pathway
+   * Complete activity in patient pathway;
    */
   async completePathwayActivity(
     patientPathwayId: string,
@@ -1132,27 +1143,27 @@ export class ClinicalPathwaysService {
     }
   ): Promise<PatientPathwayActivity> {
     try {
-      // Get patient pathway
+      // Get patient pathway;
       const patientPathway = await this.getPatientPathwayById(patientPathwayId);
       if (!patientPathway) {
         throw new Error(`Patient pathway ${patientPathwayId} not found`);
       }
 
-      // Find phase
+      // Find phase;
       const phaseIndex = patientPathway.phases.findIndex(phase => phase.id === phaseId);
       if (phaseIndex === -1) {
         throw new Error(`Phase ${phaseId} not found in patient pathway ${patientPathwayId}`);
       }
 
-      // Find activity
+      // Find activity;
       const activityIndex = patientPathway.phases[phaseIndex].activities.findIndex(
-        activity => activity.id === activityId
+        activity => activity.id === activityId;
       );
       if (activityIndex === -1) {
         throw new Error(`Activity ${activityId} not found in phase ${phaseId}`);
       }
 
-      // Update activity
+      // Update activity;
       const activity = patientPathway.phases[phaseIndex].activities[activityIndex];
       activity.status = 'COMPLETED';
       activity.completedDate = new Date();
@@ -1162,7 +1173,7 @@ export class ClinicalPathwaysService {
       activity.documentId = data.documentId;
       activity.customFields = data.customFields;
 
-      // Update patient pathway
+      // Update patient pathway;
       await this.prisma.patientPathway.update({
         where: { id: patientPathwayId },
         data: {
@@ -1170,16 +1181,16 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Update phase completion percentage
+      // Update phase completion percentage;
       await this.updatePhaseCompletionPercentage(patientPathwayId, phaseId);
 
-      // Update overall pathway progress
+      // Update overall pathway progress;
       await this.updatePathwayProgress(patientPathwayId);
 
-      // Check if phase is complete
+      // Check if phase is complete;
       await this.checkPhaseCompletion(patientPathwayId, phaseId);
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'COMPLETE_ACTIVITY',
         resourceType: 'PATIENT_PATHWAY_ACTIVITY',
@@ -1192,7 +1203,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.pathway_activities_completed', 1, {
         patientPathwayId,
         phaseId,
@@ -1200,7 +1211,7 @@ export class ClinicalPathwaysService {
         activityCategory: activity.category,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PATHWAY_ACTIVITY_COMPLETED', {
         pathwayActivityCompleted: {
           patientPathwayId,
@@ -1211,27 +1222,27 @@ export class ClinicalPathwaysService {
 
       return activity;
     } catch (error) {
-      console.error(`Error completing activity ${activityId} in patient pathway ${patientPathwayId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Add variance to patient pathway
+   * Add variance to patient pathway;
    */
   async addPathwayVariance(
     patientPathwayId: string,
     variance: Omit<PatientPathwayVariance, 'id' | 'detectionDate' | 'status' | 'actions'>,
-    userId: string
+    userId: string;
   ): Promise<PatientPathwayVariance> {
     try {
-      // Get patient pathway
+      // Get patient pathway;
       const patientPathway = await this.getPatientPathwayById(patientPathwayId);
       if (!patientPathway) {
         throw new Error(`Patient pathway ${patientPathwayId} not found`);
       }
 
-      // Create variance
+      // Create variance;
       const newVariance: PatientPathwayVariance = {
         id: `variance-${Date.now()}`,
         ...variance,
@@ -1241,10 +1252,10 @@ export class ClinicalPathwaysService {
         actions: [],
       };
 
-      // Add variance to patient pathway
+      // Add variance to patient pathway;
       patientPathway.variances.push(newVariance);
 
-      // Update patient pathway
+      // Update patient pathway;
       await this.prisma.patientPathway.update({
         where: { id: patientPathwayId },
         data: {
@@ -1252,7 +1263,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'ADD_VARIANCE',
         resourceType: 'PATIENT_PATHWAY_VARIANCE',
@@ -1267,7 +1278,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.pathway_variances', 1, {
         patientPathwayId,
         category: variance.category,
@@ -1275,7 +1286,7 @@ export class ClinicalPathwaysService {
         phaseId: variance.phaseId || 'none',
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PATHWAY_VARIANCE_ADDED', {
         pathwayVarianceAdded: {
           patientPathwayId,
@@ -1285,13 +1296,13 @@ export class ClinicalPathwaysService {
 
       return newVariance;
     } catch (error) {
-      console.error(`Error adding variance to patient pathway ${patientPathwayId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get all order sets
+   * Get all order sets;
    */
   async getAllOrderSets(filters?: {
     type?: OrderSetType;
@@ -1299,30 +1310,30 @@ export class ClinicalPathwaysService {
     status?: string;
   }): Promise<OrderSet[]> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `orderSets:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.type) where.type = filters.type;
       if (filters?.specialty) where.specialty = { has: filters.specialty };
       if (filters?.status) where.status = filters.status;
       
-      // Only return active order sets by default
+      // Only return active order sets by default;
       if (!filters?.status) where.status = 'ACTIVE';
 
-      // Query database
+      // Query database;
       const orderSets = await this.prisma.orderSet.findMany({
         where,
         orderBy: { updatedAt: 'desc' },
       });
 
-      // Cache results
-      await cacheService.cacheResult('cdss:', cacheKey, orderSets, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('cdss:', cacheKey, orderSets, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.order_set_queries', 1, {
         type: filters?.type || 'ALL',
         specialty: filters?.specialty || 'ALL',
@@ -1331,50 +1342,50 @@ export class ClinicalPathwaysService {
 
       return orderSets as OrderSet[];
     } catch (error) {
-      console.error('Error fetching order sets:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get order set by ID
+   * Get order set by ID;
    */
   async getOrderSetById(id: string): Promise<OrderSet | null> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `orderSet:${id}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Query database
+      // Query database;
       const orderSet = await this.prisma.orderSet.findUnique({
         where: { id },
       });
 
       if (!orderSet) return null;
 
-      // Cache result
-      await cacheService.cacheResult('cdss:', cacheKey, orderSet, 3600); // 1 hour
+      // Cache result;
+      await cacheService.cacheResult('cdss:', cacheKey, orderSet, 3600); // 1 hour;
 
       return orderSet as OrderSet;
     } catch (error) {
-      console.error(`Error fetching order set ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create new order set
+   * Create new order set;
    */
   async createOrderSet(
     orderSet: Omit<OrderSet, 'id' | 'createdAt' | 'updatedAt'>,
-    userId: string
+    userId: string;
   ): Promise<OrderSet> {
     try {
-      // Validate order set
+      // Validate order set;
       this.validateOrderSet(orderSet);
 
-      // Create order set
+      // Create order set;
       const newOrderSet = await this.prisma.orderSet.create({
         data: {
           ...orderSet,
@@ -1386,7 +1397,7 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'ORDER_SET',
@@ -1399,29 +1410,29 @@ export class ClinicalPathwaysService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern('cdss:orderSets:*');
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.order_sets_created', 1, {
         type: orderSet.type,
         specialty: orderSet.specialty.join(','),
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('ORDER_SET_CREATED', {
         orderSetCreated: newOrderSet,
       });
 
       return newOrderSet as OrderSet;
     } catch (error) {
-      console.error('Error creating order set:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get quality measures
+   * Get quality measures;
    */
   async getQualityMeasures(filters?: {
     category?: QualityMeasureCategory;
@@ -1430,39 +1441,39 @@ export class ClinicalPathwaysService {
     status?: string;
   }): Promise<QualityMeasure[]> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `qualityMeasures:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.category) where.category = filters.category;
       if (filters?.type) where.type = filters.type;
       if (filters?.domain) where.domain = filters.domain;
       if (filters?.status) where.status = filters.status;
       
-      // Only return active measures by default
+      // Only return active measures by default;
       if (!filters?.status) where.status = 'ACTIVE';
 
-      // Query database
+      // Query database;
       const measures = await this.prisma.qualityMeasure.findMany({
         where,
         orderBy: { updatedAt: 'desc' },
       });
 
-      // Cache results
-      await cacheService.cacheResult('cdss:', cacheKey, measures, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('cdss:', cacheKey, measures, 3600); // 1 hour;
 
       return measures as QualityMeasure[];
     } catch (error) {
-      console.error('Error fetching quality measures:', error);
+
       throw error;
     }
   }
 
   /**
-   * Generate quality measure report
+   * Generate quality measure report;
    */
   async generateQualityMeasureReport(
     measureId: string,
@@ -1475,7 +1486,7 @@ export class ClinicalPathwaysService {
     }
   ): Promise<any> {
     try {
-      // Get measure
+      // Get measure;
       const measure = await this.prisma.qualityMeasure.findUnique({
         where: { id: measureId },
       });
@@ -1484,13 +1495,13 @@ export class ClinicalPathwaysService {
         throw new Error(`Quality measure ${measureId} not found`);
       }
 
-      // Generate report
+      // Generate report;
       const reportData = await this.calculateMeasurePerformance(
         measure as QualityMeasure,
-        parameters
+        parameters;
       );
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.quality_measure_reports', 1, {
         measureId,
         measureName: measure.name,
@@ -1499,13 +1510,13 @@ export class ClinicalPathwaysService {
 
       return reportData;
     } catch (error) {
-      console.error(`Error generating report for quality measure ${measureId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get available clinical trials
+   * Get available clinical trials;
    */
   async getClinicalTrials(filters?: {
     condition?: string;
@@ -1514,8 +1525,8 @@ export class ClinicalPathwaysService {
     location?: string;
   }): Promise<ClinicalTrial[]> {
     try {
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.condition) where.conditions = { has: filters.condition };
       if (filters?.phase) where.phase = filters.phase;
       if (filters?.status) where.status = filters.status;
@@ -1532,13 +1543,13 @@ export class ClinicalPathwaysService {
         };
       }
 
-      // Query database
+      // Query database;
       const trials = await this.prisma.clinicalTrial.findMany({
         where,
         orderBy: { lastUpdateDate: 'desc' },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.clinical_trial_queries', 1, {
         condition: filters?.condition || 'ALL',
         phase: filters?.phase || 'ALL',
@@ -1547,127 +1558,127 @@ export class ClinicalPathwaysService {
 
       return trials as ClinicalTrial[];
     } catch (error) {
-      console.error('Error fetching clinical trials:', error);
+
       throw error;
     }
   }
 
   /**
-   * Match patient to clinical trials
+   * Match patient to clinical trials;
    */
   async matchPatientToTrials(patientId: string): Promise<PatientTrialMatch[]> {
     try {
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientDataForTrialMatching(patientId);
       
-      // Get available trials
+      // Get available trials;
       const availableTrials = await this.getRecruitingTrials();
       
-      // Match patient to trials
+      // Match patient to trials;
       const matches = await this.performTrialMatching(patientData, availableTrials);
       
-      // Save matches
+      // Save matches;
       const savedMatches = await this.saveTrialMatches(patientId, matches);
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.patient_trial_matches', 1, {
         patientId,
         matchCount: matches.length.toString(),
       });
 
-      // Notify providers about high-scoring matches
+      // Notify providers about high-scoring matches;
       const highScoringMatches = matches.filter(match => match.matchScore >= 80);
       if (highScoringMatches.length > 0) {
         await this.notifyProvidersAboutTrialMatches(
           patientId,
-          highScoringMatches
+          highScoringMatches;
         );
       }
 
       return savedMatches;
     } catch (error) {
-      console.error(`Error matching patient ${patientId} to clinical trials:`, error);
+
       throw error;
     }
   }
 
-  // Private helper methods
-  private validatePathway(pathway: any): void {
-    // Implementation for pathway validation
+  // Private helper methods;
+  private validatePathway(pathway: unknown): void {
+    // Implementation for pathway validation;
   }
 
   private validatePathwayUpdates(updates: Partial<ClinicalPathway>): void {
-    // Implementation for update validation
+    // Implementation for update validation;
   }
 
   private async checkPatientEligibility(
     patientId: string,
-    pathway: ClinicalPathway
+    pathway: ClinicalPathway;
   ): Promise<{ eligible: boolean; reasons: string[] }> {
-    // Implementation to check eligibility
+    // Implementation to check eligibility;
     return { eligible: true, reasons: [] };
   }
 
   private initializePatientPathwayPhases(pathway: ClinicalPathway): PatientPathwayPhase[] {
-    // Implementation to initialize phases
+    // Implementation to initialize phases;
     return [];
   }
 
   private initializePatientPathwayOutcomes(pathway: ClinicalPathway): PatientPathwayOutcome[] {
-    // Implementation to initialize outcomes
+    // Implementation to initialize outcomes;
     return [];
   }
 
   private initializePatientPathwayMetrics(pathway: ClinicalPathway): PatientPathwayMetric[] {
-    // Implementation to initialize metrics
+    // Implementation to initialize metrics;
     return [];
   }
 
   private async updatePhaseCompletionPercentage(
     patientPathwayId: string,
-    phaseId: string
+    phaseId: string;
   ): Promise<void> {
-    // Implementation to update phase completion
+    // Implementation to update phase completion;
   }
 
   private async updatePathwayProgress(patientPathwayId: string): Promise<void> {
-    // Implementation to update pathway progress
+    // Implementation to update pathway progress;
   }
 
   private async checkPhaseCompletion(
     patientPathwayId: string,
-    phaseId: string
+    phaseId: string;
   ): Promise<void> {
-    // Implementation to check phase completion
+    // Implementation to check phase completion;
   }
 
-  private validateOrderSet(orderSet: any): void {
-    // Implementation for order set validation
+  private validateOrderSet(orderSet: unknown): void {
+    // Implementation for order set validation;
   }
 
   private async calculateMeasurePerformance(
     measure: QualityMeasure,
-    parameters: any
+    parameters: unknown;
   ): Promise<any> {
-    // Implementation to calculate measure performance
+    // Implementation to calculate measure performance;
     return {};
   }
 
   private async getPatientDataForTrialMatching(patientId: string): Promise<any> {
-    // Implementation to get patient data
+    // Implementation to get patient data;
     return {};
   }
 
   private async getRecruitingTrials(): Promise<ClinicalTrial[]> {
-    // Implementation to get recruiting trials
+    // Implementation to get recruiting trials;
     return [];
   }
 
   private async performTrialMatching(
-    patientData: any,
+    patientData: unknown,
     trials: ClinicalTrial[]
   ): Promise<PatientTrialMatch[]> {
-    // Implementation to perform matching
+    // Implementation to perform matching;
     return [];
   }
 
@@ -1675,7 +1686,7 @@ export class ClinicalPathwaysService {
     patientId: string,
     matches: PatientTrialMatch[]
   ): Promise<PatientTrialMatch[]> {
-    // Implementation to save matches
+    // Implementation to save matches;
     return [];
   }
 
@@ -1683,6 +1694,6 @@ export class ClinicalPathwaysService {
     patientId: string,
     matches: PatientTrialMatch[]
   ): Promise<void> {
-    // Implementation to notify providers
+    // Implementation to notify providers;
   }
 }

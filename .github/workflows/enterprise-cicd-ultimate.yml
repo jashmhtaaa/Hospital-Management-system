@@ -99,7 +99,7 @@ jobs:
     - name: 🏷️ Generate Version
       id: version
       run: |
-        VERSION="v$(date +'%Y.%m.%d')-${GITHUB_SHA::8}"
+        VERSION="v$(date +'%Y.%m.%d')-${GITHUB_SHA: :8}"
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Generated version: $VERSION"
         
@@ -144,27 +144,27 @@ jobs:
     - name: 🧹 ESLint Enterprise Analysis
       if: matrix.analysis == 'frontend'
       run: |
-        npm run lint:enterprise -- --format=json --output-file=eslint-report.json
-        npm run lint:security -- --format=sarif --output-file=eslint-security.sarif
+        npm run lint: enterprise -- --format=json --output-file=eslint-report.json
+        npm run lint: security -- --format=sarif --output-file=eslint-security.sarif
         
     - name: 💅 Prettier Enterprise Formatting
       if: matrix.analysis == 'frontend'
       run: |
-        npm run prettier:check:enterprise
-        npm run prettier:write:safe
+        npm run prettier: check:enterprise
+        npm run prettier: write:safe
         
     - name: 📋 TypeScript Ultra-Strict Check
       if: matrix.analysis == 'frontend'
       run: |
-        npm run type-check:strict
-        npm run type-check:coverage
+        npm run type-check: strict
+        npm run type-check: coverage
         
     - name: ☕ Java Code Quality (SpotBugs + PMD)
       if: matrix.analysis == 'backend' || matrix.analysis == 'microservices'
       run: |
         cd microservices
-        ./mvnw spotbugs:check pmd:check
-        ./mvnw checkstyle:check
+        ./mvnw spotbugs: check pmd:check
+        ./mvnw checkstyle: check
         
     - name: 🔒 Advanced Security Analysis
       run: |
@@ -222,7 +222,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-suite: 
+        test-suite:
           - unit-frontend
           - unit-backend
           - integration-api
@@ -266,20 +266,20 @@ jobs:
     - name: 🧪 Run Unit Tests (Frontend)
       if: matrix.test-suite == 'unit-frontend'
       run: |
-        npm run test:unit:coverage -- --ci --maxWorkers=4
-        npm run test:component:coverage
+        npm run test: unit:coverage -- --ci --maxWorkers=4
+        npm run test: component:coverage
         
     - name: ☕ Run Unit Tests (Backend/Microservices)
       if: matrix.test-suite == 'unit-backend'
       run: |
         cd microservices
         ./mvnw test -DargLine="-Xmx2g" -Dspring.profiles.active=test
-        ./mvnw jacoco:report
+        ./mvnw jacoco: report
         
     - name: 🔗 Run Integration Tests (API)
       if: matrix.test-suite == 'integration-api'
       run: |
-        npm run test:api:integration
+        npm run test: api:integration
         newman run tests/postman/HMS-API-Tests.postman_collection.json \
           --environment tests/postman/test-environment.json \
           --reporters cli,json \
@@ -288,20 +288,20 @@ jobs:
     - name: 🗃️ Run Integration Tests (Database)
       if: matrix.test-suite == 'integration-database'
       run: |
-        npm run test:database:integration
-        npm run test:migration:validation
+        npm run test: database:integration
+        npm run test: migration:validation
         
     - name: 🎭 Run E2E Tests (Critical Flows)
       if: matrix.test-suite == 'e2e-critical-flows'
       run: |
-        npm run test:e2e:critical
+        npm run test: e2e:critical
         npx playwright test --config=playwright.critical.config.ts
         
     - name: 🏥 Run E2E Tests (Healthcare Workflows)
       if: matrix.test-suite == 'e2e-healthcare-workflows'
       run: |
         npx playwright test --config=playwright.healthcare.config.ts
-        npm run test:fhir:compliance
+        npm run test: fhir:compliance
         
     - name: ⚡ Run Performance Tests (Load)
       if: matrix.test-suite == 'performance-load'
@@ -325,23 +325,23 @@ jobs:
       if: matrix.test-suite == 'security-penetration'
       run: |
         # OWASP ZAP Security Testing
-        docker run -v $(pwd):/zap/wrk/:rw \
+        docker run -v $(pwd): /zap/wrk/:rw \
           -t owasp/zap2docker-stable \
-          zap-full-scan.py -t http://localhost:3000 \
+          zap-full-scan.py -t http: //localhost:3000 \
           -J zap-report.json \
           -r zap-report.html
           
     - name: ♿ Run Accessibility Compliance Tests
       if: matrix.test-suite == 'accessibility-compliance'
       run: |
-        npm run test:accessibility:axe
-        npm run test:accessibility:lighthouse
+        npm run test: accessibility:axe
+        npm run test: accessibility:lighthouse
         
     - name: 📊 Generate Test Reports
       if: always()
       run: |
-        npm run test:report:merge
-        npm run test:report:html
+        npm run test: report:merge
+        npm run test: report:html
         
     - name: 📈 Upload Test Results
       uses: actions/upload-artifact@v4
@@ -380,8 +380,8 @@ jobs:
           
     - name: 📋 FHIR R4 Compliance Check
       run: |
-        npm run fhir:validate:r4
-        npm run fhir:structure:validation
+        npm run fhir: validate:r4
+        npm run fhir: structure:validation
         
     - name: 🔒 PHI Data Protection Audit
       run: |
@@ -417,7 +417,7 @@ jobs:
     
     strategy:
       matrix:
-        service: 
+        service:
           - frontend
           - api-gateway
           - patient-management
@@ -484,9 +484,9 @@ jobs:
     - name: 📋 Container Image Analysis
       run: |
         # Dive analysis for image efficiency
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-          wagoodman/dive:latest \
-          ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.service }}:${{ needs.pipeline-init.outputs.version }} \
+        docker run --rm -v /var/run/docker.sock: /var/run/docker.sock \
+          wagoodman/dive: latest \
+          ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.service }}: ${{ needs.pipeline-init.outputs.version }} \
           --ci \
           --json dive-analysis-${{ matrix.service }}.json
           
@@ -529,12 +529,12 @@ jobs:
         
     - name: 🔧 Setup Kubernetes Tools
       run: |
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        curl -LO "https: //dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
         
         # Install Helm
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+        curl https: //raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
         
     - name: 🔍 Terraform Validation
       run: |
@@ -593,7 +593,7 @@ jobs:
         kubectl wait --for=condition=ready pod -l app=hms -n hms-staging --timeout=300s
         
         # Smoke tests
-        npm run test:smoke:staging
+        npm run test: smoke:staging
         
     - name: 📊 Update Monitoring
       run: |
@@ -635,14 +635,14 @@ jobs:
     - name: 🧪 Production Validation
       run: |
         # Comprehensive production validation
-        npm run test:production:validation
-        npm run test:fhir:production
+        npm run test: production:validation
+        npm run test: fhir:production
         
     - name: 🔄 Traffic Switch
       run: |
         # Switch traffic to green deployment
         kubectl patch service hms-frontend -n hms-production \
-          -p '{"spec":{"selector":{"deployment":"green"}}}'
+          -p '{"spec": {"selector":{"deployment":"green"}}}'
           
         # Wait for traffic switch
         sleep 60

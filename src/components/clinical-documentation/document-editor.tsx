@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -27,7 +38,6 @@ import {
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { Checkbox } from '../ui/checkbox';
 import { Switch } from '../ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { useToast } from '../../hooks/use-toast';
@@ -35,7 +45,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-// Form schema validation
+// Form schema validation;
 const documentFormSchema = z.object({
   documentTitle: z.string().min(1, 'Document title is required'),
   documentType: z.string().min(1, 'Document type is required'),
@@ -48,13 +58,13 @@ const documentFormSchema = z.object({
       sectionType: z.string().min(1, 'Section type is required'),
       content: z.string().min(1, 'Section content is required'),
       sectionOrder: z.number().optional(),
-    })
+    });
   ).optional(),
   tags: z.array(z.string()).optional(),
   attachmentUrls: z.array(z.string()).optional(),
 });
 
-// Type for document templates
+// Type for document templates;
 interface DocumentTemplate {
   id: string;
   templateNumber: string;
@@ -80,11 +90,11 @@ interface DocumentEditorProps {
   onSuccess?: () => void;
 }
 
-export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) {
+export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // State
+  // State;
   const [templates, setTemplates] = useState<DocumentTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -92,7 +102,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
   const [isEditing, setIsEditing] = useState(!!documentId);
   const [activeTab, setActiveTab] = useState('content');
   
-  // Form
+  // Form;
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
     defaultValues: {
@@ -106,7 +116,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     },
   });
   
-  // Fetch document templates
+  // Fetch document templates;
   const fetchTemplates = async () => {
     setLoading(true);
     
@@ -121,7 +131,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
       
       setTemplates(data.data);
     } catch (error) {
-      console.error('Error fetching templates:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to fetch document templates. Please try again.',
@@ -132,7 +142,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Fetch document if editing
+  // Fetch document if editing;
   const fetchDocument = async () => {
     if (!documentId) return;
     
@@ -147,7 +157,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
       
       const data = await response.json();
       
-      // Update form values
+      // Update form values;
       form.reset({
         documentTitle: data.documentTitle,
         documentType: data.documentType,
@@ -158,7 +168,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
         attachmentUrls: data.attachmentUrls,
       });
     } catch (error) {
-      console.error('Error fetching document:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to fetch document. Please try again.',
@@ -169,7 +179,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Effect to fetch templates and document on initial load
+  // Effect to fetch templates and document on initial load;
   useEffect(() => {
     fetchTemplates();
     
@@ -178,7 +188,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     }
   }, [documentId]);
   
-  // Handle template selection
+  // Handle template selection;
   const handleTemplateChange = (templateId: string) => {
     setSelectedTemplate(templateId);
     
@@ -204,7 +214,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Handle form submission
+  // Handle form submission;
   const onSubmit = async (values: z.infer<typeof documentFormSchema>) => {
     setSubmitLoading(true);
     
@@ -219,7 +229,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
       let response;
       
       if (isEditing) {
-        // Update document
+        // Update document;
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
           method: 'PUT',
           headers: {
@@ -228,7 +238,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
           body: JSON.stringify(payload),
         });
       } else {
-        // Create document
+        // Create document;
         response = await fetch('/api/clinical-documentation', {
           method: 'POST',
           headers: {
@@ -253,11 +263,11 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
       if (onSuccess) {
         onSuccess();
       } else {
-        // Navigate to document view
+        // Navigate to document view;
         router.push(`/clinical-documentation/${data.id}`);
       }
     } catch (error) {
-      console.error('Error saving document:', error);
+
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to save document. Please try again.',
@@ -268,7 +278,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Add section handler
+  // Add section handler;
   const handleAddSection = () => {
     const currentSections = form.getValues('sections') || [];
     
@@ -283,12 +293,12 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     ]);
   };
   
-  // Remove section handler
+  // Remove section handler;
   const handleRemoveSection = (index: number) => {
     const currentSections = form.getValues('sections') || [];
     const updatedSections = currentSections.filter((_, i) => i !== index);
     
-    // Update section orders
+    // Update section orders;
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
       sectionOrder: i + 1,
@@ -297,7 +307,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     form.setValue('sections', reorderedSections);
   };
   
-  // Document type options
+  // Document type options;
   const documentTypeOptions = [
     { value: 'Admission Note', label: 'Admission Note' },
     { value: 'Progress Note', label: 'Progress Note' },
@@ -309,7 +319,7 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
     { value: 'Care Plan', label: 'Care Plan' },
   ];
   
-  // Section type options
+  // Section type options;
   const sectionTypeOptions = [
     { value: 'History', label: 'History' },
     { value: 'Physical Exam', label: 'Physical Exam' },
@@ -328,11 +338,11 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
   ];
   
   return (
-    <Card className="w-full">
+    <Card className="w-full">;
       <CardHeader>
         <CardTitle>{isEditing ? 'Edit Document' : 'Create Document'}</CardTitle>
         <CardDescription>
-          {isEditing 
+          {isEditing;
             ? 'Update an existing clinical document' 
             : 'Create a new clinical document for the patient'}
         </CardDescription>
@@ -340,47 +350,47 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
       
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
             {/* Template selection (only for new documents) */}
             {!isEditing && (
-              <div className="mb-6">
+              <div className="mb-6">;
                 <FormLabel>Document Template</FormLabel>
-                <Select value={selectedTemplate} onValueChange={handleTemplateChange}>
+                <Select value={selectedTemplate} onValueChange={handleTemplateChange}>;
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a template (optional)" />
+                    <SelectValue placeholder="Select a template (optional)" />;
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Template</SelectItem>
+                    <SelectItem value="">No Template</SelectItem>;
                     {templates.map((template) => (
-                      <SelectItem key={template.id} value={template.id}>
-                        {template.templateName} ({template.templateType})
+                      <SelectItem key={template.id} value={template.id}>;
+                        {template.templateName} ({template.templateType});
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  Selecting a template will pre-fill the document with template content
+                  Selecting a template will pre-fill the document with template content;
                 </FormDescription>
               </div>
             )}
             
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="mb-4">
-                <TabsTrigger value="content">Document Content</TabsTrigger>
-                <TabsTrigger value="sections">Sections</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
+            <Tabs value={activeTab} onValueChange={setActiveTab}>;
+              <TabsList className="mb-4">;
+                <TabsTrigger value="content">Document Content</TabsTrigger>;
+                <TabsTrigger value="sections">Sections</TabsTrigger>;
+                <TabsTrigger value="settings">Settings</TabsTrigger>;
               </TabsList>
               
-              <TabsContent value="content" className="space-y-4">
+              <TabsContent value="content" className="space-y-4">;
                 {/* Document Title */}
-                <FormField
+                <FormField;
                   control={form.control}
-                  name="documentTitle"
+                  name="documentTitle";
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter document title" {...field} />
+                        <Input placeholder="Enter document title" {...field} />;
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -388,23 +398,23 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                 />
                 
                 {/* Document Type */}
-                <FormField
+                <FormField;
                   control={form.control}
-                  name="documentType"
+                  name="documentType";
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Type</FormLabel>
                       <FormControl>
-                        <Select 
+                        <Select;
                           value={field.value}
                           onValueChange={field.onChange}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select document type" />
+                            <SelectValue placeholder="Select document type" />;
                           </SelectTrigger>
                           <SelectContent>
                             {documentTypeOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
+                              <SelectItem key={option.value} value={option.value}>;
                                 {option.label}
                               </SelectItem>
                             ))}
@@ -417,16 +427,16 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                 />
                 
                 {/* Document Content */}
-                <FormField
+                <FormField;
                   control={form.control}
-                  name="content"
+                  name="content";
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Content</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Enter document content"
-                          className="min-h-[300px]"
+                        <Textarea;
+                          placeholder="Enter document content";
+                          className="min-h-[300px]";
                           {...field}
                         />
                       </FormControl>
@@ -436,39 +446,39 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                 />
               </TabsContent>
               
-              <TabsContent value="sections" className="space-y-4">
-                <div className="flex justify-end mb-4">
-                  <Button type="button" onClick={handleAddSection}>
-                    Add Section
+              <TabsContent value="sections" className="space-y-4">;
+                <div className="flex justify-end mb-4">;
+                  <Button type="button" onClick={handleAddSection}>;
+                    Add Section;
                   </Button>
                 </div>
                 
                 {/* Sections */}
                 {form.watch('sections')?.map((section, index) => (
-                  <Card key={index} className="mb-4">
-                    <CardHeader className="pb-2">
-                      <div className="flex justify-between">
-                        <CardTitle className="text-lg">Section {index + 1}</CardTitle>
-                        <Button
+                  <Card key={index} className="mb-4">;
+                    <CardHeader className="pb-2">;
+                      <div className="flex justify-between">;
+                        <CardTitle className="text-lg">Section {index + 1}</CardTitle>;
+                        <Button;
                           type="button"
-                          variant="destructive"
-                          size="sm"
+                          variant="destructive";
+                          size="sm";
                           onClick={() => handleRemoveSection(index)}
                         >
-                          Remove
+                          Remove;
                         </Button>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4">;
                       {/* Section Title */}
-                      <FormField
+                      <FormField;
                         control={form.control}
                         name={`sections.${index}.sectionTitle`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Section Title</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter section title" {...field} />
+                              <Input placeholder="Enter section title" {...field} />;
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -476,23 +486,23 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                       />
                       
                       {/* Section Type */}
-                      <FormField
+                      <FormField;
                         control={form.control}
                         name={`sections.${index}.sectionType`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Section Type</FormLabel>
                             <FormControl>
-                              <Select 
+                              <Select;
                                 value={field.value}
                                 onValueChange={field.onChange}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select section type" />
+                                  <SelectValue placeholder="Select section type" />;
                                 </SelectTrigger>
                                 <SelectContent>
                                   {sectionTypeOptions.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
+                                    <SelectItem key={option.value} value={option.value}>;
                                       {option.label}
                                     </SelectItem>
                                   ))}
@@ -505,16 +515,16 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                       />
                       
                       {/* Section Content */}
-                      <FormField
+                      <FormField;
                         control={form.control}
                         name={`sections.${index}.content`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Section Content</FormLabel>
                             <FormControl>
-                              <Textarea 
-                                placeholder="Enter section content"
-                                className="min-h-[150px]"
+                              <Textarea;
+                                placeholder="Enter section content";
+                                className="min-h-[150px]";
                                 {...field}
                               />
                             </FormControl>
@@ -527,27 +537,27 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                 ))}
                 
                 {(!form.watch('sections') || form.watch('sections').length === 0) && (
-                  <div className="text-center py-8 text-gray-500">
-                    No sections added. Click "Add Section" to add document sections.
+                  <div className="text-center py-8 text-gray-500">;
+                    No sections added. Click "Add Section" to add document sections.;
                   </div>
                 )}
               </TabsContent>
               
-              <TabsContent value="settings" className="space-y-4">
+              <TabsContent value="settings" className="space-y-4">;
                 {/* Confidentiality */}
-                <FormField
+                <FormField;
                   control={form.control}
-                  name="isConfidential"
+                  name="isConfidential";
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Confidential Document</FormLabel>
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">;
+                      <div className="space-y-0.5">;
+                        <FormLabel className="text-base">Confidential Document</FormLabel>;
                         <FormDescription>
-                          Mark this document as confidential with restricted access
+                          Mark this document as confidential with restricted access;
                         </FormDescription>
                       </div>
                       <FormControl>
-                        <Switch
+                        <Switch;
                           checked={field.value}
                           onCheckedChange={field.onChange}
                         />
@@ -557,21 +567,21 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
                 />
                 
                 {/* Tags */}
-                <div className="rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Document Tags</FormLabel>
+                <div className="rounded-lg border p-4">;
+                  <div className="space-y-0.5">;
+                    <FormLabel className="text-base">Document Tags</FormLabel>;
                     <FormDescription>
-                      Add tags to categorize and find the document easily (coming soon)
+                      Add tags to categorize and find the document easily (coming soon);
                     </FormDescription>
                   </div>
                 </div>
                 
                 {/* Attachments */}
-                <div className="rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Document Attachments</FormLabel>
+                <div className="rounded-lg border p-4">;
+                  <div className="space-y-0.5">;
+                    <FormLabel className="text-base">Document Attachments</FormLabel>;
                     <FormDescription>
-                      Upload files to attach to this document (coming soon)
+                      Upload files to attach to this document (coming soon);
                     </FormDescription>
                   </div>
                 </div>
@@ -581,27 +591,27 @@ export function DocumentEditor({ patientId, encounterId, documentId, onSuccess }
         </Form>
       </CardContent>
       
-      <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
+      <CardFooter className="flex justify-between">;
+        <Button;
+          variant="outline";
           onClick={() => router.back()}
           disabled={submitLoading}
         >
-          Cancel
+          Cancel;
         </Button>
         
-        <div className="space-x-2">
+        <div className="space-x-2">;
           {isEditing && (
-            <Button
-              variant="secondary"
+            <Button;
+              variant="secondary";
               onClick={() => router.push(`/clinical-documentation/${documentId}`)}
               disabled={submitLoading}
             >
-              View Document
+              View Document;
             </Button>
           )}
           
-          <Button
+          <Button;
             onClick={form.handleSubmit(onSubmit)}
             disabled={submitLoading || loading}
           >

@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const contactService = new ContactService();
 
 /**
- * POST /api/support-services/marketing/contacts/:id/link-patient
- * Link a contact to a patient
+ * POST /api/support-services/marketing/contacts/:id/link-patient;
+ * Link a contact to a patient;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -30,7 +41,7 @@ export async function POST(
       const contact = await contactService.linkContactToPatient(
         params.id,
         patientId,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(contact);

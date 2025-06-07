@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
@@ -7,7 +18,7 @@ import {
   TableCell, 
   TableHead, 
   TableHeader, 
-  TableRow 
+  TableRow;
 } from '../ui/table';
 import { 
   Pagination, 
@@ -15,7 +26,7 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious;
 } from '../ui/pagination';
 import { 
   Card, 
@@ -23,7 +34,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '../ui/card';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
@@ -32,22 +43,22 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '../ui/select';
 import { Badge } from '../ui/badge';
 import { Search, RefreshCw, UserPlus, Filter } from 'lucide-react';
 import { format } from 'date-fns';
 import { useToast } from '../../hooks/use-toast';
 
-// Define patient status colors
+// Define patient status colors;
 const statusColors: Record<string, string> = {
   Active: 'success',
   Inactive: 'secondary',
   Deceased: 'destructive',
-  'On Hold': 'warning'
+  'On Hold': 'warning';
 };
 
-// Patient interface
+// Patient interface;
 interface Patient {
   id: string;
   mrn: string;
@@ -67,7 +78,7 @@ interface Patient {
   }[];
 }
 
-// Props interface
+// Props interface;
 interface PatientListProps {
   initialData?: {
     patients: Patient[];
@@ -78,11 +89,11 @@ interface PatientListProps {
   };
 }
 
-export default function PatientList({ initialData }: PatientListProps) {
+export default const PatientList = ({ initialData }: PatientListProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // States
+  // States;
   const [patients, setPatients] = useState<Patient[]>(initialData?.patients || []);
   const [total, setTotal] = useState<number>(initialData?.total || 0);
   const [page, setPage] = useState<number>(initialData?.page || 1);
@@ -90,37 +101,37 @@ export default function PatientList({ initialData }: PatientListProps) {
   const [totalPages, setTotalPages] = useState<number>(initialData?.totalPages || 1);
   const [loading, setLoading] = useState<boolean>(!initialData);
   
-  // Search filters
+  // Search filters;
   const [searchFilters, setSearchFilters] = useState({
     mrn: '',
     firstName: '',
     lastName: '',
     dateOfBirth: '',
     phone: '',
-    status: ''
+    status: '';
   });
   
-  // Advanced filter visibility
+  // Advanced filter visibility;
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
   
-  // Effect to load patients if no initial data
+  // Effect to load patients if no initial data;
   useEffect(() => {
     if (!initialData) {
       searchPatients();
     }
   }, [initialData]);
   
-  // Function to search patients
+  // Function to search patients;
   const searchPatients = async () => {
     setLoading(true);
     
     try {
-      // Build query parameters
+      // Build query parameters;
       const params = new URLSearchParams();
       params.append('page', page.toString());
       params.append('limit', limit.toString());
       
-      // Add filters if they have values
+      // Add filters if they have values;
       if (searchFilters.mrn) params.append('mrn', searchFilters.mrn);
       if (searchFilters.firstName) params.append('firstName', searchFilters.firstName);
       if (searchFilters.lastName) params.append('lastName', searchFilters.lastName);
@@ -128,7 +139,7 @@ export default function PatientList({ initialData }: PatientListProps) {
       if (searchFilters.phone) params.append('phone', searchFilters.phone);
       if (searchFilters.status) params.append('status', searchFilters.status);
       
-      // Fetch patients
+      // Fetch patients;
       const response = await fetch(`/api/patients?${params.toString()}`);
       
       if (!response.ok) {
@@ -137,62 +148,62 @@ export default function PatientList({ initialData }: PatientListProps) {
       
       const data = await response.json();
       
-      // Update state
+      // Update state;
       setPatients(data.patients);
       setTotal(data.total);
       setPage(data.page);
       setLimit(data.limit);
       setTotalPages(data.totalPages);
     } catch (error) {
-      console.error('Error searching patients:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to fetch patients. Please try again.',
-        variant: 'destructive'
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
   
-  // Handle filter change
+  // Handle filter change;
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSearchFilters((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value;
     }));
   };
   
-  // Handle status filter change
+  // Handle status filter change;
   const handleStatusChange = (value: string) => {
     setSearchFilters((prev) => ({
       ...prev,
-      status: value
+      status: value;
     }));
   };
   
-  // Handle search form submission
+  // Handle search form submission;
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1); // Reset to first page
+    setPage(1); // Reset to first page;
     searchPatients();
   };
   
-  // Handle page change
+  // Handle page change;
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     searchPatients();
   };
   
-  // Handle limit change
+  // Handle limit change;
   const handleLimitChange = (value: string) => {
     setLimit(parseInt(value));
-    setPage(1); // Reset to first page
+    setPage(1); // Reset to first page;
     searchPatients();
   };
   
-  // Handle refresh
+  // Handle refresh;
   const handleRefresh = () => {
     searchPatients();
   };
@@ -202,12 +213,12 @@ export default function PatientList({ initialData }: PatientListProps) {
     router.push(`/patients/${patientId}`);
   };
   
-  // Handle create new patient
+  // Handle create new patient;
   const handleCreatePatient = () => {
     router.push('/patients/new');
   };
   
-  // Format date function
+  // Format date function;
   const formatDate = (date: string) => {
     try {
       return format(new Date(date), 'MMM d, yyyy');
@@ -216,7 +227,7 @@ export default function PatientList({ initialData }: PatientListProps) {
     }
   };
   
-  // Calculate age from date of birth
+  // Calculate age from date of birth;
   const calculateAge = (dateOfBirth: string) => {
     try {
       const birthDate = new Date(dateOfBirth);
@@ -235,119 +246,119 @@ export default function PatientList({ initialData }: PatientListProps) {
   };
   
   return (
-    <Card className="w-full">
+    <Card className="w-full">;
       <CardHeader>
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">;
           <div>
             <CardTitle>Patient Management</CardTitle>
             <CardDescription>
-              Search, view, and manage patients
+              Search, view, and manage patients;
             </CardDescription>
           </div>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
+          <div className="flex gap-2">;
+            <Button;
+              variant="outline";
+              size="sm";
               onClick={handleRefresh}
               disabled={loading}
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              <RefreshCw className="h-4 w-4 mr-2" />;
+              Refresh;
             </Button>
-            <Button 
-              size="sm" 
+            <Button;
+              size="sm";
               onClick={handleCreatePatient}
             >
-              <UserPlus className="h-4 w-4 mr-2" />
-              New Patient
+              <UserPlus className="h-4 w-4 mr-2" />;
+              New Patient;
             </Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSearchSubmit} className="space-y-4">
-          <div className="flex flex-col md:flex-row gap-3">
-            <div className="flex-1">
-              <Input
-                name="lastName"
-                placeholder="Last Name"
+        <form onSubmit={handleSearchSubmit} className="space-y-4">;
+          <div className="flex flex-col md:flex-row gap-3">;
+            <div className="flex-1">;
+              <Input;
+                name="lastName";
+                placeholder="Last Name";
                 value={searchFilters.lastName}
                 onChange={handleFilterChange}
               />
             </div>
-            <div className="flex-1">
-              <Input
-                name="firstName"
-                placeholder="First Name"
+            <div className="flex-1">;
+              <Input;
+                name="firstName";
+                placeholder="First Name";
                 value={searchFilters.firstName}
                 onChange={handleFilterChange}
               />
             </div>
-            <div className="w-full md:w-48">
-              <Input
-                name="mrn"
-                placeholder="MRN"
+            <div className="w-full md:w-48">;
+              <Input;
+                name="mrn";
+                placeholder="MRN";
                 value={searchFilters.mrn}
                 onChange={handleFilterChange}
               />
             </div>
-            <div className="flex-none">
-              <Button type="submit" disabled={loading}>
-                <Search className="h-4 w-4 mr-2" />
-                Search
+            <div className="flex-none">;
+              <Button type="submit" disabled={loading}>;
+                <Search className="h-4 w-4 mr-2" />;
+                Search;
               </Button>
             </div>
-            <div className="flex-none">
-              <Button 
+            <div className="flex-none">;
+              <Button;
                 type="button" 
-                variant="outline" 
+                variant="outline";
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
               >
-                <Filter className="h-4 w-4 mr-2" />
+                <Filter className="h-4 w-4 mr-2" />;
                 {showAdvancedFilters ? "Hide Filters" : "More Filters"}
               </Button>
             </div>
           </div>
           
           {showAdvancedFilters && (
-            <div className="flex flex-col md:flex-row gap-3 pt-3 border-t">
-              <div className="flex-1">
-                <Input
-                  name="phone"
-                  placeholder="Phone Number"
+            <div className="flex flex-col md:flex-row gap-3 pt-3 border-t">;
+              <div className="flex-1">;
+                <Input;
+                  name="phone";
+                  placeholder="Phone Number";
                   value={searchFilters.phone}
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="flex-1">
-                <Input
-                  name="dateOfBirth"
-                  placeholder="Date of Birth (YYYY-MM-DD)"
+              <div className="flex-1">;
+                <Input;
+                  name="dateOfBirth";
+                  placeholder="Date of Birth (YYYY-MM-DD)";
                   value={searchFilters.dateOfBirth}
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="w-full md:w-48">
-                <Select
+              <div className="w-full md:w-48">;
+                <Select;
                   value={searchFilters.status}
                   onValueChange={handleStatusChange}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Status" />
+                    <SelectValue placeholder="Status" />;
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
-                    <SelectItem value="Active">Active</SelectItem>
-                    <SelectItem value="Inactive">Inactive</SelectItem>
-                    <SelectItem value="Deceased">Deceased</SelectItem>
-                    <SelectItem value="On Hold">On Hold</SelectItem>
+                    <SelectItem value="">All Statuses</SelectItem>;
+                    <SelectItem value="Active">Active</SelectItem>;
+                    <SelectItem value="Inactive">Inactive</SelectItem>;
+                    <SelectItem value="Deceased">Deceased</SelectItem>;
+                    <SelectItem value="On Hold">On Hold</SelectItem>;
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex-none">
-                <Button 
+              <div className="flex-none">;
+                <Button;
                   type="button" 
-                  variant="outline"
+                  variant="outline";
                   onClick={() => {
                     setSearchFilters({
                       mrn: '',
@@ -355,21 +366,21 @@ export default function PatientList({ initialData }: PatientListProps) {
                       lastName: '',
                       dateOfBirth: '',
                       phone: '',
-                      status: ''
+                      status: '';
                     });
                   }}
                 >
-                  Clear Filters
+                  Clear Filters;
                 </Button>
               </div>
             </div>
           )}
         </form>
         
-        <div className="mt-6">
+        <div className="mt-6">;
           <Table>
             <TableCaption>
-              {loading
+              {loading;
                 ? 'Loading patients...'
                 : `Showing ${patients.length} of ${total} patients`}
             </TableCaption>
@@ -387,83 +398,83 @@ export default function PatientList({ initialData }: PatientListProps) {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8">
-                    <div className="flex justify-center items-center">
-                      <RefreshCw className="h-6 w-6 animate-spin mr-2" />
+                  <TableCell colSpan={7} className="text-center py-8">;
+                    <div className="flex justify-center items-center">;
+                      <RefreshCw className="h-6 w-6 animate-spin mr-2" />;
                       <span>Loading patients...</span>
                     </div>
                   </TableCell>
                 </TableRow>
               ) : patients.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8">
-                    No patients found. Try adjusting your search criteria.
+                  <TableCell colSpan={7} className="text-center py-8">;
+                    No patients found. Try adjusting your search criteria.;
                   </TableCell>
                 </TableRow>
               ) : (
                 patients.map((patient) => (
-                  <TableRow 
+                  <TableRow;
                     key={patient.id} 
-                    className="cursor-pointer hover:bg-muted/50"
+                    className="cursor-pointer hover:bg-muted/50";
                     onClick={() => handlePatientSelect(patient.id)}
                   >
-                    <TableCell className="font-medium">{patient.mrn}</TableCell>
+                    <TableCell className="font-medium">{patient.mrn}</TableCell>;
                     <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>
                     <TableCell>
                       {formatDate(patient.dateOfBirth)} 
-                      <span className="text-muted-foreground ml-1">
-                        ({calculateAge(patient.dateOfBirth)})
+                      <span className="text-muted-foreground ml-1">;
+                        ({calculateAge(patient.dateOfBirth)});
                       </span>
                     </TableCell>
                     <TableCell>{patient.gender}</TableCell>
                     <TableCell>
                       {patient.contact?.phoneMobile && (
-                        <div className="text-sm">{patient.contact.phoneMobile}</div>
+                        <div className="text-sm">{patient.contact.phoneMobile}</div>;
                       )}
                       {patient.contact?.email && (
-                        <div className="text-xs text-muted-foreground truncate max-w-[200px]">
+                        <div className="text-xs text-muted-foreground truncate max-w-[200px]">;
                           {patient.contact.email}
                         </div>
                       )}
                     </TableCell>
                     <TableCell>
                       {patient.addresses && patient.addresses.length > 0 && (
-                        <div className="text-sm">
+                        <div className="text-sm">;
                           {patient.addresses[0].city}
                           {patient.addresses[0].state && `, ${patient.addresses[0].state}`}
                         </div>
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={statusColors[patient.status] as any || 'default'}>
+                      <Badge variant={statusColors[patient.status] as any || 'default'}>;
                         {patient.status}
                       </Badge>
                     </TableCell>
                   </TableRow>
-                ))
+                ));
               )}
             </TableBody>
           </Table>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col sm:flex-row justify-between items-center">
-        <div className="flex items-center mb-4 sm:mb-0">
-          <span className="text-sm text-muted-foreground mr-2">Rows per page:</span>
-          <Select
+      <CardFooter className="flex flex-col sm:flex-row justify-between items-center">;
+        <div className="flex items-center mb-4 sm:mb-0">;
+          <span className="text-sm text-muted-foreground mr-2">Rows per page:</span>;
+          <Select;
             value={limit.toString()}
             onValueChange={handleLimitChange}
           >
-            <SelectTrigger className="w-16">
-              <SelectValue placeholder={limit.toString()} />
+            <SelectTrigger className="w-16">;
+              <SelectValue placeholder={limit.toString()} />;
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value="100">100</SelectItem>
+              <SelectItem value="10">10</SelectItem>;
+              <SelectItem value="20">20</SelectItem>;
+              <SelectItem value="50">50</SelectItem>;
+              <SelectItem value="100">100</SelectItem>;
             </SelectContent>
           </Select>
-          <span className="text-sm text-muted-foreground ml-4">
+          <span className="text-sm text-muted-foreground ml-4">;
             {`${Math.min((page - 1) * limit + 1, total)}-${Math.min(page * limit, total)} of ${total} patients`}
           </span>
         </div>
@@ -471,7 +482,7 @@ export default function PatientList({ initialData }: PatientListProps) {
         <Pagination>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious 
+              <PaginationPrevious;
                 onClick={() => page > 1 && handlePageChange(page - 1)}
                 className={page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
               />
@@ -481,7 +492,7 @@ export default function PatientList({ initialData }: PatientListProps) {
             {page > 2 && (
               <PaginationItem>
                 <PaginationLink onClick={() => handlePageChange(1)}>
-                  1
+                  1;
                 </PaginationLink>
               </PaginationItem>
             )}
@@ -533,7 +544,7 @@ export default function PatientList({ initialData }: PatientListProps) {
             )}
             
             <PaginationItem>
-              <PaginationNext 
+              <PaginationNext;
                 onClick={() => page < totalPages && handlePageChange(page + 1)}
                 className={page === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
               />

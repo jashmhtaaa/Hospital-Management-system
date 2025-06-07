@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9
+import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9;
 
-// FHIR-compliant Observation resource structure
+// FHIR-compliant Observation resource structure;
 interface FHIRObservation {
   resourceType: "Observation";
   id: string;
@@ -113,63 +124,63 @@ interface FHIRObservation {
   };
 }
 
-// Interface for the request body when creating a laboratory result
+// Interface for the request body when creating a laboratory result;
 interface LabResultCreateBody {
-  // Basic result information
+  // Basic result information;
   order_item_id: number;
   parameter_id?: number;
   
-  // Result value - one of these must be provided
+  // Result value - one of these must be provided;
   result_value_numeric?: number;
   result_value_text?: string;
   result_value_coded?: string;
   result_value_boolean?: boolean;
   
-  // Result metadata
+  // Result metadata;
   unit?: string;
   unit_code?: string;
   unit_system?: string;
   
-  // Interpretation
+  // Interpretation;
   interpretation?: "normal" | "abnormal" | "critical-high" | "critical-low" | "high" | "low" | "off-scale-high" | "off-scale-low";
   
-  // Method information
+  // Method information;
   method?: string;
   method_code?: string;
   method_system?: string;
   
-  // Device information
+  // Device information;
   device_id?: number;
   device_name?: string;
   
-  // Verification
+  // Verification;
   verified_by?: number;
   verified_at?: string;
   verification_signature?: string;
   
-  // Additional information
+  // Additional information;
   notes?: string;
   is_corrected?: boolean;
   correction_reason?: string;
   previous_result_id?: number;
   
-  // Delta check
+  // Delta check;
   delta_check_performed?: boolean;
   delta_check_passed?: boolean;
   delta_check_notes?: string;
 }
 
-// GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering
-export async function GET(request: NextRequest) {
+// GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering;
+export async const GET = (request: NextRequest) {
   try {
     const session = await getSession();
     
-    // Check authentication
+    // Check authentication;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const orderId = searchParams.get("orderId");
     const orderItemId = searchParams.get("orderItemId");
@@ -183,14 +194,14 @@ export async function GET(request: NextRequest) {
     const verified = searchParams.get("verified");
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const format = searchParams.get("format") || "default"; // 'default' or 'fhir'
+    const format = searchParams.get("format") || "default"; // 'default' or 'fhir';
     
-    // Calculate offset for pagination
+    // Calculate offset for pagination;
     const offset = (page - 1) * pageSize;
     
-    // Build query
-    let query = `
-      SELECT 
+    // Build query;
+    let query = `;
+      SELECT;
         r.*,
         oi.order_id,
         oi.test_id,
@@ -205,29 +216,29 @@ export async function GET(request: NextRequest) {
         pat.mrn as patient_mrn,
         u1.username as performed_by_username,
         u2.username as verified_by_username,
-        s.barcode as specimen_barcode
-      FROM 
-        lab_results r
-      JOIN 
-        lab_order_items oi ON r.order_item_id = oi.id
-      JOIN 
-        lab_orders o ON oi.order_id = o.id
-      LEFT JOIN 
-        lab_tests t ON oi.test_id = t.id
-      LEFT JOIN 
-        lab_test_parameters p ON r.parameter_id = p.id
-      LEFT JOIN 
-        patients pat ON o.patient_id = pat.id
-      LEFT JOIN 
-        users u1 ON r.performed_by = u1.id
-      LEFT JOIN 
-        users u2 ON r.verified_by = u2.id
-      LEFT JOIN 
-        lab_specimens s ON o.specimen_id = s.id
+        s.barcode as specimen_barcode;
+      FROM;
+        lab_results r;
+      JOIN;
+        lab_order_items oi ON r.order_item_id = oi.id;
+      JOIN;
+        lab_orders o ON oi.order_id = o.id;
+      LEFT JOIN;
+        lab_tests t ON oi.test_id = t.id;
+      LEFT JOIN;
+        lab_test_parameters p ON r.parameter_id = p.id;
+      LEFT JOIN;
+        patients pat ON o.patient_id = pat.id;
+      LEFT JOIN;
+        users u1 ON r.performed_by = u1.id;
+      LEFT JOIN;
+        users u2 ON r.verified_by = u2.id;
+      LEFT JOIN;
+        lab_specimens s ON o.specimen_id = s.id;
     `;
     
-    // Add filters
-    const parameters: any[] = [];
+    // Add filters;
+    const parameters: unknown[] = [];
     const conditions: string[] = [];
     
     if (orderId) {
@@ -287,18 +298,18 @@ export async function GET(request: NextRequest) {
       query += " WHERE " + conditions.join(" AND ");
     }
     
-    // Add ordering
+    // Add ordering;
     query += " ORDER BY r.performed_at DESC";
     
-    // Add pagination
+    // Add pagination;
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query
+    // Execute query;
     const resultsQueryResult = await DB.query(query, parameters);
     const results = resultsQueryResult.results || [];
     
-    // Get total count for pagination
+    // Get total count for pagination;
     let countQuery = "SELECT COUNT(*) as total FROM lab_results r JOIN lab_order_items oi ON r.order_item_id = oi.id JOIN lab_orders o ON oi.order_id = o.id";
     
     if (conditions.length > 0) {
@@ -308,17 +319,17 @@ export async function GET(request: NextRequest) {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Format response based on requested format
+    // Format response based on requested format;
     if (format === 'fhir') {
-      // Transform to FHIR Observation resources
+      // Transform to FHIR Observation resources;
       const fhirResources = await Promise.all(results.map(async (result) => {
-        // Get reference ranges for this test/parameter
+        // Get reference ranges for this test/parameter;
         let referenceRanges = [];
         if (result.parameter_id) {
-          const rangesQuery = `
-            SELECT * FROM lab_test_reference_ranges 
-            WHERE test_id = ? AND parameter_id = ?
-            ORDER BY id
+          const rangesQuery = `;
+            SELECT * FROM lab_test_reference_ranges;
+            WHERE test_id = ? AND parameter_id = ?;
+            ORDER BY id;
           `;
           const rangesResult = await DB.query(rangesQuery, [result.test_id, result.parameter_id]);
           referenceRanges = rangesResult.results || [];
@@ -329,7 +340,7 @@ export async function GET(request: NextRequest) {
           id: result.id.toString(),
           meta: {
             versionId: "1",
-            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString()
+            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString();
           },
           status: mapStatusToFHIR(result.status || "preliminary"),
           category: [
@@ -338,7 +349,7 @@ export async function GET(request: NextRequest) {
                 {
                   system: "http://terminology.hl7.org/CodeSystem/observation-category",
                   code: "laboratory",
-                  display: "Laboratory"
+                  display: "Laboratory";
                 }
               ]
             }
@@ -348,70 +359,70 @@ export async function GET(request: NextRequest) {
               {
                 system: "http://loinc.org",
                 code: result.parameter_loinc_code || result.loinc_code || "unknown",
-                display: result.parameter_name || result.test_name
+                display: result.parameter_name || result.test_name;
               }
             ],
-            text: result.parameter_name || result.test_name
+            text: result.parameter_name || result.test_name;
           },
           subject: {
             reference: `Patient/${result.patient_id}`,
-            display: `${result.patient_first_name} ${result.patient_last_name}`
+            display: `${result.patient_first_name} ${result.patient_last_name}`;
           },
           effectiveDateTime: result.performed_at,
           performer: [
             {
               reference: `Practitioner/${result.performed_by}`,
-              display: result.performed_by_username
+              display: result.performed_by_username;
             }
           ]
         };
         
-        // Add verification information if verified
+        // Add verification information if verified;
         if (result.verified_by) {
           resource.issued = result.verified_at;
           if (!resource.performer) resource.performer = [];
           resource.performer.push({
             reference: `Practitioner/${result.verified_by}`,
-            display: result.verified_by_username
+            display: result.verified_by_username;
           });
         }
         
-        // Add specimen reference if available
+        // Add specimen reference if available;
         if (result.specimen_barcode) {
           resource.specimen = {
-            reference: `Specimen/${result.specimen_id || 'unknown'}`
+            reference: `Specimen/${result.specimen_id || 'unknown'}`;
           };
         }
         
-        // Add method if available
+        // Add method if available;
         if (result.method) {
           resource.method = {
             coding: [
               {
                 system: result.method_system || "http://terminology.hl7.org/CodeSystem/v2-0936",
                 code: result.method_code || "unknown",
-                display: result.method
+                display: result.method;
               }
             ],
-            text: result.method
+            text: result.method;
           };
         }
         
-        // Add device if available
+        // Add device if available;
         if (result.device_id) {
           resource.device = {
             reference: `Device/${result.device_id}`,
-            display: result.device_name
+            display: result.device_name;
           };
         }
         
-        // Add result value based on type
+        // Add result value based on type;
         if (result.result_value_numeric !== null && result.result_value_numeric !== undefined) {
           resource.valueQuantity = {
             value: result.result_value_numeric,
             unit: result.unit || "",
             system: result.unit_system || "http://unitsofmeasure.org",
-            code: result.unit_code || result.unit || ""
+            code: result.unit_code || result.unit || "";
           };
         } else if (result.result_value_text) {
           resource.valueString = result.result_value_text;
@@ -421,40 +432,40 @@ export async function GET(request: NextRequest) {
               {
                 system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                 code: result.result_value_coded,
-                display: result.result_value_coded
+                display: result.result_value_coded;
               }
             ],
-            text: result.result_value_coded
+            text: result.result_value_coded;
           };
         } else if (result.result_value_boolean !== null && result.result_value_boolean !== undefined) {
           resource.valueBoolean = result.result_value_boolean;
         } else if (result.result_value) {
-          // Legacy field - try to determine type
+          // Legacy field - try to determine type;
           if (!isNaN(Number(result.result_value))) {
             resource.valueQuantity = {
               value: Number(result.result_value),
               unit: result.unit || "",
               system: result.unit_system || "http://unitsofmeasure.org",
-              code: result.unit_code || result.unit || ""
+              code: result.unit_code || result.unit || "";
             };
           } else {
             resource.valueString = result.result_value;
           }
         } else {
-          // No result value
+          // No result value;
           resource.dataAbsentReason = {
             coding: [
               {
                 system: "http://terminology.hl7.org/CodeSystem/data-absent-reason",
                 code: "unknown",
-                display: "Unknown"
+                display: "Unknown";
               }
             ],
-            text: "Result value not provided"
+            text: "Result value not provided";
           };
         }
         
-        // Add interpretation if available
+        // Add interpretation if available;
         if (result.interpretation) {
           resource.interpretation = [
             {
@@ -462,48 +473,48 @@ export async function GET(request: NextRequest) {
                 {
                   system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                   code: mapInterpretationToFHIR(result.interpretation),
-                  display: result.interpretation
+                  display: result.interpretation;
                 }
               ],
-              text: result.interpretation
+              text: result.interpretation;
             }
           ];
         }
         
-        // Add notes if available
+        // Add notes if available;
         if (result.notes || result.delta_check_notes || result.correction_reason) {
           resource.note = [];
           
           if (result.notes) {
             resource.note.push({
-              text: result.notes
+              text: result.notes;
             });
           }
           
           if (result.delta_check_notes) {
             resource.note.push({
-              text: `Delta check: ${result.delta_check_notes}`
+              text: `Delta check: ${result.delta_check_notes}`;
             });
           }
           
           if (result.correction_reason) {
             resource.note.push({
-              text: `Correction: ${result.correction_reason}`
+              text: `Correction: ${result.correction_reason}`;
             });
           }
         }
         
-        // Add reference ranges if available
+        // Add reference ranges if available;
         if (referenceRanges.length > 0) {
           resource.referenceRange = referenceRanges.map(range => {
-            const refRange: any = {};
+            const refRange: unknown = {};
             
             if (range.value_low !== null && range.value_low !== undefined) {
               refRange.low = {
                 value: range.value_low,
                 unit: range.unit || "",
                 system: "http://unitsofmeasure.org",
-                code: range.unit || ""
+                code: range.unit || "";
               };
             }
             
@@ -512,18 +523,23 @@ export async function GET(request: NextRequest) {
                 value: range.value_high,
                 unit: range.unit || "",
                 system: "http://unitsofmeasure.org",
-                code: range.unit || ""
+                code: range.unit || "";
               };
             }
             
             if (range.text_value) {
               refRange.text = range.text_value;
-            } else if (range.gender || (range.age_low !== null && range.age_low !== undefined) || (range.age_high !== null && range.age_high !== undefined)) {
+            } else if (range.gender || (range.age_low !== null &&;
+              range.age_low !== undefined) || (range.age_high !== null &&;
+              range.age_high !== undefined)) {
               let text = "Reference range";
               if (range.gender) {
                 text += ` for ${range.gender}`;
               }
-              if (range.age_low !== null && range.age_low !== undefined && range.age_high !== null && range.age_high !== undefined) {
+              if (range.age_low !== null &&
+                range.age_low !== undefined &&;
+                range.age_high !== null &&;
+                range.age_high !== undefined) {
                 text += ` age ${range.age_low}-${range.age_high}`;
               } else if (range.age_low !== null && range.age_low !== undefined) {
                 text += ` age >= ${range.age_low}`;
@@ -537,13 +553,13 @@ export async function GET(request: NextRequest) {
           });
         }
         
-        // Add security tag for sensitive results if needed
+        // Add security tag for sensitive results if needed;
         if (result.is_sensitive) {
           resource.meta.security = [
             {
               system: "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
               code: "R",
-              display: "Restricted"
+              display: "Restricted";
             }
           ];
         }
@@ -558,27 +574,27 @@ export async function GET(request: NextRequest) {
         link: [
           {
             relation: "self",
-            url: request.url
+            url: request.url;
           }
         ],
         entry: fhirResources.map(resource => ({
-          resource
-        }))
+          resource;
+        }));
       });
     } else {
-      // Return default format with pagination metadata
+      // Return default format with pagination metadata;
       return NextResponse.json({
         data: results,
         pagination: {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize)
+          totalPages: Math.ceil(totalCount / pageSize);
         }
       });
     }
   } catch (error: unknown) {
-    console.error("Error fetching laboratory results:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to fetch laboratory results", details: errorMessage },
@@ -587,20 +603,20 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features
-export async function POST(request: NextRequest) {
+// POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features;
+export async const POST = (request: NextRequest) {
   try {
     const session = await getSession();
     
-    // Check authentication
+    // Check authentication;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as LabResultCreateBody;
     
-    // Validate required fields
+    // Validate required fields;
     if (!body.order_item_id) {
       return NextResponse.json(
         { error: "Order item ID is required" },
@@ -608,12 +624,12 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Validate that at least one result value is provided
+    // Validate that at least one result value is provided;
     if (
-      body.result_value_numeric === undefined &&
-      body.result_value_text === undefined &&
-      body.result_value_coded === undefined &&
-      body.result_value_boolean === undefined
+      body.result_value_numeric === undefined &&;
+      body.result_value_text === undefined &&;
+      body.result_value_coded === undefined &&;
+      body.result_value_boolean === undefined;
     ) {
       return NextResponse.json(
         { error: "At least one result value must be provided" },
@@ -621,20 +637,20 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Check if order item exists
+    // Check if order item exists;
     const orderItemCheckResult = await DB.query(
-      `SELECT 
+      `SELECT;
         oi.*, 
         o.patient_id,
         t.name as test_name,
-        t.loinc_code
-      FROM 
-        lab_order_items oi
-      JOIN 
-        lab_orders o ON oi.order_id = o.id
-      LEFT JOIN 
-        lab_tests t ON oi.test_id = t.id
-      WHERE 
+        t.loinc_code;
+      FROM;
+        lab_order_items oi;
+      JOIN;
+        lab_orders o ON oi.order_id = o.id;
+      LEFT JOIN;
+        lab_tests t ON oi.test_id = t.id;
+      WHERE;
         oi.id = ?`,
       [body.order_item_id]
     );
@@ -648,7 +664,7 @@ export async function POST(request: NextRequest) {
     
     const orderItem = orderItemCheckResult.results[0];
     
-    // Check if parameter exists if provided
+    // Check if parameter exists if provided;
     if (body.parameter_id) {
       const parameterCheckResult = await DB.query(
         "SELECT * FROM lab_test_parameters WHERE id = ?",
@@ -663,7 +679,7 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Check if device exists if provided
+    // Check if device exists if provided;
     if (body.device_id) {
       const deviceCheckResult = await DB.query(
         "SELECT * FROM lab_devices WHERE id = ?",
@@ -678,7 +694,7 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Check if previous result exists if this is a correction
+    // Check if previous result exists if this is a correction;
     if (body.is_corrected && !body.previous_result_id) {
       return NextResponse.json(
         { error: "Previous result ID is required for corrections" },
@@ -700,32 +716,32 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Perform delta check if requested
+    // Perform delta check if requested;
     let deltaCheckResult = null;
     if (body.delta_check_performed) {
-      // Get previous results for this patient, test, and parameter
-      const previousResultsQuery = `
-        SELECT 
+      // Get previous results for this patient, test, and parameter;
+      const previousResultsQuery = `;
+        SELECT;
           r.*
-        FROM 
-          lab_results r
-        JOIN 
-          lab_order_items oi ON r.order_item_id = oi.id
-        JOIN 
-          lab_orders o ON oi.order_id = o.id
-        WHERE 
-          o.patient_id = ? AND
-          oi.test_id = ? AND
+        FROM;
+          lab_results r;
+        JOIN;
+          lab_order_items oi ON r.order_item_id = oi.id;
+        JOIN;
+          lab_orders o ON oi.order_id = o.id;
+        WHERE;
+          o.patient_id = ? AND;
+          oi.test_id = ? AND;
           ${body.parameter_id ? "r.parameter_id = ? AND" : ""}
-          r.id != ?
-        ORDER BY 
-          r.performed_at DESC
-        LIMIT 1
+          r.id != ?;
+        ORDER BY;
+          r.performed_at DESC;
+        LIMIT 1;
       `;
       
       const queryParams = [
         orderItem.patient_id,
-        orderItem.test_id
+        orderItem.test_id;
       ];
       
       if (body.parameter_id) {
@@ -737,18 +753,20 @@ export async function POST(request: NextRequest) {
       const previousResultsResult = await DB.query(previousResultsQuery, queryParams);
       const previousResult = previousResultsResult.results?.[0];
       
-      if (previousResult && body.result_value_numeric !== undefined && previousResult.result_value_numeric !== undefined) {
-        // Calculate delta
+      if (previousResult &&
+        body.result_value_numeric !== undefined &&;
+        previousResult.result_value_numeric !== undefined) {
+        // Calculate delta;
         const currentValue = body.result_value_numeric;
         const previousValue = previousResult.result_value_numeric;
         const absoluteDelta = Math.abs(currentValue - previousValue);
         const percentDelta = (absoluteDelta / previousValue) * 100;
         
-        // Get delta check rules
-        const deltaRulesQuery = `
-          SELECT * FROM lab_delta_check_rules
+        // Get delta check rules;
+        const deltaRulesQuery = `;
+          SELECT * FROM lab_delta_check_rules;
           WHERE test_id = ? ${body.parameter_id ? "AND parameter_id = ?" : ""}
-          LIMIT 1
+          LIMIT 1;
         `;
         
         const deltaRulesParams = [orderItem.test_id];
@@ -763,7 +781,7 @@ export async function POST(request: NextRequest) {
         let deltaCheckNotes = "";
         
         if (deltaRule) {
-          // Apply delta check rule
+          // Apply delta check rule;
           if (deltaRule.absolute_change_limit !== null && absoluteDelta > deltaRule.absolute_change_limit) {
             deltaCheckPassed = false;
             deltaCheckNotes = `Absolute change (${absoluteDelta.toFixed(2)}) exceeds limit (${deltaRule.absolute_change_limit})`;
@@ -772,7 +790,7 @@ export async function POST(request: NextRequest) {
             deltaCheckNotes = `Percent change (${percentDelta.toFixed(2)}%) exceeds limit (${deltaRule.percent_change_limit}%)`;
           }
         } else {
-          // Default delta check if no rule exists
+          // Default delta check if no rule exists;
           if (percentDelta > 80) {
             deltaCheckPassed = false;
             deltaCheckNotes = `Large percent change (${percentDelta.toFixed(2)}%) from previous result`;
@@ -790,19 +808,19 @@ export async function POST(request: NextRequest) {
       } else {
         deltaCheckResult = {
           passed: true,
-          notes: "No comparable previous result found for delta check"
+          notes: "No comparable previous result found for delta check";
         };
       }
     }
     
-    // Determine interpretation if not provided
+    // Determine interpretation if not provided;
     let interpretation = body.interpretation;
     if (!interpretation && body.result_value_numeric !== undefined) {
-      // Get reference ranges for this test/parameter
-      const rangesQuery = `
-        SELECT * FROM lab_test_reference_ranges 
+      // Get reference ranges for this test/parameter;
+      const rangesQuery = `;
+        SELECT * FROM lab_test_reference_ranges;
         WHERE test_id = ? ${body.parameter_id ? "AND parameter_id = ?" : ""}
-        ORDER BY id
+        ORDER BY id;
       `;
       
       const rangesParams = [orderItem.test_id];
@@ -814,14 +832,14 @@ export async function POST(request: NextRequest) {
       const ranges = rangesResult.results || [];
       
       if (ranges.length > 0) {
-        // Find applicable reference range
+        // Find applicable reference range;
         const applicableRanges = ranges.filter(range => {
-          // Check gender if specified
+          // Check gender if specified;
           if (range.gender && orderItem.patient_gender && range.gender !== orderItem.patient_gender) {
             return false;
           }
           
-          // Check age if specified
+          // Check age if specified;
           if ((range.age_low !== null || range.age_high !== null) && orderItem.patient_age) {
             if (range.age_low !== null && orderItem.patient_age < range.age_low) {
               return false;
@@ -837,7 +855,7 @@ export async function POST(request: NextRequest) {
         if (applicableRanges.length > 0) {
           const range = applicableRanges[0];
           
-          // Check if result is critical
+          // Check if result is critical;
           if (range.is_critical) {
             if (range.critical_low !== null && body.result_value_numeric < range.critical_low) {
               interpretation = "critical-low";
@@ -846,7 +864,7 @@ export async function POST(request: NextRequest) {
             }
           }
           
-          // If not critical, check if abnormal
+          // If not critical, check if abnormal;
           if (!interpretation) {
             if (range.value_low !== null && body.result_value_numeric < range.value_low) {
               interpretation = "low";
@@ -860,11 +878,11 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // If this is a correction, update the previous result status
+      // If this is a correction, update the previous result status;
       if (body.is_corrected && body.previous_result_id) {
         await DB.query(
           "UPDATE lab_results SET status = 'corrected', updated_at = NOW() WHERE id = ?",
@@ -872,15 +890,15 @@ export async function POST(request: NextRequest) {
         );
       }
       
-      // Encrypt sensitive data if needed
+      // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
         notes: body.notes,
         correctionReason: body.correction_reason,
-        deltaCheckNotes: deltaCheckResult?.notes
+        deltaCheckNotes: deltaCheckResult?.notes;
       });
       
-      // Insert result
-      const insertQuery = `
+      // Insert result;
+      const insertQuery = `;
         INSERT INTO lab_results (
           order_item_id, parameter_id, 
           result_value_numeric, result_value_text, result_value_coded, result_value_boolean,
@@ -892,10 +910,10 @@ export async function POST(request: NextRequest) {
           notes, status, 
           is_corrected, correction_reason, previous_result_id,
           delta_check_performed, delta_check_passed, delta_check_notes,
-          created_at, updated_at
+          created_at, updated_at;
         ) VALUES (
-          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW()
-        )
+          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW();
+        );
       `;
       
       const insertParameters = [
@@ -925,35 +943,35 @@ export async function POST(request: NextRequest) {
         body.previous_result_id || null,
         body.delta_check_performed ? 1 : 0,
         deltaCheckResult ? (deltaCheckResult.passed ? 1 : 0) : null,
-        encryptedData.deltaCheckNotes || null
+        encryptedData.deltaCheckNotes || null;
       ];
       
       const result = await DB.query(insertQuery, insertParameters);
       const resultId = result.insertId;
       
-      // Check if all parameters for this order item have results
+      // Check if all parameters for this order item have results;
       let allParametersCompleted = false;
       
       if (orderItem.test_id) {
-        const parametersQuery = `
-          SELECT id FROM lab_test_parameters WHERE test_id = ?
+        const parametersQuery = `;
+          SELECT id FROM lab_test_parameters WHERE test_id = ?;
         `;
         
         const parametersResult = await DB.query(parametersQuery, [orderItem.test_id]);
         const parameters = parametersResult.results || [];
         
         if (parameters.length > 0) {
-          // Test has parameters, check if all have results
+          // Test has parameters, check if all have results;
           const parameterIds = parameters.map(p => p.id);
           
-          const resultsCountQuery = `
-            SELECT 
+          const resultsCountQuery = `;
+            SELECT;
               p.id as parameter_id,
-              (SELECT COUNT(*) FROM lab_results WHERE order_item_id = ? AND parameter_id = p.id) as result_count
-            FROM 
-              lab_test_parameters p
-            WHERE 
-              p.test_id = ?
+              (SELECT COUNT(*) FROM lab_results WHERE order_item_id = ? AND parameter_id = p.id) as result_count;
+            FROM;
+              lab_test_parameters p;
+            WHERE;
+              p.test_id = ?;
           `;
           
           const resultsCountResult = await DB.query(resultsCountQuery, [body.order_item_id, orderItem.test_id]);
@@ -961,24 +979,24 @@ export async function POST(request: NextRequest) {
           
           allParametersCompleted = resultCounts.every(rc => rc.result_count > 0);
         } else {
-          // Test has no defined parameters, so one result completes it
+          // Test has no defined parameters, so one result completes it;
           allParametersCompleted = true;
         }
       } else {
-        // No test ID, so one result completes it
+        // No test ID, so one result completes it;
         allParametersCompleted = true;
       }
       
-      // Update order item status if all parameters are completed
+      // Update order item status if all parameters are completed;
       if (allParametersCompleted) {
         await DB.query(
           "UPDATE lab_order_items SET status = ? WHERE id = ?",
           ["completed", body.order_item_id]
         );
         
-        // Check if all items in the order are completed
-        const orderItemsQuery = `
-          SELECT status FROM lab_order_items WHERE order_id = ?
+        // Check if all items in the order are completed;
+        const orderItemsQuery = `;
+          SELECT status FROM lab_order_items WHERE order_id = ?;
         `;
         
         const orderItemsResult = await DB.query(orderItemsQuery, [orderItem.order_id]);
@@ -986,16 +1004,16 @@ export async function POST(request: NextRequest) {
         
         const allOrderItemsCompleted = orderItems.every(item => item.status === "completed");
         
-        // Update order status if all items are completed
+        // Update order status if all items are completed;
         if (allOrderItemsCompleted) {
           await DB.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
           );
           
-          // Create report if needed
-          const reportCheckQuery = `
-            SELECT id FROM lab_reports WHERE order_id = ?
+          // Create report if needed;
+          const reportCheckQuery = `;
+            SELECT id FROM lab_reports WHERE order_id = ?;
           `;
           
           const reportCheckResult = await DB.query(reportCheckQuery, [orderItem.order_id]);
@@ -1005,25 +1023,25 @@ export async function POST(request: NextRequest) {
             
             await DB.query(
               `INSERT INTO lab_reports (
-                order_id, report_number, generated_by, status, created_at, updated_at
+                order_id, report_number, generated_by, status, created_at, updated_at;
               ) VALUES (?, ?, ?, ?, NOW(), NOW())`,
               [
                 orderItem.order_id,
                 reportNumber,
                 session.user.id,
-                "preliminary"
+                "preliminary";
               ]
             );
           }
         }
       }
       
-      // Create critical result alert if interpretation is critical
+      // Create critical result alert if interpretation is critical;
       if (interpretation === "critical-high" || interpretation === "critical-low") {
         await DB.query(
           `INSERT INTO lab_critical_alerts (
             result_id, order_id, patient_id, test_id, parameter_id, 
-            alert_type, value, status, created_by, created_at
+            alert_type, value, status, created_by, created_at;
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
           [
             resultId,
@@ -1037,17 +1055,17 @@ export async function POST(request: NextRequest) {
               body.result_value_coded || 
               (body.result_value_boolean !== undefined ? (body.result_value_boolean ? "true" : "false") : ""),
             "pending",
-            session.user.id
+            session.user.id;
           ]
         );
       }
       
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
       
-      // Fetch the created result
-      const fetchQuery = `
-        SELECT 
+      // Fetch the created result;
+      const fetchQuery = `;
+        SELECT;
           r.*,
           oi.order_id,
           oi.test_id,
@@ -1059,25 +1077,25 @@ export async function POST(request: NextRequest) {
           pat.first_name as patient_first_name,
           pat.last_name as patient_last_name,
           u1.username as performed_by_username,
-          u2.username as verified_by_username
-        FROM 
-          lab_results r
-        JOIN 
-          lab_order_items oi ON r.order_item_id = oi.id
-        JOIN 
-          lab_orders o ON oi.order_id = o.id
-        LEFT JOIN 
-          lab_tests t ON oi.test_id = t.id
-        LEFT JOIN 
-          lab_test_parameters p ON r.parameter_id = p.id
-        LEFT JOIN 
-          patients pat ON o.patient_id = pat.id
-        LEFT JOIN 
-          users u1 ON r.performed_by = u1.id
-        LEFT JOIN 
-          users u2 ON r.verified_by = u2.id
-        WHERE 
-          r.id = ?
+          u2.username as verified_by_username;
+        FROM;
+          lab_results r;
+        JOIN;
+          lab_order_items oi ON r.order_item_id = oi.id;
+        JOIN;
+          lab_orders o ON oi.order_id = o.id;
+        LEFT JOIN;
+          lab_tests t ON oi.test_id = t.id;
+        LEFT JOIN;
+          lab_test_parameters p ON r.parameter_id = p.id;
+        LEFT JOIN;
+          patients pat ON o.patient_id = pat.id;
+        LEFT JOIN;
+          users u1 ON r.performed_by = u1.id;
+        LEFT JOIN;
+          users u2 ON r.verified_by = u2.id;
+        WHERE;
+          r.id = ?;
       `;
       
       const resultFetchResult = await DB.query(fetchQuery, [resultId]);
@@ -1087,20 +1105,20 @@ export async function POST(request: NextRequest) {
         throw new Error("Failed to retrieve created result");
       }
       
-      // Include delta check result if performed
+      // Include delta check result if performed;
       if (deltaCheckResult) {
         createdResult.delta_check_details = deltaCheckResult;
       }
       
-      // Return the created result
+      // Return the created result;
       return NextResponse.json(createdResult, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
-    console.error("Error creating laboratory result:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to create laboratory result", details: errorMessage },
@@ -1109,32 +1127,32 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT /api/diagnostics/lab/results/:id - Update a laboratory result
-export async function PUT(
+// PUT /api/diagnostics/lab/results/:id - Update a laboratory result;
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getSession();
     
-    // Check authentication
+    // Check authentication;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     const resultId = params.id;
     
-    // Check if result exists
+    // Check if result exists;
     const resultCheckResult = await DB.query(
-      `SELECT 
+      `SELECT;
         r.*,
         oi.order_id,
-        oi.test_id
-      FROM 
-        lab_results r
-      JOIN 
-        lab_order_items oi ON r.order_item_id = oi.id
-      WHERE 
+        oi.test_id;
+      FROM;
+        lab_results r;
+      JOIN;
+        lab_order_items oi ON r.order_item_id = oi.id;
+      WHERE;
         r.id = ?`,
       [resultId]
     );
@@ -1148,7 +1166,7 @@ export async function PUT(
     
     const existingResult = resultCheckResult.results[0];
     
-    // Check if result is already verified and not being corrected
+    // Check if result is already verified and not being corrected;
     const body = await request.json() as Partial<LabResultCreateBody>;
     
     if (existingResult.verified_by && !body.is_corrected) {
@@ -1158,13 +1176,13 @@ export async function PUT(
       );
     }
     
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // If this is being converted to a correction, create a new result instead
+      // If this is being converted to a correction, create a new result instead;
       if (body.is_corrected && !existingResult.is_corrected) {
-        // Create a new result as a correction
+        // Create a new result as a correction;
         const correctionBody: LabResultCreateBody = {
           order_item_id: existingResult.order_item_id,
           parameter_id: existingResult.parameter_id,
@@ -1184,23 +1202,23 @@ export async function PUT(
           notes: body.notes !== undefined ? body.notes : existingResult.notes,
           is_corrected: true,
           correction_reason: body.correction_reason,
-          previous_result_id: existingResult.id
+          previous_result_id: existingResult.id;
         };
         
-        // Mark the existing result as corrected
+        // Mark the existing result as corrected;
         await DB.query(
           "UPDATE lab_results SET status = 'corrected', updated_at = NOW() WHERE id = ?",
           [existingResult.id]
         );
         
-        // Encrypt sensitive data if needed
+        // Encrypt sensitive data if needed;
         const encryptedData = await encryptSensitiveData({
           notes: correctionBody.notes,
-          correctionReason: correctionBody.correction_reason
+          correctionReason: correctionBody.correction_reason;
         });
         
-        // Insert correction
-        const insertQuery = `
+        // Insert correction;
+        const insertQuery = `;
           INSERT INTO lab_results (
             order_item_id, parameter_id, 
             result_value_numeric, result_value_text, result_value_coded, result_value_boolean,
@@ -1211,10 +1229,10 @@ export async function PUT(
             verified_by, verified_at, verification_signature,
             notes, status, 
             is_corrected, correction_reason, previous_result_id,
-            created_at, updated_at
+            created_at, updated_at;
           ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW()
-          )
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW();
+          );
         `;
         
         const insertParameters = [
@@ -1241,18 +1259,18 @@ export async function PUT(
           body.verified_by ? "final" : "preliminary",
           1,
           encryptedData.correctionReason || null,
-          existingResult.id
+          existingResult.id;
         ];
         
         const result = await DB.query(insertQuery, insertParameters);
         const newResultId = result.insertId;
         
-        // Commit transaction
+        // Commit transaction;
         await DB.query("COMMIT", []);
         
-        // Fetch the created correction
-        const fetchQuery = `
-          SELECT 
+        // Fetch the created correction;
+        const fetchQuery = `;
+          SELECT;
             r.*,
             oi.order_id,
             oi.test_id,
@@ -1264,25 +1282,25 @@ export async function PUT(
             pat.first_name as patient_first_name,
             pat.last_name as patient_last_name,
             u1.username as performed_by_username,
-            u2.username as verified_by_username
-          FROM 
-            lab_results r
-          JOIN 
-            lab_order_items oi ON r.order_item_id = oi.id
-          JOIN 
-            lab_orders o ON oi.order_id = o.id
-          LEFT JOIN 
-            lab_tests t ON oi.test_id = t.id
-          LEFT JOIN 
-            lab_test_parameters p ON r.parameter_id = p.id
-          LEFT JOIN 
-            patients pat ON o.patient_id = pat.id
-          LEFT JOIN 
-            users u1 ON r.performed_by = u1.id
-          LEFT JOIN 
-            users u2 ON r.verified_by = u2.id
-          WHERE 
-            r.id = ?
+            u2.username as verified_by_username;
+          FROM;
+            lab_results r;
+          JOIN;
+            lab_order_items oi ON r.order_item_id = oi.id;
+          JOIN;
+            lab_orders o ON oi.order_id = o.id;
+          LEFT JOIN;
+            lab_tests t ON oi.test_id = t.id;
+          LEFT JOIN;
+            lab_test_parameters p ON r.parameter_id = p.id;
+          LEFT JOIN;
+            patients pat ON o.patient_id = pat.id;
+          LEFT JOIN;
+            users u1 ON r.performed_by = u1.id;
+          LEFT JOIN;
+            users u2 ON r.verified_by = u2.id;
+          WHERE;
+            r.id = ?;
         `;
         
         const resultFetchResult = await DB.query(fetchQuery, [newResultId]);
@@ -1294,20 +1312,20 @@ export async function PUT(
         
         return NextResponse.json({
           ...createdCorrection,
-          message: "Created new result as a correction"
+          message: "Created new result as a correction";
         }, { status: 201 });
       } else {
-        // Regular update of an unverified result
-        // Encrypt sensitive data if needed
+        // Regular update of an unverified result;
+        // Encrypt sensitive data if needed;
         const encryptedData = await encryptSensitiveData({
           notes: body.notes,
-          correctionReason: body.correction_reason
+          correctionReason: body.correction_reason;
         });
         
-        // Build update query
+        // Build update query;
         let updateQuery = "UPDATE lab_results SET ";
         const updateFields: string[] = [];
-        const updateParameters: any[] = [];
+        const updateParameters: unknown[] = [];
         
         if (body.result_value_numeric !== undefined) {
           updateFields.push("result_value_numeric = ?");
@@ -1379,7 +1397,7 @@ export async function PUT(
           updateParameters.push(encryptedData.notes);
         }
         
-        // Handle verification
+        // Handle verification;
         if (body.verified_by !== undefined) {
           updateFields.push("verified_by = ?");
           updateParameters.push(body.verified_by);
@@ -1395,7 +1413,7 @@ export async function PUT(
           }
         }
         
-        // Only proceed if there are fields to update
+        // Only proceed if there are fields to update;
         if (updateFields.length === 0) {
           return NextResponse.json(
             { error: "No fields to update" },
@@ -1403,21 +1421,21 @@ export async function PUT(
           );
         }
         
-        // Add updated_at field
+        // Add updated_at field;
         updateFields.push("updated_at = NOW()");
         
-        // Complete the query
+        // Complete the query;
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(resultId);
         
-        // Execute update
+        // Execute update;
         await DB.query(updateQuery, updateParameters);
         
-        // Create critical result alert if interpretation is critical
+        // Create critical result alert if interpretation is critical;
         if (body.interpretation === "critical-high" || body.interpretation === "critical-low") {
-          // Check if alert already exists
-          const alertCheckQuery = `
-            SELECT id FROM lab_critical_alerts WHERE result_id = ?
+          // Check if alert already exists;
+          const alertCheckQuery = `;
+            SELECT id FROM lab_critical_alerts WHERE result_id = ?;
           `;
           
           const alertCheckResult = await DB.query(alertCheckQuery, [resultId]);
@@ -1426,7 +1444,7 @@ export async function PUT(
             await DB.query(
               `INSERT INTO lab_critical_alerts (
                 result_id, order_id, patient_id, test_id, parameter_id, 
-                alert_type, value, status, created_by, created_at
+                alert_type, value, status, created_by, created_at;
               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
               [
                 resultId,
@@ -1440,18 +1458,18 @@ export async function PUT(
                   body.result_value_coded || 
                   (body.result_value_boolean !== undefined ? (body.result_value_boolean ? "true" : "false") : ""),
                 "pending",
-                session.user.id
+                session.user.id;
               ]
             );
           }
         }
         
-        // Commit transaction
+        // Commit transaction;
         await DB.query("COMMIT", []);
         
-        // Fetch the updated result
-        const fetchQuery = `
-          SELECT 
+        // Fetch the updated result;
+        const fetchQuery = `;
+          SELECT;
             r.*,
             oi.order_id,
             oi.test_id,
@@ -1463,25 +1481,25 @@ export async function PUT(
             pat.first_name as patient_first_name,
             pat.last_name as patient_last_name,
             u1.username as performed_by_username,
-            u2.username as verified_by_username
-          FROM 
-            lab_results r
-          JOIN 
-            lab_order_items oi ON r.order_item_id = oi.id
-          JOIN 
-            lab_orders o ON oi.order_id = o.id
-          LEFT JOIN 
-            lab_tests t ON oi.test_id = t.id
-          LEFT JOIN 
-            lab_test_parameters p ON r.parameter_id = p.id
-          LEFT JOIN 
-            patients pat ON o.patient_id = pat.id
-          LEFT JOIN 
-            users u1 ON r.performed_by = u1.id
-          LEFT JOIN 
-            users u2 ON r.verified_by = u2.id
-          WHERE 
-            r.id = ?
+            u2.username as verified_by_username;
+          FROM;
+            lab_results r;
+          JOIN;
+            lab_order_items oi ON r.order_item_id = oi.id;
+          JOIN;
+            lab_orders o ON oi.order_id = o.id;
+          LEFT JOIN;
+            lab_tests t ON oi.test_id = t.id;
+          LEFT JOIN;
+            lab_test_parameters p ON r.parameter_id = p.id;
+          LEFT JOIN;
+            patients pat ON o.patient_id = pat.id;
+          LEFT JOIN;
+            users u1 ON r.performed_by = u1.id;
+          LEFT JOIN;
+            users u2 ON r.verified_by = u2.id;
+          WHERE;
+            r.id = ?;
         `;
         
         const resultFetchResult = await DB.query(fetchQuery, [resultId]);
@@ -1491,16 +1509,16 @@ export async function PUT(
           throw new Error("Failed to retrieve updated result");
         }
         
-        // Return the updated result
+        // Return the updated result;
         return NextResponse.json(updatedResult);
       }
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
-    console.error("Error updating laboratory result:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to update laboratory result", details: errorMessage },
@@ -1509,27 +1527,27 @@ export async function PUT(
   }
 }
 
-// POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result
-export async function POST_VERIFY(
+// POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result;
+export async const POST_VERIFY = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab technicians, lab managers, and pathologists can verify results
+    // Only lab technicians, lab managers, and pathologists can verify results;
     if (!["lab_technician", "lab_manager", "pathologist"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const resultId = params.id;
     
-    // Check if result exists
+    // Check if result exists;
     const resultCheckResult = await DB.query(
       "SELECT * FROM lab_results WHERE id = ?",
       [resultId]
@@ -1544,7 +1562,7 @@ export async function POST_VERIFY(
     
     const existingResult = resultCheckResult.results[0];
     
-    // Check if result is already verified
+    // Check if result is already verified;
     if (existingResult.verified_by) {
       return NextResponse.json(
         { error: "Result is already verified" },
@@ -1552,31 +1570,31 @@ export async function POST_VERIFY(
       );
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as {
       verification_signature?: string;
       notes?: string;
     };
     
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Encrypt sensitive data if needed
+      // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes
+        notes: body.notes;
       });
       
-      // Update result
-      const updateQuery = `
-        UPDATE lab_results SET 
+      // Update result;
+      const updateQuery = `;
+        UPDATE lab_results SET;
           verified_by = ?,
           verified_at = NOW(),
           verification_signature = ?,
           status = 'final',
           notes = CASE WHEN ? IS NOT NULL THEN ? ELSE notes END,
-          updated_at = NOW()
-        WHERE id = ?
+          updated_at = NOW();
+        WHERE id = ?;
       `;
       
       const updateParameters = [
@@ -1584,17 +1602,17 @@ export async function POST_VERIFY(
         body.verification_signature || null,
         body.notes ? 1 : null,
         encryptedData.notes,
-        resultId
+        resultId;
       ];
       
       await DB.query(updateQuery, updateParameters);
       
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
       
-      // Fetch the verified result
-      const fetchQuery = `
-        SELECT 
+      // Fetch the verified result;
+      const fetchQuery = `;
+        SELECT;
           r.*,
           oi.order_id,
           oi.test_id,
@@ -1606,25 +1624,25 @@ export async function POST_VERIFY(
           pat.first_name as patient_first_name,
           pat.last_name as patient_last_name,
           u1.username as performed_by_username,
-          u2.username as verified_by_username
-        FROM 
-          lab_results r
-        JOIN 
-          lab_order_items oi ON r.order_item_id = oi.id
-        JOIN 
-          lab_orders o ON oi.order_id = o.id
-        LEFT JOIN 
-          lab_tests t ON oi.test_id = t.id
-        LEFT JOIN 
-          lab_test_parameters p ON r.parameter_id = p.id
-        LEFT JOIN 
-          patients pat ON o.patient_id = pat.id
-        LEFT JOIN 
-          users u1 ON r.performed_by = u1.id
-        LEFT JOIN 
-          users u2 ON r.verified_by = u2.id
-        WHERE 
-          r.id = ?
+          u2.username as verified_by_username;
+        FROM;
+          lab_results r;
+        JOIN;
+          lab_order_items oi ON r.order_item_id = oi.id;
+        JOIN;
+          lab_orders o ON oi.order_id = o.id;
+        LEFT JOIN;
+          lab_tests t ON oi.test_id = t.id;
+        LEFT JOIN;
+          lab_test_parameters p ON r.parameter_id = p.id;
+        LEFT JOIN;
+          patients pat ON o.patient_id = pat.id;
+        LEFT JOIN;
+          users u1 ON r.performed_by = u1.id;
+        LEFT JOIN;
+          users u2 ON r.verified_by = u2.id;
+        WHERE;
+          r.id = ?;
       `;
       
       const resultFetchResult = await DB.query(fetchQuery, [resultId]);
@@ -1634,18 +1652,18 @@ export async function POST_VERIFY(
         throw new Error("Failed to retrieve verified result");
       }
       
-      // Return the verified result
+      // Return the verified result;
       return NextResponse.json({
         ...verifiedResult,
-        message: "Result verified successfully"
+        message: "Result verified successfully";
       });
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
-    console.error("Error verifying laboratory result:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to verify laboratory result", details: errorMessage },
@@ -1654,28 +1672,28 @@ export async function POST_VERIFY(
   }
 }
 
-// GET /api/diagnostics/lab/results/critical - Get critical results
-export async function GET_CRITICAL(request: NextRequest) {
+// GET /api/diagnostics/lab/results/critical - Get critical results;
+export async const GET_CRITICAL = (request: NextRequest) {
   try {
     const session = await getSession();
     
-    // Check authentication
+    // Check authentication;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     
-    // Calculate offset for pagination
+    // Calculate offset for pagination;
     const offset = (page - 1) * pageSize;
     
-    // Build query
-    let query = `
-      SELECT 
+    // Build query;
+    let query = `;
+      SELECT;
         a.*,
         r.result_value_numeric, r.result_value_text, r.result_value_coded, r.result_value_boolean,
         r.unit, r.interpretation,
@@ -1686,41 +1704,41 @@ export async function GET_CRITICAL(request: NextRequest) {
         pat.first_name as patient_first_name,
         pat.last_name as patient_last_name,
         pat.mrn as patient_mrn,
-        u.username as created_by_username
-      FROM 
-        lab_critical_alerts a
-      JOIN 
-        lab_results r ON a.result_id = r.id
-      LEFT JOIN 
-        lab_tests t ON a.test_id = t.id
-      LEFT JOIN 
-        lab_test_parameters p ON a.parameter_id = p.id
-      LEFT JOIN 
-        patients pat ON a.patient_id = pat.id
-      LEFT JOIN 
-        users u ON a.created_by = u.id
+        u.username as created_by_username;
+      FROM;
+        lab_critical_alerts a;
+      JOIN;
+        lab_results r ON a.result_id = r.id;
+      LEFT JOIN;
+        lab_tests t ON a.test_id = t.id;
+      LEFT JOIN;
+        lab_test_parameters p ON a.parameter_id = p.id;
+      LEFT JOIN;
+        patients pat ON a.patient_id = pat.id;
+      LEFT JOIN;
+        users u ON a.created_by = u.id;
     `;
     
-    // Add filters
-    const parameters: any[] = [];
+    // Add filters;
+    const parameters: unknown[] = [];
     
     if (status) {
       query += " WHERE a.status = ?";
       parameters.push(status);
     }
     
-    // Add ordering
+    // Add ordering;
     query += " ORDER BY a.created_at DESC";
     
-    // Add pagination
+    // Add pagination;
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query
+    // Execute query;
     const alertsResult = await DB.query(query, parameters);
     const alerts = alertsResult.results || [];
     
-    // Get total count for pagination
+    // Get total count for pagination;
     let countQuery = "SELECT COUNT(*) as total FROM lab_critical_alerts a";
     
     if (status) {
@@ -1730,18 +1748,18 @@ export async function GET_CRITICAL(request: NextRequest) {
     const countResult = await DB.query(countQuery, status ? [status] : []);
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Return alerts with pagination metadata
+    // Return alerts with pagination metadata;
     return NextResponse.json({
       data: alerts,
       pagination: {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize)
+        totalPages: Math.ceil(totalCount / pageSize);
       }
     });
   } catch (error: unknown) {
-    console.error("Error fetching critical alerts:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to fetch critical alerts", details: errorMessage },
@@ -1750,22 +1768,22 @@ export async function GET_CRITICAL(request: NextRequest) {
   }
 }
 
-// PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status
-export async function PUT_CRITICAL(
+// PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status;
+export async const PUT_CRITICAL = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getSession();
     
-    // Check authentication
+    // Check authentication;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     const alertId = params.id;
     
-    // Check if alert exists
+    // Check if alert exists;
     const alertCheckResult = await DB.query(
       "SELECT * FROM lab_critical_alerts WHERE id = ?",
       [alertId]
@@ -1778,7 +1796,7 @@ export async function PUT_CRITICAL(
       );
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as {
       status: "pending" | "acknowledged" | "notified" | "resolved";
       acknowledged_by?: number;
@@ -1787,7 +1805,7 @@ export async function PUT_CRITICAL(
       resolution_notes?: string;
     };
     
-    // Validate status
+    // Validate status;
     if (!body.status || !["pending", "acknowledged", "notified", "resolved"].includes(body.status)) {
       return NextResponse.json(
         { error: "Invalid status" },
@@ -1795,15 +1813,15 @@ export async function PUT_CRITICAL(
       );
     }
     
-    // Encrypt sensitive data if needed
+    // Encrypt sensitive data if needed;
     const encryptedData = await encryptSensitiveData({
       resolutionNotes: body.resolution_notes,
-      notifiedTo: body.notified_to
+      notifiedTo: body.notified_to;
     });
     
-    // Update alert
-    const updateQuery = `
-      UPDATE lab_critical_alerts SET 
+    // Update alert;
+    const updateQuery = `;
+      UPDATE lab_critical_alerts SET;
         status = ?,
         acknowledged_by = CASE WHEN ? = 'acknowledged' THEN ? ELSE acknowledged_by END,
         acknowledged_at = CASE WHEN ? = 'acknowledged' THEN NOW() ELSE acknowledged_at END,
@@ -1813,8 +1831,8 @@ export async function PUT_CRITICAL(
         resolved_by = CASE WHEN ? = 'resolved' THEN ? ELSE resolved_by END,
         resolved_at = CASE WHEN ? = 'resolved' THEN NOW() ELSE resolved_at END,
         resolution_notes = CASE WHEN ? = 'resolved' THEN ? ELSE resolution_notes END,
-        updated_at = NOW()
-      WHERE id = ?
+        updated_at = NOW();
+      WHERE id = ?;
     `;
     
     const updateParameters = [
@@ -1827,14 +1845,14 @@ export async function PUT_CRITICAL(
       body.status, session.user.id,
       body.status,
       body.status, encryptedData.resolutionNotes,
-      alertId
+      alertId;
     ];
     
     await DB.query(updateQuery, updateParameters);
     
-    // Fetch the updated alert
-    const fetchQuery = `
-      SELECT 
+    // Fetch the updated alert;
+    const fetchQuery = `;
+      SELECT;
         a.*,
         r.result_value_numeric, r.result_value_text, r.result_value_coded, r.result_value_boolean,
         r.unit, r.interpretation,
@@ -1847,25 +1865,25 @@ export async function PUT_CRITICAL(
         pat.mrn as patient_mrn,
         u1.username as created_by_username,
         u2.username as acknowledged_by_username,
-        u3.username as resolved_by_username
-      FROM 
-        lab_critical_alerts a
-      JOIN 
-        lab_results r ON a.result_id = r.id
-      LEFT JOIN 
-        lab_tests t ON a.test_id = t.id
-      LEFT JOIN 
-        lab_test_parameters p ON a.parameter_id = p.id
-      LEFT JOIN 
-        patients pat ON a.patient_id = pat.id
-      LEFT JOIN 
-        users u1 ON a.created_by = u1.id
-      LEFT JOIN 
-        users u2 ON a.acknowledged_by = u2.id
-      LEFT JOIN 
-        users u3 ON a.resolved_by = u3.id
-      WHERE 
-        a.id = ?
+        u3.username as resolved_by_username;
+      FROM;
+        lab_critical_alerts a;
+      JOIN;
+        lab_results r ON a.result_id = r.id;
+      LEFT JOIN;
+        lab_tests t ON a.test_id = t.id;
+      LEFT JOIN;
+        lab_test_parameters p ON a.parameter_id = p.id;
+      LEFT JOIN;
+        patients pat ON a.patient_id = pat.id;
+      LEFT JOIN;
+        users u1 ON a.created_by = u1.id;
+      LEFT JOIN;
+        users u2 ON a.acknowledged_by = u2.id;
+      LEFT JOIN;
+        users u3 ON a.resolved_by = u3.id;
+      WHERE;
+        a.id = ?;
     `;
     
     const alertFetchResult = await DB.query(fetchQuery, [alertId]);
@@ -1875,10 +1893,10 @@ export async function PUT_CRITICAL(
       throw new Error("Failed to retrieve updated alert");
     }
     
-    // Return the updated alert
+    // Return the updated alert;
     return NextResponse.json(updatedAlert);
   } catch (error: unknown) {
-    console.error("Error updating critical alert:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to update critical alert", details: errorMessage },
@@ -1887,8 +1905,8 @@ export async function PUT_CRITICAL(
   }
 }
 
-// Helper function to map HMS status to FHIR status
-function mapStatusToFHIR(status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
+// Helper function to map HMS status to FHIR status;
+const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
   switch (status) {
     case "registered":
       return "registered";
@@ -1909,8 +1927,8 @@ function mapStatusToFHIR(status: string): "registered" | "preliminary" | "final"
   }
 }
 
-// Helper function to map HMS interpretation to FHIR interpretation
-function mapInterpretationToFHIR(interpretation: string): string {
+// Helper function to map HMS interpretation to FHIR interpretation;
+const mapInterpretationToFHIR = (interpretation: string): string {
   switch (interpretation) {
     case "normal":
       return "N";

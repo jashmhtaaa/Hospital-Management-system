@@ -1,4 +1,4 @@
-// app/api/lis/orders/route.ts
+// app/api/lis/orders/route.ts;
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabOrderStatus } from "@prisma/client";
 import { z } from "zod";
@@ -20,7 +20,7 @@ const createLabOrderSchema = z.object({
   notes: z.string().max(2000).optional().nullable(),
 });
 
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -39,11 +39,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body: unknown = await request.json();
-    console.log(`[LIS_ORDERS_POST] User ${userId} attempting to create lab order with body:`, body);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = createLabOrderSchema.safeParse(body);
     if (!validation.success) {
-      console.warn("[LIS_ORDERS_POST] Validation failed:", validation.error.flatten());
+      // Debug logging removed);
       await auditLogService.logEvent(userId, "LIS_CREATE_ORDER_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const [patient, orderedByUsr, testItems] = await Promise.all([
       prisma.patient.findUnique({ where: { id: patientId } }),
       prisma.user.findUnique({ where: { id: orderedById } }),
-      prisma.labTestItem.findMany({ where: { id: { in: testItemIds } } })
+      prisma.labTestItem.findMany({ where: { id: { in: testItemIds } } });
     ]);
 
     if (!patient) {
@@ -92,14 +92,14 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log(`[LIS_ORDERS_POST] User ${userId} successfully created lab order ID: ${newLabOrder.id}`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_CREATE_ORDER_SUCCESS", { path: request.nextUrl.pathname, labOrderId: newLabOrder.id, data: newLabOrder });
     const duration = Date.now() - start;
-    console.log(`[LIS_ORDERS_POST] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(newLabOrder, 201);
 
-  } catch (error: any) {
-    console.error("[LIS_ORDERS_POST_ERROR]", { userId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     let errStatus = 500;
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
@@ -119,12 +119,12 @@ export async function POST(request: NextRequest) {
     }
     await auditLogService.logEvent(userId, "LIS_CREATE_ORDER_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
     const duration = Date.now() - start;
-    console.error(`[LIS_ORDERS_POST] Request failed after ${duration}ms.`);
+
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
 
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -178,7 +178,7 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    console.log(`[LIS_ORDERS_GET] User ${userId} fetching lab orders with filters:`, whereClause);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const [labOrders, totalCount] = await prisma.$transaction([
       prisma.labOrder.findMany({
@@ -193,12 +193,12 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.labOrder.count({ where: whereClause })
+      prisma.labOrder.count({ where: whereClause });
     ]);
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ORDERS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labOrders.length, totalCount });
     const duration = Date.now() - start;
-    console.log(`[LIS_ORDERS_GET] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
     return sendSuccessResponse({
       data: labOrders,
@@ -210,11 +210,11 @@ export async function GET(request: NextRequest) {
       }
     });
 
-  } catch (error: any) {
-    console.error("[LIS_ORDERS_GET_ERROR]", { userId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     await auditLogService.logEvent(userId, "LIS_VIEW_ORDERS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
     const duration = Date.now() - start;
-    console.error(`[LIS_ORDERS_GET] Request failed after ${duration}ms.`);
+
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }

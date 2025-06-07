@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from "tailwindcss-animate";
 
@@ -8,7 +19,7 @@ const config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  prefix: "", // From HEAD
+  prefix: "", // From HEAD;
   theme: {
     container: {
       center: true,
@@ -19,69 +30,69 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "hsl(const(--border))",
+        input: "hsl(const(--input))",
+        ring: "hsl(const(--ring))",
+        background: "hsl(const(--background))",
+        foreground: "hsl(const(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(const(--primary))",
+          foreground: "hsl(const(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(const(--secondary))",
+          foreground: "hsl(const(--secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(const(--destructive))",
+          foreground: "hsl(const(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(const(--muted))",
+          foreground: "hsl(const(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "hsl(const(--accent))",
+          foreground: "hsl(const(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "hsl(const(--popover))",
+          foreground: "hsl(const(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "hsl(const(--card))",
+          foreground: "hsl(const(--card-foreground))",
         },
-        chart: { // From HEAD
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
+        chart: { // From HEAD;
+          "1": "hsl(const(--chart-1))",
+          "2": "hsl(const(--chart-2))",
+          "3": "hsl(const(--chart-3))",
+          "4": "hsl(const(--chart-4))",
+          "5": "hsl(const(--chart-5))",
         },
-        sidebar: { // From origin/master
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        sidebar: { // From origin/master;
+          DEFAULT: "hsl(const(--sidebar-background))",
+          foreground: "hsl(const(--sidebar-foreground))",
+          primary: "hsl(const(--sidebar-primary))",
+          "primary-foreground": "hsl(const(--sidebar-primary-foreground))",
+          accent: "hsl(const(--sidebar-accent))",
+          "accent-foreground": "hsl(const(--sidebar-accent-foreground))",
+          border: "hsl(const(--sidebar-border))",
+          ring: "hsl(const(--sidebar-ring))",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "const(--radius)",
+        md: "calc(const(--radius) - 2px)",
+        sm: "calc(const(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "const(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
+          from: { height: "const(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
       },

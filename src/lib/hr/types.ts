@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Type definitions for the HR & Asset Management module
- * Based on FHIR R4 standards for healthcare interoperability
+ * Type definitions for the HR & Asset Management module;
+ * Based on FHIR R4 standards for healthcare interoperability;
  */
 
-// Staff Management Types
+// Staff Management Types;
 export interface Practitioner {
   id: string;
   identifier: Identifier[];
@@ -42,7 +53,7 @@ export interface Qualification {
   issuer?: Reference;
 }
 
-// Attendance Management Types
+// Attendance Management Types;
 export interface Attendance {
   id: string;
   employeeId: string;
@@ -70,7 +81,7 @@ export interface Leave {
   updatedAt: string;
 }
 
-// Payroll Types
+// Payroll Types;
 export interface Payroll {
   id: string;
   periodStart: string;
@@ -107,7 +118,7 @@ export interface PayrollItem {
   type: string;
 }
 
-// Asset Management Types
+// Asset Management Types;
 export interface Asset {
   id: string;
   identifier: Identifier[];
@@ -131,7 +142,7 @@ export interface Asset {
   updatedAt: string;
 }
 
-// Biomedical Equipment Types
+// Biomedical Equipment Types;
 export interface Device {
   id: string;
   identifier: Identifier[];
@@ -188,7 +199,7 @@ export interface UdiCarrier {
   entryType?: 'barcode' | 'rfid' | 'manual' | 'card' | 'self-reported' | 'unknown';
 }
 
-// Common Types
+// Common Types;
 export interface Identifier {
   use?: 'usual' | 'official' | 'temp' | 'secondary' | 'old';
   type?: CodeableConcept;

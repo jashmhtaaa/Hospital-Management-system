@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,10 +24,10 @@ import { useRouter } from 'next/navigation';
 
 interface SegmentBuilderProps {
   segmentId?: string;
-  onSuccess?: (segment: any) => void;
+  onSuccess?: (segment: unknown) => void;
 }
 
-export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderProps) {
+export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [segment, setSegment] = useState<any>(null);
@@ -37,10 +48,10 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
   const [newCondition, setNewCondition] = useState({
     field: 'email',
     operator: 'contains',
-    value: ''
+    value: '';
   });
 
-  // Fetch segment data if editing an existing segment
+  // Fetch segment data if editing an existing segment;
   useEffect(() => {
     const fetchSegment = async () => {
       if (!segmentId) return;
@@ -53,7 +64,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
         const data = await response.json();
         setSegment(data);
         
-        // Set form values from segment data
+        // Set form values from segment data;
         setFormData({
           name: data.name || '',
           description: data.description || '',
@@ -64,18 +75,18 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
           }
         });
         
-        // Set members
+        // Set members;
         if (data.members && data.members.length > 0) {
-          setMembers(data.members.map((m: any) => m.contact));
+          setMembers(data.members.map((m: unknown) => m.contact));
         }
         
-        // Update criteria preview
+        // Update criteria preview;
         updateCriteriaPreview(data.criteria);
         
-        // Get estimated size
+        // Get estimated size;
         fetchEstimatedSize(data.criteria);
       } catch (error) {
-        console.error('Error fetching segment:', error);
+
         toast({
           title: "Error",
           description: "Failed to load segment data. Please try again.",
@@ -89,7 +100,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     fetchSegment();
   }, [segmentId]);
 
-  // Fetch available contacts
+  // Fetch available contacts;
   useEffect(() => {
     const fetchContacts = async () => {
       try {
@@ -99,21 +110,21 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
         const data = await response.json();
         setAvailableContacts(data.data || []);
       } catch (error) {
-        console.error('Error fetching contacts:', error);
+
       }
     };
     
     fetchContacts();
   }, []);
 
-  // Update criteria preview
-  const updateCriteriaPreview = (criteria: any) => {
+  // Update criteria preview;
+  const updateCriteriaPreview = (criteria: unknown) => {
     if (!criteria || !criteria.conditions || criteria.conditions.length === 0) {
       setCriteriaPreview('No conditions defined');
       return;
     }
     
-    const conditionStrings = criteria.conditions.map((condition: any) => {
+    const conditionStrings = criteria.conditions.map((condition: unknown) => {
       const fieldLabel = getFieldLabel(condition.field);
       const operatorLabel = getOperatorLabel(condition.operator);
       return `${fieldLabel} ${operatorLabel} "${condition.value}"`;
@@ -123,23 +134,23 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     setCriteriaPreview(conditionStrings.join(` ${joinWord} `));
   };
 
-  // Get estimated size
-  const fetchEstimatedSize = async (criteria: any) => {
+  // Get estimated size;
+  const fetchEstimatedSize = async (criteria: unknown) => {
     if (!criteria || !criteria.conditions || criteria.conditions.length === 0) {
       setEstimatedSize(0);
       return;
     }
     
     try {
-      // This would be a real API call in production
-      // For now, we'll simulate with a random number
+      // This would be a real API call in production;
+      // For now, we'll simulate with a random number;
       setEstimatedSize(Math.floor(Math.random() * 100) + 1);
     } catch (error) {
-      console.error('Error estimating segment size:', error);
+
     }
   };
 
-  // Get field label
+  // Get field label;
   const getFieldLabel = (field: string): string => {
     switch (field) {
       case 'email':
@@ -169,7 +180,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Get operator label
+  // Get operator label;
   const getOperatorLabel = (operator: string): string => {
     switch (operator) {
       case 'equals':
@@ -201,64 +212,64 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Handle form input changes
+  // Handle form input changes;
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value;
     });
   };
 
-  // Handle switch changes
+  // Handle switch changes;
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked
+      isActive: checked;
     });
   };
 
-  // Handle criteria type change
+  // Handle criteria type change;
   const handleCriteriaTypeChange = (value: string) => {
     const newCriteria = {
       ...formData.criteria,
-      type: value
+      type: value;
     };
     
     setFormData({
       ...formData,
-      criteria: newCriteria
+      criteria: newCriteria;
     });
     
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
   };
 
-  // Handle new condition field change
+  // Handle new condition field change;
   const handleConditionFieldChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      field: value
+      field: value;
     });
   };
 
-  // Handle new condition operator change
+  // Handle new condition operator change;
   const handleConditionOperatorChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      operator: value
+      operator: value;
     });
   };
 
-  // Handle new condition value change
+  // Handle new condition value change;
   const handleConditionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCondition({
       ...newCondition,
-      value: e.target.value
+      value: e.target.value;
     });
   };
 
-  // Add condition to criteria
+  // Add condition to criteria;
   const handleAddCondition = () => {
     if (!newCondition.value && !['isTrue', 'isFalse', 'isNull', 'isNotNull'].includes(newCondition.operator)) {
       toast({
@@ -276,46 +287,46 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     
     setFormData({
       ...formData,
-      criteria: newCriteria
+      criteria: newCriteria;
     });
     
-    // Reset new condition
+    // Reset new condition;
     setNewCondition({
       field: 'email',
       operator: 'contains',
-      value: ''
+      value: '';
     });
     
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
   };
 
-  // Remove condition from criteria
+  // Remove condition from criteria;
   const handleRemoveCondition = (index: number) => {
     const newConditions = [...formData.criteria.conditions];
     newConditions.splice(index, 1);
     
     const newCriteria = {
       ...formData.criteria,
-      conditions: newConditions
+      conditions: newConditions;
     };
     
     setFormData({
       ...formData,
-      criteria: newCriteria
+      criteria: newCriteria;
     });
     
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
   };
 
-  // Handle form submission
+  // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      const url = segmentId 
+      const url = segmentId;
         ? `/api/support-services/marketing/segments/${segmentId}` 
         : '/api/support-services/marketing/segments';
       
@@ -344,7 +355,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
         router.push(`/marketing/segments/${savedSegment.id}`);
       }
     } catch (error) {
-      console.error('Error saving segment:', error);
+
       toast({
         title: "Error",
         description: "Failed to save segment. Please try again.",
@@ -355,7 +366,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Apply segment criteria
+  // Apply segment criteria;
   const handleApplyCriteria = async () => {
     if (!segmentId) return;
     
@@ -377,16 +388,16 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
         description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`,
       });
       
-      // Refresh members
+      // Refresh members;
       const segmentResponse = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
       if (segmentResponse.ok) {
         const segmentData = await segmentResponse.json();
         if (segmentData.members) {
-          setMembers(segmentData.members.map((m: any) => m.contact));
+          setMembers(segmentData.members.map((m: unknown) => m.contact));
         }
       }
     } catch (error) {
-      console.error('Error applying criteria:', error);
+
       toast({
         title: "Error",
         description: "Failed to apply criteria. Please try again.",
@@ -397,7 +408,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Add contact to segment
+  // Add contact to segment;
   const handleAddContact = async (contactId: string) => {
     if (!segmentId) return;
     
@@ -412,7 +423,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
       
       if (!response.ok) throw new Error('Failed to add contact');
       
-      // Update members
+      // Update members;
       const contact = availableContacts.find(c => c.id === contactId);
       if (contact) {
         setMembers([...members, contact]);
@@ -423,7 +434,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
         description: "Contact added to segment successfully.",
       });
     } catch (error) {
-      console.error('Error adding contact:', error);
+
       toast({
         title: "Error",
         description: "Failed to add contact. Please try again.",
@@ -432,7 +443,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Remove contact from segment
+  // Remove contact from segment;
   const handleRemoveContact = async (contactId: string) => {
     if (!segmentId) return;
     
@@ -443,7 +454,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
       
       if (!response.ok) throw new Error('Failed to remove contact');
       
-      // Update members
+      // Update members;
       setMembers(members.filter(m => m.id !== contactId));
       
       toast({
@@ -451,7 +462,7 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
         description: "Contact removed from segment successfully.",
       });
     } catch (error) {
-      console.error('Error removing contact:', error);
+
       toast({
         title: "Error",
         description: "Failed to remove contact. Please try again.",
@@ -461,217 +472,218 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">;
       <CardHeader>
         <CardTitle>{segmentId ? 'Edit Segment' : 'Create New Segment'}</CardTitle>
         <CardDescription>
-          {segmentId 
+          {segmentId;
             ? 'Update your contact segment criteria and members' 
             : 'Create a new segment to target specific groups of contacts'}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="details">Segment Details</TabsTrigger>
-            <TabsTrigger value="criteria">Segment Criteria</TabsTrigger>
-            <TabsTrigger value="members" disabled={!segmentId}>Segment Members</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>;
+          <TabsList className="grid w-full grid-cols-3">;
+            <TabsTrigger value="details">Segment Details</TabsTrigger>;
+            <TabsTrigger value="criteria">Segment Criteria</TabsTrigger>;
+            <TabsTrigger value="members" disabled={!segmentId}>Segment Members</TabsTrigger>;
           </TabsList>
           
-          <TabsContent value="details">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Segment Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
+          <TabsContent value="details">;
+            <form onSubmit={handleSubmit} className="space-y-6">;
+              <div className="space-y-4">;
+                <div className="space-y-2">;
+                  <Label htmlFor="name">Segment Name</Label>;
+                  <Input;
+                    id="name";
+                    name="name";
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Enter segment name"
-                    required
+                    placeholder="Enter segment name";
+                    required;
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    name="description"
+                <div className="space-y-2">;
+                  <Label htmlFor="description">Description</Label>;
+                  <Textarea;
+                    id="description";
+                    name="description";
                     value={formData.description}
                     onChange={handleInputChange}
-                    placeholder="Enter segment description"
+                    placeholder="Enter segment description";
                     rows={3}
                   />
                 </div>
                 
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="isActive"
+                <div className="flex items-center space-x-2">;
+                  <Switch;
+                    id="isActive";
                     checked={formData.isActive}
                     onCheckedChange={handleSwitchChange}
                   />
-                  <Label htmlFor="isActive">Active</Label>
+                  <Label htmlFor="isActive">Active</Label>;
                 </div>
               </div>
               
-              <div className="flex justify-end space-x-2">
-                <Button 
+              <div className="flex justify-end space-x-2">;
+                <Button;
                   type="button" 
-                  variant="outline" 
+                  variant="outline";
                   onClick={() => router.back()}
                 >
-                  Cancel
+                  Cancel;
                 </Button>
-                <Button type="submit" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading}>;
                   {isLoading ? 'Saving...' : segmentId ? 'Update Segment' : 'Create Segment'}
                 </Button>
               </div>
             </form>
           </TabsContent>
           
-          <TabsContent value="criteria">
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <div className="space-y-2">
+          <TabsContent value="criteria">;
+            <div className="space-y-6">;
+              <div className="space-y-4">;
+                <div className="space-y-2">;
                   <Label>Match Type</Label>
-                  <Select
+                  <Select;
                     value={formData.criteria.type}
                     onValueChange={handleCriteriaTypeChange}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select match type" />
+                      <SelectValue placeholder="Select match type" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="AND">Match ALL conditions (AND)</SelectItem>
-                      <SelectItem value="OR">Match ANY condition (OR)</SelectItem>
+                      <SelectItem value="AND">Match ALL conditions (AND)</SelectItem>;
+                      <SelectItem value="OR">Match ANY condition (OR)</SelectItem>;
                     </SelectContent>
                   </Select>
-                  <p className="text-sm text-muted-foreground">
-                    {formData.criteria.type === 'AND' 
+                  <p className="text-sm text-muted-foreground">;
+                    {formData.criteria.type === 'AND';
                       ? 'Contacts must match all of the following conditions to be included in this segment.' 
                       : 'Contacts that match any of the following conditions will be included in this segment.'}
                   </p>
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-2">;
                   <Label>Current Conditions</Label>
-                  <div className="border rounded-md p-4 space-y-2">
+                  <div className="border rounded-md p-4 space-y-2">;
                     {formData.criteria.conditions.length > 0 ? (
                       formData.criteria.conditions.map((condition, index) => (
-                        <div key={index} className="flex items-center justify-between p-2 border rounded">
+                        <div key={index} className="flex items-center justify-between p-2 border rounded">;
                           <span>
                             {getFieldLabel(condition.field)} {getOperatorLabel(condition.operator)} {condition.value}
                           </span>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button;
+                            variant="ghost";
+                            size="sm";
                             onClick={() => handleRemoveCondition(index)}
                           >
-                            Remove
+                            Remove;
                           </Button>
                         </div>
-                      ))
+                      ));
                     ) : (
-                      <p className="text-sm text-muted-foreground">No conditions defined yet</p>
+                      <p className="text-sm text-muted-foreground">No conditions defined yet</p>;
                     )}
                   </div>
                 </div>
                 
-                <div className="space-y-2 border-t pt-4">
+                <div className="space-y-2 border-t pt-4">;
                   <Label>Add Condition</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <Select
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">;
+                    <Select;
                       value={newCondition.field}
                       onValueChange={handleConditionFieldChange}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select field" />
+                        <SelectValue placeholder="Select field" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="email">Email</SelectItem>
-                        <SelectItem value="name">Name</SelectItem>
-                        <SelectItem value="phone">Phone</SelectItem>
-                        <SelectItem value="source">Source</SelectItem>
-                        <SelectItem value="status">Status</SelectItem>
-                        <SelectItem value="preferences.emailOptIn">Email Opt-in</SelectItem>
-                        <SelectItem value="preferences.smsOptIn">SMS Opt-in</SelectItem>
-                        <SelectItem value="address.city">City</SelectItem>
-                        <SelectItem value="address.state">State</SelectItem>
-                        <SelectItem value="address.country">Country</SelectItem>
-                        <SelectItem value="createdAt">Created Date</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>;
+                        <SelectItem value="name">Name</SelectItem>;
+                        <SelectItem value="phone">Phone</SelectItem>;
+                        <SelectItem value="source">Source</SelectItem>;
+                        <SelectItem value="status">Status</SelectItem>;
+                        <SelectItem value="preferences.emailOptIn">Email Opt-in</SelectItem>;
+                        <SelectItem value="preferences.smsOptIn">SMS Opt-in</SelectItem>;
+                        <SelectItem value="address.city">City</SelectItem>;
+                        <SelectItem value="address.state">State</SelectItem>;
+                        <SelectItem value="address.country">Country</SelectItem>;
+                        <SelectItem value="createdAt">Created Date</SelectItem>;
                       </SelectContent>
                     </Select>
                     
-                    <Select
+                    <Select;
                       value={newCondition.operator}
                       onValueChange={handleConditionOperatorChange}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select operator" />
+                        <SelectValue placeholder="Select operator" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="equals">Equals</SelectItem>
-                        <SelectItem value="notEquals">Does not equal</SelectItem>
-                        <SelectItem value="contains">Contains</SelectItem>
-                        <SelectItem value="notContains">Does not contain</SelectItem>
-                        <SelectItem value="startsWith">Starts with</SelectItem>
-                        <SelectItem value="endsWith">Ends with</SelectItem>
-                        {(newCondition.field === 'preferences.emailOptIn' || newCondition.field === 'preferences.smsOptIn') && (
+                        <SelectItem value="equals">Equals</SelectItem>;
+                        <SelectItem value="notEquals">Does not equal</SelectItem>;
+                        <SelectItem value="contains">Contains</SelectItem>;
+                        <SelectItem value="notContains">Does not contain</SelectItem>;
+                        <SelectItem value="startsWith">Starts with</SelectItem>;
+                        <SelectItem value="endsWith">Ends with</SelectItem>;
+                        {(newCondition.field === 'preferences.emailOptIn' || newCondition.field === 'preferences.smsOptIn') &&;
+                          (
                           <>
-                            <SelectItem value="isTrue">Is true</SelectItem>
-                            <SelectItem value="isFalse">Is false</SelectItem>
+                            <SelectItem value="isTrue">Is true</SelectItem>;
+                            <SelectItem value="isFalse">Is false</SelectItem>;
                           </>
                         )}
-                        <SelectItem value="isNull">Is empty</SelectItem>
-                        <SelectItem value="isNotNull">Is not empty</SelectItem>
+                        <SelectItem value="isNull">Is empty</SelectItem>;
+                        <SelectItem value="isNotNull">Is not empty</SelectItem>;
                       </SelectContent>
                     </Select>
                     
                     {!['isTrue', 'isFalse', 'isNull', 'isNotNull'].includes(newCondition.operator) && (
-                      <Input
+                      <Input;
                         value={newCondition.value}
                         onChange={handleConditionValueChange}
-                        placeholder="Enter value"
+                        placeholder="Enter value";
                       />
                     )}
                   </div>
-                  <div className="flex justify-end mt-2">
-                    <Button type="button" onClick={handleAddCondition}>
-                      Add Condition
+                  <div className="flex justify-end mt-2">;
+                    <Button type="button" onClick={handleAddCondition}>;
+                      Add Condition;
                     </Button>
                   </div>
                 </div>
                 
-                <div className="space-y-2 border-t pt-4">
+                <div className="space-y-2 border-t pt-4">;
                   <Label>Segment Preview</Label>
-                  <div className="border rounded-md p-4">
-                    <p className="text-sm">{criteriaPreview}</p>
+                  <div className="border rounded-md p-4">;
+                    <p className="text-sm">{criteriaPreview}</p>;
                   </div>
-                  <div className="flex justify-between items-center">
-                    <p className="text-sm">Estimated size: <Badge>{estimatedSize} contacts</Badge></p>
+                  <div className="flex justify-between items-center">;
+                    <p className="text-sm">Estimated size: <Badge>{estimatedSize} contacts</Badge></p>;
                     {segmentId && (
-                      <Button 
+                      <Button;
                         type="button" 
                         onClick={handleApplyCriteria}
                         disabled={isLoading || formData.criteria.conditions.length === 0}
                       >
-                        Apply Criteria
+                        Apply Criteria;
                       </Button>
                     )}
                   </div>
                 </div>
               </div>
               
-              <div className="flex justify-end space-x-2">
-                <Button 
+              <div className="flex justify-end space-x-2">;
+                <Button;
                   type="button" 
-                  variant="outline" 
+                  variant="outline";
                   onClick={() => setActiveTab("details")}
                 >
-                  Back
+                  Back;
                 </Button>
-                <Button 
+                <Button;
                   type="button" 
                   onClick={handleSubmit} 
                   disabled={isLoading}
@@ -682,64 +694,64 @@ export default function SegmentBuilder({ segmentId, onSuccess }: SegmentBuilderP
             </div>
           </TabsContent>
           
-          <TabsContent value="members">
+          <TabsContent value="members">;
             {segmentId ? (
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-medium">Segment Members</h3>
-                  <div className="flex items-center space-x-2">
+              <div className="space-y-6">;
+                <div className="flex justify-between items-center">;
+                  <h3 className="text-lg font-medium">Segment Members</h3>;
+                  <div className="flex items-center space-x-2">;
                     <Badge>{members.length} contacts</Badge>
-                    <Select onValueChange={handleAddContact}>
-                      <SelectTrigger className="w-[200px]">
-                        <SelectValue placeholder="Add contact" />
+                    <Select onValueChange={handleAddContact}>;
+                      <SelectTrigger className="w-[200px]">;
+                        <SelectValue placeholder="Add contact" />;
                       </SelectTrigger>
                       <SelectContent>
-                        {availableContacts
-                          .filter(contact => !members.some(m => m.id === contact.id))
+                        {availableContacts;
+                          .filter(contact => !members.some(m => m.id === contact.id));
                           .map(contact => (
-                            <SelectItem key={contact.id} value={contact.id}>
+                            <SelectItem key={contact.id} value={contact.id}>;
                               {contact.name}
                             </SelectItem>
-                          ))
+                          ));
                         }
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 
-                <div className="space-y-2 max-h-96 overflow-y-auto">
+                <div className="space-y-2 max-h-96 overflow-y-auto">;
                   {members.map(member => (
-                    <div key={member.id} className="flex items-center justify-between p-3 border rounded">
+                    <div key={member.id} className="flex items-center justify-between p-3 border rounded">;
                       <div>
-                        <h4 className="font-medium">{member.name}</h4>
-                        <p className="text-sm text-muted-foreground">{member.email}</p>
+                        <h4 className="font-medium">{member.name}</h4>;
+                        <p className="text-sm text-muted-foreground">{member.email}</p>;
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
+                      <div className="flex items-center space-x-2">;
+                        <Button;
+                          variant="outline";
+                          size="sm";
                           onClick={() => router.push(`/marketing/contacts/${member.id}`)}
                         >
-                          View
+                          View;
                         </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
+                        <Button;
+                          variant="outline";
+                          size="sm";
                           onClick={() => handleRemoveContact(member.id)}
                         >
-                          Remove
+                          Remove;
                         </Button>
                       </div>
                     </div>
                   ))}
                   
                   {members.length === 0 && (
-                    <p className="text-sm text-muted-foreground">No members in this segment yet</p>
+                    <p className="text-sm text-muted-foreground">No members in this segment yet</p>;
                   )}
                 </div>
               </div>
             ) : (
-              <div className="p-4 text-center">
+              <div className="p-4 text-center">;
                 <p>Please save the segment first to manage members.</p>
               </div>
             )}

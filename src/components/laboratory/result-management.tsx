@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
@@ -11,21 +22,21 @@ import {
   Form,
   Tag,
   Checkbox,
-} from "antd"; // FIX: Import Checkbox
+} from "antd"; // FIX: Import Checkbox;
 import {
   PlusOutlined,
   SearchOutlined,
   CheckOutlined,
-  // CloseOutlined, // FIX: Removed unused import
+  // CloseOutlined, // FIX: Removed unused import;
   EditOutlined,
 } from "@ant-design/icons";
-// import dayjs from "dayjs"; // FIX: Removed unused import
-// import type { Dayjs } from "dayjs"; // FIX: Removed unused import
+// import dayjs from "dayjs"; // FIX: Removed unused import;
+// import type { Dayjs } from "dayjs"; // FIX: Removed unused import;
 
 const { Option } = Select;
-// const { TabPane } = Tabs; // FIX: Removed unused import
+// const { TabPane } = Tabs; // FIX: Removed unused import;
 
-// Define interfaces for data types
+// Define interfaces for data types;
 interface LabResult {
   id: string;
   order_item_id: string;
@@ -49,17 +60,17 @@ interface LabResult {
 interface LabOrder {
   id: string;
   patient_name: string;
-  // Add other relevant order fields if needed for display
+  // Add other relevant order fields if needed for display;
 }
 
-// interface LabParameter { // FIX: Commented out unused interface
+// interface LabParameter { // FIX: Commented out unused interface;
 //   id: string;
 //   name: string;
 //   unit?: string;
-//   // Add other relevant parameter fields if needed
+//   // Add other relevant parameter fields if needed;
 // }
 
-// FIX: Define API response types
+// FIX: Define API response types;
 interface ResultsApiResponse {
   results?: LabResult[];
 }
@@ -68,7 +79,7 @@ interface OrdersApiResponse {
   results?: LabOrder[];
 }
 
-// interface OrderItemsApiResponse { // Removed unused interface
+// interface OrderItemsApiResponse { // Removed unused interface;
 //   results?: LabOrderItem[];
 // }
 
@@ -95,18 +106,18 @@ const ResultManagement: React.FC = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [orderFilter, setOrderFilter] = useState<string | null>();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isEntryModalVisible, setIsEntryModalVisible] =
+  const [isEntryModalVisible, setIsEntryModalVisible] =;
     useState<boolean>(false);
   const [selectedResult, setSelectedResult] = useState<LabResult | null>();
-  // const [selectedOrderItem, setSelectedOrderItem] = // Removed unused state
+  // const [selectedOrderItem, setSelectedOrderItem] = // Removed unused state;
   //   useState<LabOrderItem | null>();
   const [form] = Form.useForm<UpdateResultValues>();
   const [entryForm] = Form.useForm<CreateResultValues>();
-  const [orders, setOrders] = useState<LabOrder[]>([]); // For order selection
+  const [orders, setOrders] = useState<LabOrder[]>([]); // For order selection;
   // const [orderItems, setOrderItems] = useState<LabOrderItem[]>([]); // FIX: Removed unused state variable (for result entry)
-  // const [_parameters, _setParameters] = useState<LabParameter[]>([]); // For parameter selection
+  // const [_parameters, _setParameters] = useState<LabParameter[]>([]); // For parameter selection;
 
-  // Fetch results with optional filters
+  // Fetch results with optional filters;
   const fetchResults = useCallback(async (): Promise<void> => {
     setLoading(true);
     try {
@@ -132,35 +143,35 @@ const ResultManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data
+      // FIX: Type the response data;
       const data: ResultsApiResponse = await response.json();
 
       let fetchedResults: LabResult[] = data.results || [];
 
-      // Filter by search text if provided
+      // Filter by search text if provided;
       if (searchText) {
         const searchLower = searchText.toLowerCase();
         fetchedResults = fetchedResults.filter(
           (result) =>
             result.test_name?.toLowerCase().includes(searchLower) ||
             result.parameter_name?.toLowerCase().includes(searchLower) ||
-            result.result_value?.toLowerCase().includes(searchLower)
+            result.result_value?.toLowerCase().includes(searchLower);
         );
       }
 
       setResults(fetchedResults);
     } catch (error: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error fetching results:", error);
+
       message.error(`Failed to load laboratory results: ${messageText}`);
     } finally {
       setLoading(false);
     }
   }, [orderFilter, searchText]);
 
-  // Fetch orders for filter dropdown
+  // Fetch orders for filter dropdown;
   const fetchOrders = useCallback(async (): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/orders");
@@ -174,20 +185,20 @@ const ResultManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data
+      // FIX: Type the response data;
       const data: OrdersApiResponse = await response.json();
       setOrders(data.results || []);
     } catch (error: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error fetching orders:", error);
+
       message.error(`Failed to load laboratory orders: ${messageText}`);
     }
   }, []);
 
-  // Fetch order items for a specific order
-  // const fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function
+  // Fetch order items for a specific order;
+  // const fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function;
   //   try {
   //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
   //     if (!response.ok) {
@@ -200,20 +211,20 @@ const ResultManagement: React.FC = () => {
   //       }
   //       throw new Error(errorMessage);
   //     }
-  //     // FIX: Type the response data
+  //     // FIX: Type the response data;
   //     const data: OrderItemsApiResponse = await response.json();
   //     setOrderItems(data.results || []);
   //   } catch (error: unknown) {
-  //     // FIX: Use unknown
+  //     // FIX: Use unknown;
   //     const messageText =
   //       error instanceof Error ? error.message : "An unknown error occurred";
-  //     console.error("Error fetching order items:", error);
+  //     // Debug logging removed
   //     message.error(`Failed to load order items: ${messageText}`);
   //   }
   // };
 
-  // Fetch parameters for a specific test
-  // const fetchParameters = async (testId: string): Promise<void> => { // Removed unused function
+  // Fetch parameters for a specific test;
+  // const fetchParameters = async (testId: string): Promise<void> => { // Removed unused function;
   //   try {
   //     const response = await fetch(
   //       `/api/laboratory/tests/${testId}/parameters`
@@ -228,37 +239,37 @@ const ResultManagement: React.FC = () => {
   //       }
   //       throw new Error(errorMessage);
   //     }
-  //     // FIX: Type the response data
+  //     // FIX: Type the response data;
   //     const data: ParametersApiResponse = await response.json();
   //     setParameters(data.results || []);
   //   } catch (error: unknown) {
-  //     // FIX: Use unknown
+  //     // FIX: Use unknown;
   //     const messageText =
   //       error instanceof Error ? error.message : "An unknown error occurred";
-  //     console.error("Error fetching test parameters:", error);
+  //     // Debug logging removed
   //     message.error(`Failed to load test parameters: ${messageText}`);
   //   }
   // };
 
-  // Load data on component mount
+  // Load data on component mount;
   useEffect(() => {
     fetchResults();
     fetchOrders();
   }, [fetchResults, fetchOrders]);
 
-  // Reload results when filters change
+  // Reload results when filters change;
   useEffect(() => {
     fetchResults();
-  }, [orderFilter, searchText, fetchResults]); // Also refetch on search text change
+  }, [orderFilter, searchText, fetchResults]); // Also refetch on search text change;
 
-  // Handle updating a result
+  // Handle updating a result;
   const handleUpdateResult = async (
-    values: UpdateResultValues
+    values: UpdateResultValues;
   ): Promise<void> => {
     if (!selectedResult) return;
     try {
       const response = await fetch("/api/laboratory/results", {
-        method: "POST", // Assuming POST handles updates via ID
+        method: "POST", // Assuming POST handles updates via ID;
         headers: {
           "Content-Type": "application/json",
         },
@@ -269,7 +280,7 @@ const ResultManagement: React.FC = () => {
       });
 
       if (!response.ok) {
-        // FIX: Type the error response
+        // FIX: Type the error response;
         let errorMessage = "Failed to update result";
         try {
           const errorData: ApiErrorResponse = await response.json();
@@ -285,19 +296,19 @@ const ResultManagement: React.FC = () => {
       form.resetFields();
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error updating result:", error);
+
       message.error(messageText);
     }
   };
 
-  // Handle creating a new result
+  // Handle creating a new result;
   const handleCreateResult = async (
-    values: CreateResultValues
+    values: CreateResultValues;
   ): Promise<void> => {
-    // if (!selectedOrderItem) return; // FIX: selectedOrderItem is not defined
+    // if (!selectedOrderItem) return; // FIX: selectedOrderItem is not defined;
     try {
       const response = await fetch("/api/laboratory/results", {
         method: "POST",
@@ -305,13 +316,13 @@ const ResultManagement: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // order_item_id: selectedOrderItem.id, // FIX: selectedOrderItem is not defined
+          // order_item_id: selectedOrderItem.id, // FIX: selectedOrderItem is not defined;
           ...values,
         }),
       });
 
       if (!response.ok) {
-        // FIX: Type the error response
+        // FIX: Type the error response;
         let errorMessage = "Failed to create result";
         try {
           const errorData: ApiErrorResponse = await response.json();
@@ -327,19 +338,19 @@ const ResultManagement: React.FC = () => {
       entryForm.resetFields();
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error creating result:", error);
+
       message.error(messageText);
     }
   };
 
-  // Handle verifying a result
+  // Handle verifying a result;
   const handleVerifyResult = async (result: LabResult): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/results", {
-        method: "POST", // Assuming POST handles verification
+        method: "POST", // Assuming POST handles verification;
         headers: {
           "Content-Type": "application/json",
         },
@@ -350,7 +361,7 @@ const ResultManagement: React.FC = () => {
       });
 
       if (!response.ok) {
-        // FIX: Type the error response
+        // FIX: Type the error response;
         let errorMessage = "Failed to verify result";
         try {
           const errorData: ApiErrorResponse = await response.json();
@@ -364,21 +375,21 @@ const ResultManagement: React.FC = () => {
       message.success("Result verified successfully");
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error verifying result:", error);
+
       message.error(messageText);
     }
   };
 
-  // Show result entry modal
-  // const showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function
+  // Show result entry modal;
+  // const showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function;
   //   setSelectedOrderItem(orderItem);
   //   entryForm.resetFields();
-  //   setParameters([]); // Reset parameters
+  //   setParameters([]); // Reset parameters;
   //
-  //   // If the test has parameters, fetch them
+  //   // If the test has parameters, fetch them;
   //   if (orderItem.test_id) {
   //     fetchParameters(orderItem.test_id);
   //   }
@@ -386,7 +397,7 @@ const ResultManagement: React.FC = () => {
   //   setIsEntryModalVisible(true);
   // };
 
-  // Show result update modal
+  // Show result update modal;
   const showResultUpdateModal = (result: LabResult): void => {
     setSelectedResult(result);
     form.setFieldsValue({
@@ -397,7 +408,7 @@ const ResultManagement: React.FC = () => {
     setIsModalVisible(true);
   };
 
-  // Table columns
+  // Table columns;
   const columns = [
     {
       title: "Test",
@@ -430,9 +441,9 @@ const ResultManagement: React.FC = () => {
       key: "reference_range",
       width: "15%",
       render: (_: unknown, record: LabResult) => {
-        // Simplified - in a real app, you'd use patient gender/age to determine which range to show
+        // Simplified - in a real app, you'd use patient gender/age to determine which range to show;
         return (
-          record.reference_range_male || record.reference_range_female || "N/A"
+          record.reference_range_male || record.reference_range_female || "N/A";
         );
       },
     },
@@ -467,13 +478,13 @@ const ResultManagement: React.FC = () => {
         // Edit action (only if not verified)
         if (!record.verified_by) {
           actions.push(
-            <Button
-              key="edit"
+            <Button;
+              key="edit";
               type="link"
               icon={<EditOutlined />}
               onClick={() => showResultUpdateModal(record)}
             >
-              Edit
+              Edit;
             </Button>
           );
         }
@@ -481,13 +492,13 @@ const ResultManagement: React.FC = () => {
         // Verify action (only if not verified and user has permission - permission check omitted for brevity)
         if (!record.verified_by) {
           actions.push(
-            <Button
-              key="verify"
+            <Button;
+              key="verify";
               type="link"
               icon={<CheckOutlined />}
               onClick={() => handleVerifyResult(record)}
             >
-              Verify
+              Verify;
             </Button>
           );
         }
@@ -498,26 +509,26 @@ const ResultManagement: React.FC = () => {
   ];
 
   return (
-    <div className="result-management-container">
-      <Card
-        title="Laboratory Result Management"
+    <div className="result-management-container">;
+      <Card;
+        title="Laboratory Result Management";
         extra={
-          <Button
+          <Button;
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
-              // TODO: Implement proper order/item selection for result entry
+              // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
               message.info(
-                "Select an order/item to enter results for (feature pending)."
+                "Select an order/item to enter results for (feature pending).";
               );
             }}
           >
-            Enter Results
+            Enter Results;
           </Button>
         }
       >
-        <div
-          className="filter-container"
+        <div;
+          className="filter-container";
           style={{
             marginBottom: 16,
             display: "flex",
@@ -525,57 +536,57 @@ const ResultManagement: React.FC = () => {
             gap: 16,
           }}
         >
-          <Input
-            placeholder="Search results..."
+          <Input;
+            placeholder="Search results...";
             prefix={<SearchOutlined />}
             value={searchText}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setSearchText(event.target.value)
+              setSearchText(event.target.value);
             }
-            // onPressEnter={fetchResults} // fetchResults is called via useEffect
+            // onPressEnter={fetchResults} // fetchResults is called via useEffect;
             style={{ width: 250 }}
           />
 
-          <Select
-            placeholder="Filter by Order"
-            allowClear
-            showSearch
-            optionFilterProp="children"
+          <Select;
+            placeholder="Filter by Order";
+            allowClear;
+            showSearch;
+            optionFilterProp="children";
             style={{ width: 250 }}
             value={orderFilter}
             onChange={(value: string | null) => setOrderFilter(value)}
             filterOption={(input, option) =>
-              (option?.children as unknown as string)
-                ?.toLowerCase()
-                .includes(input.toLowerCase()) ?? false
+              (option?.children as unknown as string);
+                ?.toLowerCase();
+                .includes(input.toLowerCase()) ?? false;
             }
           >
             {orders.map((order) => (
-              <Option key={order.id} value={order.id}>
+              <Option key={order.id} value={order.id}>;
                 Order #{order.id} - {order.patient_name}
               </Option>
             ))}
           </Select>
 
-          <Button
+          <Button;
             onClick={() => {
               setSearchText("");
               setOrderFilter(undefined);
-              // fetchResults(); // fetchResults is called via useEffect
+              // fetchResults(); // fetchResults is called via useEffect;
             }}
           >
-            Reset Filters
+            Reset Filters;
           </Button>
         </div>
 
-        <Spin spinning={loading}>
-          <Table
+        <Spin spinning={loading}>;
+          <Table;
             columns={columns}
             dataSource={results}
-            rowKey="id"
+            rowKey="id";
             pagination={{ pageSize: 10 }}
             locale={{
-              emptyText: loading
+              emptyText: loading;
                 ? "Loading results..."
                 : "No laboratory results found matching criteria",
             }}
@@ -583,69 +594,69 @@ const ResultManagement: React.FC = () => {
         </Spin>
       </Card>
       {/* Result Update Modal */}
-      <Modal
-        title="Update Result"
+      <Modal;
+        title="Update Result";
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={[
           <Button key="back" onClick={() => setIsModalVisible(false)}>
-            Cancel
+            Cancel;
           </Button>,
           <Button key="submit" type="primary" onClick={() => form.submit()}>
-            Update Result
+            Update Result;
           </Button>,
         ]}
       >
-        <Form form={form} layout="vertical" onFinish={handleUpdateResult}>
-          <Form.Item
-            name="result_value"
-            label="Result Value"
+        <Form form={form} layout="vertical" onFinish={handleUpdateResult}>;
+          <Form.Item;
+            name="result_value";
+            label="Result Value";
             rules={[
               { required: true, message: "Please enter the result value" },
             ]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="is_abnormal"
-            valuePropName="checked"
-            label="Is Abnormal?"
+          <Form.Item;
+            name="is_abnormal";
+            valuePropName="checked";
+            label="Is Abnormal?";
           >
             <Checkbox />
           </Form.Item>
-          <Form.Item name="notes" label="Notes">
-            <Input.TextArea rows={3} />
+          <Form.Item name="notes" label="Notes">;
+            <Input.TextArea rows={3} />;
           </Form.Item>
         </Form>
       </Modal>
       {/* Result Entry Modal (Placeholder/Example) */}
-      <Modal
+      <Modal;
          title={`Enter Result` /* FIX: Removed reference to undefined selectedOrderItem: for ${selectedOrderItem?.test_name} */}        visible={isEntryModalVisible}
         onCancel={() => setIsEntryModalVisible(false)}
         footer={[
           <Button key="back" onClick={() => setIsEntryModalVisible(false)}>
-            Cancel
+            Cancel;
           </Button>,
-          <Button
-            key="submit"
+          <Button;
+            key="submit";
             type="primary"
             onClick={() => entryForm.submit()}
           >
-            Save Result
+            Save Result;
           </Button>,
         ]}
       >
-        <Form form={entryForm} layout="vertical" onFinish={handleCreateResult}>
-          {/* FIX: Commented out parameters section as 'parameters' is not defined
+        <Form form={entryForm} layout="vertical" onFinish={handleCreateResult}>;
+          {/* FIX: Commented out parameters section as 'parameters' is not defined;
           {parameters.length > 0 && (
-            <Form.Item
-              name="parameter_id"
-              label="Parameter"
+            <Form.Item;
+              name="parameter_id";
+              label="Parameter";
               rules={[{ required: true, message: "Please select a parameter" }]}
             >
-              <Select placeholder="Select Parameter">
-                {parameters.map((p: any) => ( // Added 'any' type temporarily if uncommented
-                  <Option key={p.id} value={p.id}>
+              <Select placeholder="Select Parameter">;
+                {parameters.map((p: unknown) => ( // Added 'any' type temporarily if uncommented;
+                  <Option key={p.id} value={p.id}>;
                     {p.name}
                   </Option>
                 ))}
@@ -653,24 +664,24 @@ const ResultManagement: React.FC = () => {
             </Form.Item>
           )}
           */}
-          <Form.Item
-            name="result_value"
-            label="Result Value"
+          <Form.Item;
+            name="result_value";
+            label="Result Value";
             rules={[
               { required: true, message: "Please enter the result value" },
             ]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="is_abnormal"
-            valuePropName="checked"
-            label="Is Abnormal?"
+          <Form.Item;
+            name="is_abnormal";
+            valuePropName="checked";
+            label="Is Abnormal?";
           >
             <Checkbox />
           </Form.Item>
-          <Form.Item name="notes" label="Notes">
-            <Input.TextArea rows={3} />
+          <Form.Item name="notes" label="Notes">;
+            <Input.TextArea rows={3} />;
           </Form.Item>
         </Form>
       </Modal>

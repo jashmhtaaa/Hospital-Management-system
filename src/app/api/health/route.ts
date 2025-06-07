@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Health Check API Endpoints
- * Comprehensive health monitoring for enterprise deployment
+ * Health Check API Endpoints;
+ * Comprehensive health monitoring for enterprise deployment;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -31,23 +42,23 @@ interface HealthCheck {
   error?: string;
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async const GET = (request: NextRequest): Promise<NextResponse> {
   try {
     const startTime = Date.now();
     
-    // Perform all health checks in parallel
+    // Perform all health checks in parallel;
     const [
       databaseCheck,
       cacheCheck,
       memoryCheck,
       diskCheck,
-      externalCheck
+      externalCheck;
     ] = await Promise.allSettled([
       checkDatabase(),
       checkCache(),
       checkMemory(),
       checkDisk(),
-      checkExternalServices()
+      checkExternalServices();
     ]);
 
     const checks = {
@@ -55,10 +66,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       cache: getCheckResult(cacheCheck),
       memory: getCheckResult(memoryCheck),
       disk: getCheckResult(diskCheck),
-      external: getCheckResult(externalCheck)
+      external: getCheckResult(externalCheck);
     };
 
-    // Determine overall status
+    // Determine overall status;
     const overallStatus = determineOverallStatus(checks);
     
     const healthStatus: HealthStatus = {
@@ -67,12 +78,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       version: process.env.APP_VERSION || '1.0.0',
       environment: process.env.NODE_ENV || 'development',
       uptime: process.uptime(),
-      checks
+      checks;
     };
 
     const responseTime = Date.now() - startTime;
     
-    // Set appropriate HTTP status code
+    // Set appropriate HTTP status code;
     const statusCode = overallStatus === 'healthy' ? 200 : 
                       overallStatus === 'degraded' ? 200 : 503;
 
@@ -80,30 +91,29 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       status: statusCode,
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'X-Response-Time': `${responseTime}ms`
+        'X-Response-Time': `${responseTime}ms`;
       }
     });
 
   } catch (error) {
-    console.error('Health check error:', error);
-    
+
     return NextResponse.json({
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
       error: 'Health check failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
     }, { status: 503 });
   }
 }
 
-async function checkDatabase(): Promise<HealthCheck> {
+async const checkDatabase = (): Promise<HealthCheck> {
   const startTime = Date.now();
   
   try {
-    // Simple query to check database connectivity
+    // Simple query to check database connectivity;
     await prisma.$queryRaw`SELECT 1 as healthy`;
     
-    // Check for slow queries or connection issues
+    // Check for slow queries or connection issues;
     const responseTime = Date.now() - startTime;
     
     return {
@@ -111,26 +121,26 @@ async function checkDatabase(): Promise<HealthCheck> {
       responseTime,
       details: {
         responseTime: `${responseTime}ms`,
-        connected: true
+        connected: true;
       }
     };
   } catch (error) {
     return {
       status: 'fail',
       error: error.message,
-      responseTime: Date.now() - startTime
+      responseTime: Date.now() - startTime;
     };
   }
 }
 
-async function checkCache(): Promise<HealthCheck> {
+async const checkCache = (): Promise<HealthCheck> {
   const startTime = Date.now();
   
   try {
     const testKey = 'health-check-' + Date.now();
     const testValue = 'ok';
     
-    // Test cache write and read
+    // Test cache write and read;
     await cache.set(testKey, testValue, 10);
     const retrievedValue = await cache.get(testKey);
     await cache.del(testKey);
@@ -143,32 +153,32 @@ async function checkCache(): Promise<HealthCheck> {
         responseTime,
         details: {
           responseTime: `${responseTime}ms`,
-          operations: 'read/write successful'
+          operations: 'read/write successful';
         }
       };
     } else {
       return {
         status: 'fail',
         error: 'Cache read/write test failed',
-        responseTime
+        responseTime;
       };
     }
   } catch (error) {
     return {
       status: 'fail',
       error: error.message,
-      responseTime: Date.now() - startTime
+      responseTime: Date.now() - startTime;
     };
   }
 }
 
-async function checkMemory(): Promise<HealthCheck> {
+async const checkMemory = (): Promise<HealthCheck> {
   try {
     const memUsage = process.memoryUsage();
     const totalMemory = memUsage.rss + memUsage.heapUsed + memUsage.external;
     const memoryUsageMB = Math.round(totalMemory / 1024 / 1024);
     
-    // Consider memory usage over 1GB as warning, over 2GB as critical
+    // Consider memory usage over 1GB as warning, over 2GB as critical;
     const status = memoryUsageMB < 1024 ? 'pass' : 
                   memoryUsageMB < 2048 ? 'warn' : 'fail';
     
@@ -179,20 +189,20 @@ async function checkMemory(): Promise<HealthCheck> {
         heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
         heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
         external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
-        totalUsage: `${memoryUsageMB}MB`
+        totalUsage: `${memoryUsageMB}MB`;
       }
     };
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message
+      error: error.message;
     };
   }
 }
 
-async function checkDisk(): Promise<HealthCheck> {
+async const checkDisk = (): Promise<HealthCheck> {
   try {
-    // This is a simplified check - in production you'd use a proper disk usage library
+    // This is a simplified check - in production you'd use a proper disk usage library;
     const fs = require('fs');
     const stats = fs.statSync('.');
     
@@ -200,39 +210,39 @@ async function checkDisk(): Promise<HealthCheck> {
       status: 'pass',
       details: {
         accessible: true,
-        note: 'Basic filesystem access check passed'
+        note: 'Basic filesystem access check passed';
       }
     };
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message
+      error: error.message;
     };
   }
 }
 
-async function checkExternalServices(): Promise<HealthCheck> {
+async const checkExternalServices = (): Promise<HealthCheck> {
   try {
     const checks = [];
     
-    // Check external API dependencies if any
+    // Check external API dependencies if any;
     // Example: Third-party services, payment gateways, etc.
     
     return {
       status: 'pass',
       details: {
-        externalServices: 'No critical external dependencies configured'
+        externalServices: 'No critical external dependencies configured';
       }
     };
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message
+      error: error.message;
     };
   }
 }
 
-function getCheckResult(settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
+const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
   if (settledResult.status === 'fulfilled') {
     return settledResult.value;
   } else {
@@ -243,18 +253,18 @@ function getCheckResult(settledResult: PromiseSettledResult<HealthCheck>): Healt
   }
 }
 
-function determineOverallStatus(checks: HealthStatus['checks']): 'healthy' | 'degraded' | 'unhealthy' {
+const determineOverallStatus = (checks: HealthStatus['checks']): 'healthy' | 'degraded' | 'unhealthy' {
   const checkResults = Object.values(checks);
   
   const failedChecks = checkResults.filter(check => check.status === 'fail');
   const warnChecks = checkResults.filter(check => check.status === 'warn');
   
   if (failedChecks.length > 0) {
-    // If database fails, consider it unhealthy regardless of other checks
+    // If database fails, consider it unhealthy regardless of other checks;
     if (checks.database.status === 'fail') {
       return 'unhealthy';
     }
-    // If more than half of checks fail, unhealthy
+    // If more than half of checks fail, unhealthy;
     if (failedChecks.length > checkResults.length / 2) {
       return 'unhealthy';
     }

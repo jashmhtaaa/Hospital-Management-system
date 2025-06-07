@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
-import React, { useState, useEffect, FormEvent } from "react"; // Added FormEvent
+import React, { useState, useEffect, FormEvent } from "react"; // Added FormEvent;
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,7 +21,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-// import { Input } from "@/components/ui/input"; // Unused
+// import { Input } from "@/components/ui/input"; // Unused;
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -22,26 +33,26 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
-// Define interfaces for data types
+// Define interfaces for data types;
 interface Patient {
   id: string;
-  name: string; // Assuming patient object has a name property
-  // Add other relevant patient fields if needed
+  name: string; // Assuming patient object has a name property;
+  // Add other relevant patient fields if needed;
 }
 
 interface ProcedureType {
   id: string;
   name: string;
-  // Add other relevant procedure type fields if needed
+  // Add other relevant procedure type fields if needed;
 }
 
 interface Doctor {
   id: string;
-  name: string; // Assuming user/doctor object has a name property
-  // Add other relevant doctor fields if needed
+  name: string; // Assuming user/doctor object has a name property;
+  // Add other relevant doctor fields if needed;
 }
 
-// FIX: Export the payload type
+// FIX: Export the payload type;
 export interface OrderPayload {
   patient_id: string;
   procedure_type_id: string;
@@ -51,12 +62,12 @@ export interface OrderPayload {
 }
 
 interface CreateRadiologyOrderModalProperties {
-  isOpen: boolean; // Add isOpen prop to control visibility from parent
+  isOpen: boolean; // Add isOpen prop to control visibility from parent;
   onClose: () => void;
   onSubmit: (payload: OrderPayload) => Promise<void>;
 }
 
-export default function CreateRadiologyOrderModal({
+export default const CreateRadiologyOrderModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -65,7 +76,7 @@ export default function CreateRadiologyOrderModal({
   const [procedureTypeId, setProcedureTypeId] = useState<string>("");
   const [clinicalIndication, setClinicalIndication] = useState<string>("");
   const [priority, setPriority] = useState<"routine" | "stat">("routine");
-  const [referringDoctorId, setReferringDoctorId] = useState<string>(""); // Store as string, convert to null on submit if empty
+  const [referringDoctorId, setReferringDoctorId] = useState<string>(""); // Store as string, convert to null on submit if empty;
 
   const [patients, setPatients] = useState<Patient[]>([]);
   const [procedureTypes, setProcedureTypes] = useState<ProcedureType[]>([]);
@@ -75,150 +86,150 @@ export default function CreateRadiologyOrderModal({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    // Only fetch data if the modal is open
+    // Only fetch data if the modal is open;
     if (!isOpen) return;
 
     const fetchData = async () => {
       setLoading(true);
       setError(undefined);
       try {
-        // Assuming API endpoints return { results: [...] } or just [...] directly
+        // Assuming API endpoints return { results: [...] } or just [...] directly;
         const [patientsResponse, proceduresResponse, doctorsResponse] = await Promise.all([
-          fetch("/api/patients"), // Adjust if endpoint differs
+          fetch("/api/patients"), // Adjust if endpoint differs;
           fetch("/api/radiology/procedure-types"),
-          fetch("/api/users?role=Doctor"), // Adjust if endpoint differs
+          fetch("/api/users?role=Doctor"), // Adjust if endpoint differs;
         ]);
 
         if (!patientsResponse.ok)
           throw new Error(
-            `Failed to fetch patients: ${patientsResponse.statusText}`
+            `Failed to fetch patients: ${patientsResponse.statusText}`;
           );
         if (!proceduresResponse.ok)
           throw new Error(
-            `Failed to fetch procedure types: ${proceduresResponse.statusText}`
+            `Failed to fetch procedure types: ${proceduresResponse.statusText}`;
           );
         if (!doctorsResponse.ok)
           throw new Error(`Failed to fetch doctors: ${doctorsResponse.statusText}`);
 
-        // Explicitly type the JSON response
-        const patientsData: { results: Patient[] } | Patient[] =
+        // Explicitly type the JSON response;
+        const patientsData: { results: Patient[] } | Patient[] =;
           await patientsResponse.json();
-        const proceduresData: { results: ProcedureType[] } | ProcedureType[] =
+        const proceduresData: { results: ProcedureType[] } | ProcedureType[] =;
           await proceduresResponse.json();
-        const doctorsData: { results: Doctor[] } | Doctor[] =
+        const doctorsData: { results: Doctor[] } | Doctor[] =;
           await doctorsResponse.json();
 
         // Handle potential API response structures (e.g., { results: [...] })
         setPatients(
-          Array.isArray(patientsData)
-            ? patientsData
+          Array.isArray(patientsData);
+            ? patientsData;
             : patientsData.results || []
         );
         setProcedureTypes(
-          Array.isArray(proceduresData)
-            ? proceduresData
+          Array.isArray(proceduresData);
+            ? proceduresData;
             : proceduresData.results || []
         );
         setDoctors(
           Array.isArray(doctorsData) ? doctorsData : doctorsData.results || []
         );
       } catch (error_) {
-        const message =
-          error_ instanceof Error
-            ? error_.message
+        const message =;
+          error_ instanceof Error;
+            ? error_.message;
             : "An unknown error occurred";
-        console.error("Error fetching data for modal:", message);
+
         setError(
-          `Failed to load necessary data: ${message}. Please try again.`
+          `Failed to load necessary data: ${message}. Please try again.`;
         );
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [isOpen]); // Re-fetch when modal opens
+  }, [isOpen]); // Re-fetch when modal opens;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!patientId || !procedureTypeId || !clinicalIndication) {
-      // Consider using a toast notification instead of alert
+      // Consider using a toast notification instead of alert;
       alert(
-        "Please fill in all required fields (Patient, Procedure Type, Clinical Indication)."
+        "Please fill in all required fields (Patient, Procedure Type, Clinical Indication).";
       );
       return;
     }
     setIsSubmitting(true);
-    setError(undefined); // Clear previous errors
+    setError(undefined); // Clear previous errors;
     try {
       await onSubmit({
         patient_id: patientId,
         procedure_type_id: procedureTypeId,
         clinical_indication: clinicalIndication,
         priority: priority,
-        referring_doctor_id: referringDoctorId || null, // Convert empty string to null
+        referring_doctor_id: referringDoctorId || null, // Convert empty string to null;
       });
-      // Reset form state after successful submission
+      // Reset form state after successful submission;
       setPatientId("");
       setProcedureTypeId("");
       setClinicalIndication("");
       setPriority("routine");
       setReferringDoctorId("");
-      // onClose(); // Parent component should handle closing the modal
+      // onClose(); // Parent component should handle closing the modal;
     } catch (submitError) {
-      const message =
-        submitError instanceof Error
-          ? submitError.message
+      const message =;
+        submitError instanceof Error;
+          ? submitError.message;
           : "An unknown error occurred during submission";
-      console.error("Error submitting order:", message);
-      setError(`Submission failed: ${message}`); // Show error to user
+
+      setError(`Submission failed: ${message}`); // Show error to user;
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Use the isOpen prop passed from the parent to control the dialog
+  // Use the isOpen prop passed from the parent to control the dialog;
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]">;
         <DialogHeader>
           <DialogTitle>Create New Radiology Order</DialogTitle>
         </DialogHeader>
         {loading ? (
-          <div className="flex justify-center items-center h-40">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="flex justify-center items-center h-40">;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 p-4 border border-red-200 rounded bg-red-50">
+          <div className="text-center text-red-500 p-4 border border-red-200 rounded bg-red-50">;
             {error}
           </div>
         ) : undefined}
         {/* Render form only when not loading, even if there was an error during fetch */}
         {!loading && (
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 py-4">
+          <form onSubmit={handleSubmit}>;
+            <div className="grid gap-4 py-4">;
               {/* Patient Select */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="patient" className="text-right">
+              <div className="grid grid-cols-4 items-center gap-4">;
+                <Label htmlFor="patient" className="text-right">;
                   Patient *
                 </Label>
-                <Select
+                <Select;
                   value={patientId}
                   onValueChange={setPatientId}
-                  required
+                  required;
                   disabled={isSubmitting}
                 >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select Patient" />
+                  <SelectTrigger className="col-span-3">;
+                    <SelectValue placeholder="Select Patient" />;
                   </SelectTrigger>
                   <SelectContent>
                     {patients.length === 0 && (
-                      <SelectItem value="" disabled>
-                        No patients found
+                      <SelectItem value="" disabled>;
+                        No patients found;
                       </SelectItem>
                     )}
                     {patients.map((patient) => (
-                      <SelectItem key={patient.id} value={patient.id}>
-                        {patient.name} (ID: {patient.id.slice(0, 6)})
+                      <SelectItem key={patient.id} value={patient.id}>;
+                        {patient.name} (ID: {patient.id.slice(0, 6)});
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -226,27 +237,27 @@ export default function CreateRadiologyOrderModal({
               </div>
 
               {/* Procedure Type Select */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="procedureType" className="text-right">
+              <div className="grid grid-cols-4 items-center gap-4">;
+                <Label htmlFor="procedureType" className="text-right">;
                   Procedure Type *
                 </Label>
-                <Select
+                <Select;
                   value={procedureTypeId}
                   onValueChange={setProcedureTypeId}
-                  required
+                  required;
                   disabled={isSubmitting}
                 >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select Procedure Type" />
+                  <SelectTrigger className="col-span-3">;
+                    <SelectValue placeholder="Select Procedure Type" />;
                   </SelectTrigger>
                   <SelectContent>
                     {procedureTypes.length === 0 && (
-                      <SelectItem value="" disabled>
-                        No procedure types found
+                      <SelectItem value="" disabled>;
+                        No procedure types found;
                       </SelectItem>
                     )}
                     {procedureTypes.map((type) => (
-                      <SelectItem key={type.id} value={type.id}>
+                      <SelectItem key={type.id} value={type.id}>;
                         {type.name}
                       </SelectItem>
                     ))}
@@ -255,68 +266,68 @@ export default function CreateRadiologyOrderModal({
               </div>
 
               {/* Clinical Indication Textarea */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="clinicalIndication" className="text-right">
+              <div className="grid grid-cols-4 items-center gap-4">;
+                <Label htmlFor="clinicalIndication" className="text-right">;
                   Clinical Indication *
                 </Label>
-                <Textarea
-                  id="clinicalIndication"
+                <Textarea;
+                  id="clinicalIndication";
                   value={clinicalIndication}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setClinicalIndication(event.target.value)
+                    setClinicalIndication(event.target.value);
                   }
-                  className="col-span-3"
-                  required
-                  placeholder="Enter reason for the study..."
+                  className="col-span-3";
+                  required;
+                  placeholder="Enter reason for the study...";
                   disabled={isSubmitting}
                 />
               </div>
 
               {/* Priority Select */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="priority" className="text-right">
-                  Priority
+              <div className="grid grid-cols-4 items-center gap-4">;
+                <Label htmlFor="priority" className="text-right">;
+                  Priority;
                 </Label>
-                <Select
+                <Select;
                   value={priority}
                   onValueChange={(value: "routine" | "stat") =>
-                    setPriority(value)
+                    setPriority(value);
                   }
                   disabled={isSubmitting}
                 >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select Priority" />
+                  <SelectTrigger className="col-span-3">;
+                    <SelectValue placeholder="Select Priority" />;
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="routine">Routine</SelectItem>
-                    <SelectItem value="stat">STAT</SelectItem>
+                    <SelectItem value="routine">Routine</SelectItem>;
+                    <SelectItem value="stat">STAT</SelectItem>;
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Referring Doctor Select */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="referringDoctor" className="text-right">
-                  Referring Doctor
+              <div className="grid grid-cols-4 items-center gap-4">;
+                <Label htmlFor="referringDoctor" className="text-right">;
+                  Referring Doctor;
                 </Label>
-                <Select
+                <Select;
                   value={referringDoctorId}
                   onValueChange={setReferringDoctorId}
                   disabled={isSubmitting}
                 >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select Referring Doctor (Optional)" />
+                  <SelectTrigger className="col-span-3">;
+                    <SelectValue placeholder="Select Referring Doctor (Optional)" />;
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">None</SelectItem>{" "}
                     {/* Use empty string for no selection */}
                     {doctors.length === 0 && (
-                      <SelectItem value="" disabled>
-                        No doctors found
+                      <SelectItem value="" disabled>;
+                        No doctors found;
                       </SelectItem>
                     )}
                     {doctors.map((doctor) => (
-                      <SelectItem key={doctor.id} value={doctor.id}>
+                      <SelectItem key={doctor.id} value={doctor.id}>;
                         {doctor.name}
                       </SelectItem>
                     ))}
@@ -327,20 +338,20 @@ export default function CreateRadiologyOrderModal({
             <DialogFooter>
               <DialogClose asChild>
                 {/* Ensure Cancel button calls onClose */}
-                <Button
+                <Button;
                   type="button"
-                  variant="outline"
+                  variant="outline";
                   onClick={onClose}
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  Cancel;
                 </Button>
               </DialogClose>
-              <Button type="submit" disabled={isSubmitting || loading}>
+              <Button type="submit" disabled={isSubmitting || loading}>;
                 {isSubmitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
                 ) : undefined}
-                Create Order
+                Create Order;
               </Button>
             </DialogFooter>
           </form>

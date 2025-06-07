@@ -1,0 +1,58 @@
+[NX Daemon Server] - 2025-06-07T12:31:42.985Z - Started listening on: /tmp/f96991ebb36f5edfdd28/d.sock
+[NX Daemon Server] - 2025-06-07T12:31:42.987Z - [WATCHER]: Subscribed to changes within: /workspace/Hospital-Management-System (native)
+[NX Daemon Server] - 2025-06-07T12:31:43.054Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-07T12:31:43.055Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-06-07T12:31:43.058Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2025-06-07T12:31:43.058Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2025-06-07T12:31:43.058Z - Handled FORCE_SHUTDOWN. Handling time: 1. Response time: 0.
+[NX Daemon Server] - 2025-06-07T12:31:43.058Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-07T12:31:43.059Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-06-07T12:31:43.068Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (sources)
+[NX Daemon Server] - 2025-06-07T12:31:44.353Z - Time taken for 'Load Nx Plugin: /workspace/Hospital-Management-System/node_modules/nx/src/plugins/package-json' 1109.0508719980717ms
+[NX Daemon Server] - 2025-06-07T12:31:44.357Z - Time taken for 'Load Nx Plugin: /workspace/Hospital-Management-System/node_modules/nx/src/plugins/project-json/build-nodes/project-json' 1198.8864879906178ms
+[NX Daemon Server] - 2025-06-07T12:31:44.376Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2025-06-07T12:31:44.376Z - [REQUEST]: 
+[NX Daemon Server] - 2025-06-07T12:31:44.377Z - [REQUEST]: 
+[NX Daemon Server] - 2025-06-07T12:31:44.460Z - Time taken for 'loadNxPlugins' 1220.7617179900408ms
+[NX Daemon Server] - 2025-06-07T12:31:45.771Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (outputs)
+ WARN  The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
+ WARN  The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
+[NX Daemon Server] - 2025-06-07T12:51:17.260Z - Started listening on: /tmp/f96991ebb36f5edfdd28/d.sock
+[NX Daemon Server] - 2025-06-07T12:51:17.265Z - [WATCHER]: Subscribed to changes within: /workspace/Hospital-Management-System (native)
+[NX Daemon Server] - 2025-06-07T12:51:17.266Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-07T12:51:17.267Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-06-07T12:51:17.270Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2025-06-07T12:51:17.270Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2025-06-07T12:51:17.270Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 0.
+[NX Daemon Server] - 2025-06-07T12:51:17.270Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-07T12:51:17.271Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-06-07T12:51:17.278Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (sources)
+[NX Daemon Server] - 2025-06-07T12:51:18.158Z - Time taken for 'Load Nx Plugin: /workspace/Hospital-Management-System/node_modules/nx/src/plugins/project-json/build-nodes/project-json' 786.5020980089903ms
+[NX Daemon Server] - 2025-06-07T12:51:18.165Z - Time taken for 'Load Nx Plugin: /workspace/Hospital-Management-System/node_modules/nx/src/plugins/package-json' 795.2823639959097ms
+[NX Daemon Server] - 2025-06-07T12:51:18.167Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2025-06-07T12:51:18.167Z - [REQUEST]: 
+[NX Daemon Server] - 2025-06-07T12:51:18.167Z - [REQUEST]: 
+[NX Daemon Server] - 2025-06-07T12:51:18.174Z - Time taken for 'loadNxPlugins' 798.9342899918556ms
+
+ NX   Failed to parse pnpm lockfile
+
+Please open an issue at `https://github.com/nrwl/nx/issues/new?template=1-bug.yml` and provide a reproduction.
+
+Original error: Could not find ".modules.yaml" at "/workspace/Hospital-Management-System/node_modules/.modules.yaml"
+
+
+Error: Could not find ".modules.yaml" at "/workspace/Hospital-Management-System/node_modules/.modules.yaml"
+    at loadPnpmHoistedDepsDefinition (/workspace/Hospital-Management-System/node_modules/nx/src/plugins/js/lock-file/utils/pnpm-normalizer.js:40:15)
+    at getNodes (/workspace/Hospital-Management-System/node_modules/nx/src/plugins/js/lock-file/pnpm-parser.js:213:77)
+    at getPnpmLockfileNodes (/workspace/Hospital-Management-System/node_modules/nx/src/plugins/js/lock-file/pnpm-parser.js:32:12)
+    at getLockFileNodes (/workspace/Hospital-Management-System/node_modules/nx/src/plugins/js/lock-file/lock-file.js:48:59)
+    at exports.createNodes (/workspace/Hospital-Management-System/node_modules/nx/src/plugins/js/index.js:47:64)
+    at /workspace/Hospital-Management-System/node_modules/nx/src/project-graph/plugins/utils.js:47:33
+    at Array.map (<anonymous>)
+    at createNodesFromFiles (/workspace/Hospital-Management-System/node_modules/nx/src/project-graph/plugins/utils.js:45:35)
+    at LoadedNxPlugin.createNodes (/workspace/Hospital-Management-System/node_modules/nx/src/project-graph/plugins/internal-api.js:27:76)
+    at LoadedNxPlugin.createNodes.<computed> (/workspace/Hospital-Management-System/node_modules/nx/src/project-graph/plugins/internal-api.js:44:34)
+
+[NX Daemon Server] - 2025-06-07T12:51:19.283Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (outputs)
+ WARN  The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
+ WARN  The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.

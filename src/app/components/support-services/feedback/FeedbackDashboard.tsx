@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -5,7 +17,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/ui/data-table';
@@ -15,7 +26,7 @@ import { Loader2, Search, Filter, Download, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-// Define types for feedback and complaint data
+// Define types for feedback and complaint data;
 interface Feedback {
   id: string;
   type: string;
@@ -68,7 +79,7 @@ interface AnalyticsData {
   period: string;
 }
 
-// Define columns for feedback table
+// Define columns for feedback table;
 const feedbackColumns: ColumnDef<Feedback>[] = [
   {
     accessorKey: 'id',
@@ -79,7 +90,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     accessorKey: 'type',
     header: 'Type',
     cell: ({ row }) => (
-      <Badge variant="outline" className="capitalize">
+      <Badge variant="outline" className="capitalize">;
         {row.getValue('type').replace(/_/g, ' ').toLowerCase()}
       </Badge>
     ),
@@ -90,10 +101,10 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     cell: ({ row }) => {
       const rating = row.getValue('rating') as number;
       return (
-        <div className="flex">
+        <div className="flex">;
           {[...Array(5)].map((_, i) => (
-            <span key={i} className={`text-sm ${i < rating ? 'text-yellow-500' : 'text-gray-300'}`}>
-              ★
+            <span key={i} className={`text-sm ${i < rating ? 'text-yellow-500' : 'text-gray-300'}`}>;
+              ★;
             </span>
           ))}
         </div>
@@ -104,7 +115,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     accessorKey: 'source',
     header: 'Source',
     cell: ({ row }) => (
-      <Badge variant="secondary" className="capitalize">
+      <Badge variant="secondary" className="capitalize">;
         {row.getValue('source').toLowerCase()}
       </Badge>
     ),
@@ -140,7 +151,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
       }
       
       return (
-        <Badge variant={variant} className="capitalize">
+        <Badge variant={variant} className="capitalize">;
           {status.toLowerCase()}
         </Badge>
       );
@@ -155,13 +166,13 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     id: 'actions',
     cell: ({ row }) => (
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/feedback/${row.original.id}`}>
-        View
+        View;
       </Button>
     ),
   },
 ];
 
-// Define columns for complaint table
+// Define columns for complaint table;
 const complaintColumns: ColumnDef<Complaint>[] = [
   {
     accessorKey: 'id',
@@ -177,7 +188,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     accessorKey: 'category',
     header: 'Category',
     cell: ({ row }) => (
-      <Badge variant="outline" className="capitalize">
+      <Badge variant="outline" className="capitalize">;
         {row.getValue('category').toLowerCase()}
       </Badge>
     ),
@@ -205,7 +216,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
       }
       
       return (
-        <Badge variant={variant} className="capitalize">
+        <Badge variant={variant} className="capitalize">;
           {severity.toLowerCase()}
         </Badge>
       );
@@ -237,7 +248,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
       }
       
       return (
-        <Badge variant={variant} className="capitalize">
+        <Badge variant={variant} className="capitalize">;
           {status.toLowerCase().replace(/_/g, ' ')}
         </Badge>
       );
@@ -268,16 +279,16 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     id: 'actions',
     cell: ({ row }) => (
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/complaints/${row.original.id}`}>
-        View
+        View;
       </Button>
     ),
   },
 ];
 
-// Define color palette for charts
+// Define color palette for charts;
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FF6B6B', '#6C757D'];
 
-export default function FeedbackDashboard() {
+export default const FeedbackDashboard = () {
   const [activeTab, setActiveTab] = useState('feedback');
   const [isLoading, setIsLoading] = useState(true);
   const [feedbackData, setFeedbackData] = useState<Feedback[]>([]);
@@ -285,7 +296,7 @@ export default function FeedbackDashboard() {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [analyticsPeriod, setAnalyticsPeriod] = useState('MONTHLY');
   
-  // Filters
+  // Filters;
   const [feedbackFilters, setFeedbackFilters] = useState({
     type: '',
     source: '',
@@ -306,7 +317,7 @@ export default function FeedbackDashboard() {
     limit: 10,
   });
   
-  // Pagination
+  // Pagination;
   const [feedbackPagination, setFeedbackPagination] = useState({
     total: 0,
     totalPages: 0,
@@ -317,7 +328,7 @@ export default function FeedbackDashboard() {
     totalPages: 0,
   });
 
-  // Load data on component mount and when filters change
+  // Load data on component mount and when filters change;
   useEffect(() => {
     loadFeedbackData();
   }, [feedbackFilters]);
@@ -330,7 +341,7 @@ export default function FeedbackDashboard() {
     loadAnalyticsData();
   }, [analyticsPeriod]);
 
-  // Load feedback data
+  // Load feedback data;
   const loadFeedbackData = async () => {
     setIsLoading(true);
     try {
@@ -351,7 +362,7 @@ export default function FeedbackDashboard() {
         totalPages: data.pagination.totalPages,
       });
     } catch (error) {
-      console.error('Error loading feedback data:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to load feedback data',
@@ -362,7 +373,7 @@ export default function FeedbackDashboard() {
     }
   };
 
-  // Load complaint data
+  // Load complaint data;
   const loadComplaintData = async () => {
     setIsLoading(true);
     try {
@@ -383,7 +394,7 @@ export default function FeedbackDashboard() {
         totalPages: data.pagination.totalPages,
       });
     } catch (error) {
-      console.error('Error loading complaint data:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to load complaint data',
@@ -394,7 +405,7 @@ export default function FeedbackDashboard() {
     }
   };
 
-  // Load analytics data
+  // Load analytics data;
   const loadAnalyticsData = async () => {
     try {
       const response = await fetch(`/api/support-services/feedback/analytics?period=${analyticsPeriod}`);
@@ -405,7 +416,7 @@ export default function FeedbackDashboard() {
       const data = await response.json();
       setAnalyticsData(data);
     } catch (error) {
-      console.error('Error loading analytics data:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to load analytics data',
@@ -414,26 +425,26 @@ export default function FeedbackDashboard() {
     }
   };
 
-  // Handle feedback filter changes
+  // Handle feedback filter changes;
   const handleFeedbackFilterChange = (key: string, value: string | number) => {
     setFeedbackFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change
+      page: key === 'page' ? value : 1, // Reset page when other filters change;
     }));
   };
 
-  // Handle complaint filter changes
+  // Handle complaint filter changes;
   const handleComplaintFilterChange = (key: string, value: string | number) => {
     setComplaintFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change
+      page: key === 'page' ? value : 1, // Reset page when other filters change;
     }));
   };
 
-  // Export data to CSV
-  const exportToCSV = (data: any[], filename: string) => {
+  // Export data to CSV;
+  const exportToCSV = (data: unknown[], filename: string) => {
     const headers = Object.keys(data[0]).filter(key => !key.startsWith('_'));
     const csvContent = [
       headers.join(','),
@@ -444,8 +455,8 @@ export default function FeedbackDashboard() {
             return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
           }
           return typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
-        }).join(',')
-      )
+        }).join(',');
+      );
     ].join('\n');
     
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -459,8 +470,8 @@ export default function FeedbackDashboard() {
     document.body.removeChild(link);
   };
 
-  // Prepare data for charts
-  const prepareChartData = (data: any[]) => {
+  // Prepare data for charts;
+  const prepareChartData = (data: unknown[]) => {
     return data.map((item, index) => ({
       ...item,
       color: COLORS[index % COLORS.length],
@@ -468,114 +479,114 @@ export default function FeedbackDashboard() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Feedback & Complaint Dashboard</h1>
-        <div className="flex space-x-2">
+    <div className="container mx-auto py-6 space-y-6">;
+      <div className="flex justify-between items-center">;
+        <h1 className="text-3xl font-bold">Feedback & Complaint Dashboard</h1>;
+        <div className="flex space-x-2">;
           <Button variant="outline" onClick={() => window.location.href = '/feedback/new'}>
-            New Feedback
+            New Feedback;
           </Button>
           <Button onClick={() => window.location.href = '/complaints/new'}>
-            New Complaint
+            New Complaint;
           </Button>
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-3 w-[400px]">
-          <TabsTrigger value="feedback">Feedback</TabsTrigger>
-          <TabsTrigger value="complaints">Complaints</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">;
+        <TabsList className="grid grid-cols-3 w-[400px]">;
+          <TabsTrigger value="feedback">Feedback</TabsTrigger>;
+          <TabsTrigger value="complaints">Complaints</TabsTrigger>;
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>;
         </TabsList>
 
         {/* Feedback Tab */}
-        <TabsContent value="feedback" className="space-y-4">
+        <TabsContent value="feedback" className="space-y-4">;
           <Card>
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-3">;
               <CardTitle>Feedback Management</CardTitle>
               <CardDescription>
-                View and manage feedback from patients, visitors, and staff.
+                View and manage feedback from patients, visitors, and staff.;
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-4 mb-4">
-                <div className="w-full md:w-auto">
-                  <Label htmlFor="feedback-type">Type</Label>
-                  <Select
+              <div className="flex flex-wrap gap-4 mb-4">;
+                <div className="w-full md:w-auto">;
+                  <Label htmlFor="feedback-type">Type</Label>;
+                  <Select;
                     value={feedbackFilters.type}
                     onValueChange={(value) => handleFeedbackFilterChange('type', value)}
                   >
-                    <SelectTrigger id="feedback-type" className="w-[180px]">
-                      <SelectValue placeholder="All Types" />
+                    <SelectTrigger id="feedback-type" className="w-[180px]">;
+                      <SelectValue placeholder="All Types" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>
-                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>
-                      <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>
-                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>
-                      <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
+                      <SelectItem value="">All Types</SelectItem>;
+                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>;
+                      <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>;
+                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>;
+                      <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">
-                  <Label htmlFor="feedback-source">Source</Label>
-                  <Select
+                <div className="w-full md:w-auto">;
+                  <Label htmlFor="feedback-source">Source</Label>;
+                  <Select;
                     value={feedbackFilters.source}
                     onValueChange={(value) => handleFeedbackFilterChange('source', value)}
                   >
-                    <SelectTrigger id="feedback-source" className="w-[180px]">
-                      <SelectValue placeholder="All Sources" />
+                    <SelectTrigger id="feedback-source" className="w-[180px]">;
+                      <SelectValue placeholder="All Sources" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Sources</SelectItem>
-                      <SelectItem value="PATIENT">Patient</SelectItem>
-                      <SelectItem value="VISITOR">Visitor</SelectItem>
-                      <SelectItem value="STAFF">Staff</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
+                      <SelectItem value="">All Sources</SelectItem>;
+                      <SelectItem value="PATIENT">Patient</SelectItem>;
+                      <SelectItem value="VISITOR">Visitor</SelectItem>;
+                      <SelectItem value="STAFF">Staff</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">
-                  <Label htmlFor="feedback-status">Status</Label>
-                  <Select
+                <div className="w-full md:w-auto">;
+                  <Label htmlFor="feedback-status">Status</Label>;
+                  <Select;
                     value={feedbackFilters.status}
                     onValueChange={(value) => handleFeedbackFilterChange('status', value)}
                   >
-                    <SelectTrigger id="feedback-status" className="w-[180px]">
-                      <SelectValue placeholder="All Statuses" />
+                    <SelectTrigger id="feedback-status" className="w-[180px]">;
+                      <SelectValue placeholder="All Statuses" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>
-                      <SelectItem value="NEW">New</SelectItem>
-                      <SelectItem value="REVIEWED">Reviewed</SelectItem>
-                      <SelectItem value="ADDRESSED">Addressed</SelectItem>
-                      <SelectItem value="CLOSED">Closed</SelectItem>
+                      <SelectItem value="">All Statuses</SelectItem>;
+                      <SelectItem value="NEW">New</SelectItem>;
+                      <SelectItem value="REVIEWED">Reviewed</SelectItem>;
+                      <SelectItem value="ADDRESSED">Addressed</SelectItem>;
+                      <SelectItem value="CLOSED">Closed</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="flex-grow"></div>
+                <div className="flex-grow"></div>;
 
-                <div className="flex items-end space-x-2">
+                <div className="flex items-end space-x-2">;
                   <Button variant="outline" onClick={() => loadFeedbackData()}>
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Refresh
+                    <RefreshCw className="h-4 w-4 mr-2" />;
+                    Refresh;
                   </Button>
-                  <Button
-                    variant="outline"
+                  <Button;
+                    variant="outline";
                     onClick={() => exportToCSV(feedbackData, 'feedback')}
                     disabled={feedbackData.length === 0}
                   >
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
+                    <Download className="h-4 w-4 mr-2" />;
+                    Export;
                   </Button>
                 </div>
               </div>
 
-              <DataTable
+              <DataTable;
                 columns={feedbackColumns}
                 data={feedbackData}
                 isLoading={isLoading}
@@ -591,95 +602,95 @@ export default function FeedbackDashboard() {
         </TabsContent>
 
         {/* Complaints Tab */}
-        <TabsContent value="complaints" className="space-y-4">
+        <TabsContent value="complaints" className="space-y-4">;
           <Card>
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-3">;
               <CardTitle>Complaint Management</CardTitle>
               <CardDescription>
-                View and manage complaints from patients, visitors, and staff.
+                View and manage complaints from patients, visitors, and staff.;
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-4 mb-4">
-                <div className="w-full md:w-auto">
-                  <Label htmlFor="complaint-category">Category</Label>
-                  <Select
+              <div className="flex flex-wrap gap-4 mb-4">;
+                <div className="w-full md:w-auto">;
+                  <Label htmlFor="complaint-category">Category</Label>;
+                  <Select;
                     value={complaintFilters.category}
                     onValueChange={(value) => handleComplaintFilterChange('category', value)}
                   >
-                    <SelectTrigger id="complaint-category" className="w-[180px]">
-                      <SelectValue placeholder="All Categories" />
+                    <SelectTrigger id="complaint-category" className="w-[180px]">;
+                      <SelectValue placeholder="All Categories" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Categories</SelectItem>
-                      <SelectItem value="CLINICAL">Clinical Care</SelectItem>
-                      <SelectItem value="ADMINISTRATIVE">Administrative</SelectItem>
-                      <SelectItem value="FACILITY">Facility</SelectItem>
-                      <SelectItem value="STAFF">Staff Behavior</SelectItem>
-                      <SelectItem value="BILLING">Billing</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
+                      <SelectItem value="">All Categories</SelectItem>;
+                      <SelectItem value="CLINICAL">Clinical Care</SelectItem>;
+                      <SelectItem value="ADMINISTRATIVE">Administrative</SelectItem>;
+                      <SelectItem value="FACILITY">Facility</SelectItem>;
+                      <SelectItem value="STAFF">Staff Behavior</SelectItem>;
+                      <SelectItem value="BILLING">Billing</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">
-                  <Label htmlFor="complaint-severity">Severity</Label>
-                  <Select
+                <div className="w-full md:w-auto">;
+                  <Label htmlFor="complaint-severity">Severity</Label>;
+                  <Select;
                     value={complaintFilters.severity}
                     onValueChange={(value) => handleComplaintFilterChange('severity', value)}
                   >
-                    <SelectTrigger id="complaint-severity" className="w-[180px]">
-                      <SelectValue placeholder="All Severities" />
+                    <SelectTrigger id="complaint-severity" className="w-[180px]">;
+                      <SelectValue placeholder="All Severities" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Severities</SelectItem>
-                      <SelectItem value="LOW">Low</SelectItem>
-                      <SelectItem value="MEDIUM">Medium</SelectItem>
-                      <SelectItem value="HIGH">High</SelectItem>
-                      <SelectItem value="CRITICAL">Critical</SelectItem>
+                      <SelectItem value="">All Severities</SelectItem>;
+                      <SelectItem value="LOW">Low</SelectItem>;
+                      <SelectItem value="MEDIUM">Medium</SelectItem>;
+                      <SelectItem value="HIGH">High</SelectItem>;
+                      <SelectItem value="CRITICAL">Critical</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">
-                  <Label htmlFor="complaint-status">Status</Label>
-                  <Select
+                <div className="w-full md:w-auto">;
+                  <Label htmlFor="complaint-status">Status</Label>;
+                  <Select;
                     value={complaintFilters.status}
                     onValueChange={(value) => handleComplaintFilterChange('status', value)}
                   >
-                    <SelectTrigger id="complaint-status" className="w-[180px]">
-                      <SelectValue placeholder="All Statuses" />
+                    <SelectTrigger id="complaint-status" className="w-[180px]">;
+                      <SelectValue placeholder="All Statuses" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>
-                      <SelectItem value="SUBMITTED">Submitted</SelectItem>
-                      <SelectItem value="UNDER_INVESTIGATION">Under Investigation</SelectItem>
-                      <SelectItem value="RESOLVED">Resolved</SelectItem>
-                      <SelectItem value="CLOSED">Closed</SelectItem>
-                      <SelectItem value="ESCALATED">Escalated</SelectItem>
+                      <SelectItem value="">All Statuses</SelectItem>;
+                      <SelectItem value="SUBMITTED">Submitted</SelectItem>;
+                      <SelectItem value="UNDER_INVESTIGATION">Under Investigation</SelectItem>;
+                      <SelectItem value="RESOLVED">Resolved</SelectItem>;
+                      <SelectItem value="CLOSED">Closed</SelectItem>;
+                      <SelectItem value="ESCALATED">Escalated</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="flex-grow"></div>
+                <div className="flex-grow"></div>;
 
-                <div className="flex items-end space-x-2">
+                <div className="flex items-end space-x-2">;
                   <Button variant="outline" onClick={() => loadComplaintData()}>
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Refresh
+                    <RefreshCw className="h-4 w-4 mr-2" />;
+                    Refresh;
                   </Button>
-                  <Button
-                    variant="outline"
+                  <Button;
+                    variant="outline";
                     onClick={() => exportToCSV(complaintData, 'complaints')}
                     disabled={complaintData.length === 0}
                   >
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
+                    <Download className="h-4 w-4 mr-2" />;
+                    Export;
                   </Button>
                 </div>
               </div>
 
-              <DataTable
+              <DataTable;
                 columns={complaintColumns}
                 data={complaintData}
                 isLoading={isLoading}
@@ -695,30 +706,30 @@ export default function FeedbackDashboard() {
         </TabsContent>
 
         {/* Analytics Tab */}
-        <TabsContent value="analytics" className="space-y-4">
+        <TabsContent value="analytics" className="space-y-4">;
           <Card>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-center">
+            <CardHeader className="pb-3">;
+              <div className="flex justify-between items-center">;
                 <div>
                   <CardTitle>Feedback & Complaint Analytics</CardTitle>
                   <CardDescription>
-                    Analyze trends and patterns in feedback and complaints.
+                    Analyze trends and patterns in feedback and complaints.;
                   </CardDescription>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Label htmlFor="analytics-period">Time Period:</Label>
-                  <Select
+                <div className="flex items-center space-x-2">;
+                  <Label htmlFor="analytics-period">Time Period:</Label>;
+                  <Select;
                     value={analyticsPeriod}
                     onValueChange={setAnalyticsPeriod}
                   >
-                    <SelectTrigger id="analytics-period" className="w-[150px]">
-                      <SelectValue placeholder="Select Period" />
+                    <SelectTrigger id="analytics-period" className="w-[150px]">;
+                      <SelectValue placeholder="Select Period" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="DAILY">Last 30 Days</SelectItem>
-                      <SelectItem value="WEEKLY">Last 90 Days</SelectItem>
-                      <SelectItem value="MONTHLY">Last 12 Months</SelectItem>
-                      <SelectItem value="YEARLY">Last 5 Years</SelectItem>
+                      <SelectItem value="DAILY">Last 30 Days</SelectItem>;
+                      <SelectItem value="WEEKLY">Last 90 Days</SelectItem>;
+                      <SelectItem value="MONTHLY">Last 12 Months</SelectItem>;
+                      <SelectItem value="YEARLY">Last 5 Years</SelectItem>;
                     </SelectContent>
                   </Select>
                 </div>
@@ -726,35 +737,35 @@ export default function FeedbackDashboard() {
             </CardHeader>
             <CardContent>
               {!analyticsData ? (
-                <div className="flex justify-center items-center h-64">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="flex justify-center items-center h-64">;
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />;
                 </div>
               ) : (
-                <div className="space-y-8">
+                <div className="space-y-8">;
                   {/* Feedback Overview */}
                   <div>
-                    <h3 className="text-lg font-medium mb-4">Feedback Overview</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <h3 className="text-lg font-medium mb-4">Feedback Overview</h3>;
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                       {/* Feedback by Type */}
                       <Card>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-base">Feedback by Type</CardTitle>
+                        <CardHeader className="pb-2">;
+                          <CardTitle className="text-base">Feedback by Type</CardTitle>;
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
+                          <div className="h-64">;
+                            <ResponsiveContainer width="100%" height="100%">;
                               <PieChart>
-                                <Pie
+                                <Pie;
                                   data={prepareChartData(analyticsData.feedbackByType)}
-                                  dataKey="_count"
-                                  nameKey="type"
-                                  cx="50%"
-                                  cy="50%"
+                                  dataKey="_count";
+                                  nameKey="type";
+                                  cx="50%";
+                                  cy="50%";
                                   outerRadius={80}
                                   label={({ type }) => type.replace(/_/g, ' ')}
                                 >
                                   {analyticsData.feedbackByType.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
                                   ))}
                                 </Pie>
                                 <Tooltip formatter={(value, name) => [value, name.replace(/_/g, ' ')]} />
@@ -767,13 +778,13 @@ export default function FeedbackDashboard() {
 
                       {/* Average Ratings */}
                       <Card>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-base">Average Ratings</CardTitle>
+                        <CardHeader className="pb-2">;
+                          <CardTitle className="text-base">Average Ratings</CardTitle>;
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <BarChart
+                          <div className="h-64">;
+                            <ResponsiveContainer width="100%" height="100%">;
+                              <BarChart;
                                 data={[
                                   { name: 'Overall', rating: analyticsData.overallRating },
                                   ...Object.entries(analyticsData.ratingsByServiceType).map(([type, data]) => ({
@@ -783,11 +794,11 @@ export default function FeedbackDashboard() {
                                 ]}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                               >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} />
-                                <YAxis domain={[0, 5]} />
+                                <CartesianGrid strokeDasharray="3 3" />;
+                                <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} />;
+                                <YAxis domain={[0, 5]} />;
                                 <Tooltip formatter={(value) => [Number(value).toFixed(2), 'Rating']} />
-                                <Bar dataKey="rating" fill="#8884d8" />
+                                <Bar dataKey="rating" fill="#8884d8" />;
                               </BarChart>
                             </ResponsiveContainer>
                           </div>
@@ -798,28 +809,28 @@ export default function FeedbackDashboard() {
 
                   {/* Complaint Overview */}
                   <div>
-                    <h3 className="text-lg font-medium mb-4">Complaint Overview</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <h3 className="text-lg font-medium mb-4">Complaint Overview</h3>;
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                       {/* Complaints by Category */}
                       <Card>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-base">Complaints by Category</CardTitle>
+                        <CardHeader className="pb-2">;
+                          <CardTitle className="text-base">Complaints by Category</CardTitle>;
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
+                          <div className="h-64">;
+                            <ResponsiveContainer width="100%" height="100%">;
                               <PieChart>
-                                <Pie
+                                <Pie;
                                   data={prepareChartData(analyticsData.complaintsByCategory)}
-                                  dataKey="_count"
-                                  nameKey="category"
-                                  cx="50%"
-                                  cy="50%"
+                                  dataKey="_count";
+                                  nameKey="category";
+                                  cx="50%";
+                                  cy="50%";
                                   outerRadius={80}
                                   label={({ category }) => category.replace(/_/g, ' ')}
                                 >
                                   {analyticsData.complaintsByCategory.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
                                   ))}
                                 </Pie>
                                 <Tooltip formatter={(value, name) => [value, name.replace(/_/g, ' ')]} />
@@ -832,21 +843,21 @@ export default function FeedbackDashboard() {
 
                       {/* Complaints by Severity */}
                       <Card>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-base">Complaints by Severity</CardTitle>
+                        <CardHeader className="pb-2">;
+                          <CardTitle className="text-base">Complaints by Severity</CardTitle>;
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <BarChart
+                          <div className="h-64">;
+                            <ResponsiveContainer width="100%" height="100%">;
+                              <BarChart;
                                 data={analyticsData.complaintsBySeverity}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                               >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="severity" />
+                                <CartesianGrid strokeDasharray="3 3" />;
+                                <XAxis dataKey="severity" />;
                                 <YAxis />
                                 <Tooltip formatter={(value, name, props) => [value, props.payload.severity]} />
-                                <Bar dataKey="_count" name="Count">
+                                <Bar dataKey="_count" name="Count">;
                                   {analyticsData.complaintsBySeverity.map((entry, index) => {
                                     let color = '#8884d8';
                                     switch (entry.severity) {
@@ -876,13 +887,13 @@ export default function FeedbackDashboard() {
 
                   {/* Resolution Times */}
                   <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Average Resolution Time (Days)</CardTitle>
+                    <CardHeader className="pb-2">;
+                      <CardTitle className="text-base">Average Resolution Time (Days)</CardTitle>;
                     </CardHeader>
                     <CardContent>
-                      <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
+                      <div className="h-64">;
+                        <ResponsiveContainer width="100%" height="100%">;
+                          <BarChart;
                             data={[
                               { name: 'Overall', days: analyticsData.resolutionTimes.overall.avgDays },
                               { name: 'Low', days: analyticsData.resolutionTimes.LOW.avgDays },
@@ -892,16 +903,16 @@ export default function FeedbackDashboard() {
                             ]}
                             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                           >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
+                            <CartesianGrid strokeDasharray="3 3" />;
+                            <XAxis dataKey="name" />;
                             <YAxis />
                             <Tooltip formatter={(value) => [Number(value).toFixed(1), 'Days']} />
-                            <Bar dataKey="days" fill="#8884d8">
-                              <Cell fill="#82ca9d" />
-                              <Cell fill="#82ca9d" />
-                              <Cell fill="#8884d8" />
-                              <Cell fill="#ffc658" />
-                              <Cell fill="#ff8042" />
+                            <Bar dataKey="days" fill="#8884d8">;
+                              <Cell fill="#82ca9d" />;
+                              <Cell fill="#82ca9d" />;
+                              <Cell fill="#8884d8" />;
+                              <Cell fill="#ffc658" />;
+                              <Cell fill="#ff8042" />;
                             </Bar>
                           </BarChart>
                         </ResponsiveContainer>

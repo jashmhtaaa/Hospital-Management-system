@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Clinical Guidelines Service
- * Enterprise-grade evidence-based medicine rule engine with latest clinical guidelines
+ * Clinical Guidelines Service;
+ * Enterprise-grade evidence-based medicine rule engine with latest clinical guidelines;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -11,7 +22,7 @@ import { pubsub } from '@/lib/graphql/schema-base';
 import { EncryptionService } from '@/lib/security/encryption.service';
 import { AuditService } from '@/lib/security/audit.service';
 
-// Clinical guideline models
+// Clinical guideline models;
 export interface ClinicalGuideline {
   id: string;
   name: string;
@@ -43,14 +54,14 @@ export enum GuidelineStatus {
 }
 
 export enum EvidenceLevel {
-  LEVEL_1A = 'LEVEL_1A', // Systematic review of RCTs
-  LEVEL_1B = 'LEVEL_1B', // Individual RCT
-  LEVEL_2A = 'LEVEL_2A', // Systematic review of cohort studies
-  LEVEL_2B = 'LEVEL_2B', // Individual cohort study
-  LEVEL_3A = 'LEVEL_3A', // Systematic review of case-control studies
-  LEVEL_3B = 'LEVEL_3B', // Individual case-control study
-  LEVEL_4 = 'LEVEL_4',   // Case series
-  LEVEL_5 = 'LEVEL_5',   // Expert opinion
+  LEVEL_1A = 'LEVEL_1A', // Systematic review of RCTs;
+  LEVEL_1B = 'LEVEL_1B', // Individual RCT;
+  LEVEL_2A = 'LEVEL_2A', // Systematic review of cohort studies;
+  LEVEL_2B = 'LEVEL_2B', // Individual cohort study;
+  LEVEL_3A = 'LEVEL_3A', // Systematic review of case-control studies;
+  LEVEL_3B = 'LEVEL_3B', // Individual case-control study;
+  LEVEL_4 = 'LEVEL_4',   // Case series;
+  LEVEL_5 = 'LEVEL_5',   // Expert opinion;
 }
 
 export enum RecommendationStrength {
@@ -137,7 +148,7 @@ export interface DecisionRule {
 export interface Condition {
   parameter: string;
   operator: Operator;
-  value: any;
+  value: unknown;
   unit?: string;
   valueType: ValueType;
 }
@@ -237,7 +248,7 @@ export interface UserFeedback {
   clinicalRelevanceScore?: number;
 }
 
-// Patient evaluation models
+// Patient evaluation models;
 export interface PatientEvaluation {
   patientId: string;
   encounterId?: string;
@@ -415,18 +426,18 @@ export interface UserAction {
   details?: string;
 }
 
-// Patient deterioration models
+// Patient deterioration models;
 export interface DeteriorationPrediction {
   patientId: string;
   encounterId: string;
   timestamp: Date;
-  predictedRisk: number; // 0-100
+  predictedRisk: number; // 0-100;
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   riskTrajectory: 'IMPROVING' | 'STABLE' | 'WORSENING' | 'RAPIDLY_WORSENING';
   confidenceInterval: [number, number];
   contributingFactors: ContributingFactor[];
   recommendedActions: RecommendedAction[];
-  timeToDeterioration?: number; // minutes
+  timeToDeterioration?: number; // minutes;
   modelInformation: ModelInformation;
   previousPredictions: PreviousPrediction[];
   clinicalValidation?: ClinicalValidation;
@@ -434,11 +445,11 @@ export interface DeteriorationPrediction {
 
 export interface ContributingFactor {
   factor: string;
-  value: any;
+  value: unknown;
   normalRange?: string;
-  contributionWeight: number; // 0-100
+  contributionWeight: number; // 0-100;
   trend: 'IMPROVING' | 'STABLE' | 'WORSENING';
-  dataAge: number; // minutes
+  dataAge: number; // minutes;
 }
 
 export interface RecommendedAction {
@@ -475,7 +486,7 @@ export interface ClinicalValidation {
   notes?: string;
 }
 
-// Sepsis models
+// Sepsis models;
 export interface SepsisAlertConfig {
   id: string;
   name: string;
@@ -486,8 +497,8 @@ export interface SepsisAlertConfig {
   alertThresholds: AlertThreshold[];
   escalationProtocol: EscalationProtocol;
   interventions: SepsisIntervention[];
-  monitoringFrequency: number; // minutes
-  reEvaluationPeriod: number; // minutes
+  monitoringFrequency: number; // minutes;
+  reEvaluationPeriod: number; // minutes;
   exclusionCriteria: string[];
   created: Date;
   createdBy: string;
@@ -510,7 +521,7 @@ export interface SepsisCriteria {
   vitalSigns: SepsisVitalCriteria[];
   labValues: SepsisLabCriteria[];
   clinicalFactors: SepsisClinicalCriteria[];
-  combinationRules: string; // e.g., "(1 AND 2) OR (3 AND 4)"
+  combinationRules: string; // e.g., "(1 AND 2) OR (3 AND 4)";
   minimumScore?: number;
 }
 
@@ -521,7 +532,7 @@ export interface SepsisVitalCriteria {
   value: number;
   unit: string;
   points: number;
-  duration?: number; // minutes sustained
+  duration?: number; // minutes sustained;
 }
 
 export interface SepsisLabCriteria {
@@ -531,14 +542,14 @@ export interface SepsisLabCriteria {
   value: number;
   unit: string;
   points: number;
-  lookbackPeriod?: number; // hours
+  lookbackPeriod?: number; // hours;
 }
 
 export interface SepsisClinicalCriteria {
   id: string;
   parameter: string;
   operator: Operator;
-  value: any;
+  value: unknown;
   points: number;
 }
 
@@ -552,7 +563,7 @@ export interface AlertThreshold {
 
 export interface EscalationProtocol {
   levels: EscalationLevel[];
-  autoEscalateAfter: number; // minutes without acknowledgment
+  autoEscalateAfter: number; // minutes without acknowledgment;
   maxEscalationLevel: number;
 }
 
@@ -599,7 +610,7 @@ export interface SepsisAlert {
 
 export interface TriggeringFactor {
   parameter: string;
-  value: any;
+  value: unknown;
   unit?: string;
   normalRange?: string;
   weight: number;
@@ -632,7 +643,7 @@ export interface InterventionStatus {
   notes?: string;
 }
 
-// Medication optimization models
+// Medication optimization models;
 export interface MedicationOptimization {
   id: string;
   patientId: string;
@@ -642,7 +653,7 @@ export interface MedicationOptimization {
   medications: PatientMedication[];
   pharmacogenomicProfile?: PharmacogenomicProfile;
   optimizationResults: OptimizationResult[];
-  overallScore: number; // 0-100
+  overallScore: number; // 0-100;
   implementationStatus: 'PENDING' | 'PARTIAL' | 'COMPLETE' | 'REJECTED';
   implementationNotes?: string;
   savings?: MedicationSavings;
@@ -697,7 +708,7 @@ export interface OptimizationReason {
   category: 'INTERACTION' | 'ALLERGY' | 'DUPLICATE' | 'DOSAGE' | 'INDICATION' | 'CONTRAINDICATION' | 'PHARMACOGENOMIC' | 'FORMULARY' | 'COST' | 'MONITORING' | 'ADHERENCE';
   description: string;
   evidence: string;
-  severityScore: number; // 0-100
+  severityScore: number; // 0-100;
 }
 
 export interface MedicationAlternative {
@@ -706,7 +717,7 @@ export interface MedicationAlternative {
   route: string;
   frequency: string;
   rationale: string;
-  benefitScore: number; // 0-100
+  benefitScore: number; // 0-100;
   costComparison: 'LOWER' | 'SIMILAR' | 'HIGHER';
   pharmacogenomicFit: 'BETTER' | 'SIMILAR' | 'WORSE' | 'UNKNOWN';
 }
@@ -718,7 +729,7 @@ export interface MedicationSavings {
   adherenceImprovementEstimate: number;
 }
 
-@Injectable()
+@Injectable();
 export class ClinicalGuidelinesService {
   constructor(
     private prisma: PrismaService,
@@ -727,7 +738,7 @@ export class ClinicalGuidelinesService {
   ) {}
 
   /**
-   * Get all clinical guidelines
+   * Get all clinical guidelines;
    */
   async getAllGuidelines(filters?: {
     status?: GuidelineStatus;
@@ -736,31 +747,31 @@ export class ClinicalGuidelinesService {
     condition?: string;
   }): Promise<ClinicalGuideline[]> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `guidelines:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.status) where.status = filters.status;
       if (filters?.category) where.category = { has: filters.category };
       if (filters?.specialty) where.specialties = { has: filters.specialty };
       if (filters?.condition) where.conditions = { has: filters.condition };
       
-      // Only return active guidelines by default
+      // Only return active guidelines by default;
       if (!filters?.status) where.status = GuidelineStatus.ACTIVE;
 
-      // Query database
+      // Query database;
       const guidelines = await this.prisma.clinicalGuideline.findMany({
         where,
         orderBy: { effectiveDate: 'desc' },
       });
 
-      // Cache results
-      await cacheService.cacheResult('cdss:', cacheKey, guidelines, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('cdss:', cacheKey, guidelines, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.guideline_queries', 1, {
         status: filters?.status || 'ACTIVE',
         category: filters?.category || 'ALL',
@@ -770,47 +781,47 @@ export class ClinicalGuidelinesService {
 
       return guidelines as ClinicalGuideline[];
     } catch (error) {
-      console.error('Error fetching clinical guidelines:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get guideline by ID
+   * Get guideline by ID;
    */
   async getGuidelineById(id: string): Promise<ClinicalGuideline | null> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `guideline:${id}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Query database
+      // Query database;
       const guideline = await this.prisma.clinicalGuideline.findUnique({
         where: { id },
       });
 
       if (!guideline) return null;
 
-      // Cache result
-      await cacheService.cacheResult('cdss:', cacheKey, guideline, 3600); // 1 hour
+      // Cache result;
+      await cacheService.cacheResult('cdss:', cacheKey, guideline, 3600); // 1 hour;
 
       return guideline as ClinicalGuideline;
     } catch (error) {
-      console.error(`Error fetching guideline ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create new clinical guideline
+   * Create new clinical guideline;
    */
   async createGuideline(guideline: Omit<ClinicalGuideline, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ClinicalGuideline> {
     try {
-      // Validate guideline
+      // Validate guideline;
       this.validateGuideline(guideline);
 
-      // Create guideline
+      // Create guideline;
       const newGuideline = await this.prisma.clinicalGuideline.create({
         data: {
           ...guideline,
@@ -820,7 +831,7 @@ export class ClinicalGuidelinesService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'CLINICAL_GUIDELINE',
@@ -833,42 +844,42 @@ export class ClinicalGuidelinesService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern('cdss:guidelines:*');
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.guidelines_created', 1, {
         status: guideline.status,
         evidenceLevel: guideline.evidenceLevel,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('GUIDELINE_CREATED', {
         guidelineCreated: newGuideline,
       });
 
       return newGuideline as ClinicalGuideline;
     } catch (error) {
-      console.error('Error creating clinical guideline:', error);
+
       throw error;
     }
   }
 
   /**
-   * Update clinical guideline
+   * Update clinical guideline;
    */
   async updateGuideline(id: string, updates: Partial<ClinicalGuideline>, userId: string): Promise<ClinicalGuideline> {
     try {
-      // Get current guideline
+      // Get current guideline;
       const currentGuideline = await this.getGuidelineById(id);
       if (!currentGuideline) {
         throw new Error(`Guideline ${id} not found`);
       }
 
-      // Validate updates
+      // Validate updates;
       this.validateGuidelineUpdates(updates);
 
-      // Update guideline
+      // Update guideline;
       const updatedGuideline = await this.prisma.clinicalGuideline.update({
         where: { id },
         data: {
@@ -877,7 +888,7 @@ export class ClinicalGuidelinesService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'UPDATE',
         resourceType: 'CLINICAL_GUIDELINE',
@@ -890,7 +901,7 @@ export class ClinicalGuidelinesService {
         },
       });
 
-      // Update metadata with update history
+      // Update metadata with update history;
       if (!updatedGuideline.metadata.updateHistory) {
         updatedGuideline.metadata.updateHistory = [];
       }
@@ -914,24 +925,24 @@ export class ClinicalGuidelinesService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern(`cdss:guideline:${id}`);
       await cacheService.invalidatePattern('cdss:guidelines:*');
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('GUIDELINE_UPDATED', {
         guidelineUpdated: updatedGuideline,
       });
 
       return updatedGuideline as ClinicalGuideline;
     } catch (error) {
-      console.error(`Error updating guideline ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Evaluate patient against guidelines
+   * Evaluate patient against guidelines;
    */
   async evaluatePatient(
     patientId: string, 
@@ -943,24 +954,24 @@ export class ClinicalGuidelinesService {
     const startTime = performance.now();
     
     try {
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientData(patientId);
 
-      // Find applicable guidelines
+      // Find applicable guidelines;
       const guidelines = await this.findApplicableGuidelines(
         patientData,
         context,
-        specificGuidelineIds
+        specificGuidelineIds;
       );
 
-      // Evaluate each guideline
+      // Evaluate each guideline;
       const evaluations = await Promise.all(
         guidelines.map(guideline => 
-          this.evaluateGuidelineForPatient(guideline, patientId, encounterId, userId, context, patientData)
-        )
+          this.evaluateGuidelineForPatient(guideline, patientId, encounterId, userId, context, patientData);
+        );
       );
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('cdss.patient_evaluation_time', duration);
       metricsCollector.incrementCounter('cdss.patient_evaluations', 1, {
@@ -970,7 +981,7 @@ export class ClinicalGuidelinesService {
         specialty: context.specialty,
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'EVALUATE',
         resourceType: 'PATIENT_GUIDELINE',
@@ -987,48 +998,48 @@ export class ClinicalGuidelinesService {
 
       return evaluations;
     } catch (error) {
-      console.error(`Error evaluating patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Predict patient deterioration
+   * Predict patient deterioration;
    */
   async predictDeterioration(patientId: string, encounterId: string): Promise<DeteriorationPrediction> {
     const startTime = performance.now();
     
     try {
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientData(patientId);
       
-      // Get previous vital signs
-      const vitalSigns = await this.getPatientVitalSigns(patientId, 24); // last 24 hours
+      // Get previous vital signs;
+      const vitalSigns = await this.getPatientVitalSigns(patientId, 24); // last 24 hours;
       
-      // Get lab results
-      const labResults = await this.getPatientLabResults(patientId, 48); // last 48 hours
+      // Get lab results;
+      const labResults = await this.getPatientLabResults(patientId, 48); // last 48 hours;
       
-      // Get previous predictions
+      // Get previous predictions;
       const previousPredictions = await this.getPreviousPredictions(patientId, encounterId);
 
-      // Calculate risk score
+      // Calculate risk score;
       const prediction = await this.calculateDeteriorationRisk(
         patientId,
         patientData,
         vitalSigns,
         labResults,
-        previousPredictions
+        previousPredictions;
       );
 
-      // Save prediction
+      // Save prediction;
       await this.saveDeteriorationPrediction(prediction);
 
-      // Check if prediction requires alerts
+      // Check if prediction requires alerts;
       if (prediction.riskLevel === 'HIGH' || prediction.riskLevel === 'CRITICAL') {
         await this.generateDeteriorationAlert(prediction);
       }
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('cdss.deterioration_prediction_time', duration);
       metricsCollector.incrementCounter('cdss.deterioration_predictions', 1, {
@@ -1039,58 +1050,58 @@ export class ClinicalGuidelinesService {
 
       return prediction;
     } catch (error) {
-      console.error(`Error predicting deterioration for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Generate sepsis alert
+   * Generate sepsis alert;
    */
   async checkSepsisRisk(patientId: string, encounterId: string): Promise<SepsisAlert | null> {
     try {
-      // Get active sepsis alert config
+      // Get active sepsis alert config;
       const config = await this.getActiveSepsisConfig();
       
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientData(patientId);
       
-      // Get vitals
+      // Get vitals;
       const vitals = await this.getRecentVitals(patientId);
       
-      // Get labs
+      // Get labs;
       const labs = await this.getRecentLabs(patientId);
       
-      // Calculate sepsis score
+      // Calculate sepsis score;
       const { score, factors } = this.calculateSepsisScore(
         config, 
         patientData, 
         vitals, 
-        labs
+        labs;
       );
 
-      // Determine risk level
+      // Determine risk level;
       const riskLevel = this.determineSepsisRiskLevel(config, score);
       
-      // If score is below threshold, return null
+      // If score is below threshold, return null;
       if (riskLevel === 'LOW') {
         return null;
       }
 
-      // Create sepsis alert
+      // Create sepsis alert;
       const alert = await this.createSepsisAlert(
         patientId,
         encounterId,
         config,
         score,
         riskLevel,
-        factors
+        factors;
       );
 
-      // Trigger alert notifications
+      // Trigger alert notifications;
       await this.notifySepsisAlert(alert);
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.sepsis_alerts', 1, {
         patientId,
         algorithm: config.algorithm,
@@ -1099,44 +1110,44 @@ export class ClinicalGuidelinesService {
 
       return alert;
     } catch (error) {
-      console.error(`Error checking sepsis risk for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Optimize medications with pharmacogenomics
+   * Optimize medications with pharmacogenomics;
    */
   async optimizeMedications(patientId: string, userId: string, encounterId?: string): Promise<MedicationOptimization> {
     try {
-      // Get patient medications
+      // Get patient medications;
       const medications = await this.getPatientMedications(patientId);
       
-      // Get patient pharmacogenomic profile if available
+      // Get patient pharmacogenomic profile if available;
       const pgxProfile = await this.getPharmacogenomicProfile(patientId);
       
-      // Get patient conditions
+      // Get patient conditions;
       const conditions = await this.getPatientConditions(patientId);
       
-      // Get patient allergies
+      // Get patient allergies;
       const allergies = await this.getPatientAllergies(patientId);
       
-      // Get patient demographics
+      // Get patient demographics;
       const demographics = await this.getPatientDemographics(patientId);
 
-      // Perform optimization analysis
+      // Perform optimization analysis;
       const optimizationResults = await this.analyzeOptimizationOpportunities(
         medications,
         pgxProfile,
         conditions,
         allergies,
-        demographics
+        demographics;
       );
 
-      // Calculate overall score
+      // Calculate overall score;
       const overallScore = this.calculateOptimizationScore(optimizationResults);
 
-      // Create optimization record
+      // Create optimization record;
       const optimization: MedicationOptimization = {
         id: `optimization-${Date.now()}`,
         patientId,
@@ -1151,10 +1162,10 @@ export class ClinicalGuidelinesService {
         savings: this.calculateMedicationSavings(optimizationResults),
       };
 
-      // Save optimization
+      // Save optimization;
       await this.saveMedicationOptimization(optimization);
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.medication_optimizations', 1, {
         patientId,
         medicationCount: medications.length.toString(),
@@ -1164,22 +1175,22 @@ export class ClinicalGuidelinesService {
 
       return optimization;
     } catch (error) {
-      console.error(`Error optimizing medications for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
-  // Private helper methods
-  private validateGuideline(guideline: any): void {
-    // Implementation for guideline validation
+  // Private helper methods;
+  private validateGuideline(guideline: unknown): void {
+    // Implementation for guideline validation;
   }
 
   private validateGuidelineUpdates(updates: Partial<ClinicalGuideline>): void {
-    // Implementation for update validation
+    // Implementation for update validation;
   }
 
   private async getPatientData(patientId: string): Promise<PatientData> {
-    // Implementation to fetch patient data
+    // Implementation to fetch patient data;
     return {
       demographics: { age: 0, gender: '' },
       vitalSigns: [],
@@ -1198,7 +1209,7 @@ export class ClinicalGuidelinesService {
     context: EvaluationContext,
     specificGuidelineIds?: string[]
   ): Promise<ClinicalGuideline[]> {
-    // Implementation to find applicable guidelines
+    // Implementation to find applicable guidelines;
     return [];
   }
 
@@ -1208,9 +1219,9 @@ export class ClinicalGuidelinesService {
     encounterId: string,
     userId: string,
     context: EvaluationContext,
-    patientData: PatientData
+    patientData: PatientData;
   ): Promise<PatientEvaluation> {
-    // Implementation to evaluate guideline
+    // Implementation to evaluate guideline;
     return {
       patientId,
       encounterId,
@@ -1234,28 +1245,28 @@ export class ClinicalGuidelinesService {
   }
 
   private async getPatientVitalSigns(patientId: string, hours: number): Promise<any[]> {
-    // Implementation to get vital signs
+    // Implementation to get vital signs;
     return [];
   }
 
   private async getPatientLabResults(patientId: string, hours: number): Promise<any[]> {
-    // Implementation to get lab results
+    // Implementation to get lab results;
     return [];
   }
 
   private async getPreviousPredictions(patientId: string, encounterId: string): Promise<PreviousPrediction[]> {
-    // Implementation to get previous predictions
+    // Implementation to get previous predictions;
     return [];
   }
 
   private async calculateDeteriorationRisk(
     patientId: string,
     patientData: PatientData,
-    vitalSigns: any[],
-    labResults: any[],
+    vitalSigns: unknown[],
+    labResults: unknown[],
     previousPredictions: PreviousPrediction[]
   ): Promise<DeteriorationPrediction> {
-    // Implementation to calculate risk
+    // Implementation to calculate risk;
     return {
       patientId,
       encounterId: '',
@@ -1282,15 +1293,15 @@ export class ClinicalGuidelinesService {
   }
 
   private async saveDeteriorationPrediction(prediction: DeteriorationPrediction): Promise<void> {
-    // Implementation to save prediction
+    // Implementation to save prediction;
   }
 
   private async generateDeteriorationAlert(prediction: DeteriorationPrediction): Promise<void> {
-    // Implementation to generate alert
+    // Implementation to generate alert;
   }
 
   private async getActiveSepsisConfig(): Promise<SepsisAlertConfig> {
-    // Implementation to get sepsis config
+    // Implementation to get sepsis config;
     return {
       id: '',
       name: '',
@@ -1321,27 +1332,27 @@ export class ClinicalGuidelinesService {
   }
 
   private async getRecentVitals(patientId: string): Promise<any[]> {
-    // Implementation to get recent vitals
+    // Implementation to get recent vitals;
     return [];
   }
 
   private async getRecentLabs(patientId: string): Promise<any[]> {
-    // Implementation to get recent labs
+    // Implementation to get recent labs;
     return [];
   }
 
   private calculateSepsisScore(
     config: SepsisAlertConfig,
     patientData: PatientData,
-    vitals: any[],
-    labs: any[]
+    vitals: unknown[],
+    labs: unknown[]
   ): { score: number; factors: TriggeringFactor[] } {
-    // Implementation to calculate sepsis score
+    // Implementation to calculate sepsis score;
     return { score: 0, factors: [] };
   }
 
   private determineSepsisRiskLevel(config: SepsisAlertConfig, score: number): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
-    // Implementation to determine risk level
+    // Implementation to determine risk level;
     return 'LOW';
   }
 
@@ -1353,7 +1364,7 @@ export class ClinicalGuidelinesService {
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
     factors: TriggeringFactor[]
   ): Promise<SepsisAlert> {
-    // Implementation to create sepsis alert
+    // Implementation to create sepsis alert;
     return {
       id: `sepsis-alert-${Date.now()}`,
       patientId,
@@ -1372,31 +1383,31 @@ export class ClinicalGuidelinesService {
   }
 
   private async notifySepsisAlert(alert: SepsisAlert): Promise<void> {
-    // Implementation to notify about alert
+    // Implementation to notify about alert;
   }
 
   private async getPatientMedications(patientId: string): Promise<PatientMedication[]> {
-    // Implementation to get patient medications
+    // Implementation to get patient medications;
     return [];
   }
 
   private async getPharmacogenomicProfile(patientId: string): Promise<PharmacogenomicProfile | undefined> {
-    // Implementation to get PGx profile
+    // Implementation to get PGx profile;
     return undefined;
   }
 
   private async getPatientConditions(patientId: string): Promise<PatientCondition[]> {
-    // Implementation to get patient conditions
+    // Implementation to get patient conditions;
     return [];
   }
 
   private async getPatientAllergies(patientId: string): Promise<PatientAllergy[]> {
-    // Implementation to get patient allergies
+    // Implementation to get patient allergies;
     return [];
   }
 
   private async getPatientDemographics(patientId: string): Promise<PatientDemographics> {
-    // Implementation to get demographics
+    // Implementation to get demographics;
     return { age: 0, gender: '' };
   }
 
@@ -1405,19 +1416,19 @@ export class ClinicalGuidelinesService {
     pgxProfile?: PharmacogenomicProfile,
     conditions?: PatientCondition[],
     allergies?: PatientAllergy[],
-    demographics?: PatientDemographics
+    demographics?: PatientDemographics;
   ): Promise<OptimizationResult[]> {
-    // Implementation to analyze optimization opportunities
+    // Implementation to analyze optimization opportunities;
     return [];
   }
 
   private calculateOptimizationScore(results: OptimizationResult[]): number {
-    // Implementation to calculate score
+    // Implementation to calculate score;
     return 0;
   }
 
   private calculateMedicationSavings(results: OptimizationResult[]): MedicationSavings {
-    // Implementation to calculate savings
+    // Implementation to calculate savings;
     return {
       costSavings: 0,
       qualityImprovementScore: 0,
@@ -1427,6 +1438,6 @@ export class ClinicalGuidelinesService {
   }
 
   private async saveMedicationOptimization(optimization: MedicationOptimization): Promise<void> {
-    // Implementation to save optimization
+    // Implementation to save optimization;
   }
 }

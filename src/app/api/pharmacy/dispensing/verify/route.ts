@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Dispensing Verification API Routes
+ * Dispensing Verification API Routes;
  * 
- * This file implements the API endpoints for verifying medication dispensing
+ * This file implements the API endpoints for verifying medication dispensing;
  * with barcode scanning and safety checks.
  */
 
@@ -19,7 +30,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const prescriptionRepository = {
@@ -30,7 +41,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const dispensingRepository = {
@@ -38,18 +49,18 @@ const dispensingRepository = {
   findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByStatus: (status: string) => Promise.resolve([]),
-  save: (dispensing: any) => Promise.resolve(dispensing.id || 'new-id'),
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 /**
- * POST /api/pharmacy/dispensing/verify
- * Verify medication dispensing with barcode scanning
+ * POST /api/pharmacy/dispensing/verify;
+ * Verify medication dispensing with barcode scanning;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateDispensingVerificationRequest(data);
     if (!validationResult.success) {
@@ -59,52 +70,52 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Verify prescription exists
+    // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!prescription) {
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
-    // Verify medication exists
+    // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!medication) {
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
-    // Verify medication barcode matches prescription
+    // Verify medication barcode matches prescription;
     if (data.medicationBarcode !== medication.barcode) {
       return NextResponse.json(
         { 
           error: 'Medication barcode does not match prescription',
           expected: medication.barcode,
-          received: data.medicationBarcode
+          received: data.medicationBarcode;
         },
         { status: 400 }
       );
     }
 
-    // Verify patient barcode matches prescription
+    // Verify patient barcode matches prescription;
     if (data.patientBarcode && data.patientBarcode !== prescription.patientId) {
       return NextResponse.json(
         { 
           error: 'Patient barcode does not match prescription',
           expected: prescription.patientId,
-          received: data.patientBarcode
+          received: data.patientBarcode;
         },
         { status: 400 }
       );
     }
 
-    // Create verification record
+    // Create verification record;
     const verification = {
       id: crypto.randomUUID(),
       prescriptionId: data.prescriptionId,
@@ -113,13 +124,13 @@ export async function POST(req: NextRequest) {
       verifiedBy: userId,
       verifiedAt: new Date(),
       status: 'verified',
-      notes: data.notes || ''
+      notes: data.notes || '';
     };
 
-    // In a real implementation, save verification record
+    // In a real implementation, save verification record;
     // const verificationId = await verificationRepository.save(verification);
 
-    // Update dispensing status if dispensingId is provided
+    // Update dispensing status if dispensingId is provided;
     if (data.dispensingId) {
       const dispensing = await dispensingRepository.findById(data.dispensingId);
       if (dispensing) {
@@ -130,7 +141,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Audit logging
+    // Audit logging;
     await auditLog('DISPENSING', {
       action: 'VERIFY',
       resourceType: 'MedicationDispense',
@@ -139,18 +150,18 @@ export async function POST(req: NextRequest) {
       details: {
         medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId,
-        dispensingId: data.dispensingId
+        dispensingId: data.dispensingId;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json(
       { 
         success: true,
         message: 'Dispensing verification successful',
         verification: {
           id: verification.id,
-          verifiedAt: verification.verifiedAt
+          verifiedAt: verification.verifiedAt;
         }
       }, 
       { status: 200 }

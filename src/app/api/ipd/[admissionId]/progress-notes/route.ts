@@ -1,20 +1,31 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
 
-// Zod schema for creating a progress note
+// Zod schema for creating a progress note;
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
         message: "Invalid note datetime format",
     }),
     notes: z.string().min(1, "Progress note content cannot be empty"),
-    // Assuming doctor_id is derived from the session
+    // Assuming doctor_id is derived from the session;
 });
 
-// GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission
-export async function GET(
+// GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission;
+export async const GET = (
     request: NextRequest,
     { params }: { params: Promise<{ admissionId: string }> }
 ) {
@@ -45,7 +56,7 @@ export async function GET(
         const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
         const admissionCheck = await (DB as D1Database).prepare(
-            "SELECT id FROM IPDAdmissions WHERE id = ?"
+            "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<{ id: number }>();
 
         if (!admissionCheck) {
@@ -55,14 +66,14 @@ export async function GET(
             );
         }
 
-        const query = `
-            SELECT
+        const query = `;
+            SELECT;
                 pn.id, pn.admission_id, pn.doctor_id, pn.note_datetime, pn.notes,
                 pn.created_at, pn.updated_at,
-                u.name as doctor_name
-            FROM ProgressNotes pn
-            JOIN Users u ON pn.doctor_id = u.id
-            WHERE pn.admission_id = ?
+                u.name as doctor_name;
+            FROM ProgressNotes pn;
+            JOIN Users u ON pn.doctor_id = u.id;
+            WHERE pn.admission_id = ?;
             ORDER BY pn.${finalSortBy} ${finalSortOrder}
             LIMIT ? OFFSET ?
         `;
@@ -70,7 +81,7 @@ export async function GET(
 
         const [notesResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(admissionId, limit, offset).all(),
-            (DB as D1Database).prepare(countQuery).bind(admissionId).first<{ total: number }>()
+            (DB as D1Database).prepare(countQuery).bind(admissionId).first<{ total: number }>();
         ]);
 
         const results = notesResult.results || [];
@@ -87,7 +98,7 @@ export async function GET(
         });
 
     } catch (error: unknown) {
-        console.error(`Error fetching progress notes for admission ${admissionId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;
@@ -99,8 +110,8 @@ export async function GET(
     }
 }
 
-// POST /api/ipd/[admissionId]/progress-notes - Create a new progress note
-export async function POST(
+// POST /api/ipd/[admissionId]/progress-notes - Create a new progress note;
+export async const POST = (
     request: NextRequest,
     { params }: { params: Promise<{ admissionId: string }> }
 ) {
@@ -108,7 +119,7 @@ export async function POST(
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in;
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -122,7 +133,7 @@ export async function POST(
 
     try {
         const admissionCheck = await (DB as D1Database).prepare(
-            "SELECT id FROM IPDAdmissions WHERE id = ?"
+            "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<{ id: number }>();
 
         if (!admissionCheck) {
@@ -144,10 +155,10 @@ export async function POST(
 
         const noteData = validationResult.data;
         const now = new Date().toISOString();
-        const doctorId = session.user.userId; // session.user is now guaranteed to be defined
+        const doctorId = session.user.userId; // session.user is now guaranteed to be defined;
 
         const insertStmt = (DB as D1Database).prepare(
-            `INSERT INTO ProgressNotes (admission_id, doctor_id, note_datetime, notes, created_at, updated_at)
+            `INSERT INTO ProgressNotes (admission_id, doctor_id, note_datetime, notes, created_at, updated_at);
              VALUES (?, ?, ?, ?, ?, ?)`
         ).bind(
             admissionId,
@@ -155,13 +166,13 @@ export async function POST(
             noteData.note_datetime,
             noteData.notes,
             now,
-            now
+            now;
         );
 
         const result = await insertStmt.run() as D1ResultWithMeta;
 
         if (!result.success || !result.meta || typeof result.meta.last_row_id !== 'number') {
-             console.error("Failed to create progress note or get last_row_id:", result);
+
             throw new Error("Failed to create progress note record");
         }
 
@@ -173,7 +184,7 @@ export async function POST(
         );
 
     } catch (error: unknown) {
-        console.error(`Error creating progress note for admission ${admissionId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;

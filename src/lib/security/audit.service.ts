@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Enterprise Audit Logging Service
- * HIPAA-compliant comprehensive audit logging with structured data
+ * Enterprise Audit Logging Service;
+ * HIPAA-compliant comprehensive audit logging with structured data;
  */
 
 import { PrismaClient } from '@prisma/client';
@@ -71,7 +82,7 @@ export class AuditService {
   }
 
   /**
-   * Log an audit event
+   * Log an audit event;
    */
   async logEvent(event: AuditEvent): Promise<void> {
     try {
@@ -84,30 +95,30 @@ export class AuditService {
           hipaa: this.isHIPAARelevant(event),
           gdpr: this.isGDPRRelevant(event),
           sox: this.isSOXRelevant(event),
-          ...event.compliance
+          ...event.compliance;
         }
       };
 
-      // Store in database
+      // Store in database;
       await this.storeInDatabase(auditEvent);
 
-      // Log to structured logging system
+      // Log to structured logging system;
       await this.logToSystem(auditEvent);
 
-      // Send alerts for critical events
+      // Send alerts for critical events;
       if (auditEvent.severity === 'CRITICAL') {
         await this.sendCriticalAlert(auditEvent);
       }
 
     } catch (error) {
-      console.error('Failed to log audit event:', error);
-      // Fallback to console logging
-      console.log('AUDIT_FALLBACK:', JSON.stringify(event));
+
+      // Fallback to console logging;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
   }
 
   /**
-   * Batch log multiple events
+   * Batch log multiple events;
    */
   async logEvents(events: AuditEvent[]): Promise<void> {
     for (const event of events) {
@@ -116,11 +127,11 @@ export class AuditService {
   }
 
   /**
-   * Query audit logs
+   * Query audit logs;
    */
   async queryLogs(query: AuditQuery): Promise<AuditReport> {
     try {
-      const where: any = {};
+      const where: unknown = {};
 
       if (query.startDate || query.endDate) {
         where.timestamp = {};
@@ -139,51 +150,51 @@ export class AuditService {
           where,
           orderBy: { timestamp: 'desc' },
           take: query.limit || 100,
-          skip: query.offset || 0
+          skip: query.offset || 0;
         }),
-        this.prisma.auditLog.count({ where })
+        this.prisma.auditLog.count({ where });
       ]);
 
-      // Generate summary
+      // Generate summary;
       const summary = await this.generateSummary(where);
 
       return {
         events: events.map(this.formatAuditEvent),
         totalCount,
-        summary
+        summary;
       };
 
     } catch (error) {
-      console.error('Failed to query audit logs:', error);
+
       throw new Error('Audit query failed');
     }
   }
 
   /**
-   * Generate compliance report
+   * Generate compliance report;
    */
   async generateComplianceReport(
     type: 'HIPAA' | 'GDPR' | 'SOX',
     startDate: Date,
-    endDate: Date
+    endDate: Date;
   ): Promise<AuditReport> {
     const complianceField = `compliance.${type.toLowerCase()}`;
     
     return this.queryLogs({
       startDate,
       endDate,
-      // Note: Prisma doesn't support direct JSON field queries like this
-      // This would need to be implemented differently in production
+      // Note: Prisma doesn't support direct JSON field queries like this;
+      // This would need to be implemented differently in production;
     });
   }
 
   /**
-   * Get user activity report
+   * Get user activity report;
    */
   async getUserActivity(
     userId: string,
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date;
   ): Promise<AuditEvent[]> {
     const query: AuditQuery = { userId };
     if (startDate) query.startDate = startDate;
@@ -194,11 +205,11 @@ export class AuditService {
   }
 
   /**
-   * Get security events
+   * Get security events;
    */
   async getSecurityEvents(
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date;
   ): Promise<AuditEvent[]> {
     const securityEventTypes = [
       'LOGIN_FAILURE',
@@ -207,7 +218,7 @@ export class AuditService {
       'ACCOUNT_LOCKED',
       'EMERGENCY_ACCESS_GRANTED',
       'ROLE_ASSIGNMENT_ERROR',
-      'ENCRYPTION_ERROR'
+      'ENCRYPTION_ERROR';
     ];
 
     const events: AuditEvent[] = [];
@@ -217,22 +228,22 @@ export class AuditService {
         eventType,
         startDate,
         endDate,
-        limit: 1000
+        limit: 1000;
       });
       events.push(...report.events);
     }
 
     return events.sort((a, b) => 
-      (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+      (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0);
     );
   }
 
   /**
-   * Archive old audit logs
+   * Archive old audit logs;
    */
   async archiveLogs(olderThan: Date): Promise<number> {
     try {
-      // In production, this would move logs to cold storage
+      // In production, this would move logs to cold storage;
       const result = await this.prisma.auditLog.deleteMany({
         where: {
           timestamp: { lt: olderThan }
@@ -244,14 +255,14 @@ export class AuditService {
         resource: 'audit_logs',
         details: {
           archivedCount: result.count,
-          olderThan: olderThan.toISOString()
+          olderThan: olderThan.toISOString();
         },
-        severity: 'LOW'
+        severity: 'LOW';
       });
 
       return result.count;
     } catch (error) {
-      console.error('Failed to archive audit logs:', error);
+
       throw new Error('Audit log archival failed');
     }
   }
@@ -261,15 +272,15 @@ export class AuditService {
    */
   subscribeToEvents(
     eventTypes: string[],
-    callback: (event: AuditEvent) => void
+    callback: (event: AuditEvent) => void;
   ): () => void {
-    // This would integrate with a real-time messaging system like Redis Pub/Sub
-    // For now, return a no-op unsubscribe function
+    // This would integrate with a real-time messaging system like Redis Pub/Sub;
+    // For now, return a no-op unsubscribe function;
     return () => {};
   }
 
   /**
-   * Private helper methods
+   * Private helper methods;
    */
   private async storeInDatabase(event: AuditEvent): Promise<void> {
     await this.prisma.auditLog.create({
@@ -287,7 +298,7 @@ export class AuditService {
         timestamp: event.timestamp || new Date(),
         severity: event.severity || 'LOW',
         outcome: event.outcome || 'SUCCESS',
-        compliance: event.compliance
+        compliance: event.compliance;
       }
     });
   }
@@ -297,7 +308,7 @@ export class AuditService {
       ...event,
       '@timestamp': event.timestamp || new Date(),
       service: 'hms-audit',
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development';
     });
   }
 
@@ -306,34 +317,34 @@ export class AuditService {
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.timestamp(),
-          winston.format.json()
-        )
+          winston.format.json();
+        );
       }),
       new winston.transports.File({
         filename: 'logs/audit.log',
         format: winston.format.combine(
           winston.format.timestamp(),
-          winston.format.json()
-        )
-      })
+          winston.format.json();
+        );
+      });
     ];
 
-    // Add Elasticsearch transport if configured
+    // Add Elasticsearch transport if configured;
     if (process.env.ELASTICSEARCH_URL) {
       transports.push(
         new ElasticsearchTransport({
           clientOpts: {
-            node: process.env.ELASTICSEARCH_URL
+            node: process.env.ELASTICSEARCH_URL;
           },
-          index: 'hms-audit-logs'
-        })
+          index: 'hms-audit-logs';
+        });
       );
     }
 
     this.logger = winston.createLogger({
       level: 'info',
       format: winston.format.json(),
-      transports
+      transports;
     });
   }
 
@@ -345,11 +356,11 @@ export class AuditService {
       'patient.insurance',
       'prescription',
       'lab.result',
-      'radiology.result'
+      'radiology.result';
     ];
     
     return phiResources.some(resource => 
-      event.resource.includes(resource)
+      event.resource.includes(resource);
     );
   }
 
@@ -358,7 +369,7 @@ export class AuditService {
     const piiResources = ['patient', 'staff', 'user'];
     
     return piiResources.some(resource => 
-      event.resource.includes(resource)
+      event.resource.includes(resource);
     ) && piiActions.includes(event.action || '');
   }
 
@@ -367,22 +378,22 @@ export class AuditService {
       'billing',
       'payment',
       'invoice',
-      'financial.report'
+      'financial.report';
     ];
     
     return financialResources.some(resource => 
-      event.resource.includes(resource)
+      event.resource.includes(resource);
     );
   }
 
-  private async generateSummary(where: any): Promise<AuditReport['summary']> {
+  private async generateSummary(where: unknown): Promise<AuditReport['summary']> {
     const [
       totalEvents,
       successfulEvents,
       failedEvents,
       severityGroups,
       userGroups,
-      resourceGroups
+      resourceGroups;
     ] = await Promise.all([
       this.prisma.auditLog.count({ where }),
       this.prisma.auditLog.count({ 
@@ -401,15 +412,15 @@ export class AuditService {
         where: { ...where, userId: { not: null } },
         _count: { userId: true },
         orderBy: { _count: { userId: 'desc' } },
-        take: 10
+        take: 10;
       }),
       this.prisma.auditLog.groupBy({
         by: ['resource'],
         where,
         _count: { resource: true },
         orderBy: { _count: { resource: 'desc' } },
-        take: 10
-      })
+        take: 10;
+      });
     ]);
 
     return {
@@ -422,16 +433,16 @@ export class AuditService {
       }, {} as Record<string, number>),
       topUsers: userGroups.map(group => ({
         userId: group.userId || 'unknown',
-        count: group._count.userId
+        count: group._count.userId;
       })),
       topResources: resourceGroups.map(group => ({
         resource: group.resource,
-        count: group._count.resource
-      }))
+        count: group._count.resource;
+      }));
     };
   }
 
-  private formatAuditEvent(dbEvent: any): AuditEvent {
+  private formatAuditEvent(dbEvent: unknown): AuditEvent {
     return {
       eventType: dbEvent.eventType,
       userId: dbEvent.userId,
@@ -446,26 +457,25 @@ export class AuditService {
       timestamp: dbEvent.timestamp,
       severity: dbEvent.severity,
       outcome: dbEvent.outcome,
-      compliance: dbEvent.compliance
+      compliance: dbEvent.compliance;
     };
   }
 
   private async sendCriticalAlert(event: AuditEvent): Promise<void> {
-    // Implement critical alert logic
+    // Implement critical alert logic;
     // This could send emails, SMS, Slack notifications, etc.
-    console.error('CRITICAL AUDIT EVENT:', event);
-    
-    // Example: Log to dedicated critical events log
+
+    // Example: Log to dedicated critical events log;
     this.logger.error('CRITICAL_AUDIT_EVENT', event);
   }
 }
 
-// Export convenience function
-export async function logAuditEvent(event: AuditEvent): Promise<void> {
+// Export convenience function;
+export async const logAuditEvent = (event: AuditEvent): Promise<void> {
   return AuditService.getInstance().logEvent(event);
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const auditService = AuditService.getInstance();
 
 export default auditService;

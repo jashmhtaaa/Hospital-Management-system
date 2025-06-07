@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Predictive Analytics Engine Service
- * Enterprise-grade predictive analytics for patient outcomes and resource optimization
+ * Predictive Analytics Engine Service;
+ * Enterprise-grade predictive analytics for patient outcomes and resource optimization;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -11,7 +22,7 @@ import { pubsub } from '@/lib/graphql/schema-base';
 import { EncryptionService } from '@/lib/security/encryption.service';
 import { AuditService } from '@/lib/security/audit.service';
 
-// Predictive model models
+// Predictive model models;
 export interface PredictiveModel {
   id: string;
   name: string;
@@ -80,7 +91,7 @@ export interface ModelFeature {
   description: string;
   dataType: 'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image';
   source: string;
-  importance?: number; // 0-100
+  importance?: number; // 0-100;
   transformations: string[];
   statistics: {
     min?: number;
@@ -294,16 +305,16 @@ export interface ModelMetadata {
   customFields: Record<string, any>;
 }
 
-// Readmission risk models
+// Readmission risk models;
 export interface ReadmissionRisk {
   id: string;
   patientId: string;
   encounterId?: string;
   timestamp: Date;
-  riskScore: number; // 0-100
-  probability: number; // 0-1
+  riskScore: number; // 0-100;
+  probability: number; // 0-1;
   riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
-  timeHorizon: number; // days
+  timeHorizon: number; // days;
   confidenceInterval: [number, number];
   riskFactors: RiskFactor[];
   protectiveFactors: ProtectiveFactor[];
@@ -334,9 +345,9 @@ export interface ReadmissionRisk {
 export interface RiskFactor {
   name: string;
   category: string;
-  value: any;
+  value: unknown;
   normalRange?: string;
-  impact: number; // 0-100
+  impact: number; // 0-100;
   trend?: 'IMPROVING' | 'WORSENING' | 'STABLE';
   description: string;
   actionable: boolean;
@@ -347,8 +358,8 @@ export interface RiskFactor {
 export interface ProtectiveFactor {
   name: string;
   category: string;
-  value: any;
-  impact: number; // 0-100
+  value: unknown;
+  impact: number; // 0-100;
   description: string;
   source: string;
   lastUpdated?: Date;
@@ -360,7 +371,7 @@ export interface Intervention {
   description: string;
   type: 'MEDICATION' | 'PROCEDURE' | 'REFERRAL' | 'EDUCATION' | 'MONITORING' | 'FOLLOW_UP' | 'CARE_COORDINATION' | 'CUSTOM';
   targetRiskFactors: string[];
-  expectedImpact: number; // 0-100
+  expectedImpact: number; // 0-100;
   evidence: 'HIGH' | 'MODERATE' | 'LOW' | 'EXPERIMENTAL';
   costCategory: 'LOW' | 'MEDIUM' | 'HIGH';
   timeToImplement: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM';
@@ -388,9 +399,9 @@ export interface PredictionExplanation {
   }[];
   counterfactuals?: {
     feature: string;
-    currentValue: any;
-    requiredValue: any;
-    feasibility: number; // 0-100
+    currentValue: unknown;
+    requiredValue: unknown;
+    feasibility: number; // 0-100;
   }[];
   similarCases?: {
     encounterId: string;
@@ -399,17 +410,17 @@ export interface PredictionExplanation {
   }[];
 }
 
-// Length of stay models
+// Length of stay models;
 export interface LengthOfStayPrediction {
   id: string;
   patientId: string;
   encounterId: string;
   timestamp: Date;
-  predictedLOS: number; // days
+  predictedLOS: number; // days;
   confidenceInterval: [number, number];
   predictionCategory: 'SHORT' | 'EXPECTED' | 'EXTENDED' | 'PROLONGED';
-  riskOfExtendedStay: number; // 0-100
-  optimizedLOS: number; // days with interventions
+  riskOfExtendedStay: number; // 0-100;
+  optimizedLOS: number; // days with interventions;
   factors: LOSFactor[];
   interventions: LOSIntervention[];
   targetDischargeDate: Date;
@@ -441,8 +452,8 @@ export interface LengthOfStayPrediction {
 export interface LOSFactor {
   name: string;
   category: 'CLINICAL' | 'DEMOGRAPHIC' | 'ADMINISTRATIVE' | 'SOCIAL' | 'PROCEDURAL' | 'CUSTOM';
-  value: any;
-  impact: number; // 0-100
+  value: unknown;
+  impact: number; // 0-100;
   trend?: 'IMPROVING' | 'WORSENING' | 'STABLE';
   description: string;
   actionable: boolean;
@@ -456,7 +467,7 @@ export interface LOSIntervention {
   description: string;
   type: 'CLINICAL' | 'CARE_COORDINATION' | 'ADMINISTRATIVE' | 'SOCIAL' | 'CUSTOM';
   targetFactors: string[];
-  expectedLOSReduction: number; // days
+  expectedLOSReduction: number; // days;
   confidence: 'HIGH' | 'MODERATE' | 'LOW';
   implementationTimeframe: 'IMMEDIATE' | 'TODAY' | 'TOMORROW' | 'THIS_WEEK';
   status?: 'RECOMMENDED' | 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'DECLINED';
@@ -487,7 +498,7 @@ export interface ResourceImplication {
   constraints?: string[];
 }
 
-// Census forecasting models
+// Census forecasting models;
 export interface CensusForecast {
   id: string;
   facilityId: string;
@@ -495,7 +506,7 @@ export interface CensusForecast {
   serviceLineId?: string;
   forecastDate: Date;
   generatedAt: Date;
-  forecastHorizon: number; // days
+  forecastHorizon: number; // days;
   intervals: CensusForecastInterval[];
   aggregation: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
   trends: CensusTrend[];
@@ -509,7 +520,7 @@ export interface CensusForecast {
     mae: number;
     accuracyLastMonth: number;
   };
-  confidenceLevel: number; // 0-100
+  confidenceLevel: number; // 0-100;
   forecastType: 'BASELINE' | 'OPTIMISTIC' | 'PESSIMISTIC' | 'CUSTOM';
   externalFactors: ExternalFactor[];
   historicalData: {
@@ -548,7 +559,7 @@ export interface CensusForecastInterval {
     techs: number;
     others: number;
   };
-  resourceUtilization: number; // 0-100
+  resourceUtilization: number; // 0-100;
   overflow: number;
   status: 'NORMAL' | 'NEAR_CAPACITY' | 'AT_CAPACITY' | 'OVER_CAPACITY';
 }
@@ -560,7 +571,7 @@ export interface CensusTrend {
   magnitude: number;
   rate: number;
   description: string;
-  confidence: number; // 0-100
+  confidence: number; // 0-100;
   factors: {
     factor: string;
     contribution: number;
@@ -582,7 +593,7 @@ export interface CensusAnomaly {
 export interface SeasonalPattern {
   patternType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL';
   description: string;
-  strength: number; // 0-100
+  strength: number; // 0-100;
   peakTimes?: string[];
   lowTimes?: string[];
   visualData?: {
@@ -596,13 +607,13 @@ export interface ExternalFactor {
   type: 'WEATHER' | 'HOLIDAY' | 'EVENT' | 'EPIDEMIC' | 'CONSTRUCTION' | 'OTHER';
   startDate: Date;
   endDate?: Date;
-  impact: number; // -100 to 100
+  impact: number; // -100 to 100;
   description: string;
   source: string;
-  confidence: number; // 0-100
+  confidence: number; // 0-100;
 }
 
-// Cost prediction models
+// Cost prediction models;
 export interface CostPrediction {
   id: string;
   patientId: string;
@@ -617,7 +628,7 @@ export interface CostPrediction {
   benchmarkComparison: {
     average: number;
     percentile: number;
-    peerComparison: number; // % above/below peer average
+    peerComparison: number; // % above/below peer average;
   };
   modelId: string;
   modelVersion: string;
@@ -651,7 +662,7 @@ export interface CostCategory {
   amount: number;
   percentage: number;
   confidenceInterval: [number, number];
-  comparisonToBenchmark: number; // % above/below benchmark
+  comparisonToBenchmark: number; // % above/below benchmark;
   trend: 'INCREASING' | 'DECREASING' | 'STABLE';
   subcategories?: {
     name: string;
@@ -690,11 +701,11 @@ export interface CostScenario {
   predictedCost: number;
   changeToPrediction: number;
   changePercentage: number;
-  probability: number; // 0-100
+  probability: number; // 0-100;
   triggers: string[];
 }
 
-@Injectable()
+@Injectable();
 export class PredictiveAnalyticsService {
   constructor(
     private prisma: PrismaService,
@@ -703,7 +714,7 @@ export class PredictiveAnalyticsService {
   ) {}
 
   /**
-   * Get all predictive models
+   * Get all predictive models;
    */
   async getAllModels(filters?: {
     type?: ModelType;
@@ -711,27 +722,27 @@ export class PredictiveAnalyticsService {
     status?: ModelStatus;
   }): Promise<PredictiveModel[]> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `models:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached) return cached;
 
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.type) where.type = filters.type;
       if (filters?.category) where.category = filters.category;
       if (filters?.status) where.status = filters.status;
 
-      // Query database
+      // Query database;
       const models = await this.prisma.predictiveModel.findMany({
         where,
         orderBy: { updated: 'desc' },
       });
 
-      // Cache results
-      await cacheService.cacheResult('analytics:', cacheKey, models, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('analytics:', cacheKey, models, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('analytics.model_queries', 1, {
         type: filters?.type || 'ALL',
         category: filters?.category || 'ALL',
@@ -740,50 +751,50 @@ export class PredictiveAnalyticsService {
 
       return models as PredictiveModel[];
     } catch (error) {
-      console.error('Error fetching predictive models:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get predictive model by ID
+   * Get predictive model by ID;
    */
   async getModelById(id: string): Promise<PredictiveModel | null> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `model:${id}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached) return cached;
 
-      // Query database
+      // Query database;
       const model = await this.prisma.predictiveModel.findUnique({
         where: { id },
       });
 
       if (!model) return null;
 
-      // Cache result
-      await cacheService.cacheResult('analytics:', cacheKey, model, 3600); // 1 hour
+      // Cache result;
+      await cacheService.cacheResult('analytics:', cacheKey, model, 3600); // 1 hour;
 
       return model as PredictiveModel;
     } catch (error) {
-      console.error(`Error fetching predictive model ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create predictive model
+   * Create predictive model;
    */
   async createModel(
     model: Omit<PredictiveModel, 'id' | 'created' | 'updated'>,
-    userId: string
+    userId: string;
   ): Promise<PredictiveModel> {
     try {
-      // Validate model
+      // Validate model;
       this.validateModel(model);
 
-      // Create model
+      // Create model;
       const newModel: PredictiveModel = {
         ...model,
         id: `model-${Date.now()}`,
@@ -793,12 +804,12 @@ export class PredictiveAnalyticsService {
         updatedBy: userId,
       };
 
-      // Save model
+      // Save model;
       await this.prisma.predictiveModel.create({
         data: newModel as any,
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'PREDICTIVE_MODEL',
@@ -812,47 +823,47 @@ export class PredictiveAnalyticsService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern('analytics:models:*');
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('analytics.models_created', 1, {
         type: model.type,
         category: model.category,
         algorithm: model.algorithm,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('MODEL_CREATED', {
         modelCreated: newModel,
       });
 
       return newModel;
     } catch (error) {
-      console.error('Error creating predictive model:', error);
+
       throw error;
     }
   }
 
   /**
-   * Update predictive model
+   * Update predictive model;
    */
   async updateModel(
     id: string,
     updates: Partial<PredictiveModel>,
-    userId: string
+    userId: string;
   ): Promise<PredictiveModel> {
     try {
-      // Get current model
+      // Get current model;
       const currentModel = await this.getModelById(id);
       if (!currentModel) {
         throw new Error(`Predictive model ${id} not found`);
       }
 
-      // Validate updates
+      // Validate updates;
       this.validateModelUpdates(updates);
 
-      // Update model
+      // Update model;
       const updatedModel = await this.prisma.predictiveModel.update({
         where: { id },
         data: {
@@ -862,7 +873,7 @@ export class PredictiveAnalyticsService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'UPDATE',
         resourceType: 'PREDICTIVE_MODEL',
@@ -875,7 +886,7 @@ export class PredictiveAnalyticsService {
         },
       });
 
-      // Update version history if version changed
+      // Update version history if version changed;
       if (updates.version && updates.version !== currentModel.version) {
         const versionHistory = [...(currentModel.mlOpsInfo.version.history || [])];
         versionHistory.unshift({
@@ -899,24 +910,24 @@ export class PredictiveAnalyticsService {
         });
       }
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern(`analytics:model:${id}`);
       await cacheService.invalidatePattern('analytics:models:*');
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('MODEL_UPDATED', {
         modelUpdated: updatedModel,
       });
 
       return updatedModel as PredictiveModel;
     } catch (error) {
-      console.error(`Error updating predictive model ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Train predictive model
+   * Train predictive model;
    */
   async trainModel(
     id: string,
@@ -928,25 +939,25 @@ export class PredictiveAnalyticsService {
       validationStrategy?: 'cross_validation' | 'train_test_split' | 'time_series_split';
       validationParameters?: Record<string, any>;
     },
-    userId: string
+    userId: string;
   ): Promise<any> {
     try {
-      // Get model
+      // Get model;
       const model = await this.getModelById(id);
       if (!model) {
         throw new Error(`Predictive model ${id} not found`);
       }
 
-      // Update model status
+      // Update model status;
       await this.updateModel(
         id,
         {
           status: ModelStatus.TRAINING,
         },
-        userId
+        userId;
       );
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'TRAIN',
         resourceType: 'PREDICTIVE_MODEL',
@@ -960,14 +971,14 @@ export class PredictiveAnalyticsService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('analytics.model_training_started', 1, {
         modelId: id,
         modelType: model.type,
         modelCategory: model.category,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('MODEL_TRAINING_STARTED', {
         modelTrainingStarted: {
           modelId: id,
@@ -988,15 +999,14 @@ export class PredictiveAnalyticsService {
         estimatedCompletionTime: trainingJob.estimatedCompletionTime,
       };
     } catch (error) {
-      console.error(`Error training predictive model ${id}:`, error);
 
-      // Update model status to ERROR
+      // Update model status to ERROR;
       await this.updateModel(
         id,
         {
           status: ModelStatus.ERROR,
         },
-        userId
+        userId;
       );
 
       throw error;
@@ -1004,7 +1014,7 @@ export class PredictiveAnalyticsService {
   }
 
   /**
-   * Deploy predictive model
+   * Deploy predictive model;
    */
   async deployModel(
     id: string,
@@ -1028,28 +1038,28 @@ export class PredictiveAnalyticsService {
         alerts?: boolean;
       };
     },
-    userId: string
+    userId: string;
   ): Promise<any> {
     try {
-      // Get model
+      // Get model;
       const model = await this.getModelById(id);
       if (!model) {
         throw new Error(`Predictive model ${id} not found`);
       }
 
-      // Check if model is in deployable state
+      // Check if model is in deployable state;
       if (
         ![
           ModelStatus.EVALUATED,
           ModelStatus.VALIDATED,
           ModelStatus.DEPLOYED,
           ModelStatus.MONITORING,
-        ].includes(model.status)
+        ].includes(model.status);
       ) {
         throw new Error(`Model ${id} is not in a deployable state. Current status: ${model.status}`);
       }
 
-      // Update model status
+      // Update model status;
       await this.updateModel(
         id,
         {
@@ -1063,10 +1073,10 @@ export class PredictiveAnalyticsService {
             monitoring: deploymentConfig.monitoring || model.mlOpsInfo.monitoring,
           },
         },
-        userId
+        userId;
       );
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'DEPLOY',
         resourceType: 'PREDICTIVE_MODEL',
@@ -1080,14 +1090,14 @@ export class PredictiveAnalyticsService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('analytics.model_deployment_started', 1, {
         modelId: id,
         modelType: model.type,
         environment: deploymentConfig.environment,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('MODEL_DEPLOYMENT_STARTED', {
         modelDeploymentStarted: {
           modelId: id,
@@ -1108,16 +1118,15 @@ export class PredictiveAnalyticsService {
         estimatedCompletionTime: deploymentJob.estimatedCompletionTime,
       };
     } catch (error) {
-      console.error(`Error deploying predictive model ${id}:`, error);
 
-      // Update model status to ERROR
+      // Update model status to ERROR;
       await this.updateModel(
         id,
         {
-          status: model.status, // Maintain previous status
+          status: model.status, // Maintain previous status;
           deploymentStatus: DeploymentStatus.FAILED,
         },
-        userId
+        userId;
       );
 
       throw error;
@@ -1125,51 +1134,51 @@ export class PredictiveAnalyticsService {
   }
 
   /**
-   * Predict readmission risk
+   * Predict readmission risk;
    */
   async predictReadmissionRisk(
     patientId: string,
     options: {
       encounterId?: string;
       modelId?: string;
-      timeHorizon?: number; // days, default 30
+      timeHorizon?: number; // days, default 30;
       useCache?: boolean;
     } = {}
   ): Promise<ReadmissionRisk> {
     try {
       const startTime = performance.now();
       
-      // Set defaults
+      // Set defaults;
       const timeHorizon = options.timeHorizon || 30;
       const useCache = options.useCache !== false;
       
-      // Try cache first if enabled
+      // Try cache first if enabled;
       if (useCache) {
         const cacheKey = `readmission:${patientId}:${options.encounterId || 'current'}:${timeHorizon}`;
         const cached = await cacheService.getCachedResult('analytics:', cacheKey);
         if (cached) return cached;
       }
 
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientData(patientId, options.encounterId);
       
-      // Select model to use
+      // Select model to use;
       const modelId = options.modelId || await this.selectBestModel(ModelCategory.READMISSION, patientData);
       
-      // Get model
+      // Get model;
       const model = await this.getModelById(modelId);
       if (!model) {
         throw new Error(`Predictive model ${modelId} not found`);
       }
 
-      // Call prediction API
+      // Call prediction API;
       const prediction = await this.callPredictionAPI(model, 'readmission', {
         patientData,
         timeHorizon,
         options,
       });
 
-      // Create ReadmissionRisk object
+      // Create ReadmissionRisk object;
       const readmissionRisk: ReadmissionRisk = {
         id: `readmission-risk-${Date.now()}`,
         patientId,
@@ -1195,18 +1204,18 @@ export class PredictiveAnalyticsService {
         historicalPredictions: await this.getHistoricalReadmissionPredictions(patientId, options.encounterId),
       };
 
-      // Save prediction to database
+      // Save prediction to database;
       await this.prisma.readmissionRisk.create({
         data: readmissionRisk as any,
       });
 
-      // Cache the result
+      // Cache the result;
       if (useCache) {
         const cacheKey = `readmission:${patientId}:${options.encounterId || 'current'}:${timeHorizon}`;
-        await cacheService.cacheResult('analytics:', cacheKey, readmissionRisk, 3600); // 1 hour
+        await cacheService.cacheResult('analytics:', cacheKey, readmissionRisk, 3600); // 1 hour;
       }
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('analytics.readmission_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.readmission_predictions', 1, {
@@ -1214,7 +1223,7 @@ export class PredictiveAnalyticsService {
         timeHorizon: timeHorizon.toString(),
       });
 
-      // If high risk, publish alert event
+      // If high risk, publish alert event;
       if (readmissionRisk.riskLevel === 'HIGH' || readmissionRisk.riskLevel === 'VERY_HIGH') {
         await pubsub.publish('HIGH_READMISSION_RISK', {
           highReadmissionRisk: {
@@ -1229,9 +1238,8 @@ export class PredictiveAnalyticsService {
 
       return readmissionRisk;
     } catch (error) {
-      console.error(`Error predicting readmission risk for patient ${patientId}:`, error);
-      
-      // Record error metric
+
+      // Record error metric;
       metricsCollector.incrementCounter('analytics.readmission_prediction_errors', 1, {
         patientId,
         errorType: error.name,
@@ -1242,7 +1250,7 @@ export class PredictiveAnalyticsService {
   }
 
   /**
-   * Predict length of stay
+   * Predict length of stay;
    */
   async predictLengthOfStay(
     patientId: string,
@@ -1256,42 +1264,42 @@ export class PredictiveAnalyticsService {
     try {
       const startTime = performance.now();
       
-      // Set defaults
+      // Set defaults;
       const includeInterventions = options.includeInterventions !== false;
       const useCache = options.useCache !== false;
       
-      // Try cache first if enabled
+      // Try cache first if enabled;
       if (useCache) {
         const cacheKey = `los:${patientId}:${encounterId}`;
         const cached = await cacheService.getCachedResult('analytics:', cacheKey);
         if (cached) return cached;
       }
 
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientData(patientId, encounterId);
       
-      // Select model to use
+      // Select model to use;
       const modelId = options.modelId || await this.selectBestModel(ModelCategory.LENGTH_OF_STAY, patientData);
       
-      // Get model
+      // Get model;
       const model = await this.getModelById(modelId);
       if (!model) {
         throw new Error(`Predictive model ${modelId} not found`);
       }
 
-      // Call prediction API
+      // Call prediction API;
       const prediction = await this.callPredictionAPI(model, 'length_of_stay', {
         patientData,
         encounterId,
         includeInterventions,
       });
 
-      // Calculate target discharge date
+      // Calculate target discharge date;
       const admissionDate = patientData.admissionDate || new Date();
       const targetDischargeDate = new Date(admissionDate);
       targetDischargeDate.setDate(targetDischargeDate.getDate() + prediction.predictedLOS);
 
-      // Create LengthOfStayPrediction object
+      // Create LengthOfStayPrediction object;
       const losPrediction: LengthOfStayPrediction = {
         id: `los-prediction-${Date.now()}`,
         patientId,
@@ -1319,25 +1327,25 @@ export class PredictiveAnalyticsService {
         historicalPredictions: await this.getHistoricalLOSPredictions(patientId, encounterId),
       };
 
-      // Save prediction to database
+      // Save prediction to database;
       await this.prisma.lengthOfStayPrediction.create({
         data: losPrediction as any,
       });
 
-      // Cache the result
+      // Cache the result;
       if (useCache) {
         const cacheKey = `los:${patientId}:${encounterId}`;
-        await cacheService.cacheResult('analytics:', cacheKey, losPrediction, 3600); // 1 hour
+        await cacheService.cacheResult('analytics:', cacheKey, losPrediction, 3600); // 1 hour;
       }
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('analytics.los_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.los_predictions', 1, {
         category: losPrediction.predictionCategory,
       });
 
-      // If extended stay risk is high, publish alert event
+      // If extended stay risk is high, publish alert event;
       if (losPrediction.riskOfExtendedStay > 70) {
         await pubsub.publish('HIGH_EXTENDED_STAY_RISK', {
           highExtendedStayRisk: {
@@ -1352,9 +1360,8 @@ export class PredictiveAnalyticsService {
 
       return losPrediction;
     } catch (error) {
-      console.error(`Error predicting length of stay for patient ${patientId}, encounter ${encounterId}:`, error);
-      
-      // Record error metric
+
+      // Record error metric;
       metricsCollector.incrementCounter('analytics.los_prediction_errors', 1, {
         patientId,
         errorType: error.name,
@@ -1365,7 +1372,7 @@ export class PredictiveAnalyticsService {
   }
 
   /**
-   * Forecast census
+   * Forecast census;
    */
   async forecastCensus(
     options: {
@@ -1384,45 +1391,47 @@ export class PredictiveAnalyticsService {
     try {
       const startTime = performance.now();
       
-      // Set defaults
+      // Set defaults;
       const aggregation = options.aggregation || 'DAILY';
       const forecastType = options.forecastType || 'BASELINE';
       const includeExternalFactors = options.includeExternalFactors !== false;
       const useCache = options.useCache !== false;
       
-      // Calculate forecast horizon in days
+      // Calculate forecast horizon in days;
       const startDate = new Date(options.startDate);
       const endDate = new Date(options.endDate);
       const forecastHorizon = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
       
-      // Try cache first if enabled
+      // Try cache first if enabled;
       if (useCache) {
-        const cacheKey = `census:${options.facilityId}:${options.unitId || 'all'}:${options.serviceLineId || 'all'}:${startDate.toISOString()}:${endDate.toISOString()}:${aggregation}:${forecastType}`;
+        const cacheKey = `census:${options.facilityId}:${options.unitId ||;
+          'all'}:${options.serviceLineId ||
+          'all'}:${startDate.toISOString()}:${endDate.toISOString()}:${aggregation}:${forecastType}`;
         const cached = await cacheService.getCachedResult('analytics:', cacheKey);
         if (cached) return cached;
       }
 
-      // Get historical census data
+      // Get historical census data;
       const historicalData = await this.getHistoricalCensusData(
         options.facilityId,
         options.unitId,
-        options.serviceLineId
+        options.serviceLineId;
       );
       
-      // Select model to use
+      // Select model to use;
       const modelId = options.modelId || await this.selectBestModel(ModelCategory.PATIENT_FLOW, { 
         facilityId: options.facilityId, 
         unitId: options.unitId,
         serviceLineId: options.serviceLineId,
       });
       
-      // Get model
+      // Get model;
       const model = await this.getModelById(modelId);
       if (!model) {
         throw new Error(`Predictive model ${modelId} not found`);
       }
 
-      // Call prediction API
+      // Call prediction API;
       const prediction = await this.callPredictionAPI(model, 'census_forecast', {
         facilityId: options.facilityId,
         unitId: options.unitId,
@@ -1435,7 +1444,7 @@ export class PredictiveAnalyticsService {
         historicalData,
       });
 
-      // Create CensusForecast object
+      // Create CensusForecast object;
       const censusForecast: CensusForecast = {
         id: `census-forecast-${Date.now()}`,
         facilityId: options.facilityId,
@@ -1461,7 +1470,7 @@ export class PredictiveAnalyticsService {
         forecastType,
         externalFactors: prediction.externalFactors || [],
         historicalData: prediction.historicalData || {
-          startDate: new Date(new Date().setDate(new Date().getDate() - 90)), // 90 days ago
+          startDate: new Date(new Date().setDate(new Date().getDate() - 90)), // 90 days ago;
           endDate: new Date(),
           observations: 0,
           averageCensus: 0,
@@ -1470,18 +1479,20 @@ export class PredictiveAnalyticsService {
         },
       };
 
-      // Save forecast to database
+      // Save forecast to database;
       await this.prisma.censusForecast.create({
         data: censusForecast as any,
       });
 
-      // Cache the result
+      // Cache the result;
       if (useCache) {
-        const cacheKey = `census:${options.facilityId}:${options.unitId || 'all'}:${options.serviceLineId || 'all'}:${startDate.toISOString()}:${endDate.toISOString()}:${aggregation}:${forecastType}`;
-        await cacheService.cacheResult('analytics:', cacheKey, censusForecast, 3600); // 1 hour
+        const cacheKey = `census:${options.facilityId}:${options.unitId ||;
+          'all'}:${options.serviceLineId ||
+          'all'}:${startDate.toISOString()}:${endDate.toISOString()}:${aggregation}:${forecastType}`;
+        await cacheService.cacheResult('analytics:', cacheKey, censusForecast, 3600); // 1 hour;
       }
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('analytics.census_forecast_time', duration);
       metricsCollector.incrementCounter('analytics.census_forecasts', 1, {
@@ -1491,7 +1502,7 @@ export class PredictiveAnalyticsService {
         horizon: forecastHorizon.toString(),
       });
 
-      // If capacity issues predicted, publish alert event
+      // If capacity issues predicted, publish alert event;
       const capacityIssues = censusForecast.intervals.filter(
         interval => interval.status === 'AT_CAPACITY' || interval.status === 'OVER_CAPACITY'
       );
@@ -1512,9 +1523,8 @@ export class PredictiveAnalyticsService {
 
       return censusForecast;
     } catch (error) {
-      console.error(`Error forecasting census:`, error);
-      
-      // Record error metric
+
+      // Record error metric;
       metricsCollector.incrementCounter('analytics.census_forecast_errors', 1, {
         facilityId: options.facilityId,
         errorType: error.name,
@@ -1525,7 +1535,7 @@ export class PredictiveAnalyticsService {
   }
 
   /**
-   * Predict cost
+   * Predict cost;
    */
   async predictCost(
     patientId: string,
@@ -1540,31 +1550,31 @@ export class PredictiveAnalyticsService {
     try {
       const startTime = performance.now();
       
-      // Set defaults
+      // Set defaults;
       const includeReimbursement = options.includeReimbursement !== false;
       const includeScenarios = options.includeScenarios !== false;
       const useCache = options.useCache !== false;
       
-      // Try cache first if enabled
+      // Try cache first if enabled;
       if (useCache) {
         const cacheKey = `cost:${patientId}:${options.encounterId || 'future'}`;
         const cached = await cacheService.getCachedResult('analytics:', cacheKey);
         if (cached) return cached;
       }
 
-      // Get patient data
+      // Get patient data;
       const patientData = await this.getPatientData(patientId, options.encounterId);
       
-      // Select model to use
+      // Select model to use;
       const modelId = options.modelId || await this.selectBestModel(ModelCategory.COST_PREDICTION, patientData);
       
-      // Get model
+      // Get model;
       const model = await this.getModelById(modelId);
       if (!model) {
         throw new Error(`Predictive model ${modelId} not found`);
       }
 
-      // Call prediction API
+      // Call prediction API;
       const prediction = await this.callPredictionAPI(model, 'cost_prediction', {
         patientData,
         encounterId: options.encounterId,
@@ -1572,7 +1582,7 @@ export class PredictiveAnalyticsService {
         includeScenarios,
       });
 
-      // Create CostPrediction object
+      // Create CostPrediction object;
       const costPrediction: CostPrediction = {
         id: `cost-prediction-${Date.now()}`,
         patientId,
@@ -1603,25 +1613,25 @@ export class PredictiveAnalyticsService {
         historicalCosts: await this.getHistoricalCosts(patientId),
       };
 
-      // Save prediction to database
+      // Save prediction to database;
       await this.prisma.costPrediction.create({
         data: costPrediction as any,
       });
 
-      // Cache the result
+      // Cache the result;
       if (useCache) {
         const cacheKey = `cost:${patientId}:${options.encounterId || 'future'}`;
-        await cacheService.cacheResult('analytics:', cacheKey, costPrediction, 3600); // 1 hour
+        await cacheService.cacheResult('analytics:', cacheKey, costPrediction, 3600); // 1 hour;
       }
 
-      // Record metrics
+      // Record metrics;
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('analytics.cost_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.cost_predictions', 1, {
         riskLevel: costPrediction.riskLevel,
       });
 
-      // If high cost risk, publish alert event
+      // If high cost risk, publish alert event;
       if (costPrediction.riskLevel === 'HIGH' || costPrediction.riskLevel === 'VERY_HIGH') {
         await pubsub.publish('HIGH_COST_RISK', {
           highCostRisk: {
@@ -1636,9 +1646,8 @@ export class PredictiveAnalyticsService {
 
       return costPrediction;
     } catch (error) {
-      console.error(`Error predicting cost for patient ${patientId}:`, error);
-      
-      // Record error metric
+
+      // Record error metric;
       metricsCollector.incrementCounter('analytics.cost_prediction_errors', 1, {
         patientId,
         errorType: error.name,
@@ -1649,13 +1658,13 @@ export class PredictiveAnalyticsService {
   }
 
   /**
-   * Record prediction outcome
+   * Record prediction outcome;
    */
   async recordPredictionOutcome(
     predictionType: 'readmission' | 'length_of_stay' | 'cost',
     predictionId: string,
-    outcome: any,
-    userId: string
+    outcome: unknown,
+    userId: string;
   ): Promise<void> {
     try {
       switch (predictionType) {
@@ -1672,18 +1681,18 @@ export class PredictiveAnalyticsService {
           throw new Error(`Unsupported prediction type: ${predictionType}`);
       }
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('analytics.prediction_outcomes_recorded', 1, {
         predictionType,
       });
     } catch (error) {
-      console.error(`Error recording ${predictionType} outcome for prediction ${predictionId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Record clinical validation
+   * Record clinical validation;
    */
   async recordClinicalValidation(
     predictionType: 'readmission' | 'length_of_stay' | 'cost',
@@ -1692,7 +1701,7 @@ export class PredictiveAnalyticsService {
       agreement: boolean;
       notes?: string;
     },
-    userId: string
+    userId: string;
   ): Promise<void> {
     try {
       const validationData = {
@@ -1732,7 +1741,7 @@ export class PredictiveAnalyticsService {
           throw new Error(`Unsupported prediction type: ${predictionType}`);
       }
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CLINICAL_VALIDATION',
         resourceType: 'PREDICTION',
@@ -1744,13 +1753,13 @@ export class PredictiveAnalyticsService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('analytics.prediction_validations', 1, {
         predictionType,
         agreement: validation.agreement.toString(),
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('PREDICTION_VALIDATED', {
         predictionValidated: {
           predictionType,
@@ -1761,13 +1770,13 @@ export class PredictiveAnalyticsService {
         },
       });
     } catch (error) {
-      console.error(`Error recording clinical validation for ${predictionType} prediction ${predictionId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get model performance metrics
+   * Get model performance metrics;
    */
   async getModelPerformanceMetrics(
     modelId: string,
@@ -1778,7 +1787,7 @@ export class PredictiveAnalyticsService {
     } = {}
   ): Promise<any> {
     try {
-      // Get model
+      // Get model;
       const model = await this.getModelById(modelId);
       if (!model) {
         throw new Error(`Predictive model ${modelId} not found`);
@@ -1789,11 +1798,11 @@ export class PredictiveAnalyticsService {
       const startDate = options.startDate || new Date(endDate);
       startDate.setDate(startDate.getDate() - 30);
 
-      // Get predictions and outcomes
+      // Get predictions and outcomes;
       const predictions = await this.getModelPredictions(modelId, startDate, endDate, options.segment);
       
-      // Calculate performance metrics based on model type
-      let performanceMetrics: any;
+      // Calculate performance metrics based on model type;
+      let performanceMetrics: unknown;
       
       switch (model.type) {
         case ModelType.CLASSIFICATION:
@@ -1809,13 +1818,13 @@ export class PredictiveAnalyticsService {
           performanceMetrics = {};
       }
 
-      // Add model drift metrics
+      // Add model drift metrics;
       const driftMetrics = await this.calculateModelDrift(model, predictions);
       
-      // Add data quality metrics
+      // Add data quality metrics;
       const dataQualityMetrics = await this.calculateDataQualityMetrics(model, predictions);
       
-      // Combine metrics
+      // Combine metrics;
       const result = {
         modelId,
         modelName: model.name,
@@ -1836,26 +1845,26 @@ export class PredictiveAnalyticsService {
 
       return result;
     } catch (error) {
-      console.error(`Error getting performance metrics for model ${modelId}:`, error);
+
       throw error;
     }
   }
 
-  // Private helper methods
-  private validateModel(model: any): void {
-    // Implementation for model validation
+  // Private helper methods;
+  private validateModel(model: unknown): void {
+    // Implementation for model validation;
   }
 
   private validateModelUpdates(updates: Partial<PredictiveModel>): void {
-    // Implementation for update validation
+    // Implementation for update validation;
   }
 
   private async startModelTrainingJob(
     model: PredictiveModel,
-    trainingConfig: any
+    trainingConfig: unknown;
   ): Promise<{ jobId: string; estimatedCompletionTime: Date }> {
-    // This would be implemented to start an actual training job
-    // Here we just simulate a job
+    // This would be implemented to start an actual training job;
+    // Here we just simulate a job;
     const jobId = `training-job-${Date.now()}`;
     const estimatedCompletionTime = new Date();
     estimatedCompletionTime.setHours(estimatedCompletionTime.getHours() + 2);
@@ -1865,10 +1874,10 @@ export class PredictiveAnalyticsService {
 
   private async startModelDeploymentJob(
     model: PredictiveModel,
-    deploymentConfig: any
+    deploymentConfig: unknown;
   ): Promise<{ jobId: string; estimatedCompletionTime: Date }> {
-    // This would be implemented to start an actual deployment job
-    // Here we just simulate a job
+    // This would be implemented to start an actual deployment job;
+    // Here we just simulate a job;
     const jobId = `deployment-job-${Date.now()}`;
     const estimatedCompletionTime = new Date();
     estimatedCompletionTime.setMinutes(estimatedCompletionTime.getMinutes() + 30);
@@ -1877,21 +1886,21 @@ export class PredictiveAnalyticsService {
   }
 
   private async getPatientData(patientId: string, encounterId?: string): Promise<any> {
-    // Implementation to get patient data
-    // This would typically fetch comprehensive patient data
+    // Implementation to get patient data;
+    // This would typically fetch comprehensive patient data;
     return {
       patientId,
       encounterId,
       admissionDate: new Date(),
-      // More patient data fields would be here
+      // More patient data fields would be here;
     };
   }
 
-  private async selectBestModel(category: ModelCategory, context: any): Promise<string> {
-    // Implementation to select the best model for the given category and context
-    // This would be a sophisticated model selection logic in a real system
+  private async selectBestModel(category: ModelCategory, context: unknown): Promise<string> {
+    // Implementation to select the best model for the given category and context;
+    // This would be a sophisticated model selection logic in a real system;
     
-    // For demonstration, just get the first active model of the category
+    // For demonstration, just get the first active model of the category;
     const models = await this.prisma.predictiveModel.findMany({
       where: {
         category,
@@ -1913,12 +1922,12 @@ export class PredictiveAnalyticsService {
   private async callPredictionAPI(
     model: PredictiveModel,
     endpoint: string,
-    payload: any
+    payload: unknown;
   ): Promise<any> {
-    // This would be implemented to call the actual prediction API
-    // Here we just simulate a prediction
+    // This would be implemented to call the actual prediction API;
+    // Here we just simulate a prediction;
     
-    // For demonstration purposes, return mock prediction data
+    // For demonstration purposes, return mock prediction data;
     switch (endpoint) {
       case 'readmission':
         return this.generateMockReadmissionPrediction(payload);
@@ -1940,18 +1949,18 @@ export class PredictiveAnalyticsService {
     return 'VERY_HIGH';
   }
 
-  private getLOSCategory(los: number, patientData: any): 'SHORT' | 'EXPECTED' | 'EXTENDED' | 'PROLONGED' {
+  private getLOSCategory(los: number, patientData: unknown): 'SHORT' | 'EXPECTED' | 'EXTENDED' | 'PROLONGED' {
     // This would be implemented based on patient diagnosis, age, etc.
-    // Here we use simple thresholds
+    // Here we use simple thresholds;
     if (los < 2) return 'SHORT';
     if (los < 5) return 'EXPECTED';
     if (los < 10) return 'EXTENDED';
     return 'PROLONGED';
   }
 
-  private getCostRiskLevel(cost: number, patientData: any): 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH' {
+  private getCostRiskLevel(cost: number, patientData: unknown): 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH' {
     // This would be implemented based on patient insurance, diagnosis, etc.
-    // Here we use simple thresholds
+    // Here we use simple thresholds;
     if (cost < 5000) return 'LOW';
     if (cost < 10000) return 'MODERATE';
     if (cost < 25000) return 'HIGH';
@@ -1960,26 +1969,26 @@ export class PredictiveAnalyticsService {
 
   private async getHistoricalReadmissionPredictions(
     patientId: string,
-    encounterId?: string
+    encounterId?: string;
   ): Promise<{ timestamp: Date; riskScore: number; riskLevel: string }[]> {
-    // Implementation to get historical predictions
+    // Implementation to get historical predictions;
     return [];
   }
 
   private async getHistoricalLOSPredictions(
     patientId: string,
-    encounterId: string
+    encounterId: string;
   ): Promise<{ timestamp: Date; predictedLOS: number; predictionCategory: string }[]> {
-    // Implementation to get historical predictions
+    // Implementation to get historical predictions;
     return [];
   }
 
   private async getHistoricalCensusData(
     facilityId: string,
     unitId?: string,
-    serviceLineId?: string
+    serviceLineId?: string;
   ): Promise<any> {
-    // Implementation to get historical census data
+    // Implementation to get historical census data;
     return {
       days: 90,
       data: [],
@@ -1987,7 +1996,7 @@ export class PredictiveAnalyticsService {
   }
 
   private async getHistoricalCosts(patientId: string): Promise<any> {
-    // Implementation to get historical costs
+    // Implementation to get historical costs;
     return {
       previousEncounters: [],
       averageAnnualCost: 0,
@@ -1997,65 +2006,65 @@ export class PredictiveAnalyticsService {
 
   private async recordReadmissionOutcome(
     predictionId: string,
-    outcome: any,
-    userId: string
+    outcome: unknown,
+    userId: string;
   ): Promise<void> {
-    // Implementation to record readmission outcome
+    // Implementation to record readmission outcome;
   }
 
   private async recordLOSOutcome(
     predictionId: string,
-    outcome: any,
-    userId: string
+    outcome: unknown,
+    userId: string;
   ): Promise<void> {
-    // Implementation to record length of stay outcome
+    // Implementation to record length of stay outcome;
   }
 
   private async recordCostOutcome(
     predictionId: string,
-    outcome: any,
-    userId: string
+    outcome: unknown,
+    userId: string;
   ): Promise<void> {
-    // Implementation to record cost outcome
+    // Implementation to record cost outcome;
   }
 
   private async getModelPredictions(
     modelId: string,
     startDate: Date,
     endDate: Date,
-    segment?: string
+    segment?: string;
   ): Promise<any[]> {
-    // Implementation to get model predictions
+    // Implementation to get model predictions;
     return [];
   }
 
-  private calculateClassificationMetrics(predictions: any[]): any {
-    // Implementation to calculate classification metrics
+  private calculateClassificationMetrics(predictions: unknown[]): unknown {
+    // Implementation to calculate classification metrics;
     return {};
   }
 
-  private calculateRegressionMetrics(predictions: any[]): any {
-    // Implementation to calculate regression metrics
+  private calculateRegressionMetrics(predictions: unknown[]): unknown {
+    // Implementation to calculate regression metrics;
     return {};
   }
 
-  private calculateTimeSeriesMetrics(predictions: any[]): any {
-    // Implementation to calculate time series metrics
+  private calculateTimeSeriesMetrics(predictions: unknown[]): unknown {
+    // Implementation to calculate time series metrics;
     return {};
   }
 
-  private async calculateModelDrift(model: PredictiveModel, predictions: any[]): Promise<any> {
-    // Implementation to calculate model drift
+  private async calculateModelDrift(model: PredictiveModel, predictions: unknown[]): Promise<any> {
+    // Implementation to calculate model drift;
     return {};
   }
 
-  private async calculateDataQualityMetrics(model: PredictiveModel, predictions: any[]): Promise<any> {
-    // Implementation to calculate data quality metrics
+  private async calculateDataQualityMetrics(model: PredictiveModel, predictions: unknown[]): Promise<any> {
+    // Implementation to calculate data quality metrics;
     return {};
   }
 
-  // Mock data generators for demonstration
-  private generateMockReadmissionPrediction(payload: any): any {
+  // Mock data generators for demonstration;
+  private generateMockReadmissionPrediction(payload: unknown): unknown {
     const riskScore = Math.floor(Math.random() * 100);
     const probability = riskScore / 100;
     
@@ -2157,7 +2166,7 @@ export class PredictiveAnalyticsService {
     };
   }
 
-  private generateMockLOSPrediction(payload: any): any {
+  private generateMockLOSPrediction(payload: unknown): unknown {
     const predictedLOS = Math.floor(Math.random() * 10) + 3;
     const optimizedLOS = Math.max(2, predictedLOS - Math.floor(Math.random() * 3));
     
@@ -2262,7 +2271,7 @@ export class PredictiveAnalyticsService {
     };
   }
 
-  private generateMockCensusForecast(payload: any): any {
+  private generateMockCensusForecast(payload: unknown): unknown {
     const startDate = new Date(payload.startDate);
     const endDate = new Date(payload.endDate);
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -2270,25 +2279,25 @@ export class PredictiveAnalyticsService {
     const intervals = [];
     let currentDate = new Date(startDate);
     
-    // Base census value that will fluctuate
+    // Base census value that will fluctuate;
     const baseCensus = 80 + Math.floor(Math.random() * 20);
     const bedCapacity = 100;
     
-    // Generate intervals
+    // Generate intervals;
     while (currentDate <= endDate) {
       const dayOfWeek = currentDate.getDay();
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
       
-      // Create random fluctuations with weekend pattern
+      // Create random fluctuations with weekend pattern;
       const randomFactor = Math.random() * 10 - 5;
       const weekendFactor = isWeekend ? -10 : 0;
       const predictedCensus = Math.max(50, Math.min(120, baseCensus + randomFactor + weekendFactor));
       
-      // Random admissions and discharges
+      // Random admissions and discharges;
       const admissions = Math.floor(Math.random() * 15) + 5;
       const discharges = Math.floor(Math.random() * 15) + 5;
       
-      // Calculate status based on capacity
+      // Calculate status based on capacity;
       let status = 'NORMAL';
       if (predictedCensus > bedCapacity * 0.9) {
         status = 'NEAR_CAPACITY';
@@ -2333,11 +2342,11 @@ export class PredictiveAnalyticsService {
       
       intervals.push(interval);
       
-      // Move to next interval
+      // Move to next interval;
       currentDate.setDate(currentDate.getDate() + 1);
     }
     
-    // Generate trends
+    // Generate trends;
     const trends: CensusTrend[] = [
       {
         trendType: 'STABLE',
@@ -2355,7 +2364,7 @@ export class PredictiveAnalyticsService {
       },
     ];
     
-    // Generate seasonal patterns
+    // Generate seasonal patterns;
     const seasonalPatterns: SeasonalPattern[] = [
       {
         patternType: 'WEEKLY',
@@ -2366,7 +2375,7 @@ export class PredictiveAnalyticsService {
       },
     ];
     
-    // Detect anomalies
+    // Detect anomalies;
     const anomalies: CensusAnomaly[] = [];
     for (let i = 1; i < intervals.length; i++) {
       const prevCensus = intervals[i - 1].predictedCensus;
@@ -2422,7 +2431,7 @@ export class PredictiveAnalyticsService {
     };
   }
 
-  private generateMockCostPrediction(payload: any): any {
+  private generateMockCostPrediction(payload: unknown): unknown {
     const predictedTotalCost = 5000 + Math.floor(Math.random() * 20000);
     
     return {

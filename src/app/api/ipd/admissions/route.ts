@@ -4,29 +4,29 @@ import {
   getAdmissionByIdFromDB,
   createAdmissionInDB,
   updateAdmissionInDB,
-  AdmissionFilters, // Import AdmissionFilters from lib
-  CreateAdmissionData, // FIX: Import CreateAdmissionData
-  UpdateAdmissionData, // FIX: Import UpdateAdmissionData
-} from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction
+  AdmissionFilters, // Import AdmissionFilters from lib;
+  CreateAdmissionData, // FIX: Import CreateAdmissionData;
+  UpdateAdmissionData, // FIX: Import UpdateAdmissionData;
+} from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction;
 
-// FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput
+// FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput;
 // interface AdmissionInput { ... }
 // interface AdmissionUpdateInput { ... }
 
 /**
- * GET /api/ipd/admissions
+ * GET /api/ipd/admissions;
  * Retrieves a list of admissions, optionally filtered by query parameters.
  * Can also retrieve a single admission by ID if provided as a query parameter.
  */
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const admissionId = searchParams.get("id");
 
     const filters: AdmissionFilters = {};
-    // Populate filters from searchParams
+    // Populate filters from searchParams;
     for (const [key, value] of searchParams.entries()) {
-      // Ensure only valid filter keys are added
+      // Ensure only valid filter keys are added;
       if (
         [
           "patient_id",
@@ -38,19 +38,19 @@ export async function GET(request: NextRequest) {
           "discharge_date_from",
           "discharge_date_to",
           "attending_doctor_id",
-        ].includes(key)
+        ].includes(key);
       ) {
         const filterKey = key as keyof AdmissionFilters;
         if (filterKey === "status") {
           if (
-            value === "active" ||
-            value === "discharged" ||
-            value === "cancelled"
+            value === "active" ||;
+            value === "discharged" ||;
+            value === "cancelled";
           ) {
             filters[filterKey] = value;
           } else {
-            // Optionally handle invalid status value, e.g., ignore or return error
-            console.warn(`Invalid status filter value received: ${value}`);
+            // Optionally handle invalid status value, e.g., ignore or return error;
+
           }
         } else {
           filters[filterKey] = value;
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // If an ID is provided, attempt to fetch a single admission
+    // If an ID is provided, attempt to fetch a single admission;
     if (admissionId) {
       const id = Number.parseInt(admissionId);
       if (Number.isNaN(id) || id <= 0) {
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
           { status: 400 }
         );
       } else {
-        // Simulate fetching a single admission by ID
+        // Simulate fetching a single admission by ID;
         const admission = await getAdmissionByIdFromDB(id);
         if (!admission) {
           return NextResponse.json(
@@ -79,14 +79,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Otherwise, return filtered list
+    // Otherwise, return filtered list;
     const admissions = await getAdmissionsFromDB(filters);
 
     return NextResponse.json({ admissions });
   } catch (error: unknown) {
-    console.error("Error fetching admissions:", error);
-    // Fixed: Safely access error message
-    const errorMessage =
+
+    // Fixed: Safely access error message;
+    const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       { error: "Failed to fetch admissions", details: errorMessage },
@@ -96,33 +96,33 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/ipd/admissions
+ * POST /api/ipd/admissions;
  * Creates a new admission.
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   try {
-    // FIX: Use imported CreateAdmissionData type
+    // FIX: Use imported CreateAdmissionData type;
     const admissionData = (await request.json()) as CreateAdmissionData;
 
     // FIX: Update validation based on CreateAdmissionData fields (patient_id is required)
-    // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData
+    // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData;
     if (
       !admissionData.patient_id /* Add other required fields from CreateAdmissionData */
     ) {
       return NextResponse.json(
-        { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields
+        { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields;
         { status: 400 }
       );
     }
 
-    // Simulate creating the admission in the database
+    // Simulate creating the admission in the database;
     const newAdmission = await createAdmissionInDB(admissionData);
 
     return NextResponse.json({ admission: newAdmission }, { status: 201 });
   } catch (error: unknown) {
-    console.error("Error creating admission:", error);
-    // Fixed: Safely access error message
-    const errorMessage =
+
+    // Fixed: Safely access error message;
+    const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       { error: "Failed to create admission", details: errorMessage },
@@ -136,9 +136,9 @@ export async function POST(request: NextRequest) {
  * Updates an existing admission.
  * Note: This route structure assumes the ID is part of the path,
  * but the current implementation reads it from the path manually.
- * A better approach is to use dynamic route segments like /api/ipd/admissions/[id]/route.ts
+ * A better approach is to use dynamic route segments like /api/ipd/admissions/[id]/route.ts;
  */
-export async function PUT(request: NextRequest) {
+export async const PUT = (request: NextRequest) {
   try {
     // This manual path parsing is fragile. Consider using dynamic routes.
     const path = request.nextUrl.pathname;
@@ -152,10 +152,10 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // FIX: Use imported UpdateAdmissionData type
+    // FIX: Use imported UpdateAdmissionData type;
     const updateData = (await request.json()) as UpdateAdmissionData;
 
-    // Simulate updating the admission in the database
+    // Simulate updating the admission in the database;
     const updatedAdmission = await updateAdmissionInDB(id, updateData);
 
     if (!updatedAdmission) {
@@ -167,9 +167,9 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json({ admission: updatedAdmission });
   } catch (error: unknown) {
-    console.error("Error updating admission:", error);
-    // Fixed: Safely access error message
-    const errorMessage =
+
+    // Fixed: Safely access error message;
+    const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       { error: "Failed to update admission", details: errorMessage },

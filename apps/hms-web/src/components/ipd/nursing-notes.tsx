@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -19,9 +30,9 @@ interface NursingNotesProps {
 }
 
 /**
- * IPD Nursing Notes component
+ * IPD Nursing Notes component;
  */
-export function NursingNotes({ patientId, patientName, notes }: NursingNotesProps) {
+export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProps) {
   const getCategoryLabel = (category: string) => {
     switch(category) {
       case 'assessment': return 'Assessment';
@@ -38,8 +49,8 @@ export function NursingNotes({ patientId, patientName, notes }: NursingNotesProp
         <CardTitle>Nursing Notes - {patientName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-end">
+        <div className="space-y-4">;
+          <div className="flex justify-end">;
             <Button>Add Nursing Note</Button>
           </div>
           
@@ -57,30 +68,30 @@ export function NursingNotes({ patientId, patientName, notes }: NursingNotesProp
             <TableBody>
               {notes.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    No nursing notes available
+                  <TableCell colSpan={6} className="text-center">;
+                    No nursing notes available;
                   </TableCell>
                 </TableRow>
               ) : (
                 notes.map((note) => (
-                  <TableRow key={note.id}>
+                  <TableRow key={note.id}>;
                     <TableCell>{note.date}</TableCell>
                     <TableCell>{note.time}</TableCell>
                     <TableCell>{note.nurse}</TableCell>
                     <TableCell>{getCategoryLabel(note.category)}</TableCell>
                     <TableCell>
-                      <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">
+                      <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">;
                         {note.note}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">View</Button>
-                        <Button variant="outline" size="sm">Edit</Button>
+                      <div className="flex space-x-2">;
+                        <Button variant="outline" size="sm">View</Button>;
+                        <Button variant="outline" size="sm">Edit</Button>;
                       </div>
                     </TableCell>
                   </TableRow>
-                ))
+                ));
               )}
             </TableBody>
           </Table>

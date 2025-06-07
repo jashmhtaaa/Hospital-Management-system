@@ -1,4 +1,4 @@
-// app/api/lis/reports/route.ts
+// app/api/lis/reports/route.ts;
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabOrderStatus, LabReportStatus } from "@prisma/client";
 import { z } from "zod";
@@ -21,7 +21,7 @@ const createLabReportSchema = z.object({
   reportDate: z.string().datetime({ offset: true, message: "Invalid report date format. ISO 8601 expected." }).optional().nullable(),
 });
 
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -40,11 +40,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body: unknown = await request.json();
-    console.log(`[LIS_REPORTS_POST] User ${userId} attempting to create lab report metadata with body:`, body);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = createLabReportSchema.safeParse(body);
     if (!validation.success) {
-      console.warn("[LIS_REPORTS_POST] Validation failed:", validation.error.flatten());
+      // Debug logging removed);
       await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -88,14 +88,14 @@ export async function POST(request: NextRequest) {
       await auditLogService.logEvent(userId, "LIS_ORDER_STATUS_AUTO_UPDATED_TO_REPORT_AVAILABLE", { labOrderId: validatedData.labOrderId, reportId: newLabReport.id });
     }
 
-    console.log(`[LIS_REPORTS_POST] User ${userId} successfully created lab report metadata ID: ${newLabReport.id}`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_SUCCESS", { path: request.nextUrl.pathname, reportId: newLabReport.id, data: newLabReport });
     const duration = Date.now() - start;
-    console.log(`[LIS_REPORTS_POST] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(newLabReport, 201);
 
-  } catch (error: any) {
-    console.error("[LIS_REPORTS_POST_ERROR]", { userId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     let errStatus = 500;
     let errMessage = "Internal Server Error";
     let errDetails: string | { target?: readonly string[] | string } | undefined = error.message;
@@ -116,12 +116,12 @@ export async function POST(request: NextRequest) {
     }
     await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
     const duration = Date.now() - start;
-    console.error(`[LIS_REPORTS_POST] Request failed after ${duration}ms.`);
+
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
 
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -171,7 +171,7 @@ export async function GET(request: NextRequest) {
         return sendErrorResponse("Forbidden: Please specify a patient or order to view reports.", 403);
     }
 
-    console.log(`[LIS_REPORTS_GET] User ${userId} fetching lab reports with filters:`, whereClause);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const [labReports, totalCount] = await prisma.$transaction([
       prisma.labReport.findMany({
@@ -190,12 +190,12 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.labReport.count({ where: whereClause })
+      prisma.labReport.count({ where: whereClause });
     ]);
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labReports.length, totalCount });
     const duration = Date.now() - start;
-    console.log(`[LIS_REPORTS_GET] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
     return sendSuccessResponse({
       data: labReports,
@@ -207,11 +207,11 @@ export async function GET(request: NextRequest) {
       }
     });
 
-  } catch (error: any) {
-    console.error("[LIS_REPORTS_GET_ERROR]", { userId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
     const duration = Date.now() - start;
-    console.error(`[LIS_REPORTS_GET] Request failed after ${duration}ms.`);
+
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }

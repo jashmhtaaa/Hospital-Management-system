@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,17 +18,17 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const analyticsService = new AnalyticsService();
 
 /**
- * GET /api/support-services/marketing/analytics/comparative
- * Get comparative analytics for multiple campaigns
+ * GET /api/support-services/marketing/analytics/comparative;
+ * Get comparative analytics for multiple campaigns;
  */
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
       
-      // Parse query parameters
+      // Parse query parameters;
       const campaignIds = searchParams.get('campaignIds')?.split(',') || [];
       
       if (campaignIds.length === 0) {
@@ -28,20 +39,20 @@ export async function GET(request: NextRequest) {
       }
       
       const filters = {
-        startDate: searchParams.has('startDate')
-          ? new Date(searchParams.get('startDate') as string)
+        startDate: searchParams.has('startDate');
+          ? new Date(searchParams.get('startDate') as string);
           : undefined,
-        endDate: searchParams.has('endDate')
-          ? new Date(searchParams.get('endDate') as string)
+        endDate: searchParams.has('endDate');
+          ? new Date(searchParams.get('endDate') as string);
           : undefined,
-        metrics: searchParams.has('metrics')
-          ? (searchParams.get('metrics') as string).split(',')
+        metrics: searchParams.has('metrics');
+          ? (searchParams.get('metrics') as string).split(',');
           : undefined,
       };
       
       const result = await analyticsService.getComparativeAnalytics(
         campaignIds,
-        filters
+        filters;
       );
       
       return NextResponse.json(result);

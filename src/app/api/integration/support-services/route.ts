@@ -1,83 +1,93 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
 import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middleware';
-import { RBACService, Resource, Action } from '@/lib/rbac.service';
 
 /**
- * Integration API for Support Services
+ * Integration API for Support Services;
  * 
  * This API provides endpoints for integrating support services with core HMS systems.
  */
 
 /**
- * GET /api/integration/support-services/patient/:patientId
- * Retrieves patient information for support services
+ * GET /api/integration/support-services/patient/:patientId;
+ * Retrieves patient information for support services;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { patientId: string } }
 ) {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Get patient information
+    // Get patient information;
     const patientInfo = await HMSIntegrationService.getPatientInfo(
       params.patientId,
       userId,
-      userRoles
+      userRoles;
     );
     
     return NextResponse.json({
       success: true,
-      data: patientInfo
+      data: patientInfo;
     });
   });
 }
 
 /**
- * GET /api/integration/support-services/location/:locationId
- * Retrieves location information for support services
+ * GET /api/integration/support-services/location/:locationId;
+ * Retrieves location information for support services;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { locationId: string } }
 ) {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Get location information
+    // Get location information;
     const locationInfo = await HMSIntegrationService.getLocationInfo(
       params.locationId,
       userId,
-      userRoles
+      userRoles;
     );
     
     return NextResponse.json({
       success: true,
-      data: locationInfo
+      data: locationInfo;
     });
   });
 }
 
 /**
- * POST /api/integration/support-services/notification
- * Sends a notification through the HMS Notification System
+ * POST /api/integration/support-services/notification;
+ * Sends a notification through the HMS Notification System;
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { recipientId, type, title, message, metadata } = body;
     
-    // Validate required fields
+    // Validate required fields;
     if (!recipientId || !type || !title || !message) {
       return NextResponse.json(
         {
@@ -94,7 +104,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Send notification
+    // Send notification;
     const notification = await HMSIntegrationService.sendNotification(
       recipientId,
       type,
@@ -102,31 +112,31 @@ export async function POST(request: NextRequest) {
       message,
       metadata || {},
       userId,
-      userRoles
+      userRoles;
     );
     
     return NextResponse.json({
       success: true,
-      data: notification
+      data: notification;
     });
   });
 }
 
 /**
- * POST /api/integration/support-services/report
- * Submits data to the HMS Reporting System
+ * POST /api/integration/support-services/report;
+ * Submits data to the HMS Reporting System;
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { reportType, reportData } = body;
     
-    // Validate required fields
+    // Validate required fields;
     if (!reportType || !reportData) {
       return NextResponse.json(
         {
@@ -143,39 +153,39 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Submit report data
+    // Submit report data;
     const report = await HMSIntegrationService.submitReportData(
       reportType,
       reportData,
       userId,
-      userRoles
+      userRoles;
     );
     
     return NextResponse.json({
       success: true,
-      data: report
+      data: report;
     });
   });
 }
 
 /**
- * POST /api/integration/support-services/:serviceType/:requestId/link-patient
- * Links a support service request to a patient record
+ * POST /api/integration/support-services/:serviceType/:requestId/link-patient;
+ * Links a support service request to a patient record;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { serviceType: string; requestId: string } }
 ) {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { patientId } = body;
     
-    // Validate required fields
+    // Validate required fields;
     if (!patientId) {
       return NextResponse.json(
         {
@@ -192,7 +202,7 @@ export async function POST(
       );
     }
     
-    // Validate service type
+    // Validate service type;
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE', 'FEEDBACK'];
     const serviceType = params.serviceType.toUpperCase();
     
@@ -204,7 +214,7 @@ export async function POST(
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type',
             details: {
-              validServiceTypes
+              validServiceTypes;
             }
           }
         },
@@ -212,40 +222,40 @@ export async function POST(
       );
     }
     
-    // Link request to patient
+    // Link request to patient;
     const request = await HMSIntegrationService.linkRequestToPatient(
       serviceType as any,
       params.requestId,
       patientId,
       userId,
-      userRoles
+      userRoles;
     );
     
     return NextResponse.json({
       success: true,
-      data: request
+      data: request;
     });
   });
 }
 
 /**
- * POST /api/integration/support-services/:serviceType/:requestId/link-location
- * Links a support service request to a location
+ * POST /api/integration/support-services/:serviceType/:requestId/link-location;
+ * Links a support service request to a location;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { serviceType: string; requestId: string } }
 ) {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { locationId } = body;
     
-    // Validate required fields
+    // Validate required fields;
     if (!locationId) {
       return NextResponse.json(
         {
@@ -262,7 +272,7 @@ export async function POST(
       );
     }
     
-    // Validate service type
+    // Validate service type;
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE'];
     const serviceType = params.serviceType.toUpperCase();
     
@@ -274,7 +284,7 @@ export async function POST(
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type',
             details: {
-              validServiceTypes
+              validServiceTypes;
             }
           }
         },
@@ -282,18 +292,18 @@ export async function POST(
       );
     }
     
-    // Link request to location
+    // Link request to location;
     const request = await HMSIntegrationService.linkRequestToLocation(
       serviceType as any,
       params.requestId,
       locationId,
       userId,
-      userRoles
+      userRoles;
     );
     
     return NextResponse.json({
       success: true,
-      data: request
+      data: request;
     });
   });
 }

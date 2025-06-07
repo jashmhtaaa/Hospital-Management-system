@@ -1,34 +1,45 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextApiRequest, NextApiResponse } from "next";
-import { InvoiceService } from "../../../../features/billing/services/InvoiceService"; // Adjust path as per actual structure
-import { Invoice } from "../../../../features/billing/types"; // Adjust path
+import { InvoiceService } from "../../../../features/billing/services/InvoiceService.ts"; // Adjust path as per actual structure;
+import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path;
 
 const invoiceService = new InvoiceService();
 
 /**
- * @swagger
+ * @swagger;
  * /api/billing/invoices:
  *   post:
- *     summary: Generate a new invoice for a patient
+ *     summary: Generate a new invoice for a patient;
  *     description: Creates an invoice based on billable charges for a patient.
  *     requestBody:
- *       required: true
+ *       required: true;
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             type: object;
  *             required:
- *               - patientId
+ *               - patientId;
  *             properties:
  *               patientId:
- *                 type: string
+ *                 type: string;
  *                 description: The ID of the patient for whom to generate the invoice.
  *               chargeIds:
- *                 type: array
+ *                 type: array;
  *                 items:
- *                   type: string
+ *                   type: string;
  *                 description: Optional array of specific charge IDs to include in this invoice.
  *               invoiceType:
- *                 type: string
+ *                 type: string;
  *                 description: Type of invoice (e.g., 'INTERIM', 'FINAL'). Defaults to 'FINAL'.
  *                 default: 'FINAL'
  *     responses:
@@ -45,14 +56,14 @@ const invoiceService = new InvoiceService();
  *
  * /api/billing/invoices/{invoiceId}:
  *   get:
- *     summary: Retrieve a specific invoice by ID
+ *     summary: Retrieve a specific invoice by ID;
  *     description: Fetches the details of a single invoice.
  *     parameters:
- *       - in: path
- *         name: invoiceId
- *         required: true
+ *       - in: path;
+ *         name: invoiceId;
+ *         required: true;
  *         schema:
- *           type: string
+ *           type: string;
  *         description: The ID of the invoice to retrieve.
  *     responses:
  *       200:
@@ -66,7 +77,7 @@ const invoiceService = new InvoiceService();
  *       500:
  *         description: Server error.
  */
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
     const { invoiceId } = req.query;
 
     if (req.method === "POST") {
@@ -77,8 +88,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             const newInvoice = await invoiceService.generateInvoice(patientId, chargeIds, invoiceType);
             return res.status(201).json(newInvoice);
-        } catch (error: any) {
-            console.error("Error generating invoice:", error);
+        } catch (error: unknown) {
+
             if (error.message.includes("not found") || error.message.includes("No billable charges")) {
                 return res.status(400).json({ message: error.message });
             }
@@ -92,8 +103,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     return res.status(404).json({ message: `Invoice with ID ${invoiceId} not found.` });
                 }
                 return res.status(200).json(invoice);
-            } catch (error: any) {
-                console.error(`Error fetching invoice ${invoiceId}:`, error);
+            } catch (error: unknown) {
+
                 return res.status(500).json({ message: `Error fetching invoice ${invoiceId}`, error: error.message });
             }
         }

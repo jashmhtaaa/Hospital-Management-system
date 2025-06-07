@@ -1,45 +1,55 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextApiRequest, NextApiResponse } from "next";
-import { TPA, InsurancePolicy } from "../../../../features/insurance/types"; // Adjust path as per actual structure
-import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService"; // Adjust path
+import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService.ts"; // Adjust path;
 
 const claimService = new ClaimProcessingService();
 
 /**
- * @swagger
+ * @swagger;
  * /api/insurance/claims:
  *   post:
- *     summary: Submit a new insurance claim
+ *     summary: Submit a new insurance claim;
  *     description: Creates and submits a new insurance claim for a patient.
  *     requestBody:
- *       required: true
+ *       required: true;
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             type: object;
  *             required:
- *               - patientId
- *               - policyId
- *               - serviceCodes
- *               - diagnosisCodes
- *               - totalAmount
+ *               - patientId;
+ *               - policyId;
+ *               - serviceCodes;
+ *               - diagnosisCodes;
+ *               - totalAmount;
  *             properties:
  *               patientId:
- *                 type: string
+ *                 type: string;
  *               policyId:
- *                 type: string
+ *                 type: string;
  *               serviceCodes:
- *                 type: array
+ *                 type: array;
  *                 items:
- *                   type: string
+ *                   type: string;
  *               diagnosisCodes:
- *                 type: array
+ *                 type: array;
  *                 items:
- *                   type: string
+ *                   type: string;
  *               totalAmount:
- *                 type: number
+ *                 type: number;
  *               notes:
- *                 type: string
- *                 nullable: true
+ *                 type: string;
+ *                 nullable: true;
  *     responses:
  *       201:
  *         description: Claim submitted successfully.
@@ -52,14 +62,14 @@ const claimService = new ClaimProcessingService();
  *       500:
  *         description: Server error.
  *   get:
- *     summary: Retrieve claim status
+ *     summary: Retrieve claim status;
  *     description: Fetches the status of a previously submitted insurance claim.
  *     parameters:
- *       - in: query
- *         name: claimId
- *         required: true
+ *       - in: query;
+ *         name: claimId;
+ *         required: true;
  *         schema:
- *           type: string
+ *           type: string;
  *         description: The ID of the claim to check.
  *     responses:
  *       200:
@@ -76,7 +86,7 @@ const claimService = new ClaimProcessingService();
  *         description: Server error.
  */
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceCodes, diagnosisCodes, totalAmount, notes } = req.body as {
@@ -101,9 +111,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             const newClaim = await claimService.submitClaim(patientId, policyId, claimDetails);
             return res.status(201).json(newClaim);
-        } catch (error: any) {
-            console.error("Error creating claim:", error);
-            // Determine appropriate status code based on error type if possible
+        } catch (error: unknown) {
+
+            // Determine appropriate status code based on error type if possible;
             if (error.message.includes("not found")) {
                 return res.status(404).json({ message: error.message });
             }
@@ -120,8 +130,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404).json({ message: `Claim with ID ${claimId} not found.` });
             }
             return res.status(200).json(status);
-        } catch (error: any) {
-            console.error(`Error fetching claim ${claimId}:`, error);
+        } catch (error: unknown) {
+
             if (error.message.includes("not found")) {
                 return res.status(404).json({ message: error.message });
             }

@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -6,13 +17,13 @@ import {
   CardContent, 
   CardHeader, 
   CardTitle, 
-  CardDescription 
+  CardDescription;
 } from '@/components/ui/card';
 import { 
   Tabs, 
   TabsContent, 
   TabsList, 
-  TabsTrigger 
+  TabsTrigger;
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { 
@@ -20,14 +31,14 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '@/components/ui/select';
 import { DatePicker } from '@/components/ui/date-picker';
 import { 
   BarChart, 
   LineChart, 
   PieChart, 
-  DonutChart 
+  DonutChart;
 } from '@/components/ui/charts';
 import { DataTable } from '@/components/ui/data-table';
 import { Badge } from '@/components/ui/badge';
@@ -35,11 +46,11 @@ import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatCurrency, formatDate, formatNumber } from '@/lib/formatters';
 
-export default function FinancialDashboard() {
+export default const FinancialDashboard = () {
   const [activeTab, setActiveTab] = useState('overview');
   const [dateRange, setDateRange] = useState({
     startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-    endDate: new Date()
+    endDate: new Date();
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,13 +65,13 @@ export default function FinancialDashboard() {
     setError(null);
     
     try {
-      // In a real implementation, this would fetch data from the API
-      // For now, we'll simulate the data
+      // In a real implementation, this would fetch data from the API;
+      // For now, we'll simulate the data;
       
-      // Simulate API call delay
+      // Simulate API call delay;
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Generate simulated data based on active tab
+      // Generate simulated data based on active tab;
       let data;
       switch (activeTab) {
         case 'overview':
@@ -85,13 +96,13 @@ export default function FinancialDashboard() {
       setDashboardData(data);
     } catch (err) {
       setError('Failed to load dashboard data. Please try again.');
-      console.error(err);
+
     } finally {
       setLoading(false);
     }
   };
 
-  // Simulated data generators
+  // Simulated data generators;
   const generateOverviewData = () => {
     return {
       kpis: [
@@ -124,7 +135,7 @@ export default function FinancialDashboard() {
           'rgba(34, 197, 94, 0.6)',
           'rgba(59, 130, 246, 0.6)',
           'rgba(250, 204, 21, 0.6)',
-          'rgba(239, 68, 68, 0.6)'
+          'rgba(239, 68, 68, 0.6)';
         ]
       },
       recentTransactions: [
@@ -159,7 +170,7 @@ export default function FinancialDashboard() {
           'rgba(239, 68, 68, 0.6)',
           'rgba(250, 204, 21, 0.6)',
           'rgba(168, 85, 247, 0.6)',
-          'rgba(236, 72, 153, 0.6)'
+          'rgba(236, 72, 153, 0.6)';
         ]
       },
       revenueByService: [
@@ -179,7 +190,7 @@ export default function FinancialDashboard() {
           'rgba(59, 130, 246, 0.6)',
           'rgba(34, 197, 94, 0.6)',
           'rgba(168, 85, 247, 0.6)',
-          'rgba(236, 72, 153, 0.6)'
+          'rgba(236, 72, 153, 0.6)';
         ]
       }
     };
@@ -198,7 +209,7 @@ export default function FinancialDashboard() {
           'rgba(236, 72, 153, 0.6)',
           'rgba(14, 165, 233, 0.6)',
           'rgba(34, 197, 94, 0.6)',
-          'rgba(239, 68, 68, 0.6)'
+          'rgba(239, 68, 68, 0.6)';
         ]
       },
       agingAnalysis: {
@@ -212,7 +223,7 @@ export default function FinancialDashboard() {
               'rgba(250, 204, 21, 0.6)',
               'rgba(249, 115, 22, 0.6)',
               'rgba(239, 68, 68, 0.6)',
-              'rgba(220, 38, 38, 0.6)'
+              'rgba(220, 38, 38, 0.6)';
             ]
           }
         ]
@@ -250,7 +261,7 @@ export default function FinancialDashboard() {
           'rgba(34, 197, 94, 0.6)',
           'rgba(168, 85, 247, 0.6)',
           'rgba(239, 68, 68, 0.6)',
-          'rgba(236, 72, 153, 0.6)'
+          'rgba(236, 72, 153, 0.6)';
         ]
       },
       claimTrend: {
@@ -293,7 +304,7 @@ export default function FinancialDashboard() {
           'rgba(250, 204, 21, 0.6)',
           'rgba(168, 85, 247, 0.6)',
           'rgba(59, 130, 246, 0.6)',
-          'rgba(236, 72, 153, 0.6)'
+          'rgba(236, 72, 153, 0.6)';
         ]
       }
     };
@@ -320,77 +331,77 @@ export default function FinancialDashboard() {
     };
   };
 
-  // Render loading state
+  // Render loading state;
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner size="lg" />
-        <span className="ml-2">Loading financial dashboard...</span>
+      <div className="flex items-center justify-center h-screen">;
+        <Spinner size="lg" />;
+        <span className="ml-2">Loading financial dashboard...</span>;
       </div>
     );
   }
 
-  // Render error state
+  // Render error state;
   if (error) {
     return (
-      <div className="p-4">
-        <Alert variant="destructive">
+      <div className="p-4">;
+        <Alert variant="destructive">;
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button className="mt-4" onClick={fetchDashboardData}>Retry</Button>
+        <Button className="mt-4" onClick={fetchDashboardData}>Retry</Button>;
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Financial Dashboard</h1>
-        <div className="flex space-x-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium">From:</span>
-            <DatePicker
+    <div className="p-6">;
+      <div className="flex justify-between items-center mb-6">;
+        <h1 className="text-3xl font-bold">Financial Dashboard</h1>;
+        <div className="flex space-x-4">;
+          <div className="flex items-center space-x-2">;
+            <span className="text-sm font-medium">From:</span>;
+            <DatePicker;
               date={dateRange.startDate}
               onDateChange={(date) => setDateRange({ ...dateRange, startDate: date })}
             />
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium">To:</span>
-            <DatePicker
+          <div className="flex items-center space-x-2">;
+            <span className="text-sm font-medium">To:</span>;
+            <DatePicker;
               date={dateRange.endDate}
               onDateChange={(date) => setDateRange({ ...dateRange, endDate: date })}
             />
           </div>
-          <Button onClick={fetchDashboardData}>Apply</Button>
+          <Button onClick={fetchDashboardData}>Apply</Button>;
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="revenue">Revenue Analysis</TabsTrigger>
-          <TabsTrigger value="billing">Billing & Payments</TabsTrigger>
-          <TabsTrigger value="insurance">Insurance Claims</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>;
+        <TabsList className="mb-6">;
+          <TabsTrigger value="overview">Overview</TabsTrigger>;
+          <TabsTrigger value="revenue">Revenue Analysis</TabsTrigger>;
+          <TabsTrigger value="billing">Billing & Payments</TabsTrigger>;
+          <TabsTrigger value="insurance">Insurance Claims</TabsTrigger>;
+          <TabsTrigger value="reports">Reports</TabsTrigger>;
         </TabsList>
 
-        <TabsContent value="overview">
+        <TabsContent value="overview">;
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">;
                 {dashboardData.kpis.map((kpi, index) => (
-                  <Card key={index}>
-                    <CardContent className="p-6">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-muted-foreground">{kpi.title}</span>
-                        <div className="flex items-baseline mt-2">
-                          <span className="text-3xl font-bold">
+                  <Card key={index}>;
+                    <CardContent className="p-6">;
+                      <div className="flex flex-col">;
+                        <span className="text-sm font-medium text-muted-foreground">{kpi.title}</span>;
+                        <div className="flex items-baseline mt-2">;
+                          <span className="text-3xl font-bold">;
                             {kpi.unit === '%' ? formatNumber(kpi.value) + '%' : 
                              kpi.unit === 'days' ? formatNumber(kpi.value) + ' days' : 
                              formatCurrency(kpi.value)}
                           </span>
-                          <span className={`ml-2 text-sm font-medium ${kpi.changeType === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
-                            {kpi.changeType === 'increase' ? '↑' : '↓'} {Math.abs(kpi.change)}%
+                          <span className={`ml-2 text-sm font-medium ${kpi.changeType === 'increase' ? 'text-green-600' : 'text-red-600'}`}>;
+                            {kpi.changeType === 'increase' ? '↑' : '↓'} {Math.abs(kpi.change)}%;
                           </span>
                         </div>
                       </div>
@@ -399,14 +410,14 @@ export default function FinancialDashboard() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue vs Expenses</CardTitle>
                     <CardDescription>Monthly comparison for the last 6 months</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <BarChart
+                    <BarChart;
                       data={dashboardData.revenueChart}
                       height={300}
                     />
@@ -419,7 +430,7 @@ export default function FinancialDashboard() {
                     <CardDescription>Current distribution of invoice status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DonutChart
+                    <DonutChart;
                       data={dashboardData.billingStatus}
                       height={300}
                     />
@@ -433,7 +444,7 @@ export default function FinancialDashboard() {
                   <CardDescription>Latest financial activities</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable
+                  <DataTable;
                     data={dashboardData.recentTransactions}
                     columns={[
                       { header: 'Invoice ID', accessorKey: 'id' },
@@ -441,12 +452,12 @@ export default function FinancialDashboard() {
                       { 
                         header: 'Date', 
                         accessorKey: 'date',
-                        cell: ({ row }) => formatDate(row.original.date)
+                        cell: ({ row }) => formatDate(row.original.date);
                       },
                       { 
                         header: 'Amount', 
                         accessorKey: 'amount',
-                        cell: ({ row }) => formatCurrency(row.original.amount)
+                        cell: ({ row }) => formatCurrency(row.original.amount);
                       },
                       { 
                         header: 'Status', 
@@ -457,11 +468,11 @@ export default function FinancialDashboard() {
                             paid: 'bg-green-100 text-green-800',
                             partial: 'bg-blue-100 text-blue-800',
                             pending: 'bg-yellow-100 text-yellow-800',
-                            overdue: 'bg-red-100 text-red-800'
+                            overdue: 'bg-red-100 text-red-800';
                           };
                           
                           return (
-                            <Badge className={statusColors[status as keyof typeof statusColors]}>
+                            <Badge className={statusColors[status as keyof typeof statusColors]}>;
                               {status.charAt(0).toUpperCase() + status.slice(1)}
                             </Badge>
                           );
@@ -475,17 +486,17 @@ export default function FinancialDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="revenue">
+        <TabsContent value="revenue">;
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue Trend</CardTitle>
                     <CardDescription>Weekly revenue for the selected period</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <LineChart
+                    <LineChart;
                       data={dashboardData.revenueTrend}
                       height={300}
                     />
@@ -498,7 +509,7 @@ export default function FinancialDashboard() {
                     <CardDescription>Distribution across hospital departments</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <PieChart
+                    <PieChart;
                       data={dashboardData.revenueByDepartment}
                       height={300}
                     />
@@ -506,26 +517,26 @@ export default function FinancialDashboard() {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue by Service</CardTitle>
                     <CardDescription>Top revenue-generating services</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable
+                    <DataTable;
                       data={dashboardData.revenueByService}
                       columns={[
                         { header: 'Service', accessorKey: 'service' },
                         { 
                           header: 'Revenue', 
                           accessorKey: 'revenue',
-                          cell: ({ row }) => formatCurrency(row.original.revenue)
+                          cell: ({ row }) => formatCurrency(row.original.revenue);
                         },
                         { 
                           header: 'Percentage', 
                           accessorKey: 'percentage',
-                          cell: ({ row }) => `${row.original.percentage}%`
+                          cell: ({ row }) => `${row.original.percentage}%`;
                         }
                       ]}
                     />
@@ -538,7 +549,7 @@ export default function FinancialDashboard() {
                     <CardDescription>Distribution of payment methods used</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DonutChart
+                    <DonutChart;
                       data={dashboardData.paymentMethods}
                       height={300}
                     />
@@ -549,23 +560,23 @@ export default function FinancialDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="billing">
+        <TabsContent value="billing">;
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Invoice Status</CardTitle>
                     <CardDescription>Current distribution of invoices by status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <BarChart
+                    <BarChart;
                       data={{
                         labels: dashboardData.invoiceStatus.labels,
                         datasets: [{
                           label: 'Invoices',
                           data: dashboardData.invoiceStatus.data,
-                          backgroundColor: dashboardData.invoiceStatus.backgroundColor
+                          backgroundColor: dashboardData.invoiceStatus.backgroundColor;
                         }]
                       }}
                       height={300}
@@ -579,10 +590,10 @@ export default function FinancialDashboard() {
                     <CardDescription>Outstanding amounts by age</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <BarChart
+                    <BarChart;
                       data={{
                         labels: dashboardData.agingAnalysis.labels,
-                        datasets: dashboardData.agingAnalysis.datasets
+                        datasets: dashboardData.agingAnalysis.datasets;
                       }}
                       height={300}
                     />
@@ -590,14 +601,14 @@ export default function FinancialDashboard() {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 mb-6">
+              <div className="grid grid-cols-1 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Invoices</CardTitle>
                     <CardDescription>Latest generated invoices</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable
+                    <DataTable;
                       data={dashboardData.recentInvoices}
                       columns={[
                         { header: 'Invoice ID', accessorKey: 'id' },
@@ -605,12 +616,12 @@ export default function FinancialDashboard() {
                         { 
                           header: 'Date', 
                           accessorKey: 'date',
-                          cell: ({ row }) => formatDate(row.original.date)
+                          cell: ({ row }) => formatDate(row.original.date);
                         },
                         { 
                           header: 'Amount', 
                           accessorKey: 'amount',
-                          cell: ({ row }) => formatCurrency(row.original.amount)
+                          cell: ({ row }) => formatCurrency(row.original.amount);
                         },
                         { 
                           header: 'Status', 
@@ -625,11 +636,11 @@ export default function FinancialDashboard() {
                               sent: 'bg-pink-100 text-pink-800',
                               partial: 'bg-sky-100 text-sky-800',
                               paid: 'bg-green-100 text-green-800',
-                              overdue: 'bg-red-100 text-red-800'
+                              overdue: 'bg-red-100 text-red-800';
                             };
                             
                             return (
-                              <Badge className={statusColors[status]}>
+                              <Badge className={statusColors[status]}>;
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
                               </Badge>
                             );
@@ -638,11 +649,11 @@ export default function FinancialDashboard() {
                         {
                           header: 'Actions',
                           cell: () => (
-                            <div className="flex space-x-2">
-                              <Button variant="outline" size="sm">View</Button>
-                              <Button variant="outline" size="sm">Edit</Button>
+                            <div className="flex space-x-2">;
+                              <Button variant="outline" size="sm">View</Button>;
+                              <Button variant="outline" size="sm">Edit</Button>;
                             </div>
-                          )
+                          );
                         }
                       ]}
                     />
@@ -656,7 +667,7 @@ export default function FinancialDashboard() {
                   <CardDescription>Latest payment transactions</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable
+                  <DataTable;
                     data={dashboardData.recentPayments}
                     columns={[
                       { header: 'Payment ID', accessorKey: 'id' },
@@ -665,22 +676,22 @@ export default function FinancialDashboard() {
                       { 
                         header: 'Date', 
                         accessorKey: 'date',
-                        cell: ({ row }) => formatDate(row.original.date)
+                        cell: ({ row }) => formatDate(row.original.date);
                       },
                       { 
                         header: 'Amount', 
                         accessorKey: 'amount',
-                        cell: ({ row }) => formatCurrency(row.original.amount)
+                        cell: ({ row }) => formatCurrency(row.original.amount);
                       },
                       { header: 'Method', accessorKey: 'method' },
                       {
                         header: 'Actions',
                         cell: () => (
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">View</Button>
-                            <Button variant="outline" size="sm">Receipt</Button>
+                          <div className="flex space-x-2">;
+                            <Button variant="outline" size="sm">View</Button>;
+                            <Button variant="outline" size="sm">Receipt</Button>;
                           </div>
-                        )
+                        );
                       }
                     ]}
                   />
@@ -690,17 +701,17 @@ export default function FinancialDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="insurance">
+        <TabsContent value="insurance">;
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Claim Status</CardTitle>
                     <CardDescription>Distribution of claims by status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <PieChart
+                    <PieChart;
                       data={dashboardData.claimStatus}
                       height={300}
                     />
@@ -713,7 +724,7 @@ export default function FinancialDashboard() {
                     <CardDescription>Monthly submitted vs approved claims</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <LineChart
+                    <LineChart;
                       data={dashboardData.claimTrend}
                       height={300}
                     />
@@ -721,31 +732,31 @@ export default function FinancialDashboard() {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 mb-6">
+              <div className="grid grid-cols-1 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Top Insurance Providers</CardTitle>
                     <CardDescription>Performance metrics by insurance provider</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable
+                    <DataTable;
                       data={dashboardData.topInsuranceProviders}
                       columns={[
                         { header: 'Provider', accessorKey: 'provider' },
                         { 
                           header: 'Claims Count', 
                           accessorKey: 'claimsCount',
-                          cell: ({ row }) => formatNumber(row.original.claimsCount)
+                          cell: ({ row }) => formatNumber(row.original.claimsCount);
                         },
                         { 
                           header: 'Approval Rate', 
                           accessorKey: 'approvalRate',
-                          cell: ({ row }) => `${row.original.approvalRate}%`
+                          cell: ({ row }) => `${row.original.approvalRate}%`;
                         },
                         { 
                           header: 'Avg. Processing Days', 
                           accessorKey: 'averageProcessingDays',
-                          cell: ({ row }) => `${row.original.averageProcessingDays} days`
+                          cell: ({ row }) => `${row.original.averageProcessingDays} days`;
                         }
                       ]}
                     />
@@ -753,14 +764,14 @@ export default function FinancialDashboard() {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Claims</CardTitle>
                     <CardDescription>Latest insurance claims</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable
+                    <DataTable;
                       data={dashboardData.recentClaims}
                       columns={[
                         { header: 'Claim ID', accessorKey: 'id' },
@@ -769,7 +780,7 @@ export default function FinancialDashboard() {
                         { 
                           header: 'Amount', 
                           accessorKey: 'amount',
-                          cell: ({ row }) => formatCurrency(row.original.amount)
+                          cell: ({ row }) => formatCurrency(row.original.amount);
                         },
                         { 
                           header: 'Status', 
@@ -784,11 +795,11 @@ export default function FinancialDashboard() {
                               approved: 'bg-green-100 text-green-800',
                               partially_approved: 'bg-purple-100 text-purple-800',
                               denied: 'bg-red-100 text-red-800',
-                              appealed: 'bg-pink-100 text-pink-800'
+                              appealed: 'bg-pink-100 text-pink-800';
                             };
                             
                             return (
-                              <Badge className={statusColors[status]}>
+                              <Badge className={statusColors[status]}>;
                                 {status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                               </Badge>
                             );
@@ -805,7 +816,7 @@ export default function FinancialDashboard() {
                     <CardDescription>Common reasons for claim denials</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <PieChart
+                    <PieChart;
                       data={dashboardData.denialReasons}
                       height={300}
                     />
@@ -816,17 +827,17 @@ export default function FinancialDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="reports">
+        <TabsContent value="reports">;
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 gap-6 mb-6">
+              <div className="grid grid-cols-1 gap-6 mb-6">;
                 <Card>
                   <CardHeader>
                     <CardTitle>Available Reports</CardTitle>
                     <CardDescription>Generate financial reports</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable
+                    <DataTable;
                       data={dashboardData.availableReports}
                       columns={[
                         { header: 'Report ID', accessorKey: 'id' },
@@ -835,16 +846,16 @@ export default function FinancialDashboard() {
                         { 
                           header: 'Last Run', 
                           accessorKey: 'lastRun',
-                          cell: ({ row }) => formatDate(row.original.lastRun)
+                          cell: ({ row }) => formatDate(row.original.lastRun);
                         },
                         {
                           header: 'Actions',
                           cell: () => (
-                            <div className="flex space-x-2">
-                              <Button variant="outline" size="sm">Generate</Button>
-                              <Button variant="outline" size="sm">Schedule</Button>
+                            <div className="flex space-x-2">;
+                              <Button variant="outline" size="sm">Generate</Button>;
+                              <Button variant="outline" size="sm">Schedule</Button>;
                             </div>
-                          )
+                          );
                         }
                       ]}
                     />
@@ -858,7 +869,7 @@ export default function FinancialDashboard() {
                   <CardDescription>Automated report generation</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable
+                  <DataTable;
                     data={dashboardData.scheduledReports}
                     columns={[
                       { header: 'Schedule ID', accessorKey: 'id' },
@@ -867,17 +878,17 @@ export default function FinancialDashboard() {
                       { 
                         header: 'Next Run', 
                         accessorKey: 'nextRun',
-                        cell: ({ row }) => formatDate(row.original.nextRun)
+                        cell: ({ row }) => formatDate(row.original.nextRun);
                       },
                       { header: 'Recipients', accessorKey: 'recipients' },
                       {
                         header: 'Actions',
                         cell: () => (
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">Edit</Button>
-                            <Button variant="outline" size="sm">Delete</Button>
+                          <div className="flex space-x-2">;
+                            <Button variant="outline" size="sm">Edit</Button>;
+                            <Button variant="outline" size="sm">Delete</Button>;
                           </div>
-                        )
+                        );
                       }
                     ]}
                   />

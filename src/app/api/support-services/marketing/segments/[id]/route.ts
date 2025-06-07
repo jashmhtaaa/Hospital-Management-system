@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const segmentService = new SegmentService();
 
 /**
- * GET /api/support-services/marketing/segments/:id
- * Get a specific segment by ID
+ * GET /api/support-services/marketing/segments/:id;
+ * Get a specific segment by ID;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -34,10 +45,10 @@ export async function GET(
 }
 
 /**
- * PUT /api/support-services/marketing/segments/:id
- * Update a specific segment
+ * PUT /api/support-services/marketing/segments/:id;
+ * Update a specific segment;
  */
-export async function PUT(
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -50,7 +61,7 @@ export async function PUT(
       const segment = await segmentService.updateSegment(
         params.id,
         data,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(segment);

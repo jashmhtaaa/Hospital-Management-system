@@ -1,4 +1,15 @@
-import { NextConfig } from 'next'
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -10,4 +21,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+export default nextConfig;

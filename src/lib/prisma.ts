@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { PrismaClient } from '@prisma/client';
 
-// PrismaClient is attached to the `global` object in development to prevent
+// PrismaClient is attached to the `global` object in development to prevent;
 // exhausting your database connection limit.
-// Learn more: https://pris.ly/d/help/next-js-best-practices
+// Learn more: https://pris.ly/d/help/next-js-best-practices;
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 

@@ -1,10 +1,21 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * FHIR R4 Base Types and Interfaces
- * Implementation based on HL7 FHIR R4 specification
- * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices
+ * FHIR R4 Base Types and Interfaces;
+ * Implementation based on HL7 FHIR R4 specification;
+ * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices;
  */
 
-// Base FHIR Types
+// Base FHIR Types;
 export interface FHIRBase {
   resourceType: string;
   id?: string;
@@ -24,7 +35,7 @@ export interface FHIRMeta {
 
 export interface FHIRExtension {
   url: string;
-  value?: any;
+  value?: unknown;
   extension?: FHIRExtension[];
 }
 
@@ -118,7 +129,7 @@ export interface FHIRBundle<T = any> extends FHIRBase {
   total?: number;
   link?: FHIRBundleLink[];
   entry?: FHIRBundleEntry<T>[];
-  signature?: any; // Simplified
+  signature?: unknown; // Simplified;
 }
 
 export interface FHIRBundleLink {
@@ -147,6 +158,6 @@ export interface FHIRBundleEntry<T = any> {
     location?: string;
     etag?: string;
     lastModified?: string;
-    outcome?: any;
+    outcome?: unknown;
   };
 }

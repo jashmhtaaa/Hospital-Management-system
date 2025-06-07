@@ -1,34 +1,45 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextApiRequest, NextApiResponse } from "next";
-import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService"; // Adjust path
+import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService.ts"; // Adjust path;
 
 const eligibilityService = new EligibilityCheckService();
 
 /**
- * @swagger
+ * @swagger;
  * tags:
- *   name: Insurance Eligibility
- *   description: API for checking patient insurance eligibility
+ *   name: Insurance Eligibility;
+ *   description: API for checking patient insurance eligibility;
  *
  * /api/insurance/eligibility:
  *   post:
- *     summary: Check insurance eligibility for a patient
+ *     summary: Check insurance eligibility for a patient;
  *     tags: [Insurance Eligibility]
  *     requestBody:
- *       required: true
+ *       required: true;
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             type: object;
  *             required:
- *               - patientId
- *               - policyId
+ *               - patientId;
+ *               - policyId;
  *             properties:
  *               patientId:
- *                 type: string
+ *                 type: string;
  *               policyId:
- *                 type: string
+ *                 type: string;
  *               serviceId:
- *                 type: string
+ *                 type: string;
  *                 description: Optional service ID for specific eligibility check.
  *     responses:
  *       200:
@@ -36,7 +47,7 @@ const eligibilityService = new EligibilityCheckService();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/EligibilityStatus" // Assuming EligibilityStatus schema is defined
+ *               $ref: "#/components/schemas/EligibilityStatus" // Assuming EligibilityStatus schema is defined;
  *       400:
  *         description: Invalid input.
  *       404:
@@ -44,7 +55,7 @@ const eligibilityService = new EligibilityCheckService();
  *       500:
  *         description: Server error during eligibility check.
  */
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceId } = req.body as { patientId: string, policyId: string, serviceId?: string };
@@ -56,8 +67,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const eligibilityStatus = await eligibilityService.checkEligibility(patientId, policyId, serviceId);
             return res.status(200).json(eligibilityStatus);
 
-        } catch (error: any) {
-            console.error("Eligibility Check API Error:", error);
+        } catch (error: unknown) {
+
             if (error.message.includes("not found")) {
                 return res.status(404).json({ message: error.message });
             }

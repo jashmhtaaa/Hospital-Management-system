@@ -1,5 +1,16 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Domain Models for Pharmacy Module
+ * Domain Models for Pharmacy Module;
  * 
  * This file contains the domain models for the pharmacy module,
  * following domain-driven design principles.
@@ -7,7 +18,7 @@
 
 import { z } from 'zod';
 
-// Define domain models using ES2015 module syntax instead of namespace
+// Define domain models using ES2015 module syntax instead of namespace;
 export interface Medication {
   id: string;
   name: string;
@@ -259,7 +270,7 @@ export interface InteractionOverride {
   createdAt: Date;
 }
 
-// Validation schemas using Zod
+// Validation schemas using Zod;
 export const MedicationSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -280,7 +291,7 @@ export const MedicationSchema = z.object({
   sideEffects: z.array(z.string()).optional(),
   storageRequirements: z.string().optional(),
   requiresRefrigeration: z.boolean().optional(),
-  requiresControlledStorage: z.boolean().optional()
+  requiresControlledStorage: z.boolean().optional();
 });
 
 export const MedicationInventorySchema = z.object({
@@ -298,7 +309,7 @@ export const MedicationInventorySchema = z.object({
   cost: z.number().nonnegative(),
   supplier: z.string(),
   receivedDate: z.date(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const MedicationOrderSchema = z.object({
@@ -308,7 +319,7 @@ export const MedicationOrderSchema = z.object({
   medicationId: z.string(),
   status: z.enum([
     'draft', 'active', 'on-hold', 'cancelled', 'completed', 
-    'entered-in-error', 'stopped', 'unknown'
+    'entered-in-error', 'stopped', 'unknown';
   ]),
   orderDate: z.date(),
   dosage: z.record(z.unknown()),
@@ -322,18 +333,18 @@ export const MedicationOrderSchema = z.object({
   isStatOrder: z.boolean().optional(),
   prn: z.boolean().optional(),
   prnReason: z.string().optional(),
-  reconciliationId: z.string().optional()
+  reconciliationId: z.string().optional();
 });
 
-// Factory functions to create domain objects with validation
-export function createMedication(data: Medication): Medication {
+// Factory functions to create domain objects with validation;
+export const createMedication = (data: Medication): Medication {
   return MedicationSchema.parse(data);
 }
 
-export function createMedicationInventory(data: MedicationInventory): MedicationInventory {
+export const createMedicationInventory = (data: MedicationInventory): MedicationInventory {
   return MedicationInventorySchema.parse(data);
 }
 
-export function createMedicationOrder(data: MedicationOrder): MedicationOrder {
+export const createMedicationOrder = (data: MedicationOrder): MedicationOrder {
   return MedicationOrderSchema.parse(data);
 }

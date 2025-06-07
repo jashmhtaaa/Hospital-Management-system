@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 import { EmployeeService } from '../employee-service';
 import { PrismaClient } from '@prisma/client';
 import { cache } from '@/lib/cache';
 
-// Mock PrismaClient
+// Mock PrismaClient;
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
     employee: {
@@ -37,7 +48,7 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-// Mock cache service
+// Mock cache service;
 jest.mock('@/lib/cache', () => ({
   cache: {
     get: jest.fn(),
@@ -50,7 +61,7 @@ jest.mock('@/lib/cache', () => ({
 
 describe('EmployeeService', () => {
   let employeeService: EmployeeService;
-  let prisma: any;
+  let prisma: unknown;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -89,7 +100,7 @@ describe('EmployeeService', () => {
       expect(cache.set).toHaveBeenCalledWith(
         'employee:id:123',
         JSON.stringify(mockEmployee),
-        expect.any(Number)
+        expect.any(Number);
       );
       expect(result).toEqual(mockEmployee);
     });
@@ -140,7 +151,7 @@ describe('EmployeeService', () => {
       expect(prisma.employee.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           cursor: { id: '456' },
-        })
+        });
       );
     });
   });
@@ -150,7 +161,7 @@ describe('EmployeeService', () => {
       const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
       (prisma.employee.create as jest.Mock).mockResolvedValue(mockEmployee);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
-      // Mock the invalidateEmployeeCache method to avoid the findFirst call
+      // Mock the invalidateEmployeeCache method to avoid the findFirst call;
       jest.spyOn(EmployeeService.prototype, 'invalidateEmployeeCache' as any).mockResolvedValue(undefined);
 
       await employeeService.createEmployee({
@@ -169,7 +180,7 @@ describe('EmployeeService', () => {
     it('should update employee and invalidate cache', async () => {
       const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
       (prisma.employee.update as jest.Mock).mockResolvedValue(mockEmployee);
-      // Mock the invalidateEmployeeCache method to avoid the findFirst call
+      // Mock the invalidateEmployeeCache method to avoid the findFirst call;
       jest.spyOn(EmployeeService.prototype, 'invalidateEmployeeCache' as any).mockResolvedValue(undefined);
 
       await employeeService.updateEmployee('123', { firstName: 'John Updated' });
@@ -178,7 +189,7 @@ describe('EmployeeService', () => {
         expect.objectContaining({
           where: { id: '123' },
           data: { firstName: 'John Updated' },
-        })
+        });
       );
       expect(EmployeeService.prototype.invalidateEmployeeCache).toHaveBeenCalled();
     });
@@ -313,7 +324,7 @@ describe('EmployeeService', () => {
               lte: expect.any(Date),
             }),
           }),
-        })
+        });
       );
       expect(result).toEqual(mockQualifications);
     });

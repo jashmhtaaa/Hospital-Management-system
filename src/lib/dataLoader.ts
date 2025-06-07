@@ -1,15 +1,26 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import DataLoader from 'dataloader';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 
 /**
- * DataLoader implementation for efficient batch loading of database records
- * Prevents N+1 query problems by batching database requests
+ * DataLoader implementation for efficient batch loading of database records;
+ * Prevents N+1 query problems by batching database requests;
  */
-export function createLoaders() {
+export const createLoaders = () {
   return {
     /**
-     * Patient loader - batch loads patients by ID
+     * Patient loader - batch loads patients by ID;
      */
     patient: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.patient', count: ids.length }, 'Batch loading patients');
@@ -18,12 +29,12 @@ export function createLoaders() {
         where: { id: { in: ids as string[] } },
       });
       
-      // Maintain order of requested IDs
+      // Maintain order of requested IDs;
       return ids.map(id => patients.find(p => p.id === id) || null);
     }),
     
     /**
-     * Bed loader - batch loads beds by ID
+     * Bed loader - batch loads beds by ID;
      */
     bed: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.bed', count: ids.length }, 'Batch loading beds');
@@ -36,7 +47,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Ward loader - batch loads wards by ID
+     * Ward loader - batch loads wards by ID;
      */
     ward: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.ward', count: ids.length }, 'Batch loading wards');
@@ -49,7 +60,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Doctor loader - batch loads doctors by ID
+     * Doctor loader - batch loads doctors by ID;
      */
     doctor: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.doctor', count: ids.length }, 'Batch loading doctors');
@@ -62,7 +73,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Encounter loader - batch loads encounters by ID
+     * Encounter loader - batch loads encounters by ID;
      */
     encounter: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.encounter', count: ids.length }, 'Batch loading encounters');
@@ -75,7 +86,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Admission loader - batch loads admissions by ID
+     * Admission loader - batch loads admissions by ID;
      */
     admission: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.admission', count: ids.length }, 'Batch loading admissions');
@@ -88,7 +99,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Discharge loader - batch loads discharges by ID
+     * Discharge loader - batch loads discharges by ID;
      */
     discharge: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.discharge', count: ids.length }, 'Batch loading discharges');
@@ -101,7 +112,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Progress note loader - batch loads progress notes by ID
+     * Progress note loader - batch loads progress notes by ID;
      */
     progressNote: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.progressNote', count: ids.length }, 'Batch loading progress notes');
@@ -114,7 +125,7 @@ export function createLoaders() {
     }),
     
     /**
-     * Observation loader - batch loads observations by ID
+     * Observation loader - batch loads observations by ID;
      */
     observation: new DataLoader(async (ids: string[]) => {
       logger.debug({ action: 'dataLoader.observation', count: ids.length }, 'Batch loading observations');
@@ -129,6 +140,6 @@ export function createLoaders() {
 }
 
 /**
- * Type definition for the data loaders
+ * Type definition for the data loaders;
  */
 export type Loaders = ReturnType<typeof createLoaders>;

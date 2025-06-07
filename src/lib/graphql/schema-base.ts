@@ -1,329 +1,340 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * GraphQL Schema Base Implementation
- * Real-time subscriptions and comprehensive API structure
+ * GraphQL Schema Base Implementation;
+ * Real-time subscriptions and comprehensive API structure;
  */
 
 import { gql } from 'graphql-tag';
 import { PubSub } from 'graphql-subscriptions';
 
-// GraphQL PubSub instance for real-time subscriptions
+// GraphQL PubSub instance for real-time subscriptions;
 export const pubsub = new PubSub();
 
-// Subscription event types
+// Subscription event types;
 export const SUBSCRIPTION_EVENTS = {
-  // Laboratory events
+  // Laboratory events;
   LAB_ORDER_CREATED: 'LAB_ORDER_CREATED',
   LAB_RESULT_UPDATED: 'LAB_RESULT_UPDATED',
   CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT',
   SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED',
   
-  // Pharmacy events
+  // Pharmacy events;
   PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED',
   MEDICATION_DISPENSED: 'MEDICATION_DISPENSED',
   DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT',
   INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK',
   
-  // Emergency Department events
+  // Emergency Department events;
   PATIENT_TRIAGED: 'PATIENT_TRIAGED',
   BED_ASSIGNMENT_CHANGED: 'BED_ASSIGNMENT_CHANGED',
   CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT',
   ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT',
   
-  // Clinical Documentation events
+  // Clinical Documentation events;
   CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED',
   CARE_PLAN_UPDATED: 'CARE_PLAN_UPDATED',
   QUALITY_METRIC_ALERT: 'QUALITY_METRIC_ALERT',
   
-  // Patient Management events
+  // Patient Management events;
   PATIENT_REGISTERED: 'PATIENT_REGISTERED',
   PATIENT_UPDATED: 'PATIENT_UPDATED',
   APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED',
   INSURANCE_VERIFIED: 'INSURANCE_VERIFIED',
 } as const;
 
-// Base GraphQL types
+// Base GraphQL types;
 export const baseTypeDefs = gql`
-  scalar DateTime
-  scalar JSON
-  scalar Upload
+  scalar DateTime;
+  scalar JSON;
+  scalar Upload;
 
-  # Common enums
+  # Common enums;
   enum Priority {
-    LOW
-    MEDIUM
-    HIGH
-    URGENT
-    STAT
+    LOW;
+    MEDIUM;
+    HIGH;
+    URGENT;
+    STAT;
   }
 
   enum Status {
-    ACTIVE
-    INACTIVE
-    PENDING
-    COMPLETED
-    CANCELLED
-    ERROR
+    ACTIVE;
+    INACTIVE;
+    PENDING;
+    COMPLETED;
+    CANCELLED;
+    ERROR;
   }
 
-  # Base interfaces
+  # Base interfaces;
   interface Node {
-    id: ID!
-    createdAt: DateTime!
-    updatedAt: DateTime!
+    id: ID!;
+    createdAt: DateTime!;
+    updatedAt: DateTime!;
   }
 
   interface AuditableEntity {
-    id: ID!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    createdBy: String!
-    updatedBy: String
-    version: Int!
+    id: ID!;
+    createdAt: DateTime!;
+    updatedAt: DateTime!;
+    createdBy: String!;
+    updatedBy: String;
+    version: Int!;
   }
 
-  # Common types
+  # Common types;
   type Address {
-    line1: String!
-    line2: String
-    city: String!
-    state: String!
-    postalCode: String!
-    country: String!
+    line1: String!;
+    line2: String;
+    city: String!;
+    state: String!;
+    postalCode: String!;
+    country: String!;
     type: AddressType!
   }
 
   enum AddressType {
-    HOME
-    WORK
-    BILLING
-    TEMPORARY
+    HOME;
+    WORK;
+    BILLING;
+    TEMPORARY;
   }
 
   type ContactInfo {
-    phone: String
-    mobile: String
-    email: String
-    fax: String
+    phone: String;
+    mobile: String;
+    email: String;
+    fax: String;
   }
 
   type Identifier {
-    system: String!
-    value: String!
-    type: String
-    use: IdentifierUse
+    system: String!;
+    value: String!;
+    type: String;
+    use: IdentifierUse;
   }
 
   enum IdentifierUse {
-    USUAL
-    OFFICIAL
-    TEMP
-    SECONDARY
-    OLD
+    USUAL;
+    OFFICIAL;
+    TEMP;
+    SECONDARY;
+    OLD;
   }
 
-  # FHIR-compliant coding
+  # FHIR-compliant coding;
   type Coding {
-    system: String
-    version: String
-    code: String
-    display: String
-    userSelected: Boolean
+    system: String;
+    version: String;
+    code: String;
+    display: String;
+    userSelected: Boolean;
   }
 
   type CodeableConcept {
     coding: [Coding!]
-    text: String
+    text: String;
   }
 
-  # Pagination
+  # Pagination;
   type PageInfo {
-    hasNextPage: Boolean!
-    hasPreviousPage: Boolean!
-    startCursor: String
-    endCursor: String
-    total: Int!
+    hasNextPage: Boolean!;
+    hasPreviousPage: Boolean!;
+    startCursor: String;
+    endCursor: String;
+    total: Int!;
   }
 
-  # Common input types
+  # Common input types;
   input PaginationInput {
-    first: Int
-    after: String
-    last: Int
-    before: String
+    first: Int;
+    after: String;
+    last: Int;
+    before: String;
   }
 
   input SortInput {
-    field: String!
-    direction: SortDirection!
+    field: String!;
+    direction: SortDirection!;
   }
 
   enum SortDirection {
-    ASC
-    DESC
+    ASC;
+    DESC;
   }
 
   input FilterInput {
-    field: String!
-    operator: FilterOperator!
-    value: String!
+    field: String!;
+    operator: FilterOperator!;
+    value: String!;
   }
 
   enum FilterOperator {
-    EQUALS
-    NOT_EQUALS
-    CONTAINS
-    NOT_CONTAINS
-    STARTS_WITH
-    ENDS_WITH
-    GREATER_THAN
-    LESS_THAN
-    GREATER_THAN_OR_EQUAL
-    LESS_THAN_OR_EQUAL
-    IN
-    NOT_IN
-    IS_NULL
-    IS_NOT_NULL
+    EQUALS;
+    NOT_EQUALS;
+    CONTAINS;
+    NOT_CONTAINS;
+    STARTS_WITH;
+    ENDS_WITH;
+    GREATER_THAN;
+    LESS_THAN;
+    GREATER_THAN_OR_EQUAL;
+    LESS_THAN_OR_EQUAL;
+    IN;
+    NOT_IN;
+    IS_NULL;
+    IS_NOT_NULL;
   }
 
-  # Error handling
+  # Error handling;
   type Error {
-    code: String!
-    message: String!
-    field: String
-    details: JSON
+    code: String!;
+    message: String!;
+    field: String;
+    details: JSON;
   }
 
   type MutationResponse {
-    success: Boolean!
+    success: Boolean!;
     errors: [Error!]
-    message: String
+    message: String;
   }
 
-  # Real-time notifications
+  # Real-time notifications;
   type Notification {
-    id: ID!
+    id: ID!;
     type: NotificationType!
-    title: String!
-    message: String!
-    data: JSON
-    priority: Priority!
-    timestamp: DateTime!
-    userId: String
-    read: Boolean!
+    title: String!;
+    message: String!;
+    data: JSON;
+    priority: Priority!;
+    timestamp: DateTime!;
+    userId: String;
+    read: Boolean!;
   }
 
   enum NotificationType {
-    INFO
-    WARNING
-    ERROR
-    SUCCESS
-    ALERT
+    INFO;
+    WARNING;
+    ERROR;
+    SUCCESS;
+    ALERT;
   }
 
-  # File upload
+  # File upload;
   type FileUpload {
-    id: ID!
-    filename: String!
-    mimetype: String!
-    encoding: String!
-    url: String!
-    size: Int!
-    uploadedAt: DateTime!
-    uploadedBy: String!
+    id: ID!;
+    filename: String!;
+    mimetype: String!;
+    encoding: String!;
+    url: String!;
+    size: Int!;
+    uploadedAt: DateTime!;
+    uploadedBy: String!;
   }
 
-  # System health
+  # System health;
   type HealthStatus {
-    service: String!
-    status: HealthStatusType!
-    timestamp: DateTime!
-    details: JSON
+    service: String!;
+    status: HealthStatusType!;
+    timestamp: DateTime!;
+    details: JSON;
   }
 
   enum HealthStatusType {
-    HEALTHY
-    DEGRADED
-    UNHEALTHY
-    UNKNOWN
+    HEALTHY;
+    DEGRADED;
+    UNHEALTHY;
+    UNKNOWN;
   }
 
-  # Base queries (will be extended by each module)
+  # Base queries (will be extended by each module);
   type Query {
-    # Health check
-    health: [HealthStatus!]!
+    # Health check;
+    health: [HealthStatus!]!;
     
-    # System information
-    systemInfo: SystemInfo!
+    # System information;
+    systemInfo: SystemInfo!;
     
-    # Current user context
-    me: User
+    # Current user context;
+    me: User;
   }
 
-  # Base mutations (will be extended by each module)
+  # Base mutations (will be extended by each module);
   type Mutation {
-    # File upload
-    uploadFile(file: Upload!): FileUpload!
+    # File upload;
+    uploadFile(file: Upload!): FileUpload!;
     
-    # Mark notification as read
-    markNotificationRead(id: ID!): MutationResponse!
+    # Mark notification as read;
+    markNotificationRead(id: ID!): MutationResponse!;
   }
 
-  # Base subscriptions (will be extended by each module)
+  # Base subscriptions (will be extended by each module);
   type Subscription {
-    # Global notifications
-    notifications(userId: String): Notification!
+    # Global notifications;
+    notifications(userId: String): Notification!;
     
-    # System health updates
-    healthUpdates: HealthStatus!
+    # System health updates;
+    healthUpdates: HealthStatus!;
   }
 
-  # System info
+  # System info;
   type SystemInfo {
-    version: String!
-    environment: String!
-    uptime: Int!
-    timestamp: DateTime!
-    features: [String!]!
+    version: String!;
+    environment: String!;
+    uptime: Int!;
+    timestamp: DateTime!;
+    features: [String!]!;
   }
 
-  # User type (basic structure)
+  # User type (basic structure);
   type User implements Node {
-    id: ID!
-    email: String!
-    firstName: String!
-    lastName: String!
-    fullName: String!
-    role: String!
-    department: String
-    isActive: Boolean!
-    lastLoginAt: DateTime
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    permissions: [String!]!
+    id: ID!;
+    email: String!;
+    firstName: String!;
+    lastName: String!;
+    fullName: String!;
+    role: String!;
+    department: String;
+    isActive: Boolean!;
+    lastLoginAt: DateTime;
+    createdAt: DateTime!;
+    updatedAt: DateTime!;
+    permissions: [String!]!;
   }
 `;
 
-// Base resolvers
+// Base resolvers;
 export const baseResolvers = {
   DateTime: {
-    serialize: (date: any) => {
+    serialize: (date: unknown) => {
       if (date instanceof Date) {
         return date.toISOString();
       }
       return date;
     },
-    parseValue: (value: any) => {
+    parseValue: (value: unknown) => {
       return new Date(value);
     },
-    parseLiteral: (ast: any) => {
+    parseLiteral: (ast: unknown) => {
       return new Date(ast.value);
     },
   },
 
   JSON: {
-    serialize: (value: any) => value,
-    parseValue: (value: any) => value,
-    parseLiteral: (ast: any) => {
+    serialize: (value: unknown) => value,
+    parseValue: (value: unknown) => value,
+    parseLiteral: (ast: unknown) => {
       switch (ast.kind) {
         case 'StringValue':
         case 'BooleanValue':
@@ -332,12 +343,12 @@ export const baseResolvers = {
         case 'FloatValue':
           return parseFloat(ast.value);
         case 'ObjectValue':
-          return ast.fields.reduce((obj: any, field: any) => {
+          return ast.fields.reduce((obj: unknown, field: unknown) => {
             obj[field.name.value] = field.value;
             return obj;
           }, {});
         case 'ListValue':
-          return ast.values.map((value: any) => value);
+          return ast.values.map((value: unknown) => value);
         default:
           return null;
       }
@@ -346,7 +357,7 @@ export const baseResolvers = {
 
   Query: {
     health: async () => {
-      // Implementation would check actual services
+      // Implementation would check actual services;
       return [
         {
           service: 'database',
@@ -391,24 +402,24 @@ export const baseResolvers = {
 
   Mutation: {
     uploadFile: async (parent, { file }, context) => {
-      // File upload implementation
+      // File upload implementation;
       const { createReadStream, filename, mimetype, encoding } = await file;
       
-      // Implementation would save file and return metadata
+      // Implementation would save file and return metadata;
       return {
         id: 'file-' + Date.now(),
         filename,
         mimetype,
         encoding,
         url: `/uploads/${filename}`,
-        size: 1024, // Would be actual file size
+        size: 1024, // Would be actual file size;
         uploadedAt: new Date(),
         uploadedBy: context.user?.id || 'system',
       };
     },
 
     markNotificationRead: async (parent, { id }, context) => {
-      // Implementation would update notification status
+      // Implementation would update notification status;
       return {
         success: true,
         message: 'Notification marked as read',
@@ -433,15 +444,15 @@ export const baseResolvers = {
   User: {
     fullName: (parent) => `${parent.firstName} ${parent.lastName}`,
     permissions: async (parent, args, context) => {
-      // Implementation would fetch user permissions from RBAC system
+      // Implementation would fetch user permissions from RBAC system;
       return parent.permissions || [];
     },
   },
 };
 
-// Utility functions for GraphQL
+// Utility functions for GraphQL;
 export class GraphQLUtils {
-  static formatError(error: any) {
+  static formatError(error: unknown) {
     return {
       message: error.message,
       code: error.extensions?.code || 'INTERNAL_ERROR',
@@ -452,10 +463,10 @@ export class GraphQLUtils {
 
   static createConnection<T>(
     items: T[],
-    args: any,
-    totalCount: number
+    args: unknown,
+    totalCount: number;
   ) {
-    const edges = items.map((item: any, index) => ({
+    const edges = items.map((item: unknown, index) => ({
       cursor: Buffer.from(`${index}`).toString('base64'),
       node: item,
     }));
@@ -475,8 +486,8 @@ export class GraphQLUtils {
     };
   }
 
-  static buildFilters(filters: any[]): any {
-    const where: any = {};
+  static buildFilters(filters: unknown[]): unknown {
+    const where: unknown = {};
     
     filters?.forEach((filter) => {
       const { field, operator, value } = filter;
@@ -530,20 +541,20 @@ export class GraphQLUtils {
     return where;
   }
 
-  static buildOrderBy(sort: any[]): any {
+  static buildOrderBy(sort: unknown[]): unknown {
     return sort?.map((s) => ({
       [s.field]: s.direction.toLowerCase(),
     })) || [];
   }
 
-  // Real-time notification utilities
+  // Real-time notification utilities;
   static async publishNotification(
     type: string,
     title: string,
     message: string,
-    data?: any,
+    data?: unknown,
     userId?: string,
-    priority: string = 'MEDIUM'
+    priority: string = 'MEDIUM';
   ) {
     const notification = {
       id: `notification-${Date.now()}-${Math.random()}`,
@@ -563,7 +574,7 @@ export class GraphQLUtils {
     return notification;
   }
 
-  static async publishHealthUpdate(service: string, status: string, details?: any) {
+  static async publishHealthUpdate(service: string, status: string, details?: unknown) {
     const healthUpdate = {
       service,
       status,
@@ -575,9 +586,9 @@ export class GraphQLUtils {
     return healthUpdate;
   }
 
-  // FHIR integration utilities
-  static fhirToGraphQL(fhirResource: any, resourceType: string) {
-    // Convert FHIR resource to GraphQL format
+  // FHIR integration utilities;
+  static fhirToGraphQL(fhirResource: unknown, resourceType: string) {
+    // Convert FHIR resource to GraphQL format;
     const graphqlResource = {
       id: fhirResource.id,
       resourceType,
@@ -585,7 +596,7 @@ export class GraphQLUtils {
       ...fhirResource,
     };
 
-    // Convert FHIR dates to GraphQL DateTime format
+    // Convert FHIR dates to GraphQL DateTime format;
     if (fhirResource.meta?.lastUpdated) {
       graphqlResource.updatedAt = new Date(fhirResource.meta.lastUpdated);
     }
@@ -593,8 +604,8 @@ export class GraphQLUtils {
     return graphqlResource;
   }
 
-  static graphqlToFHIR(graphqlData: any, resourceType: string) {
-    // Convert GraphQL data to FHIR format
+  static graphqlToFHIR(graphqlData: unknown, resourceType: string) {
+    // Convert GraphQL data to FHIR format;
     const fhirResource = {
       resourceType,
       id: graphqlData.id,
@@ -606,7 +617,7 @@ export class GraphQLUtils {
       ...graphqlData,
     };
 
-    // Remove GraphQL-specific fields
+    // Remove GraphQL-specific fields;
     delete fhirResource.createdAt;
     delete fhirResource.updatedAt;
     delete fhirResource.__typename;

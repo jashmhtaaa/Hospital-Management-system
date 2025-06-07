@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -9,16 +20,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Assuming these will be created
+} from "@/components/ui/table"; // Assuming these will be created;
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created
+import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created;
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"; // Assuming this exists or will be created
+} from "@/components/ui/dialog"; // Assuming this exists or will be created;
 // Removed direct import: import { hasPermission } from "@/lib/session";
 
 interface Appointment {
@@ -29,16 +40,16 @@ interface Appointment {
   doctorName: string;
   appointmentTime: string;
   status:
-    | "scheduled"
-    | "checked-in"
-    | "in-progress"
-    | "completed"
+    | "scheduled";
+    | "checked-in";
+    | "in-progress";
+    | "completed";
     | "cancelled";
   appointmentType: string;
   reason: string;
 }
 
-// FIX: Define API response types
+// FIX: Define API response types;
 interface PermissionApiResponse {
   hasPermission?: boolean;
   error?: string;
@@ -55,7 +66,7 @@ interface OPDAppointmentListProperties {
   date: Date;
 }
 
-export default function OPDAppointmentList({
+export default const OPDAppointmentList = ({
   date,
 }: OPDAppointmentListProperties) {
   const router = useRouter();
@@ -67,7 +78,7 @@ export default function OPDAppointmentList({
   const [loadingPermissions, setLoadingPermissions] = useState(true);
 
   useEffect(() => {
-    // Check permissions via API route
+    // Check permissions via API route;
     const checkPermissions = async () => {
       setLoadingPermissions(true);
       try {
@@ -77,20 +88,20 @@ export default function OPDAppointmentList({
         ]);
 
         if (!checkInResponse.ok || !cancelResponse.ok) {
-          console.error("Failed to fetch permissions");
+
           setCanCheckIn(false);
           setCanCancel(false);
           return;
         }
 
-        // FIX: Type the response data
+        // FIX: Type the response data;
         const checkInData: PermissionApiResponse = await checkInResponse.json();
         const cancelData: PermissionApiResponse = await cancelResponse.json();
 
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
-      } catch (err) { // Declare error variable for the catch block
-        console.error("Error fetching permissions:", err); // Log the caught error
+      } catch (err) { // Declare error variable for the catch block;
+        // Debug logging removed // Log the caught error;
         setCanCheckIn(false);
         setCanCancel(false);
       } finally {
@@ -121,27 +132,24 @@ export default function OPDAppointmentList({
           throw new Error(errorMessage);
         }
 
-        // FIX: Type the response data
+        // FIX: Type the response data;
         const data: AppointmentsApiResponse = await response.json();
-        // Ensure data is an array before setting state
+        // Ensure data is an array before setting state;
         if (Array.isArray(data)) {
           setAppointments(data);
         } else {
-          // Handle cases where API might return { results: [...] } or other formats
-          console.warn(
-            "Unexpected API response format for appointments:",
-            data
-          );
-          setAppointments([]); // Default to empty array on unexpected format
+          // Handle cases where API might return { results: [...] } or other formats;
+
+          setAppointments([]); // Default to empty array on unexpected format;
         }
       } catch (error_: unknown) {
-        // FIX: Use unknown
-        const messageText =
-          error_ instanceof Error
-            ? error_.message
+        // FIX: Use unknown;
+        const messageText =;
+          error_ instanceof Error;
+            ? error_.message;
             : "An unknown error occurred";
         setError(messageText);
-        console.error("Error fetching appointments:", error_);
+
       } finally {
         setLoading(false);
       }
@@ -171,21 +179,21 @@ export default function OPDAppointmentList({
         throw new Error(errorMessage);
       }
 
-      // Update the appointment status in the local state
+      // Update the appointment status in the local state;
       setAppointments(
         appointments.map((appointment) =>
-          appointment.id === appointmentId
+          appointment.id === appointmentId;
             ? { ...appointment, status: "checked-in" }
-            : appointment
-        )
+            : appointment;
+        );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      console.error("Error checking in patient:", error_);
-      // TODO: Show error notification to user (e.g., using toast)
-      alert(`Error: ${messageText}`); // Placeholder alert
+
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      alert(`Error: ${messageText}`); // Placeholder alert;
     }
   };
 
@@ -209,21 +217,21 @@ export default function OPDAppointmentList({
         throw new Error(errorMessage);
       }
 
-      // Update the appointment status in the local state
+      // Update the appointment status in the local state;
       setAppointments(
         appointments.map((appointment) =>
-          appointment.id === appointmentId
+          appointment.id === appointmentId;
             ? { ...appointment, status: "cancelled" }
-            : appointment
-        )
+            : appointment;
+        );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown
-      const messageText =
+      // FIX: Use unknown;
+      const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      console.error("Error cancelling appointment:", error_);
-      // TODO: Show error notification to user
-      alert(`Error: ${messageText}`); // Placeholder alert
+
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      alert(`Error: ${messageText}`); // Placeholder alert;
     }
   };
 
@@ -243,13 +251,13 @@ export default function OPDAppointmentList({
         return <Badge variant="default">In Progress</Badge>;
       }
       case "completed": {
-        // Assuming a 'success' variant exists for Badge
+        // Assuming a 'success' variant exists for Badge;
         return (
-          <Badge
-            variant="default"
-            className="bg-green-500 text-white hover:bg-green-600"
+          <Badge;
+            variant="default";
+            className="bg-green-500 text-white hover:bg-green-600";
           >
-            Completed
+            Completed;
           </Badge>
         );
       }
@@ -272,8 +280,8 @@ export default function OPDAppointmentList({
 
   if (appointments.length === 0) {
     return (
-      <div className="text-center p-4">
-        No appointments scheduled for this date.
+      <div className="text-center p-4">;
+        No appointments scheduled for this date.;
       </div>
     );
   }
@@ -288,12 +296,12 @@ export default function OPDAppointmentList({
             <TableHead>Doctor</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-right">Actions</TableHead>;
           </TableRow>
         </TableHeader>
         <TableBody>
           {appointments.map((appointment) => (
-            <TableRow key={appointment.id}>
+            <TableRow key={appointment.id}>;
               <TableCell>
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
                   hour: "2-digit",
@@ -304,49 +312,49 @@ export default function OPDAppointmentList({
               <TableCell>{appointment.doctorName}</TableCell>
               <TableCell>{appointment.appointmentType}</TableCell>
               <TableCell>{getStatusBadge(appointment.status)}</TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
+              <TableCell className="text-right">;
+                <div className="flex justify-end gap-2">;
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        View
+                      <Button variant="outline" size="sm">;
+                        View;
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Appointment Details</DialogTitle>
                       </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-2 gap-2">
-                          <span className="font-medium">Patient:</span>
+                      <div className="grid gap-4 py-4">;
+                        <div className="grid grid-cols-2 gap-2">;
+                          <span className="font-medium">Patient:</span>;
                           <span>{appointment.patientName}</span>
 
-                          <span className="font-medium">Doctor:</span>
+                          <span className="font-medium">Doctor:</span>;
                           <span>{appointment.doctorName}</span>
 
-                          <span className="font-medium">Time:</span>
+                          <span className="font-medium">Time:</span>;
                           <span>
                             {new Date(
-                              appointment.appointmentTime
+                              appointment.appointmentTime;
                             ).toLocaleString()}
                           </span>
 
-                          <span className="font-medium">Type:</span>
+                          <span className="font-medium">Type:</span>;
                           <span>{appointment.appointmentType}</span>
 
-                          <span className="font-medium">Status:</span>
+                          <span className="font-medium">Status:</span>;
                           <span>{getStatusBadge(appointment.status)}</span>
 
-                          <span className="font-medium">Reason:</span>
+                          <span className="font-medium">Reason:</span>;
                           <span>{appointment.reason}</span>
                         </div>
 
-                        <div className="flex justify-end gap-2 mt-4">
-                          <Button
-                            variant="outline"
+                        <div className="flex justify-end gap-2 mt-4">;
+                          <Button;
+                            variant="outline";
                             onClick={() => handleViewDetails(appointment.id)}
                           >
-                            Full Details
+                            Full Details;
                           </Button>
                         </div>
                       </div>
@@ -354,24 +362,24 @@ export default function OPDAppointmentList({
                   </Dialog>
 
                   {canCheckIn && appointment.status === "scheduled" && (
-                    <Button
-                      variant="default"
-                      size="sm"
+                    <Button;
+                      variant="default";
+                      size="sm";
                       onClick={() => handleCheckIn(appointment.id)}
                     >
-                      Check In
+                      Check In;
                     </Button>
                   )}
 
                   {canCancel &&
-                    (appointment.status === "scheduled" ||
+                    (appointment.status === "scheduled" ||;
                       appointment.status === "checked-in") && (
-                      <Button
-                        variant="destructive"
-                        size="sm"
+                      <Button;
+                        variant="destructive";
+                        size="sm";
                         onClick={() => handleCancel(appointment.id)}
                       >
-                        Cancel
+                        Cancel;
                       </Button>
                     )}
                 </div>

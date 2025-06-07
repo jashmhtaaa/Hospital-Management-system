@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -16,36 +27,36 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define SurgeryType interface
+// Define SurgeryType interface;
 interface SurgeryType {
-  id?: string; // Optional for new types
+  id?: string; // Optional for new types;
   name: string;
   description: string | null;
   specialty: string | null;
-  estimated_duration_minutes: number | string | null; // Allow string for input
-  required_staff?: unknown; // JSON structure, use unknown for now
-  required_equipment?: unknown; // JSON structure, use unknown for now
-  updated_at?: string; // Optional
+  estimated_duration_minutes: number | string | null; // Allow string for input;
+  required_staff?: unknown; // JSON structure, use unknown for now;
+  required_equipment?: unknown; // JSON structure, use unknown for now;
+  updated_at?: string; // Optional;
 }
 
-// Define the type for data passed to onSave
+// Define the type for data passed to onSave;
 interface SurgeryTypeSaveData {
   name: string;
   description: string | null;
   specialty: string | null;
   estimated_duration_minutes: number | null;
-  required_staff: unknown | null; // Parsed JSON
-  required_equipment: unknown | null; // Parsed JSON
+  required_staff: unknown | null; // Parsed JSON;
+  required_equipment: unknown | null; // Parsed JSON;
 }
 
-// Props for the modal - use defined types
+// Props for the modal - use defined types;
 interface OTSurgeryTypeModalProperties {
   trigger: React.ReactNode;
-  surgeryType?: SurgeryType; // Use SurgeryType type
-  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise<void>; // Use SurgeryTypeSaveData type
+  surgeryType?: SurgeryType; // Use SurgeryType type;
+  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise<void>; // Use SurgeryTypeSaveData type;
 }
 
-export default function OTSurgeryTypeModal({
+export default const OTSurgeryTypeModal = ({
   trigger,
   surgeryType,
   onSave,
@@ -56,18 +67,18 @@ export default function OTSurgeryTypeModal({
     description: surgeryType?.description || "",
     specialty: surgeryType?.specialty || "",
     estimated_duration_minutes:
-      surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
-    required_staff: surgeryType?.required_staff
-      ? JSON.stringify(surgeryType.required_staff, undefined, 2)
+      surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input;
+    required_staff: surgeryType?.required_staff;
+      ? JSON.stringify(surgeryType.required_staff, undefined, 2);
       : "",
-    required_equipment: surgeryType?.required_equipment
-      ? JSON.stringify(surgeryType.required_equipment, undefined, 2)
+    required_equipment: surgeryType?.required_equipment;
+      ? JSON.stringify(surgeryType.required_equipment, undefined, 2);
       : "",
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when surgeryType prop changes or modal opens
+  // Reset form when surgeryType prop changes or modal opens;
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -75,22 +86,22 @@ export default function OTSurgeryTypeModal({
         description: surgeryType?.description || "",
         specialty: surgeryType?.specialty || "",
         estimated_duration_minutes:
-          surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
-        required_staff: surgeryType?.required_staff
-          ? JSON.stringify(surgeryType.required_staff, undefined, 2)
+          surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input;
+        required_staff: surgeryType?.required_staff;
+          ? JSON.stringify(surgeryType.required_staff, undefined, 2);
           : "",
-        required_equipment: surgeryType?.required_equipment
-          ? JSON.stringify(surgeryType.required_equipment, undefined, 2)
+        required_equipment: surgeryType?.required_equipment;
+          ? JSON.stringify(surgeryType.required_equipment, undefined, 2);
           : "",
       });
     } else {
-      // Optionally clear form when closed
+      // Optionally clear form when closed;
       // setFormData({ name: "", ... });
     }
   }, [surgeryType, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
@@ -100,7 +111,7 @@ export default function OTSurgeryTypeModal({
     event.preventDefault();
     setIsSaving(true);
     try {
-      // Parse JSON fields before sending
+      // Parse JSON fields before sending;
       let parsedStaff: unknown | null;
       let parsedEquipment: unknown | null;
       try {
@@ -128,12 +139,12 @@ export default function OTSurgeryTypeModal({
         return;
       }
 
-      const duration = formData.estimated_duration_minutes
-        ? Number.parseInt(formData.estimated_duration_minutes, 10)
+      const duration = formData.estimated_duration_minutes;
+        ? Number.parseInt(formData.estimated_duration_minutes, 10);
         : undefined;
       if (
         formData.estimated_duration_minutes &&
-        (Number.isNaN(duration as number) || (duration as number) < 0)
+        (Number.isNaN(duration as number) || (duration as number) < 0);
       ) {
         toast({
           title: "Error",
@@ -153,7 +164,7 @@ export default function OTSurgeryTypeModal({
         required_equipment: parsedEquipment,
       };
 
-      // Replace with actual API call
+      // Replace with actual API call;
       // const url = surgeryType?.id ? `/api/ot/surgery-types/${surgeryType.id}` : `/api/ot/surgery-types`;
       // const method = surgeryType?.id ? "PUT" : "POST";
       // const response = await fetch(url, {
@@ -166,11 +177,11 @@ export default function OTSurgeryTypeModal({
       //   throw new Error(errorData.message || "Failed to save surgery type");
       // }
 
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Saving surgery type:", apiData);
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list
+      await onSave(apiData); // Call parent callback to refresh list;
 
       toast({
         title: "Success",
@@ -178,8 +189,8 @@ export default function OTSurgeryTypeModal({
       });
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type
-      console.error("Error saving surgery type:", error);
+      // Use unknown for error type;
+
       let errorMessage = "Failed to save surgery type.";
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -195,110 +206,110 @@ export default function OTSurgeryTypeModal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px]">;
         <DialogHeader>
           <DialogTitle>
             {surgeryType ? "Edit Surgery Type" : "Add New Surgery Type"}
           </DialogTitle>
           <DialogDescription>
-            Enter the details for the surgery type.
+            Enter the details for the surgery type.;
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+        <form onSubmit={handleSubmit}>;
+          <div className="grid gap-4 py-4">;
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="name" className="text-right">;
                 Name *
               </Label>
-              <Input
-                id="name"
-                name="name"
+              <Input;
+                id="name";
+                name="name";
                 value={formData.name}
                 onChange={handleChange}
-                className="col-span-3"
-                required
+                className="col-span-3";
+                required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="specialty" className="text-right">
-                Specialty
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="specialty" className="text-right">;
+                Specialty;
               </Label>
-              <Input
-                id="specialty"
-                name="specialty"
+              <Input;
+                id="specialty";
+                name="specialty";
                 value={formData.specialty}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-3";
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label
-                htmlFor="estimated_duration_minutes"
-                className="text-right"
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label;
+                htmlFor="estimated_duration_minutes";
+                className="text-right";
               >
-                Est. Duration (min)
+                Est. Duration (min);
               </Label>
-              <Input
-                id="estimated_duration_minutes"
-                name="estimated_duration_minutes"
+              <Input;
+                id="estimated_duration_minutes";
+                name="estimated_duration_minutes";
                 type="number"
                 value={formData.estimated_duration_minutes}
                 onChange={handleChange}
-                className="col-span-3"
-                min="0"
+                className="col-span-3";
+                min="0";
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="description" className="text-right pt-2">
-                Description
+            <div className="grid grid-cols-4 items-start gap-4">;
+              <Label htmlFor="description" className="text-right pt-2">;
+                Description;
               </Label>
-              <Textarea
-                id="description"
-                name="description"
+              <Textarea;
+                id="description";
+                name="description";
                 value={formData.description}
                 onChange={handleChange}
-                className="col-span-3"
-                placeholder="Brief description of the surgery..."
+                className="col-span-3";
+                placeholder="Brief description of the surgery...";
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="required_staff" className="text-right pt-2">
-                Required Staff (JSON)
+            <div className="grid grid-cols-4 items-start gap-4">;
+              <Label htmlFor="required_staff" className="text-right pt-2">;
+                Required Staff (JSON);
               </Label>
-              <Textarea
-                id="required_staff"
-                name="required_staff"
+              <Textarea;
+                id="required_staff";
+                name="required_staff";
                 value={formData.required_staff}
                 onChange={handleChange}
-                className="col-span-3 h-24"
-                placeholder='e.g., [{"role": "Surgeon", "count": 1}, {"role": "Scrub Nurse", "count": 1}]'
+                className="col-span-3 h-24";
+                placeholder='e.g., [{"role": "Surgeon", "count": 1}, {"role": "Scrub Nurse", "count": 1}]';
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="required_equipment" className="text-right pt-2">
-                Required Equipment (JSON)
+            <div className="grid grid-cols-4 items-start gap-4">;
+              <Label htmlFor="required_equipment" className="text-right pt-2">;
+                Required Equipment (JSON);
               </Label>
-              <Textarea
-                id="required_equipment"
-                name="required_equipment"
+              <Textarea;
+                id="required_equipment";
+                name="required_equipment";
                 value={formData.required_equipment}
                 onChange={handleChange}
-                className="col-span-3 h-24"
-                placeholder='e.g., [{"item": "Laparoscope", "count": 1}, {"item": "Electrocautery Unit", "count": 1}]'
+                className="col-span-3 h-24";
+                placeholder='e.g., [{"item": "Laparoscope", "count": 1}, {"item": "Electrocautery Unit", "count": 1}]';
               />
             </div>
           </div>
           <DialogFooter>
-            <Button
+            <Button;
               type="button"
-              variant="outline"
+              variant="outline";
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              Cancel;
             </Button>
-            <Button type="submit" disabled={isSaving}>
+            <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving..." : "Save Surgery Type"}
             </Button>
           </DialogFooter>

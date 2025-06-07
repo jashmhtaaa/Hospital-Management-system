@@ -1,12 +1,23 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Enhanced Patient Management API (v2) - Using new service layer
+ * Enhanced Patient Management API (v2) - Using new service layer;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { patientManagementService, PatientCreateSchema } from '@/lib/core/patient-management.service';
 import { z } from 'zod';
 
-// Search query schema
+// Search query schema;
 const SearchQuerySchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
@@ -21,17 +32,17 @@ const SearchQuerySchema = z.object({
 });
 
 /**
- * GET /api/v2/patients - Search and list patients with enhanced features
+ * GET /api/v2/patients - Search and list patients with enhanced features;
  */
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
     
-    // Validate search parameters
+    // Validate search parameters;
     const validatedParams = SearchQuerySchema.parse(queryParams);
     
-    // Perform search using new service
+    // Perform search using new service;
     const result = await patientManagementService.searchPatients(validatedParams);
     
     return NextResponse.json({
@@ -47,8 +58,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error searching patients:', error);
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
@@ -72,16 +82,16 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/v2/patients - Create new patient with enhanced validation
+ * POST /api/v2/patients - Create new patient with enhanced validation;
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   try {
     const body = await request.json();
     
-    // Validate patient data using enhanced schema
+    // Validate patient data using enhanced schema;
     const validatedData = PatientCreateSchema.parse(body);
     
-    // Create patient using new service
+    // Create patient using new service;
     const patient = await patientManagementService.createPatient(validatedData);
     
     return NextResponse.json(
@@ -98,8 +108,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error creating patient:', error);
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

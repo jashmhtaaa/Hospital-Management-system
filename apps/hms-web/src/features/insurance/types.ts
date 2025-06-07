@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 export interface TPA {
     id: string;
     name: string;
@@ -11,8 +22,8 @@ export interface InsurancePolicy {
     id: string;
     patientId: string;
     policyNumber: string;
-    tpaId: string; // Links to TPA
-    providerName?: string; // Could be derived from TPA if TPA is the provider
+    tpaId: string; // Links to TPA;
+    providerName?: string; // Could be derived from TPA if TPA is the provider;
     coverageDetails: string;
     startDate: Date;
     endDate: Date;
@@ -22,7 +33,7 @@ export interface InsurancePolicy {
 export interface EligibilityStatus {
     eligible: boolean;
     reason?: string;
-    details?: any; // Could include co-pay, deductible info
+    details?: unknown; // Could include co-pay, deductible info;
 }
 
 export interface Claim {
@@ -33,9 +44,9 @@ export interface Claim {
     serviceCodes: string[];
     diagnosisCodes: string[];
     totalAmount: number;
-    status: string; // e.g., SUBMITTED, PENDING, APPROVED, REJECTED, PAID
+    status: string; // e.g., SUBMITTED, PENDING, APPROVED, REJECTED, PAID;
     notes?: string;
-    tpaResponse?: string; // To store any direct response from TPA regarding the claim
+    tpaResponse?: string; // To store any direct response from TPA regarding the claim;
 }
 
 export interface ClaimStatusResponse {

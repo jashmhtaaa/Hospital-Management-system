@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { Invoice } from "@/types/billing";
@@ -5,7 +16,7 @@ import { getSession } from "@/lib/session";
 import { z } from "zod";
 import type { D1ResultWithMeta, D1Database, D1PreparedStatement, D1Result } from "@/types/cloudflare";
 
-// Zod schema for invoice creation
+// Zod schema for invoice creation;
 const invoiceCreateSchema = z.object({
   patient_id: z.number(),
   consultation_id: z.number().optional().nullable(),
@@ -23,19 +34,19 @@ const invoiceCreateSchema = z.object({
       description: z.string(),
       quantity: z.number().positive(),
       unit_price: z.number().nonnegative(),
-    })
+    });
   ).min(1, "At least one invoice item is required"),
 });
 
 // Helper function to generate the next invoice number (example implementation)
-async function generateInvoiceNumber(db: D1Database): Promise<string> {
+async const generateInvoiceNumber = (db: D1Database): Promise<string> {
   const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>();
   const nextId = (result?.maxId || 0) + 1;
   return `INV-${String(nextId).padStart(6, "0")}`;
 }
 
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination)
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   try {
     const session = await getSession();
     if (!session.isLoggedIn) {
@@ -58,14 +69,14 @@ export async function GET(request: NextRequest) {
     const finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "issue_date";
     const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
-    let query = `
-      SELECT
+    let query = `;
+      SELECT;
         i.id, i.invoice_number, i.patient_id, i.consultation_id,
         i.issue_date, i.due_date, i.total_amount, i.status, i.notes,
-        p.first_name as patient_first_name, p.last_name as patient_last_name
-      FROM Invoices i
-      JOIN Patients p ON i.patient_id = p.patient_id
-      WHERE 1=1
+        p.first_name as patient_first_name, p.last_name as patient_last_name;
+      FROM Invoices i;
+      JOIN Patients p ON i.patient_id = p.patient_id;
+      WHERE 1=1;
     `;
     const queryParameters: (string | number)[] = [];
     let countQuery = `SELECT COUNT(*) as total FROM Invoices WHERE 1=1`;
@@ -101,7 +112,7 @@ export async function GET(request: NextRequest) {
 
     const [invoicesResult, countResult] = await Promise.all([
       (DB as D1Database).prepare(query).bind(...queryParameters).all<Invoice>(),
-      (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>()
+      (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
     ]);
 
     const results = invoicesResult.results || [];
@@ -118,7 +129,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    console.error("Error fetching invoices:", error);
+
     let errorMessage = "An unknown error occurred";
     if (error instanceof Error) {
       errorMessage = error.message;
@@ -131,13 +142,13 @@ export async function GET(request: NextRequest) {
 }
 
 
-// POST /api/invoices - Create a new invoice
-export async function POST(request: NextRequest) {
+// POST /api/invoices - Create a new invoice;
+export async const POST = (request: NextRequest) {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in;
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -157,13 +168,13 @@ export async function POST(request: NextRequest) {
 
         const totalAmount = invoiceData.items.reduce(
             (sum, item) => sum + item.quantity * item.unit_price,
-            0
+            0;
         );
 
         const invoiceNumber = await generateInvoiceNumber(DB as D1Database);
 
         const insertInvoiceStmt = (DB as D1Database).prepare(
-            `INSERT INTO Invoices (invoice_number, patient_id, consultation_id, issue_date, due_date, total_amount, status, notes, created_by_user_id, created_at, updated_at)
+            `INSERT INTO Invoices (invoice_number, patient_id, consultation_id, issue_date, due_date, total_amount, status, notes, created_by_user_id, created_at, updated_at);
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         ).bind(
             invoiceNumber,
@@ -174,14 +185,14 @@ export async function POST(request: NextRequest) {
             totalAmount,
             invoiceData.status,
             invoiceData.notes || null,
-            session.user.userId, // session.user is now guaranteed to be defined
+            session.user.userId, // session.user is now guaranteed to be defined;
             now,
-            now
+            now;
         );
         const insertResult = await insertInvoiceStmt.run() as D1ResultWithMeta;
 
         if (!insertResult.success || !insertResult.meta || typeof insertResult.meta.last_row_id !== 'number') {
-            console.error("Failed to create invoice or get last_row_id:", insertResult);
+
             throw new Error("Failed to create invoice record");
         }
 
@@ -189,7 +200,7 @@ export async function POST(request: NextRequest) {
 
         const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) =>
             (DB as D1Database).prepare(
-                `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at)
+                `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at);
                  VALUES (?, ?, ?, ?, ?, ?, ?)`
             ).bind(
                 newInvoiceId,
@@ -198,15 +209,15 @@ export async function POST(request: NextRequest) {
                 item.quantity,
                 item.unit_price,
                 item.quantity * item.unit_price,
-                now
-            )
+                now;
+            );
         );
 
         const itemInsertResults = await (DB as D1Database).batch(itemInsertStmts);
 
         const allItemsInserted = itemInsertResults.every((res: D1Result) => res.success);
         if (!allItemsInserted) {
-            console.error("Failed to insert one or more invoice items:", itemInsertResults);
+
             await (DB as D1Database).prepare("DELETE FROM Invoices WHERE id = ?").bind(newInvoiceId).run();
             throw new Error("Failed to create invoice items");
         }
@@ -217,7 +228,7 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error: unknown) {
-        console.error("Error creating invoice:", error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;

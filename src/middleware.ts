@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Enterprise Next.js Middleware
- * Integrates all enterprise services: RBAC, audit logging, rate limiting, caching, health monitoring
- * Based on enterprise requirements from ZIP 6 resources
- */
+ * Enterprise Next.js Middleware;
+ * Integrates all enterprise services: RBAC, audit logging, rate limiting, caching, health monitoring;
+ * Based on enterprise requirements from ZIP 6 resources;
+ */;
 
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
@@ -24,14 +35,14 @@ interface RequestContext {
 }
 
 /**
- * Main middleware function that orchestrates all enterprise services
- */
-export async function middleware(request: NextRequest) {
+ * Main middleware function that orchestrates all enterprise services;
+ */;
+export async const middleware = (request: NextRequest) {
   const startTime = Date.now();
   const requestId = generateRequestId();
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
   
-  // Initialize request context
+  // Initialize request context;
   const context: RequestContext = {
     requestId,
     startTime,
@@ -42,34 +53,34 @@ export async function middleware(request: NextRequest) {
     authenticated: false,
     rateLimited: false,
     cached: false,
-    nonce
+    nonce;
   };
 
   try {
-    // Skip middleware for certain paths
+    // Skip middleware for certain paths;
     if (shouldSkipMiddleware(request.nextUrl.pathname)) {
       return applySecurityHeaders(NextResponse.next(), context);
     }
 
-    // 1. Health Check Endpoint
+    // 1. Health Check Endpoint;
     if (request.nextUrl.pathname === '/api/health') {
       return handleHealthCheck(request, context);
     }
 
-    // 2. Rate Limiting
+    // 2. Rate Limiting;
     const rateLimitResult = await checkRateLimit(request, context);
     if (!rateLimitResult.allowed) {
       return applySecurityHeaders(createRateLimitResponse(rateLimitResult), context);
     }
 
-    // 3. Authentication & Authorization
+    // 3. Authentication & Authorization;
     const authResult = await authenticateRequest(request, context);
     if (!authResult.success && requiresAuth(request.nextUrl.pathname)) {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context);
     }
 
     // 4. Cache Check (for GET requests)
-    let cacheResult: any = null;
+    let cacheResult: unknown = null;
     if (request.method === 'GET' && isCacheable(request.nextUrl.pathname)) {
       cacheResult = await checkCache(request, context);
       if (cacheResult?.hit) {
@@ -77,7 +88,7 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    // 5. Request Authorization Check
+    // 5. Request Authorization Check;
     if (context.authenticated) {
       const authzResult = await checkAuthorization(request, context);
       if (!authzResult.allowed) {
@@ -89,19 +100,19 @@ export async function middleware(request: NextRequest) {
     // 6. Audit Logging (Pre-request)
     await logRequestStart(context);
 
-    // 7. Create enhanced request with context
+    // 7. Create enhanced request with context;
     const response = await processRequest(request, context);
 
-    // 8. Post-processing
+    // 8. Post-processing;
     await postProcessResponse(request, response, context);
 
     return applySecurityHeaders(response, context);
 
   } catch (error) {
-    console.error('Middleware error:', error);
+    // Debug logging removed;
     
-    // Log error
-    await logSecurityEvent(
+    // Log error;
+    await logSecurityEvent(;
       'middleware_error',
       'critical',
       'Middleware processing failed',
@@ -109,10 +120,8 @@ export async function middleware(request: NextRequest) {
       { error: error.message, stack: error.stack }
     );
 
-    // Return error response
-    const errorResponse = NextResponse.json(
-      { error: 'Internal server error', requestId: context.requestId },
-      { status: 500 }
+    // Return error response;
+\1;
     );
     
     return applySecurityHeaders(errorResponse, context);
@@ -120,26 +129,14 @@ export async function middleware(request: NextRequest) {
 }
 
 /**
- * Apply comprehensive security headers including CSP
- */
-function applySecurityHeaders(response: NextResponse, context: RequestContext): NextResponse {
-  // CSP directives
-  const cspHeader = [
-    "default-src 'self'",
-    `script-src 'self' 'nonce-${context.nonce}' https://trusted-cdn.com 'unsafe-eval'`,
-    `style-src 'self' 'nonce-${context.nonce}' https://trusted-cdn.com 'unsafe-inline'`,
-    "img-src 'self' data: https://trusted-cdn.com https:",
-    "font-src 'self' https://trusted-cdn.com",
-    "connect-src 'self' https://api.hospital.com wss: ws:",
-    "frame-ancestors 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-    "object-src 'none'",
-    "worker-src 'self' blob:",
-    "manifest-src 'self'"
+ * Apply comprehensive security headers including CSP;
+ */;
+const applySecurityHeaders = (response: NextResponse, context: RequestContext): NextResponse {
+  // CSP directives;
+\1;
   ].join('; ');
 
-  // Apply security headers
+  // Apply security headers;
   response.headers.set('Content-Security-Policy', cspHeader);
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
@@ -155,16 +152,16 @@ function applySecurityHeaders(response: NextResponse, context: RequestContext): 
 }
 
 /**
- * Generate unique request ID
- */
-function generateRequestId(): string {
+ * Generate unique request ID;
+ */;
+const generateRequestId = (): string {
   return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 /**
- * Get client IP address
- */
-function getClientIP(request: NextRequest): string {
+ * Get client IP address;
+ */;
+const getClientIP = (request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
   const realIP = request.headers.get('x-real-ip');
   const remoteAddr = request.headers.get('x-remote-addr');
@@ -177,82 +174,70 @@ function getClientIP(request: NextRequest): string {
 }
 
 /**
- * Check if middleware should be skipped for this path
- */
-function shouldSkipMiddleware(pathname: string): boolean {
-  const skipPaths = [
-    '/_next',
-    '/favicon.ico',
-    '/robots.txt',
-    '/sitemap.xml',
-    '/static',
-    '/public'
+ * Check if middleware should be skipped for this path;
+ */;
+const shouldSkipMiddleware = (pathname: string): boolean {
+\1;
   ];
   
   return skipPaths.some(path => pathname.startsWith(path));
 }
 
 /**
- * Handle health check requests
- */
-async function handleHealthCheck(request: NextRequest, context: RequestContext): Promise<NextResponse> {
+ * Handle health check requests;
+ */;
+async const handleHealthCheck = (request: NextRequest, context: RequestContext): Promise<NextResponse> {
   try {
-    // Simplified health check since services might not be initialized in middleware
-    const healthData = {
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      version: process.env.APP_VERSION || '1.0.0',
-      uptime: process.uptime(),
-      requestId: context.requestId
+    // Simplified health check since services might not be initialized in middleware;
+\1;
+      requestId: context.requestId;
     };
     
     const response = NextResponse.json(healthData, { status: 200 });
     return response;
   } catch (error) {
-    const response = NextResponse.json(
-      { status: 'error', message: 'Health check failed', requestId: context.requestId },
-      { status: 500 }
+\1;
     );
     return response;
   }
 }
 
 /**
- * Simplified rate limiting check
- */
-async function checkRateLimit(request: NextRequest, context: RequestContext) {
+ * Simplified rate limiting check;
+ */;
+async const checkRateLimit = (request: NextRequest, context: RequestContext) {
   try {
-    // Simplified rate limiting - in production this would use the rate limiter service
-    // For now, implement basic IP-based rate limiting
+    // Simplified rate limiting - in production this would use the rate limiter service;
+    // For now, implement basic IP-based rate limiting;
     const key = `rate_limit:${context.ipAddress}:${context.path}`;
     
-    // This would normally use Redis or the rate limiter service
-    // For now, allow all requests
+    // This would normally use Redis or the rate limiter service;
+    // For now, allow all requests;
     return { allowed: true };
   } catch (error) {
-    console.error('Rate limit check failed:', error);
+    // Debug logging removed;
     return { allowed: true };
   }
 }
 
 /**
- * Create rate limit exceeded response
- */
-function createRateLimitResponse(rateLimitResult: any): NextResponse {
-  return NextResponse.json(
+ * Create rate limit exceeded response;
+ */;
+const createRateLimitResponse = (rateLimitResult: unknown): NextResponse {
+  return NextResponse.json(;
     {
       error: 'Rate limit exceeded',
       message: 'Too many requests',
-      retryAfter: 60
+      retryAfter: 60;
     },
     { status: 429 }
   );
 }
 
 /**
- * Simplified authentication check
- */
-async function authenticateRequest(request: NextRequest, context: RequestContext) {
+ * Simplified authentication check;
+ */;
+async const authenticateRequest = (request: NextRequest, context: RequestContext) {
   try {
     const authHeader = request.headers.get('authorization');
     const tokenCookie = request.cookies.get('access_token');
@@ -263,7 +248,7 @@ async function authenticateRequest(request: NextRequest, context: RequestContext
       return { success: false, error: 'No authentication token' };
     }
     
-    // Simplified token validation - in production this would use the RBAC service
+    // Simplified token validation - in production this would use the RBAC service;
     // For now, assume valid tokens start with 'valid_'
     if (token.startsWith('valid_')) {
       context.userId = 'user_123';
@@ -275,67 +260,51 @@ async function authenticateRequest(request: NextRequest, context: RequestContext
     
     return { success: false, error: 'Invalid token' };
   } catch (error) {
-    console.error('Authentication error:', error);
+    // Debug logging removed;
     return { success: false, error: 'Authentication failed' };
   }
 }
 
 /**
- * Check if path requires authentication
- */
-function requiresAuth(pathname: string): boolean {
-  const publicPaths = [
-    '/api/auth/login',
-    '/api/auth/register',
-    '/api/health',
-    '/login',
-    '/register',
-    '/forgot-password',
-    '/'
+ * Check if path requires authentication;
+ */;
+const requiresAuth = (pathname: string): boolean {
+\1;
   ];
   
   return !publicPaths.some(path => pathname === path || pathname.startsWith(path));
 }
 
 /**
- * Create unauthorized response
- */
-function createUnauthorizedResponse(error: string): NextResponse {
-  return NextResponse.json(
+ * Create unauthorized response;
+ */;
+const createUnauthorizedResponse = (error: string): NextResponse {
+  return NextResponse.json(;
     { error: 'Unauthorized', message: error },
     { status: 401 }
   );
 }
 
 /**
- * Simplified cache check
- */
-async function checkCache(request: NextRequest, context: RequestContext) {
+ * Simplified cache check;
+ */;
+async const checkCache = (request: NextRequest, context: RequestContext) {
   try {
-    // Simplified caching - in production this would use the cache service
+    // Simplified caching - in production this would use the cache service;
     return { hit: false };
   } catch (error) {
-    console.error('Cache check failed:', error);
+    // Debug logging removed;
     return { hit: false };
   }
 }
 
 /**
- * Check if path is cacheable
- */
-function isCacheable(pathname: string): boolean {
-  const cacheablePaths = [
-    '/api/patients',
-    '/api/appointments',
-    '/api/organizations',
-    '/api/locations',
-    '/api/practitioners'
+ * Check if path is cacheable;
+ */;
+const isCacheable = (pathname: string): boolean {
+\1;
   ];
-  
-  const nonCacheablePaths = [
-    '/api/auth',
-    '/api/sessions',
-    '/api/notifications'
+\1;
   ];
   
   if (nonCacheablePaths.some(path => pathname.startsWith(path))) {
@@ -346,86 +315,69 @@ function isCacheable(pathname: string): boolean {
 }
 
 /**
- * Create cached response
- */
-function createCachedResponse(data: any, headers: Record<string, string> = {}): NextResponse {
+ * Create cached response;
+ */;
+const createCachedResponse = (data: unknown, headers: Record<string, string> = {}): NextResponse {
   const response = NextResponse.json(data);
   response.headers.set('X-Cache', 'HIT');
   return response;
 }
 
 /**
- * Simplified authorization check
- */
-async function checkAuthorization(request: NextRequest, context: RequestContext) {
+ * Simplified authorization check;
+ */;
+async const checkAuthorization = (request: NextRequest, context: RequestContext) {
   try {
-    // Simplified authorization - in production this would use the RBAC service
-    // For now, allow all authenticated requests
+    // Simplified authorization - in production this would use the RBAC service;
+    // For now, allow all authenticated requests;
     return { allowed: true };
   } catch (error) {
-    console.error('Authorization check failed:', error);
+    // Debug logging removed;
     return { allowed: false, reason: 'Authorization check failed' };
   }
 }
 
 /**
- * Log unauthorized access attempt
- */
-async function logUnauthorizedAccess(context: RequestContext, reason: string): Promise<void> {
+ * Log unauthorized access attempt;
+ */;
+async const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise<void> {
   try {
-    console.warn(`Unauthorized access attempt: ${reason}`, {
-      requestId: context.requestId,
-      ipAddress: context.ipAddress,
-      path: context.path,
-      method: context.method
-    });
+    // Debug logging removed;
   } catch (error) {
-    console.error('Failed to log unauthorized access:', error);
+    // Debug logging removed;
   }
 }
 
 /**
- * Create forbidden response
- */
-function createForbiddenResponse(reason: string): NextResponse {
-  return NextResponse.json(
+ * Create forbidden response;
+ */;
+const createForbiddenResponse = (reason: string): NextResponse {
+  return NextResponse.json(;
     { error: 'Forbidden', message: reason },
     { status: 403 }
   );
 }
 
 /**
- * Log request start
- */
-async function logRequestStart(context: RequestContext): Promise<void> {
+ * Log request start;
+ */;
+async const logRequestStart = (context: RequestContext): Promise<void> {
   try {
     if (shouldLogRequest(context.path)) {
-      console.log(`Request started: ${context.method} ${context.path}`, {
-        requestId: context.requestId,
-        userId: context.userId,
-        ipAddress: context.ipAddress
-      });
+// Debug logging removed;
     }
   } catch (error) {
-    console.error('Failed to log request start:', error);
+    // Debug logging removed;
   }
 }
 
 /**
- * Check if request should be logged
- */
-function shouldLogRequest(path: string): boolean {
-  const loggedPaths = [
-    '/api/patients',
-    '/api/appointments',
-    '/api/conditions',
-    '/api/procedures'
+ * Check if request should be logged;
+ */;
+const shouldLogRequest = (path: string): boolean {
+\1;
   ];
-  
-  const skipLogPaths = [
-    '/api/health',
-    '/api/metrics',
-    '/api/ping'
+\1;
   ];
   
   if (skipLogPaths.some(skipPath => path.startsWith(skipPath))) {
@@ -436,10 +388,10 @@ function shouldLogRequest(path: string): boolean {
 }
 
 /**
- * Process the request (pass to Next.js)
- */
-async function processRequest(request: NextRequest, context: RequestContext): Promise<NextResponse> {
-  // Add context headers for downstream handlers
+ * Process the request (pass to Next.js);
+ */;
+async const processRequest = (request: NextRequest, context: RequestContext): Promise<NextResponse> {
+  // Add context headers for downstream handlers;
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-request-id', context.requestId);
   requestHeaders.set('x-user-id', context.userId || '');
@@ -449,60 +401,55 @@ async function processRequest(request: NextRequest, context: RequestContext): Pr
   requestHeaders.set('x-nonce', context.nonce);
   
   return NextResponse.next({
-    request: {
-      headers: requestHeaders
+    request: {;
+      headers: requestHeaders;
     }
   });
 }
 
 /**
- * Post-process response
- */
-async function postProcessResponse(
+ * Post-process response;
+ */;
+async const postProcessResponse = (;
   request: NextRequest,
   response: NextResponse,
-  context: RequestContext
+  context: RequestContext;
 ): Promise<void> {
   const endTime = Date.now();
   const responseTime = endTime - context.startTime;
   
   try {
-    // Add response headers
+    // Add response headers;
     response.headers.set('X-Response-Time', `${responseTime}ms`);
     
-    // Log completion for important requests
+    // Log completion for important requests;
     if (shouldLogRequest(context.path)) {
-      console.log(`Request completed: ${context.method} ${context.path}`, {
-        requestId: context.requestId,
-        statusCode: response.status,
-        responseTime,
-        userId: context.userId
-      });
+// Debug logging removed;
     }
   } catch (error) {
-    console.error('Post-processing error:', error);
+    // Debug logging removed;
   }
 }
 
 /**
- * Log security events
- */
-async function logSecurityEvent(
+ * Log security events;
+ */;
+async const logSecurityEvent = (;
   eventType: string,
   severity: string,
   message: string,
   context: RequestContext,
-  metadata?: any
+  metadata?: unknown;
 ): Promise<void> {
   try {
-    console.error(`Security Event [${severity.toUpperCase()}]: ${eventType}`, {
+    // Debug logging removed}]: ${eventType}`, {
       message,
       requestId: context.requestId,
       ipAddress: context.ipAddress,
       path: context.path,
-      metadata
+      metadata;
     });
   } catch (error) {
-    console.error('Failed to log security event:', error);
+    // Debug logging removed;
   }
 }

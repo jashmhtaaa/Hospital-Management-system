@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { employeeService } from '@/lib/hr/employee-service';
 import { z } from 'zod';
 
-// Schema for employee update
+// Schema for employee update;
 const updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
@@ -20,7 +31,7 @@ const updateEmployeeSchema = z.object({
 });
 
 // GET /api/hr/staff/[id]
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -35,8 +46,8 @@ export async function GET(
     }
     
     return NextResponse.json(employee);
-  } catch (error: any) {
-    console.error(`Error fetching employee ${params.id}:`, error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: 'Failed to fetch employee', details: error.message },
       { status: 500 }
@@ -45,24 +56,23 @@ export async function GET(
 }
 
 // PUT /api/hr/staff/[id]
-export async function PUT(
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const body = await request.json();
     
-    // Validate request body
+    // Validate request body;
     const validatedData = updateEmployeeSchema.parse(body);
     
-    // Update employee
+    // Update employee;
     const employee = await employeeService.updateEmployee(params.id, validatedData);
     
     return NextResponse.json(employee);
-  } catch (error: any) {
-    console.error(`Error updating employee ${params.id}:`, error);
-    
-    // Handle validation errors
+  } catch (error: unknown) {
+
+    // Handle validation errors;
     if (error.name === 'ZodError') {
       return NextResponse.json(
         { error: 'Validation error', details: error.errors },
@@ -70,7 +80,7 @@ export async function PUT(
       );
     }
     
-    // Handle not found errors
+    // Handle not found errors;
     if (error.code === 'P2025') {
       return NextResponse.json(
         { error: 'Employee not found' },
@@ -85,23 +95,22 @@ export async function PUT(
   }
 }
 
-// DELETE /api/hr/staff/[id] - Soft delete by setting active to false
-export async function DELETE(
+// DELETE /api/hr/staff/[id] - Soft delete by setting active to false;
+export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Soft delete by setting active to false and recording termination date
+    // Soft delete by setting active to false and recording termination date;
     const employee = await employeeService.updateEmployee(params.id, {
       active: false,
       terminationDate: new Date(),
     });
     
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error(`Error deleting employee ${params.id}:`, error);
-    
-    // Handle not found errors
+  } catch (error: unknown) {
+
+    // Handle not found errors;
     if (error.code === 'P2025') {
       return NextResponse.json(
         { error: 'Employee not found' },

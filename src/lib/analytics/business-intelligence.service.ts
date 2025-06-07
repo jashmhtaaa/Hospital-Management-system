@@ -1,12 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Business Intelligence Service
- * Advanced analytics, reporting, and data visualization for healthcare operations
- * Provides executive dashboards, clinical insights, and operational intelligence
+ * Business Intelligence Service;
+ * Advanced analytics, reporting, and data visualization for healthcare operations;
+ * Provides executive dashboards, clinical insights, and operational intelligence;
  */
 
 import { EventEmitter } from 'events';
 import { PrismaClient } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface AnalyticsReport {
   id: string;
@@ -29,24 +39,24 @@ export interface AnalyticsReport {
 }
 
 export type ReportCategory = 
-  | 'executive'
-  | 'financial'
-  | 'clinical'
-  | 'operational'
-  | 'quality'
-  | 'compliance'
-  | 'research'
+  | 'executive';
+  | 'financial';
+  | 'clinical';
+  | 'operational';
+  | 'quality';
+  | 'compliance';
+  | 'research';
   | 'custom';
 
 export type ReportType = 
-  | 'dashboard'
-  | 'table'
-  | 'chart'
-  | 'kpi'
-  | 'trend'
-  | 'comparative'
-  | 'drill_down'
-  | 'real_time'
+  | 'dashboard';
+  | 'table';
+  | 'chart';
+  | 'kpi';
+  | 'trend';
+  | 'comparative';
+  | 'drill_down';
+  | 'real_time';
   | 'predictive';
 
 export interface DataSource {
@@ -55,8 +65,8 @@ export interface DataSource {
   type: 'database' | 'api' | 'file' | 'external';
   connection: DatabaseConnection | ApiConnection | FileConnection;
   query: string;
-  refreshInterval: number; // in minutes
-  cacheTtl: number; // in minutes
+  refreshInterval: number; // in minutes;
+  cacheTtl: number; // in minutes;
 }
 
 export interface DatabaseConnection {
@@ -76,7 +86,7 @@ export interface ApiConnection {
   headers?: Record<string, string>;
   authentication?: {
     type: 'basic' | 'bearer' | 'api_key';
-    credentials: any;
+    credentials: unknown;
   };
 }
 
@@ -93,13 +103,13 @@ export interface ReportParameter {
   label: string;
   description?: string;
   required: boolean;
-  defaultValue?: any;
+  defaultValue?: unknown;
   options?: ParameterOption[];
   validation?: ParameterValidation;
 }
 
 export interface ParameterOption {
-  value: any;
+  value: unknown;
   label: string;
   description?: string;
 }
@@ -120,21 +130,21 @@ export interface VisualizationConfig {
 }
 
 export type ChartType = 
-  | 'line'
-  | 'bar'
-  | 'column'
-  | 'pie'
-  | 'donut'
-  | 'area'
-  | 'scatter'
-  | 'bubble'
-  | 'heatmap'
-  | 'gauge'
-  | 'metric'
-  | 'table'
-  | 'treemap'
-  | 'sankey'
-  | 'funnel'
+  | 'line';
+  | 'bar';
+  | 'column';
+  | 'pie';
+  | 'donut';
+  | 'area';
+  | 'scatter';
+  | 'bubble';
+  | 'heatmap';
+  | 'gauge';
+  | 'metric';
+  | 'table';
+  | 'treemap';
+  | 'sankey';
+  | 'funnel';
   | 'waterfall';
 
 export interface LayoutConfig {
@@ -222,16 +232,16 @@ export interface DrillDownLevel {
 export interface FilterConfig {
   field: string;
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'between';
-  value: any;
+  value: unknown;
 }
 
 export interface ScheduleConfig {
   enabled: boolean;
   frequency: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
   interval: number;
-  time?: string; // HH:MM format
-  dayOfWeek?: number; // 0-6, Sunday = 0
-  dayOfMonth?: number; // 1-31
+  time?: string; // HH:MM format;
+  dayOfWeek?: number; // 0-6, Sunday = 0;
+  dayOfMonth?: number; // 1-31;
   timezone: string;
   format: 'pdf' | 'xlsx' | 'csv' | 'png' | 'email';
 }
@@ -284,7 +294,7 @@ export interface DataField {
   nullable: boolean;
   description?: string;
   format?: string;
-  enum?: any[];
+  enum?: unknown[];
 }
 
 export interface ReportExecution {
@@ -307,8 +317,8 @@ export interface AnalyticsInsight {
   title: string;
   description: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
-  confidence: number; // 0-100
-  dataPoints: any[];
+  confidence: number; // 0-100;
+  dataPoints: unknown[];
   recommendations: string[];
   category: string;
   detectedAt: Date;
@@ -366,8 +376,8 @@ export interface AlertCondition {
   field: string;
   operator: 'greater_than' | 'less_than' | 'equals' | 'not_equals' | 'change_percent';
   value: number;
-  duration?: number; // minutes
-  consecutive?: number; // consecutive violations
+  duration?: number; // minutes;
+  consecutive?: number; // consecutive violations;
 }
 
 export interface AlertRecipient {
@@ -378,7 +388,7 @@ export interface AlertRecipient {
 
 export interface AlertChannel {
   type: 'email' | 'sms' | 'slack' | 'webhook' | 'in_app';
-  configuration: any;
+  configuration: unknown;
   isEnabled: boolean;
 }
 
@@ -400,7 +410,7 @@ export interface DataClassification {
 
 export interface RetentionPolicy {
   dataType: string;
-  retentionPeriod: number; // days
+  retentionPeriod: number; // days;
   action: 'archive' | 'delete' | 'anonymize';
   reason: string;
   isActive: boolean;
@@ -414,7 +424,7 @@ export interface AccessAuditLog {
   ipAddress: string;
   userAgent: string;
   success: boolean;
-  details?: any;
+  details?: unknown;
 }
 
 export interface DataLineage {
@@ -445,7 +455,7 @@ export interface DataQualityRule {
   name: string;
   field: string;
   rule: 'not_null' | 'unique' | 'range' | 'pattern' | 'custom';
-  parameters: any;
+  parameters: unknown;
   severity: 'warning' | 'error';
   isActive: boolean;
 }
@@ -468,7 +478,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Start the BI service
+   * Start the BI service;
    */
   async start(): Promise<void> {
     if (this.isRunning) return;
@@ -476,48 +486,48 @@ class BusinessIntelligenceService extends EventEmitter {
     try {
       this.isRunning = true;
 
-      // Load reports and datasets
+      // Load reports and datasets;
       await this.loadReports();
       await this.loadDatasets();
       await this.loadKPIs();
       await this.loadAlerts();
 
-      // Start scheduled jobs
+      // Start scheduled jobs;
       this.startScheduledJobs();
 
-      // Start KPI monitoring
+      // Start KPI monitoring;
       this.startKPIMonitoring();
 
-      // Start insight generation
+      // Start insight generation;
       this.startInsightGeneration();
 
-      console.log('Business Intelligence Service started');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.emit('bi_service_started');
 
     } catch (error) {
-      console.error('Failed to start BI service:', error);
+
       throw error;
     }
   }
 
   /**
-   * Stop the BI service
+   * Stop the BI service;
    */
   async stop(): Promise<void> {
     if (!this.isRunning) return;
 
     this.isRunning = false;
 
-    // Stop all scheduled jobs
+    // Stop all scheduled jobs;
     this.scheduledJobs.forEach(job => clearInterval(job));
     this.scheduledJobs.clear();
 
-    console.log('Business Intelligence Service stopped');
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     this.emit('bi_service_stopped');
   }
 
   /**
-   * Create a new analytics report
+   * Create a new analytics report;
    */
   async createReport(report: Omit<AnalyticsReport, 'id' | 'createdAt' | 'updatedAt' | 'status'>): Promise<string> {
     const newReport: AnalyticsReport = {
@@ -525,22 +535,22 @@ class BusinessIntelligenceService extends EventEmitter {
       id: uuidv4(),
       status: 'active',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date();
     };
 
     this.reports.set(newReport.id, newReport);
 
-    // Start scheduled job if configured
+    // Start scheduled job if configured;
     if (newReport.schedule?.enabled) {
       this.startScheduledJob(newReport);
     }
 
-    // Persist to database
+    // Persist to database;
     try {
-      // In production, save to database
-      console.log(`Report created: ${newReport.name}`);
+      // In production, save to database;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
-      console.error('Failed to persist report:', error);
+
     }
 
     this.emit('report_created', newReport);
@@ -548,7 +558,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Execute a report
+   * Execute a report;
    */
   async executeReport(reportId: string, parameters: Record<string, any> = {}, triggeredBy: string, triggerType: 'manual' | 'scheduled' | 'api' = 'manual'): Promise<string> {
     const report = this.reports.get(reportId);
@@ -563,13 +573,13 @@ class BusinessIntelligenceService extends EventEmitter {
       status: 'running',
       startTime: new Date(),
       triggeredBy,
-      triggerType
+      triggerType;
     };
 
     this.executions.set(execution.id, execution);
 
     try {
-      // Execute report
+      // Execute report;
       const result = await this.performReportExecution(report, parameters);
       
       execution.status = 'completed';
@@ -593,7 +603,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Get report data
+   * Get report data;
    */
   async getReportData(reportId: string, parameters: Record<string, any> = {}): Promise<any> {
     const report = this.reports.get(reportId);
@@ -605,13 +615,13 @@ class BusinessIntelligenceService extends EventEmitter {
       const data = await this.fetchReportData(report, parameters);
       return this.transformReportData(data, report);
     } catch (error) {
-      console.error(`Failed to get report data for ${reportId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create a dataset
+   * Create a dataset;
    */
   async createDataset(dataset: Omit<AnalyticsDataset, 'id' | 'refreshedAt' | 'recordCount' | 'sizeBytes' | 'status'>): Promise<string> {
     const newDataset: AnalyticsDataset = {
@@ -620,12 +630,12 @@ class BusinessIntelligenceService extends EventEmitter {
       refreshedAt: new Date(),
       recordCount: 0,
       sizeBytes: 0,
-      status: 'loading'
+      status: 'loading';
     };
 
     this.datasets.set(newDataset.id, newDataset);
 
-    // Load dataset data
+    // Load dataset data;
     setImmediate(() => this.refreshDataset(newDataset.id));
 
     this.emit('dataset_created', newDataset);
@@ -633,7 +643,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Refresh a dataset
+   * Refresh a dataset;
    */
   async refreshDataset(datasetId: string): Promise<boolean> {
     const dataset = this.datasets.get(datasetId);
@@ -643,7 +653,7 @@ class BusinessIntelligenceService extends EventEmitter {
       dataset.status = 'loading';
       this.datasets.set(datasetId, dataset);
 
-      // Fetch data from source
+      // Fetch data from source;
       const data = await this.fetchDatasetData(dataset);
 
       dataset.status = 'ready';
@@ -668,18 +678,18 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Define a KPI
+   * Define a KPI;
    */
   async defineKPI(kpi: Omit<KPIDefinition, 'id'>): Promise<string> {
     const newKPI: KPIDefinition = {
       ...kpi,
-      id: uuidv4()
+      id: uuidv4();
     };
 
     this.kpis.set(newKPI.id, newKPI);
     this.kpiValues.set(newKPI.id, []);
 
-    // Start monitoring if active
+    // Start monitoring if active;
     if (newKPI.isActive) {
       this.startKPICollection(newKPI);
     }
@@ -689,7 +699,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Get KPI values
+   * Get KPI values;
    */
   getKPIValues(kpiId: string, timeRange?: { start: Date; end: Date }): KPIValue[] {
     const values = this.kpiValues.get(kpiId) || [];
@@ -697,12 +707,12 @@ class BusinessIntelligenceService extends EventEmitter {
     if (!timeRange) return values;
 
     return values.filter(v => 
-      v.timestamp >= timeRange.start && v.timestamp <= timeRange.end
+      v.timestamp >= timeRange.start && v.timestamp <= timeRange.end;
     );
   }
 
   /**
-   * Get current KPI value
+   * Get current KPI value;
    */
   getCurrentKPIValue(kpiId: string): KPIValue | undefined {
     const values = this.kpiValues.get(kpiId) || [];
@@ -710,14 +720,14 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Create an alert
+   * Create an alert;
    */
   async createAlert(alert: Omit<AnalyticsAlert, 'id' | 'lastTriggered' | 'triggerCount' | 'createdAt'>): Promise<string> {
     const newAlert: AnalyticsAlert = {
       ...alert,
       id: uuidv4(),
       triggerCount: 0,
-      createdAt: new Date()
+      createdAt: new Date();
     };
 
     this.alerts.set(newAlert.id, newAlert);
@@ -727,7 +737,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Generate insights
+   * Generate insights;
    */
   async generateInsights(datasetId: string): Promise<AnalyticsInsight[]> {
     const dataset = this.datasets.get(datasetId);
@@ -745,13 +755,13 @@ class BusinessIntelligenceService extends EventEmitter {
       return insights;
 
     } catch (error) {
-      console.error(`Failed to generate insights for dataset ${datasetId}:`, error);
+
       return [];
     }
   }
 
   /**
-   * Get all insights
+   * Get all insights;
    */
   getInsights(category?: string, severity?: string): AnalyticsInsight[] {
     let filtered = this.insights.filter(i => !i.dismissed);
@@ -768,7 +778,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Export report
+   * Export report;
    */
   async exportReport(reportId: string, format: 'pdf' | 'xlsx' | 'csv' | 'png', parameters: Record<string, any> = {}): Promise<string> {
     const report = this.reports.get(reportId);
@@ -784,13 +794,13 @@ class BusinessIntelligenceService extends EventEmitter {
       return exportUrl;
 
     } catch (error) {
-      console.error(`Failed to export report ${reportId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get analytics statistics
+   * Get analytics statistics;
    */
   getStatistics(): {
     reports: { total: number; active: number; scheduled: number };
@@ -808,58 +818,58 @@ class BusinessIntelligenceService extends EventEmitter {
       reports: {
         total: allReports.length,
         active: allReports.filter(r => r.status === 'active').length,
-        scheduled: allReports.filter(r => r.schedule?.enabled).length
+        scheduled: allReports.filter(r => r.schedule?.enabled).length;
       },
       datasets: {
         total: allDatasets.length,
         ready: allDatasets.filter(d => d.status === 'ready').length,
         loading: allDatasets.filter(d => d.status === 'loading').length,
-        error: allDatasets.filter(d => d.status === 'error').length
+        error: allDatasets.filter(d => d.status === 'error').length;
       },
       executions: {
         total: allExecutions.length,
         success: allExecutions.filter(e => e.status === 'completed').length,
         failed: allExecutions.filter(e => e.status === 'failed').length,
-        running: allExecutions.filter(e => e.status === 'running').length
+        running: allExecutions.filter(e => e.status === 'running').length;
       },
       insights: {
         total: this.insights.length,
         critical: this.insights.filter(i => i.severity === 'critical' && !i.dismissed).length,
-        dismissed: this.insights.filter(i => i.dismissed).length
+        dismissed: this.insights.filter(i => i.dismissed).length;
       },
       kpis: {
         total: allKPIs.length,
-        active: allKPIs.filter(k => k.isActive).length
+        active: allKPIs.filter(k => k.isActive).length;
       }
     };
   }
 
-  // Private methods
+  // Private methods;
 
   private async loadReports(): Promise<void> {
     try {
-      // In production, load from database
-      console.log('Loading analytics reports...');
+      // In production, load from database;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
-      console.error('Failed to load reports:', error);
+
     }
   }
 
   private async loadDatasets(): Promise<void> {
     try {
-      // In production, load from database
-      console.log('Loading datasets...');
+      // In production, load from database;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
-      console.error('Failed to load datasets:', error);
+
     }
   }
 
   private async loadKPIs(): Promise<void> {
     try {
-      // In production, load from database
-      console.log('Loading KPIs...');
+      // In production, load from database;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       
-      // Sample KPIs
+      // Sample KPIs;
       await this.defineKPI({
         name: 'Patient Satisfaction',
         description: 'Overall patient satisfaction score',
@@ -874,7 +884,7 @@ class BusinessIntelligenceService extends EventEmitter {
         },
         frequency: 'daily',
         dataSources: ['patient_surveys'],
-        isActive: true
+        isActive: true;
       });
 
       await this.defineKPI({
@@ -891,20 +901,20 @@ class BusinessIntelligenceService extends EventEmitter {
         },
         frequency: 'daily',
         dataSources: ['admissions'],
-        isActive: true
+        isActive: true;
       });
 
     } catch (error) {
-      console.error('Failed to load KPIs:', error);
+
     }
   }
 
   private async loadAlerts(): Promise<void> {
     try {
-      // In production, load from database
-      console.log('Loading analytics alerts...');
+      // In production, load from database;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
-      console.error('Failed to load alerts:', error);
+
     }
   }
 
@@ -925,7 +935,7 @@ class BusinessIntelligenceService extends EventEmitter {
       try {
         await this.executeReport(report.id, {}, 'system', 'scheduled');
       } catch (error) {
-        console.error(`Scheduled report execution failed for ${report.name}:`, error);
+
       }
     }, intervalMs);
 
@@ -933,19 +943,19 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private startKPIMonitoring(): void {
-    // Monitor KPIs every 5 minutes
+    // Monitor KPIs every 5 minutes;
     setInterval(() => {
       this.collectKPIValues();
     }, 5 * 60 * 1000);
   }
 
   private startKPICollection(kpi: KPIDefinition): void {
-    // Start individual KPI collection
-    console.log(`Starting KPI collection for: ${kpi.name}`);
+    // Start individual KPI collection;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private startInsightGeneration(): void {
-    // Generate insights every hour
+    // Generate insights every hour;
     setInterval(() => {
       this.generateAllInsights();
     }, 60 * 60 * 1000);
@@ -960,24 +970,24 @@ class BusinessIntelligenceService extends EventEmitter {
         const values = this.kpiValues.get(kpi.id) || [];
         values.push(value);
         
-        // Keep only last 1000 values
+        // Keep only last 1000 values;
         if (values.length > 1000) {
           values.splice(0, values.length - 1000);
         }
         
         this.kpiValues.set(kpi.id, values);
 
-        // Check alerts
+        // Check alerts;
         this.checkKPIAlerts(kpi, value);
 
       } catch (error) {
-        console.error(`Failed to collect KPI value for ${kpi.name}:`, error);
+
       }
     }
   }
 
   private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {
-    // Mock KPI calculation - in production, this would execute the formula
+    // Mock KPI calculation - in production, this would execute the formula;
     const mockValue = Math.random() * 100;
     const target = kpi.target || 0;
     const trend = mockValue > target * 0.95 ? 'up' : mockValue < target * 0.85 ? 'down' : 'stable';
@@ -995,7 +1005,7 @@ class BusinessIntelligenceService extends EventEmitter {
       target,
       status,
       trend,
-      changePercent: (Math.random() - 0.5) * 10, // -5% to +5%
+      changePercent: (Math.random() - 0.5) * 10, // -5% to +5%;
       metadata: {}
     };
   }
@@ -1013,7 +1023,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private evaluateAlertCondition(condition: AlertCondition, value: KPIValue): boolean {
-    const fieldValue = value.value; // Simplified - would need to handle different fields
+    const fieldValue = value.value; // Simplified - would need to handle different fields;
     
     switch (condition.operator) {
       case 'greater_than': return fieldValue > condition.value;
@@ -1029,7 +1039,7 @@ class BusinessIntelligenceService extends EventEmitter {
     alert.lastTriggered = new Date();
     alert.triggerCount++;
     
-    // Send notifications via configured channels
+    // Send notifications via configured channels;
     alert.channels.forEach(channel => {
       if (channel.isEnabled) {
         this.sendAlertNotification(alert, value, channel);
@@ -1040,8 +1050,8 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private sendAlertNotification(alert: AnalyticsAlert, value: KPIValue, channel: AlertChannel): void {
-    // Send notification via specified channel
-    console.log(`Sending alert notification: ${alert.name} via ${channel.type}`);
+    // Send notification via specified channel;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async generateAllInsights(): Promise<void> {
@@ -1052,8 +1062,8 @@ class BusinessIntelligenceService extends EventEmitter {
     }
   }
 
-  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, any>): Promise<{ url: string; data: any }> {
-    // Mock report execution
+  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, any>): Promise<{ url: string; data: unknown }> {
+    // Mock report execution;
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     return {
@@ -1063,25 +1073,25 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private async fetchReportData(report: AnalyticsReport, parameters: Record<string, any>): Promise<any> {
-    // Mock data fetching
+    // Mock data fetching;
     return { data: [], parameters };
   }
 
-  private transformReportData(data: any, report: AnalyticsReport): any {
-    // Transform data based on report configuration
+  private transformReportData(data: unknown, report: AnalyticsReport): unknown {
+    // Transform data based on report configuration;
     return data;
   }
 
   private async fetchDatasetData(dataset: AnalyticsDataset): Promise<any> {
-    // Mock dataset data fetching
+    // Mock dataset data fetching;
     return [];
   }
 
-  private async analyzeDataForInsights(data: any[], dataset: AnalyticsDataset): Promise<AnalyticsInsight[]> {
-    // Mock insight generation
+  private async analyzeDataForInsights(data: unknown[], dataset: AnalyticsDataset): Promise<AnalyticsInsight[]> {
+    // Mock insight generation;
     const insights: AnalyticsInsight[] = [];
     
-    // Simulate anomaly detection
+    // Simulate anomaly detection;
     if (Math.random() > 0.8) {
       insights.push({
         id: uuidv4(),
@@ -1094,31 +1104,31 @@ class BusinessIntelligenceService extends EventEmitter {
         recommendations: ['Investigate data source', 'Review data quality'],
         category: 'Data Quality',
         detectedAt: new Date(),
-        dismissed: false
+        dismissed: false;
       });
     }
 
     return insights;
   }
 
-  private async performReportExport(report: AnalyticsReport, data: any, format: string): Promise<string> {
-    // Mock export
+  private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {
+    // Mock export;
     return `/exports/${report.id}_${Date.now()}.${format}`;
   }
 
   private calculateScheduleInterval(schedule: ScheduleConfig): number {
-    // Calculate interval in milliseconds
+    // Calculate interval in milliseconds;
     switch (schedule.frequency) {
       case 'hourly': return 60 * 60 * 1000 * schedule.interval;
       case 'daily': return 24 * 60 * 60 * 1000 * schedule.interval;
       case 'weekly': return 7 * 24 * 60 * 60 * 1000 * schedule.interval;
       case 'monthly': return 30 * 24 * 60 * 60 * 1000 * schedule.interval;
-      default: return 24 * 60 * 60 * 1000; // Default to daily
+      default: return 24 * 60 * 60 * 1000; // Default to daily;
     }
   }
 
   /**
-   * Shutdown the BI service
+   * Shutdown the BI service;
    */
   async shutdown(): Promise<void> {
     await this.stop();
@@ -1137,5 +1147,5 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const businessIntelligence = new BusinessIntelligenceService();

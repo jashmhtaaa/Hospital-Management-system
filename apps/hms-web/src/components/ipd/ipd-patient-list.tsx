@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -23,9 +34,9 @@ interface IPDPatientListProps {
 }
 
 /**
- * IPD Patient List component
+ * IPD Patient List component;
  */
-export function IPDPatientList({ patients, onViewPatient }: IPDPatientListProps) {
+export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'stable': return <Badge variant="success">Stable</Badge>;
@@ -57,16 +68,16 @@ export function IPDPatientList({ patients, onViewPatient }: IPDPatientListProps)
           <TableBody>
             {patients.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center">
-                  No inpatients found
+                <TableCell colSpan={7} className="text-center">;
+                  No inpatients found;
                 </TableCell>
               </TableRow>
             ) : (
               patients.map((patient) => (
-                <TableRow key={patient.id}>
+                <TableRow key={patient.id}>;
                   <TableCell>
-                    <div className="font-medium">{patient.name}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="font-medium">{patient.name}</div>;
+                    <div className="text-sm text-gray-500">;
                       {patient.age} yrs, {patient.gender}
                     </div>
                   </TableCell>
@@ -76,16 +87,16 @@ export function IPDPatientList({ patients, onViewPatient }: IPDPatientListProps)
                   <TableCell>{patient.attendingDoctor}</TableCell>
                   <TableCell>{getStatusBadge(patient.status)}</TableCell>
                   <TableCell>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button;
+                      variant="outline";
+                      size="sm";
                       onClick={() => onViewPatient(patient.id)}
                     >
-                      View
+                      View;
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

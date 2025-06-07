@@ -1,11 +1,21 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * FHIR R4 Base Implementation
- * Comprehensive FHIR R4 compliance for healthcare interoperability
+ * FHIR R4 Base Implementation;
+ * Comprehensive FHIR R4 compliance for healthcare interoperability;
  */
 
-import { v4 as uuidv4 } from 'uuid';
 
-// FHIR R4 Base Resource Interface
+// FHIR R4 Base Resource Interface;
 export interface FHIRResource {
   resourceType: string;
   id?: string;
@@ -18,7 +28,7 @@ export interface FHIRResource {
   modifierExtension?: FHIRExtension[];
 }
 
-// FHIR Meta Information
+// FHIR Meta Information;
 export interface FHIRMeta {
   versionId?: string;
   lastUpdated?: string;
@@ -28,13 +38,13 @@ export interface FHIRMeta {
   tag?: FHIRCoding[];
 }
 
-// FHIR Narrative
+// FHIR Narrative;
 export interface FHIRNarrative {
   status: 'generated' | 'extensions' | 'additional' | 'empty';
   div: string;
 }
 
-// FHIR Extension
+// FHIR Extension;
 export interface FHIRExtension {
   url: string;
   valueString?: string;
@@ -49,7 +59,7 @@ export interface FHIRExtension {
   extension?: FHIRExtension[];
 }
 
-// FHIR Coding
+// FHIR Coding;
 export interface FHIRCoding {
   system?: string;
   version?: string;
@@ -58,13 +68,13 @@ export interface FHIRCoding {
   userSelected?: boolean;
 }
 
-// FHIR CodeableConcept
+// FHIR CodeableConcept;
 export interface FHIRCodeableConcept {
   coding?: FHIRCoding[];
   text?: string;
 }
 
-// FHIR Reference
+// FHIR Reference;
 export interface FHIRReference {
   reference?: string;
   type?: string;
@@ -72,7 +82,7 @@ export interface FHIRReference {
   display?: string;
 }
 
-// FHIR Identifier
+// FHIR Identifier;
 export interface FHIRIdentifier {
   use?: 'usual' | 'official' | 'temp' | 'secondary' | 'old';
   type?: FHIRCodeableConcept;
@@ -82,13 +92,13 @@ export interface FHIRIdentifier {
   assigner?: FHIRReference;
 }
 
-// FHIR Period
+// FHIR Period;
 export interface FHIRPeriod {
   start?: string;
   end?: string;
 }
 
-// FHIR Quantity
+// FHIR Quantity;
 export interface FHIRQuantity {
   value?: number;
   comparator?: '<' | '<=' | '>=' | '>';
@@ -97,13 +107,13 @@ export interface FHIRQuantity {
   code?: string;
 }
 
-// FHIR Range
+// FHIR Range;
 export interface FHIRRange {
   low?: FHIRQuantity;
   high?: FHIRQuantity;
 }
 
-// FHIR Address
+// FHIR Address;
 export interface FHIRAddress {
   use?: 'home' | 'work' | 'temp' | 'old' | 'billing';
   type?: 'postal' | 'physical' | 'both';
@@ -117,7 +127,7 @@ export interface FHIRAddress {
   period?: FHIRPeriod;
 }
 
-// FHIR ContactPoint
+// FHIR ContactPoint;
 export interface FHIRContactPoint {
   system?: 'phone' | 'fax' | 'email' | 'pager' | 'url' | 'sms' | 'other';
   value?: string;
@@ -126,7 +136,7 @@ export interface FHIRContactPoint {
   period?: FHIRPeriod;
 }
 
-// FHIR HumanName
+// FHIR HumanName;
 export interface FHIRHumanName {
   use?: 'usual' | 'official' | 'temp' | 'nickname' | 'anonymous' | 'old' | 'maiden';
   text?: string;
@@ -422,7 +432,7 @@ export interface FHIRMedicationRequestSubstitution {
   reason?: FHIRCodeableConcept;
 }
 
-// Base FHIR Manager Class
+// Base FHIR Manager Class;
 export abstract class FHIRResourceManager<T extends FHIRResource> {
   protected resourceType: string;
 
@@ -430,12 +440,12 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     this.resourceType = resourceType;
   }
 
-  // Generate FHIR-compliant ID
+  // Generate FHIR-compliant ID;
   generateId(): string {
     return uuidv4();
   }
 
-  // Create basic meta information
+  // Create basic meta information;
   createMeta(source?: string): FHIRMeta {
     return {
       versionId: '1',
@@ -444,7 +454,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create narrative
+  // Create narrative;
   createNarrative(content: string, status: FHIRNarrative['status'] = 'generated'): FHIRNarrative {
     return {
       status,
@@ -452,7 +462,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create coding
+  // Create coding;
   createCoding(system: string, code: string, display?: string): FHIRCoding {
     return {
       system,
@@ -461,7 +471,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create CodeableConcept
+  // Create CodeableConcept;
   createCodeableConcept(codings: FHIRCoding[], text?: string): FHIRCodeableConcept {
     return {
       coding: codings,
@@ -469,7 +479,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create identifier
+  // Create identifier;
   createIdentifier(system: string, value: string, use?: FHIRIdentifier['use']): FHIRIdentifier {
     return {
       use: use || 'usual',
@@ -478,7 +488,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create reference
+  // Create reference;
   createReference(resourceType: string, id: string, display?: string): FHIRReference {
     return {
       reference: `${resourceType}/${id}`,
@@ -486,15 +496,15 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Validate resource structure
+  // Validate resource structure;
   abstract validate(resource: T): boolean;
 
-  // Convert to/from internal format
-  abstract toFHIR(internalData: any): T;
-  abstract fromFHIR(fhirResource: T): any;
+  // Convert to/from internal format;
+  abstract toFHIR(internalData: unknown): T;
+  abstract fromFHIR(fhirResource: T): unknown;
 }
 
-// FHIR Bundle for transaction operations
+// FHIR Bundle for transaction operations;
 export interface FHIRBundle extends FHIRResource {
   resourceType: 'Bundle';
   identifier?: FHIRIdentifier;
@@ -552,44 +562,44 @@ export interface FHIRSignature {
   data?: string;
 }
 
-// Common terminology systems
+// Common terminology systems;
 export const FHIR_SYSTEMS = {
-  // Patient identifiers
+  // Patient identifiers;
   MRN: 'http://hospital.local/patient-mrn',
   SSN: 'http://hl7.org/fhir/sid/us-ssn',
   
-  // Lab codes
+  // Lab codes;
   LOINC: 'http://loinc.org',
   SNOMED_CT: 'http://snomed.info/sct',
   
-  // Medication codes
+  // Medication codes;
   RXNORM: 'http://www.nlm.nih.gov/research/umls/rxnorm',
   NDC: 'http://hl7.org/fhir/sid/ndc',
   
-  // Units
+  // Units;
   UCUM: 'http://unitsofmeasure.org',
   
-  // Administrative
+  // Administrative;
   V2_0203: 'http://terminology.hl7.org/CodeSystem/v2-0203',
   V3_ROLE_CODE: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
   
-  // Observation categories
+  // Observation categories;
   OBSERVATION_CATEGORY: 'http://terminology.hl7.org/CodeSystem/observation-category',
   
-  // Request priorities
+  // Request priorities;
   REQUEST_PRIORITY: 'http://hl7.org/fhir/request-priority',
   
-  // Medication request categories
+  // Medication request categories;
   MEDICATIONREQUEST_CATEGORY: 'http://terminology.hl7.org/CodeSystem/medicationrequest-category',
 } as const;
 
-// FHIR Validation utilities
+// FHIR Validation utilities;
 export class FHIRValidator {
   static isValidResourceType(resourceType: string): boolean {
     const validTypes = [
       'Patient', 'Observation', 'ServiceRequest', 'MedicationRequest',
       'Practitioner', 'Organization', 'Encounter', 'DiagnosticReport',
-      'Specimen', 'Device', 'Location', 'Bundle'
+      'Specimen', 'Device', 'Location', 'Bundle';
     ];
     return validTypes.includes(resourceType);
   }
@@ -605,12 +615,12 @@ export class FHIRValidator {
   }
 
   static isValidCode(code: string): boolean {
-    // Basic code validation - should not be empty and follow FHIR code pattern
+    // Basic code validation - should not be empty and follow FHIR code pattern;
     const regex = /^[^\s]+(\s[^\s]+)*$/;
     return code && code.length > 0 && regex.test(code);
   }
 
-  static validateRequired(value: any, fieldName: string): void {
+  static validateRequired(value: unknown, fieldName: string): void {
     if (value === undefined || value === null) {
       throw new Error(`Required field '${fieldName}' is missing`);
     }

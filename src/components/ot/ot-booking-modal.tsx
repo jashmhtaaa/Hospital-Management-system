@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -23,22 +34,22 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define the Booking type based on usage
+// Define the Booking type based on usage;
 interface Booking {
-  id?: string; // Optional ID for existing bookings
+  id?: string; // Optional ID for existing bookings;
   patient_id: string;
   surgery_type_id: string;
   theatre_id: string;
   lead_surgeon_id: string;
   anesthesiologist_id: string;
-  scheduled_start_time: string | Date; // Can be string or Date
-  scheduled_end_time: string | Date; // Can be string or Date
+  scheduled_start_time: string | Date; // Can be string or Date;
+  scheduled_end_time: string | Date; // Can be string or Date;
   booking_type: string;
   priority: string;
   booking_notes: string;
 }
 
-// Define the type for data passed to onSave
+// Define the type for data passed to onSave;
 interface BookingSaveData {
   patient_id: string;
   surgery_type_id: string;
@@ -52,14 +63,14 @@ interface BookingSaveData {
   booking_notes: string;
 }
 
-// Props for the modal - use defined types
+// Props for the modal - use defined types;
 interface OTBookingModalProperties {
   trigger: React.ReactNode;
-  booking?: Booking; // Use Booking type
-  onSave: (bookingData: BookingSaveData) => Promise<void>; // Use BookingSaveData type
+  booking?: Booking; // Use Booking type;
+  onSave: (bookingData: BookingSaveData) => Promise<void>; // Use BookingSaveData type;
 }
 
-// Mock data for dropdowns - replace with API calls
+// Mock data for dropdowns - replace with API calls;
 const mockPatients = [
   { id: "patient-1", name: "John Smith (MRN001)" },
   { id: "patient-2", name: "Sarah Johnson (MRN002)" },
@@ -88,24 +99,24 @@ const mockAnesthesiologists = [
   { id: "user-4", name: "Dr. Diana Black" },
 ];
 
-export default function OTBookingModal({
+export default const OTBookingModal = ({
   trigger,
   booking,
   onSave,
 }: OTBookingModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
-  // Initialize form data state, handling potential Date objects for time
+  // Initialize form data state, handling potential Date objects for time;
   const [formData, setFormData] = useState(() => ({
     patient_id: booking?.patient_id || "",
     surgery_type_id: booking?.surgery_type_id || "",
     theatre_id: booking?.theatre_id || "",
     lead_surgeon_id: booking?.lead_surgeon_id || "",
     anesthesiologist_id: booking?.anesthesiologist_id || "",
-    scheduled_start_time: booking?.scheduled_start_time
-      ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16)
+    scheduled_start_time: booking?.scheduled_start_time;
+      ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16);
       : "",
-    scheduled_end_time: booking?.scheduled_end_time
-      ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16)
+    scheduled_end_time: booking?.scheduled_end_time;
+      ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
       : "",
     booking_type: booking?.booking_type || "elective",
     priority: booking?.priority || "routine",
@@ -114,7 +125,7 @@ export default function OTBookingModal({
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when booking prop changes (for editing) or modal opens
+  // Reset form when booking prop changes (for editing) or modal opens;
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -123,24 +134,24 @@ export default function OTBookingModal({
         theatre_id: booking?.theatre_id || "",
         lead_surgeon_id: booking?.lead_surgeon_id || "",
         anesthesiologist_id: booking?.anesthesiologist_id || "",
-        scheduled_start_time: booking?.scheduled_start_time
-          ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16)
+        scheduled_start_time: booking?.scheduled_start_time;
+          ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16);
           : "",
-        scheduled_end_time: booking?.scheduled_end_time
-          ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16)
+        scheduled_end_time: booking?.scheduled_end_time;
+          ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
           : "",
         booking_type: booking?.booking_type || "elective",
         priority: booking?.priority || "routine",
         booking_notes: booking?.booking_notes || "",
       });
     } else {
-      // Optionally clear form when closed, or keep last state
+      // Optionally clear form when closed, or keep last state;
       // setFormData({ patient_id: "", ... });
     }
   }, [booking, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
@@ -154,18 +165,18 @@ export default function OTBookingModal({
     event.preventDefault();
     setIsSaving(true);
     try {
-      // Convert datetime-local strings back to ISO strings for API
+      // Convert datetime-local strings back to ISO strings for API;
       const apiData: BookingSaveData = {
         ...formData,
-        scheduled_start_time: formData.scheduled_start_time
-          ? new Date(formData.scheduled_start_time).toISOString()
+        scheduled_start_time: formData.scheduled_start_time;
+          ? new Date(formData.scheduled_start_time).toISOString();
           : null,
-        scheduled_end_time: formData.scheduled_end_time
-          ? new Date(formData.scheduled_end_time).toISOString()
+        scheduled_end_time: formData.scheduled_end_time;
+          ? new Date(formData.scheduled_end_time).toISOString();
           : null,
       };
 
-      // Replace with actual API call
+      // Replace with actual API call;
       // const url = booking ? `/api/ot/bookings/${booking.id}` :
       // const method = booking ? "PUT" : "POST";
       // const response = await fetch(url, {
@@ -178,11 +189,11 @@ export default function OTBookingModal({
       //   throw new Error(errorData.message || "Failed to save booking");
       // }
 
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Saving booking:", apiData);
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list
+      await onSave(apiData); // Call parent callback to refresh list;
 
       toast({
         title: "Success",
@@ -190,8 +201,8 @@ export default function OTBookingModal({
       });
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type
-      console.error("Error saving booking:", error);
+      // Use unknown for error type;
+
       let errorMessage = "Failed to save booking.";
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -207,38 +218,38 @@ export default function OTBookingModal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px]">;
         <DialogHeader>
           <DialogTitle>
             {booking ? "Edit OT Booking" : "Create New OT Booking"}
           </DialogTitle>
           <DialogDescription>
-            Fill in the details for the operation theatre booking.
+            Fill in the details for the operation theatre booking.;
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
+        <form onSubmit={handleSubmit}>;
+          <div className="grid gap-4 py-4">;
             {/* Patient Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="patient_id" className="text-right">
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="patient_id" className="text-right">;
                 Patient *
               </Label>
-              <Select
-                name="patient_id"
+              <Select;
+                name="patient_id";
                 value={formData.patient_id}
                 onValueChange={(value) =>
-                  handleSelectChange("patient_id", value)
+                  handleSelectChange("patient_id", value);
                 }
-                required
+                required;
               >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Patient" />
+                <SelectTrigger className="col-span-3">;
+                  <SelectValue placeholder="Select Patient" />;
                 </SelectTrigger>
                 <SelectContent>
                   {mockPatients.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
+                    <SelectItem key={p.id} value={p.id}>;
                       {p.name}
                     </SelectItem>
                   ))}
@@ -246,24 +257,24 @@ export default function OTBookingModal({
               </Select>
             </div>
             {/* Surgery Type Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="surgery_type_id" className="text-right">
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="surgery_type_id" className="text-right">;
                 Surgery Type *
               </Label>
-              <Select
-                name="surgery_type_id"
+              <Select;
+                name="surgery_type_id";
                 value={formData.surgery_type_id}
                 onValueChange={(value) =>
-                  handleSelectChange("surgery_type_id", value)
+                  handleSelectChange("surgery_type_id", value);
                 }
-                required
+                required;
               >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Surgery Type" />
+                <SelectTrigger className="col-span-3">;
+                  <SelectValue placeholder="Select Surgery Type" />;
                 </SelectTrigger>
                 <SelectContent>
                   {mockSurgeryTypes.map((st) => (
-                    <SelectItem key={st.id} value={st.id}>
+                    <SelectItem key={st.id} value={st.id}>;
                       {st.name}
                     </SelectItem>
                   ))}
@@ -271,24 +282,24 @@ export default function OTBookingModal({
               </Select>
             </div>
             {/* Theatre Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="theatre_id" className="text-right">
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="theatre_id" className="text-right">;
                 Theatre *
               </Label>
-              <Select
-                name="theatre_id"
+              <Select;
+                name="theatre_id";
                 value={formData.theatre_id}
                 onValueChange={(value) =>
-                  handleSelectChange("theatre_id", value)
+                  handleSelectChange("theatre_id", value);
                 }
-                required
+                required;
               >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Theatre" />
+                <SelectTrigger className="col-span-3">;
+                  <SelectValue placeholder="Select Theatre" />;
                 </SelectTrigger>
                 <SelectContent>
                   {mockTheatres.map((t) => (
-                    <SelectItem key={t.id} value={t.id}>
+                    <SelectItem key={t.id} value={t.id}>;
                       {t.name}
                     </SelectItem>
                   ))}
@@ -296,24 +307,24 @@ export default function OTBookingModal({
               </Select>
             </div>
             {/* Surgeon Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="lead_surgeon_id" className="text-right">
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="lead_surgeon_id" className="text-right">;
                 Lead Surgeon *
               </Label>
-              <Select
-                name="lead_surgeon_id"
+              <Select;
+                name="lead_surgeon_id";
                 value={formData.lead_surgeon_id}
                 onValueChange={(value) =>
-                  handleSelectChange("lead_surgeon_id", value)
+                  handleSelectChange("lead_surgeon_id", value);
                 }
-                required
+                required;
               >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Lead Surgeon" />
+                <SelectTrigger className="col-span-3">;
+                  <SelectValue placeholder="Select Lead Surgeon" />;
                 </SelectTrigger>
                 <SelectContent>
                   {mockSurgeons.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
+                    <SelectItem key={s.id} value={s.id}>;
                       {s.name}
                     </SelectItem>
                   ))}
@@ -321,24 +332,24 @@ export default function OTBookingModal({
               </Select>
             </div>
             {/* Anesthesiologist Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="anesthesiologist_id" className="text-right">
-                Anesthesiologist
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="anesthesiologist_id" className="text-right">;
+                Anesthesiologist;
               </Label>
-              <Select
-                name="anesthesiologist_id"
+              <Select;
+                name="anesthesiologist_id";
                 value={formData.anesthesiologist_id}
                 onValueChange={(value) =>
-                  handleSelectChange("anesthesiologist_id", value)
+                  handleSelectChange("anesthesiologist_id", value);
                 }
               >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Anesthesiologist (Optional)" />
+                <SelectTrigger className="col-span-3">;
+                  <SelectValue placeholder="Select Anesthesiologist (Optional)" />;
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="">None</SelectItem>;
                   {mockAnesthesiologists.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>
+                    <SelectItem key={a.id} value={a.id}>;
                       {a.name}
                     </SelectItem>
                   ))}
@@ -346,102 +357,102 @@ export default function OTBookingModal({
               </Select>
             </div>
             {/* Scheduled Times */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="scheduled_start_time" className="text-right">
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="scheduled_start_time" className="text-right">;
                 Start Time *
               </Label>
-              <Input
-                id="scheduled_start_time"
-                name="scheduled_start_time"
+              <Input;
+                id="scheduled_start_time";
+                name="scheduled_start_time";
                 type="datetime-local"
                 value={formData.scheduled_start_time}
                 onChange={handleChange}
-                className="col-span-3"
-                required
+                className="col-span-3";
+                required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="scheduled_end_time" className="text-right">
+            <div className="grid grid-cols-4 items-center gap-4">;
+              <Label htmlFor="scheduled_end_time" className="text-right">;
                 End Time *
               </Label>
-              <Input
-                id="scheduled_end_time"
-                name="scheduled_end_time"
+              <Input;
+                id="scheduled_end_time";
+                name="scheduled_end_time";
                 type="datetime-local"
                 value={formData.scheduled_end_time}
                 onChange={handleChange}
-                className="col-span-3"
-                required
+                className="col-span-3";
+                required;
               />
             </div>
             {/* Booking Type & Priority */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid grid-cols-2 items-center gap-4">
-                <Label htmlFor="booking_type" className="text-right">
-                  Type
+            <div className="grid grid-cols-2 gap-4">;
+              <div className="grid grid-cols-2 items-center gap-4">;
+                <Label htmlFor="booking_type" className="text-right">;
+                  Type;
                 </Label>
-                <Select
-                  name="booking_type"
+                <Select;
+                  name="booking_type";
                   value={formData.booking_type}
                   onValueChange={(value) =>
-                    handleSelectChange("booking_type", value)
+                    handleSelectChange("booking_type", value);
                   }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="elective">Elective</SelectItem>
-                    <SelectItem value="emergency">Emergency</SelectItem>
+                    <SelectItem value="elective">Elective</SelectItem>;
+                    <SelectItem value="emergency">Emergency</SelectItem>;
                   </SelectContent>
                 </Select>
               </div>
-              <div className="grid grid-cols-2 items-center gap-4">
-                <Label htmlFor="priority" className="text-right">
-                  Priority
+              <div className="grid grid-cols-2 items-center gap-4">;
+                <Label htmlFor="priority" className="text-right">;
+                  Priority;
                 </Label>
-                <Select
-                  name="priority"
+                <Select;
+                  name="priority";
                   value={formData.priority}
                   onValueChange={(value) =>
-                    handleSelectChange("priority", value)
+                    handleSelectChange("priority", value);
                   }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="routine">Routine</SelectItem>
-                    <SelectItem value="urgent">Urgent</SelectItem>
-                    <SelectItem value="emergency">Emergency</SelectItem>
+                    <SelectItem value="routine">Routine</SelectItem>;
+                    <SelectItem value="urgent">Urgent</SelectItem>;
+                    <SelectItem value="emergency">Emergency</SelectItem>;
                   </SelectContent>
                 </Select>
               </div>
             </div>
             {/* Notes */}
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="booking_notes" className="text-right pt-2">
-                Notes
+            <div className="grid grid-cols-4 items-start gap-4">;
+              <Label htmlFor="booking_notes" className="text-right pt-2">;
+                Notes;
               </Label>
-              <Textarea
-                id="booking_notes"
-                name="booking_notes"
+              <Textarea;
+                id="booking_notes";
+                name="booking_notes";
                 value={formData.booking_notes}
                 onChange={handleChange}
-                className="col-span-3"
-                placeholder="Any specific requirements or notes..."
+                className="col-span-3";
+                placeholder="Any specific requirements or notes...";
               />
             </div>
           </div>
           <DialogFooter>
-            <Button
+            <Button;
               type="button"
-              variant="outline"
+              variant="outline";
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              Cancel;
             </Button>
-            <Button type="submit" disabled={isSaving}>
+            <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving..." : "Save Booking"}
             </Button>
           </DialogFooter>

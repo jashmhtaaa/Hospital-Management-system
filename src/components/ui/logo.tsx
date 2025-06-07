@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from "react";
 import Image from "next/image";
 
@@ -14,43 +25,43 @@ const Logo: React.FC<LogoProperties> = ({
   size = "md",
   className = "",
 }) => {
-  // Size mapping
+  // Size mapping;
   const sizeMap = {
     sm: { logo: 30, text: "text-lg" },
     md: { logo: 40, text: "text-xl" },
     lg: { logo: 50, text: "text-2xl" },
   };
 
-  // Variant mapping for text color
+  // Variant mapping for text color;
   const textColorClass = variant === "light" ? "text-white" : "text-secondary";
 
   return (
-    <div className={`flex items-center ${className}`}>
-      <div
-        className="relative"
+    <div className={`flex items-center ${className}`}>;
+      <div;
+        className="relative";
         style={{ width: sizeMap[size].logo, height: sizeMap[size].logo }}
       >
-        <Image
-          src="/images/shlokam-logo.svg"
-          alt="Shlokam Logo"
-          fill
-          priority
-          className="object-contain"
+        <Image;
+          src="/images/shlokam-logo.svg";
+          alt="Shlokam Logo";
+          fill;
+          priority;
+          className="object-contain";
         />
       </div>
 
       {showText && (
-        <div className="ml-2 flex flex-col">
-          <span
+        <div className="ml-2 flex flex-col">;
+          <span;
             className={`font-bold ${sizeMap[size].text} ${textColorClass} tracking-wide`}
           >
-            SHLOKAM
+            SHLOKAM;
           </span>
           {size !== "sm" && (
-            <span
+            <span;
               className={`text-xs ${textColorClass} opacity-90 tracking-wider`}
             >
-              HEALTHCARE
+              HEALTHCARE;
             </span>
           )}
         </div>

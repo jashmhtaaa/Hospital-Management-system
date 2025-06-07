@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
 import { getServerSession } from 'next-auth';
@@ -7,7 +18,7 @@ import { z } from 'zod';
 
 const campaignService = new MarketingCampaignService();
 
-// Campaign filter schema
+// Campaign filter schema;
 const campaignFilterSchema = z.object({
   type: z.string().optional(),
   status: z.string().optional(),
@@ -16,10 +27,10 @@ const campaignFilterSchema = z.object({
   endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined),
   page: z.string().default('1').transform(Number),
-  limit: z.string().default('10').transform(Number)
+  limit: z.string().default('10').transform(Number);
 });
 
-// Create campaign schema
+// Create campaign schema;
 const createCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters"),
   description: z.string().optional(),
@@ -30,10 +41,10 @@ const createCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional();
 });
 
-// Update campaign schema
+// Update campaign schema;
 const updateCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters").optional(),
   description: z.string().optional(),
@@ -44,37 +55,37 @@ const updateCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional();
 });
 
-// GET /api/support-services/marketing/campaigns
-export async function GET(request: NextRequest) {
+// GET /api/support-services/marketing/campaigns;
+export async const GET = (request: NextRequest) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:read');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse query parameters
+    // Parse query parameters;
     const searchParams = request.nextUrl.searchParams;
     const params = Object.fromEntries(searchParams.entries());
     
-    // Validate and transform parameters
+    // Validate and transform parameters;
     const validatedParams = campaignFilterSchema.parse(params);
     
-    // Get campaigns with filters
+    // Get campaigns with filters;
     const result = await campaignService.getCampaigns(validatedParams);
     
     return NextResponse.json(result);
-  } catch (error: any) {
-    console.error('Error in campaigns GET:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -82,36 +93,36 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/support-services/marketing/campaigns
-export async function POST(request: NextRequest) {
+// POST /api/support-services/marketing/campaigns;
+export async const POST = (request: NextRequest) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:create');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Validate request body
+    // Validate request body;
     const validatedData = createCampaignSchema.parse(body);
     
-    // Create campaign
+    // Create campaign;
     const campaign = await campaignService.createCampaign(
       validatedData,
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(campaign, { status: 201 });
-  } catch (error: any) {
-    console.error('Error in campaigns POST:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -119,28 +130,28 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET /api/support-services/marketing/campaigns/:id
-export async function GET_BY_ID(request: NextRequest, { params }: { params: { id: string } }) {
+// GET /api/support-services/marketing/campaigns/:id;
+export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:read');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Get campaign by ID
+    // Get campaign by ID;
     const includeFHIR = request.nextUrl.searchParams.get('fhir') === 'true';
     const campaign = await campaignService.getCampaignById(params.id, includeFHIR);
     
     return NextResponse.json(campaign);
-  } catch (error: any) {
-    console.error('Error in campaigns GET_BY_ID:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -148,37 +159,37 @@ export async function GET_BY_ID(request: NextRequest, { params }: { params: { id
   }
 }
 
-// PATCH /api/support-services/marketing/campaigns/:id
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+// PATCH /api/support-services/marketing/campaigns/:id;
+export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:update');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Validate request body
+    // Validate request body;
     const validatedData = updateCampaignSchema.parse(body);
     
-    // Update campaign
+    // Update campaign;
     const campaign = await campaignService.updateCampaign(
       params.id,
       validatedData,
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(campaign);
-  } catch (error: any) {
-    console.error('Error in campaigns PATCH:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -186,27 +197,27 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 }
 
-// DELETE /api/support-services/marketing/campaigns/:id
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+// DELETE /api/support-services/marketing/campaigns/:id;
+export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:delete');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Delete campaign
+    // Delete campaign;
     await campaignService.deleteCampaign(params.id, session.user.id);
     
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error('Error in campaigns DELETE:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -214,27 +225,27 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
   }
 }
 
-// GET /api/support-services/marketing/campaigns/:id/analytics
-export async function GET_ANALYTICS(request: NextRequest, { params }: { params: { id: string } }) {
+// GET /api/support-services/marketing/campaigns/:id/analytics;
+export async const GET_ANALYTICS = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:analytics');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Get campaign analytics
+    // Get campaign analytics;
     const analytics = await campaignService.getCampaignAnalytics(params.id);
     
     return NextResponse.json(analytics);
-  } catch (error: any) {
-    console.error('Error in campaigns GET_ANALYTICS:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -242,34 +253,34 @@ export async function GET_ANALYTICS(request: NextRequest, { params }: { params: 
   }
 }
 
-// POST /api/support-services/marketing/campaigns/:id/channels
-export async function POST_CHANNEL(request: NextRequest, { params }: { params: { id: string } }) {
+// POST /api/support-services/marketing/campaigns/:id/channels;
+export async const POST_CHANNEL = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:update');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Add channel to campaign
+    // Add channel to campaign;
     const channel = await campaignService.addCampaignChannel(
       params.id,
       body,
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(channel, { status: 201 });
-  } catch (error: any) {
-    console.error('Error in campaigns POST_CHANNEL:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }
@@ -277,31 +288,31 @@ export async function POST_CHANNEL(request: NextRequest, { params }: { params: {
   }
 }
 
-// POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export async function POST_SEGMENT(request: NextRequest, { params }: { params: { id: string; segmentId: string } }) {
+// POST /api/support-services/marketing/campaigns/:id/segments/:segmentId;
+export async const POST_SEGMENT = (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) {
   try {
-    // Check authentication
+    // Check authentication;
     const session = await getServerSession(authOptions);
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check permissions
+    // Check permissions;
     const hasPermission = await validatePermission(session.user.id, 'marketing:update');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Add segment to campaign
+    // Add segment to campaign;
     const result = await campaignService.addCampaignSegment(
       params.id,
       params.segmentId,
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(result, { status: 201 });
-  } catch (error: any) {
-    console.error('Error in campaigns POST_SEGMENT:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
       { status: error.status || 500 }

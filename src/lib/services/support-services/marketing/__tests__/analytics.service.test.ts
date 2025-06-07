@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { AnalyticsService } from '../analytics.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
+import { ValidationError, NotFoundError } from '@/lib/errors';
 
-// Mock dependencies
+// Mock dependencies;
 jest.mock('@/lib/prisma', () => ({
   marketingCampaign: {
     findUnique: jest.fn(),
@@ -71,7 +82,7 @@ describe('AnalyticsService', () => {
     ];
     
     it('should retrieve campaign analytics successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.campaignActivity.groupBy as jest.Mock).mockImplementation((args) => {
@@ -83,10 +94,10 @@ describe('AnalyticsService', () => {
         return Promise.resolve([]);
       });
       
-      // Act
+      // Act;
       const result = await service.getCampaignAnalytics('campaign-123');
       
-      // Assert
+      // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
       });
@@ -107,7 +118,7 @@ describe('AnalyticsService', () => {
         timeSeriesData: expect.any(Array),
       }));
       
-      // Check time series data format
+      // Check time series data format;
       expect(result.timeSeriesData).toEqual(expect.arrayContaining([
         expect.objectContaining({
           date: expect.any(String),
@@ -122,17 +133,17 @@ describe('AnalyticsService', () => {
     });
     
     it('should throw NotFoundError if campaign does not exist', async () => {
-      // Arrange
+      // Arrange;
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(service.getCampaignAnalytics('non-existent-id'))
-        .rejects
+      // Act & Assert;
+      await expect(service.getCampaignAnalytics('non-existent-id'));
+        .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should apply date range filters correctly', async () => {
-      // Arrange
+      // Arrange;
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.campaignActivity.groupBy as jest.Mock).mockResolvedValue(mockActivityCounts);
@@ -140,10 +151,10 @@ describe('AnalyticsService', () => {
       const startDate = '2023-01-05';
       const endDate = '2023-01-10';
       
-      // Act
+      // Act;
       await service.getCampaignAnalytics('campaign-123', { startDate, endDate });
       
-      // Assert
+      // Assert;
       expect(prisma.campaignActivity.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
           campaignId: 'campaign-123',
@@ -163,12 +174,12 @@ describe('AnalyticsService', () => {
               lte: new Date(endDate),
             },
           }),
-        })
+        });
       );
     });
     
     it('should log audit event after retrieving analytics', async () => {
-      // Arrange
+      // Arrange;
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.campaignActivity.groupBy as jest.Mock).mockImplementation((args) => {
@@ -180,10 +191,10 @@ describe('AnalyticsService', () => {
         return Promise.resolve([]);
       });
       
-      // Act
+      // Act;
       await service.getCampaignAnalytics('campaign-123', undefined, mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'analytics.campaign.view',
         resourceId: 'campaign-123',
@@ -241,10 +252,10 @@ describe('AnalyticsService', () => {
     ];
     
     it('should retrieve comparative campaign analytics successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.marketingCampaign.findMany as jest.Mock).mockResolvedValue(mockCampaigns);
       
-      // Mock the getCampaignAnalytics method
+      // Mock the getCampaignAnalytics method;
       jest.spyOn(service, 'getCampaignAnalytics').mockImplementation((campaignId) => {
         const metrics = mockCampaignMetrics.find(m => m.campaignId === campaignId);
         return Promise.resolve({
@@ -256,10 +267,10 @@ describe('AnalyticsService', () => {
         });
       });
       
-      // Act
+      // Act;
       const result = await service.getComparativeCampaignAnalytics(['campaign-1', 'campaign-2']);
       
-      // Assert
+      // Assert;
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith({
         where: {
           id: { in: ['campaign-1', 'campaign-2'] },
@@ -294,7 +305,7 @@ describe('AnalyticsService', () => {
         }),
       });
       
-      // Check comparison calculations
+      // Check comparison calculations;
       expect(result.comparisons.sent).toEqual({
         'campaign-1': 100,
         'campaign-2': 150,
@@ -304,24 +315,24 @@ describe('AnalyticsService', () => {
     });
     
     it('should throw ValidationError if no campaign IDs are provided', async () => {
-      // Act & Assert
-      await expect(service.getComparativeCampaignAnalytics([]))
-        .rejects
+      // Act & Assert;
+      await expect(service.getComparativeCampaignAnalytics([]));
+        .rejects;
         .toThrow(ValidationError);
     });
     
     it('should throw ValidationError if only one campaign ID is provided', async () => {
-      // Act & Assert
-      await expect(service.getComparativeCampaignAnalytics(['campaign-1']))
-        .rejects
+      // Act & Assert;
+      await expect(service.getComparativeCampaignAnalytics(['campaign-1']));
+        .rejects;
         .toThrow(ValidationError);
     });
     
     it('should log audit event after retrieving comparative analytics', async () => {
-      // Arrange
+      // Arrange;
       (prisma.marketingCampaign.findMany as jest.Mock).mockResolvedValue(mockCampaigns);
       
-      // Mock the getCampaignAnalytics method
+      // Mock the getCampaignAnalytics method;
       jest.spyOn(service, 'getCampaignAnalytics').mockImplementation((campaignId) => {
         const metrics = mockCampaignMetrics.find(m => m.campaignId === campaignId);
         return Promise.resolve({
@@ -333,13 +344,13 @@ describe('AnalyticsService', () => {
         });
       });
       
-      // Act
+      // Act;
       await service.getComparativeCampaignAnalytics(['campaign-1', 'campaign-2'], mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'analytics.campaign.compare',
-        resourceId: expect.any(String), // Generated ID
+        resourceId: expect.any(String), // Generated ID;
         userId: mockUserId,
         details: expect.objectContaining({
           campaignIds: ['campaign-1', 'campaign-2'],
@@ -377,7 +388,7 @@ describe('AnalyticsService', () => {
     ];
     
     it('should retrieve contact activity analytics successfully', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contactActivity.findMany as jest.Mock).mockResolvedValue(mockActivities);
       (prisma.contactActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.contactActivity.groupBy as jest.Mock).mockImplementation((args) => {
@@ -389,10 +400,10 @@ describe('AnalyticsService', () => {
         return Promise.resolve([]);
       });
       
-      // Act
+      // Act;
       const result = await service.getContactActivityAnalytics('contact-123');
       
-      // Assert
+      // Assert;
       expect(prisma.contactActivity.count).toHaveBeenCalledWith({
         where: { contactId: 'contact-123' },
       });
@@ -402,7 +413,7 @@ describe('AnalyticsService', () => {
           by: ['type'],
           where: { contactId: 'contact-123' },
           _count: true,
-        })
+        });
       );
       
       expect(result).toEqual(expect.objectContaining({
@@ -436,7 +447,7 @@ describe('AnalyticsService', () => {
     });
     
     it('should apply date range filters correctly', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contactActivity.findMany as jest.Mock).mockResolvedValue(mockActivities);
       (prisma.contactActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.contactActivity.groupBy as jest.Mock).mockResolvedValue(mockActivityCounts);
@@ -444,10 +455,10 @@ describe('AnalyticsService', () => {
       const startDate = '2023-01-03';
       const endDate = '2023-01-05';
       
-      // Act
+      // Act;
       await service.getContactActivityAnalytics('contact-123', { startDate, endDate });
       
-      // Assert
+      // Assert;
       expect(prisma.contactActivity.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
           contactId: 'contact-123',
@@ -467,12 +478,12 @@ describe('AnalyticsService', () => {
               lte: new Date(endDate),
             },
           }),
-        })
+        });
       );
     });
     
     it('should log audit event after retrieving contact analytics', async () => {
-      // Arrange
+      // Arrange;
       (prisma.contactActivity.findMany as jest.Mock).mockResolvedValue(mockActivities);
       (prisma.contactActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.contactActivity.groupBy as jest.Mock).mockImplementation((args) => {
@@ -484,10 +495,10 @@ describe('AnalyticsService', () => {
         return Promise.resolve([]);
       });
       
-      // Act
+      // Act;
       await service.getContactActivityAnalytics('contact-123', undefined, mockUserId);
       
-      // Assert
+      // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'analytics.contact.view',
         resourceId: 'contact-123',

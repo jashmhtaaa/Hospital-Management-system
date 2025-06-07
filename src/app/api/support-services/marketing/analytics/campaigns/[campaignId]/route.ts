@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const analyticsService = new AnalyticsService();
 
 /**
- * GET /api/support-services/marketing/analytics/campaigns/:campaignId
- * Get analytics for a specific campaign
+ * GET /api/support-services/marketing/analytics/campaigns/:campaignId;
+ * Get analytics for a specific campaign;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { campaignId: string } }
 ) {
@@ -20,23 +31,23 @@ export async function GET(
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
       
-      // Parse query parameters
+      // Parse query parameters;
       const filters = {
-        startDate: searchParams.has('startDate')
-          ? new Date(searchParams.get('startDate') as string)
+        startDate: searchParams.has('startDate');
+          ? new Date(searchParams.get('startDate') as string);
           : undefined,
-        endDate: searchParams.has('endDate')
-          ? new Date(searchParams.get('endDate') as string)
+        endDate: searchParams.has('endDate');
+          ? new Date(searchParams.get('endDate') as string);
           : undefined,
-        metrics: searchParams.has('metrics')
-          ? (searchParams.get('metrics') as string).split(',')
+        metrics: searchParams.has('metrics');
+          ? (searchParams.get('metrics') as string).split(',');
           : undefined,
         groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined,
       };
       
       const result = await analyticsService.getAggregatedAnalytics(
         params.campaignId,
-        filters
+        filters;
       );
       
       return NextResponse.json(result);
@@ -49,10 +60,10 @@ export async function GET(
 }
 
 /**
- * POST /api/support-services/marketing/analytics/campaigns/:campaignId
- * Record analytics data for a campaign
+ * POST /api/support-services/marketing/analytics/campaigns/:campaignId;
+ * Record analytics data for a campaign;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { campaignId: string } }
 ) {
@@ -65,7 +76,7 @@ export async function POST(
       const analytics = await analyticsService.recordAnalytics(
         params.campaignId,
         data,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(analytics, { status: 201 });

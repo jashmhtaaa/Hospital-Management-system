@@ -1,11 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Advanced Sample Management Service
- * Comprehensive sample tracking with barcode/RFID and chain of custody
+ * Advanced Sample Management Service;
+ * Comprehensive sample tracking with barcode/RFID and chain of custody;
  */
 
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/lib/prisma';
-import { FHIRResourceManager, FHIRObservation, FHIRServiceRequest, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
+import { FHIRResourceManager, FHIRObservation, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { cacheService } from '@/lib/cache/redis-cache';
 import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
@@ -105,23 +116,23 @@ export interface SampleRouting {
   department: string;
 }
 
-@Injectable()
+@Injectable();
 export class SampleManagementService extends FHIRResourceManager<FHIRObservation> {
   constructor(private prisma: PrismaService) {
     super('Specimen');
   }
 
   /**
-   * Create new sample with barcode generation
+   * Create new sample with barcode generation;
    */
   async createSample(data: Partial<Sample>): Promise<Sample> {
     const startTime = performance.now();
     
     try {
-      // Generate unique barcode
+      // Generate unique barcode;
       const barcode = await this.generateBarcode();
       
-      // Create sample record
+      // Create sample record;
       const sample = await this.prisma.sample.create({
         data: {
           ...data,
@@ -145,23 +156,23 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         },
       });
 
-      // Cache the sample
+      // Cache the sample;
       await cacheService.cacheResult(
         'sample:',
         sample.id,
         sample,
-        300 // 5 minutes
+        300 // 5 minutes;
       );
 
-      // Create FHIR Specimen resource
+      // Create FHIR Specimen resource;
       await this.createFHIRSpecimen(sample);
 
-      // Publish real-time event
+      // Publish real-time event;
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
         sampleStatusChanged: sample,
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('lab.samples_created', 1, {
         sampleType: sample.sampleType,
         priority: sample.priority,
@@ -172,20 +183,20 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       return sample as Sample;
     } catch (error) {
-      console.error('Error creating sample:', error);
+
       throw error;
     }
   }
 
   /**
-   * Update sample status with chain of custody tracking
+   * Update sample status with chain of custody tracking;
    */
   async updateSampleStatus(
     sampleId: string,
     newStatus: SampleStatus,
     userId: string,
     location?: string,
-    notes?: string
+    notes?: string;
   ): Promise<Sample> {
     try {
       const sample = await this.getSampleById(sampleId);
@@ -193,7 +204,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         throw new Error(`Sample ${sampleId} not found`);
       }
 
-      // Create chain of custody entry if location changed
+      // Create chain of custody entry if location changed;
       const chainOfCustodyData = location !== sample.location ? {
         create: {
           fromUserId: sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId,
@@ -206,7 +217,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         },
       } : undefined;
 
-      // Update sample
+      // Update sample;
       const updatedSample = await this.prisma.sample.update({
         where: { id: sampleId },
         data: {
@@ -221,18 +232,18 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         },
       });
 
-      // Update cache
+      // Update cache;
       await cacheService.cacheResult('sample:', sampleId, updatedSample, 300);
 
-      // Update FHIR resource
+      // Update FHIR resource;
       await this.updateFHIRSpecimen(updatedSample);
 
-      // Publish real-time event
+      // Publish real-time event;
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
         sampleStatusChanged: updatedSample,
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('lab.sample_status_updates', 1, {
         fromStatus: sample.status,
         toStatus: newStatus,
@@ -241,17 +252,17 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       return updatedSample as Sample;
     } catch (error) {
-      console.error('Error updating sample status:', error);
+
       throw error;
     }
   }
 
   /**
-   * Perform quality control check
+   * Perform quality control check;
    */
   async performQualityControl(
     sampleId: string,
-    qcData: Omit<QualityControlResult, 'id' | 'sampleId'>
+    qcData: Omit<QualityControlResult, 'id' | 'sampleId'>;
   ): Promise<QualityControlResult> {
     try {
       const qcResult = await this.prisma.qualityControlResult.create({
@@ -261,18 +272,18 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         },
       });
 
-      // If QC fails, update sample status
+      // If QC fails, update sample status;
       if (qcResult.status === 'FAIL') {
         await this.updateSampleStatus(
           sampleId,
           SampleStatus.REJECTED,
           qcData.performedBy,
           undefined,
-          `QC failed: ${qcData.parameter} - ${qcData.notes}`
+          `QC failed: ${qcData.parameter} - ${qcData.notes}`;
         );
       }
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('lab.quality_control_checks', 1, {
         testType: qcData.testType,
         status: qcResult.status,
@@ -280,13 +291,13 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       return qcResult as QualityControlResult;
     } catch (error) {
-      console.error('Error performing quality control:', error);
+
       throw error;
     }
   }
 
   /**
-   * Automated sample routing based on test requirements
+   * Automated sample routing based on test requirements;
    */
   async routeSample(sampleId: string, labOrderId: string): Promise<SampleRouting> {
     try {
@@ -297,10 +308,10 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         throw new Error('Sample or lab order not found');
       }
 
-      // Determine workflow based on tests ordered
+      // Determine workflow based on tests ordered;
       const workflow = await this.determineWorkflow(labOrder.tests);
       
-      // Create routing record
+      // Create routing record;
       const routing: SampleRouting = {
         sampleId,
         workflowId: workflow.id,
@@ -311,16 +322,16 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         department: workflow.department,
       };
 
-      // Assign to appropriate technician if available
+      // Assign to appropriate technician if available;
       const assignedTech = await this.assignTechnician(workflow.department, sample.priority);
       if (assignedTech) {
         routing.assignedTo = assignedTech.id;
       }
 
-      // Cache routing information
+      // Cache routing information;
       await cacheService.cacheResult('sample_routing:', sampleId, routing, 1800);
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('lab.samples_routed', 1, {
         department: workflow.department,
         priority: sample.priority,
@@ -328,13 +339,13 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       return routing;
     } catch (error) {
-      console.error('Error routing sample:', error);
+
       throw error;
     }
   }
 
   /**
-   * Track sample location in real-time
+   * Track sample location in real-time;
    */
   async trackSampleLocation(barcode: string): Promise<{
     sample: Sample;
@@ -343,7 +354,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     estimatedNextUpdate: Date;
   }> {
     try {
-      // Try cache first
+      // Try cache first;
       const cached = await cacheService.getCachedResult('sample_location:', barcode);
       if (cached) {
         return cached;
@@ -370,31 +381,31 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         estimatedNextUpdate: this.estimateNextUpdate(sample as Sample),
       };
 
-      // Cache for 2 minutes
+      // Cache for 2 minutes;
       await cacheService.cacheResult('sample_location:', barcode, result, 120);
 
       return result;
     } catch (error) {
-      console.error('Error tracking sample location:', error);
+
       throw error;
     }
   }
 
   /**
-   * Batch sample processing
+   * Batch sample processing;
    */
   async processBatch(
     sampleIds: string[],
     batchId: string,
     processingType: string,
-    performedBy: string
-  ): Promise<{ successful: string[]; failed: string[]; errors: any[] }> {
+    performedBy: string;
+  ): Promise<{ successful: string[]; failed: string[]; errors: unknown[] }> {
     const successful: string[] = [];
     const failed: string[] = [];
-    const errors: any[] = [];
+    const errors: unknown[] = [];
 
     try {
-      // Process samples in parallel with concurrency limit
+      // Process samples in parallel with concurrency limit;
       const concurrencyLimit = 5;
       for (let i = 0; i < sampleIds.length; i += concurrencyLimit) {
         const batch = sampleIds.slice(i, i + concurrencyLimit);
@@ -407,10 +418,10 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
                 SampleStatus.PROCESSING,
                 performedBy,
                 undefined,
-                `Batch processing: ${processingType}`
+                `Batch processing: ${processingType}`;
               );
               
-              // Update batch ID
+              // Update batch ID;
               await this.prisma.sample.update({
                 where: { id: sampleId },
                 data: { batchId },
@@ -420,7 +431,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
             } catch (error) {
               throw { sampleId, error };
             }
-          })
+          });
         );
 
         results.forEach((result) => {
@@ -434,7 +445,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         });
       }
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('lab.batch_processing', 1, {
         processingType,
         totalSamples: sampleIds.length,
@@ -444,13 +455,13 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       return { successful, failed, errors };
     } catch (error) {
-      console.error('Error processing batch:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get samples by status with advanced filtering
+   * Get samples by status with advanced filtering;
    */
   async getSamplesByStatus(
     status: SampleStatus,
@@ -465,7 +476,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     pagination?: { limit: number; offset: number }
   ): Promise<{ samples: Sample[]; total: number }> {
     try {
-      const where: any = { status };
+      const where: unknown = { status };
 
       if (filters?.sampleType) where.sampleType = filters.sampleType;
       if (filters?.priority) where.priority = filters.priority;
@@ -497,18 +508,18 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         total,
       };
     } catch (error) {
-      console.error('Error getting samples by status:', error);
+
       throw error;
     }
   }
 
   /**
-   * Generate statistical process control data
+   * Generate statistical process control data;
    */
   async getStatisticalProcessControl(
     testType: string,
     parameter: string,
-    days: number = 30
+    days: number = 30;
   ): Promise<{
     data: { date: Date; value: number; controlLimits: { upper: number; lower: number } }[];
     trends: { slope: number; rSquared: number };
@@ -536,7 +547,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const upperControlLimit = mean + (3 * stdDev);
       const lowerControlLimit = mean - (3 * stdDev);
 
-      // Group by date and calculate daily means
+      // Group by date and calculate daily means;
       const dailyData = new Map<string, number[]>();
       qcResults.forEach(result => {
         const dateKey = result.performedAt.toISOString().split('T')[0];
@@ -568,7 +579,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
       const intercept = (sumY - slope * sumX) / n;
 
-      // Calculate R-squared
+      // Calculate R-squared;
       const yMean = sumY / n;
       const ssTotal = data.reduce((sum, item) => sum + Math.pow(item.value - yMean, 2), 0);
       const ssResidual = data.reduce((sum, item, index) => {
@@ -577,9 +588,9 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       }, 0);
       const rSquared = 1 - (ssResidual / ssTotal);
 
-      // Identify outliers
+      // Identify outliers;
       const outliers = qcResults.filter(result => 
-        result.value > upperControlLimit || result.value < lowerControlLimit
+        result.value > upperControlLimit || result.value < lowerControlLimit;
       );
 
       return {
@@ -588,12 +599,12 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         outliers: outliers as QualityControlResult[],
       };
     } catch (error) {
-      console.error('Error generating SPC data:', error);
+
       throw error;
     }
   }
 
-  // Private helper methods
+  // Private helper methods;
   private async generateBarcode(): Promise<string> {
     const prefix = 'LAB';
     const timestamp = Date.now().toString();
@@ -621,15 +632,15 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   }
 
   private async getLabOrder(id: string): Promise<any> {
-    // Implementation to fetch lab order
+    // Implementation to fetch lab order;
     return await this.prisma.labOrder.findUnique({
       where: { id },
       include: { labTests: true },
     });
   }
 
-  private async determineWorkflow(tests: any[]): Promise<any> {
-    // Implementation to determine workflow based on tests
+  private async determineWorkflow(tests: unknown[]): Promise<any> {
+    // Implementation to determine workflow based on tests;
     return {
       id: 'workflow-1',
       steps: ['Collection', 'Processing', 'Analysis', 'Verification'],
@@ -637,8 +648,8 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     };
   }
 
-  private calculateEstimatedCompletion(workflow: any, priority: Priority): Date {
-    const baseHours = workflow.steps.length * 2; // 2 hours per step
+  private calculateEstimatedCompletion(workflow: unknown, priority: Priority): Date {
+    const baseHours = workflow.steps.length * 2; // 2 hours per step;
     const priorityMultiplier = priority === Priority.STAT ? 0.25 : priority === Priority.URGENT ? 0.5 : 1;
     
     const estimatedHours = baseHours * priorityMultiplier;
@@ -649,32 +660,32 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   }
 
   private async assignTechnician(department: string, priority: Priority): Promise<any> {
-    // Implementation to assign technician based on workload and expertise
+    // Implementation to assign technician based on workload and expertise;
     return { id: 'tech-1', name: 'Lab Technician' };
   }
 
   private estimateNextUpdate(sample: Sample): Date {
     const nextUpdate = new Date();
-    nextUpdate.setMinutes(nextUpdate.getMinutes() + 30); // Estimate 30 minutes
+    nextUpdate.setMinutes(nextUpdate.getMinutes() + 30); // Estimate 30 minutes;
     return nextUpdate;
   }
 
-  // FHIR compliance methods
+  // FHIR compliance methods;
   private async createFHIRSpecimen(sample: Sample): Promise<void> {
-    // Implementation to create FHIR Specimen resource
+    // Implementation to create FHIR Specimen resource;
   }
 
   private async updateFHIRSpecimen(sample: Sample): Promise<void> {
-    // Implementation to update FHIR Specimen resource
+    // Implementation to update FHIR Specimen resource;
   }
 
-  // Required abstract methods
+  // Required abstract methods;
   validate(resource: FHIRObservation): boolean {
     return !!(resource.resourceType && resource.status && resource.code);
   }
 
   toFHIR(sample: Sample): FHIRObservation {
-    // Convert internal sample data to FHIR Observation
+    // Convert internal sample data to FHIR Observation;
     return {
       resourceType: 'Observation',
       id: sample.id,
@@ -687,7 +698,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   }
 
   fromFHIR(fhirResource: FHIRObservation): Partial<Sample> {
-    // Convert FHIR Observation to internal sample format
+    // Convert FHIR Observation to internal sample format;
     return {
       id: fhirResource.id,
       patientId: fhirResource.subject?.reference?.split('/')[1] || '',

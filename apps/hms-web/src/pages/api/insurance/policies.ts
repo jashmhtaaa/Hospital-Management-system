@@ -1,69 +1,80 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextApiRequest, NextApiResponse } from "next";
-import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService"; // Adjust path as per actual structure
-import { InsurancePolicy } from "../../../../features/insurance/types"; // Adjust path
+import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService.ts"; // Adjust path as per actual structure;
+import { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path;
 
 const policyService = new InsurancePolicyService();
 
 /**
- * @swagger
+ * @swagger;
  * tags:
- *   name: Insurance Policies
- *   description: API for managing patient insurance policies
+ *   name: Insurance Policies;
+ *   description: API for managing patient insurance policies;
  *
  * components:
  *   schemas:
  *     InsurancePolicyInput:
- *       type: object
+ *       type: object;
  *       required:
- *         - policyNumber
- *         - tpaId
- *         - coverageDetails
- *         - startDate
- *         - endDate
+ *         - policyNumber;
+ *         - tpaId;
+ *         - coverageDetails;
+ *         - startDate;
+ *         - endDate;
  *       properties:
  *         policyNumber:
- *           type: string
+ *           type: string;
  *         tpaId:
- *           type: string
+ *           type: string;
  *         providerName:
- *           type: string
+ *           type: string;
  *         coverageDetails:
- *           type: string
+ *           type: string;
  *         startDate:
- *           type: string
- *           format: date
+ *           type: string;
+ *           format: date;
  *         endDate:
- *           type: string
- *           format: date
+ *           type: string;
+ *           format: date;
  *         isActive:
- *           type: boolean
- *           default: true
+ *           type: boolean;
+ *           default: true;
  *     InsurancePolicy:
  *       allOf:
  *         - $ref: "#/components/schemas/InsurancePolicyInput"
- *         - type: object
+ *         - type: object;
  *           properties:
  *             id:
- *               type: string
+ *               type: string;
  *             patientId:
- *               type: string
+ *               type: string;
  *
  * /api/insurance/policies:
  *   post:
- *     summary: Add a new insurance policy for a patient
+ *     summary: Add a new insurance policy for a patient;
  *     tags: [Insurance Policies]
  *     requestBody:
- *       required: true
+ *       required: true;
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             type: object;
  *             required:
- *               - patientId
- *               - policyDetails
+ *               - patientId;
+ *               - policyDetails;
  *             properties:
  *               patientId:
- *                 type: string
+ *                 type: string;
  *               policyDetails:
  *                 $ref: "#/components/schemas/InsurancePolicyInput"
  *     responses:
@@ -78,14 +89,14 @@ const policyService = new InsurancePolicyService();
  *       500:
  *         description: Server error.
  *   get:
- *     summary: Get all insurance policies for a patient
+ *     summary: Get all insurance policies for a patient;
  *     tags: [Insurance Policies]
  *     parameters:
- *       - in: query
- *         name: patientId
- *         required: true
+ *       - in: query;
+ *         name: patientId;
+ *         required: true;
  *         schema:
- *           type: string
+ *           type: string;
  *         description: The ID of the patient to retrieve policies for.
  *     responses:
  *       200:
@@ -93,7 +104,7 @@ const policyService = new InsurancePolicyService();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
+ *               type: array;
  *               items:
  *                 $ref: "#/components/schemas/InsurancePolicy"
  *       400:
@@ -105,21 +116,21 @@ const policyService = new InsurancePolicyService();
  *
  * /api/insurance/policies/{policyId}:
  *   put:
- *     summary: Update an existing insurance policy
+ *     summary: Update an existing insurance policy;
  *     tags: [Insurance Policies]
  *     parameters:
- *       - in: path
- *         name: policyId
- *         required: true
+ *       - in: path;
+ *         name: policyId;
+ *         required: true;
  *         schema:
- *           type: string
+ *           type: string;
  *         description: The ID of the insurance policy to update.
  *     requestBody:
- *       required: true
+ *       required: true;
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/InsurancePolicyInput" # Only updatable fields
+ *             $ref: "#/components/schemas/InsurancePolicyInput" # Only updatable fields;
  *     responses:
  *       200:
  *         description: Insurance policy updated successfully.
@@ -134,7 +145,7 @@ const policyService = new InsurancePolicyService();
  *       500:
  *         description: Server error.
  */
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
     const { patientId, policyId: queryPolicyId } = req.query;
 
@@ -175,8 +186,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.setHeader("Allow", ["POST", "GET", "PUT"]);
                 return res.status(405).end(`Method ${method} Not Allowed`);
         }
-    } catch (error: any) {
-        console.error("Insurance Policy API Error:", error);
+    } catch (error: unknown) {
+
         if (error.message.includes("not found")) {
             return res.status(404).json({ message: error.message });
         }

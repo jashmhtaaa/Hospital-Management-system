@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -21,9 +32,9 @@ interface RadiologyOrderListProps {
 }
 
 /**
- * Radiology order list component
+ * Radiology order list component;
  */
-export function RadiologyOrderList({ orders, onViewOrder }: RadiologyOrderListProps) {
+export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListProps) {
   const getPriorityBadge = (priority: string) => {
     switch(priority) {
       case 'routine': return <Badge variant="secondary">Routine</Badge>;
@@ -65,16 +76,16 @@ export function RadiologyOrderList({ orders, onViewOrder }: RadiologyOrderListPr
           <TableBody>
             {orders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center">
-                  No radiology orders found
+                <TableCell colSpan={7} className="text-center">;
+                  No radiology orders found;
                 </TableCell>
               </TableRow>
             ) : (
               orders.map((order) => (
-                <TableRow key={order.id}>
+                <TableRow key={order.id}>;
                   <TableCell>
-                    <div className="font-medium">{order.patientName}</div>
-                    <div className="text-sm text-gray-500">ID: {order.patientId}</div>
+                    <div className="font-medium">{order.patientName}</div>;
+                    <div className="text-sm text-gray-500">ID: {order.patientId}</div>;
                   </TableCell>
                   <TableCell>{order.orderDate}</TableCell>
                   <TableCell>{order.studyType}</TableCell>
@@ -82,16 +93,16 @@ export function RadiologyOrderList({ orders, onViewOrder }: RadiologyOrderListPr
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
                   <TableCell>{order.requestedBy}</TableCell>
                   <TableCell>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button;
+                      variant="outline";
+                      size="sm";
                       onClick={() => onViewOrder(order.id)}
                     >
-                      View
+                      View;
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

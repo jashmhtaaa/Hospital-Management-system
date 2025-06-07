@@ -1,5 +1,16 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
-import DashboardClientLayout from './dashboard-client-layout'; // Import the renamed client layout
+import DashboardClientLayout from './dashboard-client-layout.ts'; // Import the renamed client layout;
 
 // This is a server component. Metadata or generateViewport for /dashboard routes can be defined here.
 // For example:
@@ -7,7 +18,7 @@ import DashboardClientLayout from './dashboard-client-layout'; // Import the ren
 //   title: 'Dashboard - HMS',
 // };
 
-export default function DashboardLayout({
+export default const DashboardLayout = ({
   children,
 }: {
   children: React.ReactNode;

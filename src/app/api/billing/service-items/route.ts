@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
-import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth helpers exist
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
+import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth helpers exist;
+// import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
 
 // Mock data store for service items (replace with actual DB interaction)
 const mockServiceItems = [
@@ -51,7 +62,7 @@ const mockServiceItems = [
 ];
 let nextItemId = 5;
 
-// Define interface for service item input
+// Define interface for service item input;
 interface ServiceItemInput {
   item_code: string;
   item_name: string;
@@ -60,11 +71,11 @@ interface ServiceItemInput {
   unit_price: number;
   is_taxable?: boolean;
   is_discountable?: boolean;
-  is_active?: boolean; // Usually managed internally, but might be settable
+  is_active?: boolean; // Usually managed internally, but might be settable;
 }
 
-// GET /api/billing/service-items - Get list of service items
-export async function GET(request: NextRequest) {
+// GET /api/billing/service-items - Get list of service items;
+export async const GET = (request: NextRequest) {
   try {
     // Permission check (example: only admin or billing staff)
     if (!(await hasPermission(request, ["billing:read", "admin"]))) {
@@ -79,7 +90,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query")?.toLowerCase();
     const category = searchParams.get("category");
-    const isActive = searchParams.get("is_active"); // e.g., "true" or "false"
+    const isActive = searchParams.get("is_active"); // e.g., "true" or "false";
 
     let filteredItems = mockServiceItems;
 
@@ -87,20 +98,20 @@ export async function GET(request: NextRequest) {
       filteredItems = filteredItems.filter(
         (item) =>
           item.item_code.toLowerCase().includes(query) ||
-          item.item_name.toLowerCase().includes(query)
+          item.item_name.toLowerCase().includes(query);
       );
     }
 
     if (category) {
       filteredItems = filteredItems.filter(
-        (item) => item.category === category
+        (item) => item.category === category;
       );
     }
 
     if (isActive !== undefined && isActive !== null) {
       const activeBool = isActive.toLowerCase() === "true";
       filteredItems = filteredItems.filter(
-        (item) => (item.is_active === 1) === activeBool
+        (item) => (item.is_active === 1) === activeBool;
       );
     }
 
@@ -113,12 +124,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       serviceItems: paginatedItems,
-      total: filteredItems.length, // Total matching items before pagination
+      total: filteredItems.length, // Total matching items before pagination;
       page,
       limit,
     });
   } catch (error) {
-    console.error("Error fetching service items:", error);
+
     let errorMessage = "An unknown error occurred";
     if (error instanceof Error) {
       errorMessage = error.message;
@@ -130,8 +141,8 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/billing/service-items - Create a new service item
-export async function POST(request: NextRequest) {
+// POST /api/billing/service-items - Create a new service item;
+export async const POST = (request: NextRequest) {
   try {
     // Permission check (example: only admin or billing manager)
     if (!(await hasPermission(request, ["billing:manage", "admin"]))) {
@@ -144,10 +155,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user ID after permission check for logging/audit
+    // Get user ID after permission check for logging/audit;
     const user = await getCurrentUser(request);
     if (!user) {
-      // Should not happen if hasPermission passed, but good practice
+      // Should not happen if hasPermission passed, but good practice;
       return NextResponse.json(
         { error: "Authentication failed after permission check" },
         { status: 500 }
@@ -155,15 +166,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    // Fixed: Apply type assertion
+    // Fixed: Apply type assertion;
     const itemData = body as ServiceItemInput;
 
-    // Enhanced validation
+    // Enhanced validation;
     if (
       !itemData.item_code ||
       !itemData.item_name ||
       !itemData.category ||
-      itemData.unit_price === undefined
+      itemData.unit_price === undefined;
     ) {
       return NextResponse.json(
         {
@@ -174,10 +185,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate data types and formats
+    // Validate data types and formats;
     if (
       typeof itemData.item_code !== "string" ||
-      itemData.item_code.length > 50
+      itemData.item_code.length > 50;
     ) {
       return NextResponse.json(
         { error: "Invalid item_code format" },
@@ -187,7 +198,7 @@ export async function POST(request: NextRequest) {
 
     if (
       typeof itemData.item_name !== "string" ||
-      itemData.item_name.length > 255
+      itemData.item_name.length > 255;
     ) {
       return NextResponse.json(
         { error: "Invalid item_name format" },
@@ -202,12 +213,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // const { env } = getRequestContext(); // Cloudflare specific
+    // const { env } = getRequestContext(); // Cloudflare specific;
 
-    // Mock implementation for development without Cloudflare
-    // Check if item_code already exists in mock data
+    // Mock implementation for development without Cloudflare;
+    // Check if item_code already exists in mock data;
     const existingItem = mockServiceItems.find(
-      (item) => item.item_code === itemData.item_code
+      (item) => item.item_code === itemData.item_code;
     );
 
     if (existingItem) {
@@ -217,7 +228,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create the new service item in mock data
+    // Create the new service item in mock data;
     const newItem = {
       id: `si_${String(nextItemId++).padStart(3, "0")}`,
       item_code: itemData.item_code,
@@ -227,22 +238,22 @@ export async function POST(request: NextRequest) {
       unit_price: itemData.unit_price,
       is_taxable: itemData.is_taxable ? 1 : 0,
       is_discountable: itemData.is_discountable ? 1 : 0,
-      is_active: 1, // Default to active
-      // created_by: user.id, // Would use user.id in real implementation
-      // created_at: new Date().toISOString() // Would use current time
+      is_active: 1, // Default to active;
+      // created_by: user.id, // Would use user.id in real implementation;
+      // created_at: new Date().toISOString() // Would use current time;
     };
 
     mockServiceItems.push(newItem);
 
     // Log the action (mock)
-    console.log(
+
       `Audit Log: User ${user.id} CREATE service_item ${newItem.id}`,
       { item_code: newItem.item_code, item_name: newItem.item_name }
     );
 
     return NextResponse.json({ serviceItem: newItem }, { status: 201 });
   } catch (error: unknown) {
-    console.error("Error creating service item:", error);
+
     let errorMessage = "An unknown error occurred";
     if (error instanceof Error) {
       errorMessage = error.message;

@@ -1,4 +1,15 @@
-// src/types/ipd.ts
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// src/types/ipd.ts;
 
 export interface IPDPrescriptionItem {
   id: string;
@@ -6,12 +17,12 @@ export interface IPDPrescriptionItem {
   dosage: string;
   route: string;
   frequency: string;
-  // Add other relevant fields as needed
+  // Add other relevant fields as needed;
 }
 
 export interface IPDPrescription {
   id: string;
-  start_date: string; // Assuming ISO string format
+  start_date: string; // Assuming ISO string format;
   items: IPDPrescriptionItem[];
   // Add other relevant fields like patient_id, doctor_id, etc.
 }

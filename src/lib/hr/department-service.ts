@@ -1,13 +1,24 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 /**
- * Service for managing department and position data
+ * Service for managing department and position data;
  */
 export class DepartmentService {
   /**
-   * Create a new department
+   * Create a new department;
    */
   async createDepartment(data: {
     name: string;
@@ -24,7 +35,7 @@ export class DepartmentService {
   }
 
   /**
-   * Get department by ID
+   * Get department by ID;
    */
   async getDepartmentById(id: string) {
     return prisma.department.findUnique({
@@ -47,7 +58,7 @@ export class DepartmentService {
   }
 
   /**
-   * Update a department
+   * Update a department;
    */
   async updateDepartment(
     id: string,
@@ -68,7 +79,7 @@ export class DepartmentService {
   }
 
   /**
-   * List departments with filtering and pagination
+   * List departments with filtering and pagination;
    */
   async listDepartments({
     skip = 0,
@@ -81,7 +92,7 @@ export class DepartmentService {
     search?: string;
     parentId?: string;
   }) {
-    const where: any = {};
+    const where: unknown = {};
 
     if (parentId) {
       where.parentId = parentId;
@@ -124,10 +135,10 @@ export class DepartmentService {
   }
 
   /**
-   * Get department hierarchy
+   * Get department hierarchy;
    */
   async getDepartmentHierarchy() {
-    // Get all departments
+    // Get all departments;
     const allDepartments = await prisma.department.findMany({
       include: {
         _count: {
@@ -138,11 +149,11 @@ export class DepartmentService {
       },
     });
 
-    // Build hierarchy
+    // Build hierarchy;
     const departmentMap = new Map();
     const rootDepartments = [];
 
-    // First pass: create map of all departments
+    // First pass: create map of all departments;
     allDepartments.forEach(dept => {
       departmentMap.set(dept.id, {
         ...dept,
@@ -150,7 +161,7 @@ export class DepartmentService {
       });
     });
 
-    // Second pass: build hierarchy
+    // Second pass: build hierarchy;
     allDepartments.forEach(dept => {
       const departmentWithChildren = departmentMap.get(dept.id);
       
@@ -168,7 +179,7 @@ export class DepartmentService {
   }
 
   /**
-   * Create a new position
+   * Create a new position;
    */
   async createPosition(data: {
     title: string;
@@ -185,7 +196,7 @@ export class DepartmentService {
   }
 
   /**
-   * Get position by ID
+   * Get position by ID;
    */
   async getPositionById(id: string) {
     return prisma.position.findUnique({
@@ -205,7 +216,7 @@ export class DepartmentService {
             },
           },
           where: {
-            endDate: null, // Only current assignments
+            endDate: null, // Only current assignments;
           },
         },
       },
@@ -213,7 +224,7 @@ export class DepartmentService {
   }
 
   /**
-   * Update a position
+   * Update a position;
    */
   async updatePosition(
     id: string,
@@ -234,7 +245,7 @@ export class DepartmentService {
   }
 
   /**
-   * List positions with filtering and pagination
+   * List positions with filtering and pagination;
    */
   async listPositions({
     skip = 0,
@@ -247,7 +258,7 @@ export class DepartmentService {
     search?: string;
     departmentId?: string;
   }) {
-    const where: any = {};
+    const where: unknown = {};
 
     if (departmentId) {
       where.departmentId = departmentId;
@@ -273,7 +284,7 @@ export class DepartmentService {
             select: {
               employeePositions: {
                 where: {
-                  endDate: null, // Only current assignments
+                  endDate: null, // Only current assignments;
                 },
               },
             },

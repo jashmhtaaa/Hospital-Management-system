@@ -1,4 +1,4 @@
-// app/api/lis/reports/[reportId]/download/route.ts
+// app/api/lis/reports/[reportId]/download/route.ts;
 import { NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
@@ -14,7 +14,7 @@ interface RouteContext {
   };
 }
 
-export async function GET(request: NextRequest, { params }: RouteContext) {
+export async const GET = (request: NextRequest, { params }: RouteContext) {
   const start = Date.now();
   let userId: string | undefined;
   const { reportId } = params;
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
       return sendErrorResponse("Forbidden: You do not have permission to download this LIS report.", 403);
     }
 
-    console.log(`[LIS_REPORT_DOWNLOAD_GET] User ${userId} requesting download for report ID: ${reportId}`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const labReport = await prisma.labReport.findUnique({
       where: { id: reportId },
@@ -63,14 +63,14 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_METADATA_SUCCESS", { reportId, data: responsePayload });
     const duration = Date.now() - start;
-    console.log(`[LIS_REPORT_DOWNLOAD_GET] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(responsePayload);
 
-  } catch (error: any) {
-    console.error("[LIS_REPORT_DOWNLOAD_GET_ERROR]", { userId, reportId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) });
     const duration = Date.now() - start;
-    console.error(`[LIS_REPORT_DOWNLOAD_GET] Request failed after ${duration}ms.`);
+
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }

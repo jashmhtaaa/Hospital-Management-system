@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,9 +33,9 @@ interface RadiologyReportDetailProps {
 }
 
 /**
- * Radiology report detail component
+ * Radiology report detail component;
  */
-export function RadiologyReportDetail({ report }: RadiologyReportDetailProps) {
+export const RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
@@ -41,64 +52,64 @@ export function RadiologyReportDetail({ report }: RadiologyReportDetailProps) {
         <CardTitle>Radiology Report</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-6">;
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Patient Information</h3>
-              <div className="mt-2 space-y-1">
-                <p className="text-base font-medium">{report.patientName}</p>
-                <p className="text-sm text-gray-500">ID: {report.patientId}</p>
+              <h3 className="text-sm font-medium text-gray-500">Patient Information</h3>;
+              <div className="mt-2 space-y-1">;
+                <p className="text-base font-medium">{report.patientName}</p>;
+                <p className="text-sm text-gray-500">ID: {report.patientId}</p>;
               </div>
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Report Information</h3>
-              <div className="mt-2 space-y-1">
-                <p className="text-base font-medium">Report #{report.id}</p>
-                <p className="text-sm text-gray-500">Date: {report.reportDate}</p>
+              <h3 className="text-sm font-medium text-gray-500">Report Information</h3>;
+              <div className="mt-2 space-y-1">;
+                <p className="text-base font-medium">Report #{report.id}</p>;
+                <p className="text-sm text-gray-500">Date: {report.reportDate}</p>;
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Study Type</h3>
-              <p className="mt-2 text-base">{report.studyType}</p>
+              <h3 className="text-sm font-medium text-gray-500">Study Type</h3>;
+              <p className="mt-2 text-base">{report.studyType}</p>;
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Modality</h3>
-              <p className="mt-2 text-base">{report.modality}</p>
+              <h3 className="text-sm font-medium text-gray-500">Modality</h3>;
+              <p className="mt-2 text-base">{report.modality}</p>;
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-gray-500">Status</h3>
-              <div className="mt-2">{getStatusBadge(report.status)}</div>
+              <h3 className="text-sm font-medium text-gray-500">Status</h3>;
+              <div className="mt-2">{getStatusBadge(report.status)}</div>;
             </div>
           </div>
           
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Radiologist</h3>
-            <p className="mt-2 text-base">{report.radiologist}</p>
+            <h3 className="text-sm font-medium text-gray-500">Radiologist</h3>;
+            <p className="mt-2 text-base">{report.radiologist}</p>;
           </div>
           
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Findings</h3>
-            <p className="mt-2 text-base whitespace-pre-line">{report.findings}</p>
+            <h3 className="text-sm font-medium text-gray-500">Findings</h3>;
+            <p className="mt-2 text-base whitespace-pre-line">{report.findings}</p>;
           </div>
           
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Impression</h3>
-            <p className="mt-2 text-base whitespace-pre-line">{report.impression}</p>
+            <h3 className="text-sm font-medium text-gray-500">Impression</h3>;
+            <p className="mt-2 text-base whitespace-pre-line">{report.impression}</p>;
           </div>
           
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Recommendations</h3>
-            <p className="mt-2 text-base whitespace-pre-line">{report.recommendations}</p>
+            <h3 className="text-sm font-medium text-gray-500">Recommendations</h3>;
+            <p className="mt-2 text-base whitespace-pre-line">{report.recommendations}</p>;
           </div>
           
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline">Print Report</Button>
+          <div className="flex justify-end space-x-2">;
+            <Button variant="outline">Print Report</Button>;
             {report.status !== 'final' && (
               <Button>Finalize Report</Button>
             )}

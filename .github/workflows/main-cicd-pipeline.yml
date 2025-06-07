@@ -47,12 +47,12 @@ jobs:
     - name: 📦 Install Dependencies
       run: |
         npm ci
-        npm run install:microservices
+        npm run install: microservices
         
     - name: 🧹 ESLint Analysis
       run: |
-        npm run lint:ci
-        npm run lint:report
+        npm run lint: ci
+        npm run lint: report
         
     - name: 💅 Prettier Check
       run: npm run prettier:check
@@ -63,7 +63,7 @@ jobs:
     - name: 🔒 Security Audit
       run: |
         npm audit --audit-level=high
-        npm run security:audit
+        npm run security: audit
         
     - name: 📊 SonarQube Analysis
       uses: sonarqube-quality-gate-action@master
@@ -119,13 +119,13 @@ jobs:
       run: |
         case "${{ matrix.test-group }}" in
           frontend)
-            npm run test:frontend:coverage
+            npm run test: frontend:coverage
             ;;
           microservices)
-            npm run test:microservices:coverage
+            npm run test: microservices:coverage
             ;;
           shared)
-            npm run test:shared:coverage
+            npm run test: shared:coverage
             ;;
         esac
         
@@ -226,7 +226,7 @@ jobs:
     - name: 🚀 Start Application
       run: |
         npm run build
-        npm run start:test &
+        npm run start: test &
         npm run wait-for-app
         
     - name: 🎭 Run E2E Tests
@@ -260,13 +260,13 @@ jobs:
     - name: 🚀 Start Application
       run: |
         npm run build
-        npm run start:test &
+        npm run start: test &
         npm run wait-for-app
         
     - name: ⚡ Run Performance Tests
       run: |
-        npm run test:performance
-        npm run test:load
+        npm run test: performance
+        npm run test: load
         
     - name: 🏠 Lighthouse CI
       uses: treosh/lighthouse-ci-action@v10
@@ -306,8 +306,8 @@ jobs:
     - name: 🐳 Docker Security Scan
       run: |
         docker build -t hms-app .
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-          -v $PWD:/tmp aquasec/trivy:latest image hms-app
+        docker run --rm -v /var/run/docker.sock: /var/run/docker.sock \
+          -v $PWD: /tmp aquasec/trivy:latest image hms-app
           
     - name: 🛡️ OWASP ZAP Scan
       uses: zaproxy/action-full-scan@v0.8.0
@@ -385,12 +385,12 @@ jobs:
     - name: 🏗️ Build Application
       run: |
         npm run build
-        npm run build:microservices
+        npm run build: microservices
         
     - name: 🐳 Build Docker Images
       run: |
-        docker build -t ${{ env.DOCKER_REGISTRY }}/hms-frontend:${{ github.sha }} .
-        npm run docker:build:microservices
+        docker build -t ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }} .
+        npm run docker: build:microservices
         
     - name: 🔐 Login to Container Registry
       uses: docker/login-action@v3
@@ -401,8 +401,8 @@ jobs:
         
     - name: 🚀 Push Docker Images
       run: |
-        docker push ${{ env.DOCKER_REGISTRY }}/hms-frontend:${{ github.sha }}
-        npm run docker:push:microservices
+        docker push ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
+        npm run docker: push:microservices
 
   # ================================================================
   # PHASE 6: DEPLOYMENT
@@ -432,7 +432,7 @@ jobs:
     - name: 🚀 Deploy to Staging
       run: |
         kubectl set image deployment/hms-frontend \
-          hms-frontend=${{ env.DOCKER_REGISTRY }}/hms-frontend:${{ github.sha }} \
+          hms-frontend=${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }} \
           -n hms-staging
         kubectl rollout status deployment/hms-frontend -n hms-staging
         
@@ -464,7 +464,7 @@ jobs:
     - name: 🌟 Blue-Green Deployment
       run: |
         ./scripts/blue-green-deploy.sh \
-          ${{ env.DOCKER_REGISTRY }}/hms-frontend:${{ github.sha }}
+          ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
         
     - name: 🧪 Production Health Check
       run: npm run test:health:production
@@ -492,8 +492,8 @@ jobs:
       
     - name: 📊 Performance Monitoring
       run: |
-        npm run monitor:performance
-        npm run monitor:errors
+        npm run monitor: performance
+        npm run monitor: errors
         
     - name: 🚨 Setup Alerts
       run: npm run alerts:configure
@@ -520,9 +520,9 @@ jobs:
     - name: 📊 Generate Report
       run: |
         echo "# 🏥 HMS Deployment Report" > deployment-report.md
-        echo "**SHA:** ${{ github.sha }}" >> deployment-report.md
-        echo "**Status:** ${{ job.status }}" >> deployment-report.md
-        echo "**Timestamp:** $(date)" >> deployment-report.md
+        echo "**SHA: ** ${{ github.sha }}" >> deployment-report.md
+        echo "**Status: ** ${{ job.status }}" >> deployment-report.md
+        echo "**Timestamp: ** $(date)" >> deployment-report.md
         
     - name: 📤 Upload Artifacts
       uses: actions/upload-artifact@v4

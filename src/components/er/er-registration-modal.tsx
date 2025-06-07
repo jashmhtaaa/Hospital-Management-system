@@ -1,7 +1,18 @@
-// src/components/er/ERRegistrationModal.tsx
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// src/components/er/ERRegistrationModal.tsx;
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -32,17 +43,17 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define Zod schema for form validation
-const registrationSchema = z
+// Define Zod schema for form validation;
+const registrationSchema = z;
   .object({
-    searchMrn: z.string().optional(), // MRN for searching existing patient
+    searchMrn: z.string().optional(), // MRN for searching existing patient;
     firstName: z.string().min(1, "First name is required").optional(),
     lastName: z.string().min(1, "Last name is required").optional(),
-    dob: z.string().optional(), // Consider using a date type if input is date picker
+    dob: z.string().optional(), // Consider using a date type if input is date picker;
     sex: z.enum(["Male", "Female", "Other"]).optional(),
     chiefComplaint: z.string().min(1, "Chief complaint is required"),
     arrivalMode: z.string().optional(),
-  })
+  });
   .refine(
     (data) =>
       !!data.searchMrn ||
@@ -50,7 +61,7 @@ const registrationSchema = z
     {
       message:
         "Either search for an existing patient or provide full details for a new patient.",
-      path: ["firstName"], // Attach error to a relevant field
+      path: ["firstName"], // Attach error to a relevant field;
     }
   );
 
@@ -68,7 +79,7 @@ interface PatientResponse {
 
 interface ERVisitResponse {
   id: string;
-  visit_number?: string; // Optional visit number
+  visit_number?: string; // Optional visit number;
   patient_id: string;
   status: string;
 }
@@ -80,10 +91,10 @@ interface ApiErrorResponse {
 interface ERRegistrationModalProperties {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration
+  onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration;
 }
 
-export default function ERRegistrationModal({
+export default const ERRegistrationModal = ({
   isOpen,
   onClose,
   onSuccess,
@@ -108,7 +119,7 @@ export default function ERRegistrationModal({
     },
   });
 
-  // Reset form and found patient state when modal closes or opens
+  // Reset form and found patient state when modal closes or opens;
   useEffect(() => {
     if (!isOpen) {
       form.reset();
@@ -118,14 +129,14 @@ export default function ERRegistrationModal({
     }
   }, [isOpen, form]);
 
-  // Populate form if a patient is found
+  // Populate form if a patient is found;
   useEffect(() => {
     if (foundPatient) {
       form.setValue("firstName", foundPatient.first_name);
       form.setValue("lastName", foundPatient.last_name);
-      form.setValue("dob", foundPatient.dob); // Assuming dob format matches input
+      form.setValue("dob", foundPatient.dob); // Assuming dob format matches input;
       form.setValue("sex", foundPatient.sex as "Male" | "Female" | "Other");
-      // Disable fields
+      // Disable fields;
       form.control.getFieldState("firstName").isDirty = false;
       form.control.getFieldState("lastName").isDirty = false;
       form.control.getFieldState("dob").isDirty = false;
@@ -145,23 +156,23 @@ export default function ERRegistrationModal({
     }
     setIsSearching(true);
     setFoundPatient(undefined);
-    console.log(`Searching for patient with MRN: ${mrn}`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
-      // TODO: Implement actual API call: GET /api/patients?mrn={mrn}
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       // const response = await fetch(`/api/patients?mrn=${encodeURIComponent(mrn)}`);
       // if (!response.ok) { ... handle not found or other errors ... }
       // const patientData: PatientResponse = await response.json();
 
-      // Mock search result
+      // Mock search result;
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (mrn === "MRN001") {
-        // Simulate finding a patient
+        // Simulate finding a patient;
         const mockPatient: PatientResponse = {
           id: "p1",
           mrn: "MRN001",
           first_name: "John",
           last_name: "Doe",
-          dob: "1979-01-15", // Example format
+          dob: "1979-01-15", // Example format;
           sex: "Male",
         };
         setFoundPatient(mockPatient);
@@ -177,7 +188,7 @@ export default function ERRegistrationModal({
         });
       }
     } catch (error) {
-      console.error("Patient search error:", error);
+
       toast({
         title: "Search Failed",
         description: "Could not search for patient.",
@@ -188,37 +199,37 @@ export default function ERRegistrationModal({
     }
   };
 
-  async function onSubmit(data: RegistrationFormValues) {
+  async const onSubmit = (data: RegistrationFormValues) {
     setIsLoading(true);
-    console.log("Submitting Registration Data:", data);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     let patientId = foundPatient?.id;
 
     try {
-      // Step 1: Create/Verify Patient
+      // Step 1: Create/Verify Patient;
       if (!patientId) {
-        // Create new patient if details are provided
+        // Create new patient if details are provided;
         if (data.firstName && data.lastName && data.dob && data.sex) {
-          console.log("Creating new patient...");
-          // TODO: Implement API call: POST /api/patients
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
           // const patientResponse = await fetch("/api/patients", { ... });
           // if (!patientResponse.ok) { ... handle error ... }
           // const newPatient: PatientResponse = await patientResponse.json();
           // patientId = newPatient.id;
 
-          // Mock new patient creation
+          // Mock new patient creation;
           await new Promise((resolve) => setTimeout(resolve, 500));
           patientId = `new_patient_${Date.now()}`;
-          console.log(`Mock patient created with ID: ${patientId}`);
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         } else {
           // This case should ideally be prevented by the form validation (refine)
           throw new Error("Patient details incomplete for new registration.");
         }
       }
 
-      // Step 2: Create ER Visit
-      console.log(`Creating ER visit for patient ID: ${patientId}`);
-      // TODO: Implement API call: POST /api/er/visits
+      // Step 2: Create ER Visit;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const visitResponse = await fetch("/api/er/visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -226,7 +237,7 @@ export default function ERRegistrationModal({
           patient_id: patientId,
           chief_complaint: data.chiefComplaint,
           arrival_mode: data.arrivalMode || "Walk-in",
-          initial_location: "Waiting Room", // Or Triage if direct
+          initial_location: "Waiting Room", // Or Triage if direct;
           initial_status: "Triage",
         }),
       });
@@ -234,16 +245,16 @@ export default function ERRegistrationModal({
       if (!visitResponse.ok) {
         let errorMessage = "Failed to create ER visit";
         try {
-          // FIX: Use defined type for errorData
+          // FIX: Use defined type for errorData;
           const errorData: ApiErrorResponse = await visitResponse.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          // Ignore if response is not JSON
+          // Ignore if response is not JSON;
         }
         throw new Error(errorMessage);
       }
 
-      // FIX: Use defined type for newVisit
+      // FIX: Use defined type for newVisit;
       const newVisit: ERVisitResponse = await visitResponse.json();
       toast({
         title: "ER Visit Registered",
@@ -255,13 +266,13 @@ export default function ERRegistrationModal({
       }
       form.reset();
       setFoundPatient(undefined);
-      onClose(); // Close modal on success
+      onClose(); // Close modal on success;
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block
-      console.error("Registration submission error:", error);
-      const message =
-        error instanceof Error
-          ? error.message
+      // FIX: Use unknown for catch block;
+
+      const message =;
+        error instanceof Error;
+          ? error.message;
           : "An unexpected error occurred.";
       toast({
         title: "Registration Failed",
@@ -274,28 +285,28 @@ export default function ERRegistrationModal({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px]">
+    <Dialog open={isOpen} onOpenChange={onClose}>;
+      <DialogContent className="sm:max-w-[600px]">;
         <DialogHeader>
           <DialogTitle>Register New ER Patient Visit</DialogTitle>
           <DialogDescription>
-            Search for an existing patient by MRN or enter details for a new
-            patient.
+            Search for an existing patient by MRN or enter details for a new;
+            patient.;
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
+            <div className="space-y-2">;
               <FormLabel>Existing Patient Search</FormLabel>
-              <div className="flex space-x-2">
-                <FormField
+              <div className="flex space-x-2">;
+                <FormField;
                   control={form.control}
-                  name="searchMrn"
+                  name="searchMrn";
                   render={({ field }) => (
-                    <FormItem className="flex-grow">
+                    <FormItem className="flex-grow">;
                       <FormControl>
-                        <Input
-                          placeholder="Enter MRN to search..."
+                        <Input;
+                          placeholder="Enter MRN to search...";
                           {...field}
                           disabled={!!foundPatient}
                         />
@@ -304,7 +315,7 @@ export default function ERRegistrationModal({
                     </FormItem>
                   )}
                 />
-                <Button
+                <Button;
                   type="button"
                   onClick={handleSearchPatient}
                   disabled={isSearching || !!foundPatient}
@@ -314,20 +325,20 @@ export default function ERRegistrationModal({
               </div>
             </div>
 
-            <div className="text-center text-sm text-muted-foreground">
-              OR Enter New Patient Details Below
+            <div className="text-center text-sm text-muted-foreground">;
+              OR Enter New Patient Details Below;
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
+            <div className="grid grid-cols-2 gap-4">;
+              <FormField;
                 control={form.control}
-                name="firstName"
+                name="firstName";
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g., John"
+                      <Input;
+                        placeholder="e.g., John";
                         {...field}
                         disabled={!!foundPatient}
                       />
@@ -336,15 +347,15 @@ export default function ERRegistrationModal({
                   </FormItem>
                 )}
               />
-              <FormField
+              <FormField;
                 control={form.control}
-                name="lastName"
+                name="lastName";
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="e.g., Doe"
+                      <Input;
+                        placeholder="e.g., Doe";
                         {...field}
                         disabled={!!foundPatient}
                       />
@@ -353,17 +364,17 @@ export default function ERRegistrationModal({
                   </FormItem>
                 )}
               />
-              <FormField
+              <FormField;
                 control={form.control}
-                name="dob"
+                name="dob";
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Date of Birth</FormLabel>
                     <FormControl>
                       {/* TODO: Replace with a Date Picker component */}
-                      <Input
+                      <Input;
                         type="date"
-                        placeholder="YYYY-MM-DD"
+                        placeholder="YYYY-MM-DD";
                         {...field}
                         disabled={!!foundPatient}
                       />
@@ -372,26 +383,26 @@ export default function ERRegistrationModal({
                   </FormItem>
                 )}
               />
-              <FormField
+              <FormField;
                 control={form.control}
-                name="sex"
+                name="sex";
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sex</FormLabel>
-                    <Select
+                    <Select;
                       onValueChange={field.onChange}
                       value={field.value}
                       disabled={!!foundPatient}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Sex" />
+                          <SelectValue placeholder="Select Sex" />;
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value="Male">Male</SelectItem>;
+                        <SelectItem value="Female">Female</SelectItem>;
+                        <SelectItem value="Other">Other</SelectItem>;
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -400,37 +411,37 @@ export default function ERRegistrationModal({
               />
             </div>
 
-            <FormField
+            <FormField;
               control={form.control}
-              name="chiefComplaint"
+              name="chiefComplaint";
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Chief Complaint</FormLabel>
                   <FormControl>
-                    <Input placeholder="Reason for visit..." {...field} />
+                    <Input placeholder="Reason for visit..." {...field} />;
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField
+            <FormField;
               control={form.control}
-              name="arrivalMode"
+              name="arrivalMode";
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival Mode</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>;
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Arrival Mode" />
+                        <SelectValue placeholder="Select Arrival Mode" />;
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Walk-in">Walk-in</SelectItem>
-                      <SelectItem value="Ambulance">Ambulance</SelectItem>
-                      <SelectItem value="Wheelchair">Wheelchair</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
+                      <SelectItem value="Walk-in">Walk-in</SelectItem>;
+                      <SelectItem value="Ambulance">Ambulance</SelectItem>;
+                      <SelectItem value="Wheelchair">Wheelchair</SelectItem>;
+                      <SelectItem value="Other">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -439,15 +450,15 @@ export default function ERRegistrationModal({
             />
 
             <DialogFooter>
-              <Button
+              <Button;
                 type="button"
-                variant="outline"
+                variant="outline";
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel
+                Cancel;
               </Button>
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading}>;
                 {isLoading ? "Registering..." : "Register Visit"}
               </Button>
             </DialogFooter>

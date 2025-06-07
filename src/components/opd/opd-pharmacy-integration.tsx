@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 
-// Define interfaces for data structures
+// Define interfaces for data structures;
 interface Patient {
   id: string;
   first_name: string;
@@ -25,7 +36,7 @@ interface PrescriptionItemInput {
   dosage: string;
   frequency: string;
   duration: string;
-  quantity: number | string; // Allow string for input, parse later
+  quantity: number | string; // Allow string for input, parse later;
   instructions: string;
 }
 
@@ -33,7 +44,7 @@ interface SelectedMedication extends Medication {
   dosage: string;
   frequency: string;
   duration: string;
-  quantity: string; // Keep as string for input state
+  quantity: string; // Keep as string for input state;
   instructions: string;
 }
 
@@ -58,29 +69,29 @@ interface PrescriptionFormData {
   items: PrescriptionItemInput[];
 }
 
-// Component to integrate Pharmacy with OPD module
+// Component to integrate Pharmacy with OPD module;
 const OPDPharmacyIntegration: React.FC = () => {
   // const router = useRouter(); // Removed unused variable (and missing import)
   const [loading, setLoading] = useState<boolean>(true);
   const [activePatient, setActivePatient] = useState<Patient | null>();
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
-  const [selectedMedications, setSelectedMedications] = useState<
+  const [selectedMedications, setSelectedMedications] = useState<;
     SelectedMedication[]
   >([]);
   const [formData, setFormData] = useState<Omit<PrescriptionFormData, "items">>(
     {
       patient_id: "",
-      doctor_id: "", // This should ideally come from auth context
+      doctor_id: "", // This should ideally come from auth context;
       notes: "",
     }
   );
 
   useEffect(() => {
-    // Fetch active patient from OPD context
+    // Fetch active patient from OPD context;
     const fetchActivePatient = async (): Promise<void> => {
       try {
-        // Simulate fetching active patient
+        // Simulate fetching active patient;
         const simulatedPatient: Patient = {
           id: "pat_12345",
           first_name: "John",
@@ -94,18 +105,18 @@ const OPDPharmacyIntegration: React.FC = () => {
         setFormData((previous) => ({
           ...previous,
           patient_id: simulatedPatient.id,
-          doctor_id: "doc_67890", // Simulate logged-in doctor ID
+          doctor_id: "doc_67890", // Simulate logged-in doctor ID;
         }));
       } catch (error) {
-        console.error("Error fetching active patient:", error);
+
         // Handle error appropriately (e.g., show message)
       }
     };
 
-    // Fetch medications for prescribing
+    // Fetch medications for prescribing;
     const fetchMedications = async (): Promise<void> => {
       try {
-        // Simulate fetching medications
+        // Simulate fetching medications;
         const simulatedMedications: Medication[] = [
           {
             id: "med_001",
@@ -145,21 +156,21 @@ const OPDPharmacyIntegration: React.FC = () => {
         ];
         setMedications(simulatedMedications);
       } catch (error) {
-        console.error("Error fetching medications:", error);
-        // Handle error appropriately
+
+        // Handle error appropriately;
       }
     };
 
-    // Fetch existing prescriptions for this patient
+    // Fetch existing prescriptions for this patient;
     const fetchPrescriptions = async (): Promise<void> => {
-      // Guard clause if patient ID isn't set yet
+      // Guard clause if patient ID isn't set yet;
       if (!activePatient?.id) {
-        // Check activePatient.id directly
-        setLoading(false); // Set loading false if no patient yet
+        // Check activePatient.id directly;
+        setLoading(false); // Set loading false if no patient yet;
         return;
       }
       try {
-        // Simulate fetching prescriptions for the active patient
+        // Simulate fetching prescriptions for the active patient;
         // const response = await fetch(`/api/pharmacy/prescriptions?patientId=${activePatient.id}`);
         // if (!response.ok) throw new Error('Failed to fetch prescriptions');
         // const data = await response.json();
@@ -201,8 +212,8 @@ const OPDPharmacyIntegration: React.FC = () => {
         ];
         setPrescriptions(simulatedPrescriptions);
       } catch (error) {
-        console.error("Error fetching prescriptions:", error);
-        // Handle error appropriately
+
+        // Handle error appropriately;
       } finally {
         setLoading(false);
       }
@@ -210,16 +221,16 @@ const OPDPharmacyIntegration: React.FC = () => {
 
     fetchActivePatient();
     fetchMedications();
-    // Fetch prescriptions depends on activePatient being set first
+    // Fetch prescriptions depends on activePatient being set first;
     if (activePatient) {
       fetchPrescriptions();
     } else {
-      // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change
-      setLoading(false); // Set loading false if no patient yet
+      // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change;
+      setLoading(false); // Set loading false if no patient yet;
     }
 
     // Dependency array needs careful consideration. Fetching prescriptions depends on activePatient.
-  }, [activePatient]); // Re-run if activePatient changes
+  }, [activePatient]); // Re-run if activePatient changes;
 
   const handleAddMedication = (medication: Medication): void => {
     if (!selectedMedications.some((med) => med.id === medication.id)) {
@@ -244,12 +255,12 @@ const OPDPharmacyIntegration: React.FC = () => {
   const handleMedicationChange = (
     index: number,
     field: keyof SelectedMedication,
-    value: string
+    value: string;
   ): void => {
     const updatedMeds = [...selectedMedications];
     // Ensure the field exists on the object before assignment (though TS should catch this)
     if (field in updatedMeds[index]) {
-      updatedMeds[index][field] = value; // Removed 'as any'
+      updatedMeds[index][field] = value; // Removed 'as any';
     }
     setSelectedMedications(updatedMeds);
   };
@@ -265,12 +276,12 @@ const OPDPharmacyIntegration: React.FC = () => {
     setLoading(true);
 
     try {
-      // Prepare prescription items with proper types
+      // Prepare prescription items with proper types;
       const items: PrescriptionItemInput[] = selectedMedications.map((med) => {
         const quantity = Number.parseInt(med.quantity);
         if (Number.isNaN(quantity) || quantity <= 0) {
           throw new Error(
-            `Invalid quantity for ${med.generic_name}. Please enter a positive number.`
+            `Invalid quantity for ${med.generic_name}. Please enter a positive number.`;
           );
         }
         return {
@@ -286,13 +297,13 @@ const OPDPharmacyIntegration: React.FC = () => {
       const prescriptionData: PrescriptionFormData = {
         ...formData,
         items,
-        // source: 'opd', // Add if API expects it
-        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it
+        // source: 'opd', // Add if API expects it;
+        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it;
       };
 
-      console.log("Submitting prescription:", prescriptionData);
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      // Simulate API call
+      // Simulate API call;
       // const response = await fetch('/api/pharmacy/prescriptions', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
@@ -303,12 +314,12 @@ const OPDPharmacyIntegration: React.FC = () => {
       //   throw new Error(errorData.error || 'Failed to create prescription');
       // }
 
-      // Simulate successful submission
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
+      // Simulate successful submission;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay;
 
       alert("Prescription created successfully!");
 
-      // Add the new prescription to the local state for display
+      // Add the new prescription to the local state for display;
       const newPrescription: Prescription = {
         id: `presc_${Date.now()}`,
         date: new Date().toISOString().split("T")[0],
@@ -322,15 +333,15 @@ const OPDPharmacyIntegration: React.FC = () => {
       };
       setPrescriptions([newPrescription, ...prescriptions]);
 
-      // Reset form state
+      // Reset form state;
       setSelectedMedications([]);
       setFormData((previous) => ({
         ...previous,
-        notes: "", // Reset notes field
+        notes: "", // Reset notes field;
       }));
     } catch (error) {
-        console.error("Error creating prescription:", error);
-        const message =
+
+        const message =;
           error instanceof Error ? error.message : "An unknown error occurred.";
         alert(`Failed to create prescription: ${message}`);
     } finally {
@@ -340,42 +351,42 @@ const OPDPharmacyIntegration: React.FC = () => {
 
   if (loading && !activePatient) {
     return (
-      <div className="flex justify-center items-center h-64">
-        Loading patient data...
+      <div className="flex justify-center items-center h-64">;
+        Loading patient data...;
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">
-        <h2 className="text-lg font-semibold text-gray-800">
-          Prescribe Medications
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">;
+      <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
+        <h2 className="text-lg font-semibold text-gray-800">;
+          Prescribe Medications;
         </h2>
       </div>
 
       {activePatient && (
-        <div className="p-4 bg-gray-50 border-b">
-          <div className="flex flex-wrap">
-            <div className="w-full md:w-1/3 px-2 mb-2">
-              <span className="text-sm font-medium text-gray-500">
+        <div className="p-4 bg-gray-50 border-b">;
+          <div className="flex flex-wrap">;
+            <div className="w-full md:w-1/3 px-2 mb-2">;
+              <span className="text-sm font-medium text-gray-500">;
                 Patient:
               </span>
-              <span className="ml-2 text-sm text-gray-900">
+              <span className="ml-2 text-sm text-gray-900">;
                 {activePatient.first_name} {activePatient.last_name}
               </span>
             </div>
-            <div className="w-full md:w-1/3 px-2 mb-2">
-              <span className="text-sm font-medium text-gray-500">
+            <div className="w-full md:w-1/3 px-2 mb-2">;
+              <span className="text-sm font-medium text-gray-500">;
                 Age/Gender:
               </span>
-              <span className="ml-2 text-sm text-gray-900">
+              <span className="ml-2 text-sm text-gray-900">;
                 {activePatient.age} / {activePatient.gender}
               </span>
             </div>
-            <div className="w-full md:w-1/3 px-2 mb-2">
-              <span className="text-sm font-medium text-gray-500">Phone:</span>
-              <span className="ml-2 text-sm text-gray-900">
+            <div className="w-full md:w-1/3 px-2 mb-2">;
+              <span className="text-sm font-medium text-gray-500">Phone:</span>;
+              <span className="ml-2 text-sm text-gray-900">;
                 {activePatient.phone}
               </span>
             </div>
@@ -383,20 +394,20 @@ const OPDPharmacyIntegration: React.FC = () => {
         </div>
       )}
 
-      <div className="p-6">
-        <form onSubmit={handleSubmit}>
+      <div className="p-6">;
+        <form onSubmit={handleSubmit}>;
           {/* Medication Selection */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Add Medications
+          <div className="mb-6">;
+            <label className="block text-sm font-medium text-gray-700 mb-2">;
+              Add Medications;
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">;
               {medications.map((med) => (
-                <button
+                <button;
                   key={med.id}
                   type="button"
                   onClick={() => handleAddMedication(med)}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:bg-blue-200"
+                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:bg-blue-200";
                 >
                   {med.generic_name} {med.strength}
                 </button>
@@ -406,132 +417,132 @@ const OPDPharmacyIntegration: React.FC = () => {
 
           {/* Selected Medications Table */}
           {selectedMedications.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-md font-medium text-gray-700 mb-2">
-                Prescription Details
+            <div className="mb-6">;
+              <h3 className="text-md font-medium text-gray-700 mb-2">;
+                Prescription Details;
               </h3>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+              <div className="overflow-x-auto">;
+                <table className="min-w-full divide-y divide-gray-200">;
+                  <thead className="bg-gray-50">;
                     <tr>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Medication
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Medication;
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Dosage
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Dosage;
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Frequency
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Frequency;
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Duration
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Duration;
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Quantity
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Quantity;
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Instructions
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Instructions;
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Action
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                        Action;
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-gray-200">;
                     {selectedMedications.map((med, index) => (
-                      <tr key={index}>
-                        <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
+                      <tr key={index}>;
+                        <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">;
                           {med.generic_name} {med.strength} {med.dosage_form}
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">
-                          <input
+                        <td className="px-3 py-2 whitespace-nowrap">;
+                          <input;
                             type="text"
                             value={med.dosage}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
                               handleMedicationChange(
                                 index,
                                 "dosage",
-                                event.target.value
-                              )
+                                event.target.value;
+                              );
                             }
-                            placeholder="e.g., 1 tablet"
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
+                            placeholder="e.g., 1 tablet";
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">
-                          <select
+                        <td className="px-3 py-2 whitespace-nowrap">;
+                          <select;
                             value={med.frequency}
                             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
                               handleMedicationChange(
                                 index,
                                 "frequency",
-                                event.target.value
-                              )
+                                event.target.value;
+                              );
                             }
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
                           >
-                            <option value="">Select</option>
-                            <option value="OD">Once daily (OD)</option>
-                            <option value="BID">Twice daily (BID)</option>
-                            <option value="TID">Three times daily (TID)</option>
-                            <option value="QID">Four times daily (QID)</option>
-                            <option value="QHS">At bedtime (QHS)</option>
-                            <option value="PRN">As needed (PRN)</option>
-                            <option value="STAT">Immediately (STAT)</option>
+                            <option value="">Select</option>;
+                            <option value="OD">Once daily (OD)</option>;
+                            <option value="BID">Twice daily (BID)</option>;
+                            <option value="TID">Three times daily (TID)</option>;
+                            <option value="QID">Four times daily (QID)</option>;
+                            <option value="QHS">At bedtime (QHS)</option>;
+                            <option value="PRN">As needed (PRN)</option>;
+                            <option value="STAT">Immediately (STAT)</option>;
                           </select>
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">
-                          <input
+                        <td className="px-3 py-2 whitespace-nowrap">;
+                          <input;
                             type="text"
                             value={med.duration}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
                               handleMedicationChange(
                                 index,
                                 "duration",
-                                event.target.value
-                              )
+                                event.target.value;
+                              );
                             }
-                            placeholder="e.g., 7 days"
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
+                            placeholder="e.g., 7 days";
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">
-                          <input
+                        <td className="px-3 py-2 whitespace-nowrap">;
+                          <input;
                             type="number"
                             value={med.quantity}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
                               handleMedicationChange(
                                 index,
                                 "quantity",
-                                event.target.value
-                              )
+                                event.target.value;
+                              );
                             }
-                            placeholder="Qty"
-                            className="w-16 p-1 text-sm border border-gray-300 rounded-md"
+                            placeholder="Qty";
+                            className="w-16 p-1 text-sm border border-gray-300 rounded-md";
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">
-                          <textarea
+                        <td className="px-3 py-2 whitespace-nowrap">;
+                          <textarea;
                             value={med.instructions}
                             onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                               handleMedicationChange(
                                 index,
                                 "instructions",
-                                event.target.value
-                              )
+                                event.target.value;
+                              );
                             }
-                            placeholder="e.g., Take with food"
+                            placeholder="e.g., Take with food";
                             rows={1}
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                          <button
+                        <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">;
+                          <button;
                             type="button"
                             onClick={() => handleRemoveMedication(index)}
-                            className="text-red-600 hover:text-red-800"
+                            className="text-red-600 hover:text-red-800";
                           >
-                            Remove
+                            Remove;
                           </button>
                         </td>
                       </tr>
@@ -543,35 +554,36 @@ const OPDPharmacyIntegration: React.FC = () => {
           )}
 
           {/* Notes */}
-          <div className="mb-6">
-            <label
-              htmlFor="notes"
-              className="block text-sm font-medium text-gray-700"
+          <div className="mb-6">;
+            <label;
+              htmlFor="notes";
+              className="block text-sm font-medium text-gray-700";
             >
-              Prescription Notes (Optional)
+              Prescription Notes (Optional);
             </label>
-            <textarea
-              id="notes"
-              name="notes"
+            <textarea;
+              id="notes";
+              name="notes";
               rows={3}
               value={formData.notes}
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                 setFormData((previous) => ({
                   ...previous,
                   notes: event.target.value,
-                }))
+                }));
               }
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Add any specific notes for the pharmacist or patient"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
+              placeholder="Add any specific notes for the pharmacist or patient";
             />
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end">
-            <button
+          <div className="flex justify-end">;
+            <button;
               type="submit"
               disabled={loading || selectedMedications.length === 0}
-              className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white ${loading || selectedMedications.length === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"}`}
+              className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white ${loading ||;
+                selectedMedications.length === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"}`}
             >
               {loading ? "Submitting..." : "Create Prescription"}
             </button>
@@ -579,38 +591,38 @@ const OPDPharmacyIntegration: React.FC = () => {
         </form>
 
         {/* Existing Prescriptions */}
-        <div className="mt-8">
-          <h3 className="text-md font-medium text-gray-700 mb-4">
-            Prescription History
+        <div className="mt-8">;
+          <h3 className="text-md font-medium text-gray-700 mb-4">;
+            Prescription History;
           </h3>
           {loading && prescriptions.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              Loading prescription history...
+            <p className="text-sm text-gray-500">;
+              Loading prescription history...;
             </p>
           ) : prescriptions.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              No previous prescriptions found for this patient.
+            <p className="text-sm text-gray-500">;
+              No previous prescriptions found for this patient.;
             </p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4">;
               {prescriptions.map((presc) => (
-                <div key={presc.id} className="border rounded-md p-4 shadow-sm">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-semibold text-sm">
+                <div key={presc.id} className="border rounded-md p-4 shadow-sm">;
+                  <div className="flex justify-between items-center mb-2">;
+                    <span className="font-semibold text-sm">;
                       Prescription #{presc.id}
                     </span>
-                    <span
+                    <span;
                       className={`text-xs font-medium px-2 py-0.5 rounded-full ${presc.status === "dispensed" ? "bg-green-100 text-green-800" : presc.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}
                     >
                       {presc.status}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-gray-500 mb-2">;
                     Date: {presc.date}
                   </p>
-                  <ul className="list-disc list-inside space-y-1">
+                  <ul className="list-disc list-inside space-y-1">;
                     {presc.items.map((item, index) => (
-                      <li key={index} className="text-sm text-gray-700">
+                      <li key={index} className="text-sm text-gray-700">;
                         {item.medication} - {item.dosage}, {item.frequency},{" "}
                         {item.duration}
                       </li>

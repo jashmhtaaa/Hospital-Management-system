@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Core logging module for the Financial Management system
- * Provides standardized logging with sensitive data masking
+ * Core logging module for the Financial Management system;
+ * Provides standardized logging with sensitive data masking;
  */
 
-// Logger interface
+// Logger interface;
 export interface Logger {
   debug(message: string, context?: Record<string, any>): void;
   info(message: string, context?: Record<string, any>): void;
@@ -11,7 +22,7 @@ export interface Logger {
   error(message: string, context?: Record<string, any>): void;
 }
 
-// Sensitive fields that should be masked in logs
+// Sensitive fields that should be masked in logs;
 const SENSITIVE_FIELDS = [
   'password',
   'token',
@@ -29,8 +40,8 @@ const SENSITIVE_FIELDS = [
   'authorizationCode',
 ];
 
-// Function to mask sensitive data in objects
-function maskSensitiveData(data: any): any {
+// Function to mask sensitive data in objects;
+const maskSensitiveData = (data: unknown): unknown {
   if (!data) return data;
   
   if (typeof data === 'object' && data !== null) {
@@ -42,15 +53,15 @@ function maskSensitiveData(data: any): any {
     
     for (const [key, value] of Object.entries(data)) {
       if (SENSITIVE_FIELDS.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
-        // Mask sensitive field
-        maskedData[key] = typeof value === 'string' 
+        // Mask sensitive field;
+        maskedData[key] = typeof value === 'string';
           ? '***MASKED***' 
           : '[MASKED]';
       } else if (typeof value === 'object' && value !== null) {
-        // Recursively mask nested objects
+        // Recursively mask nested objects;
         maskedData[key] = maskSensitiveData(value);
       } else {
-        // Pass through non-sensitive data
+        // Pass through non-sensitive data;
         maskedData[key] = value;
       }
     }
@@ -61,7 +72,7 @@ function maskSensitiveData(data: any): any {
   return data;
 }
 
-// Default logger implementation
+// Default logger implementation;
 class DefaultLogger implements Logger {
   private logLevel: 'debug' | 'info' | 'warn' | 'error';
   
@@ -88,52 +99,52 @@ class DefaultLogger implements Logger {
   
   debug(message: string, context?: Record<string, any>): void {
     if (this.shouldLog('debug')) {
-      console.debug(this.formatLog('debug', message, context));
+      // Debug logging removed);
     }
   }
   
   info(message: string, context?: Record<string, any>): void {
     if (this.shouldLog('info')) {
-      console.info(this.formatLog('info', message, context));
+      // Debug logging removed);
     }
   }
   
   warn(message: string, context?: Record<string, any>): void {
     if (this.shouldLog('warn')) {
-      console.warn(this.formatLog('warn', message, context));
+      // Debug logging removed);
     }
   }
   
   error(message: string, context?: Record<string, any>): void {
     if (this.shouldLog('error')) {
-      console.error(this.formatLog('error', message, context));
+      // Debug logging removed);
     }
   }
 }
 
-// Create logger instance based on environment
+// Create logger instance based on environment;
 const logLevel = process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error' || 'info';
 export const logger: Logger = new DefaultLogger(logLevel);
 
-// Correlation ID for request tracking
+// Correlation ID for request tracking;
 let currentCorrelationId: string | null = null;
 
-// Set correlation ID for the current context
-export function setCorrelationId(correlationId: string): void {
+// Set correlation ID for the current context;
+export const setCorrelationId = (correlationId: string): void {
   currentCorrelationId = correlationId;
 }
 
-// Get current correlation ID
-export function getCorrelationId(): string | null {
+// Get current correlation ID;
+export const getCorrelationId = (): string | null {
   return currentCorrelationId;
 }
 
-// Clear correlation ID
-export function clearCorrelationId(): void {
+// Clear correlation ID;
+export const clearCorrelationId = (): void {
   currentCorrelationId = null;
 }
 
-// Logger with correlation ID
+// Logger with correlation ID;
 export class CorrelatedLogger implements Logger {
   constructor(private baseLogger: Logger) {}
   
@@ -164,5 +175,5 @@ export class CorrelatedLogger implements Logger {
   }
 }
 
-// Create correlated logger
+// Create correlated logger;
 export const correlatedLogger: Logger = new CorrelatedLogger(logger);

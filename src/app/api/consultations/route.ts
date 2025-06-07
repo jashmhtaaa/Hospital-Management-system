@@ -1,4 +1,4 @@
-// app/api/consultations/route.ts
+// app/api/consultations/route.ts;
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { sessionOptions, IronSessionData } from "@/lib/session";
 import { getIronSession } from "iron-session";
@@ -10,7 +10,7 @@ import { z } from "zod";
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"];
 const ALLOWED_ROLES_CREATE = ["Doctor"];
 
-// GET handler for listing consultations with filters
+// GET handler for listing consultations with filters;
 const ListConsultationsQuerySchema = z.object({
     patientId: z.coerce.number().int().positive().optional(),
     doctorId: z.coerce.number().int().positive().optional(),
@@ -22,7 +22,7 @@ const ListConsultationsQuerySchema = z.object({
     offset: z.coerce.number().int().nonnegative().optional().default(0),
 });
 
-// Define type for the query result row
+// Define type for the query result row;
 interface ConsultationListQueryResult {
     consultation_id: number;
     patient_id: number;
@@ -39,11 +39,11 @@ interface ConsultationListQueryResult {
     doctor_full_name: string;
 }
 
-export async function GET(request: Request) {
+export async const GET = (request: Request) {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
-    // 1. Check Authentication & Authorization
+    // 1. Check Authentication & Authorization;
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
@@ -65,22 +65,22 @@ export async function GET(request: Request) {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Build Query
-        let query = `
-            SELECT
+        // 2. Build Query;
+        let query = `;
+            SELECT;
                 c.consultation_id, c.patient_id, c.doctor_id, c.opd_visit_id, c.admission_id,
                 c.consultation_datetime, c.chief_complaint, c.diagnosis, c.created_at, c.updated_at,
                 p.first_name as patient_first_name, p.last_name as patient_last_name,
-                u.full_name as doctor_full_name
-            FROM Consultations c
-            JOIN Patients p ON c.patient_id = p.patient_id
-            JOIN Doctors d ON c.doctor_id = d.doctor_id
-            JOIN Users u ON d.user_id = u.user_id
-            WHERE 1=1
+                u.full_name as doctor_full_name;
+            FROM Consultations c;
+            JOIN Patients p ON c.patient_id = p.patient_id;
+            JOIN Doctors d ON c.doctor_id = d.doctor_id;
+            JOIN Users u ON d.user_id = u.user_id;
+            WHERE 1=1;
         `;
         const queryParamsList: (string | number)[] = [];
 
-        // Apply filters
+        // Apply filters;
         if (filters.patientId) {
             query += " AND c.patient_id = ?";
             queryParamsList.push(filters.patientId);
@@ -125,10 +125,10 @@ export async function GET(request: Request) {
         query += " ORDER BY c.consultation_datetime DESC LIMIT ? OFFSET ?";
         queryParamsList.push(filters.limit, filters.offset);
 
-        // 3. Execute Query
+        // 3. Execute Query;
         const results = await DB.prepare(query).bind(...queryParamsList).all<ConsultationListQueryResult>();
 
-        // 4. Format Response
+        // 4. Format Response;
         const consultations: Consultation[] = results.results?.map((row: ConsultationListQueryResult) => ({
             consultation_id: row.consultation_id,
             patient_id: row.patient_id,
@@ -154,13 +154,13 @@ export async function GET(request: Request) {
         return new Response(JSON.stringify(consultations), { status: 200 });
 
     } catch (error) {
-        console.error("List consultations error:", error);
+
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
     }
 }
 
-// POST handler for creating a new consultation
+// POST handler for creating a new consultation;
 const CreateConsultationSchema = z.object({
     patient_id: z.number().int().positive(),
     opd_visit_id: z.number().int().positive().optional().nullable(),
@@ -178,11 +178,11 @@ const CreateConsultationSchema = z.object({
     path: ["opd_visit_id", "admission_id"],
 });
 
-export async function POST(request: Request) {
+export async const POST = (request: Request) {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
-    // 1. Check Authentication & Authorization
+    // 1. Check Authentication & Authorization;
     if (!session.user || !ALLOWED_ROLES_CREATE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
@@ -203,16 +203,16 @@ export async function POST(request: Request) {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Get Doctor ID from session user
+        // 2. Get Doctor ID from session user;
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
         if (!doctorProfile) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
 
-        // 3. Check if patient exists and if visit/admission exists and belongs to patient
+        // 3. Check if patient exists and if visit/admission exists and belongs to patient;
         const checks: D1PreparedStatement[] = [
-            DB.prepare("SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE").bind(consultData.patient_id)
+            DB.prepare("SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE").bind(consultData.patient_id);
         ];
         if (consultData.opd_visit_id) {
             checks.push(DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ? AND patient_id = ?").bind(consultData.opd_visit_id, consultData.patient_id));
@@ -228,12 +228,12 @@ export async function POST(request: Request) {
             return new Response(JSON.stringify({ error: "OPD Visit not found or does not belong to this patient" }), { status: 404 });
         }
 
-        // 4. Insert the new consultation
+        // 4. Insert the new consultation;
         const insertResult = await DB.prepare(
             `INSERT INTO Consultations (
                 patient_id, doctor_id, opd_visit_id, admission_id, consultation_datetime,
                 chief_complaint, history_of_present_illness, physical_examination,
-                diagnosis, treatment_plan, follow_up_instructions, notes
+                diagnosis, treatment_plan, follow_up_instructions, notes;
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         ).bind(
             consultData.patient_id,
@@ -247,7 +247,7 @@ export async function POST(request: Request) {
             consultData.diagnosis,
             consultData.treatment_plan,
             consultData.follow_up_instructions,
-            consultData.notes
+            consultData.notes;
         ).run();
 
         if (!insertResult.success) {
@@ -257,24 +257,24 @@ export async function POST(request: Request) {
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newConsultationId = meta.last_row_id;
         if (newConsultationId === undefined || newConsultationId === null) {
-            console.warn("Could not retrieve last_row_id after consultation insert.");
+
             throw new Error("Failed to retrieve consultation ID after creation.");
         }
 
         if (consultData.opd_visit_id) {
-            await DB.prepare("UPDATE OPDVisits SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE opd_visit_id = ? AND status = ?")
-                  .bind("WithDoctor", consultData.opd_visit_id, "Waiting")
+            await DB.prepare("UPDATE OPDVisits SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE opd_visit_id = ? AND status = ?");
+                  .bind("WithDoctor", consultData.opd_visit_id, "Waiting");
                   .run();
         }
 
-        // 5. Return the newly created consultation ID
+        // 5. Return the newly created consultation ID;
         return new Response(JSON.stringify({ message: "Consultation created successfully", consultation_id: newConsultationId }), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });
 
     } catch (error) {
-        console.error("Create consultation error:", error);
+
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,

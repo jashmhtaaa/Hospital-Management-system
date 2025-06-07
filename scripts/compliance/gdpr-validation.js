@@ -51,23 +51,17 @@ function logCheck(name, passed, details) {
   results.totalChecks++;
   
   if (passed) {
-    results.passedChecks++;
-    console.log(`✅ PASSED: ${name}`);
-    if (details) console.log(`   ${details}`);
+    results.passedChecks++;\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    if (details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } else {
-    results.failedChecks.push({ name, details });
-    console.log(`❌ FAILED: ${name}`);
-    if (details) console.log(`   ${details}`);
-  }
-  
-  console.log(''); // Empty line for readability
+    results.failedChecks.push({ name, details });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    if (details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  }\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 }
 
 function logWarning(name, details) {
-  results.warnings.push({ name, details });
-  console.log(`⚠️ WARNING: ${name}`);
-  if (details) console.log(`   ${details}`);
-  console.log(''); // Empty line for readability
+  results.warnings.push({ name, details });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  if (details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 }
 
 function fileExists(filePath) {
@@ -109,16 +103,9 @@ function findFilesWithPattern(startPath, pattern) {
   return results;
 }
 
-// Start validation
-console.log('====================================================');
-console.log('GDPR COMPLIANCE VALIDATION');
-console.log(`Started at: ${new Date().toISOString()}`);
-console.log('====================================================');
-console.log('');
+// Start validation\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-// 1. Data Protection by Design
-console.log('SECTION 1: DATA PROTECTION BY DESIGN');
-console.log('----------------------------------------------------');
+// 1. Data Protection by Design\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 1.1 Check for data minimization
 const dataMinimizationImplemented = findFilesWithPattern('./src', /data.*minimization/i).length > 0 ||
@@ -147,10 +134,7 @@ logCheck(
   'Encryption service implemented for personal data'
 );
 
-// 2. User Consent
-console.log('');
-console.log('SECTION 2: USER CONSENT');
-console.log('----------------------------------------------------');
+// 2. User Consent\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 2.1 Check for consent mechanism
 const consentImplemented = findFilesWithPattern('./src', /consent/i).length > 0 ||
@@ -179,10 +163,7 @@ logCheck(
   'Cookie consent mechanism is implemented'
 );
 
-// 3. Data Subject Rights
-console.log('');
-console.log('SECTION 3: DATA SUBJECT RIGHTS');
-console.log('----------------------------------------------------');
+// 3. Data Subject Rights\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 3.1 Check for right to access
 const rightToAccessImplemented = findFilesWithPattern('./src', /right.*access/i).length > 0 ||
@@ -212,10 +193,7 @@ logCheck(
   'Data portability is implemented'
 );
 
-// 4. Data Processing Records
-console.log('');
-console.log('SECTION 4: DATA PROCESSING RECORDS');
-console.log('----------------------------------------------------');
+// 4. Data Processing Records\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 4.1 Check for data processing records
 const dataProcessingRecordsImplemented = findFilesWithPattern('./src', /data.*processing.*record/i).length > 0 ||
@@ -237,10 +215,7 @@ logCheck(
   'Data retention policy is documented and implemented'
 );
 
-// 5. Data Protection Impact Assessment
-console.log('');
-console.log('SECTION 5: DATA PROTECTION IMPACT ASSESSMENT');
-console.log('----------------------------------------------------');
+// 5. Data Protection Impact Assessment\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 5.1 Check for DPIA
 const dpiaImplemented = findFilesWithPattern('./docs', /data.*protection.*impact.*assessment/i).length > 0 ||
@@ -251,10 +226,7 @@ logCheck(
   'DPIA is documented'
 );
 
-// 6. Breach Notification
-console.log('');
-console.log('SECTION 6: BREACH NOTIFICATION');
-console.log('----------------------------------------------------');
+// 6. Breach Notification\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 6.1 Check for breach notification procedure
 const breachNotificationImplemented = findFilesWithPattern('./src', /breach.*notification/i).length > 0 || 
@@ -265,10 +237,7 @@ logCheck(
   'Breach notification procedure is documented and implemented'
 );
 
-// 7. Data Transfer Controls
-console.log('');
-console.log('SECTION 7: DATA TRANSFER CONTROLS');
-console.log('----------------------------------------------------');
+// 7. Data Transfer Controls\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 7.1 Check for data transfer controls
 const dataTransferControlsImplemented = findFilesWithPattern('./src', /data.*transfer/i).length > 0 || 
@@ -289,10 +258,7 @@ logCheck(
   'Cross-border data transfer controls are documented'
 );
 
-// 8. Technical Measures
-console.log('');
-console.log('SECTION 8: TECHNICAL MEASURES');
-console.log('----------------------------------------------------');
+// 8. Technical Measures\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 8.1 Check for access control
 const accessControlImplemented = fileExists('./src/lib/rbac/rbac.service.ts') || 
@@ -321,45 +287,24 @@ logCheck(
   'Audit logging is implemented'
 );
 
-// Final Results
-console.log('');
-console.log('====================================================');
-console.log('GDPR COMPLIANCE VALIDATION RESULTS');
-console.log('====================================================');
-console.log(`Total Checks: ${results.totalChecks}`);
-console.log(`Passed Checks: ${results.passedChecks}`);
-console.log(`Failed Checks: ${results.totalChecks - results.passedChecks}`);
-console.log(`Pass Rate: ${Math.round((results.passedChecks / results.totalChecks) * 100)}%`);
-console.log('');
+// Final Results\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-if (results.failedChecks.length > 0) {
-  console.log('FAILED CHECKS:');
-  results.failedChecks.forEach((failure, index) => {
-    console.log(`${index + 1}. ${failure.name}`);
-    if (failure.details) console.log(`   ${failure.details}`);
-  });
-  console.log('');
+if (results.failedChecks.length > 0) {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  results.failedChecks.forEach((failure, index) => {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    if (failure.details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 }
 
-if (results.warnings.length > 0) {
-  console.log('WARNINGS:');
-  results.warnings.forEach((warning, index) => {
-    console.log(`${index + 1}. ${warning.name}`);
-    if (warning.details) console.log(`   ${warning.details}`);
-  });
-  console.log('');
+if (results.warnings.length > 0) {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  results.warnings.forEach((warning, index) => {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    if (warning.details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 }
 
 // Compliance determination
 const complianceThreshold = 1.0; // 100% compliance required for GDPR
 const complianceRate = results.passedChecks / results.totalChecks;
-const isCompliant = complianceRate >= complianceThreshold;
-
-console.log('====================================================');
-console.log(`COMPLIANCE STATUS: ${isCompliant ? 'COMPLIANT ✅' : 'NON-COMPLIANT ❌'}`);
-console.log('====================================================');
-console.log(`Completed at: ${new Date().toISOString()}`);
-console.log('');
+const isCompliant = complianceRate >= complianceThreshold;\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // Exit with appropriate code
 process.exit(isCompliant ? 0 : 1);

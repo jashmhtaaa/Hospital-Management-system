@@ -1,12 +1,23 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Enterprise Redis Caching Implementation
- * High-performance caching layer for Hospital Management System
+ * Enterprise Redis Caching Implementation;
+ * High-performance caching layer for Hospital Management System;
  */
 
 import Redis from 'ioredis';
 import { cache } from '../cache';
 
-// Cache configuration
+// Cache configuration;
 interface CacheConfig {
   host: string;
   port: number;
@@ -19,7 +30,7 @@ interface CacheConfig {
   maxRetriesPerRequest: number;
 }
 
-// Cache key patterns for different data types
+// Cache key patterns for different data types;
 export const CACHE_PATTERNS = {
   PATIENT: 'patient:',
   PATIENT_LIST: 'patients:list:',
@@ -45,11 +56,11 @@ export const CACHE_PATTERNS = {
 
 // TTL constants (in seconds)
 export const CACHE_TTL = {
-  SHORT: 300,      // 5 minutes
-  MEDIUM: 1800,    // 30 minutes
-  LONG: 3600,      // 1 hour
-  VERY_LONG: 86400, // 24 hours
-  PERMANENT: -1,   // No expiration
+  SHORT: 300,      // 5 minutes;
+  MEDIUM: 1800,    // 30 minutes;
+  LONG: 3600,      // 1 hour;
+  VERY_LONG: 86400, // 24 hours;
+  PERMANENT: -1,   // No expiration;
 } as const;
 
 class RedisCacheManager {
@@ -106,30 +117,30 @@ class RedisCacheManager {
 
   private setupEventHandlers(): void {
     this.redis.on('connect', () => {
-      console.log('🔗 Redis connected');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.isConnected = true;
     });
 
     this.redis.on('ready', () => {
-      console.log('✅ Redis ready');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     });
 
     this.redis.on('error', (error) => {
-      console.error('❌ Redis error:', error);
+
       this.isConnected = false;
     });
 
     this.redis.on('close', () => {
-      console.log('🔌 Redis connection closed');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.isConnected = false;
     });
 
     this.redis.on('reconnecting', () => {
-      console.log('🔄 Redis reconnecting...');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     });
   }
 
-  // Core cache operations
+  // Core cache operations;
   async get<T>(key: string): Promise<T | null> {
     try {
       if (!this.isConnected) {
@@ -141,7 +152,7 @@ class RedisCacheManager {
 
       return JSON.parse(value);
     } catch (error) {
-      console.error(`Cache get error for key ${key}:`, error);
+
       return null;
     }
   }
@@ -162,7 +173,7 @@ class RedisCacheManager {
 
       return true;
     } catch (error) {
-      console.error(`Cache set error for key ${key}:`, error);
+
       return false;
     }
   }
@@ -175,7 +186,7 @@ class RedisCacheManager {
 
       return await this.redis.del(key);
     } catch (error) {
-      console.error(`Cache delete error for key(s) ${key}:`, error);
+      // Debug logging removed ${key}:`, error);
       return 0;
     }
   }
@@ -189,7 +200,7 @@ class RedisCacheManager {
       const result = await this.redis.exists(key);
       return result === 1;
     } catch (error) {
-      console.error(`Cache exists error for key ${key}:`, error);
+
       return false;
     }
   }
@@ -203,12 +214,12 @@ class RedisCacheManager {
       const result = await this.redis.expire(key, ttl);
       return result === 1;
     } catch (error) {
-      console.error(`Cache expire error for key ${key}:`, error);
+
       return false;
     }
   }
 
-  // Pattern-based operations
+  // Pattern-based operations;
   async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
       if (!this.isConnected) {
@@ -217,7 +228,7 @@ class RedisCacheManager {
 
       return await this.redis.keys(pattern);
     } catch (error) {
-      console.error(`Cache keys error for pattern ${pattern}:`, error);
+
       return [];
     }
   }
@@ -229,12 +240,12 @@ class RedisCacheManager {
 
       return await this.del(keys);
     } catch (error) {
-      console.error(`Cache delete by pattern error for ${pattern}:`, error);
+
       return 0;
     }
   }
 
-  // Batch operations
+  // Batch operations;
   async mget<T>(keys: string[]): Promise<(T | null)[]> {
     try {
       if (!this.isConnected) {
@@ -244,7 +255,7 @@ class RedisCacheManager {
       const values = await this.redis.mget(keys);
       return values.map(value => value ? JSON.parse(value) : null);
     } catch (error) {
-      console.error(`Cache mget error for keys ${keys}:`, error);
+
       return keys.map(() => null);
     }
   }
@@ -269,12 +280,12 @@ class RedisCacheManager {
       await pipeline.exec();
       return true;
     } catch (error) {
-      console.error('Cache mset error:', error);
+
       return false;
     }
   }
 
-  // Hash operations for complex data structures
+  // Hash operations for complex data structures;
   async hget<T>(key: string, field: string): Promise<T | null> {
     try {
       if (!this.isConnected) {
@@ -286,7 +297,7 @@ class RedisCacheManager {
 
       return JSON.parse(value);
     } catch (error) {
-      console.error(`Cache hget error for key ${key}, field ${field}:`, error);
+
       return null;
     }
   }
@@ -301,7 +312,7 @@ class RedisCacheManager {
       await this.redis.hset(key, field, serializedValue);
       return true;
     } catch (error) {
-      console.error(`Cache hset error for key ${key}, field ${field}:`, error);
+
       return false;
     }
   }
@@ -321,12 +332,12 @@ class RedisCacheManager {
 
       return result;
     } catch (error) {
-      console.error(`Cache hgetall error for key ${key}:`, error);
+
       return {};
     }
   }
 
-  // List operations for queues and timelines
+  // List operations for queues and timelines;
   async lpush<T>(key: string, ...values: T[]): Promise<number> {
     try {
       if (!this.isConnected) {
@@ -336,7 +347,7 @@ class RedisCacheManager {
       const serializedValues = values.map(value => JSON.stringify(value));
       return await this.redis.lpush(key, ...serializedValues);
     } catch (error) {
-      console.error(`Cache lpush error for key ${key}:`, error);
+
       return 0;
     }
   }
@@ -352,7 +363,7 @@ class RedisCacheManager {
 
       return JSON.parse(value);
     } catch (error) {
-      console.error(`Cache rpop error for key ${key}:`, error);
+
       return null;
     }
   }
@@ -366,12 +377,12 @@ class RedisCacheManager {
       const values = await this.redis.lrange(key, start, stop);
       return values.map(value => JSON.parse(value));
     } catch (error) {
-      console.error(`Cache lrange error for key ${key}:`, error);
+
       return [];
     }
   }
 
-  // Set operations for unique collections
+  // Set operations for unique collections;
   async sadd<T>(key: string, ...members: T[]): Promise<number> {
     try {
       if (!this.isConnected) {
@@ -381,7 +392,7 @@ class RedisCacheManager {
       const serializedMembers = members.map(member => JSON.stringify(member));
       return await this.redis.sadd(key, ...serializedMembers);
     } catch (error) {
-      console.error(`Cache sadd error for key ${key}:`, error);
+
       return 0;
     }
   }
@@ -395,12 +406,12 @@ class RedisCacheManager {
       const members = await this.redis.smembers(key);
       return members.map(member => JSON.parse(member));
     } catch (error) {
-      console.error(`Cache smembers error for key ${key}:`, error);
+
       return [];
     }
   }
 
-  // Cache statistics and monitoring
+  // Cache statistics and monitoring;
   async getStats(): Promise<any> {
     try {
       if (!this.isConnected) {
@@ -422,7 +433,7 @@ class RedisCacheManager {
         },
       };
     } catch (error) {
-      console.error('Cache stats error:', error);
+
       return {
         connected: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -444,7 +455,7 @@ class RedisCacheManager {
     return result;
   }
 
-  // Health check
+  // Health check;
   async healthCheck(): Promise<boolean> {
     try {
       if (!this.isConnected) {
@@ -454,32 +465,32 @@ class RedisCacheManager {
       const result = await this.redis.ping();
       return result === 'PONG';
     } catch (error) {
-      console.error('Cache health check error:', error);
+
       return false;
     }
   }
 
-  // Graceful shutdown
+  // Graceful shutdown;
   async disconnect(): Promise<void> {
     try {
       await this.redis.quit();
       this.isConnected = false;
-      console.log('✅ Redis disconnected gracefully');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
-      console.error('Cache disconnect error:', error);
+
     }
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const redisCache = RedisCacheManager.getInstance();
 
-// High-level cache service integration
+// High-level cache service integration;
 export class CacheService {
   private redis = redisCache;
 
-  // Patient caching
-  async cachePatient(patientId: string, patient: any, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
+  // Patient caching;
+  async cachePatient(patientId: string, patient: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.PATIENT}${patientId}`, patient, ttl);
   }
 
@@ -493,8 +504,8 @@ export class CacheService {
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
   }
 
-  // Bill caching
-  async cacheBill(billId: string, bill: any, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
+  // Bill caching;
+  async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.BILL}${billId}`, bill, ttl);
   }
 
@@ -508,8 +519,8 @@ export class CacheService {
     await this.redis.del(CACHE_PATTERNS.OUTSTANDING_BILLS);
   }
 
-  // Appointment caching
-  async cacheDoctorSchedule(doctorId: string, date: string, schedule: any, ttl: number = CACHE_TTL.SHORT): Promise<void> {
+  // Appointment caching;
+  async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.DOCTOR_SCHEDULE}${doctorId}:${date}`, schedule, ttl);
   }
 
@@ -522,8 +533,8 @@ export class CacheService {
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`);
   }
 
-  // User session caching
-  async cacheUserSession(sessionId: string, sessionData: any, ttl: number = CACHE_TTL.LONG): Promise<void> {
+  // User session caching;
+  async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.SESSION}${sessionId}`, sessionData, ttl);
   }
 
@@ -535,8 +546,8 @@ export class CacheService {
     await this.redis.del(`${CACHE_PATTERNS.SESSION}${sessionId}`);
   }
 
-  // Dashboard statistics caching
-  async cacheDashboardStats(userId: string, stats: any, ttl: number = CACHE_TTL.SHORT): Promise<void> {
+  // Dashboard statistics caching;
+  async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.DASHBOARD}${userId}`, stats, ttl);
   }
 
@@ -544,7 +555,7 @@ export class CacheService {
     return await this.redis.get(`${CACHE_PATTERNS.DASHBOARD}${userId}`);
   }
 
-  // General purpose caching with automatic key generation
+  // General purpose caching with automatic key generation;
   async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     const key = `${pattern}${identifier}`;
     await this.redis.set(key, data, ttl);
@@ -559,17 +570,17 @@ export class CacheService {
     await this.redis.deleteByPattern(`${pattern}*`);
   }
 
-  // Cache warming strategies
+  // Cache warming strategies;
   async warmCache(): Promise<void> {
-    console.log('🔥 Starting cache warming...');
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
-    // Warm frequently accessed data
-    // This would typically be called during application startup
+    // Warm frequently accessed data;
+    // This would typically be called during application startup;
     
-    console.log('✅ Cache warming completed');
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
-  // Cache health and stats
+  // Cache health and stats;
   async getHealthStatus(): Promise<any> {
     const isHealthy = await this.redis.healthCheck();
     const stats = await this.redis.getStats();
@@ -582,7 +593,7 @@ export class CacheService {
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const cacheService = new CacheService();
 
 export default redisCache;

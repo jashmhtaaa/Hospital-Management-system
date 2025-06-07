@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +20,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -17,7 +29,7 @@ import {
   TableCell, 
   TableHead, 
   TableHeader, 
-  TableRow 
+  TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +38,7 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '@/components/ui/select';
 import { 
   Pagination, 
@@ -34,7 +46,7 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
@@ -48,40 +60,40 @@ import {
   CheckCircle, 
   XCircle, 
   AlertCircle, 
-  FileText
+  FileText;
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, startOfDay, endOfDay } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default function AttendanceManagement() {
+export default const AttendanceManagement = () {
   const router = useRouter();
-  const [attendanceRecords, setAttendanceRecords] = useState([]);
+  const [attendanceRecords, setAttendanceRecords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any | null>(null);
   const [search, setSearch] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [biometricFilter, setBiometricFilter] = useState('');
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
     from: startOfMonth(new Date()),
-    to: endOfMonth(new Date())
+    to: endOfMonth(new Date());
   });
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0
+    total: 0;
   });
   const [activeTab, setActiveTab] = useState('daily');
 
-  // Fetch attendance records
+  // Fetch attendance records;
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          take: pagination.take.toString();
         });
         
         if (search) queryParams.append('search', search);
@@ -89,12 +101,12 @@ export default function AttendanceManagement() {
         if (statusFilter) queryParams.append('status', statusFilter);
         if (biometricFilter) queryParams.append('biometricVerified', biometricFilter);
         
-        // Add date filters based on active tab
+        // Add date filters based on active tab;
         if (activeTab === 'daily') {
-          // For daily view, use the 'from' date as a single day filter
+          // For daily view, use the 'from' date as a single day filter;
           queryParams.append('date', format(dateRange.from || new Date(), 'yyyy-MM-dd'));
         } else {
-          // For range view, use from and to dates
+          // For range view, use from and to dates;
           if (dateRange.from) {
             queryParams.append('startDate', format(startOfDay(dateRange.from), 'yyyy-MM-dd'));
           }
@@ -113,7 +125,7 @@ export default function AttendanceManagement() {
         setAttendanceRecords(data.records || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0
+          total: data.total || 0;
         }));
       } catch (err) {
         setError(err.message);
@@ -130,7 +142,7 @@ export default function AttendanceManagement() {
     fetchAttendance();
   }, [search, departmentFilter, statusFilter, biometricFilter, pagination.skip, pagination.take, dateRange, activeTab]);
 
-  // Fetch departments for filters
+  // Fetch departments for filters;
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -140,19 +152,19 @@ export default function AttendanceManagement() {
           setDepartments(data.departments || []);
         }
       } catch (err) {
-        console.error('Error fetching departments:', err);
+
       }
     };
     
     fetchDepartments();
   }, []);
 
-  // Handle pagination
+  // Handle pagination;
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -161,41 +173,41 @@ export default function AttendanceManagement() {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
 
-  // Handle search
-  const handleSearch = (e) => {
+  // Handle search;
+  const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching
+    // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
-  // Handle tab change
-  const handleTabChange = (value) => {
+  // Handle tab change;
+  const handleTabChange = (value: unknown) => {
     setActiveTab(value);
-    // Reset pagination when changing tabs
+    // Reset pagination when changing tabs;
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
-  // Export attendance data
+  // Export attendance data;
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
       toast({
         title: "Export Started",
         description: "Your attendance report is being generated and will download shortly.",
       });
       
-      // Simulate download delay
+      // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -211,8 +223,8 @@ export default function AttendanceManagement() {
     }
   };
 
-  // Get status badge variant
-  const getStatusBadgeVariant = (status) => {
+  // Get status badge variant;
+  const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'PRESENT':
         return 'default';
@@ -229,38 +241,38 @@ export default function AttendanceManagement() {
     }
   };
 
-  // Format time or show placeholder
-  const formatTimeOrPlaceholder = (time) => {
+  // Format time or show placeholder;
+  const formatTimeOrPlaceholder = (time: unknown) => {
     return time ? format(new Date(time), 'h:mm a') : '—';
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold">Attendance Management</h1>
-        <p className="text-muted-foreground">
-          Track and manage employee attendance records
+    <div className="flex flex-col gap-4 p-4 md:p-8">;
+      <div className="flex flex-col gap-2">;
+        <h1 className="text-3xl font-bold">Attendance Management</h1>;
+        <p className="text-muted-foreground">;
+          Track and manage employee attendance records;
         </p>
       </div>
       
-      <Tabs defaultValue="daily" value={activeTab} onValueChange={handleTabChange}>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+      <Tabs defaultValue="daily" value={activeTab} onValueChange={handleTabChange}>;
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
           <TabsList>
-            <TabsTrigger value="daily">Daily View</TabsTrigger>
-            <TabsTrigger value="range">Date Range</TabsTrigger>
+            <TabsTrigger value="daily">Daily View</TabsTrigger>;
+            <TabsTrigger value="range">Date Range</TabsTrigger>;
           </TabsList>
           
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">;
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-[240px] justify-start">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="w-[240px] justify-start">;
+                  <CalendarIcon className="mr-2 h-4 w-4" />;
                   {activeTab === 'daily' ? (
                     dateRange.from ? (
-                      format(dateRange.from, 'PPP')
+                      format(dateRange.from, 'PPP');
                     ) : (
-                      "Select date"
-                    )
+                      "Select date";
+                    );
                   ) : (
                     <>
                       {dateRange.from ? format(dateRange.from, 'PPP') : "Start date"} - 
@@ -269,90 +281,90 @@ export default function AttendanceManagement() {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
+              <PopoverContent className="w-auto p-0" align="end">;
+                <Calendar;
                   mode={activeTab === 'daily' ? "single" : "range"}
                   selected={activeTab === 'daily' ? dateRange.from : dateRange}
-                  onSelect={activeTab === 'daily' 
-                    ? (date) => setDateRange({ from: date, to: date }) 
-                    : setDateRange
+                  onSelect={activeTab === 'daily';
+                    ? (date) => setDateRange({ from: date, to: date });
+                    : setDateRange;
                   }
-                  initialFocus
+                  initialFocus;
                 />
               </PopoverContent>
             </Popover>
             
-            <Button variant="outline" onClick={handleExport}>
-              <Download className="mr-2 h-4 w-4" />
-              Export
+            <Button variant="outline" onClick={handleExport}>;
+              <Download className="mr-2 h-4 w-4" />;
+              Export;
             </Button>
           </div>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">
-          <div className="flex flex-col md:flex-row gap-2 md:items-center">
-            <form onSubmit={handleSearch} className="flex gap-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
+        <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
+          <div className="flex flex-col md:flex-row gap-2 md:items-center">;
+            <form onSubmit={handleSearch} className="flex gap-2">;
+              <div className="relative">;
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
+                <Input;
                   type="search"
-                  placeholder="Search employees..."
-                  className="pl-8 w-full md:w-[300px]"
+                  placeholder="Search employees...";
+                  className="pl-8 w-full md:w-[300px]";
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <Button type="submit" variant="secondary">
-                Search
+              <Button type="submit" variant="secondary">;
+                Search;
               </Button>
             </form>
           </div>
           
-          <div className="flex flex-col md:flex-row gap-2">
-            <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="All Departments" />
+          <div className="flex flex-col md:flex-row gap-2">;
+            <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
+              <SelectTrigger className="w-full md:w-[180px]">;
+                <SelectValue placeholder="All Departments" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Departments</SelectItem>
+                <SelectItem value="">All Departments</SelectItem>;
                 {departments.map((dept) => (
-                  <SelectItem key={dept.id} value={dept.id}>
+                  <SelectItem key={dept.id} value={dept.id}>;
                     {dept.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="All Statuses" />
+            <Select value={statusFilter} onValueChange={setStatusFilter}>;
+              <SelectTrigger className="w-full md:w-[180px]">;
+                <SelectValue placeholder="All Statuses" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
-                <SelectItem value="PRESENT">Present</SelectItem>
-                <SelectItem value="LATE">Late</SelectItem>
-                <SelectItem value="ABSENT">Absent</SelectItem>
-                <SelectItem value="HALF_DAY">Half Day</SelectItem>
-                <SelectItem value="ON_LEAVE">On Leave</SelectItem>
+                <SelectItem value="">All Statuses</SelectItem>;
+                <SelectItem value="PRESENT">Present</SelectItem>;
+                <SelectItem value="LATE">Late</SelectItem>;
+                <SelectItem value="ABSENT">Absent</SelectItem>;
+                <SelectItem value="HALF_DAY">Half Day</SelectItem>;
+                <SelectItem value="ON_LEAVE">On Leave</SelectItem>;
               </SelectContent>
             </Select>
             
-            <Select value={biometricFilter} onValueChange={setBiometricFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
-                <SelectValue placeholder="Biometric Verification" />
+            <Select value={biometricFilter} onValueChange={setBiometricFilter}>;
+              <SelectTrigger className="w-full md:w-[180px]">;
+                <SelectValue placeholder="Biometric Verification" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Records</SelectItem>
-                <SelectItem value="true">Verified</SelectItem>
-                <SelectItem value="false">Not Verified</SelectItem>
+                <SelectItem value="">All Records</SelectItem>;
+                <SelectItem value="true">Verified</SelectItem>;
+                <SelectItem value="false">Not Verified</SelectItem>;
               </SelectContent>
             </Select>
           </div>
         </div>
         
-        <TabsContent value="daily" className="mt-0">
+        <TabsContent value="daily" className="mt-0">;
           <Card>
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2">;
               <CardTitle>Daily Attendance</CardTitle>
               <CardDescription>
                 {loading ? 'Loading attendance records...' : 
@@ -361,19 +373,19 @@ export default function AttendanceManagement() {
             </CardHeader>
             <CardContent>
               {error ? (
-                <div className="text-center py-4 text-red-500">
+                <div className="text-center py-4 text-red-500">;
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">
-                  Loading...
+                <div className="text-center py-4">;
+                  Loading...;
                 </div>
               ) : attendanceRecords.length === 0 ? (
-                <div className="text-center py-4">
-                  No attendance records found. Try adjusting your filters.
+                <div className="text-center py-4">;
+                  No attendance records found. Try adjusting your filters.;
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto">;
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -388,10 +400,10 @@ export default function AttendanceManagement() {
                     </TableHeader>
                     <TableBody>
                       {attendanceRecords.map((record) => (
-                        <TableRow key={record.id}>
-                          <TableCell className="font-medium">
+                        <TableRow key={record.id}>;
+                          <TableCell className="font-medium">;
                             {record.employee.firstName} {record.employee.lastName}
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-xs text-muted-foreground">;
                               {record.employee.employeeId}
                             </div>
                           </TableCell>
@@ -405,24 +417,24 @@ export default function AttendanceManagement() {
                             {formatTimeOrPlaceholder(record.checkOutTime)}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(record.status)}>
+                            <Badge variant={getStatusBadgeVariant(record.status)}>;
                               {record.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             {record.biometricVerified ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />
+                              <CheckCircle className="h-5 w-5 text-green-500" />;
                             ) : (
-                              <XCircle className="h-5 w-5 text-red-500" />
+                              <XCircle className="h-5 w-5 text-red-500" />;
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
+                            <Button;
+                              variant="ghost";
+                              size="sm";
                               onClick={() => router.push(`/dashboard/hr/attendance/${record.id}`)}
                             >
-                              View
+                              View;
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -436,18 +448,19 @@ export default function AttendanceManagement() {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious 
+                    <PaginationPrevious;
                       onClick={handlePreviousPage}
                       className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">
-                      Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) || 1}
+                    <span className="text-sm">;
+                      Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
+                        1}
                     </span>
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext 
+                    <PaginationNext;
                       onClick={handleNextPage}
                       className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -458,9 +471,9 @@ export default function AttendanceManagement() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="range" className="mt-0">
+        <TabsContent value="range" className="mt-0">;
           <Card>
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2">;
               <CardTitle>Attendance Summary</CardTitle>
               <CardDescription>
                 {loading ? 'Loading attendance summary...' : 
@@ -469,19 +482,19 @@ export default function AttendanceManagement() {
             </CardHeader>
             <CardContent>
               {error ? (
-                <div className="text-center py-4 text-red-500">
+                <div className="text-center py-4 text-red-500">;
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">
-                  Loading...
+                <div className="text-center py-4">;
+                  Loading...;
                 </div>
               ) : attendanceRecords.length === 0 ? (
-                <div className="text-center py-4">
-                  No attendance records found in the selected date range.
+                <div className="text-center py-4">;
+                  No attendance records found in the selected date range.;
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto">;
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -496,10 +509,10 @@ export default function AttendanceManagement() {
                     </TableHeader>
                     <TableBody>
                       {attendanceRecords.map((record) => (
-                        <TableRow key={record.id}>
-                          <TableCell className="font-medium">
+                        <TableRow key={record.id}>;
+                          <TableCell className="font-medium">;
                             {record.employee.firstName} {record.employee.lastName}
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-xs text-muted-foreground">;
                               {record.employee.employeeId}
                             </div>
                           </TableCell>
@@ -510,29 +523,29 @@ export default function AttendanceManagement() {
                             {format(new Date(record.date), 'PP')}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(record.status)}>
+                            <Badge variant={getStatusBadgeVariant(record.status)}>;
                               {record.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             {record.checkInTime && record.checkOutTime ? (
-                              `${((new Date(record.checkOutTime).getTime() - new Date(record.checkInTime).getTime()) / (1000 * 60 * 60)).toFixed(1)} hrs`
+                              `${((new Date(record.checkOutTime).getTime() - new Date(record.checkInTime).getTime()) / (1000 * 60 * 60)).toFixed(1)} hrs`;
                             ) : '—'}
                           </TableCell>
                           <TableCell>
                             {record.biometricVerified ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />
+                              <CheckCircle className="h-5 w-5 text-green-500" />;
                             ) : (
-                              <XCircle className="h-5 w-5 text-red-500" />
+                              <XCircle className="h-5 w-5 text-red-500" />;
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
+                            <Button;
+                              variant="ghost";
+                              size="sm";
                               onClick={() => router.push(`/dashboard/hr/attendance/${record.id}`)}
                             >
-                              View
+                              View;
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -546,18 +559,19 @@ export default function AttendanceManagement() {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious 
+                    <PaginationPrevious;
                       onClick={handlePreviousPage}
                       className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">
-                      Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) || 1}
+                    <span className="text-sm">;
+                      Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
+                        1}
                     </span>
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext 
+                    <PaginationNext;
                       onClick={handleNextPage}
                       className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -569,15 +583,15 @@ export default function AttendanceManagement() {
         </TabsContent>
       </Tabs>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Present Today</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Present Today</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <CheckCircle className="h-5 w-5 text-green-500 mr-2" />;
+              <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'PRESENT').length}
               </span>
             </div>
@@ -585,13 +599,13 @@ export default function AttendanceManagement() {
         </Card>
         
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Late Today</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Late Today</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <Clock className="h-5 w-5 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <Clock className="h-5 w-5 text-yellow-500 mr-2" />;
+              <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'LATE').length}
               </span>
             </div>
@@ -599,13 +613,13 @@ export default function AttendanceManagement() {
         </Card>
         
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Absent Today</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Absent Today</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <XCircle className="h-5 w-5 text-red-500 mr-2" />
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <XCircle className="h-5 w-5 text-red-500 mr-2" />;
+              <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'ABSENT').length}
               </span>
             </div>
@@ -613,13 +627,13 @@ export default function AttendanceManagement() {
         </Card>
         
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">On Leave</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">On Leave</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <FileText className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <FileText className="h-5 w-5 text-blue-500 mr-2" />;
+              <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'ON_LEAVE').length}
               </span>
             </div>

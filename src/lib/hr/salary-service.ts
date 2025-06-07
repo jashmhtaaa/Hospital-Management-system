@@ -1,13 +1,24 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 /**
- * Service for managing salary structures and payroll components
+ * Service for managing salary structures and payroll components;
  */
 export class SalaryService {
   /**
-   * Create a new salary structure
+   * Create a new salary structure;
    */
   async createSalaryStructure(data: {
     name: string;
@@ -24,7 +35,7 @@ export class SalaryService {
   }) {
     const { name, description, components } = data;
     
-    // Create salary structure with components
+    // Create salary structure with components;
     return prisma.salaryStructure.create({
       data: {
         name,
@@ -48,7 +59,7 @@ export class SalaryService {
   }
   
   /**
-   * Get a salary structure by ID
+   * Get a salary structure by ID;
    */
   async getSalaryStructure(id: string) {
     return prisma.salaryStructure.findUnique({
@@ -60,7 +71,7 @@ export class SalaryService {
   }
   
   /**
-   * List all salary structures
+   * List all salary structures;
    */
   async listSalaryStructures() {
     return prisma.salaryStructure.findMany({
@@ -76,7 +87,7 @@ export class SalaryService {
   }
   
   /**
-   * Update a salary structure
+   * Update a salary structure;
    */
   async updateSalaryStructure(id: string, data: {
     name?: string;
@@ -90,7 +101,7 @@ export class SalaryService {
   }
   
   /**
-   * Add a component to a salary structure
+   * Add a component to a salary structure;
    */
   async addSalaryComponent(structureId: string, data: {
     name: string;
@@ -110,7 +121,7 @@ export class SalaryService {
   }
   
   /**
-   * Update a salary component
+   * Update a salary component;
    */
   async updateSalaryComponent(id: string, data: {
     name?: string;
@@ -129,7 +140,7 @@ export class SalaryService {
   }
   
   /**
-   * Delete a salary component
+   * Delete a salary component;
    */
   async deleteSalaryComponent(id: string) {
     return prisma.salaryComponent.delete({
@@ -138,7 +149,7 @@ export class SalaryService {
   }
   
   /**
-   * Assign a salary structure to an employee
+   * Assign a salary structure to an employee;
    */
   async assignSalaryStructure(data: {
     employeeId: string;
@@ -150,7 +161,7 @@ export class SalaryService {
   }) {
     const { employeeId, salaryStructureId, baseSalary, effectiveDate, endDate, notes } = data;
     
-    // Check if employee exists
+    // Check if employee exists;
     const employee = await prisma.employee.findUnique({
       where: { id: employeeId },
     });
@@ -159,7 +170,7 @@ export class SalaryService {
       throw new Error('Employee not found');
     }
     
-    // Check if salary structure exists
+    // Check if salary structure exists;
     const salaryStructure = await prisma.salaryStructure.findUnique({
       where: { id: salaryStructureId },
     });
@@ -168,7 +179,7 @@ export class SalaryService {
       throw new Error('Salary structure not found');
     }
     
-    // If there's an existing active assignment, end it
+    // If there's an existing active assignment, end it;
     if (!endDate) {
       const existingAssignment = await prisma.employeeSalary.findFirst({
         where: {
@@ -182,7 +193,7 @@ export class SalaryService {
           where: { id: existingAssignment.id },
           data: {
             endDate: new Date(effectiveDate),
-            notes: existingAssignment.notes 
+            notes: existingAssignment.notes;
               ? `${existingAssignment.notes}; Automatically ended due to new assignment.` 
               : 'Automatically ended due to new assignment.',
           },
@@ -190,7 +201,7 @@ export class SalaryService {
       }
     }
     
-    // Create new assignment
+    // Create new assignment;
     return prisma.employeeSalary.create({
       data: {
         employeeId,
@@ -218,7 +229,7 @@ export class SalaryService {
   }
   
   /**
-   * Get employee's current salary structure
+   * Get employee's current salary structure;
    */
   async getEmployeeSalary(employeeId: string) {
     return prisma.employeeSalary.findFirst({
@@ -237,7 +248,7 @@ export class SalaryService {
   }
   
   /**
-   * Get employee's salary history
+   * Get employee's salary history;
    */
   async getEmployeeSalaryHistory(employeeId: string) {
     return prisma.employeeSalary.findMany({
@@ -254,10 +265,10 @@ export class SalaryService {
   }
   
   /**
-   * Calculate employee's gross salary
+   * Calculate employee's gross salary;
    */
   async calculateGrossSalary(employeeId: string, date: Date = new Date()) {
-    // Get employee's salary structure for the given date
+    // Get employee's salary structure for the given date;
     const employeeSalary = await prisma.employeeSalary.findFirst({
       where: {
         employeeId,
@@ -284,7 +295,7 @@ export class SalaryService {
     
     const { baseSalary, salaryStructure } = employeeSalary;
     
-    // Calculate each component
+    // Calculate each component;
     let grossSalary = baseSalary;
     const componentBreakdown = [];
     
@@ -301,13 +312,13 @@ export class SalaryService {
           componentValue = baseSalary * (component.value / 100);
           break;
         case 'FORMULA':
-          // In a real implementation, this would evaluate the formula
-          // For simplicity, we'll just use the value as a percentage of base salary
+          // In a real implementation, this would evaluate the formula;
+          // For simplicity, we'll just use the value as a percentage of base salary;
           componentValue = baseSalary * (component.value / 100);
           break;
       }
       
-      // Add to gross salary if it's an earning, subtract if it's a deduction or tax
+      // Add to gross salary if it's an earning, subtract if it's a deduction or tax;
       if (component.type === 'EARNING') {
         grossSalary += componentValue;
       } else {

@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 import { useCallback, useState } from 'react';
 
 export interface Toast {
@@ -16,9 +28,9 @@ export interface ToastOptions {
 }
 
 /**
- * Custom hook for managing toast notifications
+ * Custom hook for managing toast notifications;
  */
-export function useToast() {
+export const useToast = () {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const toast = useCallback((options: ToastOptions) => {
@@ -33,7 +45,7 @@ export function useToast() {
 
     setToasts((prevToasts) => [...prevToasts, newToast]);
 
-    // Auto-dismiss toast after duration
+    // Auto-dismiss toast after duration;
     setTimeout(() => {
       setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
     }, newToast.duration);

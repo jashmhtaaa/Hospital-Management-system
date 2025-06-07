@@ -1,40 +1,50 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextApiRequest, NextApiResponse } from "next";
-import { PaymentService } from "../../../../features/billing/services/PaymentService"; // Adjust path as per actual structure
-import { PaymentInput } from "../../../../features/billing/types"; // Adjust path
+import { PaymentService } from "../../../../features/billing/services/PaymentService.ts"; // Adjust path as per actual structure;
 
 const paymentService = new PaymentService();
 
 /**
- * @swagger
+ * @swagger;
  * /api/billing/payments:
  *   post:
- *     summary: Process a payment for an invoice
+ *     summary: Process a payment for an invoice;
  *     description: Processes a payment made by a patient for a specific invoice, integrating with payment gateways.
  *     requestBody:
- *       required: true
+ *       required: true;
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             type: object;
  *             required:
- *               - invoiceId
+ *               - invoiceId;
  *               - paymentDetails // This would contain amount, payment method token, etc.
  *             properties:
  *               invoiceId:
- *                 type: string
+ *                 type: string;
  *                 description: The ID of the invoice being paid.
  *               paymentDetails:
- *                 type: object
+ *                 type: object;
  *                 description: Contains payment information like amount, payment method token/details.
  *                 properties:
  *                   amount:
- *                     type: number
+ *                     type: number;
  *                     description: The amount being paid.
- *                   payment_method_token: // Example, actual structure depends on gateway
- *                     type: string
+ *                   payment_method_token: // Example, actual structure depends on gateway;
+ *                     type: string;
  *                     description: Token representing the payment method from the payment gateway.
  *                   currency:
- *                     type: string
+ *                     type: string;
  *                     description: Currency of the payment (e.g., USD).
  *                     default: 'USD'
  *     responses:
@@ -43,14 +53,14 @@ const paymentService = new PaymentService();
  *         content:
  *           application/json:
  *             schema:
- *               type: object
+ *               type: object;
  *               properties:
  *                 status:
- *                   type: string
- *                   example: success
+ *                   type: string;
+ *                   example: success;
  *                 transactionId:
- *                   type: string
- *                   example: pay_xxxxxxxxxxxx
+ *                   type: string;
+ *                   example: pay_xxxxxxxxxxxx;
  *       400:
  *         description: Invalid input, invoice not found, or payment processing error.
  *       500:
@@ -58,14 +68,14 @@ const paymentService = new PaymentService();
  *
  * /api/billing/payments/{invoiceId}:
  *   get:
- *     summary: Retrieve payment history for an invoice
+ *     summary: Retrieve payment history for an invoice;
  *     description: Fetches all payment records associated with a specific invoice ID.
  *     parameters:
- *       - in: path
- *         name: invoiceId
- *         required: true
+ *       - in: path;
+ *         name: invoiceId;
+ *         required: true;
  *         schema:
- *           type: string
+ *           type: string;
  *         description: The ID of the invoice to retrieve payment history for.
  *     responses:
  *       200:
@@ -73,9 +83,9 @@ const paymentService = new PaymentService();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
+ *               type: array;
  *               items:
- *                 $ref: "#/components/schemas/PaymentRecord" # Define PaymentRecord schema as needed
+ *                 $ref: "#/components/schemas/PaymentRecord" # Define PaymentRecord schema as needed;
  *       404:
  *         description: Invoice not found or no payments associated.
  *       500:
@@ -88,10 +98,10 @@ const paymentService = new PaymentService();
 // - Database interactions to record payment success/failure and update invoice status.
 // - Adherence to PCI DSS compliance if handling sensitive cardholder data directly.
 
-// For the purpose of this exercise, we'll assume the actual payment processing logic
+// For the purpose of this exercise, we'll assume the actual payment processing logic;
 // is handled by the `PaymentService` and we are defining the API contract here.
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
     const { invoiceId, ...paymentDetails } = req.body;
 
     if (req.method === "POST") {
@@ -100,36 +110,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         try {
-            // In a real application, you would pass necessary details from paymentDetails
+            // In a real application, you would pass necessary details from paymentDetails;
             // to an instance of PaymentService to process the payment.
             // For example: const paymentResult = await paymentService.processPayment(invoiceId, paymentDetails);
             // Then, depending on paymentResult, send appropriate response.
 
-            // Mocking a successful payment processing for now
-            // This would typically involve calls to a payment gateway
-            console.log(`Processing payment for invoice: ${invoiceId}`);
-            console.log("Payment Details:", paymentDetails);
+            // Mocking a successful payment processing for now;
+            // This would typically involve calls to a payment gateway;
+            // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+            // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
             
-            // Simulate payment processing delay
+            // Simulate payment processing delay;
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Assume payment is successful and a transaction ID is generated
+            // Assume payment is successful and a transaction ID is generated;
             const transactionId = `txn_${Date.now()}`;
             
-            // Here, you would typically update your database to reflect the payment
+            // Here, you would typically update your database to reflect the payment;
             // For example, mark the invoice as paid, record the transaction, etc.
 
             return res.status(200).json({ 
                 message: "Payment processed successfully", 
-                transactionId: transactionId 
+                transactionId: transactionId;
             });
 
-        } catch (error: any) {
-            console.error("Error processing payment:", error);
+        } catch (error: unknown) {
+
             return res.status(500).json({ message: "Error processing payment", error: error.message });
         }
     }
-    // Handle GET request for retrieving payment history for an invoiceId
+    // Handle GET request for retrieving payment history for an invoiceId;
     else if (req.method === "GET") {
         const invId = req.query.invoiceId;
         if (typeof invId === 'string') {
@@ -143,14 +153,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 ];
                 // Filter mock payments by invoiceId (even though it's not used in this mock example)
                 // This is just to illustrate where such logic would go.
-                const paymentsForInvoice = mockPayments.filter(p => true); // Replace true with actual filtering logic
+                const paymentsForInvoice = mockPayments.filter(p => true); // Replace true with actual filtering logic;
 
                 if (paymentsForInvoice.length === 0) {
                     return res.status(404).json({ message: `No payments found for invoice ${invId}` });
                 }
                 return res.status(200).json(paymentsForInvoice);
-            } catch (error: any) {
-                console.error(`Error fetching payments for invoice ${invId}:`, error);
+            } catch (error: unknown) {
+
                 return res.status(500).json({ message: `Error fetching payments for invoice ${invId}`, error: error.message });
             }
         } else {

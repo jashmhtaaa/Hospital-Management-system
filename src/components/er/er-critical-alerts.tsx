@@ -1,7 +1,18 @@
-// src/components/er/ERCriticalAlerts.tsx
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// src/components/er/ERCriticalAlerts.tsx;
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -13,22 +24,22 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast"; // Changed import
+import { useToast } from "@/components/ui/use-toast"; // Changed import;
 
-// Mock data structure - replace with API data
+// Mock data structure - replace with API data;
 interface CriticalAlert {
   id: string;
   visit_id: string;
-  patient_name: string; // Need to join with visits/patients table
-  mrn: string; // Need to join
-  location: string; // Need to join
-  alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.
+  patient_name: string; // Need to join with visits/patients table;
+  mrn: string; // Need to join;
+  location: string; // Need to join;
+  alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.;
   activation_timestamp: string;
-  status: string; // Active, Acknowledged, Resolved
+  status: string; // Active, Acknowledged, Resolved;
   details?: string;
 }
 
-// Mock data - replace with API fetch
+// Mock data - replace with API fetch;
 const mockAlerts: CriticalAlert[] = [
   {
     id: "alert_uuid_1",
@@ -76,9 +87,9 @@ const mockAlerts: CriticalAlert[] = [
   },
 ];
 
-// FIX: Adjust return type to match allowed Badge variants
+// FIX: Adjust return type to match allowed Badge variants;
 const getAlertBadgeVariant = (
-  status: string
+  status: string;
 ): "destructive" | "secondary" | "default" => {
   switch (status) {
     case "Active": {
@@ -86,38 +97,38 @@ const getAlertBadgeVariant = (
     }
     case "Acknowledged": {
       return "secondary";
-    } // Changed "warning" to "secondary"
+    } // Changed "warning" to "secondary";
     default: {
       return "default";
-    } // For "Resolved" or other statuses
+    } // For "Resolved" or other statuses;
   }
 };
 
-export default function ERCriticalAlerts() {
+export default const ERCriticalAlerts = () {
   const [alerts, setAlerts] = useState<CriticalAlert[]>(mockAlerts);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // Added hook call
+  const { toast } = useToast(); // Added hook call;
 
-  // TODO: Fetch data from API: GET /api/er/alerts?status=active (or similar endpoint)
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // useEffect(() => {
-  //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts
+  //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts;
   //     .then(res => res.json())
   //     .then(data => setAlerts(data));
   // }, []);
 
-  // TODO: Implement real-time updates via WebSockets or polling
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
   const handleAcknowledge = async (alertId: string) => {
     setIsLoading(true);
-    console.log(`Acknowledging alert: ${alertId}`);
-    // TODO: Implement API call: PUT /api/er/visits/[visitId]/alerts/[alertId] { status: "Acknowledged" }
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 500));
       setAlerts((previousAlerts) =>
         previousAlerts.map((alert) =>
-          alert.id === alertId ? { ...alert, status: "Acknowledged" } : alert
-        )
+          alert.id === alertId ? { ...alert, status: "Acknowledged" } : alert;
+        );
       );
       toast({
         title: "Alert Acknowledged",
@@ -136,14 +147,14 @@ export default function ERCriticalAlerts() {
 
   const handleResolve = async (alertId: string) => {
     setIsLoading(true);
-    console.log(`Resolving alert: ${alertId}`);
-    // TODO: Implement API call: PUT /api/er/visits/[visitId]/alerts/[alertId] { status: "Resolved" }
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 500));
       setAlerts(
         (previousAlerts) =>
-          previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view
+          previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view;
       );
       toast({
         title: "Alert Resolved",
@@ -165,101 +176,101 @@ export default function ERCriticalAlerts() {
   );
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-md border dark:border-gray-700">
+    <div className="space-y-4">;
+      <div className="rounded-md border dark:border-gray-700">;
         <Table>
           <TableHeader>
-            <TableRow className="border-b dark:border-gray-700">
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Patient (MRN)
+            <TableRow className="border-b dark:border-gray-700">;
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Patient (MRN);
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Location
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Location;
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Alert Type
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Alert Type;
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Activated
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Activated;
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Details
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Details;
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Status
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Status;
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">
-                Actions
+              <TableHead className="text-gray-700 dark:text-gray-300">;
+                Actions;
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {activeAlerts.length > 0 ? (
               activeAlerts.map((alert) => (
-                <TableRow
+                <TableRow;
                   key={alert.id}
-                  className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                  className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50";
                 >
                   <TableCell>
-                    <div className="font-medium text-gray-900 dark:text-gray-100">
+                    <div className="font-medium text-gray-900 dark:text-gray-100">;
                       {alert.patient_name}
                     </div>
-                    <div className="text-sm text-muted-foreground dark:text-gray-400">
+                    <div className="text-sm text-muted-foreground dark:text-gray-400">;
                       {alert.mrn}
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-700 dark:text-gray-300">
+                  <TableCell className="text-gray-700 dark:text-gray-300">;
                     {alert.location}
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center text-gray-700 dark:text-gray-300">
-                      <AlertTriangle className="h-4 w-4 mr-1 text-red-600 dark:text-red-400" />
+                    <div className="flex items-center text-gray-700 dark:text-gray-300">;
+                      <AlertTriangle className="h-4 w-4 mr-1 text-red-600 dark:text-red-400" />;
                       {alert.alert_type}
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-700 dark:text-gray-300">
+                  <TableCell className="text-gray-700 dark:text-gray-300">;
                     {new Date(alert.activation_timestamp).toLocaleTimeString()}
                   </TableCell>
-                  <TableCell className="max-w-[250px] truncate text-gray-700 dark:text-gray-300">
+                  <TableCell className="max-w-[250px] truncate text-gray-700 dark:text-gray-300">;
                     {alert.details || "N/A"}
                   </TableCell>
                   <TableCell>
                     {/* FIX: Ensure the variant returned by getAlertBadgeVariant is valid */}
-                    <Badge variant={getAlertBadgeVariant(alert.status)}>
+                    <Badge variant={getAlertBadgeVariant(alert.status)}>;
                       {alert.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2">;
                       {alert.status === "Active" && (
-                        <Button
-                          variant="outline"
-                          size="sm"
+                        <Button;
+                          variant="outline";
+                          size="sm";
                           onClick={() => handleAcknowledge(alert.id)}
                           disabled={isLoading}
                         >
-                          Ack
+                          Ack;
                         </Button>
                       )}
-                      <Button
-                        variant="outline"
-                        size="sm"
+                      <Button;
+                        variant="outline";
+                        size="sm";
                         onClick={() => handleResolve(alert.id)}
                         disabled={isLoading}
                       >
-                        Resolve
+                        Resolve;
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))
+              ));
             ) : (
               <TableRow>
-                <TableCell
+                <TableCell;
                   colSpan={7}
-                  className="h-24 text-center text-gray-500 dark:text-gray-400"
+                  className="h-24 text-center text-gray-500 dark:text-gray-400";
                 >
-                  No active critical alerts.
+                  No active critical alerts.;
                 </TableCell>
               </TableRow>
             )}

@@ -1,18 +1,29 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect, notFound } from 'next/navigation';
 import { authOptions } from '../../../lib/auth';
 import PatientDetail from '../../../components/patient-management/patient-detail';
 
-export default async function PatientDetailPage({
-  params
+export default async const PatientDetailPage = ({
+  params;
 }: {
   params: { id: string }
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session) {
     redirect('/login');
   }
@@ -23,7 +34,7 @@ export default async function PatientDetailPage({
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients/${params.id}`, {
       cache: 'no-store',
       headers: {
-        Cookie: `next-auth.session-token=${session.user.id}`
+        Cookie: `next-auth.session-token=${session.user.id}`;
       }
     });
     
@@ -36,14 +47,14 @@ export default async function PatientDetailPage({
     
     patient = await response.json();
   } catch (error) {
-    console.error('Error pre-fetching patient:', error);
-    // Will let client-side handling take over
+
+    // Will let client-side handling take over;
   }
   
   return (
-    <div className="container mx-auto py-6">
-      <Suspense fallback={<div>Loading patient details...</div>}>
-        <PatientDetail patientId={params.id} initialData={patient} />
+    <div className="container mx-auto py-6">;
+      <Suspense fallback={<div>Loading patient details...</div>}>;
+        <PatientDetail patientId={params.id} initialData={patient} />;
       </Suspense>
     </div>
   );

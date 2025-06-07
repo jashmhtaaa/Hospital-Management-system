@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +20,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,7 +40,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Pagination } from '@/components/ui/pagination';
 import { format } from 'date-fns';
@@ -47,38 +58,38 @@ import {
   RefreshCw,
   Search,
   HardDrive,
-  Tool
+  Tool;
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Status badge color mapping
+// Status badge color mapping;
 const statusColors: Record<string, string> = {
   'PENDING': 'bg-yellow-500',
   'ASSIGNED': 'bg-blue-500',
   'IN_PROGRESS': 'bg-purple-500',
   'ON_HOLD': 'bg-orange-500',
   'COMPLETED': 'bg-green-500',
-  'CANCELLED': 'bg-gray-500'
+  'CANCELLED': 'bg-gray-500';
 };
 
-// Priority badge color mapping
+// Priority badge color mapping;
 const priorityColors: Record<string, string> = {
   'LOW': 'bg-blue-500',
   'MEDIUM': 'bg-yellow-500',
   'HIGH': 'bg-orange-500',
-  'EMERGENCY': 'bg-red-500'
+  'EMERGENCY': 'bg-red-500';
 };
 
-// Request type icon mapping
+// Request type icon mapping;
 const requestTypeIcons: Record<string, any> = {
   'REPAIR': <Wrench className="h-4 w-4 mr-1" />,
   'PREVENTIVE': <Tool className="h-4 w-4 mr-1" />,
   'INSTALLATION': <HardDrive className="h-4 w-4 mr-1" />,
-  'INSPECTION': <Search className="h-4 w-4 mr-1" />
+  'INSPECTION': <Search className="h-4 w-4 mr-1" />;
 };
 
-export function MaintenanceDashboard() {
+export const MaintenanceDashboard = () {
   const [requests, setRequests] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [locations, setLocations] = useState<any[]>([]);
@@ -96,7 +107,7 @@ export function MaintenanceDashboard() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
-  // Load initial data from URL params
+  // Load initial data from URL params;
   useEffect(() => {
     const tab = searchParams.get('tab') || 'all';
     const status = searchParams.get('status') || '';
@@ -115,7 +126,7 @@ export function MaintenanceDashboard() {
     setCurrentPage(page);
   }, [searchParams]);
   
-  // Fetch locations for filtering
+  // Fetch locations for filtering;
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -124,14 +135,14 @@ export function MaintenanceDashboard() {
         const data = await response.json();
         setLocations(data);
       } catch (error) {
-        console.error('Error fetching locations:', error);
+
       }
     };
     
     fetchLocations();
   }, []);
   
-  // Fetch assets for filtering
+  // Fetch assets for filtering;
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -140,19 +151,19 @@ export function MaintenanceDashboard() {
         const data = await response.json();
         setAssets(data.data || []);
       } catch (error) {
-        console.error('Error fetching assets:', error);
+
       }
     };
     
     fetchAssets();
   }, []);
   
-  // Fetch maintenance requests
+  // Fetch maintenance requests;
   useEffect(() => {
     const fetchRequests = async () => {
       setIsLoading(true);
       try {
-        // Build query parameters
+        // Build query parameters;
         const params = new URLSearchParams();
         
         if (filterStatus) params.append('status', filterStatus);
@@ -161,7 +172,7 @@ export function MaintenanceDashboard() {
         if (filterPriority) params.append('priority', filterPriority);
         if (filterType) params.append('requestType', filterType);
         
-        // Handle tab-specific filters
+        // Handle tab-specific filters;
         if (activeTab === 'pending') {
           params.set('status', 'PENDING');
         } else if (activeTab === 'inProgress') {
@@ -185,7 +196,7 @@ export function MaintenanceDashboard() {
         setRequests(data.data);
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
-        console.error('Error fetching requests:', error);
+
         toast({
           title: "Error",
           description: "Failed to load maintenance requests. Please try again.",
@@ -199,7 +210,7 @@ export function MaintenanceDashboard() {
     fetchRequests();
   }, [activeTab, filterStatus, filterLocation, filterAsset, filterPriority, filterType, currentPage, toast]);
   
-  // Update URL with current filters
+  // Update URL with current filters;
   const updateUrlParams = () => {
     const params = new URLSearchParams();
     
@@ -214,12 +225,12 @@ export function MaintenanceDashboard() {
     router.push(`/support-services/maintenance?${params.toString()}`);
   };
   
-  // Handle tab change
+  // Handle tab change;
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     setCurrentPage(1);
     
-    // Reset filters when changing tabs to avoid conflicts
+    // Reset filters when changing tabs to avoid conflicts;
     if (value === 'pending') {
       setFilterStatus('PENDING');
       setFilterPriority('');
@@ -247,13 +258,13 @@ export function MaintenanceDashboard() {
     }
   };
   
-  // Handle filter changes
+  // Handle filter changes;
   const applyFilters = () => {
     setCurrentPage(1);
     updateUrlParams();
   };
   
-  // Reset all filters
+  // Reset all filters;
   const resetFilters = () => {
     setFilterStatus('');
     setFilterLocation('');
@@ -269,22 +280,22 @@ export function MaintenanceDashboard() {
     }
   };
   
-  // Handle page change
+  // Handle page change;
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
   
-  // Navigate to create new request
+  // Navigate to create new request;
   const handleCreateRequest = () => {
     router.push('/support-services/maintenance/new');
   };
   
-  // Navigate to request details
+  // Navigate to request details;
   const handleViewRequest = (id: string) => {
     router.push(`/support-services/maintenance/${id}`);
   };
   
-  // Render status badge
+  // Render status badge;
   const renderStatusBadge = (status: string) => {
     const color = statusColors[status] || 'bg-gray-500';
     let icon;
@@ -313,59 +324,59 @@ export function MaintenanceDashboard() {
     }
     
     return (
-      <Badge className={`${color} flex items-center`}>
+      <Badge className={`${color} flex items-center`}>;
         {icon}
         {status.replace(/_/g, ' ')}
       </Badge>
     );
   };
   
-  // Render priority badge
+  // Render priority badge;
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || 'bg-gray-500';
     let icon = priority === 'EMERGENCY' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
     
     return (
-      <Badge className={`${color} flex items-center`}>
+      <Badge className={`${color} flex items-center`}>;
         {icon}
         {priority}
       </Badge>
     );
   };
   
-  // Render request type with icon
+  // Render request type with icon;
   const renderRequestType = (requestType: string) => {
     const icon = requestTypeIcons[requestType] || null;
     
     return (
-      <div className="flex items-center">
+      <div className="flex items-center">;
         {icon}
         {requestType.replace(/_/g, ' ')}
       </div>
     );
   };
   
-  // Render loading skeleton
+  // Render loading skeleton;
   const renderSkeleton = () => (
-    <div className="space-y-4">
+    <div className="space-y-4">;
       {[...Array(5)].map((_, i) => (
-        <Card key={i}>
-          <CardHeader className="pb-2">
-            <div className="flex justify-between">
-              <Skeleton className="h-6 w-1/3" />
-              <Skeleton className="h-6 w-20" />
+        <Card key={i}>;
+          <CardHeader className="pb-2">;
+            <div className="flex justify-between">;
+              <Skeleton className="h-6 w-1/3" />;
+              <Skeleton className="h-6 w-20" />;
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-2/3" />
+            <div className="space-y-2">;
+              <Skeleton className="h-4 w-full" />;
+              <Skeleton className="h-4 w-2/3" />;
             </div>
           </CardContent>
           <CardFooter>
-            <div className="flex justify-between w-full">
-              <Skeleton className="h-4 w-1/4" />
-              <Skeleton className="h-8 w-24" />
+            <div className="flex justify-between w-full">;
+              <Skeleton className="h-4 w-1/4" />;
+              <Skeleton className="h-8 w-24" />;
             </div>
           </CardFooter>
         </Card>
@@ -374,54 +385,54 @@ export function MaintenanceDashboard() {
   );
   
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Maintenance Management</h1>
-        <Button onClick={handleCreateRequest}>
-          <Plus className="h-4 w-4 mr-2" />
-          New Request
+    <div className="space-y-6">;
+      <div className="flex justify-between items-center">;
+        <h1 className="text-2xl font-bold">Maintenance Management</h1>;
+        <Button onClick={handleCreateRequest}>;
+          <Plus className="h-4 w-4 mr-2" />;
+          New Request;
         </Button>
       </div>
       
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList className="grid grid-cols-6">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="pending">Pending</TabsTrigger>
-          <TabsTrigger value="inProgress">In Progress</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
-          <TabsTrigger value="emergency">Emergency</TabsTrigger>
-          <TabsTrigger value="repairs">Repairs</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={handleTabChange}>;
+        <TabsList className="grid grid-cols-6">;
+          <TabsTrigger value="all">All</TabsTrigger>;
+          <TabsTrigger value="pending">Pending</TabsTrigger>;
+          <TabsTrigger value="inProgress">In Progress</TabsTrigger>;
+          <TabsTrigger value="completed">Completed</TabsTrigger>;
+          <TabsTrigger value="emergency">Emergency</TabsTrigger>;
+          <TabsTrigger value="repairs">Repairs</TabsTrigger>;
         </TabsList>
         
-        <div className="my-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="my-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">;
           <div>
-            <label className="text-sm font-medium">Status</label>
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
+            <label className="text-sm font-medium">Status</label>;
+            <Select value={filterStatus} onValueChange={setFilterStatus}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Statuses" />
+                <SelectValue placeholder="All Statuses" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
-                <SelectItem value="PENDING">Pending</SelectItem>
-                <SelectItem value="ASSIGNED">Assigned</SelectItem>
-                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-                <SelectItem value="ON_HOLD">On Hold</SelectItem>
-                <SelectItem value="COMPLETED">Completed</SelectItem>
-                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                <SelectItem value="">All Statuses</SelectItem>;
+                <SelectItem value="PENDING">Pending</SelectItem>;
+                <SelectItem value="ASSIGNED">Assigned</SelectItem>;
+                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>;
+                <SelectItem value="ON_HOLD">On Hold</SelectItem>;
+                <SelectItem value="COMPLETED">Completed</SelectItem>;
+                <SelectItem value="CANCELLED">Cancelled</SelectItem>;
               </SelectContent>
             </Select>
           </div>
           
           <div>
-            <label className="text-sm font-medium">Location</label>
-            <Select value={filterLocation} onValueChange={setFilterLocation}>
+            <label className="text-sm font-medium">Location</label>;
+            <Select value={filterLocation} onValueChange={setFilterLocation}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Locations" />
+                <SelectValue placeholder="All Locations" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Locations</SelectItem>
+                <SelectItem value="">All Locations</SelectItem>;
                 {locations.map(location => (
-                  <SelectItem key={location.id} value={location.id}>
+                  <SelectItem key={location.id} value={location.id}>;
                     {location.name}
                   </SelectItem>
                 ))}
@@ -430,15 +441,15 @@ export function MaintenanceDashboard() {
           </div>
           
           <div>
-            <label className="text-sm font-medium">Asset</label>
-            <Select value={filterAsset} onValueChange={setFilterAsset}>
+            <label className="text-sm font-medium">Asset</label>;
+            <Select value={filterAsset} onValueChange={setFilterAsset}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Assets" />
+                <SelectValue placeholder="All Assets" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Assets</SelectItem>
+                <SelectItem value="">All Assets</SelectItem>;
                 {assets.map(asset => (
-                  <SelectItem key={asset.id} value={asset.id}>
+                  <SelectItem key={asset.id} value={asset.id}>;
                     {asset.name}
                   </SelectItem>
                 ))}
@@ -447,117 +458,117 @@ export function MaintenanceDashboard() {
           </div>
           
           <div>
-            <label className="text-sm font-medium">Priority</label>
-            <Select value={filterPriority} onValueChange={setFilterPriority}>
+            <label className="text-sm font-medium">Priority</label>;
+            <Select value={filterPriority} onValueChange={setFilterPriority}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Priorities" />
+                <SelectValue placeholder="All Priorities" />;
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Priorities</SelectItem>
-                <SelectItem value="LOW">Low</SelectItem>
-                <SelectItem value="MEDIUM">Medium</SelectItem>
-                <SelectItem value="HIGH">High</SelectItem>
-                <SelectItem value="EMERGENCY">Emergency</SelectItem>
+                <SelectItem value="">All Priorities</SelectItem>;
+                <SelectItem value="LOW">Low</SelectItem>;
+                <SelectItem value="MEDIUM">Medium</SelectItem>;
+                <SelectItem value="HIGH">High</SelectItem>;
+                <SelectItem value="EMERGENCY">Emergency</SelectItem>;
               </SelectContent>
             </Select>
           </div>
           
-          <div className="flex items-end space-x-2">
-            <Button onClick={applyFilters} className="flex-1">
-              <Filter className="h-4 w-4 mr-2" />
-              Apply Filters
+          <div className="flex items-end space-x-2">;
+            <Button onClick={applyFilters} className="flex-1">;
+              <Filter className="h-4 w-4 mr-2" />;
+              Apply Filters;
             </Button>
-            <Button variant="outline" onClick={resetFilters}>
-              <RefreshCw className="h-4 w-4" />
+            <Button variant="outline" onClick={resetFilters}>;
+              <RefreshCw className="h-4 w-4" />;
             </Button>
           </div>
         </div>
         
-        <TabsContent value={activeTab} className="mt-0">
+        <TabsContent value={activeTab} className="mt-0">;
           {isLoading ? (
-            renderSkeleton()
+            renderSkeleton();
           ) : requests.length === 0 ? (
             <Card>
-              <CardContent className="flex flex-col items-center justify-center py-10">
-                <Wrench className="h-12 w-12 text-gray-400 mb-4" />
-                <p className="text-lg font-medium text-gray-900">No requests found</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  {activeTab === 'all' 
+              <CardContent className="flex flex-col items-center justify-center py-10">;
+                <Wrench className="h-12 w-12 text-gray-400 mb-4" />;
+                <p className="text-lg font-medium text-gray-900">No requests found</p>;
+                <p className="text-sm text-gray-500 mt-1">;
+                  {activeTab === 'all';
                     ? 'There are no maintenance requests matching your filters.' 
                     : `There are no ${activeTab === 'inProgress' ? 'in progress' : activeTab} maintenance requests.`}
                 </p>
-                <Button onClick={handleCreateRequest} className="mt-4">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create New Request
+                <Button onClick={handleCreateRequest} className="mt-4">;
+                  <Plus className="h-4 w-4 mr-2" />;
+                  Create New Request;
                 </Button>
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4">;
               {requests.map((request) => (
-                <Card key={request.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
+                <Card key={request.id} className="hover:shadow-md transition-shadow">;
+                  <CardHeader className="pb-2">;
+                    <div className="flex justify-between items-start">;
                       <div>
-                        <CardTitle className="text-lg">
+                        <CardTitle className="text-lg">;
                           {renderRequestType(request.requestType)}
                         </CardTitle>
-                        <CardDescription className="flex items-center mt-1">
-                          <MapPin className="h-3 w-3 mr-1" />
+                        <CardDescription className="flex items-center mt-1">;
+                          <MapPin className="h-3 w-3 mr-1" />;
                           {request.location?.name || 'Unknown Location'}
                           {request.asset && (
-                            <span className="ml-2">• {request.asset.name}</span>
+                            <span className="ml-2">• {request.asset.name}</span>;
                           )}
                         </CardDescription>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-2">;
                         {renderPriorityBadge(request.priority)}
                         {renderStatusBadge(request.status)}
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm line-clamp-2">{request.description}</p>
-                    <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">
-                      <div className="flex items-center">
-                        <Calendar className="h-3 w-3 mr-1" />
+                    <p className="text-sm line-clamp-2">{request.description}</p>;
+                    <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">;
+                      <div className="flex items-center">;
+                        <Calendar className="h-3 w-3 mr-1" />;
                         Created: {format(new Date(request.createdAt), 'MMM d, yyyy')}
                       </div>
                       {request.scheduledDate && (
-                        <div className="flex items-center">
-                          <Clock className="h-3 w-3 mr-1" />
+                        <div className="flex items-center">;
+                          <Clock className="h-3 w-3 mr-1" />;
                           Scheduled: {format(new Date(request.scheduledDate), 'MMM d, yyyy')}
                         </div>
                       )}
-                      <div className="flex items-center">
-                        <User className="h-3 w-3 mr-1" />
+                      <div className="flex items-center">;
+                        <User className="h-3 w-3 mr-1" />;
                         By: {request.requestedByUser?.name || 'Unknown'}
                       </div>
                       {request.estimatedHours && (
-                        <div className="flex items-center">
-                          <Clock3 className="h-3 w-3 mr-1" />
+                        <div className="flex items-center">;
+                          <Clock3 className="h-3 w-3 mr-1" />;
                           Est. Hours: {request.estimatedHours}
                         </div>
                       )}
                     </div>
                   </CardContent>
-                  <CardFooter className="flex justify-between pt-0">
-                    <div className="text-xs text-gray-500">
-                      {request.workOrders?.length || 0} work order(s)
+                  <CardFooter className="flex justify-between pt-0">;
+                    <div className="text-xs text-gray-500">;
+                      {request.workOrders?.length || 0} work order(s);
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
+                    <Button;
+                      variant="outline";
+                      size="sm";
                       onClick={() => handleViewRequest(request.id)}
                     >
-                      View Details
+                      View Details;
                     </Button>
                   </CardFooter>
                 </Card>
               ))}
               
               {totalPages > 1 && (
-                <Pagination
+                <Pagination;
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}

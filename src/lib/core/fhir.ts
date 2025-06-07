@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Core FHIR utilities for the Financial Management system
- * Provides standardized FHIR resource handling and validation
+ * Core FHIR utilities for the Financial Management system;
+ * Provides standardized FHIR resource handling and validation;
  */
 
-// FHIR Resource Types relevant to Financial Management
+// FHIR Resource Types relevant to Financial Management;
 export enum FHIRResourceType {
   ACCOUNT = 'Account',
   CLAIM = 'Claim',
@@ -294,9 +305,9 @@ export interface FHIRPaymentReconciliation {
   }>;
 }
 
-// Utility function to convert internal invoice to FHIR Invoice
-export function convertToFHIRInvoice(invoice: any): FHIRInvoice {
-  // Map internal invoice status to FHIR Invoice status
+// Utility function to convert internal invoice to FHIR Invoice;
+export const convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
+  // Map internal invoice status to FHIR Invoice status;
   const statusMap: Record<string, 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error'> = {
     draft: 'draft',
     pending: 'draft',
@@ -330,7 +341,7 @@ export function convertToFHIRInvoice(invoice: any): FHIRInvoice {
     account: invoice.accountId ? {
       reference: `Account/${invoice.accountId}`,
     } : undefined,
-    lineItem: invoice.items.map((item: any, index: number) => ({
+    lineItem: invoice.items.map((item: unknown, index: number) => ({
       sequence: index + 1,
       chargeItem: {
         reference: `ChargeItem/${item.id}`,
@@ -370,9 +381,9 @@ export function convertToFHIRInvoice(invoice: any): FHIRInvoice {
   };
 }
 
-// Utility function to convert internal claim to FHIR Claim
-export function convertToFHIRClaim(claim: any): FHIRClaim {
-  // Map internal claim status to FHIR Claim status
+// Utility function to convert internal claim to FHIR Claim;
+export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
+  // Map internal claim status to FHIR Claim status;
   const statusMap: Record<string, 'active' | 'cancelled' | 'draft' | 'entered-in-error'> = {
     draft: 'draft',
     pending: 'active',
@@ -432,7 +443,7 @@ export function convertToFHIRClaim(claim: any): FHIRClaim {
         },
       },
     ],
-    diagnosis: claim.diagnoses.map((diagnosis: any, index: number) => ({
+    diagnosis: claim.diagnoses.map((diagnosis: unknown, index: number) => ({
       sequence: index + 1,
       diagnosis: {
         coding: [
@@ -444,7 +455,7 @@ export function convertToFHIRClaim(claim: any): FHIRClaim {
         ],
       },
     })),
-    item: claim.items.map((item: any, index: number) => ({
+    item: claim.items.map((item: unknown, index: number) => ({
       sequence: index + 1,
       productOrService: {
         coding: [
@@ -472,8 +483,8 @@ export function convertToFHIRClaim(claim: any): FHIRClaim {
   };
 }
 
-// Utility function to convert internal coverage to FHIR Coverage
-export function convertToFHIRCoverage(coverage: any): FHIRCoverage {
+// Utility function to convert internal coverage to FHIR Coverage;
+export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
   return {
     resourceType: FHIRResourceType.COVERAGE,
     id: coverage.id,
@@ -535,10 +546,10 @@ export function convertToFHIRCoverage(coverage: any): FHIRCoverage {
   };
 }
 
-// Utility function to validate FHIR resources
-export function validateFHIRResource(resource: any): boolean {
-  // This would typically use a FHIR validation library
-  // For now, we'll do basic validation
+// Utility function to validate FHIR resources;
+export const validateFHIRResource = (resource: unknown): boolean {
+  // This would typically use a FHIR validation library;
+  // For now, we'll do basic validation;
   
   if (!resource || !resource.resourceType) {
     return false;
@@ -560,13 +571,13 @@ export function validateFHIRResource(resource: any): boolean {
   }
 }
 
-// Helper validation functions
-function validateFHIRAccount(account: any): boolean {
+// Helper validation functions;
+const validateFHIRAccount = (account: unknown): boolean {
   return !!account.status;
 }
 
-function validateFHIRClaim(claim: any): boolean {
-  return !!claim.status && 
+const validateFHIRClaim = (claim: unknown): boolean {
+  return !!claim.status &&;
          !!claim.type && 
          !!claim.use && 
          !!claim.patient && 
@@ -577,20 +588,20 @@ function validateFHIRClaim(claim: any): boolean {
          claim.insurance.length > 0;
 }
 
-function validateFHIRCoverage(coverage: any): boolean {
-  return !!coverage.status && 
+const validateFHIRCoverage = (coverage: unknown): boolean {
+  return !!coverage.status &&;
          !!coverage.beneficiary && 
          Array.isArray(coverage.payor) && 
          coverage.payor.length > 0;
 }
 
-function validateFHIRInvoice(invoice: any): boolean {
-  return !!invoice.status && 
+const validateFHIRInvoice = (invoice: unknown): boolean {
+  return !!invoice.status &&;
          !!invoice.date;
 }
 
-function validateFHIRPaymentReconciliation(paymentReconciliation: any): boolean {
-  return !!paymentReconciliation.status && 
+const validateFHIRPaymentReconciliation = (paymentReconciliation: unknown): boolean {
+  return !!paymentReconciliation.status &&;
          !!paymentReconciliation.created && 
          !!paymentReconciliation.paymentDate && 
          !!paymentReconciliation.paymentAmount;

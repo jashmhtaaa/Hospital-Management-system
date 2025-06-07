@@ -1,11 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
 import { Consultation } from "@/types/opd";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
 
-// Zod schema for creating an OPD visit
+// Zod schema for creating an OPD visit;
 const opdVisitCreateSchema = z.object({
     patient_id: z.number(),
     doctor_id: z.number(),
@@ -22,19 +33,19 @@ const opdVisitCreateSchema = z.object({
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     try {
-        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined
+        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined;
         const page = Number.parseInt(searchParams.get("page") || "1");
         const limit = Number.parseInt(searchParams.get("limit") || "10");
         const offset = (page - 1) * limit;
         const patientIdFilter = searchParams.get("patient_id");
-        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams
+        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams;
         const dateFromFilter = searchParams.get("date_from");
         const dateToFilter = searchParams.get("date_to");
         const statusFilter = searchParams.get("status");
@@ -46,16 +57,16 @@ export async function GET(request: NextRequest) {
         const finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "consultation_datetime";
         const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
-        let query = `
-            SELECT
+        let query = `;
+            SELECT;
                 c.consultation_id, c.patient_id, c.doctor_id, c.consultation_datetime,
                 c.chief_complaint, c.visit_status,
                 p.first_name as patient_first_name, p.last_name as patient_last_name,
-                u.name as doctor_name
-            FROM Consultations c
-            JOIN Patients p ON c.patient_id = p.patient_id
-            JOIN Users u ON c.doctor_id = u.id
-            WHERE c.visit_type = 'OPD'
+                u.name as doctor_name;
+            FROM Consultations c;
+            JOIN Patients p ON c.patient_id = p.patient_id;
+            JOIN Users u ON c.doctor_id = u.id;
+            WHERE c.visit_type = 'OPD';
         `;
         const queryParameters: (string | number)[] = [];
         let countQuery = `SELECT COUNT(*) as total FROM Consultations WHERE visit_type = 'OPD'`;
@@ -97,7 +108,7 @@ export async function GET(request: NextRequest) {
 
         const [visitsResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(...queryParameters).all<Consultation>(),
-            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>()
+            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
         ]);
 
         const results = visitsResult.results || [];
@@ -114,7 +125,7 @@ export async function GET(request: NextRequest) {
         });
 
     } catch (error: unknown) {
-        console.error("Error fetching OPD visits:", error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;
@@ -127,12 +138,12 @@ export async function GET(request: NextRequest) {
 }
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record)
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in;
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -155,7 +166,7 @@ export async function POST(request: NextRequest) {
                 patient_id, doctor_id, consultation_datetime, visit_type, visit_status,
                 chief_complaint, history_of_present_illness, past_medical_history,
                 physical_examination, diagnosis, treatment_plan, follow_up_instructions,
-                created_by_user_id, created_at, updated_at
+                created_by_user_id, created_at, updated_at;
             ) VALUES (?, ?, ?, 'OPD', 'Scheduled', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         ).bind(
             visitData.patient_id,
@@ -168,15 +179,15 @@ export async function POST(request: NextRequest) {
             visitData.diagnosis,
             visitData.treatment_plan,
             visitData.follow_up_instructions,
-            session.user.userId, // session.user is now guaranteed to be defined
+            session.user.userId, // session.user is now guaranteed to be defined;
             now,
-            now
+            now;
         );
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta;
 
         if (!insertResult.success || !insertResult.meta || typeof insertResult.meta.last_row_id !== 'number') {
-            console.error("Failed to create OPD visit or get last_row_id:", insertResult);
+
             throw new Error("Failed to create OPD visit record");
         }
 
@@ -188,7 +199,7 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error: unknown) {
-        console.error("Error creating OPD visit:", error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;

@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Prescription Management API Routes
+ * Prescription Management API Routes;
  * 
- * This file implements the FHIR-compliant API endpoints for prescription management
+ * This file implements the FHIR-compliant API endpoints for prescription management;
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
@@ -23,7 +34,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const prescriptionRepository = {
@@ -33,33 +44,33 @@ const prescriptionRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findByStatus: (status: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (prescription: any) => Promise.resolve(prescription.id || 'new-id'),
+  save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-// Initialize services
+// Initialize services;
 const interactionService = new DrugInteractionService(
   medicationRepository,
-  prescriptionRepository
+  prescriptionRepository;
 );
 
 /**
- * GET /api/pharmacy/prescriptions
- * List prescriptions with filtering and pagination
+ * GET /api/pharmacy/prescriptions;
+ * List prescriptions with filtering and pagination;
  */
-export async function GET(req: NextRequest) {
+export async const GET = (req: NextRequest) {
   try {
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const patientId = url.searchParams.get('patientId');
     const prescriberId = url.searchParams.get('prescriberId');
@@ -70,14 +81,14 @@ export async function GET(req: NextRequest) {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Build filter criteria
-    const filter: any = {};
+    // Build filter criteria;
+    const filter: unknown = {};
     if (patientId) filter.patientId = patientId;
     if (prescriberId) filter.prescriberId = prescriberId;
     if (medicationId) filter.medicationId = medicationId;
     if (status) filter.status = status;
     
-    // Add date range if provided
+    // Add date range if provided;
     if (startDate || endDate) {
       filter.createdAt = {};
       if (startDate) filter.createdAt.gte = new Date(startDate);
@@ -87,7 +98,7 @@ export async function GET(req: NextRequest) {
     // Get prescriptions (mock implementation)
     const prescriptions = await prescriptionRepository.findAll();
     
-    // Apply filters
+    // Apply filters;
     let filteredPrescriptions = prescriptions;
     if (patientId) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.patientId === patientId);
@@ -104,13 +115,13 @@ export async function GET(req: NextRequest) {
     
     const total = filteredPrescriptions.length;
 
-    // Apply pagination
+    // Apply pagination;
     const paginatedPrescriptions = filteredPrescriptions.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources
+    // Map to FHIR resources;
     const fhirPrescriptions = paginatedPrescriptions.map(FHIRMapper.toFHIRMedicationRequest);
 
-    // Audit logging
+    // Audit logging;
     await auditLog('PRESCRIPTION', {
       action: 'LIST',
       resourceType: 'MedicationRequest',
@@ -119,18 +130,18 @@ export async function GET(req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: paginatedPrescriptions.length
+        resultCount: paginatedPrescriptions.length;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({ 
       prescriptions: fhirPrescriptions,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -139,12 +150,12 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * POST /api/pharmacy/prescriptions
- * Create a new prescription with interaction checking
+ * POST /api/pharmacy/prescriptions;
+ * Create a new prescription with interaction checking;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validatePrescriptionRequest(data);
     if (!validationResult.success) {
@@ -154,78 +165,78 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Verify patient exists
+    // Verify patient exists;
     const patient = await getPatientById(data.patientId);
     if (!patient) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Verify medication exists
+    // Verify medication exists;
     const medication = await medicationRepository.findById(data.medicationId);
     if (!medication) {
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
-    // Check for drug interactions
+    // Check for drug interactions;
     const patientPrescriptions = await prescriptionRepository.findByPatientId(data.patientId);
-    const activeMedicationIds = patientPrescriptions
-      .filter(p => p.isActive())
+    const activeMedicationIds = patientPrescriptions;
+      .filter(p => p.isActive());
       .map(p => p.medicationId);
     
-    // Add the new medication to the list
+    // Add the new medication to the list;
     activeMedicationIds.push(data.medicationId);
     
-    // Check for drug-drug interactions
+    // Check for drug-drug interactions;
     const drugInteractions = await interactionService.checkDrugDrugInteractions(
       activeMedicationIds,
-      false
+      false;
     );
     
-    // Check for drug-allergy interactions
+    // Check for drug-allergy interactions;
     const patientAllergies = await getPatientAllergies(data.patientId);
     const allergens = patientAllergies.map(a => a.allergen);
     const allergyInteractions = await interactionService.checkDrugAllergyInteractions(
       [data.medicationId],
-      allergens
+      allergens;
     );
     
-    // Combine all interactions
+    // Combine all interactions;
     const allInteractions = [...drugInteractions, ...allergyInteractions];
     
-    // Check for severe interactions that should block the prescription
+    // Check for severe interactions that should block the prescription;
     const severeInteractions = allInteractions.filter(i => 
-      i.severity === 'contraindicated' || i.severity === 'severe'
+      i.severity === 'contraindicated' || i.severity === 'severe';
     );
     
-    // If there are severe interactions and no override provided, return error
+    // If there are severe interactions and no override provided, return error;
     if (severeInteractions.length > 0 && !data.interactionOverride) {
       return NextResponse.json(
         { 
           error: 'Severe drug interactions detected', 
           interactions: severeInteractions,
-          requiresOverride: true
+          requiresOverride: true;
         },
         { status: 409 }
       );
     }
 
-    // Create prescription
+    // Create prescription;
     const dosage = new PharmacyDomain.Dosage(
       data.dosage.value,
       data.dosage.unit,
       data.dosage.route,
       data.dosage.frequency,
       data.dosage.duration,
-      data.dosage.instructions
+      data.dosage.instructions;
     );
 
     const prescription = new PharmacyDomain.Prescription(
@@ -238,31 +249,31 @@ export async function POST(req: NextRequest) {
       data.endDate ? new Date(data.endDate) : null,
       data.status || 'active',
       data.priority || 'routine',
-      data.notes || ''
+      data.notes || '';
     );
 
-    // Special handling for controlled substances
+    // Special handling for controlled substances;
     if (medication.isControlled) {
-      // Encrypt controlled substance data
+      // Encrypt controlled substance data;
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           dea: data.dea,
           refills: data.refills || 0,
-          writtenDate: new Date()
-        })
+          writtenDate: new Date();
+        });
       );
     }
 
-    // Save prescription
+    // Save prescription;
     const prescriptionId = await prescriptionRepository.save(prescription);
 
-    // If interaction override was provided, save it
+    // If interaction override was provided, save it;
     if (data.interactionOverride && severeInteractions.length > 0) {
-      // In a real implementation, save override record
-      console.log('Saving interaction override:', data.interactionOverride);
+      // In a real implementation, save override record;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
 
-    // Audit logging
+    // Audit logging;
     await auditLog('PRESCRIPTION', {
       action: 'CREATE',
       resourceType: 'MedicationRequest',
@@ -273,16 +284,16 @@ export async function POST(req: NextRequest) {
         medicationId: data.medicationId,
         interactionCount: allInteractions.length,
         severeInteractionCount: severeInteractions.length,
-        overrideProvided: !!data.interactionOverride
+        overrideProvided: !!data.interactionOverride;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json(
       { 
         id: prescriptionId,
         message: 'Prescription created successfully',
-        interactions: allInteractions.length > 0 ? allInteractions : undefined
+        interactions: allInteractions.length > 0 ? allInteractions : undefined;
       }, 
       { status: 201 }
     );

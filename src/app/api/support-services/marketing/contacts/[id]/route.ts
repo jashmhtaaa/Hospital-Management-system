@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const contactService = new ContactService();
 
 /**
- * GET /api/support-services/marketing/contacts/:id
- * Get a specific contact by ID
+ * GET /api/support-services/marketing/contacts/:id;
+ * Get a specific contact by ID;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -34,10 +45,10 @@ export async function GET(
 }
 
 /**
- * PUT /api/support-services/marketing/contacts/:id
- * Update a specific contact
+ * PUT /api/support-services/marketing/contacts/:id;
+ * Update a specific contact;
  */
-export async function PUT(
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -50,7 +61,7 @@ export async function PUT(
       const contact = await contactService.updateContact(
         params.id,
         data,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(contact);
@@ -63,10 +74,10 @@ export async function PUT(
 }
 
 /**
- * POST /api/support-services/marketing/contacts/:id/notes
- * Add a note to a specific contact
+ * POST /api/support-services/marketing/contacts/:id/notes;
+ * Add a note to a specific contact;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -86,7 +97,7 @@ export async function POST(
       const note = await contactService.addContactNote(
         params.id,
         content,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(note, { status: 201 });

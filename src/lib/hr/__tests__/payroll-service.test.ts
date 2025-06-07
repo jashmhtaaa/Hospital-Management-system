@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { payrollService } from '@/lib/hr/payroll-service';
 import { PrismaClient } from '@prisma/client';
 
-// Mock PrismaClient
+// Mock PrismaClient;
 jest.mock('@prisma/client', () => {
   const mockPrisma = {
     payrollPeriod: {
@@ -42,13 +53,13 @@ describe('Payroll Service', () => {
   
   beforeEach(() => {
     prisma = new PrismaClient();
-    // Clear all mocks before each test
+    // Clear all mocks before each test;
     jest.clearAllMocks();
   });
   
   describe('createPayrollPeriod', () => {
     it('should create a payroll period successfully', async () => {
-      // Arrange
+      // Arrange;
       const periodData = {
         name: 'May 2025',
         startDate: new Date('2025-05-01'),
@@ -64,10 +75,10 @@ describe('Payroll Service', () => {
       
       prisma.payrollPeriod.create.mockResolvedValue(mockCreatedPeriod);
       
-      // Act
+      // Act;
       const result = await payrollService.createPayrollPeriod(periodData);
       
-      // Assert
+      // Assert;
       expect(prisma.payrollPeriod.create).toHaveBeenCalledWith({
         data: expect.objectContaining(periodData),
         include: expect.any(Object),
@@ -76,18 +87,18 @@ describe('Payroll Service', () => {
     });
     
     it('should throw an error if dates are invalid', async () => {
-      // Arrange
+      // Arrange;
       const periodData = {
         name: 'Invalid Period',
         startDate: new Date('2025-05-31'),
-        endDate: new Date('2025-05-01'), // End date before start date
+        endDate: new Date('2025-05-01'), // End date before start date;
         paymentDate: new Date('2025-06-05'),
         status: 'DRAFT',
       };
       
-      // Act & Assert
-      await expect(payrollService.createPayrollPeriod(periodData))
-        .rejects
+      // Act & Assert;
+      await expect(payrollService.createPayrollPeriod(periodData));
+        .rejects;
         .toThrow('End date must be after start date');
       
       expect(prisma.payrollPeriod.create).not.toHaveBeenCalled();
@@ -96,7 +107,7 @@ describe('Payroll Service', () => {
   
   describe('generatePayrollEntries', () => {
     it('should generate payroll entries for all active employees', async () => {
-      // Arrange
+      // Arrange;
       const periodId = 'period1';
       const mockPeriod = {
         id: periodId,
@@ -151,7 +162,7 @@ describe('Payroll Service', () => {
       const mockAttendance = [
         { employeeId: 'emp1', date: new Date('2025-05-01'), status: 'PRESENT' },
         { employeeId: 'emp1', date: new Date('2025-05-02'), status: 'PRESENT' },
-        // More attendance records would be here
+        // More attendance records would be here;
       ];
       
       const mockCreatedEntries = [
@@ -208,10 +219,10 @@ describe('Payroll Service', () => {
         });
       });
       
-      // Act
+      // Act;
       const result = await payrollService.generatePayrollEntries(periodId);
       
-      // Assert
+      // Assert;
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
       });
@@ -226,14 +237,14 @@ describe('Payroll Service', () => {
     });
     
     it('should throw an error if payroll period not found', async () => {
-      // Arrange
+      // Arrange;
       const periodId = 'invalid-period';
       
       prisma.payrollPeriod.findUnique.mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(payrollService.generatePayrollEntries(periodId))
-        .rejects
+      // Act & Assert;
+      await expect(payrollService.generatePayrollEntries(periodId));
+        .rejects;
         .toThrow('Payroll period not found');
       
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
@@ -243,21 +254,21 @@ describe('Payroll Service', () => {
     });
     
     it('should throw an error if payroll period is not in DRAFT status', async () => {
-      // Arrange
+      // Arrange;
       const periodId = 'period1';
       const mockPeriod = {
         id: periodId,
         name: 'May 2025',
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-31'),
-        status: 'APPROVED', // Not in DRAFT status
+        status: 'APPROVED', // Not in DRAFT status;
       };
       
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
       
-      // Act & Assert
-      await expect(payrollService.generatePayrollEntries(periodId))
-        .rejects
+      // Act & Assert;
+      await expect(payrollService.generatePayrollEntries(periodId));
+        .rejects;
         .toThrow('Payroll entries can only be generated for periods in DRAFT status');
       
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
@@ -269,7 +280,7 @@ describe('Payroll Service', () => {
   
   describe('calculatePayroll', () => {
     it('should calculate payroll correctly based on attendance and salary structure', () => {
-      // Arrange
+      // Arrange;
       const employee = {
         id: 'emp1',
         firstName: 'John',
@@ -295,17 +306,17 @@ describe('Payroll Service', () => {
       
       const workingDays = 5;
       
-      // Act
+      // Act;
       const result = payrollService.calculatePayroll(employee, salaryStructure, attendance, workingDays);
       
-      // Assert
-      // 3.5 days present out of 5 working days = 70% attendance
-      // Base salary: 5000 * 0.7 = 3500
+      // Assert;
+      // 3.5 days present out of 5 working days = 70% attendance;
+      // Base salary: 5000 * 0.7 = 3500;
       // Housing Allowance: 1000 (fixed)
       // Transport Allowance: 500 (fixed)
-      // Gross salary: 3500 + 1000 + 500 = 5000
-      // Income Tax: 5000 * 0.2 = 1000
-      // Net salary: 5000 - 1000 = 4000
+      // Gross salary: 3500 + 1000 + 500 = 5000;
+      // Income Tax: 5000 * 0.2 = 1000;
+      // Net salary: 5000 - 1000 = 4000;
       expect(result).toEqual({
         baseSalary: 3500,
         grossSalary: 5000,
@@ -323,7 +334,7 @@ describe('Payroll Service', () => {
   
   describe('approvePayrollPeriod', () => {
     it('should approve a payroll period successfully', async () => {
-      // Arrange
+      // Arrange;
       const periodId = 'period1';
       const mockPeriod = {
         id: periodId,
@@ -341,10 +352,10 @@ describe('Payroll Service', () => {
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
       prisma.payrollPeriod.update.mockResolvedValue(mockUpdatedPeriod);
       
-      // Act
+      // Act;
       const result = await payrollService.approvePayrollPeriod(periodId, 'admin@example.com');
       
-      // Assert
+      // Assert;
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
       });
@@ -360,14 +371,14 @@ describe('Payroll Service', () => {
     });
     
     it('should throw an error if payroll period not found', async () => {
-      // Arrange
+      // Arrange;
       const periodId = 'invalid-period';
       
       prisma.payrollPeriod.findUnique.mockResolvedValue(null);
       
-      // Act & Assert
-      await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'))
-        .rejects
+      // Act & Assert;
+      await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'));
+        .rejects;
         .toThrow('Payroll period not found');
       
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
@@ -377,19 +388,19 @@ describe('Payroll Service', () => {
     });
     
     it('should throw an error if payroll period is not in PROCESSING status', async () => {
-      // Arrange
+      // Arrange;
       const periodId = 'period1';
       const mockPeriod = {
         id: periodId,
         name: 'May 2025',
-        status: 'DRAFT', // Not in PROCESSING status
+        status: 'DRAFT', // Not in PROCESSING status;
       };
       
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
       
-      // Act & Assert
-      await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'))
-        .rejects
+      // Act & Assert;
+      await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'));
+        .rejects;
         .toThrow('Payroll period must be in PROCESSING status to approve');
       
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
@@ -399,5 +410,5 @@ describe('Payroll Service', () => {
     });
   });
   
-  // Additional tests for other methods would follow the same pattern
+  // Additional tests for other methods would follow the same pattern;
 });

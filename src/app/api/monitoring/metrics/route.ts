@@ -1,26 +1,37 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Monitoring Metrics API Endpoint
- * Provides access to system metrics and health data
+ * Monitoring Metrics API Endpoint;
+ * Provides access to system metrics and health data;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
     const metric = searchParams.get('metric');
     const timeWindow = searchParams.get('window');
 
-    // Check authentication/authorization here if needed
+    // Check authentication/authorization here if needed;
     // const user = await getCurrentUser(request);
     // if (!user || !hasMonitoringAccess(user)) {
     //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     // }
 
     if (metric) {
-      // Return specific metric
+      // Return specific metric;
       const timeWindowSeconds = timeWindow ? parseInt(timeWindow) : undefined;
       const metrics = metricsCollector.getMetrics(metric, timeWindowSeconds);
       
@@ -33,7 +44,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (format === 'prometheus') {
-      // Return Prometheus format
+      // Return Prometheus format;
       const prometheusData = metricsCollector.exportMetrics('prometheus');
       
       return new NextResponse(prometheusData, {
@@ -43,7 +54,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Return dashboard metrics
+    // Return dashboard metrics;
     const dashboardMetrics = metricsCollector.getDashboardMetrics();
     
     return NextResponse.json({
@@ -53,8 +64,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Metrics API error:', error);
-    
+
     return NextResponse.json(
       {
         error: 'Internal server error',
@@ -65,7 +75,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   try {
     const body = await request.json();
     const { action } = body;
@@ -93,8 +103,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Metrics API POST error:', error);
-    
+
     return NextResponse.json(
       {
         error: 'Internal server error',

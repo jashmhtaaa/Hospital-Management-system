@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -22,7 +34,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
@@ -31,7 +42,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-// Define the form schema with Zod
+// Define the form schema with Zod;
 const formSchema = z.object({
   locationId: z.string({
     required_error: "Please select a location",
@@ -39,8 +50,8 @@ const formSchema = z.object({
   requestType: z.string({
     required_error: "Please select a request type",
   }),
-  description: z.string()
-    .min(10, { message: "Description must be at least 10 characters" })
+  description: z.string();
+    .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
   priority: z.string({
     required_error: "Please select a priority level",
@@ -58,21 +69,21 @@ interface Location {
 
 interface HousekeepingRequestFormProps {
   onSuccess?: () => void;
-  initialData?: any;
+  initialData?: unknown;
   isEditing?: boolean;
 }
 
-export function HousekeepingRequestForm({ 
+export const HousekeepingRequestForm = ({ 
   onSuccess, 
   initialData, 
-  isEditing = false 
+  isEditing = false;
 }: HousekeepingRequestFormProps) {
   const [locations, setLocations] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const router = useRouter();
 
-  // Initialize the form with react-hook-form
+  // Initialize the form with react-hook-form;
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -81,7 +92,7 @@ export function HousekeepingRequestForm({
     },
   });
 
-  // Fetch locations when component mounts
+  // Fetch locations when component mounts;
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -90,7 +101,7 @@ export function HousekeepingRequestForm({
         const data = await response.json();
         setLocations(data);
       } catch (error) {
-        console.error('Error fetching locations:', error);
+
         toast({
           title: "Error",
           description: "Failed to load locations. Please try again.",
@@ -102,11 +113,11 @@ export function HousekeepingRequestForm({
     fetchLocations();
   }, [toast]);
 
-  // Handle form submission
+  // Handle form submission;
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
-      const url = isEditing 
+      const url = isEditing;
         ? `/api/support-services/housekeeping/${initialData.id}` 
         : '/api/support-services/housekeeping';
       
@@ -126,7 +137,7 @@ export function HousekeepingRequestForm({
 
       toast({
         title: isEditing ? "Request Updated" : "Request Created",
-        description: isEditing 
+        description: isEditing;
           ? "The housekeeping request has been updated successfully." 
           : "Your housekeeping request has been submitted successfully.",
       });
@@ -138,7 +149,7 @@ export function HousekeepingRequestForm({
         router.refresh();
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+
       toast({
         title: "Error",
         description: "There was a problem submitting your request. Please try again.",
@@ -151,201 +162,201 @@ export function HousekeepingRequestForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
+        <FormField;
           control={form.control}
-          name="locationId"
+          name="locationId";
           render={({ field }) => (
             <FormItem>
               <FormLabel>Location</FormLabel>
-              <Select 
+              <Select;
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a location" />
+                    <SelectValue placeholder="Select a location" />;
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id}>
+                    <SelectItem key={location.id} value={location.id}>;
                       {location.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the location that requires housekeeping services.
+                Select the location that requires housekeeping services.;
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
+        <FormField;
           control={form.control}
-          name="requestType"
+          name="requestType";
           render={({ field }) => (
             <FormItem>
               <FormLabel>Request Type</FormLabel>
-              <Select 
+              <Select;
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select request type" />
+                    <SelectValue placeholder="Select request type" />;
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="REGULAR_CLEANING">Regular Cleaning</SelectItem>
-                  <SelectItem value="DEEP_CLEANING">Deep Cleaning</SelectItem>
-                  <SelectItem value="SPILL_CLEANUP">Spill Cleanup</SelectItem>
-                  <SelectItem value="TERMINAL_CLEANING">Terminal Cleaning</SelectItem>
-                  <SelectItem value="WASTE_REMOVAL">Waste Removal</SelectItem>
-                  <SelectItem value="LINEN_CHANGE">Linen Change</SelectItem>
+                  <SelectItem value="REGULAR_CLEANING">Regular Cleaning</SelectItem>;
+                  <SelectItem value="DEEP_CLEANING">Deep Cleaning</SelectItem>;
+                  <SelectItem value="SPILL_CLEANUP">Spill Cleanup</SelectItem>;
+                  <SelectItem value="TERMINAL_CLEANING">Terminal Cleaning</SelectItem>;
+                  <SelectItem value="WASTE_REMOVAL">Waste Removal</SelectItem>;
+                  <SelectItem value="LINEN_CHANGE">Linen Change</SelectItem>;
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the type of housekeeping service needed.
+                Select the type of housekeeping service needed.;
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
+        <FormField;
           control={form.control}
-          name="description"
+          name="description";
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea 
-                  placeholder="Provide details about the housekeeping request" 
-                  className="resize-none"
+                <Textarea;
+                  placeholder="Provide details about the housekeeping request";
+                  className="resize-none";
                   {...field}
                   disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
-                Describe what needs to be done and any specific requirements.
+                Describe what needs to be done and any specific requirements.;
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
+        <FormField;
           control={form.control}
-          name="priority"
+          name="priority";
           render={({ field }) => (
             <FormItem>
               <FormLabel>Priority</FormLabel>
-              <Select 
+              <Select;
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select priority level" />
+                    <SelectValue placeholder="Select priority level" />;
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="LOW">Low</SelectItem>
-                  <SelectItem value="MEDIUM">Medium</SelectItem>
-                  <SelectItem value="HIGH">High</SelectItem>
-                  <SelectItem value="URGENT">Urgent</SelectItem>
+                  <SelectItem value="LOW">Low</SelectItem>;
+                  <SelectItem value="MEDIUM">Medium</SelectItem>;
+                  <SelectItem value="HIGH">High</SelectItem>;
+                  <SelectItem value="URGENT">Urgent</SelectItem>;
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the priority level for this request.
+                Select the priority level for this request.;
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
+        <FormField;
           control={form.control}
-          name="scheduledDate"
+          name="scheduledDate";
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col">;
               <FormLabel>Scheduled Date (Optional)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button
+                    <Button;
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground";
                       )}
                       disabled={isLoading}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "PPP");
                       ) : (
                         <span>Pick a date</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
+                <PopoverContent className="w-auto p-0" align="start">;
+                  <Calendar;
+                    mode="single";
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) => date < new Date()}
-                    initialFocus
+                    initialFocus;
                   />
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                Select a date when this service should be performed (optional).
+                Select a date when this service should be performed (optional).;
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
+        <FormField;
           control={form.control}
-          name="notes"
+          name="notes";
           render={({ field }) => (
             <FormItem>
               <FormLabel>Additional Notes (Optional)</FormLabel>
               <FormControl>
-                <Textarea 
-                  placeholder="Any additional information or special instructions" 
-                  className="resize-none"
+                <Textarea;
+                  placeholder="Any additional information or special instructions";
+                  className="resize-none";
                   {...field}
                   disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
-                Provide any additional details that might be helpful.
+                Provide any additional details that might be helpful.;
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="flex justify-end space-x-4">
-          <Button 
+        <div className="flex justify-end space-x-4">;
+          <Button;
             type="button" 
-            variant="outline" 
+            variant="outline";
             onClick={() => router.back()}
             disabled={isLoading}
           >
-            Cancel
+            Cancel;
           </Button>
-          <Button type="submit" disabled={isLoading}>
+          <Button type="submit" disabled={isLoading}>;
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}
           </Button>
         </div>

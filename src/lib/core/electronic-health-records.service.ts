@@ -1,12 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Electronic Health Records (EHR) Service
- * Complete EHR system with SOAP notes, care plans, clinical pathways, and decision support
+ * Electronic Health Records (EHR) Service;
+ * Complete EHR system with SOAP notes, care plans, clinical pathways, and decision support;
  */
 
 import { z } from 'zod';
-import { v4 as uuidv4 } from 'uuid';
 
-// Clinical Note Schemas
+// Clinical Note Schemas;
 export const ClinicalNoteSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
   encounter_id: z.string().min(1, 'Encounter ID is required'),
@@ -14,13 +24,13 @@ export const ClinicalNoteSchema = z.object({
   note_type: z.enum(['progress_note', 'soap_note', 'admission_note', 'discharge_summary', 'consultation_note', 'procedure_note', 'nursing_note']),
   template_id: z.string().optional(),
   
-  // SOAP components
+  // SOAP components;
   subjective: z.string().optional(),
   objective: z.string().optional(),
   assessment: z.string().optional(),
   plan: z.string().optional(),
   
-  // Structured data
+  // Structured data;
   chief_complaint: z.string().optional(),
   history_of_present_illness: z.string().optional(),
   review_of_systems: z.string().optional(),
@@ -43,12 +53,12 @@ export const ClinicalNoteSchema = z.object({
     pain_scale: z.number().min(0).max(10).optional(),
   }).optional(),
   
-  // Diagnoses
+  // Diagnoses;
   primary_diagnosis: z.string().optional(),
   secondary_diagnoses: z.array(z.string()).default([]),
   icd10_codes: z.array(z.string()).default([]),
   
-  // Treatment plan
+  // Treatment plan;
   orders: z.array(z.object({
     type: z.enum(['medication', 'lab', 'imaging', 'procedure', 'consultation', 'therapy']),
     description: z.string(),
@@ -56,25 +66,25 @@ export const ClinicalNoteSchema = z.object({
     priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
   })).default([]),
   
-  // Follow-up
+  // Follow-up;
   follow_up_instructions: z.string().optional(),
   return_visit_interval: z.string().optional(),
   discharge_disposition: z.string().optional(),
   
-  // Clinical decision support
+  // Clinical decision support;
   alerts_triggered: z.array(z.string()).default([]),
   guidelines_referenced: z.array(z.string()).default([]),
   
-  // Note metadata
+  // Note metadata;
   note_status: z.enum(['draft', 'preliminary', 'final', 'amended', 'corrected']).default('draft'),
   priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
   confidentiality_level: z.enum(['normal', 'restricted', 'very_restricted']).default('normal'),
   
-  // Voice-to-text
+  // Voice-to-text;
   audio_recording_id: z.string().optional(),
   transcription_confidence: z.number().min(0).max(1).optional(),
   
-  // Template and formatting
+  // Template and formatting;
   free_text_content: z.string().optional(),
   structured_data: z.record(z.any()).optional(),
 });
@@ -274,12 +284,12 @@ export interface ClinicalSummary {
   active_problems: ProblemListItem[];
   current_medications: string[];
   allergies: string[];
-  recent_vitals: any;
-  recent_lab_results: any[];
+  recent_vitals: unknown;
+  recent_lab_results: unknown[];
   
   care_plans: CarePlan[];
-  upcoming_appointments: any[];
-  pending_orders: any[];
+  upcoming_appointments: unknown[];
+  pending_orders: unknown[];
   
   quality_measures: QualityMeasure[];
   risk_factors: string[];
@@ -302,7 +312,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Initialize clinical guidelines
+   * Initialize clinical guidelines;
    */
   private initializeClinicalGuidelines(): void {
     const guidelines: Omit<ClinicalGuideline, 'id' | 'created_at' | 'updated_at' | 'usage_count' | 'last_used'>[] = [
@@ -405,7 +415,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Initialize note templates
+   * Initialize note templates;
    */
   private initializeNoteTemplates(): void {
     const templates = [
@@ -451,7 +461,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Create clinical note
+   * Create clinical note;
    */
   async createClinicalNote(noteData: z.infer<typeof ClinicalNoteSchema>): Promise<ClinicalNote> {
     const validatedData = ClinicalNoteSchema.parse(noteData);
@@ -459,7 +469,7 @@ export class ElectronicHealthRecordsService {
     const noteId = uuidv4();
     const noteNumber = this.generateNoteNumber();
 
-    // Apply template if specified
+    // Apply template if specified;
     let templateData = {};
     if (validatedData.template_id) {
       const template = this.templates.get(validatedData.template_id);
@@ -481,14 +491,14 @@ export class ElectronicHealthRecordsService {
 
     this.clinicalNotes.set(noteId, clinicalNote);
 
-    // Trigger clinical decision support
+    // Trigger clinical decision support;
     await this.triggerClinicalDecisionSupport(validatedData.patient_id, validatedData.encounter_id, clinicalNote);
 
     return clinicalNote;
   }
 
   /**
-   * Generate note number
+   * Generate note number;
    */
   private generateNoteNumber(): string {
     const timestamp = Date.now().toString().slice(-6);
@@ -497,7 +507,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Update clinical note
+   * Update clinical note;
    */
   async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {
     const existingNote = this.clinicalNotes.get(noteId);
@@ -520,7 +530,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Sign clinical note
+   * Sign clinical note;
    */
   async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {
     const note = this.clinicalNotes.get(noteId);
@@ -542,7 +552,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Create note amendment
+   * Create note amendment;
    */
   async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {
     const originalNote = this.clinicalNotes.get(originalNoteId);
@@ -571,7 +581,7 @@ export class ElectronicHealthRecordsService {
       amendments: [],
     };
 
-    // Update original note to reference amendment
+    // Update original note to reference amendment;
     originalNote.amendments.push(amendmentId);
     originalNote.updated_at = new Date();
 
@@ -582,7 +592,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Create care plan
+   * Create care plan;
    */
   async createCarePlan(carePlanData: z.infer<typeof CarePlanSchema>): Promise<CarePlan> {
     const validatedData = CarePlanSchema.parse(carePlanData);
@@ -609,7 +619,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Generate care plan number
+   * Generate care plan number;
    */
   private generateCarePlanNumber(): string {
     const timestamp = Date.now().toString().slice(-6);
@@ -618,7 +628,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Add problem to patient's problem list
+   * Add problem to patient's problem list;
    */
   async addProblem(problemData: z.infer<typeof ProblemListSchema>): Promise<ProblemListItem> {
     const validatedData = ProblemListSchema.parse(problemData);
@@ -641,14 +651,14 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Update problem status
+   * Update problem status;
    */
   async updateProblemStatus(
     patientId: string,
     problemId: string,
     status: ProblemListItem['status'],
     providerId: string,
-    resolutionDate?: string
+    resolutionDate?: string;
   ): Promise<ProblemListItem> {
     const patientProblems = this.problemLists.get(patientId) || [];
     const problem = patientProblems.find(p => p.id === problemId);
@@ -670,7 +680,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Get patient's active problems
+   * Get patient's active problems;
    */
   async getActiveProblems(patientId: string): Promise<ProblemListItem[]> {
     const patientProblems = this.problemLists.get(patientId) || [];
@@ -678,17 +688,17 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Trigger clinical decision support
+   * Trigger clinical decision support;
    */
   private async triggerClinicalDecisionSupport(
     patientId: string,
     encounterId: string,
-    note: ClinicalNote
+    note: ClinicalNote;
   ): Promise<void> {
     const alerts: ClinicalDecisionSupport['alerts'] = [];
     const guidelines: ClinicalDecisionSupport['guidelines'] = [];
 
-    // Check vital signs for alerts
+    // Check vital signs for alerts;
     if (note.vital_signs) {
       if (note.vital_signs.blood_pressure_systolic && note.vital_signs.blood_pressure_systolic >= 180) {
         alerts.push({
@@ -715,13 +725,13 @@ export class ElectronicHealthRecordsService {
       }
     }
 
-    // Check for applicable guidelines
-    const applicableGuidelines = Array.from(this.clinicalGuidelines.values())
+    // Check for applicable guidelines;
+    const applicableGuidelines = Array.from(this.clinicalGuidelines.values());
       .filter(guideline => {
         return note.icd10_codes.some(code => 
           guideline.icd10_codes.some(guidelineCode => 
-            code.startsWith(guidelineCode)
-          )
+            code.startsWith(guidelineCode);
+          );
         );
       });
 
@@ -730,8 +740,8 @@ export class ElectronicHealthRecordsService {
       guideline.last_used = new Date();
       
       const applicableRecommendations = guideline.recommendations.map(rec => rec.recommendation_text);
-      const triggeredRules = guideline.decision_support_rules
-        .filter(rule => this.evaluateRule(rule, note))
+      const triggeredRules = guideline.decision_support_rules;
+        .filter(rule => this.evaluateRule(rule, note));
         .map(rule => rule.rule_id);
 
       if (applicableRecommendations.length > 0 || triggeredRules.length > 0) {
@@ -742,7 +752,7 @@ export class ElectronicHealthRecordsService {
           triggered_rules: triggeredRules,
         });
 
-        // Create alerts for triggered rules
+        // Create alerts for triggered rules;
         for (const rule of guideline.decision_support_rules) {
           if (triggeredRules.includes(rule.rule_id)) {
             alerts.push({
@@ -770,10 +780,10 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Evaluate decision support rule
+   * Evaluate decision support rule;
    */
-  private evaluateRule(rule: any, note: ClinicalNote): boolean {
-    // Simplified rule evaluation - in real implementation, this would be more sophisticated
+  private evaluateRule(rule: unknown, note: ClinicalNote): boolean {
+    // Simplified rule evaluation - in real implementation, this would be more sophisticated;
     const condition = rule.condition.toLowerCase();
     
     if (condition.includes('bp') && note.vital_signs?.blood_pressure_systolic) {
@@ -786,8 +796,8 @@ export class ElectronicHealthRecordsService {
     if (condition.includes('hba1c') && note.assessment?.toLowerCase().includes('hba1c')) {
       const match = condition.match(/hba1c > (\d+)%/);
       if (match) {
-        // In real implementation, this would check actual lab values
-        return Math.random() > 0.8; // Simulate 20% chance of high HbA1c
+        // In real implementation, this would check actual lab values;
+        return Math.random() > 0.8; // Simulate 20% chance of high HbA1c;
       }
     }
     
@@ -795,20 +805,20 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Get clinical decision support alerts
+   * Get clinical decision support alerts;
    */
   async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {
     return this.decisionSupport.get(encounterId) || null;
   }
 
   /**
-   * Dismiss clinical alert
+   * Dismiss clinical alert;
    */
   async dismissClinicalAlert(
     encounterId: string,
     alertId: string,
     providerId: string,
-    reason: string
+    reason: string;
   ): Promise<void> {
     const cds = this.decisionSupport.get(encounterId);
     if (!cds) {
@@ -829,15 +839,15 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Generate clinical summary
+   * Generate clinical summary;
    */
   async generateClinicalSummary(
     patientId: string,
-    summaryType: 'encounter' | 'episodic' | 'comprehensive' = 'comprehensive'
+    summaryType: 'encounter' | 'episodic' | 'comprehensive' = 'comprehensive';
   ): Promise<ClinicalSummary> {
-    // Get patient data
+    // Get patient data;
     const activeProblems = await this.getActiveProblems(patientId);
-    const patientCarePlans = Array.from(this.carePlans.values())
+    const patientCarePlans = Array.from(this.carePlans.values());
       .filter(cp => cp.patient_id === patientId && cp.status === 'active');
 
     // Generate quality measures (simplified)
@@ -861,13 +871,13 @@ export class ElectronicHealthRecordsService {
       generated_date: new Date(),
       summary_type: summaryType,
       demographics: {
-        name: 'Patient Name', // In real implementation, fetch from patient service
+        name: 'Patient Name', // In real implementation, fetch from patient service;
         age: 45,
         gender: 'Male',
         mrn: `MRN${patientId.slice(-6)}`,
       },
       active_problems: activeProblems,
-      current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified
+      current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified;
       allergies: ['NKDA'],
       recent_vitals: { bp: '130/80', hr: '72', temp: '98.6' },
       recent_lab_results: [],
@@ -884,7 +894,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Search clinical notes
+   * Search clinical notes;
    */
   async searchClinicalNotes(criteria: {
     patient_id?: string;
@@ -901,7 +911,7 @@ export class ElectronicHealthRecordsService {
     
     let filteredNotes = Array.from(this.clinicalNotes.values());
 
-    // Apply filters
+    // Apply filters;
     Object.entries(filters).forEach(([key, value]) => {
       if (value) {
         filteredNotes = filteredNotes.filter(note => {
@@ -914,7 +924,7 @@ export class ElectronicHealthRecordsService {
       }
     });
 
-    // Text search
+    // Text search;
     if (search_text) {
       const searchLower = search_text.toLowerCase();
       filteredNotes = filteredNotes.filter(note =>
@@ -922,14 +932,14 @@ export class ElectronicHealthRecordsService {
         note.objective?.toLowerCase().includes(searchLower) ||
         note.assessment?.toLowerCase().includes(searchLower) ||
         note.plan?.toLowerCase().includes(searchLower) ||
-        note.chief_complaint?.toLowerCase().includes(searchLower)
+        note.chief_complaint?.toLowerCase().includes(searchLower);
       );
     }
 
     // Sort by creation date (newest first)
     filteredNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
 
-    // Pagination
+    // Pagination;
     const total = filteredNotes.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -939,7 +949,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Get note templates
+   * Get note templates;
    */
   async getNoteTemplates(noteType?: string): Promise<any[]> {
     const templates = Array.from(this.templates.values());
@@ -952,7 +962,7 @@ export class ElectronicHealthRecordsService {
   }
 
   /**
-   * Get clinical guidelines
+   * Get clinical guidelines;
    */
   async getClinicalGuidelines(condition?: string): Promise<ClinicalGuideline[]> {
     const guidelines = Array.from(this.clinicalGuidelines.values());
@@ -960,8 +970,8 @@ export class ElectronicHealthRecordsService {
     if (condition) {
       return guidelines.filter(guideline => 
         guideline.applicable_conditions.some(c => 
-          c.toLowerCase().includes(condition.toLowerCase())
-        )
+          c.toLowerCase().includes(condition.toLowerCase());
+        );
       );
     }
     
@@ -991,5 +1001,5 @@ export class ElectronicHealthRecordsService {
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const electronicHealthRecordsService = new ElectronicHealthRecordsService();

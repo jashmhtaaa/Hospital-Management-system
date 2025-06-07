@@ -1,11 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
 import { Patient } from "@/types/patient";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
 
-// Zod schema for patient update
+// Zod schema for patient update;
 const patientUpdateSchema = z.object({
     mrn: z.string().optional(),
     first_name: z.string().min(1, "First name is required").optional(),
@@ -32,8 +43,8 @@ const patientUpdateSchema = z.object({
     insurance_policy_number: z.string().optional().nullable(),
 }).partial();
 
-// GET /api/patients/[id] - Fetch a specific patient by ID
-export async function GET(
+// GET /api/patients/[id] - Fetch a specific patient by ID;
+export async const GET = (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
@@ -51,15 +62,15 @@ export async function GET(
     }
 
     try {
-        const query = `
-            SELECT
+        const query = `;
+            SELECT;
                 p.*,
                 u_created.name as created_by_user_name,
-                u_updated.name as updated_by_user_name
-            FROM Patients p
-            LEFT JOIN Users u_created ON p.created_by_user_id = u_created.id
-            LEFT JOIN Users u_updated ON p.updated_by_user_id = u_updated.id
-            WHERE p.patient_id = ?
+                u_updated.name as updated_by_user_name;
+            FROM Patients p;
+            LEFT JOIN Users u_created ON p.created_by_user_id = u_created.id;
+            LEFT JOIN Users u_updated ON p.updated_by_user_id = u_updated.id;
+            WHERE p.patient_id = ?;
         `;
         const patientResult = await (DB as D1Database).prepare(query).bind(patientId).first<Patient & { created_by_user_name?: string, updated_by_user_name?: string }>();
 
@@ -73,7 +84,7 @@ export async function GET(
         return NextResponse.json(patientResult);
 
     } catch (error: unknown) {
-        console.error(`Error fetching patient ${patientId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;
@@ -85,8 +96,8 @@ export async function GET(
     }
 }
 
-// PUT /api/patients/[id] - Update an existing patient
-export async function PUT(
+// PUT /api/patients/[id] - Update an existing patient;
+export async const PUT = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
@@ -94,7 +105,7 @@ export async function PUT(
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in;
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -127,14 +138,14 @@ export async function PUT(
         }
 
         const now = new Date().toISOString();
-        const userId = session.user.userId; // session.user is now guaranteed to be defined
+        const userId = session.user.userId; // session.user is now guaranteed to be defined;
 
         const fieldsToUpdate: Record<string, string | number | boolean | Date | null | undefined> = { ...updateData };
         fieldsToUpdate.updated_at = now;
         fieldsToUpdate.updated_by_user_id = userId;
 
-        const setClauses = Object.keys(fieldsToUpdate)
-            .map((key) => `${key} = ?`)
+        const setClauses = Object.keys(fieldsToUpdate);
+            .map((key) => `${key} = ?`);
             .join(", ");
         const values = Object.values(fieldsToUpdate);
 
@@ -144,29 +155,29 @@ export async function PUT(
         const updateResult = await (DB as D1Database).prepare(updateQuery).bind(...values).run() as D1ResultWithMeta;
 
         if (!updateResult.success || (updateResult.meta && updateResult.meta.changes === 0)) {
-             console.warn(`Update attempt for patient ${patientId} resulted in 0 changes or failed:`, updateResult);
+
              if (!updateResult.success) {
                 throw new Error("Failed to update patient record");
              }
         }
 
-        const fetchUpdatedQuery = `
-            SELECT p.*, u_updated.name as updated_by_user_name
-            FROM Patients p
-            LEFT JOIN Users u_updated ON p.updated_by_user_id = u_updated.id
-            WHERE p.patient_id = ?
+        const fetchUpdatedQuery = `;
+            SELECT p.*, u_updated.name as updated_by_user_name;
+            FROM Patients p;
+            LEFT JOIN Users u_updated ON p.updated_by_user_id = u_updated.id;
+            WHERE p.patient_id = ?;
         `;
         const updatedPatient = await (DB as D1Database).prepare(fetchUpdatedQuery).bind(patientId).first<Patient & { updated_by_user_name?: string }>();
 
         if (!updatedPatient) {
-             console.error(`Failed to fetch updated patient data for ID ${patientId} after update.`);
+
              throw new Error("Failed to retrieve updated patient data");
         }
 
         return NextResponse.json(updatedPatient);
 
     } catch (error: unknown) {
-        console.error(`Error updating patient ${patientId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;
@@ -179,12 +190,12 @@ export async function PUT(
 }
 
 // DELETE /api/patients/[id] - Delete a patient (use with caution!)
-export async function DELETE(
+export async const DELETE = (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const session = await getSession();
-    if (!session.isLoggedIn || !session.user || session.user.roleName !== "Admin") { // Added !session.user check
+    if (!session.isLoggedIn || !session.user || session.user.roleName !== "Admin") { // Added !session.user check;
         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
@@ -201,7 +212,7 @@ export async function DELETE(
         const deleteResult = await (DB as D1Database).prepare(deleteQuery).bind(patientId).run() as D1ResultWithMeta;
 
         if (!deleteResult.success || (deleteResult.meta && deleteResult.meta.changes === 0)) {
-            console.warn(`Delete attempt for patient ${patientId} resulted in 0 changes or failed:`, deleteResult);
+
             if (deleteResult.meta?.changes === 0) {
                  return NextResponse.json({ message: "Patient not found or already deleted" }, { status: 404 });
             }
@@ -216,7 +227,7 @@ export async function DELETE(
         );
 
     } catch (error: unknown) {
-        console.error(`Error deleting patient ${patientId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;

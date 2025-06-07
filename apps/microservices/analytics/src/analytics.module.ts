@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Analytics Microservice Module
- * Enterprise-grade advanced analytics, dashboards, and business intelligence
+ * Analytics Microservice Module;
+ * Enterprise-grade advanced analytics, dashboards, and business intelligence;
  */
 
 import { Module } from '@nestjs/common';
@@ -12,19 +23,18 @@ import { PrismaModule } from '@/lib/prisma/prisma.module';
 import { SecurityModule } from '@/lib/security/security.module';
 import { MonitoringModule } from '@/lib/monitoring/monitoring.module';
 import { CacheModule } from '@/lib/cache/cache.module';
-import { GraphQLModule as CoreGraphQLModule } from '@/lib/graphql/graphql.module';
 
-import { PredictiveAnalyticsService } from './services/predictive-analytics.service';
-import { CustomReportService } from './services/custom-report.service';
-import { DashboardService } from './services/dashboard.service';
+import { PredictiveAnalyticsService } from './services/predictive-analytics.service.ts';
+import { CustomReportService } from './services/custom-report.service.ts';
+import { DashboardService } from './services/dashboard.service.ts';
 
-import { PredictiveAnalyticsController } from './controllers/predictive-analytics.controller';
-import { CustomReportController } from './controllers/custom-report.controller';
-import { DashboardController } from './controllers/dashboard.controller';
+import { PredictiveAnalyticsController } from './controllers/predictive-analytics.controller.ts';
+import { CustomReportController } from './controllers/custom-report.controller.ts';
+import { DashboardController } from './controllers/dashboard.controller.ts';
 
-import { PredictiveAnalyticsResolver } from './resolvers/predictive-analytics.resolver';
-import { CustomReportResolver } from './resolvers/custom-report.resolver';
-import { DashboardResolver } from './resolvers/dashboard.resolver';
+import { PredictiveAnalyticsResolver } from './resolvers/predictive-analytics.resolver.ts';
+import { CustomReportResolver } from './resolvers/custom-report.resolver.ts';
+import { DashboardResolver } from './resolvers/dashboard.resolver.ts';
 
 @Module({
   imports: [
@@ -64,5 +74,5 @@ import { DashboardResolver } from './resolvers/dashboard.resolver';
     CustomReportService,
     DashboardService,
   ],
-})
+});
 export class AnalyticsModule {}

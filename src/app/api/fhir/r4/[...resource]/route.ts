@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * FHIR R4 API Routes Implementation
- * RESTful FHIR endpoints following FHIR R4 specification
- * Handles: GET, POST, PUT, DELETE operations for all FHIR resources
+ * FHIR R4 API Routes Implementation;
+ * RESTful FHIR endpoints following FHIR R4 specification;
+ * Handles: GET, POST, PUT, DELETE operations for all FHIR resources;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -18,10 +29,10 @@ interface RouteParams {
 }
 
 /**
- * GET /fhir/r4/{resourceType} - Search resources
- * GET /fhir/r4/{resourceType}/{id} - Read resource by ID
+ * GET /fhir/r4/{resourceType} - Search resources;
+ * GET /fhir/r4/{resourceType}/{id} - Read resource by ID;
  */
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async const GET = (request: NextRequest, { params }: RouteParams) {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -29,13 +40,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const url = new URL(request.url);
     const searchParams = Object.fromEntries(url.searchParams);
 
-    // Add FHIR headers
+    // Add FHIR headers;
     const headers = {
       'Content-Type': 'application/fhir+json',
       'Cache-Control': 'no-cache',
     };
 
-    // Read specific resource by ID
+    // Read specific resource by ID;
     if (resourceId) {
       const result = await fhirService.readResource(resourceType, resourceId);
       
@@ -44,7 +55,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
           result.issues || { error: result.error },
           { 
             status: result.error === 'Resource not found' ? 404 : 400,
-            headers 
+            headers;
           }
         );
       }
@@ -52,7 +63,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json(result.data, { headers });
     }
 
-    // Search resources
+    // Search resources;
     let searchResult;
     
     switch (resourceType) {
@@ -79,7 +90,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json(searchResult.data, { headers });
 
   } catch (error) {
-    console.error('FHIR GET error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
@@ -98,16 +109,16 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 }
 
 /**
- * POST /fhir/r4/{resourceType} - Create resource
+ * POST /fhir/r4/{resourceType} - Create resource;
  */
-export async function POST(request: NextRequest, { params }: RouteParams) {
+export async const POST = (request: NextRequest, { params }: RouteParams) {
   try {
     const { resource } = params;
     const resourceType = resource[0];
     
     const body = await request.json();
     
-    // Validate resource type matches URL
+    // Validate resource type matches URL;
     if (body.resourceType !== resourceType) {
       return NextResponse.json(
         {
@@ -115,7 +126,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'invalid',
-            diagnostics: `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`
+            diagnostics: `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`;
           }]
         },
         { 
@@ -154,7 +165,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Return 201 Created with Location header
+    // Return 201 Created with Location header;
     const headers = {
       'Content-Type': 'application/fhir+json',
       'Location': `/fhir/r4/${resourceType}/${result.data!.id}`,
@@ -163,11 +174,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(result.data, { 
       status: 201, 
-      headers 
+      headers;
     });
 
   } catch (error) {
-    console.error('FHIR POST error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
@@ -186,9 +197,9 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 }
 
 /**
- * PUT /fhir/r4/{resourceType}/{id} - Update resource
+ * PUT /fhir/r4/{resourceType}/{id} - Update resource;
  */
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async const PUT = (request: NextRequest, { params }: RouteParams) {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -201,7 +212,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'required',
-            diagnostics: 'Resource ID is required for PUT operation'
+            diagnostics: 'Resource ID is required for PUT operation';
           }]
         },
         { 
@@ -213,7 +224,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     const body = await request.json();
     
-    // Validate resource type matches URL
+    // Validate resource type matches URL;
     if (body.resourceType !== resourceType) {
       return NextResponse.json(
         {
@@ -221,7 +232,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'invalid',
-            diagnostics: `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`
+            diagnostics: `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`;
           }]
         },
         { 
@@ -266,7 +277,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json(result.data, { headers });
 
   } catch (error) {
-    console.error('FHIR PUT error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
@@ -285,9 +296,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 }
 
 /**
- * DELETE /fhir/r4/{resourceType}/{id} - Delete resource
+ * DELETE /fhir/r4/{resourceType}/{id} - Delete resource;
  */
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async const DELETE = (request: NextRequest, { params }: RouteParams) {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -300,7 +311,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'required',
-            diagnostics: 'Resource ID is required for DELETE operation'
+            diagnostics: 'Resource ID is required for DELETE operation';
           }]
         },
         { 
@@ -323,11 +334,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Return 204 No Content for successful deletion
+    // Return 204 No Content for successful deletion;
     return new NextResponse(null, { status: 204 });
 
   } catch (error) {
-    console.error('FHIR DELETE error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
@@ -348,7 +359,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 /**
  * PATCH /fhir/r4/{resourceType}/{id} - Partial update (JSON Patch)
  */
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export async const PATCH = (request: NextRequest, { params }: RouteParams) {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -361,7 +372,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'required',
-            diagnostics: 'Resource ID is required for PATCH operation'
+            diagnostics: 'Resource ID is required for PATCH operation';
           }]
         },
         { 
@@ -371,7 +382,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Get current resource
+    // Get current resource;
     const currentResult = await fhirService.readResource(resourceType, resourceId);
     
     if (!currentResult.success) {
@@ -387,10 +398,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const contentType = request.headers.get('content-type');
     
     if (contentType?.includes('application/json-patch+json')) {
-      // Handle JSON Patch
+      // Handle JSON Patch;
       const patches = await request.json();
-      // Apply JSON patches to the resource
-      // This would require a JSON Patch library
+      // Apply JSON patches to the resource;
+      // This would require a JSON Patch library;
       
       return NextResponse.json(
         {
@@ -398,7 +409,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'not-supported',
-            diagnostics: 'JSON Patch not yet implemented'
+            diagnostics: 'JSON Patch not yet implemented';
           }]
         },
         { 
@@ -407,14 +418,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         }
       );
     } else {
-      // Handle FHIR Patch
+      // Handle FHIR Patch;
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
           issue: [{
             severity: 'error',
             code: 'not-supported',
-            diagnostics: 'FHIR Patch not yet implemented'
+            diagnostics: 'FHIR Patch not yet implemented';
           }]
         },
         { 
@@ -425,7 +436,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
   } catch (error) {
-    console.error('FHIR PATCH error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',

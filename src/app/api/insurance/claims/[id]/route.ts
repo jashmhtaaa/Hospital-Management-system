@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -5,21 +16,21 @@ import {
   withErrorHandling, 
   validateBody, 
   checkPermission, 
-  createSuccessResponse 
+  createSuccessResponse;
 } from '@/lib/core/middleware';
-import { ValidationError, NotFoundError, BusinessLogicError } from '@/lib/core/errors';
+import { ValidationError, NotFoundError } from '@/lib/core/errors';
 import { claimStatusSchema } from '@/lib/core/validation';
 import { convertToFHIRClaim } from '@/lib/core/fhir';
 import { logger } from '@/lib/core/logging';
 
-// Schema for claim update
+// Schema for claim update;
 const updateClaimSchema = z.object({
   status: claimStatusSchema.optional(),
   notes: z.string().optional(),
   preAuthorizationNumber: z.string().optional(),
 });
 
-// Schema for claim submission
+// Schema for claim submission;
 const submitClaimSchema = z.object({
   submittedBy: z.string(),
   submissionMethod: z.enum(['electronic', 'paper', 'fax', 'portal']),
@@ -27,7 +38,7 @@ const submitClaimSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Schema for claim response
+// Schema for claim response;
 const claimResponseSchema = z.object({
   responseDate: z.coerce.date(),
   responseReference: z.string(),
@@ -40,16 +51,16 @@ const claimResponseSchema = z.object({
   additionalInfoRequested: z.string().optional(),
 });
 
-// GET handler for retrieving a specific claim
+// GET handler for retrieving a specific claim;
 export const GET = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'read', 'claim')(req);
   
-  // Get format from query parameters
+  // Get format from query parameters;
   const url = new URL(req.url);
   const format = url.searchParams.get('format') || 'json';
   
-  // Retrieve claim from database
+  // Retrieve claim from database;
   const claim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
     include: {
@@ -95,25 +106,25 @@ export const GET = withErrorHandling(async (req: NextRequest, { params }: { para
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
   
-  // Convert to FHIR format if requested
+  // Convert to FHIR format if requested;
   if (format === 'fhir') {
     const fhirClaim = convertToFHIRClaim(claim);
     return createSuccessResponse(fhirClaim);
   }
   
-  // Return standard JSON response
+  // Return standard JSON response;
   return createSuccessResponse(claim);
 });
 
-// PUT handler for updating a claim
+// PUT handler for updating a claim;
 export const PUT = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Validate request body
+  // Validate request body;
   const data = await validateBody(updateClaimSchema)(req);
   
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'update', 'claim')(req);
   
-  // Retrieve existing claim
+  // Retrieve existing claim;
   const existingClaim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
   });
@@ -131,14 +142,14 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
     );
   }
   
-  // Prepare update data
-  const updateData: any = {};
+  // Prepare update data;
+  const updateData: unknown = {};
   
   if (data.status) updateData.status = data.status;
   if (data.notes) updateData.notes = data.notes;
   if (data.preAuthorizationNumber) updateData.preAuthorizationNumber = data.preAuthorizationNumber;
   
-  // Update claim
+  // Update claim;
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: params.id },
     data: updateData,
@@ -184,12 +195,12 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
   return createSuccessResponse(updatedClaim);
 });
 
-// DELETE handler for deleting a claim
+// DELETE handler for deleting a claim;
 export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'delete', 'claim')(req);
   
-  // Retrieve existing claim
+  // Retrieve existing claim;
   const existingClaim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
   });
@@ -207,35 +218,35 @@ export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { p
     );
   }
   
-  // Delete claim in a transaction
+  // Delete claim in a transaction;
   await prisma.$transaction(async (prisma) => {
-    // Delete claim items
+    // Delete claim items;
     await prisma.claimItem.deleteMany({
       where: { claimId: params.id },
     });
     
-    // Delete claim diagnoses
+    // Delete claim diagnoses;
     await prisma.claimDiagnosis.deleteMany({
       where: { claimId: params.id },
     });
     
-    // Delete claim follow-ups
+    // Delete claim follow-ups;
     await prisma.claimFollowUp.deleteMany({
       where: { claimId: params.id },
     });
     
-    // Delete claim responses
+    // Delete claim responses;
     await prisma.claimResponse.deleteMany({
       where: { claimId: params.id },
     });
     
-    // Update invoice to remove claim reference
+    // Update invoice to remove claim reference;
     await prisma.bill.updateMany({
       where: { insuranceClaimId: params.id },
       data: { insuranceClaimId: null },
     });
     
-    // Delete claim
+    // Delete claim;
     await prisma.insuranceClaim.delete({
       where: { id: params.id },
     });
@@ -248,7 +259,7 @@ export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { p
 
 // PATCH handler for claim operations (submit, respond)
 export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Get operation from query parameters
+  // Get operation from query parameters;
   const url = new URL(req.url);
   const operation = url.searchParams.get('operation');
   
@@ -256,7 +267,7 @@ export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { pa
     throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
   }
   
-  // Retrieve existing claim
+  // Retrieve existing claim;
   const existingClaim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
   });
@@ -265,7 +276,7 @@ export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { pa
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
   
-  // Handle different operations
+  // Handle different operations;
   switch (operation) {
     case 'submit':
       return submitClaim(req, params.id, existingClaim);
@@ -276,15 +287,15 @@ export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { pa
   }
 });
 
-// Helper function to submit a claim
-async function submitClaim(req: NextRequest, claimId: string, existingClaim: any) {
-  // Check permissions
+// Helper function to submit a claim;
+async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unknown) {
+  // Check permissions;
   await checkPermission(permissionService, 'submit', 'claim')(req);
   
-  // Validate request body
+  // Validate request body;
   const data = await validateBody(submitClaimSchema)(req);
   
-  // Check if claim can be submitted
+  // Check if claim can be submitted;
   if (existingClaim.status !== 'draft') {
     throw new ValidationError(
       'Only draft claims can be submitted',
@@ -293,7 +304,7 @@ async function submitClaim(req: NextRequest, claimId: string, existingClaim: any
     );
   }
   
-  // Update claim
+  // Update claim;
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: claimId },
     data: {
@@ -344,21 +355,21 @@ async function submitClaim(req: NextRequest, claimId: string, existingClaim: any
   logger.info('Claim submitted', { 
     claimId, 
     submittedBy: data.submittedBy,
-    method: data.submissionMethod
+    method: data.submissionMethod;
   });
   
   return createSuccessResponse(updatedClaim);
 }
 
-// Helper function to record a claim response
-async function recordClaimResponse(req: NextRequest, claimId: string, existingClaim: any) {
-  // Check permissions
+// Helper function to record a claim response;
+async const recordClaimResponse = (req: NextRequest, claimId: string, existingClaim: unknown) {
+  // Check permissions;
   await checkPermission(permissionService, 'respond', 'claim')(req);
   
-  // Validate request body
+  // Validate request body;
   const data = await validateBody(claimResponseSchema)(req);
   
-  // Check if claim can receive a response
+  // Check if claim can receive a response;
   if (existingClaim.status !== 'submitted' && existingClaim.status !== 'in_progress') {
     throw new ValidationError(
       'Only submitted or in-progress claims can receive responses',
@@ -367,7 +378,7 @@ async function recordClaimResponse(req: NextRequest, claimId: string, existingCl
     );
   }
   
-  // Determine new claim status based on response
+  // Determine new claim status based on response;
   let newClaimStatus;
   switch (data.status) {
     case 'approved':
@@ -386,9 +397,9 @@ async function recordClaimResponse(req: NextRequest, claimId: string, existingCl
       newClaimStatus = existingClaim.status;
   }
   
-  // Create response and update claim in a transaction
+  // Create response and update claim in a transaction;
   const result = await prisma.$transaction(async (prisma) => {
-    // Create claim response
+    // Create claim response;
     const response = await prisma.claimResponse.create({
       data: {
         claimId,
@@ -404,7 +415,7 @@ async function recordClaimResponse(req: NextRequest, claimId: string, existingCl
       },
     });
     
-    // Update claim status
+    // Update claim status;
     const updatedClaim = await prisma.insuranceClaim.update({
       where: { id: claimId },
       data: {
@@ -456,7 +467,7 @@ async function recordClaimResponse(req: NextRequest, claimId: string, existingCl
   logger.info('Claim response recorded', { 
     claimId, 
     responseId: result.response.id,
-    status: data.status
+    status: data.status;
   });
   
   return createSuccessResponse(result.updatedClaim);

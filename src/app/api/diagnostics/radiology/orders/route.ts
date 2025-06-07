@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -8,18 +19,18 @@ import { auditLog } from '@/lib/audit';
 import { notifyUsers } from '@/lib/notifications';
 
 /**
- * GET /api/diagnostics/radiology/orders
- * Get radiology orders with optional filtering
+ * GET /api/diagnostics/radiology/orders;
+ * Get radiology orders with optional filtering;
  */
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   try {
-    // Authentication
+    // Authentication;
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get('patientId');
     const status = searchParams.get('status');
@@ -31,32 +42,39 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '20');
 
-    // Cache key
-    const cacheKey = `diagnostic:radiology:orders:${patientId || ''}:${status || ''}:${priority || ''}:${modality || ''}:${orderedAfter || ''}:${orderedBefore || ''}:${search || ''}:${page}:${pageSize}`;
+    // Cache key;
+    const cacheKey = `diagnostic:radiology:orders:${patientId ||;
+      ''}:${status ||
+      ''}:${priority ||
+      ''}:${modality ||
+      ''}:${orderedAfter ||
+      ''}:${orderedBefore ||
+      ''}:${search ||
+      ''}:${page}:${pageSize}`;
 
-    // Try to get from cache or fetch from database
+    // Try to get from cache or fetch from database;
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Build query
-        let query = `
+        // Build query;
+        let query = `;
           SELECT ro.*, 
                  p.patient_id as patient_identifier, p.first_name, p.last_name, 
                  u1.username as ordered_by_name,
                  u2.username as radiologist_name,
                  u3.username as technician_name,
-                 rp.name as protocol_name
-          FROM radiology_orders ro
-          JOIN patients p ON ro.patient_id = p.id
-          LEFT JOIN users u1 ON ro.ordered_by = u1.id
-          LEFT JOIN users u2 ON ro.radiologist_id = u2.id
-          LEFT JOIN users u3 ON ro.technician_id = u3.id
-          LEFT JOIN radiology_protocols rp ON ro.protocol_id = rp.id
-          WHERE 1=1
+                 rp.name as protocol_name;
+          FROM radiology_orders ro;
+          JOIN patients p ON ro.patient_id = p.id;
+          LEFT JOIN users u1 ON ro.ordered_by = u1.id;
+          LEFT JOIN users u2 ON ro.radiologist_id = u2.id;
+          LEFT JOIN users u3 ON ro.technician_id = u3.id;
+          LEFT JOIN radiology_protocols rp ON ro.protocol_id = rp.id;
+          WHERE 1=1;
         `;
-        const params: any[] = [];
+        const params: unknown[] = [];
 
-        // Add filters
+        // Add filters;
         if (patientId) {
           query += ' AND ro.patient_id = ?';
           params.push(patientId);
@@ -93,20 +111,20 @@ export async function GET(request: NextRequest) {
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
         }
 
-        // Add pagination
+        // Add pagination;
         const offset = (page - 1) * pageSize;
         query += ' ORDER BY ro.ordered_at DESC LIMIT ? OFFSET ?';
         params.push(pageSize, offset);
 
-        // Execute query
+        // Execute query;
         const result = await DB.query(query, params);
 
-        // Get total count for pagination
-        const countQuery = `
-          SELECT COUNT(*) as total
-          FROM radiology_orders ro
-          JOIN patients p ON ro.patient_id = p.id
-          WHERE 1=1
+        // Get total count for pagination;
+        const countQuery = `;
+          SELECT COUNT(*) as total;
+          FROM radiology_orders ro;
+          JOIN patients p ON ro.patient_id = p.id;
+          WHERE 1=1;
           ${patientId ? ' AND ro.patient_id = ?' : ''}
           ${status ? ' AND ro.status = ?' : ''}
           ${priority ? ' AND ro.priority = ?' : ''}
@@ -122,19 +140,19 @@ export async function GET(request: NextRequest) {
         const totalCount = countResult.results[0].total;
         const totalPages = Math.ceil(totalCount / pageSize);
 
-        // Decrypt sensitive data
+        // Decrypt sensitive data;
         const orders = result.results.map(order => {
-          // Decrypt any encrypted fields
+          // Decrypt any encrypted fields;
           return {
             ...order,
             clinical_information: order.clinical_information ? 
               decryptSensitiveData(order.clinical_information) : null,
             contrast_allergy_details: order.contrast_allergy_details ? 
-              decryptSensitiveData(order.contrast_allergy_details) : null
+              decryptSensitiveData(order.contrast_allergy_details) : null;
           };
         });
 
-        // Log access
+        // Log access;
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -148,16 +166,16 @@ export async function GET(request: NextRequest) {
             page,
             pageSize,
             totalCount,
-            totalPages
+            totalPages;
           }
         };
       },
-      1800 // 30 minutes cache
+      1800 // 30 minutes cache;
     );
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error in GET /api/diagnostics/radiology/orders:', error);
+
     return NextResponse.json({
       error: 'Failed to fetch radiology orders',
       details: error instanceof Error ? error.message : 'Unknown error'
@@ -166,23 +184,23 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/diagnostics/radiology/orders
- * Create a new radiology order
+ * POST /api/diagnostics/radiology/orders;
+ * Create a new radiology order;
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   try {
-    // Authentication
+    // Authentication;
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization
+    // Authorization;
     if (!['admin', 'physician', 'radiologist', 'nurse_practitioner'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { 
       patientId, 
@@ -203,23 +221,23 @@ export async function POST(request: NextRequest) {
       scheduledDate,
       scheduledTime,
       patientPreparation,
-      specialInstructions
+      specialInstructions;
     } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!patientId || !modality || !procedureCode || !procedureName) {
       return NextResponse.json({ 
-        error: 'Patient ID, modality, procedure code, and procedure name are required' 
+        error: 'Patient ID, modality, procedure code, and procedure name are required';
       }, { status: 400 });
     }
 
-    // Check if patient exists
+    // Check if patient exists;
     const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
     if (patientCheck.results.length === 0) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Check if protocol exists if provided
+    // Check if protocol exists if provided;
     if (protocolId) {
       const protocolCheck = await DB.query('SELECT id FROM radiology_protocols WHERE id = ?', [protocolId]);
       if (protocolCheck.results.length === 0) {
@@ -227,7 +245,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Check if radiologist exists if provided
+    // Check if radiologist exists if provided;
     if (radiologistId) {
       const radiologistCheck = await DB.query(
         'SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)',
@@ -238,27 +256,27 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate unique order number and accession number
+    // Generate unique order number and accession number;
     const orderNumber = `RO${Date.now().toString().slice(-10)}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
     const accessionNumber = `ACC${Date.now().toString().slice(-10)}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
 
-    // Encrypt sensitive data
-    const encryptedClinicalInfo = clinicalInformation ? 
+    // Encrypt sensitive data;
+    const encryptedClinicalInfo = clinicalInformation ?;
       encryptSensitiveData(clinicalInformation) : null;
     
-    const encryptedAllergyDetails = contrastAllergyDetails ? 
+    const encryptedAllergyDetails = contrastAllergyDetails ?;
       encryptSensitiveData(contrastAllergyDetails) : null;
 
-    // Insert order
-    const query = `
+    // Insert order;
+    const query = `;
       INSERT INTO radiology_orders (
         order_number, accession_number, patient_id, modality, procedure_code, procedure_name,
         priority, clinical_information, transport_mode, laterality, body_part,
         contrast_required, contrast_allergy, contrast_allergy_details, pregnancy_status,
         protocol_id, radiologist_id, scheduled_date, scheduled_time,
         patient_preparation, special_instructions, status, ordered_by, ordered_at,
-        created_by, updated_by
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)
+        created_by, updated_by;
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?);
     `;
 
     const params = [
@@ -286,12 +304,12 @@ export async function POST(request: NextRequest) {
       'ordered',
       session.user.id,
       session.user.id,
-      session.user.id
+      session.user.id;
     ];
 
     const result = await DB.query(query, params);
 
-    // Log creation
+    // Log creation;
     await auditLog({
       userId: session.user.id,
       action: 'create',
@@ -303,24 +321,24 @@ export async function POST(request: NextRequest) {
         patientId,
         modality,
         procedureCode,
-        priority: priority || 'routine'
+        priority: priority || 'routine';
       }
     });
 
-    // Create order tracking entry
+    // Create order tracking entry;
     await DB.query(
       `INSERT INTO radiology_order_tracking (
-        order_id, status, notes, performed_by, created_at
+        order_id, status, notes, performed_by, created_at;
       ) VALUES (?, ?, ?, ?, NOW())`,
       [
         result.insertId,
         'ordered',
         'Order created',
-        session.user.id
+        session.user.id;
       ]
     );
 
-    // Notify radiologist if assigned
+    // Notify radiologist if assigned;
     if (radiologistId) {
       await notifyUsers({
         userIds: [radiologistId],
@@ -329,10 +347,10 @@ export async function POST(request: NextRequest) {
         type: 'radiology_order',
         resourceId: result.insertId,
         resourceType: 'radiology_orders',
-        priority: priority === 'stat' ? 'high' : 'medium'
+        priority: priority === 'stat' ? 'high' : 'medium';
       });
     } else {
-      // Notify radiology department
+      // Notify radiology department;
       const radiologyStaff = await DB.query(
         'SELECT id FROM users WHERE role_id IN (SELECT id FROM roles WHERE name IN (?, ?))',
         ['radiologist', 'radiology_technician']
@@ -348,44 +366,44 @@ export async function POST(request: NextRequest) {
           type: 'radiology_order',
           resourceId: result.insertId,
           resourceType: 'radiology_orders',
-          priority: priority === 'stat' ? 'high' : 'medium'
+          priority: priority === 'stat' ? 'high' : 'medium';
         });
       }
     }
 
-    // Invalidate cache
+    // Invalidate cache;
     await CacheInvalidation.invalidatePattern('diagnostic:radiology:orders:*');
 
-    // Get the created order
+    // Get the created order;
     const createdOrder = await DB.query(
       `SELECT ro.*, 
               p.patient_id as patient_identifier, p.first_name, p.last_name, 
               u1.username as ordered_by_name,
               u2.username as radiologist_name,
               u3.username as technician_name,
-              rp.name as protocol_name
-       FROM radiology_orders ro
-       JOIN patients p ON ro.patient_id = p.id
-       LEFT JOIN users u1 ON ro.ordered_by = u1.id
-       LEFT JOIN users u2 ON ro.radiologist_id = u2.id
-       LEFT JOIN users u3 ON ro.technician_id = u3.id
-       LEFT JOIN radiology_protocols rp ON ro.protocol_id = rp.id
+              rp.name as protocol_name;
+       FROM radiology_orders ro;
+       JOIN patients p ON ro.patient_id = p.id;
+       LEFT JOIN users u1 ON ro.ordered_by = u1.id;
+       LEFT JOIN users u2 ON ro.radiologist_id = u2.id;
+       LEFT JOIN users u3 ON ro.technician_id = u3.id;
+       LEFT JOIN radiology_protocols rp ON ro.protocol_id = rp.id;
        WHERE ro.id = ?`,
       [result.insertId]
     );
 
-    // Decrypt sensitive data
+    // Decrypt sensitive data;
     const order = {
       ...createdOrder.results[0],
       clinical_information: createdOrder.results[0].clinical_information ? 
         decryptSensitiveData(createdOrder.results[0].clinical_information) : null,
       contrast_allergy_details: createdOrder.results[0].contrast_allergy_details ? 
-        decryptSensitiveData(createdOrder.results[0].contrast_allergy_details) : null
+        decryptSensitiveData(createdOrder.results[0].contrast_allergy_details) : null;
     };
 
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
-    console.error('Error in POST /api/diagnostics/radiology/orders:', error);
+
     return NextResponse.json({
       error: 'Failed to create radiology order',
       details: error instanceof Error ? error.message : 'Unknown error'
@@ -394,12 +412,12 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * PUT /api/diagnostics/radiology/orders/:id
- * Update a radiology order
+ * PUT /api/diagnostics/radiology/orders/:id;
+ * Update a radiology order;
  */
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Authentication
+    // Authentication;
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -410,7 +428,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { 
       modality, 
@@ -442,10 +460,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       contrastVolumeUnit,
       contrastAdministrationRoute,
       contrastReaction,
-      contrastReactionDetails
+      contrastReactionDetails;
     } = body;
 
-    // Check if order exists
+    // Check if order exists;
     const existingCheck = await DB.query('SELECT * FROM radiology_orders WHERE id = ?', [id]);
     if (existingCheck.results.length === 0) {
       return NextResponse.json({ error: 'Radiology order not found' }, { status: 404 });
@@ -453,19 +471,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     const existingOrder = existingCheck.results[0];
 
-    // Authorization
+    // Authorization;
     const isOrderer = existingOrder.ordered_by === session.user.id;
     const isRadiologist = existingOrder.radiologist_id === session.user.id;
     const isTechnician = existingOrder.technician_id === session.user.id;
     const isAdmin = ['admin', 'radiology_manager'].includes(session.user.roleName);
     const isRadiologyStaff = ['radiologist', 'radiology_technician'].includes(session.user.roleName);
     
-    // Only certain roles can update orders
+    // Only certain roles can update orders;
     if (!isOrderer && !isRadiologist && !isTechnician && !isAdmin && !isRadiologyStaff) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Check if protocol exists if provided
+    // Check if protocol exists if provided;
     if (protocolId) {
       const protocolCheck = await DB.query('SELECT id FROM radiology_protocols WHERE id = ?', [protocolId]);
       if (protocolCheck.results.length === 0) {
@@ -473,7 +491,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    // Check if radiologist exists if provided
+    // Check if radiologist exists if provided;
     if (radiologistId) {
       const radiologistCheck = await DB.query(
         'SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)',
@@ -484,7 +502,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    // Check if technician exists if provided
+    // Check if technician exists if provided;
     if (technicianId) {
       const technicianCheck = await DB.query(
         'SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)',
@@ -495,14 +513,14 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    // Build update query
+    // Build update query;
     const updateFields: string[] = [];
-    const updateParams: any[] = [];
+    const updateParams: unknown[] = [];
     let statusChanged = false;
     let oldStatus = existingOrder.status;
     let trackingNote = null;
 
-    // Only orderer or admin can change these fields if order is still in 'ordered' status
+    // Only orderer or admin can change these fields if order is still in 'ordered' status;
     if ((isOrderer || isAdmin) && existingOrder.status === 'ordered') {
       if (modality !== undefined) {
         updateFields.push('modality = ?');
@@ -575,7 +593,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    // Radiology staff or admin can change these fields
+    // Radiology staff or admin can change these fields;
     if (isRadiologyStaff || isAdmin) {
       if (protocolId !== undefined) {
         updateFields.push('protocol_id = ?');
@@ -608,9 +626,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    // Status changes
+    // Status changes;
     if (status !== undefined && status !== existingOrder.status) {
-      // Validate status transitions
+      // Validate status transitions;
       const validTransitions: Record<string, string[]> = {
         'ordered': ['scheduled', 'cancelled', 'in_progress'],
         'scheduled': ['in_progress', 'cancelled'],
@@ -621,7 +639,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
       if (!validTransitions[existingOrder.status].includes(status)) {
         return NextResponse.json({ 
-          error: `Invalid status transition from ${existingOrder.status} to ${status}` 
+          error: `Invalid status transition from ${existingOrder.status} to ${status}`;
         }, { status: 400 });
       }
 
@@ -629,7 +647,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       updateParams.push(status);
       statusChanged = true;
       
-      // Set tracking note based on status change
+      // Set tracking note based on status change;
       switch (status) {
         case 'scheduled':
           if (!scheduledDate) {
@@ -655,14 +673,14 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
           break;
       }
     } else {
-      // Handle cancellation reason update without status change
+      // Handle cancellation reason update without status change;
       if (cancellationReason !== undefined && existingOrder.status === 'cancelled') {
         updateFields.push('cancellation_reason = ?');
         updateParams.push(cancellationReason || null);
         trackingNote = `Cancellation reason updated: ${cancellationReason}`;
       }
       
-      // Handle completed date update without status change
+      // Handle completed date update without status change;
       if (completedDate !== undefined && existingOrder.status === 'completed') {
         updateFields.push('completed_date = ?');
         updateParams.push(completedDate || null);
@@ -720,15 +738,15 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     updateFields.push('updated_at = NOW()');
 
-    // Add ID to params
+    // Add ID to params;
     updateParams.push(id);
 
-    // Execute update
+    // Execute update;
     if (updateFields.length > 0) {
       const query = `UPDATE radiology_orders SET ${updateFields.join(', ')} WHERE id = ?`;
       await DB.query(query, updateParams);
 
-      // Log update
+      // Log update;
       await auditLog({
         userId: session.user.id,
         action: 'update',
@@ -738,28 +756,28 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
           ...body,
           statusChanged,
           oldStatus: statusChanged ? oldStatus : undefined,
-          newStatus: statusChanged ? status : undefined
+          newStatus: statusChanged ? status : undefined;
         }
       });
 
-      // Create tracking entry if status changed or tracking note exists
+      // Create tracking entry if status changed or tracking note exists;
       if (trackingNote) {
         await DB.query(
           `INSERT INTO radiology_order_tracking (
-            order_id, status, notes, performed_by, created_at
+            order_id, status, notes, performed_by, created_at;
           ) VALUES (?, ?, ?, ?, NOW())`,
           [
             id,
             status || existingOrder.status,
             trackingNote,
-            session.user.id
+            session.user.id;
           ]
         );
       }
 
-      // Send notifications for status changes
+      // Send notifications for status changes;
       if (statusChanged) {
-        // Notify orderer
+        // Notify orderer;
         if (existingOrder.ordered_by !== session.user.id) {
           await notifyUsers({
             userIds: [existingOrder.ordered_by],
@@ -768,11 +786,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order_update',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: 'medium'
+            priority: 'medium';
           });
         }
         
-        // Notify radiologist if assigned
+        // Notify radiologist if assigned;
         if (existingOrder.radiologist_id && existingOrder.radiologist_id !== session.user.id) {
           await notifyUsers({
             userIds: [existingOrder.radiologist_id],
@@ -781,11 +799,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order_update',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: 'medium'
+            priority: 'medium';
           });
         }
         
-        // Notify technician if assigned
+        // Notify technician if assigned;
         if (existingOrder.technician_id && existingOrder.technician_id !== session.user.id) {
           await notifyUsers({
             userIds: [existingOrder.technician_id],
@@ -794,12 +812,12 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order_update',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: 'medium'
+            priority: 'medium';
           });
         }
       }
 
-      // Send notifications for assignment changes
+      // Send notifications for assignment changes;
       if (radiologistId !== undefined && radiologistId !== existingOrder.radiologist_id) {
         if (radiologistId) {
           await notifyUsers({
@@ -809,7 +827,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
+            priority: existingOrder.priority === 'stat' ? 'high' : 'medium';
           });
         }
       }
@@ -823,34 +841,34 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
+            priority: existingOrder.priority === 'stat' ? 'high' : 'medium';
           });
         }
       }
 
-      // Invalidate cache
+      // Invalidate cache;
       await CacheInvalidation.invalidatePattern('diagnostic:radiology:orders:*');
     }
 
-    // Get the updated order
+    // Get the updated order;
     const updatedOrder = await DB.query(
       `SELECT ro.*, 
               p.patient_id as patient_identifier, p.first_name, p.last_name, 
               u1.username as ordered_by_name,
               u2.username as radiologist_name,
               u3.username as technician_name,
-              rp.name as protocol_name
-       FROM radiology_orders ro
-       JOIN patients p ON ro.patient_id = p.id
-       LEFT JOIN users u1 ON ro.ordered_by = u1.id
-       LEFT JOIN users u2 ON ro.radiologist_id = u2.id
-       LEFT JOIN users u3 ON ro.technician_id = u3.id
-       LEFT JOIN radiology_protocols rp ON ro.protocol_id = rp.id
+              rp.name as protocol_name;
+       FROM radiology_orders ro;
+       JOIN patients p ON ro.patient_id = p.id;
+       LEFT JOIN users u1 ON ro.ordered_by = u1.id;
+       LEFT JOIN users u2 ON ro.radiologist_id = u2.id;
+       LEFT JOIN users u3 ON ro.technician_id = u3.id;
+       LEFT JOIN radiology_protocols rp ON ro.protocol_id = rp.id;
        WHERE ro.id = ?`,
       [id]
     );
 
-    // Decrypt sensitive data
+    // Decrypt sensitive data;
     const order = {
       ...updatedOrder.results[0],
       clinical_information: updatedOrder.results[0].clinical_information ? 
@@ -858,12 +876,12 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       contrast_allergy_details: updatedOrder.results[0].contrast_allergy_details ? 
         decryptSensitiveData(updatedOrder.results[0].contrast_allergy_details) : null,
       contrast_reaction_details: updatedOrder.results[0].contrast_reaction_details ? 
-        decryptSensitiveData(updatedOrder.results[0].contrast_reaction_details) : null
+        decryptSensitiveData(updatedOrder.results[0].contrast_reaction_details) : null;
     };
 
     return NextResponse.json(order);
   } catch (error) {
-    console.error('Error in PUT /api/diagnostics/radiology/orders/:id:', error);
+
     return NextResponse.json({
       error: 'Failed to update radiology order',
       details: error instanceof Error ? error.message : 'Unknown error'
@@ -872,12 +890,12 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 /**
- * GET /api/diagnostics/radiology/orders/:id/tracking
- * Get tracking history for a radiology order
+ * GET /api/diagnostics/radiology/orders/:id/tracking;
+ * Get tracking history for a radiology order;
  */
-export async function GET_TRACKING(request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Authentication
+    // Authentication;
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -888,31 +906,31 @@ export async function GET_TRACKING(request: NextRequest, { params }: { params: {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Cache key
+    // Cache key;
     const cacheKey = `diagnostic:radiology:order:${id}:tracking`;
 
-    // Try to get from cache or fetch from database
+    // Try to get from cache or fetch from database;
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Check if order exists
+        // Check if order exists;
         const orderCheck = await DB.query('SELECT id FROM radiology_orders WHERE id = ?', [id]);
         if (orderCheck.results.length === 0) {
           throw new Error('Radiology order not found');
         }
 
-        // Get tracking history
-        const query = `
-          SELECT t.*, u.username as performed_by_name
-          FROM radiology_order_tracking t
-          LEFT JOIN users u ON t.performed_by = u.id
-          WHERE t.order_id = ?
-          ORDER BY t.created_at DESC
+        // Get tracking history;
+        const query = `;
+          SELECT t.*, u.username as performed_by_name;
+          FROM radiology_order_tracking t;
+          LEFT JOIN users u ON t.performed_by = u.id;
+          WHERE t.order_id = ?;
+          ORDER BY t.created_at DESC;
         `;
 
         const result = await DB.query(query, [id]);
 
-        // Log access
+        // Log access;
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -922,12 +940,12 @@ export async function GET_TRACKING(request: NextRequest, { params }: { params: {
 
         return result.results;
       },
-      1800 // 30 minutes cache
+      1800 // 30 minutes cache;
     );
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error in GET /api/diagnostics/radiology/orders/:id/tracking:', error);
+
     return NextResponse.json({
       error: 'Failed to fetch order tracking',
       details: error instanceof Error ? error.message : 'Unknown error'

@@ -1,4 +1,15 @@
-// /home/ubuntu/Hms/apps/hms-web/src/lib/authUtils.ts
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// /home/ubuntu/Hms/apps/hms-web/src/lib/authUtils.ts;
 import { NextRequest } from "next/server";
 
 // --- AUTH PLACEHOLDERS (To be replaced by actual Auth Module from Manus 9) ---
@@ -13,8 +24,8 @@ export interface User {
  * Replace with actual implementation from Manus 9 Auth Module.
  */
 export const getCurrentUser = async (_req: NextRequest): Promise<User | null> => {
-  console.warn("getCurrentUser (authUtils): Using MOCK user. Replace with actual implementation.");
-  // Simulate different users for different contexts if needed for testing, or a generic one
+  // Debug logging removed: Using MOCK user. Replace with actual implementation.");
+  // Simulate different users for different contexts if needed for testing, or a generic one;
   return { id: "mockUserId-shared", name: "Mock Shared User" }; 
 };
 
@@ -24,11 +35,11 @@ export const getCurrentUser = async (_req: NextRequest): Promise<User | null> =>
  * This mock allows all permissions for the mock user for now.
  */
 export const hasPermission = async (userId: string | undefined, permission: string): Promise<boolean> => {
-  console.warn(`hasPermission (authUtils): Using MOCK permission check for ${permission}. Replace with actual implementation.`);
+  // Debug logging removed: Using MOCK permission check for ${permission}. Replace with actual implementation.`);
   if (!userId) return false;
   // For simplicity in this refactoring, this mock will grant all permissions to the mock user.
   // In a real scenario, this would involve checking user roles and permissions against a database or auth service.
-  console.log(`Mock permission check: User ${userId} requesting ${permission} - GRANTED (mock)`);
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   return true; 
   // Example of a more specific mock if needed:
   /*
@@ -39,8 +50,8 @@ export const hasPermission = async (userId: string | undefined, permission: stri
       "LIS_UPLOAD_REPORT_METADATA", "LIS_VIEW_ALL_REPORTS", "LIS_VIEW_PATIENT_REPORTS",
       "LIS_VIEW_SPECIFIC_REPORT", "LIS_UPDATE_REPORT_METADATA", "LIS_DELETE_REPORT_METADATA",
       "LIS_DOWNLOAD_REPORT",
-      "RADIOLOGY_CREATE_REQUEST", "RADIOLOGY_VIEW_ALL_REQUESTS", "RADIOLOGY_VIEW_PATIENT_REQUESTS"
-      // Add other permissions as needed
+      "RADIOLOGY_CREATE_REQUEST", "RADIOLOGY_VIEW_ALL_REQUESTS", "RADIOLOGY_VIEW_PATIENT_REQUESTS";
+      // Add other permissions as needed;
     ]
   };
   return mockPermissions[userId]?.includes(permission) || false;

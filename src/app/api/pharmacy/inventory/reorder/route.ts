@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Automated Reordering API Routes
+ * Automated Reordering API Routes;
  * 
- * This file implements the API endpoints for automated inventory reordering
+ * This file implements the API endpoints for automated inventory reordering;
  * with threshold-based triggers and approval workflows.
  */
 
@@ -19,7 +30,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const inventoryRepository = {
@@ -28,9 +39,9 @@ const inventoryRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findBelowReorderLevel: () => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (item: any) => Promise.resolve(item.id || 'new-id'),
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const reorderRepository = {
@@ -39,36 +50,36 @@ const reorderRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (reorder: any) => Promise.resolve(reorder.id || 'new-id'),
+  save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const supplierRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (supplier: any) => Promise.resolve(supplier.id || 'new-id'),
+  save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 /**
- * GET /api/pharmacy/inventory/reorder
- * List items that need reordering based on threshold levels
+ * GET /api/pharmacy/inventory/reorder;
+ * List items that need reordering based on threshold levels;
  */
-export async function GET(req: NextRequest) {
+export async const GET = (req: NextRequest) {
   try {
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const locationId = url.searchParams.get('locationId');
     const includeOnOrder = url.searchParams.get('includeOnOrder') === 'true';
@@ -76,43 +87,43 @@ export async function GET(req: NextRequest) {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Get inventory items below reorder level
+    // Get inventory items below reorder level;
     const itemsBelowReorderLevel = await inventoryRepository.findBelowReorderLevel();
     
-    // Apply filters
+    // Apply filters;
     let filteredItems = itemsBelowReorderLevel;
     if (locationId) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
     }
     
-    // Get existing reorders
+    // Get existing reorders;
     const existingReorders = await reorderRepository.findByStatus('pending');
     const medicationsOnOrder = existingReorders.map(reorder => reorder.medicationId);
     
-    // Filter out items already on order if not including them
+    // Filter out items already on order if not including them;
     if (!includeOnOrder) {
       filteredItems = filteredItems.filter(item => !medicationsOnOrder.includes(item.medicationId));
     }
     
-    // Filter for critical items only if requested
+    // Filter for critical items only if requested;
     if (criticalOnly) {
       filteredItems = filteredItems.filter(item => {
         const stockRatio = item.quantityOnHand / item.reorderLevel;
-        return stockRatio < 0.5; // Consider critical if less than 50% of reorder level
+        return stockRatio < 0.5; // Consider critical if less than 50% of reorder level;
       });
     }
     
-    // Enrich with medication details and calculate reorder quantities
+    // Enrich with medication details and calculate reorder quantities;
     const reorderItems = await Promise.all(filteredItems.map(async item => {
       const medication = await medicationRepository.findById(item.medicationId);
       const suppliers = await supplierRepository.findByMedicationId(item.medicationId);
       const preferredSupplier = suppliers.length > 0 ? suppliers[0] : null;
       
-      // Calculate suggested reorder quantity based on usage patterns
-      // In a real implementation, this would use historical usage data
+      // Calculate suggested reorder quantity based on usage patterns;
+      // In a real implementation, this would use historical usage data;
       const suggestedQuantity = Math.max(
         item.reorderLevel * 2 - item.quantityOnHand,
-        item.reorderLevel
+        item.reorderLevel;
       );
       
       return {
@@ -129,7 +140,7 @@ export async function GET(req: NextRequest) {
         preferredSupplierId: preferredSupplier ? preferredSupplier.id : null,
         preferredSupplierName: preferredSupplier ? preferredSupplier.name : null,
         isOnOrder: medicationsOnOrder.includes(item.medicationId),
-        stockStatus: getStockStatus(item.quantityOnHand, item.reorderLevel)
+        stockStatus: getStockStatus(item.quantityOnHand, item.reorderLevel);
       };
     }));
     
@@ -141,17 +152,17 @@ export async function GET(req: NextRequest) {
     
     const total = reorderItems.length;
     
-    // Apply pagination
+    // Apply pagination;
     const paginatedItems = reorderItems.slice((page - 1) * limit, page * limit);
 
-    // Group by status for reporting
+    // Group by status for reporting;
     const statusCounts = {
       critical: reorderItems.filter(item => item.stockStatus === 'critical').length,
       low: reorderItems.filter(item => item.stockStatus === 'low').length,
-      normal: reorderItems.filter(item => item.stockStatus === 'normal').length
+      normal: reorderItems.filter(item => item.stockStatus === 'normal').length;
     };
 
-    // Audit logging
+    // Audit logging;
     await auditLog('INVENTORY', {
       action: 'LIST_REORDER',
       resourceType: 'Inventory',
@@ -161,11 +172,11 @@ export async function GET(req: NextRequest) {
         includeOnOrder,
         criticalOnly,
         resultCount: paginatedItems.length,
-        statusCounts
+        statusCounts;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({ 
       reorderItems: paginatedItems,
       statusCounts,
@@ -173,7 +184,7 @@ export async function GET(req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -182,12 +193,12 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * POST /api/pharmacy/inventory/reorder
- * Create a new reorder request
+ * POST /api/pharmacy/inventory/reorder;
+ * Create a new reorder request;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateReorderRequest(data);
     if (!validationResult.success) {
@@ -197,22 +208,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Verify medication exists
+    // Verify medication exists;
     const medication = await medicationRepository.findById(data.medicationId);
     if (!medication) {
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
-    // Check for existing pending reorder for this medication
+    // Check for existing pending reorder for this medication;
     const existingReorders = await reorderRepository.findByMedicationId(data.medicationId);
     const pendingReorder = existingReorders.find(r => r.status === 'pending');
     
@@ -220,13 +231,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { 
           error: 'Pending reorder already exists for this medication',
-          existingReorderId: pendingReorder.id
+          existingReorderId: pendingReorder.id;
         },
         { status: 409 }
       );
     }
 
-    // Create reorder record
+    // Create reorder record;
     const reorder = {
       id: data.id || crypto.randomUUID(),
       medicationId: data.medicationId,
@@ -241,15 +252,15 @@ export async function POST(req: NextRequest) {
       notes: data.notes || '',
       priority: data.priority || 'normal',
       expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
-      purchaseOrderNumber: generatePurchaseOrderNumber()
+      purchaseOrderNumber: generatePurchaseOrderNumber();
     };
 
-    // Special handling for controlled substances
+    // Special handling for controlled substances;
     if (medication.isControlled) {
       reorder.requiresApproval = true;
       reorder.approvalStatus = 'pending';
       
-      // Additional logging for controlled substances
+      // Additional logging for controlled substances;
       await auditLog('CONTROLLED_SUBSTANCE', {
         action: 'REORDER_REQUEST',
         resourceType: 'Inventory',
@@ -258,15 +269,15 @@ export async function POST(req: NextRequest) {
           medicationId: data.medicationId,
           quantity: data.quantity,
           supplierId: data.supplierId,
-          purchaseOrderNumber: reorder.purchaseOrderNumber
+          purchaseOrderNumber: reorder.purchaseOrderNumber;
         }
       });
     }
 
-    // Save reorder record
+    // Save reorder record;
     const reorderId = await reorderRepository.save(reorder);
 
-    // Regular audit logging
+    // Regular audit logging;
     await auditLog('INVENTORY', {
       action: 'CREATE_REORDER',
       resourceType: 'Inventory',
@@ -276,17 +287,17 @@ export async function POST(req: NextRequest) {
         medicationId: data.medicationId,
         quantity: data.quantity,
         supplierId: data.supplierId,
-        purchaseOrderNumber: reorder.purchaseOrderNumber
+        purchaseOrderNumber: reorder.purchaseOrderNumber;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json(
       { 
         id: reorderId,
         purchaseOrderNumber: reorder.purchaseOrderNumber,
         requiresApproval: reorder.requiresApproval,
-        message: 'Reorder request created successfully' 
+        message: 'Reorder request created successfully';
       }, 
       { status: 201 }
     );
@@ -296,9 +307,9 @@ export async function POST(req: NextRequest) {
 }
 
 /**
- * Helper function to determine stock status based on quantity and reorder level
+ * Helper function to determine stock status based on quantity and reorder level;
  */
-function getStockStatus(quantity: number, reorderLevel: number): 'critical' | 'low' | 'normal' {
+const getStockStatus = (quantity: number, reorderLevel: number): 'critical' | 'low' | 'normal' {
   const ratio = quantity / reorderLevel;
   
   if (ratio <= 0.25) {
@@ -311,9 +322,9 @@ function getStockStatus(quantity: number, reorderLevel: number): 'critical' | 'l
 }
 
 /**
- * Helper function to generate a purchase order number
+ * Helper function to generate a purchase order number;
  */
-function generatePurchaseOrderNumber(): string {
+const generatePurchaseOrderNumber = (): string {
   const prefix = 'PO';
   const timestamp = Date.now().toString().slice(-6);
   const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');

@@ -1,13 +1,24 @@
-import React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
 
-// UI components barrel file
-// This file exports all UI components to make imports cleaner
+import React, { useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons;
 
-// Define more specific props types using React's utility types
+// UI components barrel file;
+// This file exports all UI components to make imports cleaner;
 
-// Button component Props
-interface ButtonProperties
+// Define more specific props types using React's utility types;
+
+// Button component Props;
+interface ButtonProperties;
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   variant?: "default" | "destructive" | "outline" | "ghost" | "success";
@@ -19,9 +30,9 @@ export const Button = ({
   variant = "default",
   size = "md",
   className = "",
-  ...properties
+  ...properties;
 }: ButtonProperties) => {
-  const baseStyles =
+  const baseStyles =;
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
   const variantStyles: { [key: string]: string } = {
@@ -43,17 +54,19 @@ export const Button = ({
     icon: "h-10 w-10",
   };
 
-  const combinedClassName = `${baseStyles} ${variantStyles[variant || "default"]} ${sizeStyles[size || "md"]} ${className}`;
+  const combinedClassName = `${baseStyles} ${variantStyles[variant ||;
+    "default"]} ${sizeStyles[size ||
+    "md"]} ${className}`;
 
   return (
-    <button className={combinedClassName} {...properties}>
+    <button className={combinedClassName} {...properties}>;
       {children}
     </button>
   );
 };
 Button.displayName = "Button";
 
-// Card components Props
+// Card components Props;
 interface CardProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
@@ -61,10 +74,10 @@ interface CardProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const Card = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: CardProperties) => {
   return (
-    <div
+    <div;
       className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}
       {...properties}
     >
@@ -81,10 +94,10 @@ interface CardHeaderProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const CardHeader = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: CardHeaderProperties) => {
   return (
-    <div className={`p-6 pb-3 ${className}`} {...properties}>
+    <div className={`p-6 pb-3 ${className}`} {...properties}>;
       {children}
     </div>
   );
@@ -98,17 +111,17 @@ interface CardTitleProperties extends React.HTMLAttributes<HTMLHeadingElement> {
 export const CardTitle = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: CardTitleProperties) => {
   return (
-    <h3 className={`text-lg font-semibold ${className}`} {...properties}>
+    <h3 className={`text-lg font-semibold ${className}`} {...properties}>;
       {children}
     </h3>
   );
 };
 CardTitle.displayName = "CardTitle";
 
-interface CardDescriptionProperties
+interface CardDescriptionProperties;
   extends React.HTMLAttributes<HTMLParagraphElement> {
   children?: React.ReactNode;
 }
@@ -116,10 +129,10 @@ interface CardDescriptionProperties
 export const CardDescription = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: CardDescriptionProperties) => {
   return (
-    <p className={`text-sm text-gray-500 ${className}`} {...properties}>
+    <p className={`text-sm text-gray-500 ${className}`} {...properties}>;
       {children}
     </p>
   );
@@ -133,10 +146,10 @@ interface CardContentProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const CardContent = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: CardContentProperties) => {
   return (
-    <div className={`p-6 pt-0 ${className}`} {...properties}>
+    <div className={`p-6 pt-0 ${className}`} {...properties}>;
       {children}
     </div>
   );
@@ -150,23 +163,23 @@ interface CardFooterProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const CardFooter = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: CardFooterProperties) => {
   return (
-    <div className={`p-6 pt-0 ${className}`} {...properties}>
+    <div className={`p-6 pt-0 ${className}`} {...properties}>;
       {children}
     </div>
   );
 };
 CardFooter.displayName = "CardFooter";
 
-// Input component
+// Input component;
 export const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
 >(({ className = "", ...properties }, reference) => {
   return (
-    <input
+    <input;
       ref={reference}
       className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       {...properties}
@@ -175,13 +188,13 @@ export const Input = React.forwardRef<
 });
 Input.displayName = "Input";
 
-// Label component
+// Label component;
 export const Label = React.forwardRef<
   HTMLLabelElement,
   React.LabelHTMLAttributes<HTMLLabelElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <label
+    <label;
       ref={reference}
       className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className}`}
       {...properties}
@@ -192,13 +205,13 @@ export const Label = React.forwardRef<
 });
 Label.displayName = "Label";
 
-// Textarea component
+// Textarea component;
 export const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
 >(({ className = "", ...properties }, reference) => {
   return (
-    <textarea
+    <textarea;
       ref={reference}
       className={`flex min-h-[80px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       {...properties}
@@ -207,7 +220,7 @@ export const Textarea = React.forwardRef<
 });
 Textarea.displayName = "Textarea";
 
-// Badge component Props
+// Badge component Props;
 interface BadgeProperties extends React.HTMLAttributes<HTMLSpanElement> {
   children?: React.ReactNode;
   variant?: "default" | "secondary" | "destructive" | "outline" | "success";
@@ -217,7 +230,7 @@ export const Badge = ({
   children,
   variant = "default",
   className = "",
-  ...properties
+  ...properties;
 }: BadgeProperties) => {
   const variantStyles: { [key: string]: string } = {
     default: "bg-blue-100 text-blue-800",
@@ -228,8 +241,9 @@ export const Badge = ({
   };
 
   return (
-    <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${variantStyles[variant || "default"]} ${className}`}
+    <span;
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${variantStyles[variant ||;
+        "default"]} ${className}`}
       {...properties}
     >
       {children}
@@ -238,7 +252,7 @@ export const Badge = ({
 };
 Badge.displayName = "Badge";
 
-// Alert components Props
+// Alert components Props;
 interface AlertProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   variant?: "default" | "destructive" | "warning" | "success";
@@ -248,7 +262,7 @@ export const Alert = ({
   children,
   variant = "default",
   className = "",
-  ...properties
+  ...properties;
 }: AlertProperties) => {
   const variantStyles: { [key: string]: string } = {
     default: "bg-blue-50 text-blue-800 border-blue-200",
@@ -258,9 +272,9 @@ export const Alert = ({
   };
 
   return (
-    <div
+    <div;
       className={`p-4 rounded-md border ${variantStyles[variant || "default"]} ${className}`}
-      role="alert"
+      role="alert";
       {...properties}
     >
       {children}
@@ -269,7 +283,7 @@ export const Alert = ({
 };
 Alert.displayName = "Alert";
 
-interface AlertDescriptionProperties
+interface AlertDescriptionProperties;
   extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
@@ -277,24 +291,24 @@ interface AlertDescriptionProperties
 export const AlertDescription = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: AlertDescriptionProperties) => {
   return (
-    <div className={`text-sm ${className}`} {...properties}>
+    <div className={`text-sm ${className}`} {...properties}>;
       {children}
     </div>
   );
 };
 AlertDescription.displayName = "AlertDescription";
 
-// Table components
+// Table components;
 export const Table = React.forwardRef<
   HTMLTableElement,
   React.TableHTMLAttributes<HTMLTableElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <div className="w-full overflow-auto">
-      <table
+    <div className="w-full overflow-auto">;
+      <table;
         ref={reference}
         className={`w-full caption-bottom text-sm ${className}`}
         {...properties}
@@ -311,7 +325,7 @@ export const TableHeader = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <thead ref={reference} className={`${className}`} {...properties}>
+    <thead ref={reference} className={`${className}`} {...properties}>;
       {children}
     </thead>
   );
@@ -323,7 +337,7 @@ export const TableBody = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <tbody ref={reference} className={`${className}`} {...properties}>
+    <tbody ref={reference} className={`${className}`} {...properties}>;
       {children}
     </tbody>
   );
@@ -335,7 +349,7 @@ export const TableRow = React.forwardRef<
   React.HTMLAttributes<HTMLTableRowElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <tr
+    <tr;
       ref={reference}
       className={`border-b border-gray-200 transition-colors hover:bg-gray-50 ${className}`}
       {...properties}
@@ -351,7 +365,7 @@ export const TableHead = React.forwardRef<
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <th
+    <th;
       ref={reference}
       className={`h-12 px-4 text-left align-middle font-medium text-gray-500 ${className}`}
       {...properties}
@@ -367,7 +381,7 @@ export const TableCell = React.forwardRef<
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <td
+    <td;
       ref={reference}
       className={`p-4 align-middle ${className}`}
       {...properties}
@@ -378,7 +392,7 @@ export const TableCell = React.forwardRef<
 });
 TableCell.displayName = "TableCell";
 
-// Define specific props type for Tabs component
+// Define specific props type for Tabs component;
 interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   value: string;
@@ -386,19 +400,19 @@ interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-// Tabs components
+// Tabs components;
 export const Tabs = ({
   children,
   value,
   onValueChange,
   className = "",
-  ...properties
+  ...properties;
 }: TabsProperties) => {
   return (
-    <div className={`${className}`} {...properties}>
+    <div className={`${className}`} {...properties}>;
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          // Pass value and onValueChange explicitly, add type assertion for child props
+          // Pass value and onValueChange explicitly, add type assertion for child props;
           return React.cloneElement(
             child as React.ReactElement<{
               value?: string;
@@ -406,10 +420,10 @@ export const Tabs = ({
               parentValue?: string;
             }>,
             {
-              value: child.type === TabsContent ? value : undefined, // Pass value only to TabsContent
+              value: child.type === TabsContent ? value : undefined, // Pass value only to TabsContent;
               onValueChange:
-                child.type === TabsTrigger ? onValueChange : undefined, // Pass onValueChange only to TabsTrigger
-              parentValue: value, // Pass parent value to children for comparison
+                child.type === TabsTrigger ? onValueChange : undefined, // Pass onValueChange only to TabsTrigger;
+              parentValue: value, // Pass parent value to children for comparison;
             }
           );
         }
@@ -420,7 +434,7 @@ export const Tabs = ({
 };
 Tabs.displayName = "Tabs";
 
-// Define specific props type for TabsList component
+// Define specific props type for TabsList component;
 interface TabsListProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
@@ -429,12 +443,12 @@ interface TabsListProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const TabsList = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: TabsListProperties) => {
   return (
-    <div
+    <div;
       className={`inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 ${className}`}
-      role="tablist"
+      role="tablist";
       {...properties}
     >
       {children}
@@ -443,14 +457,14 @@ export const TabsList = ({
 };
 TabsList.displayName = "TabsList";
 
-// Define specific props type for TabsTrigger component
-interface TabsTriggerProperties
+// Define specific props type for TabsTrigger component;
+interface TabsTriggerProperties;
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   value: string;
   className?: string;
-  onValueChange?: (value: string) => void; // Received from Tabs
-  parentValue?: string; // Received from Tabs
+  onValueChange?: (value: string) => void; // Received from Tabs;
+  parentValue?: string; // Received from Tabs;
 }
 
 export const TabsTrigger = ({
@@ -459,18 +473,18 @@ export const TabsTrigger = ({
   className = "",
   onValueChange,
   parentValue,
-  ...properties
+  ...properties;
 }: TabsTriggerProperties) => {
   const isActive = parentValue === value;
 
   return (
-    <button
+    <button;
       className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 ${
-        isActive
+        isActive;
           ? "bg-white text-blue-700 shadow-sm"
-          : "text-gray-600 hover:text-gray-900"
+          : "text-gray-600 hover:text-gray-900";
       } ${className}`}
-      role="tab"
+      role="tab";
       aria-selected={isActive}
       tabIndex={isActive ? 0 : -1}
       onClick={() => onValueChange?.(value)}
@@ -482,12 +496,12 @@ export const TabsTrigger = ({
 };
 TabsTrigger.displayName = "TabsTrigger";
 
-// Define specific props type for TabsContent component
+// Define specific props type for TabsContent component;
 interface TabsContentProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   value: string;
   className?: string;
-  parentValue?: string; // Received from Tabs
+  parentValue?: string; // Received from Tabs;
 }
 
 export const TabsContent = ({
@@ -495,16 +509,16 @@ export const TabsContent = ({
   value,
   className = "",
   parentValue,
-  ...properties
+  ...properties;
 }: TabsContentProperties) => {
   const isActive = parentValue === value;
 
   if (!isActive) return;
 
   return (
-    <div
+    <div;
       className={`mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${className}`}
-      role="tabpanel"
+      role="tabpanel";
       tabIndex={0}
       {...properties}
     >
@@ -514,19 +528,19 @@ export const TabsContent = ({
 };
 TabsContent.displayName = "TabsContent";
 
-// Define specific props type for Dialog component
+// Define specific props type for Dialog component;
 interface DialogProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  open?: boolean; // Add open state if controlled externally
-  onOpenChange?: (open: boolean) => void; // Add handler for external control
+  open?: boolean; // Add open state if controlled externally;
+  onOpenChange?: (open: boolean) => void; // Add handler for external control;
 }
 
-// Dialog components
+// Dialog components;
 export const Dialog = ({
   children,
   open: controlledOpen,
   onOpenChange,
-  ...properties
+  ...properties;
 }: DialogProperties) => {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const open = controlledOpen === undefined ? internalOpen : controlledOpen;
@@ -536,7 +550,7 @@ export const Dialog = ({
     <div {...properties}>
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          // Pass open and setOpen explicitly, add type assertion for child props
+          // Pass open and setOpen explicitly, add type assertion for child props;
           return React.cloneElement(
             child as React.ReactElement<{
               open?: boolean;
@@ -544,7 +558,7 @@ export const Dialog = ({
             }>,
             {
               open,
-              setOpen: setOpen as React.Dispatch<React.SetStateAction<boolean>>, // Cast for internal state setter compatibility
+              setOpen: setOpen as React.Dispatch<React.SetStateAction<boolean>>, // Cast for internal state setter compatibility;
             }
           );
         }
@@ -555,31 +569,31 @@ export const Dialog = ({
 };
 Dialog.displayName = "Dialog";
 
-// Define specific props type for DialogTrigger component
-interface DialogTriggerProperties
+// Define specific props type for DialogTrigger component;
+interface DialogTriggerProperties;
   extends React.ComponentPropsWithoutRef<"button"> {
   children: React.ReactNode;
   asChild?: boolean;
-  open?: boolean; // Received from Dialog
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog
+  open?: boolean; // Received from Dialog;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog;
 }
 
 export const DialogTrigger = ({
   children,
   asChild,
   setOpen,
-  ...properties
+  ...properties;
 }: DialogTriggerProperties) => {
   const handleClick = () => {
     setOpen?.(true);
   };
 
   if (asChild && React.isValidElement(children)) {
-  // Use React.ReactElement<React.HTMLAttributes<HTMLElement>> for better type safety
-    const childOnClick =
+  // Use React.ReactElement<React.HTMLAttributes<HTMLElement>> for better type safety;
+    const childOnClick =;
       React.isValidElement<{ onClick?: (event: React.MouseEvent<HTMLElement>) => void }>(children) &&
       typeof children.props.onClick === "function"
-        ? children.props.onClick
+        ? children.props.onClick;
         : undefined;
     return React.cloneElement(
       children as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
@@ -587,7 +601,7 @@ export const DialogTrigger = ({
         ...properties,
          
         onClick: (event: React.MouseEvent<HTMLElement>) => {
-          childOnClick?.(event); // FIX: Use the correct variable name
+          childOnClick?.(event); // FIX: Use the correct variable name;
           handleClick();
         },
       }
@@ -595,20 +609,20 @@ export const DialogTrigger = ({
   }
 
   return (
-    <button {...properties} onClick={handleClick}>
+    <button {...properties} onClick={handleClick}>;
       {children}
     </button>
   );
 };
 DialogTrigger.displayName = "DialogTrigger";
 
-// Define specific props type for DialogContent component
-interface DialogContentProperties
+// Define specific props type for DialogContent component;
+interface DialogContentProperties;
   extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   className?: string;
-  open?: boolean; // Received from Dialog
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog
+  open?: boolean; // Received from Dialog;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog;
 }
 
 export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProperties>(
@@ -626,41 +640,41 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
     if (!open) return null;
 
     return (
-      <div
+      <div;
         ref={reference}
         className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 ${className}`}
         {...properties}
          
         onClick={(_event_: React.MouseEvent<HTMLElement>) => {
-          // Close on overlay click
+          // Close on overlay click;
           setOpen?.(false);
         }}
       >
-        <div
-          className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative"
-          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content
+        <div;
+          className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative";
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content;
         >
           {children}
-          <button
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          <button;
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700";
             onClick={() => setOpen?.(false)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
+            <svg;
+              xmlns="http://www.w3.org/2000/svg";
+              width="24";
+              height="24";
+              viewBox="0 0 24 24";
+              fill="none";
+              stroke="currentColor";
+              strokeWidth="2";
+              strokeLinecap="round";
+              strokeLinejoin="round";
+              className="h-4 w-4";
             >
-              <path d="M18 6 6 18"></path>
-              <path d="m6 6 12 12"></path>
+              <path d="M18 6 6 18"></path>;
+              <path d="m6 6 12 12"></path>;
             </svg>
-            <span className="sr-only">Close</span>
+            <span className="sr-only">Close</span>;
           </button>
         </div>
       </div>
@@ -669,7 +683,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
 );
 DialogContent.displayName = "DialogContent";
 
-// Define specific props type for DialogHeader component
+// Define specific props type for DialogHeader component;
 interface DialogHeaderProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
@@ -678,10 +692,10 @@ interface DialogHeaderProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const DialogHeader = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: DialogHeaderProperties) => {
   return (
-    <div
+    <div;
       className={`flex flex-col space-y-1.5 text-center sm:text-left ${className}`}
       {...properties}
     >
@@ -691,8 +705,8 @@ export const DialogHeader = ({
 };
 DialogHeader.displayName = "DialogHeader";
 
-// Define specific props type for DialogTitle component
-interface DialogTitleProperties
+// Define specific props type for DialogTitle component;
+interface DialogTitleProperties;
   extends React.ComponentPropsWithoutRef<"h2"> {
   children: React.ReactNode;
   className?: string;
@@ -701,7 +715,7 @@ interface DialogTitleProperties
 export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProperties>(
   ({ children, className = "", ...properties }, reference) => {
     return (
-      <h2
+      <h2;
         ref={reference}
         className={`text-lg font-semibold leading-none tracking-tight ${className}`}
         {...properties}
@@ -713,8 +727,8 @@ export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitlePrope
 );
 DialogTitle.displayName = "DialogTitle";
 
-// Define specific props type for DialogDescription component
-interface DialogDescriptionProperties
+// Define specific props type for DialogDescription component;
+interface DialogDescriptionProperties;
   extends React.ComponentPropsWithoutRef<"p"> {
   children: React.ReactNode;
   className?: string;
@@ -723,7 +737,7 @@ interface DialogDescriptionProperties
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProperties>(
   ({ children, className = "", ...properties }, reference) => {
     return (
-      <p
+      <p;
         ref={reference}
         className={`text-sm text-gray-500 ${className}`}
         {...properties}
@@ -735,7 +749,7 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
 );
 DialogDescription.displayName = "DialogDescription";
 
-// Define specific props type for DialogFooter component
+// Define specific props type for DialogFooter component;
 interface DialogFooterProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
@@ -744,10 +758,10 @@ interface DialogFooterProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const DialogFooter = ({
   children,
   className = "",
-  ...properties
+  ...properties;
 }: DialogFooterProperties) => {
   return (
-    <div
+    <div;
       className={`flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 ${className}`}
       {...properties}
     >
@@ -757,7 +771,7 @@ export const DialogFooter = ({
 };
 DialogFooter.displayName = "DialogFooter";
 
-// Define specific props type for DatePicker component
+// Define specific props type for DatePicker component;
 interface DatePickerProperties {
   date?: Date;
   setDate: (date: Date | undefined) => void;
@@ -778,19 +792,19 @@ export const DatePicker = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
-      <Button
-        variant="outline"
-        className="w-[280px] justify-start text-left font-normal"
+    <div className={`relative ${className}`}>;
+      <Button;
+        variant="outline";
+        className="w-[280px] justify-start text-left font-normal";
         onClick={() => setIsOpen(!isOpen)}
       >
         {date ? date.toLocaleDateString() : <span>Pick a date</span>}
       </Button>
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-auto rounded-md border bg-white p-0 shadow-lg">
+        <div className="absolute z-10 mt-1 w-auto rounded-md border bg-white p-0 shadow-lg">;
           {/* Basic Day Picker - Replace with a proper library like react-day-picker */}
-          <div className="p-3">
-            <div className="grid grid-cols-7 gap-1 text-center text-sm">
+          <div className="p-3">;
+            <div className="grid grid-cols-7 gap-1 text-center text-sm">;
               <div>Su</div>
               <div>Mo</div>
               <div>Tu</div>
@@ -803,12 +817,12 @@ export const DatePicker = ({
                 const day = new Date();
                 day.setDate(index + 1);
                 return (
-                  <button
+                  <button;
                     key={index}
                     className={`p-1 rounded-md hover:bg-gray-100 ${
-                      date && date.getDate() === index + 1
+                      date && date.getDate() === index + 1;
                         ? "bg-blue-600 text-white"
-                        : ""
+                        : "";
                     }`}
                     onClick={() => handleDayClick(day)}
                   >
@@ -830,7 +844,7 @@ interface CalendarProperties {
   mode?: "single" | "multiple" | "range";
   selected?: Date | Date[] | { from?: Date; to?: Date };
   onSelect?: (
-    day: Date | Date[] | { from?: Date; to?: Date } | undefined
+    day: Date | Date[] | { from?: Date; to?: Date } | undefined;
   ) => void;
   className?: string;
   month?: Date;
@@ -841,16 +855,16 @@ interface CalendarProperties {
 // Calendar component (placeholder - use react-day-picker)
 export const Calendar = ({
    
-  mode: _mode = "single", // FIX: Prefix unused variable
+  mode: _mode = "single", // FIX: Prefix unused variable;
   selected,
   onSelect,
   className = "",
   month,
   onMonthChange,
   numberOfMonths = 1,
-  ...properties
+  ...properties;
 }: CalendarProperties) => {
-  // State for the current displayed month if not controlled externally
+  // State for the current displayed month if not controlled externally;
   const [currentMonth, setCurrentMonth] = React.useState(month || new Date());
 
   React.useEffect(() => {
@@ -876,37 +890,37 @@ export const Calendar = ({
     handleMonthChange(nextMonth);
   };
 
-  // Simplified day rendering logic
+  // Simplified day rendering logic;
   const renderDays = (offsetMonth: number) => {
     const monthToRender = new Date(currentMonth);
     monthToRender.setMonth(monthToRender.getMonth() + offsetMonth);
     const year = monthToRender.getFullYear();
     const monthIndex = monthToRender.getMonth();
     const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-    const firstDayOfMonth = new Date(year, monthIndex, 1).getDay(); // 0 = Sunday
+    const firstDayOfMonth = new Date(year, monthIndex, 1).getDay(); // 0 = Sunday;
 
     const days = [];
-    // Add padding for days before the 1st
+    // Add padding for days before the 1st;
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`pad-start-${i}`} className="p-1.5"></div>);
     }
-    // Add actual days
+    // Add actual days;
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(year, monthIndex, day);
       const isSelected = (
         selected instanceof Date &&
-        currentDate.toDateString() === selected.toDateString()
+        currentDate.toDateString() === selected.toDateString();
       );
-      // Add more complex selection logic for multiple/range modes
+      // Add more complex selection logic for multiple/range modes;
 
       days.push(
-        <button
+        <button;
           key={day}
           className={`p-1.5 rounded-md text-center hover:bg-gray-100 ${
             isSelected ? "bg-blue-600 text-white hover:bg-blue-700" : ""
           }`}
            
-          onClick={(_event: React.MouseEvent<HTMLElement>) => onSelect?.(currentDate)} // Pass the date object
+          onClick={(_event: React.MouseEvent<HTMLElement>) => onSelect?.(currentDate)} // Pass the date object;
         >
           {day}
         </button>
@@ -916,31 +930,31 @@ export const Calendar = ({
   };
 
   return (
-    <div className={`p-3 ${className}`} {...properties}>
+    <div className={`p-3 ${className}`} {...properties}>;
       {[...Array(numberOfMonths)].map((_, index) => {
         const monthToRender = new Date(currentMonth);
         monthToRender.setMonth(monthToRender.getMonth() + index);
         return (
-          <div key={index} className={numberOfMonths > 1 ? "mb-4" : ""}>
-            <div className="flex justify-between items-center mb-2">
+          <div key={index} className={numberOfMonths > 1 ? "mb-4" : ""}>;
+            <div className="flex justify-between items-center mb-2">;
               {index === 0 && (
-                <Button variant="outline" size="icon" onClick={handlePrevMonth}>
-                  <ChevronLeft className="h-4 w-4" />
+                <Button variant="outline" size="icon" onClick={handlePrevMonth}>;
+                  <ChevronLeft className="h-4 w-4" />;
                 </Button>
               )}
-              <div className="text-sm font-medium">
+              <div className="text-sm font-medium">;
                 {monthToRender.toLocaleString("default", {
                   month: "long",
                   year: "numeric",
                 })}
               </div>
               {index === numberOfMonths - 1 && (
-                <Button variant="outline" size="icon" onClick={handleNextMonth}>
-                  <ChevronRight className="h-4 w-4" />
+                <Button variant="outline" size="icon" onClick={handleNextMonth}>;
+                  <ChevronRight className="h-4 w-4" />;
                 </Button>
               )}
             </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-500 mb-1">
+            <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-500 mb-1">;
               <div>Su</div>
               <div>Mo</div>
               <div>Tu</div>
@@ -949,7 +963,7 @@ export const Calendar = ({
               <div>Fr</div>
               <div>Sa</div>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-sm">
+            <div className="grid grid-cols-7 gap-1 text-sm">;
               {renderDays(index)}
             </div>
           </div>

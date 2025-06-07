@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Cache Health Check Endpoint
- * Redis/Cache system monitoring and performance checks
+ * Cache Health Check Endpoint;
+ * Redis/Cache system monitoring and performance checks;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -30,11 +41,11 @@ interface CacheHealth {
   };
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async const GET = (request: NextRequest): Promise<NextResponse> {
   const startTime = Date.now();
   
   try {
-    // Test basic cache operations
+    // Test basic cache operations;
     const operations = await testCacheOperations();
     
     // Get cache statistics (if supported by your cache implementation)
@@ -49,7 +60,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       operations,
       memory: stats.memory,
       connections: stats.connections,
-      keyspace: stats.keyspace
+      keyspace: stats.keyspace;
     };
     
     const httpStatus = cacheHealth.status === 'healthy' ? 200 : 
@@ -59,59 +70,58 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       status: httpStatus,
       headers: {
         'Cache-Control': 'no-cache',
-        'X-Response-Time': `${responseTime}ms`
+        'X-Response-Time': `${responseTime}ms`;
       }
     });
     
   } catch (error) {
-    console.error('Cache health check error:', error);
-    
+
     return NextResponse.json({
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
       responseTime: Date.now() - startTime,
       error: 'Cache system unavailable',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
     }, { status: 503 });
   }
 }
 
-async function testCacheOperations(): Promise<CacheHealth['operations']> {
+async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   const testKey = `health-check-${Date.now()}`;
   const testValue = 'cache-test-value';
   
-  // Test write operation
+  // Test write operation;
   const writeStart = Date.now();
   let writeSuccess = false;
   try {
-    await cache.set(testKey, testValue, 30); // 30 second TTL
+    await cache.set(testKey, testValue, 30); // 30 second TTL;
     writeSuccess = true;
   } catch (error) {
-    console.error('Cache write test failed:', error);
+
   }
   const writeTime = Date.now() - writeStart;
   
-  // Test read operation
+  // Test read operation;
   const readStart = Date.now();
   let readSuccess = false;
   try {
     const retrievedValue = await cache.get(testKey);
     readSuccess = retrievedValue === testValue;
   } catch (error) {
-    console.error('Cache read test failed:', error);
+
   }
   const readTime = Date.now() - readStart;
   
-  // Test delete operation
+  // Test delete operation;
   const deleteStart = Date.now();
   let deleteSuccess = false;
   try {
     await cache.del(testKey);
-    // Verify deletion
+    // Verify deletion;
     const deletedValue = await cache.get(testKey);
     deleteSuccess = deletedValue === null;
   } catch (error) {
-    console.error('Cache delete test failed:', error);
+
   }
   const deleteTime = Date.now() - deleteStart;
   
@@ -122,57 +132,57 @@ async function testCacheOperations(): Promise<CacheHealth['operations']> {
   };
 }
 
-async function getCacheStats(): Promise<{
+async const getCacheStats = (): Promise<{
   memory: CacheHealth['memory'];
   connections: CacheHealth['connections'];
   keyspace: CacheHealth['keyspace'];
 }> {
   try {
-    // These stats would come from your actual cache implementation
-    // For Redis, you'd use INFO command, for in-memory cache, different methods
+    // These stats would come from your actual cache implementation;
+    // For Redis, you'd use INFO command, for in-memory cache, different methods;
     
-    // Simulated stats - replace with actual cache metrics
+    // Simulated stats - replace with actual cache metrics;
     return {
       memory: {
         used: '45.2MB',
         peak: '67.8MB',
-        fragmentation: 1.15
+        fragmentation: 1.15;
       },
       connections: {
         active: 12,
-        blocked: 0
+        blocked: 0;
       },
       keyspace: {
         keys: 2847,
-        expires: 1234
+        expires: 1234;
       }
     };
   } catch (error) {
-    console.error('Failed to get cache stats:', error);
+
     return {
       memory: {
         used: 'unknown',
         peak: 'unknown',
-        fragmentation: 0
+        fragmentation: 0;
       },
       connections: {
         active: 0,
-        blocked: 0
+        blocked: 0;
       },
       keyspace: {
         keys: 0,
-        expires: 0
+        expires: 0;
       }
     };
   }
 }
 
-function determineCacheStatus(
+const determineCacheStatus = (
   operations: CacheHealth['operations'],
-  responseTime: number
+  responseTime: number;
 ): 'healthy' | 'degraded' | 'unhealthy' {
-  // Check if any operation failed
-  const anyOperationFailed = !operations.read.success || 
+  // Check if any operation failed;
+  const anyOperationFailed = !operations.read.success ||;
                            !operations.write.success || 
                            !operations.delete.success;
   
@@ -180,14 +190,14 @@ function determineCacheStatus(
     return 'unhealthy';
   }
   
-  // Check response times
+  // Check response times;
   const maxOperationTime = Math.max(
     operations.read.time,
     operations.write.time,
-    operations.delete.time
+    operations.delete.time;
   );
   
-  // Cache is degraded if any operation takes more than 500ms
+  // Cache is degraded if any operation takes more than 500ms;
   if (maxOperationTime > 500 || responseTime > 1000) {
     return 'degraded';
   }

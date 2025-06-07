@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -7,18 +18,18 @@ import {
   validateQuery, 
   checkPermission, 
   createSuccessResponse,
-  createPaginatedResponse
+  createPaginatedResponse;
 } from '@/lib/core/middleware';
 import { ValidationError, NotFoundError, BusinessLogicError } from '@/lib/core/errors';
 import { 
   claimStatusSchema,
   icd10CodeSchema,
-  cptCodeSchema
+  cptCodeSchema;
 } from '@/lib/core/validation';
 import { convertToFHIRClaim } from '@/lib/core/fhir';
 import { logger } from '@/lib/core/logging';
 
-// Schema for claim creation
+// Schema for claim creation;
 const createClaimSchema = z.object({
   invoiceId: z.string().uuid(),
   insurancePolicyId: z.string().uuid(),
@@ -40,7 +51,7 @@ const createClaimSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Schema for claim query parameters
+// Schema for claim query parameters;
 const claimQuerySchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
@@ -55,20 +66,20 @@ const claimQuerySchema = z.object({
   format: z.enum(['json', 'fhir']).optional().default('json'),
 });
 
-// GET handler for retrieving all claims with filtering and pagination
+// GET handler for retrieving all claims with filtering and pagination;
 export const GET = withErrorHandling(async (req: NextRequest) => {
-  // Validate query parameters
+  // Validate query parameters;
   const query = validateQuery(claimQuerySchema)(req);
   
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'read', 'claim')(req);
   
-  // Build filter conditions
-  const where: any = {};
+  // Build filter conditions;
+  const where: unknown = {};
   
   if (query.patientId) {
     where.invoice = {
-      patientId: query.patientId
+      patientId: query.patientId;
     };
   }
   
@@ -102,7 +113,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
     }
   }
   
-  // Execute query with pagination
+  // Execute query with pagination;
   const [claims, total] = await Promise.all([
     prisma.insuranceClaim.findMany({
       where,
@@ -151,25 +162,25 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
     prisma.insuranceClaim.count({ where }),
   ]);
   
-  // Convert to FHIR format if requested
+  // Convert to FHIR format if requested;
   if (query.format === 'fhir') {
     const fhirClaims = claims.map(claim => convertToFHIRClaim(claim));
     return createPaginatedResponse(fhirClaims, query.page, query.pageSize, total);
   }
   
-  // Return standard JSON response
+  // Return standard JSON response;
   return createPaginatedResponse(claims, query.page, query.pageSize, total);
 });
 
-// POST handler for creating a new claim
+// POST handler for creating a new claim;
 export const POST = withErrorHandling(async (req: NextRequest) => {
-  // Validate request body
+  // Validate request body;
   const data = await validateBody(createClaimSchema)(req);
   
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'create', 'claim')(req);
   
-  // Retrieve invoice
+  // Retrieve invoice;
   const invoice = await prisma.bill.findUnique({
     where: { id: data.invoiceId },
   });
@@ -178,7 +189,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
   
-  // Check if invoice is in a valid state for claim
+  // Check if invoice is in a valid state for claim;
   if (!['approved', 'paid'].includes(invoice.status)) {
     throw new BusinessLogicError(
       'Claims can only be created for approved or paid invoices',
@@ -187,7 +198,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     );
   }
   
-  // Check if insurance policy exists
+  // Check if insurance policy exists;
   const insurancePolicy = await prisma.insurancePolicy.findUnique({
     where: { id: data.insurancePolicyId },
     include: {
@@ -199,7 +210,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     throw new NotFoundError(`Insurance policy with ID ${data.insurancePolicyId} not found`);
   }
   
-  // Check if policy is active
+  // Check if policy is active;
   if (insurancePolicy.status !== 'active') {
     throw new BusinessLogicError(
       'Insurance policy is not active',
@@ -208,28 +219,28 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     );
   }
   
-  // Check if patient on invoice matches policy beneficiary
+  // Check if patient on invoice matches policy beneficiary;
   if (invoice.patientId !== insurancePolicy.patientId) {
     throw new BusinessLogicError(
       'Invoice patient does not match insurance policy beneficiary',
       'PATIENT_MISMATCH',
       { 
         invoicePatientId: invoice.patientId,
-        policyPatientId: insurancePolicy.patientId
+        policyPatientId: insurancePolicy.patientId;
       }
     );
   }
   
-  // Generate claim number
+  // Generate claim number;
   const claimCount = await prisma.insuranceClaim.count();
   const claimNumber = `CLM-${new Date().getFullYear()}-${(claimCount + 1).toString().padStart(6, '0')}`;
   
-  // Calculate total amount
+  // Calculate total amount;
   const totalAmount = data.items.reduce((sum, item) => sum + item.totalPrice, 0);
   
-  // Create claim in database
+  // Create claim in database;
   const claim = await prisma.$transaction(async (prisma) => {
-    // Create claim record
+    // Create claim record;
     const newClaim = await prisma.insuranceClaim.create({
       data: {
         claimNumber,
@@ -291,7 +302,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
       },
     });
     
-    // Update invoice to link claim
+    // Update invoice to link claim;
     await prisma.bill.update({
       where: { id: data.invoiceId },
       data: {
@@ -306,7 +317,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     claimId: claim.id, 
     claimNumber,
     invoiceId: data.invoiceId,
-    insurancePolicyId: data.insurancePolicyId
+    insurancePolicyId: data.insurancePolicyId;
   });
   
   return createSuccessResponse(claim);

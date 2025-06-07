@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
@@ -15,25 +26,25 @@ import {
   TableCell,
   Input,
   Label,
-  // Textarea, // FIX: Removed unused import
-} from "@/components/ui"; // Assuming Select components are also here or adjust import
+  // Textarea, // FIX: Removed unused import;
+} from "@/components/ui"; // Assuming Select components are also here or adjust import;
 import { Loader2 } from "lucide-react";
 
-// Define interfaces for data structures
+// Define interfaces for data structures;
 interface MedicationRecord {
   id: string;
   administered_time: string;
-  medication_name: string; // Assuming this comes from a join
+  medication_name: string; // Assuming this comes from a join;
   dosage: string;
   route: string;
-  administered_by_first_name: string; // Assuming this comes from a join
-  administered_by_last_name: string; // Assuming this comes from a join
+  administered_by_first_name: string; // Assuming this comes from a join;
+  administered_by_last_name: string; // Assuming this comes from a join;
   notes?: string;
 }
 
 interface Medication {
   id: string;
-  item_name: string; // Assuming this is the display name
+  item_name: string; // Assuming this is the display name;
   dosage_form: string;
   strength: string;
 }
@@ -57,10 +68,10 @@ interface MedicationAdministrationProperties {
   admissionId: string | null;
 }
 
-const MedicationAdministration: React.FC<
-  MedicationAdministrationProperties
+const MedicationAdministration: React.FC<;
+  MedicationAdministrationProperties;
 > = ({ admissionId }) => {
-  const [medicationRecords, setMedicationRecords] = useState<
+  const [medicationRecords, setMedicationRecords] = useState<;
     MedicationRecord[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -78,7 +89,7 @@ const MedicationAdministration: React.FC<
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
 
-  // Fetch medication administration records for the admission
+  // Fetch medication administration records for the admission;
   useEffect(() => {
     const fetchMedicationRecords = async (): Promise<void> => {
       if (!admissionId) {
@@ -90,7 +101,7 @@ const MedicationAdministration: React.FC<
       try {
         setLoading(true);
         setError(undefined);
-        // Simulate API call
+        // Simulate API call;
         // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`);
         // if (!response.ok) {
         //   const errorData = await response.json().catch(() => ({}));
@@ -100,12 +111,12 @@ const MedicationAdministration: React.FC<
         // setMedicationRecords(data.medication_administration || []);
         // setPatientInfo(data.admission || null);
 
-        // Mock data
+        // Mock data;
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockRecords: MedicationRecord[] = [
           {
             id: "mar_001",
-            administered_time: new Date(Date.now() - 3_600_000).toISOString(), // 1 hour ago
+            administered_time: new Date(Date.now() - 3_600_000).toISOString(), // 1 hour ago;
             medication_name: "Paracetamol 500mg Tablet",
             dosage: "1 tablet",
             route: "oral",
@@ -115,7 +126,7 @@ const MedicationAdministration: React.FC<
           },
           {
             id: "mar_002",
-            administered_time: new Date(Date.now() - 14_400_000).toISOString(), // 4 hours ago
+            administered_time: new Date(Date.now() - 14_400_000).toISOString(), // 4 hours ago;
             medication_name: "Amoxicillin 250mg Capsule",
             dosage: "1 capsule",
             route: "oral",
@@ -125,7 +136,7 @@ const MedicationAdministration: React.FC<
         ];
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
+          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday;
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -133,11 +144,11 @@ const MedicationAdministration: React.FC<
         setMedicationRecords(mockRecords);
         setPatientInfo(mockPatientInfo);
       } catch (error_) {
-        const message =
-          error_ instanceof Error
-            ? error_.message
+        const message =;
+          error_ instanceof Error;
+            ? error_.message;
             : "An unknown error occurred.";
-        console.error("Error fetching medication records:", error_);
+
         setError(`Failed to load medication records: ${message}`);
       } finally {
         setLoading(false);
@@ -147,12 +158,12 @@ const MedicationAdministration: React.FC<
     fetchMedicationRecords();
   }, [admissionId]);
 
-  // Fetch available medications from pharmacy inventory
+  // Fetch available medications from pharmacy inventory;
   useEffect(() => {
     const fetchMedications = async (): Promise<void> => {
       try {
         setLoadingMedications(true);
-        // Simulate API call
+        // Simulate API call;
         // const response = await fetch("/api/pharmacy/inventory?in_stock=true");
         // if (!response.ok) {
         //   throw new Error("Failed to fetch medications");
@@ -160,7 +171,7 @@ const MedicationAdministration: React.FC<
         // const data = await response.json();
         // setMedications(data || []); // Assuming API returns Medication[]
 
-        // Mock data
+        // Mock data;
         await new Promise((resolve) => setTimeout(resolve, 300));
         const mockMeds: Medication[] = [
           {
@@ -184,8 +195,8 @@ const MedicationAdministration: React.FC<
         ];
         setMedications(mockMeds);
       } catch (error_) {
-        console.error("Error fetching medications:", error_);
-        // Optionally set an error state for medication loading
+
+        // Optionally set an error state for medication loading;
       } finally {
         setLoadingMedications(false);
       }
@@ -195,14 +206,14 @@ const MedicationAdministration: React.FC<
   }, []);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
   ): void => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   // Note: If using shadcn/ui Select, the onChange is handled differently (onValueChange)
-  // This example assumes standard HTML select or a compatible custom component
+  // This example assumes standard HTML select or a compatible custom component;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -215,7 +226,7 @@ const MedicationAdministration: React.FC<
     setSubmitSuccess(false);
 
     try {
-      // Validate required fields
+      // Validate required fields;
       if (!formData.medication_id || !formData.dosage || !formData.route) {
         throw new Error("Please fill in Medication, Dosage, and Route");
       }
@@ -223,10 +234,10 @@ const MedicationAdministration: React.FC<
       const submissionData = {
         ...formData,
         administered_time: new Date().toISOString(),
-        // administered_by_id: session?.user?.id // Get from session in real app
+        // administered_by_id: session?.user?.id // Get from session in real app;
       };
 
-      // Simulate API call
+      // Simulate API call;
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
       //   method: "POST",
       //   headers: {
@@ -240,28 +251,28 @@ const MedicationAdministration: React.FC<
       // }
       // const newRecord: MedicationRecord = await response.json();
 
-      // Mock response
+      // Mock response;
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const selectedMed = medications.find(
-        (m) => m.id === formData.medication_id
+        (m) => m.id === formData.medication_id;
       );
       const newRecord: MedicationRecord = {
         id: `mar_${Date.now()}`,
         administered_time: submissionData.administered_time,
-        medication_name: selectedMed
+        medication_name: selectedMed;
           ? `${selectedMed.item_name} ${selectedMed.strength} ${selectedMed.dosage_form}`
           : "Unknown Medication",
         dosage: formData.dosage,
         route: formData.route,
-        administered_by_first_name: "Current", // Replace with actual user data
+        administered_by_first_name: "Current", // Replace with actual user data;
         administered_by_last_name: "User",
         notes: formData.notes,
       };
 
-      // Update the medication records list with the new record
+      // Update the medication records list with the new record;
       setMedicationRecords((previous) => [newRecord, ...previous]);
 
-      // Reset form
+      // Reset form;
       setFormData({
         medication_id: "",
         dosage: "",
@@ -271,21 +282,21 @@ const MedicationAdministration: React.FC<
 
       setSubmitSuccess(true);
 
-      // Clear success message after 3 seconds
+      // Clear success message after 3 seconds;
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
     } catch (error_) {
-      const message =
+      const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
-      console.error("Error recording medication administration:", error_);
+
       setSubmitError(message);
     } finally {
       setSubmitting(false);
     }
   };
 
-  // Format date for display
+  // Format date for display;
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
@@ -297,14 +308,14 @@ const MedicationAdministration: React.FC<
         hour12: true,
       };
       return new Intl.DateTimeFormat(undefined, options).format(
-        new Date(dateString)
+        new Date(dateString);
       );
     } catch {
       return "Invalid Date";
     }
   };
 
-  // Route options for medication administration
+  // Route options for medication administration;
   const routeOptions: { value: string; label: string }[] = [
     { value: "oral", label: "Oral" },
     { value: "iv", label: "Intravenous (IV)" },
@@ -319,13 +330,13 @@ const MedicationAdministration: React.FC<
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6">;
       {patientInfo && (
-        <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
-          <h3 className="font-semibold text-lg text-blue-900">
+        <div className="bg-blue-50 p-4 rounded-md border border-blue-100">;
+          <h3 className="font-semibold text-lg text-blue-900">;
             {patientInfo.patient_first_name} {patientInfo.patient_last_name}
           </h3>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-700">;
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDate(patientInfo.admission_date)}
             {patientInfo.diagnosis && ` | Diagnosis: ${patientInfo.diagnosis}`}
@@ -338,105 +349,105 @@ const MedicationAdministration: React.FC<
         </CardHeader>
         <CardContent>
           {submitSuccess && (
-            <div
-              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
-              role="alert"
+            <div;
+              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4";
+              role="alert";
             >
               Medication administration recorded successfully!
             </div>
           )}
 
           {submitError && (
-            <div
-              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
-              role="alert"
+            <div;
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4";
+              role="alert";
             >
               Error: {submitError}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="medication_id">
-                  Medication <span className="text-red-500">*</span>
+          <form onSubmit={handleSubmit} className="space-y-4">;
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+              <div className="space-y-2">;
+                <Label htmlFor="medication_id">;
+                  Medication <span className="text-red-500">*</span>;
                 </Label>
-                <select
-                  id="medication_id"
-                  name="medication_id"
+                <select;
+                  id="medication_id";
+                  name="medication_id";
                   value={formData.medication_id}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  required
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+                  required;
                   disabled={loadingMedications || submitting}
-                  aria-required="true"
+                  aria-required="true";
                 >
-                  <option value="">
+                  <option value="">;
                     {loadingMedications ? "Loading..." : "Select Medication"}
                   </option>
                   {medications.map((med) => (
-                    <option key={med.id} value={med.id}>
-                      {med.item_name} ({med.strength} {med.dosage_form})
+                    <option key={med.id} value={med.id}>;
+                      {med.item_name} ({med.strength} {med.dosage_form});
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="dosage">
-                  Dosage <span className="text-red-500">*</span>
+              <div className="space-y-2">;
+                <Label htmlFor="dosage">;
+                  Dosage <span className="text-red-500">*</span>;
                 </Label>
-                <Input
-                  id="dosage"
-                  name="dosage"
+                <Input;
+                  id="dosage";
+                  name="dosage";
                   type="text"
-                  placeholder="e.g., 500mg, 1 tablet, 10ml"
+                  placeholder="e.g., 500mg, 1 tablet, 10ml";
                   value={formData.dosage}
                   onChange={handleChange}
-                  required
+                  required;
                   disabled={submitting}
-                  aria-required="true"
+                  aria-required="true";
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="route">
-                  Administration Route <span className="text-red-500">*</span>
+              <div className="space-y-2">;
+                <Label htmlFor="route">;
+                  Administration Route <span className="text-red-500">*</span>;
                 </Label>
-                <select
-                  id="route"
-                  name="route"
+                <select;
+                  id="route";
+                  name="route";
                   value={formData.route}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  required
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+                  required;
                   disabled={submitting}
-                  aria-required="true"
+                  aria-required="true";
                 >
-                  <option value="">Select Route</option>
+                  <option value="">Select Route</option>;
                   {routeOptions.map((route) => (
-                    <option key={route.value} value={route.value}>
+                    <option key={route.value} value={route.value}>;
                       {route.label}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="notes">Notes</Label>
-                <Input // Changed to Input, use Textarea if multi-line is needed
-                  id="notes"
-                  name="notes"
+              <div className="space-y-2">;
+                <Label htmlFor="notes">Notes</Label>;
+                <Input // Changed to Input, use Textarea if multi-line is needed;
+                  id="notes";
+                  name="notes";
                   type="text"
-                  placeholder="Any additional information (optional)"
+                  placeholder="Any additional information (optional)";
                   value={formData.notes}
                   onChange={handleChange}
                   disabled={submitting}
                 />
-                {/* <Textarea
-                  id="notes"
-                  name="notes"
-                  placeholder="Any additional information (optional)"
+                {/* <Textarea;
+                  id="notes";
+                  name="notes";
+                  placeholder="Any additional information (optional)";
                   value={formData.notes}
                   onChange={handleChange}
                   disabled={submitting}
@@ -444,10 +455,10 @@ const MedicationAdministration: React.FC<
               </div>
             </div>
 
-            <div className="flex justify-end">
-              <Button type="submit" disabled={submitting || loadingMedications}>
+            <div className="flex justify-end">;
+              <Button type="submit" disabled={submitting || loadingMedications}>;
                 {submitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
                 ) : undefined}
                 {submitting ? "Recording..." : "Record Administration"}
               </Button>
@@ -461,16 +472,16 @@ const MedicationAdministration: React.FC<
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex justify-center p-8">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex justify-center p-8">;
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />;
             </div>
           ) : error ? (
-            <div className="text-red-500 p-4 text-center" role="alert">
+            <div className="text-red-500 p-4 text-center" role="alert">;
               {error}
             </div>
           ) : medicationRecords.length === 0 ? (
-            <div className="text-gray-500 p-4 text-center">
-              No medication administration records found for this admission.
+            <div className="text-gray-500 p-4 text-center">;
+              No medication administration records found for this admission.;
             </div>
           ) : (
             <Table>
@@ -480,14 +491,14 @@ const MedicationAdministration: React.FC<
                   <TableHead>Medication</TableHead>
                   <TableHead>Dosage</TableHead>
                   <TableHead>Route</TableHead>
-                  (Content truncated due to size limit. Use line ranges to read
+                  (Content truncated due to size limit. Use line ranges to read;
                   in chunks) <TableHead>Administered By</TableHead>
                   <TableHead>Notes</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {medicationRecords.map((record) => (
-                  <TableRow key={record.id}>
+                  <TableRow key={record.id}>;
                     <TableCell>
                       {formatDate(record.administered_time)}
                     </TableCell>

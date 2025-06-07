@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { LabelHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -6,15 +17,15 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 }
 
 /**
- * Label component for form fields
+ * Label component for form fields;
  */
 const Label = forwardRef<HTMLLabelElement, LabelProps>(
   ({ className, children, required, ...props }, ref) => {
     return (
-      <label
+      <label;
         className={cn(
           "text-sm font-medium text-gray-700",
-          className
+          className;
         )}
         ref={ref}
         {...props}

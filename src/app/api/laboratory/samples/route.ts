@@ -1,11 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
-import { getDB } from "@/lib/database"; // Using mock DB
-import { getSession } from "@/lib/session"; // Using mock session
+import { getDB } from "@/lib/database"; // Using mock DB;
+import { getSession } from "@/lib/session"; // Using mock session;
 
 // --- Interfaces ---
 
 interface SampleInput {
-  id?: number; // For updates
+  id?: number; // For updates;
   order_id: number;
   sample_type: string;
   barcode?: string; // Optional for creation, required for update?
@@ -28,7 +39,7 @@ interface LabSample {
   notes: string | null;
   created_at: string;
   updated_at: string;
-  // Joined fields
+  // Joined fields;
   patient_id?: number;
   patient_name?: string;
   collector_name?: string;
@@ -37,8 +48,8 @@ interface LabSample {
 
 // --- API Route Handlers ---
 
-// GET /api/laboratory/samples - Get laboratory samples
-export async function GET(request: NextRequest) {
+// GET /api/laboratory/samples - Get laboratory samples;
+export async const GET = (request: NextRequest) {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -51,20 +62,20 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get("status");
 
     const database = await getDB();
-    let query = `
+    let query = `;
       SELECT s.*, 
         o.patient_id,
         p.first_name || ' ' || p.last_name as patient_name,
         c.first_name || ' ' || c.last_name as collector_name,
-        r.first_name || ' ' || r.last_name as receiver_name
-      FROM lab_samples s
-      JOIN lab_orders o ON s.order_id = o.id
-      JOIN patients p ON o.patient_id = p.id
-      LEFT JOIN users c ON s.collected_by = c.id
-      LEFT JOIN users r ON s.received_by = r.id
+        r.first_name || ' ' || r.last_name as receiver_name;
+      FROM lab_samples s;
+      JOIN lab_orders o ON s.order_id = o.id;
+      JOIN patients p ON o.patient_id = p.id;
+      LEFT JOIN users c ON s.collected_by = c.id;
+      LEFT JOIN users r ON s.received_by = r.id;
     `;
 
-    // FIX: Use specific type for params
+    // FIX: Use specific type for params;
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
@@ -86,12 +97,12 @@ export async function GET(request: NextRequest) {
     }
     query += " ORDER BY s.created_at DESC";
 
-    // Fixed: Use db.query
+    // Fixed: Use db.query;
     const samplesResult = await database.query(query, parameters);
-    return NextResponse.json(samplesResult.results || []); // Changed .rows to .results
+    return NextResponse.json(samplesResult.results || []); // Changed .rows to .results;
   } catch (error: unknown) {
-    console.error("Error fetching laboratory samples:", error);
-    const errorMessage =
+
+    const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       { error: "Failed to fetch laboratory samples", details: errorMessage },
@@ -100,21 +111,21 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/laboratory/samples - Create or update a laboratory sample
-export async function POST(request: NextRequest) {
+// POST /api/laboratory/samples - Create or update a laboratory sample;
+export async const POST = (request: NextRequest) {
   try {
     const session = await getSession();
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fixed: Use roleName
+    // Fixed: Use roleName;
     const allowedRoles = [
       "Lab Technician",
       "Lab Manager",
       "Phlebotomist",
       "Admin",
-    ]; // Adjust role names
+    ]; // Adjust role names;
     if (!allowedRoles.includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -129,9 +140,9 @@ export async function POST(request: NextRequest) {
         [body.id]
       );
       const existingSample = (
-        sampleResult.results && sampleResult.results.length > 0 // Changed .rows to .results (twice)
-          ? sampleResult.results[0] // Changed .rows to .results
-          : undefined
+        sampleResult.results && sampleResult.results.length > 0 // Changed .rows to .results (twice);
+          ? sampleResult.results[0] // Changed .rows to .results;
+          : undefined;
       ) as LabSample | null;
 
       if (!existingSample) {
@@ -142,7 +153,7 @@ export async function POST(request: NextRequest) {
       }
 
       const updates: string[] = [];
-      // FIX: Use specific type for params
+      // FIX: Use specific type for params;
       const parameters: (string | number | boolean)[] = [];
 
       if (body.status) {
@@ -150,15 +161,15 @@ export async function POST(request: NextRequest) {
         parameters.push(body.status);
 
         if (
-          body.status === "collected" &&
-          existingSample.status !== "collected"
+          body.status === "collected" &&;
+          existingSample.status !== "collected";
         ) {
           updates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
         }
         if (
-          body.status === "received" &&
-          existingSample.status !== "received"
+          body.status === "received" &&;
+          existingSample.status !== "received";
         ) {
           updates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
@@ -186,22 +197,22 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      parameters.push(body.id); // Add ID for WHERE clause
+      parameters.push(body.id); // Add ID for WHERE clause;
 
-      // Fixed: Use db.query for update
+      // Fixed: Use db.query for update;
       await database.query(
         `UPDATE lab_samples SET ${updates.join(", ")}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-        parameters
+        parameters;
       );
 
-      // Fixed: Use db.query to get updated sample
+      // Fixed: Use db.query to get updated sample;
       const updatedSampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
         [body.id]
       );
-      const updatedSample =
-        updatedSampleResult.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice)
-          ? updatedSampleResult.results[0] // Changed .rows to .results
+      const updatedSample =;
+        updatedSampleResult.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice);
+          ? updatedSampleResult.results[0] // Changed .rows to .results;
           : undefined;
 
       return NextResponse.json(updatedSample);
@@ -223,16 +234,16 @@ export async function POST(request: NextRequest) {
 
       // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
       await database.query(
-        `
-        INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at)
-        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        `;
+        INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at);
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
       `,
         [
           body.order_id,
           barcode,
           body.sample_type,
           session.user.userId,
-          "collected", // New samples start as collected
+          "collected", // New samples start as collected;
           body.notes || "",
         ]
       );
@@ -242,13 +253,13 @@ export async function POST(request: NextRequest) {
         "SELECT * FROM lab_samples WHERE barcode = ? ORDER BY created_at DESC LIMIT 1",
         [barcode]
       );
-      const newSample =
-        newSampleResult.results && newSampleResult.results.length > 0 // Changed .rows to .results (twice)
-          ? newSampleResult.results[0] // Changed .rows to .results
+      const newSample =;
+        newSampleResult.results && newSampleResult.results.length > 0 // Changed .rows to .results (twice);
+          ? newSampleResult.results[0] // Changed .rows to .results;
           : undefined;
 
       if (!newSample) {
-        // Fallback if mock fetch fails
+        // Fallback if mock fetch fails;
         return NextResponse.json(
           {
             message: "Sample created (mock), but could not fetch immediately.",
@@ -261,8 +272,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(newSample, { status: 201 });
     }
   } catch (error: unknown) {
-    console.error("Error managing laboratory sample:", error);
-    const errorMessage =
+
+    const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       { error: "Failed to manage laboratory sample", details: errorMessage },

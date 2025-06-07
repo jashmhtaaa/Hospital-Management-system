@@ -1,7 +1,17 @@
-import { PrismaClient } from '@prisma/client';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { z } from 'zod';
 
-// Create enums to match Prisma schema
+// Create enums to match Prisma schema;
 export enum DietType {
   REGULAR = 'REGULAR',
   VEGETARIAN = 'VEGETARIAN',
@@ -12,16 +22,16 @@ export enum DietType {
   LIQUID = 'LIQUID',
   SOFT = 'SOFT',
   NPO = 'NPO',
-  CUSTOM = 'CUSTOM'
+  CUSTOM = 'CUSTOM';
 }
 
 export enum DietOrderStatus {
   ACTIVE = 'ACTIVE',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED';
 }
 
-// Validation schemas
+// Validation schemas;
 export const createDietOrderSchema = z.object({
   patientId: z.string().min(1, 'Patient ID is required'),
   dietType: z.nativeEnum(DietType),
@@ -40,24 +50,24 @@ export const updateDietOrderSchema = createDietOrderSchema.partial().extend({
 export type CreateDietOrderInput = z.infer<typeof createDietOrderSchema>;
 export type UpdateDietOrderInput = z.infer<typeof updateDietOrderSchema>;
 
-// Import prisma client
+// Import prisma client;
 import { prisma } from '../lib/prisma';
 
 /**
- * Service class for managing dietary orders
+ * Service class for managing dietary orders;
  */
 export class DietaryService {
   /**
-   * Create a new diet order
-   * @param data Diet order data
-   * @returns The created diet order
+   * Create a new diet order;
+   * @param data Diet order data;
+   * @returns The created diet order;
    */
   async createOrder(data: CreateDietOrderInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createDietOrderSchema.parse(data);
       
-      // Create the diet order
+      // Create the diet order;
       const order = await prisma.dietOrder.create({
         data: validatedData,
       });
@@ -72,9 +82,9 @@ export class DietaryService {
   }
 
   /**
-   * Get all diet orders with optional filtering
-   * @param filters Optional filters for status, dietType, patientId, or date range
-   * @returns Array of diet orders matching the filters
+   * Get all diet orders with optional filtering;
+   * @param filters Optional filters for status, dietType, patientId, or date range;
+   * @returns Array of diet orders matching the filters;
    */
   async getOrders(filters?: {
     status?: string;
@@ -83,7 +93,7 @@ export class DietaryService {
     activeOn?: Date;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -96,7 +106,7 @@ export class DietaryService {
           where.patientId = filters.patientId;
         }
         if (filters.activeOn) {
-          // Find orders active on the specified date
+          // Find orders active on the specified date;
           where.startDate = { lte: filters.activeOn };
           where.OR = [
             { endDate: null },
@@ -127,9 +137,9 @@ export class DietaryService {
   }
 
   /**
-   * Get a single diet order by ID
-   * @param id Diet order ID
-   * @returns The diet order or null if not found
+   * Get a single diet order by ID;
+   * @param id Diet order ID;
+   * @returns The diet order or null if not found;
    */
   async getOrderById(id: string) {
     try {
@@ -152,20 +162,20 @@ export class DietaryService {
   }
 
   /**
-   * Update a diet order
-   * @param id Diet order ID
-   * @param data Updated diet order data
-   * @returns The updated diet order
+   * Update a diet order;
+   * @param id Diet order ID;
+   * @param data Updated diet order data;
+   * @returns The updated diet order;
    */
   async updateOrder(id: string, data: UpdateDietOrderInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateDietOrderSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Update the diet order
+      // Update the diet order;
       const order = await prisma.dietOrder.update({
         where: { id },
         data: updateData,
@@ -189,9 +199,9 @@ export class DietaryService {
   }
 
   /**
-   * Delete a diet order
-   * @param id Diet order ID
-   * @returns The deleted diet order
+   * Delete a diet order;
+   * @param id Diet order ID;
+   * @returns The deleted diet order;
    */
   async deleteOrder(id: string) {
     try {
@@ -206,9 +216,9 @@ export class DietaryService {
   }
 
   /**
-   * Cancel a diet order
-   * @param id Diet order ID
-   * @returns The updated diet order
+   * Cancel a diet order;
+   * @param id Diet order ID;
+   * @returns The updated diet order;
    */
   async cancelOrder(id: string) {
     try {
@@ -235,9 +245,9 @@ export class DietaryService {
   }
 
   /**
-   * Complete a diet order
-   * @param id Diet order ID
-   * @returns The updated diet order
+   * Complete a diet order;
+   * @param id Diet order ID;
+   * @returns The updated diet order;
    */
   async completeOrder(id: string) {
     try {
@@ -264,9 +274,9 @@ export class DietaryService {
   }
 
   /**
-   * Get active diet orders for a specific date
-   * @param date Date to check for active orders
-   * @returns Array of active diet orders on the specified date
+   * Get active diet orders for a specific date;
+   * @param date Date to check for active orders;
+   * @returns Array of active diet orders on the specified date;
    */
   async getActiveOrdersForDate(date: Date) {
     try {
@@ -296,5 +306,5 @@ export class DietaryService {
   }
 }
 
-// Export a singleton instance
+// Export a singleton instance;
 export const dietaryService = new DietaryService();

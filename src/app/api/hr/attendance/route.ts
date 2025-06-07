@@ -1,27 +1,38 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
 
-// Schema for check-in request
+// Schema for check-in request;
 const checkInSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   checkInTime: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid time format"
+    message: "Invalid time format";
   }),
   biometricData: z.string().optional(),
   notes: z.string().optional(),
 });
 
-// POST handler for check-in
-export async function POST(request: NextRequest) {
+// POST handler for check-in;
+export async const POST = (request: NextRequest) {
   try {
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Validate request data
+    // Validate request data;
     const validationResult = checkInSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -32,7 +43,7 @@ export async function POST(request: NextRequest) {
     
     const { employeeId, date, checkInTime, biometricData, notes } = validationResult.data;
     
-    // Verify biometric data if provided
+    // Verify biometric data if provided;
     let biometricVerified = false;
     if (biometricData) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
@@ -44,7 +55,7 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Record check-in
+    // Record check-in;
     const attendance = await attendanceService.recordCheckIn({
       employeeId,
       date: new Date(date),
@@ -55,7 +66,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(attendance);
   } catch (error) {
-    console.error("Error recording check-in:", error);
+
     return NextResponse.json(
       { error: "Failed to record check-in", details: error.message },
       { status: 500 }
@@ -63,26 +74,26 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET handler for attendance records
-export async function GET(request: NextRequest) {
+// GET handler for attendance records;
+export async const GET = (request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     
-    // Parse pagination parameters
+    // Parse pagination parameters;
     const skip = parseInt(searchParams.get('skip') || '0');
     const take = parseInt(searchParams.get('take') || '10');
     
-    // Parse filter parameters
+    // Parse filter parameters;
     const date = searchParams.get('date') ? new Date(searchParams.get('date')) : undefined;
     const startDate = searchParams.get('startDate') ? new Date(searchParams.get('startDate')) : undefined;
     const endDate = searchParams.get('endDate') ? new Date(searchParams.get('endDate')) : undefined;
     const departmentId = searchParams.get('departmentId') || undefined;
     const status = searchParams.get('status') as any || undefined;
-    const biometricVerified = searchParams.get('biometricVerified') 
-      ? searchParams.get('biometricVerified') === 'true' 
+    const biometricVerified = searchParams.get('biometricVerified');
+      ? searchParams.get('biometricVerified') === 'true';
       : undefined;
     
-    // Get attendance records
+    // Get attendance records;
     const result = await attendanceService.listAttendance({
       skip,
       take,
@@ -96,7 +107,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Error fetching attendance records:", error);
+
     return NextResponse.json(
       { error: "Failed to fetch attendance records", details: error.message },
       { status: 500 }

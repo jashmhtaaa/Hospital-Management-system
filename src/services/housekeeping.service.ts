@@ -1,22 +1,32 @@
-import { PrismaClient } from '@prisma/client';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { z } from 'zod';
 
-// Create enums to match Prisma schema
+// Create enums to match Prisma schema;
 export enum HousekeepingTaskStatus {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED';
 }
 
 export enum HousekeepingTaskPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  URGENT = 'URGENT'
+  URGENT = 'URGENT';
 }
 
-// Validation schemas
+// Validation schemas;
 export const createHousekeepingTaskSchema = z.object({
   taskName: z.string().min(1, 'Task name is required'),
   description: z.string().optional(),
@@ -36,24 +46,24 @@ export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial
 export type CreateHousekeepingTaskInput = z.infer<typeof createHousekeepingTaskSchema>;
 export type UpdateHousekeepingTaskInput = z.infer<typeof updateHousekeepingTaskSchema>;
 
-// Import prisma client
+// Import prisma client;
 import { prisma } from '../lib/prisma';
 
 /**
- * Service class for managing housekeeping tasks
+ * Service class for managing housekeeping tasks;
  */
 export class HousekeepingService {
   /**
-   * Create a new housekeeping task
-   * @param data Task data
-   * @returns The created task
+   * Create a new housekeeping task;
+   * @param data Task data;
+   * @returns The created task;
    */
   async createTask(data: CreateHousekeepingTaskInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createHousekeepingTaskSchema.parse(data);
       
-      // Create the task
+      // Create the task;
       const task = await prisma.housekeepingTask.create({
         data: validatedData,
       });
@@ -68,9 +78,9 @@ export class HousekeepingService {
   }
 
   /**
-   * Get all housekeeping tasks with optional filtering
-   * @param filters Optional filters for status, priority, location, or assignedToId
-   * @returns Array of tasks matching the filters
+   * Get all housekeeping tasks with optional filtering;
+   * @param filters Optional filters for status, priority, location, or assignedToId;
+   * @returns Array of tasks matching the filters;
    */
   async getTasks(filters?: {
     status?: string;
@@ -79,7 +89,7 @@ export class HousekeepingService {
     assignedToId?: string;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -119,9 +129,9 @@ export class HousekeepingService {
   }
 
   /**
-   * Get a single housekeeping task by ID
-   * @param id Task ID
-   * @returns The task or null if not found
+   * Get a single housekeeping task by ID;
+   * @param id Task ID;
+   * @returns The task or null if not found;
    */
   async getTaskById(id: string) {
     try {
@@ -144,20 +154,20 @@ export class HousekeepingService {
   }
 
   /**
-   * Update a housekeeping task
-   * @param id Task ID
-   * @param data Updated task data
-   * @returns The updated task
+   * Update a housekeeping task;
+   * @param id Task ID;
+   * @param data Updated task data;
+   * @returns The updated task;
    */
   async updateTask(id: string, data: UpdateHousekeepingTaskInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateHousekeepingTaskSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Update the task
+      // Update the task;
       const task = await prisma.housekeepingTask.update({
         where: { id },
         data: updateData,
@@ -181,9 +191,9 @@ export class HousekeepingService {
   }
 
   /**
-   * Delete a housekeeping task
-   * @param id Task ID
-   * @returns The deleted task
+   * Delete a housekeeping task;
+   * @param id Task ID;
+   * @returns The deleted task;
    */
   async deleteTask(id: string) {
     try {
@@ -198,10 +208,10 @@ export class HousekeepingService {
   }
 
   /**
-   * Assign a task to a user
-   * @param taskId Task ID
-   * @param userId User ID
-   * @returns The updated task
+   * Assign a task to a user;
+   * @param taskId Task ID;
+   * @param userId User ID;
+   * @returns The updated task;
    */
   async assignTask(taskId: string, userId: string) {
     try {
@@ -228,9 +238,9 @@ export class HousekeepingService {
   }
 
   /**
-   * Mark a task as completed
-   * @param taskId Task ID
-   * @returns The updated task
+   * Mark a task as completed;
+   * @param taskId Task ID;
+   * @returns The updated task;
    */
   async completeTask(taskId: string) {
     try {
@@ -257,9 +267,9 @@ export class HousekeepingService {
   }
 
   /**
-   * Cancel a task
-   * @param taskId Task ID
-   * @returns The updated task
+   * Cancel a task;
+   * @param taskId Task ID;
+   * @returns The updated task;
    */
   async cancelTask(taskId: string) {
     try {
@@ -285,5 +295,5 @@ export class HousekeepingService {
   }
 }
 
-// Export a singleton instance
+// Export a singleton instance;
 export const housekeepingService = new HousekeepingService();

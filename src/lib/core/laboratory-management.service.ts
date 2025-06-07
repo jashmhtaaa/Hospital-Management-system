@@ -1,12 +1,22 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Laboratory Information System (LIS) Service
- * Complete lab management with sample tracking, equipment integration, and result management
+ * Laboratory Information System (LIS) Service;
+ * Complete lab management with sample tracking, equipment integration, and result management;
  */
 
 import { z } from 'zod';
-import { v4 as uuidv4 } from 'uuid';
 
-// Lab Test Validation Schemas
+// Lab Test Validation Schemas;
 export const LabTestSchema = z.object({
   code: z.string().min(1, 'Test code is required'),
   name: z.string().min(1, 'Test name is required'),
@@ -154,7 +164,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Initialize common lab tests
+   * Initialize common lab tests;
    */
   private initializeDefaultTests(): void {
     const defaultTests: Omit<LabTest, 'id' | 'created_at' | 'updated_at'>[] = [
@@ -243,7 +253,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Initialize laboratory equipment
+   * Initialize laboratory equipment;
    */
   private initializeEquipment(): void {
     const defaultEquipment: EquipmentInterface[] = [
@@ -254,8 +264,8 @@ export class LaboratoryManagementService {
         serial_number: 'SN123456',
         status: 'online',
         supported_tests: ['CBC', 'DIFF'],
-        last_calibration: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        next_maintenance: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000), // 23 days from now
+        last_calibration: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago;
+        next_maintenance: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000), // 23 days from now;
         connection_status: 'connected',
       },
       {
@@ -265,8 +275,8 @@ export class LaboratoryManagementService {
         serial_number: 'SN789012',
         status: 'online',
         supported_tests: ['BMP', 'LIPID', 'LFT'],
-        last_calibration: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        next_maintenance: new Date(Date.now() + 27 * 24 * 60 * 60 * 1000), // 27 days from now
+        last_calibration: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago;
+        next_maintenance: new Date(Date.now() + 27 * 24 * 60 * 60 * 1000), // 27 days from now;
         connection_status: 'connected',
       },
     ];
@@ -277,7 +287,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Create a new lab test definition
+   * Create a new lab test definition;
    */
   async createLabTest(testData: z.infer<typeof LabTestSchema>): Promise<LabTest> {
     const validatedData = LabTestSchema.parse(testData);
@@ -298,7 +308,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Get all available lab tests
+   * Get all available lab tests;
    */
   async getLabTests(category?: string): Promise<LabTest[]> {
     const tests = Array.from(this.labTests.values());
@@ -311,12 +321,12 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Create a new lab order
+   * Create a new lab order;
    */
   async createLabOrder(orderData: z.infer<typeof LabOrderSchema>): Promise<LabOrder> {
     const validatedData = LabOrderSchema.parse(orderData);
     
-    // Validate test codes exist
+    // Validate test codes exist;
     const invalidTests = validatedData.test_codes.filter(code => !this.labTests.has(code));
     if (invalidTests.length > 0) {
       throw new Error(`Invalid test codes: ${invalidTests.join(', ')}`);
@@ -339,7 +349,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Generate unique order number
+   * Generate unique order number;
    */
   private generateOrderNumber(): string {
     const timestamp = Date.now().toString().slice(-6);
@@ -348,7 +358,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Get lab orders with filtering
+   * Get lab orders with filtering;
    */
   async getLabOrders(filters?: {
     patient_id?: string;
@@ -363,7 +373,7 @@ export class LaboratoryManagementService {
     
     let filteredOrders = Array.from(this.labOrders.values());
 
-    // Apply filters
+    // Apply filters;
     if (searchFilters.patient_id) {
       filteredOrders = filteredOrders.filter(order => order.patient_id === searchFilters.patient_id);
     }
@@ -389,7 +399,7 @@ export class LaboratoryManagementService {
     // Sort by creation date (newest first)
     filteredOrders.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
 
-    // Pagination
+    // Pagination;
     const total = filteredOrders.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -399,7 +409,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Collect samples for an order
+   * Collect samples for an order;
    */
   async collectSample(collectionData: z.infer<typeof SampleCollectionSchema>): Promise<SampleCollection> {
     const validatedData = SampleCollectionSchema.parse(collectionData);
@@ -422,7 +432,7 @@ export class LaboratoryManagementService {
 
     this.sampleCollections.set(sampleCollection.id, sampleCollection);
 
-    // Update order status
+    // Update order status;
     order.status = 'collected';
     order.updated_at = new Date();
     this.labOrders.set(order.id, order);
@@ -431,7 +441,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Generate sample ID
+   * Generate sample ID;
    */
   private generateSampleId(): string {
     const timestamp = Date.now().toString().slice(-6);
@@ -440,7 +450,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Enter lab results
+   * Enter lab results;
    */
   async enterResults(resultsData: z.infer<typeof LabResultSchema>[]): Promise<LabResult[]> {
     const results: LabResult[] = [];
@@ -458,7 +468,7 @@ export class LaboratoryManagementService {
         throw new Error(`Test not found: ${validatedData.test_code}`);
       }
 
-      // Determine abnormal flag based on reference ranges
+      // Determine abnormal flag based on reference ranges;
       const abnormalFlag = this.determineAbnormalFlag(validatedData.numeric_value, test);
 
       const labResult: LabResult = {
@@ -469,20 +479,20 @@ export class LaboratoryManagementService {
         updated_at: new Date(),
       };
 
-      // Store result
+      // Store result;
       const orderResults = this.labResults.get(validatedData.order_id) || [];
       orderResults.push(labResult);
       this.labResults.set(validatedData.order_id, orderResults);
 
       results.push(labResult);
 
-      // Check for critical values and send alerts
+      // Check for critical values and send alerts;
       if (abnormalFlag.includes('critical') || abnormalFlag === 'panic') {
         await this.sendCriticalAlert(labResult, order, test);
       }
     }
 
-    // Update order status if all tests are resulted
+    // Update order status if all tests are resulted;
     const order = this.labOrders.get(resultsData[0].order_id);
     if (order) {
       const orderResults = this.labResults.get(order.id) || [];
@@ -497,14 +507,14 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Determine abnormal flag based on numeric value and reference ranges
+   * Determine abnormal flag based on numeric value and reference ranges;
    */
   private determineAbnormalFlag(numericValue: number | undefined, test: LabTest): LabResult['abnormal_flag'] {
     if (!numericValue || !test.reference_ranges.length) {
       return 'normal';
     }
 
-    // Check critical values first
+    // Check critical values first;
     if (test.critical_values) {
       if (test.critical_values.panic_low && numericValue <= test.critical_values.panic_low) {
         return 'panic';
@@ -520,8 +530,8 @@ export class LaboratoryManagementService {
       }
     }
 
-    // Check reference ranges
-    const refRange = test.reference_ranges[0]; // Use first range for simplicity
+    // Check reference ranges;
+    const refRange = test.reference_ranges[0]; // Use first range for simplicity;
     if (refRange.range_min && numericValue < refRange.range_min) {
       return 'low';
     }
@@ -533,11 +543,11 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Send critical value alert
+   * Send critical value alert;
    */
   private async sendCriticalAlert(result: LabResult, order: LabOrder, test: LabTest): Promise<void> {
     // In real implementation, this would send notifications via email, SMS, etc.
-    console.log('CRITICAL ALERT:', {
+
       patient_id: order.patient_id,
       test: test.name,
       value: result.result_value,
@@ -547,14 +557,14 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Get results for an order
+   * Get results for an order;
    */
   async getOrderResults(orderId: string): Promise<LabResult[]> {
     return this.labResults.get(orderId) || [];
   }
 
   /**
-   * Run quality control
+   * Run quality control;
    */
   async runQualityControl(
     equipmentId: string,
@@ -562,7 +572,7 @@ export class LaboratoryManagementService {
     controlLevel: 'low' | 'normal' | 'high',
     expectedValue: number,
     actualValue: number,
-    performedBy: string
+    performedBy: string;
   ): Promise<QualityControlResult> {
     const variance = Math.abs((actualValue - expectedValue) / expectedValue) * 100;
     
@@ -594,7 +604,7 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Get laboratory statistics
+   * Get laboratory statistics;
    */
   async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{
     totalOrders: number;
@@ -620,7 +630,7 @@ export class LaboratoryManagementService {
     const completedOrders = filteredOrders.filter(order => order.status === 'completed').length;
     const pendingOrders = filteredOrders.filter(order => order.status === 'pending').length;
 
-    // Calculate average turnaround time for completed orders
+    // Calculate average turnaround time for completed orders;
     let totalTurnaroundHours = 0;
     let completedCount = 0;
     filteredOrders.forEach(order => {
@@ -632,15 +642,15 @@ export class LaboratoryManagementService {
     });
     const averageTurnaroundTime = completedCount > 0 ? totalTurnaroundHours / completedCount : 0;
 
-    // Count critical results
+    // Count critical results;
     let criticalResults = 0;
     Array.from(this.labResults.values()).forEach(results => {
       criticalResults += results.filter(result => 
-        result.abnormal_flag.includes('critical') || result.abnormal_flag === 'panic'
+        result.abnormal_flag.includes('critical') || result.abnormal_flag === 'panic';
       ).length;
     });
 
-    // Count QC failures
+    // Count QC failures;
     let qcFailures = 0;
     Array.from(this.qcResults.values()).forEach(qcResults => {
       qcFailures += qcResults.filter(qc => qc.status === 'fail').length;
@@ -657,14 +667,14 @@ export class LaboratoryManagementService {
   }
 
   /**
-   * Get equipment status
+   * Get equipment status;
    */
   async getEquipmentStatus(): Promise<EquipmentInterface[]> {
     return Array.from(this.equipment.values());
   }
 
   /**
-   * Update equipment status
+   * Update equipment status;
    */
   async updateEquipmentStatus(equipmentId: string, status: EquipmentInterface['status']): Promise<EquipmentInterface> {
     const equipment = this.equipment.get(equipmentId);
@@ -679,5 +689,5 @@ export class LaboratoryManagementService {
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const laboratoryManagementService = new LaboratoryManagementService();

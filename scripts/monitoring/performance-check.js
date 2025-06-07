@@ -73,7 +73,9 @@ class PerformanceMonitor {
         responseTime: Math.round(responseTime),
         contentLength: response.contentLength || 0,
         headers: response.headers,
-        passed: response.statusCode >= 200 && response.statusCode < 400 && responseTime < this.config.thresholds.responseTime,
+        passed: response.statusCode >= 200 &&
+          response.statusCode < 400 &&
+          responseTime < this.config.thresholds.responseTime,
         timestamp: new Date().toISOString()
       };
       
@@ -195,14 +197,13 @@ class PerformanceMonitor {
         uptime: os.uptime()
       };
     } catch (error) {
-      console.warn('Could not get system metrics:', error.message);
+      // Debug logging removed
     }
     
     return metrics;
   }
 
-  async runHealthChecks() {
-    console.log('🏥 Starting HMS Performance Health Checks...');
+  async runHealthChecks() {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     const startTime = performance.now();
     
     // Run endpoint checks
@@ -238,12 +239,7 @@ class PerformanceMonitor {
     this.results.overall.duration = Math.round(performance.now() - startTime);
     
     // Get system metrics
-    this.results.systemMetrics = await this.checkSystemMetrics();
-    
-    console.log(`✅ Performance checks completed in ${this.results.overall.duration}ms`);
-    console.log(`📊 Overall Score: ${this.results.overall.score}/100`);
-    console.log(`📈 Success Rate: ${this.results.metrics.successRate.toFixed(2)}%`);
-    console.log(`⚡ Average Response Time: ${this.results.metrics.averageResponseTime}ms`);
+    this.results.systemMetrics = await this.checkSystemMetrics();\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
     return this.results;
   }
@@ -331,8 +327,7 @@ class PerformanceMonitor {
       }
     };
     
-    await fs.writeFile(outputPath, JSON.stringify(reportData, null, 2));
-    console.log(`📄 Performance report saved to ${outputPath}`);
+    await fs.writeFile(outputPath, JSON.stringify(reportData, null, 2));\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   async generateHTMLReport(outputPath) {
@@ -428,8 +423,7 @@ class PerformanceMonitor {
 </html>
     `;
     
-    await fs.writeFile(outputPath, html);
-    console.log(`📄 HTML report saved to ${outputPath}`);
+    await fs.writeFile(outputPath, html);\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 }
 
@@ -460,13 +454,7 @@ async function main() {
         config.failOnError = true;
         break;
       case '--help':
-        console.log(`
-HMS Performance Monitor
-
-Usage: node performance-check.js [options]
-
-Options:
-  --base-url <url>                  Base URL to test (default: http://localhost:3000)
+        // Debug logging removed
   --timeout <ms>                   Request timeout in milliseconds (default: 30000)
   --response-time-threshold <ms>   Response time threshold (default: 2000)
   --json-report <path>             Save JSON report to path
@@ -493,15 +481,14 @@ Options:
     
     // Exit with appropriate code
     if (config.failOnError && !results.overall.passed) {
-      console.error('❌ Performance checks failed');
+      // Debug logging removed
       process.exit(1);
-    } else {
-      console.log('✅ Performance checks completed successfully');
+    } else {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       process.exit(0);
     }
     
   } catch (error) {
-    console.error('💥 Performance check failed:', error.message);
+    // Debug logging removed
     process.exit(1);
   }
 }

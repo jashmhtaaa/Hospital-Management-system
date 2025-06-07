@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -18,9 +29,9 @@ interface OTSurgeryTypeListProps {
 }
 
 /**
- * Operation Theatre surgery type list component
+ * Operation Theatre surgery type list component;
  */
-export function OTSurgeryTypeList({ surgeryTypes }: OTSurgeryTypeListProps) {
+export const OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) {
   const getRiskBadge = (risk: string) => {
     switch(risk) {
       case 'low': return <Badge variant="secondary">Low Risk</Badge>;
@@ -49,20 +60,20 @@ export function OTSurgeryTypeList({ surgeryTypes }: OTSurgeryTypeListProps) {
           <TableBody>
             {surgeryTypes.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No surgery types defined
+                <TableCell colSpan={5} className="text-center">;
+                  No surgery types defined;
                 </TableCell>
               </TableRow>
             ) : (
               surgeryTypes.map((surgeryType) => (
-                <TableRow key={surgeryType.id}>
-                  <TableCell className="font-medium">{surgeryType.name}</TableCell>
+                <TableRow key={surgeryType.id}>;
+                  <TableCell className="font-medium">{surgeryType.name}</TableCell>;
                   <TableCell>{surgeryType.category}</TableCell>
                   <TableCell>{surgeryType.averageDuration}</TableCell>
                   <TableCell>{surgeryType.specialistRequired}</TableCell>
                   <TableCell>{getRiskBadge(surgeryType.riskLevel)}</TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

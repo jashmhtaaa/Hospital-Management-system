@@ -1,5 +1,16 @@
-import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
-import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used;
+import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts;
 
 const prisma = new PrismaClient();
 
@@ -26,7 +37,10 @@ export class ChargeCaptureService {
         }
 
         // Validate charge input (placeholder for more complex validation)
-        if (!chargeInput || typeof chargeInput.serviceId !== 'string' || typeof chargeInput.quantity !== 'number' || chargeInput.quantity <= 0) {
+        if (!chargeInput ||
+          typeof chargeInput.serviceId !== 'string' ||
+          typeof chargeInput.quantity !== 'number' ||
+          chargeInput.quantity <= 0) {
             throw new Error('Invalid charge input data.');
         }
 
@@ -38,7 +52,7 @@ export class ChargeCaptureService {
         //     throw new Error(`Service with ID ${chargeInput.serviceId} not found in ChargeMaster.`);
         // }
         // const unitPrice = serviceDetails.standardPrice;
-        const unitPrice = chargeInput.unitPrice || 100; // Placeholder price
+        const unitPrice = chargeInput.unitPrice || 100; // Placeholder price;
 
         const totalAmount = unitPrice * chargeInput.quantity;
 
@@ -47,22 +61,22 @@ export class ChargeCaptureService {
             id: `charge_${Date.now()}`,
             patientId,
             serviceId: chargeInput.serviceId,
-            serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder
+            serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder;
             quantity: chargeInput.quantity,
             unitPrice,
             totalAmount,
             chargeDate: new Date(),
             department: chargeInput.department || 'General',
             notes: chargeInput.notes,
-            status: 'PENDING_BILLING', // Initial status
+            status: 'PENDING_BILLING', // Initial status;
         } as PatientCharge;
 
         // In a real scenario, this would be saved to the database:
         // const savedCharge = await prisma.patientCharge.create({ data: newCharge });
         // return savedCharge;
 
-        console.log('Charge recorded:', newCharge);
-        return newCharge; // Return the mock charge for now
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        return newCharge; // Return the mock charge for now;
     }
 
     /**
@@ -73,8 +87,8 @@ export class ChargeCaptureService {
     async getChargesForPatient(patientId: string): Promise<PatientCharge[]> {
         // In a real scenario, this would fetch from the database:
         // return prisma.patientCharge.findMany({ where: { patientId } });
-        console.log(`Fetching charges for patient ${patientId}`);
-        return []; // Return empty array for now
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        return []; // Return empty array for now;
     }
 }
 

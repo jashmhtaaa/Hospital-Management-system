@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -17,9 +28,9 @@ interface OTTheatreListProps {
 }
 
 /**
- * Operation Theatre list component
+ * Operation Theatre list component;
  */
-export function OTTheatreList({ theatres }: OTTheatreListProps) {
+export const OTTheatreList = ({ theatres }: OTTheatreListProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'available': return <Badge variant="success">Available</Badge>;
@@ -48,20 +59,20 @@ export function OTTheatreList({ theatres }: OTTheatreListProps) {
           <TableBody>
             {theatres.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No theatres available
+                <TableCell colSpan={5} className="text-center">;
+                  No theatres available;
                 </TableCell>
               </TableRow>
             ) : (
               theatres.map((theatre) => (
-                <TableRow key={theatre.id}>
-                  <TableCell className="font-medium">{theatre.name}</TableCell>
+                <TableRow key={theatre.id}>;
+                  <TableCell className="font-medium">{theatre.name}</TableCell>;
                   <TableCell>{theatre.type}</TableCell>
                   <TableCell>{getStatusBadge(theatre.status)}</TableCell>
                   <TableCell>{theatre.currentProcedure || 'None'}</TableCell>
                   <TableCell>{theatre.nextAvailable || 'Now'}</TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

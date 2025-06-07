@@ -1,13 +1,24 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 /**
- * Service for managing attendance records and biometric verification
+ * Service for managing attendance records and biometric verification;
  */
 export class AttendanceService {
   /**
-   * Record employee check-in
+   * Record employee check-in;
    */
   async recordCheckIn(data: {
     employeeId: string;
@@ -18,11 +29,11 @@ export class AttendanceService {
   }) {
     const { employeeId, date, checkInTime, biometricVerified, notes } = data;
     
-    // Format date to remove time component for unique constraint
+    // Format date to remove time component for unique constraint;
     const formattedDate = new Date(date);
     formattedDate.setHours(0, 0, 0, 0);
     
-    // Check if attendance record already exists for this employee and date
+    // Check if attendance record already exists for this employee and date;
     const existingRecord = await prisma.attendance.findUnique({
       where: {
         employeeId_date: {
@@ -33,7 +44,7 @@ export class AttendanceService {
     });
     
     if (existingRecord) {
-      // Update existing record with check-in time
+      // Update existing record with check-in time;
       return prisma.attendance.update({
         where: {
           id: existingRecord.id,
@@ -55,7 +66,7 @@ export class AttendanceService {
         },
       });
     } else {
-      // Create new attendance record
+      // Create new attendance record;
       return prisma.attendance.create({
         data: {
           employeeId,
@@ -79,7 +90,7 @@ export class AttendanceService {
   }
   
   /**
-   * Record employee check-out
+   * Record employee check-out;
    */
   async recordCheckOut(data: {
     employeeId: string;
@@ -90,11 +101,11 @@ export class AttendanceService {
   }) {
     const { employeeId, date, checkOutTime, biometricVerified, notes } = data;
     
-    // Format date to remove time component for unique constraint
+    // Format date to remove time component for unique constraint;
     const formattedDate = new Date(date);
     formattedDate.setHours(0, 0, 0, 0);
     
-    // Find attendance record for this employee and date
+    // Find attendance record for this employee and date;
     const existingRecord = await prisma.attendance.findUnique({
       where: {
         employeeId_date: {
@@ -108,7 +119,7 @@ export class AttendanceService {
       throw new Error('No check-in record found for this date');
     }
     
-    // Update record with check-out time
+    // Update record with check-out time;
     return prisma.attendance.update({
       where: {
         id: existingRecord.id,
@@ -132,7 +143,7 @@ export class AttendanceService {
   }
   
   /**
-   * Get attendance record by ID
+   * Get attendance record by ID;
    */
   async getAttendanceById(id: string) {
     return prisma.attendance.findUnique({
@@ -152,10 +163,10 @@ export class AttendanceService {
   }
   
   /**
-   * Get attendance records for an employee
+   * Get attendance records for an employee;
    */
   async getEmployeeAttendance(employeeId: string, startDate?: Date, endDate?: Date) {
-    const where: any = { employeeId };
+    const where: unknown = { employeeId };
     
     if (startDate || endDate) {
       where.date = {};
@@ -183,7 +194,7 @@ export class AttendanceService {
   }
   
   /**
-   * List attendance records with filtering and pagination
+   * List attendance records with filtering and pagination;
    */
   async listAttendance({
     skip = 0,
@@ -204,9 +215,9 @@ export class AttendanceService {
     status?: 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE';
     biometricVerified?: boolean;
   }) {
-    const where: any = {};
+    const where: unknown = {};
     
-    // Date filters
+    // Date filters;
     if (date) {
       const formattedDate = new Date(date);
       formattedDate.setHours(0, 0, 0, 0);
@@ -221,19 +232,19 @@ export class AttendanceService {
       }
     }
     
-    // Department filter
+    // Department filter;
     if (departmentId) {
       where.employee = {
         departmentId,
       };
     }
     
-    // Status filter
+    // Status filter;
     if (status) {
       where.status = status;
     }
     
-    // Biometric verification filter
+    // Biometric verification filter;
     if (biometricVerified !== undefined) {
       where.biometricVerified = biometricVerified;
     }
@@ -271,7 +282,7 @@ export class AttendanceService {
   }
   
   /**
-   * Update attendance record
+   * Update attendance record;
    */
   async updateAttendance(
     id: string,
@@ -283,7 +294,7 @@ export class AttendanceService {
       notes?: string;
     }
   ) {
-    // If both check-in and check-out times are provided, determine status
+    // If both check-in and check-out times are provided, determine status;
     let status = data.status;
     if (data.checkInTime && data.checkOutTime && !status) {
       status = this.determineAttendanceStatus(data.checkInTime, data.checkOutTime);
@@ -308,7 +319,7 @@ export class AttendanceService {
   }
   
   /**
-   * Mark employee as absent
+   * Mark employee as absent;
    */
   async markAbsent(data: {
     employeeId: string;
@@ -317,11 +328,11 @@ export class AttendanceService {
   }) {
     const { employeeId, date, notes } = data;
     
-    // Format date to remove time component for unique constraint
+    // Format date to remove time component for unique constraint;
     const formattedDate = new Date(date);
     formattedDate.setHours(0, 0, 0, 0);
     
-    // Check if attendance record already exists for this employee and date
+    // Check if attendance record already exists for this employee and date;
     const existingRecord = await prisma.attendance.findUnique({
       where: {
         employeeId_date: {
@@ -332,7 +343,7 @@ export class AttendanceService {
     });
     
     if (existingRecord) {
-      // Update existing record
+      // Update existing record;
       return prisma.attendance.update({
         where: {
           id: existingRecord.id,
@@ -352,7 +363,7 @@ export class AttendanceService {
         },
       });
     } else {
-      // Create new attendance record
+      // Create new attendance record;
       return prisma.attendance.create({
         data: {
           employeeId,
@@ -375,10 +386,10 @@ export class AttendanceService {
   }
   
   /**
-   * Get attendance statistics for a department
+   * Get attendance statistics for a department;
    */
   async getDepartmentAttendanceStats(departmentId: string, startDate: Date, endDate: Date) {
-    // Get all employees in the department
+    // Get all employees in the department;
     const employees = await prisma.employee.findMany({
       where: {
         departmentId,
@@ -391,7 +402,7 @@ export class AttendanceService {
     
     const employeeIds = employees.map(emp => emp.id);
     
-    // Get attendance records for these employees in the date range
+    // Get attendance records for these employees in the date range;
     const attendanceRecords = await prisma.attendance.findMany({
       where: {
         employeeId: {
@@ -404,7 +415,7 @@ export class AttendanceService {
       },
     });
     
-    // Calculate statistics
+    // Calculate statistics;
     const totalEmployees = employeeIds.length;
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     const totalPossibleAttendance = totalEmployees * totalDays;
@@ -415,7 +426,7 @@ export class AttendanceService {
     const halfDayCount = attendanceRecords.filter(record => record.status === 'HALF_DAY').length;
     const onLeaveCount = attendanceRecords.filter(record => record.status === 'ON_LEAVE').length;
     
-    // Calculate percentages
+    // Calculate percentages;
     const presentPercentage = (presentCount / totalPossibleAttendance) * 100;
     const latePercentage = (lateCount / totalPossibleAttendance) * 100;
     const absentPercentage = (absentCount / totalPossibleAttendance) * 100;
@@ -443,22 +454,22 @@ export class AttendanceService {
   }
   
   /**
-   * Verify biometric data
-   * This is a placeholder for actual biometric verification logic
+   * Verify biometric data;
+   * This is a placeholder for actual biometric verification logic;
    */
   async verifyBiometric(employeeId: string, biometricData: string): Promise<boolean> {
     // In a real implementation, this would:
-    // 1. Retrieve the employee's stored biometric template
-    // 2. Compare the provided biometric data with the stored template
-    // 3. Return true if the match is above a certain threshold
+    // 1. Retrieve the employee's stored biometric template;
+    // 2. Compare the provided biometric data with the stored template;
+    // 3. Return true if the match is above a certain threshold;
     
-    // For demonstration purposes, we'll simulate verification
-    // In production, this would integrate with a biometric verification service
+    // For demonstration purposes, we'll simulate verification;
+    // In production, this would integrate with a biometric verification service;
     
-    // Simulate 95% success rate for verification
+    // Simulate 95% success rate for verification;
     const randomSuccess = Math.random() < 0.95;
     
-    // Log the verification attempt
+    // Log the verification attempt;
     await prisma.auditLog.create({
       data: {
         userId: null,
@@ -475,12 +486,12 @@ export class AttendanceService {
   }
   
   /**
-   * Determine attendance status based on check-in and check-out times
-   * This is a simplified implementation and would be more complex in a real system
+   * Determine attendance status based on check-in and check-out times;
+   * This is a simplified implementation and would be more complex in a real system;
    */
   private determineAttendanceStatus(
     checkInTime: Date | null,
-    checkOutTime: Date | null
+    checkOutTime: Date | null;
   ): 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE' {
     if (!checkInTime) {
       return 'ABSENT';
@@ -495,22 +506,22 @@ export class AttendanceService {
     const checkInMinute = checkInTime.getMinutes();
     const isLate = checkInHour > workStartHour || (checkInHour === workStartHour && checkInMinute > 15);
     
-    // If check-out time is provided, calculate total hours worked
+    // If check-out time is provided, calculate total hours worked;
     if (checkOutTime) {
       const hoursWorked = (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
       
-      // If worked less than half a day (4 hours), mark as half-day
+      // If worked less than half a day (4 hours), mark as half-day;
       if (hoursWorked < 4) {
         return 'HALF_DAY';
       }
     }
     
-    // If check-in is late, mark as late
+    // If check-in is late, mark as late;
     if (isLate) {
       return 'LATE';
     }
     
-    // Otherwise, mark as present
+    // Otherwise, mark as present;
     return 'PRESENT';
   }
 }

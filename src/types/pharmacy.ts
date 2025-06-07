@@ -1,4 +1,15 @@
-// src/types/pharmacy.ts
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// src/types/pharmacy.ts;
 
 export interface MedicationAdministrationRecord {
   id: string;
@@ -7,11 +18,11 @@ export interface MedicationAdministrationRecord {
   medication_name: string;
   dosage: string;
   route: string;
-  scheduled_time: string; // ISO 8601 format
-  administration_time: string; // ISO 8601 format
+  scheduled_time: string; // ISO 8601 format;
+  administration_time: string; // ISO 8601 format;
   status: "Administered" | "Missed" | "Refused";
   administered_by_id: string;
   notes?: string;
-  // Add other relevant fields as needed
+  // Add other relevant fields as needed;
 }
 

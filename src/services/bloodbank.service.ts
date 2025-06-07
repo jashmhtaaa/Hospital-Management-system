@@ -1,7 +1,17 @@
-import { PrismaClient } from '@prisma/client';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { z } from 'zod';
 
-// Create enums to match Prisma schema
+// Create enums to match Prisma schema;
 export enum BloodType {
   A_POSITIVE = 'A_POSITIVE',
   A_NEGATIVE = 'A_NEGATIVE',
@@ -10,14 +20,14 @@ export enum BloodType {
   AB_POSITIVE = 'AB_POSITIVE',
   AB_NEGATIVE = 'AB_NEGATIVE',
   O_POSITIVE = 'O_POSITIVE',
-  O_NEGATIVE = 'O_NEGATIVE'
+  O_NEGATIVE = 'O_NEGATIVE';
 }
 
 export enum BloodDonationStatus {
   PENDING = 'PENDING',
   COMPLETED = 'COMPLETED',
   REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED';
 }
 
 export enum BloodRequestStatus {
@@ -25,16 +35,16 @@ export enum BloodRequestStatus {
   APPROVED = 'APPROVED',
   FULFILLED = 'FULFILLED',
   REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED';
 }
 
 export enum BloodRequestPriority {
   ROUTINE = 'ROUTINE',
   URGENT = 'URGENT',
-  EMERGENCY = 'EMERGENCY'
+  EMERGENCY = 'EMERGENCY';
 }
 
-// Validation schemas for BloodDonation
+// Validation schemas for BloodDonation;
 export const createBloodDonationSchema = z.object({
   donorId: z.string().min(1, 'Donor ID is required'),
   bloodType: z.nativeEnum(BloodType),
@@ -49,7 +59,7 @@ export const updateBloodDonationSchema = createBloodDonationSchema.partial().ext
   id: z.string(),
 });
 
-// Validation schemas for BloodRequest
+// Validation schemas for BloodRequest;
 export const createBloodRequestSchema = z.object({
   patientId: z.string().min(1, 'Patient ID is required'),
   requestedBy: z.string().min(1, 'Requester ID is required'),
@@ -72,33 +82,33 @@ export type UpdateBloodDonationInput = z.infer<typeof updateBloodDonationSchema>
 export type CreateBloodRequestInput = z.infer<typeof createBloodRequestSchema>;
 export type UpdateBloodRequestInput = z.infer<typeof updateBloodRequestSchema>;
 
-// Import prisma client
+// Import prisma client;
 import { prisma } from '../lib/prisma';
 
 /**
- * Service class for managing blood bank operations
+ * Service class for managing blood bank operations;
  */
 export class BloodBankService {
   /**
-   * Create a new blood donation
-   * @param data Blood donation data
-   * @returns The created blood donation
+   * Create a new blood donation;
+   * @param data Blood donation data;
+   * @returns The created blood donation;
    */
   async createDonation(data: CreateBloodDonationInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createBloodDonationSchema.parse(data);
       
-      // Create the donation and update inventory in a transaction
+      // Create the donation and update inventory in a transaction;
       const donation = await prisma.$transaction(async (tx) => {
-        // Create the donation
+        // Create the donation;
         const newDonation = await tx.bloodDonation.create({
           data: validatedData,
         });
         
-        // If the donation status is COMPLETED, update the inventory
+        // If the donation status is COMPLETED, update the inventory;
         if (validatedData.status === BloodDonationStatus.COMPLETED) {
-          // Check if inventory exists for this blood type
+          // Check if inventory exists for this blood type;
           const inventory = await tx.bloodInventory.findUnique({
             where: {
               bloodType: validatedData.bloodType,
@@ -106,7 +116,7 @@ export class BloodBankService {
           });
           
           if (inventory) {
-            // Update existing inventory
+            // Update existing inventory;
             await tx.bloodInventory.update({
               where: {
                 bloodType: validatedData.bloodType,
@@ -117,7 +127,7 @@ export class BloodBankService {
               },
             });
           } else {
-            // Create new inventory
+            // Create new inventory;
             await tx.bloodInventory.create({
               data: {
                 bloodType: validatedData.bloodType,
@@ -141,9 +151,9 @@ export class BloodBankService {
   }
 
   /**
-   * Get all blood donations with optional filtering
-   * @param filters Optional filters for status, bloodType, donorId, or date range
-   * @returns Array of blood donations matching the filters
+   * Get all blood donations with optional filtering;
+   * @param filters Optional filters for status, bloodType, donorId, or date range;
+   * @returns Array of blood donations matching the filters;
    */
   async getDonations(filters?: {
     status?: string;
@@ -153,7 +163,7 @@ export class BloodBankService {
     toDate?: Date;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -198,9 +208,9 @@ export class BloodBankService {
   }
 
   /**
-   * Get a single blood donation by ID
-   * @param id Blood donation ID
-   * @returns The blood donation or null if not found
+   * Get a single blood donation by ID;
+   * @param id Blood donation ID;
+   * @returns The blood donation or null if not found;
    */
   async getDonationById(id: string) {
     try {
@@ -223,20 +233,20 @@ export class BloodBankService {
   }
 
   /**
-   * Update a blood donation
-   * @param id Blood donation ID
-   * @param data Updated blood donation data
-   * @returns The updated blood donation
+   * Update a blood donation;
+   * @param id Blood donation ID;
+   * @param data Updated blood donation data;
+   * @returns The updated blood donation;
    */
   async updateDonation(id: string, data: UpdateBloodDonationInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateBloodDonationSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Get the current donation
+      // Get the current donation;
       const currentDonation = await prisma.bloodDonation.findUnique({
         where: { id },
       });
@@ -245,22 +255,23 @@ export class BloodBankService {
         throw new Error(`Blood donation with ID ${id} not found`);
       }
       
-      // Update the donation and inventory in a transaction if status changes
+      // Update the donation and inventory in a transaction if status changes;
       const updatedDonation = await prisma.$transaction(async (tx) => {
-        // Update the donation
+        // Update the donation;
         const donation = await tx.bloodDonation.update({
           where: { id },
           data: updateData,
         });
         
-        // Handle inventory updates if status changes
+        // Handle inventory updates if status changes;
         if (updateData.status && updateData.status !== currentDonation.status) {
-          // If changing to COMPLETED, add to inventory
-          if (updateData.status === BloodDonationStatus.COMPLETED && currentDonation.status !== BloodDonationStatus.COMPLETED) {
+          // If changing to COMPLETED, add to inventory;
+          if (updateData.status === BloodDonationStatus.COMPLETED &&
+            currentDonation.status !== BloodDonationStatus.COMPLETED) {
             const bloodType = updateData.bloodType || currentDonation.bloodType;
             const quantity = updateData.quantity || currentDonation.quantity;
             
-            // Check if inventory exists for this blood type
+            // Check if inventory exists for this blood type;
             const inventory = await tx.bloodInventory.findUnique({
               where: {
                 bloodType,
@@ -268,7 +279,7 @@ export class BloodBankService {
             });
             
             if (inventory) {
-              // Update existing inventory
+              // Update existing inventory;
               await tx.bloodInventory.update({
                 where: {
                   bloodType,
@@ -279,7 +290,7 @@ export class BloodBankService {
                 },
               });
             } else {
-              // Create new inventory
+              // Create new inventory;
               await tx.bloodInventory.create({
                 data: {
                   bloodType,
@@ -290,12 +301,13 @@ export class BloodBankService {
             }
           }
           
-          // If changing from COMPLETED to something else, remove from inventory
-          if (currentDonation.status === BloodDonationStatus.COMPLETED && updateData.status !== BloodDonationStatus.COMPLETED) {
+          // If changing from COMPLETED to something else, remove from inventory;
+          if (currentDonation.status === BloodDonationStatus.COMPLETED &&
+            updateData.status !== BloodDonationStatus.COMPLETED) {
             const bloodType = currentDonation.bloodType;
             const quantity = currentDonation.quantity;
             
-            // Check if inventory exists for this blood type
+            // Check if inventory exists for this blood type;
             const inventory = await tx.bloodInventory.findUnique({
               where: {
                 bloodType,
@@ -303,13 +315,13 @@ export class BloodBankService {
             });
             
             if (inventory) {
-              // Update existing inventory
+              // Update existing inventory;
               await tx.bloodInventory.update({
                 where: {
                   bloodType,
                 },
                 data: {
-                  quantity: Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn't go below 0
+                  quantity: Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn't go below 0;
                   lastUpdated: new Date(),
                 },
               });
@@ -330,13 +342,13 @@ export class BloodBankService {
   }
 
   /**
-   * Delete a blood donation
-   * @param id Blood donation ID
-   * @returns The deleted blood donation
+   * Delete a blood donation;
+   * @param id Blood donation ID;
+   * @returns The deleted blood donation;
    */
   async deleteDonation(id: string) {
     try {
-      // Get the current donation
+      // Get the current donation;
       const currentDonation = await prisma.bloodDonation.findUnique({
         where: { id },
       });
@@ -345,16 +357,16 @@ export class BloodBankService {
         throw new Error(`Blood donation with ID ${id} not found`);
       }
       
-      // Delete the donation and update inventory in a transaction if needed
+      // Delete the donation and update inventory in a transaction if needed;
       const deletedDonation = await prisma.$transaction(async (tx) => {
-        // Delete the donation
+        // Delete the donation;
         const donation = await tx.bloodDonation.delete({
           where: { id },
         });
         
-        // If the donation was COMPLETED, update the inventory
+        // If the donation was COMPLETED, update the inventory;
         if (currentDonation.status === BloodDonationStatus.COMPLETED) {
-          // Check if inventory exists for this blood type
+          // Check if inventory exists for this blood type;
           const inventory = await tx.bloodInventory.findUnique({
             where: {
               bloodType: currentDonation.bloodType,
@@ -362,13 +374,13 @@ export class BloodBankService {
           });
           
           if (inventory) {
-            // Update existing inventory
+            // Update existing inventory;
             await tx.bloodInventory.update({
               where: {
                 bloodType: currentDonation.bloodType,
               },
               data: {
-                quantity: Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn't go below 0
+                quantity: Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn't go below 0;
                 lastUpdated: new Date(),
               },
             });
@@ -385,16 +397,16 @@ export class BloodBankService {
   }
 
   /**
-   * Create a new blood request
-   * @param data Blood request data
-   * @returns The created blood request
+   * Create a new blood request;
+   * @param data Blood request data;
+   * @returns The created blood request;
    */
   async createRequest(data: CreateBloodRequestInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createBloodRequestSchema.parse(data);
       
-      // Create the request
+      // Create the request;
       const request = await prisma.bloodRequest.create({
         data: validatedData,
       });
@@ -409,9 +421,9 @@ export class BloodBankService {
   }
 
   /**
-   * Get all blood requests with optional filtering
-   * @param filters Optional filters for status, bloodType, patientId, or priority
-   * @returns Array of blood requests matching the filters
+   * Get all blood requests with optional filtering;
+   * @param filters Optional filters for status, bloodType, patientId, or priority;
+   * @returns Array of blood requests matching the filters;
    */
   async getRequests(filters?: {
     status?: string;
@@ -422,7 +434,7 @@ export class BloodBankService {
     toDate?: Date;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -471,9 +483,9 @@ export class BloodBankService {
   }
 
   /**
-   * Get a single blood request by ID
-   * @param id Blood request ID
-   * @returns The blood request or null if not found
+   * Get a single blood request by ID;
+   * @param id Blood request ID;
+   * @returns The blood request or null if not found;
    */
   async getRequestById(id: string) {
     try {
@@ -496,20 +508,20 @@ export class BloodBankService {
   }
 
   /**
-   * Update a blood request
-   * @param id Blood request ID
-   * @param data Updated blood request data
-   * @returns The updated blood request
+   * Update a blood request;
+   * @param id Blood request ID;
+   * @param data Updated blood request data;
+   * @returns The updated blood request;
    */
   async updateRequest(id: string, data: UpdateBloodRequestInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateBloodRequestSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Get the current request
+      // Get the current request;
       const currentRequest = await prisma.bloodRequest.findUnique({
         where: { id },
       });
@@ -518,13 +530,14 @@ export class BloodBankService {
         throw new Error(`Blood request with ID ${id} not found`);
       }
       
-      // Update the request and inventory in a transaction if status changes to FULFILLED
+      // Update the request and inventory in a transaction if status changes to FULFILLED;
       const updatedRequest = await prisma.$transaction(async (tx) => {
-        // Special handling for status transitions
-        if (updateData.status === BloodRequestStatus.FULFILLED && currentRequest.status !== BloodRequestStatus.FULFILLED) {
+        // Special handling for status transitions;
+        if (updateData.status === BloodRequestStatus.FULFILLED &&
+          currentRequest.status !== BloodRequestStatus.FULFILLED) {
           updateData.fulfilledDate = new Date();
           
-          // Check if there's enough inventory
+          // Check if there's enough inventory;
           const bloodType = updateData.bloodType || currentRequest.bloodType;
           const quantity = updateData.quantity || currentRequest.quantity;
           
@@ -538,7 +551,7 @@ export class BloodBankService {
             throw new Error(`Not enough ${bloodType} blood in inventory to fulfill this request`);
           }
           
-          // Update inventory
+          // Update inventory;
           await tx.bloodInventory.update({
             where: {
               bloodType,
@@ -550,11 +563,13 @@ export class BloodBankService {
           });
         }
         
-        // If changing from FULFILLED to something else, add back to inventory
-        if (currentRequest.status === BloodRequestStatus.FULFILLED && updateData.status && updateData.status !== BloodRequestStatus.FULFILLED) {
+        // If changing from FULFILLED to something else, add back to inventory;
+        if (currentRequest.status === BloodRequestStatus.FULFILLED &&
+          updateData.status &&
+          updateData.status !== BloodRequestStatus.FULFILLED) {
           updateData.fulfilledDate = null;
           
-          // Check if inventory exists for this blood type
+          // Check if inventory exists for this blood type;
           const inventory = await tx.bloodInventory.findUnique({
             where: {
               bloodType: currentRequest.bloodType,
@@ -562,7 +577,7 @@ export class BloodBankService {
           });
           
           if (inventory) {
-            // Update existing inventory
+            // Update existing inventory;
             await tx.bloodInventory.update({
               where: {
                 bloodType: currentRequest.bloodType,
@@ -573,7 +588,7 @@ export class BloodBankService {
               },
             });
           } else {
-            // Create new inventory
+            // Create new inventory;
             await tx.bloodInventory.create({
               data: {
                 bloodType: currentRequest.bloodType,
@@ -584,7 +599,7 @@ export class BloodBankService {
           }
         }
         
-        // Update the request
+        // Update the request;
         const request = await tx.bloodRequest.update({
           where: { id },
           data: updateData,
@@ -603,13 +618,13 @@ export class BloodBankService {
   }
 
   /**
-   * Delete a blood request
-   * @param id Blood request ID
-   * @returns The deleted blood request
+   * Delete a blood request;
+   * @param id Blood request ID;
+   * @returns The deleted blood request;
    */
   async deleteRequest(id: string) {
     try {
-      // Get the current request
+      // Get the current request;
       const currentRequest = await prisma.bloodRequest.findUnique({
         where: { id },
       });
@@ -618,16 +633,16 @@ export class BloodBankService {
         throw new Error(`Blood request with ID ${id} not found`);
       }
       
-      // Delete the request and update inventory in a transaction if needed
+      // Delete the request and update inventory in a transaction if needed;
       const deletedRequest = await prisma.$transaction(async (tx) => {
-        // Delete the request
+        // Delete the request;
         const request = await tx.bloodRequest.delete({
           where: { id },
         });
         
-        // If the request was FULFILLED, update the inventory
+        // If the request was FULFILLED, update the inventory;
         if (currentRequest.status === BloodRequestStatus.FULFILLED) {
-          // Check if inventory exists for this blood type
+          // Check if inventory exists for this blood type;
           const inventory = await tx.bloodInventory.findUnique({
             where: {
               bloodType: currentRequest.bloodType,
@@ -635,7 +650,7 @@ export class BloodBankService {
           });
           
           if (inventory) {
-            // Update existing inventory
+            // Update existing inventory;
             await tx.bloodInventory.update({
               where: {
                 bloodType: currentRequest.bloodType,
@@ -646,7 +661,7 @@ export class BloodBankService {
               },
             });
           } else {
-            // Create new inventory
+            // Create new inventory;
             await tx.bloodInventory.create({
               data: {
                 bloodType: currentRequest.bloodType,
@@ -667,13 +682,13 @@ export class BloodBankService {
   }
 
   /**
-   * Get blood inventory
-   * @param bloodType Optional blood type to filter by
-   * @returns Array of blood inventory records
+   * Get blood inventory;
+   * @param bloodType Optional blood type to filter by;
+   * @returns Array of blood inventory records;
    */
   async getInventory(bloodType?: string) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (bloodType) {
         where.bloodType = bloodType;
@@ -693,10 +708,10 @@ export class BloodBankService {
   }
 
   /**
-   * Check if there's enough blood of a specific type in inventory
-   * @param bloodType Blood type to check
-   * @param quantity Quantity needed
-   * @returns Boolean indicating if there's enough blood
+   * Check if there's enough blood of a specific type in inventory;
+   * @param bloodType Blood type to check;
+   * @param quantity Quantity needed;
+   * @returns Boolean indicating if there's enough blood;
    */
   async checkInventoryAvailability(bloodType: string, quantity: number) {
     try {
@@ -713,13 +728,13 @@ export class BloodBankService {
   }
 
   /**
-   * Fulfill a blood request
-   * @param id Blood request ID
-   * @returns The updated blood request
+   * Fulfill a blood request;
+   * @param id Blood request ID;
+   * @returns The updated blood request;
    */
   async fulfillRequest(id: string) {
     try {
-      // Get the current request
+      // Get the current request;
       const request = await prisma.bloodRequest.findUnique({
         where: { id },
       });
@@ -736,7 +751,7 @@ export class BloodBankService {
         throw new Error(`Cannot fulfill a ${request.status.toLowerCase()} blood request`);
       }
       
-      // Check if there's enough inventory
+      // Check if there's enough inventory;
       const inventory = await prisma.bloodInventory.findUnique({
         where: {
           bloodType: request.bloodType,
@@ -747,9 +762,9 @@ export class BloodBankService {
         throw new Error(`Not enough ${request.bloodType} blood in inventory to fulfill this request`);
       }
       
-      // Fulfill the request and update inventory in a transaction
+      // Fulfill the request and update inventory in a transaction;
       const fulfilledRequest = await prisma.$transaction(async (tx) => {
-        // Update the request
+        // Update the request;
         const updatedRequest = await tx.bloodRequest.update({
           where: { id },
           data: {
@@ -758,7 +773,7 @@ export class BloodBankService {
           },
         });
         
-        // Update inventory
+        // Update inventory;
         await tx.bloodInventory.update({
           where: {
             bloodType: request.bloodType,
@@ -779,5 +794,5 @@ export class BloodBankService {
   }
 }
 
-// Export a singleton instance
+// Export a singleton instance;
 export const bloodBankService = new BloodBankService();

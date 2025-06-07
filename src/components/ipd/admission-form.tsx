@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
@@ -13,7 +24,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { toast } from "sonner"; // Changed from useToast to sonner
+import { toast } from "sonner"; // Changed from useToast to sonner;
 import { Loader2 } from "lucide-react";
 
 interface AdmissionFormData {
@@ -82,7 +93,7 @@ const AdmissionForm = () => {
   ];
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
@@ -107,9 +118,9 @@ const AdmissionForm = () => {
       !formData.patient_id ||
       !formData.primary_doctor_id ||
       !formData.bed_id ||
-      !formData.diagnosis
+      !formData.diagnosis;
     ) {
-      toast.error("Missing Information", { // Changed to sonner toast.error
+      toast.error("Missing Information", { // Changed to sonner toast.error;
         description:
           "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",
       });
@@ -139,7 +150,7 @@ const AdmissionForm = () => {
 
       const newAdmission: AdmissionResponse = await response.json();
 
-      toast.success("Admission Successful", { // Changed to sonner toast.success
+      toast.success("Admission Successful", { // Changed to sonner toast.success;
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,
       });
 
@@ -153,12 +164,12 @@ const AdmissionForm = () => {
         estimated_stay: "",
       });
     } catch (error: unknown) {
-      console.error("Error creating admission:", error);
-      const message =
-        error instanceof Error
-          ? error.message
+
+      const message =;
+        error instanceof Error;
+          ? error.message;
           : "An unexpected error occurred.";
-      toast.error("Admission Failed", { // Changed to sonner toast.error
+      toast.error("Admission Failed", { // Changed to sonner toast.error;
         description: message,
       });
     } finally {
@@ -172,29 +183,29 @@ const AdmissionForm = () => {
         <CardTitle>New Patient Admission</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="patient_id">Patient *</Label>
-              <Select
+        <form onSubmit={handleSubmit} className="space-y-6">;
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+            <div className="space-y-2">;
+              <Label htmlFor="patient_id">Patient *</Label>;
+              <Select;
                 value={formData.patient_id}
                 onValueChange={(value) =>
-                  handleSelectChange("patient_id", value)
+                  handleSelectChange("patient_id", value);
                 }
-                required
+                required;
                 disabled={loading}
               >
-                <SelectTrigger id="patient_id">
-                  <SelectValue placeholder="Select Patient" />
+                <SelectTrigger id="patient_id">;
+                  <SelectValue placeholder="Select Patient" />;
                 </SelectTrigger>
                 <SelectContent>
                   {patients.length === 0 && (
-                    <SelectItem value="" disabled>
-                      No patients available
+                    <SelectItem value="" disabled>;
+                      No patients available;
                     </SelectItem>
                   )}
                   {patients.map((patient) => (
-                    <SelectItem key={patient.id} value={patient.id}>
+                    <SelectItem key={patient.id} value={patient.id}>;
                       {patient.name}
                     </SelectItem>
                   ))}
@@ -202,61 +213,61 @@ const AdmissionForm = () => {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="admission_date">Admission Date *</Label>
-              <Input
-                id="admission_date"
-                name="admission_date"
+            <div className="space-y-2">;
+              <Label htmlFor="admission_date">Admission Date *</Label>;
+              <Input;
+                id="admission_date";
+                name="admission_date";
                 type="date"
                 value={formData.admission_date}
                 onChange={handleChange}
-                required
+                required;
                 disabled={loading}
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="admission_type">Admission Type *</Label>
-              <Select
+            <div className="space-y-2">;
+              <Label htmlFor="admission_type">Admission Type *</Label>;
+              <Select;
                 value={formData.admission_type}
                 onValueChange={(value) =>
-                  handleSelectChange("admission_type", value)
+                  handleSelectChange("admission_type", value);
                 }
-                required
+                required;
                 disabled={loading}
               >
-                <SelectTrigger id="admission_type">
-                  <SelectValue placeholder="Select Admission Type" />
+                <SelectTrigger id="admission_type">;
+                  <SelectValue placeholder="Select Admission Type" />;
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="planned">Planned</SelectItem>
-                  <SelectItem value="emergency">Emergency</SelectItem>
-                  <SelectItem value="transfer">Transfer</SelectItem>
+                  <SelectItem value="planned">Planned</SelectItem>;
+                  <SelectItem value="emergency">Emergency</SelectItem>;
+                  <SelectItem value="transfer">Transfer</SelectItem>;
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="primary_doctor_id">Primary Doctor *</Label>
-              <Select
+            <div className="space-y-2">;
+              <Label htmlFor="primary_doctor_id">Primary Doctor *</Label>;
+              <Select;
                 value={formData.primary_doctor_id}
                 onValueChange={(value) =>
-                  handleSelectChange("primary_doctor_id", value)
+                  handleSelectChange("primary_doctor_id", value);
                 }
-                required
+                required;
                 disabled={loading}
               >
-                <SelectTrigger id="primary_doctor_id">
-                  <SelectValue placeholder="Select Doctor" />
+                <SelectTrigger id="primary_doctor_id">;
+                  <SelectValue placeholder="Select Doctor" />;
                 </SelectTrigger>
                 <SelectContent>
                   {doctors.length === 0 && (
-                    <SelectItem value="" disabled>
-                      No doctors available
+                    <SelectItem value="" disabled>;
+                      No doctors available;
                     </SelectItem>
                   )}
                   {doctors.map((doctor) => (
-                    <SelectItem key={doctor.id} value={doctor.id}>
+                    <SelectItem key={doctor.id} value={doctor.id}>;
                       {doctor.name}
                     </SelectItem>
                   ))}
@@ -264,65 +275,65 @@ const AdmissionForm = () => {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="bed_id">Assign Bed *</Label>
-              <Select
+            <div className="space-y-2">;
+              <Label htmlFor="bed_id">Assign Bed *</Label>;
+              <Select;
                 value={formData.bed_id}
                 onValueChange={(value) => handleSelectChange("bed_id", value)}
-                required
+                required;
                 disabled={loading}
               >
-                <SelectTrigger id="bed_id">
-                  <SelectValue placeholder="Select Bed" />
+                <SelectTrigger id="bed_id">;
+                  <SelectValue placeholder="Select Bed" />;
                 </SelectTrigger>
                 <SelectContent>
                   {beds.length === 0 && (
-                    <SelectItem value="" disabled>
-                      No beds available
+                    <SelectItem value="" disabled>;
+                      No beds available;
                     </SelectItem>
                   )}
                   {beds.map((bed) => (
-                    <SelectItem key={bed.id} value={bed.id}>
-                      {bed.number} - {bed.room} ({bed.ward})
+                    <SelectItem key={bed.id} value={bed.id}>;
+                      {bed.number} - {bed.room} ({bed.ward});
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="estimated_stay">Estimated Stay (days)</Label>
-              <Input
-                id="estimated_stay"
-                name="estimated_stay"
+            <div className="space-y-2">;
+              <Label htmlFor="estimated_stay">Estimated Stay (days)</Label>;
+              <Input;
+                id="estimated_stay";
+                name="estimated_stay";
                 type="number"
-                min="1"
+                min="1";
                 value={formData.estimated_stay}
                 onChange={handleChange}
                 disabled={loading}
-                placeholder="e.g., 5"
+                placeholder="e.g., 5";
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="diagnosis">Diagnosis *</Label>
-            <Textarea
-              id="diagnosis"
-              name="diagnosis"
+          <div className="space-y-2">;
+            <Label htmlFor="diagnosis">Diagnosis *</Label>;
+            <Textarea;
+              id="diagnosis";
+              name="diagnosis";
               value={formData.diagnosis}
               onChange={handleChange}
-              required
+              required;
               disabled={loading}
-              placeholder="Enter primary diagnosis..."
+              placeholder="Enter primary diagnosis...";
               rows={4}
             />
           </div>
 
-          <div className="flex justify-end pt-4">
-            <Button type="submit" disabled={loading}>
+          <div className="flex justify-end pt-4">;
+            <Button type="submit" disabled={loading}>;
               {loading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
               ) : undefined}
               {loading ? "Processing..." : "Admit Patient"}
             </Button>

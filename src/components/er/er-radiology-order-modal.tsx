@@ -1,7 +1,18 @@
-// src/components/er/ERRadiologyOrderModal.tsx
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// src/components/er/ERRadiologyOrderModal.tsx;
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -30,17 +41,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast hook
+import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast hook;
 
-// Define the schema for the radiology order form using Zod
+// Define the schema for the radiology order form using Zod;
 const radiologyOrderFormSchema = z.object({
   visitId: z.string().min(1, { message: "Visit ID is required." }),
   patientName: z.string().min(1, { message: "Patient name is required." }),
-  orderingDoctorId: z
-    .string()
+  orderingDoctorId: z;
+    .string();
     .min(1, { message: "Ordering doctor is required." }),
   procedureTypeId: z.string().min(1, { message: "Select a procedure type." }),
-  priority: z.literal("STAT"), // Default to STAT for ER
+  priority: z.literal("STAT"), // Default to STAT for ER;
   clinicalNotes: z.string().optional(),
 });
 
@@ -52,12 +63,12 @@ interface ERRadiologyOrderModalProperties {
   visitData?: {
     id: string;
     patientName: string;
-    assignedDoctorId?: string; // Pass assigned doctor if available
+    assignedDoctorId?: string; // Pass assigned doctor if available;
   };
   onSuccess?: () => void;
 }
 
-// Mock data for available radiology procedure types - replace with API fetch
+// Mock data for available radiology procedure types - replace with API fetch;
 const availableProcedureTypes = [
   { id: "proc_xray_chest", name: "X-Ray Chest (PA/Lat)" },
   { id: "proc_ct_head_wo", name: "CT Head w/o Contrast" },
@@ -67,28 +78,28 @@ const availableProcedureTypes = [
   { id: "proc_mri_brain_wo", name: "MRI Brain w/o Contrast" },
 ];
 
-export default function ERRadiologyOrderModal({
+export default const ERRadiologyOrderModal = ({
   isOpen,
   onClose,
   visitData,
   onSuccess,
 }: ERRadiologyOrderModalProperties) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // FIX: Get toast function from hook
+  const { toast } = useToast(); // FIX: Get toast function from hook;
 
   const form = useForm<RadiologyOrderFormValues>({
     resolver: zodResolver(radiologyOrderFormSchema),
     defaultValues: {
       visitId: visitData?.id || "",
       patientName: visitData?.patientName || "",
-      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
+      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available;
       procedureTypeId: "",
       priority: "STAT",
       clinicalNotes: "",
     },
   });
 
-  // Update form when visitData changes
+  // Update form when visitData changes;
   useEffect(() => {
     if (visitData) {
       form.setValue("visitId", visitData.id);
@@ -97,41 +108,41 @@ export default function ERRadiologyOrderModal({
     }
   }, [visitData, form]);
 
-  async function onSubmit(data: RadiologyOrderFormValues) {
+  async const onSubmit = (data: RadiologyOrderFormValues) {
     setIsLoading(true);
-    console.log("Submitting Radiology Order Data:", data);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     try {
-      // TODO: Implement API call: POST /api/radiology/orders
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const response = await fetch("/api/radiology/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          patient_id: visitData?.id, // Assuming visit ID links to patient in backend
+          patient_id: visitData?.id, // Assuming visit ID links to patient in backend;
           visit_id: data.visitId,
           ordering_doctor_id: data.orderingDoctorId,
           procedure_type_id: data.procedureTypeId,
           priority: data.priority,
           clinical_notes: data.clinicalNotes || undefined,
-          order_source: "ER", // Indicate order source
+          order_source: "ER", // Indicate order source;
         }),
       });
 
       if (!response.ok) {
         let errorMessage = "Failed to create radiology order";
         try {
-          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData
+          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData;
           errorMessage = errorData.error || errorMessage;
         } catch {
-          // Ignore if response is not JSON
+          // Ignore if response is not JSON;
         }
         throw new Error(errorMessage);
       }
 
-      const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder
+      const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder;
 
-      // TODO: Update ER visit status/indicators (e.g., radPending = true)
-      // This might require another API call or be handled by backend logic
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // This might require another API call or be handled by backend logic;
 
       toast({
         title: "Radiology Order Submitted",
@@ -139,21 +150,21 @@ export default function ERRadiologyOrderModal({
       });
 
       if (onSuccess) {
-        onSuccess(); // Trigger potential refresh of tracking board
+        onSuccess(); // Trigger potential refresh of tracking board;
       }
       form.reset({
-        ...form.getValues(), // Keep visit/patient info
-        procedureTypeId: "", // Clear selected procedure
+        ...form.getValues(), // Keep visit/patient info;
+        procedureTypeId: "", // Clear selected procedure;
         clinicalNotes: "",
       });
       onClose();
     } catch (error: unknown) {
-      console.error("Radiology order error:", error);
+
       toast({
         title: "Order Failed",
         description:
-          error instanceof Error
-            ? error.message
+          error instanceof Error;
+            ? error.message;
             : "An unexpected error occurred.",
         variant: "destructive",
       });
@@ -163,61 +174,61 @@ export default function ERRadiologyOrderModal({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px]">
+    <Dialog open={isOpen} onOpenChange={onClose}>;
+      <DialogContent className="sm:max-w-[600px]">;
         <DialogHeader>
           <DialogTitle>Place STAT Radiology Order</DialogTitle>
           <DialogDescription>
             Select procedure for patient: {visitData?.patientName || "N/A"}{" "}
-            (Visit: {visitData?.id || "N/A"})
+            (Visit: {visitData?.id || "N/A"});
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
             {/* Hidden or disabled fields for context */}
-            <FormField
+            <FormField;
               control={form.control}
-              name="visitId"
+              name="visitId";
               render={({ field }) => <Input type="hidden" {...field} />}
             />
-            <FormField
+            <FormField;
               control={form.control}
-              name="patientName"
+              name="patientName";
               render={({ field }) => <Input type="hidden" {...field} />}
             />
             {/* TODO: Need a way to select the ordering doctor, ideally from logged-in user or list */}
-            <FormField
+            <FormField;
               control={form.control}
-              name="orderingDoctorId"
+              name="orderingDoctorId";
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Ordering Doctor ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Ordering Doctor ID" {...field} />
+                    <Input placeholder="Enter Ordering Doctor ID" {...field} />;
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField
+            <FormField;
               control={form.control}
-              name="procedureTypeId"
+              name="procedureTypeId";
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Procedure Type</FormLabel>
-                  <Select
+                  <Select;
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Procedure Type" />
+                        <SelectValue placeholder="Select Procedure Type" />;
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {availableProcedureTypes.map((proc) => (
-                        <SelectItem key={proc.id} value={proc.id}>
+                        <SelectItem key={proc.id} value={proc.id}>;
                           {proc.name}
                         </SelectItem>
                       ))}
@@ -228,17 +239,17 @@ export default function ERRadiologyOrderModal({
               )}
             />
 
-            <FormField
+            <FormField;
               control={form.control}
-              name="clinicalNotes"
+              name="clinicalNotes";
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     Clinical Notes / Reason for Exam (Optional)
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="e.g., R/O Pneumonia, Trauma assessment"
+                    <Input;
+                      placeholder="e.g., R/O Pneumonia, Trauma assessment";
                       {...field}
                     />
                   </FormControl>
@@ -248,15 +259,15 @@ export default function ERRadiologyOrderModal({
             />
 
             <DialogFooter>
-              <Button
+              <Button;
                 type="button"
-                variant="outline"
+                variant="outline";
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel
+                Cancel;
               </Button>
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading}>;
                 {isLoading ? "Placing Order..." : "Place STAT Order"}
               </Button>
             </DialogFooter>

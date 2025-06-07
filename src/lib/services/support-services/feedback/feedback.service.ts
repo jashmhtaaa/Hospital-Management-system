@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { prisma } from '@/lib/prisma';
 import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintActivity, ComplaintAttachment, FollowUpAction, FeedbackSurveyTemplate, FeedbackSurvey } from '@prisma/client';
 import { createAuditLog } from '@/lib/audit-logging';
-import { toFHIRFeedback, toFHIRComplaint, toFHIRFollowUpAction, toFHIRFeedbackSurveyTemplate } from '@/lib/models/feedback';
+import { toFHIRFeedback, toFHIRComplaint } from '@/lib/models/feedback';
 import { NotificationService } from '@/lib/services/notification.service';
 
 export interface FeedbackFilter {
@@ -40,7 +51,7 @@ export interface CreateFeedbackData {
   serviceType?: string;
   tags?: string[];
   anonymous: boolean;
-  contactInfo?: any;
+  contactInfo?: unknown;
 }
 
 export interface CreateComplaintData {
@@ -52,7 +63,7 @@ export interface CreateComplaintData {
   patientId?: string;
   departmentId?: string;
   anonymous: boolean;
-  contactInfo?: any;
+  contactInfo?: unknown;
   dueDate?: Date;
 }
 
@@ -64,20 +75,20 @@ export class FeedbackService {
   }
   
   /**
-   * Get feedback based on filters
+   * Get feedback based on filters;
    */
   async getFeedback(filter: FeedbackFilter) {
     const { type, source, status, departmentId, serviceType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
     
-    const where: any = {};
+    const where: unknown = {};
     if (type) where.type = type;
     if (source) where.source = source;
     if (status) where.status = status;
     if (departmentId) where.departmentId = departmentId;
     if (serviceType) where.serviceType = serviceType;
     
-    // Date range filter for createdAt
+    // Date range filter for createdAt;
     if (startDate || endDate) {
       where.createdAt = {};
       if (startDate) where.createdAt.gte = startDate;
@@ -92,7 +103,7 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           patient: {
@@ -100,7 +111,7 @@ export class FeedbackService {
               id: true,
               name: true,
               dateOfBirth: true,
-              gender: true
+              gender: true;
             }
           },
           department: true,
@@ -108,7 +119,7 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           responses: {
@@ -117,7 +128,7 @@ export class FeedbackService {
                 select: {
                   id: true,
                   name: true,
-                  email: true
+                  email: true;
                 }
               }
             },
@@ -129,7 +140,7 @@ export class FeedbackService {
                 select: {
                   id: true,
                   name: true,
-                  email: true
+                  email: true;
                 }
               }
             }
@@ -145,7 +156,7 @@ export class FeedbackService {
                 select: {
                   id: true,
                   name: true,
-                  email: true
+                  email: true;
                 }
               }
             }
@@ -155,10 +166,10 @@ export class FeedbackService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.feedback.count({ where })
+      prisma.feedback.count({ where });
     ]);
     
-    // Convert to FHIR format
+    // Convert to FHIR format;
     const fhirFeedback = feedback.map(item => toFHIRFeedback(item));
     
     return {
@@ -168,13 +179,13 @@ export class FeedbackService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit);
       }
     };
   }
   
   /**
-   * Get feedback by ID
+   * Get feedback by ID;
    */
   async getFeedbackById(id: string, includeFHIR: boolean = false): Promise<any> {
     const feedback = await prisma.feedback.findUnique({
@@ -184,7 +195,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
@@ -192,7 +203,7 @@ export class FeedbackService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true
+            gender: true;
           }
         },
         department: true,
@@ -200,7 +211,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         responses: {
@@ -209,7 +220,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             }
           },
@@ -221,7 +232,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             }
           }
@@ -232,14 +243,14 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             },
             createdByUser: {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             }
           },
@@ -255,7 +266,7 @@ export class FeedbackService {
     if (includeFHIR) {
       return {
         data: feedback,
-        fhir: toFHIRFeedback(feedback)
+        fhir: toFHIRFeedback(feedback);
       };
     }
     
@@ -263,10 +274,10 @@ export class FeedbackService {
   }
   
   /**
-   * Create new feedback
+   * Create new feedback;
    */
   async createFeedback(data: CreateFeedbackData, userId?: string): Promise<Feedback> {
-    // Validate department if provided
+    // Validate department if provided;
     if (data.departmentId) {
       const department = await prisma.department.findUnique({
         where: { id: data.departmentId }
@@ -277,7 +288,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate patient if provided
+    // Validate patient if provided;
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -288,7 +299,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the feedback
+    // Create the feedback;
     const feedback = await prisma.feedback.create({
       data: {
         type: data.type,
@@ -303,38 +314,38 @@ export class FeedbackService {
         status: 'NEW',
         tags: data.tags || [],
         anonymous: data.anonymous,
-        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null
+        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null;
       },
       include: {
         submittedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         },
-        department: true
+        department: true;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     if (userId) {
       await createAuditLog({
         action: 'CREATE',
         entityType: 'FEEDBACK',
         entityId: feedback.id,
         userId,
-        details: `Created ${data.type} feedback with rating ${data.rating}`
+        details: `Created ${data.type} feedback with rating ${data.rating}`;
       });
     }
     
-    // Send notification to department managers or service managers
+    // Send notification to department managers or service managers;
     let recipientRoles = ['FEEDBACK_MANAGER'];
     let notificationTitle = 'New Feedback Received';
     let notificationMessage = `New ${data.type} feedback received`;
@@ -360,7 +371,7 @@ export class FeedbackService {
         type: data.type,
         rating: data.rating,
         departmentId: data.departmentId,
-        serviceType: data.serviceType
+        serviceType: data.serviceType;
       }
     });
     
@@ -368,13 +379,13 @@ export class FeedbackService {
   }
   
   /**
-   * Update feedback status
+   * Update feedback status;
    */
   async updateFeedbackStatus(id: string, status: string, reviewNotes: string | null, userId: string): Promise<Feedback> {
     const feedback = await prisma.feedback.findUnique({
       where: { id },
       include: {
-        department: true
+        department: true;
       }
     });
     
@@ -382,27 +393,27 @@ export class FeedbackService {
       throw new Error('Feedback not found');
     }
     
-    // Update the feedback
+    // Update the feedback;
     const updatedFeedback = await prisma.feedback.update({
       where: { id },
       data: {
         status,
         reviewedById: userId,
         reviewedAt: new Date(),
-        reviewNotes: reviewNotes || undefined
+        reviewNotes: reviewNotes || undefined;
       },
       include: {
         submittedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         },
         department: true,
@@ -410,22 +421,22 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'FEEDBACK',
       entityId: id,
       userId,
-      details: `Updated feedback status to ${status}`
+      details: `Updated feedback status to ${status}`;
     });
     
-    // Send notification to submitter if not anonymous and has user account
+    // Send notification to submitter if not anonymous and has user account;
     if (!feedback.anonymous && feedback.submittedById) {
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_STATUS_UPDATE',
@@ -435,7 +446,7 @@ export class FeedbackService {
         entityId: feedback.id,
         metadata: {
           feedbackId: feedback.id,
-          status
+          status;
         }
       });
     }
@@ -444,7 +455,7 @@ export class FeedbackService {
   }
   
   /**
-   * Add response to feedback
+   * Add response to feedback;
    */
   async addFeedbackResponse(feedbackId: string, responseText: string, isPublic: boolean, userId: string): Promise<FeedbackResponse> {
     const feedback = await prisma.feedback.findUnique({
@@ -454,7 +465,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
@@ -464,35 +475,35 @@ export class FeedbackService {
       throw new Error('Feedback not found');
     }
     
-    // Create the response
+    // Create the response;
     const response = await prisma.feedbackResponse.create({
       data: {
         feedbackId,
         responseText,
         respondedById: userId,
-        isPublic
+        isPublic;
       },
       include: {
         respondedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FEEDBACK_RESPONSE',
       entityId: response.id,
       userId,
-      details: `Added response to feedback ${feedbackId}`
+      details: `Added response to feedback ${feedbackId}`;
     });
     
-    // Send notification to submitter if not anonymous and has user account
+    // Send notification to submitter if not anonymous and has user account;
     if (isPublic && !feedback.anonymous && feedback.submittedById) {
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_RESPONSE',
@@ -502,7 +513,7 @@ export class FeedbackService {
         entityId: feedbackId,
         metadata: {
           feedbackId,
-          responseId: response.id
+          responseId: response.id;
         }
       });
     }
@@ -511,7 +522,7 @@ export class FeedbackService {
   }
   
   /**
-   * Add attachment to feedback
+   * Add attachment to feedback;
    */
   async addFeedbackAttachment(feedbackId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<FeedbackAttachment> {
     const feedback = await prisma.feedback.findUnique({
@@ -522,7 +533,7 @@ export class FeedbackService {
       throw new Error('Feedback not found');
     }
     
-    // Create the attachment
+    // Create the attachment;
     const attachment = await prisma.feedbackAttachment.create({
       data: {
         feedbackId,
@@ -530,46 +541,46 @@ export class FeedbackService {
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId
+        uploadedById: userId;
       },
       include: {
         uploadedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FEEDBACK_ATTACHMENT',
       entityId: attachment.id,
       userId,
-      details: `Added attachment ${fileName} to feedback ${feedbackId}`
+      details: `Added attachment ${fileName} to feedback ${feedbackId}`;
     });
     
     return attachment;
   }
   
   /**
-   * Get complaints based on filters
+   * Get complaints based on filters;
    */
   async getComplaints(filter: ComplaintFilter) {
     const { category, severity, status, departmentId, assignedToId, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
     
-    const where: any = {};
+    const where: unknown = {};
     if (category) where.category = category;
     if (severity) where.severity = severity;
     if (status) where.status = status;
     if (departmentId) where.departmentId = departmentId;
     if (assignedToId) where.assignedToId = assignedToId;
     
-    // Date range filter for createdAt
+    // Date range filter for createdAt;
     if (startDate || endDate) {
       where.createdAt = {};
       if (startDate) where.createdAt.gte = startDate;
@@ -584,7 +595,7 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           patient: {
@@ -592,7 +603,7 @@ export class FeedbackService {
               id: true,
               name: true,
               dateOfBirth: true,
-              gender: true
+              gender: true;
             }
           },
           department: true,
@@ -600,28 +611,28 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           resolvedByUser: {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           escalatedToUser: {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           _count: {
             select: {
               activities: true,
               attachments: true,
-              followUpActions: true
+              followUpActions: true;
             }
           }
         },
@@ -632,10 +643,10 @@ export class FeedbackService {
           { createdAt: 'desc' }
         ]
       }),
-      prisma.complaint.count({ where })
+      prisma.complaint.count({ where });
     ]);
     
-    // Convert to FHIR format
+    // Convert to FHIR format;
     const fhirComplaints = complaints.map(complaint => toFHIRComplaint(complaint));
     
     return {
@@ -645,13 +656,13 @@ export class FeedbackService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit);
       }
     };
   }
   
   /**
-   * Get complaint by ID
+   * Get complaint by ID;
    */
   async getComplaintById(id: string, includeFHIR: boolean = false): Promise<any> {
     const complaint = await prisma.complaint.findUnique({
@@ -661,7 +672,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
@@ -669,7 +680,7 @@ export class FeedbackService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true
+            gender: true;
           }
         },
         department: true,
@@ -677,21 +688,21 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         resolvedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         escalatedToUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         activities: {
@@ -700,7 +711,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             }
           },
@@ -712,7 +723,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             }
           }
@@ -723,14 +734,14 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             },
             createdByUser: {
               select: {
                 id: true,
                 name: true,
-                email: true
+                email: true;
               }
             }
           },
@@ -746,7 +757,7 @@ export class FeedbackService {
     if (includeFHIR) {
       return {
         data: complaint,
-        fhir: toFHIRComplaint(complaint)
+        fhir: toFHIRComplaint(complaint);
       };
     }
     
@@ -754,10 +765,10 @@ export class FeedbackService {
   }
   
   /**
-   * Create new complaint
+   * Create new complaint;
    */
   async createComplaint(data: CreateComplaintData, userId?: string): Promise<Complaint> {
-    // Validate department if provided
+    // Validate department if provided;
     if (data.departmentId) {
       const department = await prisma.department.findUnique({
         where: { id: data.departmentId }
@@ -768,7 +779,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate patient if provided
+    // Validate patient if provided;
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -779,7 +790,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the complaint
+    // Create the complaint;
     const complaint = await prisma.complaint.create({
       data: {
         title: data.title,
@@ -790,57 +801,57 @@ export class FeedbackService {
         submittedById: data.anonymous ? null : (data.submittedById || userId),
         patientId: data.patientId,
         departmentId: data.departmentId,
-        dueDate: data.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now
+        dueDate: data.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now;
         anonymous: data.anonymous,
-        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null
+        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null;
       },
       include: {
         submittedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         },
-        department: true
+        department: true;
       }
     });
     
-    // Create initial activity
+    // Create initial activity;
     await prisma.complaintActivity.create({
       data: {
         complaintId: complaint.id,
         activityType: 'STATUS_CHANGE',
         description: 'Complaint submitted',
-        performedById: userId || 'system'
+        performedById: userId || 'system';
       }
     });
     
-    // Create audit log
+    // Create audit log;
     if (userId) {
       await createAuditLog({
         action: 'CREATE',
         entityType: 'COMPLAINT',
         entityId: complaint.id,
         userId,
-        details: `Created ${data.severity} ${data.category} complaint: ${data.title}`
+        details: `Created ${data.severity} ${data.category} complaint: ${data.title}`;
       });
     }
     
-    // Send notification to complaint managers
+    // Send notification to complaint managers;
     let recipientRoles = ['COMPLAINT_MANAGER'];
     
     if (data.departmentId) {
       recipientRoles.push('DEPARTMENT_MANAGER');
     }
     
-    // High and critical complaints should notify higher management
+    // High and critical complaints should notify higher management;
     if (data.severity === 'HIGH' || data.severity === 'CRITICAL') {
       recipientRoles.push('QUALITY_MANAGER');
       
@@ -859,7 +870,7 @@ export class FeedbackService {
         complaintId: complaint.id,
         severity: data.severity,
         category: data.category,
-        departmentId: data.departmentId
+        departmentId: data.departmentId;
       }
     });
     
@@ -867,7 +878,7 @@ export class FeedbackService {
   }
   
   /**
-   * Update complaint status
+   * Update complaint status;
    */
   async updateComplaintStatus(id: string, status: string, details: string | null, userId: string): Promise<Complaint> {
     const complaint = await prisma.complaint.findUnique({
@@ -878,9 +889,9 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    const updateData: any = { status };
+    const updateData: unknown = { status };
     
-    // Handle status-specific updates
+    // Handle status-specific updates;
     switch (status) {
       case 'RESOLVED':
         updateData.resolutionDetails = details || undefined;
@@ -894,7 +905,7 @@ export class FeedbackService {
         break;
     }
     
-    // Update the complaint
+    // Update the complaint;
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: updateData,
@@ -903,13 +914,13 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         },
         department: true,
@@ -917,46 +928,46 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         resolvedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         escalatedToUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create activity
+    // Create activity;
     await prisma.complaintActivity.create({
       data: {
         complaintId: id,
         activityType: 'STATUS_CHANGE',
         description: `Status changed to ${status}${details ? `: ${details}` : ''}`,
-        performedById: userId
+        performedById: userId;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'COMPLAINT',
       entityId: id,
       userId,
-      details: `Updated complaint status to ${status}`
+      details: `Updated complaint status to ${status}`;
     });
     
-    // Send notification to submitter if not anonymous and has user account
+    // Send notification to submitter if not anonymous and has user account;
     if (!complaint.anonymous && complaint.submittedById) {
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_STATUS_UPDATE',
@@ -966,12 +977,12 @@ export class FeedbackService {
         entityId: id,
         metadata: {
           complaintId: id,
-          status
+          status;
         }
       });
     }
     
-    // Send notification to assigned user
+    // Send notification to assigned user;
     if (complaint.assignedToId) {
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_STATUS_UPDATE',
@@ -981,7 +992,7 @@ export class FeedbackService {
         entityId: id,
         metadata: {
           complaintId: id,
-          status
+          status;
         }
       });
     }
@@ -990,7 +1001,7 @@ export class FeedbackService {
   }
   
   /**
-   * Assign complaint to user
+   * Assign complaint to user;
    */
   async assignComplaint(id: string, assignedToId: string, userId: string): Promise<Complaint> {
     const complaint = await prisma.complaint.findUnique({
@@ -1001,7 +1012,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Validate assigned user
+    // Validate assigned user;
     const assignedUser = await prisma.user.findUnique({
       where: { id: assignedToId }
     });
@@ -1010,44 +1021,44 @@ export class FeedbackService {
       throw new Error('Assigned user not found');
     }
     
-    // Update the complaint
+    // Update the complaint;
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: {
         assignedToId,
-        status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status
+        status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status;
       },
       include: {
         assignedToUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create activity
+    // Create activity;
     await prisma.complaintActivity.create({
       data: {
         complaintId: id,
         activityType: 'ASSIGNMENT',
         description: `Assigned to ${assignedUser.name}`,
-        performedById: userId
+        performedById: userId;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'COMPLAINT',
       entityId: id,
       userId,
-      details: `Assigned complaint to ${assignedUser.name}`
+      details: `Assigned complaint to ${assignedUser.name}`;
     });
     
-    // Send notification to assigned user
+    // Send notification to assigned user;
     await this.notificationService.sendNotification({
       type: 'COMPLAINT_ASSIGNED',
       title: 'Complaint Assigned',
@@ -1057,7 +1068,7 @@ export class FeedbackService {
       metadata: {
         complaintId: id,
         severity: complaint.severity,
-        category: complaint.category
+        category: complaint.category;
       }
     });
     
@@ -1065,7 +1076,7 @@ export class FeedbackService {
   }
   
   /**
-   * Escalate complaint to user
+   * Escalate complaint to user;
    */
   async escalateComplaint(id: string, escalatedToId: string, reason: string, userId: string): Promise<Complaint> {
     const complaint = await prisma.complaint.findUnique({
@@ -1076,7 +1087,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Validate escalated user
+    // Validate escalated user;
     const escalatedUser = await prisma.user.findUnique({
       where: { id: escalatedToId }
     });
@@ -1085,46 +1096,46 @@ export class FeedbackService {
       throw new Error('Escalation user not found');
     }
     
-    // Update the complaint
+    // Update the complaint;
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: {
         escalatedToId,
         escalationReason: reason,
         escalationDate: new Date(),
-        status: 'ESCALATED'
+        status: 'ESCALATED';
       },
       include: {
         escalatedToUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create activity
+    // Create activity;
     await prisma.complaintActivity.create({
       data: {
         complaintId: id,
         activityType: 'ESCALATION',
         description: `Escalated to ${escalatedUser.name}: ${reason}`,
-        performedById: userId
+        performedById: userId;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'COMPLAINT',
       entityId: id,
       userId,
-      details: `Escalated complaint to ${escalatedUser.name}`
+      details: `Escalated complaint to ${escalatedUser.name}`;
     });
     
-    // Send notification to escalated user
+    // Send notification to escalated user;
     await this.notificationService.sendNotification({
       type: 'COMPLAINT_ESCALATED',
       title: 'Complaint Escalated',
@@ -1135,7 +1146,7 @@ export class FeedbackService {
         complaintId: id,
         severity: complaint.severity,
         category: complaint.category,
-        reason
+        reason;
       }
     });
     
@@ -1143,7 +1154,7 @@ export class FeedbackService {
   }
   
   /**
-   * Add comment to complaint
+   * Add comment to complaint;
    */
   async addComplaintComment(id: string, comment: string, userId: string): Promise<ComplaintActivity> {
     const complaint = await prisma.complaint.findUnique({
@@ -1154,35 +1165,35 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Create activity
+    // Create activity;
     const activity = await prisma.complaintActivity.create({
       data: {
         complaintId: id,
         activityType: 'COMMENT',
         description: comment,
-        performedById: userId
+        performedById: userId;
       },
       include: {
         performedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'CREATE',
       entityType: 'COMPLAINT_ACTIVITY',
       entityId: activity.id,
       userId,
-      details: `Added comment to complaint ${id}`
+      details: `Added comment to complaint ${id}`;
     });
     
-    // Send notification to assigned user if comment is from someone else
+    // Send notification to assigned user if comment is from someone else;
     if (complaint.assignedToId && complaint.assignedToId !== userId) {
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_COMMENT',
@@ -1192,7 +1203,7 @@ export class FeedbackService {
         entityId: id,
         metadata: {
           complaintId: id,
-          activityId: activity.id
+          activityId: activity.id;
         }
       });
     }
@@ -1201,7 +1212,7 @@ export class FeedbackService {
   }
   
   /**
-   * Add attachment to complaint
+   * Add attachment to complaint;
    */
   async addComplaintAttachment(complaintId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<ComplaintAttachment> {
     const complaint = await prisma.complaint.findUnique({
@@ -1212,7 +1223,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Create the attachment
+    // Create the attachment;
     const attachment = await prisma.complaintAttachment.create({
       data: {
         complaintId,
@@ -1220,51 +1231,51 @@ export class FeedbackService {
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId
+        uploadedById: userId;
       },
       include: {
         uploadedByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create activity
+    // Create activity;
     await prisma.complaintActivity.create({
       data: {
         complaintId,
         activityType: 'COMMENT',
         description: `Attached file: ${fileName}`,
-        performedById: userId
+        performedById: userId;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'CREATE',
       entityType: 'COMPLAINT_ATTACHMENT',
       entityId: attachment.id,
       userId,
-      details: `Added attachment ${fileName} to complaint ${complaintId}`
+      details: `Added attachment ${fileName} to complaint ${complaintId}`;
     });
     
     return attachment;
   }
   
   /**
-   * Create follow-up action
+   * Create follow-up action;
    */
-  async createFollowUpAction(data: any, userId: string): Promise<FollowUpAction> {
-    // Validate that either feedback or complaint is provided
+  async createFollowUpAction(data: unknown, userId: string): Promise<FollowUpAction> {
+    // Validate that either feedback or complaint is provided;
     if (!data.feedbackId && !data.complaintId) {
       throw new Error('Either feedback or complaint must be provided');
     }
     
-    // Validate feedback if provided
+    // Validate feedback if provided;
     if (data.feedbackId) {
       const feedback = await prisma.feedback.findUnique({
         where: { id: data.feedbackId }
@@ -1275,7 +1286,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate complaint if provided
+    // Validate complaint if provided;
     if (data.complaintId) {
       const complaint = await prisma.complaint.findUnique({
         where: { id: data.complaintId }
@@ -1286,7 +1297,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate assigned user if provided
+    // Validate assigned user if provided;
     if (data.assignedToId) {
       const assignedUser = await prisma.user.findUnique({
         where: { id: data.assignedToId }
@@ -1297,7 +1308,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the follow-up action
+    // Create the follow-up action;
     const action = await prisma.followUpAction.create({
       data: {
         actionType: data.actionType,
@@ -1307,29 +1318,29 @@ export class FeedbackService {
         assignedToId: data.assignedToId,
         feedbackId: data.feedbackId,
         complaintId: data.complaintId,
-        createdById: userId
+        createdById: userId;
       },
       include: {
         assignedToUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         feedback: true,
-        complaint: true
+        complaint: true;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FOLLOW_UP_ACTION',
@@ -1338,19 +1349,19 @@ export class FeedbackService {
       details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ''}${data.complaintId ? ` for complaint ${data.complaintId}` : ''}`
     });
     
-    // If complaint, add activity
+    // If complaint, add activity;
     if (data.complaintId) {
       await prisma.complaintActivity.create({
         data: {
           complaintId: data.complaintId,
           activityType: 'COMMENT',
           description: `Created follow-up action: ${data.actionType} - ${data.description}`,
-          performedById: userId
+          performedById: userId;
         }
       });
     }
     
-    // Send notification to assigned user
+    // Send notification to assigned user;
     if (data.assignedToId) {
       await this.notificationService.sendNotification({
         type: 'FOLLOW_UP_ACTION_ASSIGNED',
@@ -1363,7 +1374,7 @@ export class FeedbackService {
           actionType: data.actionType,
           feedbackId: data.feedbackId,
           complaintId: data.complaintId,
-          dueDate: data.dueDate?.toISOString()
+          dueDate: data.dueDate?.toISOString();
         }
       });
     }
@@ -1372,14 +1383,14 @@ export class FeedbackService {
   }
   
   /**
-   * Update follow-up action status
+   * Update follow-up action status;
    */
   async updateFollowUpActionStatus(id: string, status: string, userId: string): Promise<FollowUpAction> {
     const action = await prisma.followUpAction.findUnique({
       where: { id },
       include: {
         feedback: true,
-        complaint: true
+        complaint: true;
       }
     });
     
@@ -1387,14 +1398,14 @@ export class FeedbackService {
       throw new Error('Follow-up action not found');
     }
     
-    const updateData: any = { status };
+    const updateData: unknown = { status };
     
-    // If status is COMPLETED, set completedDate
+    // If status is COMPLETED, set completedDate;
     if (status === 'COMPLETED') {
       updateData.completedDate = new Date();
     }
     
-    // Update the action
+    // Update the action;
     const updatedAction = await prisma.followUpAction.update({
       where: { id },
       data: updateData,
@@ -1403,43 +1414,43 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         feedback: true,
-        complaint: true
+        complaint: true;
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'FOLLOW_UP_ACTION',
       entityId: id,
       userId,
-      details: `Updated follow-up action status to ${status}`
+      details: `Updated follow-up action status to ${status}`;
     });
     
-    // If complaint, add activity
+    // If complaint, add activity;
     if (action.complaintId) {
       await prisma.complaintActivity.create({
         data: {
           complaintId: action.complaintId,
           activityType: 'COMMENT',
           description: `Follow-up action status updated to ${status}: ${action.description}`,
-          performedById: userId
+          performedById: userId;
         }
       });
     }
     
-    // Send notification to creator
+    // Send notification to creator;
     await this.notificationService.sendNotification({
       type: 'FOLLOW_UP_ACTION_STATUS',
       title: 'Follow-up Action Status Updated',
@@ -1450,7 +1461,7 @@ export class FeedbackService {
         actionId: id,
         status,
         feedbackId: action.feedbackId,
-        complaintId: action.complaintId
+        complaintId: action.complaintId;
       }
     });
     
@@ -1458,10 +1469,10 @@ export class FeedbackService {
   }
   
   /**
-   * Create feedback survey template
+   * Create feedback survey template;
    */
-  async createSurveyTemplate(data: any, userId: string): Promise<FeedbackSurveyTemplate> {
-    // Create the template
+  async createSurveyTemplate(data: unknown, userId: string): Promise<FeedbackSurveyTemplate> {
+    // Create the template;
     const template = await prisma.feedbackSurveyTemplate.create({
       data: {
         name: data.name,
@@ -1469,36 +1480,36 @@ export class FeedbackService {
         serviceType: data.serviceType,
         questions: data.questions,
         isActive: data.isActive !== undefined ? data.isActive : true,
-        createdById: userId
+        createdById: userId;
       },
       include: {
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         }
       }
     });
     
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FEEDBACK_SURVEY_TEMPLATE',
       entityId: template.id,
       userId,
-      details: `Created survey template: ${template.name}`
+      details: `Created survey template: ${template.name}`;
     });
     
     return template;
   }
   
   /**
-   * Submit feedback survey
+   * Submit feedback survey;
    */
-  async submitSurvey(templateId: string, responses: any, data: any, userId?: string): Promise<FeedbackSurvey> {
-    // Validate template
+  async submitSurvey(templateId: string, responses: unknown, data: unknown, userId?: string): Promise<FeedbackSurvey> {
+    // Validate template;
     const template = await prisma.feedbackSurveyTemplate.findUnique({
       where: { id: templateId }
     });
@@ -1511,7 +1522,7 @@ export class FeedbackService {
       throw new Error('Survey template is not active');
     }
     
-    // Validate patient if provided
+    // Validate patient if provided;
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -1522,7 +1533,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the survey
+    // Create the survey;
     const survey = await prisma.feedbackSurvey.create({
       data: {
         templateId,
@@ -1532,7 +1543,7 @@ export class FeedbackService {
         serviceId: data.serviceId,
         serviceType: data.serviceType || template.serviceType,
         anonymous: data.anonymous,
-        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null
+        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null;
       },
       include: {
         template: true,
@@ -1540,30 +1551,30 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true
+            email: true;
           }
         },
         patient: {
           select: {
             id: true,
-            name: true
+            name: true;
           }
         }
       }
     });
     
-    // Create audit log
+    // Create audit log;
     if (userId) {
       await createAuditLog({
         action: 'CREATE',
         entityType: 'FEEDBACK_SURVEY',
         entityId: survey.id,
         userId,
-        details: `Submitted survey for template: ${template.name}`
+        details: `Submitted survey for template: ${template.name}`;
       });
     }
     
-    // Send notification to service managers
+    // Send notification to service managers;
     let recipientRoles = ['FEEDBACK_MANAGER'];
     
     if (data.serviceType || template.serviceType) {
@@ -1580,7 +1591,7 @@ export class FeedbackService {
       metadata: {
         surveyId: survey.id,
         templateId,
-        serviceType: data.serviceType || template.serviceType
+        serviceType: data.serviceType || template.serviceType;
       }
     });
     
@@ -1588,92 +1599,92 @@ export class FeedbackService {
   }
   
   /**
-   * Get feedback analytics
+   * Get feedback analytics;
    */
   async getFeedbackAnalytics(period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY') {
-    // Get date range based on period
+    // Get date range based on period;
     const now = new Date();
     let startDate: Date;
     
     switch (period) {
       case 'DAILY':
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days;
         break;
       case 'WEEKLY':
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days;
         break;
       case 'MONTHLY':
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months;
         break;
       case 'YEARLY':
-        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
+        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
         break;
       default:
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
     }
     
-    // Get feedback counts by type
+    // Get feedback counts by type;
     const feedbackByType = await prisma.feedback.groupBy({
       by: ['type'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get feedback counts by source
+    // Get feedback counts by source;
     const feedbackBySource = await prisma.feedback.groupBy({
       by: ['source'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get feedback counts by status
+    // Get feedback counts by status;
     const feedbackByStatus = await prisma.feedback.groupBy({
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get feedback counts by service type
+    // Get feedback counts by service type;
     const feedbackByServiceType = await prisma.feedback.groupBy({
       by: ['serviceType'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         },
         serviceType: {
-          not: null
+          not: null;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get feedback counts by department
-    const feedbackByDepartment = await prisma.$queryRaw`
-      SELECT d.name as department, COUNT(*) as count
-      FROM Feedback f
-      JOIN Department d ON f.departmentId = d.id
+    // Get feedback counts by department;
+    const feedbackByDepartment = await prisma.$queryRaw`;
+      SELECT d.name as department, COUNT(*) as count;
+      FROM Feedback f;
+      JOIN Department d ON f.departmentId = d.id;
       WHERE f.createdAt >= ${startDate}
-      GROUP BY d.name
-      ORDER BY count DESC
+      GROUP BY d.name;
+      ORDER BY count DESC;
     `;
     
-    // Get average ratings
+    // Get average ratings;
     const ratings = await prisma.feedback.findMany({
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
       select: {
@@ -1682,18 +1693,18 @@ export class FeedbackService {
         departmentId: true,
         department: {
           select: {
-            name: true
+            name: true;
           }
         }
       }
     });
     
-    // Calculate overall average rating
-    const overallRating = ratings.length > 0
-      ? ratings.reduce((sum, item) => sum + item.rating, 0) / ratings.length
+    // Calculate overall average rating;
+    const overallRating = ratings.length > 0;
+      ? ratings.reduce((sum, item) => sum + item.rating, 0) / ratings.length;
       : 0;
     
-    // Calculate average rating by service type
+    // Calculate average rating by service type;
     const ratingsByServiceType: Record<string, { count: number, sum: number, avg: number }> = {};
     
     ratings.forEach(item => {
@@ -1707,13 +1718,13 @@ export class FeedbackService {
       }
     });
     
-    // Calculate averages
+    // Calculate averages;
     Object.keys(ratingsByServiceType).forEach(type => {
       const data = ratingsByServiceType[type];
       data.avg = data.sum / data.count;
     });
     
-    // Calculate average rating by department
+    // Calculate average rating by department;
     const ratingsByDepartment: Record<string, { count: number, sum: number, avg: number }> = {};
     
     ratings.forEach(item => {
@@ -1729,64 +1740,64 @@ export class FeedbackService {
       }
     });
     
-    // Calculate averages
+    // Calculate averages;
     Object.keys(ratingsByDepartment).forEach(dept => {
       const data = ratingsByDepartment[dept];
       data.avg = data.sum / data.count;
     });
     
-    // Get complaint counts by category
+    // Get complaint counts by category;
     const complaintsByCategory = await prisma.complaint.groupBy({
       by: ['category'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get complaint counts by severity
+    // Get complaint counts by severity;
     const complaintsBySeverity = await prisma.complaint.groupBy({
       by: ['severity'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get complaint counts by status
+    // Get complaint counts by status;
     const complaintsByStatus = await prisma.complaint.groupBy({
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate
+          gte: startDate;
         }
       },
-      _count: true
+      _count: true;
     });
     
-    // Get complaint resolution time
+    // Get complaint resolution time;
     const resolvedComplaints = await prisma.complaint.findMany({
       where: {
         status: 'RESOLVED',
         createdAt: {
-          gte: startDate
+          gte: startDate;
         },
         resolutionDate: {
-          not: null
+          not: null;
         }
       },
       select: {
         createdAt: true,
         resolutionDate: true,
-        severity: true
+        severity: true;
       }
     });
     
-    // Calculate average resolution time
+    // Calculate average resolution time;
     const resolutionTimes: Record<string, { count: number, totalDays: number, avgDays: number }> = {
       overall: { count: 0, totalDays: 0, avgDays: 0 },
       LOW: { count: 0, totalDays: 0, avgDays: 0 },
@@ -1807,7 +1818,7 @@ export class FeedbackService {
       }
     });
     
-    // Calculate averages
+    // Calculate averages;
     Object.keys(resolutionTimes).forEach(key => {
       const data = resolutionTimes[key];
       data.avgDays = data.count > 0 ? data.totalDays / data.count : 0;
@@ -1826,7 +1837,7 @@ export class FeedbackService {
       complaintsBySeverity,
       complaintsByStatus,
       resolutionTimes,
-      period
+      period;
     };
   }
 }

@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +32,9 @@ interface ERPatientTrackingBoardProps {
 }
 
 /**
- * Emergency Room patient tracking board component
+ * Emergency Room patient tracking board component;
  */
-export function ERPatientTrackingBoard({ patients }: ERPatientTrackingBoardProps) {
+export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps) {
   const getTriageBadge = (level: number) => {
     switch(level) {
       case 1: return <Badge variant="danger">Level 1</Badge>;
@@ -46,7 +57,7 @@ export function ERPatientTrackingBoard({ patients }: ERPatientTrackingBoardProps
   };
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border">;
       <Table>
         <TableHeader>
           <TableRow>
@@ -62,16 +73,16 @@ export function ERPatientTrackingBoard({ patients }: ERPatientTrackingBoardProps
         <TableBody>
           {patients.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center">
-                No patients in the emergency department
+              <TableCell colSpan={7} className="text-center">;
+                No patients in the emergency department;
               </TableCell>
             </TableRow>
           ) : (
             patients.map((patient) => (
-              <TableRow key={patient.id}>
+              <TableRow key={patient.id}>;
                 <TableCell>
-                  <div className="font-medium">{patient.name}</div>
-                  <div className="text-sm text-gray-500">
+                  <div className="font-medium">{patient.name}</div>;
+                  <div className="text-sm text-gray-500">;
                     {patient.age} yrs, {patient.gender}
                   </div>
                 </TableCell>
@@ -82,7 +93,7 @@ export function ERPatientTrackingBoard({ patients }: ERPatientTrackingBoardProps
                 <TableCell>{patient.location || 'Waiting Area'}</TableCell>
                 <TableCell>{patient.assignedTo || 'Unassigned'}</TableCell>
               </TableRow>
-            ))
+            ));
           )}
         </TableBody>
       </Table>

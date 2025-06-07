@@ -1,22 +1,33 @@
-import { PrismaClient, Patient, PatientContact, PatientAddress, PatientIdentification, EmergencyContact, PatientInsurance } from '@prisma/client';
-import { AuditService } from './audit_log_service';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { PrismaClient, Patient, PatientAddress, PatientIdentification, EmergencyContact, PatientInsurance } from '@prisma/client';
+import { AuditService } from './audit_log_service.ts';
 import { FhirService } from '../lib/fhir/fhir-r4-base';
-import { AuthService } from './auth_service';
+import { AuthService } from './auth_service.ts';
 import { NotificationService } from '../lib/notifications';
-import { EncryptionService } from './encryption_service';
+import { EncryptionService } from './encryption_service.ts';
 import * as z from 'zod';
 
 const prisma = new PrismaClient();
 
-// Define schema for patient creation/update
+// Define schema for patient creation/update;
 const PatientSchema = z.object({
-  // Required fields
+  // Required fields;
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   dateOfBirth: z.date(),
   gender: z.string().min(1, "Gender is required"),
   
-  // Optional fields
+  // Optional fields;
   mrn: z.string().optional(),
   title: z.string().optional(),
   middleName: z.string().optional(),
@@ -43,7 +54,7 @@ const PatientSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Define schema for contact information
+// Define schema for contact information;
 const ContactSchema = z.object({
   phoneHome: z.string().optional(),
   phoneMobile: z.string().optional(),
@@ -57,7 +68,7 @@ const ContactSchema = z.object({
   doNotContactReason: z.string().optional(),
 });
 
-// Define schema for address
+// Define schema for address;
 const AddressSchema = z.object({
   addressType: z.string().min(1, "Address type is required"),
   isPrimary: z.boolean().default(false),
@@ -75,7 +86,7 @@ const AddressSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Define schema for identification
+// Define schema for identification;
 const IdentificationSchema = z.object({
   idType: z.string().min(1, "ID type is required"),
   idNumber: z.string().min(1, "ID number is required"),
@@ -88,7 +99,7 @@ const IdentificationSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Define schema for emergency contact
+// Define schema for emergency contact;
 const EmergencyContactSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -110,7 +121,7 @@ const EmergencyContactSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Define schema for insurance
+// Define schema for insurance;
 const InsuranceSchema = z.object({
   insuranceType: z.string().min(1, "Insurance type is required"),
   payerName: z.string().min(1, "Payer name is required"),
@@ -134,7 +145,7 @@ const InsuranceSchema = z.object({
 });
 
 /**
- * Service class for patient management
+ * Service class for patient management;
  */
 export class PatientManagementService {
   private auditService: AuditService;
@@ -152,47 +163,47 @@ export class PatientManagementService {
   }
 
   /**
-   * Generate a unique MRN for a new patient
+   * Generate a unique MRN for a new patient;
    */
   private async generateMRN(): Promise<string> {
-    // Get current date for prefix
+    // Get current date for prefix;
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().slice(-2);
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     
-    // Get count of patients for the day to generate a sequential number
+    // Get count of patients for the day to generate a sequential number;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
     const patientCount = await prisma.patient.count({
       where: {
         createdAt: {
-          gte: today
+          gte: today;
         }
       }
     });
     
-    // Generate sequential number with padding
+    // Generate sequential number with padding;
     const sequentialNumber = (patientCount + 1).toString().padStart(4, '0');
     
-    // Combine to create MRN: YY-MM-XXXX
+    // Combine to create MRN: YY-MM-XXXX;
     const mrn = `${year}-${month}-${sequentialNumber}`;
     
     return mrn;
   }
 
   /**
-   * Create a new patient
+   * Create a new patient;
    */
-  async createPatient(patientData: any, userId: string): Promise<Patient> {
+  async createPatient(patientData: unknown, userId: string): Promise<Patient> {
     try {
-      // Validate patient data
+      // Validate patient data;
       const validatedPatient = PatientSchema.parse(patientData);
       
-      // Generate MRN if not provided
+      // Generate MRN if not provided;
       const mrn = validatedPatient.mrn || await this.generateMRN();
       
-      // Create patient record
+      // Create patient record;
       const patient = await prisma.patient.create({
         data: {
           ...validatedPatient,
@@ -200,93 +211,93 @@ export class PatientManagementService {
         }
       });
       
-      // Create contact information if provided
+      // Create contact information if provided;
       if (patientData.contact) {
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.create({
           data: {
             ...validatedContact,
-            patientId: patient.id
+            patientId: patient.id;
           }
         });
       }
       
-      // Create address if provided
+      // Create address if provided;
       if (patientData.address) {
         const validatedAddress = AddressSchema.parse(patientData.address);
         await prisma.patientAddress.create({
           data: {
             ...validatedAddress,
-            patientId: patient.id
+            patientId: patient.id;
           }
         });
       }
       
-      // Create identification if provided
+      // Create identification if provided;
       if (patientData.identification) {
         const validatedIdentification = IdentificationSchema.parse(patientData.identification);
         await prisma.patientIdentification.create({
           data: {
             ...validatedIdentification,
-            patientId: patient.id
+            patientId: patient.id;
           }
         });
       }
       
-      // Create emergency contact if provided
+      // Create emergency contact if provided;
       if (patientData.emergencyContact) {
         const validatedEmergencyContact = EmergencyContactSchema.parse(patientData.emergencyContact);
         await prisma.emergencyContact.create({
           data: {
             ...validatedEmergencyContact,
-            patientId: patient.id
+            patientId: patient.id;
           }
         });
       }
       
-      // Create insurance if provided
+      // Create insurance if provided;
       if (patientData.insurance) {
         const validatedInsurance = InsuranceSchema.parse(patientData.insurance);
         await prisma.patientInsurance.create({
           data: {
             ...validatedInsurance,
-            patientId: patient.id
+            patientId: patient.id;
           }
         });
       }
       
-      // Create FHIR resource for interoperability
+      // Create FHIR resource for interoperability;
       await this.fhirService.createPatientResource(patient);
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'Patient',
         resourceId: patient.id,
         description: `Created patient record for ${patient.firstName} ${patient.lastName}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return patient;
     } catch (error) {
-      console.error('Error creating patient:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get patient by ID
+   * Get patient by ID;
    */
   async getPatientById(patientId: string, userId: string): Promise<any> {
     try {
-      // Check if user has permission to view this patient
+      // Check if user has permission to view this patient;
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to view this patient');
       }
       
-      // Get patient with related data
+      // Get patient with related data;
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
         include: {
@@ -321,35 +332,35 @@ export class PatientManagementService {
         throw new Error('Patient not found');
       }
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'Patient',
         resourceId: patientId,
         description: `Viewed patient record for ${patient.firstName} ${patient.lastName}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return patient;
     } catch (error) {
-      console.error('Error getting patient:', error);
+
       throw error;
     }
   }
 
   /**
-   * Update patient information
+   * Update patient information;
    */
-  async updatePatient(patientId: string, patientData: any, userId: string): Promise<Patient> {
+  async updatePatient(patientId: string, patientData: unknown, userId: string): Promise<Patient> {
     try {
-      // Check if user has permission to update this patient
+      // Check if user has permission to update this patient;
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to update this patient');
       }
       
-      // Get current patient data
+      // Get current patient data;
       const existingPatient = await prisma.patient.findUnique({
         where: { id: patientId }
       });
@@ -358,19 +369,19 @@ export class PatientManagementService {
         throw new Error('Patient not found');
       }
       
-      // Validate patient data
+      // Validate patient data;
       const validatedPatient = PatientSchema.parse({
         ...existingPatient,
-        ...patientData
+        ...patientData;
       });
       
-      // Update patient record
+      // Update patient record;
       const patient = await prisma.patient.update({
         where: { id: patientId },
-        data: validatedPatient
+        data: validatedPatient;
       });
       
-      // Update contact information if provided
+      // Update contact information if provided;
       if (patientData.contact) {
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.upsert({
@@ -378,117 +389,117 @@ export class PatientManagementService {
           update: validatedContact,
           create: {
             ...validatedContact,
-            patientId
+            patientId;
           }
         });
       }
       
-      // Update FHIR resource for interoperability
+      // Update FHIR resource for interoperability;
       await this.fhirService.updatePatientResource(patient);
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'Patient',
         resourceId: patientId,
         description: `Updated patient record for ${patient.firstName} ${patient.lastName}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return patient;
     } catch (error) {
-      console.error('Error updating patient:', error);
+
       throw error;
     }
   }
 
   /**
-   * Add patient address
+   * Add patient address;
    */
-  async addPatientAddress(patientId: string, addressData: any, userId: string): Promise<PatientAddress> {
+  async addPatientAddress(patientId: string, addressData: unknown, userId: string): Promise<PatientAddress> {
     try {
-      // Check if user has permission
+      // Check if user has permission;
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to update this patient');
       }
       
-      // Validate address data
+      // Validate address data;
       const validatedAddress = AddressSchema.parse(addressData);
       
-      // If this is a primary address, unset primary flag on other addresses of same type
+      // If this is a primary address, unset primary flag on other addresses of same type;
       if (validatedAddress.isPrimary) {
         await prisma.patientAddress.updateMany({
           where: {
             patientId,
             addressType: validatedAddress.addressType,
-            isPrimary: true
+            isPrimary: true;
           },
           data: {
-            isPrimary: false
+            isPrimary: false;
           }
         });
       }
       
-      // Create address
+      // Create address;
       const address = await prisma.patientAddress.create({
         data: {
           ...validatedAddress,
-          patientId
+          patientId;
         }
       });
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'PatientAddress',
         resourceId: address.id,
         description: `Added address for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return address;
     } catch (error) {
-      console.error('Error adding patient address:', error);
+
       throw error;
     }
   }
 
   /**
-   * Add patient identification
+   * Add patient identification;
    */
-  async addPatientIdentification(patientId: string, identificationData: any, userId: string): Promise<PatientIdentification> {
+  async addPatientIdentification(patientId: string, identificationData: unknown, userId: string): Promise<PatientIdentification> {
     try {
-      // Check if user has permission
+      // Check if user has permission;
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to update this patient');
       }
       
-      // Validate identification data
+      // Validate identification data;
       const validatedIdentification = IdentificationSchema.parse(identificationData);
       
-      // If this is a primary ID, unset primary flag on other IDs of same type
+      // If this is a primary ID, unset primary flag on other IDs of same type;
       if (validatedIdentification.isPrimary) {
         await prisma.patientIdentification.updateMany({
           where: {
             patientId,
             idType: validatedIdentification.idType,
-            isPrimary: true
+            isPrimary: true;
           },
           data: {
-            isPrimary: false
+            isPrimary: false;
           }
         });
       }
       
-      // Check for existing ID with same number
+      // Check for existing ID with same number;
       const existingId = await prisma.patientIdentification.findFirst({
         where: {
           idType: validatedIdentification.idType,
-          idNumber: validatedIdentification.idNumber
+          idNumber: validatedIdentification.idNumber;
         }
       });
       
@@ -496,119 +507,119 @@ export class PatientManagementService {
         throw new Error(`This ${validatedIdentification.idType} is already associated with another patient`);
       }
       
-      // Create identification
+      // Create identification;
       const identification = await prisma.patientIdentification.create({
         data: {
           ...validatedIdentification,
-          patientId
+          patientId;
         }
       });
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'PatientIdentification',
         resourceId: identification.id,
         description: `Added identification for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return identification;
     } catch (error) {
-      console.error('Error adding patient identification:', error);
+
       throw error;
     }
   }
 
   /**
-   * Add emergency contact
+   * Add emergency contact;
    */
-  async addEmergencyContact(patientId: string, contactData: any, userId: string): Promise<EmergencyContact> {
+  async addEmergencyContact(patientId: string, contactData: unknown, userId: string): Promise<EmergencyContact> {
     try {
-      // Check if user has permission
+      // Check if user has permission;
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to update this patient');
       }
       
-      // Validate contact data
+      // Validate contact data;
       const validatedContact = EmergencyContactSchema.parse(contactData);
       
-      // If this is a primary contact, unset primary flag on other contacts
+      // If this is a primary contact, unset primary flag on other contacts;
       if (validatedContact.isPrimary) {
         await prisma.emergencyContact.updateMany({
           where: {
             patientId,
-            isPrimary: true
+            isPrimary: true;
           },
           data: {
-            isPrimary: false
+            isPrimary: false;
           }
         });
       }
       
-      // Create contact
+      // Create contact;
       const contact = await prisma.emergencyContact.create({
         data: {
           ...validatedContact,
-          patientId
+          patientId;
         }
       });
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'EmergencyContact',
         resourceId: contact.id,
         description: `Added emergency contact for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return contact;
     } catch (error) {
-      console.error('Error adding emergency contact:', error);
+
       throw error;
     }
   }
 
   /**
-   * Add insurance
+   * Add insurance;
    */
-  async addInsurance(patientId: string, insuranceData: any, userId: string): Promise<PatientInsurance> {
+  async addInsurance(patientId: string, insuranceData: unknown, userId: string): Promise<PatientInsurance> {
     try {
-      // Check if user has permission
+      // Check if user has permission;
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to update this patient');
       }
       
-      // Validate insurance data
+      // Validate insurance data;
       const validatedInsurance = InsuranceSchema.parse(insuranceData);
       
-      // If there's an existing insurance of the same type, update its status based on priority
+      // If there's an existing insurance of the same type, update its status based on priority;
       if (validatedInsurance.insuranceType === 'Primary') {
-        // Find existing primary insurance
+        // Find existing primary insurance;
         const existingPrimary = await prisma.patientInsurance.findFirst({
           where: {
             patientId,
-            insuranceType: 'Primary'
+            insuranceType: 'Primary';
           }
         });
         
-        // If found, change it to secondary
+        // If found, change it to secondary;
         if (existingPrimary) {
           await prisma.patientInsurance.update({
             where: { id: existingPrimary.id },
             data: { insuranceType: 'Secondary' }
           });
           
-          // Find existing secondary and change to tertiary if needed
+          // Find existing secondary and change to tertiary if needed;
           const existingSecondary = await prisma.patientInsurance.findFirst({
             where: {
               patientId,
-              insuranceType: 'Secondary'
+              insuranceType: 'Secondary';
             }
           });
           
@@ -621,63 +632,63 @@ export class PatientManagementService {
         }
       }
       
-      // Create insurance
+      // Create insurance;
       const insurance = await prisma.patientInsurance.create({
         data: {
           ...validatedInsurance,
-          patientId
+          patientId;
         }
       });
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'PatientInsurance',
         resourceId: insurance.id,
         description: `Added insurance for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return insurance;
     } catch (error) {
-      console.error('Error adding insurance:', error);
+
       throw error;
     }
   }
 
   /**
-   * Search patients
+   * Search patients;
    */
-  async searchPatients(searchParams: any, userId: string): Promise<any> {
+  async searchPatients(searchParams: unknown, userId: string): Promise<any> {
     try {
-      // Check if user has permission to search patients
+      // Check if user has permission to search patients;
       const hasPermission = await this.authService.hasPermission(userId, 'search', 'patient');
       if (!hasPermission) {
         throw new Error('Unauthorized to search patients');
       }
       
-      // Build where clause based on search parameters
-      const where: any = {};
+      // Build where clause based on search parameters;
+      const where: unknown = {};
       
       if (searchParams.mrn) {
         where.mrn = {
           contains: searchParams.mrn,
-          mode: 'insensitive'
+          mode: 'insensitive';
         };
       }
       
       if (searchParams.firstName) {
         where.firstName = {
           contains: searchParams.firstName,
-          mode: 'insensitive'
+          mode: 'insensitive';
         };
       }
       
       if (searchParams.lastName) {
         where.lastName = {
           contains: searchParams.lastName,
-          mode: 'insensitive'
+          mode: 'insensitive';
         };
       }
       
@@ -700,7 +711,7 @@ export class PatientManagementService {
           ...where.contact,
           email: {
             contains: searchParams.email,
-            mode: 'insensitive'
+            mode: 'insensitive';
           }
         };
       }
@@ -709,11 +720,11 @@ export class PatientManagementService {
         where.status = searchParams.status;
       }
       
-      // Add pagination parameters
+      // Add pagination parameters;
       const skip = searchParams.page ? (searchParams.page - 1) * (searchParams.limit || 10) : 0;
       const take = searchParams.limit || 10;
       
-      // Perform search
+      // Perform search;
       const [patients, total] = await Promise.all([
         prisma.patient.findMany({
           where,
@@ -727,16 +738,16 @@ export class PatientManagementService {
           take,
           orderBy: { lastName: 'asc' }
         }),
-        prisma.patient.count({ where })
+        prisma.patient.count({ where });
       ]);
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Search',
         resourceType: 'Patient',
         description: 'Performed patient search',
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return {
@@ -744,51 +755,51 @@ export class PatientManagementService {
         total,
         page: searchParams.page || 1,
         limit: take,
-        totalPages: Math.ceil(total / take)
+        totalPages: Math.ceil(total / take);
       };
     } catch (error) {
-      console.error('Error searching patients:', error);
+
       throw error;
     }
   }
 
   /**
-   * Mark patient as deceased
+   * Mark patient as deceased;
    */
   async markPatientDeceased(patientId: string, data: { deceasedDate: Date, deceasedReason?: string }, userId: string): Promise<Patient> {
     try {
-      // Check if user has permission
+      // Check if user has permission;
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to update this patient');
       }
       
-      // Update patient record
+      // Update patient record;
       const patient = await prisma.patient.update({
         where: { id: patientId },
         data: {
           status: 'Deceased',
           deceasedDate: data.deceasedDate,
-          deceasedReason: data.deceasedReason
+          deceasedReason: data.deceasedReason;
         }
       });
       
-      // Update FHIR resource
+      // Update FHIR resource;
       await this.fhirService.updatePatientResource(patient);
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'Patient',
         resourceId: patientId,
         description: `Marked patient ${patientId} as deceased`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return patient;
     } catch (error) {
-      console.error('Error marking patient as deceased:', error);
+
       throw error;
     }
   }
@@ -804,9 +815,9 @@ export class PatientManagementService {
         throw new Error('Unauthorized to merge patient records');
       }
       
-      // Begin transaction
+      // Begin transaction;
       return await prisma.$transaction(async (tx) => {
-        // Get source and target patients
+        // Get source and target patients;
         const [sourcePatient, targetPatient] = await Promise.all([
           tx.patient.findUnique({
             where: { id: sourcePatientId },
@@ -822,24 +833,24 @@ export class PatientManagementService {
               appointments: true,
               visits: true,
               vitalSigns: true,
-              immunizations: true
+              immunizations: true;
             }
           }),
           tx.patient.findUnique({
             where: { id: targetPatientId }
-          })
+          });
         ]);
         
         if (!sourcePatient || !targetPatient) {
           throw new Error('Source or target patient not found');
         }
         
-        // Transfer addresses
+        // Transfer addresses;
         for (const address of sourcePatient.addresses) {
           await tx.patientAddress.create({
             data: {
               addressType: address.addressType,
-              isPrimary: false, // Don't override target's primary addresses
+              isPrimary: false, // Don't override target's primary addresses;
               addressLine1: address.addressLine1,
               addressLine2: address.addressLine2,
               city: address.city,
@@ -852,19 +863,19 @@ export class PatientManagementService {
               isBilling: address.isBilling,
               isShipping: address.isShipping,
               notes: `Merged from patient ${sourcePatientId}: ${address.notes || ''}`,
-              patientId: targetPatientId
+              patientId: targetPatientId;
             }
           });
         }
         
-        // Transfer identifications
+        // Transfer identifications;
         for (const id of sourcePatient.identifications) {
-          // Check if this ID already exists for target patient
+          // Check if this ID already exists for target patient;
           const existingId = await tx.patientIdentification.findFirst({
             where: {
               patientId: targetPatientId,
               idType: id.idType,
-              idNumber: id.idNumber
+              idNumber: id.idNumber;
             }
           });
           
@@ -877,23 +888,23 @@ export class PatientManagementService {
                 issuingState: id.issuingState,
                 issueDate: id.issueDate,
                 expirationDate: id.expirationDate,
-                isPrimary: false, // Don't override target's primary IDs
+                isPrimary: false, // Don't override target's primary IDs;
                 documentImageUrl: id.documentImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${id.notes || ''}`,
-                patientId: targetPatientId
+                patientId: targetPatientId;
               }
             });
           }
         }
         
-        // Transfer emergency contacts
+        // Transfer emergency contacts;
         for (const contact of sourcePatient.contacts) {
           await tx.emergencyContact.create({
             data: {
               firstName: contact.firstName,
               lastName: contact.lastName,
               relationship: contact.relationship,
-              isPrimary: false, // Don't override target's primary contacts
+              isPrimary: false, // Don't override target's primary contacts;
               phoneHome: contact.phoneHome,
               phoneMobile: contact.phoneMobile,
               phoneWork: contact.phoneWork,
@@ -908,26 +919,26 @@ export class PatientManagementService {
               isLegalGuardian: contact.isLegalGuardian,
               hasDecisionMaking: contact.hasDecisionMaking,
               notes: `Merged from patient ${sourcePatientId}: ${contact.notes || ''}`,
-              patientId: targetPatientId
+              patientId: targetPatientId;
             }
           });
         }
         
-        // Transfer insurance records
+        // Transfer insurance records;
         for (const insurance of sourcePatient.insurances) {
-          // Check if this insurance already exists for target patient
+          // Check if this insurance already exists for target patient;
           const existingInsurance = await tx.patientInsurance.findFirst({
             where: {
               patientId: targetPatientId,
               payerName: insurance.payerName,
-              policyNumber: insurance.policyNumber
+              policyNumber: insurance.policyNumber;
             }
           });
           
           if (!existingInsurance) {
             await tx.patientInsurance.create({
               data: {
-                insuranceType: 'Secondary', // Don't override primary insurance
+                insuranceType: 'Secondary', // Don't override primary insurance;
                 payerName: insurance.payerName,
                 planName: insurance.planName,
                 policyNumber: insurance.policyNumber,
@@ -946,14 +957,14 @@ export class PatientManagementService {
                 cardFrontImageUrl: insurance.cardFrontImageUrl,
                 cardBackImageUrl: insurance.cardBackImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || ''}`,
-                patientId: targetPatientId
+                patientId: targetPatientId;
               }
             });
           }
         }
         
         // Transfer clinical data (with updated patientId)
-        // Allergies
+        // Allergies;
         for (const allergy of sourcePatient.allergies) {
           await tx.patientAllergy.create({
             data: {
@@ -966,12 +977,12 @@ export class PatientManagementService {
               endDate: allergy.endDate,
               recordedBy: allergy.recordedBy,
               notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ''}`,
-              patientId: targetPatientId
+              patientId: targetPatientId;
             }
           });
         }
         
-        // Conditions
+        // Conditions;
         for (const condition of sourcePatient.conditions) {
           await tx.patientCondition.create({
             data: {
@@ -987,85 +998,85 @@ export class PatientManagementService {
               recordedBy: condition.recordedBy,
               notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ''}`,
               isConfidential: condition.isConfidential,
-              patientId: targetPatientId
+              patientId: targetPatientId;
             }
           });
         }
         
-        // Update appointments with new patientId
+        // Update appointments with new patientId;
         await tx.appointment.updateMany({
           where: { patientId: sourcePatientId },
           data: { patientId: targetPatientId }
         });
         
-        // Update visits with new patientId
+        // Update visits with new patientId;
         await tx.patientVisit.updateMany({
           where: { patientId: sourcePatientId },
           data: { patientId: targetPatientId }
         });
         
-        // Update vital signs with new patientId
+        // Update vital signs with new patientId;
         await tx.vitalSign.updateMany({
           where: { patientId: sourcePatientId },
           data: { patientId: targetPatientId }
         });
         
-        // Update immunizations with new patientId
+        // Update immunizations with new patientId;
         await tx.immunization.updateMany({
           where: { patientId: sourcePatientId },
           data: { patientId: targetPatientId }
         });
         
-        // Mark source patient as inactive and add note about merge
+        // Mark source patient as inactive and add note about merge;
         await tx.patient.update({
           where: { id: sourcePatientId },
           data: {
             status: 'Inactive',
-            notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`
+            notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`;
           }
         });
         
-        // Update target patient with note about merge
+        // Update target patient with note about merge;
         const updatedTargetPatient = await tx.patient.update({
           where: { id: targetPatientId },
           data: {
-            notes: targetPatient.notes
+            notes: targetPatient.notes;
               ? `${targetPatient.notes}\nMerged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
-              : `Merged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
+              : `Merged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`;
           }
         });
         
-        // Log audit
+        // Log audit;
         await this.auditService.logAction({
           action: 'Merge',
           resourceType: 'Patient',
           resourceId: targetPatientId,
           description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
           performedBy: userId,
-          performerRole: await this.authService.getUserRole(userId)
+          performerRole: await this.authService.getUserRole(userId);
         });
         
         return updatedTargetPatient;
       });
     } catch (error) {
-      console.error('Error merging patients:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get patient MPI (Master Patient Index) summary
-   * This is a comprehensive patient summary for interoperability
+   * Get patient MPI (Master Patient Index) summary;
+   * This is a comprehensive patient summary for interoperability;
    */
   async getPatientMPI(patientId: string, userId: string): Promise<any> {
     try {
-      // Check if user has permission
+      // Check if user has permission;
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
       if (!hasPermission) {
         throw new Error('Unauthorized to view this patient');
       }
       
-      // Get patient with all related data for MPI
+      // Get patient with all related data for MPI;
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
         include: {
@@ -1073,7 +1084,7 @@ export class PatientManagementService {
           addresses: true,
           identifications: true,
           contacts: true,
-          insurances: true
+          insurances: true;
         }
       });
       
@@ -1081,25 +1092,25 @@ export class PatientManagementService {
         throw new Error('Patient not found');
       }
       
-      // Format as FHIR resource for interoperability
+      // Format as FHIR resource for interoperability;
       const fhirPatient = await this.fhirService.createPatientResource(patient);
       
-      // Log audit
+      // Log audit;
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'PatientMPI',
         resourceId: patientId,
         description: `Viewed MPI for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
       
       return {
         patient,
-        fhirPatient
+        fhirPatient;
       };
     } catch (error) {
-      console.error('Error getting patient MPI:', error);
+
       throw error;
     }
   }

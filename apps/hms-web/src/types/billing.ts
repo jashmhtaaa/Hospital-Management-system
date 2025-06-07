@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { BillingStatus, InvoiceStatus, PaymentMethod, PaymentStatus } from '@prisma/client';
 
-// Billing Types
+// Billing Types;
 export interface BillingItem {
   id: string;
   name: string;

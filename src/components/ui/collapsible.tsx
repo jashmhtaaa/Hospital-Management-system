@@ -1,11 +1,22 @@
-"use client"
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
 
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
+"use client";
 
-const Collapsible = CollapsiblePrimitive.Root
+import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger
+const Collapsible = CollapsiblePrimitive.Root;
 
-const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent
+const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
+
+const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }

@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
@@ -184,7 +184,7 @@ jobs:
               with open("hipaa-access-control-results.json", "w") as f:
                   json.dump(results, f, indent=2)
               
-              print(f"\n📊 HIPAA Access Control Validation Results:")
+              print(f"\n📊 HIPAA Access Control Validation Results: ")
               print(f"   Checks Passed: {results['checks_passed']}/{results['checks_total']}")
               print(f"   Compliance: {results['compliance_percentage']:.1f}%")
               print(f"   Violations: {len(results['violations'])}")
@@ -304,7 +304,7 @@ jobs:
               with open("hipaa-audit-controls-results.json", "w") as f:
                   json.dump(results, f, indent=2)
               
-              print(f"\n📊 HIPAA Audit Controls Validation Results:")
+              print(f"\n📊 HIPAA Audit Controls Validation Results: ")
               print(f"   Checks Passed: {results['checks_passed']}/{results['checks_total']}")
               print(f"   Compliance: {results['compliance_percentage']:.1f}%")
               print(f"   Violations: {len(results['violations'])}")
@@ -337,7 +337,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
@@ -501,7 +501,7 @@ jobs:
               with open("gdpr-validation-results.json", "w") as f:
                   json.dump(results, f, indent=2)
               
-              print(f"\n📊 GDPR Privacy Validation Results:")
+              print(f"\n📊 GDPR Privacy Validation Results: ")
               print(f"   Checks Passed: {results['checks_passed']}/{results['checks_total']}")
               print(f"   Compliance: {results['compliance_percentage']:.1f}%")
               print(f"   Violations: {len(results['violations'])}")
@@ -532,7 +532,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
@@ -596,7 +596,7 @@ jobs:
                               elements_found = sum(1 for pattern in required_elements 
                                                  if re.search(pattern, content, re.IGNORECASE))
                               
-                              if elements_found >= 3:  # At least 3 out of 4 elements
+                              if elements_found >= 3: # At least 3 out of 4 elements
                                   audit_trail_found = True
                                   break
                       except Exception:
@@ -682,7 +682,7 @@ jobs:
               with open("fda-cfr-validation-results.json", "w") as f:
                   json.dump(results, f, indent=2)
               
-              print(f"\n📊 FDA 21 CFR Part 11 Validation Results:")
+              print(f"\n📊 FDA 21 CFR Part 11 Validation Results: ")
               print(f"   Checks Passed: {results['checks_passed']}/{results['checks_total']}")
               print(f"   Compliance: {results['compliance_percentage']:.1f}%")
               print(f"   Violations: {len(results['violations'])}")
@@ -802,18 +802,18 @@ jobs:
               <body>
                   <div class="header">
                       <h1>🏥 HMS Healthcare Compliance Report</h1>
-                      <p><strong>Generated:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
-                      <p><strong>Repository:</strong> Hospital Management System</p>
-                      <p><strong>Branch:</strong> ${{{{ github.ref_name }}}}</p>
+                      <p><strong>Generated: </strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
+                      <p><strong>Repository: </strong> Hospital Management System</p>
+                      <p><strong>Branch: </strong> ${{{{ github.ref_name }}}}</p>
                   </div>
                   
                   <div class="summary">
                       <h2>📊 Overall Compliance Status</h2>
                       <div class="compliance-score {'excellent' if overall_compliance >= 95 else 'good' if overall_compliance >= 80 else 'warning' if overall_compliance >= 70 else 'danger'}">
-                          {overall_compliance:.1f}% Compliant
+                          {overall_compliance: .1f}% Compliant
                       </div>
-                      <p><strong>Total Violations:</strong> {total_violations}</p>
-                      <p><strong>Compliance Level:</strong> {'EXCELLENT' if overall_compliance >= 95 else 'GOOD' if overall_compliance >= 80 else 'NEEDS IMPROVEMENT' if overall_compliance >= 70 else 'CRITICAL'}</p>
+                      <p><strong>Total Violations: </strong> {total_violations}</p>
+                      <p><strong>Compliance Level: </strong> {'EXCELLENT' if overall_compliance >= 95 else 'GOOD' if overall_compliance >= 80 else 'NEEDS IMPROVEMENT' if overall_compliance >= 70 else 'CRITICAL'}</p>
                   </div>
                   
                   <h2>🔍 Regulatory Compliance Breakdown</h2>
@@ -826,25 +826,25 @@ jobs:
                       </tr>
                       <tr>
                           <td><strong>HIPAA - Access Control</strong></td>
-                          <td>{results["hipaa_access"]["compliance_percentage"]:.1f}%</td>
+                          <td>{results["hipaa_access"]["compliance_percentage"]: .1f}%</td>
                           <td>{len(results["hipaa_access"]["violations"])}</td>
                           <td>{'✅ COMPLIANT' if results["hipaa_access"]["compliance_percentage"] >= 90 else '⚠️ ISSUES'}</td>
                       </tr>
                       <tr>
                           <td><strong>HIPAA - Audit Controls</strong></td>
-                          <td>{results["hipaa_audit"]["compliance_percentage"]:.1f}%</td>
+                          <td>{results["hipaa_audit"]["compliance_percentage"]: .1f}%</td>
                           <td>{len(results["hipaa_audit"]["violations"])}</td>
                           <td>{'✅ COMPLIANT' if results["hipaa_audit"]["compliance_percentage"] >= 90 else '⚠️ ISSUES'}</td>
                       </tr>
                       <tr>
                           <td><strong>GDPR - Privacy by Design</strong></td>
-                          <td>{results["gdpr"]["compliance_percentage"]:.1f}%</td>
+                          <td>{results["gdpr"]["compliance_percentage"]: .1f}%</td>
                           <td>{len(results["gdpr"]["violations"])}</td>
                           <td>{'✅ COMPLIANT' if results["gdpr"]["compliance_percentage"] >= 90 else '⚠️ ISSUES'}</td>
                       </tr>
                       <tr>
                           <td><strong>FDA 21 CFR Part 11</strong></td>
-                          <td>{results["fda_cfr"]["compliance_percentage"]:.1f}%</td>
+                          <td>{results["fda_cfr"]["compliance_percentage"]: .1f}%</td>
                           <td>{len(results["fda_cfr"]["violations"])}</td>
                           <td>{'✅ COMPLIANT' if results["fda_cfr"]["compliance_percentage"] >= 90 else '⚠️ ISSUES'}</td>
                       </tr>
@@ -870,19 +870,19 @@ jobs:
               html += """
                   <h2>📋 Compliance Recommendations</h2>
                   <ol>
-                      <li><strong>Address High-Severity Violations:</strong> Prioritize fixing all HIGH severity compliance issues immediately</li>
-                      <li><strong>Implement Missing Controls:</strong> Add any missing technical or administrative safeguards</li>
-                      <li><strong>Regular Compliance Audits:</strong> Schedule monthly compliance validation runs</li>
-                      <li><strong>Staff Training:</strong> Ensure all team members understand healthcare compliance requirements</li>
-                      <li><strong>Documentation Updates:</strong> Keep all compliance documentation current and accessible</li>
+                      <li><strong>Address High-Severity Violations: </strong> Prioritize fixing all HIGH severity compliance issues immediately</li>
+                      <li><strong>Implement Missing Controls: </strong> Add any missing technical or administrative safeguards</li>
+                      <li><strong>Regular Compliance Audits: </strong> Schedule monthly compliance validation runs</li>
+                      <li><strong>Staff Training: </strong> Ensure all team members understand healthcare compliance requirements</li>
+                      <li><strong>Documentation Updates: </strong> Keep all compliance documentation current and accessible</li>
                   </ol>
                   
                   <h2>📞 Compliance Support</h2>
-                  <p>For compliance-related questions or support:</p>
+                  <p>For compliance-related questions or support: </p>
                   <ul>
-                      <li><strong>Compliance Officer:</strong> compliance@hms-enterprise.com</li>
-                      <li><strong>Legal Team:</strong> legal@hms-enterprise.com</li>
-                      <li><strong>Privacy Officer:</strong> privacy@hms-enterprise.com</li>
+                      <li><strong>Compliance Officer: </strong> compliance@hms-enterprise.com</li>
+                      <li><strong>Legal Team: </strong> legal@hms-enterprise.com</li>
+                      <li><strong>Privacy Officer: </strong> privacy@hms-enterprise.com</li>
                   </ul>
                   
                   <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #dee2e6;">

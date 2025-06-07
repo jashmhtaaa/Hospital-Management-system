@@ -1,9 +1,20 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9
+import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9;
 
-// FHIR-compliant DiagnosticReport resource structure
+// FHIR-compliant DiagnosticReport resource structure;
 interface FHIRDiagnosticReport {
   resourceType: "DiagnosticReport";
   id: string;
@@ -48,14 +59,14 @@ interface FHIRDiagnosticReport {
   conclusion?: string;
 }
 
-// Interface for the request body when creating a lab test
+// Interface for the request body when creating a lab test;
 interface LabTestCreateBody {
-  // Basic test information
+  // Basic test information;
   name: string;
   description?: string;
   category_id: number;
   
-  // LOINC coding
+  // LOINC coding;
   loinc_code: string;
   loinc_display?: string;
   
@@ -66,24 +77,24 @@ interface LabTestCreateBody {
     display?: string;
   }>;
   
-  // Specimen requirements
+  // Specimen requirements;
   sample_type: string;
   sample_container?: string;
   sample_volume?: string;
   sample_handling_instructions?: string;
   
-  // Processing information
+  // Processing information;
   processing_time?: number;
   turnaround_time?: number;
   
-  // Test configuration
+  // Test configuration;
   is_panel: boolean;
   panel_items?: Array<{
     test_id: number;
     sequence?: number;
   }>;
   
-  // Reference ranges
+  // Reference ranges;
   reference_ranges?: Array<{
     gender?: "male" | "female" | "other" | "unknown";
     age_low?: number;
@@ -95,7 +106,7 @@ interface LabTestCreateBody {
     interpretation?: string;
   }>;
   
-  // Reflex testing rules
+  // Reflex testing rules;
   reflex_rules?: Array<{
     condition_test_id: number;
     condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
@@ -103,32 +114,32 @@ interface LabTestCreateBody {
     action_test_id: number;
   }>;
   
-  // Business information
+  // Business information;
   price: number;
   cost_center_id?: number;
   billing_code?: string;
   
-  // Status
+  // Status;
   is_active?: boolean;
   
-  // Test preparation
+  // Test preparation;
   patient_preparation?: string;
   
-  // Priority options
+  // Priority options;
   available_priorities?: Array<"routine" | "urgent" | "stat">;
 }
 
-// GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering
-export async function GET(request: NextRequest) {
+// GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering;
+export async const GET = (request: NextRequest) {
   try {
     const session = await getSession();
     
-    // Check authentication
+    // Check authentication;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get("categoryId");
     const isActive = searchParams.get("isActive");
@@ -138,24 +149,24 @@ export async function GET(request: NextRequest) {
     const name = searchParams.get("name");
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const format = searchParams.get("format") || "default"; // 'default' or 'fhir'
+    const format = searchParams.get("format") || "default"; // 'default' or 'fhir';
     
-    // Calculate offset for pagination
+    // Calculate offset for pagination;
     const offset = (page - 1) * pageSize;
     
-    // Build query
-    let query = `
-      SELECT 
+    // Build query;
+    let query = `;
+      SELECT;
         t.*,
         c.name as category_name,
-        (SELECT COUNT(*) FROM lab_test_panel_items WHERE panel_id = t.id) as panel_item_count
-      FROM 
-        lab_tests t 
-      JOIN 
-        lab_test_categories c ON t.category_id = c.id
+        (SELECT COUNT(*) FROM lab_test_panel_items WHERE panel_id = t.id) as panel_item_count;
+      FROM;
+        lab_tests t;
+      JOIN;
+        lab_test_categories c ON t.category_id = c.id;
     `;
     
-    // Add filters
+    // Add filters;
     const parameters: (string | number | boolean)[] = [];
     const conditions: string[] = [];
     
@@ -193,18 +204,18 @@ export async function GET(request: NextRequest) {
       query += " WHERE " + conditions.join(" AND ");
     }
     
-    // Add ordering
+    // Add ordering;
     query += " ORDER BY t.name ASC";
     
-    // Add pagination
+    // Add pagination;
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query
+    // Execute query;
     const testsResult = await DB.query(query, parameters);
     const tests = testsResult.results || [];
     
-    // Get total count for pagination
+    // Get total count for pagination;
     let countQuery = "SELECT COUNT(*) as total FROM lab_tests t";
     if (conditions.length > 0) {
       countQuery += " WHERE " + conditions.join(" AND ");
@@ -213,44 +224,44 @@ export async function GET(request: NextRequest) {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Format response based on requested format
+    // Format response based on requested format;
     if (format === 'fhir') {
-      // Transform to FHIR DiagnosticReport resources
+      // Transform to FHIR DiagnosticReport resources;
       const fhirResources = tests.map(test => {
         const resource: FHIRDiagnosticReport = {
           resourceType: "DiagnosticReport",
           id: test.id.toString(),
           meta: {
             versionId: "1",
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString();
           },
           status: "registered",
           category: {
             coding: [{
               system: "http://terminology.hl7.org/CodeSystem/v2-0074",
               code: "LAB",
-              display: "Laboratory"
+              display: "Laboratory";
             }]
           },
           code: {
             coding: [{
               system: "http://loinc.org",
               code: test.loinc_code || "unknown",
-              display: test.loinc_display || test.name
+              display: test.loinc_display || test.name;
             }],
-            text: test.name
+            text: test.name;
           },
           subject: {
-            reference: "Patient/example"
+            reference: "Patient/example";
           }
         };
         
-        // Add security tag for sensitive tests if needed
+        // Add security tag for sensitive tests if needed;
         if (test.is_sensitive) {
           resource.meta.security = [{
             system: "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
             code: "R",
-            display: "Restricted"
+            display: "Restricted";
           }];
         }
         
@@ -264,27 +275,27 @@ export async function GET(request: NextRequest) {
         link: [
           {
             relation: "self",
-            url: request.url
+            url: request.url;
           }
         ],
         entry: fhirResources.map(resource => ({
-          resource
-        }))
+          resource;
+        }));
       });
     } else {
-      // Return default format with pagination metadata
+      // Return default format with pagination metadata;
       return NextResponse.json({
         data: tests,
         pagination: {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize)
+          totalPages: Math.ceil(totalCount / pageSize);
         }
       });
     }
   } catch (error: unknown) {
-    console.error("Error fetching laboratory tests:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to fetch laboratory tests", details: errorMessage },
@@ -293,32 +304,32 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features
-export async function POST(request: NextRequest) {
+// POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features;
+export async const POST = (request: NextRequest) {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can create tests
+    // Only lab managers and admins can create tests;
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as LabTestCreateBody;
     
-    // Validate required fields
+    // Validate required fields;
     const requiredFields: (keyof LabTestCreateBody)[] = [
       "name",
       "category_id",
       "loinc_code",
       "sample_type",
       "price",
-      "is_panel"
+      "is_panel";
     ];
     
     for (const field of requiredFields) {
@@ -339,7 +350,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Validate panel items if this is a panel
+    // Validate panel items if this is a panel;
     if (body.is_panel && (!body.panel_items || body.panel_items.length === 0)) {
       return NextResponse.json(
         { error: "Panel tests must include at least one panel item" },
@@ -347,23 +358,23 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Insert new test
-      const insertQuery = `
+      // Insert new test;
+      const insertQuery = `;
         INSERT INTO lab_tests (
           name, description, category_id, loinc_code, loinc_display,
           sample_type, sample_container, sample_volume, sample_handling_instructions,
           processing_time, turnaround_time, is_panel, price, cost_center_id,
-          billing_code, is_active, patient_preparation, available_priorities
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          billing_code, is_active, patient_preparation, available_priorities;
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
       `;
       
-      // Encrypt sensitive data if needed
+      // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
-        patientPreparation: body.patient_preparation
+        patientPreparation: body.patient_preparation;
       });
       
       const insertParameters = [
@@ -384,13 +395,13 @@ export async function POST(request: NextRequest) {
         body.billing_code || "",
         body.is_active === undefined ? 1 : (body.is_active ? 1 : 0),
         encryptedData.patientPreparation || "",
-        JSON.stringify(body.available_priorities || ["routine"])
+        JSON.stringify(body.available_priorities || ["routine"]);
       ];
       
       const result = await DB.query(insertQuery, insertParameters);
       const testId = result.insertId;
       
-      // Insert additional codes if provided
+      // Insert additional codes if provided;
       if (body.additional_codes && body.additional_codes.length > 0) {
         for (const code of body.additional_codes) {
           await DB.query(
@@ -400,7 +411,7 @@ export async function POST(request: NextRequest) {
         }
       }
       
-      // Insert panel items if this is a panel
+      // Insert panel items if this is a panel;
       if (body.is_panel && body.panel_items && body.panel_items.length > 0) {
         for (const item of body.panel_items) {
           await DB.query(
@@ -410,13 +421,13 @@ export async function POST(request: NextRequest) {
         }
       }
       
-      // Insert reference ranges if provided
+      // Insert reference ranges if provided;
       if (body.reference_ranges && body.reference_ranges.length > 0) {
         for (const range of body.reference_ranges) {
           await DB.query(
             `INSERT INTO lab_test_reference_ranges (
               test_id, gender, age_low, age_high, value_low, value_high, 
-              text_value, unit, interpretation
+              text_value, unit, interpretation;
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
               testId,
@@ -427,43 +438,43 @@ export async function POST(request: NextRequest) {
               range.value_high || null,
               range.text_value || null,
               range.unit || null,
-              range.interpretation || null
+              range.interpretation || null;
             ]
           );
         }
       }
       
-      // Insert reflex rules if provided
+      // Insert reflex rules if provided;
       if (body.reflex_rules && body.reflex_rules.length > 0) {
         for (const rule of body.reflex_rules) {
           await DB.query(
             `INSERT INTO lab_test_reflex_rules (
-              condition_test_id, condition_operator, condition_value, action_test_id
+              condition_test_id, condition_operator, condition_value, action_test_id;
             ) VALUES (?, ?, ?, ?)`,
             [
               rule.condition_test_id,
               rule.condition_operator,
               rule.condition_value,
-              rule.action_test_id
+              rule.action_test_id;
             ]
           );
         }
       }
       
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
       
-      // Fetch the complete test with all related data
-      const fetchTestQuery = `
-        SELECT 
+      // Fetch the complete test with all related data;
+      const fetchTestQuery = `;
+        SELECT;
           t.*,
-          c.name as category_name
-        FROM 
-          lab_tests t 
-        JOIN 
-          lab_test_categories c ON t.category_id = c.id
-        WHERE 
-          t.id = ?
+          c.name as category_name;
+        FROM;
+          lab_tests t;
+        JOIN;
+          lab_test_categories c ON t.category_id = c.id;
+        WHERE;
+          t.id = ?;
       `;
       
       const testResult = await DB.query(fetchTestQuery, [testId]);
@@ -473,76 +484,76 @@ export async function POST(request: NextRequest) {
         throw new Error("Failed to retrieve created test");
       }
       
-      // Fetch additional codes
+      // Fetch additional codes;
       const codesResult = await DB.query(
         "SELECT system, code, display FROM lab_test_codes WHERE test_id = ?",
         [testId]
       );
       const additionalCodes = codesResult.results || [];
       
-      // Fetch panel items if this is a panel
+      // Fetch panel items if this is a panel;
       let panelItems = [];
       if (body.is_panel) {
         const panelItemsResult = await DB.query(
-          `SELECT 
-            i.test_id, i.sequence, t.name as test_name, t.loinc_code
-          FROM 
-            lab_test_panel_items i
-          JOIN 
-            lab_tests t ON i.test_id = t.id
-          WHERE 
-            i.panel_id = ?
-          ORDER BY 
+          `SELECT;
+            i.test_id, i.sequence, t.name as test_name, t.loinc_code;
+          FROM;
+            lab_test_panel_items i;
+          JOIN;
+            lab_tests t ON i.test_id = t.id;
+          WHERE;
+            i.panel_id = ?;
+          ORDER BY;
             i.sequence`,
           [testId]
         );
         panelItems = panelItemsResult.results || [];
       }
       
-      // Fetch reference ranges
+      // Fetch reference ranges;
       const rangesResult = await DB.query(
         "SELECT * FROM lab_test_reference_ranges WHERE test_id = ?",
         [testId]
       );
       const referenceRanges = rangesResult.results || [];
       
-      // Fetch reflex rules
+      // Fetch reflex rules;
       const rulesResult = await DB.query(
-        `SELECT 
+        `SELECT;
           r.*,
           ct.name as condition_test_name,
-          at.name as action_test_name
-        FROM 
-          lab_test_reflex_rules r
-        JOIN 
-          lab_tests ct ON r.condition_test_id = ct.id
-        JOIN 
-          lab_tests at ON r.action_test_id = at.id
-        WHERE 
+          at.name as action_test_name;
+        FROM;
+          lab_test_reflex_rules r;
+        JOIN;
+          lab_tests ct ON r.condition_test_id = ct.id;
+        JOIN;
+          lab_tests at ON r.action_test_id = at.id;
+        WHERE;
           r.condition_test_id = ?`,
         [testId]
       );
       const reflexRules = rulesResult.results || [];
       
-      // Construct complete response
+      // Construct complete response;
       const completeTest = {
         ...test,
         additional_codes: additionalCodes,
         panel_items: panelItems,
         reference_ranges: referenceRanges,
         reflex_rules: reflexRules,
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
+        available_priorities: JSON.parse(test.available_priorities || '["routine"]');
       };
       
-      // Return the created test
+      // Return the created test;
       return NextResponse.json(completeTest, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
-    console.error("Error creating laboratory test:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to create laboratory test", details: errorMessage },
@@ -551,27 +562,27 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT /api/diagnostics/lab/tests/:id - Update an existing laboratory test
-export async function PUT(
+// PUT /api/diagnostics/lab/tests/:id - Update an existing laboratory test;
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can update tests
+    // Only lab managers and admins can update tests;
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const testId = params.id;
     
-    // Check if test exists
+    // Check if test exists;
     const checkResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ?",
       [testId]
@@ -584,19 +595,19 @@ export async function PUT(
       );
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as Partial<LabTestCreateBody>;
     
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Update test
+      // Update test;
       let updateQuery = "UPDATE lab_tests SET ";
       const updateFields: string[] = [];
-      const updateParameters: any[] = [];
+      const updateParameters: unknown[] = [];
       
-      // Build dynamic update query based on provided fields
+      // Build dynamic update query based on provided fields;
       if (body.name !== undefined) {
         updateFields.push("name = ?");
         updateParameters.push(body.name);
@@ -613,7 +624,7 @@ export async function PUT(
       }
       
       if (body.loinc_code !== undefined) {
-        // Validate LOINC code format
+        // Validate LOINC code format;
         const loincRegex = /^\d+-\d+$/;
         if (!loincRegex.test(body.loinc_code)) {
           throw new Error("Invalid LOINC code format. Expected format: #####-#");
@@ -678,9 +689,9 @@ export async function PUT(
       }
       
       if (body.patient_preparation !== undefined) {
-        // Encrypt sensitive data
+        // Encrypt sensitive data;
         const encryptedData = await encryptSensitiveData({
-          patientPreparation: body.patient_preparation
+          patientPreparation: body.patient_preparation;
         });
         updateFields.push("patient_preparation = ?");
         updateParameters.push(encryptedData.patientPreparation);
@@ -691,7 +702,7 @@ export async function PUT(
         updateParameters.push(JSON.stringify(body.available_priorities));
       }
       
-      // Only proceed if there are fields to update
+      // Only proceed if there are fields to update;
       if (updateFields.length > 0) {
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(testId);
@@ -699,15 +710,15 @@ export async function PUT(
         await DB.query(updateQuery, updateParameters);
       }
       
-      // Update additional codes if provided
+      // Update additional codes if provided;
       if (body.additional_codes !== undefined) {
-        // Delete existing codes
+        // Delete existing codes;
         await DB.query(
           "DELETE FROM lab_test_codes WHERE test_id = ?",
           [testId]
         );
         
-        // Insert new codes
+        // Insert new codes;
         if (body.additional_codes.length > 0) {
           for (const code of body.additional_codes) {
             await DB.query(
@@ -718,21 +729,21 @@ export async function PUT(
         }
       }
       
-      // Update panel items if provided and this is a panel
+      // Update panel items if provided and this is a panel;
       if (body.is_panel !== undefined && body.panel_items !== undefined) {
-        // Update is_panel flag
+        // Update is_panel flag;
         await DB.query(
           "UPDATE lab_tests SET is_panel = ? WHERE id = ?",
           [body.is_panel ? 1 : 0, testId]
         );
         
-        // Delete existing panel items
+        // Delete existing panel items;
         await DB.query(
           "DELETE FROM lab_test_panel_items WHERE panel_id = ?",
           [testId]
         );
         
-        // Insert new panel items if this is a panel
+        // Insert new panel items if this is a panel;
         if (body.is_panel && body.panel_items.length > 0) {
           for (const item of body.panel_items) {
             await DB.query(
@@ -743,21 +754,21 @@ export async function PUT(
         }
       }
       
-      // Update reference ranges if provided
+      // Update reference ranges if provided;
       if (body.reference_ranges !== undefined) {
-        // Delete existing ranges
+        // Delete existing ranges;
         await DB.query(
           "DELETE FROM lab_test_reference_ranges WHERE test_id = ?",
           [testId]
         );
         
-        // Insert new ranges
+        // Insert new ranges;
         if (body.reference_ranges.length > 0) {
           for (const range of body.reference_ranges) {
             await DB.query(
               `INSERT INTO lab_test_reference_ranges (
                 test_id, gender, age_low, age_high, value_low, value_high, 
-                text_value, unit, interpretation
+                text_value, unit, interpretation;
               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
               [
                 testId,
@@ -768,53 +779,53 @@ export async function PUT(
                 range.value_high || null,
                 range.text_value || null,
                 range.unit || null,
-                range.interpretation || null
+                range.interpretation || null;
               ]
             );
           }
         }
       }
       
-      // Update reflex rules if provided
+      // Update reflex rules if provided;
       if (body.reflex_rules !== undefined) {
-        // Delete existing rules
+        // Delete existing rules;
         await DB.query(
           "DELETE FROM lab_test_reflex_rules WHERE condition_test_id = ?",
           [testId]
         );
         
-        // Insert new rules
+        // Insert new rules;
         if (body.reflex_rules.length > 0) {
           for (const rule of body.reflex_rules) {
             await DB.query(
               `INSERT INTO lab_test_reflex_rules (
-                condition_test_id, condition_operator, condition_value, action_test_id
+                condition_test_id, condition_operator, condition_value, action_test_id;
               ) VALUES (?, ?, ?, ?)`,
               [
                 testId,
                 rule.condition_operator,
                 rule.condition_value,
-                rule.action_test_id
+                rule.action_test_id;
               ]
             );
           }
         }
       }
       
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
       
-      // Fetch the updated test with all related data
-      const fetchTestQuery = `
-        SELECT 
+      // Fetch the updated test with all related data;
+      const fetchTestQuery = `;
+        SELECT;
           t.*,
-          c.name as category_name
-        FROM 
-          lab_tests t 
-        JOIN 
-          lab_test_categories c ON t.category_id = c.id
-        WHERE 
-          t.id = ?
+          c.name as category_name;
+        FROM;
+          lab_tests t;
+        JOIN;
+          lab_test_categories c ON t.category_id = c.id;
+        WHERE;
+          t.id = ?;
       `;
       
       const testResult = await DB.query(fetchTestQuery, [testId]);
@@ -824,76 +835,76 @@ export async function PUT(
         throw new Error("Failed to retrieve updated test");
       }
       
-      // Fetch additional codes
+      // Fetch additional codes;
       const codesResult = await DB.query(
         "SELECT system, code, display FROM lab_test_codes WHERE test_id = ?",
         [testId]
       );
       const additionalCodes = codesResult.results || [];
       
-      // Fetch panel items if this is a panel
+      // Fetch panel items if this is a panel;
       let panelItems = [];
       if (test.is_panel) {
         const panelItemsResult = await DB.query(
-          `SELECT 
-            i.test_id, i.sequence, t.name as test_name, t.loinc_code
-          FROM 
-            lab_test_panel_items i
-          JOIN 
-            lab_tests t ON i.test_id = t.id
-          WHERE 
-            i.panel_id = ?
-          ORDER BY 
+          `SELECT;
+            i.test_id, i.sequence, t.name as test_name, t.loinc_code;
+          FROM;
+            lab_test_panel_items i;
+          JOIN;
+            lab_tests t ON i.test_id = t.id;
+          WHERE;
+            i.panel_id = ?;
+          ORDER BY;
             i.sequence`,
           [testId]
         );
         panelItems = panelItemsResult.results || [];
       }
       
-      // Fetch reference ranges
+      // Fetch reference ranges;
       const rangesResult = await DB.query(
         "SELECT * FROM lab_test_reference_ranges WHERE test_id = ?",
         [testId]
       );
       const referenceRanges = rangesResult.results || [];
       
-      // Fetch reflex rules
+      // Fetch reflex rules;
       const rulesResult = await DB.query(
-        `SELECT 
+        `SELECT;
           r.*,
           ct.name as condition_test_name,
-          at.name as action_test_name
-        FROM 
-          lab_test_reflex_rules r
-        JOIN 
-          lab_tests ct ON r.condition_test_id = ct.id
-        JOIN 
-          lab_tests at ON r.action_test_id = at.id
-        WHERE 
+          at.name as action_test_name;
+        FROM;
+          lab_test_reflex_rules r;
+        JOIN;
+          lab_tests ct ON r.condition_test_id = ct.id;
+        JOIN;
+          lab_tests at ON r.action_test_id = at.id;
+        WHERE;
           r.condition_test_id = ?`,
         [testId]
       );
       const reflexRules = rulesResult.results || [];
       
-      // Construct complete response
+      // Construct complete response;
       const completeTest = {
         ...test,
         additional_codes: additionalCodes,
         panel_items: panelItems,
         reference_ranges: referenceRanges,
         reflex_rules: reflexRules,
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
+        available_priorities: JSON.parse(test.available_priorities || '["routine"]');
       };
       
-      // Return the updated test
+      // Return the updated test;
       return NextResponse.json(completeTest);
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
-    console.error("Error updating laboratory test:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to update laboratory test", details: errorMessage },
@@ -902,27 +913,27 @@ export async function PUT(
   }
 }
 
-// DELETE /api/diagnostics/lab/tests/:id - Delete a laboratory test
-export async function DELETE(
+// DELETE /api/diagnostics/lab/tests/:id - Delete a laboratory test;
+export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can delete tests
+    // Only lab managers and admins can delete tests;
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const testId = params.id;
     
-    // Check if test exists
+    // Check if test exists;
     const checkResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ?",
       [testId]
@@ -935,50 +946,50 @@ export async function DELETE(
       );
     }
     
-    // Check if test is used in any orders
+    // Check if test is used in any orders;
     const orderCheckResult = await DB.query(
       "SELECT id FROM lab_order_items WHERE test_id = ? LIMIT 1",
       [testId]
     );
     
     if (orderCheckResult.results && orderCheckResult.results.length > 0) {
-      // Instead of deleting, mark as inactive
+      // Instead of deleting, mark as inactive;
       await DB.query(
         "UPDATE lab_tests SET is_active = 0 WHERE id = ?",
         [testId]
       );
       
       return NextResponse.json({
-        message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead."
+        message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead.";
       });
     }
     
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Delete related data
+      // Delete related data;
       await DB.query("DELETE FROM lab_test_codes WHERE test_id = ?", [testId]);
       await DB.query("DELETE FROM lab_test_panel_items WHERE panel_id = ?", [testId]);
       await DB.query("DELETE FROM lab_test_reference_ranges WHERE test_id = ?", [testId]);
       await DB.query("DELETE FROM lab_test_reflex_rules WHERE condition_test_id = ? OR action_test_id = ?", [testId, testId]);
       
-      // Delete the test
+      // Delete the test;
       await DB.query("DELETE FROM lab_tests WHERE id = ?", [testId]);
       
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
       
       return NextResponse.json({
-        message: "Laboratory test deleted successfully"
+        message: "Laboratory test deleted successfully";
       });
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
-    console.error("Error deleting laboratory test:", error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { error: "Failed to delete laboratory test", details: errorMessage },

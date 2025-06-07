@@ -1,10 +1,21 @@
-import { MaintenanceRequest, MaintenanceWorkOrder, Asset, MaintenanceSchedule } from '@prisma/client';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
 
-// FHIR-compliant interfaces for Maintenance Management
+import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client';
+
+// FHIR-compliant interfaces for Maintenance Management;
 
 /**
- * FHIR-compliant Maintenance Request
- * Maps to FHIR ServiceRequest resource
+ * FHIR-compliant Maintenance Request;
+ * Maps to FHIR ServiceRequest resource;
  */
 export interface FHIRMaintenanceRequest {
   resourceType: 'ServiceRequest';
@@ -51,8 +62,8 @@ export interface FHIRMaintenanceRequest {
 }
 
 /**
- * FHIR-compliant Maintenance Work Order
- * Maps to FHIR Task resource
+ * FHIR-compliant Maintenance Work Order;
+ * Maps to FHIR Task resource;
  */
 export interface FHIRMaintenanceWorkOrder {
   resourceType: 'Task';
@@ -90,8 +101,8 @@ export interface FHIRMaintenanceWorkOrder {
 }
 
 /**
- * FHIR-compliant Asset
- * Maps to FHIR Device resource
+ * FHIR-compliant Asset;
+ * Maps to FHIR Device resource;
  */
 export interface FHIRAsset {
   resourceType: 'Device';
@@ -124,33 +135,33 @@ export interface FHIRAsset {
 }
 
 /**
- * Convert database MaintenanceRequest to FHIR ServiceRequest
+ * Convert database MaintenanceRequest to FHIR ServiceRequest;
  */
-export function toFHIRMaintenanceRequest(request: MaintenanceRequest & {
-  location: any;
-  asset?: any;
-  requestedByUser: any;
-  workOrders?: any[];
+export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
+  location: unknown;
+  asset?: unknown;
+  requestedByUser: unknown;
+  workOrders?: unknown[];
 }): FHIRMaintenanceRequest {
-  // Map status from internal to FHIR status
+  // Map status from internal to FHIR status;
   const statusMap: Record<string, 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown'> = {
     'PENDING': 'draft',
     'ASSIGNED': 'active',
     'IN_PROGRESS': 'active',
     'ON_HOLD': 'on-hold',
     'COMPLETED': 'completed',
-    'CANCELLED': 'revoked'
+    'CANCELLED': 'revoked';
   };
 
-  // Map priority from internal to FHIR priority
+  // Map priority from internal to FHIR priority;
   const priorityMap: Record<string, 'routine' | 'urgent' | 'asap' | 'stat'> = {
     'LOW': 'routine',
     'MEDIUM': 'routine',
     'HIGH': 'urgent',
-    'EMERGENCY': 'stat'
+    'EMERGENCY': 'stat';
   };
 
-  // Map request type to FHIR coding
+  // Map request type to FHIR coding;
   const requestTypeMap: Record<string, { code: string, display: string }> = {
     'REPAIR': { code: 'repair', display: 'Repair' },
     'PREVENTIVE': { code: 'preventive', display: 'Preventive Maintenance' },
@@ -168,16 +179,16 @@ export function toFHIRMaintenanceRequest(request: MaintenanceRequest & {
       coding: [{
         system: 'http://terminology.hl7.org/CodeSystem/service-category',
         code: 'maintenance',
-        display: 'Maintenance'
+        display: 'Maintenance';
       }]
     }],
     code: {
       coding: [{
         system: 'http://hms.local/fhir/CodeSystem/maintenance-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
-        display: requestTypeMap[request.requestType]?.display || request.requestType
+        display: requestTypeMap[request.requestType]?.display || request.requestType;
       }],
-      text: request.description
+      text: request.description;
     },
     subject: request.assetId ? {
       reference: `Device/${request.assetId}`,
@@ -205,42 +216,42 @@ export function toFHIRMaintenanceRequest(request: MaintenanceRequest & {
 }
 
 /**
- * Convert database MaintenanceWorkOrder to FHIR Task
+ * Convert database MaintenanceWorkOrder to FHIR Task;
  */
-export function toFHIRMaintenanceWorkOrder(workOrder: MaintenanceWorkOrder & {
+export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
   request: MaintenanceRequest;
-  assignedToUser?: any;
-  createdByUser: any;
+  assignedToUser?: unknown;
+  createdByUser: unknown;
 }): FHIRMaintenanceWorkOrder {
-  // Map status from internal to FHIR status
+  // Map status from internal to FHIR status;
   const statusMap: Record<string, 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error'> = {
     'PENDING': 'requested',
     'IN_PROGRESS': 'in-progress',
     'ON_HOLD': 'on-hold',
     'COMPLETED': 'completed',
-    'CANCELLED': 'cancelled'
+    'CANCELLED': 'cancelled';
   };
 
-  // Map priority from internal to FHIR priority
+  // Map priority from internal to FHIR priority;
   const priorityMap: Record<string, 'routine' | 'urgent' | 'asap' | 'stat'> = {
     'LOW': 'routine',
     'MEDIUM': 'routine',
     'HIGH': 'urgent',
-    'EMERGENCY': 'stat'
+    'EMERGENCY': 'stat';
   };
 
   return {
     resourceType: 'Task',
     id: workOrder.id,
     basedOn: [{
-      reference: `ServiceRequest/${workOrder.requestId}`
+      reference: `ServiceRequest/${workOrder.requestId}`;
     }],
     status: statusMap[workOrder.status] || 'requested',
     intent: 'order',
     priority: priorityMap[workOrder.request?.priority] || 'routine',
     description: workOrder.description,
     focus: {
-      reference: `ServiceRequest/${workOrder.requestId}`
+      reference: `ServiceRequest/${workOrder.requestId}`;
     },
     for: {
       reference: workOrder.request?.assetId 
@@ -260,26 +271,26 @@ export function toFHIRMaintenanceWorkOrder(workOrder: MaintenanceWorkOrder & {
     note: workOrder.notes ? [{ text: workOrder.notes }] : [],
     executionPeriod: {
       start: workOrder.startTime?.toISOString(),
-      end: workOrder.endTime?.toISOString()
+      end: workOrder.endTime?.toISOString();
     }
   };
 }
 
 /**
- * Convert database Asset to FHIR Device
+ * Convert database Asset to FHIR Device;
  */
-export function toFHIRAsset(asset: Asset & {
-  location: any;
+export const toFHIRAsset = (asset: Asset & {
+  location: unknown;
 }): FHIRAsset {
-  // Map status from internal to FHIR status
+  // Map status from internal to FHIR status;
   const statusMap: Record<string, 'active' | 'inactive' | 'entered-in-error' | 'unknown'> = {
     'OPERATIONAL': 'active',
     'NEEDS_REPAIR': 'active',
     'UNDER_MAINTENANCE': 'inactive',
-    'DECOMMISSIONED': 'inactive'
+    'DECOMMISSIONED': 'inactive';
   };
 
-  // Map asset type to FHIR coding
+  // Map asset type to FHIR coding;
   const assetTypeMap: Record<string, { code: string, display: string }> = {
     'EQUIPMENT': { code: 'equipment', display: 'Medical Equipment' },
     'FACILITY': { code: 'facility', display: 'Facility Asset' },
@@ -293,12 +304,12 @@ export function toFHIRAsset(asset: Asset & {
     identifier: [
       {
         system: 'http://hms.local/identifier/asset',
-        value: asset.id
+        value: asset.id;
       },
       ...(asset.serialNumber ? [{
         system: 'http://hms.local/identifier/serial-number',
-        value: asset.serialNumber
-      }] : [])
+        value: asset.serialNumber;
+      }] : []);
     ],
     status: statusMap[asset.status] || 'unknown',
     manufacturer: asset.manufacturer,
@@ -308,9 +319,9 @@ export function toFHIRAsset(asset: Asset & {
       coding: [{
         system: 'http://hms.local/fhir/CodeSystem/asset-type',
         code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
-        display: assetTypeMap[asset.assetType]?.display || asset.assetType
+        display: assetTypeMap[asset.assetType]?.display || asset.assetType;
       }],
-      text: asset.name
+      text: asset.name;
     },
     location: {
       reference: `Location/${asset.locationId}`,
@@ -318,6 +329,6 @@ export function toFHIRAsset(asset: Asset & {
     },
     note: [],
     manufactureDate: asset.purchaseDate?.toISOString(),
-    expirationDate: asset.warrantyExpiry?.toISOString()
+    expirationDate: asset.warrantyExpiry?.toISOString();
   };
 }

@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +20,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -17,7 +29,7 @@ import {
   TableCell, 
   TableHead, 
   TableHeader, 
-  TableRow 
+  TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +38,7 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '@/components/ui/select';
 import { 
   Pagination, 
@@ -34,11 +46,10 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { 
   Search, 
   Calendar as CalendarIcon, 
@@ -50,43 +61,43 @@ import {
   Wrench,
   AlertTriangle,
   Building,
-  Tag
+  Tag;
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default function AssetManagement() {
+export default const AssetManagement = () {
   const router = useRouter();
-  const [assets, setAssets] = useState([]);
+  const [assets, setAssets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any | null>(null);
   const [search, setSearch] = useState('');
   const [assetTypeFilter, setAssetTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
-  const [departments, setDepartments] = useState([]);
-  const [locations, setLocations] = useState([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [locations, setLocations] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
     from: null,
-    to: null
+    to: null;
   });
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0
+    total: 0;
   });
   const [activeTab, setActiveTab] = useState('all');
-  const [statistics, setStatistics] = useState(null);
+  const [statistics, setStatistics] = useState<any | null>(null);
 
-  // Fetch assets
+  // Fetch assets;
   useEffect(() => {
     const fetchAssets = async () => {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          take: pagination.take.toString();
         });
         
         if (search) queryParams.append('search', search);
@@ -113,7 +124,7 @@ export default function AssetManagement() {
         setAssets(data.assets || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0
+          total: data.total || 0;
         }));
       } catch (err) {
         setError(err.message);
@@ -132,7 +143,7 @@ export default function AssetManagement() {
     }
   }, [search, assetTypeFilter, statusFilter, departmentFilter, locationFilter, dateRange, pagination.skip, pagination.take, activeTab]);
 
-  // Fetch departments for filters
+  // Fetch departments for filters;
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -142,14 +153,14 @@ export default function AssetManagement() {
           setDepartments(data.departments || []);
         }
       } catch (err) {
-        console.error('Error fetching departments:', err);
+
       }
     };
     
     fetchDepartments();
   }, []);
 
-  // Fetch asset statistics
+  // Fetch asset statistics;
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
@@ -159,14 +170,14 @@ export default function AssetManagement() {
           setStatistics(data);
         }
       } catch (err) {
-        console.error('Error fetching asset statistics:', err);
+
       }
     };
     
     fetchStatistics();
   }, []);
 
-  // Extract unique locations from assets
+  // Extract unique locations from assets;
   useEffect(() => {
     if (assets.length > 0) {
       const uniqueLocations = [...new Set(assets.map(asset => asset.location).filter(Boolean))];
@@ -174,12 +185,12 @@ export default function AssetManagement() {
     }
   }, [assets]);
 
-  // Handle pagination
+  // Handle pagination;
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -188,31 +199,31 @@ export default function AssetManagement() {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
 
-  // Handle search
-  const handleSearch = (e) => {
+  // Handle search;
+  const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching
+    // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
-  // Handle tab change
-  const handleTabChange = (value) => {
+  // Handle tab change;
+  const handleTabChange = (value: unknown) => {
     setActiveTab(value);
-    // Reset pagination when changing tabs
+    // Reset pagination when changing tabs;
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
     
-    // Set appropriate filters based on tab
+    // Set appropriate filters based on tab;
     if (value === 'maintenance') {
       setStatusFilter('UNDER_MAINTENANCE');
     } else if (value === 'all') {
@@ -220,21 +231,21 @@ export default function AssetManagement() {
     }
   };
 
-  // Create new asset
+  // Create new asset;
   const handleCreateAsset = () => {
     router.push('/dashboard/hr/assets/new');
   };
 
-  // Export asset data
+  // Export asset data;
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
       toast({
         title: "Export Started",
         description: "Your asset report is being generated and will download shortly.",
       });
       
-      // Simulate download delay
+      // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -250,8 +261,8 @@ export default function AssetManagement() {
     }
   };
 
-  // Get status badge variant
-  const getStatusBadgeVariant = (status) => {
+  // Get status badge variant;
+  const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'AVAILABLE':
         return 'default';
@@ -268,8 +279,8 @@ export default function AssetManagement() {
     }
   };
 
-  // Get asset type icon
-  const getAssetTypeIcon = (type) => {
+  // Get asset type icon;
+  const getAssetTypeIcon = (type: unknown) => {
     switch (type) {
       case 'EQUIPMENT':
         return <Package className="h-4 w-4" />;
@@ -286,8 +297,8 @@ export default function AssetManagement() {
     }
   };
 
-  // Format currency
-  const formatCurrency = (amount) => {
+  // Format currency;
+  const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -296,37 +307,37 @@ export default function AssetManagement() {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold">Asset Management</h1>
-        <p className="text-muted-foreground">
-          Track and manage hospital assets and equipment
+    <div className="flex flex-col gap-4 p-4 md:p-8">;
+      <div className="flex flex-col gap-2">;
+        <h1 className="text-3xl font-bold">Asset Management</h1>;
+        <p className="text-muted-foreground">;
+          Track and manage hospital assets and equipment;
         </p>
       </div>
       
-      <Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange}>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+      <Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange}>;
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
           <TabsList>
-            <TabsTrigger value="all">All Assets</TabsTrigger>
-            <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
-            <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
+            <TabsTrigger value="all">All Assets</TabsTrigger>;
+            <TabsTrigger value="maintenance">Maintenance</TabsTrigger>;
+            <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>;
           </TabsList>
           
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={handleCreateAsset}>
-              <Plus className="mr-2 h-4 w-4" />
-              New Asset
+          <div className="flex flex-wrap gap-2">;
+            <Button onClick={handleCreateAsset}>;
+              <Plus className="mr-2 h-4 w-4" />;
+              New Asset;
             </Button>
-            <Button variant="outline" onClick={handleExport}>
-              <Download className="mr-2 h-4 w-4" />
-              Export
+            <Button variant="outline" onClick={handleExport}>;
+              <Download className="mr-2 h-4 w-4" />;
+              Export;
             </Button>
           </div>
         </div>
         
-        <TabsContent value="all" className="mt-0">
+        <TabsContent value="all" className="mt-0">;
           <Card>
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2">;
               <CardTitle>Asset Inventory</CardTitle>
               <CardDescription>
                 {loading ? 'Loading assets...' : 
@@ -334,63 +345,63 @@ export default function AssetManagement() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">
-                <div className="flex flex-col md:flex-row gap-2 md:items-center">
-                  <form onSubmit={handleSearch} className="flex gap-2">
-                    <div className="relative">
-                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input
+              <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
+                <div className="flex flex-col md:flex-row gap-2 md:items-center">;
+                  <form onSubmit={handleSearch} className="flex gap-2">;
+                    <div className="relative">;
+                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
+                      <Input;
                         type="search"
-                        placeholder="Search assets..."
-                        className="pl-8 w-full md:w-[300px]"
+                        placeholder="Search assets...";
+                        className="pl-8 w-full md:w-[300px]";
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <Button type="submit" variant="secondary">
-                      Search
+                    <Button type="submit" variant="secondary">;
+                      Search;
                     </Button>
                   </form>
                 </div>
                 
-                <div className="flex flex-col md:flex-row gap-2">
-                  <Select value={assetTypeFilter} onValueChange={setAssetTypeFilter}>
-                    <SelectTrigger className="w-full md:w-[180px]">
-                      <SelectValue placeholder="All Types" />
+                <div className="flex flex-col md:flex-row gap-2">;
+                  <Select value={assetTypeFilter} onValueChange={setAssetTypeFilter}>;
+                    <SelectTrigger className="w-full md:w-[180px]">;
+                      <SelectValue placeholder="All Types" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>
-                      <SelectItem value="EQUIPMENT">Equipment</SelectItem>
-                      <SelectItem value="FURNITURE">Furniture</SelectItem>
-                      <SelectItem value="IT">IT</SelectItem>
-                      <SelectItem value="VEHICLE">Vehicle</SelectItem>
-                      <SelectItem value="BUILDING">Building</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
+                      <SelectItem value="">All Types</SelectItem>;
+                      <SelectItem value="EQUIPMENT">Equipment</SelectItem>;
+                      <SelectItem value="FURNITURE">Furniture</SelectItem>;
+                      <SelectItem value="IT">IT</SelectItem>;
+                      <SelectItem value="VEHICLE">Vehicle</SelectItem>;
+                      <SelectItem value="BUILDING">Building</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                   
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full md:w-[180px]">
-                      <SelectValue placeholder="All Statuses" />
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>;
+                    <SelectTrigger className="w-full md:w-[180px]">;
+                      <SelectValue placeholder="All Statuses" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>
-                      <SelectItem value="AVAILABLE">Available</SelectItem>
-                      <SelectItem value="IN_USE">In Use</SelectItem>
-                      <SelectItem value="UNDER_MAINTENANCE">Under Maintenance</SelectItem>
-                      <SelectItem value="DISPOSED">Disposed</SelectItem>
-                      <SelectItem value="LOST">Lost</SelectItem>
+                      <SelectItem value="">All Statuses</SelectItem>;
+                      <SelectItem value="AVAILABLE">Available</SelectItem>;
+                      <SelectItem value="IN_USE">In Use</SelectItem>;
+                      <SelectItem value="UNDER_MAINTENANCE">Under Maintenance</SelectItem>;
+                      <SelectItem value="DISPOSED">Disposed</SelectItem>;
+                      <SelectItem value="LOST">Lost</SelectItem>;
                     </SelectContent>
                   </Select>
                   
-                  <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-                    <SelectTrigger className="w-full md:w-[180px]">
-                      <SelectValue placeholder="All Departments" />
+                  <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
+                    <SelectTrigger className="w-full md:w-[180px]">;
+                      <SelectValue placeholder="All Departments" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Departments</SelectItem>
+                      <SelectItem value="">All Departments</SelectItem>;
                       {departments.map((dept) => (
-                        <SelectItem key={dept.id} value={dept.id}>
+                        <SelectItem key={dept.id} value={dept.id}>;
                           {dept.name}
                         </SelectItem>
                       ))}
@@ -400,19 +411,19 @@ export default function AssetManagement() {
               </div>
               
               {error ? (
-                <div className="text-center py-4 text-red-500">
+                <div className="text-center py-4 text-red-500">;
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">
-                  Loading...
+                <div className="text-center py-4">;
+                  Loading...;
                 </div>
               ) : assets.length === 0 ? (
-                <div className="text-center py-4">
-                  No assets found. Try adjusting your filters or create a new asset.
+                <div className="text-center py-4">;
+                  No assets found. Try adjusting your filters or create a new asset.;
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto">;
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -427,9 +438,9 @@ export default function AssetManagement() {
                     </TableHeader>
                     <TableBody>
                       {assets.map((asset) => (
-                        <TableRow key={asset.id}>
-                          <TableCell className="font-medium">
-                            <div className="flex items-center gap-2">
+                        <TableRow key={asset.id}>;
+                          <TableCell className="font-medium">;
+                            <div className="flex items-center gap-2">;
                               {getAssetTypeIcon(asset.assetType)}
                               <span>{asset.name}</span>
                             </div>
@@ -447,17 +458,17 @@ export default function AssetManagement() {
                             {asset.location || '—'}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(asset.status)}>
+                            <Badge variant={getStatusBadgeVariant(asset.status)}>;
                               {asset.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
+                            <Button;
+                              variant="ghost";
+                              size="sm";
                               onClick={() => router.push(`/dashboard/hr/assets/${asset.id}`)}
                             >
-                              View
+                              View;
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -471,18 +482,19 @@ export default function AssetManagement() {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious 
+                    <PaginationPrevious;
                       onClick={handlePreviousPage}
                       className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">
-                      Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) || 1}
+                    <span className="text-sm">;
+                      Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
+                        1}
                     </span>
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext 
+                    <PaginationNext;
                       onClick={handleNextPage}
                       className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -493,50 +505,50 @@ export default function AssetManagement() {
           </Card>
         </TabsContent>
         
-        <TabsContent value="maintenance" className="mt-0">
+        <TabsContent value="maintenance" className="mt-0">;
           <Card>
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2">;
               <CardTitle>Maintenance Schedule</CardTitle>
               <CardDescription>
-                Assets currently under maintenance or scheduled for maintenance
+                Assets currently under maintenance or scheduled for maintenance;
               </CardDescription>
             </CardHeader>
             <CardContent>
               {/* Maintenance content would go here */}
-              <div className="text-center py-4">
-                Loading maintenance schedule...
+              <div className="text-center py-4">;
+                Loading maintenance schedule...;
               </div>
             </CardContent>
           </Card>
         </TabsContent>
         
-        <TabsContent value="reports" className="mt-0">
+        <TabsContent value="reports" className="mt-0">;
           <Card>
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2">;
               <CardTitle>Asset Reports & Analytics</CardTitle>
               <CardDescription>
-                View asset distribution, value, and maintenance costs
+                View asset distribution, value, and maintenance costs;
               </CardDescription>
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
-              <div className="text-center py-4">
-                Loading asset reports...
+              <div className="text-center py-4">;
+                Loading asset reports...;
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Assets</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Total Assets</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <Package className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <Package className="h-5 w-5 text-blue-500 mr-2" />;
+              <span className="text-2xl font-bold">;
                 {statistics?.totalAssets || 0}
               </span>
             </div>
@@ -544,13 +556,13 @@ export default function AssetManagement() {
         </Card>
         
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Under Maintenance</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Under Maintenance</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <Wrench className="h-5 w-5 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <Wrench className="h-5 w-5 text-yellow-500 mr-2" />;
+              <span className="text-2xl font-bold">;
                 {statistics?.assetsByStatus?.find(s => s.status === 'UNDER_MAINTENANCE')?.count || 0}
               </span>
             </div>
@@ -558,12 +570,12 @@ export default function AssetManagement() {
         </Card>
         
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Value</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Total Value</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <span className="text-2xl font-bold">;
                 {formatCurrency(statistics?.totalValue || 0)}
               </span>
             </div>
@@ -571,12 +583,12 @@ export default function AssetManagement() {
         </Card>
         
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Maintenance Costs</CardTitle>
+          <CardHeader className="pb-2">;
+            <CardTitle className="text-sm font-medium">Maintenance Costs</CardTitle>;
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">
-              <span className="text-2xl font-bold">
+            <div className="flex items-center">;
+              <span className="text-2xl font-bold">;
                 {formatCurrency(statistics?.maintenanceCosts || 0)}
               </span>
             </div>

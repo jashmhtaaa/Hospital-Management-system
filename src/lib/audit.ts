@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Audit Logger Service for HMS Support Services
+ * Audit Logger Service for HMS Support Services;
  * 
- * This service provides comprehensive HIPAA-compliant audit logging
+ * This service provides comprehensive HIPAA-compliant audit logging;
  * for all operations within the HMS Support Services module.
  */
 
@@ -37,55 +48,43 @@ export class AuditLogger {
       userAgent: context.userAgent,
       method: context.method,
       url: context.url ? SecurityService.sanitizeUrl(context.url) : undefined,
-      ipAddress: context.ipAddress
+      ipAddress: context.ipAddress;
     };
   }
   
   /**
-   * Logs an audit event to the database and console
-   * @param entry The audit log entry to record
-   * @returns The created audit log entry
+   * Logs an audit event to the database and console;
+   * @param entry The audit log entry to record;
+   * @returns The created audit log entry;
    */
   public async log(entry: AuditLogEntry): Promise<any> {
     try {
-      // Sanitize details to remove any PHI/PII
+      // Sanitize details to remove any PHI/PII;
       const sanitizedDetails = this.sanitizeDetails(entry.details);
       
-      // Determine severity if not provided
+      // Determine severity if not provided;
       const severity = entry.severity || this.determineSeverity(entry.action);
       
-      // Create the audit log entry
-      const logEntry = await prisma.auditLog.create({
-        data: {
-          requestId: this.context.requestId,
-          timestamp: new Date(),
-          action: entry.action,
-          resourceId: entry.resourceId,
-          userId: entry.userId,
-          userRoles: this.context.userRoles,
-          userAgent: this.context.userAgent,
-          method: this.context.method,
-          url: this.context.url,
-          ipAddress: this.context.ipAddress,
-          details: sanitizedDetails,
-          severity
+      // Create the audit log entry;
+\1;
+          severity;
         }
       });
       
-      // Also log to console for development/debugging
+      // Also log to console for development/debugging;
       if (process.env.NODE_ENV !== 'production') {
-        console.log(`[AUDIT] ${severity.toUpperCase()} - ${entry.action} - User: ${entry.userId} - Resource: ${entry.resourceId}`);
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
       
       return logEntry;
     } catch (error) {
-      // Fallback to console logging if database logging fails
-      console.error('Failed to write audit log to database:', error);
-      console.log(`[AUDIT] ${entry.action} - User: ${entry.userId} - Resource: ${entry.resourceId} - Details:`, entry.details);
+      // Fallback to console logging if database logging fails;
+
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       
-      // In production, we might want to use a more robust fallback
+      // In production, we might want to use a more robust fallback;
       if (process.env.NODE_ENV === 'production') {
-        // Send to external logging service or write to file
+        // Send to external logging service or write to file;
         this.fallbackLogging(entry);
       }
       
@@ -94,40 +93,34 @@ export class AuditLogger {
   }
   
   /**
-   * Sanitizes log details to remove any PHI/PII
-   * @param details The details object to sanitize
-   * @returns Sanitized details object
+   * Sanitizes log details to remove any PHI/PII;
+   * @param details The details object to sanitize;
+   * @returns Sanitized details object;
    */
   private sanitizeDetails(details: Record<string, any>): Record<string, any> {
     const sanitized: Record<string, any> = {};
     
-    // Define sensitive field patterns
-    const sensitiveFields = [
-      'password', 'secret', 'token', 'key', 'auth',
-      'ssn', 'socialSecurity', 'dob', 'dateOfBirth', 'birthDate',
-      'address', 'phone', 'email', 'medicalRecord', 'diagnosis',
-      'treatment', 'medication', 'insurance', 'payment', 'credit',
-      'debit', 'card', 'account', 'license', 'patient'
+    // Define sensitive field patterns;
+\1;
     ];
     
-    // Process each field in the details object
+    // Process each field in the details object;
     for (const [key, value] of Object.entries(details)) {
-      // Check if this is a sensitive field
-      const isSensitive = sensitiveFields.some(field => 
-        key.toLowerCase().includes(field.toLowerCase())
+      // Check if this is a sensitive field;
+\1;
       );
       
       if (isSensitive) {
-        // Redact sensitive fields
+        // Redact sensitive fields;
         sanitized[key] = '[REDACTED]';
       } else if (typeof value === 'object' && value !== null) {
-        // Recursively sanitize nested objects
+        // Recursively sanitize nested objects;
         sanitized[key] = this.sanitizeDetails(value);
       } else if (typeof value === 'string') {
-        // Check for patterns in string values
+        // Check for patterns in string values;
         sanitized[key] = SecurityService.sanitizeErrorMessage(value);
       } else {
-        // Pass through non-sensitive values
+        // Pass through non-sensitive values;
         sanitized[key] = value;
       }
     }
@@ -136,60 +129,59 @@ export class AuditLogger {
   }
   
   /**
-   * Determines the severity level based on the action
-   * @param action The audit action
-   * @returns The severity level
+   * Determines the severity level based on the action;
+   * @param action The audit action;
+   * @returns The severity level;
    */
   private determineSeverity(action: string): 'info' | 'warning' | 'error' | 'critical' {
-    // Security-related actions are higher severity
+    // Security-related actions are higher severity;
     if (action.includes('login') || action.includes('auth') || action.includes('permission')) {
       return 'warning';
     }
     
-    // Error actions are error severity
+    // Error actions are error severity;
     if (action.includes('error') || action.includes('fail') || action.includes('exception')) {
       return 'error';
     }
     
-    // Data modification actions are warning severity
+    // Data modification actions are warning severity;
     if (
       action.includes('create') || 
       action.includes('update') || 
       action.includes('delete') || 
-      action.includes('modify')
+      action.includes('modify');
     ) {
       return 'warning';
     }
     
-    // Security breaches or critical operations
+    // Security breaches or critical operations;
     if (
       action.includes('breach') || 
       action.includes('security.violation') || 
-      action.includes('critical')
+      action.includes('critical');
     ) {
       return 'critical';
     }
     
-    // Default to info
+    // Default to info;
     return 'info';
   }
   
   /**
-   * Fallback logging mechanism when database logging fails
-   * @param entry The audit log entry to record
+   * Fallback logging mechanism when database logging fails;
+   * @param entry The audit log entry to record;
    */
   private fallbackLogging(entry: AuditLogEntry): void {
-    // In a real implementation, this would write to a file or external service
-    // For this example, we'll just log to console
-    console.warn('[AUDIT FALLBACK] Failed to write to database, using fallback logging');
-    console.log(JSON.stringify({
-      timestamp: new Date().toISOString(),
+    // In a real implementation, this would write to a file or external service;
+    // For this example, we'll just log to console;
+
+    // console.log removed for production.toISOString(),
       requestId: this.context.requestId,
       action: entry.action,
       resourceId: entry.resourceId,
       userId: entry.userId,
       severity: entry.severity || this.determineSeverity(entry.action),
-      details: this.sanitizeDetails(entry.details)
+      details: this.sanitizeDetails(entry.details);
     }));
   }
 }

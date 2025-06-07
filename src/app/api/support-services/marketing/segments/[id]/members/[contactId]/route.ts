@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const segmentService = new SegmentService();
 
 /**
- * POST /api/support-services/marketing/segments/:id/members
- * Add a contact to a segment
+ * POST /api/support-services/marketing/segments/:id/members;
+ * Add a contact to a segment;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -30,7 +41,7 @@ export async function POST(
       const member = await segmentService.addContactToSegment(
         params.id,
         contactId,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(member, { status: 201 });
@@ -43,10 +54,10 @@ export async function POST(
 }
 
 /**
- * DELETE /api/support-services/marketing/segments/:id/members/:contactId
- * Remove a contact from a segment
+ * DELETE /api/support-services/marketing/segments/:id/members/:contactId;
+ * Remove a contact from a segment;
  */
-export async function DELETE(
+export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string; contactId: string } }
 ) {
@@ -58,7 +69,7 @@ export async function DELETE(
       const member = await segmentService.removeContactFromSegment(
         params.id,
         params.contactId,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(member);

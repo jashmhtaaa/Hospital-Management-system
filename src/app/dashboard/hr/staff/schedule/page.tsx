@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +20,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '@/components/ui/card';
 import { 
   Table, 
@@ -16,7 +28,7 @@ import {
   TableCell, 
   TableHead, 
   TableHeader, 
-  TableRow 
+  TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +37,7 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '@/components/ui/select';
 import { 
   Pagination, 
@@ -33,7 +45,7 @@ import {
   PaginationItem, 
   PaginationLink, 
   PaginationNext, 
-  PaginationPrevious 
+  PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -42,35 +54,35 @@ import {
   Building2, 
   ArrowLeft,
   CalendarRange,
-  Users
+  Users;
 } from 'lucide-react';
 import { format } from 'date-fns';
 
-export default function StaffScheduling() {
+export default const StaffScheduling = () {
   const router = useRouter();
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any | null>(null);
   const [search, setSearch] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0
+    total: 0;
   });
   const [scheduleView, setScheduleView] = useState('week');
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [schedules, setSchedules] = useState([]);
+  const [schedules, setSchedules] = useState<any[]>([]);
 
-  // Fetch employees
+  // Fetch employees;
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          take: pagination.take.toString();
         });
         
         if (search) queryParams.append('search', search);
@@ -86,7 +98,7 @@ export default function StaffScheduling() {
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total
+          total: data.total;
         }));
       } catch (err) {
         setError(err.message);
@@ -98,25 +110,25 @@ export default function StaffScheduling() {
     fetchEmployees();
   }, [search, departmentFilter, pagination.skip, pagination.take]);
 
-  // Fetch departments for filters
+  // Fetch departments for filters;
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        // Fetch departments
+        // Fetch departments;
         const deptResponse = await fetch('/api/hr/departments');
         if (deptResponse.ok) {
           const deptData = await deptResponse.json();
           setDepartments(deptData.departments || []);
         }
       } catch (err) {
-        console.error('Error fetching departments:', err);
+
       }
     };
     
     fetchDepartments();
   }, []);
 
-  // Generate mock schedule data for demonstration
+  // Generate mock schedule data for demonstration;
   useEffect(() => {
     if (employees.length > 0) {
       const mockSchedules = [];
@@ -129,13 +141,13 @@ export default function StaffScheduling() {
           employeeName: `${employee.firstName} ${employee.lastName}`,
           department: employee.department?.name || 'Unassigned',
           position: employee.positions?.length > 0 
-            ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title) 
+            ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title);
             : 'Unassigned',
           schedule: {}
         };
         
         days.forEach(day => {
-          // Randomly assign shifts, with higher probability for "Off" on weekends
+          // Randomly assign shifts, with higher probability for "Off" on weekends;
           const isWeekend = day === 'Saturday' || day === 'Sunday';
           const shiftIndex = Math.floor(Math.random() * (isWeekend ? 10 : shifts.length));
           employeeSchedule.schedule[day] = shiftIndex >= shifts.length ? 'Off' : shifts[shiftIndex];
@@ -148,12 +160,12 @@ export default function StaffScheduling() {
     }
   }, [employees]);
 
-  // Handle pagination
+  // Handle pagination;
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -162,27 +174,27 @@ export default function StaffScheduling() {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
 
-  // Handle search
-  const handleSearch = (e) => {
+  // Handle search;
+  const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching
+    // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
-  // Get days of the week for the current date
+  // Get days of the week for the current date;
   const getDaysOfWeek = () => {
     const days = [];
     const startOfWeek = new Date(currentDate);
     const day = startOfWeek.getDay();
-    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday;
     startOfWeek.setDate(diff);
     
     for (let i = 0; i < 7; i++) {
@@ -190,14 +202,14 @@ export default function StaffScheduling() {
       date.setDate(date.getDate() + i);
       days.push({
         name: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i],
-        date: date
+        date: date;
       });
     }
     
     return days;
   };
 
-  // Navigate to previous/next week
+  // Navigate to previous/next week;
   const navigatePreviousWeek = () => {
     const newDate = new Date(currentDate);
     newDate.setDate(newDate.getDate() - 7);
@@ -210,60 +222,60 @@ export default function StaffScheduling() {
     setCurrentDate(newDate);
   };
 
-  // Get the week range string
+  // Get the week range string;
   const getWeekRangeString = () => {
     const days = getDaysOfWeek();
     return `${format(days[0].date, 'MMM d')} - ${format(days[6].date, 'MMM d, yyyy')}`;
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">
-      <div className="flex items-center gap-2">
-        <Button 
-          variant="ghost" 
-          size="sm" 
+    <div className="flex flex-col gap-4 p-4 md:p-8">;
+      <div className="flex items-center gap-2">;
+        <Button;
+          variant="ghost";
+          size="sm";
           onClick={() => router.push('/dashboard/hr/staff')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Staff Management
+          <ArrowLeft className="h-4 w-4 mr-2" />;
+          Back to Staff Management;
         </Button>
       </div>
       
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold">Staff Scheduling</h1>
-        <p className="text-muted-foreground">
-          Manage employee work schedules and shifts
+      <div className="flex flex-col gap-2">;
+        <h1 className="text-3xl font-bold">Staff Scheduling</h1>;
+        <p className="text-muted-foreground">;
+          Manage employee work schedules and shifts;
         </p>
       </div>
       
-      <div className="flex flex-col md:flex-row gap-4 justify-between">
-        <div className="flex flex-col md:flex-row gap-2 md:items-center">
-          <form onSubmit={handleSearch} className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
+      <div className="flex flex-col md:flex-row gap-4 justify-between">;
+        <div className="flex flex-col md:flex-row gap-2 md:items-center">;
+          <form onSubmit={handleSearch} className="flex gap-2">;
+            <div className="relative">;
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
+              <Input;
                 type="search"
-                placeholder="Search employees..."
-                className="pl-8 w-full md:w-[300px]"
+                placeholder="Search employees...";
+                className="pl-8 w-full md:w-[300px]";
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button type="submit" variant="secondary">
-              Search
+            <Button type="submit" variant="secondary">;
+              Search;
             </Button>
           </form>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-2">
-          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Filter by Department" />
+        <div className="flex flex-col md:flex-row gap-2">;
+          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
+            <SelectTrigger className="w-full md:w-[200px]">;
+              <SelectValue placeholder="Filter by Department" />;
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Departments</SelectItem>
+              <SelectItem value="">All Departments</SelectItem>;
               {departments.map((dept) => (
-                <SelectItem key={dept.id} value={dept.id}>
+                <SelectItem key={dept.id} value={dept.id}>;
                   {dept.name}
                 </SelectItem>
               ))}
@@ -271,24 +283,24 @@ export default function StaffScheduling() {
           </Select>
           
           <Button onClick={() => router.push('/dashboard/hr/staff/schedule/new')}>
-            <CalendarRange className="mr-2 h-4 w-4" />
-            Create Schedule
+            <CalendarRange className="mr-2 h-4 w-4" />;
+            Create Schedule;
           </Button>
         </div>
       </div>
       
       <Card>
-        <CardHeader className="pb-2">
-          <div className="flex justify-between items-center">
+        <CardHeader className="pb-2">;
+          <div className="flex justify-between items-center">;
             <CardTitle>Staff Schedule</CardTitle>
-            <div className="flex gap-2">
-              <Select value={scheduleView} onValueChange={setScheduleView}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue placeholder="View" />
+            <div className="flex gap-2">;
+              <Select value={scheduleView} onValueChange={setScheduleView}>;
+                <SelectTrigger className="w-[120px]">;
+                  <SelectValue placeholder="View" />;
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="week">Week View</SelectItem>
-                  <SelectItem value="month">Month View</SelectItem>
+                  <SelectItem value="week">Week View</SelectItem>;
+                  <SelectItem value="month">Month View</SelectItem>;
                 </SelectContent>
               </Select>
             </div>
@@ -298,43 +310,43 @@ export default function StaffScheduling() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between items-center mb-4">
-            <Button variant="outline" size="sm" onClick={navigatePreviousWeek}>
-              Previous Week
+          <div className="flex justify-between items-center mb-4">;
+            <Button variant="outline" size="sm" onClick={navigatePreviousWeek}>;
+              Previous Week;
             </Button>
-            <div className="font-medium">
+            <div className="font-medium">;
               {getWeekRangeString()}
             </div>
-            <Button variant="outline" size="sm" onClick={navigateNextWeek}>
-              Next Week
+            <Button variant="outline" size="sm" onClick={navigateNextWeek}>;
+              Next Week;
             </Button>
           </div>
           
           {error ? (
-            <div className="text-center py-4 text-red-500">
+            <div className="text-center py-4 text-red-500">;
               Error: {error}
             </div>
           ) : loading ? (
-            <div className="text-center py-4">
-              Loading...
+            <div className="text-center py-4">;
+              Loading...;
             </div>
           ) : schedules.length === 0 ? (
-            <div className="text-center py-4">
-              No employees found. Try adjusting your filters.
+            <div className="text-center py-4">;
+              No employees found. Try adjusting your filters.;
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto">;
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="min-w-[150px]">Employee</TableHead>
+                    <TableHead className="min-w-[150px]">Employee</TableHead>;
                     <TableHead>Department</TableHead>
                     <TableHead>Position</TableHead>
                     {getDaysOfWeek().map((day) => (
-                      <TableHead key={day.name} className="min-w-[120px]">
-                        <div className="flex flex-col">
+                      <TableHead key={day.name} className="min-w-[120px]">;
+                        <div className="flex flex-col">;
                           <span>{day.name}</span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">;
                             {format(day.date, 'MMM d')}
                           </span>
                         </div>
@@ -344,8 +356,8 @@ export default function StaffScheduling() {
                 </TableHeader>
                 <TableBody>
                   {schedules.map((schedule) => (
-                    <TableRow key={schedule.employeeId}>
-                      <TableCell className="font-medium">
+                    <TableRow key={schedule.employeeId}>;
+                      <TableCell className="font-medium">;
                         {schedule.employeeName}
                       </TableCell>
                       <TableCell>
@@ -355,12 +367,12 @@ export default function StaffScheduling() {
                         {schedule.position}
                       </TableCell>
                       {getDaysOfWeek().map((day) => (
-                        <TableCell key={day.name}>
+                        <TableCell key={day.name}>;
                           <Badge variant={
                             schedule.schedule[day.name] === 'Off' ? 'outline' :
                             schedule.schedule[day.name]?.includes('Morning') ? 'default' :
                             schedule.schedule[day.name]?.includes('Evening') ? 'secondary' :
-                            'destructive'
+                            'destructive';
                           }>
                             {schedule.schedule[day.name]}
                           </Badge>
@@ -377,18 +389,18 @@ export default function StaffScheduling() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious 
+                <PaginationPrevious;
                   onClick={handlePreviousPage}
                   className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                 />
               </PaginationItem>
               <PaginationItem>
-                <span className="text-sm">
+                <span className="text-sm">;
                   Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take)}
                 </span>
               </PaginationItem>
               <PaginationItem>
-                <PaginationNext 
+                <PaginationNext;
                   onClick={handleNextPage}
                   className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                 />

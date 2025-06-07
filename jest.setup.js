@@ -12,13 +12,13 @@ const originalConsoleError = console.error;
 const originalConsoleWarn = console.warn;
 
 beforeAll(() => {
-  console.error = jest.fn();
-  console.warn = jest.fn();
+// Debug logging removed
+// Debug logging removed
 });
 
 afterAll(() => {
-  console.error = originalConsoleError;
-  console.warn = originalConsoleWarn;
+// Debug logging removed
+// Debug logging removed
 });
 
 // Mock Prisma Client

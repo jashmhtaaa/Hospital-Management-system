@@ -1,4 +1,15 @@
-import { MarketingCampaign, CampaignChannel, MarketingMessage, Contact, ContactSegment, Lead } from '@/lib/models/marketing';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { MarketingCampaign, CampaignChannel, Contact, ContactSegment, Lead } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { encryptData, decryptData } from '@/lib/encryption';
 import { FhirResourceGenerator } from '@/lib/fhir';
@@ -7,7 +18,7 @@ import { NotificationService } from '@/lib/notifications';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 
 /**
- * Service for managing marketing campaigns and related operations
+ * Service for managing marketing campaigns and related operations;
  */
 export class MarketingCampaignService {
   private auditLogger = new AuditLogger('marketing-campaign');
@@ -15,14 +26,14 @@ export class MarketingCampaignService {
   private fhirGenerator = new FhirResourceGenerator();
 
   /**
-   * Create a new marketing campaign
+   * Create a new marketing campaign;
    */
   async createCampaign(data: Omit<MarketingCampaign, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<MarketingCampaign> {
     try {
-      // Validate campaign data
+      // Validate campaign data;
       this.validateCampaignData(data);
       
-      // Create campaign in database
+      // Create campaign in database;
       const campaign = await prisma.marketingCampaign.create({
         data: {
           name: data.name,
@@ -40,7 +51,7 @@ export class MarketingCampaignService {
         },
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'campaign.create',
         resourceId: campaign.id,
@@ -48,7 +59,7 @@ export class MarketingCampaignService {
         details: { campaignName: campaign.name, campaignType: campaign.type }
       });
       
-      // Notify relevant users
+      // Notify relevant users;
       await this.notificationService.sendNotification({
         type: 'CAMPAIGN_CREATED',
         title: 'New Marketing Campaign Created',
@@ -67,9 +78,9 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Get a marketing campaign by ID
+   * Get a marketing campaign by ID;
    */
-  async getCampaignById(id: string, includeFHIR = false): Promise<MarketingCampaign & { fhir?: any }> {
+  async getCampaignById(id: string, includeFHIR = false): Promise<MarketingCampaign & { fhir?: unknown }> {
     try {
       const campaign = await prisma.marketingCampaign.findUnique({
         where: { id },
@@ -77,26 +88,26 @@ export class MarketingCampaignService {
           channels: true,
           segments: {
             include: {
-              segment: true
+              segment: true;
             }
           },
           leads: {
             take: 10,
             orderBy: {
-              createdAt: 'desc'
+              createdAt: 'desc';
             }
           },
           analytics: {
             take: 5,
             orderBy: {
-              date: 'desc'
+              date: 'desc';
             }
           },
           createdByUser: {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           }
         }
@@ -106,8 +117,8 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
       
-      // Generate FHIR representation if requested
-      const result: any = campaign;
+      // Generate FHIR representation if requested;
+      const result: unknown = campaign;
       if (includeFHIR) {
         result.fhir = this.generateCampaignFHIR(campaign);
       }
@@ -122,7 +133,7 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Get all marketing campaigns with optional filtering
+   * Get all marketing campaigns with optional filtering;
    */
   async getCampaigns(filters: {
     type?: string;
@@ -143,11 +154,11 @@ export class MarketingCampaignService {
         endDateFrom, 
         endDateTo,
         page = 1, 
-        limit = 10 
+        limit = 10;
       } = filters;
       
-      // Build where clause based on filters
-      const where: any = {};
+      // Build where clause based on filters;
+      const where: unknown = {};
       
       if (type) {
         where.type = type;
@@ -177,36 +188,36 @@ export class MarketingCampaignService {
         }
       }
       
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.marketingCampaign.count({ where });
       
-      // Get campaigns with pagination
+      // Get campaigns with pagination;
       const campaigns = await prisma.marketingCampaign.findMany({
         where,
         include: {
           channels: true,
           segments: {
             include: {
-              segment: true
+              segment: true;
             }
           },
           _count: {
             select: {
               leads: true,
-              activities: true
+              activities: true;
             }
           },
           createdByUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
       
@@ -216,7 +227,7 @@ export class MarketingCampaignService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -225,11 +236,11 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Update a marketing campaign
+   * Update a marketing campaign;
    */
   async updateCampaign(id: string, data: Partial<MarketingCampaign>, userId: string): Promise<MarketingCampaign> {
     try {
-      // Check if campaign exists
+      // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id }
       });
@@ -238,23 +249,23 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
       
-      // Update campaign
+      // Update campaign;
       const updatedCampaign = await prisma.marketingCampaign.update({
         where: { id },
         data: {
           ...data,
-          updatedById: userId
+          updatedById: userId;
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'campaign.update',
         resourceId: id,
         userId,
         details: { 
           campaignName: updatedCampaign.name, 
-          updatedFields: Object.keys(data) 
+          updatedFields: Object.keys(data);
         }
       });
       
@@ -268,11 +279,11 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Delete a marketing campaign
+   * Delete a marketing campaign;
    */
   async deleteCampaign(id: string, userId: string): Promise<void> {
     try {
-      // Check if campaign exists
+      // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id }
       });
@@ -281,19 +292,19 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
       
-      // Delete campaign
+      // Delete campaign;
       await prisma.marketingCampaign.delete({
         where: { id }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'campaign.delete',
         resourceId: id,
         userId,
         details: { 
           campaignName: existingCampaign.name,
-          campaignType: existingCampaign.type
+          campaignType: existingCampaign.type;
         }
       });
     } catch (error) {
@@ -305,11 +316,11 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Add a channel to a campaign
+   * Add a channel to a campaign;
    */
   async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, 'id' | 'campaignId' | 'createdAt' | 'updatedAt'>, userId: string): Promise<CampaignChannel> {
     try {
-      // Check if campaign exists
+      // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id: campaignId }
       });
@@ -318,7 +329,7 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
       
-      // Create channel
+      // Create channel;
       const channel = await prisma.campaignChannel.create({
         data: {
           campaignId,
@@ -327,11 +338,11 @@ export class MarketingCampaignService {
           content: channelData.content,
           schedule: channelData.schedule,
           status: channelData.status || 'DRAFT',
-          metrics: channelData.metrics
+          metrics: channelData.metrics;
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'campaign.channel.add',
         resourceId: campaignId,
@@ -339,7 +350,7 @@ export class MarketingCampaignService {
         details: { 
           channelId: channel.id,
           channelType: channel.channelType,
-          channelName: channel.channelName
+          channelName: channel.channelName;
         }
       });
       
@@ -353,11 +364,11 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Get campaign analytics
+   * Get campaign analytics;
    */
   async getCampaignAnalytics(campaignId: string): Promise<any> {
     try {
-      // Check if campaign exists
+      // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id: campaignId }
       });
@@ -366,13 +377,13 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
       
-      // Get analytics data
+      // Get analytics data;
       const analytics = await prisma.campaignAnalytics.findMany({
         where: { campaignId },
         orderBy: { date: 'asc' }
       });
       
-      // Get channel metrics
+      // Get channel metrics;
       const channels = await prisma.campaignChannel.findMany({
         where: { campaignId },
         include: {
@@ -380,7 +391,7 @@ export class MarketingCampaignService {
             include: {
               _count: {
                 select: {
-                  interactions: true
+                  interactions: true;
                 }
               }
             }
@@ -388,22 +399,22 @@ export class MarketingCampaignService {
         }
       });
       
-      // Get lead conversion metrics
+      // Get lead conversion metrics;
       const leads = await prisma.lead.findMany({
         where: { campaignId },
         select: {
           status: true,
           convertedToPatientId: true,
-          conversionDate: true
+          conversionDate: true;
         }
       });
       
-      // Calculate conversion rate
+      // Calculate conversion rate;
       const totalLeads = leads.length;
       const convertedLeads = leads.filter(lead => lead.convertedToPatientId).length;
       const conversionRate = totalLeads > 0 ? (convertedLeads / totalLeads) * 100 : 0;
       
-      // Aggregate analytics data
+      // Aggregate analytics data;
       const aggregatedData = {
         campaign: {
           id: campaignId,
@@ -411,7 +422,7 @@ export class MarketingCampaignService {
           type: existingCampaign.type,
           startDate: existingCampaign.startDate,
           endDate: existingCampaign.endDate,
-          status: existingCampaign.status
+          status: existingCampaign.status;
         },
         metrics: analytics.map(item => item.metrics),
         channels: channels.map(channel => ({
@@ -421,15 +432,15 @@ export class MarketingCampaignService {
           status: channel.status,
           messageCount: channel.messages.length,
           interactionCount: channel.messages.reduce((sum, msg) => sum + msg._count.interactions, 0),
-          metrics: channel.metrics
+          metrics: channel.metrics;
         })),
         leads: {
           total: totalLeads,
           converted: convertedLeads,
           conversionRate: conversionRate.toFixed(2) + '%',
-          byStatus: this.groupLeadsByStatus(leads)
+          byStatus: this.groupLeadsByStatus(leads);
         },
-        timeSeriesData: this.aggregateTimeSeriesData(analytics)
+        timeSeriesData: this.aggregateTimeSeriesData(analytics);
       };
       
       return aggregatedData;
@@ -442,11 +453,11 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Add a segment to a campaign
+   * Add a segment to a campaign;
    */
   async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<any> {
     try {
-      // Check if campaign exists
+      // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id: campaignId }
       });
@@ -455,7 +466,7 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
       
-      // Check if segment exists
+      // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
@@ -464,11 +475,11 @@ export class MarketingCampaignService {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
       
-      // Check if segment is already added to campaign
+      // Check if segment is already added to campaign;
       const existingRelation = await prisma.campaignSegment.findFirst({
         where: {
           campaignId,
-          segmentId
+          segmentId;
         }
       });
       
@@ -476,22 +487,22 @@ export class MarketingCampaignService {
         return existingRelation;
       }
       
-      // Add segment to campaign
+      // Add segment to campaign;
       const campaignSegment = await prisma.campaignSegment.create({
         data: {
           campaignId,
-          segmentId
+          segmentId;
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'campaign.segment.add',
         resourceId: campaignId,
         userId,
         details: { 
           segmentId,
-          segmentName: existingSegment.name
+          segmentName: existingSegment.name;
         }
       });
       
@@ -505,11 +516,11 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Generate FHIR representation of a marketing campaign
-   * Maps to FHIR Communication and CommunicationRequest resources
+   * Generate FHIR representation of a marketing campaign;
+   * Maps to FHIR Communication and CommunicationRequest resources;
    */
-  private generateCampaignFHIR(campaign: any): any {
-    // Create FHIR Communication resource for the campaign
+  private generateCampaignFHIR(campaign: unknown): unknown {
+    // Create FHIR Communication resource for the campaign;
     const communicationResource = {
       resourceType: 'Communication',
       id: `marketing-campaign-${campaign.id}`,
@@ -520,35 +531,35 @@ export class MarketingCampaignService {
             {
               system: 'http://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing',
-              display: 'Marketing'
+              display: 'Marketing';
             }
           ]
         }
       ],
       subject: {
         reference: 'Group/marketing-segment',
-        display: 'Marketing Target Audience'
+        display: 'Marketing Target Audience';
       },
       sent: campaign.startDate,
       received: campaign.endDate,
       recipient: [],
       sender: {
         reference: `Organization/hospital`,
-        display: 'Hospital Marketing Department'
+        display: 'Hospital Marketing Department';
       },
       payload: [
         {
-          contentString: campaign.description
+          contentString: campaign.description;
         }
       ],
       note: [
         {
-          text: `Marketing campaign: ${campaign.name}`
+          text: `Marketing campaign: ${campaign.name}`;
         }
       ]
     };
     
-    // Create FHIR CommunicationRequest resource for campaign planning
+    // Create FHIR CommunicationRequest resource for campaign planning;
     const communicationRequestResource = {
       resourceType: 'CommunicationRequest',
       id: `marketing-campaign-request-${campaign.id}`,
@@ -559,7 +570,7 @@ export class MarketingCampaignService {
             {
               system: 'http://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing',
-              display: 'Marketing'
+              display: 'Marketing';
             }
           ]
         }
@@ -567,7 +578,7 @@ export class MarketingCampaignService {
       priority: 'routine',
       subject: {
         reference: 'Group/marketing-segment',
-        display: 'Marketing Target Audience'
+        display: 'Marketing Target Audience';
       },
       requester: {
         reference: `Practitioner/${campaign.createdById}`,
@@ -576,24 +587,24 @@ export class MarketingCampaignService {
       recipient: [],
       occurrencePeriod: {
         start: campaign.startDate,
-        end: campaign.endDate
+        end: campaign.endDate;
       },
       authoredOn: campaign.createdAt,
       payload: [
         {
-          contentString: campaign.description
+          contentString: campaign.description;
         }
       ]
     };
     
     return {
       communication: communicationResource,
-      communicationRequest: communicationRequestResource
+      communicationRequest: communicationRequestResource;
     };
   }
 
   /**
-   * Map campaign status to FHIR Communication status
+   * Map campaign status to FHIR Communication status;
    */
   private mapCampaignStatusToFHIR(status: string): string {
     switch (status) {
@@ -615,7 +626,7 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Map campaign status to FHIR CommunicationRequest status
+   * Map campaign status to FHIR CommunicationRequest status;
    */
   private mapCampaignStatusToFHIRRequest(status: string): string {
     switch (status) {
@@ -637,15 +648,15 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Group leads by status
+   * Group leads by status;
    */
-  private groupLeadsByStatus(leads: any[]): Record<string, number> {
+  private groupLeadsByStatus(leads: unknown[]): Record<string, number> {
     const result: Record<string, number> = {
       NEW: 0,
       CONTACTED: 0,
       QUALIFIED: 0,
       CONVERTED: 0,
-      LOST: 0
+      LOST: 0;
     };
     
     leads.forEach(lead => {
@@ -658,21 +669,21 @@ export class MarketingCampaignService {
   }
 
   /**
-   * Aggregate time series data from analytics
+   * Aggregate time series data from analytics;
    */
-  private aggregateTimeSeriesData(analytics: any[]): any {
-    // Implementation depends on the structure of metrics in analytics
-    // This is a simplified example
+  private aggregateTimeSeriesData(analytics: unknown[]): unknown {
+    // Implementation depends on the structure of metrics in analytics;
+    // This is a simplified example;
     return analytics.map(item => ({
       date: item.date,
-      ...item.metrics
+      ...item.metrics;
     }));
   }
 
   /**
-   * Validate campaign data
+   * Validate campaign data;
    */
-  private validateCampaignData(data: any): void {
+  private validateCampaignData(data: unknown): void {
     const errors = [];
     
     if (!data.name || data.name.trim() === '') {
@@ -698,35 +709,35 @@ export class MarketingCampaignService {
 }
 
 /**
- * Service for managing contacts and segments
+ * Service for managing contacts and segments;
  */
 export class ContactService {
   private auditLogger = new AuditLogger('marketing-contact');
   
   /**
-   * Create a new contact
+   * Create a new contact;
    */
   async createContact(data: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<Contact> {
     try {
-      // Validate contact data
+      // Validate contact data;
       this.validateContactData(data);
       
-      // Encrypt sensitive data if present
+      // Encrypt sensitive data if present;
       const encryptedData = this.encryptSensitiveData(data);
       
-      // Create contact in database
+      // Create contact in database;
       const contact = await prisma.contact.create({
-        data: encryptedData
+        data: encryptedData;
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'contact.create',
         resourceId: contact.id,
         userId,
         details: { 
           contactEmail: data.email,
-          contactSource: data.source
+          contactSource: data.source;
         }
       });
       
@@ -740,7 +751,7 @@ export class ContactService {
   }
 
   /**
-   * Get a contact by ID
+   * Get a contact by ID;
    */
   async getContactById(id: string): Promise<Contact> {
     try {
@@ -752,7 +763,7 @@ export class ContactService {
               id: true,
               firstName: true,
               lastName: true,
-              dateOfBirth: true
+              dateOfBirth: true;
             }
           },
           notes: {
@@ -760,27 +771,27 @@ export class ContactService {
               createdByUser: {
                 select: {
                   id: true,
-                  name: true
+                  name: true;
                 }
               }
             },
             orderBy: {
-              createdAt: 'desc'
+              createdAt: 'desc';
             }
           },
           segmentMembers: {
             where: {
-              isActive: true
+              isActive: true;
             },
             include: {
-              segment: true
+              segment: true;
             }
           },
           _count: {
             select: {
               interactions: true,
               activities: true,
-              leads: true
+              leads: true;
             }
           }
         }
@@ -800,7 +811,7 @@ export class ContactService {
   }
 
   /**
-   * Get all contacts with optional filtering
+   * Get all contacts with optional filtering;
    */
   async getContacts(filters: {
     search?: string;
@@ -817,11 +828,11 @@ export class ContactService {
         source, 
         tags,
         page = 1, 
-        limit = 10 
+        limit = 10;
       } = filters;
       
-      // Build where clause based on filters
-      const where: any = {};
+      // Build where clause based on filters;
+      const where: unknown = {};
       
       if (search) {
         where.OR = [
@@ -842,20 +853,20 @@ export class ContactService {
       
       if (tags && tags.length > 0) {
         where.tags = {
-          hasSome: tags
+          hasSome: tags;
         };
       }
       
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.contact.count({ where });
       
-      // Get contacts with pagination
+      // Get contacts with pagination;
       const contacts = await prisma.contact.findMany({
         where,
         include: {
           patient: {
             select: {
-              id: true
+              id: true;
             }
           },
           _count: {
@@ -863,18 +874,18 @@ export class ContactService {
               interactions: true,
               activities: true,
               leads: true,
-              segmentMembers: true
+              segmentMembers: true;
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
       
-      // Decrypt sensitive data
+      // Decrypt sensitive data;
       const decryptedContacts = contacts.map(contact => this.decryptSensitiveData(contact));
       
       return {
@@ -883,7 +894,7 @@ export class ContactService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -892,11 +903,11 @@ export class ContactService {
   }
 
   /**
-   * Update a contact
+   * Update a contact;
    */
   async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {
     try {
-      // Check if contact exists
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id }
       });
@@ -905,22 +916,22 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
       
-      // Encrypt sensitive data if present
+      // Encrypt sensitive data if present;
       const encryptedData = this.encryptSensitiveData(data);
       
-      // Update contact
+      // Update contact;
       const updatedContact = await prisma.contact.update({
         where: { id },
-        data: encryptedData
+        data: encryptedData;
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'contact.update',
         resourceId: id,
         userId,
         details: { 
-          updatedFields: Object.keys(data) 
+          updatedFields: Object.keys(data);
         }
       });
       
@@ -934,11 +945,11 @@ export class ContactService {
   }
 
   /**
-   * Delete a contact
+   * Delete a contact;
    */
   async deleteContact(id: string, userId: string): Promise<void> {
     try {
-      // Check if contact exists
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id }
       });
@@ -947,18 +958,18 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
       
-      // Delete contact
+      // Delete contact;
       await prisma.contact.delete({
         where: { id }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'contact.delete',
         resourceId: id,
         userId,
         details: { 
-          contactEmail: existingContact.email
+          contactEmail: existingContact.email;
         }
       });
     } catch (error) {
@@ -970,11 +981,11 @@ export class ContactService {
   }
 
   /**
-   * Add a note to a contact
+   * Add a note to a contact;
    */
   async addContactNote(contactId: string, content: string, userId: string): Promise<any> {
     try {
-      // Check if contact exists
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -983,30 +994,30 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Create note
+      // Create note;
       const note = await prisma.contactNote.create({
         data: {
           contactId,
           content,
-          createdById: userId
+          createdById: userId;
         },
         include: {
           createdByUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           }
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'contact.note.add',
         resourceId: contactId,
         userId,
         details: { 
-          noteId: note.id
+          noteId: note.id;
         }
       });
       
@@ -1020,33 +1031,33 @@ export class ContactService {
   }
 
   /**
-   * Create a new contact segment
+   * Create a new contact segment;
    */
   async createSegment(data: Omit<ContactSegment, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ContactSegment> {
     try {
-      // Validate segment data
+      // Validate segment data;
       if (!data.name || data.name.trim() === '') {
         throw new ValidationError('Segment validation failed', ['Segment name is required']);
       }
       
-      // Create segment in database
+      // Create segment in database;
       const segment = await prisma.contactSegment.create({
         data: {
           name: data.name,
           description: data.description,
           criteria: data.criteria,
           isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId
+          createdById: userId;
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'segment.create',
         resourceId: segment.id,
         userId,
         details: { 
-          segmentName: segment.name
+          segmentName: segment.name;
         }
       });
       
@@ -1060,7 +1071,7 @@ export class ContactService {
   }
 
   /**
-   * Get all segments with optional filtering
+   * Get all segments with optional filtering;
    */
   async getSegments(filters: {
     isActive?: boolean;
@@ -1071,40 +1082,40 @@ export class ContactService {
       const { 
         isActive, 
         page = 1, 
-        limit = 10 
+        limit = 10;
       } = filters;
       
-      // Build where clause based on filters
-      const where: any = {};
+      // Build where clause based on filters;
+      const where: unknown = {};
       
       if (isActive !== undefined) {
         where.isActive = isActive;
       }
       
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.contactSegment.count({ where });
       
-      // Get segments with pagination
+      // Get segments with pagination;
       const segments = await prisma.contactSegment.findMany({
         where,
         include: {
           _count: {
             select: {
               members: true,
-              campaigns: true
+              campaigns: true;
             }
           },
           createdByUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
       
@@ -1114,7 +1125,7 @@ export class ContactService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -1123,11 +1134,11 @@ export class ContactService {
   }
 
   /**
-   * Add a contact to a segment
+   * Add a contact to a segment;
    */
   async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<any> {
     try {
-      // Check if segment exists
+      // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
@@ -1136,7 +1147,7 @@ export class ContactService {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
       }
       
-      // Check if contact exists
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -1145,12 +1156,12 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Check if contact is already in segment
+      // Check if contact is already in segment;
       const existingMembership = await prisma.segmentMember.findFirst({
         where: {
           segmentId,
           contactId,
-          isActive: true
+          isActive: true;
         }
       });
       
@@ -1158,12 +1169,12 @@ export class ContactService {
         return existingMembership;
       }
       
-      // If contact was previously removed from segment, reactivate
+      // If contact was previously removed from segment, reactivate;
       const inactiveMemebership = await prisma.segmentMember.findFirst({
         where: {
           segmentId,
           contactId,
-          isActive: false
+          isActive: false;
         }
       });
       
@@ -1172,41 +1183,41 @@ export class ContactService {
           where: { id: inactiveMemebership.id },
           data: {
             isActive: true,
-            removedAt: null
+            removedAt: null;
           }
         });
         
-        // Log audit event
+        // Log audit event;
         await this.auditLogger.log({
           action: 'segment.contact.reactivate',
           resourceId: segmentId,
           userId,
           details: { 
             contactId,
-            segmentName: existingSegment.name
+            segmentName: existingSegment.name;
           }
         });
         
         return updatedMembership;
       }
       
-      // Add contact to segment
+      // Add contact to segment;
       const membership = await prisma.segmentMember.create({
         data: {
           segmentId,
           contactId,
-          isActive: true
+          isActive: true;
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'segment.contact.add',
         resourceId: segmentId,
         userId,
         details: { 
           contactId,
-          segmentName: existingSegment.name
+          segmentName: existingSegment.name;
         }
       });
       
@@ -1220,11 +1231,11 @@ export class ContactService {
   }
 
   /**
-   * Remove a contact from a segment
+   * Remove a contact from a segment;
    */
   async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<any> {
     try {
-      // Check if segment exists
+      // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
@@ -1233,7 +1244,7 @@ export class ContactService {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
       }
       
-      // Check if contact exists
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -1242,12 +1253,12 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Check if contact is in segment
+      // Check if contact is in segment;
       const membership = await prisma.segmentMember.findFirst({
         where: {
           segmentId,
           contactId,
-          isActive: true
+          isActive: true;
         }
       });
       
@@ -1260,18 +1271,18 @@ export class ContactService {
         where: { id: membership.id },
         data: {
           isActive: false,
-          removedAt: new Date()
+          removedAt: new Date();
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'segment.contact.remove',
         resourceId: segmentId,
         userId,
         details: { 
           contactId,
-          segmentName: existingSegment.name
+          segmentName: existingSegment.name;
         }
       });
       
@@ -1285,17 +1296,17 @@ export class ContactService {
   }
 
   /**
-   * Encrypt sensitive contact data
+   * Encrypt sensitive contact data;
    */
-  private encryptSensitiveData(data: any): any {
+  private encryptSensitiveData(data: unknown): unknown {
     const result = { ...data };
     
-    // Encrypt address if present
+    // Encrypt address if present;
     if (result.address) {
       result.address = encryptData(JSON.stringify(result.address));
     }
     
-    // Encrypt preferences if present
+    // Encrypt preferences if present;
     if (result.preferences) {
       result.preferences = encryptData(JSON.stringify(result.preferences));
     }
@@ -1304,26 +1315,26 @@ export class ContactService {
   }
 
   /**
-   * Decrypt sensitive contact data
+   * Decrypt sensitive contact data;
    */
-  private decryptSensitiveData(data: any): any {
+  private decryptSensitiveData(data: unknown): unknown {
     const result = { ...data };
     
-    // Decrypt address if present
+    // Decrypt address if present;
     if (result.address && typeof result.address === 'string') {
       try {
         result.address = JSON.parse(decryptData(result.address));
       } catch (error) {
-        console.error('Failed to decrypt address data', error);
+
       }
     }
     
-    // Decrypt preferences if present
+    // Decrypt preferences if present;
     if (result.preferences && typeof result.preferences === 'string') {
       try {
         result.preferences = JSON.parse(decryptData(result.preferences));
       } catch (error) {
-        console.error('Failed to decrypt preferences data', error);
+
       }
     }
     
@@ -1331,17 +1342,17 @@ export class ContactService {
   }
 
   /**
-   * Validate contact data
+   * Validate contact data;
    */
-  private validateContactData(data: any): void {
+  private validateContactData(data: unknown): void {
     const errors = [];
     
-    // Either email or phone is required
+    // Either email or phone is required;
     if (!data.email && !data.phone) {
       errors.push('Either email or phone is required');
     }
     
-    // Validate email format if provided
+    // Validate email format if provided;
     if (data.email && !this.isValidEmail(data.email)) {
       errors.push('Invalid email format');
     }
@@ -1352,7 +1363,7 @@ export class ContactService {
   }
 
   /**
-   * Validate email format
+   * Validate email format;
    */
   private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1361,21 +1372,21 @@ export class ContactService {
 }
 
 /**
- * Service for managing leads
+ * Service for managing leads;
  */
 export class LeadService {
   private auditLogger = new AuditLogger('marketing-lead');
   private notificationService = new NotificationService();
   
   /**
-   * Create a new lead
+   * Create a new lead;
    */
   async createLead(data: Omit<Lead, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<Lead> {
     try {
-      // Validate lead data
+      // Validate lead data;
       this.validateLeadData(data);
       
-      // Create lead in database
+      // Create lead in database;
       const lead = await prisma.lead.create({
         data: {
           contactId: data.contactId,
@@ -1386,7 +1397,7 @@ export class LeadService {
           assignedToId: data.assignedToId,
           notes: data.notes,
           convertedToPatientId: data.convertedToPatientId,
-          conversionDate: data.conversionDate
+          conversionDate: data.conversionDate;
         },
         include: {
           contact: true,
@@ -1395,13 +1406,13 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           }
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'lead.create',
         resourceId: lead.id,
@@ -1409,16 +1420,18 @@ export class LeadService {
         details: { 
           contactId: lead.contactId,
           source: lead.source,
-          status: lead.status
+          status: lead.status;
         }
       });
       
-      // Notify assigned user if applicable
+      // Notify assigned user if applicable;
       if (lead.assignedToId) {
         await this.notificationService.sendNotification({
           type: 'LEAD_ASSIGNED',
           title: 'New Lead Assigned',
-          message: `A new lead has been assigned to you: ${lead.contact.firstName || ''} ${lead.contact.lastName || ''}`,
+          message: `A new lead has been assigned to you: ${lead.contact.firstName ||
+            ''} ${lead.contact.lastName ||
+            ''}`,
           recipientIds: [lead.assignedToId],
           metadata: { leadId: lead.id }
         });
@@ -1434,7 +1447,7 @@ export class LeadService {
   }
 
   /**
-   * Get a lead by ID
+   * Get a lead by ID;
    */
   async getLeadById(id: string): Promise<Lead> {
     try {
@@ -1447,7 +1460,7 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           },
           convertedToPatient: {
@@ -1455,7 +1468,7 @@ export class LeadService {
               id: true,
               firstName: true,
               lastName: true,
-              dateOfBirth: true
+              dateOfBirth: true;
             }
           },
           activities: {
@@ -1463,12 +1476,12 @@ export class LeadService {
               performedByUser: {
                 select: {
                   id: true,
-                  name: true
+                  name: true;
                 }
               }
             },
             orderBy: {
-              timestamp: 'desc'
+              timestamp: 'desc';
             }
           }
         }
@@ -1488,7 +1501,7 @@ export class LeadService {
   }
 
   /**
-   * Get all leads with optional filtering
+   * Get all leads with optional filtering;
    */
   async getLeads(filters: {
     status?: string;
@@ -1505,11 +1518,11 @@ export class LeadService {
         campaignId,
         assignedToId,
         page = 1, 
-        limit = 10 
+        limit = 10;
       } = filters;
       
-      // Build where clause based on filters
-      const where: any = {};
+      // Build where clause based on filters;
+      const where: unknown = {};
       
       if (status) {
         where.status = status;
@@ -1527,10 +1540,10 @@ export class LeadService {
         where.assignedToId = assignedToId;
       }
       
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.lead.count({ where });
       
-      // Get leads with pagination
+      // Get leads with pagination;
       const leads = await prisma.lead.findMany({
         where,
         include: {
@@ -1540,31 +1553,31 @@ export class LeadService {
               firstName: true,
               lastName: true,
               email: true,
-              phone: true
+              phone: true;
             }
           },
           campaign: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           },
           assignedToUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           },
           _count: {
             select: {
-              activities: true
+              activities: true;
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
       
@@ -1574,7 +1587,7 @@ export class LeadService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -1583,11 +1596,11 @@ export class LeadService {
   }
 
   /**
-   * Update a lead
+   * Update a lead;
    */
   async updateLead(id: string, data: Partial<Lead>, userId: string): Promise<Lead> {
     try {
-      // Check if lead exists
+      // Check if lead exists;
       const existingLead = await prisma.lead.findUnique({
         where: { id },
         include: {
@@ -1595,7 +1608,7 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           }
         }
@@ -1605,12 +1618,12 @@ export class LeadService {
         throw new NotFoundError(`Lead with ID ${id} not found`);
       }
       
-      // Check if status is changing to CONVERTED and set conversion date
+      // Check if status is changing to CONVERTED and set conversion date;
       if (data.status === 'CONVERTED' && existingLead.status !== 'CONVERTED') {
         data.conversionDate = new Date();
       }
       
-      // Update lead
+      // Update lead;
       const updatedLead = await prisma.lead.update({
         where: { id },
         data,
@@ -1621,37 +1634,39 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true
+              email: true;
             }
           }
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'lead.update',
         resourceId: id,
         userId,
         details: { 
-          updatedFields: Object.keys(data) 
+          updatedFields: Object.keys(data);
         }
       });
       
-      // Create activity for status change if applicable
+      // Create activity for status change if applicable;
       if (data.status && data.status !== existingLead.status) {
         await this.addLeadActivity(id, {
           activityType: 'STATUS_CHANGE',
           description: `Status changed from ${existingLead.status} to ${data.status}`,
-          performedById: userId
+          performedById: userId;
         });
       }
       
-      // Notify newly assigned user if applicable
+      // Notify newly assigned user if applicable;
       if (data.assignedToId && data.assignedToId !== existingLead.assignedToId) {
         await this.notificationService.sendNotification({
           type: 'LEAD_ASSIGNED',
           title: 'Lead Assigned',
-          message: `A lead has been assigned to you: ${updatedLead.contact.firstName || ''} ${updatedLead.contact.lastName || ''}`,
+          message: `A lead has been assigned to you: ${updatedLead.contact.firstName ||
+            ''} ${updatedLead.contact.lastName ||
+            ''}`,
           recipientIds: [data.assignedToId],
           metadata: { leadId: id }
         });
@@ -1667,11 +1682,11 @@ export class LeadService {
   }
 
   /**
-   * Add an activity to a lead
+   * Add an activity to a lead;
    */
-  async addLeadActivity(leadId: string, data: { activityType: string; description: string; performedById: string; metadata?: any }): Promise<any> {
+  async addLeadActivity(leadId: string, data: { activityType: string; description: string; performedById: string; metadata?: unknown }): Promise<any> {
     try {
-      // Check if lead exists
+      // Check if lead exists;
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId }
       });
@@ -1680,33 +1695,33 @@ export class LeadService {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
       }
       
-      // Create activity
+      // Create activity;
       const activity = await prisma.leadActivity.create({
         data: {
           leadId,
           activityType: data.activityType,
           description: data.description,
           performedById: data.performedById,
-          metadata: data.metadata
+          metadata: data.metadata;
         },
         include: {
           performedByUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           }
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'lead.activity.add',
         resourceId: leadId,
         userId: data.performedById,
         details: { 
           activityId: activity.id,
-          activityType: data.activityType
+          activityType: data.activityType;
         }
       });
       
@@ -1720,15 +1735,15 @@ export class LeadService {
   }
 
   /**
-   * Convert a lead to a patient
+   * Convert a lead to a patient;
    */
-  async convertLeadToPatient(leadId: string, patientData: any, userId: string): Promise<any> {
+  async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<any> {
     try {
-      // Check if lead exists
+      // Check if lead exists;
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId },
         include: {
-          contact: true
+          contact: true;
         }
       });
       
@@ -1736,12 +1751,12 @@ export class LeadService {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
       }
       
-      // Check if lead is already converted
+      // Check if lead is already converted;
       if (existingLead.convertedToPatientId) {
         throw new ValidationError('Lead conversion failed', ['Lead is already converted']);
       }
       
-      // Create patient from lead data
+      // Create patient from lead data;
       const patient = await prisma.patient.create({
         data: {
           firstName: patientData.firstName || existingLead.contact.firstName,
@@ -1751,31 +1766,31 @@ export class LeadService {
           dateOfBirth: patientData.dateOfBirth || existingLead.contact.dateOfBirth,
           gender: patientData.gender || existingLead.contact.gender,
           address: patientData.address || existingLead.contact.address,
-          // Add other patient fields as needed
+          // Add other patient fields as needed;
         }
       });
       
-      // Update lead with conversion data
+      // Update lead with conversion data;
       const updatedLead = await prisma.lead.update({
         where: { id: leadId },
         data: {
           status: 'CONVERTED',
           convertedToPatientId: patient.id,
-          conversionDate: new Date()
+          conversionDate: new Date();
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'lead.convert',
         resourceId: leadId,
         userId,
         details: { 
-          patientId: patient.id
+          patientId: patient.id;
         }
       });
       
-      // Add lead activity
+      // Add lead activity;
       await this.addLeadActivity(leadId, {
         activityType: 'CONVERSION',
         description: `Lead converted to patient`,
@@ -1785,7 +1800,7 @@ export class LeadService {
       
       return {
         lead: updatedLead,
-        patient
+        patient;
       };
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ValidationError) {
@@ -1796,9 +1811,9 @@ export class LeadService {
   }
 
   /**
-   * Validate lead data
+   * Validate lead data;
    */
-  private validateLeadData(data: any): void {
+  private validateLeadData(data: unknown): void {
     const errors = [];
     
     if (!data.contactId) {

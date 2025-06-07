@@ -1,17 +1,27 @@
-"use client"
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
 
-import { useTheme } from "next-themes"
-import { Toaster as Sonner } from "sonner"
+"use client";
+
+import { useTheme } from "next-themes";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const { theme = "system" } = useTheme();
 
   return (
-    <Sonner
+    <Sonner;
       theme={theme as ToasterProps["theme"]}
-      className="toaster group"
+      className="toaster group";
       toastOptions={{
         classNames: {
           toast:
@@ -25,7 +35,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     />
-  )
+  );
 }
 
 export { Toaster }

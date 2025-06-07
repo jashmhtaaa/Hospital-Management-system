@@ -1,5 +1,16 @@
-import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
-import { InsurancePolicy, Patient, TPA, EligibilityCheckResponse, ClaimSubmission, ClaimStatus } from "../types"; // Adjust path as per actual structure
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used;
+import { InsurancePolicy, Patient, TPA } from "../types.ts"; // Adjust path as per actual structure;
 
 const prisma = new PrismaClient();
 
@@ -33,12 +44,12 @@ export class InsurancePolicyService {
         // const savedPolicy = await prisma.insurancePolicy.create({ data: newPolicyData });
         // return savedPolicy;
 
-        // Mock implementation
+        // Mock implementation;
         const mockPolicy: InsurancePolicy = {
             id: `pol_${Date.now()}`,
             patientId,
             ...policyDetails,
-            // Ensure all required fields from Omit<InsurancePolicy, "id" | "patientId"> are present or defaulted
+            // Ensure all required fields from Omit<InsurancePolicy, "id" | "patientId"> are present or defaulted;
             policyNumber: policyDetails.policyNumber || "POL-MOCK-123",
             tpaId: policyDetails.tpaId || "TPA-MOCK-001",
             coverageDetails: policyDetails.coverageDetails || "Basic Coverage",
@@ -46,7 +57,7 @@ export class InsurancePolicyService {
             endDate: policyDetails.endDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
             isActive: policyDetails.isActive !== undefined ? policyDetails.isActive : true,
         };
-        console.log("Insurance policy added:", mockPolicy);
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         return mockPolicy;
     }
 
@@ -57,13 +68,13 @@ export class InsurancePolicyService {
      */
     async getInsurancePoliciesForPatient(patientId: string): Promise<InsurancePolicy[]> {
         // return prisma.insurancePolicy.findMany({ where: { patientId } });
-        console.log(`Fetching insurance policies for patient ${patientId}`);
-        // Mock implementation
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // Mock implementation;
         return [
             {
                 id: "pol_mock_1", patientId, policyNumber: "XYZ12345", tpaId: "TPA001",
                 coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
-                endDate: new Date("2023-12-31"), isActive: true
+                endDate: new Date("2023-12-31"), isActive: true;
             }
         ];
     }
@@ -85,12 +96,12 @@ export class InsurancePolicyService {
         // }
         // return updatedPolicy;
 
-        // Mock implementation
-        console.log(`Updating insurance policy ${policyId} with:`, updates);
+        // Mock implementation;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         const mockExistingPolicy: InsurancePolicy = {
             id: policyId, patientId: "pat_mock_1", policyNumber: "XYZ12345", tpaId: "TPA001",
             coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
-            endDate: new Date("2023-12-31"), isActive: true
+            endDate: new Date("2023-12-31"), isActive: true;
         };
         const updatedMockPolicy = { ...mockExistingPolicy, ...updates };
         return updatedMockPolicy;

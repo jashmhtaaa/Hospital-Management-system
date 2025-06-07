@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -9,36 +20,36 @@ import { Textarea } from '@/components/ui/textarea';
 interface OTSurgeryTypeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: unknown) => void;
 }
 
 /**
- * Operation Theatre surgery type modal component
+ * Operation Theatre surgery type modal component;
  */
-export function OTSurgeryTypeModal({ isOpen, onClose, onSubmit }: OTSurgeryTypeModalProps) {
+export const OTSurgeryTypeModal = ({ isOpen, onClose, onSubmit }: OTSurgeryTypeModalProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, we would collect form data here
+    // In a real implementation, we would collect form data here;
     onSubmit({});
   };
 
   return (
     <Dialog>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]">;
         <DialogHeader>
           <DialogTitle>Add/Edit Surgery Type</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Surgery Name</Label>
-              <Input id="name" placeholder="e.g., Appendectomy" />
+        <form onSubmit={handleSubmit}>;
+          <div className="grid gap-4 py-4">;
+            <div className="space-y-2">;
+              <Label htmlFor="name">Surgery Name</Label>;
+              <Input id="name" placeholder="e.g., Appendectomy" />;
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Select 
-                id="category"
+            <div className="space-y-2">;
+              <Label htmlFor="category">Category</Label>;
+              <Select;
+                id="category";
                 options={[
                   { value: "general", label: "General Surgery" },
                   { value: "cardiac", label: "Cardiac Surgery" },
@@ -49,25 +60,25 @@ export function OTSurgeryTypeModal({ isOpen, onClose, onSubmit }: OTSurgeryTypeM
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="duration">Average Duration</Label>
-              <Input id="duration" placeholder="e.g., 2 hours" />
+            <div className="space-y-2">;
+              <Label htmlFor="duration">Average Duration</Label>;
+              <Input id="duration" placeholder="e.g., 2 hours" />;
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="equipment">Special Equipment</Label>
-              <Textarea id="equipment" placeholder="List of required equipment" />
+            <div className="space-y-2">;
+              <Label htmlFor="equipment">Special Equipment</Label>;
+              <Textarea id="equipment" placeholder="List of required equipment" />;
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="specialist">Specialist Required</Label>
-              <Input id="specialist" placeholder="e.g., General Surgeon" />
+            <div className="space-y-2">;
+              <Label htmlFor="specialist">Specialist Required</Label>;
+              <Input id="specialist" placeholder="e.g., General Surgeon" />;
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="riskLevel">Risk Level</Label>
-              <Select 
-                id="riskLevel"
+            <div className="space-y-2">;
+              <Label htmlFor="riskLevel">Risk Level</Label>;
+              <Select;
+                id="riskLevel";
                 options={[
                   { value: "low", label: "Low Risk" },
                   { value: "medium", label: "Medium Risk" },
@@ -76,16 +87,16 @@ export function OTSurgeryTypeModal({ isOpen, onClose, onSubmit }: OTSurgeryTypeM
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
-              <Textarea id="notes" placeholder="Additional information" />
+            <div className="space-y-2">;
+              <Label htmlFor="notes">Notes</Label>;
+              <Textarea id="notes" placeholder="Additional information" />;
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+            <Button type="button" variant="outline" onClick={onClose}>;
+              Cancel;
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">Save</Button>;
           </DialogFooter>
         </form>
       </DialogContent>

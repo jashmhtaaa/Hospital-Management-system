@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -7,15 +18,15 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default async function DocumentEditPage({
-  params
+export default async const DocumentEditPage = ({
+  params;
 }: {
   params: { id: string }
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session) {
     redirect('/login');
   }
@@ -34,11 +45,11 @@ export default async function DocumentEditPage({
   // }
   
   return (
-    <div className="container mx-auto py-6">
-      <Suspense fallback={<div>Loading document editor...</div>}>
-        <DocumentEditor
+    <div className="container mx-auto py-6">;
+      <Suspense fallback={<div>Loading document editor...</div>}>;
+        <DocumentEditor;
           documentId={params.id}
-          patientId="pat_123456" // This would be fetched from the document in a real implementation
+          patientId="pat_123456" // This would be fetched from the document in a real implementation;
         />
       </Suspense>
     </div>

@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Smart Alerts & Notifications Service
- * Enterprise-grade intelligent alert system with machine learning to reduce alert fatigue
+ * Smart Alerts & Notifications Service;
+ * Enterprise-grade intelligent alert system with machine learning to reduce alert fatigue;
  */
 
 import { Injectable } from '@nestjs/common';
@@ -11,7 +22,7 @@ import { pubsub } from '@/lib/graphql/schema-base';
 import { EncryptionService } from '@/lib/security/encryption.service';
 import { AuditService } from '@/lib/security/audit.service';
 
-// Alert models
+// Alert models;
 export interface AlertDefinition {
   id: string;
   name: string;
@@ -27,7 +38,7 @@ export interface AlertDefinition {
   schedule: AlertSchedule;
   acknowledgmentRequired: boolean;
   autoResolve: boolean;
-  autoResolveAfter?: number; // minutes
+  autoResolveAfter?: number; // minutes;
   status: 'ACTIVE' | 'INACTIVE' | 'TESTING';
   metadata: AlertMetadata;
   createdAt: Date;
@@ -78,10 +89,10 @@ export interface AlertCondition {
   parameter: string;
   dataSource: string;
   operator: AlertOperator;
-  value: any;
+  value: unknown;
   unit?: string;
-  duration?: number; // seconds
-  lookbackPeriod?: number; // seconds
+  duration?: number; // seconds;
+  lookbackPeriod?: number; // seconds;
   context?: Record<string, any>;
 }
 
@@ -120,7 +131,7 @@ export interface AlertAction {
   recipientOverride?: AlertRecipient[];
   conditions?: Record<string, any>;
   templateId?: string;
-  throttleRate?: number; // seconds
+  throttleRate?: number; // seconds;
 }
 
 export enum ActionType {
@@ -157,7 +168,7 @@ export interface SuppressionRule {
   id: string;
   name: string;
   conditions: Record<string, any>;
-  duration: number; // seconds
+  duration: number; // seconds;
   startTime?: Date;
   endTime?: Date;
   maxOccurrences?: number;
@@ -172,7 +183,7 @@ export interface EscalationRule {
   id: string;
   name: string;
   escalationLevels: EscalationLevel[];
-  escalationDelay: number; // seconds
+  escalationDelay: number; // seconds;
   maxEscalationLevel: number;
   conditions: Record<string, any>;
 }
@@ -182,7 +193,7 @@ export interface EscalationLevel {
   recipients: AlertRecipient[];
   actions: AlertAction[];
   acknowledgmentRequired: boolean;
-  escalationDelay: number; // seconds
+  escalationDelay: number; // seconds;
 }
 
 export interface AlertRecipient {
@@ -212,9 +223,9 @@ export interface AlertSchedule {
   timezone: string;
   startDate?: Date;
   endDate?: Date;
-  daysOfWeek?: number[]; // 0-6, 0 = Sunday
-  startTime?: string; // HH:MM
-  endTime?: string; // HH:MM
+  daysOfWeek?: number[]; // 0-6, 0 = Sunday;
+  startTime?: string; // HH:MM;
+  endTime?: string; // HH:MM;
   excludedDates?: Date[];
   recurrencePattern?: string;
 }
@@ -242,7 +253,7 @@ export interface Reference {
   type: 'JOURNAL' | 'GUIDELINE' | 'REGULATION' | 'INTERNAL' | 'OTHER';
 }
 
-// Alert instance models
+// Alert instance models;
 export interface AlertInstance {
   id: string;
   definitionId: string;
@@ -292,7 +303,7 @@ export interface AlertActionInstance {
   status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
   executionTime?: Date;
   error?: string;
-  result?: any;
+  result?: unknown;
 }
 
 export interface AlertEscalationInstance {
@@ -319,18 +330,18 @@ export interface AlertDeliveryInstance {
 }
 
 export interface MLInsights {
-  priority: number; // 0-100
-  urgency: number; // 0-100
-  relevance: number; // 0-100
+  priority: number; // 0-100;
+  urgency: number; // 0-100;
+  relevance: number; // 0-100;
   noiseReduction: boolean;
-  confidence: number; // 0-100
-  patientRisk: number; // 0-100
+  confidence: number; // 0-100;
+  patientRisk: number; // 0-100;
   recommendedActions: string[];
   explanation: string;
   similarCases?: number;
 }
 
-// Drug interaction alert models
+// Drug interaction alert models;
 export interface DrugInteractionAlert {
   id: string;
   patientId: string;
@@ -381,7 +392,7 @@ export enum InteractionType {
   UNKNOWN = 'UNKNOWN',
 }
 
-// Critical value alert models
+// Critical value alert models;
 export interface CriticalValueAlert {
   id: string;
   patientId: string;
@@ -430,7 +441,7 @@ export interface CriticalValueEscalation {
   status: 'PENDING' | 'NOTIFIED' | 'ACKNOWLEDGED' | 'ESCALATED';
 }
 
-// Patient safety alert models
+// Patient safety alert models;
 export interface PatientSafetyAlert {
   id: string;
   patientId: string;
@@ -475,7 +486,7 @@ export enum SafetyAlertType {
   OTHER = 'OTHER',
 }
 
-// Alert analytics models
+// Alert analytics models;
 export interface AlertAnalytics {
   totalAlerts: number;
   activeAlerts: number;
@@ -491,9 +502,9 @@ export interface AlertAnalytics {
   alertsByHour: number[];
   alertsByDay: number[];
   alertsByProvider: Record<string, number>;
-  responseTimeAverage: number; // seconds
-  escalationRate: number; // percentage
-  overrideRate: number; // percentage
+  responseTimeAverage: number; // seconds;
+  escalationRate: number; // percentage;
+  overrideRate: number; // percentage;
   topAlertDefinitions: {
     id: string;
     name: string;
@@ -504,7 +515,7 @@ export interface AlertAnalytics {
     alertsBeforeReduction: number;
     alertsAfterReduction: number;
     reductionPercentage: number;
-    estimatedTimeSaved: number; // minutes
+    estimatedTimeSaved: number; // minutes;
   };
   alertFatigue: {
     overrideRateByHour: number[];
@@ -513,7 +524,7 @@ export interface AlertAnalytics {
   };
 }
 
-@Injectable()
+@Injectable();
 export class SmartAlertsService {
   constructor(
     private prisma: PrismaService,
@@ -522,7 +533,7 @@ export class SmartAlertsService {
   ) {}
 
   /**
-   * Get all alert definitions
+   * Get all alert definitions;
    */
   async getAllAlertDefinitions(filters?: {
     category?: AlertCategory;
@@ -530,30 +541,30 @@ export class SmartAlertsService {
     status?: string;
   }): Promise<AlertDefinition[]> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `alertDefinitions:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Build filters
-      const where: any = {};
+      // Build filters;
+      const where: unknown = {};
       if (filters?.category) where.category = filters.category;
       if (filters?.severity) where.severity = filters.severity;
       if (filters?.status) where.status = filters.status;
       
-      // Only return active alerts by default
+      // Only return active alerts by default;
       if (!filters?.status) where.status = 'ACTIVE';
 
-      // Query database
+      // Query database;
       const alertDefinitions = await this.prisma.alertDefinition.findMany({
         where,
         orderBy: { updatedAt: 'desc' },
       });
 
-      // Cache results
-      await cacheService.cacheResult('cdss:', cacheKey, alertDefinitions, 3600); // 1 hour
+      // Cache results;
+      await cacheService.cacheResult('cdss:', cacheKey, alertDefinitions, 3600); // 1 hour;
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.alert_definition_queries', 1, {
         category: filters?.category || 'ALL',
         severity: filters?.severity || 'ALL',
@@ -562,50 +573,50 @@ export class SmartAlertsService {
 
       return alertDefinitions as AlertDefinition[];
     } catch (error) {
-      console.error('Error fetching alert definitions:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get alert definition by ID
+   * Get alert definition by ID;
    */
   async getAlertDefinitionById(id: string): Promise<AlertDefinition | null> {
     try {
-      // Try cache first
+      // Try cache first;
       const cacheKey = `alertDefinition:${id}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached) return cached;
 
-      // Query database
+      // Query database;
       const alertDefinition = await this.prisma.alertDefinition.findUnique({
         where: { id },
       });
 
       if (!alertDefinition) return null;
 
-      // Cache result
-      await cacheService.cacheResult('cdss:', cacheKey, alertDefinition, 3600); // 1 hour
+      // Cache result;
+      await cacheService.cacheResult('cdss:', cacheKey, alertDefinition, 3600); // 1 hour;
 
       return alertDefinition as AlertDefinition;
     } catch (error) {
-      console.error(`Error fetching alert definition ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create new alert definition
+   * Create new alert definition;
    */
   async createAlertDefinition(
     definition: Omit<AlertDefinition, 'id' | 'createdAt' | 'updatedAt'>,
-    userId: string
+    userId: string;
   ): Promise<AlertDefinition> {
     try {
-      // Validate definition
+      // Validate definition;
       this.validateAlertDefinition(definition);
 
-      // Create definition
+      // Create definition;
       const newDefinition = await this.prisma.alertDefinition.create({
         data: {
           ...definition,
@@ -617,7 +628,7 @@ export class SmartAlertsService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'ALERT_DEFINITION',
@@ -630,47 +641,47 @@ export class SmartAlertsService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern('cdss:alertDefinitions:*');
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.alert_definitions_created', 1, {
         category: definition.category,
         severity: definition.severity,
         type: definition.type,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('ALERT_DEFINITION_CREATED', {
         alertDefinitionCreated: newDefinition,
       });
 
       return newDefinition as AlertDefinition;
     } catch (error) {
-      console.error('Error creating alert definition:', error);
+
       throw error;
     }
   }
 
   /**
-   * Update alert definition
+   * Update alert definition;
    */
   async updateAlertDefinition(
     id: string,
     updates: Partial<AlertDefinition>,
-    userId: string
+    userId: string;
   ): Promise<AlertDefinition> {
     try {
-      // Get current definition
+      // Get current definition;
       const currentDefinition = await this.getAlertDefinitionById(id);
       if (!currentDefinition) {
         throw new Error(`Alert definition ${id} not found`);
       }
 
-      // Validate updates
+      // Validate updates;
       this.validateAlertDefinitionUpdates(updates);
 
-      // Update definition
+      // Update definition;
       const updatedDefinition = await this.prisma.alertDefinition.update({
         where: { id },
         data: {
@@ -680,7 +691,7 @@ export class SmartAlertsService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'UPDATE',
         resourceType: 'ALERT_DEFINITION',
@@ -693,42 +704,42 @@ export class SmartAlertsService {
         },
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await cacheService.invalidatePattern(`cdss:alertDefinition:${id}`);
       await cacheService.invalidatePattern('cdss:alertDefinitions:*');
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('ALERT_DEFINITION_UPDATED', {
         alertDefinitionUpdated: updatedDefinition,
       });
 
       return updatedDefinition as AlertDefinition;
     } catch (error) {
-      console.error(`Error updating alert definition ${id}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create new alert instance
+   * Create new alert instance;
    */
   async createAlertInstance(
     alert: Omit<AlertInstance, 'id' | 'triggerTime' | 'status' | 'actions' | 'escalations' | 'deliveries'>,
-    definitionId: string
+    definitionId: string;
   ): Promise<AlertInstance> {
     try {
-      // Get alert definition
+      // Get alert definition;
       const definition = await this.getAlertDefinitionById(definitionId);
       if (!definition) {
         throw new Error(`Alert definition ${definitionId} not found`);
       }
 
-      // Check suppression rules
+      // Check suppression rules;
       const shouldSuppress = await this.checkSuppressionRules(
         definitionId,
         alert.patientId,
         alert.resourceId,
-        alert.context
+        alert.context;
       );
 
       let status = AlertStatus.ACTIVE;
@@ -741,21 +752,21 @@ export class SmartAlertsService {
         suppressionReason = 'Suppressed by rule';
       }
 
-      // Apply machine learning for alert relevance and priority
+      // Apply machine learning for alert relevance and priority;
       const mlInsights = await this.generateAlertMLInsights(
         definition,
         alert,
-        shouldSuppress
+        shouldSuppress;
       );
 
-      // Further suppress based on ML if noise reduction is enabled
+      // Further suppress based on ML if noise reduction is enabled;
       if (mlInsights && mlInsights.noiseReduction && mlInsights.relevance < 30) {
         status = AlertStatus.SUPPRESSED;
         suppressedBy = 'ML';
         suppressionReason = 'Low relevance score determined by ML';
       }
 
-      // Create alert instance
+      // Create alert instance;
       const newAlert: AlertInstance = {
         id: `alert-${Date.now()}`,
         definitionId,
@@ -771,8 +782,8 @@ export class SmartAlertsService {
         severity: definition.severity,
         status,
         triggerTime: new Date(),
-        expirationTime: definition.autoResolve
-          ? new Date(Date.now() + (definition.autoResolveAfter || 1440) * 60 * 1000)
+        expirationTime: definition.autoResolve;
+          ? new Date(Date.now() + (definition.autoResolveAfter || 1440) * 60 * 1000);
           : undefined,
         suppressedBy,
         suppressionReason,
@@ -785,33 +796,33 @@ export class SmartAlertsService {
         mlInsights,
       };
 
-      // Save alert instance
+      // Save alert instance;
       await this.prisma.alertInstance.create({
         data: newAlert as any,
       });
 
-      // If not suppressed, process actions and notifications
+      // If not suppressed, process actions and notifications;
       if (status === AlertStatus.ACTIVE) {
-        // Process actions
+        // Process actions;
         const actions = await this.processAlertActions(
           newAlert,
-          definition
+          definition;
         );
         newAlert.actions = actions;
 
-        // Process deliveries
+        // Process deliveries;
         const deliveries = await this.processAlertDeliveries(
           newAlert,
-          definition
+          definition;
         );
         newAlert.deliveries = deliveries;
 
-        // Schedule escalations if needed
+        // Schedule escalations if needed;
         if (definition.escalationRules && definition.escalationRules.length > 0) {
           await this.scheduleEscalation(newAlert.id, definition.escalationRules[0]);
         }
 
-        // Update alert with actions and deliveries
+        // Update alert with actions and deliveries;
         await this.prisma.alertInstance.update({
           where: { id: newAlert.id },
           data: {
@@ -821,7 +832,7 @@ export class SmartAlertsService {
         });
       }
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.alerts_generated', 1, {
         category: definition.category,
         severity: definition.severity,
@@ -829,25 +840,25 @@ export class SmartAlertsService {
         suppressed: shouldSuppress ? 'true' : 'false',
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('ALERT_CREATED', {
         alertCreated: newAlert,
       });
 
       return newAlert;
     } catch (error) {
-      console.error('Error creating alert instance:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get active alerts for a patient
+   * Get active alerts for a patient;
    */
   async getPatientActiveAlerts(patientId: string, encounterId?: string): Promise<AlertInstance[]> {
     try {
-      // Build filter
-      const where: any = {
+      // Build filter;
+      const where: unknown = {
         patientId,
         status: { in: [AlertStatus.ACTIVE, AlertStatus.ACKNOWLEDGED] },
       };
@@ -856,16 +867,16 @@ export class SmartAlertsService {
         where.encounterId = encounterId;
       }
 
-      // Query database
+      // Query database;
       const alerts = await this.prisma.alertInstance.findMany({
         where,
         orderBy: [
-          { severity: 'asc' }, // CRITICAL first
+          { severity: 'asc' }, // CRITICAL first;
           { triggerTime: 'desc' },
         ],
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.patient_alert_queries', 1, {
         patientId,
         activeAlertCount: alerts.length.toString(),
@@ -873,21 +884,21 @@ export class SmartAlertsService {
 
       return alerts as AlertInstance[];
     } catch (error) {
-      console.error(`Error fetching active alerts for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Acknowledge an alert
+   * Acknowledge an alert;
    */
   async acknowledgeAlert(
     alertId: string,
     userId: string,
-    note?: string
+    note?: string;
   ): Promise<AlertInstance> {
     try {
-      // Get alert
+      // Get alert;
       const alert = await this.prisma.alertInstance.findUnique({
         where: { id: alertId },
       });
@@ -900,7 +911,7 @@ export class SmartAlertsService {
         throw new Error(`Alert ${alertId} is not active`);
       }
 
-      // Update alert
+      // Update alert;
       const updatedAlert = await this.prisma.alertInstance.update({
         where: { id: alertId },
         data: {
@@ -911,10 +922,10 @@ export class SmartAlertsService {
         },
       });
 
-      // Update any escalations
+      // Update any escalations;
       await this.prisma.alertEscalationInstance.updateMany({
         where: {
-          id: { in: alert.escalations.map((e: any) => e.id) },
+          id: { in: alert.escalations.map((e: unknown) => e.id) },
           status: 'ACTIVE',
         },
         data: {
@@ -924,7 +935,7 @@ export class SmartAlertsService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'ACKNOWLEDGE',
         resourceType: 'ALERT',
@@ -937,7 +948,7 @@ export class SmartAlertsService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       const responseTime = new Date().getTime() - new Date(alert.triggerTime).getTime();
       metricsCollector.recordTimer('cdss.alert_response_time', responseTime);
       metricsCollector.incrementCounter('cdss.alerts_acknowledged', 1, {
@@ -945,28 +956,28 @@ export class SmartAlertsService {
         severity: alert.severity,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('ALERT_ACKNOWLEDGED', {
         alertAcknowledged: updatedAlert,
       });
 
       return updatedAlert as AlertInstance;
     } catch (error) {
-      console.error(`Error acknowledging alert ${alertId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Resolve an alert
+   * Resolve an alert;
    */
   async resolveAlert(
     alertId: string,
     userId: string,
-    note?: string
+    note?: string;
   ): Promise<AlertInstance> {
     try {
-      // Get alert
+      // Get alert;
       const alert = await this.prisma.alertInstance.findUnique({
         where: { id: alertId },
       });
@@ -979,7 +990,7 @@ export class SmartAlertsService {
         throw new Error(`Alert ${alertId} cannot be resolved`);
       }
 
-      // Update alert
+      // Update alert;
       const updatedAlert = await this.prisma.alertInstance.update({
         where: { id: alertId },
         data: {
@@ -990,10 +1001,10 @@ export class SmartAlertsService {
         },
       });
 
-      // Update any escalations
+      // Update any escalations;
       await this.prisma.alertEscalationInstance.updateMany({
         where: {
-          id: { in: alert.escalations.map((e: any) => e.id) },
+          id: { in: alert.escalations.map((e: unknown) => e.id) },
           status: { in: ['ACTIVE', 'ACKNOWLEDGED'] },
         },
         data: {
@@ -1001,7 +1012,7 @@ export class SmartAlertsService {
         },
       });
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'RESOLVE',
         resourceType: 'ALERT',
@@ -1014,63 +1025,65 @@ export class SmartAlertsService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.alerts_resolved', 1, {
         category: alert.category,
         severity: alert.severity,
       });
 
-      // Publish event
+      // Publish event;
       await pubsub.publish('ALERT_RESOLVED', {
         alertResolved: updatedAlert,
       });
 
       return updatedAlert as AlertInstance;
     } catch (error) {
-      console.error(`Error resolving alert ${alertId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Check for drug-drug interactions
+   * Check for drug-drug interactions;
    */
   async checkDrugInteractions(
     patientId: string,
     drugIds: string[],
-    encounterId?: string
+    encounterId?: string;
   ): Promise<DrugInteractionAlert | null> {
     try {
-      // Get drug information
+      // Get drug information;
       const drugs = await this.getDrugInformation(drugIds);
       
-      // Get patient's active medications
+      // Get patient's active medications;
       const patientMedications = await this.getPatientActiveMedications(patientId);
       
-      // Combine new drugs with existing medications
+      // Combine new drugs with existing medications;
       const allDrugs = [...drugs, ...patientMedications];
       
-      // Check for interactions
+      // Check for interactions;
       const interactions = await this.checkInteractions(allDrugs);
       
-      // If no interactions, return null
+      // If no interactions, return null;
       if (interactions.length === 0) {
         return null;
       }
 
-      // Determine highest severity
+      // Determine highest severity;
       let highestSeverity = AlertSeverity.LOW;
       interactions.forEach(interaction => {
         if (
-          (interaction.severity === AlertSeverity.CRITICAL) ||
-          (interaction.severity === AlertSeverity.HIGH && highestSeverity !== AlertSeverity.CRITICAL) ||
-          (interaction.severity === AlertSeverity.MEDIUM && highestSeverity !== AlertSeverity.CRITICAL && highestSeverity !== AlertSeverity.HIGH)
+          (interaction.severity === AlertSeverity.CRITICAL) ||;
+          (interaction.severity === AlertSeverity.HIGH && highestSeverity !== AlertSeverity.CRITICAL) ||;
+          (interaction.severity === AlertSeverity.MEDIUM &&;
+            highestSeverity !== AlertSeverity.CRITICAL &&;
+            highestSeverity !== AlertSeverity.HIGH);
         ) {
           highestSeverity = interaction.severity;
         }
       });
 
-      // Create drug interaction alert
+      // Create drug interaction alert;
       const alert: DrugInteractionAlert = {
         id: `drug-interaction-${Date.now()}`,
         patientId,
@@ -1081,12 +1094,12 @@ export class SmartAlertsService {
         createdAt: new Date(),
       };
 
-      // Save drug interaction alert
+      // Save drug interaction alert;
       await this.prisma.drugInteractionAlert.create({
         data: alert as any,
       });
 
-      // Create standard alert instance for this interaction
+      // Create standard alert instance for this interaction;
       await this.createAlertInstance({
         patientId,
         encounterId,
@@ -1099,7 +1112,7 @@ export class SmartAlertsService {
         context: { medications: allDrugs.map(d => d.name) },
       }, 'DRUG_INTERACTION_ALERT_DEFINITION_ID');
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.drug_interaction_alerts', 1, {
         patientId,
         severity: highestSeverity,
@@ -1108,13 +1121,13 @@ export class SmartAlertsService {
 
       return alert;
     } catch (error) {
-      console.error(`Error checking drug interactions for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Process critical lab value
+   * Process critical lab value;
    */
   async processCriticalLabValue(
     patientId: string,
@@ -1131,17 +1144,17 @@ export class SmartAlertsService {
       abnormalFlag: 'HIGH' | 'LOW' | 'CRITICAL_HIGH' | 'CRITICAL_LOW';
       resultTime: Date;
     },
-    encounterId?: string
+    encounterId?: string;
   ): Promise<CriticalValueAlert> {
     try {
-      // Get previous results for comparison
+      // Get previous results for comparison;
       const previousResults = await this.getPreviousLabResults(
         patientId,
         result.testCode,
-        5
+        5;
       );
 
-      // Create critical value alert
+      // Create critical value alert;
       const alert: CriticalValueAlert = {
         id: `critical-value-${Date.now()}`,
         patientId,
@@ -1167,12 +1180,12 @@ export class SmartAlertsService {
         status: 'PENDING',
       };
 
-      // Save critical value alert
+      // Save critical value alert;
       await this.prisma.criticalValueAlert.create({
         data: alert as any,
       });
 
-      // Create standard alert instance for this critical value
+      // Create standard alert instance for this critical value;
       await this.createAlertInstance({
         patientId,
         encounterId,
@@ -1185,10 +1198,10 @@ export class SmartAlertsService {
         context: { testName: result.testName, abnormalFlag: result.abnormalFlag },
       }, 'CRITICAL_VALUE_ALERT_DEFINITION_ID');
 
-      // Start escalation process
+      // Start escalation process;
       await this.startCriticalValueEscalation(alert);
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.critical_value_alerts', 1, {
         patientId,
         testCode: result.testCode,
@@ -1197,20 +1210,20 @@ export class SmartAlertsService {
 
       return alert;
     } catch (error) {
-      console.error(`Error processing critical lab value for patient ${patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Create patient safety alert
+   * Create patient safety alert;
    */
   async createPatientSafetyAlert(
     safety: Omit<PatientSafetyAlert, 'id' | 'detectionTime' | 'status'>,
-    userId: string
+    userId: string;
   ): Promise<PatientSafetyAlert> {
     try {
-      // Create safety alert
+      // Create safety alert;
       const alert: PatientSafetyAlert = {
         ...safety,
         id: `safety-alert-${Date.now()}`,
@@ -1218,12 +1231,12 @@ export class SmartAlertsService {
         status: 'ACTIVE',
       };
 
-      // Save safety alert
+      // Save safety alert;
       await this.prisma.patientSafetyAlert.create({
         data: alert as any,
       });
 
-      // Create standard alert instance for this safety issue
+      // Create standard alert instance for this safety issue;
       await this.createAlertInstance({
         patientId: safety.patientId,
         encounterId: safety.encounterId,
@@ -1236,18 +1249,18 @@ export class SmartAlertsService {
         context: { type: safety.type, category: safety.category },
       }, 'PATIENT_SAFETY_ALERT_DEFINITION_ID');
 
-      // Create incident report if required for certain safety alert types
+      // Create incident report if required for certain safety alert types;
       if (
-        safety.type === SafetyAlertType.MEDICATION_ERROR ||
-        safety.type === SafetyAlertType.SENTINEL_EVENT ||
-        safety.type === SafetyAlertType.WRONG_SITE_SURGERY
+        safety.type === SafetyAlertType.MEDICATION_ERROR ||;
+        safety.type === SafetyAlertType.SENTINEL_EVENT ||;
+        safety.type === SafetyAlertType.WRONG_SITE_SURGERY;
       ) {
         const incidentReportId = await this.createIncidentReport(
           alert,
-          userId
+          userId;
         );
 
-        // Update safety alert with incident report ID
+        // Update safety alert with incident report ID;
         await this.prisma.patientSafetyAlert.update({
           where: { id: alert.id },
           data: { incidentReportId },
@@ -1256,7 +1269,7 @@ export class SmartAlertsService {
         alert.incidentReportId = incidentReportId;
       }
 
-      // Create audit log
+      // Create audit log;
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'PATIENT_SAFETY_ALERT',
@@ -1269,7 +1282,7 @@ export class SmartAlertsService {
         },
       });
 
-      // Record metrics
+      // Record metrics;
       metricsCollector.incrementCounter('cdss.safety_alerts', 1, {
         type: safety.type,
         severity: safety.severity,
@@ -1278,13 +1291,13 @@ export class SmartAlertsService {
 
       return alert;
     } catch (error) {
-      console.error(`Error creating patient safety alert for patient ${safety.patientId}:`, error);
+
       throw error;
     }
   }
 
   /**
-   * Get alert analytics
+   * Get alert analytics;
    */
   async getAlertAnalytics(
     timeRange?: {
@@ -1298,12 +1311,12 @@ export class SmartAlertsService {
     }
   ): Promise<AlertAnalytics> {
     try {
-      // Default time range is last 24 hours
+      // Default time range is last 24 hours;
       const startDate = timeRange?.startDate || new Date(Date.now() - 24 * 60 * 60 * 1000);
       const endDate = timeRange?.endDate || new Date();
 
-      // Build filters
-      const where: any = {
+      // Build filters;
+      const where: unknown = {
         triggerTime: {
           gte: startDate,
           lte: endDate,
@@ -1335,12 +1348,12 @@ export class SmartAlertsService {
         where.category = filters.alertCategory;
       }
 
-      // Get alert stats
+      // Get alert stats;
       const alertStats = await this.prisma.$transaction([
-        // Total alerts
+        // Total alerts;
         this.prisma.alertInstance.count({ where }),
         
-        // Active alerts
+        // Active alerts;
         this.prisma.alertInstance.count({
           where: {
             ...where,
@@ -1348,7 +1361,7 @@ export class SmartAlertsService {
           },
         }),
         
-        // Resolved alerts
+        // Resolved alerts;
         this.prisma.alertInstance.count({
           where: {
             ...where,
@@ -1356,7 +1369,7 @@ export class SmartAlertsService {
           },
         }),
         
-        // Acknowledged alerts
+        // Acknowledged alerts;
         this.prisma.alertInstance.count({
           where: {
             ...where,
@@ -1364,7 +1377,7 @@ export class SmartAlertsService {
           },
         }),
         
-        // Suppressed alerts
+        // Suppressed alerts;
         this.prisma.alertInstance.count({
           where: {
             ...where,
@@ -1372,7 +1385,7 @@ export class SmartAlertsService {
           },
         }),
         
-        // Expired alerts
+        // Expired alerts;
         this.prisma.alertInstance.count({
           where: {
             ...where,
@@ -1380,7 +1393,7 @@ export class SmartAlertsService {
           },
         }),
         
-        // Error alerts
+        // Error alerts;
         this.prisma.alertInstance.count({
           where: {
             ...where,
@@ -1388,35 +1401,35 @@ export class SmartAlertsService {
           },
         }),
         
-        // Alerts by severity
+        // Alerts by severity;
         this.prisma.alertInstance.groupBy({
           by: ['severity'],
           where,
           _count: true,
         }),
         
-        // Alerts by category
+        // Alerts by category;
         this.prisma.alertInstance.groupBy({
           by: ['category'],
           where,
           _count: true,
         }),
         
-        // Alerts by type
+        // Alerts by type;
         this.prisma.alertInstance.groupBy({
           by: ['type'],
           where,
           _count: true,
         }),
         
-        // Alerts by status
+        // Alerts by status;
         this.prisma.alertInstance.groupBy({
           by: ['status'],
           where,
           _count: true,
         }),
         
-        // Response time average
+        // Response time average;
         this.prisma.alertInstance.aggregate({
           where: {
             ...where,
@@ -1427,7 +1440,7 @@ export class SmartAlertsService {
           },
         }),
         
-        // Top alert definitions
+        // Top alert definitions;
         this.prisma.alertInstance.groupBy({
           by: ['definitionId'],
           where,
@@ -1441,24 +1454,24 @@ export class SmartAlertsService {
         }),
       ]);
       
-      // Process alert by hour and day
+      // Process alert by hour and day;
       const alertsByHour = await this.getAlertCountByHour(where);
       const alertsByDay = await this.getAlertCountByDay(where);
       
-      // Process provider data
+      // Process provider data;
       const alertsByProvider = await this.getAlertCountByProvider(where);
       
-      // Calculate escalation and override rates
+      // Calculate escalation and override rates;
       const escalationRate = await this.calculateEscalationRate(where);
       const overrideRate = await this.calculateOverrideRate(where);
       
-      // Calculate alert fatigue metrics
+      // Calculate alert fatigue metrics;
       const alertFatigue = await this.calculateAlertFatigue(where);
       
-      // Calculate noise reduction impact
+      // Calculate noise reduction impact;
       const noiseReductionImpact = await this.calculateNoiseReductionImpact(where);
       
-      // Map severity counts
+      // Map severity counts;
       const alertsBySeverity: Record<AlertSeverity, number> = {
         [AlertSeverity.CRITICAL]: 0,
         [AlertSeverity.HIGH]: 0,
@@ -1467,31 +1480,31 @@ export class SmartAlertsService {
         [AlertSeverity.INFO]: 0,
       };
       
-      alertStats[7].forEach((item: any) => {
+      alertStats[7].forEach((item: unknown) => {
         alertsBySeverity[item.severity as AlertSeverity] = item._count;
       });
       
-      // Map category counts
+      // Map category counts;
       const alertsByCategory: Record<AlertCategory, number> = {} as Record<AlertCategory, number>;
-      alertStats[8].forEach((item: any) => {
+      alertStats[8].forEach((item: unknown) => {
         alertsByCategory[item.category as AlertCategory] = item._count;
       });
       
-      // Map type counts
+      // Map type counts;
       const alertsByType: Record<AlertType, number> = {} as Record<AlertType, number>;
-      alertStats[9].forEach((item: any) => {
+      alertStats[9].forEach((item: unknown) => {
         alertsByType[item.type as AlertType] = item._count;
       });
       
-      // Map status counts
+      // Map status counts;
       const alertsByStatus: Record<AlertStatus, number> = {} as Record<AlertStatus, number>;
-      alertStats[10].forEach((item: any) => {
+      alertStats[10].forEach((item: unknown) => {
         alertsByStatus[item.status as AlertStatus] = item._count;
       });
       
-      // Get top alert definition details
+      // Get top alert definition details;
       const topAlertDefinitions = await Promise.all(
-        alertStats[12].map(async (item: any) => {
+        alertStats[12].map(async (item: unknown) => {
           const definition = await this.getAlertDefinitionById(item.definitionId);
           const overrideRate = await this.calculateDefinitionOverrideRate(item.definitionId, where);
           
@@ -1501,10 +1514,10 @@ export class SmartAlertsService {
             count: item._count,
             overrideRate,
           };
-        })
+        });
       );
 
-      // Compile analytics
+      // Compile analytics;
       const analytics: AlertAnalytics = {
         totalAlerts: alertStats[0],
         activeAlerts: alertStats[1],
@@ -1530,34 +1543,34 @@ export class SmartAlertsService {
 
       return analytics;
     } catch (error) {
-      console.error('Error generating alert analytics:', error);
+
       throw error;
     }
   }
 
   /**
-   * Get alert analytics by provider
+   * Get alert analytics by provider;
    */
   async getProviderAlertAnalytics(providerId: string): Promise<any> {
-    // Implementation to get provider-specific analytics
+    // Implementation to get provider-specific analytics;
     return {};
   }
 
   /**
-   * Check for alert fatigue for a provider
+   * Check for alert fatigue for a provider;
    */
   async checkAlertFatigue(providerId: string): Promise<any> {
-    // Implementation to check alert fatigue
+    // Implementation to check alert fatigue;
     return {};
   }
 
-  // Private helper methods
-  private validateAlertDefinition(definition: any): void {
-    // Implementation for definition validation
+  // Private helper methods;
+  private validateAlertDefinition(definition: unknown): void {
+    // Implementation for definition validation;
   }
 
   private validateAlertDefinitionUpdates(updates: Partial<AlertDefinition>): void {
-    // Implementation for update validation
+    // Implementation for update validation;
   }
 
   private async checkSuppressionRules(
@@ -1566,135 +1579,135 @@ export class SmartAlertsService {
     resourceId?: string,
     context?: Record<string, any>
   ): Promise<boolean> {
-    // Implementation to check suppression rules
+    // Implementation to check suppression rules;
     return false;
   }
 
   private async generateAlertMLInsights(
     definition: AlertDefinition,
-    alert: any,
-    suppressedByRule: boolean
+    alert: unknown,
+    suppressedByRule: boolean;
   ): Promise<MLInsights | undefined> {
-    // Implementation to generate ML insights
+    // Implementation to generate ML insights;
     return undefined;
   }
 
   private async processAlertActions(
     alert: AlertInstance,
-    definition: AlertDefinition
+    definition: AlertDefinition;
   ): Promise<AlertActionInstance[]> {
-    // Implementation to process actions
+    // Implementation to process actions;
     return [];
   }
 
   private async processAlertDeliveries(
     alert: AlertInstance,
-    definition: AlertDefinition
+    definition: AlertDefinition;
   ): Promise<AlertDeliveryInstance[]> {
-    // Implementation to process deliveries
+    // Implementation to process deliveries;
     return [];
   }
 
   private async scheduleEscalation(
     alertId: string,
-    escalationRule: EscalationRule
+    escalationRule: EscalationRule;
   ): Promise<void> {
-    // Implementation to schedule escalation
+    // Implementation to schedule escalation;
   }
 
   private async getDrugInformation(drugIds: string[]): Promise<Drug[]> {
-    // Implementation to get drug information
+    // Implementation to get drug information;
     return [];
   }
 
   private async getPatientActiveMedications(patientId: string): Promise<Drug[]> {
-    // Implementation to get active medications
+    // Implementation to get active medications;
     return [];
   }
 
   private async checkInteractions(drugs: Drug[]): Promise<DrugInteraction[]> {
-    // Implementation to check interactions
+    // Implementation to check interactions;
     return [];
   }
 
   private formatDrugInteractionMessage(interactions: DrugInteraction[]): string {
-    // Implementation to format message
+    // Implementation to format message;
     return '';
   }
 
   private formatDrugInteractionDetails(interactions: DrugInteraction[]): string {
-    // Implementation to format details
+    // Implementation to format details;
     return '';
   }
 
   private async getPreviousLabResults(
     patientId: string,
     testCode: string,
-    limit: number
+    limit: number;
   ): Promise<PreviousResult[]> {
-    // Implementation to get previous results
+    // Implementation to get previous results;
     return [];
   }
 
   private async getOrderingProvider(orderId: string): Promise<string> {
-    // Implementation to get ordering provider
+    // Implementation to get ordering provider;
     return '';
   }
 
   private formatCriticalValueDetails(
-    result: any,
+    result: unknown,
     previousResults: PreviousResult[]
   ): string {
-    // Implementation to format critical value details
+    // Implementation to format critical value details;
     return '';
   }
 
   private async startCriticalValueEscalation(
-    alert: CriticalValueAlert
+    alert: CriticalValueAlert;
   ): Promise<void> {
-    // Implementation to start escalation
+    // Implementation to start escalation;
   }
 
-  private formatSafetyAlertDetails(safety: any): string {
-    // Implementation to format safety alert details
+  private formatSafetyAlertDetails(safety: unknown): string {
+    // Implementation to format safety alert details;
     return '';
   }
 
   private async createIncidentReport(
     alert: PatientSafetyAlert,
-    userId: string
+    userId: string;
   ): Promise<string> {
-    // Implementation to create incident report
+    // Implementation to create incident report;
     return '';
   }
 
-  private async getAlertCountByHour(where: any): Promise<number[]> {
-    // Implementation to get counts by hour
+  private async getAlertCountByHour(where: unknown): Promise<number[]> {
+    // Implementation to get counts by hour;
     return Array(24).fill(0);
   }
 
-  private async getAlertCountByDay(where: any): Promise<number[]> {
-    // Implementation to get counts by day
+  private async getAlertCountByDay(where: unknown): Promise<number[]> {
+    // Implementation to get counts by day;
     return Array(7).fill(0);
   }
 
-  private async getAlertCountByProvider(where: any): Promise<Record<string, number>> {
-    // Implementation to get counts by provider
+  private async getAlertCountByProvider(where: unknown): Promise<Record<string, number>> {
+    // Implementation to get counts by provider;
     return {};
   }
 
-  private async calculateEscalationRate(where: any): Promise<number> {
-    // Implementation to calculate escalation rate
+  private async calculateEscalationRate(where: unknown): Promise<number> {
+    // Implementation to calculate escalation rate;
     return 0;
   }
 
-  private async calculateOverrideRate(where: any): Promise<number> {
-    // Implementation to calculate override rate
+  private async calculateOverrideRate(where: unknown): Promise<number> {
+    // Implementation to calculate override rate;
     return 0;
   }
 
-  private async calculateAlertFatigue(where: any): Promise<any> {
-    // Implementation to calculate alert fatigue metrics
+  private async calculateAlertFatigue(where: unknown): Promise<any> {
+    // Implementation to calculate alert fatigue metrics;
     return {
       overrideRateByHour: Array(24).fill(0),
       responseTimeByHour: Array(24).fill(0),
@@ -1702,8 +1715,8 @@ export class SmartAlertsService {
     };
   }
 
-  private async calculateNoiseReductionImpact(where: any): Promise<any> {
-    // Implementation to calculate noise reduction impact
+  private async calculateNoiseReductionImpact(where: unknown): Promise<any> {
+    // Implementation to calculate noise reduction impact;
     return {
       alertsBeforeReduction: 0,
       alertsAfterReduction: 0,
@@ -1714,9 +1727,9 @@ export class SmartAlertsService {
 
   private async calculateDefinitionOverrideRate(
     definitionId: string,
-    where: any
+    where: unknown;
   ): Promise<number> {
-    // Implementation to calculate definition override rate
+    // Implementation to calculate definition override rate;
     return 0;
   }
 }

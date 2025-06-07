@@ -1,12 +1,22 @@
-import { PrismaClient } from '@prisma/client';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { z } from 'zod';
 
-// Create enums to match Prisma schema
+// Create enums to match Prisma schema;
 export enum AmbulanceStatus {
   AVAILABLE = 'AVAILABLE',
   ON_CALL = 'ON_CALL',
   OUT_OF_SERVICE = 'OUT_OF_SERVICE',
-  MAINTENANCE = 'MAINTENANCE'
+  MAINTENANCE = 'MAINTENANCE';
 }
 
 export enum AmbulanceType {
@@ -14,7 +24,7 @@ export enum AmbulanceType {
   ADVANCED = 'ADVANCED',
   CRITICAL_CARE = 'CRITICAL_CARE',
   NEONATAL = 'NEONATAL',
-  BARIATRIC = 'BARIATRIC'
+  BARIATRIC = 'BARIATRIC';
 }
 
 export enum AmbulanceRunStatus {
@@ -25,10 +35,10 @@ export enum AmbulanceRunStatus {
   EN_ROUTE_TO_DESTINATION = 'EN_ROUTE_TO_DESTINATION',
   AT_DESTINATION = 'AT_DESTINATION',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED';
 }
 
-// Validation schemas for Ambulance
+// Validation schemas for Ambulance;
 export const createAmbulanceSchema = z.object({
   vehicleNumber: z.string().min(1, 'Vehicle number is required'),
   type: z.nativeEnum(AmbulanceType).default(AmbulanceType.BASIC),
@@ -42,7 +52,7 @@ export const updateAmbulanceSchema = createAmbulanceSchema.partial().extend({
   id: z.string(),
 });
 
-// Validation schemas for AmbulanceRun
+// Validation schemas for AmbulanceRun;
 export const createAmbulanceRunSchema = z.object({
   ambulanceId: z.string().min(1, 'Ambulance ID is required'),
   patientId: z.string().optional().nullable(),
@@ -67,24 +77,24 @@ export type UpdateAmbulanceInput = z.infer<typeof updateAmbulanceSchema>;
 export type CreateAmbulanceRunInput = z.infer<typeof createAmbulanceRunSchema>;
 export type UpdateAmbulanceRunInput = z.infer<typeof updateAmbulanceRunSchema>;
 
-// Import prisma client
+// Import prisma client;
 import { prisma } from '../lib/prisma';
 
 /**
- * Service class for managing ambulance fleet and runs
+ * Service class for managing ambulance fleet and runs;
  */
 export class AmbulanceService {
   /**
-   * Create a new ambulance
-   * @param data Ambulance data
-   * @returns The created ambulance
+   * Create a new ambulance;
+   * @param data Ambulance data;
+   * @returns The created ambulance;
    */
   async createAmbulance(data: CreateAmbulanceInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createAmbulanceSchema.parse(data);
       
-      // Create the ambulance
+      // Create the ambulance;
       const ambulance = await prisma.ambulance.create({
         data: validatedData,
       });
@@ -99,16 +109,16 @@ export class AmbulanceService {
   }
 
   /**
-   * Get all ambulances with optional filtering
-   * @param filters Optional filters for status or type
-   * @returns Array of ambulances matching the filters
+   * Get all ambulances with optional filtering;
+   * @param filters Optional filters for status or type;
+   * @returns Array of ambulances matching the filters;
    */
   async getAmbulances(filters?: {
     status?: string;
     type?: string;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -138,9 +148,9 @@ export class AmbulanceService {
   }
 
   /**
-   * Get a single ambulance by ID
-   * @param id Ambulance ID
-   * @returns The ambulance or null if not found
+   * Get a single ambulance by ID;
+   * @param id Ambulance ID;
+   * @returns The ambulance or null if not found;
    */
   async getAmbulanceById(id: string) {
     try {
@@ -163,20 +173,20 @@ export class AmbulanceService {
   }
 
   /**
-   * Update an ambulance
-   * @param id Ambulance ID
-   * @param data Updated ambulance data
-   * @returns The updated ambulance
+   * Update an ambulance;
+   * @param id Ambulance ID;
+   * @param data Updated ambulance data;
+   * @returns The updated ambulance;
    */
   async updateAmbulance(id: string, data: UpdateAmbulanceInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateAmbulanceSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Update the ambulance
+      // Update the ambulance;
       const ambulance = await prisma.ambulance.update({
         where: { id },
         data: updateData,
@@ -200,13 +210,13 @@ export class AmbulanceService {
   }
 
   /**
-   * Delete an ambulance
-   * @param id Ambulance ID
-   * @returns The deleted ambulance
+   * Delete an ambulance;
+   * @param id Ambulance ID;
+   * @returns The deleted ambulance;
    */
   async deleteAmbulance(id: string) {
     try {
-      // Check if ambulance is on an active run
+      // Check if ambulance is on an active run;
       const activeRun = await prisma.ambulanceRun.findFirst({
         where: {
           ambulanceId: id,
@@ -238,10 +248,10 @@ export class AmbulanceService {
   }
 
   /**
-   * Assign a driver to an ambulance
-   * @param ambulanceId Ambulance ID
-   * @param driverId Driver user ID
-   * @returns The updated ambulance
+   * Assign a driver to an ambulance;
+   * @param ambulanceId Ambulance ID;
+   * @param driverId Driver user ID;
+   * @returns The updated ambulance;
    */
   async assignDriver(ambulanceId: string, driverId: string) {
     try {
@@ -267,14 +277,14 @@ export class AmbulanceService {
   }
 
   /**
-   * Update ambulance status
-   * @param ambulanceId Ambulance ID
-   * @param status New status
-   * @returns The updated ambulance
+   * Update ambulance status;
+   * @param ambulanceId Ambulance ID;
+   * @param status New status;
+   * @returns The updated ambulance;
    */
   async updateStatus(ambulanceId: string, status: AmbulanceStatus) {
     try {
-      // If setting to ON_CALL, check that ambulance is not already on a run
+      // If setting to ON_CALL, check that ambulance is not already on a run;
       if (status === AmbulanceStatus.ON_CALL) {
         const activeRun = await prisma.ambulanceRun.findFirst({
           where: {
@@ -319,16 +329,16 @@ export class AmbulanceService {
   }
 
   /**
-   * Create a new ambulance run
-   * @param data Run data
-   * @returns The created run
+   * Create a new ambulance run;
+   * @param data Run data;
+   * @returns The created run;
    */
   async createRun(data: CreateAmbulanceRunInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = createAmbulanceRunSchema.parse(data);
       
-      // Check if ambulance is available
+      // Check if ambulance is available;
       const ambulance = await prisma.ambulance.findUnique({
         where: { id: validatedData.ambulanceId },
       });
@@ -341,14 +351,14 @@ export class AmbulanceService {
         throw new Error(`Ambulance with ID ${validatedData.ambulanceId} is not available`);
       }
       
-      // Create the run and update ambulance status in a transaction
+      // Create the run and update ambulance status in a transaction;
       const run = await prisma.$transaction(async (tx) => {
-        // Create the run
+        // Create the run;
         const newRun = await tx.ambulanceRun.create({
           data: validatedData,
         });
         
-        // Update ambulance status
+        // Update ambulance status;
         await tx.ambulance.update({
           where: { id: validatedData.ambulanceId },
           data: {
@@ -369,9 +379,9 @@ export class AmbulanceService {
   }
 
   /**
-   * Get all ambulance runs with optional filtering
-   * @param filters Optional filters for status, ambulanceId, patientId, or date range
-   * @returns Array of runs matching the filters
+   * Get all ambulance runs with optional filtering;
+   * @param filters Optional filters for status, ambulanceId, patientId, or date range;
+   * @returns Array of runs matching the filters;
    */
   async getRuns(filters?: {
     status?: string;
@@ -381,7 +391,7 @@ export class AmbulanceService {
     dateTo?: Date;
   }) {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters) {
         if (filters.status) {
@@ -427,9 +437,9 @@ export class AmbulanceService {
   }
 
   /**
-   * Get a single ambulance run by ID
-   * @param id Run ID
-   * @returns The run or null if not found
+   * Get a single ambulance run by ID;
+   * @param id Run ID;
+   * @returns The run or null if not found;
    */
   async getRunById(id: string) {
     try {
@@ -453,20 +463,20 @@ export class AmbulanceService {
   }
 
   /**
-   * Update an ambulance run
-   * @param id Run ID
-   * @param data Updated run data
-   * @returns The updated run
+   * Update an ambulance run;
+   * @param id Run ID;
+   * @param data Updated run data;
+   * @returns The updated run;
    */
   async updateRun(id: string, data: UpdateAmbulanceRunInput) {
     try {
-      // Validate input data
+      // Validate input data;
       const validatedData = updateAmbulanceRunSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
       
-      // Get current run
+      // Get current run;
       const currentRun = await prisma.ambulanceRun.findUnique({
         where: { id },
       });
@@ -475,7 +485,7 @@ export class AmbulanceService {
         throw new Error(`Ambulance run with ID ${id} not found`);
       }
       
-      // Update the run
+      // Update the run;
       const run = await prisma.ambulanceRun.update({
         where: { id },
         data: updateData,
@@ -490,11 +500,11 @@ export class AmbulanceService {
         },
       });
       
-      // If status is changing to COMPLETED or CANCELLED, update ambulance status
+      // If status is changing to COMPLETED or CANCELLED, update ambulance status;
       if (updateData.status && 
-          (updateData.status === AmbulanceRunStatus.COMPLETED || 
-           updateData.status === AmbulanceRunStatus.CANCELLED) && 
-          currentRun.status !== AmbulanceRunStatus.COMPLETED && 
+          (updateData.status === AmbulanceRunStatus.COMPLETED ||;
+           updateData.status === AmbulanceRunStatus.CANCELLED) &&;
+          currentRun.status !== AmbulanceRunStatus.COMPLETED &&;
           currentRun.status !== AmbulanceRunStatus.CANCELLED) {
         
         await prisma.ambulance.update({
@@ -515,13 +525,13 @@ export class AmbulanceService {
   }
 
   /**
-   * Delete an ambulance run
-   * @param id Run ID
-   * @returns The deleted run
+   * Delete an ambulance run;
+   * @param id Run ID;
+   * @returns The deleted run;
    */
   async deleteRun(id: string) {
     try {
-      // Get current run
+      // Get current run;
       const currentRun = await prisma.ambulanceRun.findUnique({
         where: { id },
       });
@@ -530,7 +540,7 @@ export class AmbulanceService {
         throw new Error(`Ambulance run with ID ${id} not found`);
       }
       
-      // Check if run is active
+      // Check if run is active;
       if (![AmbulanceRunStatus.COMPLETED, AmbulanceRunStatus.CANCELLED].includes(currentRun.status as AmbulanceRunStatus)) {
         throw new Error(`Cannot delete active ambulance run with ID ${id}`);
       }
@@ -546,14 +556,14 @@ export class AmbulanceService {
   }
 
   /**
-   * Update run status
-   * @param runId Run ID
-   * @param status New status
-   * @returns The updated run
+   * Update run status;
+   * @param runId Run ID;
+   * @param status New status;
+   * @returns The updated run;
    */
   async updateRunStatus(runId: string, status: AmbulanceRunStatus) {
     try {
-      // Get current run
+      // Get current run;
       const currentRun = await prisma.ambulanceRun.findUnique({
         where: { id: runId },
       });
@@ -562,8 +572,8 @@ export class AmbulanceService {
         throw new Error(`Ambulance run with ID ${runId} not found`);
       }
       
-      // Update timestamps based on status
-      const updateData: any = {
+      // Update timestamps based on status;
+      const updateData: unknown = {
         status,
       };
       
@@ -596,7 +606,7 @@ export class AmbulanceService {
           break;
       }
       
-      // Update the run
+      // Update the run;
       const run = await prisma.$transaction(async (tx) => {
         const updatedRun = await tx.ambulanceRun.update({
           where: { id: runId },
@@ -612,9 +622,9 @@ export class AmbulanceService {
           },
         });
         
-        // If status is changing to COMPLETED or CANCELLED, update ambulance status
+        // If status is changing to COMPLETED or CANCELLED, update ambulance status;
         if ((status === AmbulanceRunStatus.COMPLETED || status === AmbulanceRunStatus.CANCELLED) && 
-            currentRun.status !== AmbulanceRunStatus.COMPLETED && 
+            currentRun.status !== AmbulanceRunStatus.COMPLETED &&;
             currentRun.status !== AmbulanceRunStatus.CANCELLED) {
           
           await tx.ambulance.update({
@@ -635,5 +645,5 @@ export class AmbulanceService {
   }
 }
 
-// Export a singleton instance
+// Export a singleton instance;
 export const ambulanceService = new AmbulanceService();

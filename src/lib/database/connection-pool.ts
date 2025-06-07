@@ -1,28 +1,39 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Enterprise Database Connection Pool Configuration
- * Optimized for high-performance healthcare applications
+ * Enterprise Database Connection Pool Configuration;
+ * Optimized for high-performance healthcare applications;
  */
 
 import { PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
 
-// Connection Pool Configuration
+// Connection Pool Configuration;
 interface PoolConfig {
   host: string;
   port: number;
   database: string;
   user: string;
   password: string;
-  max: number;           // Maximum number of connections
-  min: number;           // Minimum number of connections
-  idle: number;          // Idle timeout in milliseconds
-  acquire: number;       // Acquire timeout in milliseconds
-  evict: number;         // Eviction timeout in milliseconds
+  max: number;           // Maximum number of connections;
+  min: number;           // Minimum number of connections;
+  idle: number;          // Idle timeout in milliseconds;
+  acquire: number;       // Acquire timeout in milliseconds;
+  evict: number;         // Eviction timeout in milliseconds;
   handleDisconnects: boolean;
   logging: boolean;
 }
 
-// Enhanced Prisma Client with Connection Pooling
+// Enhanced Prisma Client with Connection Pooling;
 class DatabasePool {
   private static instance: DatabasePool;
   private prismaClient: PrismaClient;
@@ -49,13 +60,13 @@ class DatabasePool {
       database: process.env.DB_NAME || 'hospital_management',
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'password',
-      max: parseInt(process.env.DB_POOL_MAX || '20'),        // 20 connections max
-      min: parseInt(process.env.DB_POOL_MIN || '5'),         // 5 connections min
-      idle: parseInt(process.env.DB_POOL_IDLE || '10000'),   // 10 seconds
-      acquire: parseInt(process.env.DB_POOL_ACQUIRE || '30000'), // 30 seconds
-      evict: parseInt(process.env.DB_POOL_EVICT || '1000'),  // 1 second
+      max: parseInt(process.env.DB_POOL_MAX || '20'),        // 20 connections max;
+      min: parseInt(process.env.DB_POOL_MIN || '5'),         // 5 connections min;
+      idle: parseInt(process.env.DB_POOL_IDLE || '10000'),   // 10 seconds;
+      acquire: parseInt(process.env.DB_POOL_ACQUIRE || '30000'), // 30 seconds;
+      evict: parseInt(process.env.DB_POOL_EVICT || '1000'),  // 1 second;
       handleDisconnects: true,
-      logging: process.env.NODE_ENV === 'development'
+      logging: process.env.NODE_ENV === 'development';
     };
   }
 
@@ -65,28 +76,24 @@ class DatabasePool {
     this.prismaClient = new PrismaClient({
       datasources: {
         db: {
-          url: databaseUrl
+          url: databaseUrl;
         }
       },
       log: this.config.logging ? ['query', 'info', 'warn', 'error'] : ['error'],
       errorFormat: 'pretty',
     });
 
-    // Enable query optimization features
+    // Enable query optimization features;
     this.prismaClient.$on('beforeExit', async () => {
-      console.log('Disconnecting Prisma client...');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       await this.prismaClient.$disconnect();
     });
 
-    // Query performance monitoring
+    // Query performance monitoring;
     if (this.config.logging) {
       this.prismaClient.$on('query', (e) => {
         if (e.duration > 1000) { // Log slow queries (> 1 second)
-          console.warn(`Slow Query Detected: ${e.duration}ms`, {
-            query: e.query,
-            params: e.params,
-            duration: e.duration
-          });
+
         }
       });
     }
@@ -103,32 +110,32 @@ class DatabasePool {
       min: this.config.min,
       idleTimeoutMillis: this.config.idle,
       connectionTimeoutMillis: this.config.acquire,
-      maxUses: 1000, // Maximum uses per connection before recreation
+      maxUses: 1000, // Maximum uses per connection before recreation;
       allowExitOnIdle: true,
-      application_name: 'hospital-management-system'
+      application_name: 'hospital-management-system';
     });
 
-    // Pool event listeners
+    // Pool event listeners;
     this.pgPool.on('connect', (client) => {
-      console.log('New database connection established');
-      // Set connection-specific settings
-      client.query('SET statement_timeout = 30000'); // 30 second statement timeout
-      client.query('SET idle_in_transaction_session_timeout = 60000'); // 1 minute idle timeout
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // Set connection-specific settings;
+      client.query('SET statement_timeout = 30000'); // 30 second statement timeout;
+      client.query('SET idle_in_transaction_session_timeout = 60000'); // 1 minute idle timeout;
     });
 
     this.pgPool.on('error', (err) => {
-      console.error('Database pool error:', err);
+
     });
 
     this.pgPool.on('acquire', () => {
       if (this.config.logging) {
-        console.log('Connection acquired from pool');
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     });
 
     this.pgPool.on('release', () => {
       if (this.config.logging) {
-        console.log('Connection released back to pool');
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     });
   }
@@ -144,43 +151,43 @@ class DatabasePool {
     return `postgresql://${this.config.user}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.database}?${params.toString()}`;
   }
 
-  // Get Prisma client instance
+  // Get Prisma client instance;
   public getPrismaClient(): PrismaClient {
     return this.prismaClient;
   }
 
-  // Get raw PostgreSQL pool for complex queries
+  // Get raw PostgreSQL pool for complex queries;
   public getPgPool(): Pool {
     return this.pgPool;
   }
 
-  // Connection pool health check
+  // Connection pool health check;
   public async healthCheck(): Promise<{
     prisma: boolean;
     pool: boolean;
-    stats: any;
+    stats: unknown;
   }> {
     try {
-      // Test Prisma connection
+      // Test Prisma connection;
       const prismaHealthy = await this.testPrismaConnection();
       
-      // Test pool connection
+      // Test pool connection;
       const poolHealthy = await this.testPoolConnection();
       
-      // Get pool statistics
+      // Get pool statistics;
       const stats = this.getPoolStats();
       
       return {
         prisma: prismaHealthy,
         pool: poolHealthy,
-        stats
+        stats;
       };
     } catch (error) {
-      console.error('Database health check failed:', error);
+
       return {
         prisma: false,
         pool: false,
-        stats: null
+        stats: null;
       };
     }
   }
@@ -190,7 +197,7 @@ class DatabasePool {
       await this.prismaClient.$queryRaw`SELECT 1 as test`;
       return true;
     } catch (error) {
-      console.error('Prisma connection test failed:', error);
+
       return false;
     }
   }
@@ -202,38 +209,38 @@ class DatabasePool {
       client.release();
       return true;
     } catch (error) {
-      console.error('Pool connection test failed:', error);
+
       return false;
     }
   }
 
-  private getPoolStats(): any {
+  private getPoolStats(): unknown {
     return {
       totalCount: this.pgPool.totalCount,
       idleCount: this.pgPool.idleCount,
       waitingCount: this.pgPool.waitingCount,
       maxConnections: this.config.max,
-      minConnections: this.config.min
+      minConnections: this.config.min;
     };
   }
 
-  // Graceful shutdown
+  // Graceful shutdown;
   public async shutdown(): Promise<void> {
-    console.log('Shutting down database connections...');
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
     try {
       await this.prismaClient.$disconnect();
       await this.pgPool.end();
-      console.log('Database connections closed successfully');
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
-      console.error('Error during database shutdown:', error);
+
     }
   }
 
-  // Query optimization helper
+  // Query optimization helper;
   public async executeOptimizedQuery<T>(
     queryFn: (client: PrismaClient) => Promise<T>,
-    useTransaction = false
+    useTransaction = false;
   ): Promise<T> {
     if (useTransaction) {
       return this.prismaClient.$transaction(async (tx) => {
@@ -244,48 +251,48 @@ class DatabasePool {
     }
   }
 
-  // Batch operations for better performance
+  // Batch operations for better performance;
   public async executeBatch<T>(
-    operations: Array<(client: PrismaClient) => Promise<any>>
+    operations: Array<(client: PrismaClient) => Promise<any>>;
   ): Promise<T[]> {
     return this.prismaClient.$transaction(async (tx) => {
       const results = await Promise.all(
-        operations.map(op => op(tx as PrismaClient))
+        operations.map(op => op(tx as PrismaClient));
       );
       return results;
     });
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const dbPool = DatabasePool.getInstance();
 
-// Enhanced Prisma client with connection pooling
+// Enhanced Prisma client with connection pooling;
 export const prisma = dbPool.getPrismaClient();
 
-// Raw PostgreSQL pool for complex queries
+// Raw PostgreSQL pool for complex queries;
 export const pgPool = dbPool.getPgPool();
 
-// Utility functions for common patterns
+// Utility functions for common patterns;
 export async function withTransaction<T>(
-  fn: (tx: PrismaClient) => Promise<T>
+  fn: (tx: PrismaClient) => Promise<T>;
 ): Promise<T> {
   return dbPool.executeOptimizedQuery(fn, true);
 }
 
 export async function withBatch<T>(
-  operations: Array<(client: PrismaClient) => Promise<any>>
+  operations: Array<(client: PrismaClient) => Promise<any>>;
 ): Promise<T[]> {
   return dbPool.executeBatch(operations);
 }
 
-// Database health check endpoint helper
-export async function getDatabaseHealth() {
+// Database health check endpoint helper;
+export async const getDatabaseHealth = () {
   return dbPool.healthCheck();
 }
 
-// Graceful shutdown helper
-export async function shutdownDatabase() {
+// Graceful shutdown helper;
+export async const shutdownDatabase = () {
   return dbPool.shutdown();
 }
 

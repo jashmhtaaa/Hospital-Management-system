@@ -1,4 +1,15 @@
-import { RedisCache } from './redis';
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { RedisCache } from './redis.ts';
 
 export class CacheMetrics {
   private static hits = 0;
@@ -6,7 +17,7 @@ export class CacheMetrics {
   private static totalRequests = 0;
   
   /**
-   * Record a cache hit
+   * Record a cache hit;
    */
   static recordHit(): void {
     this.hits++;
@@ -14,7 +25,7 @@ export class CacheMetrics {
   }
   
   /**
-   * Record a cache miss
+   * Record a cache miss;
    */
   static recordMiss(): void {
     this.misses++;
@@ -22,7 +33,7 @@ export class CacheMetrics {
   }
   
   /**
-   * Get cache hit rate
+   * Get cache hit rate;
    */
   static getHitRate(): number {
     if (this.totalRequests === 0) {
@@ -32,7 +43,7 @@ export class CacheMetrics {
   }
   
   /**
-   * Get cache metrics
+   * Get cache metrics;
    */
   static getMetrics(): {
     hits: number;
@@ -49,7 +60,7 @@ export class CacheMetrics {
   }
   
   /**
-   * Reset metrics
+   * Reset metrics;
    */
   static reset(): void {
     this.hits = 0;
@@ -58,7 +69,7 @@ export class CacheMetrics {
   }
 }
 
-// Enhance RedisCache to track metrics
+// Enhance RedisCache to track metrics;
 const originalGet = RedisCache.get;
 RedisCache.get = async function<T>(key: string): Promise<T | null> {
   const result = await originalGet<T>(key);

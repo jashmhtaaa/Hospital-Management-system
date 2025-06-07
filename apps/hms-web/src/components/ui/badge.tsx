@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -5,10 +16,10 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'secondary' | 'outline' | 'success' | 'warning' | 'danger';
 }
 
-function Badge({
+const Badge = ({
   className,
   variant = 'default',
-  ...props
+  ...props;
 }: BadgeProps) {
   const variantClasses = {
     default: 'bg-blue-100 text-blue-800',
@@ -20,11 +31,11 @@ function Badge({
   };
 
   return (
-    <div
+    <div;
       className={cn(
         'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
         variantClasses[variant],
-        className
+        className;
       )}
       {...props}
     />

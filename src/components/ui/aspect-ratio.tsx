@@ -1,7 +1,18 @@
-"use client"
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
 
-import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio"
+"use client";
 
-const AspectRatio = AspectRatioPrimitive.Root
+import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+
+const AspectRatio = AspectRatioPrimitive.Root;
 
 export { AspectRatio }

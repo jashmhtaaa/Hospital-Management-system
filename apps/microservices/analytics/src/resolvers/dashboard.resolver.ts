@@ -1,5 +1,16 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Dashboard GraphQL Resolver
+ * Dashboard GraphQL Resolver;
  */
 
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
@@ -9,23 +20,23 @@ import { GqlRolesGuard } from '@/lib/security/guards/gql-roles.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
 import { DashboardService } from '../services/dashboard.service';
 
-// GraphQL models would be defined here
+// GraphQL models would be defined here;
 // import { Dashboard, DashboardWidget, DashboardData, KPI, etc. } from '../models';
 
-@Resolver()
-@UseGuards(GqlAuthGuard, GqlRolesGuard)
+@Resolver();
+@UseGuards(GqlAuthGuard, GqlRolesGuard);
 export class DashboardResolver {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
+  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types;
   
-  @Query()
+  @Query();
   async dashboards(
     @Args('category') category?: string,
     @Args('status') status?: string,
     @Args('isPublic') isPublic?: boolean,
     @Args('createdBy') createdBy?: string,
-    @Args('isTemplate') isTemplate?: boolean
+    @Args('isTemplate') isTemplate?: boolean;
   ) {
     return this.dashboardService.getAllDashboards({
       category: category as any,
@@ -36,98 +47,98 @@ export class DashboardResolver {
     });
   }
 
-  @Query()
+  @Query();
   async dashboard(
     @Args('id') id: string,
-    @Context() context: any
+    @Context() context: unknown;
   ) {
     return this.dashboardService.getDashboardById(id, context.req.user.id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'DASHBOARD_DESIGNER', 'ANALYST')
+  @Mutation();
+  @Roles('ADMIN', 'DASHBOARD_DESIGNER', 'ANALYST');
   async createDashboard(
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.createDashboard(input, context.req.user.id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'DASHBOARD_DESIGNER', 'ANALYST')
+  @Mutation();
+  @Roles('ADMIN', 'DASHBOARD_DESIGNER', 'ANALYST');
   async updateDashboard(
     @Args('id') id: string,
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.updateDashboard(id, input, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async createDashboardWidget(
     @Args('dashboardId') dashboardId: string,
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.createWidget(dashboardId, input, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async updateDashboardWidget(
     @Args('dashboardId') dashboardId: string,
     @Args('widgetId') widgetId: string,
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.updateWidget(dashboardId, widgetId, input, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async deleteDashboardWidget(
     @Args('dashboardId') dashboardId: string,
     @Args('widgetId') widgetId: string,
-    @Context() context: any
+    @Context() context: unknown;
   ) {
     return this.dashboardService.deleteWidget(dashboardId, widgetId, context.req.user.id);
   }
 
-  @Query()
+  @Query();
   async dashboardData(
     @Args('id') id: string,
-    @Args('options') options: any,
-    @Context() context: any
+    @Args('options') options: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.getDashboardData(id, options, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async exportDashboard(
     @Args('id') id: string,
-    @Args('options') options: any,
-    @Context() context: any
+    @Args('options') options: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.exportDashboard(id, options, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async createDashboardFromTemplate(
     @Args('templateId') templateId: string,
-    @Args('options') options: any,
-    @Context() context: any
+    @Args('options') options: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.createDashboardFromTemplate(templateId, options, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async shareDashboard(
     @Args('id') id: string,
-    @Args('options') options: any,
-    @Context() context: any
+    @Args('options') options: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.shareDashboard(id, options, context.req.user.id);
   }
 
-  @Query()
+  @Query();
   async kpis(
     @Args('category') category?: string,
     @Args('status') status?: string,
@@ -140,34 +151,34 @@ export class DashboardResolver {
     });
   }
 
-  @Query()
+  @Query();
   async kpi(@Args('id') id: string) {
     return this.dashboardService.getKPIById(id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'ANALYST', 'QUALITY_MANAGER')
+  @Mutation();
+  @Roles('ADMIN', 'ANALYST', 'QUALITY_MANAGER');
   async createKPI(
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.createKPI(input, context.req.user.id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'ANALYST', 'QUALITY_MANAGER')
+  @Mutation();
+  @Roles('ADMIN', 'ANALYST', 'QUALITY_MANAGER');
   async updateKPI(
     @Args('id') id: string,
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.dashboardService.updateKPI(id, input, context.req.user.id);
   }
 
-  @Query()
+  @Query();
   async calculateKPIValue(
     @Args('id') id: string,
-    @Args('options') options?: any
+    @Args('options') options?: unknown;
   ) {
     return this.dashboardService.calculateKPIValue(id, options);
   }

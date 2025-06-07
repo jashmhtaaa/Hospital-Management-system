@@ -1,14 +1,25 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Notifications module for HMS Diagnostics
+ * Notifications module for HMS Diagnostics;
  * 
- * This module provides functionality for sending notifications to users
+ * This module provides functionality for sending notifications to users;
  * about critical events, alerts, and important updates in the diagnostic workflow.
  */
 
-import { DB } from './database';
+import { DB } from './database.ts';
 
 /**
- * Notification type definition
+ * Notification type definition;
  */
 export interface Notification {
   userId: number;
@@ -22,27 +33,27 @@ export interface Notification {
 }
 
 /**
- * Sends notifications to specified users
+ * Sends notifications to specified users;
  * 
- * @param userIds Array of user IDs to notify
- * @param notification The notification to send
- * @returns Promise resolving to array of created notification IDs
+ * @param userIds Array of user IDs to notify;
+ * @param notification The notification to send;
+ * @returns Promise resolving to array of created notification IDs;
  */
-export async function notifyUsers(
+export async const notifyUsers = (
   userIds: number[],
-  notification: Omit<Notification, 'userId'>
+  notification: Omit<Notification, 'userId'>;
 ): Promise<number[]> {
   try {
     const db = DB();
     const notificationIds: number[] = [];
     
-    // Sanitize metadata to prevent sensitive data leakage
+    // Sanitize metadata to prevent sensitive data leakage;
     const sanitizedMetadata = notification.metadata ? JSON.stringify(notification.metadata) : null;
     
     for (const userId of userIds) {
       const result = await db.query(
-        `INSERT INTO notifications 
-         (user_id, type, title, message, resource_type, resource_id, priority, metadata, created_at, read) 
+        `INSERT INTO notifications;
+         (user_id, type, title, message, resource_type, resource_id, priority, metadata, created_at, read);
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), false)`,
         [
           userId,
@@ -52,7 +63,7 @@ export async function notifyUsers(
           notification.resourceType,
           notification.resourceId || null,
           notification.priority,
-          sanitizedMetadata
+          sanitizedMetadata;
         ]
       );
       
@@ -61,62 +72,62 @@ export async function notifyUsers(
     
     return notificationIds;
   } catch (error) {
-    console.error('Failed to create notifications:', error);
+
     return [];
   }
 }
 
 /**
- * Marks a notification as read
+ * Marks a notification as read;
  * 
- * @param notificationId The ID of the notification to mark as read
- * @param userId The ID of the user who owns the notification
- * @returns Promise resolving to boolean indicating success
+ * @param notificationId The ID of the notification to mark as read;
+ * @param userId The ID of the user who owns the notification;
+ * @returns Promise resolving to boolean indicating success;
  */
-export async function markNotificationRead(
+export async const markNotificationRead = (
   notificationId: number,
-  userId: number
+  userId: number;
 ): Promise<boolean> {
   try {
     const db = DB();
     
     const result = await db.query(
-      `UPDATE notifications 
-       SET read = true, read_at = NOW() 
+      `UPDATE notifications;
+       SET read = true, read_at = NOW();
        WHERE id = ? AND user_id = ?`,
       [notificationId, userId]
     );
     
     return result.affectedRows > 0;
   } catch (error) {
-    console.error('Failed to mark notification as read:', error);
+
     return false;
   }
 }
 
 /**
- * Gets notifications for a specific user
+ * Gets notifications for a specific user;
  * 
- * @param userId The ID of the user to get notifications for
- * @param unreadOnly Whether to only return unread notifications
- * @param limit Maximum number of notifications to return
- * @returns Promise resolving to array of notifications
+ * @param userId The ID of the user to get notifications for;
+ * @param unreadOnly Whether to only return unread notifications;
+ * @param limit Maximum number of notifications to return;
+ * @returns Promise resolving to array of notifications;
  */
-export async function getUserNotifications(
+export async const getUserNotifications = (
   userId: number,
   unreadOnly: boolean = false,
-  limit: number = 50
+  limit: number = 50;
 ): Promise<any[]> {
   try {
     const db = DB();
     
-    let query = `
+    let query = `;
       SELECT *
-      FROM notifications
-      WHERE user_id = ?
+      FROM notifications;
+      WHERE user_id = ?;
     `;
     
-    const params: any[] = [userId];
+    const params: unknown[] = [userId];
     
     if (unreadOnly) {
       query += ' AND read = false';
@@ -127,12 +138,12 @@ export async function getUserNotifications(
     
     const result = await db.query(query, params);
     
-    return result.results.map((notification: any) => ({
+    return result.results.map((notification: unknown) => ({
       ...notification,
-      metadata: notification.metadata ? JSON.parse(notification.metadata) : null
+      metadata: notification.metadata ? JSON.parse(notification.metadata) : null;
     }));
   } catch (error) {
-    console.error('Failed to get user notifications:', error);
+
     return [];
   }
 }

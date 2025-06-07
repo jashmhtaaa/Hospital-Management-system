@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
@@ -12,22 +23,22 @@ import {
   Form,
   Tag,
   Checkbox,
-  // notification, // Removed unused import
+  // notification, // Removed unused import;
 } from "antd";
 import {
-  // SearchOutlined, // Removed unused import
-  // CheckOutlined, // Removed unused import
-  // EditOutlined, // Removed unused import
-  // SyncOutlined, // Removed unused import
-  // WarningOutlined, // Removed unused import
+  // SearchOutlined, // Removed unused import;
+  // CheckOutlined, // Removed unused import;
+  // EditOutlined, // Removed unused import;
+  // SyncOutlined, // Removed unused import;
+  // WarningOutlined, // Removed unused import;
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-// import { useSession } from "next-auth/react"; // Removed unused import
+// import { useSession } from "next-auth/react"; // Removed unused import;
 import { IPDPrescription, IPDPrescriptionItem } from "@/types/ipd";
 import { MedicationAdministrationRecord } from "@/types/pharmacy";
-import { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Import API response types
+import { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Import API response types;
 
-// const { Option } = Select; // Removed unused variable assignment
+// const { Option } = Select; // Removed unused variable assignment;
 
 interface IPDPharmacyIntegrationProperties {
   admissionId: string;
@@ -41,36 +52,36 @@ interface MedicationScheduleItem {
   dosage: string;
   route: string;
   frequency: string;
-  scheduledTime: string; // ISO 8601 format
+  scheduledTime: string; // ISO 8601 format;
   status: "Pending" | "Administered" | "Missed" | "Refused";
   administrationRecordId?: string;
 }
 
-// FIX: Prefix unused variables with underscore
+// FIX: Prefix unused variables with underscore;
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   admissionId,
   prescriptions,
 }) => {
-  // const { data: session } = useSession(); // Removed unused variable
-  const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable
-  const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable
+  // const { data: session } = useSession(); // Removed unused variable;
+  const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable;
+  const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable;
     MedicationScheduleItem[]
   >([]);
    
-  const [_administrationRecords, _setAdministrationRecords] = useState<
+  const [_administrationRecords, _setAdministrationRecords] = useState<;
     MedicationAdministrationRecord[]
   >([]);
    
   const [_error, _setError] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [selectedScheduleItem, setSelectedScheduleItem] =
+  const [selectedScheduleItem, setSelectedScheduleItem] =;
     useState<MedicationScheduleItem | null>(null);
   const [form] = Form.useForm();
 
-  // Generate medication schedule based on prescriptions
+  // Generate medication schedule based on prescriptions;
   const generateSchedule = useCallback(() => {
     const schedule: MedicationScheduleItem[] = [];
-    const now = dayjs(); // Use dayjs for date manipulation
+    const now = dayjs(); // Use dayjs for date manipulation;
 
     prescriptions.forEach((prescription) => {
       prescription.items.forEach((item: IPDPrescriptionItem) => {
@@ -82,11 +93,11 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         // Add more frequency parsing logic (e.g., q4h, q6h, specific times)
 
         const intervalHours = 24 / timesPerDay;
-        let administrationTime = dayjs(prescription.start_date); // Start from prescription start date
+        let administrationTime = dayjs(prescription.start_date); // Start from prescription start date;
 
-        // Find the first administration time today or in the future
+        // Find the first administration time today or in the future;
         while (administrationTime.isBefore(now, "day")) {
-          administrationTime = administrationTime.add(1, "day"); // Move to today if start date is past
+          administrationTime = administrationTime.add(1, "day"); // Move to today if start date is past;
         }
         // Set a default start time if needed (e.g., 8 AM)
         administrationTime = administrationTime.hour(8).minute(0).second(0);
@@ -95,7 +106,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         const scheduleEndDate = now.add(1, "day");
         while (administrationTime.isBefore(scheduleEndDate)) {
           if (administrationTime.isAfter(now)) {
-            // Only schedule future administrations
+            // Only schedule future administrations;
             schedule.push({
               id: `${item.id}-${administrationTime.toISOString()}`,
               prescriptionItemId: item.id,
@@ -112,20 +123,20 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       });
     });
 
-    // Sort schedule by time
+    // Sort schedule by time;
     schedule.sort((alpha, beta) =>
-      dayjs(alpha.scheduledTime).diff(dayjs(beta.scheduledTime))
+      dayjs(alpha.scheduledTime).diff(dayjs(beta.scheduledTime));
     );
     _setMedicationSchedule(schedule);
   }, [prescriptions]);
 
-  // Fetch administration records
+  // Fetch administration records;
   const fetchAdministrationRecords = useCallback(async () => {
     _setLoading(true);
     _setError(null);
     try {
       const response = await fetch(
-        `/api/pharmacy/administration-records?admissionId=${admissionId}`
+        `/api/pharmacy/administration-records?admissionId=${admissionId}`;
       );
       if (!response.ok) {
         throw new Error("Failed to fetch administration records");
@@ -133,13 +144,13 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       const data: AdminRecordsApiResponse = await response.json();
       _setAdministrationRecords(data.records || []);
 
-      // Update schedule status based on fetched records
+      // Update schedule status based on fetched records;
       _setMedicationSchedule((currentSchedule) =>
         currentSchedule.map((item) => {
           const record = data.records?.find(
             (r: MedicationAdministrationRecord) =>
-              r.prescription_item_id === item.prescriptionItemId &&
-              dayjs(r.administration_time).isSame(item.scheduledTime)
+              r.prescription_item_id === item.prescriptionItemId &&;
+              dayjs(r.administration_time).isSame(item.scheduledTime);
           );
           if (record) {
             return {
@@ -149,10 +160,10 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             };
           }
           return item;
-        })
+        });
       );
     } catch (err) {
-      const message_ =
+      const message_ =;
         err instanceof Error ? err.message : "An unknown error occurred";
       _setError(message_);
       message.error(`Error fetching records: ${message_}`);
@@ -166,14 +177,14 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     fetchAdministrationRecords();
   }, [generateSchedule, fetchAdministrationRecords]);
 
-  // FIX: Prefix unused function with underscore
+  // FIX: Prefix unused function with underscore;
   const _handleAdministerMedication = async (
     scheduleItemId: string,
     status: "Administered" | "Missed" | "Refused",
-    notes?: string
+    notes?: string;
   ) => {
     const itemToAdminister = _medicationSchedule.find(
-      (item) => item.id === scheduleItemId
+      (item) => item.id === scheduleItemId;
     );
     if (!itemToAdminister) {
       message.error("Schedule item not found");
@@ -194,9 +205,9 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           dosage: itemToAdminister.dosage,
           route: itemToAdminister.route,
           scheduled_time: itemToAdminister.scheduledTime,
-          administration_time: dayjs().toISOString(), // Record actual time
+          administration_time: dayjs().toISOString(), // Record actual time;
           status,
-          administered_by_id: "user_placeholder", // Replace with actual user ID from session
+          administered_by_id: "user_placeholder", // Replace with actual user ID from session;
           notes,
         }),
       });
@@ -207,11 +218,11 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       }
 
       message.success(`Medication marked as ${status}`);
-      fetchAdministrationRecords(); // Refresh records and schedule status
+      fetchAdministrationRecords(); // Refresh records and schedule status;
       setIsModalVisible(false);
       form.resetFields();
     } catch (err) {
-      const message_ =
+      const message_ =;
         err instanceof Error ? err.message : "An unknown error occurred";
       message.error(`Error recording administration: ${message_}`);
     } finally {
@@ -219,36 +230,36 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     }
   };
 
-  // Removed unused function _getDosageForScheduleItem
+  // Removed unused function _getDosageForScheduleItem;
 
   const showAdministrationModal = (item: MedicationScheduleItem) => {
     setSelectedScheduleItem(item);
-    form.setFieldsValue({ notes: "" }); // Reset notes field
+    form.setFieldsValue({ notes: "" }); // Reset notes field;
     setIsModalVisible(true);
   };
 
   const handleModalOk = () => {
-    form
-      .validateFields()
+    form;
+      .validateFields();
       .then((values) => {
         if (!selectedScheduleItem) return;
 
         // Determine status based on which button was implicitly clicked (needs better state management)
         // This is a simplification. A real app might have separate handlers or pass status explicitly.
-        const status = values.administered
+        const status = values.administered;
           ? "Administered"
-          : values.refused
+          : values.refused;
           ? "Refused"
-          : "Missed"; // Default or based on another field if needed
+          : "Missed"; // Default or based on another field if needed;
 
         _handleAdministerMedication(
           selectedScheduleItem.id,
           status,
-          values.notes
+          values.notes;
         );
-      })
+      });
       .catch((info) => {
-        console.log("Validate Failed:", info);
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       });
   };
 
@@ -276,7 +287,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       title: "Dosage",
       dataIndex: "dosage",
       key: "dosage",
-      // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId), // Reference removed
+      // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId), // Reference removed;
     },
     {
       title: "Route",
@@ -303,21 +314,21 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         if (record.status === "Pending") {
           return (
             <Button type="primary" onClick={() => showAdministrationModal(record)}>
-              Administer
+              Administer;
             </Button>
           );
         } else if (record.administrationRecordId) {
-          // Optionally show details or edit action for recorded administrations
+          // Optionally show details or edit action for recorded administrations;
           return (
-            <Button
+            <Button;
               type="link"
               onClick={() =>
                 message.info(
-                  `Record ID: ${record.administrationRecordId} (Details view pending)`
-                )
+                  `Record ID: ${record.administrationRecordId} (Details view pending)`;
+                );
               }
             >
-              View Record
+              View Record;
             </Button>
           );
         }
@@ -327,57 +338,57 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   ];
 
   return (
-    <Card title="Medication Administration Schedule (Next 24h)">
-      <Spin spinning={_loading}>
-        <Table
+    <Card title="Medication Administration Schedule (Next 24h)">;
+      <Spin spinning={_loading}>;
+        <Table;
           columns={columns}
           dataSource={_medicationSchedule}
-          rowKey="id"
+          rowKey="id";
           pagination={false}
-          size="small"
+          size="small";
         />
       </Spin>
 
-      <Modal
+      <Modal;
         title={`Administer: ${selectedScheduleItem?.medicationName}`}
         visible={isModalVisible}
-        onOk={handleModalOk} // This might need refinement based on button actions
+        onOk={handleModalOk} // This might need refinement based on button actions;
         onCancel={handleModalCancel}
         footer={[
-          <Button key="cancel" onClick={handleModalCancel}>
-            Cancel
+          <Button key="cancel" onClick={handleModalCancel}>;
+            Cancel;
           </Button>,
-          <Button
-            key="refused"
+          <Button;
+            key="refused";
             onClick={() => {
               form.setFieldsValue({ refused: true, administered: false });
-              handleModalOk(); // Trigger submission with 'Refused' state
+              handleModalOk(); // Trigger submission with 'Refused' state;
             }}
           >
-            Mark as Refused
+            Mark as Refused;
           </Button>,
-          <Button
-            key="missed"
+          <Button;
+            key="missed";
             onClick={() => {
-              form.setFieldsValue({ missed: true, administered: false }); // Assuming a 'missed' field or logic
-              handleModalOk(); // Trigger submission with 'Missed' state
+              form.setFieldsValue({ missed: true, administered: false }); // Assuming a 'missed' field or logic;
+              handleModalOk(); // Trigger submission with 'Missed' state;
             }}
           >
-            Mark as Missed
+            Mark as Missed;
           </Button>,
-          <Button
-            key="administered"
+          <Button;
+            key="administered";
             type="primary"
             onClick={() => {
               form.setFieldsValue({ administered: true, refused: false });
-              handleModalOk(); // Trigger submission with 'Administered' state
+              handleModalOk(); // Trigger submission with 'Administered' state;
             }}
           >
-            Mark as Administered
+            Mark as Administered;
           </Button>,
         ]}
       >
-        <Form form={form} layout="vertical" name="administration_form">
+        <Form form={form} layout="vertical" name="administration_form">;
           <p>
             <strong>Time:</strong>{" "}
             {selectedScheduleItem &&
@@ -389,17 +400,17 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           <p>
             <strong>Route:</strong> {selectedScheduleItem?.route}
           </p>
-          <Form.Item name="notes" label="Administration Notes">
-            <Input.TextArea rows={3} />
+          <Form.Item name="notes" label="Administration Notes">;
+            <Input.TextArea rows={3} />;
           </Form.Item>
           {/* Hidden fields to track button press - not ideal, consider state */}
-          <Form.Item name="administered" hidden initialValue={false}>
+          <Form.Item name="administered" hidden initialValue={false}>;
             <Checkbox />
           </Form.Item>
-          <Form.Item name="refused" hidden initialValue={false}>
+          <Form.Item name="refused" hidden initialValue={false}>;
             <Checkbox />
           </Form.Item>
-          <Form.Item name="missed" hidden initialValue={false}>
+          <Form.Item name="missed" hidden initialValue={false}>;
             <Checkbox />
           </Form.Item>
         </Form>

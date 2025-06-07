@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -6,13 +17,13 @@ import {
   CardContent, 
   CardHeader, 
   CardTitle, 
-  CardDescription 
+  CardDescription;
 } from '@/components/ui/card';
 import { 
   Tabs, 
   TabsContent, 
   TabsList, 
-  TabsTrigger 
+  TabsTrigger;
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { 
@@ -31,16 +42,16 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '@/components/ui/select';
 import { DatePicker } from '@/components/ui/date-picker';
 import { DataTable } from '@/components/ui/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { formatCurrency, formatDate, formatNumber } from '@/lib/formatters';
+import { formatCurrency, formatDate } from '@/lib/formatters';
 
-export default function BillingDashboard() {
+export default const BillingDashboard = () {
   const [activeTab, setActiveTab] = useState('invoices');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,13 +68,13 @@ export default function BillingDashboard() {
     setError(null);
     
     try {
-      // In a real implementation, this would fetch data from the API
-      // For now, we'll simulate the data
+      // In a real implementation, this would fetch data from the API;
+      // For now, we'll simulate the data;
       
-      // Simulate API call delay
+      // Simulate API call delay;
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Generate simulated data based on active tab
+      // Generate simulated data based on active tab;
       let data;
       switch (activeTab) {
         case 'invoices':
@@ -88,13 +99,13 @@ export default function BillingDashboard() {
       setBillingData(data);
     } catch (err) {
       setError('Failed to load billing data. Please try again.');
-      console.error(err);
+
     } finally {
       setLoading(false);
     }
   };
 
-  // Simulated data generators
+  // Simulated data generators;
   const generateInvoicesData = () => {
     return {
       invoices: [
@@ -186,18 +197,18 @@ export default function BillingDashboard() {
     };
   };
 
-  // Filter functions
+  // Filter functions;
   const filterInvoices = () => {
     if (!billingData || !billingData.invoices) return [];
     
-    return billingData.invoices.filter((invoice: any) => {
-      // Filter by search query
-      const matchesSearch = searchQuery === '' || 
+    return billingData.invoices.filter((invoice: unknown) => {
+      // Filter by search query;
+      const matchesSearch = searchQuery === '' ||;
         invoice.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         invoice.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         invoice.patientId.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Filter by status
+      // Filter by status;
       const matchesStatus = filterStatus === 'all' || invoice.status === filterStatus;
       
       return matchesSearch && matchesStatus;
@@ -207,15 +218,15 @@ export default function BillingDashboard() {
   const filterPayments = () => {
     if (!billingData || !billingData.payments) return [];
     
-    return billingData.payments.filter((payment: any) => {
-      // Filter by search query
-      const matchesSearch = searchQuery === '' || 
+    return billingData.payments.filter((payment: unknown) => {
+      // Filter by search query;
+      const matchesSearch = searchQuery === '' ||;
         payment.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.invoiceId.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.patientId.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Filter by status
+      // Filter by status;
       const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
       
       return matchesSearch && matchesStatus;
@@ -225,16 +236,16 @@ export default function BillingDashboard() {
   const filterServiceItems = () => {
     if (!billingData || !billingData.serviceItems) return [];
     
-    return billingData.serviceItems.filter((item: any) => {
-      // Filter by search query
-      const matchesSearch = searchQuery === '' || 
+    return billingData.serviceItems.filter((item: unknown) => {
+      // Filter by search query;
+      const matchesSearch = searchQuery === '' ||;
         item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.category.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Filter by active status
-      const matchesStatus = filterStatus === 'all' || 
-        (filterStatus === 'active' && item.active) || 
+      // Filter by active status;
+      const matchesStatus = filterStatus === 'all' ||;
+        (filterStatus === 'active' && item.active) ||;
         (filterStatus === 'inactive' && !item.active);
       
       return matchesSearch && matchesStatus;
@@ -244,16 +255,16 @@ export default function BillingDashboard() {
   const filterPackages = () => {
     if (!billingData || !billingData.packages) return [];
     
-    return billingData.packages.filter((pkg: any) => {
-      // Filter by search query
-      const matchesSearch = searchQuery === '' || 
+    return billingData.packages.filter((pkg: unknown) => {
+      // Filter by search query;
+      const matchesSearch = searchQuery === '' ||;
         pkg.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (pkg.description && pkg.description.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      // Filter by active status
-      const matchesStatus = filterStatus === 'all' || 
-        (filterStatus === 'active' && pkg.active) || 
+      // Filter by active status;
+      const matchesStatus = filterStatus === 'all' ||;
+        (filterStatus === 'active' && pkg.active) ||;
         (filterStatus === 'inactive' && !pkg.active);
       
       return matchesSearch && matchesStatus;
@@ -263,88 +274,88 @@ export default function BillingDashboard() {
   const filterDiscounts = () => {
     if (!billingData || !billingData.discounts) return [];
     
-    return billingData.discounts.filter((discount: any) => {
-      // Filter by search query
-      const matchesSearch = searchQuery === '' || 
+    return billingData.discounts.filter((discount: unknown) => {
+      // Filter by search query;
+      const matchesSearch = searchQuery === '' ||;
         discount.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         discount.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (discount.description && discount.description.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      // Filter by active status
-      const matchesStatus = filterStatus === 'all' || 
-        (filterStatus === 'active' && discount.active) || 
+      // Filter by active status;
+      const matchesStatus = filterStatus === 'all' ||;
+        (filterStatus === 'active' && discount.active) ||;
         (filterStatus === 'inactive' && !discount.active);
       
       return matchesSearch && matchesStatus;
     });
   };
 
-  // Render loading state
+  // Render loading state;
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner size="lg" />
-        <span className="ml-2">Loading billing dashboard...</span>
+      <div className="flex items-center justify-center h-screen">;
+        <Spinner size="lg" />;
+        <span className="ml-2">Loading billing dashboard...</span>;
       </div>
     );
   }
 
-  // Render error state
+  // Render error state;
   if (error) {
     return (
-      <div className="p-4">
-        <Alert variant="destructive">
+      <div className="p-4">;
+        <Alert variant="destructive">;
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button className="mt-4" onClick={fetchBillingData}>Retry</Button>
+        <Button className="mt-4" onClick={fetchBillingData}>Retry</Button>;
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Billing Management</h1>
-        <div className="flex space-x-4">
-          <div className="relative">
-            <Input
+    <div className="p-6">;
+      <div className="flex justify-between items-center mb-6">;
+        <h1 className="text-3xl font-bold">Billing Management</h1>;
+        <div className="flex space-x-4">;
+          <div className="relative">;
+            <Input;
               type="text"
-              placeholder="Search..."
+              placeholder="Search...";
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64"
+              className="w-64";
             />
           </div>
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Filter by status" />
+          <Select value={filterStatus} onValueChange={setFilterStatus}>;
+            <SelectTrigger className="w-40">;
+              <SelectValue placeholder="Filter by status" />;
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="all">All Statuses</SelectItem>;
               {activeTab === 'invoices' && (
                 <>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="verified">Verified</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="sent">Sent</SelectItem>
-                  <SelectItem value="partial">Partial</SelectItem>
-                  <SelectItem value="paid">Paid</SelectItem>
-                  <SelectItem value="overdue">Overdue</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>;
+                  <SelectItem value="pending">Pending</SelectItem>;
+                  <SelectItem value="verified">Verified</SelectItem>;
+                  <SelectItem value="approved">Approved</SelectItem>;
+                  <SelectItem value="sent">Sent</SelectItem>;
+                  <SelectItem value="partial">Partial</SelectItem>;
+                  <SelectItem value="paid">Paid</SelectItem>;
+                  <SelectItem value="overdue">Overdue</SelectItem>;
                 </>
               )}
               {activeTab === 'payments' && (
                 <>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="processing">Processing</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="failed">Failed</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>;
+                  <SelectItem value="processing">Processing</SelectItem>;
+                  <SelectItem value="completed">Completed</SelectItem>;
+                  <SelectItem value="failed">Failed</SelectItem>;
                 </>
               )}
               {(activeTab === 'service-items' || activeTab === 'packages' || activeTab === 'discounts') && (
                 <>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>;
+                  <SelectItem value="inactive">Inactive</SelectItem>;
                 </>
               )}
             </SelectContent>
@@ -354,62 +365,62 @@ export default function BillingDashboard() {
               <DialogTrigger asChild>
                 <Button>Create Invoice</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">
+              <DialogContent className="sm:max-w-[600px]">;
                 <DialogHeader>
                   <DialogTitle>Create New Invoice</DialogTitle>
                   <DialogDescription>
-                    Enter the details to create a new invoice.
+                    Enter the details to create a new invoice.;
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="patientId" className="text-right">
-                      Patient ID
+                <div className="grid gap-4 py-4">;
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="patientId" className="text-right">;
+                      Patient ID;
                     </Label>
-                    <Input id="patientId" className="col-span-3" />
+                    <Input id="patientId" className="col-span-3" />;
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="visitType" className="text-right">
-                      Visit Type
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="visitType" className="text-right">;
+                      Visit Type;
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select visit type" />
+                      <SelectTrigger className="col-span-3">;
+                        <SelectValue placeholder="Select visit type" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="OPD">OPD</SelectItem>
-                        <SelectItem value="IPD">IPD</SelectItem>
-                        <SelectItem value="ER">Emergency</SelectItem>
-                        <SelectItem value="OTHER">Other</SelectItem>
+                        <SelectItem value="OPD">OPD</SelectItem>;
+                        <SelectItem value="IPD">IPD</SelectItem>;
+                        <SelectItem value="ER">Emergency</SelectItem>;
+                        <SelectItem value="OTHER">Other</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="billDate" className="text-right">
-                      Bill Date
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="billDate" className="text-right">;
+                      Bill Date;
                     </Label>
-                    <div className="col-span-3">
+                    <div className="col-span-3">;
                       <DatePicker date={new Date()} onDateChange={() => {}} />
                     </div>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="billType" className="text-right">
-                      Bill Type
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="billType" className="text-right">;
+                      Bill Type;
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select bill type" />
+                      <SelectTrigger className="col-span-3">;
+                        <SelectValue placeholder="Select bill type" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Regular">Regular</SelectItem>
-                        <SelectItem value="Package">Package</SelectItem>
-                        <SelectItem value="Consolidated">Consolidated</SelectItem>
+                        <SelectItem value="Regular">Regular</SelectItem>;
+                        <SelectItem value="Package">Package</SelectItem>;
+                        <SelectItem value="Consolidated">Consolidated</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Create</Button>
+                  <Button type="submit">Create</Button>;
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -419,54 +430,54 @@ export default function BillingDashboard() {
               <DialogTrigger asChild>
                 <Button>Record Payment</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">
+              <DialogContent className="sm:max-w-[600px]">;
                 <DialogHeader>
                   <DialogTitle>Record New Payment</DialogTitle>
                   <DialogDescription>
-                    Enter the details to record a new payment.
+                    Enter the details to record a new payment.;
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="invoiceId" className="text-right">
-                      Invoice ID
+                <div className="grid gap-4 py-4">;
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="invoiceId" className="text-right">;
+                      Invoice ID;
                     </Label>
-                    <Input id="invoiceId" className="col-span-3" />
+                    <Input id="invoiceId" className="col-span-3" />;
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="amount" className="text-right">
-                      Amount
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="amount" className="text-right">;
+                      Amount;
                     </Label>
-                    <Input id="amount" type="number" className="col-span-3" />
+                    <Input id="amount" type="number" className="col-span-3" />;
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="paymentMethod" className="text-right">
-                      Payment Method
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="paymentMethod" className="text-right">;
+                      Payment Method;
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select payment method" />
+                      <SelectTrigger className="col-span-3">;
+                        <SelectValue placeholder="Select payment method" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Cash">Cash</SelectItem>
-                        <SelectItem value="Credit Card">Credit Card</SelectItem>
-                        <SelectItem value="Debit Card">Debit Card</SelectItem>
-                        <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
-                        <SelectItem value="Online Payment">Online Payment</SelectItem>
-                        <SelectItem value="Insurance">Insurance</SelectItem>
-                        <SelectItem value="Mobile Payment">Mobile Payment</SelectItem>
+                        <SelectItem value="Cash">Cash</SelectItem>;
+                        <SelectItem value="Credit Card">Credit Card</SelectItem>;
+                        <SelectItem value="Debit Card">Debit Card</SelectItem>;
+                        <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>;
+                        <SelectItem value="Online Payment">Online Payment</SelectItem>;
+                        <SelectItem value="Insurance">Insurance</SelectItem>;
+                        <SelectItem value="Mobile Payment">Mobile Payment</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="referenceNumber" className="text-right">
-                      Reference Number
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="referenceNumber" className="text-right">;
+                      Reference Number;
                     </Label>
-                    <Input id="referenceNumber" className="col-span-3" />
+                    <Input id="referenceNumber" className="col-span-3" />;
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Record</Button>
+                  <Button type="submit">Record</Button>;
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -476,60 +487,60 @@ export default function BillingDashboard() {
               <DialogTrigger asChild>
                 <Button>Add Service Item</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">
+              <DialogContent className="sm:max-w-[600px]">;
                 <DialogHeader>
                   <DialogTitle>Add New Service Item</DialogTitle>
                   <DialogDescription>
-                    Enter the details to add a new service item.
+                    Enter the details to add a new service item.;
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="code" className="text-right">
-                      Code
+                <div className="grid gap-4 py-4">;
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="code" className="text-right">;
+                      Code;
                     </Label>
-                    <Input id="code" className="col-span-3" />
+                    <Input id="code" className="col-span-3" />;
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="name" className="text-right">;
+                      Name;
                     </Label>
-                    <Input id="name" className="col-span-3" />
+                    <Input id="name" className="col-span-3" />;
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="category" className="text-right">
-                      Category
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="category" className="text-right">;
+                      Category;
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select category" />
+                      <SelectTrigger className="col-span-3">;
+                        <SelectValue placeholder="Select category" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Consultation">Consultation</SelectItem>
-                        <SelectItem value="Laboratory">Laboratory</SelectItem>
-                        <SelectItem value="Radiology">Radiology</SelectItem>
-                        <SelectItem value="Procedure">Procedure</SelectItem>
-                        <SelectItem value="Room">Room</SelectItem>
-                        <SelectItem value="Physiotherapy">Physiotherapy</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value="Consultation">Consultation</SelectItem>;
+                        <SelectItem value="Laboratory">Laboratory</SelectItem>;
+                        <SelectItem value="Radiology">Radiology</SelectItem>;
+                        <SelectItem value="Procedure">Procedure</SelectItem>;
+                        <SelectItem value="Room">Room</SelectItem>;
+                        <SelectItem value="Physiotherapy">Physiotherapy</SelectItem>;
+                        <SelectItem value="Other">Other</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="unitPrice" className="text-right">
-                      Unit Price
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="unitPrice" className="text-right">;
+                      Unit Price;
                     </Label>
-                    <Input id="unitPrice" type="number" className="col-span-3" />
+                    <Input id="unitPrice" type="number" className="col-span-3" />;
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="taxRate" className="text-right">
-                      Tax Rate (%)
+                  <div className="grid grid-cols-4 items-center gap-4">;
+                    <Label htmlFor="taxRate" className="text-right">;
+                      Tax Rate (%);
                     </Label>
-                    <Input id="taxRate" type="number" className="col-span-3" />
+                    <Input id="taxRate" type="number" className="col-span-3" />;
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Add</Button>
+                  <Button type="submit">Add</Button>;
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -537,16 +548,16 @@ export default function BillingDashboard() {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-6">
-          <TabsTrigger value="invoices">Invoices</TabsTrigger>
-          <TabsTrigger value="payments">Payments</TabsTrigger>
-          <TabsTrigger value="service-items">Service Items</TabsTrigger>
-          <TabsTrigger value="packages">Packages</TabsTrigger>
-          <TabsTrigger value="discounts">Discounts</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>;
+        <TabsList className="mb-6">;
+          <TabsTrigger value="invoices">Invoices</TabsTrigger>;
+          <TabsTrigger value="payments">Payments</TabsTrigger>;
+          <TabsTrigger value="service-items">Service Items</TabsTrigger>;
+          <TabsTrigger value="packages">Packages</TabsTrigger>;
+          <TabsTrigger value="discounts">Discounts</TabsTrigger>;
         </TabsList>
 
-        <TabsContent value="invoices">
+        <TabsContent value="invoices">;
           {billingData && (
             <Card>
               <CardHeader>
@@ -554,7 +565,7 @@ export default function BillingDashboard() {
                 <CardDescription>Manage patient invoices and bills</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable
+                <DataTable;
                   data={filterInvoices()}
                   columns={[
                     { header: 'Invoice ID', accessorKey: 'id' },
@@ -564,22 +575,22 @@ export default function BillingDashboard() {
                     { 
                       header: 'Bill Date', 
                       accessorKey: 'billDate',
-                      cell: ({ row }) => formatDate(row.original.billDate)
+                      cell: ({ row }) => formatDate(row.original.billDate);
                     },
                     { 
                       header: 'Total Amount', 
                       accessorKey: 'totalAmount',
-                      cell: ({ row }) => formatCurrency(row.original.totalAmount)
+                      cell: ({ row }) => formatCurrency(row.original.totalAmount);
                     },
                     { 
                       header: 'Paid Amount', 
                       accessorKey: 'paidAmount',
-                      cell: ({ row }) => formatCurrency(row.original.paidAmount)
+                      cell: ({ row }) => formatCurrency(row.original.paidAmount);
                     },
                     { 
                       header: 'Outstanding', 
                       accessorKey: 'outstandingAmount',
-                      cell: ({ row }) => formatCurrency(row.original.outstandingAmount)
+                      cell: ({ row }) => formatCurrency(row.original.outstandingAmount);
                     },
                     { 
                       header: 'Status', 
@@ -594,11 +605,11 @@ export default function BillingDashboard() {
                           sent: 'bg-pink-100 text-pink-800',
                           partial: 'bg-sky-100 text-sky-800',
                           paid: 'bg-green-100 text-green-800',
-                          overdue: 'bg-red-100 text-red-800'
+                          overdue: 'bg-red-100 text-red-800';
                         };
                         
                         return (
-                          <Badge className={statusColors[status]}>
+                          <Badge className={statusColors[status]}>;
                             {status.charAt(0).toUpperCase() + status.slice(1)}
                           </Badge>
                         );
@@ -607,12 +618,12 @@ export default function BillingDashboard() {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">View</Button>
-                          <Button variant="outline" size="sm">Edit</Button>
-                          <Button variant="outline" size="sm">Print</Button>
+                        <div className="flex space-x-2">;
+                          <Button variant="outline" size="sm">View</Button>;
+                          <Button variant="outline" size="sm">Edit</Button>;
+                          <Button variant="outline" size="sm">Print</Button>;
                         </div>
-                      )
+                      );
                     }
                   ]}
                 />
@@ -621,7 +632,7 @@ export default function BillingDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="payments">
+        <TabsContent value="payments">;
           {billingData && (
             <Card>
               <CardHeader>
@@ -629,7 +640,7 @@ export default function BillingDashboard() {
                 <CardDescription>Manage payment transactions</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable
+                <DataTable;
                   data={filterPayments()}
                   columns={[
                     { header: 'Payment ID', accessorKey: 'id' },
@@ -639,12 +650,12 @@ export default function BillingDashboard() {
                     { 
                       header: 'Payment Date', 
                       accessorKey: 'paymentDate',
-                      cell: ({ row }) => formatDate(row.original.paymentDate)
+                      cell: ({ row }) => formatDate(row.original.paymentDate);
                     },
                     { 
                       header: 'Amount', 
                       accessorKey: 'amount',
-                      cell: ({ row }) => formatCurrency(row.original.amount)
+                      cell: ({ row }) => formatCurrency(row.original.amount);
                     },
                     { header: 'Method', accessorKey: 'paymentMethod' },
                     { header: 'Reference', accessorKey: 'referenceNumber' },
@@ -660,11 +671,11 @@ export default function BillingDashboard() {
                           failed: 'bg-red-100 text-red-800',
                           refunded: 'bg-purple-100 text-purple-800',
                           partially_refunded: 'bg-pink-100 text-pink-800',
-                          cancelled: 'bg-gray-100 text-gray-800'
+                          cancelled: 'bg-gray-100 text-gray-800';
                         };
                         
                         return (
-                          <Badge className={statusColors[status]}>
+                          <Badge className={statusColors[status]}>;
                             {status.charAt(0).toUpperCase() + status.slice(1)}
                           </Badge>
                         );
@@ -673,14 +684,14 @@ export default function BillingDashboard() {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">View</Button>
-                          <Button variant="outline" size="sm">Receipt</Button>
+                        <div className="flex space-x-2">;
+                          <Button variant="outline" size="sm">View</Button>;
+                          <Button variant="outline" size="sm">Receipt</Button>;
                           {row.original.status === 'completed' && (
-                            <Button variant="outline" size="sm">Refund</Button>
+                            <Button variant="outline" size="sm">Refund</Button>;
                           )}
                         </div>
-                      )
+                      );
                     }
                   ]}
                 />
@@ -689,7 +700,7 @@ export default function BillingDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="service-items">
+        <TabsContent value="service-items">;
           {billingData && (
             <Card>
               <CardHeader>
@@ -697,7 +708,7 @@ export default function BillingDashboard() {
                 <CardDescription>Manage billable service items</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable
+                <DataTable;
                   data={filterServiceItems()}
                   columns={[
                     { header: 'Code', accessorKey: 'code' },
@@ -706,32 +717,32 @@ export default function BillingDashboard() {
                     { 
                       header: 'Unit Price', 
                       accessorKey: 'unitPrice',
-                      cell: ({ row }) => formatCurrency(row.original.unitPrice)
+                      cell: ({ row }) => formatCurrency(row.original.unitPrice);
                     },
                     { 
                       header: 'Tax Rate', 
                       accessorKey: 'taxRate',
-                      cell: ({ row }) => `${row.original.taxRate}%`
+                      cell: ({ row }) => `${row.original.taxRate}%`;
                     },
                     { 
                       header: 'Status', 
                       accessorKey: 'active',
                       cell: ({ row }) => (
-                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
                           {row.original.active ? 'Active' : 'Inactive'}
                         </Badge>
-                      )
+                      );
                     },
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">Edit</Button>
-                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>
+                        <div className="flex space-x-2">;
+                          <Button variant="outline" size="sm">Edit</Button>;
+                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>;
                             {row.original.active ? 'Deactivate' : 'Activate'}
                           </Button>
                         </div>
-                      )
+                      );
                     }
                   ]}
                 />
@@ -740,7 +751,7 @@ export default function BillingDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="packages">
+        <TabsContent value="packages">;
           {billingData && (
             <Card>
               <CardHeader>
@@ -748,7 +759,7 @@ export default function BillingDashboard() {
                 <CardDescription>Manage service packages and bundles</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable
+                <DataTable;
                   data={filterPackages()}
                   columns={[
                     { header: 'Code', accessorKey: 'code' },
@@ -757,12 +768,12 @@ export default function BillingDashboard() {
                     { 
                       header: 'Total Price', 
                       accessorKey: 'totalPrice',
-                      cell: ({ row }) => formatCurrency(row.original.totalPrice)
+                      cell: ({ row }) => formatCurrency(row.original.totalPrice);
                     },
                     { 
                       header: 'Discount', 
                       accessorKey: 'discountPercentage',
-                      cell: ({ row }) => `${row.original.discountPercentage}%`
+                      cell: ({ row }) => `${row.original.discountPercentage}%`;
                     },
                     { 
                       header: 'Final Price', 
@@ -776,22 +787,22 @@ export default function BillingDashboard() {
                       header: 'Status', 
                       accessorKey: 'active',
                       cell: ({ row }) => (
-                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
                           {row.original.active ? 'Active' : 'Inactive'}
                         </Badge>
-                      )
+                      );
                     },
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">View</Button>
-                          <Button variant="outline" size="sm">Edit</Button>
-                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>
+                        <div className="flex space-x-2">;
+                          <Button variant="outline" size="sm">View</Button>;
+                          <Button variant="outline" size="sm">Edit</Button>;
+                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>;
                             {row.original.active ? 'Deactivate' : 'Activate'}
                           </Button>
                         </div>
-                      )
+                      );
                     }
                   ]}
                 />
@@ -800,7 +811,7 @@ export default function BillingDashboard() {
           )}
         </TabsContent>
 
-        <TabsContent value="discounts">
+        <TabsContent value="discounts">;
           {billingData && (
             <Card>
               <CardHeader>
@@ -808,7 +819,7 @@ export default function BillingDashboard() {
                 <CardDescription>Manage discount rules and policies</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable
+                <DataTable;
                   data={filterDiscounts()}
                   columns={[
                     { header: 'Code', accessorKey: 'code' },
@@ -824,7 +835,7 @@ export default function BillingDashboard() {
                       accessorKey: 'discountValue',
                       cell: ({ row }) => row.original.discountType === 'percentage' ? 
                         `${row.original.discountValue}%` : 
-                        formatCurrency(row.original.discountValue)
+                        formatCurrency(row.original.discountValue);
                     },
                     { 
                       header: 'Min Bill Amount', 
@@ -840,21 +851,21 @@ export default function BillingDashboard() {
                       header: 'Status', 
                       accessorKey: 'active',
                       cell: ({ row }) => (
-                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
                           {row.original.active ? 'Active' : 'Inactive'}
                         </Badge>
-                      )
+                      );
                     },
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">Edit</Button>
-                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>
+                        <div className="flex space-x-2">;
+                          <Button variant="outline" size="sm">Edit</Button>;
+                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>;
                             {row.original.active ? 'Deactivate' : 'Activate'}
                           </Button>
                         </div>
-                      )
+                      );
                     }
                   ]}
                 />

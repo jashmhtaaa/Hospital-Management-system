@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -20,9 +31,9 @@ interface RadiologyReportsListProps {
 }
 
 /**
- * Radiology reports list component
+ * Radiology reports list component;
  */
-export function RadiologyReportsList({ reports, onViewReport }: RadiologyReportsListProps) {
+export const RadiologyReportsList = ({ reports, onViewReport }: RadiologyReportsListProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
@@ -53,32 +64,32 @@ export function RadiologyReportsList({ reports, onViewReport }: RadiologyReports
           <TableBody>
             {reports.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center">
-                  No radiology reports found
+                <TableCell colSpan={6} className="text-center">;
+                  No radiology reports found;
                 </TableCell>
               </TableRow>
             ) : (
               reports.map((report) => (
-                <TableRow key={report.id}>
+                <TableRow key={report.id}>;
                   <TableCell>
-                    <div className="font-medium">{report.patientName}</div>
-                    <div className="text-sm text-gray-500">ID: {report.patientId}</div>
+                    <div className="font-medium">{report.patientName}</div>;
+                    <div className="text-sm text-gray-500">ID: {report.patientId}</div>;
                   </TableCell>
                   <TableCell>{report.reportDate}</TableCell>
                   <TableCell>{report.studyType}</TableCell>
                   <TableCell>{getStatusBadge(report.status)}</TableCell>
                   <TableCell>{report.radiologist}</TableCell>
                   <TableCell>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button;
+                      variant="outline";
+                      size="sm";
                       onClick={() => onViewReport(report.id)}
                     >
-                      View
+                      View;
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

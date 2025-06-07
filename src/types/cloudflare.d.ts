@@ -1,6 +1,17 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import type { D1Result, D1Database, D1PreparedStatement } from "@cloudflare/workers-types";
 
-// Define a more specific type for D1Result that includes expected meta properties
+// Define a more specific type for D1Result that includes expected meta properties;
 export interface D1ResultWithMeta<T = unknown> extends D1Result<T> {
   meta: {
     last_row_id?: number;

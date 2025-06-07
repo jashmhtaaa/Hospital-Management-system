@@ -1,10 +1,21 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Popover = ({ className, ...props }: PopoverProps) => (
-  <div className={cn("relative", className)} {...props} />
+  <div className={cn("relative", className)} {...props} />;
 );
 Popover.displayName = "Popover";
 
@@ -12,12 +23,12 @@ interface PopoverTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
 
 const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>(
   ({ className, ...props }, ref) => (
-    <button
+    <button;
       ref={ref}
       className={cn("inline-flex items-center justify-center", className)}
       {...props}
     />
-  )
+  );
 );
 PopoverTrigger.displayName = "PopoverTrigger";
 
@@ -25,15 +36,15 @@ interface PopoverContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
   ({ className, ...props }, ref) => (
-    <div
+    <div;
       ref={ref}
       className={cn(
         "absolute z-50 w-72 rounded-md border border-gray-200 bg-white p-4 shadow-md outline-none",
-        className
+        className;
       )}
       {...props}
     />
-  )
+  );
 );
 PopoverContent.displayName = "PopoverContent";
 

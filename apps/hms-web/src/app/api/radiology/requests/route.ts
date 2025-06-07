@@ -1,4 +1,4 @@
-// app/api/radiology/requests/route.ts
+// app/api/radiology/requests/route.ts;
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, RadiologyRequestStatus } from "@prisma/client";
 import { z } from "zod";
@@ -20,7 +20,7 @@ const createRadiologyRequestSchema = z.object({
   scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." }).optional().nullable(),
 });
 
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -39,11 +39,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body: unknown = await request.json();
-    console.log(`[RADIOLOGY_REQUESTS_POST] User ${userId} attempting to create radiology request with body:`, body);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = createRadiologyRequestSchema.safeParse(body);
     if (!validation.success) {
-      console.warn("[RADIOLOGY_REQUESTS_POST] Validation failed:", validation.error.flatten());
+      // Debug logging removed);
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const [patient, orderedByUser, procedures] = await Promise.all([
         prisma.patient.findUnique({ where: { id: patientId } }),
         prisma.user.findUnique({ where: { id: orderedById } }),
-        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } })
+        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } });
     ]);
 
     if (!patient) {
@@ -92,14 +92,14 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log(`[RADIOLOGY_REQUESTS_POST] User ${userId} successfully created radiology request ID: ${newRadiologyRequest.id}`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest });
     const duration = Date.now() - start;
-    console.log(`[RADIOLOGY_REQUESTS_POST] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(newRadiologyRequest, 201);
 
-  } catch (error: any) {
-    console.error("[RADIOLOGY_REQUESTS_POST_ERROR]", { userId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     let errStatus = 500;
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
@@ -119,12 +119,12 @@ export async function POST(request: NextRequest) {
     }
     await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
     const duration = Date.now() - start;
-    console.error(`[RADIOLOGY_REQUESTS_POST] Request failed after ${duration}ms.`);
+
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
 
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -174,7 +174,7 @@ export async function GET(request: NextRequest) {
         }
     }
 
-    console.log(`[RADIOLOGY_REQUESTS_GET] User ${userId} fetching radiology requests with filters:`, whereClause);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const [radiologyRequests, totalCount] = await prisma.$transaction([
       prisma.radiologyRequest.findMany({
@@ -189,12 +189,12 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.radiologyRequest.count({ where: whereClause })
+      prisma.radiologyRequest.count({ where: whereClause });
     ]);
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: radiologyRequests.length, totalCount });
     const duration = Date.now() - start;
-    console.log(`[RADIOLOGY_REQUESTS_GET] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
     return sendSuccessResponse({
       data: radiologyRequests,
@@ -206,11 +206,11 @@ export async function GET(request: NextRequest) {
       }
     });
 
-  } catch (error: any) {
-    console.error("[RADIOLOGY_REQUESTS_GET_ERROR]", { userId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
     const duration = Date.now() - start;
-    console.error(`[RADIOLOGY_REQUESTS_GET] Request failed after ${duration}ms.`);
+
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }

@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -10,10 +21,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
 import { Edit, Trash2 } from "lucide-react";
 
-// Mock data structure - replace with actual API response type
+// Mock data structure - replace with actual API response type;
 interface SurgeryType {
   id: string;
   name: string;
@@ -23,7 +34,7 @@ interface SurgeryType {
   updated_at: string;
 }
 
-export default function OTSurgeryTypeList() {
+export default const OTSurgeryTypeList = () {
   const [surgeryTypes, setSurgeryTypes] = useState<SurgeryType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -34,7 +45,7 @@ export default function OTSurgeryTypeList() {
         setLoading(true);
         setError(undefined);
 
-        // Replace with actual API call
+        // Replace with actual API call;
         // const response = await fetch("/api/ot/surgery-types");
         // if (!response.ok) {
         //   throw new Error("Failed to fetch surgery types");
@@ -42,8 +53,8 @@ export default function OTSurgeryTypeList() {
         // const data = await response.json();
         // setSurgeryTypes(data);
 
-        // Mock data for demonstration
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
+        // Mock data for demonstration;
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
         const mockData: SurgeryType[] = [
           {
             id: "st-1",
@@ -97,7 +108,7 @@ export default function OTSurgeryTypeList() {
 
   return (
     <Card>
-      <CardContent className="pt-6">
+      <CardContent className="pt-6">;
         {loading && <div>Loading surgery types...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && (
@@ -114,41 +125,41 @@ export default function OTSurgeryTypeList() {
             <TableBody>
               {surgeryTypes.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center">
-                    No surgery types found.
+                  <TableCell colSpan={5} className="text-center">;
+                    No surgery types found.;
                   </TableCell>
                 </TableRow>
               ) : (
                 surgeryTypes.map((type) => (
-                  <TableRow key={type.id}>
+                  <TableRow key={type.id}>;
                     <TableCell>{type.name}</TableCell>
                     <TableCell>{type.specialty || "N/A"}</TableCell>
                     <TableCell>
                       {type.estimated_duration_minutes || "N/A"}
                     </TableCell>
-                    <TableCell className="max-w-xs truncate">
+                    <TableCell className="max-w-xs truncate">;
                       {type.description || "N/A"}
                     </TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          title="Edit Surgery Type"
+                      <div className="flex space-x-2">;
+                        <Button;
+                          variant="outline";
+                          size="icon";
+                          title="Edit Surgery Type";
                         >
-                          <Edit className="h-4 w-4" />
+                          <Edit className="h-4 w-4" />;
                         </Button>
-                        <Button
-                          variant="destructive"
-                          size="icon"
-                          title="Delete Surgery Type"
+                        <Button;
+                          variant="destructive";
+                          size="icon";
+                          title="Delete Surgery Type";
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />;
                         </Button>
                       </div>
                     </TableCell>
                   </TableRow>
-                ))
+                ));
               )}
             </TableBody>
           </Table>

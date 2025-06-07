@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,10 +18,10 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const templateService = new TemplateService();
 
 /**
- * GET /api/support-services/marketing/templates/:id
- * Get a specific template by ID
+ * GET /api/support-services/marketing/templates/:id;
+ * Get a specific template by ID;
  */
-export async function GET(
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -31,10 +42,10 @@ export async function GET(
 }
 
 /**
- * PUT /api/support-services/marketing/templates/:id
- * Update a specific template
+ * PUT /api/support-services/marketing/templates/:id;
+ * Update a specific template;
  */
-export async function PUT(
+export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -47,7 +58,7 @@ export async function PUT(
       const template = await templateService.updateTemplate(
         params.id,
         data,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(template);
@@ -60,10 +71,10 @@ export async function PUT(
 }
 
 /**
- * DELETE /api/support-services/marketing/templates/:id
- * Delete a specific template
+ * DELETE /api/support-services/marketing/templates/:id;
+ * Delete a specific template;
  */
-export async function DELETE(
+export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -74,7 +85,7 @@ export async function DELETE(
       
       await templateService.deleteTemplate(
         params.id,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json({ success: true }, { status: 200 });

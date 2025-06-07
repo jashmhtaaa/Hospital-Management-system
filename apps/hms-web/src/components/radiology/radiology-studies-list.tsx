@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -22,9 +33,9 @@ interface RadiologyStudiesListProps {
 }
 
 /**
- * Radiology studies list component
+ * Radiology studies list component;
  */
-export function RadiologyStudiesList({ studies, onViewStudy }: RadiologyStudiesListProps) {
+export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesListProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
@@ -57,16 +68,16 @@ export function RadiologyStudiesList({ studies, onViewStudy }: RadiologyStudiesL
           <TableBody>
             {studies.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center">
-                  No radiology studies found
+                <TableCell colSpan={8} className="text-center">;
+                  No radiology studies found;
                 </TableCell>
               </TableRow>
             ) : (
               studies.map((study) => (
-                <TableRow key={study.id}>
+                <TableRow key={study.id}>;
                   <TableCell>
-                    <div className="font-medium">{study.patientName}</div>
-                    <div className="text-sm text-gray-500">ID: {study.patientId}</div>
+                    <div className="font-medium">{study.patientName}</div>;
+                    <div className="text-sm text-gray-500">ID: {study.patientId}</div>;
                   </TableCell>
                   <TableCell>{study.studyDate}</TableCell>
                   <TableCell>{study.studyType}</TableCell>
@@ -75,16 +86,16 @@ export function RadiologyStudiesList({ studies, onViewStudy }: RadiologyStudiesL
                   <TableCell>{getStatusBadge(study.status)}</TableCell>
                   <TableCell>{study.technician}</TableCell>
                   <TableCell>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button;
+                      variant="outline";
+                      size="sm";
                       onClick={() => onViewStudy(study.id)}
                     >
-                      View
+                      View;
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))
+              ));
             )}
           </TableBody>
         </Table>

@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
@@ -7,7 +18,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage 
+  FormMessage;
 } from '../ui/form';
 import { 
   Card, 
@@ -15,7 +26,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '../ui/card';
 import {
   Accordion,
@@ -31,13 +42,13 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue;
 } from '../ui/select';
 import { 
   Tabs, 
   TabsContent, 
   TabsList, 
-  TabsTrigger 
+  TabsTrigger;
 } from '../ui/tabs';
 import { 
   AlertCircle, 
@@ -45,7 +56,7 @@ import {
   ChevronLeft, 
   Save, 
   User, 
-  X 
+  X;
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useToast } from '../../hooks/use-toast';
@@ -53,9 +64,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-// Define form schema
+// Define form schema;
 const patientFormSchema = z.object({
-  // Personal Information
+  // Personal Information;
   firstName: z.string().min(1, "First name is required"),
   middleName: z.string().optional(),
   lastName: z.string().min(1, "Last name is required"),
@@ -67,7 +78,7 @@ const patientFormSchema = z.object({
   pronouns: z.string().optional(),
   maritalStatus: z.string().optional(),
   
-  // Contact Information
+  // Contact Information;
   phoneHome: z.string().optional(),
   phoneMobile: z.string().optional(),
   phoneWork: z.string().optional(),
@@ -77,7 +88,7 @@ const patientFormSchema = z.object({
   smsOptIn: z.boolean().default(false),
   mailOptIn: z.boolean().default(true),
   
-  // Address
+  // Address;
   addressLine1: z.string().optional(),
   addressLine2: z.string().optional(),
   city: z.string().optional(),
@@ -85,7 +96,7 @@ const patientFormSchema = z.object({
   postalCode: z.string().optional(),
   country: z.string().default("USA"),
   
-  // Demographics
+  // Demographics;
   language: z.string().default("English"),
   interpreter: z.boolean().default(false),
   ethnicity: z.string().optional(),
@@ -95,12 +106,12 @@ const patientFormSchema = z.object({
   educationLevel: z.string().optional(),
   occupation: z.string().optional(),
   
-  // Medical
+  // Medical;
   bloodType: z.string().optional(),
   rh: z.string().optional(),
   organDonor: z.boolean().default(false),
   
-  // Administrative
+  // Administrative;
   mrn: z.string().optional(),
   status: z.string().default("Active"),
   vip: z.boolean().default(false),
@@ -110,20 +121,20 @@ const patientFormSchema = z.object({
 
 type PatientFormValues = z.infer<typeof patientFormSchema>;
 
-// Props interface
+// Props interface;
 interface PatientFormProps {
-  initialData?: any;
+  initialData?: unknown;
   isEditing?: boolean;
 }
 
-export default function PatientForm({ initialData, isEditing = false }: PatientFormProps) {
+export default const PatientForm = ({ initialData, isEditing = false }: PatientFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Default values for the form
+  // Default values for the form;
   const defaultValues: Partial<PatientFormValues> = initialData ? {
-    // Personal Information
+    // Personal Information;
     firstName: initialData.firstName || '',
     middleName: initialData.middleName || '',
     lastName: initialData.lastName || '',
@@ -135,7 +146,7 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
     pronouns: initialData.pronouns || '',
     maritalStatus: initialData.maritalStatus || '',
     
-    // Contact Information
+    // Contact Information;
     phoneHome: initialData.contact?.phoneHome || '',
     phoneMobile: initialData.contact?.phoneMobile || '',
     phoneWork: initialData.contact?.phoneWork || '',
@@ -145,15 +156,17 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
     smsOptIn: initialData.contact?.smsOptIn || false,
     mailOptIn: initialData.contact?.mailOptIn || true,
     
-    // Address
-    addressLine1: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].addressLine1 : '',
-    addressLine2: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].addressLine2 : '',
+    // Address;
+    addressLine1: initialData.addresses &&
+      initialData.addresses.length > 0 ? initialData.addresses[0].addressLine1 : '',
+    addressLine2: initialData.addresses &&
+      initialData.addresses.length > 0 ? initialData.addresses[0].addressLine2 : '',
     city: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : '',
     state: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].state : '',
     postalCode: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '',
     country: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].country : 'USA',
     
-    // Demographics
+    // Demographics;
     language: initialData.language || 'English',
     interpreter: initialData.interpreter || false,
     ethnicity: initialData.ethnicity || '',
@@ -163,12 +176,12 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
     educationLevel: initialData.educationLevel || '',
     occupation: initialData.occupation || '',
     
-    // Medical
+    // Medical;
     bloodType: initialData.bloodType || '',
     rh: initialData.rh || '',
     organDonor: initialData.organDonor || false,
     
-    // Administrative
+    // Administrative;
     mrn: initialData.mrn || '',
     status: initialData.status || 'Active',
     vip: initialData.vip || false,
@@ -182,18 +195,18 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
     mailOptIn: true,
   };
   
-  // Form definition
+  // Form definition;
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientFormSchema),
     defaultValues,
   });
   
-  // Handle form submission
+  // Handle form submission;
   const onSubmit = async (data: PatientFormValues) => {
     setIsSubmitting(true);
     
     try {
-      // Format the request data
+      // Format the request data;
       const requestData = {
         firstName: data.firstName,
         middleName: data.middleName || undefined,
@@ -222,7 +235,7 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
         confidential: data.confidential,
         notes: data.notes || undefined,
         
-        // Contact information
+        // Contact information;
         contact: {
           phoneHome: data.phoneHome || undefined,
           phoneMobile: data.phoneMobile || undefined,
@@ -247,10 +260,10 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
         } : undefined,
       };
       
-      // API call - create or update
+      // API call - create or update;
       let response;
       if (isEditing && initialData?.id) {
-        // Update existing patient
+        // Update existing patient;
         response = await fetch(`/api/patients/${initialData.id}`, {
           method: 'PUT',
           headers: {
@@ -259,7 +272,7 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
           body: JSON.stringify(requestData),
         });
       } else {
-        // Create new patient
+        // Create new patient;
         response = await fetch('/api/patients', {
           method: 'POST',
           headers: {
@@ -276,17 +289,16 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
       
       const patient = await response.json();
       
-      // Show success message
+      // Show success message;
       toast({
         title: isEditing ? 'Patient Updated' : 'Patient Created',
         description: `${patient.firstName} ${patient.lastName} has been ${isEditing ? 'updated' : 'created'} successfully.`,
       });
       
-      // Navigate to patient detail
+      // Navigate to patient detail;
       router.push(`/patients/${patient.id}`);
-    } catch (error: any) {
-      console.error('Error saving patient:', error);
-      
+    } catch (error: unknown) {
+
       toast({
         title: 'Error',
         description: error.message || 'An error occurred while saving the patient.',
@@ -297,7 +309,7 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
     }
   };
   
-  // Handle cancel
+  // Handle cancel;
   const handleCancel = () => {
     if (isEditing && initialData?.id) {
       router.push(`/patients/${initialData.id}`);
@@ -307,92 +319,92 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
   };
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6">;
       <Card>
         <CardHeader>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">;
             <div>
               <CardTitle>
                 {isEditing ? 'Edit Patient' : 'New Patient'}
               </CardTitle>
               <CardDescription>
-                {isEditing 
+                {isEditing;
                   ? 'Update patient information and demographics'
-                  : 'Register a new patient in the system'
+                  : 'Register a new patient in the system';
                 }
               </CardDescription>
             </div>
-            <Button variant="outline" onClick={handleCancel}>
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Cancel
+            <Button variant="outline" onClick={handleCancel}>;
+              <ChevronLeft className="h-4 w-4 mr-2" />;
+              Cancel;
             </Button>
           </div>
         </CardHeader>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-6">
-              <Tabs defaultValue="personal" className="w-full">
-                <TabsList className="grid grid-cols-2 md:grid-cols-4">
-                  <TabsTrigger value="personal">Personal</TabsTrigger>
-                  <TabsTrigger value="contact">Contact</TabsTrigger>
-                  <TabsTrigger value="demographics">Demographics</TabsTrigger>
-                  <TabsTrigger value="administrative">Administrative</TabsTrigger>
+          <form onSubmit={form.handleSubmit(onSubmit)}>;
+            <CardContent className="space-y-6">;
+              <Tabs defaultValue="personal" className="w-full">;
+                <TabsList className="grid grid-cols-2 md:grid-cols-4">;
+                  <TabsTrigger value="personal">Personal</TabsTrigger>;
+                  <TabsTrigger value="contact">Contact</TabsTrigger>;
+                  <TabsTrigger value="demographics">Demographics</TabsTrigger>;
+                  <TabsTrigger value="administrative">Administrative</TabsTrigger>;
                 </TabsList>
                 
                 {/* Personal Information */}
-                <TabsContent value="personal" className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
+                <TabsContent value="personal" className="space-y-6">;
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="firstName"
+                      name="firstName";
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>First Name <span className="text-destructive">*</span></FormLabel>
+                          <FormLabel>First Name <span className="text-destructive">*</span></FormLabel>;
                           <FormControl>
-                            <Input placeholder="First Name" {...field} />
+                            <Input placeholder="First Name" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="lastName"
+                      name="lastName";
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Last Name <span className="text-destructive">*</span></FormLabel>
+                          <FormLabel>Last Name <span className="text-destructive">*</span></FormLabel>;
                           <FormControl>
-                            <Input placeholder="Last Name" {...field} />
+                            <Input placeholder="Last Name" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="middleName"
+                      name="middleName";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Middle Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Middle Name" {...field} />
+                            <Input placeholder="Middle Name" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="preferredName"
+                      name="preferredName";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Preferred Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Preferred Name" {...field} />
+                            <Input placeholder="Preferred Name" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -400,42 +412,42 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="dateOfBirth"
+                      name="dateOfBirth";
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date of Birth <span className="text-destructive">*</span></FormLabel>
+                          <FormLabel>Date of Birth <span className="text-destructive">*</span></FormLabel>;
                           <FormControl>
-                            <Input type="date" {...field} />
+                            <Input type="date" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="gender"
+                      name="gender";
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Gender <span className="text-destructive">*</span></FormLabel>
-                          <Select
+                          <FormLabel>Gender <span className="text-destructive">*</span></FormLabel>;
+                          <Select;
                             value={field.value}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select gender" />
+                                <SelectValue placeholder="Select gender" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Male">Male</SelectItem>
-                              <SelectItem value="Female">Female</SelectItem>
-                              <SelectItem value="Non-binary">Non-binary</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
-                              <SelectItem value="Unknown">Unknown</SelectItem>
+                              <SelectItem value="Male">Male</SelectItem>;
+                              <SelectItem value="Female">Female</SelectItem>;
+                              <SelectItem value="Non-binary">Non-binary</SelectItem>;
+                              <SelectItem value="Other">Other</SelectItem>;
+                              <SelectItem value="Unknown">Unknown</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -444,32 +456,32 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                   
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1">
+                  <Accordion type="single" collapsible className="w-full">;
+                    <AccordionItem value="item-1">;
                       <AccordionTrigger>Additional Personal Information</AccordionTrigger>
                       <AccordionContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                          <FormField
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">;
+                          <FormField;
                             control={form.control}
-                            name="biologicalSex"
+                            name="biologicalSex";
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Biological Sex</FormLabel>
-                                <Select
+                                <Select;
                                   value={field.value || ""}
                                   onValueChange={field.onChange}
                                 >
                                   <FormControl>
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select biological sex" />
+                                      <SelectValue placeholder="Select biological sex" />;
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Not Specified</SelectItem>
-                                    <SelectItem value="Male">Male</SelectItem>
-                                    <SelectItem value="Female">Female</SelectItem>
-                                    <SelectItem value="Intersex">Intersex</SelectItem>
-                                    <SelectItem value="Unknown">Unknown</SelectItem>
+                                    <SelectItem value="">Not Specified</SelectItem>;
+                                    <SelectItem value="Male">Male</SelectItem>;
+                                    <SelectItem value="Female">Female</SelectItem>;
+                                    <SelectItem value="Intersex">Intersex</SelectItem>;
+                                    <SelectItem value="Unknown">Unknown</SelectItem>;
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -477,41 +489,41 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                             )}
                           />
                           
-                          <FormField
+                          <FormField;
                             control={form.control}
-                            name="genderIdentity"
+                            name="genderIdentity";
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Gender Identity</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Gender Identity" {...field} />
+                                  <Input placeholder="Gender Identity" {...field} />;
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
                           
-                          <FormField
+                          <FormField;
                             control={form.control}
-                            name="pronouns"
+                            name="pronouns";
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Pronouns</FormLabel>
-                                <Select
+                                <Select;
                                   value={field.value || ""}
                                   onValueChange={field.onChange}
                                 >
                                   <FormControl>
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select pronouns" />
+                                      <SelectValue placeholder="Select pronouns" />;
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Not Specified</SelectItem>
-                                    <SelectItem value="He/Him">He/Him</SelectItem>
-                                    <SelectItem value="She/Her">She/Her</SelectItem>
-                                    <SelectItem value="They/Them">They/Them</SelectItem>
-                                    <SelectItem value="Other">Other</SelectItem>
+                                    <SelectItem value="">Not Specified</SelectItem>;
+                                    <SelectItem value="He/Him">He/Him</SelectItem>;
+                                    <SelectItem value="She/Her">She/Her</SelectItem>;
+                                    <SelectItem value="They/Them">They/Them</SelectItem>;
+                                    <SelectItem value="Other">Other</SelectItem>;
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -519,29 +531,29 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                             )}
                           />
                           
-                          <FormField
+                          <FormField;
                             control={form.control}
-                            name="maritalStatus"
+                            name="maritalStatus";
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Marital Status</FormLabel>
-                                <Select
+                                <Select;
                                   value={field.value || ""}
                                   onValueChange={field.onChange}
                                 >
                                   <FormControl>
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select marital status" />
+                                      <SelectValue placeholder="Select marital status" />;
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Not Specified</SelectItem>
-                                    <SelectItem value="Single">Single</SelectItem>
-                                    <SelectItem value="Married">Married</SelectItem>
-                                    <SelectItem value="Divorced">Divorced</SelectItem>
-                                    <SelectItem value="Widowed">Widowed</SelectItem>
-                                    <SelectItem value="Separated">Separated</SelectItem>
-                                    <SelectItem value="Domestic Partner">Domestic Partner</SelectItem>
+                                    <SelectItem value="">Not Specified</SelectItem>;
+                                    <SelectItem value="Single">Single</SelectItem>;
+                                    <SelectItem value="Married">Married</SelectItem>;
+                                    <SelectItem value="Divorced">Divorced</SelectItem>;
+                                    <SelectItem value="Widowed">Widowed</SelectItem>;
+                                    <SelectItem value="Separated">Separated</SelectItem>;
+                                    <SelectItem value="Domestic Partner">Domestic Partner</SelectItem>;
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -549,27 +561,27 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                             )}
                           />
                           
-                          <FormField
+                          <FormField;
                             control={form.control}
-                            name="bloodType"
+                            name="bloodType";
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Blood Type</FormLabel>
-                                <Select
+                                <Select;
                                   value={field.value || ""}
                                   onValueChange={field.onChange}
                                 >
                                   <FormControl>
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select blood type" />
+                                      <SelectValue placeholder="Select blood type" />;
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Unknown</SelectItem>
-                                    <SelectItem value="A">A</SelectItem>
-                                    <SelectItem value="B">B</SelectItem>
-                                    <SelectItem value="AB">AB</SelectItem>
-                                    <SelectItem value="O">O</SelectItem>
+                                    <SelectItem value="">Unknown</SelectItem>;
+                                    <SelectItem value="A">A</SelectItem>;
+                                    <SelectItem value="B">B</SelectItem>;
+                                    <SelectItem value="AB">AB</SelectItem>;
+                                    <SelectItem value="O">O</SelectItem>;
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -577,25 +589,25 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                             )}
                           />
                           
-                          <FormField
+                          <FormField;
                             control={form.control}
-                            name="rh"
+                            name="rh";
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Rh Factor</FormLabel>
-                                <Select
+                                <Select;
                                   value={field.value || ""}
                                   onValueChange={field.onChange}
                                 >
                                   <FormControl>
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select Rh factor" />
+                                      <SelectValue placeholder="Select Rh factor" />;
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Unknown</SelectItem>
-                                    <SelectItem value="Positive">Positive (+)</SelectItem>
-                                    <SelectItem value="Negative">Negative (-)</SelectItem>
+                                    <SelectItem value="">Unknown</SelectItem>;
+                                    <SelectItem value="Positive">Positive (+)</SelectItem>;
+                                    <SelectItem value="Negative">Negative (-)</SelectItem>;
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -603,21 +615,21 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                             )}
                           />
                           
-                          <FormField
+                          <FormField;
                             control={form.control}
-                            name="organDonor"
+                            name="organDonor";
                             render={({ field }) => (
-                              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                                 <FormControl>
-                                  <Checkbox
+                                  <Checkbox;
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
                                   />
                                 </FormControl>
-                                <div className="space-y-1 leading-none">
+                                <div className="space-y-1 leading-none">;
                                   <FormLabel>Organ Donor</FormLabel>
                                   <FormDescription>
-                                    Patient has registered as an organ donor
+                                    Patient has registered as an organ donor;
                                   </FormDescription>
                                 </div>
                               </FormItem>
@@ -630,69 +642,69 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                 </TabsContent>
                 
                 {/* Contact Information */}
-                <TabsContent value="contact" className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
+                <TabsContent value="contact" className="space-y-6">;
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="phoneMobile"
+                      name="phoneMobile";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Mobile Phone</FormLabel>
                           <FormControl>
-                            <Input placeholder="Mobile Phone" {...field} />
+                            <Input placeholder="Mobile Phone" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="phoneHome"
+                      name="phoneHome";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Home Phone</FormLabel>
                           <FormControl>
-                            <Input placeholder="Home Phone" {...field} />
+                            <Input placeholder="Home Phone" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="phoneWork"
+                      name="phoneWork";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Work Phone</FormLabel>
                           <FormControl>
-                            <Input placeholder="Work Phone" {...field} />
+                            <Input placeholder="Work Phone" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="phonePreferred"
+                      name="phonePreferred";
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preferred Phone <span className="text-destructive">*</span></FormLabel>
-                          <Select
+                          <FormLabel>Preferred Phone <span className="text-destructive">*</span></FormLabel>;
+                          <Select;
                             value={field.value}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select preferred phone" />
+                                <SelectValue placeholder="Select preferred phone" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Mobile">Mobile</SelectItem>
-                              <SelectItem value="Home">Home</SelectItem>
-                              <SelectItem value="Work">Work</SelectItem>
+                              <SelectItem value="Mobile">Mobile</SelectItem>;
+                              <SelectItem value="Home">Home</SelectItem>;
+                              <SelectItem value="Work">Work</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -700,14 +712,14 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="email"
+                      name="email";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="Email" {...field} />
+                            <Input type="email" placeholder="Email" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -715,64 +727,64 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <FormField
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="emailOptIn"
+                      name="emailOptIn";
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                           <FormControl>
-                            <Checkbox
+                            <Checkbox;
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div className="space-y-1 leading-none">;
                             <FormLabel>Email Communication</FormLabel>
                             <FormDescription>
-                              Patient consents to email communications
+                              Patient consents to email communications;
                             </FormDescription>
                           </div>
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="smsOptIn"
+                      name="smsOptIn";
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                           <FormControl>
-                            <Checkbox
+                            <Checkbox;
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div className="space-y-1 leading-none">;
                             <FormLabel>SMS Communication</FormLabel>
                             <FormDescription>
-                              Patient consents to text message communications
+                              Patient consents to text message communications;
                             </FormDescription>
                           </div>
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="mailOptIn"
+                      name="mailOptIn";
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                           <FormControl>
-                            <Checkbox
+                            <Checkbox;
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div className="space-y-1 leading-none">;
                             <FormLabel>Mail Communication</FormLabel>
                             <FormDescription>
-                              Patient consents to postal mail communications
+                              Patient consents to postal mail communications;
                             </FormDescription>
                           </div>
                         </FormItem>
@@ -780,74 +792,74 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                   
-                  <div className="border-t pt-6">
-                    <h3 className="font-medium text-lg mb-4">Address Information</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
+                  <div className="border-t pt-6">;
+                    <h3 className="font-medium text-lg mb-4">Address Information</h3>;
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                      <FormField;
                         control={form.control}
-                        name="addressLine1"
+                        name="addressLine1";
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Address Line 1</FormLabel>
                             <FormControl>
-                              <Input placeholder="Street Address" {...field} />
+                              <Input placeholder="Street Address" {...field} />;
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                       
-                      <FormField
+                      <FormField;
                         control={form.control}
-                        name="addressLine2"
+                        name="addressLine2";
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Address Line 2</FormLabel>
                             <FormControl>
-                              <Input placeholder="Apt, Suite, Unit, etc." {...field} />
+                              <Input placeholder="Apt, Suite, Unit, etc." {...field} />;
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                       
-                      <FormField
+                      <FormField;
                         control={form.control}
-                        name="city"
+                        name="city";
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>City</FormLabel>
                             <FormControl>
-                              <Input placeholder="City" {...field} />
+                              <Input placeholder="City" {...field} />;
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                       
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormField
+                      <div className="grid grid-cols-2 gap-4">;
+                        <FormField;
                           control={form.control}
-                          name="state"
+                          name="state";
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>State</FormLabel>
                               <FormControl>
-                                <Input placeholder="State" {...field} />
+                                <Input placeholder="State" {...field} />;
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
                         
-                        <FormField
+                        <FormField;
                           control={form.control}
-                          name="postalCode"
+                          name="postalCode";
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Postal Code</FormLabel>
                               <FormControl>
-                                <Input placeholder="Postal Code" {...field} />
+                                <Input placeholder="Postal Code" {...field} />;
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -855,14 +867,14 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                         />
                       </div>
                       
-                      <FormField
+                      <FormField;
                         control={form.control}
-                        name="country"
+                        name="country";
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Country</FormLabel>
                             <FormControl>
-                              <Input placeholder="Country" {...field} />
+                              <Input placeholder="Country" {...field} />;
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -873,35 +885,35 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                 </TabsContent>
                 
                 {/* Demographics */}
-                <TabsContent value="demographics" className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
+                <TabsContent value="demographics" className="space-y-6">;
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="language"
+                      name="language";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Primary Language</FormLabel>
-                          <Select
+                          <Select;
                             value={field.value}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select language" />
+                                <SelectValue placeholder="Select language" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="English">English</SelectItem>
-                              <SelectItem value="Spanish">Spanish</SelectItem>
-                              <SelectItem value="French">French</SelectItem>
-                              <SelectItem value="Mandarin">Mandarin</SelectItem>
-                              <SelectItem value="Arabic">Arabic</SelectItem>
-                              <SelectItem value="Russian">Russian</SelectItem>
-                              <SelectItem value="Hindi">Hindi</SelectItem>
-                              <SelectItem value="Portuguese">Portuguese</SelectItem>
-                              <SelectItem value="Bengali">Bengali</SelectItem>
-                              <SelectItem value="Japanese">Japanese</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
+                              <SelectItem value="English">English</SelectItem>;
+                              <SelectItem value="Spanish">Spanish</SelectItem>;
+                              <SelectItem value="French">French</SelectItem>;
+                              <SelectItem value="Mandarin">Mandarin</SelectItem>;
+                              <SelectItem value="Arabic">Arabic</SelectItem>;
+                              <SelectItem value="Russian">Russian</SelectItem>;
+                              <SelectItem value="Hindi">Hindi</SelectItem>;
+                              <SelectItem value="Portuguese">Portuguese</SelectItem>;
+                              <SelectItem value="Bengali">Bengali</SelectItem>;
+                              <SelectItem value="Japanese">Japanese</SelectItem>;
+                              <SelectItem value="Other">Other</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -909,47 +921,47 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="interpreter"
+                      name="interpreter";
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                           <FormControl>
-                            <Checkbox
+                            <Checkbox;
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div className="space-y-1 leading-none">;
                             <FormLabel>Needs Interpreter</FormLabel>
                             <FormDescription>
-                              Patient requires language interpretation services
+                              Patient requires language interpretation services;
                             </FormDescription>
                           </div>
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="ethnicity"
+                      name="ethnicity";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Ethnicity</FormLabel>
-                          <Select
+                          <Select;
                             value={field.value || ""}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select ethnicity" />
+                                <SelectValue placeholder="Select ethnicity" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="">Not Specified</SelectItem>
-                              <SelectItem value="Hispanic or Latino">Hispanic or Latino</SelectItem>
-                              <SelectItem value="Not Hispanic or Latino">Not Hispanic or Latino</SelectItem>
-                              <SelectItem value="Declined">Declined to Specify</SelectItem>
+                              <SelectItem value="">Not Specified</SelectItem>;
+                              <SelectItem value="Hispanic or Latino">Hispanic or Latino</SelectItem>;
+                              <SelectItem value="Not Hispanic or Latino">Not Hispanic or Latino</SelectItem>;
+                              <SelectItem value="Declined">Declined to Specify</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -957,30 +969,30 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="race"
+                      name="race";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Race</FormLabel>
-                          <Select
+                          <Select;
                             value={field.value || ""}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select race" />
+                                <SelectValue placeholder="Select race" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="">Not Specified</SelectItem>
-                              <SelectItem value="American Indian or Alaska Native">American Indian or Alaska Native</SelectItem>
-                              <SelectItem value="Asian">Asian</SelectItem>
-                              <SelectItem value="Black or African American">Black or African American</SelectItem>
-                              <SelectItem value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</SelectItem>
-                              <SelectItem value="White">White</SelectItem>
-                              <SelectItem value="More than one race">More than one race</SelectItem>
-                              <SelectItem value="Declined">Declined to Specify</SelectItem>
+                              <SelectItem value="">Not Specified</SelectItem>;
+                              <SelectItem value="American Indian or Alaska Native">American Indian or Alaska Native</SelectItem>;
+                              <SelectItem value="Asian">Asian</SelectItem>;
+                              <SelectItem value="Black or African American">Black or African American</SelectItem>;
+                              <SelectItem value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</SelectItem>;
+                              <SelectItem value="White">White</SelectItem>;
+                              <SelectItem value="More than one race">More than one race</SelectItem>;
+                              <SelectItem value="Declined">Declined to Specify</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -988,59 +1000,59 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="nationality"
+                      name="nationality";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Nationality</FormLabel>
                           <FormControl>
-                            <Input placeholder="Nationality" {...field} />
+                            <Input placeholder="Nationality" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="religion"
+                      name="religion";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Religion</FormLabel>
                           <FormControl>
-                            <Input placeholder="Religion" {...field} />
+                            <Input placeholder="Religion" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="educationLevel"
+                      name="educationLevel";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Education Level</FormLabel>
-                          <Select
+                          <Select;
                             value={field.value || ""}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select education level" />
+                                <SelectValue placeholder="Select education level" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="">Not Specified</SelectItem>
-                              <SelectItem value="Less than high school">Less than high school</SelectItem>
-                              <SelectItem value="High school graduate">High school graduate</SelectItem>
-                              <SelectItem value="Some college">Some college</SelectItem>
-                              <SelectItem value="Associate degree">Associate degree</SelectItem>
-                              <SelectItem value="Bachelor's degree">Bachelor's degree</SelectItem>
-                              <SelectItem value="Master's degree">Master's degree</SelectItem>
-                              <SelectItem value="Professional degree">Professional degree</SelectItem>
-                              <SelectItem value="Doctoral degree">Doctoral degree</SelectItem>
+                              <SelectItem value="">Not Specified</SelectItem>;
+                              <SelectItem value="Less than high school">Less than high school</SelectItem>;
+                              <SelectItem value="High school graduate">High school graduate</SelectItem>;
+                              <SelectItem value="Some college">Some college</SelectItem>;
+                              <SelectItem value="Associate degree">Associate degree</SelectItem>;
+                              <SelectItem value="Bachelor's degree">Bachelor's degree</SelectItem>;
+                              <SelectItem value="Master's degree">Master's degree</SelectItem>;
+                              <SelectItem value="Professional degree">Professional degree</SelectItem>;
+                              <SelectItem value="Doctoral degree">Doctoral degree</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -1048,14 +1060,14 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="occupation"
+                      name="occupation";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Occupation</FormLabel>
                           <FormControl>
-                            <Input placeholder="Occupation" {...field} />
+                            <Input placeholder="Occupation" {...field} />;
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1065,21 +1077,21 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                 </TabsContent>
                 
                 {/* Administrative */}
-                <TabsContent value="administrative" className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
+                <TabsContent value="administrative" className="space-y-6">;
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="mrn"
+                      name="mrn";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>MRN</FormLabel>
                           <FormControl>
-                            <Input placeholder="Medical Record Number" {...field} disabled={isEditing} />
+                            <Input placeholder="Medical Record Number" {...field} disabled={isEditing} />;
                           </FormControl>
                           <FormDescription>
-                            {isEditing 
+                            {isEditing;
                               ? "MRN cannot be modified after creation"
-                              : "Leave blank to generate automatically"
+                              : "Leave blank to generate automatically";
                             }
                           </FormDescription>
                           <FormMessage />
@@ -1087,26 +1099,26 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="status"
+                      name="status";
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Status</FormLabel>
-                          <Select
+                          <Select;
                             value={field.value}
                             onValueChange={field.onChange}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select status" />
+                                <SelectValue placeholder="Select status" />;
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Active">Active</SelectItem>
-                              <SelectItem value="Inactive">Inactive</SelectItem>
-                              <SelectItem value="Deceased">Deceased</SelectItem>
-                              <SelectItem value="On Hold">On Hold</SelectItem>
+                              <SelectItem value="Active">Active</SelectItem>;
+                              <SelectItem value="Inactive">Inactive</SelectItem>;
+                              <SelectItem value="Deceased">Deceased</SelectItem>;
+                              <SelectItem value="On Hold">On Hold</SelectItem>;
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -1115,43 +1127,43 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <FormField;
                       control={form.control}
-                      name="vip"
+                      name="vip";
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                           <FormControl>
-                            <Checkbox
+                            <Checkbox;
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div className="space-y-1 leading-none">;
                             <FormLabel>VIP Status</FormLabel>
                             <FormDescription>
-                              Patient has VIP status (special handling required)
+                              Patient has VIP status (special handling required);
                             </FormDescription>
                           </div>
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
+                    <FormField;
                       control={form.control}
-                      name="confidential"
+                      name="confidential";
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
                           <FormControl>
-                            <Checkbox
+                            <Checkbox;
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div className="space-y-1 leading-none">;
                             <FormLabel>Confidential Record</FormLabel>
                             <FormDescription>
-                              Patient record has heightened confidentiality requirements
+                              Patient record has heightened confidentiality requirements;
                             </FormDescription>
                           </div>
                         </FormItem>
@@ -1159,16 +1171,16 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                   
-                  <FormField
+                  <FormField;
                     control={form.control}
-                    name="notes"
+                    name="notes";
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Administrative Notes</FormLabel>
                         <FormControl>
-                          <textarea
-                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]"
-                            placeholder="Additional notes about this patient..."
+                          <textarea;
+                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]";
+                            placeholder="Additional notes about this patient...";
                             {...field}
                           />
                         </FormControl>
@@ -1180,23 +1192,23 @@ export default function PatientForm({ initialData, isEditing = false }: PatientF
               </Tabs>
             </CardContent>
             
-            <CardFooter className="flex justify-between border-t pt-6">
-              <Button 
+            <CardFooter className="flex justify-between border-t pt-6">;
+              <Button;
                 type="button" 
-                variant="outline" 
+                variant="outline";
                 onClick={handleCancel}
               >
-                <X className="h-4 w-4 mr-2" />
-                Cancel
+                <X className="h-4 w-4 mr-2" />;
+                Cancel;
               </Button>
-              <Button 
+              <Button;
                 type="submit" 
                 disabled={isSubmitting}
               >
-                <Save className="h-4 w-4 mr-2" />
-                {isSubmitting 
-                  ? (isEditing ? 'Updating...' : 'Saving...') 
-                  : (isEditing ? 'Update Patient' : 'Save Patient')
+                <Save className="h-4 w-4 mr-2" />;
+                {isSubmitting;
+                  ? (isEditing ? 'Updating...' : 'Saving...');
+                  : (isEditing ? 'Update Patient' : 'Save Patient');
                 }
               </Button>
             </CardFooter>

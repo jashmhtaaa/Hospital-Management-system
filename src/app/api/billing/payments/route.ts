@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -7,17 +18,17 @@ import {
   validateQuery, 
   checkPermission, 
   createSuccessResponse,
-  createPaginatedResponse
+  createPaginatedResponse;
 } from '@/lib/core/middleware';
 import { ValidationError, NotFoundError, BusinessLogicError } from '@/lib/core/errors';
 import { 
   moneySchema, 
   paymentMethodSchema,
-  paymentStatusSchema
+  paymentStatusSchema;
 } from '@/lib/core/validation';
 import { logger } from '@/lib/core/logging';
 
-// Schema for payment creation
+// Schema for payment creation;
 const createPaymentSchema = z.object({
   invoiceId: z.string().uuid(),
   amount: moneySchema,
@@ -29,7 +40,7 @@ const createPaymentSchema = z.object({
   receiptRequired: z.boolean().default(true),
 });
 
-// Schema for payment query parameters
+// Schema for payment query parameters;
 const paymentQuerySchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
@@ -45,16 +56,16 @@ const paymentQuerySchema = z.object({
   sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
 });
 
-// GET handler for retrieving all payments with filtering and pagination
+// GET handler for retrieving all payments with filtering and pagination;
 export const GET = withErrorHandling(async (req: NextRequest) => {
-  // Validate query parameters
+  // Validate query parameters;
   const query = validateQuery(paymentQuerySchema)(req);
   
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'read', 'payment')(req);
   
-  // Build filter conditions
-  const where: any = {};
+  // Build filter conditions;
+  const where: unknown = {};
   
   if (query.invoiceId) {
     where.invoiceId = query.invoiceId;
@@ -62,7 +73,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   
   if (query.patientId) {
     where.invoice = {
-      patientId: query.patientId
+      patientId: query.patientId;
     };
   }
   
@@ -106,7 +117,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
     };
   }
   
-  // Execute query with pagination
+  // Execute query with pagination;
   const [payments, total] = await Promise.all([
     prisma.payment.findMany({
       where,
@@ -139,15 +150,15 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   return createPaginatedResponse(payments, query.page, query.pageSize, total);
 });
 
-// POST handler for creating a new payment
+// POST handler for creating a new payment;
 export const POST = withErrorHandling(async (req: NextRequest) => {
-  // Validate request body
+  // Validate request body;
   const data = await validateBody(createPaymentSchema)(req);
   
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, 'create', 'payment')(req);
   
-  // Retrieve invoice
+  // Retrieve invoice;
   const invoice = await prisma.bill.findUnique({
     where: { id: data.invoiceId },
   });
@@ -156,7 +167,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
   
-  // Check if invoice is in a valid state for payment
+  // Check if invoice is in a valid state for payment;
   if (!['approved', 'partial', 'overdue'].includes(invoice.status)) {
     throw new BusinessLogicError(
       'Payment can only be made for approved, partially paid, or overdue invoices',
@@ -165,7 +176,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     );
   }
   
-  // Check if payment amount is valid
+  // Check if payment amount is valid;
   if (data.amount <= 0) {
     throw new ValidationError('Payment amount must be greater than zero', 'INVALID_PAYMENT_AMOUNT');
   }
@@ -176,18 +187,18 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
       'PAYMENT_EXCEEDS_OUTSTANDING',
       { 
         paymentAmount: data.amount,
-        outstandingAmount: invoice.outstandingAmount
+        outstandingAmount: invoice.outstandingAmount;
       }
     );
   }
   
-  // Generate payment reference number if not provided
-  const referenceNumber = data.referenceNumber || 
+  // Generate payment reference number if not provided;
+  const referenceNumber = data.referenceNumber ||;
     `PAY-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
   
-  // Create payment in database
+  // Create payment in database;
   const payment = await prisma.$transaction(async (prisma) => {
-    // Create payment record
+    // Create payment record;
     const newPayment = await prisma.payment.create({
       data: {
         invoiceId: data.invoiceId,
@@ -201,11 +212,11 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
       },
     });
     
-    // Update invoice
+    // Update invoice;
     const newPaidAmount = invoice.paidAmount + data.amount;
     const newOutstandingAmount = invoice.totalAmount - newPaidAmount;
     
-    // Determine new invoice status
+    // Determine new invoice status;
     let newStatus = invoice.status;
     if (newOutstandingAmount <= 0) {
       newStatus = 'paid';
@@ -229,14 +240,14 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     paymentId: payment.id, 
     invoiceId: data.invoiceId,
     amount: data.amount,
-    method: data.paymentMethod
+    method: data.paymentMethod;
   });
   
-  // Generate receipt if required
+  // Generate receipt if required;
   let receiptUrl = null;
   if (data.receiptRequired) {
-    // In a real implementation, this would generate a receipt
-    // For now, we'll just simulate it
+    // In a real implementation, this would generate a receipt;
+    // For now, we'll just simulate it;
     receiptUrl = `/api/billing/receipts/${payment.id}`;
   }
   

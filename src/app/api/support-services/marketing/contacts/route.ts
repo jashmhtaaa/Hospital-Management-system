@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -7,30 +18,30 @@ import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const contactService = new ContactService();
 
 /**
- * GET /api/support-services/marketing/contacts
- * Get all contacts with optional filtering
+ * GET /api/support-services/marketing/contacts;
+ * Get all contacts with optional filtering;
  */
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
       
-      // Parse query parameters
+      // Parse query parameters;
       const filters = {
         status: searchParams.get('status') || undefined,
         source: searchParams.get('source') || undefined,
         search: searchParams.get('search') || undefined,
         segmentId: searchParams.get('segmentId') || undefined,
-        hasPatient: searchParams.has('hasPatient') 
-          ? searchParams.get('hasPatient') === 'true'
+        hasPatient: searchParams.has('hasPatient');
+          ? searchParams.get('hasPatient') === 'true';
           : undefined,
-        page: searchParams.has('page')
-          ? parseInt(searchParams.get('page') || '1', 10)
+        page: searchParams.has('page');
+          ? parseInt(searchParams.get('page') || '1', 10);
           : 1,
-        limit: searchParams.has('limit')
-          ? parseInt(searchParams.get('limit') || '10', 10)
+        limit: searchParams.has('limit');
+          ? parseInt(searchParams.get('limit') || '10', 10);
           : 10,
       };
       
@@ -46,10 +57,10 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/support-services/marketing/contacts
- * Create a new contact
+ * POST /api/support-services/marketing/contacts;
+ * Create a new contact;
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -58,7 +69,7 @@ export async function POST(request: NextRequest) {
       
       const contact = await contactService.createContact(
         data,
-        session?.user?.id as string
+        session?.user?.id as string;
       );
       
       return NextResponse.json(contact, { status: 201 });

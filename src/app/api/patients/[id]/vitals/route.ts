@@ -1,10 +1,21 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
 
-// Zod schema for creating patient vitals
+// Zod schema for creating patient vitals;
 const vitalCreateSchema = z.object({
     visit_id: z.number().optional().nullable(),
     record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
@@ -23,8 +34,8 @@ const vitalCreateSchema = z.object({
     notes: z.string().optional().nullable(),
 });
 
-// GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
-export async function GET(
+// GET /api/patients/[id]/vitals - Fetch vitals for a specific patient;
+export async const GET = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
@@ -58,7 +69,7 @@ export async function GET(
         const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
         const patientCheck = await (DB as D1Database).prepare(
-            "SELECT patient_id FROM Patients WHERE patient_id = ?"
+            "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<{ patient_id: number }>();
 
         if (!patientCheck) {
@@ -68,13 +79,13 @@ export async function GET(
             );
         }
 
-        let query = `
-            SELECT
+        let query = `;
+            SELECT;
                 pv.*,
-                u.name as recorded_by_user_name
-            FROM PatientVitals pv
-            JOIN Users u ON pv.recorded_by_user_id = u.id
-            WHERE pv.patient_id = ?
+                u.name as recorded_by_user_name;
+            FROM PatientVitals pv;
+            JOIN Users u ON pv.recorded_by_user_id = u.id;
+            WHERE pv.patient_id = ?;
         `;
         const queryParameters: (string | number)[] = [Number.parseInt(patientId)];
         let countQuery = `SELECT COUNT(*) as total FROM PatientVitals WHERE patient_id = ?`;
@@ -104,7 +115,7 @@ export async function GET(
 
         const [vitalsResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(...queryParameters).all<{ recorded_by_user_name?: string }>(),
-            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>()
+            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
         ]);
 
         const results = vitalsResult.results || [];
@@ -121,7 +132,7 @@ export async function GET(
         });
 
     } catch (error: unknown) {
-        console.error(`Error fetching vitals for patient ${patientId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;
@@ -133,8 +144,8 @@ export async function GET(
     }
 }
 
-// POST /api/patients/[id]/vitals - Record new vitals for a patient
-export async function POST(
+// POST /api/patients/[id]/vitals - Record new vitals for a patient;
+export async const POST = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
@@ -142,7 +153,7 @@ export async function POST(
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in;
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -156,7 +167,7 @@ export async function POST(
 
     try {
         const patientCheck = await (DB as D1Database).prepare(
-            "SELECT patient_id FROM Patients WHERE patient_id = ?"
+            "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<{ patient_id: number }>();
 
         if (!patientCheck) {
@@ -178,7 +189,7 @@ export async function POST(
 
         const vitalData = validationResult.data;
         const now = new Date().toISOString();
-        const userId = session.user.userId; // session.user is now guaranteed to be defined
+        const userId = session.user.userId; // session.user is now guaranteed to be defined;
 
         let bmi: number | undefined | null = vitalData.bmi;
         if (vitalData.height_cm && vitalData.weight_kg && bmi === undefined) {
@@ -190,7 +201,7 @@ export async function POST(
             `INSERT INTO PatientVitals (
                 patient_id, visit_id, record_datetime, temperature_celsius, heart_rate_bpm,
                 respiratory_rate_bpm, systolic_bp_mmhg, diastolic_bp_mmhg, oxygen_saturation_percent,
-                height_cm, weight_kg, bmi, pain_scale_0_10, notes, recorded_by_user_id, created_at
+                height_cm, weight_kg, bmi, pain_scale_0_10, notes, recorded_by_user_id, created_at;
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         ).bind(
             patientId,
@@ -208,13 +219,13 @@ export async function POST(
             vitalData.pain_scale_0_10,
             vitalData.notes,
             userId,
-            now
+            now;
         );
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta;
 
         if (!insertResult.success || !insertResult.meta || typeof insertResult.meta.last_row_id !== 'number') {
-            console.error("Failed to record patient vitals or get last_row_id:", insertResult);
+
             throw new Error("Failed to record patient vitals");
         }
 
@@ -226,7 +237,7 @@ export async function POST(
         });
 
     } catch (error: unknown) {
-        console.error(`Error recording vitals for patient ${patientId}:`, error);
+
         let errorMessage = "An unknown error occurred";
         if (error instanceof Error) {
             errorMessage = error.message;

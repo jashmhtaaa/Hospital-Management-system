@@ -52,7 +52,7 @@ const CRITICAL_ENDPOINTS = [
 ];
 
 export function setup() {
-  console.log('🔥 Starting stress testing setup...');
+  // Debug logging removed
   
   // Authenticate
   const loginResponse = http.post(`${BASE_URL}/api/auth/login`, 
@@ -66,7 +66,7 @@ export function setup() {
   if (loginResponse.status === 200) {
     const body = JSON.parse(loginResponse.body);
     authToken = body.tokens?.accessToken || '';
-    console.log('🔑 Authentication successful for stress testing');
+    // Debug logging removed
   }
   
   return { authToken };
@@ -249,18 +249,18 @@ function recordStressMetrics(response, operation) {
   errorRate.add(isError, { operation });
   
   if (isError) {
-    console.warn(`⚠️ Stress test error in ${operation}: ${response.status}`);
+    // Debug logging removed
   }
   
   // Log critical performance degradation
   if (response.timings.duration > 5000) {
-    console.warn(`⏱️ Slow response in ${operation}: ${response.timings.duration}ms`);
+    // Debug logging removed
   }
 }
 
 export function teardown(data) {
-  console.log('🔥 Stress testing completed');
-  console.log('📊 Check results for system breaking points and performance degradation');
+  // Debug logging removed
+  // Debug logging removed
 }
 
 export function handleSummary(data) {
@@ -331,7 +331,8 @@ function generateStressTestReport(data) {
                 <h3>⚡ Performance Under Stress</h3>
                 <p><strong>Error Rate:</strong> ${errorRate.toFixed(2)}% ${errorRate > 20 ? '❌ CRITICAL' : errorRate > 10 ? '⚠️ WARNING' : '✅ GOOD'}</p>
                 <p><strong>99th Percentile Response Time:</strong> ${p99ResponseTime}ms</p>
-                <p><strong>Average Response Time:</strong> ${Math.round(data.metrics?.http_req_duration?.values?.avg || 0)}ms</p>
+                <p><strong>Average Response Time:</strong> ${Math.round(data.metrics?.http_req_duration?.values?.avg ||
+                  0)}ms</p>
                 <p><strong>System Status:</strong> ${errorRate > 20 ? '🔥 BREAKING POINT REACHED' : '✅ STABLE UNDER STRESS'}</p>
             </div>
 

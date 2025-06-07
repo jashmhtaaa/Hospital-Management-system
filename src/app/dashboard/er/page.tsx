@@ -1,8 +1,19 @@
-// src/app/dashboard/er/page.tsx
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+// src/app/dashboard/er/page.tsx;
 "use client";
 export const dynamic = 'force-dynamic';
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -18,34 +29,34 @@ import ERCriticalAlerts from "@/components/er/er-critical-alerts";
 import ERRegistrationModal from "@/components/er/er-registration-modal";
 import { Button } from "@/components/ui/button";
 
-export default function ERDashboardPage() {
+export default const ERDashboardPage = () {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Emergency Department</h1>
+    <div className="container mx-auto py-6">;
+      <div className="flex justify-between items-center mb-6">;
+        <h1 className="text-3xl font-bold">Emergency Department</h1>;
         <Button onClick={() => setIsRegistrationModalOpen(true)}>
-          Register New Patient
+          Register New Patient;
         </Button>
       </div>
 
       <ERDashboardStats />
 
-      <Tabs defaultValue="tracking" className="mt-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="tracking">Patient Tracking</TabsTrigger>
-          <TabsTrigger value="triage">Triage</TabsTrigger>
-          <TabsTrigger value="alerts">Critical Alerts</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+      <Tabs defaultValue="tracking" className="mt-6">;
+        <TabsList className="grid w-full grid-cols-4">;
+          <TabsTrigger value="tracking">Patient Tracking</TabsTrigger>;
+          <TabsTrigger value="triage">Triage</TabsTrigger>;
+          <TabsTrigger value="alerts">Critical Alerts</TabsTrigger>;
+          <TabsTrigger value="reports">Reports</TabsTrigger>;
         </TabsList>
 
-        <TabsContent value="tracking" className="mt-4">
+        <TabsContent value="tracking" className="mt-4">;
           <Card>
             <CardHeader>
               <CardTitle>Patient Tracking Board</CardTitle>
               <CardDescription>
-                Real-time view of all patients in the Emergency Department
+                Real-time view of all patients in the Emergency Department;
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -54,12 +65,12 @@ export default function ERDashboardPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="triage" className="mt-4">
+        <TabsContent value="triage" className="mt-4">;
           <Card>
             <CardHeader>
               <CardTitle>Triage Assessment</CardTitle>
               <CardDescription>
-                Perform triage assessment for patients
+                Perform triage assessment for patients;
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -68,12 +79,12 @@ export default function ERDashboardPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="alerts" className="mt-4">
+        <TabsContent value="alerts" className="mt-4">;
           <Card>
             <CardHeader>
               <CardTitle>Critical Alerts</CardTitle>
               <CardDescription>
-                Active critical alerts requiring attention
+                Active critical alerts requiring attention;
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -82,24 +93,24 @@ export default function ERDashboardPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="reports" className="mt-4">
+        <TabsContent value="reports" className="mt-4">;
           <Card>
             <CardHeader>
               <CardTitle>ER Reports</CardTitle>
               <CardDescription>
-                Analytics and operational reports
+                Analytics and operational reports;
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p>
-                Reports functionality will be implemented in a future iteration.
+                Reports functionality will be implemented in a future iteration.;
               </p>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
 
-      <ERRegistrationModal
+      <ERRegistrationModal;
         isOpen={isRegistrationModalOpen}
         onClose={() => setIsRegistrationModalOpen(false)}
       />

@@ -1,13 +1,24 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Database Query Optimizer
- * Comprehensive solution to eliminate all 37 identified N+1 query issues
+ * Database Query Optimizer;
+ * Comprehensive solution to eliminate all 37 identified N+1 query issues;
  */
 
 import { PrismaClient, Prisma } from '@prisma/client';
-import { prisma } from './connection-pool';
+import { prisma } from './connection-pool.ts';
 import { cache } from '@/lib/cache';
 
-// Query optimization patterns for common scenarios
+// Query optimization patterns for common scenarios;
 export class QueryOptimizer {
   private static instance: QueryOptimizer;
   private readonly client: PrismaClient;
@@ -52,7 +63,7 @@ export class QueryOptimizer {
             billDate: true,
           },
           orderBy: { billDate: 'desc' },
-          take: 10, // Limit related records
+          take: 10, // Limit related records;
         },
         _count: {
           select: {
@@ -67,7 +78,7 @@ export class QueryOptimizer {
       orderBy: { createdAt: 'desc' },
     });
 
-    await cache.set(cacheKey, result, 300); // Cache for 5 minutes
+    await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
   }
 
@@ -121,7 +132,7 @@ export class QueryOptimizer {
       orderBy: { lastName: 'asc' },
     });
 
-    await cache.set(cacheKey, result, 600); // Cache for 10 minutes
+    await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
   }
 
@@ -198,21 +209,21 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Optimized outstanding bills calculation
+  // Optimized outstanding bills calculation;
   async getOutstandingBillsSummary() {
     const cacheKey = 'outstanding_bills_summary';
     const cached = await cache.get(cacheKey);
     if (cached) return cached;
 
-    // Use raw SQL for better performance on aggregations
-    const result = await this.client.$queryRaw`
-      SELECT 
+    // Use raw SQL for better performance on aggregations;
+    const result = await this.client.$queryRaw`;
+      SELECT;
         COUNT(*) as total_bills,
         SUM(outstanding_amount) as total_outstanding,
         AVG(outstanding_amount) as average_outstanding,
-        COUNT(CASE WHEN outstanding_amount > 0 THEN 1 END) as bills_with_outstanding
-      FROM bills 
-      WHERE status NOT IN ('CANCELLED', 'REFUNDED')
+        COUNT(CASE WHEN outstanding_amount > 0 THEN 1 END) as bills_with_outstanding;
+      FROM bills;
+      WHERE status NOT IN ('CANCELLED', 'REFUNDED');
     ` as any[];
 
     await cache.set(cacheKey, result[0], 300);
@@ -261,11 +272,11 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Doctor's schedule optimization
+  // Doctor's schedule optimization;
   async getDoctorScheduleOptimized(
     doctorId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date;
   ) {
     const cacheKey = `doctor_schedule:${doctorId}:${startDate.toISOString()}:${endDate.toISOString()}`;
     const cached = await cache.get(cacheKey);
@@ -296,7 +307,7 @@ export class QueryOptimizer {
       orderBy: { startTime: 'asc' },
     });
 
-    await cache.set(cacheKey, result, 1800); // Cache for 30 minutes
+    await cache.set(cacheKey, result, 1800); // Cache for 30 minutes;
     return result;
   }
 
@@ -342,7 +353,7 @@ export class QueryOptimizer {
             oxygenSaturation: true,
           },
           orderBy: { recordedAt: 'desc' },
-          take: 5, // Latest 5 vital signs
+          take: 5, // Latest 5 vital signs;
         },
         medications: {
           select: {
@@ -353,7 +364,7 @@ export class QueryOptimizer {
             administeredBy: true,
           },
           orderBy: { administeredAt: 'desc' },
-          take: 10, // Latest 10 medications
+          take: 10, // Latest 10 medications;
         },
         _count: {
           select: {
@@ -371,25 +382,25 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Ward occupancy optimization
+  // Ward occupancy optimization;
   async getWardOccupancyOptimized() {
     const cacheKey = 'ward_occupancy';
     const cached = await cache.get(cacheKey);
     if (cached) return cached;
 
-    const result = await this.client.$queryRaw`
-      SELECT 
+    const result = await this.client.$queryRaw`;
+      SELECT;
         ward_id,
         COUNT(*) as occupied_beds,
         COUNT(CASE WHEN status = 'ACTIVE' THEN 1 END) as active_admissions,
-        AVG(EXTRACT(EPOCH FROM (COALESCE(discharge_date, NOW()) - admission_date)) / 86400) as avg_length_of_stay
-      FROM admissions 
-      WHERE ward_id IS NOT NULL
-      GROUP BY ward_id
-      ORDER BY ward_id
+        AVG(EXTRACT(EPOCH FROM (COALESCE(discharge_date, NOW()) - admission_date)) / 86400) as avg_length_of_stay;
+      FROM admissions;
+      WHERE ward_id IS NOT NULL;
+      GROUP BY ward_id;
+      ORDER BY ward_id;
     ` as any[];
 
-    await cache.set(cacheKey, result, 600); // Cache for 10 minutes
+    await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
   }
 
@@ -459,7 +470,7 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Critical lab results optimization
+  // Critical lab results optimization;
   async getCriticalLabResults(hours: number = 24) {
     const cacheKey = `critical_lab_results:${hours}`;
     const cached = await cache.get(cacheKey);
@@ -504,7 +515,7 @@ export class QueryOptimizer {
       orderBy: { reportedDate: 'desc' },
     });
 
-    await cache.set(cacheKey, result, 300); // Cache for 5 minutes
+    await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
   }
 
@@ -548,7 +559,7 @@ export class QueryOptimizer {
             lastResponseDate: true,
           },
           orderBy: { submittedAt: 'desc' },
-          take: 10, // Latest 10 claims
+          take: 10, // Latest 10 claims;
         },
         verifications: {
           select: {
@@ -558,7 +569,7 @@ export class QueryOptimizer {
             verifiedBy: true,
           },
           orderBy: { verifiedAt: 'desc' },
-          take: 3, // Latest 3 verifications
+          take: 3, // Latest 3 verifications;
         },
         _count: {
           select: {
@@ -574,13 +585,13 @@ export class QueryOptimizer {
   }
 
   /**
-   * BULK OPERATIONS FOR BETTER PERFORMANCE
+   * BULK OPERATIONS FOR BETTER PERFORMANCE;
    */
 
   async bulkUpdateBillStatus(
     billIds: string[],
     status: string,
-    updatedBy: string
+    updatedBy: string;
   ) {
     return this.client.bill.updateMany({
       where: {
@@ -593,7 +604,7 @@ export class QueryOptimizer {
     });
   }
 
-  async bulkCreateBillItems(billItems: any[]) {
+  async bulkCreateBillItems(billItems: unknown[]) {
     return this.client.billItem.createMany({
       data: billItems,
       skipDuplicates: true,
@@ -601,7 +612,7 @@ export class QueryOptimizer {
   }
 
   /**
-   * DATALOADER PATTERN FOR FREQUENTLY ACCESSED DATA
+   * DATALOADER PATTERN FOR FREQUENTLY ACCESSED DATA;
    */
 
   private patientLoader = new Map<string, Promise<any>>();
@@ -626,29 +637,29 @@ export class QueryOptimizer {
     return this.patientLoader.get(patientId);
   }
 
-  // Clear dataloader cache periodically
+  // Clear dataloader cache periodically;
   clearDataLoaderCache() {
     this.patientLoader.clear();
   }
 
   /**
-   * PERFORMANCE MONITORING
+   * PERFORMANCE MONITORING;
    */
 
   async analyzeSlowQueries() {
-    // This would integrate with PostgreSQL's pg_stat_statements
-    const result = await this.client.$queryRaw`
-      SELECT 
+    // This would integrate with PostgreSQL's pg_stat_statements;
+    const result = await this.client.$queryRaw`;
+      SELECT;
         query,
         calls,
         total_exec_time,
         mean_exec_time,
         stddev_exec_time,
-        rows
-      FROM pg_stat_statements 
-      WHERE mean_exec_time > 1000
-      ORDER BY mean_exec_time DESC
-      LIMIT 20
+        rows;
+      FROM pg_stat_statements;
+      WHERE mean_exec_time > 1000;
+      ORDER BY mean_exec_time DESC;
+      LIMIT 20;
     ` as any[];
 
     return result;
@@ -666,23 +677,23 @@ export class QueryOptimizer {
       cacheHitRate: 0,
     };
 
-    // This would be populated with actual metrics
+    // This would be populated with actual metrics;
     await cache.set(cacheKey, stats, 60);
     return stats;
   }
 }
 
-// Export singleton instance
+// Export singleton instance;
 export const queryOptimizer = QueryOptimizer.getInstance();
 
-// Utility functions for common optimized patterns
-export async function getOptimizedPatientData(patientId: string) {
+// Utility functions for common optimized patterns;
+export async const getOptimizedPatientData = (patientId: string) {
   return queryOptimizer.getPatientOptimized(patientId);
 }
 
-export async function getOptimizedBillsForPatient(
+export async const getOptimizedBillsForPatient = (
   patientId: string,
-  limit: number = 10
+  limit: number = 10;
 ) {
   return queryOptimizer.getBillsWithItems({
     patientId,
@@ -690,9 +701,9 @@ export async function getOptimizedBillsForPatient(
   });
 }
 
-export async function getOptimizedAppointmentsForDoctor(
+export async const getOptimizedAppointmentsForDoctor = (
   doctorId: string,
-  date: Date
+  date: Date;
 ) {
   return queryOptimizer.getAppointmentsWithDetails({
     doctorId,

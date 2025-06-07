@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Patient Education API Routes
+ * Patient Education API Routes;
  * 
- * This file implements the API endpoints for recording patient education related to medications
+ * This file implements the API endpoints for recording patient education related to medications;
  * with comprehensive documentation and tracking.
  */
 
@@ -20,7 +31,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const prescriptionRepository = {
@@ -31,25 +42,25 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const educationRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  save: (education: any) => Promise.resolve(education.id || 'new-id'),
+  save: (education: unknown) => Promise.resolve(education.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 /**
- * POST /api/pharmacy/administration/education
- * Record patient education for medication
+ * POST /api/pharmacy/administration/education;
+ * Record patient education for medication;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateEducationRequest(data);
     if (!validationResult.success) {
@@ -59,22 +70,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Verify patient exists
+    // Verify patient exists;
     const patient = await getPatientById(data.patientId);
     if (!patient) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Verify medication exists if provided
+    // Verify medication exists if provided;
     if (data.medicationId) {
       const medication = await medicationRepository.findById(data.medicationId);
       if (!medication) {
@@ -82,7 +93,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Verify prescription exists if provided
+    // Verify prescription exists if provided;
     if (data.prescriptionId) {
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
       if (!prescription) {
@@ -90,7 +101,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Create education record
+    // Create education record;
     const education = {
       id: data.id || crypto.randomUUID(),
       patientId: data.patientId,
@@ -107,13 +118,13 @@ export async function POST(req: NextRequest) {
       followUpDate: data.followUpDate ? new Date(data.followUpDate) : null,
       language: data.language || 'English',
       interpreter: data.interpreter || false,
-      interpreterName: data.interpreterName
+      interpreterName: data.interpreterName;
     };
 
-    // Save education record
+    // Save education record;
     const educationId = await educationRepository.save(education);
 
-    // Audit logging
+    // Audit logging;
     await auditLog('MEDICATION_EDUCATION', {
       action: 'CREATE',
       resourceType: 'MedicationEducation',
@@ -124,15 +135,15 @@ export async function POST(req: NextRequest) {
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId,
         educationType: data.educationType,
-        topics: data.topics
+        topics: data.topics;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json(
       { 
         id: educationId,
-        message: 'Patient education recorded successfully' 
+        message: 'Patient education recorded successfully';
       }, 
       { status: 201 }
     );
@@ -142,21 +153,21 @@ export async function POST(req: NextRequest) {
 }
 
 /**
- * GET /api/pharmacy/administration/education
- * Get patient education records with filtering options
+ * GET /api/pharmacy/administration/education;
+ * Get patient education records with filtering options;
  */
-export async function GET(req: NextRequest) {
+export async const GET = (req: NextRequest) {
   try {
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const patientId = url.searchParams.get('patientId');
     const medicationId = url.searchParams.get('medicationId');
@@ -167,7 +178,7 @@ export async function GET(req: NextRequest) {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Require at least patientId filter
+    // Require at least patientId filter;
     if (!patientId) {
       return NextResponse.json(
         { error: 'Patient ID is required' },
@@ -175,13 +186,13 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Build filter criteria
-    const filter: any = { patientId };
+    // Build filter criteria;
+    const filter: unknown = { patientId };
     if (medicationId) filter.medicationId = medicationId;
     if (prescriptionId) filter.prescriptionId = prescriptionId;
     if (educationType) filter.educationType = educationType;
     
-    // Add date range if provided
+    // Add date range if provided;
     if (startDate || endDate) {
       filter.educatedAt = {};
       if (startDate) filter.educatedAt.gte = new Date(startDate);
@@ -191,7 +202,7 @@ export async function GET(req: NextRequest) {
     // Get education records (mock implementation)
     const educationRecords = await educationRepository.findByPatientId(patientId);
     
-    // Apply additional filters
+    // Apply additional filters;
     let filteredRecords = educationRecords;
     if (medicationId) {
       filteredRecords = filteredRecords.filter(e => e.medicationId === medicationId);
@@ -213,10 +224,10 @@ export async function GET(req: NextRequest) {
     
     const total = filteredRecords.length;
 
-    // Apply pagination
+    // Apply pagination;
     const paginatedRecords = filteredRecords.slice((page - 1) * limit, page * limit);
 
-    // Audit logging
+    // Audit logging;
     await auditLog('MEDICATION_EDUCATION', {
       action: 'LIST',
       resourceType: 'MedicationEducation',
@@ -226,18 +237,18 @@ export async function GET(req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length
+        resultCount: paginatedRecords.length;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({ 
       educationRecords: paginatedRecords,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {

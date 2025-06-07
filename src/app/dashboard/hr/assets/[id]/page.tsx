@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +20,7 @@ import {
   CardDescription, 
   CardFooter, 
   CardHeader, 
-  CardTitle 
+  CardTitle;
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +32,7 @@ import {
   TableCell, 
   TableHead, 
   TableHeader, 
-  TableRow 
+  TableRow;
 } from '@/components/ui/table';
 import { 
   Dialog,
@@ -45,20 +57,20 @@ import {
   Wrench,
   Clock,
   DollarSign,
-  FileText
+  FileText;
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default function AssetDetail({ params }: { params: { id: string } }) {
+export default const AssetDetail = ({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [asset, setAsset] = useState(null);
+  const [asset, setAsset] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any | null>(null);
   const [activeTab, setActiveTab] = useState('details');
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  // Fetch asset data
+  // Fetch asset data;
   useEffect(() => {
     const fetchAsset = async () => {
       try {
@@ -89,12 +101,12 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
     fetchAsset();
   }, [params.id]);
 
-  // Handle edit navigation
+  // Handle edit navigation;
   const handleEdit = () => {
     router.push(`/dashboard/hr/assets/${params.id}/edit`);
   };
 
-  // Handle delete
+  // Handle delete;
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/hr/assets/${params.id}`, {
@@ -120,23 +132,23 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
     }
   };
 
-  // Handle maintenance record
+  // Handle maintenance record;
   const handleAddMaintenance = () => {
     router.push(`/dashboard/hr/assets/${params.id}/maintenance/new`);
   };
 
-  // Handle asset transfer
+  // Handle asset transfer;
   const handleTransfer = () => {
     router.push(`/dashboard/hr/assets/${params.id}/transfer`);
   };
 
-  // Handle asset assignment
+  // Handle asset assignment;
   const handleAssign = () => {
     router.push(`/dashboard/hr/assets/${params.id}/assign`);
   };
 
-  // Get status badge variant
-  const getStatusBadgeVariant = (status) => {
+  // Get status badge variant;
+  const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'AVAILABLE':
         return 'default';
@@ -153,8 +165,8 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
     }
   };
 
-  // Format currency
-  const formatCurrency = (amount) => {
+  // Format currency;
+  const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -162,25 +174,25 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
     }).format(amount);
   };
 
-  // Format date or show placeholder
-  const formatDateOrPlaceholder = (date) => {
+  // Format date or show placeholder;
+  const formatDateOrPlaceholder = (date: unknown) => {
     return date ? format(new Date(date), 'PPP') : '—';
   };
 
   if (loading) {
     return (
-      <div className="flex flex-col gap-4 p-4 md:p-8">
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+      <div className="flex flex-col gap-4 p-4 md:p-8">;
+        <div className="flex items-center gap-2">;
+          <Button;
+            variant="ghost";
+            size="sm";
             onClick={() => router.push('/dashboard/hr/assets')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Assets
+            <ArrowLeft className="h-4 w-4 mr-2" />;
+            Back to Assets;
           </Button>
         </div>
-        <div className="flex justify-center items-center h-64">
+        <div className="flex justify-center items-center h-64">;
           <p>Loading asset data...</p>
         </div>
       </div>
@@ -189,27 +201,27 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
 
   if (error) {
     return (
-      <div className="flex flex-col gap-4 p-4 md:p-8">
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+      <div className="flex flex-col gap-4 p-4 md:p-8">;
+        <div className="flex items-center gap-2">;
+          <Button;
+            variant="ghost";
+            size="sm";
             onClick={() => router.push('/dashboard/hr/assets')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Assets
+            <ArrowLeft className="h-4 w-4 mr-2" />;
+            Back to Assets;
           </Button>
         </div>
         <Card>
-          <CardContent className="flex flex-col items-center justify-center h-64">
-            <AlertTriangle className="h-10 w-10 text-destructive mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Error</h2>
-            <p className="text-muted-foreground">{error}</p>
-            <Button 
-              className="mt-4" 
+          <CardContent className="flex flex-col items-center justify-center h-64">;
+            <AlertTriangle className="h-10 w-10 text-destructive mb-4" />;
+            <h2 className="text-xl font-semibold mb-2">Error</h2>;
+            <p className="text-muted-foreground">{error}</p>;
+            <Button;
+              className="mt-4";
               onClick={() => router.push('/dashboard/hr/assets')}
             >
-              Return to Assets
+              Return to Assets;
             </Button>
           </CardContent>
         </Card>
@@ -222,39 +234,39 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">
-      <div className="flex items-center gap-2">
-        <Button 
-          variant="ghost" 
-          size="sm" 
+    <div className="flex flex-col gap-4 p-4 md:p-8">;
+      <div className="flex items-center gap-2">;
+        <Button;
+          variant="ghost";
+          size="sm";
           onClick={() => router.push('/dashboard/hr/assets')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Assets
+          <ArrowLeft className="h-4 w-4 mr-2" />;
+          Back to Assets;
         </Button>
       </div>
       
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
         <div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold">;
             {asset.name}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground">;
             {asset.serialNumber ? `Serial: ${asset.serialNumber}` : 'No serial number'}
           </p>
         </div>
         
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={handleEdit}>
-            <Edit className="h-4 w-4 mr-2" />
-            Edit
+        <div className="flex gap-2">;
+          <Button variant="outline" onClick={handleEdit}>;
+            <Edit className="h-4 w-4 mr-2" />;
+            Edit;
           </Button>
           
-          <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>
+          <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>;
             <DialogTrigger asChild>
-              <Button variant="destructive">
-                <Trash className="h-4 w-4 mr-2" />
-                Delete
+              <Button variant="destructive">;
+                <Trash className="h-4 w-4 mr-2" />;
+                Delete;
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -266,10 +278,10 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
               </DialogHeader>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setConfirmDelete(false)}>
-                  Cancel
+                  Cancel;
                 </Button>
-                <Button variant="destructive" onClick={handleDelete}>
-                  Delete
+                <Button variant="destructive" onClick={handleDelete}>;
+                  Delete;
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -277,70 +289,70 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
         </div>
       </div>
       
-      <Tabs defaultValue="details" value={activeTab} onValueChange={setActiveTab}>
+      <Tabs defaultValue="details" value={activeTab} onValueChange={setActiveTab}>;
         <TabsList>
-          <TabsTrigger value="details">Details</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
-          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>;
+          <TabsTrigger value="history">History</TabsTrigger>;
+          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>;
         </TabsList>
         
-        <TabsContent value="details" className="mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="md:col-span-1">
+        <TabsContent value="details" className="mt-4">;
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
+            <Card className="md:col-span-1">;
               <CardHeader>
                 <CardTitle>Asset Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-col items-center">
-                  <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">
-                    <Package className="h-12 w-12 text-muted-foreground" />
+              <CardContent className="space-y-4">;
+                <div className="flex flex-col items-center">;
+                  <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">;
+                    <Package className="h-12 w-12 text-muted-foreground" />;
                   </div>
                   
-                  <h3 className="text-xl font-semibold">
+                  <h3 className="text-xl font-semibold">;
                     {asset.name}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-2">
+                  <p className="text-sm text-muted-foreground mb-2">;
                     {asset.serialNumber || 'No serial number'}
                   </p>
                   
-                  <Badge variant={getStatusBadgeVariant(asset.status)} className="mb-2">
+                  <Badge variant={getStatusBadgeVariant(asset.status)} className="mb-2">;
                     {asset.status.replace('_', ' ')}
                   </Badge>
                 </div>
                 
                 <Separator />
                 
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Tag className="h-4 w-4 text-muted-foreground" />
+                <div className="space-y-2">;
+                  <div className="flex items-center gap-2">;
+                    <Tag className="h-4 w-4 text-muted-foreground" />;
                     <div>
-                      <p className="text-sm text-muted-foreground">Asset Type</p>
-                      <p className="font-medium">{asset.assetType}</p>
+                      <p className="text-sm text-muted-foreground">Asset Type</p>;
+                      <p className="font-medium">{asset.assetType}</p>;
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Building className="h-4 w-4 text-muted-foreground" />
+                  <div className="flex items-center gap-2">;
+                    <Building className="h-4 w-4 text-muted-foreground" />;
                     <div>
-                      <p className="text-sm text-muted-foreground">Department</p>
-                      <p className="font-medium">{asset.department?.name || 'Not Assigned'}</p>
+                      <p className="text-sm text-muted-foreground">Department</p>;
+                      <p className="font-medium">{asset.department?.name || 'Not Assigned'}</p>;
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <div className="flex items-center gap-2">;
+                    <MapPin className="h-4 w-4 text-muted-foreground" />;
                     <div>
-                      <p className="text-sm text-muted-foreground">Location</p>
-                      <p className="font-medium">{asset.location || 'Not Specified'}</p>
+                      <p className="text-sm text-muted-foreground">Location</p>;
+                      <p className="font-medium">{asset.location || 'Not Specified'}</p>;
                     </div>
                   </div>
                   
                   {asset.assignedTo && (
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex items-center gap-2">;
+                      <User className="h-4 w-4 text-muted-foreground" />;
                       <div>
-                        <p className="text-sm text-muted-foreground">Assigned To</p>
-                        <p className="font-medium">{asset.assignedTo.firstName} {asset.assignedTo.lastName}</p>
+                        <p className="text-sm text-muted-foreground">Assigned To</p>;
+                        <p className="font-medium">{asset.assignedTo.firstName} {asset.assignedTo.lastName}</p>;
                       </div>
                     </div>
                   )}
@@ -348,81 +360,81 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
                 
                 <Separator />
                 
-                <div className="flex flex-col gap-2">
-                  <Button onClick={handleAddMaintenance}>
-                    <Wrench className="h-4 w-4 mr-2" />
-                    Record Maintenance
+                <div className="flex flex-col gap-2">;
+                  <Button onClick={handleAddMaintenance}>;
+                    <Wrench className="h-4 w-4 mr-2" />;
+                    Record Maintenance;
                   </Button>
                   
-                  <Button variant="outline" onClick={handleTransfer}>
-                    <MapPin className="h-4 w-4 mr-2" />
-                    Transfer Asset
+                  <Button variant="outline" onClick={handleTransfer}>;
+                    <MapPin className="h-4 w-4 mr-2" />;
+                    Transfer Asset;
                   </Button>
                   
-                  <Button variant="outline" onClick={handleAssign}>
-                    <User className="h-4 w-4 mr-2" />
+                  <Button variant="outline" onClick={handleAssign}>;
+                    <User className="h-4 w-4 mr-2" />;
                     {asset.assignedTo ? 'Reassign Asset' : 'Assign Asset'}
                   </Button>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="md:col-span-2">
+            <Card className="md:col-span-2">;
               <CardHeader>
                 <CardTitle>Asset Details</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Manufacturer</p>
-                    <p className="font-medium">{asset.manufacturer || '—'}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Manufacturer</p>;
+                    <p className="font-medium">{asset.manufacturer || '—'}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Model</p>
-                    <p className="font-medium">{asset.model || '—'}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Model</p>;
+                    <p className="font-medium">{asset.model || '—'}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Purchase Date</p>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.purchaseDate)}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Purchase Date</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.purchaseDate)}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Purchase Price</p>
-                    <p className="font-medium">{formatCurrency(asset.purchasePrice)}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Purchase Price</p>;
+                    <p className="font-medium">{formatCurrency(asset.purchasePrice)}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Warranty Expiry</p>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.warrantyExpiryDate)}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Warranty Expiry</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.warrantyExpiryDate)}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Last Maintenance</p>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.lastMaintenanceDate)}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Last Maintenance</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.lastMaintenanceDate)}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Next Maintenance</p>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.nextMaintenanceDate)}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Next Maintenance</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.nextMaintenanceDate)}</p>;
                   </div>
                   
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Created On</p>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.createdAt)}</p>
+                  <div className="space-y-2">;
+                    <p className="text-sm text-muted-foreground">Created On</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.createdAt)}</p>;
                   </div>
                 </div>
                 
                 {asset.tags && asset.tags.length > 0 && (
                   <>
-                    <Separator className="my-6" />
+                    <Separator className="my-6" />;
                     
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">Tags</p>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="space-y-2">;
+                      <p className="text-sm text-muted-foreground">Tags</p>;
+                      <div className="flex flex-wrap gap-2">;
                         {asset.tags.map((tag, index) => (
-                          <Badge key={index} variant="outline">
+                          <Badge key={index} variant="outline">;
                             {tag}
                           </Badge>
                         ))}
@@ -433,12 +445,12 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
                 
                 {asset.notes && (
                   <>
-                    <Separator className="my-6" />
+                    <Separator className="my-6" />;
                     
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">Notes</p>
-                      <div className="p-4 bg-muted rounded-md">
-                        <p className="whitespace-pre-line">{asset.notes}</p>
+                    <div className="space-y-2">;
+                      <p className="text-sm text-muted-foreground">Notes</p>;
+                      <div className="p-4 bg-muted rounded-md">;
+                        <p className="whitespace-pre-line">{asset.notes}</p>;
                       </div>
                     </div>
                   </>
@@ -448,21 +460,21 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
           </div>
         </TabsContent>
         
-        <TabsContent value="history" className="mt-4">
+        <TabsContent value="history" className="mt-4">;
           <Card>
             <CardHeader>
               <CardTitle>Asset History</CardTitle>
               <CardDescription>
-                Track changes and events related to this asset
+                Track changes and events related to this asset;
               </CardDescription>
             </CardHeader>
             <CardContent>
               {!asset.assetHistory || asset.assetHistory.length === 0 ? (
-                <div className="text-center py-4">
+                <div className="text-center py-4">;
                   <p>No history records found for this asset.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto">;
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -474,19 +486,20 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
                     </TableHeader>
                     <TableBody>
                       {asset.assetHistory.map((history) => (
-                        <TableRow key={history.id}>
+                        <TableRow key={history.id}>;
                           <TableCell>
                             {format(new Date(history.date), 'PPP p')}
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline">
+                            <Badge variant="outline">;
                               {history.type.replace('_', ' ')}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             {history.type === 'TRANSFER' && (
                               <span>
-                                Transferred from {history.details.previousLocation || 'Unknown'} to {history.details.newLocation}
+                                Transferred from {history.details.previousLocation ||
+                                  'Unknown'} to {history.details.newLocation}
                               </span>
                             )}
                             {history.type === 'ASSIGNMENT' && (
@@ -496,7 +509,7 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
                             )}
                             {history.type === 'UNASSIGNMENT' && (
                               <span>
-                                Unassigned from employee
+                                Unassigned from employee;
                               </span>
                             )}
                             {history.type === 'MAINTENANCE' && (
@@ -532,29 +545,29 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
           </Card>
         </TabsContent>
         
-        <TabsContent value="maintenance" className="mt-4">
+        <TabsContent value="maintenance" className="mt-4">;
           <Card>
             <CardHeader>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center">;
                 <div>
                   <CardTitle>Maintenance Records</CardTitle>
                   <CardDescription>
-                    View and manage maintenance history
+                    View and manage maintenance history;
                   </CardDescription>
                 </div>
-                <Button onClick={handleAddMaintenance}>
-                  <Wrench className="h-4 w-4 mr-2" />
-                  Record Maintenance
+                <Button onClick={handleAddMaintenance}>;
+                  <Wrench className="h-4 w-4 mr-2" />;
+                  Record Maintenance;
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
               {!asset.maintenanceRecords || asset.maintenanceRecords.length === 0 ? (
-                <div className="text-center py-4">
+                <div className="text-center py-4">;
                   <p>No maintenance records found for this asset.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto">;
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -568,12 +581,12 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
                     </TableHeader>
                     <TableBody>
                       {asset.maintenanceRecords.map((record) => (
-                        <TableRow key={record.id}>
+                        <TableRow key={record.id}>;
                           <TableCell>
                             {format(new Date(record.date), 'PPP')}
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline">
+                            <Badge variant="outline">;
                               {record.maintenanceType}
                             </Badge>
                           </TableCell>
@@ -587,12 +600,12 @@ export default function AssetDetail({ params }: { params: { id: string } }) {
                             {formatDateOrPlaceholder(record.nextMaintenanceDate)}
                           </TableCell>
                           <TableCell>
-                            <Button 
-                              variant="ghost" 
-                              size="sm"
+                            <Button;
+                              variant="ghost";
+                              size="sm";
                               onClick={() => router.push(`/dashboard/hr/assets/${asset.id}/maintenance/${record.id}`)}
                             >
-                              View
+                              View;
                             </Button>
                           </TableCell>
                         </TableRow>

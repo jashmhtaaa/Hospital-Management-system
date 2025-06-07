@@ -1,15 +1,26 @@
-import { cn } from "@/lib/utils"
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
 
-function Skeleton({
+import { cn } from "@/lib/utils";
+
+const Skeleton = ({
   className,
-  ...props
+  ...props;
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
+    <div;
       className={cn("animate-pulse rounded-md bg-primary/10", className)}
       {...props}
     />
-  )
+  );
 }
 
 export { Skeleton }

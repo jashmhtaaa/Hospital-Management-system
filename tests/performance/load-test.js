@@ -52,7 +52,7 @@ const TEST_CREDENTIALS = {
 let authToken = '';
 
 export function setup() {
-  console.log('Setting up performance test environment...');
+  // Debug logging removed
   
   // Authenticate and get token
   const loginResponse = http.post(`${BASE_URL}/api/auth/login`, 
@@ -65,9 +65,9 @@ export function setup() {
   if (loginResponse.status === 200) {
     const body = JSON.parse(loginResponse.body);
     authToken = body.tokens?.accessToken || '';
-    console.log('Authentication successful');
+    // Debug logging removed
   } else {
-    console.error('Authentication failed:', loginResponse.status);
+    // Debug logging removed
   }
   
   return { authToken };
@@ -306,13 +306,13 @@ function recordMetrics(response, operation) {
   errorRate.add(isError, { operation });
   
   if (isError) {
-    console.error(`Error in ${operation}: ${response.status} - ${response.body}`);
+    // Debug logging removed
   }
 }
 
 export function teardown(data) {
-  console.log('Performance test completed');
-  console.log('Check the results for performance metrics and thresholds');
+  // Debug logging removed
+  // Debug logging removed
 }
 
 export function handleSummary(data) {
@@ -342,11 +342,13 @@ function generateHTMLReport(data) {
         <h1>Hospital Management System - Performance Test Results</h1>
         <h2>Test Summary</h2>
         <p><strong>Test Duration:</strong> ${data.state?.testRunDurationMs || 0}ms</p>
-        <p><strong>Virtual Users:</strong> ${data.options?.stages?.reduce((max, stage) => Math.max(max, stage.target), 0) || 0}</p>
+        <p><strong>Virtual Users:</strong> ${data.options?.stages?.reduce((max, stage) => Math.max(max, stage.target), 0) ||
+          0}</p>
         
         <h2>Key Metrics</h2>
         <div class="metric ${data.metrics?.http_req_duration?.values?.['p(95)'] < 2000 ? 'pass' : 'fail'}">
-            <strong>95th Percentile Response Time:</strong> ${Math.round(data.metrics?.http_req_duration?.values?.['p(95)'] || 0)}ms
+            <strong>95th Percentile Response Time:</strong> ${Math.round(data.metrics?.http_req_duration?.values?.['p(95)'] ||
+              0)}ms
             (Threshold: < 2000ms)
         </div>
         

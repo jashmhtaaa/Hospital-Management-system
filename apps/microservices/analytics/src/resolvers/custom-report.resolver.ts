@@ -1,5 +1,16 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Custom Report GraphQL Resolver
+ * Custom Report GraphQL Resolver;
  */
 
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
@@ -9,22 +20,22 @@ import { GqlRolesGuard } from '@/lib/security/guards/gql-roles.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
 import { CustomReportService } from '../services/custom-report.service';
 
-// GraphQL models would be defined here
+// GraphQL models would be defined here;
 // import { ReportTemplate, ReportData, RegulatoryReport, NaturalLanguageQuery } from '../models';
 
-@Resolver()
-@UseGuards(GqlAuthGuard, GqlRolesGuard)
+@Resolver();
+@UseGuards(GqlAuthGuard, GqlRolesGuard);
 export class CustomReportResolver {
   constructor(private readonly customReportService: CustomReportService) {}
 
-  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
+  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types;
   
-  @Query()
+  @Query();
   async reportTemplates(
     @Args('category') category?: string,
     @Args('type') type?: string,
     @Args('status') status?: string,
-    @Args('createdBy') createdBy?: string
+    @Args('createdBy') createdBy?: string;
   ) {
     return this.customReportService.getAllReportTemplates({
       category: category as any,
@@ -34,65 +45,65 @@ export class CustomReportResolver {
     });
   }
 
-  @Query()
+  @Query();
   async reportTemplate(@Args('id') id: string) {
     return this.customReportService.getReportTemplateById(id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST')
+  @Mutation();
+  @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST');
   async createReportTemplate(
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.createReportTemplate(input, context.req.user.id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST')
+  @Mutation();
+  @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST');
   async updateReportTemplate(
     @Args('id') id: string,
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.updateReportTemplate(id, input, context.req.user.id);
   }
 
-  @Query()
+  @Query();
   async generateReport(
     @Args('id') id: string,
-    @Args('options') options: any,
-    @Context() context: any
+    @Args('options') options: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.generateReportData(id, options, context.req.user.id);
   }
 
-  @Mutation()
+  @Mutation();
   async exportReport(
     @Args('id') id: string,
-    @Args('options') options: any,
-    @Context() context: any
+    @Args('options') options: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.exportReport(id, options, context.req.user.id);
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST')
+  @Mutation();
+  @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST');
   async scheduleReport(
     @Args('id') id: string,
-    @Args('schedule') schedule: any,
-    @Context() context: any
+    @Args('schedule') schedule: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.scheduleReport(id, schedule, context.req.user.id);
   }
 
-  @Query()
+  @Query();
   async regulatoryReports(
     @Args('reportType') reportType?: string,
     @Args('status') status?: string,
     @Args('dueStartDate') dueStartDate?: string,
     @Args('dueEndDate') dueEndDate?: string,
-    @Args('assignedTo') assignedTo?: string
+    @Args('assignedTo') assignedTo?: string;
   ) {
     const dueDate = dueStartDate && dueEndDate ? {
       start: new Date(dueStartDate),
@@ -107,21 +118,21 @@ export class CustomReportResolver {
     });
   }
 
-  @Mutation()
-  @Roles('ADMIN', 'COMPLIANCE_OFFICER', 'QUALITY_MANAGER')
+  @Mutation();
+  @Roles('ADMIN', 'COMPLIANCE_OFFICER', 'QUALITY_MANAGER');
   async createRegulatoryReport(
-    @Args('input') input: any,
-    @Context() context: any
+    @Args('input') input: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.createRegulatoryReport(input, context.req.user.id);
   }
 
-  @Query()
+  @Query();
   async naturalLanguageQuery(
     @Args('query') query: string,
     @Args('dataSource') dataSource?: string,
-    @Args('context') queryContext?: any,
-    @Context() context: any
+    @Args('context') queryContext?: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.naturalLanguageQuery(
       query,
@@ -129,15 +140,15 @@ export class CustomReportResolver {
         dataSource,
         context: queryContext,
       },
-      context.req.user.id
+      context.req.user.id;
     );
   }
 
-  @Mutation()
+  @Mutation();
   async provideQueryFeedback(
     @Args('id') id: string,
-    @Args('feedback') feedback: any,
-    @Context() context: any
+    @Args('feedback') feedback: unknown,
+    @Context() context: unknown;
   ) {
     return this.customReportService.provideQueryFeedback(id, feedback, context.req.user.id);
   }

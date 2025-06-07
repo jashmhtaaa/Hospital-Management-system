@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Batch Interaction Check API Routes
+ * Batch Interaction Check API Routes;
  * 
- * This file implements the API endpoints for batch checking interactions
+ * This file implements the API endpoints for batch checking interactions;
  * across multiple medications, allergies, conditions, and lab results.
  */
 
@@ -11,7 +22,7 @@ import { validateBatchInteractionCheckRequest } from '../../../../../lib/validat
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-import { getPatientById, getPatientAllergies, getPatientConditions } from '../../../../../lib/services/patient/patient.service';
+import { getPatientAllergies, getPatientConditions } from '../../../../../lib/services/patient/patient.service';
 import { getPatientLabResults } from '../../../../../lib/services/laboratory/laboratory.service';
 import { PharmacyDomain } from '../../../models/domain-models';
 
@@ -22,22 +33,22 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-// Initialize services
+// Initialize services;
 const interactionService = new DrugInteractionService(
   medicationRepository,
-  null // No need for prescription repository in this endpoint
+  null // No need for prescription repository in this endpoint;
 );
 
 /**
- * POST /api/pharmacy/interactions/batch-check
- * Perform comprehensive batch interaction checking
+ * POST /api/pharmacy/interactions/batch-check;
+ * Perform comprehensive batch interaction checking;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateBatchInteractionCheckRequest(data);
     if (!validationResult.success) {
@@ -47,34 +58,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Get patient data if patientId is provided
+    // Get patient data if patientId is provided;
     let allergies = data.allergies || [];
     let conditions = data.conditions || [];
     let labResults = data.labResults || [];
     
     if (data.patientId) {
-      // Fetch patient allergies if not provided
+      // Fetch patient allergies if not provided;
       if (allergies.length === 0) {
         const patientAllergies = await getPatientAllergies(data.patientId);
         allergies = patientAllergies.map(a => a.allergen);
       }
       
-      // Fetch patient conditions if not provided
+      // Fetch patient conditions if not provided;
       if (conditions.length === 0) {
         const patientConditions = await getPatientConditions(data.patientId);
         conditions = patientConditions.map(c => c.code);
       }
       
-      // Fetch patient lab results if not provided
+      // Fetch patient lab results if not provided;
       if (labResults.length === 0) {
         const patientLabResults = await getPatientLabResults(data.patientId);
         labResults = patientLabResults.map(lr => ({
@@ -82,21 +93,21 @@ export async function POST(req: NextRequest) {
           value: lr.value,
           unit: lr.unit,
           referenceRange: lr.referenceRange,
-          abnormalFlag: lr.abnormalFlag
+          abnormalFlag: lr.abnormalFlag;
         }));
       }
     }
 
-    // Perform batch interaction checks
+    // Perform batch interaction checks;
     const results = await interactionService.batchCheckInteractions({
       medicationIds: data.medicationIds,
       allergies,
       conditions,
       labResults,
-      includeMonographs: data.includeMonographs || false
+      includeMonographs: data.includeMonographs || false;
     });
 
-    // Audit logging
+    // Audit logging;
     await auditLog('DRUG_INTERACTION', {
       action: 'BATCH_CHECK',
       resourceType: 'DrugInteraction',
@@ -107,11 +118,11 @@ export async function POST(req: NextRequest) {
         allergyCount: allergies.length,
         conditionCount: conditions.length,
         labResultCount: labResults.length,
-        interactionCount: results.totalInteractionCount
+        interactionCount: results.totalInteractionCount;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({ 
       results,
       metadata: {
@@ -120,7 +131,7 @@ export async function POST(req: NextRequest) {
         conditionCount: conditions.length,
         labResultCount: labResults.length,
         totalInteractionCount: results.totalInteractionCount,
-        criticalInteractionCount: results.criticalInteractionCount
+        criticalInteractionCount: results.criticalInteractionCount;
       }
     }, { status: 200 });
   } catch (error) {

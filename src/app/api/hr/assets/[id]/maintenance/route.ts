@@ -1,33 +1,44 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
 
-// Schema for maintenance record
+// Schema for maintenance record;
 const maintenanceSchema = z.object({
   maintenanceType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'CALIBRATION', 'INSPECTION'], {
-    errorMap: () => ({ message: "Invalid maintenance type" })
+    errorMap: () => ({ message: "Invalid maintenance type" });
   }),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   performedBy: z.string().optional(),
   cost: z.number().optional(),
   description: z.string().min(1, "Description is required"),
   nextMaintenanceDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
 });
 
-// POST handler for recording maintenance
-export async function POST(
+// POST handler for recording maintenance;
+export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Validate request data
+    // Validate request data;
     const validationResult = maintenanceSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -38,7 +49,7 @@ export async function POST(
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects
+    // Convert date strings to Date objects;
     const maintenanceData = {
       assetId: params.id,
       maintenanceType: data.maintenanceType,
@@ -49,12 +60,12 @@ export async function POST(
       nextMaintenanceDate: data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined,
     };
     
-    // Record maintenance
+    // Record maintenance;
     const maintenanceRecord = await assetService.recordMaintenance(maintenanceData);
     
     return NextResponse.json(maintenanceRecord);
   } catch (error) {
-    console.error("Error recording maintenance:", error);
+
     return NextResponse.json(
       { error: "Failed to record maintenance", details: error.message },
       { status: 500 }
@@ -62,8 +73,8 @@ export async function POST(
   }
 }
 
-// GET handler for listing maintenance records
-export async function GET(
+// GET handler for listing maintenance records;
+export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -79,7 +90,7 @@ export async function GET(
     
     return NextResponse.json(asset.maintenanceRecords || []);
   } catch (error) {
-    console.error("Error fetching maintenance records:", error);
+
     return NextResponse.json(
       { error: "Failed to fetch maintenance records", details: error.message },
       { status: 500 }

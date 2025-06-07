@@ -1,7 +1,7 @@
 import { check, group, sleep } from 'k6';
 import http from 'k6/http';
 import { Trend, Rate, Counter } from 'k6/metrics';
-import { randomItem, randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
+import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 import encoding from 'k6/encoding';
 
@@ -106,7 +106,7 @@ function getAuthToken() {
   });
   
   if (response.status !== 200) {
-    console.error(`Authentication failed: ${response.status} ${response.body}`);
+    // Debug logging removed
     return null;
   }
   
@@ -150,7 +150,7 @@ export default function(data) {
   
   // Make sure we have a valid token
   if (!token) {
-    console.error('No valid token available, skipping requests');
+    // Debug logging removed
     failRate.add(1);
     return;
   }

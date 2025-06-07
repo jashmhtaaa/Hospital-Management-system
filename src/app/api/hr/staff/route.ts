@@ -1,8 +1,19 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { employeeService } from '@/lib/hr/employee-service';
 import { z } from 'zod';
 
-// Schema for employee creation
+// Schema for employee creation;
 const createEmployeeSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
@@ -27,7 +38,7 @@ const createEmployeeSchema = z.object({
       startDate: z.string().transform(val => new Date(val)),
       endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
       attachment: z.string().optional(),
-    })
+    });
   ).optional(),
   positions: z.array(
     z.object({
@@ -35,11 +46,11 @@ const createEmployeeSchema = z.object({
       isPrimary: z.boolean(),
       startDate: z.string().transform(val => new Date(val)),
       endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
-    })
+    });
   ).optional(),
 });
 
-// Schema for employee update
+// Schema for employee update;
 const updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
@@ -56,8 +67,8 @@ const updateEmployeeSchema = z.object({
   terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
 });
 
-// GET /api/hr/staff
-export async function GET(request: NextRequest) {
+// GET /api/hr/staff;
+export async const GET = (request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     
@@ -66,7 +77,7 @@ export async function GET(request: NextRequest) {
     const departmentId = searchParams.get('departmentId') || undefined;
     const positionId = searchParams.get('positionId') || undefined;
     const search = searchParams.get('search') || undefined;
-    const active = searchParams.get('active') !== 'false'; // Default to true
+    const active = searchParams.get('active') !== 'false'; // Default to true;
     
     const result = await employeeService.listEmployees({
       skip,
@@ -78,8 +89,8 @@ export async function GET(request: NextRequest) {
     });
     
     return NextResponse.json(result);
-  } catch (error: any) {
-    console.error('Error listing employees:', error);
+  } catch (error: unknown) {
+
     return NextResponse.json(
       { error: 'Failed to list employees', details: error.message },
       { status: 500 }
@@ -87,22 +98,21 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/hr/staff
-export async function POST(request: NextRequest) {
+// POST /api/hr/staff;
+export async const POST = (request: NextRequest) {
   try {
     const body = await request.json();
     
-    // Validate request body
+    // Validate request body;
     const validatedData = createEmployeeSchema.parse(body);
     
-    // Create employee
+    // Create employee;
     const employee = await employeeService.createEmployee(validatedData);
     
     return NextResponse.json(employee, { status: 201 });
-  } catch (error: any) {
-    console.error('Error creating employee:', error);
-    
-    // Handle validation errors
+  } catch (error: unknown) {
+
+    // Handle validation errors;
     if (error.name === 'ZodError') {
       return NextResponse.json(
         { error: 'Validation error', details: error.errors },

@@ -1,5 +1,16 @@
-import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
-import { Patient, InsurancePolicy, EligibilityStatus } from "../types"; // Adjust path as per actual structure
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used;
+import { Patient, EligibilityStatus } from "../types.ts"; // Adjust path as per actual structure;
 
 const prisma = new PrismaClient();
 
@@ -18,9 +29,9 @@ export class EligibilityCheckService {
     async checkEligibility(
         patientId: string,
         policyId: string,
-        serviceId?: string
+        serviceId?: string;
     ): Promise<EligibilityStatus> {
-        // In a real-world scenario, this service would likely interact with an external
+        // In a real-world scenario, this service would likely interact with an external;
         // insurance provider's API or a TPA system to verify eligibility.
         // For this mock implementation, we'll simulate this process.
 
@@ -38,9 +49,9 @@ export class EligibilityCheckService {
         //     throw new Error(`Policy ${policyId} does not belong to patient ${patientId}.`);
         // }
 
-        // Mock data for demonstration
-        const mockPatient: any = { id: patientId, name: "Jane Doe" };
-        const mockPolicy: any = {
+        // Mock data for demonstration;
+        const mockPatient: unknown = { id: patientId, name: "Jane Doe" };
+        const mockPolicy: unknown = {
             id: policyId,
             patientId: patientId,
             provider: "HealthFirst Insurance",
@@ -48,12 +59,12 @@ export class EligibilityCheckService {
             isActive: true,
             coverageStartDate: new Date("2023-01-01"),
             coverageEndDate: new Date("2025-12-31"),
-            // Example: specific services covered or general coverage rules
+            // Example: specific services covered or general coverage rules;
             coveredServices: ["SVC001", "SVC003"],
             coPayPercentage: 20,
         };
 
-        // 2. Basic checks
+        // 2. Basic checks;
         if (!mockPolicy.isActive) {
             return {
                 eligible: false,
@@ -77,7 +88,7 @@ export class EligibilityCheckService {
         // 3. Service-specific check (if serviceId is provided)
         if (serviceId) {
             if (mockPolicy.coveredServices && mockPolicy.coveredServices.includes(serviceId)) {
-                // Simulate a successful eligibility check for a specific service
+                // Simulate a successful eligibility check for a specific service;
                 return {
                     eligible: true,
                     reason: "Eligible for the specified service under the current policy.",
@@ -100,14 +111,14 @@ export class EligibilityCheckService {
         }
 
         // 4. General eligibility check (if no serviceId is provided)
-        // For this mock, we'll assume general eligibility if active and within date range
+        // For this mock, we'll assume general eligibility if active and within date range;
         return {
             eligible: true,
             reason: "Patient is generally eligible under the current active policy.",
             details: {
                 policyProvider: mockPolicy.provider,
                 policyNumber: mockPolicy.policyNumber,
-                coPayPercentage: mockPolicy.coPayPercentage, // General co-pay if applicable
+                coPayPercentage: mockPolicy.coPayPercentage, // General co-pay if applicable;
             },
         };
     }
@@ -116,6 +127,6 @@ export class EligibilityCheckService {
 // Example Usage (conceptual)
 // const eligibilityService = new EligibilityCheckService();
 // eligibilityService.checkEligibility('patient123', 'policyABC', 'serviceXYZ')
-//  .then(status => console.log(status))
-//  .catch(error => console.error(error));
+//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//  .catch(error => // Debug logging removed);
 

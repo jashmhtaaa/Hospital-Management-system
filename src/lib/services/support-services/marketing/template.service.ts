@@ -1,23 +1,34 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { MarketingTemplate } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 
 /**
- * Service for managing marketing templates
+ * Service for managing marketing templates;
  */
 export class TemplateService {
   private auditLogger = new AuditLogger('marketing-template');
 
   /**
-   * Create a new marketing template
+   * Create a new marketing template;
    */
   async createTemplate(data: Omit<MarketingTemplate, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<MarketingTemplate> {
     try {
-      // Validate template data
+      // Validate template data;
       this.validateTemplateData(data);
       
-      // Create template in database
+      // Create template in database;
       const template = await prisma.marketingTemplate.create({
         data: {
           name: data.name,
@@ -27,18 +38,18 @@ export class TemplateService {
           variables: data.variables,
           previewImage: data.previewImage,
           isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId
+          createdById: userId;
         }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'template.create',
         resourceId: template.id,
         userId,
         details: { 
           templateName: template.name,
-          templateType: template.type
+          templateType: template.type;
         }
       });
       
@@ -52,7 +63,7 @@ export class TemplateService {
   }
 
   /**
-   * Get a template by ID
+   * Get a template by ID;
    */
   async getTemplateById(id: string): Promise<MarketingTemplate> {
     try {
@@ -62,7 +73,7 @@ export class TemplateService {
           createdByUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           }
         }
@@ -82,7 +93,7 @@ export class TemplateService {
   }
 
   /**
-   * Get all templates with optional filtering
+   * Get all templates with optional filtering;
    */
   async getTemplates(filters: {
     type?: string;
@@ -97,11 +108,11 @@ export class TemplateService {
         isActive,
         search,
         page = 1, 
-        limit = 10 
+        limit = 10;
       } = filters;
       
-      // Build where clause based on filters
-      const where: any = {};
+      // Build where clause based on filters;
+      const where: unknown = {};
       
       if (type) {
         where.type = type;
@@ -118,24 +129,24 @@ export class TemplateService {
         ];
       }
       
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.marketingTemplate.count({ where });
       
-      // Get templates with pagination
+      // Get templates with pagination;
       const templates = await prisma.marketingTemplate.findMany({
         where,
         include: {
           createdByUser: {
             select: {
               id: true,
-              name: true
+              name: true;
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
       
@@ -145,7 +156,7 @@ export class TemplateService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -154,11 +165,11 @@ export class TemplateService {
   }
 
   /**
-   * Update a template
+   * Update a template;
    */
   async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {
     try {
-      // Check if template exists
+      // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
       });
@@ -167,20 +178,20 @@ export class TemplateService {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
       
-      // Update template
+      // Update template;
       const updatedTemplate = await prisma.marketingTemplate.update({
         where: { id },
-        data
+        data;
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'template.update',
         resourceId: id,
         userId,
         details: { 
           templateName: updatedTemplate.name,
-          updatedFields: Object.keys(data)
+          updatedFields: Object.keys(data);
         }
       });
       
@@ -194,11 +205,11 @@ export class TemplateService {
   }
 
   /**
-   * Delete a template
+   * Delete a template;
    */
   async deleteTemplate(id: string, userId: string): Promise<void> {
     try {
-      // Check if template exists
+      // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
       });
@@ -207,19 +218,19 @@ export class TemplateService {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
       
-      // Delete template
+      // Delete template;
       await prisma.marketingTemplate.delete({
         where: { id }
       });
       
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: 'template.delete',
         resourceId: id,
         userId,
         details: { 
           templateName: existingTemplate.name,
-          templateType: existingTemplate.type
+          templateType: existingTemplate.type;
         }
       });
     } catch (error) {
@@ -231,17 +242,17 @@ export class TemplateService {
   }
 
   /**
-   * Render a template with variables
+   * Render a template with variables;
    */
   async renderTemplate(id: string, variables: Record<string, any>): Promise<string> {
     try {
-      // Get template
+      // Get template;
       const template = await this.getTemplateById(id);
       
-      // Render template content with variables
+      // Render template content with variables;
       let renderedContent = template.content;
       
-      // Simple variable replacement
+      // Simple variable replacement;
       if (variables && typeof variables === 'object') {
         Object.entries(variables).forEach(([key, value]) => {
           const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
@@ -259,27 +270,27 @@ export class TemplateService {
   }
 
   /**
-   * Validate template data
+   * Validate template data;
    */
   private validateTemplateData(data: Partial<MarketingTemplate>): void {
     const errors: string[] = [];
     
-    // Name is required
+    // Name is required;
     if (!data.name) {
       errors.push('Template name is required');
     }
     
-    // Type is required
+    // Type is required;
     if (!data.type) {
       errors.push('Template type is required');
     }
     
-    // Content is required
+    // Content is required;
     if (!data.content) {
       errors.push('Template content is required');
     }
     
-    // Validate variables if provided
+    // Validate variables if provided;
     if (data.variables && typeof data.variables !== 'object') {
       errors.push('Template variables must be a valid object');
     }

@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../../services/clinical-documentation.service';
@@ -5,25 +16,25 @@ import { authOptions } from '../../../../../lib/auth';
 import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../../lib/core/errors';
 
 /**
- * POST /api/clinical-documentation/[id]/amend
+ * POST /api/clinical-documentation/[id]/amend;
  * 
- * Create an amendment for a clinical document
+ * Create an amendment for a clinical document;
  */
-export async function POST(
+export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Get session
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     
-    // Validate required fields
+    // Validate required fields;
     if (!body.amendmentType) {
       return NextResponse.json({ error: 'Amendment type is required' }, { status: 400 });
     }
@@ -36,7 +47,7 @@ export async function POST(
       return NextResponse.json({ error: 'Content is required' }, { status: 400 });
     }
     
-    // Create amendment
+    // Create amendment;
     const amendment = await clinicalDocumentationService.createAmendment(
       params.id,
       {
@@ -45,13 +56,12 @@ export async function POST(
         content: body.content,
         status: body.status,
       },
-      session.user.id
+      session.user.id;
     );
     
     return NextResponse.json(amendment, { status: 201 });
   } catch (error) {
-    console.error('Error creating document amendment:', error);
-    
+
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }

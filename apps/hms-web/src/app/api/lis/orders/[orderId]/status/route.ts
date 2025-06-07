@@ -1,10 +1,10 @@
-// app/api/lis/orders/[orderId]/status/route.ts
+// app/api/lis/orders/[orderId]/status/route.ts;
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabOrderStatus } from "@prisma/client";
 import { z } from "zod";
-import { getCurrentUser, hasPermission } from "@/lib/authUtils"; // Updated import
-import { auditLogService } from "@/lib/auditLogUtils"; // Updated import
-import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils"; // Updated import
+import { getCurrentUser, hasPermission } from "@/lib/authUtils"; // Updated import;
+import { auditLogService } from "@/lib/auditLogUtils"; // Updated import;
+import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils"; // Updated import;
 
 const prisma = new PrismaClient();
 
@@ -28,7 +28,7 @@ interface RouteContext {
   };
 }
 
-export async function PUT(request: NextRequest, { params }: RouteContext) {
+export async const PUT = (request: NextRequest, { params }: RouteContext) {
   const start = Date.now();
   let userId: string | undefined;
   const { orderId } = params;
@@ -52,11 +52,11 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     }
 
     const body: unknown = await request.json();
-    console.log(`[LIS_ORDER_STATUS_PUT] User ${userId} attempting to update status for order ${orderId} with body:`, body);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = updateLabOrderStatusSchema.safeParse(body);
     if (!validation.success) {
-      console.warn(`[LIS_ORDER_STATUS_PUT] Validation failed for order ${orderId}:`, validation.error.flatten());
+      // Debug logging removed);
       await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_VALIDATION_FAILED", { orderId, path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -95,19 +95,19 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
       },
     });
 
-    console.log(`[LIS_ORDER_STATUS_PUT] User ${userId} successfully updated status for order ${orderId} to ${status}.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_SUCCESS", { 
       orderId, 
       oldStatus: existingOrder.status, 
       newStatus: status, 
-      updatedData: updatedLabOrder 
+      updatedData: updatedLabOrder;
     });
     const duration = Date.now() - start;
-    console.log(`[LIS_ORDER_STATUS_PUT] Request processed in ${duration}ms.`);
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(updatedLabOrder);
 
-  } catch (error: any) {
-    console.error("[LIS_ORDER_STATUS_PUT_ERROR]", { userId, orderId, errorMessage: error.message, stack: error.stack, path: request.nextUrl.pathname });
+  } catch (error: unknown) {
+
     let errStatus = 500;
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
@@ -122,7 +122,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     }
     await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_FAILED", { orderId, path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
     const duration = Date.now() - start;
-    console.error(`[LIS_ORDER_STATUS_PUT] Request failed after ${duration}ms.`);
+
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }

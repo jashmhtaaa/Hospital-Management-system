@@ -1,6 +1,6 @@
 // API Test for IPD Beds Route
 const testIPDBeds = async () => {
-  console.log("Testing /api/ipd/beds endpoint...");
+  // Debug logging removed
 
   try {
     // Test GET request to fetch all beds
@@ -13,23 +13,23 @@ const testIPDBeds = async () => {
     }
 
     const data = await response.json();
-    console.log("Beds data structure:", Object.keys(data));
-    console.log(`Total beds: ${data.beds?.length || 0}`);
+    // Debug logging removed);
+    // Debug logging removed
 
     // Test filtering by status
     const availableResponse = await fetch("/api/ipd/beds?status=available");
     const availableData = await availableResponse.json();
-    console.log(`Available beds: ${availableData.beds?.length || 0}`);
+    // Debug logging removed
 
     // Test filtering by ward
     const wardResponse = await fetch("/api/ipd/beds?ward=General");
     const wardData = await wardResponse.json();
-    console.log(`General ward beds: ${wardData.beds?.length || 0}`);
+    // Debug logging removed
 
     // Validate bed data structure
     if (data.beds && data.beds.length > 0) {
       const sampleBed = data.beds[0];
-      console.log("Sample bed data:", sampleBed);
+      // Debug logging removed
 
       // Check required fields
       const requiredFields = [
@@ -44,25 +44,24 @@ const testIPDBeds = async () => {
       );
 
       if (missingFields.length > 0) {
-        console.error(
-          `Missing required fields in bed data: ${missingFields.join(", ")}`
+        // Debug logging removed}`
         );
       } else {
-        console.log("All required bed fields present ✓");
+        // Debug logging removed
       }
     }
 
-    console.log("Beds API test completed successfully ✓");
+    // Debug logging removed
     return true;
   } catch (error) {
-    console.error("Beds API test failed:", error);
+    // Debug logging removed
     return false;
   }
 };
 
 // API Test for IPD Admissions Route
 const testIPDAdmissions = async () => {
-  console.log("Testing /api/ipd/admissions endpoint...");
+  // Debug logging removed
 
   try {
     // Test GET request to fetch all admissions
@@ -75,18 +74,18 @@ const testIPDAdmissions = async () => {
     }
 
     const data = await response.json();
-    console.log("Admissions data structure:", Object.keys(data));
-    console.log(`Total admissions: ${data.admissions?.length || 0}`);
+    // Debug logging removed);
+    // Debug logging removed
 
     // Test filtering by status
     const activeResponse = await fetch("/api/ipd/admissions?status=active");
     const activeData = await activeResponse.json();
-    console.log(`Active admissions: ${activeData.admissions?.length || 0}`);
+    // Debug logging removed
 
     // Validate admission data structure
     if (data.admissions && data.admissions.length > 0) {
       const sampleAdmission = data.admissions[0];
-      console.log("Sample admission data:", sampleAdmission);
+      // Debug logging removed
 
       // Check required fields
       const requiredFields = [
@@ -102,11 +101,10 @@ const testIPDAdmissions = async () => {
       );
 
       if (missingFields.length > 0) {
-        console.error(
-          `Missing required fields in admission data: ${missingFields.join(", ")}`
+        // Debug logging removed}`
         );
       } else {
-        console.log("All required admission fields present ✓");
+        // Debug logging removed
       }
     }
 
@@ -122,32 +120,28 @@ const testIPDAdmissions = async () => {
       admission_notes: "Test admission for API testing",
     };
 
-    console.log("Mock admission data for POST test:", mockAdmission);
-    console.log(
-      "Note: POST test is simulated and not actually executed to avoid creating test data"
-    );
+    // Debug logging removed
+    // Debug logging removed
 
-    console.log("Admissions API test completed successfully ✓");
+    // Debug logging removed
     return true;
   } catch (error) {
-    console.error("Admissions API test failed:", error);
+    // Debug logging removed
     return false;
   }
 };
 
 // API Test for IPD Progress Notes Route
 const testIPDProgressNotes = async () => {
-  console.log("Testing /api/ipd/admissions/[id]/progress-notes endpoint...");
+  // Debug logging removed
 
   try {
     // For testing, we would need a valid admission ID
     // This is a simulation using a mock ID
     const mockAdmissionId = "12345";
 
-    console.log(`Using mock admission ID: ${mockAdmissionId} for testing`);
-    console.log(
-      "Note: This is a simulation and not actually executed to avoid using invalid IDs"
-    );
+    // Debug logging removed
+    // Debug logging removed
 
     // In a real test, we would:
     // 1. Fetch progress notes for the admission
@@ -156,22 +150,22 @@ const testIPDProgressNotes = async () => {
     // 4. Verify the new note appears in the list
 
     // Simulated test steps
-    console.log("1. GET progress notes - simulated");
-    console.log("2. Validate response structure - simulated");
-    console.log("3. POST new progress note - simulated");
-    console.log("4. Verify new note in list - simulated");
+    // Debug logging removed
+    // Debug logging removed
+    // Debug logging removed
+    // Debug logging removed
 
-    console.log("Progress Notes API test simulation completed ✓");
+    // Debug logging removed
     return true;
   } catch (error) {
-    console.error("Progress Notes API test failed:", error);
+    // Debug logging removed
     return false;
   }
 };
 
 // API Test for Dashboard IPD Stats Route
 const testDashboardIPDStats = async () => {
-  console.log("Testing /api/dashboard/ipd-stats endpoint...");
+  // Debug logging removed
 
   try {
     // Test GET request to fetch IPD stats
@@ -184,7 +178,7 @@ const testDashboardIPDStats = async () => {
     }
 
     const data = await response.json();
-    console.log("IPD stats data structure:", Object.keys(data));
+    // Debug logging removed);
 
     // Check required fields
     const requiredFields = [
@@ -195,34 +189,33 @@ const testDashboardIPDStats = async () => {
     const missingFields = requiredFields.filter((field) => !(field in data));
 
     if (missingFields.length > 0) {
-      console.error(
-        `Missing required fields in IPD stats: ${missingFields.join(", ")}`
+      // Debug logging removed}`
       );
     } else {
-      console.log("All required IPD stats fields present ✓");
+      // Debug logging removed
     }
 
     // Validate recent admissions if present
     if (data.recentAdmissions && Array.isArray(data.recentAdmissions)) {
-      console.log(`Recent admissions count: ${data.recentAdmissions.length}`);
+      // Debug logging removed
 
       if (data.recentAdmissions.length > 0) {
         const sampleAdmission = data.recentAdmissions[0];
-        console.log("Sample recent admission:", sampleAdmission);
+        // Debug logging removed
       }
     }
 
-    console.log("Dashboard IPD Stats API test completed successfully ✓");
+    // Debug logging removed
     return true;
   } catch (error) {
-    console.error("Dashboard IPD Stats API test failed:", error);
+    // Debug logging removed
     return false;
   }
 };
 
 // Run all tests
 const runAllTests = async () => {
-  console.log("Starting IPD API tests...");
+  // Debug logging removed
 
   const results = {
     beds: await testIPDBeds(),
@@ -231,16 +224,16 @@ const runAllTests = async () => {
     dashboardStats: await testDashboardIPDStats(),
   };
 
-  console.log("\nTest Results Summary:");
-  console.log("=====================");
+  // Debug logging removed
+  // Debug logging removed
   Object.entries(results).forEach(([test, passed]) => {
-    console.log(`${test}: ${passed ? "✓ PASSED" : "✗ FAILED"}`);
+    // Debug logging removed
   });
 
   const passedCount = Object.values(results).filter(Boolean).length;
   const totalCount = Object.values(results).length;
 
-  console.log(`\nOverall: ${passedCount}/${totalCount} tests passed`);
+  // Debug logging removed
 };
 
 // Execute tests when this file is run

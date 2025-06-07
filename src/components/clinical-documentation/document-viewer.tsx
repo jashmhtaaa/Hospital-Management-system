@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -112,11 +123,11 @@ interface DocumentViewerProps {
   documentId: string;
 }
 
-export function DocumentViewer({ documentId }: DocumentViewerProps) {
+export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // State
+  // State;
   const [document, setDocument] = useState<Document | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('content');
@@ -137,7 +148,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
   });
   const [submitting, setSubmitting] = useState(false);
   
-  // Fetch document
+  // Fetch document;
   const fetchDocument = async () => {
     setLoading(true);
     
@@ -152,7 +163,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
       
       setDocument(data);
     } catch (error) {
-      console.error('Error fetching document:', error);
+
       toast({
         title: 'Error',
         description: 'Failed to fetch document. Please try again.',
@@ -163,12 +174,12 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
     }
   };
   
-  // Effect to fetch document on initial load
+  // Effect to fetch document on initial load;
   useEffect(() => {
     fetchDocument();
   }, [documentId]);
   
-  // Handle sign document
+  // Handle sign document;
   const handleSignDocument = async () => {
     setSubmitting(true);
     
@@ -191,7 +202,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
         description: 'Document signed successfully',
       });
       
-      // Close dialog and reset form
+      // Close dialog and reset form;
       setSignatureDialogOpen(false);
       setSignatureData({
         signerRole: '',
@@ -201,10 +212,10 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
         finalize: false,
       });
       
-      // Refresh document
+      // Refresh document;
       fetchDocument();
     } catch (error) {
-      console.error('Error signing document:', error);
+
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to sign document. Please try again.',
@@ -215,7 +226,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
     }
   };
   
-  // Handle create amendment
+  // Handle create amendment;
   const handleCreateAmendment = async () => {
     setSubmitting(true);
     
@@ -238,7 +249,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
         description: 'Amendment created successfully',
       });
       
-      // Close dialog and reset form
+      // Close dialog and reset form;
       setAmendmentDialogOpen(false);
       setAmendmentData({
         amendmentType: 'Addendum',
@@ -247,10 +258,10 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
         status: 'Draft',
       });
       
-      // Refresh document
+      // Refresh document;
       fetchDocument();
     } catch (error) {
-      console.error('Error creating amendment:', error);
+
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to create amendment. Please try again.',
@@ -261,7 +272,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
     }
   };
   
-  // Get status badge variant
+  // Get status badge variant;
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'Draft':
@@ -279,25 +290,25 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
     }
   };
   
-  // Handle edit document
+  // Handle edit document;
   const handleEditDocument = () => {
     router.push(`/clinical-documentation/${documentId}/edit`);
   };
   
-  // Helper function to format date
+  // Helper function to format date;
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'MMM dd, yyyy h:mm a');
   };
   
   if (loading) {
     return (
-      <Card className="w-full">
+      <Card className="w-full">;
         <CardHeader>
           <CardTitle>Loading Document...</CardTitle>
         </CardHeader>
-        <CardContent className="h-96 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+        <CardContent className="h-96 flex items-center justify-center">;
+          <div className="text-center">;
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>;
             <p>Loading document details...</p>
           </div>
         </CardContent>
@@ -307,7 +318,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
   
   if (!document) {
     return (
-      <Card className="w-full">
+      <Card className="w-full">;
         <CardHeader>
           <CardTitle>Document Not Found</CardTitle>
         </CardHeader>
@@ -316,7 +327,7 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
         </CardContent>
         <CardFooter>
           <Button onClick={() => router.push('/clinical-documentation')}>
-            Back to Documents
+            Back to Documents;
           </Button>
         </CardFooter>
       </Card>
@@ -324,26 +335,26 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
   }
   
   return (
-    <Card className="w-full">
+    <Card className="w-full">;
       <CardHeader>
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">;
           <div>
             <CardTitle>{document.documentTitle}</CardTitle>
-            <CardDescription className="mt-1">
+            <CardDescription className="mt-1">;
               {document.documentType} - {document.documentNumber}
             </CardDescription>
           </div>
-          <div className="flex flex-wrap gap-2 items-center">
-            <Badge variant={getStatusBadgeVariant(document.status)}>
+          <div className="flex flex-wrap gap-2 items-center">;
+            <Badge variant={getStatusBadgeVariant(document.status)}>;
               {document.status}
             </Badge>
             
             {document.isConfidential && (
-              <Badge variant="destructive">Confidential</Badge>
+              <Badge variant="destructive">Confidential</Badge>;
             )}
             
             {document.tags.map((tag, index) => (
-              <Badge key={index} variant="outline">
+              <Badge key={index} variant="outline">;
                 {tag}
               </Badge>
             ))}
@@ -352,42 +363,43 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
       </CardHeader>
       
       <CardContent>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="content">Document Content</TabsTrigger>
-            <TabsTrigger value="sections">Sections ({document.sections.length})</TabsTrigger>
-            <TabsTrigger value="metadata">Metadata</TabsTrigger>
-            <TabsTrigger value="signatures">Signatures ({document.signatures.length})</TabsTrigger>
-            <TabsTrigger value="amendments">Amendments ({document.amendments.length})</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>;
+          <TabsList className="mb-4">;
+            <TabsTrigger value="content">Document Content</TabsTrigger>;
+            <TabsTrigger value="sections">Sections ({document.sections.length})</TabsTrigger>;
+            <TabsTrigger value="metadata">Metadata</TabsTrigger>;
+            <TabsTrigger value="signatures">Signatures ({document.signatures.length})</TabsTrigger>;
+            <TabsTrigger value="amendments">Amendments ({document.amendments.length})</TabsTrigger>;
           </TabsList>
           
-          <TabsContent value="content">
-            <div className="p-4 border rounded-md whitespace-pre-wrap min-h-[300px]">
+          <TabsContent value="content">;
+            <div className="p-4 border rounded-md whitespace-pre-wrap min-h-[300px]">;
               {document.content}
             </div>
           </TabsContent>
           
-          <TabsContent value="sections">
+          <TabsContent value="sections">;
             {document.sections.length > 0 ? (
-              <Accordion type="single" collapsible className="w-full">
-                {document.sections
-                  .sort((a, b) => a.sectionOrder - b.sectionOrder)
+              <Accordion type="single" collapsible className="w-full">;
+                {document.sections;
+                  .sort((a, b) => a.sectionOrder - b.sectionOrder);
                   .map((section) => (
-                    <AccordionItem key={section.id} value={section.id}>
+                    <AccordionItem key={section.id} value={section.id}>;
                       <AccordionTrigger>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2">;
                           <span>{section.sectionTitle}</span>
-                          <Badge variant="outline">{section.sectionType}</Badge>
+                          <Badge variant="outline">{section.sectionType}</Badge>;
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="p-4 border rounded-md whitespace-pre-wrap">
+                        <div className="p-4 border rounded-md whitespace-pre-wrap">;
                           {section.content}
                         </div>
-                        <div className="mt-2 text-sm text-gray-500">
+                        <div className="mt-2 text-sm text-gray-500">;
                           <p>Created by {section.authorId} on {formatDate(section.authoredDate)}</p>
                           {section.updatedById && (
-                            <p>Updated by {section.updatedById} on {formatDate(section.updatedDate || section.updatedAt)}</p>
+                            <p>Updated by {section.updatedById} on {formatDate(section.updatedDate ||
+                              section.updatedAt)}</p>
                           )}
                         </div>
                       </AccordionContent>
@@ -395,18 +407,18 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
                   ))}
               </Accordion>
             ) : (
-              <div className="text-center py-8 text-gray-500 border rounded-md">
-                This document does not have any sections.
+              <div className="text-center py-8 text-gray-500 border rounded-md">;
+                This document does not have any sections.;
               </div>
             )}
           </TabsContent>
           
-          <TabsContent value="metadata">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="border rounded-md p-4">
-                  <h3 className="text-lg font-medium mb-2">Document Information</h3>
-                  <div className="space-y-2">
+          <TabsContent value="metadata">;
+            <div className="space-y-4">;
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+                <div className="border rounded-md p-4">;
+                  <h3 className="text-lg font-medium mb-2">Document Information</h3>;
+                  <div className="space-y-2">;
                     <div>
                       <span className="font-medium">Document Number:</span> {document.documentNumber}
                     </div>
@@ -425,9 +437,9 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
                   </div>
                 </div>
                 
-                <div className="border rounded-md p-4">
-                  <h3 className="text-lg font-medium mb-2">Dates & Authors</h3>
-                  <div className="space-y-2">
+                <div className="border rounded-md p-4">;
+                  <h3 className="text-lg font-medium mb-2">Dates & Authors</h3>;
+                  <div className="space-y-2">;
                     <div>
                       <span className="font-medium">Created By:</span> {document.authorId}
                     </div>
@@ -451,9 +463,9 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
                 </div>
               </div>
               
-              <div className="border rounded-md p-4">
-                <h3 className="text-lg font-medium mb-2">References</h3>
-                <div className="space-y-2">
+              <div className="border rounded-md p-4">;
+                <h3 className="text-lg font-medium mb-2">References</h3>;
+                <div className="space-y-2">;
                   <div>
                     <span className="font-medium">Patient ID:</span> {document.patientId}
                   </div>
@@ -471,12 +483,12 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
               </div>
               
               {document.attachmentUrls.length > 0 && (
-                <div className="border rounded-md p-4">
-                  <h3 className="text-lg font-medium mb-2">Attachments</h3>
-                  <ul className="space-y-1 list-disc list-inside">
+                <div className="border rounded-md p-4">;
+                  <h3 className="text-lg font-medium mb-2">Attachments</h3>;
+                  <ul className="space-y-1 list-disc list-inside">;
                     {document.attachmentUrls.map((url, index) => (
-                      <li key={index}>
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                      <li key={index}>;
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">;
                           Attachment {index + 1}
                         </a>
                       </li>
@@ -487,17 +499,17 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
             </div>
           </TabsContent>
           
-          <TabsContent value="signatures">
+          <TabsContent value="signatures">;
             {document.signatures.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-4">;
                 {document.signatures.map((signature) => (
-                  <div key={signature.id} className="border rounded-md p-4">
-                    <div className="flex justify-between items-start">
+                  <div key={signature.id} className="border rounded-md p-4">;
+                    <div className="flex justify-between items-start">;
                       <div>
-                        <h3 className="text-lg font-medium">
-                          {signature.signerRole} Signature
+                        <h3 className="text-lg font-medium">;
+                          {signature.signerRole} Signature;
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500">;
                           Signed by {signature.signerId} on {formatDate(signature.signatureDate)}
                         </p>
                       </div>
@@ -505,125 +517,125 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
                     </div>
                     
                     {signature.attestation && (
-                      <div className="mt-2">
-                        <p className="font-medium">Attestation:</p>
-                        <p className="border rounded-md p-2 mt-1 text-gray-700">
+                      <div className="mt-2">;
+                        <p className="font-medium">Attestation:</p>;
+                        <p className="border rounded-md p-2 mt-1 text-gray-700">;
                           {signature.attestation}
                         </p>
                       </div>
                     )}
                     
                     {signature.notes && (
-                      <div className="mt-2">
-                        <p className="font-medium">Notes:</p>
-                        <p className="text-gray-700">{signature.notes}</p>
+                      <div className="mt-2">;
+                        <p className="font-medium">Notes:</p>;
+                        <p className="text-gray-700">{signature.notes}</p>;
                       </div>
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 border rounded-md">
-                This document has not been signed yet.
+              <div className="text-center py-8 text-gray-500 border rounded-md">;
+                This document has not been signed yet.;
               </div>
             )}
             
             {/* Signature Dialog */}
-            <Dialog open={signatureDialogOpen} onOpenChange={setSignatureDialogOpen}>
+            <Dialog open={signatureDialogOpen} onOpenChange={setSignatureDialogOpen}>;
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Sign Document</DialogTitle>
                   <DialogDescription>
-                    Add your signature to this document.
+                    Add your signature to this document.;
                   </DialogDescription>
                 </DialogHeader>
                 
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signer-role">Signer Role</Label>
-                    <Select
+                <div className="space-y-4 py-4">;
+                  <div className="space-y-2">;
+                    <Label htmlFor="signer-role">Signer Role</Label>;
+                    <Select;
                       value={signatureData.signerRole}
                       onValueChange={(value) => setSignatureData({...signatureData, signerRole: value})}
                     >
-                      <SelectTrigger id="signer-role">
-                        <SelectValue placeholder="Select role" />
+                      <SelectTrigger id="signer-role">;
+                        <SelectValue placeholder="Select role" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Attending Physician">Attending Physician</SelectItem>
-                        <SelectItem value="Resident">Resident</SelectItem>
-                        <SelectItem value="Fellow">Fellow</SelectItem>
-                        <SelectItem value="Nurse">Nurse</SelectItem>
-                        <SelectItem value="Consultant">Consultant</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value="Attending Physician">Attending Physician</SelectItem>;
+                        <SelectItem value="Resident">Resident</SelectItem>;
+                        <SelectItem value="Fellow">Fellow</SelectItem>;
+                        <SelectItem value="Nurse">Nurse</SelectItem>;
+                        <SelectItem value="Consultant">Consultant</SelectItem>;
+                        <SelectItem value="Other">Other</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="signature-type">Signature Type</Label>
-                    <Select
+                  <div className="space-y-2">;
+                    <Label htmlFor="signature-type">Signature Type</Label>;
+                    <Select;
                       value={signatureData.signatureType}
                       onValueChange={(value) => setSignatureData({...signatureData, signatureType: value})}
                     >
-                      <SelectTrigger id="signature-type">
-                        <SelectValue placeholder="Select signature type" />
+                      <SelectTrigger id="signature-type">;
+                        <SelectValue placeholder="Select signature type" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Electronic">Electronic</SelectItem>
-                        <SelectItem value="Digital">Digital</SelectItem>
-                        <SelectItem value="Verbal">Verbal</SelectItem>
+                        <SelectItem value="Electronic">Electronic</SelectItem>;
+                        <SelectItem value="Digital">Digital</SelectItem>;
+                        <SelectItem value="Verbal">Verbal</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="attestation">Attestation Statement</Label>
-                    <Textarea
-                      id="attestation"
-                      placeholder="I attest that this document is accurate and complete to the best of my knowledge."
+                  <div className="space-y-2">;
+                    <Label htmlFor="attestation">Attestation Statement</Label>;
+                    <Textarea;
+                      id="attestation";
+                      placeholder="I attest that this document is accurate and complete to the best of my knowledge.";
                       value={signatureData.attestation}
                       onChange={(e) => setSignatureData({...signatureData, attestation: e.target.value})}
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="notes">Notes</Label>
-                    <Textarea
-                      id="notes"
-                      placeholder="Additional notes"
+                  <div className="space-y-2">;
+                    <Label htmlFor="notes">Notes</Label>;
+                    <Textarea;
+                      id="notes";
+                      placeholder="Additional notes";
                       value={signatureData.notes}
                       onChange={(e) => setSignatureData({...signatureData, notes: e.target.value})}
                     />
                   </div>
                   
                   {document.status === 'Preliminary' && (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="finalize"
+                    <div className="flex items-center space-x-2">;
+                      <Checkbox;
+                        id="finalize";
                         checked={signatureData.finalize}
                         onCheckedChange={(checked) => 
-                          setSignatureData({...signatureData, finalize: checked as boolean})
+                          setSignatureData({...signatureData, finalize: checked as boolean});
                         }
                       />
-                      <label
-                        htmlFor="finalize"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      <label;
+                        htmlFor="finalize";
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
                       >
-                        Finalize document upon signing
+                        Finalize document upon signing;
                       </label>
                     </div>
                   )}
                 </div>
                 
                 <DialogFooter>
-                  <Button
-                    variant="outline"
+                  <Button;
+                    variant="outline";
                     onClick={() => setSignatureDialogOpen(false)}
                     disabled={submitting}
                   >
-                    Cancel
+                    Cancel;
                   </Button>
-                  <Button
+                  <Button;
                     onClick={handleSignDocument}
                     disabled={!signatureData.signerRole || submitting}
                   >
@@ -634,41 +646,41 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
             </Dialog>
           </TabsContent>
           
-          <TabsContent value="amendments">
+          <TabsContent value="amendments">;
             {document.amendments.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-4">;
                 {document.amendments.map((amendment) => (
-                  <div key={amendment.id} className="border rounded-md p-4">
-                    <div className="flex justify-between items-start">
+                  <div key={amendment.id} className="border rounded-md p-4">;
+                    <div className="flex justify-between items-start">;
                       <div>
-                        <h3 className="text-lg font-medium">
+                        <h3 className="text-lg font-medium">;
                           {amendment.amendmentType} - {amendment.amendmentNumber}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500">;
                           Created by {amendment.authorId} on {formatDate(amendment.authoredDate)}
                         </p>
                       </div>
-                      <Badge
+                      <Badge;
                         variant={amendment.status === 'Final' ? 'success' : 'secondary'}
                       >
                         {amendment.status}
                       </Badge>
                     </div>
                     
-                    <div className="mt-2">
-                      <p className="font-medium">Reason:</p>
-                      <p className="text-gray-700">{amendment.amendmentReason}</p>
+                    <div className="mt-2">;
+                      <p className="font-medium">Reason:</p>;
+                      <p className="text-gray-700">{amendment.amendmentReason}</p>;
                     </div>
                     
-                    <div className="mt-2">
-                      <p className="font-medium">Content:</p>
-                      <div className="border rounded-md p-2 mt-1 whitespace-pre-wrap text-gray-700">
+                    <div className="mt-2">;
+                      <p className="font-medium">Content:</p>;
+                      <div className="border rounded-md p-2 mt-1 whitespace-pre-wrap text-gray-700">;
                         {amendment.content}
                       </div>
                     </div>
                     
                     {amendment.finalizedDate && (
-                      <div className="mt-2 text-sm text-gray-500">
+                      <div className="mt-2 text-sm text-gray-500">;
                         <p>Finalized by {amendment.finalizedById} on {formatDate(amendment.finalizedDate)}</p>
                       </div>
                     )}
@@ -676,92 +688,92 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 border rounded-md">
-                This document has no amendments.
+              <div className="text-center py-8 text-gray-500 border rounded-md">;
+                This document has no amendments.;
               </div>
             )}
             
             {/* Amendment Dialog */}
-            <Dialog open={amendmentDialogOpen} onOpenChange={setAmendmentDialogOpen}>
+            <Dialog open={amendmentDialogOpen} onOpenChange={setAmendmentDialogOpen}>;
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Create Amendment</DialogTitle>
                   <DialogDescription>
-                    Add an amendment to this document.
+                    Add an amendment to this document.;
                   </DialogDescription>
                 </DialogHeader>
                 
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="amendment-type">Amendment Type</Label>
-                    <Select
+                <div className="space-y-4 py-4">;
+                  <div className="space-y-2">;
+                    <Label htmlFor="amendment-type">Amendment Type</Label>;
+                    <Select;
                       value={amendmentData.amendmentType}
                       onValueChange={(value) => setAmendmentData({...amendmentData, amendmentType: value})}
                     >
-                      <SelectTrigger id="amendment-type">
-                        <SelectValue placeholder="Select amendment type" />
+                      <SelectTrigger id="amendment-type">;
+                        <SelectValue placeholder="Select amendment type" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Addendum">Addendum</SelectItem>
-                        <SelectItem value="Correction">Correction</SelectItem>
-                        <SelectItem value="Clarification">Clarification</SelectItem>
+                        <SelectItem value="Addendum">Addendum</SelectItem>;
+                        <SelectItem value="Correction">Correction</SelectItem>;
+                        <SelectItem value="Clarification">Clarification</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="amendment-reason">Amendment Reason</Label>
-                    <Textarea
-                      id="amendment-reason"
-                      placeholder="Reason for the amendment"
+                  <div className="space-y-2">;
+                    <Label htmlFor="amendment-reason">Amendment Reason</Label>;
+                    <Textarea;
+                      id="amendment-reason";
+                      placeholder="Reason for the amendment";
                       value={amendmentData.amendmentReason}
                       onChange={(e) => setAmendmentData({...amendmentData, amendmentReason: e.target.value})}
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="amendment-content">Amendment Content</Label>
-                    <Textarea
-                      id="amendment-content"
-                      placeholder="Content of the amendment"
-                      className="min-h-[150px]"
+                  <div className="space-y-2">;
+                    <Label htmlFor="amendment-content">Amendment Content</Label>;
+                    <Textarea;
+                      id="amendment-content";
+                      placeholder="Content of the amendment";
+                      className="min-h-[150px]";
                       value={amendmentData.content}
                       onChange={(e) => setAmendmentData({...amendmentData, content: e.target.value})}
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="amendment-status">Status</Label>
-                    <Select
+                  <div className="space-y-2">;
+                    <Label htmlFor="amendment-status">Status</Label>;
+                    <Select;
                       value={amendmentData.status}
                       onValueChange={(value) => setAmendmentData({...amendmentData, status: value})}
                     >
-                      <SelectTrigger id="amendment-status">
-                        <SelectValue placeholder="Select status" />
+                      <SelectTrigger id="amendment-status">;
+                        <SelectValue placeholder="Select status" />;
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Draft">Draft</SelectItem>
-                        <SelectItem value="Final">Final</SelectItem>
+                        <SelectItem value="Draft">Draft</SelectItem>;
+                        <SelectItem value="Final">Final</SelectItem>;
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 
                 <DialogFooter>
-                  <Button
-                    variant="outline"
+                  <Button;
+                    variant="outline";
                     onClick={() => setAmendmentDialogOpen(false)}
                     disabled={submitting}
                   >
-                    Cancel
+                    Cancel;
                   </Button>
-                  <Button
+                  <Button;
                     onClick={handleCreateAmendment}
                     disabled={
                       !amendmentData.amendmentType ||
                       !amendmentData.amendmentReason ||
                       !amendmentData.content ||
-                      submitting
+                      submitting;
                     }
                   >
                     {submitting ? 'Creating...' : 'Create Amendment'}
@@ -773,51 +785,51 @@ export function DocumentViewer({ documentId }: DocumentViewerProps) {
         </Tabs>
       </CardContent>
       
-      <CardFooter className="flex justify-between">
-        <Button
-          variant="outline"
+      <CardFooter className="flex justify-between">;
+        <Button;
+          variant="outline";
           onClick={() => router.push('/clinical-documentation')}
         >
-          Back to Documents
+          Back to Documents;
         </Button>
         
-        <div className="space-x-2">
+        <div className="space-x-2">;
           {/* Only show Edit button for Draft or Preliminary documents */}
           {['Draft', 'Preliminary'].includes(document.status) && (
-            <Button
-              variant="secondary"
+            <Button;
+              variant="secondary";
               onClick={handleEditDocument}
             >
-              Edit Document
+              Edit Document;
             </Button>
           )}
           
           {/* Only show Sign button for Draft, Preliminary, or Final documents */}
           {['Draft', 'Preliminary', 'Final'].includes(document.status) && (
-            <Button
-              variant="secondary"
+            <Button;
+              variant="secondary";
               onClick={() => setSignatureDialogOpen(true)}
             >
-              Sign Document
+              Sign Document;
             </Button>
           )}
           
           {/* Only show Amend button for Final documents */}
           {document.status === 'Final' && (
-            <Button
-              variant="secondary"
+            <Button;
+              variant="secondary";
               onClick={() => setAmendmentDialogOpen(true)}
             >
-              Amend Document
+              Amend Document;
             </Button>
           )}
           
           {/* Print button */}
-          <Button
-            variant="outline"
+          <Button;
+            variant="outline";
             onClick={() => window.print()}
           >
-            Print
+            Print;
           </Button>
         </div>
       </CardFooter>

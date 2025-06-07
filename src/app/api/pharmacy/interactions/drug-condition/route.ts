@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Drug-Condition Interaction API Routes
+ * Drug-Condition Interaction API Routes;
  * 
- * This file implements the API endpoints for checking drug-condition contraindications
+ * This file implements the API endpoints for checking drug-condition contraindications;
  * with severity classification and detailed interaction information.
  */
 
@@ -21,22 +32,22 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-// Initialize services
+// Initialize services;
 const interactionService = new DrugInteractionService(
   medicationRepository,
-  null // No need for prescription repository in this endpoint
+  null // No need for prescription repository in this endpoint;
 );
 
 /**
- * POST /api/pharmacy/interactions/drug-condition
- * Check for drug-condition contraindications
+ * POST /api/pharmacy/interactions/drug-condition;
+ * Check for drug-condition contraindications;
  */
-export async function POST(req: NextRequest) {
+export async const POST = (req: NextRequest) {
   try {
-    // Validate request
+    // Validate request;
     const data = await req.json();
     const validationResult = validateDrugConditionInteractionRequest(data);
     if (!validationResult.success) {
@@ -46,31 +57,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = 'current-user-id'; // In production, extract from token;
 
-    // Get patient conditions
+    // Get patient conditions;
     let conditions = data.conditions || [];
     
-    // If patientId is provided, fetch conditions from patient record
+    // If patientId is provided, fetch conditions from patient record;
     if (data.patientId && conditions.length === 0) {
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
     }
 
-    // Check for drug-condition contraindications
+    // Check for drug-condition contraindications;
     const contraindications = await interactionService.checkDrugConditionContraindications(
       data.medicationIds,
-      conditions
+      conditions;
     );
 
-    // Audit logging
+    // Audit logging;
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_CONDITION',
       resourceType: 'DrugInteraction',
@@ -79,11 +90,11 @@ export async function POST(req: NextRequest) {
       details: {
         medicationIds: data.medicationIds,
         conditionCount: conditions.length,
-        contraindicationCount: contraindications.length
+        contraindicationCount: contraindications.length;
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({ 
       contraindications,
       metadata: {
@@ -91,7 +102,7 @@ export async function POST(req: NextRequest) {
         severityCounts: {
           absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length,
           relative: contraindications.filter(c => c.contraindicationType === 'relative').length,
-          caution: contraindications.filter(c => c.contraindicationType === 'caution').length
+          caution: contraindications.filter(c => c.contraindicationType === 'caution').length;
         }
       }
     }, { status: 200 });

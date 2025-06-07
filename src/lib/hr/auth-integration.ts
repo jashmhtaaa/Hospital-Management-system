@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
@@ -5,8 +16,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 
 /**
- * Authentication integration for HR & Asset Management module
- * This connects the HR module with the central HMS authentication system
+ * Authentication integration for HR & Asset Management module;
+ * This connects the HR module with the central HMS authentication system;
  */
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -30,11 +41,11 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email
+            email: credentials.email;
           },
           include: {
             employee: true,
-            roles: true
+            roles: true;
           }
         });
 
@@ -53,10 +64,10 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           employeeId: user.employee?.id,
-          roles: user.roles.map(role => role.name)
+          roles: user.roles.map(role => role.name);
         };
       }
-    })
+    });
   ],
   callbacks: {
     async session({ session, token }) {

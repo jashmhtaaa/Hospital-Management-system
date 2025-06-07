@@ -1,7 +1,18 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * FHIR R4 Batch/Transaction Processing Endpoint
- * Handles FHIR Bundle processing for batch and transaction operations
- * POST /fhir/r4 - Process FHIR Bundle
+ * FHIR R4 Batch/Transaction Processing Endpoint;
+ * Handles FHIR Bundle processing for batch and transaction operations;
+ * POST /fhir/r4 - Process FHIR Bundle;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -11,11 +22,11 @@ import { FHIRBundle } from '@/lib/fhir/types';
 /**
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction)
  */
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   try {
     const bundle: FHIRBundle = await request.json();
 
-    // Validate bundle
+    // Validate bundle;
     if (!bundle || bundle.resourceType !== 'Bundle') {
       return NextResponse.json(
         {
@@ -23,7 +34,7 @@ export async function POST(request: NextRequest) {
           issue: [{
             severity: 'error',
             code: 'invalid',
-            diagnostics: 'Request must be a FHIR Bundle resource'
+            diagnostics: 'Request must be a FHIR Bundle resource';
           }]
         },
         { 
@@ -33,7 +44,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check bundle type
+    // Check bundle type;
     if (!['batch', 'transaction'].includes(bundle.type)) {
       return NextResponse.json(
         {
@@ -41,7 +52,7 @@ export async function POST(request: NextRequest) {
           issue: [{
             severity: 'error',
             code: 'invalid',
-            diagnostics: 'Bundle type must be "batch" or "transaction"'
+            diagnostics: 'Bundle type must be "batch" or "transaction"';
           }]
         },
         { 
@@ -51,7 +62,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Process the bundle
+    // Process the bundle;
     const result = await fhirService.processBatch(bundle);
 
     if (!result.success) {
@@ -69,7 +80,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('FHIR Bundle processing error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
@@ -88,9 +99,9 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET /fhir/r4 - FHIR Capability Statement
+ * GET /fhir/r4 - FHIR Capability Statement;
  */
-export async function GET() {
+export async const GET = () {
   try {
     const capabilityStatement = {
       resourceType: 'CapabilityStatement',
@@ -101,11 +112,11 @@ export async function GET() {
       kind: 'instance',
       software: {
         name: 'HMS FHIR Server',
-        version: '1.0.0'
+        version: '1.0.0';
       },
       implementation: {
         description: 'Hospital Management System FHIR R4 Server',
-        url: '/fhir/r4'
+        url: '/fhir/r4';
       },
       fhirVersion: '4.0.1',
       format: ['application/fhir+json', 'application/json'],
@@ -117,7 +128,7 @@ export async function GET() {
             coding: [{
               system: 'http://terminology.hl7.org/CodeSystem/restful-security-service',
               code: 'OAuth',
-              display: 'OAuth'
+              display: 'OAuth';
             }]
           }]
         },
@@ -248,7 +259,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('FHIR Capability Statement error:', error);
+
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
@@ -267,16 +278,16 @@ export async function GET() {
 }
 
 /**
- * OPTIONS /fhir/r4 - CORS preflight
+ * OPTIONS /fhir/r4 - CORS preflight;
  */
-export async function OPTIONS() {
+export async const OPTIONS = () {
   return new NextResponse(null, {
     status: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept, X-Requested-With',
-      'Access-Control-Max-Age': '86400'
+      'Access-Control-Max-Age': '86400';
     }
   });
 }

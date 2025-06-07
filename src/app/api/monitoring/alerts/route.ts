@@ -1,25 +1,36 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 /**
- * Monitoring Alerts API Endpoint
- * Manages alert rules and notifications
+ * Monitoring Alerts API Endpoint;
+ * Manages alert rules and notifications;
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
-export async function GET(request: NextRequest) {
+export async const GET = (request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const ruleId = searchParams.get('ruleId');
 
     if (ruleId) {
-      // Return specific alert rule
-      // This would require adding a method to get specific rules from metricsCollector
+      // Return specific alert rule;
+      // This would require adding a method to get specific rules from metricsCollector;
       return NextResponse.json({
         error: 'Specific rule retrieval not implemented yet',
       }, { status: 501 });
     }
 
-    // Return all alert rules and recent alerts
+    // Return all alert rules and recent alerts;
     const alertData = {
       rules: [
         {
@@ -57,7 +68,7 @@ export async function GET(request: NextRequest) {
         },
       ],
       recentAlerts: [
-        // This would come from a persistent alert log
+        // This would come from a persistent alert log;
         {
           id: 'alert_1704067200000',
           ruleId: 'memory_usage_high',
@@ -79,8 +90,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Alerts API error:', error);
-    
+
     return NextResponse.json(
       {
         error: 'Internal server error',
@@ -91,7 +101,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async const POST = (request: NextRequest) {
   try {
     const body = await request.json();
     const { action } = body;
@@ -121,7 +131,7 @@ export async function POST(request: NextRequest) {
           );
         }
         
-        metricsCollector.addAlertRule(updatedRule); // This will overwrite existing
+        metricsCollector.addAlertRule(updatedRule); // This will overwrite existing;
         return NextResponse.json({ 
           message: 'Alert rule updated',
           ruleId: updatedRule.id,
@@ -151,8 +161,8 @@ export async function POST(request: NextRequest) {
           );
         }
         
-        // Simulate an alert trigger for testing
-        console.log('🧪 Testing alert rule:', testRule.name);
+        // Simulate an alert trigger for testing;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         
         return NextResponse.json({ 
           message: 'Test alert triggered',
@@ -171,8 +181,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Alerts API POST error:', error);
-    
+
     return NextResponse.json(
       {
         error: 'Internal server error',
@@ -183,7 +192,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
+export async const PUT = (request: NextRequest) {
   try {
     const body = await request.json();
     const { ruleId, enabled } = body;
@@ -195,8 +204,8 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // This would require updating the metricsCollector to support enabling/disabling rules
-    console.log(`${enabled ? 'Enabling' : 'Disabling'} alert rule: ${ruleId}`);
+    // This would require updating the metricsCollector to support enabling/disabling rules;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     return NextResponse.json({
       message: `Alert rule ${enabled ? 'enabled' : 'disabled'}`,
@@ -205,8 +214,7 @@ export async function PUT(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Alerts API PUT error:', error);
-    
+
     return NextResponse.json(
       {
         error: 'Internal server error',

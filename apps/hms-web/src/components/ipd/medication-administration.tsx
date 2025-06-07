@@ -1,3 +1,14 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -36,13 +47,13 @@ interface MedicationAdministrationProps {
 }
 
 /**
- * IPD Medication Administration component
+ * IPD Medication Administration component;
  */
-export function MedicationAdministration({ 
+export const MedicationAdministration = ({ 
   patientId, 
   patientName, 
   medications, 
-  administrations 
+  administrations;
 }: MedicationAdministrationProps) {
   const getStatusBadge = (status: string) => {
     switch(status) {
@@ -60,9 +71,9 @@ export function MedicationAdministration({
         <CardTitle>Medication Administration - {patientName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
+        <div className="space-y-6">;
           <div>
-            <h3 className="text-lg font-medium mb-2">Current Medications</h3>
+            <h3 className="text-lg font-medium mb-2">Current Medications</h3>;
             <Table>
               <TableHeader>
                 <TableRow>
@@ -78,39 +89,39 @@ export function MedicationAdministration({
               <TableBody>
                 {medications.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center">
-                      No medications prescribed
+                    <TableCell colSpan={7} className="text-center">;
+                      No medications prescribed;
                     </TableCell>
                   </TableRow>
                 ) : (
                   medications.map((medication) => (
-                    <TableRow key={medication.id}>
-                      <TableCell className="font-medium">{medication.name}</TableCell>
+                    <TableRow key={medication.id}>;
+                      <TableCell className="font-medium">{medication.name}</TableCell>;
                       <TableCell>{medication.dose}</TableCell>
                       <TableCell>{medication.route}</TableCell>
                       <TableCell>{medication.frequency}</TableCell>
                       <TableCell>{medication.startDate}</TableCell>
                       <TableCell>{medication.endDate || '-'}</TableCell>
                       <TableCell>
-                        <Badge 
+                        <Badge;
                           variant={
                             medication.status === 'active' ? 'success' : 
                             medication.status === 'discontinued' ? 'danger' : 
-                            'secondary'
+                            'secondary';
                           }
                         >
                           {medication.status.charAt(0).toUpperCase() + medication.status.slice(1)}
                         </Badge>
                       </TableCell>
                     </TableRow>
-                  ))
+                  ));
                 )}
               </TableBody>
             </Table>
           </div>
           
           <div>
-            <h3 className="text-lg font-medium mb-2">Administration Schedule</h3>
+            <h3 className="text-lg font-medium mb-2">Administration Schedule</h3>;
             <Table>
               <TableHeader>
                 <TableRow>
@@ -127,14 +138,14 @@ export function MedicationAdministration({
               <TableBody>
                 {administrations.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center">
-                      No medication administrations scheduled
+                    <TableCell colSpan={8} className="text-center">;
+                      No medication administrations scheduled;
                     </TableCell>
                   </TableRow>
                 ) : (
                   administrations.map((administration) => (
-                    <TableRow key={administration.id}>
-                      <TableCell className="font-medium">{administration.medicationName}</TableCell>
+                    <TableRow key={administration.id}>;
+                      <TableCell className="font-medium">{administration.medicationName}</TableCell>;
                       <TableCell>{administration.dose}</TableCell>
                       <TableCell>{administration.route}</TableCell>
                       <TableCell>{administration.scheduledTime}</TableCell>
@@ -143,14 +154,14 @@ export function MedicationAdministration({
                       <TableCell>{getStatusBadge(administration.status)}</TableCell>
                       <TableCell>
                         {administration.status === 'scheduled' && (
-                          <Button size="sm">Administer</Button>
+                          <Button size="sm">Administer</Button>;
                         )}
                         {administration.status !== 'scheduled' && (
-                          <Button variant="outline" size="sm">View</Button>
+                          <Button variant="outline" size="sm">View</Button>;
                         )}
                       </TableCell>
                     </TableRow>
-                  ))
+                  ));
                 )}
               </TableBody>
             </Table>

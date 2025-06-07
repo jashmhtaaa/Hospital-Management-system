@@ -1,3 +1,15 @@
+  var __DEV__: boolean;
+  interface Window {
+    [key: string]: any;
+  }
+  namespace NodeJS {
+    interface Global {
+      [key: string]: any;
+    }
+  }
+}
+
+import React, { useState } from "react";
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -13,10 +25,10 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
-import { Loader2, Star, StarHalf } from 'lucide-react';
+import { Loader2, Star } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
-// Form schema
+// Form schema;
 const feedbackFormSchema = z.object({
   type: z.string({
     required_error: "Please select a feedback type",
@@ -44,16 +56,16 @@ type FeedbackFormValues = z.infer<typeof feedbackFormSchema>;
 interface FeedbackFormProps {
   departments?: { id: string; name: string }[];
   serviceTypes?: string[];
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<FeedbackFormValues>;
 }
 
-export default function FeedbackForm({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
+export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
 
-  // Initialize form
+  // Initialize form;
   const form = useForm<FeedbackFormValues>({
     resolver: zodResolver(feedbackFormSchema),
     defaultValues: {
@@ -73,14 +85,14 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
     },
   });
 
-  // Watch for anonymous field changes
+  // Watch for anonymous field changes;
   const isAnonymous = form.watch('anonymous');
 
   useEffect(() => {
     setShowContactInfo(isAnonymous);
   }, [isAnonymous]);
 
-  // Handle form submission
+  // Handle form submission;
   const onSubmit = async (values: FeedbackFormValues) => {
     setIsSubmitting(true);
     try {
@@ -103,14 +115,14 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
         description: "Thank you for your feedback!",
       });
 
-      // Reset form
+      // Reset form;
       form.reset();
 
-      // Call onSuccess callback if provided
+      // Call onSuccess callback if provided;
       if (onSuccess) {
         onSuccess(data);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
         description: error.message || "An error occurred while submitting feedback",
@@ -122,102 +134,102 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto">;
       <CardHeader>
         <CardTitle>Submit Feedback</CardTitle>
         <CardDescription>
-          We value your feedback to improve our services. Please fill out the form below.
+          We value your feedback to improve our services. Please fill out the form below.;
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
+          <div className="space-y-4">;
             <div>
-              <Label htmlFor="type">Feedback Type</Label>
-              <Controller
-                name="type"
+              <Label htmlFor="type">Feedback Type</Label>;
+              <Controller;
+                name="type";
                 control={form.control}
                 render={({ field }) => (
-                  <Select
+                  <Select;
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     disabled={isSubmitting}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select feedback type" />
+                      <SelectValue placeholder="Select feedback type" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>
-                      <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>
-                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>
-                      <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
+                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>;
+                      <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>;
+                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>;
+                      <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                 )}
               />
               {form.formState.errors.type && (
-                <p className="text-sm text-red-500 mt-1">{form.formState.errors.type.message}</p>
+                <p className="text-sm text-red-500 mt-1">{form.formState.errors.type.message}</p>;
               )}
             </div>
 
             <div>
-              <Label htmlFor="source">Feedback Source</Label>
-              <Controller
-                name="source"
+              <Label htmlFor="source">Feedback Source</Label>;
+              <Controller;
+                name="source";
                 control={form.control}
                 render={({ field }) => (
-                  <Select
+                  <Select;
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     disabled={isSubmitting}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select feedback source" />
+                      <SelectValue placeholder="Select feedback source" />;
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="PATIENT">Patient</SelectItem>
-                      <SelectItem value="VISITOR">Visitor</SelectItem>
-                      <SelectItem value="STAFF">Staff</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
+                      <SelectItem value="PATIENT">Patient</SelectItem>;
+                      <SelectItem value="VISITOR">Visitor</SelectItem>;
+                      <SelectItem value="STAFF">Staff</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>;
                     </SelectContent>
                   </Select>
                 )}
               />
               {form.formState.errors.source && (
-                <p className="text-sm text-red-500 mt-1">{form.formState.errors.source.message}</p>
+                <p className="text-sm text-red-500 mt-1">{form.formState.errors.source.message}</p>;
               )}
             </div>
 
             <div>
               <Label>Rating</Label>
-              <Controller
-                name="rating"
+              <Controller;
+                name="rating";
                 control={form.control}
                 render={({ field }) => (
-                  <div className="flex items-center space-x-2 mt-2">
-                    <RadioGroup
+                  <div className="flex items-center space-x-2 mt-2">;
+                    <RadioGroup;
                       onValueChange={(value) => field.onChange(parseInt(value))}
                       defaultValue={field.value?.toString()}
-                      className="flex space-x-2"
+                      className="flex space-x-2";
                       disabled={isSubmitting}
                     >
                       {[1, 2, 3, 4, 5].map((rating) => (
-                        <div key={rating} className="flex flex-col items-center">
-                          <RadioGroupItem
+                        <div key={rating} className="flex flex-col items-center">;
+                          <RadioGroupItem;
                             value={rating.toString()}
                             id={`rating-${rating}`}
-                            className="sr-only"
+                            className="sr-only";
                           />
-                          <Label
+                          <Label;
                             htmlFor={`rating-${rating}`}
                             className={`cursor-pointer p-2 rounded-full hover:bg-gray-100 ${
-                              field.value === rating ? 'text-yellow-500' : 'text-gray-400'
+                              field.value === rating ? 'text-yellow-500' : 'text-gray-400';
                             }`}
                           >
-                            <Star className="h-8 w-8" fill={field.value >= rating ? 'currentColor' : 'none'} />
+                            <Star className="h-8 w-8" fill={field.value >= rating ? 'currentColor' : 'none'} />;
                           </Label>
-                          <span className="text-xs">{rating}</span>
+                          <span className="text-xs">{rating}</span>;
                         </div>
                       ))}
                     </RadioGroup>
@@ -225,28 +237,28 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
                 )}
               />
               {form.formState.errors.rating && (
-                <p className="text-sm text-red-500 mt-1">{form.formState.errors.rating.message}</p>
+                <p className="text-sm text-red-500 mt-1">{form.formState.errors.rating.message}</p>;
               )}
             </div>
 
             {departments.length > 0 && (
               <div>
-                <Label htmlFor="departmentId">Department (Optional)</Label>
-                <Controller
-                  name="departmentId"
+                <Label htmlFor="departmentId">Department (Optional)</Label>;
+                <Controller;
+                  name="departmentId";
                   control={form.control}
                   render={({ field }) => (
-                    <Select
+                    <Select;
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isSubmitting}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select department" />
+                        <SelectValue placeholder="Select department" />;
                       </SelectTrigger>
                       <SelectContent>
                         {departments.map((dept) => (
-                          <SelectItem key={dept.id} value={dept.id}>
+                          <SelectItem key={dept.id} value={dept.id}>;
                             {dept.name}
                           </SelectItem>
                         ))}
@@ -259,22 +271,22 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
 
             {serviceTypes.length > 0 && (
               <div>
-                <Label htmlFor="serviceType">Service Type (Optional)</Label>
-                <Controller
-                  name="serviceType"
+                <Label htmlFor="serviceType">Service Type (Optional)</Label>;
+                <Controller;
+                  name="serviceType";
                   control={form.control}
                   render={({ field }) => (
-                    <Select
+                    <Select;
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isSubmitting}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select service type" />
+                        <SelectValue placeholder="Select service type" />;
                       </SelectTrigger>
                       <SelectContent>
                         {serviceTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
+                          <SelectItem key={type} value={type}>;
                             {type.replace(/_/g, ' ')}
                           </SelectItem>
                         ))}
@@ -286,56 +298,56 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
             )}
 
             <div>
-              <Label htmlFor="comments">Comments</Label>
-              <Textarea
+              <Label htmlFor="comments">Comments</Label>;
+              <Textarea;
                 {...form.register('comments')}
-                placeholder="Please share your feedback, suggestions, or concerns..."
-                className="min-h-[120px]"
+                placeholder="Please share your feedback, suggestions, or concerns...";
+                className="min-h-[120px]";
                 disabled={isSubmitting}
               />
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="anonymous"
+            <div className="flex items-center space-x-2">;
+              <Checkbox;
+                id="anonymous";
                 checked={isAnonymous}
                 onCheckedChange={(checked) => {
                   form.setValue('anonymous', checked === true);
                 }}
                 disabled={isSubmitting}
               />
-              <Label htmlFor="anonymous" className="cursor-pointer">
-                Submit anonymously
+              <Label htmlFor="anonymous" className="cursor-pointer">;
+                Submit anonymously;
               </Label>
             </div>
 
             {showContactInfo && (
-              <div className="space-y-4 p-4 border rounded-md bg-gray-50">
-                <p className="text-sm text-gray-500">
+              <div className="space-y-4 p-4 border rounded-md bg-gray-50">;
+                <p className="text-sm text-gray-500">;
                   If you'd like us to follow up with you, please provide your contact information (optional):
                 </p>
                 <div>
-                  <Label htmlFor="contactInfo.name">Name</Label>
-                  <Input
+                  <Label htmlFor="contactInfo.name">Name</Label>;
+                  <Input;
                     {...form.register('contactInfo.name')}
-                    placeholder="Your name"
+                    placeholder="Your name";
                     disabled={isSubmitting}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="contactInfo.email">Email</Label>
-                  <Input
+                  <Label htmlFor="contactInfo.email">Email</Label>;
+                  <Input;
                     {...form.register('contactInfo.email')}
                     type="email"
-                    placeholder="Your email"
+                    placeholder="Your email";
                     disabled={isSubmitting}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="contactInfo.phone">Phone</Label>
-                  <Input
+                  <Label htmlFor="contactInfo.phone">Phone</Label>;
+                  <Input;
                     {...form.register('contactInfo.phone')}
-                    placeholder="Your phone number"
+                    placeholder="Your phone number";
                     disabled={isSubmitting}
                   />
                 </div>
@@ -343,21 +355,22 @@ export default function FeedbackForm({ departments = [], serviceTypes = [], onSu
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full" disabled={isSubmitting}>;
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                Submitting...;
               </>
             ) : (
-              'Submit Feedback'
+              'Submit Feedback';
             )}
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between border-t pt-4">
-        <p className="text-sm text-gray-500">
-          {!isAnonymous && session ? 'Your feedback will be linked to your account.' : 'Your feedback will be anonymous.'}
+      <CardFooter className="flex justify-between border-t pt-4">;
+        <p className="text-sm text-gray-500">;
+          {!isAnonymous &&
+            session ? 'Your feedback will be linked to your account.' : 'Your feedback will be anonymous.'}
         </p>
       </CardFooter>
     </Card>

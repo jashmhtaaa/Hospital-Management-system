@@ -3,18 +3,24 @@ server:
   servlet:
     context-path: /
   shutdown: graceful
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 20
 
 spring:
   application:
-    name: service-discovery
+    name: hms-service-discovery
   
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:default}
+    active: ${SPRING_PROFILES_ACTIVE:development}
 
   security:
     user:
-      name: ${EUREKA_USER:admin}
-      password: ${EUREKA_PASSWORD:admin123}
+      name: ${EUREKA_USER:eureka-admin}
+      password: ${EUREKA_PASSWORD:hms-eureka-secure-2024}
       roles: ADMIN
 
   cloud:
@@ -22,6 +28,9 @@ spring:
       enabled: ${CONFIG_SERVER_ENABLED:false}
       uri: ${CONFIG_SERVER_URI:http://localhost:8888}
       fail-fast: false
+    loadbalancer:
+      ribbon:
+        enabled: false
 
   sleuth:
     zipkin:
@@ -253,3 +262,38 @@ eureka:
     enabled: false
   server:
     enable-self-preservation: false
+
+---
+# HMS-specific Healthcare Service Discovery Configuration
+hms:
+  service-discovery:
+    monitoring:
+      enabled: true
+      health-check-interval: 30s
+      metrics-collection-interval: 60s
+      critical-services-check-interval: 15s
+    security:
+      authentication-required: true
+      jwt-secret: ${JWT_SECRET:hms-service-discovery-jwt-secret-key-2024}
+      jwt-expiration: 86400000  # 24 hours
+    cluster:
+      high-availability: ${HA_ENABLED:false}
+      peer-urls: ${EUREKA_PEER_URLS:}
+      sync-timeout: 30000
+    healthcare:
+      critical-services:
+        - patient-management
+        - emergency-service
+        - clinical-documentation
+        - pharmacy-service
+        - billing-service
+        - appointment-scheduling
+      compliance:
+        hipaa-validation: true
+        audit-logging: true
+        data-encryption: true
+        security-scanning: true
+      monitoring:
+        service-health-threshold: 0.8
+        critical-service-alert-threshold: 0.5
+        performance-metrics-enabled: true

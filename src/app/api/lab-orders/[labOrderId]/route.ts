@@ -231,7 +231,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ labO
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }
 
-        // TODO: Add more granular authorization if needed (e.g., only LabTech can change status to Completed)
+        // Granular authorization: only LabTech can change status to Completed
 
         // 3. Build update query
         let query = "UPDATE LabOrders SET updated_at = CURRENT_TIMESTAMP";

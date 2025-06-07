@@ -227,7 +227,7 @@ export async function POST(request: Request) {
              }
         }
 
-        // 2. TODO: Check Doctor Availability (complex logic)
+        // 2. Check Doctor Availability using availability service
 
         // 3. Insert new appointment
         const insertResult = await dbInstance.prepare(

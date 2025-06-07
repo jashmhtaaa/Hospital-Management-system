@@ -1,7 +1,7 @@
-# GraphQL Federation Gateway Configuration
+# HMS GraphQL Federation Gateway Configuration
 spring:
   application:
-    name: graphql-federation-gateway
+    name: hms-graphql-federation-gateway
   
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
@@ -194,3 +194,42 @@ graphql:
       enable-playground: false
     performance:
       enable-query-complexity-analysis: true
+
+---
+# HMS-specific GraphQL Federation Configuration
+hms:
+  graphql:
+    federation:
+      enabled: true
+      schema:
+        auto-reload: true
+        reload-interval: 300000  # 5 minutes
+      security:
+        hipaa-filtering: true
+        audit-logging: true
+        authentication-required: true
+        role-based-access: true
+      performance:
+        query-timeout: 30000  # 30 seconds
+        max-query-depth: 15
+        max-query-complexity: 1000
+        caching-enabled: true
+        cache-ttl: 300000  # 5 minutes
+      healthcare:
+        critical-services:
+          - patient-management
+          - emergency-service
+          - clinical-documentation
+        data-masking:
+          enabled: true
+          patient-data: true
+          medical-records: true
+        compliance:
+          hipaa-validation: true
+          audit-trail: true
+          data-encryption: true
+      monitoring:
+        metrics-enabled: true
+        health-checks: true
+        performance-tracking: true
+        error-tracking: true

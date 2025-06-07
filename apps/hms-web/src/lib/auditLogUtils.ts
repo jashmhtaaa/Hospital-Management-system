@@ -1,4 +1,4 @@
-  var __DEV__: boolean;
+var __DEV__: boolean;
   interface Window {
     [key: string]: any;
   }
@@ -22,4 +22,4 @@ export const auditLogService = {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 };
-// --- END AUDIT LOG PLACEHOLDER ---
+// --- END AUDIT LOG PLACEHOLDER ---;

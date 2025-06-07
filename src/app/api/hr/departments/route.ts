@@ -1,4 +1,4 @@
-  var __DEV__: boolean;
+var __DEV__: boolean;
   interface Window {
     [key: string]: any;
   }

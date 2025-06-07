@@ -1,4 +1,4 @@
-  var __DEV__: boolean;
+var __DEV__: boolean;
   interface Window {
     [key: string]: any;
   }
@@ -103,5 +103,4 @@ const nullEncrypted = encryptionService.encrypt(null as any);
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 const nullDecrypted = encryptionService.decrypt(nullEncrypted as any);
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-*/
-
+*/;

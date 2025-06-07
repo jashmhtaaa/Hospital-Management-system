@@ -1,4 +1,4 @@
-  var __DEV__: boolean;
+var __DEV__: boolean;
   interface Window {
     [key: string]: any;
   }
@@ -294,7 +294,7 @@ export class FHIRDiagnosticReportUtils {
     let conclusion = `Findings: ${data.findings}\n\nInterpretation: ${data.interpretation}`;
     
     if (data.measurements && data.measurements.length > 0) {
-      conclusion += '\n\nMeasurements:\n';
+      conclusion += ';\n\nMeasurements:\n';
       data.measurements.forEach(measurement => {
         conclusion += `- ${measurement.parameter}: ${measurement.value}`;
         if (measurement.unit) conclusion += ` ${measurement.unit}`;
@@ -304,7 +304,7 @@ export class FHIRDiagnosticReportUtils {
     }
 
     if (data.recommendations) {
-      conclusion += `\n\nRecommendations: ${data.recommendations}`;
+      conclusion += `;\n\nRecommendations: ${data.recommendations}`;
     }
 
     return {

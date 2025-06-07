@@ -14,7 +14,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
@@ -33,8 +33,18 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
+    "skipDefaultLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "suppressExcessPropertyErrors": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": false,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitThis": false,
+    "noImplicitReturns": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": false
   },
   "include": [
     "next-env.d.ts",

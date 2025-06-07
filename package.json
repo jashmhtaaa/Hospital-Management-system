@@ -131,7 +131,7 @@
     
     "report:coverage": "nyc report --reporter=lcov --reporter=text",
     "report:security": "node scripts/reporting/security-report.js",
-    "report:compliance": "node scripts/reporting/compliance-report.js"
+    "report:compliance": "node scripts/reporting/compliance-report.js",
     "db:validate": "prisma validate",
     "validate:complete": "npm run type-check && npm run lint:check && npm run test:unit && npm run security:scan",
     "hooks:test": "echo 'Testing git hooks setup'",
@@ -307,10 +307,8 @@
     "wrangler": "^4.14.0"
   },
   "lint-staged": {
-    "*": {
-      "{ts,tsx}": "eslint --fix",
-      "{ts,tsx,css,md}": "prettier --write"
-    }
+    "*.{ts,tsx}": ["eslint --fix"],
+    "*.{ts,tsx,css,md}": ["prettier --write"]
   },
   "packageManager": "pnpm@10.0.0-rc.2+sha512.b6e59b96f90ca92449ac2f6dca9b430880448fc97d21f0fa9200e3d5ddb5289ad535255400554f7f3486e2d60058492161aaa9b58828e81f50c096718be9d156"
 }

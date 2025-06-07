@@ -1,531 +1,456 @@
-name: 🏥 HMS Enterprise CI/CD Pipeline
-
-on:
+name: "\U0001F3E5 HMS Enterprise CI/CD Pipeline"
+true:
   push:
-    branches: [ main, develop, release/* ]
+    branches:
+    - main
+    - develop
+    - release/*
   pull_request:
-    branches: [ main, develop ]
+    branches:
+    - main
+    - develop
   schedule:
-    - cron: '0 2 * * *'  # Daily security scans at 2 AM
-
+  - cron: 0 2 * * *
 env:
-  NODE_VERSION: '18.x'
+  NODE_VERSION: 18.x
   JAVA_VERSION: '17'
-  DOCKER_REGISTRY: 'ghcr.io'
-  KUBERNETES_NAMESPACE: 'hms-production'
+  DOCKER_REGISTRY: ghcr.io
+  KUBERNETES_NAMESPACE: hms-production
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
 jobs:
-  # ================================================================
-  # PHASE 1: CODE QUALITY AND SECURITY ANALYSIS
-  # ================================================================
   code-quality:
-    name: 🔍 Code Quality Analysis
+    name: "\U0001F50D Code Quality Analysis"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Full history for SonarQube analysis
-        
-    - name: 🏗️ Setup Node.js
+        fetch-depth: 0
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: ☕ Setup Java
+        cache: npm
+    - name: "\u2615 Setup Java"
       uses: actions/setup-java@v4
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        
-    - name: 📦 Install Dependencies
-      run: |
-        npm ci
+        distribution: temurin
+    - name: "\U0001F4E6 Install Dependencies"
+      run: 'npm ci
+
         npm run install: microservices
-        
-    - name: 🧹 ESLint Analysis
-      run: |
-        npm run lint: ci
+
+        '
+    - name: "\U0001F9F9 ESLint Analysis"
+      run: 'npm run lint: ci
+
         npm run lint: report
-        
-    - name: 💅 Prettier Check
+
+        '
+    - name: "\U0001F485 Prettier Check"
       run: npm run prettier:check
-      
-    - name: 📋 TypeScript Check
+    - name: "\U0001F4CB TypeScript Check"
       run: npm run type-check
-      
-    - name: 🔒 Security Audit
-      run: |
-        npm audit --audit-level=high
+    - name: "\U0001F512 Security Audit"
+      run: 'npm audit --audit-level=high
+
         npm run security: audit
-        
-    - name: 📊 SonarQube Analysis
+
+        '
+    - name: "\U0001F4CA SonarQube Analysis"
       uses: sonarqube-quality-gate-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         scanMetadataReportFile: target/sonar/report-task.txt
-        
-    - name: 🛡️ CodeQL Analysis
+    - name: "\U0001F6E1\uFE0F CodeQL Analysis"
       uses: github/codeql-action/analyze@v3
       with:
         languages: javascript,typescript,java
         queries: security-and-quality
-        
-    - name: 📈 Upload Coverage Reports
+    - name: "\U0001F4C8 Upload Coverage Reports"
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage/lcov.info,./microservices/*/target/site/jacoco/jacoco.xml
         fail_ci_if_error: true
-
-  # ================================================================
-  # PHASE 2: COMPREHENSIVE TESTING
-  # ================================================================
   unit-tests:
-    name: 🧪 Unit Tests
+    name: "\U0001F9EA Unit Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       matrix:
-        test-group: [frontend, microservices, shared]
-        
+        test-group:
+        - frontend
+        - microservices
+        - shared
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: ☕ Setup Java
+        cache: npm
+    - name: "\u2615 Setup Java"
       uses: actions/setup-java@v4
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        
-    - name: 📦 Install Dependencies
+        distribution: temurin
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🧪 Run Unit Tests
-      run: |
-        case "${{ matrix.test-group }}" in
-          frontend)
-            npm run test: frontend:coverage
-            ;;
-          microservices)
-            npm run test: microservices:coverage
-            ;;
-          shared)
-            npm run test: shared:coverage
-            ;;
-        esac
-        
-    - name: 📊 Test Results
+    - name: "\U0001F9EA Run Unit Tests"
+      run: "case \"${{ matrix.test-group }}\" in\n  frontend)\n    npm run test: frontend:coverage\n\
+        \    ;;\n  microservices)\n    npm run test: microservices:coverage\n    ;;\n\
+        \  shared)\n    npm run test: shared:coverage\n    ;;\nesac\n"
+    - name: "\U0001F4CA Test Results"
       uses: dorny/test-reporter@v1
       if: success() || failure()
       with:
         name: Unit Tests (${{ matrix.test-group }})
-        path: 'test-results/${{ matrix.test-group }}/junit.xml'
+        path: test-results/${{ matrix.test-group }}/junit.xml
         reporter: java-junit
-
   integration-tests:
-    name: 🔗 Integration Tests
+    name: "\U0001F517 Integration Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    
     services:
       postgres:
         image: postgres:15
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: hms_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s
           --health-retries 5
       redis:
         image: redis:7
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-          
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout
+          5s --health-retries 5
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: ☕ Setup Java
+        cache: npm
+    - name: "\u2615 Setup Java"
       uses: actions/setup-java@v4
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        
-    - name: 📦 Install Dependencies
+        distribution: temurin
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🚀 Start Test Environment
-      run: |
-        docker-compose -f docker-compose.test.yml up -d
+    - name: "\U0001F680 Start Test Environment"
+      run: 'docker-compose -f docker-compose.test.yml up -d
+
         npm run wait-for-services
-        
-    - name: 🔗 Run Integration Tests
+
+        '
+    - name: "\U0001F517 Run Integration Tests"
       run: npm run test:integration
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hms_test
         REDIS_URL: redis://localhost:6379
-        
-    - name: 🧪 API Contract Testing
+    - name: "\U0001F9EA API Contract Testing"
       run: npm run test:contracts
-      
-    - name: 📊 Integration Test Results
+    - name: "\U0001F4CA Integration Test Results"
       uses: dorny/test-reporter@v1
       if: success() || failure()
       with:
         name: Integration Tests
-        path: 'test-results/integration/junit.xml'
+        path: test-results/integration/junit.xml
         reporter: java-junit
-
   e2e-tests:
-    name: 🎭 End-to-End Tests
+    name: "\U0001F3AD End-to-End Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: 📦 Install Dependencies
+        cache: npm
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🎭 Install Playwright
+    - name: "\U0001F3AD Install Playwright"
       run: npx playwright install --with-deps
-      
-    - name: 🚀 Start Application
-      run: |
-        npm run build
+    - name: "\U0001F680 Start Application"
+      run: 'npm run build
+
         npm run start: test &
+
         npm run wait-for-app
-        
-    - name: 🎭 Run E2E Tests
+
+        '
+    - name: "\U0001F3AD Run E2E Tests"
       run: npm run test:e2e
-      
-    - name: 📸 Upload Test Screenshots
+    - name: "\U0001F4F8 Upload Test Screenshots"
       uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: e2e-screenshots
         path: test-results/e2e/screenshots/
-
   performance-tests:
-    name: ⚡ Performance Tests
+    name: "\u26A1 Performance Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: 📦 Install Dependencies
+        cache: npm
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🚀 Start Application
-      run: |
-        npm run build
+    - name: "\U0001F680 Start Application"
+      run: 'npm run build
+
         npm run start: test &
+
         npm run wait-for-app
-        
-    - name: ⚡ Run Performance Tests
-      run: |
-        npm run test: performance
+
+        '
+    - name: "\u26A1 Run Performance Tests"
+      run: 'npm run test: performance
+
         npm run test: load
-        
-    - name: 🏠 Lighthouse CI
+
+        '
+    - name: "\U0001F3E0 Lighthouse CI"
       uses: treosh/lighthouse-ci-action@v10
       with:
-        configPath: './.lighthouserc.js'
+        configPath: ./.lighthouserc.js
         uploadArtifacts: true
         temporaryPublicStorage: true
-
-  # ================================================================
-  # PHASE 3: SECURITY SCANNING
-  # ================================================================
   security-scans:
-    name: 🔒 Security Scanning
+    name: "\U0001F512 Security Scanning"
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: 📦 Install Dependencies
+        cache: npm
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🐍 Snyk Security Scan
+    - name: "\U0001F40D Snyk Security Scan"
       uses: snyk/actions/node@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         args: --severity-threshold=high --fail-on=all
-        
-    - name: 🐳 Docker Security Scan
-      run: |
-        docker build -t hms-app .
-        docker run --rm -v /var/run/docker.sock: /var/run/docker.sock \
-          -v $PWD: /tmp aquasec/trivy:latest image hms-app
-          
-    - name: 🛡️ OWASP ZAP Scan
+    - name: "\U0001F433 Docker Security Scan"
+      run: "docker build -t hms-app .\ndocker run --rm -v /var/run/docker.sock: /var/run/docker.sock\
+        \ \\\n  -v $PWD: /tmp aquasec/trivy:latest image hms-app\n  \n"
+    - name: "\U0001F6E1\uFE0F OWASP ZAP Scan"
       uses: zaproxy/action-full-scan@v0.8.0
       with:
-        target: 'http://localhost:3000'
-        rules_file_name: '.zap/rules.tsv'
-        cmd_options: '-a'
-        
-    - name: 📋 SAST Scan
+        target: http://localhost:3000
+        rules_file_name: .zap/rules.tsv
+        cmd_options: -a
+    - name: "\U0001F4CB SAST Scan"
       uses: securecodewarrior/github-action-add-sarif@v1
       with:
-        sarif-file: 'security-scan-results.sarif'
-
-  # ================================================================
-  # PHASE 4: HEALTHCARE COMPLIANCE
-  # ================================================================
+        sarif-file: security-scan-results.sarif
   compliance-validation:
-    name: 🏥 Healthcare Compliance
+    name: "\U0001F3E5 Healthcare Compliance"
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: 📦 Install Dependencies
+        cache: npm
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🏥 HIPAA Compliance Check
+    - name: "\U0001F3E5 HIPAA Compliance Check"
       run: npm run compliance:hipaa
-      
-    - name: 🔄 FHIR Validation
+    - name: "\U0001F504 FHIR Validation"
       run: npm run compliance:fhir
-      
-    - name: 📜 License Compliance
+    - name: "\U0001F4DC License Compliance"
       run: npm run compliance:licenses
-      
-    - name: 🔐 Data Privacy Validation
+    - name: "\U0001F510 Data Privacy Validation"
       run: npm run compliance:privacy
-
-  # ================================================================
-  # PHASE 5: BUILD AND CONTAINERIZATION
-  # ================================================================
   build-and-package:
-    name: 🏗️ Build & Package
+    name: "\U0001F3D7\uFE0F Build & Package"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [code-quality, unit-tests]
-    
+    needs:
+    - code-quality
+    - unit-tests
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup Node.js
+    - name: "\U0001F3D7\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        
-    - name: ☕ Setup Java
+        cache: npm
+    - name: "\u2615 Setup Java"
       uses: actions/setup-java@v4
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        
-    - name: 📦 Install Dependencies
+        distribution: temurin
+    - name: "\U0001F4E6 Install Dependencies"
       run: npm ci
-      
-    - name: 🏗️ Build Application
-      run: |
-        npm run build
+    - name: "\U0001F3D7\uFE0F Build Application"
+      run: 'npm run build
+
         npm run build: microservices
-        
-    - name: 🐳 Build Docker Images
-      run: |
-        docker build -t ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }} .
+
+        '
+    - name: "\U0001F433 Build Docker Images"
+      run: 'docker build -t ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha
+        }} .
+
         npm run docker: build:microservices
-        
-    - name: 🔐 Login to Container Registry
+
+        '
+    - name: "\U0001F510 Login to Container Registry"
       uses: docker/login-action@v3
       with:
         registry: ${{ env.DOCKER_REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: 🚀 Push Docker Images
-      run: |
-        docker push ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
+    - name: "\U0001F680 Push Docker Images"
+      run: 'docker push ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
+
         npm run docker: push:microservices
 
-  # ================================================================
-  # PHASE 6: DEPLOYMENT
-  # ================================================================
+        '
   deploy-staging:
-    name: 🚀 Deploy to Staging
+    name: "\U0001F680 Deploy to Staging"
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [integration-tests, security-scans, build-and-package]
+    needs:
+    - integration-tests
+    - security-scans
+    - build-and-package
     if: github.ref == 'refs/heads/develop'
     environment: staging
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: ⚙️ Setup Kubectl
+    - name: "\u2699\uFE0F Setup Kubectl"
       uses: azure/setup-kubectl@v3
       with:
-        version: 'v1.28.0'
-        
-    - name: 🔐 Configure Kubernetes
-      run: |
-        echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > kubeconfig
-        export KUBECONFIG=kubeconfig
-        
-    - name: 🚀 Deploy to Staging
-      run: |
-        kubectl set image deployment/hms-frontend \
-          hms-frontend=${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }} \
-          -n hms-staging
-        kubectl rollout status deployment/hms-frontend -n hms-staging
-        
-    - name: 🧪 Smoke Tests
-      run: npm run test:smoke:staging
+        version: v1.28.0
+    - name: "\U0001F510 Configure Kubernetes"
+      run: 'echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > kubeconfig
 
+        export KUBECONFIG=kubeconfig
+
+        '
+    - name: "\U0001F680 Deploy to Staging"
+      run: "kubectl set image deployment/hms-frontend \\\n  hms-frontend=${{ env.DOCKER_REGISTRY\
+        \ }}/hms-frontend: ${{ github.sha }} \\\n  -n hms-staging\nkubectl rollout\
+        \ status deployment/hms-frontend -n hms-staging\n"
+    - name: "\U0001F9EA Smoke Tests"
+      run: npm run test:smoke:staging
   deploy-production:
-    name: 🌟 Deploy to Production
+    name: "\U0001F31F Deploy to Production"
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [e2e-tests, performance-tests, compliance-validation]
+    needs:
+    - e2e-tests
+    - performance-tests
+    - compliance-validation
     if: github.ref == 'refs/heads/main'
     environment: production
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: ⚙️ Setup Kubectl
+    - name: "\u2699\uFE0F Setup Kubectl"
       uses: azure/setup-kubectl@v3
       with:
-        version: 'v1.28.0'
-        
-    - name: 🔐 Configure Kubernetes
-      run: |
-        echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > kubeconfig
+        version: v1.28.0
+    - name: "\U0001F510 Configure Kubernetes"
+      run: 'echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > kubeconfig
+
         export KUBECONFIG=kubeconfig
-        
-    - name: 🌟 Blue-Green Deployment
-      run: |
-        ./scripts/blue-green-deploy.sh \
-          ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
-        
-    - name: 🧪 Production Health Check
+
+        '
+    - name: "\U0001F31F Blue-Green Deployment"
+      run: "./scripts/blue-green-deploy.sh \\\n  ${{ env.DOCKER_REGISTRY }}/hms-frontend:\
+        \ ${{ github.sha }}\n"
+    - name: "\U0001F9EA Production Health Check"
       run: npm run test:health:production
-      
-    - name: 📢 Deployment Notification
+    - name: "\U0001F4E2 Deployment Notification"
       uses: 8398a7/action-slack@v3
       with:
         status: ${{ job.status }}
         channel: '#deployments'
         webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-
-  # ================================================================
-  # PHASE 7: POST-DEPLOYMENT MONITORING
-  # ================================================================
   post-deployment-monitoring:
-    name: 📊 Post-Deployment Monitoring
+    name: "\U0001F4CA Post-Deployment Monitoring"
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [deploy-production]
+    needs:
+    - deploy-production
     if: always()
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: "\U0001F4E5 Checkout Repository"
       uses: actions/checkout@v4
-      
-    - name: 📊 Performance Monitoring
-      run: |
-        npm run monitor: performance
-        npm run monitor: errors
-        
-    - name: 🚨 Setup Alerts
-      run: npm run alerts:configure
-      
-    - name: 📈 Metrics Collection
-      run: npm run metrics:collect
+    - name: "\U0001F4CA Performance Monitoring"
+      run: 'npm run monitor: performance
 
-  # ================================================================
-  # CLEANUP
-  # ================================================================
+        npm run monitor: errors
+
+        '
+    - name: "\U0001F6A8 Setup Alerts"
+      run: npm run alerts:configure
+    - name: "\U0001F4C8 Metrics Collection"
+      run: npm run metrics:collect
   cleanup:
-    name: 🧹 Cleanup
+    name: "\U0001F9F9 Cleanup"
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [deploy-production, post-deployment-monitoring]
+    needs:
+    - deploy-production
+    - post-deployment-monitoring
     if: always()
-    
     steps:
-    - name: 🧹 Clean Old Images
-      run: |
-        # Clean up old container images
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: "\U0001F9F9 Clean Old Images"
+      run: '# Clean up old container images
+
         docker image prune -f
-        
-    - name: 📊 Generate Report
-      run: |
-        echo "# 🏥 HMS Deployment Report" > deployment-report.md
-        echo "**SHA: ** ${{ github.sha }}" >> deployment-report.md
-        echo "**Status: ** ${{ job.status }}" >> deployment-report.md
-        echo "**Timestamp: ** $(date)" >> deployment-report.md
-        
-    - name: 📤 Upload Artifacts
+
+        '
+    - name: "\U0001F4CA Generate Report"
+      run: "echo \"# \U0001F3E5 HMS Deployment Report\" > deployment-report.md\necho\
+        \ \"**SHA: ** ${{ github.sha }}\" >> deployment-report.md\necho \"**Status:\
+        \ ** ${{ job.status }}\" >> deployment-report.md\necho \"**Timestamp: ** $(date)\"\
+        \ >> deployment-report.md\n"
+    - name: "\U0001F4E4 Upload Artifacts"
       uses: actions/upload-artifact@v4
       with:
         name: deployment-report
         path: deployment-report.md
+'on':
+  push:
+    branches:
+    - main
+    - develop
+  pull_request:
+    branches:
+    - main
+    - develop

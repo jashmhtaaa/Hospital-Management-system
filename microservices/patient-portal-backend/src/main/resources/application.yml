@@ -1,0 +1,54 @@
+server:
+  port: 8096
+  servlet:
+    context-path: /patient-portal
+
+spring:
+  application:
+    name: patient-portal-backend-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hms_patient_portal
+    username: ${DB_USERNAME:hms_user}
+    password: ${DB_PASSWORD:hms_password}
+    driver-class-name: org.postgresql.Driver
+    
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      database: 7
+
+  websocket:
+    enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+
+hms:
+  patient-portal:
+    mobile:
+      max-devices-per-user: 3
+      session-timeout-minutes: 30
+    notifications:
+      firebase:
+        project-id: ${FIREBASE_PROJECT_ID:}
+        private-key: ${FIREBASE_PRIVATE_KEY:}
+      email:
+        enabled: true
+        from: ${EMAIL_FROM:noreply@hospital.com}
+      sms:
+        enabled: true
+        provider: ${SMS_PROVIDER:twilio}
+    security:
+      max-failed-attempts: 5
+      account-lockout-minutes: 30
+      password-expiry-days: 90
+    features:
+      appointment-booking: true
+      prescription-refill: true
+      lab-results: true
+      billing-access: true
+      health-records: true

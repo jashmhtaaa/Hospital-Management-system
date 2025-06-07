@@ -1,0 +1,57 @@
+server:
+  port: 8097
+  servlet:
+    context-path: /provider-mobile
+
+spring:
+  application:
+    name: provider-mobile-backend-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hms_provider_mobile
+    username: ${DB_USERNAME:hms_user}
+    password: ${DB_PASSWORD:hms_password}
+    driver-class-name: org.postgresql.Driver
+    
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      database: 8
+
+  websocket:
+    enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+
+hms:
+  provider-mobile:
+    security:
+      session-timeout-minutes: 480  # 8 hours
+      idle-timeout-minutes: 30
+      max-concurrent-sessions: 3
+      require-biometric-auth: true
+    clinical-decision-support:
+      enabled: true
+      drug-interaction-alerts: true
+      allergy-alerts: true
+      clinical-guidelines: true
+    offline:
+      enabled: true
+      max-cache-size-mb: 500
+      sync-interval-minutes: 15
+    notifications:
+      firebase:
+        project-id: ${FIREBASE_PROJECT_ID:}
+        private-key: ${FIREBASE_PRIVATE_KEY:}
+      clinical-alerts: true
+      patient-updates: true
+      schedule-changes: true
+    integration:
+      emr-service: http://localhost:8081
+      lab-service: http://localhost:8082
+      pharmacy-service: http://localhost:8083
+      imaging-service: http://localhost:8084

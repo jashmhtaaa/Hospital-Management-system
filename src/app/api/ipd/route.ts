@@ -13,6 +13,7 @@ var __DEV__: boolean;
 import { NextRequest } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { z } from "zod";
+import { IPDProductionService } from "@/lib/ipd-service.production";
 
 // Schema for IPD Admission;
 const AdmissionSchema = z.object({
@@ -38,9 +39,9 @@ const AdmissionSchema = z.object({
   insurance_approval_number: z.string().optional(),
 });
 
-export async const GET = (request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    // Initialize DB (mock function)
+    // Use production IPD service instead of mock
 
     // Get DB instance from Cloudflare context;
     const { env } = await getCloudflareContext();
@@ -147,9 +148,10 @@ export async const GET = (request: NextRequest) {
   }
 }
 
-export async const POST = (request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    // Initialize DB (mock function)
+    // Use production IPD service instead of mock
+    const ipdService = new IPDProductionService();
 
     // Get DB instance from Cloudflare context;
     const { env } = await getCloudflareContext();
@@ -214,48 +216,37 @@ export async const POST = (request: NextRequest) {
       });
     }
 
-    // Mock transaction using sequential queries;
+    // Use production IPD service for admission creation
     try {
-      // Insert admission record      // Assuming db.query exists and returns { rows: [...] } based on db.ts mock;
-      await database.prepare(
-        `;
-        INSERT INTO IPDAdmissions (
-          patient_id, doctor_id, admission_date, expected_discharge_date, admission_reason, 
-          admission_notes, ward_id, bed_id, admission_type, package_id, insurance_id, 
-          insurance_approval_status, insurance_approval_number, status, created_by, created_at;
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active', ?, CURRENT_TIMESTAMP);
-      `;
-      ).bind(          admissionData.patient_id,
-          admissionData.doctor_id,
-          admissionData.admission_date,
-          admissionData.expected_discharge_date || undefined,
-          admissionData.admission_reason,
-          admissionData.admission_notes || undefined,
-          admissionData.ward_id,
-          admissionData.bed_id,
-          admissionData.admission_type,
-          admissionData.package_id || undefined,
-          admissionData.insurance_id || undefined,
-          admissionData.insurance_approval_status || undefined,
-          admissionData.insurance_approval_number || undefined,
-          1, // Mock user ID;
-        );
-        .run();
+      // Create admission using production service
+      const admissionData = {
+        patientId: data.patient_id,
+        attendingDoctorId: data.doctor_id,
+        admissionDate: new Date(data.admission_date),
+        admittingDiagnosis: data.admission_reason,
+        ward: data.ward_id,
+        bedNumber: data.bed_id,
+        admissionType: data.admission_type || 'elective',
+        insuranceProvider: data.insurance_id,
+        admissionNotes: data.admission_notes,
+        admittedBy: '1' // TODO: Get from authenticated user context
+      };
 
-      // Update bed status;
-      // Assuming db.query exists and returns { rows: [...] } based on db.ts mock;
-      await database;
-        .prepare("UPDATE Beds SET status = 'Occupied' WHERE bed_id = ?");
-        .bind(admissionData.bed_id);
-        .run();
+      const admissionId = await ipdService.createAdmission(admissionData);
 
-      // Cannot get last_row_id from mock db.query;
-      const mockAdmissionId = Math.floor(Math.random() * 10_000);
+      // Assign bed using production service
+      await ipdService.assignBed({
+        admissionId,
+        ward: data.ward_id,
+        room: data.room_id || '',
+        bedNumber: data.bed_id,
+        assignedBy: '1' // TODO: Get from authenticated user context
+      });
 
       return new Response(
         JSON.stringify({
-          message: "IPD Admission created successfully (mock operation)",
-          admission_id: mockAdmissionId,
+          message: "IPD Admission created successfully",
+          admission_id: admissionId,
         }),
         {
           status: 201,

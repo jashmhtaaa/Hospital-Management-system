@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -59,7 +59,7 @@ export default const AddInventoryItemPage = () {
         // Fetch only items that might be linked (e.g., Pharmacy, Consumable)
         const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed;
         if (!response.ok) throw new Error("Failed to fetch billable items");
-        const data: BillableItem[] = await response.json();
+        const data: BillableItem[] = await response.json(),
         setBillableItems(data);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "Could not load items for linking.";
@@ -88,14 +88,14 @@ export default const AddInventoryItemPage = () {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsLoading(true);
     setErrors([]);
 
     const validation = AddInventoryItemSchema.safeParse(formData);
 
     if (!validation.success) {
-      setErrors(validation.error.errors);
+      setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
         title: "Validation Error",
@@ -134,7 +134,7 @@ export default const AddInventoryItemPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]);
+      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Creation Failed",
         description: message,
@@ -146,7 +146,7 @@ export default const AddInventoryItemPage = () {
   };
 
   const getError = (fieldName: keyof FormData | "form") => {
-    return errors.find((err) => err.path[0] === fieldName)?.message;
+    return errors.find((err) => err.path[0] === fieldName)?.message
   };
 
   return (
@@ -159,53 +159,53 @@ export default const AddInventoryItemPage = () {
               <CardTitle>Item Details</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-              <div>
+<div
                 <Label htmlFor="item_name">Item Name *</Label>;
                 <Input id="item_name" name="item_name" value={formData.item_name ||;
-                  ""} onChange={handleChange} required disabled={isLoading} />;
+                  ""} onChange={handleChange} required disabled={isLoading} />
                 {getError("item_name") && <p className="text-sm text-red-500 mt-1">{getError("item_name")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="category">Category</Label>;
                 <Input id="category" name="category" value={formData.category ||;
-                  ""} onChange={handleChange} disabled={isLoading} />;
+                  ""} onChange={handleChange} disabled={isLoading} />
                 {getError("category") && <p className="text-sm text-red-500 mt-1">{getError("category")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="manufacturer">Manufacturer</Label>;
                 <Input id="manufacturer" name="manufacturer" value={formData.manufacturer ||;
-                  ""} onChange={handleChange} disabled={isLoading} />;
+                  ""} onChange={handleChange} disabled={isLoading} />
                 {getError("manufacturer") && <p className="text-sm text-red-500 mt-1">{getError("manufacturer")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="unit_of_measure">Unit of Measure</Label>;
                 <Input id="unit_of_measure" name="unit_of_measure" placeholder="e.g., Box, Vial, Each" value={formData.unit_of_measure ||;
-                  ""} onChange={handleChange} disabled={isLoading} />;
+                  ""} onChange={handleChange} disabled={isLoading} />
                 {getError("unit_of_measure") &&
                   <p className="text-sm text-red-500 mt-1">{getError("unit_of_measure")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="reorder_level">Reorder Level</Label>;
-                <Input id="reorder_level" name="reorder_level" type="number" min="0" value={formData.reorder_level ?? 0} onChange={handleChange} disabled={isLoading} />;
+                <Input id="reorder_level" name="reorder_level" type="number" min="0" value={formData.reorder_level ?? 0} onChange={handleChange} disabled={isLoading} />
                 {getError("reorder_level") && <p className="text-sm text-red-500 mt-1">{getError("reorder_level")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="billable_item_id">Link to Billable Item (Optional)</Label>;
                 <Select name="billable_item_id" onValueChange={(value) => handleSelectChange("billable_item_id", value)} disabled={isLoading ||
                   isFetchingData}>
                   <SelectTrigger id="billable_item_id">;
-                    <SelectValue placeholder="Select billable item (if applicable)" />;
+                    <SelectValue placeholder="Select billable item (if applicable)" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">None</SelectItem>;
                     {billableItems.map(b => (
                         <SelectItem key={b.item_id} value={String(b.item_id)}>;
-                            {b.item_name} (ID: {b.item_id}, Price: {b.unit_price});
+                            {b.item_name} (ID: {b.item_id}, Price: {b.unit_price})
                         </SelectItem>
                     ))}
                   </SelectContent>
@@ -215,7 +215,7 @@ export default const AddInventoryItemPage = () {
               </div>
 
               <div className="flex items-center space-x-2 mt-4 md:col-span-2">;
-                <Checkbox id="is_active" name="is_active" checked={formData.is_active} onCheckedChange={(checked) => setFormData(prev => ({...prev, is_active: Boolean(checked)}))} disabled={isLoading} />;
+                <Checkbox id="is_active" name="is_active" checked={formData.is_active} onCheckedChange={(checked) => setFormData(prev => ({...prev, is_active: Boolean(checked)}))} disabled={isLoading} />
                 <Label htmlFor="is_active">Item is Active</Label>;
                 {getError("is_active") && <p className="text-sm text-red-500 ml-4">{getError("is_active")}</p>}
               </div>
@@ -227,7 +227,7 @@ export default const AddInventoryItemPage = () {
 
           <div className="mt-6 flex justify-end gap-4">;
             <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isLoading || isFetchingData}>;
               {isLoading ? "Adding..." : "Add Inventory Item"}

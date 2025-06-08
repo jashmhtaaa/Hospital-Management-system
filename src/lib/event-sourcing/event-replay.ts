@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -79,7 +79,7 @@ export class EventReplayService {
       // Track error metrics;
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       throw error;
@@ -149,7 +149,7 @@ export class EventReplayService {
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown',
-        replayType: 'full';
+        replayType: 'full'
       });
       
       throw error;
@@ -232,7 +232,7 @@ export class EventReplayService {
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         viewName,
         errorType: error.name || 'unknown',
-        replayType: 'view';
+        replayType: 'view'
       });
       
       throw error;
@@ -282,7 +282,7 @@ export class EventReplayService {
             await notifyProgress({
               step: 'start',
               aggregateType,
-              processed: 0;
+              processed: 0
             });
           }
           
@@ -310,7 +310,7 @@ export class EventReplayService {
             await notifyProgress({
               step: 'complete',
               aggregateType,
-              processed: 0;
+              processed: 0
             });
           }
           
@@ -324,7 +324,7 @@ export class EventReplayService {
         
         logger.info(`Completed disaster recovery process`, {
           duration: `${duration.toFixed(2)}ms`,
-          aggregateTypesProcessed: aggregateTypes.length;
+          aggregateTypesProcessed: aggregateTypes.length
         });
       } finally {
         // Release lock when done;
@@ -339,7 +339,7 @@ export class EventReplayService {
       // Track error metrics;
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         errorType: error.name || 'unknown',
-        replayType: 'disaster-recovery';
+        replayType: 'disaster-recovery'
       });
       
       throw error;
@@ -380,12 +380,12 @@ export class EventReplayService {
       // Track metrics;
       metricsCollector.incrementCounter('event_replay.consistency_checks', 1, {
         aggregateType,
-        isConsistent: result.isConsistent.toString();
+        isConsistent: result.isConsistent.toString()
       });
       
       logger.info(`Completed consistency validation for ${aggregateType}:${aggregateId}`, {
         isConsistent: result.isConsistent,
-        hasDifferences: !!result.differences;
+        hasDifferences: !!result.differences
       });
       
       return result;
@@ -400,7 +400,7 @@ export class EventReplayService {
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown',
-        operationType: 'consistency-validation';
+        operationType: 'consistency-validation'
       });
       
       throw error;

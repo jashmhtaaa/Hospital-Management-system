@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,20 +21,20 @@ export interface DietaryRequestFilter {
   requestType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface CreateDietaryRequestData {
-  patientId: string;
+  patientId: string,
   requestType: string;
   startDate: Date;
   endDate?: Date;
-  mealPreferences: string[];
+  mealPreferences: string[],
   dietaryRestrictions: string[];
   allergies: string[];
   specialInstructions?: string;
-  requestedBy: string;
+  requestedBy: string
 }
 
 export class DietaryService {
@@ -72,21 +72,21 @@ export class DietaryService {
               id: true,
               name: true,
               dateOfBirth: true,
-              gender: true;
+              gender: true
             }
           },
           requestedByUser: {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           approvedByUser: {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           mealPlans: {
@@ -98,7 +98,7 @@ export class DietaryService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.dietaryRequest.count({ where });
+      prisma.dietaryRequest.count({ where })
     ]);
     
     // Convert to FHIR format;
@@ -111,7 +111,7 @@ export class DietaryService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -153,7 +153,7 @@ export class DietaryService {
         dietaryRestrictions,
         allergies,
         specialInstructions,
-        requestedById: requestedBy;
+        requestedById: requestedBy
       },
       include: {
         patient: {
@@ -161,14 +161,14 @@ export class DietaryService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true;
+            gender: true
           }
         },
         requestedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -193,7 +193,7 @@ export class DietaryService {
       metadata: {
         requestId: request.id,
         patientId: patientId,
-        requestType: requestType;
+        requestType: requestType
       }
     });
     
@@ -212,28 +212,28 @@ export class DietaryService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true;
+            gender: true
           }
         },
         requestedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         approvedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         mealPlans: {
           include: {
             meals: {
               include: {
-                menuItems: true;
+                menuItems: true
               }
             }
           },
@@ -249,7 +249,7 @@ export class DietaryService {
     if (includeFHIR) {
       return {
         data: request,
-        fhir: toFHIRDietaryRequest(request);
+        fhir: toFHIRDietaryRequest(request)
       };
     }
     
@@ -263,7 +263,7 @@ export class DietaryService {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id },
       include: { 
-        patient: true;
+        patient: true
       }
     });
     
@@ -285,24 +285,24 @@ export class DietaryService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true;
+            gender: true
           }
         },
         requestedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         approvedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
-        mealPlans: true;
+        mealPlans: true
       }
     });
     
@@ -327,7 +327,7 @@ export class DietaryService {
         metadata: {
           requestId: request.id,
           oldStatus: request.status,
-          newStatus: data.status;
+          newStatus: data.status
         }
       });
     }
@@ -342,7 +342,7 @@ export class DietaryService {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id: requestId },
       include: { 
-        patient: true;
+        patient: true
       }
     });
     
@@ -354,7 +354,7 @@ export class DietaryService {
     const existingMealPlan = await prisma.mealPlan.findFirst({
       where: {
         requestId,
-        date: new Date(data.date);
+        date: new Date(data.date)
       }
     });
     
@@ -370,19 +370,19 @@ export class DietaryService {
         status: 'PLANNED',
         notes: data.notes,
         nutritionalSummary: data.nutritionalSummary || {},
-        createdById: userId;
+        createdById: userId
       },
       include: {
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         },
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -409,7 +409,7 @@ export class DietaryService {
       include: { 
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         }
       }
@@ -423,7 +423,7 @@ export class DietaryService {
     const existingMeal = await prisma.meal.findFirst({
       where: {
         mealPlanId,
-        mealType: data.mealType;
+        mealType: data.mealType
       }
     });
     
@@ -442,7 +442,7 @@ export class DietaryService {
         fat: data.fat,
         status: 'PLANNED',
         deliveryTime: data.deliveryTime ? new Date(data.deliveryTime) : undefined,
-        notes: data.notes;
+        notes: data.notes
       }
     });
     
@@ -483,7 +483,7 @@ export class DietaryService {
     return prisma.meal.findUnique({
       where: { id: meal.id },
       include: {
-        menuItems: true;
+        menuItems: true
       }
     }) as Promise<Meal>;
   }
@@ -496,7 +496,7 @@ export class DietaryService {
     const meals = await prisma.meal.findMany({
       where: { mealPlanId },
       include: {
-        menuItems: true;
+        menuItems: true
       }
     });
     
@@ -521,7 +521,7 @@ export class DietaryService {
         protein: meal.protein || 0,
         carbohydrates: meal.carbohydrates || 0,
         fat: meal.fat || 0,
-        menuItems: meal.menuItems.length;
+        menuItems: meal.menuItems.length
       };
     }
     
@@ -549,7 +549,7 @@ export class DietaryService {
       include: { 
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         }
       }
@@ -565,19 +565,19 @@ export class DietaryService {
       include: {
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         },
         meals: {
           include: {
-            menuItems: true;
+            menuItems: true
           }
         },
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -603,7 +603,7 @@ export class DietaryService {
         metadata: {
           mealPlanId: mealPlan.id,
           requestId: mealPlan.requestId,
-          patientId: mealPlan.request.patientId;
+          patientId: mealPlan.request.patientId
         }
       });
     }
@@ -622,7 +622,7 @@ export class DietaryService {
           include: {
             request: {
               include: {
-                patient: true;
+                patient: true
               }
             }
           }
@@ -643,7 +643,7 @@ export class DietaryService {
           include: {
             request: {
               include: {
-                patient: true;
+                patient: true
               }
             }
           }
@@ -690,7 +690,7 @@ export class DietaryService {
           metadata: {
             mealPlanId: meal.mealPlanId,
             requestId: meal.mealPlan.requestId,
-            patientId: meal.mealPlan.request.patientId;
+            patientId: meal.mealPlan.request.patientId
           }
         });
       }
@@ -712,7 +712,7 @@ export class DietaryService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -736,7 +736,7 @@ export class DietaryService {
           dietaryRestrictions: [],
           allergies: [],
           medicalConditions: [],
-          lastUpdatedById: userId;
+          lastUpdatedById: userId
         },
         include: {
           patient: true,
@@ -744,7 +744,7 @@ export class DietaryService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         }
@@ -770,7 +770,7 @@ export class DietaryService {
     const profile = await prisma.nutritionalProfile.findUnique({
       where: { id },
       include: { 
-        patient: true;
+        patient: true
       }
     });
     
@@ -802,7 +802,7 @@ export class DietaryService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -840,7 +840,7 @@ export class DietaryService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         },
@@ -848,7 +848,7 @@ export class DietaryService {
         take: limit,
         orderBy: { name: 'asc' }
       }),
-      prisma.menuTemplate.count({ where });
+      prisma.menuTemplate.count({ where })
     ]);
     
     return {
@@ -857,7 +857,7 @@ export class DietaryService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -874,14 +874,14 @@ export class DietaryService {
         category: data.category,
         items: data.items || [],
         isActive: true,
-        createdById: userId;
+        createdById: userId
       },
       include: {
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -910,7 +910,7 @@ export class DietaryService {
     if (category) where.category = category;
     if (lowStock === true) {
       where.currentStock = {
-        lte: prisma.dietaryInventory.fields.minimumStock;
+        lte: prisma.dietaryInventory.fields.minimumStock
       };
     }
     
@@ -921,7 +921,7 @@ export class DietaryService {
         take: limit,
         orderBy: { itemName: 'asc' }
       }),
-      prisma.dietaryInventory.count({ where });
+      prisma.dietaryInventory.count({ where })
     ]);
     
     return {
@@ -930,7 +930,7 @@ export class DietaryService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -978,7 +978,7 @@ export class DietaryService {
         metadata: {
           itemId: updatedItem.id,
           currentStock: updatedItem.currentStock,
-          minimumStock: updatedItem.minimumStock;
+          minimumStock: updatedItem.minimumStock
         }
       });
     }
@@ -1016,10 +1016,10 @@ export class DietaryService {
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get request counts by type;
@@ -1027,10 +1027,10 @@ export class DietaryService {
       by: ['requestType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get meal counts by type;
@@ -1038,24 +1038,24 @@ export class DietaryService {
       by: ['mealType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get average nutritional values;
     const mealPlans = await prisma.mealPlan.findMany({
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         nutritionalSummary: {
-          not: null;
+          not: null
         }
       },
       select: {
-        nutritionalSummary: true;
+        nutritionalSummary: true
       }
     });
     
@@ -1083,14 +1083,14 @@ export class DietaryService {
       calories: Math.round(totalCalories / count),
       protein: Math.round(totalProtein / count),
       carbohydrates: Math.round(totalCarbs / count),
-      fat: Math.round(totalFat / count);
+      fat: Math.round(totalFat / count)
     } : null;
     
     // Get most common dietary restrictions;
     const profiles = await prisma.nutritionalProfile.findMany({
       select: {
         dietaryRestrictions: true,
-        allergies: true;
+        allergies: true
       }
     });
     

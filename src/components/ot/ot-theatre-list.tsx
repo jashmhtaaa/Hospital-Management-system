@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,12 +27,12 @@ import { Edit, Trash2, Activity, WifiOff } from "lucide-react";
 
 // Mock data structure - replace with actual API response type;
 interface Theatre {
-  id: string;
+  id: string,
   name: string;
-  location: string | null;
+  location: string | null,
   specialty: string | null;
-  status: string;
-  updated_at: string;
+  status: string,
+  updated_at: string
 }
 
 export default const OTTheatreList = () {
@@ -43,7 +43,7 @@ export default const OTTheatreList = () {
   useEffect(() => {
     const fetchTheatres = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         // Replace with actual API call;
@@ -90,12 +90,11 @@ export default const OTTheatreList = () {
             updated_at: "2025-04-28T11:00:00Z",
           },
         ];
-        setTheatres(mockData);
-
+        setTheatres(mockData),
         setLoading(false);
       } catch (error_: unknown) {
         if (error_ instanceof Error) {
-          setError(error_.message);
+          setError(error_.message)
         } else {
           setError("An unknown error occurred while fetching theatres");
         }
@@ -109,10 +108,10 @@ export default const OTTheatreList = () {
   const getStatusIcon = (status: string) => {
     switch (status.toLowerCase()) {
       case "available": {
-        return <Activity className="h-4 w-4 text-green-500" />;
+        return <Activity className="h-4 w-4 text-green-500" />
       }
       case "in_use": {
-        return <WifiOff className="h-4 w-4 text-red-500" />;
+        return <WifiOff className="h-4 w-4 text-red-500" />
       }
       case "maintenance": {
         return <Badge variant="secondary">Maintenance</Badge>;
@@ -143,7 +142,7 @@ export default const OTTheatreList = () {
               {theatres.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center">;
-                    No theatres found.;
+                    No theatres found.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -155,7 +154,7 @@ export default const OTTheatreList = () {
                     <TableCell>
                       <div className="flex items-center space-x-2">;
                         {getStatusIcon(theatre.status)}
-                        <span>
+<span
                           {theatre.status.charAt(0).toUpperCase() +
                             theatre.status.slice(1)}
                         </span>
@@ -163,19 +162,19 @@ export default const OTTheatreList = () {
                     </TableCell>
                     <TableCell>
                       <div className="flex space-x-2">;
-                        <Button;
-                          variant="outline";
-                          size="icon";
-                          title="Edit Theatre";
+                        <Button>
+                          variant="outline"
+                          size="icon"
+                          title="Edit Theatre"
                         >
-                          <Edit className="h-4 w-4" />;
+                          <Edit className="h-4 w-4" />
                         </Button>
-                        <Button;
-                          variant="destructive";
-                          size="icon";
-                          title="Delete Theatre";
+                        <Button>
+                          variant="destructive"
+                          size="icon"
+                          title="Delete Theatre"
                         >
-                          <Trash2 className="h-4 w-4" />;
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

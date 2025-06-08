@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ export interface Service<T, ID, CreateDTO, UpdateDTO> {
   findAll(options?: QueryOptions): Promise<T[]>;
   create(data: CreateDTO): Promise<T>;
   update(id: ID, data: UpdateDTO): Promise<T>;
-  delete(id: ID): Promise<boolean>;
+  delete(id: ID): Promise<boolean>
 }
 
 // Base service implementation;
@@ -88,14 +88,14 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 
 // Audit service interface;
 export interface AuditService {
-  logAuditEvent(event: AuditEvent): Promise<void>;
+  logAuditEvent(event: AuditEvent): Promise<void>
 }
 
 // Audit event interface;
 export interface AuditEvent {
-  action: string;
+  action: string,
   entityType: string;
-  entityId: string;
+  entityId: string,
   userId: string;
   details?: Record<string, any>;
 }

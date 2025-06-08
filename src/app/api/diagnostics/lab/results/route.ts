@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,39 +16,39 @@ import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption 
 
 // FHIR-compliant Observation resource structure;
 interface FHIRObservation {
-  resourceType: "Observation";
+  resourceType: "Observation",
   id: string;
   meta: {
-    versionId: string;
+    versionId: string,
     lastUpdated: string;
     security?: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
   };
-  status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown";
+  status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown",
   category: Array<{
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
   }>;
   code: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   subject: {
     reference: string;
     display?: string;
   };
   encounter?: {
-    reference: string;
+    reference: string
   };
   effectiveDateTime: string;
   issued?: string;
@@ -57,66 +57,66 @@ interface FHIRObservation {
     display?: string;
   }>;
   valueQuantity?: {
-    value: number;
+    value: number,
     unit: string;
-    system: string;
-    code: string;
+    system: string,
+    code: string
   };
   valueString?: string;
   valueBoolean?: boolean;
   valueInteger?: number;
   valueCodeableConcept?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   dataAbsentReason?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   interpretation?: Array<{
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   }>;
   note?: Array<{
-    text: string;
+    text: string
   }>;
   referenceRange?: Array<{
     low?: {
-      value: number;
+      value: number,
       unit: string;
-      system: string;
-      code: string;
+      system: string,
+      code: string
     };
     high?: {
-      value: number;
+      value: number,
       unit: string;
-      system: string;
-      code: string;
+      system: string,
+      code: string
     };
     text?: string;
   }>;
   specimen?: {
-    reference: string;
+    reference: string
   };
   method?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   device?: {
     reference: string;
@@ -171,7 +171,7 @@ interface LabResultCreateBody {
 }
 
 // GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -340,7 +340,7 @@ export async const GET = (request: NextRequest) {
           id: result.id.toString(),
           meta: {
             versionId: "1",
-            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString();
+            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString()
           },
           status: mapStatusToFHIR(result.status || "preliminary"),
           category: [
@@ -349,7 +349,7 @@ export async const GET = (request: NextRequest) {
                 {
                   system: "http://terminology.hl7.org/CodeSystem/observation-category",
                   code: "laboratory",
-                  display: "Laboratory";
+                  display: "Laboratory"
                 }
               ]
             }
@@ -359,10 +359,10 @@ export async const GET = (request: NextRequest) {
               {
                 system: "http://loinc.org",
                 code: result.parameter_loinc_code || result.loinc_code || "unknown",
-                display: result.parameter_name || result.test_name;
+                display: result.parameter_name || result.test_name
               }
             ],
-            text: result.parameter_name || result.test_name;
+            text: result.parameter_name || result.test_name
           },
           subject: {
             reference: `Patient/${result.patient_id}`,
@@ -372,7 +372,7 @@ export async const GET = (request: NextRequest) {
           performer: [
             {
               reference: `Practitioner/${result.performed_by}`,
-              display: result.performed_by_username;
+              display: result.performed_by_username
             }
           ]
         };
@@ -383,7 +383,7 @@ export async const GET = (request: NextRequest) {
           if (!resource.performer) resource.performer = [];
           resource.performer.push({
             reference: `Practitioner/${result.verified_by}`,
-            display: result.verified_by_username;
+            display: result.verified_by_username
           });
         }
         
@@ -401,10 +401,10 @@ export async const GET = (request: NextRequest) {
               {
                 system: result.method_system || "http://terminology.hl7.org/CodeSystem/v2-0936",
                 code: result.method_code || "unknown",
-                display: result.method;
+                display: result.method
               }
             ],
-            text: result.method;
+            text: result.method
           };
         }
         
@@ -412,7 +412,7 @@ export async const GET = (request: NextRequest) {
         if (result.device_id) {
           resource.device = {
             reference: `Device/${result.device_id}`,
-            display: result.device_name;
+            display: result.device_name
           };
         }
         
@@ -422,7 +422,7 @@ export async const GET = (request: NextRequest) {
             value: result.result_value_numeric,
             unit: result.unit || "",
             system: result.unit_system || "http://unitsofmeasure.org",
-            code: result.unit_code || result.unit || "";
+            code: result.unit_code || result.unit || ""
           };
         } else if (result.result_value_text) {
           resource.valueString = result.result_value_text;
@@ -432,10 +432,10 @@ export async const GET = (request: NextRequest) {
               {
                 system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                 code: result.result_value_coded,
-                display: result.result_value_coded;
+                display: result.result_value_coded
               }
             ],
-            text: result.result_value_coded;
+            text: result.result_value_coded
           };
         } else if (result.result_value_boolean !== null && result.result_value_boolean !== undefined) {
           resource.valueBoolean = result.result_value_boolean;
@@ -446,7 +446,7 @@ export async const GET = (request: NextRequest) {
               value: Number(result.result_value),
               unit: result.unit || "",
               system: result.unit_system || "http://unitsofmeasure.org",
-              code: result.unit_code || result.unit || "";
+              code: result.unit_code || result.unit || ""
             };
           } else {
             resource.valueString = result.result_value;
@@ -458,10 +458,10 @@ export async const GET = (request: NextRequest) {
               {
                 system: "http://terminology.hl7.org/CodeSystem/data-absent-reason",
                 code: "unknown",
-                display: "Unknown";
+                display: "Unknown"
               }
             ],
-            text: "Result value not provided";
+            text: "Result value not provided"
           };
         }
         
@@ -473,10 +473,10 @@ export async const GET = (request: NextRequest) {
                 {
                   system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                   code: mapInterpretationToFHIR(result.interpretation),
-                  display: result.interpretation;
+                  display: result.interpretation
                 }
               ],
-              text: result.interpretation;
+              text: result.interpretation
             }
           ];
         }
@@ -487,7 +487,7 @@ export async const GET = (request: NextRequest) {
           
           if (result.notes) {
             resource.note.push({
-              text: result.notes;
+              text: result.notes
             });
           }
           
@@ -514,7 +514,7 @@ export async const GET = (request: NextRequest) {
                 value: range.value_low,
                 unit: range.unit || "",
                 system: "http://unitsofmeasure.org",
-                code: range.unit || "";
+                code: range.unit || ""
               };
             }
             
@@ -523,7 +523,7 @@ export async const GET = (request: NextRequest) {
                 value: range.value_high,
                 unit: range.unit || "",
                 system: "http://unitsofmeasure.org",
-                code: range.unit || "";
+                code: range.unit || ""
               };
             }
             
@@ -559,7 +559,7 @@ export async const GET = (request: NextRequest) {
             {
               system: "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
               code: "R",
-              display: "Restricted";
+              display: "Restricted"
             }
           ];
         }
@@ -574,11 +574,11 @@ export async const GET = (request: NextRequest) {
         link: [
           {
             relation: "self",
-            url: request.url;
+            url: request.url
           }
         ],
         entry: fhirResources.map(resource => ({
-          resource;
+          resource
         }));
       });
     } else {
@@ -589,7 +589,7 @@ export async const GET = (request: NextRequest) {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize);
+          totalPages: Math.ceil(totalCount / pageSize)
         }
       });
     }
@@ -604,7 +604,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -808,7 +808,7 @@ export async const POST = (request: NextRequest) {
       } else {
         deltaCheckResult = {
           passed: true,
-          notes: "No comparable previous result found for delta check";
+          notes: "No comparable previous result found for delta check"
         };
       }
     }
@@ -894,7 +894,7 @@ export async const POST = (request: NextRequest) {
       const encryptedData = await encryptSensitiveData({
         notes: body.notes,
         correctionReason: body.correction_reason,
-        deltaCheckNotes: deltaCheckResult?.notes;
+        deltaCheckNotes: deltaCheckResult?.notes
       });
       
       // Insert result;
@@ -1131,7 +1131,7 @@ export async const POST = (request: NextRequest) {
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -1202,7 +1202,7 @@ export async const PUT = (
           notes: body.notes !== undefined ? body.notes : existingResult.notes,
           is_corrected: true,
           correction_reason: body.correction_reason,
-          previous_result_id: existingResult.id;
+          previous_result_id: existingResult.id
         };
         
         // Mark the existing result as corrected;
@@ -1214,7 +1214,7 @@ export async const PUT = (
         // Encrypt sensitive data if needed;
         const encryptedData = await encryptSensitiveData({
           notes: correctionBody.notes,
-          correctionReason: correctionBody.correction_reason;
+          correctionReason: correctionBody.correction_reason
         });
         
         // Insert correction;
@@ -1312,14 +1312,14 @@ export async const PUT = (
         
         return NextResponse.json({
           ...createdCorrection,
-          message: "Created new result as a correction";
+          message: "Created new result as a correction"
         }, { status: 201 });
       } else {
         // Regular update of an unverified result;
         // Encrypt sensitive data if needed;
         const encryptedData = await encryptSensitiveData({
           notes: body.notes,
-          correctionReason: body.correction_reason;
+          correctionReason: body.correction_reason
         });
         
         // Build update query;
@@ -1531,7 +1531,7 @@ export async const PUT = (
 export async const POST_VERIFY = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -1582,7 +1582,7 @@ export async const POST_VERIFY = (
     try {
       // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes
       });
       
       // Update result;
@@ -1655,7 +1655,7 @@ export async const POST_VERIFY = (
       // Return the verified result;
       return NextResponse.json({
         ...verifiedResult,
-        message: "Result verified successfully";
+        message: "Result verified successfully"
       });
     } catch (error) {
       // Rollback transaction on error;
@@ -1673,7 +1673,7 @@ export async const POST_VERIFY = (
 }
 
 // GET /api/diagnostics/lab/results/critical - Get critical results;
-export async const GET_CRITICAL = (request: NextRequest) {
+export async const GET_CRITICAL = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -1755,7 +1755,7 @@ export async const GET_CRITICAL = (request: NextRequest) {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
@@ -1772,7 +1772,7 @@ export async const GET_CRITICAL = (request: NextRequest) {
 export async const PUT_CRITICAL = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -1816,7 +1816,7 @@ export async const PUT_CRITICAL = (
     // Encrypt sensitive data if needed;
     const encryptedData = await encryptSensitiveData({
       resolutionNotes: body.resolution_notes,
-      notifiedTo: body.notified_to;
+      notifiedTo: body.notified_to
     });
     
     // Update alert;
@@ -1922,8 +1922,7 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
       return "cancelled";
     case "error":
       return "entered-in-error";
-    default:
-      return "unknown";
+    default: return "unknown"
   }
 }
 
@@ -1946,7 +1945,6 @@ const mapInterpretationToFHIR = (interpretation: string): string {
       return ">"; 
     case "off-scale-low":
       return "<";
-    default:
-      return "N";
+    default: return "N"
   }
 }

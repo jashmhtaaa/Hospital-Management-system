@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,7 +38,7 @@ export class TemplateService {
           variables: data.variables,
           previewImage: data.previewImage,
           isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId;
+          createdById: userId
         }
       });
       
@@ -49,7 +49,7 @@ export class TemplateService {
         userId,
         details: { 
           templateName: template.name,
-          templateType: template.type;
+          templateType: template.type
         }
       });
       
@@ -73,7 +73,7 @@ export class TemplateService {
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         }
@@ -139,14 +139,14 @@ export class TemplateService {
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -156,7 +156,7 @@ export class TemplateService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -191,7 +191,7 @@ export class TemplateService {
         userId,
         details: { 
           templateName: updatedTemplate.name,
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
       
@@ -230,7 +230,7 @@ export class TemplateService {
         userId,
         details: { 
           templateName: existingTemplate.name,
-          templateType: existingTemplate.type;
+          templateType: existingTemplate.type
         }
       });
     } catch (error) {

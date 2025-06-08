@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ interface ReferenceRangeCreateBody {
 }
 
 // GET /api/diagnostics/lab/reference-ranges - Get reference ranges;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -89,7 +89,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/reference-ranges - Create a new reference range;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -241,7 +241,7 @@ export async const POST = (request: NextRequest) {
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -487,7 +487,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -523,7 +523,7 @@ export async const DELETE = (
     );
     
     return NextResponse.json({
-      message: "Reference range deleted successfully";
+      message: "Reference range deleted successfully"
     });
   } catch (error: unknown) {
 

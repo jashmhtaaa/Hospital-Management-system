@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,7 +27,7 @@ const BreadcrumbList = React.forwardRef<;
   HTMLOListElement,
   React.ComponentPropsWithoutRef<"ol">
 >(({ className, ...props }, ref) => (
-  <ol;
+  <ol>
     ref={ref}
     className={cn(
       "flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5",
@@ -42,7 +42,7 @@ const BreadcrumbItem = React.forwardRef<;
   HTMLLIElement,
   React.ComponentPropsWithoutRef<"li">
 >(({ className, ...props }, ref) => (
-  <li;
+  <li>
     ref={ref}
     className={cn("inline-flex items-center gap-1.5", className)}
     {...props}
@@ -59,7 +59,7 @@ const BreadcrumbLink = React.forwardRef<;
   const Comp = asChild ? Slot : "a";
 
   return (
-    <Comp;
+    <Comp>
       ref={ref}
       className={cn("transition-colors hover:text-foreground", className)}
       {...props}
@@ -72,11 +72,11 @@ const BreadcrumbPage = React.forwardRef<;
   HTMLSpanElement,
   React.ComponentPropsWithoutRef<"span">
 >(({ className, ...props }, ref) => (
-  <span;
+<span
     ref={ref}
-    role="link";
-    aria-disabled="true";
-    aria-current="page";
+    role="link"
+    aria-disabled="true"
+    aria-current="page"
     className={cn("font-normal text-foreground", className)}
     {...props}
   />
@@ -88,9 +88,9 @@ const BreadcrumbSeparator = ({
   className,
   ...props;
 }: React.ComponentProps<"li">) => (
-  <li;
-    role="presentation";
-    aria-hidden="true";
+  <li>
+    role="presentation"
+    aria-hidden="true"
     className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}
     {...props}
   >
@@ -103,14 +103,13 @@ const BreadcrumbEllipsis = ({
   className,
   ...props;
 }: React.ComponentProps<"span">) => (
-  <span;
-    role="presentation";
-    aria-hidden="true";
+<span role="presentation"
+    aria-hidden="true"
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />;
-    <span className="sr-only">More</span>;
+    <MoreHorizontal className="h-4 w-4" />
+    <span className="sr-only">More</span>
   </span>
 );
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis";

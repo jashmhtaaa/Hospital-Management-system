@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {}
 
 const Form = React.forwardRef<HTMLFormElement, FormProps>(
   ({ className, ...props }, ref) => (
-    <form;
+    <form>
       ref={ref}
       className={cn("space-y-6", className)}
       {...props}
@@ -33,7 +33,7 @@ interface FormFieldProps {
   name: string;
   label?: string;
   error?: string;
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const FormField = ({ name, label, error, children }: FormFieldProps) {
@@ -54,7 +54,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const FormInput = ({ label, name, error, className, ...props }: FormInputProps) {
   return (
     <FormField name={name || ''} label={label} error={error}>;
-      <Input;
+      <Input>
         id={name} 
         name={name} 
         className={cn(error && "border-red-500", className)} 
@@ -72,7 +72,7 @@ interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEle
 const FormTextarea = ({ label, name, error, className, ...props }: FormTextareaProps) {
   return (
     <FormField name={name || ''} label={label} error={error}>;
-      <Textarea;
+      <Textarea>
         id={name} 
         name={name} 
         className={cn(error && "border-red-500", className)} 
@@ -91,7 +91,7 @@ interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> 
 const FormSelect = ({ label, name, error, options, className, ...props }: FormSelectProps) {
   return (
     <FormField name={name || ''} label={label} error={error}>;
-      <select;
+      <select>
         id={name}
         name={name}
         className={cn(
@@ -117,7 +117,7 @@ interface FormSubmitProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 
 const FormSubmit = ({ children, isLoading, className, ...props }: FormSubmitProps) {
   return (
-    <Button;
+    <Button>
       type="submit"
       className={cn("w-full", className)}
       disabled={isLoading}

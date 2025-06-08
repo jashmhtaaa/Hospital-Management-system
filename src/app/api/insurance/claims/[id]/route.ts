@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -355,7 +355,7 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
   logger.info('Claim submitted', { 
     claimId, 
     submittedBy: data.submittedBy,
-    method: data.submissionMethod;
+    method: data.submissionMethod
   });
   
   return createSuccessResponse(updatedClaim);
@@ -393,8 +393,7 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
     case 'pending_additional_info':
       newClaimStatus = 'additional_info_needed';
       break;
-    default:
-      newClaimStatus = existingClaim.status;
+    default: newClaimStatus = existingClaim.status
   }
   
   // Create response and update claim in a transaction;
@@ -467,7 +466,7 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
   logger.info('Claim response recorded', { 
     claimId, 
     responseId: result.response.id,
-    status: data.status;
+    status: data.status
   });
   
   return createSuccessResponse(result.updatedClaim);

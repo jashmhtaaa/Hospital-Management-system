@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,15 +18,15 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
 interface OTChecklistTemplateModalProps {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
-  onSubmit: (data: unknown) => void;
+  onSubmit: (data: unknown) => void
 }
 
 /**
  * Operation Theatre checklist template modal component;
  */
-export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTChecklistTemplateModalProps) {
+export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTChecklistTemplateModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here;
@@ -43,13 +43,13 @@ export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheckl
           <div className="grid gap-4 py-4">;
             <div className="space-y-2">;
               <Label htmlFor="name">Checklist Name</Label>;
-              <Input id="name" placeholder="e.g., Pre-operative Checklist" />;
+              <Input id="name" placeholder="e.g., Pre-operative Checklist" />
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="surgeryType">Surgery Type</Label>;
-              <Select;
-                id="surgeryType";
+              <Select>
+                id="surgeryType"
                 options={[
                   { value: "", label: "Select surgery type" },
                 ]}
@@ -58,13 +58,13 @@ export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheckl
             
             <div className="space-y-2">;
               <Label htmlFor="items">Checklist Items</Label>;
-              <Textarea id="items" placeholder="Enter each item on a new line" rows={6} />;
+              <Textarea id="items" placeholder="Enter each item on a new line" rows={6} />
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="status">Status</Label>;
-              <Select;
-                id="status";
+              <Select>
+                id="status"
                 options={[
                   { value: "active", label: "Active" },
                   { value: "draft", label: "Draft" },
@@ -75,14 +75,14 @@ export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheckl
             
             <div className="space-y-2">;
               <Label htmlFor="notes">Notes</Label>;
-              <Textarea id="notes" placeholder="Additional information" />;
+              <Textarea id="notes" placeholder="Additional information" />
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>;
-              Cancel;
+              Cancel
             </Button>
-            <Button type="submit">Save</Button>;
+            <Button type="submit">Save</Button>
           </DialogFooter>
         </form>
       </DialogContent>

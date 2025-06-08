@@ -21,12 +21,12 @@ const getLabOrderId = (pathname: string): number | null {
 // POST handler for adding an item (test) to a lab order;
 const AddLabOrderItemSchema = z.object({
     billable_item_id: z.number().int().positive(), // Link to the specific test in BillableItems;
-    test_name: z.string().min(1).optional(), // Optional: Can be fetched from BillableItems;
+    test_name: z.string().min(1).optional(), // Optional: Can be fetched from BillableItems,
     sample_type: z.string().optional().nullable(),
     notes: z.string().optional().nullable(), // Specific notes for this test;
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

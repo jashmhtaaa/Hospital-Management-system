@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/pacs/images;
  * Get PACS images with optional filtering;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -167,7 +167,7 @@ export async const GET = (request: NextRequest) {
  * GET /api/diagnostics/pacs/images/:id;
  * Get a specific PACS image by ID;
  */
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -232,7 +232,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
  * POST /api/diagnostics/pacs/images/retrieve;
  * Retrieve images from PACS server;
  */
-export async const POST_RETRIEVE = (request: NextRequest) {
+export async const POST_RETRIEVE = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -273,7 +273,7 @@ export async const POST_RETRIEVE = (request: NextRequest) {
     
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured';
+        error: 'PACS not configured'
       }, { status: 400 });
     }
 
@@ -358,7 +358,7 @@ export async const POST_RETRIEVE = (request: NextRequest) {
         patientId,
         accessionNumber,
         studyInstanceUid,
-        imagesRetrieved: retrievedImages.length;
+        imagesRetrieved: retrievedImages.length
       }
     });
     
@@ -368,7 +368,7 @@ export async const POST_RETRIEVE = (request: NextRequest) {
       retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity;
       totalImages: retrievedImages.length,
       uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size,
-      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size;
+      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
     });
   } catch (error) {
 
@@ -383,7 +383,7 @@ export async const POST_RETRIEVE = (request: NextRequest) {
  * POST /api/diagnostics/pacs/images/store;
  * Store images to PACS server;
  */
-export async const POST_STORE = (request: NextRequest) {
+export async const POST_STORE = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -427,7 +427,7 @@ export async const POST_STORE = (request: NextRequest) {
     
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured';
+        error: 'PACS not configured'
       }, { status: 400 });
     }
 
@@ -518,7 +518,7 @@ export async const POST_STORE = (request: NextRequest) {
  * POST /api/diagnostics/pacs/images/:id/annotations;
  * Add annotations to a PACS image;
  */
-export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -550,7 +550,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
     // Validate required fields;
     if (!annotationType || !coordinates) {
       return NextResponse.json({ 
-        error: 'Annotation type and coordinates are required';
+        error: 'Annotation type and coordinates are required'
       }, { status: 400 });
     }
 
@@ -592,7 +592,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
         imageId: id,
         annotationType,
         hasText: !!text,
-        hasMeasurements: !!measurements;
+        hasMeasurements: !!measurements
       }
     });
 
@@ -607,7 +607,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
       ...createdAnnotation.results[0],
       coordinates: JSON.parse(createdAnnotation.results[0].coordinates),
       measurements: createdAnnotation.results[0].measurements ? 
-        JSON.parse(createdAnnotation.results[0].measurements) : null;
+        JSON.parse(createdAnnotation.results[0].measurements) : null
     };
 
     return NextResponse.json(annotation, { status: 201 });
@@ -624,7 +624,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
  * GET /api/diagnostics/pacs/images/:id/annotations;
  * Get annotations for a PACS image;
  */
-export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -665,7 +665,7 @@ export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params
         const annotations = result.results.map(annotation => ({
           ...annotation,
           coordinates: JSON.parse(annotation.coordinates),
-          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null;
+          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null
         }));
 
         // Log access;

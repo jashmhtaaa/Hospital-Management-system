@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../l
  * 
  * Get document templates based on filters;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Get session;
     const session = await getServerSession(authOptions);
@@ -69,7 +69,7 @@ export async const GET = (request: NextRequest) {
  * 
  * Create a new document template;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Get session;
     const session = await getServerSession(authOptions);

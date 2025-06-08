@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -35,7 +35,7 @@ const salaryStructureSchema = z.object({
 });
 
 // POST handler for creating salary structure;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -63,7 +63,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET handler for listing salary structures;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const salaryStructures = await salaryService.listSalaryStructures();
     

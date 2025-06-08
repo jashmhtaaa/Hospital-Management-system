@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,22 +24,22 @@ const TEST_USERS = {
   doctor: {
     email: 'doctor@test.hospital.com',
     password: 'Doctor123!',
-    role: 'DOCTOR';
+    role: 'DOCTOR'
   },
   nurse: {
     email: 'nurse@test.hospital.com', 
     password: 'Nurse123!',
-    role: 'NURSE';
+    role: 'NURSE'
   },
   admin: {
     email: 'admin@test.hospital.com',
     password: 'Admin123!',
-    role: 'ADMIN';
+    role: 'ADMIN'
   },
   billing: {
     email: 'billing@test.hospital.com',
     password: 'Billing123!',
-    role: 'BILLING_STAFF';
+    role: 'BILLING_STAFF'
   }
 };
 
@@ -52,7 +52,7 @@ const TEST_PATIENT = {
   email: 'john.doe@test.com',
   address: '123 Test Street, Test City',
   emergencyContact: 'Jane Doe',
-  emergencyPhone: '+1234567891';
+  emergencyPhone: '+1234567891'
 };
 
 // Helper functions;
@@ -94,7 +94,7 @@ test.describe('Critical Flow: Patient Registration to OPD Consultation', () => {
     await loginUser(page, TEST_USERS.admin);
     
     // Step 2: Register new patient;
-    const patientId = await createTestPatient(page);
+    const patientId = await createTestPatient(page),
     expect(patientId).toBeTruthy();
     
     // Step 3: Verify patient appears in patient list;
@@ -342,7 +342,7 @@ test.describe('Critical Flow: Billing and Payment', () => {
     await page.click('[data-testid="calculate-total"]');
     
     // Verify total amount;
-    const totalAmount = await page.textContent('[data-testid="total-amount"]');
+    const totalAmount = await page.textContent('[data-testid="total-amount"]'),
     expect(totalAmount).toBeTruthy();
     
     // Save bill;
@@ -491,20 +491,20 @@ test.describe('Performance and Accessibility', () => {
     await loginUser(page, TEST_USERS.admin);
     
     // Check for proper heading structure;
-    const headings = await page.locator('h1, h2, h3, h4, h5, h6').count();
+    const headings = await page.locator('h1, h2, h3, h4, h5, h6').count(),
     expect(headings).toBeGreaterThan(0);
     
     // Check for alt attributes on images;
     const images = await page.locator('img').count();
     if (images > 0) {
-      const imagesWithAlt = await page.locator('img[alt]').count();
+      const imagesWithAlt = await page.locator('img[alt]').count(),
       expect(imagesWithAlt).toBe(images);
     }
     
     // Check for form labels;
     const inputs = await page.locator('input[type="text"], input[type="email"], input[type="password"]').count();
     if (inputs > 0) {
-      const inputsWithLabels = await page.locator('input[aria-label], input[aria-labelledby], label input').count();
+      const inputsWithLabels = await page.locator('input[aria-label], input[aria-labelledby], label input').count(),
       expect(inputsWithLabels).toBeGreaterThan(0);
     }
   });

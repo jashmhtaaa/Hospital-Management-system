@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -51,7 +51,7 @@ export class MedicationReconciliationService {
       resourceType: 'Patient',
       resourceId: patientId,
       details: `Starting ${sourceType} reconciliation for ${targetType} medications`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
 
     // Get source medications;
@@ -83,7 +83,7 @@ export class MedicationReconciliationService {
       resourceType: 'Patient',
       resourceId: patientId,
       details: `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     return {
@@ -249,8 +249,7 @@ export class MedicationReconciliationService {
           );
         ];
       
-      default:
-        return commonMedications;
+      default: return commonMedications
     }
   }
   
@@ -280,7 +279,7 @@ export class MedicationReconciliationService {
           discrepancyType: 'omission',
           description: `${sourceMed.name} ${sourceMed.strength} ${sourceMed.unit} ${sourceMed.form} is in source but not in target`,
           severity: this.calculateDiscrepancySeverity(sourceMed),
-          status: 'unresolved';
+          status: 'unresolved'
         });
       }
     }
@@ -298,7 +297,7 @@ export class MedicationReconciliationService {
           discrepancyType: 'addition',
           description: `${targetMed.name} ${targetMed.strength} ${targetMed.unit} ${targetMed.form} is in target but not in source`,
           severity: this.calculateDiscrepancySeverity(targetMed),
-          status: 'unresolved';
+          status: 'unresolved'
         });
       }
     }
@@ -315,7 +314,7 @@ export class MedicationReconciliationService {
           discrepancyType: 'dosing',
           description: `Dosing difference: ${sourceMed.name} ${sourceMed.strength} ${sourceMed.unit} in source vs ${targetMed.strength} ${targetMed.unit} in target`,
           severity: this.calculateDiscrepancySeverity(sourceMed, targetMed),
-          status: 'unresolved';
+          status: 'unresolved'
         });
       }
     }
@@ -375,7 +374,7 @@ export class MedicationReconciliationService {
       resourceType: 'MedicationReconciliation',
       resourceId: reconciliationId,
       details: `Resolved discrepancy ${discrepancyId} with action: ${action}`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     // Create resolution action;
@@ -385,7 +384,7 @@ export class MedicationReconciliationService {
       action,
       providerId,
       timestamp: new Date(),
-      notes: notes || '';
+      notes: notes || ''
     };
     
     // In a real implementation, this would return the updated reconciliation from the database;
@@ -424,7 +423,7 @@ export class MedicationReconciliationService {
       resourceType: 'MedicationReconciliation',
       resourceId: reconciliationId,
       details: 'Finalized medication reconciliation',
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     // In a real implementation, this would return the updated reconciliation from the database;
@@ -469,7 +468,7 @@ export class MedicationReconciliationService {
         resolvedDiscrepancies: 3,
         highSeverityCount: 1,
         mediumSeverityCount: 1,
-        lowSeverityCount: 1;
+        lowSeverityCount: 1
       },
       discrepancies: [
         {
@@ -483,7 +482,7 @@ export class MedicationReconciliationService {
             action: 'continue',
             providerId: 'provider456',
             timestamp: new Date(),
-            notes: 'Continue medication as prescribed';
+            notes: 'Continue medication as prescribed'
           }
         },
         {
@@ -497,7 +496,7 @@ export class MedicationReconciliationService {
             action: 'continue',
             providerId: 'provider456',
             timestamp: new Date(),
-            notes: 'Added for DVT prophylaxis during hospitalization';
+            notes: 'Added for DVT prophylaxis during hospitalization'
           }
         },
         {
@@ -512,7 +511,7 @@ export class MedicationReconciliationService {
             action: 'modify',
             providerId: 'provider456',
             timestamp: new Date(),
-            notes: 'Increased dose due to elevated blood glucose';
+            notes: 'Increased dose due to elevated blood glucose'
           }
         }
       ]
@@ -541,7 +540,7 @@ export class MedicationReconciliationService {
         reconciliationDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago;
         status: 'completed',
         discrepancyCount: 3,
-        resolvedCount: 3;
+        resolvedCount: 3
       },
       {
         id: 'recon2',
@@ -552,7 +551,7 @@ export class MedicationReconciliationService {
         reconciliationDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago;
         status: 'completed',
         discrepancyCount: 2,
-        resolvedCount: 2;
+        resolvedCount: 2
       },
       {
         id: 'recon3',
@@ -563,7 +562,7 @@ export class MedicationReconciliationService {
         reconciliationDate: new Date(),
         status: 'in-progress',
         discrepancyCount: 4,
-        resolvedCount: 1;
+        resolvedCount: 1
       }
     ];
   }
@@ -599,7 +598,7 @@ export class MedicationReconciliationService {
       resourceType: 'MedicationReconciliation',
       resourceId: reconciliationId,
       details: `Created order for medication ${medicationId} from reconciliation`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     // In a real implementation, this would create an order in the database;
@@ -636,7 +635,7 @@ export class MedicationReconciliationService {
       resourceType: 'MedicationReconciliation',
       resourceId: reconciliationId,
       details: 'Session timed out during reconciliation',
-      severity: 'WARNING';
+      severity: 'WARNING'
     });
     
     // In a real implementation, this would save the current state;
@@ -666,7 +665,7 @@ export class MedicationReconciliationService {
         reconciliationDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago;
         status: 'in-progress',
         discrepancyCount: 5,
-        resolvedCount: 2;
+        resolvedCount: 2
       },
       {
         id: 'recon5',
@@ -677,7 +676,7 @@ export class MedicationReconciliationService {
         reconciliationDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago;
         status: 'in-progress',
         discrepancyCount: 3,
-        resolvedCount: 0;
+        resolvedCount: 0
       }
     ];
   }

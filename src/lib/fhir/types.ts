@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -100,12 +100,12 @@ export interface FHIRAttachment {
 export interface FHIRAnnotation {
   author?: FHIRReference | string;
   time?: string;
-  text: string;
+  text: string
 }
 
 export interface FHIRNarrative {
-  status: 'generated' | 'extensions' | 'additional' | 'empty';
-  div: string;
+  status: 'generated' | 'extensions' | 'additional' | 'empty',
+  div: string
 }
 
 export interface FHIRDuration {
@@ -133,8 +133,8 @@ export interface FHIRBundle<T = any> extends FHIRBase {
 }
 
 export interface FHIRBundleLink {
-  relation: string;
-  url: string;
+  relation: string,
+  url: string
 }
 
 export interface FHIRBundleEntry<T = any> {
@@ -146,7 +146,7 @@ export interface FHIRBundleEntry<T = any> {
     score?: number;
   };
   request?: {
-    method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+    method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
     url: string;
     ifNoneMatch?: string;
     ifModifiedSince?: string;

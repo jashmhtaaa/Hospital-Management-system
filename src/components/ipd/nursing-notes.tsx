@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -44,7 +44,7 @@ interface IntakeOutput {
 }
 
 interface NursingNote {
-  id: string;
+  id: string,
   note_date: string;
   nurse_first_name: string; // Assuming this comes from a join;
   nurse_last_name: string; // Assuming this comes from a join;
@@ -52,13 +52,13 @@ interface NursingNote {
   intake_output?: string; // JSON string;
   medication_given?: string;
   procedures?: string;
-  notes: string;
+  notes: string
 }
 
 interface AdmissionInfo {
-  admission_number: string;
+  admission_number: string,
   admission_date: string;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
@@ -66,13 +66,13 @@ interface AdmissionInfo {
 interface FormData {
   vital_signs: string; // JSON string;
   intake_output: string; // JSON string;
-  medication_given: string;
+  medication_given: string,
   procedures: string;
-  notes: string;
+  notes: string
 }
 
 interface NursingNotesProperties {
-  admissionId: string | null;
+  admissionId: string | null
 }
 
 const defaultVitalSigns: VitalSigns = {
@@ -111,13 +111,13 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   useEffect(() => {
     const fetchNursingNotes = async (): Promise<void> => {
       if (!admissionId) {
-        setLoading(false);
+        setLoading(false),
         setError("Admission ID is missing.");
         return;
       }
 
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
         // Simulate API call;
         // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`);
@@ -160,7 +160,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
         };
-        setNursingNotes(mockNotes);
+        setNursingNotes(mockNotes),
         setPatientInfo(mockPatientInfo);
       } catch (error_) {
         const message =;
@@ -188,7 +188,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       setSubmitError("Admission ID is missing.");
       return;
     }
-    setSubmitting(true);
+    setSubmitting(true),
     setSubmitError(undefined);
     setSubmitSuccess(false);
 
@@ -216,7 +216,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       const submissionData = {
         ...formData,
         note_date: new Date().toISOString(),
-        // nurse_id: session?.user?.id // Get from session in real app;
+        // nurse_id: session?.user?.id // Get from session in real app
       };
 
       // Simulate API call;
@@ -325,19 +325,13 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         </CardHeader>
         <CardContent>
           {submitSuccess && (
-            <div;
-              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4";
-              role="alert";
-            >
+<div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
               Nursing note added successfully!
             </div>
           )}
 
           {submitError && (
-            <div;
-              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4";
-              role="alert";
-            >
+<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
               Error: {submitError}
             </div>
           )}
@@ -346,92 +340,92 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <label htmlFor="vital_signs" className="font-medium text-sm">;
-                  Vital Signs (JSON);
+                  Vital Signs (JSON)
                 </label>
-                <Textarea;
-                  id="vital_signs";
-                  name="vital_signs";
+                <Textarea>
+                  id="vital_signs"
+                  name="vital_signs"
                   value={formData.vital_signs}
                   onChange={handleChange}
-                  placeholder="Enter vital signs in JSON format";
-                  className="font-mono text-sm min-h-[150px] bg-gray-50";
+                  placeholder="Enter vital signs in JSON format"
+                  className="font-mono text-sm min-h-[150px] bg-gray-50"
                   disabled={submitting}
                 />
                 <p className="text-xs text-gray-500">;
-                  Edit values for temp, pulse, resp rate, BP, SpO2, pain.;
+                  Edit values for temp, pulse, resp rate, BP, SpO2, pain.
                 </p>
               </div>
 
               <div className="space-y-2">;
                 <label htmlFor="intake_output" className="font-medium text-sm">;
-                  Intake/Output (JSON);
+                  Intake/Output (JSON)
                 </label>
-                <Textarea;
-                  id="intake_output";
-                  name="intake_output";
+                <Textarea>
+                  id="intake_output"
+                  name="intake_output"
                   value={formData.intake_output}
                   onChange={handleChange}
-                  placeholder="Enter intake/output in JSON format";
-                  className="font-mono text-sm min-h-[150px] bg-gray-50";
+                  placeholder="Enter intake/output in JSON format"
+                  className="font-mono text-sm min-h-[150px] bg-gray-50"
                   disabled={submitting}
                 />
                 <p className="text-xs text-gray-500">;
-                  Edit values for oral intake, IV fluids, urine, other output.;
+                  Edit values for oral intake, IV fluids, urine, other output.
                 </p>
               </div>
             </div>
 
             <div className="space-y-2">;
               <label htmlFor="medication_given" className="font-medium text-sm">;
-                Medications Given;
+                Medications Given
               </label>
-              <Textarea;
-                id="medication_given";
-                name="medication_given";
+              <Textarea>
+                id="medication_given"
+                name="medication_given"
                 value={formData.medication_given}
                 onChange={handleChange}
-                placeholder="List medications administered during shift (optional)";
-                className="min-h-[80px]";
+                placeholder="List medications administered during shift (optional)"
+                className="min-h-[80px]"
                 disabled={submitting}
               />
             </div>
 
             <div className="space-y-2">;
               <label htmlFor="procedures" className="font-medium text-sm">;
-                Procedures Performed;
+                Procedures Performed
               </label>
-              <Textarea;
-                id="procedures";
-                name="procedures";
+              <Textarea>
+                id="procedures"
+                name="procedures"
                 value={formData.procedures}
                 onChange={handleChange}
-                placeholder="List procedures performed during shift (optional)";
-                className="min-h-[80px]";
+                placeholder="List procedures performed during shift (optional)"
+                className="min-h-[80px]"
                 disabled={submitting}
               />
             </div>
 
             <div className="space-y-2">;
               <label htmlFor="notes" className="font-medium text-sm">;
-                Notes <span className="text-red-500">*</span>;
+                Notes <span className="text-red-500">*</span>
               </label>
-              <Textarea;
-                id="notes";
-                name="notes";
+              <Textarea>
+                id="notes"
+                name="notes"
                 value={formData.notes}
                 onChange={handleChange}
                 required;
-                placeholder="Enter nursing observations, interventions, and patient response";
-                className="min-h-[120px]";
+                placeholder="Enter nursing observations, interventions, and patient response"
+                className="min-h-[120px]"
                 disabled={submitting}
-                aria-required="true";
+                aria-required="true"
               />
             </div>
 
             <div className="flex justify-end">;
               <Button type="submit" disabled={submitting}>;
                 {submitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
                 {submitting ? "Saving..." : "Save Nursing Note"}
               </Button>
@@ -446,7 +440,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         <CardContent>
           {loading ? (
             <div className="flex justify-center p-8">;
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
             <div className="text-red-500 p-4 text-center" role="alert">;
@@ -454,7 +448,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
             </div>
           ) : nursingNotes.length === 0 ? (
             <div className="text-gray-500 p-4 text-center">;
-              No nursing notes found for this admission.;
+              No nursing notes found for this admission.
             </div>
           ) : (
             <div className="space-y-6">;
@@ -463,9 +457,9 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                 const io = safeParseJSON<IntakeOutput>(note.intake_output);
 
                 return (
-                  <div;
+<div
                     key={note.id}
-                    className="border rounded-md p-4 shadow-sm bg-white";
+                    className="border rounded-md p-4 shadow-sm bg-white"
                   >
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b pb-2">;
                       <h3 className="font-semibold text-base">;
@@ -480,7 +474,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                       {vitals && Object.values(vitals).some(Boolean) && (
                         <div className="bg-gray-50 p-3 rounded border">;
                           <h4 className="font-medium mb-2 text-sm">;
-                            Vital Signs;
+                            Vital Signs
                           </h4>
                           <Table className="text-xs">;
                             <TableBody>
@@ -503,7 +497,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                       {io && Object.values(io).some(Boolean) && (
                         <div className="bg-gray-50 p-3 rounded border">;
                           <h4 className="font-medium mb-2 text-sm">;
-                            Intake/Output;
+                            Intake/Output
                           </h4>
                           <Table className="text-xs">;
                             <TableBody>

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -75,10 +75,10 @@ export class ErrorHandler {
    * @returns Standardized error response with status, message, code, and logging flag;
    */
   public static processError(error: unknown): {
-    status: number;
+    status: number,
     message: string;
-    errorCode: string;
-    shouldLog: boolean;
+    errorCode: string,
+    shouldLog: boolean
   } {
     // Default values;
     let status = 500;

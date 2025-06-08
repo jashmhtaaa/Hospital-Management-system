@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -35,36 +35,36 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces for data types;
 interface Patient {
-  id: string;
+  id: string,
   name: string; // Assuming patient object has a name property;
   // Add other relevant patient fields if needed;
 }
 
 interface ProcedureType {
-  id: string;
+  id: string,
   name: string;
   // Add other relevant procedure type fields if needed;
 }
 
 interface Doctor {
-  id: string;
+  id: string,
   name: string; // Assuming user/doctor object has a name property;
   // Add other relevant doctor fields if needed;
 }
 
 // FIX: Export the payload type;
 export interface OrderPayload {
-  patient_id: string;
+  patient_id: string,
   procedure_type_id: string;
-  clinical_indication: string;
+  clinical_indication: string,
   priority: "routine" | "stat";
-  referring_doctor_id: string | null;
+  referring_doctor_id: string | null
 }
 
 interface CreateRadiologyOrderModalProperties {
   isOpen: boolean; // Add isOpen prop to control visibility from parent;
-  onClose: () => void;
-  onSubmit: (payload: OrderPayload) => Promise<void>;
+  onClose: () => void,
+  onSubmit: (payload: OrderPayload) => Promise<void>
 }
 
 export default const CreateRadiologyOrderModal = ({
@@ -90,7 +90,7 @@ export default const CreateRadiologyOrderModal = ({
     if (!isOpen) return;
 
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
       try {
         // Assuming API endpoints return { results: [...] } or just [...] directly;
@@ -158,7 +158,7 @@ export default const CreateRadiologyOrderModal = ({
       );
       return;
     }
-    setIsSubmitting(true);
+    setIsSubmitting(true),
     setError(undefined); // Clear previous errors;
     try {
       await onSubmit({
@@ -169,9 +169,9 @@ export default const CreateRadiologyOrderModal = ({
         referring_doctor_id: referringDoctorId || null, // Convert empty string to null;
       });
       // Reset form state after successful submission;
-      setPatientId("");
+      setPatientId(""),
       setProcedureTypeId("");
-      setClinicalIndication("");
+      setClinicalIndication(""),
       setPriority("routine");
       setReferringDoctorId("");
       // onClose(); // Parent component should handle closing the modal;
@@ -196,7 +196,7 @@ export default const CreateRadiologyOrderModal = ({
         </DialogHeader>
         {loading ? (
           <div className="flex justify-center items-center h-40">;
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4 border border-red-200 rounded bg-red-50">;
@@ -212,24 +212,24 @@ export default const CreateRadiologyOrderModal = ({
                 <Label htmlFor="patient" className="text-right">;
                   Patient *
                 </Label>
-                <Select;
+                <Select>
                   value={patientId}
                   onValueChange={setPatientId}
                   required;
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Patient" />;
+                    <SelectValue placeholder="Select Patient" />
                   </SelectTrigger>
                   <SelectContent>
                     {patients.length === 0 && (
                       <SelectItem value="" disabled>;
-                        No patients found;
+                        No patients found
                       </SelectItem>
                     )}
                     {patients.map((patient) => (
                       <SelectItem key={patient.id} value={patient.id}>;
-                        {patient.name} (ID: {patient.id.slice(0, 6)});
+                        {patient.name} (ID: {patient.id.slice(0, 6)})
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -241,19 +241,19 @@ export default const CreateRadiologyOrderModal = ({
                 <Label htmlFor="procedureType" className="text-right">;
                   Procedure Type *
                 </Label>
-                <Select;
+                <Select>
                   value={procedureTypeId}
                   onValueChange={setProcedureTypeId}
                   required;
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Procedure Type" />;
+                    <SelectValue placeholder="Select Procedure Type" />
                   </SelectTrigger>
                   <SelectContent>
                     {procedureTypes.length === 0 && (
                       <SelectItem value="" disabled>;
-                        No procedure types found;
+                        No procedure types found
                       </SelectItem>
                     )}
                     {procedureTypes.map((type) => (
@@ -270,15 +270,15 @@ export default const CreateRadiologyOrderModal = ({
                 <Label htmlFor="clinicalIndication" className="text-right">;
                   Clinical Indication *
                 </Label>
-                <Textarea;
-                  id="clinicalIndication";
+                <Textarea>
+                  id="clinicalIndication"
                   value={clinicalIndication}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setClinicalIndication(event.target.value);
+                    setClinicalIndication(event.target.value)
                   }
-                  className="col-span-3";
+                  className="col-span-3"
                   required;
-                  placeholder="Enter reason for the study...";
+                  placeholder="Enter reason for the study..."
                   disabled={isSubmitting}
                 />
               </div>
@@ -286,21 +286,21 @@ export default const CreateRadiologyOrderModal = ({
               {/* Priority Select */}
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="priority" className="text-right">;
-                  Priority;
+                  Priority
                 </Label>
-                <Select;
+                <Select>
                   value={priority}
                   onValueChange={(value: "routine" | "stat") =>
-                    setPriority(value);
+                    setPriority(value)
                   }
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Priority" />;
+                    <SelectValue placeholder="Select Priority" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="routine">Routine</SelectItem>;
-                    <SelectItem value="stat">STAT</SelectItem>;
+                    <SelectItem value="stat">STAT</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -308,22 +308,22 @@ export default const CreateRadiologyOrderModal = ({
               {/* Referring Doctor Select */}
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="referringDoctor" className="text-right">;
-                  Referring Doctor;
+                  Referring Doctor
                 </Label>
-                <Select;
+                <Select>
                   value={referringDoctorId}
                   onValueChange={setReferringDoctorId}
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Referring Doctor (Optional)" />;
+                    <SelectValue placeholder="Select Referring Doctor (Optional)" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">None</SelectItem>{" "}
                     {/* Use empty string for no selection */}
                     {doctors.length === 0 && (
                       <SelectItem value="" disabled>;
-                        No doctors found;
+                        No doctors found
                       </SelectItem>
                     )}
                     {doctors.map((doctor) => (
@@ -338,20 +338,20 @@ export default const CreateRadiologyOrderModal = ({
             <DialogFooter>
               <DialogClose asChild>
                 {/* Ensure Cancel button calls onClose */}
-                <Button;
+                <Button>
                   type="button"
-                  variant="outline";
+                  variant="outline"
                   onClick={onClose}
                   disabled={isSubmitting}
                 >
-                  Cancel;
+                  Cancel
                 </Button>
               </DialogClose>
               <Button type="submit" disabled={isSubmitting || loading}>;
                 {isSubmitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
-                Create Order;
+                Create Order
               </Button>
             </DialogFooter>
           </form>

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,13 +22,13 @@ interface SingleQueryResult<T> {
 
 // Define interfaces;
 interface RadiologyReport {
-  id: string;
+  id: string,
   study_id: string;
   report_text?: string | null;
   findings?: string | null;
   impression?: string | null;
   recommendations?: string | null;
-  status: "preliminary" | "final" | "addendum" | "retracted";
+  status: "preliminary" | "final" | "addendum" | "retracted",
   radiologist_id: string; // Assuming this is the User ID (number);
   verified_by_id?: string | null; // Assuming this is the User ID (number);
   report_datetime: string; // ISO date string;
@@ -164,7 +164,7 @@ export async const PUT = (
       .bind(reportId);
       .first()) as SingleQueryResult<{
       radiologist_id: string; // Assuming this is User ID (number);
-      status: string;
+      status: string
     }>;
 
     // Check result property;

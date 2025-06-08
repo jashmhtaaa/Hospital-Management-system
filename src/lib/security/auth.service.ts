@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -25,50 +25,50 @@ import { logAuditEvent } from '@/lib/audit';
 import { encrypt, decrypt } from '@/lib/security/encryption.service';
 
 export interface UserCredentials {
-  email: string;
-  password: string;
+  email: string,
+  password: string
 }
 
 export interface AuthTokens {
-  accessToken: string;
+  accessToken: string,
   refreshToken: string;
-  expiresAt: number;
-  tokenType: 'Bearer';
+  expiresAt: number,
+  tokenType: 'Bearer'
 }
 
 export interface TokenPayload extends JwtPayload {
-  userId: string;
+  userId: string,
   email: string;
-  roles: string[];
+  roles: string[],
   sessionId: string;
   mfaVerified?: boolean;
   emergencyAccess?: boolean;
 }
 
 export interface MFASetup {
-  secret: string;
+  secret: string,
   qrCode: string;
-  backupCodes: string[];
+  backupCodes: string[]
 }
 
 export interface LoginAttempt {
-  email: string;
+  email: string,
   ipAddress: string;
-  userAgent: string;
+  userAgent: string,
   success: boolean;
   mfaRequired?: boolean;
   failureReason?: string;
 }
 
 export interface SessionInfo {
-  userId: string;
+  userId: string,
   sessionId: string;
-  ipAddress: string;
+  ipAddress: string,
   userAgent: string;
-  createdAt: Date;
+  createdAt: Date,
   expiresAt: Date;
-  isActive: boolean;
-  mfaVerified: boolean;
+  isActive: boolean,
+  mfaVerified: boolean
 }
 
 export class AuthService {
@@ -110,7 +110,7 @@ export class AuthService {
           ipAddress: context.ipAddress,
           userAgent: context.userAgent,
           success: false,
-          failureReason: 'Account locked';
+          failureReason: 'Account locked'
         });
         return { error: 'Account is temporarily locked due to multiple failed attempts' };
       }
@@ -149,7 +149,7 @@ export class AuthService {
           ipAddress: context.ipAddress,
           userAgent: context.userAgent,
           success: true,
-          mfaRequired: true;
+          mfaRequired: true
         });
 
         return { 
@@ -172,7 +172,7 @@ export class AuthService {
         email: credentials.email,
         ipAddress: context.ipAddress,
         userAgent: context.userAgent,
-        success: true;
+        success: true
       });
 
       return { 
@@ -180,7 +180,7 @@ export class AuthService {
         user: {
           id: user.id,
           email: user.email,
-          roles: user.userRoles.map(ur => ur.roleId);
+          roles: user.userRoles.map(ur => ur.roleId)
         }
       };
 
@@ -224,7 +224,7 @@ export class AuthService {
           details: { mfaToken: mfaToken.substring(0, 2) + '****' },
           ipAddress: context.ipAddress,
           userAgent: context.userAgent,
-          severity: 'MEDIUM';
+          severity: 'MEDIUM'
         });
         return { error: 'Invalid MFA token' };
       }
@@ -369,7 +369,7 @@ export class AuthService {
       const secret = speakeasy.generateSecret({
         name: `HMS - ${user.email}`,
         issuer: 'Hospital Management System',
-        length: 32;
+        length: 32
       });
 
       // Generate QR code;
@@ -391,11 +391,11 @@ export class AuthService {
           userId,
           secret: encryptedSecret,
           backupCodes: encryptedBackupCodes,
-          isEnabled: false;
+          isEnabled: false
         },
         update: {
           secret: encryptedSecret,
-          backupCodes: encryptedBackupCodes;
+          backupCodes: encryptedBackupCodes
         }
       });
 
@@ -425,7 +425,7 @@ export class AuthService {
         where: { userId },
         data: { 
           isEnabled: true,
-          enabledAt: new Date();
+          enabledAt: new Date()
         }
       });
 
@@ -457,7 +457,7 @@ export class AuthService {
         where: { userId },
         data: { 
           isEnabled: false,
-          disabledAt: new Date();
+          disabledAt: new Date()
         }
       });
 
@@ -466,7 +466,7 @@ export class AuthService {
         userId,
         resource: 'user_security',
         details: { mfaEnabled: false },
-        severity: 'HIGH';
+        severity: 'HIGH'
       });
 
       return true;
@@ -533,7 +533,7 @@ export class AuthService {
         createdAt: session.createdAt,
         expiresAt: session.expiresAt,
         isActive: session.isActive,
-        mfaVerified: session.mfaVerified;
+        mfaVerified: session.mfaVerified
       }));
     } catch (error) {
 
@@ -553,7 +553,7 @@ export class AuthService {
         },
         data: {
           isActive: false,
-          loggedOutAt: new Date();
+          loggedOutAt: new Date()
         }
       });
 
@@ -589,7 +589,7 @@ export class AuthService {
 
     const accessToken = sign(payload, this.JWT_SECRET, {
       expiresIn: this.ACCESS_TOKEN_EXPIRES,
-      issuer: 'hms-auth';
+      issuer: 'hms-auth'
     });
 
     const refreshToken = sign(
@@ -597,7 +597,7 @@ export class AuthService {
       this.REFRESH_SECRET,
       {
         expiresIn: this.REFRESH_TOKEN_EXPIRES,
-        issuer: 'hms-auth';
+        issuer: 'hms-auth'
       }
     );
 
@@ -621,7 +621,7 @@ export class AuthService {
       accessToken,
       refreshToken,
       expiresAt: Date.now() + 15 * 60 * 1000, // 15 minutes;
-      tokenType: 'Bearer';
+      tokenType: 'Bearer'
     };
   }
 
@@ -650,7 +650,7 @@ export class AuthService {
         secret,
         encoding: 'base32',
         token,
-        window: 2 // Allow 2 time steps of variance;
+        window: 2 // Allow 2 time steps of variance
       });
 
       if (verified) return true;
@@ -686,7 +686,7 @@ export class AuthService {
         ipAddress: context.ipAddress,
         userAgent: context.userAgent,
         expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes;
-        isActive: true;
+        isActive: true
       }
     });
     return tempSession.id;
@@ -719,7 +719,7 @@ export class AuthService {
         details: { attempts: newAttempts, lockoutDuration: this.LOCKOUT_DURATION },
         ipAddress: context.ipAddress,
         userAgent: context.userAgent,
-        severity: 'HIGH';
+        severity: 'HIGH'
       });
     }
 
@@ -728,7 +728,7 @@ export class AuthService {
       ipAddress: context.ipAddress,
       userAgent: context.userAgent,
       success: false,
-      failureReason: 'Invalid credentials';
+      failureReason: 'Invalid credentials'
     });
   }
 
@@ -746,7 +746,7 @@ export class AuthService {
       resource: 'authentication',
       details: {
         mfaRequired: attempt.mfaRequired,
-        failureReason: attempt.failureReason;
+        failureReason: attempt.failureReason
       },
       ipAddress: attempt.ipAddress,
       userAgent: attempt.userAgent,

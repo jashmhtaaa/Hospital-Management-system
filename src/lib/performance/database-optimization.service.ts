@@ -13,57 +13,57 @@ import { PrismaClient } from '@prisma/client';
 import { performance } from 'perf_hooks';
 
 export interface QueryPerformanceMetric {
-  queryId: string;
+  queryId: string,
   sql: string;
-  executionTime: number;
+  executionTime: number,
   timestamp: Date;
   rowsAffected?: number;
-  database: string;
+  database: string,
   operation: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE';
   table?: string;
 }
 
 export interface IndexRecommendation {
-  table: string;
+  table: string,
   columns: string[];
-  reason: string;
+  reason: string,
   estimatedImprovement: number; // percentage
-  priority: 'high' | 'medium' | 'low';
+  priority: 'high' | 'medium' | 'low',
   queries: string[]; // affected queries
 }
 
 export interface PerformanceAlert {
-  type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan';
+  type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan',
   severity: 'critical' | 'warning' | 'info';
-  message: string;
+  message: string,
   details: any;
-  timestamp: Date;
-  resolved: boolean;
+  timestamp: Date,
+  resolved: boolean
 }
 
 export interface DatabaseStats {
   connectionPool: {
-    total: number;
+    total: number,
     active: number;
-    idle: number;
-    utilization: number;
+    idle: number,
+    utilization: number
   };
   queryMetrics: {
-    totalQueries: number;
+    totalQueries: number,
     averageExecutionTime: number;
-    slowQueries: number;
-    queriesPerSecond: number;
+    slowQueries: number,
+    queriesPerSecond: number
   };
   indexUsage: {
-    totalIndexes: number;
+    totalIndexes: number,
     unusedIndexes: number;
-    indexHitRatio: number;
+    indexHitRatio: number
   };
   tableStats: Array<{
-    table: string;
+    table: string,
     rowCount: number;
-    sizeKB: number;
-    indexSizeKB: number;
+    sizeKB: number,
+    indexSizeKB: number
   }>;
 }
 
@@ -344,8 +344,8 @@ export class DatabaseOptimizationService {
    * Apply automatic optimizations
    */
   async applyAutomaticOptimizations(): Promise<{
-    indexesCreated: number;
-    optimizationsApplied: string[];
+    indexesCreated: number,
+    optimizationsApplied: string[]
   }> {
     const result = {
       indexesCreated: 0,
@@ -395,8 +395,7 @@ export class DatabaseOptimizationService {
       case 'delete':
       case 'deleteMany':
         return 'DELETE';
-      default:
-        return 'SELECT';
+      default: return 'SELECT'
     }
   }
 

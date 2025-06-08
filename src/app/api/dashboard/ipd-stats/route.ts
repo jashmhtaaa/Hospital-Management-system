@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -25,21 +25,21 @@ interface OccupancyResult {
 
 // Define structure for recent admissions row;
 interface RecentAdmission {
-  id: number | string;
+  id: number | string,
   admission_number: string;
   admission_date: string; // Assuming ISO string or similar;
-  status: string;
+  status: string,
   patient_first_name: string;
-  patient_last_name: string;
+  patient_last_name: string,
   bed_number: string;
-  room_number: string;
+  room_number: string,
   ward: string;
-  doctor_first_name: string;
-  doctor_last_name: string;
+  doctor_first_name: string,
+  doctor_last_name: string
 }
 
 // FIX: Renamed request to _request as it's unused;
-export async const GET = (/* _request: unknown */) { // Removed unused parameter;
+export async const GET = (/* _request: unknown */) => { // Removed unused parameter;
   try {
     const session = await getSession();
     // Check authentication;

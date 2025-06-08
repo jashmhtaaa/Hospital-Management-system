@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -69,7 +69,7 @@ export default const StaffScheduling = () {
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0;
+    total: 0
   });
   const [scheduleView, setScheduleView] = useState('week');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -82,7 +82,7 @@ export default const StaffScheduling = () {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString();
+          take: pagination.take.toString()
         });
         
         if (search) queryParams.append('search', search);
@@ -94,11 +94,11 @@ export default const StaffScheduling = () {
           throw new Error('Failed to fetch employees');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total;
+          total: data.total
         }));
       } catch (err) {
         setError(err.message);
@@ -117,7 +117,7 @@ export default const StaffScheduling = () {
         // Fetch departments;
         const deptResponse = await fetch('/api/hr/departments');
         if (deptResponse.ok) {
-          const deptData = await deptResponse.json();
+          const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
       } catch (err) {
@@ -165,7 +165,7 @@ export default const StaffScheduling = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -174,7 +174,7 @@ export default const StaffScheduling = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -185,7 +185,7 @@ export default const StaffScheduling = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
   };
 
@@ -202,7 +202,7 @@ export default const StaffScheduling = () {
       date.setDate(date.getDate() + i);
       days.push({
         name: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i],
-        date: date;
+        date: date
       });
     }
     
@@ -231,20 +231,20 @@ export default const StaffScheduling = () {
   return (
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
-        <Button;
-          variant="ghost";
-          size="sm";
+        <Button>
+          variant="ghost"
+          size="sm"
           onClick={() => router.push('/dashboard/hr/staff')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />;
-          Back to Staff Management;
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Staff Management
         </Button>
       </div>
       
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Staff Scheduling</h1>;
         <p className="text-muted-foreground">;
-          Manage employee work schedules and shifts;
+          Manage employee work schedules and shifts
         </p>
       </div>
       
@@ -252,17 +252,17 @@ export default const StaffScheduling = () {
         <div className="flex flex-col md:flex-row gap-2 md:items-center">;
           <form onSubmit={handleSearch} className="flex gap-2">;
             <div className="relative">;
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-              <Input;
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input>
                 type="search"
-                placeholder="Search employees...";
-                className="pl-8 w-full md:w-[300px]";
+                placeholder="Search employees..."
+                className="pl-8 w-full md:w-[300px]"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <Button type="submit" variant="secondary">;
-              Search;
+              Search
             </Button>
           </form>
         </div>
@@ -270,7 +270,7 @@ export default const StaffScheduling = () {
         <div className="flex flex-col md:flex-row gap-2">;
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
             <SelectTrigger className="w-full md:w-[200px]">;
-              <SelectValue placeholder="Filter by Department" />;
+              <SelectValue placeholder="Filter by Department" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All Departments</SelectItem>;
@@ -283,8 +283,8 @@ export default const StaffScheduling = () {
           </Select>
           
           <Button onClick={() => router.push('/dashboard/hr/staff/schedule/new')}>
-            <CalendarRange className="mr-2 h-4 w-4" />;
-            Create Schedule;
+            <CalendarRange className="mr-2 h-4 w-4" />
+            Create Schedule
           </Button>
         </div>
       </div>
@@ -296,11 +296,11 @@ export default const StaffScheduling = () {
             <div className="flex gap-2">;
               <Select value={scheduleView} onValueChange={setScheduleView}>;
                 <SelectTrigger className="w-[120px]">;
-                  <SelectValue placeholder="View" />;
+                  <SelectValue placeholder="View" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="week">Week View</SelectItem>;
-                  <SelectItem value="month">Month View</SelectItem>;
+                  <SelectItem value="month">Month View</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -312,13 +312,13 @@ export default const StaffScheduling = () {
         <CardContent>
           <div className="flex justify-between items-center mb-4">;
             <Button variant="outline" size="sm" onClick={navigatePreviousWeek}>;
-              Previous Week;
+              Previous Week
             </Button>
             <div className="font-medium">;
               {getWeekRangeString()}
             </div>
             <Button variant="outline" size="sm" onClick={navigateNextWeek}>;
-              Next Week;
+              Next Week
             </Button>
           </div>
           
@@ -328,11 +328,11 @@ export default const StaffScheduling = () {
             </div>
           ) : loading ? (
             <div className="text-center py-4">;
-              Loading...;
+              Loading...
             </div>
           ) : schedules.length === 0 ? (
             <div className="text-center py-4">;
-              No employees found. Try adjusting your filters.;
+              No employees found. Try adjusting your filters.
             </div>
           ) : (
             <div className="overflow-x-auto">;
@@ -389,7 +389,7 @@ export default const StaffScheduling = () {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious;
+                <PaginationPrevious>
                   onClick={handlePreviousPage}
                   className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                 />
@@ -400,7 +400,7 @@ export default const StaffScheduling = () {
                 </span>
               </PaginationItem>
               <PaginationItem>
-                <PaginationNext;
+                <PaginationNext>
                   onClick={handleNextPage}
                   className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                 />

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -66,20 +66,20 @@ const documentFormSchema = z.object({
 
 // Type for document templates;
 interface DocumentTemplate {
-  id: string;
+  id: string,
   templateNumber: string;
-  templateName: string;
+  templateName: string,
   templateType: string;
   specialtyType?: string;
-  content: string;
+  content: string,
   sections: {
-    id: string;
+    id: string,
     sectionTitle: string;
-    sectionType: string;
+    sectionType: string,
     sectionOrder: number;
-    content: string;
+    content: string,
     isRequired: boolean;
-    defaultExpanded: boolean;
+    defaultExpanded: boolean
   }[];
 }
 
@@ -90,7 +90,7 @@ interface DocumentEditorProps {
   onSuccess?: () => void;
 }
 
-export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) {
+export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) => {
   const router = useRouter();
   const { toast } = useToast();
   
@@ -127,8 +127,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
         throw new Error('Failed to fetch templates');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       setTemplates(data.data);
     } catch (error) {
 
@@ -253,8 +252,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
         throw new Error(errorData.error || 'Failed to save document');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       toast({
         title: 'Success',
         description: isEditing ? 'Document updated successfully' : 'Document created successfully',
@@ -357,19 +355,19 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                 <FormLabel>Document Template</FormLabel>
                 <Select value={selectedTemplate} onValueChange={handleTemplateChange}>;
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a template (optional)" />;
+                    <SelectValue placeholder="Select a template (optional)" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">No Template</SelectItem>;
                     {templates.map((template) => (
                       <SelectItem key={template.id} value={template.id}>;
-                        {template.templateName} ({template.templateType});
+                        {template.templateName} ({template.templateType})
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  Selecting a template will pre-fill the document with template content;
+                  Selecting a template will pre-fill the document with template content
                 </FormDescription>
               </div>
             )}
@@ -378,19 +376,19 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
               <TabsList className="mb-4">;
                 <TabsTrigger value="content">Document Content</TabsTrigger>;
                 <TabsTrigger value="sections">Sections</TabsTrigger>;
-                <TabsTrigger value="settings">Settings</TabsTrigger>;
+                <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
               
               <TabsContent value="content" className="space-y-4">;
                 {/* Document Title */}
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="documentTitle";
+                  name="documentTitle"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter document title" {...field} />;
+                        <Input placeholder="Enter document title" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -398,19 +396,19 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                 />
                 
                 {/* Document Type */}
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="documentType";
+                  name="documentType"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Type</FormLabel>
                       <FormControl>
-                        <Select;
+                        <Select>
                           value={field.value}
                           onValueChange={field.onChange}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select document type" />;
+                            <SelectValue placeholder="Select document type" />
                           </SelectTrigger>
                           <SelectContent>
                             {documentTypeOptions.map((option) => (
@@ -427,16 +425,16 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                 />
                 
                 {/* Document Content */}
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="content";
+                  name="content"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Content</FormLabel>
                       <FormControl>
-                        <Textarea;
-                          placeholder="Enter document content";
-                          className="min-h-[300px]";
+                        <Textarea>
+                          placeholder="Enter document content"
+                          className="min-h-[300px]"
                           {...field}
                         />
                       </FormControl>
@@ -449,7 +447,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
               <TabsContent value="sections" className="space-y-4">;
                 <div className="flex justify-end mb-4">;
                   <Button type="button" onClick={handleAddSection}>;
-                    Add Section;
+                    Add Section
                   </Button>
                 </div>
                 
@@ -459,26 +457,26 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                     <CardHeader className="pb-2">;
                       <div className="flex justify-between">;
                         <CardTitle className="text-lg">Section {index + 1}</CardTitle>;
-                        <Button;
+                        <Button>
                           type="button"
-                          variant="destructive";
-                          size="sm";
+                          variant="destructive"
+                          size="sm"
                           onClick={() => handleRemoveSection(index)}
                         >
-                          Remove;
+                          Remove
                         </Button>
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">;
                       {/* Section Title */}
-                      <FormField;
+                      <FormField>
                         control={form.control}
                         name={`sections.${index}.sectionTitle`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Section Title</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter section title" {...field} />;
+                              <Input placeholder="Enter section title" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -486,19 +484,19 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                       />
                       
                       {/* Section Type */}
-                      <FormField;
+                      <FormField>
                         control={form.control}
                         name={`sections.${index}.sectionType`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Section Type</FormLabel>
                             <FormControl>
-                              <Select;
+                              <Select>
                                 value={field.value}
                                 onValueChange={field.onChange}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select section type" />;
+                                  <SelectValue placeholder="Select section type" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {sectionTypeOptions.map((option) => (
@@ -515,16 +513,16 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                       />
                       
                       {/* Section Content */}
-                      <FormField;
+                      <FormField>
                         control={form.control}
                         name={`sections.${index}.content`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Section Content</FormLabel>
                             <FormControl>
-                              <Textarea;
-                                placeholder="Enter section content";
-                                className="min-h-[150px]";
+                              <Textarea>
+                                placeholder="Enter section content"
+                                className="min-h-[150px]"
                                 {...field}
                               />
                             </FormControl>
@@ -538,26 +536,26 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                 
                 {(!form.watch('sections') || form.watch('sections').length === 0) && (
                   <div className="text-center py-8 text-gray-500">;
-                    No sections added. Click "Add Section" to add document sections.;
+                    No sections added. Click "Add Section" to add document sections.
                   </div>
                 )}
               </TabsContent>
               
               <TabsContent value="settings" className="space-y-4">;
                 {/* Confidentiality */}
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="isConfidential";
+                  name="isConfidential"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">;
                       <div className="space-y-0.5">;
                         <FormLabel className="text-base">Confidential Document</FormLabel>;
                         <FormDescription>
-                          Mark this document as confidential with restricted access;
+                          Mark this document as confidential with restricted access
                         </FormDescription>
                       </div>
                       <FormControl>
-                        <Switch;
+                        <Switch>
                           checked={field.value}
                           onCheckedChange={field.onChange}
                         />
@@ -571,7 +569,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                   <div className="space-y-0.5">;
                     <FormLabel className="text-base">Document Tags</FormLabel>;
                     <FormDescription>
-                      Add tags to categorize and find the document easily (coming soon);
+                      Add tags to categorize and find the document easily (coming soon)
                     </FormDescription>
                   </div>
                 </div>
@@ -581,7 +579,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                   <div className="space-y-0.5">;
                     <FormLabel className="text-base">Document Attachments</FormLabel>;
                     <FormDescription>
-                      Upload files to attach to this document (coming soon);
+                      Upload files to attach to this document (coming soon)
                     </FormDescription>
                   </div>
                 </div>
@@ -592,26 +590,26 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
       </CardContent>
       
       <CardFooter className="flex justify-between">;
-        <Button;
-          variant="outline";
+        <Button>
+          variant="outline"
           onClick={() => router.back()}
           disabled={submitLoading}
         >
-          Cancel;
+          Cancel
         </Button>
         
         <div className="space-x-2">;
           {isEditing && (
-            <Button;
-              variant="secondary";
+            <Button>
+              variant="secondary"
               onClick={() => router.push(`/clinical-documentation/${documentId}`)}
               disabled={submitLoading}
             >
-              View Document;
+              View Document
             </Button>
           )}
           
-          <Button;
+          <Button>
             onClick={form.handleSubmit(onSubmit)}
             disabled={submitLoading || loading}
           >

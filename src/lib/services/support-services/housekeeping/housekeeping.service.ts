@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,14 +22,14 @@ export interface HousekeepingRequestFilter {
   requestType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface CreateHousekeepingRequestData {
-  locationId: string;
+  locationId: string,
   requestType: string;
-  description: string;
+  description: string,
   priority: string;
   requestedBy: string;
   scheduledDate?: Date;
@@ -72,7 +72,7 @@ export class HousekeepingService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           tasks: {
@@ -81,7 +81,7 @@ export class HousekeepingService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             }
@@ -91,7 +91,7 @@ export class HousekeepingService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.housekeepingRequest.count({ where });
+      prisma.housekeepingRequest.count({ where })
     ]);
     
     // Convert to FHIR format if requested;
@@ -104,7 +104,7 @@ export class HousekeepingService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -142,7 +142,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -167,7 +167,7 @@ export class HousekeepingService {
       metadata: {
         requestId: request.id,
         locationId: locationId,
-        priority: priority;
+        priority: priority
       }
     });
     
@@ -186,7 +186,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         tasks: {
@@ -195,7 +195,7 @@ export class HousekeepingService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
@@ -210,7 +210,7 @@ export class HousekeepingService {
     if (includeFHIR) {
       return {
         data: request,
-        fhir: toFHIRHousekeepingRequest(request);
+        fhir: toFHIRHousekeepingRequest(request)
       };
     }
     
@@ -259,7 +259,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         tasks: {
@@ -268,7 +268,7 @@ export class HousekeepingService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
@@ -297,7 +297,7 @@ export class HousekeepingService {
         metadata: {
           requestId: request.id,
           oldStatus: request.status,
-          newStatus: data.status;
+          newStatus: data.status
         }
       });
     }
@@ -333,14 +333,14 @@ export class HousekeepingService {
         status: 'PENDING',
         assignedToId: data.assignedToId,
         createdById: userId,
-        notes: data.notes;
+        notes: data.notes
       },
       include: {
         assignedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -366,7 +366,7 @@ export class HousekeepingService {
         metadata: {
           taskId: task.id,
           requestId: requestId,
-          locationId: request.locationId;
+          locationId: request.locationId
         }
       });
     }
@@ -381,7 +381,7 @@ export class HousekeepingService {
     const task = await prisma.housekeepingTask.findUnique({
       where: { id },
       include: {
-        request: true;
+        request: true
       }
     });
     
@@ -425,12 +425,12 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         request: {
           include: {
-            location: true;
+            location: true
           }
         }
       }
@@ -458,7 +458,7 @@ export class HousekeepingService {
           where: { id: task.requestId },
           data: { 
             status: 'COMPLETED',
-            completedDate: new Date();
+            completedDate: new Date()
           }
         });
         
@@ -471,7 +471,7 @@ export class HousekeepingService {
           entityId: task.requestId,
           metadata: {
             requestId: task.requestId,
-            locationId: updatedTask.request.locationId;
+            locationId: updatedTask.request.locationId
           }
         });
       }
@@ -495,7 +495,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       },
@@ -531,7 +531,7 @@ export class HousekeepingService {
         taskTemplate,
         isActive: true,
         nextRun,
-        createdById: userId;
+        createdById: userId
       },
       include: {
         location: true,
@@ -539,7 +539,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -596,7 +596,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -625,11 +625,11 @@ export class HousekeepingService {
       where: {
         isActive: true,
         nextRun: {
-          lte: now;
+          lte: now
         }
       },
       include: {
-        location: true;
+        location: true
       }
     });
     
@@ -707,7 +707,7 @@ export class HousekeepingService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         },
@@ -715,7 +715,7 @@ export class HousekeepingService {
         take: limit,
         orderBy: { inspectionDate: 'desc' }
       }),
-      prisma.housekeepingInspection.count({ where });
+      prisma.housekeepingInspection.count({ where })
     ]);
     
     // Convert to FHIR format if requested;
@@ -728,7 +728,7 @@ export class HousekeepingService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -757,7 +757,7 @@ export class HousekeepingService {
         status,
         findings,
         recommendations,
-        inspectionDate: inspectionDate || new Date();
+        inspectionDate: inspectionDate || new Date()
       },
       include: {
         location: true,
@@ -765,7 +765,7 @@ export class HousekeepingService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -802,7 +802,7 @@ export class HousekeepingService {
         metadata: {
           inspectionId: inspection.id,
           locationId: locationId,
-          score: score;
+          score: score
         }
       });
     }
@@ -821,7 +821,7 @@ export class HousekeepingService {
     if (itemType) where.itemType = itemType;
     if (lowStock === true) {
       where.currentStock = {
-        lte: prisma.housekeepingInventory.fields.minimumStock;
+        lte: prisma.housekeepingInventory.fields.minimumStock
       };
     }
     
@@ -832,7 +832,7 @@ export class HousekeepingService {
         take: limit,
         orderBy: { itemName: 'asc' }
       }),
-      prisma.housekeepingInventory.count({ where });
+      prisma.housekeepingInventory.count({ where })
     ]);
     
     return {
@@ -841,7 +841,7 @@ export class HousekeepingService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -889,7 +889,7 @@ export class HousekeepingService {
         metadata: {
           itemId: updatedItem.id,
           currentStock: updatedItem.currentStock,
-          minimumStock: updatedItem.minimumStock;
+          minimumStock: updatedItem.minimumStock
         }
       });
     }
@@ -927,10 +927,10 @@ export class HousekeepingService {
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get request counts by type;
@@ -938,10 +938,10 @@ export class HousekeepingService {
       by: ['requestType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get average completion time;
@@ -957,10 +957,10 @@ export class HousekeepingService {
     const inspectionScores = await prisma.housekeepingInspection.findMany({
       where: {
         inspectionDate: {
-          gte: startDate;
+          gte: startDate
         },
         score: {
-          not: null;
+          not: null
         }
       },
       select: {
@@ -969,12 +969,12 @@ export class HousekeepingService {
         locationId: true,
         location: {
           select: {
-            name: true;
+            name: true
           }
         }
       },
       orderBy: {
-        inspectionDate: 'asc';
+        inspectionDate: 'asc'
       }
     });
     
@@ -983,28 +983,28 @@ export class HousekeepingService {
       by: ['locationId'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
       _count: true,
       orderBy: {
         _count: {
-          locationId: 'desc';
+          locationId: 'desc'
         }
       },
-      take: 5;
+      take: 5
     });
     
     // Get location details for top locations;
     const locationDetails = await prisma.location.findMany({
       where: {
         id: {
-          in: topLocations.map(loc => loc.locationId);
+          in: topLocations.map(loc => loc.locationId)
         }
       },
       select: {
         id: true,
-        name: true;
+        name: true
       }
     });
     

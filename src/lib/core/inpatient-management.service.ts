@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -251,7 +251,7 @@ export const TransferSchema = z.object({
 });
 
 export type Admission = z.infer<typeof AdmissionSchema> & {
-  id: string;
+  id: string,
   admission_number: string;
   status: 'active' | 'discharged' | 'transferred' | 'deceased' | 'ama';
   current_bed?: string;
@@ -261,7 +261,7 @@ export type Admission = z.infer<typeof AdmissionSchema> & {
   discharge_date?: Date;
   discharge_time?: Date;
   total_charges?: number;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   admitting_physician_name?: string;
@@ -269,48 +269,48 @@ export type Admission = z.infer<typeof AdmissionSchema> & {
 };
 
 export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
-  id: string;
+  id: string,
   status: 'active' | 'completed';
   start_time: Date;
   end_time?: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type NursingAssessment = z.infer<typeof NursingAssessmentSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
   updated_at: Date;
   nurse_name?: string;
 };
 
 export type DischargePlanning = z.infer<typeof DischargePlanningSchema> & {
-  id: string;
+  id: string,
   planning_started_date: Date;
-  discharge_ready: boolean;
+  discharge_ready: boolean,
   barriers_resolved: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type Transfer = z.infer<typeof TransferSchema> & {
-  id: string;
+  id: string,
   transfer_number: string;
   status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   actual_transfer_time?: Date;
   completed_by?: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export interface BedOccupancy {
-  bed_id: string;
+  bed_id: string,
   room_id: string;
-  unit_id: string;
+  unit_id: string,
   bed_number: string;
-  room_number: string;
+  room_number: string,
   unit_name: string;
-  bed_type: string;
+  bed_type: string,
   occupancy_status: 'occupied' | 'available' | 'maintenance' | 'isolation' | 'blocked';
   patient_id?: string;
   patient_name?: string;
@@ -324,43 +324,43 @@ export interface BedOccupancy {
 }
 
 export interface UnitCapacity {
-  unit_id: string;
+  unit_id: string,
   unit_name: string;
-  total_beds: number;
+  total_beds: number,
   occupied_beds: number;
-  available_beds: number;
+  available_beds: number,
   blocked_beds: number;
-  maintenance_beds: number;
+  maintenance_beds: number,
   occupancy_rate: number;
-  average_length_of_stay: number;
+  average_length_of_stay: number,
   admission_pending: number;
-  discharge_pending: number;
-  transfer_requests: number;
+  discharge_pending: number,
+  transfer_requests: number
 }
 
 export interface CensusSummary {
-  total_admissions: number;
+  total_admissions: number,
   total_discharges: number;
-  total_transfers: number;
+  total_transfers: number,
   current_census: number;
-  available_beds: number;
+  available_beds: number,
   occupancy_rate: number;
-  average_length_of_stay: number;
+  average_length_of_stay: number,
   readmission_rate: number;
-  by_unit: UnitCapacity[];
+  by_unit: UnitCapacity[],
   by_admission_type: {
-    elective: number;
+    elective: number,
     emergency: number;
-    urgent: number;
-    observation: number;
+    urgent: number,
+    observation: number
   };
   by_discharge_disposition: {
-    home: number;
+    home: number,
     snf: number;
-    rehab: number;
+    rehab: number,
     hospice: number;
-    expired: number;
-    ama: number;
+    expired: number,
+    ama: number
   };
 }
 
@@ -371,8 +371,7 @@ export class InpatientManagementService {
   private dischargePlans: Map<string, DischargePlanning> = new Map();
   private transfers: Map<string, Transfer> = new Map();
   private beds: Map<string, BedOccupancy> = new Map();
-  private units: Map<string, any> = new Map();
-
+  private units: Map<string, any> = new Map(),
   constructor() {
     this.initializeUnitsAndBeds();
   }
@@ -699,13 +698,13 @@ export class InpatientManagementService {
   async dischargePatient(
     admissionId: string,
     dischargeData: {
-      discharge_disposition: DischargePlanning['discharge_disposition'];
+      discharge_disposition: DischargePlanning['discharge_disposition'],
       discharge_date: string;
-      discharge_time: string;
+      discharge_time: string,
       discharging_physician: string;
-      discharge_instructions: string;
+      discharge_instructions: string,
       follow_up_instructions: string;
-      condition_at_discharge: 'stable' | 'improved' | 'unchanged' | 'worse';
+      condition_at_discharge: 'stable' | 'improved' | 'unchanged' | 'worse'
     }
   ): Promise<Admission> {
     const admission = this.admissions.get(admissionId);

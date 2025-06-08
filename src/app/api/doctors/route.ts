@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Nurse", "Doctor", "Patient
 const ALLOWED_ROLES_ADD = ["Admin"];
 
 // GET handler for listing doctors;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
   const cookieStore = await cookies();
   const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
   const { searchParams } = new URL(request.url);
@@ -63,7 +63,7 @@ export async const GET = (request: Request) {
     }
 
     // Map results to include user details within a nested 'user' object if desired;
-    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for 'doc';
+    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for 'doc',
         doctor_id: doc.doctor_id,
         user_id: doc.user_id,
         specialty: doc.specialty,
@@ -101,7 +101,7 @@ const AddDoctorSchema = z.object({
     license_number: z.string().optional(),
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 

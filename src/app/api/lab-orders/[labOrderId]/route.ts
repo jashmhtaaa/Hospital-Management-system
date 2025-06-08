@@ -13,45 +13,45 @@ const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // R
 
 // Define interface for lab order query result;
 interface LabOrderQueryResult {
-    lab_order_id: number;
+    lab_order_id: number,
     consultation_id: number | null;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
-    order_datetime: string;
+    order_datetime: string,
     status: LabOrderStatus;
-    notes: string | null;
+    notes: string | null,
     created_at: string;
-    updated_at: string;
+    updated_at: string,
     patient_first_name: string;
-    patient_last_name: string;
-    doctor_full_name: string | null;
+    patient_last_name: string,
+    doctor_full_name: string | null
 }
 
 // Define interface for lab order item query result;
 interface LabOrderItemQueryResult {
-    lab_order_item_id: number;
+    lab_order_item_id: number,
     lab_order_id: number;
-    billable_item_id: number;
+    billable_item_id: number,
     test_name: string;
-    sample_type: string | null;
+    sample_type: string | null,
     sample_id: string | null;
-    sample_collection_datetime: string | null;
+    sample_collection_datetime: string | null,
     sample_collected_by_user_id: number | null;
-    result_value: string | null;
+    result_value: string | null,
     result_unit: string | null;
-    reference_range: string | null;
+    reference_range: string | null,
     result_notes: string | null;
-    result_datetime: string | null;
+    result_datetime: string | null,
     result_verified_by_user_id: number | null;
-    status: string;
+    status: string,
     created_at: string;
-    updated_at: string;
+    updated_at: string,
     billable_item_code: string;
-    sample_collected_by_user_full_name: string | null;
-    result_verified_by_user_full_name: string | null;
+    sample_collected_by_user_full_name: string | null,
+    result_verified_by_user_full_name: string | null
 }
 
-export async const GET = (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) {
+export async const GET = (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
     // Pass cookies() directly;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
@@ -157,15 +157,15 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
                 updated_at: item.updated_at,
                 billable_item: {
                     item_id: item.billable_item_id,
-                    item_code: item.billable_item_code;
+                    item_code: item.billable_item_code
                 },
                 sample_collected_by_user: item.sample_collected_by_user_id ? {
                     user_id: item.sample_collected_by_user_id,
-                    full_name: item.sample_collected_by_user_full_name;
+                    full_name: item.sample_collected_by_user_full_name
                 } : null,
                 result_verified_by_user: item.result_verified_by_user_id ? {
                     user_id: item.result_verified_by_user_id,
-                    full_name: item.result_verified_by_user_full_name;
+                    full_name: item.result_verified_by_user_full_name
                 } : null;
             })) as LabOrderItem[] || [],
         };
@@ -187,7 +187,7 @@ const UpdateLabOrderSchema = z.object({
     // Other fields? Usually status is updated based on item statuses;
 });
 
-export async const PUT = (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) {
+export async const PUT = (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
     // Pass cookies() directly;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);

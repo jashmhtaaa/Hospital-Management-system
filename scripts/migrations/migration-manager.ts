@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,24 +20,24 @@ import fs from 'fs/promises';
 import path from 'path';
 
 interface Migration {
-  id: string;
+  id: string,
   name: string;
-  version: string;
+  version: string,
   up: string;
-  down: string;
+  down: string,
   checksum: string;
   appliedAt?: Date;
   rolledBackAt?: Date;
 }
 
 interface MigrationRecord {
-  id: string;
+  id: string,
   name: string;
-  version: string;
+  version: string,
   checksum: string;
   appliedAt: Date;
   rolledBackAt?: Date;
-  executionTime: number;
+  executionTime: number,
   status: 'SUCCESS' | 'FAILED' | 'ROLLED_BACK';
   errorMessage?: string;
 }
@@ -116,7 +116,7 @@ class MigrationManager {
     await fs.writeFile(migrationFile, JSON.stringify(migrationContent, null, 2));
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return version;
+    return version
   }
 
   async runMigrations(): Promise<void> {
@@ -126,13 +126,13 @@ class MigrationManager {
     
     if (pendingMigrations.length === 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      return;
+      return
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     for (const migration of pendingMigrations) {
-      await this.runSingleMigration(migration);
+      await this.runSingleMigration(migration)
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -214,7 +214,7 @@ class MigrationManager {
 
     if (migrationRecord.status === 'ROLLED_BACK') {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      return;
+      return
     }
 
     const migration = await this.loadMigration(version);
@@ -268,13 +268,13 @@ class MigrationManager {
 
     if (migrationsToRollback.length === 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      return;
+      return
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     for (const migrationRecord of migrationsToRollback) {
-      await this.rollbackMigration(migrationRecord.version);
+      await this.rollbackMigration(migrationRecord.version)
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -478,9 +478,9 @@ class MigrationManager {
   }
 
   async getMigrationStatus(): Promise<{
-    applied: MigrationRecord[];
+    applied: MigrationRecord[],
     pending: Migration[];
-    total: number;
+    total: number
   }> {
     const applied = await this.getAppliedMigrations();
     const pending = await this.getPendingMigrations();

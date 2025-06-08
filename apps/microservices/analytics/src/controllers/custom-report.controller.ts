@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -53,7 +53,7 @@ export class CustomReportController {
   @ApiResponse({ status: 200, description: 'Report template details' });
   @ApiResponse({ status: 404, description: 'Template not found' });
   async getReportTemplateById(@Param('id') id: string) {
-    return this.customReportService.getReportTemplateById(id);
+    return this.customReportService.getReportTemplateById(id)
   }
 
   @Post('templates');

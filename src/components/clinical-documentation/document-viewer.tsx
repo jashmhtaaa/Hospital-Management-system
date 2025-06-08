@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -50,80 +50,80 @@ import { useToast } from '../../hooks/use-toast';
 import { format } from 'date-fns';
 
 interface DocumentSection {
-  id: string;
+  id: string,
   documentId: string;
-  sectionTitle: string;
+  sectionTitle: string,
   sectionType: string;
-  sectionOrder: number;
+  sectionOrder: number,
   content: string;
-  authorId: string;
+  authorId: string,
   authoredDate: string;
   updatedById?: string;
   updatedDate?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string,
+  updatedAt: string
 }
 
 interface DocumentSignature {
-  id: string;
+  id: string,
   documentId: string;
-  signerId: string;
+  signerId: string,
   signerRole: string;
-  signatureDate: string;
+  signatureDate: string,
   signatureType: string;
   attestation?: string;
   ipAddress?: string;
   deviceInfo?: string;
   notes?: string;
-  createdAt: string;
+  createdAt: string
 }
 
 interface DocumentAmendment {
-  id: string;
+  id: string,
   documentId: string;
-  amendmentNumber: string;
+  amendmentNumber: string,
   amendmentType: string;
-  amendmentReason: string;
+  amendmentReason: string,
   content: string;
-  authorId: string;
+  authorId: string,
   authoredDate: string;
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string,
+  updatedAt: string
 }
 
 interface Document {
-  id: string;
+  id: string,
   documentNumber: string;
   patientId: string;
   encounterId?: string;
-  documentType: string;
+  documentType: string,
   documentTitle: string;
-  authorId: string;
+  authorId: string,
   authoredDate: string;
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
-  version: number;
+  version: number,
   content: string;
   templateId?: string;
-  isConfidential: boolean;
+  isConfidential: boolean,
   attachmentUrls: string[];
-  tags: string[];
+  tags: string[],
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string,
   sections: DocumentSection[];
-  signatures: DocumentSignature[];
-  amendments: DocumentAmendment[];
+  signatures: DocumentSignature[],
+  amendments: DocumentAmendment[]
 }
 
 interface DocumentViewerProps {
-  documentId: string;
+  documentId: string
 }
 
-export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
+export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const router = useRouter();
   const { toast } = useToast();
   
@@ -159,8 +159,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
         throw new Error('Failed to fetch document');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       setDocument(data);
     } catch (error) {
 
@@ -203,7 +202,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
       });
       
       // Close dialog and reset form;
-      setSignatureDialogOpen(false);
+      setSignatureDialogOpen(false),
       setSignatureData({
         signerRole: '',
         signatureType: 'Electronic',
@@ -250,7 +249,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
       });
       
       // Close dialog and reset form;
-      setAmendmentDialogOpen(false);
+      setAmendmentDialogOpen(false),
       setAmendmentData({
         amendmentType: 'Addendum',
         amendmentReason: '',
@@ -285,8 +284,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
         return 'info';
       case 'Canceled':
         return 'destructive';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
   
@@ -297,7 +295,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
   
   // Helper function to format date;
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM dd, yyyy h:mm a');
+    return format(new Date(dateString), 'MMM dd, yyyy h: mm a')
   };
   
   if (loading) {
@@ -327,7 +325,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
         </CardContent>
         <CardFooter>
           <Button onClick={() => router.push('/clinical-documentation')}>
-            Back to Documents;
+            Back to Documents
           </Button>
         </CardFooter>
       </Card>
@@ -338,7 +336,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
     <Card className="w-full">;
       <CardHeader>
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">;
-          <div>
+<div
             <CardTitle>{document.documentTitle}</CardTitle>
             <CardDescription className="mt-1">;
               {document.documentType} - {document.documentNumber}
@@ -369,7 +367,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
             <TabsTrigger value="sections">Sections ({document.sections.length})</TabsTrigger>;
             <TabsTrigger value="metadata">Metadata</TabsTrigger>;
             <TabsTrigger value="signatures">Signatures ({document.signatures.length})</TabsTrigger>;
-            <TabsTrigger value="amendments">Amendments ({document.amendments.length})</TabsTrigger>;
+            <TabsTrigger value="amendments">Amendments ({document.amendments.length})</TabsTrigger>
           </TabsList>
           
           <TabsContent value="content">;
@@ -388,7 +386,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                       <AccordionTrigger>
                         <div className="flex items-center gap-2">;
                           <span>{section.sectionTitle}</span>
-                          <Badge variant="outline">{section.sectionType}</Badge>;
+                          <Badge variant="outline">{section.sectionType}</Badge>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
@@ -408,7 +406,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
               </Accordion>
             ) : (
               <div className="text-center py-8 text-gray-500 border rounded-md">;
-                This document does not have any sections.;
+                This document does not have any sections.
               </div>
             )}
           </TabsContent>
@@ -419,19 +417,19 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                 <div className="border rounded-md p-4">;
                   <h3 className="text-lg font-medium mb-2">Document Information</h3>;
                   <div className="space-y-2">;
-                    <div>
+<div
                       <span className="font-medium">Document Number:</span> {document.documentNumber}
                     </div>
-                    <div>
+<div
                       <span className="font-medium">Document Type:</span> {document.documentType}
                     </div>
-                    <div>
+<div
                       <span className="font-medium">Status:</span> {document.status}
                     </div>
-                    <div>
+<div
                       <span className="font-medium">Version:</span> {document.version}
                     </div>
-                    <div>
+<div
                       <span className="font-medium">Confidential:</span> {document.isConfidential ? 'Yes' : 'No'}
                     </div>
                   </div>
@@ -440,23 +438,23 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                 <div className="border rounded-md p-4">;
                   <h3 className="text-lg font-medium mb-2">Dates & Authors</h3>;
                   <div className="space-y-2">;
-                    <div>
+<div
                       <span className="font-medium">Created By:</span> {document.authorId}
                     </div>
-                    <div>
+<div
                       <span className="font-medium">Created Date:</span> {formatDate(document.authoredDate)}
                     </div>
                     {document.finalizedDate && (
                       <>
-                        <div>
+<div
                           <span className="font-medium">Finalized By:</span> {document.finalizedById}
                         </div>
-                        <div>
+<div
                           <span className="font-medium">Finalized Date:</span> {formatDate(document.finalizedDate)}
                         </div>
                       </>
                     )}
-                    <div>
+<div
                       <span className="font-medium">Last Updated:</span> {formatDate(document.updatedAt)}
                     </div>
                   </div>
@@ -466,16 +464,16 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
               <div className="border rounded-md p-4">;
                 <h3 className="text-lg font-medium mb-2">References</h3>;
                 <div className="space-y-2">;
-                  <div>
+<div
                     <span className="font-medium">Patient ID:</span> {document.patientId}
                   </div>
                   {document.encounterId && (
-                    <div>
+<div
                       <span className="font-medium">Encounter ID:</span> {document.encounterId}
                     </div>
                   )}
                   {document.templateId && (
-                    <div>
+<div
                       <span className="font-medium">Template ID:</span> {document.templateId}
                     </div>
                   )}
@@ -505,9 +503,9 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                 {document.signatures.map((signature) => (
                   <div key={signature.id} className="border rounded-md p-4">;
                     <div className="flex justify-between items-start">;
-                      <div>
+<div
                         <h3 className="text-lg font-medium">;
-                          {signature.signerRole} Signature;
+                          {signature.signerRole} Signature
                         </h3>
                         <p className="text-sm text-gray-500">;
                           Signed by {signature.signerId} on {formatDate(signature.signatureDate)}
@@ -528,7 +526,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                     {signature.notes && (
                       <div className="mt-2">;
                         <p className="font-medium">Notes:</p>;
-                        <p className="text-gray-700">{signature.notes}</p>;
+                        <p className="text-gray-700">{signature.notes}</p>
                       </div>
                     )}
                   </div>
@@ -536,7 +534,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500 border rounded-md">;
-                This document has not been signed yet.;
+                This document has not been signed yet.
               </div>
             )}
             
@@ -546,19 +544,19 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                 <DialogHeader>
                   <DialogTitle>Sign Document</DialogTitle>
                   <DialogDescription>
-                    Add your signature to this document.;
+                    Add your signature to this document.
                   </DialogDescription>
                 </DialogHeader>
                 
                 <div className="space-y-4 py-4">;
                   <div className="space-y-2">;
                     <Label htmlFor="signer-role">Signer Role</Label>;
-                    <Select;
+                    <Select>
                       value={signatureData.signerRole}
                       onValueChange={(value) => setSignatureData({...signatureData, signerRole: value})}
                     >
                       <SelectTrigger id="signer-role">;
-                        <SelectValue placeholder="Select role" />;
+                        <SelectValue placeholder="Select role" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Attending Physician">Attending Physician</SelectItem>;
@@ -566,33 +564,33 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                         <SelectItem value="Fellow">Fellow</SelectItem>;
                         <SelectItem value="Nurse">Nurse</SelectItem>;
                         <SelectItem value="Consultant">Consultant</SelectItem>;
-                        <SelectItem value="Other">Other</SelectItem>;
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
                   <div className="space-y-2">;
                     <Label htmlFor="signature-type">Signature Type</Label>;
-                    <Select;
+                    <Select>
                       value={signatureData.signatureType}
                       onValueChange={(value) => setSignatureData({...signatureData, signatureType: value})}
                     >
                       <SelectTrigger id="signature-type">;
-                        <SelectValue placeholder="Select signature type" />;
+                        <SelectValue placeholder="Select signature type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Electronic">Electronic</SelectItem>;
                         <SelectItem value="Digital">Digital</SelectItem>;
-                        <SelectItem value="Verbal">Verbal</SelectItem>;
+                        <SelectItem value="Verbal">Verbal</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
                   <div className="space-y-2">;
                     <Label htmlFor="attestation">Attestation Statement</Label>;
-                    <Textarea;
-                      id="attestation";
-                      placeholder="I attest that this document is accurate and complete to the best of my knowledge.";
+                    <Textarea>
+                      id="attestation"
+                      placeholder="I attest that this document is accurate and complete to the best of my knowledge."
                       value={signatureData.attestation}
                       onChange={(e) => setSignatureData({...signatureData, attestation: e.target.value})}
                     />
@@ -600,9 +598,9 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                   
                   <div className="space-y-2">;
                     <Label htmlFor="notes">Notes</Label>;
-                    <Textarea;
-                      id="notes";
-                      placeholder="Additional notes";
+                    <Textarea>
+                      id="notes"
+                      placeholder="Additional notes"
                       value={signatureData.notes}
                       onChange={(e) => setSignatureData({...signatureData, notes: e.target.value})}
                     />
@@ -610,32 +608,32 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                   
                   {document.status === 'Preliminary' && (
                     <div className="flex items-center space-x-2">;
-                      <Checkbox;
-                        id="finalize";
+                      <Checkbox>
+                        id="finalize"
                         checked={signatureData.finalize}
                         onCheckedChange={(checked) => 
                           setSignatureData({...signatureData, finalize: checked as boolean});
                         }
                       />
-                      <label;
-                        htmlFor="finalize";
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                      <label>
+                        htmlFor="finalize"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
-                        Finalize document upon signing;
+                        Finalize document upon signing
                       </label>
                     </div>
                   )}
                 </div>
                 
                 <DialogFooter>
-                  <Button;
-                    variant="outline";
+                  <Button>
+                    variant="outline"
                     onClick={() => setSignatureDialogOpen(false)}
                     disabled={submitting}
                   >
-                    Cancel;
+                    Cancel
                   </Button>
-                  <Button;
+                  <Button>
                     onClick={handleSignDocument}
                     disabled={!signatureData.signerRole || submitting}
                   >
@@ -652,7 +650,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                 {document.amendments.map((amendment) => (
                   <div key={amendment.id} className="border rounded-md p-4">;
                     <div className="flex justify-between items-start">;
-                      <div>
+<div
                         <h3 className="text-lg font-medium">;
                           {amendment.amendmentType} - {amendment.amendmentNumber}
                         </h3>
@@ -660,7 +658,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                           Created by {amendment.authorId} on {formatDate(amendment.authoredDate)}
                         </p>
                       </div>
-                      <Badge;
+                      <Badge>
                         variant={amendment.status === 'Final' ? 'success' : 'secondary'}
                       >
                         {amendment.status}
@@ -669,7 +667,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                     
                     <div className="mt-2">;
                       <p className="font-medium">Reason:</p>;
-                      <p className="text-gray-700">{amendment.amendmentReason}</p>;
+                      <p className="text-gray-700">{amendment.amendmentReason}</p>
                     </div>
                     
                     <div className="mt-2">;
@@ -689,7 +687,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500 border rounded-md">;
-                This document has no amendments.;
+                This document has no amendments.
               </div>
             )}
             
@@ -699,33 +697,33 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                 <DialogHeader>
                   <DialogTitle>Create Amendment</DialogTitle>
                   <DialogDescription>
-                    Add an amendment to this document.;
+                    Add an amendment to this document.
                   </DialogDescription>
                 </DialogHeader>
                 
                 <div className="space-y-4 py-4">;
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-type">Amendment Type</Label>;
-                    <Select;
+                    <Select>
                       value={amendmentData.amendmentType}
                       onValueChange={(value) => setAmendmentData({...amendmentData, amendmentType: value})}
                     >
                       <SelectTrigger id="amendment-type">;
-                        <SelectValue placeholder="Select amendment type" />;
+                        <SelectValue placeholder="Select amendment type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Addendum">Addendum</SelectItem>;
                         <SelectItem value="Correction">Correction</SelectItem>;
-                        <SelectItem value="Clarification">Clarification</SelectItem>;
+                        <SelectItem value="Clarification">Clarification</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-reason">Amendment Reason</Label>;
-                    <Textarea;
-                      id="amendment-reason";
-                      placeholder="Reason for the amendment";
+                    <Textarea>
+                      id="amendment-reason"
+                      placeholder="Reason for the amendment"
                       value={amendmentData.amendmentReason}
                       onChange={(e) => setAmendmentData({...amendmentData, amendmentReason: e.target.value})}
                     />
@@ -733,10 +731,10 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                   
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-content">Amendment Content</Label>;
-                    <Textarea;
-                      id="amendment-content";
-                      placeholder="Content of the amendment";
-                      className="min-h-[150px]";
+                    <Textarea>
+                      id="amendment-content"
+                      placeholder="Content of the amendment"
+                      className="min-h-[150px]"
                       value={amendmentData.content}
                       onChange={(e) => setAmendmentData({...amendmentData, content: e.target.value})}
                     />
@@ -744,30 +742,30 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
                   
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-status">Status</Label>;
-                    <Select;
+                    <Select>
                       value={amendmentData.status}
                       onValueChange={(value) => setAmendmentData({...amendmentData, status: value})}
                     >
                       <SelectTrigger id="amendment-status">;
-                        <SelectValue placeholder="Select status" />;
+                        <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Draft">Draft</SelectItem>;
-                        <SelectItem value="Final">Final</SelectItem>;
+                        <SelectItem value="Final">Final</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 
                 <DialogFooter>
-                  <Button;
-                    variant="outline";
+                  <Button>
+                    variant="outline"
                     onClick={() => setAmendmentDialogOpen(false)}
                     disabled={submitting}
                   >
-                    Cancel;
+                    Cancel
                   </Button>
-                  <Button;
+                  <Button>
                     onClick={handleCreateAmendment}
                     disabled={
                       !amendmentData.amendmentType ||
@@ -786,50 +784,50 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) {
       </CardContent>
       
       <CardFooter className="flex justify-between">;
-        <Button;
-          variant="outline";
+        <Button>
+          variant="outline"
           onClick={() => router.push('/clinical-documentation')}
         >
-          Back to Documents;
+          Back to Documents
         </Button>
         
         <div className="space-x-2">;
           {/* Only show Edit button for Draft or Preliminary documents */}
           {['Draft', 'Preliminary'].includes(document.status) && (
-            <Button;
-              variant="secondary";
+            <Button>
+              variant="secondary"
               onClick={handleEditDocument}
             >
-              Edit Document;
+              Edit Document
             </Button>
           )}
           
           {/* Only show Sign button for Draft, Preliminary, or Final documents */}
           {['Draft', 'Preliminary', 'Final'].includes(document.status) && (
-            <Button;
-              variant="secondary";
+            <Button>
+              variant="secondary"
               onClick={() => setSignatureDialogOpen(true)}
             >
-              Sign Document;
+              Sign Document
             </Button>
           )}
           
           {/* Only show Amend button for Final documents */}
           {document.status === 'Final' && (
-            <Button;
-              variant="secondary";
+            <Button>
+              variant="secondary"
               onClick={() => setAmendmentDialogOpen(true)}
             >
-              Amend Document;
+              Amend Document
             </Button>
           )}
           
           {/* Print button */}
-          <Button;
-            variant="outline";
+          <Button>
+            variant="outline"
             onClick={() => window.print()}
           >
-            Print;
+            Print
           </Button>
         </div>
       </CardFooter>

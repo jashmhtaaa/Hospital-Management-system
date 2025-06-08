@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -45,7 +45,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-condition;
  * Check for drug-condition contraindications;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -90,7 +90,7 @@ export async const POST = (req: NextRequest) {
       details: {
         medicationIds: data.medicationIds,
         conditionCount: conditions.length,
-        contraindicationCount: contraindications.length;
+        contraindicationCount: contraindications.length
       }
     });
 
@@ -102,7 +102,7 @@ export async const POST = (req: NextRequest) {
         severityCounts: {
           absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length,
           relative: contraindications.filter(c => c.contraindicationType === 'relative').length,
-          caution: contraindications.filter(c => c.contraindicationType === 'caution').length;
+          caution: contraindications.filter(c => c.contraindicationType === 'caution').length
         }
       }
     }, { status: 200 });

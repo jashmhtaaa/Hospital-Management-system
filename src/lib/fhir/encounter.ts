@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -26,13 +26,13 @@ import {
 } from './types.ts';
 
 export interface FHIREncounterStatusHistory {
-  status: 'planned' | 'arrived' | 'triaged' | 'in-progress' | 'onleave' | 'finished' | 'cancelled' | 'entered-in-error' | 'unknown';
-  period: FHIRPeriod;
+  status: 'planned' | 'arrived' | 'triaged' | 'in-progress' | 'onleave' | 'finished' | 'cancelled' | 'entered-in-error' | 'unknown',
+  period: FHIRPeriod
 }
 
 export interface FHIREncounterClassHistory {
-  class: FHIRCoding;
-  period: FHIRPeriod;
+  class: FHIRCoding,
+  period: FHIRPeriod
 }
 
 export interface FHIREncounterParticipant {
@@ -118,7 +118,7 @@ export class FHIREncounterUtils {
    * Create a basic FHIR Encounter resource;
    */
   static createBasicEncounter(data: {
-    patientId: string;
+    patientId: string,
     class: 'inpatient' | 'outpatient' | 'ambulatory' | 'emergency';
     practitionerId?: string;
     locationId?: string;
@@ -134,7 +134,7 @@ export class FHIREncounterUtils {
       class: {
         system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: data.class.toUpperCase(),
-        display: data.class.charAt(0).toUpperCase() + data.class.slice(1);
+        display: data.class.charAt(0).toUpperCase() + data.class.slice(1)
       },
       subject: {
         reference: `Patient/${data.patientId}`,
@@ -168,7 +168,7 @@ export class FHIREncounterUtils {
           reference: `Location/${data.locationId}`,
           type: 'Location'
         },
-        status: 'active';
+        status: 'active'
       }];
     }
 
@@ -187,10 +187,10 @@ export class FHIREncounterUtils {
           coding: [{
             system: 'http://snomed.info/sct',
             code: data.reasonCode,
-            display: data.reasonText || data.reasonCode;
+            display: data.reasonText || data.reasonCode
           }]
         }),
-        text: data.reasonText;
+        text: data.reasonText
       }];
     }
 
@@ -201,7 +201,7 @@ export class FHIREncounterUtils {
    * Create OPD encounter;
    */
   static createOPDEncounter(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     appointmentId?: string;
     start: string;
@@ -215,7 +215,7 @@ export class FHIREncounterUtils {
       appointmentId: data.appointmentId,
       start: data.start,
       end: data.end,
-      reasonText: data.chiefComplaint;
+      reasonText: data.chiefComplaint
     });
   }
 
@@ -223,9 +223,9 @@ export class FHIREncounterUtils {
    * Create IPD encounter (admission)
    */
   static createIPDEncounter(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
-    locationId: string;
+    locationId: string,
     admissionDate: string;
     dischargeDate?: string;
     admissionReason?: string;
@@ -238,7 +238,7 @@ export class FHIREncounterUtils {
       locationId: data.locationId,
       start: data.admissionDate,
       end: data.dischargeDate,
-      reasonText: data.admissionReason;
+      reasonText: data.admissionReason
     });
 
     // Add hospitalization details;
@@ -249,7 +249,7 @@ export class FHIREncounterUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/admit-source',
           code: data.admissionSource,
-          display: data.admissionSource;
+          display: data.admissionSource
         }]
       };
     }
@@ -263,7 +263,7 @@ export class FHIREncounterUtils {
   static createEmergencyEncounter(data: {
     patientId: string;
     practitionerId?: string;
-    locationId: string;
+    locationId: string,
     arrivalTime: string;
     triageLevel?: 'routine' | 'urgent' | 'semi-urgent' | 'immediate';
     chiefComplaint?: string;
@@ -274,7 +274,7 @@ export class FHIREncounterUtils {
       practitionerId: data.practitionerId,
       locationId: data.locationId,
       start: data.arrivalTime,
-      reasonText: data.chiefComplaint;
+      reasonText: data.chiefComplaint
     });
 
     // Add triage priority;
@@ -283,7 +283,7 @@ export class FHIREncounterUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v3-ActPriority',
           code: data.triageLevel.toUpperCase(),
-          display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1);
+          display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1)
         }]
       };
     }
@@ -304,7 +304,7 @@ export class FHIREncounterUtils {
    * Get encounter class display;
    */
   static getClassDisplay(encounter: FHIREncounter): string {
-    return encounter.class.display || encounter.class.code || 'Unknown';
+    return encounter.class.display || encounter.class.code || 'Unknown'
   }
 
   /**
@@ -312,7 +312,7 @@ export class FHIREncounterUtils {
    */
   static getDurationHours(encounter: FHIREncounter): number | null {
     if (encounter.length?.value && encounter.length?.unit === 'h') {
-      return encounter.length.value;
+      return encounter.length.value
     }
     
     if (encounter.period?.start && encounter.period?.end) {
@@ -335,7 +335,7 @@ export class FHIREncounterUtils {
    * Check if encounter is completed;
    */
   static isCompleted(encounter: FHIREncounter): boolean {
-    return encounter.status === 'finished';
+    return encounter.status === 'finished'
   }
 
   /**
@@ -343,7 +343,7 @@ export class FHIREncounterUtils {
    */
   static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {
     if (!encounter.participant || encounter.participant.length === 0) {
-      return undefined;
+      return undefined
     }
 
     // Look for attending physician or primary participant;
@@ -361,7 +361,7 @@ export class FHIREncounterUtils {
    */
   static getCurrentLocation(encounter: FHIREncounter): string | undefined {
     if (!encounter.location || encounter.location.length === 0) {
-      return undefined;
+      return undefined
     }
 
     // Look for active location;
@@ -419,7 +419,7 @@ export class FHIREncounterUtils {
       class: {
         system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: encounterClass.toUpperCase(),
-        display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1);
+        display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1)
       },
       subject: {
         reference: `Patient/${hmsEncounter.patientId}`,
@@ -452,7 +452,7 @@ export class FHIREncounterUtils {
           reference: `Location/${hmsEncounter.locationId}`,
           type: 'Location'
         },
-        status: 'active';
+        status: 'active'
       }];
     }
 
@@ -467,7 +467,7 @@ export class FHIREncounterUtils {
     // Add reason/chief complaint;
     if (hmsEncounter.chiefComplaint || hmsEncounter.reason) {
       fhirEncounter.reasonCode = [{
-        text: hmsEncounter.chiefComplaint || hmsEncounter.reason;
+        text: hmsEncounter.chiefComplaint || hmsEncounter.reason
       }];
     }
 
@@ -519,8 +519,7 @@ export class FHIREncounterWorkflow {
         return 'finished';
       case 'onleave':
         return 'in-progress';
-      default:
-        return null;
+      default: return null
     }
   }
 }

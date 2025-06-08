@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session"; // Keep original getSession for server-side use;
 
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
   const { searchParams } = new URL(request.url);
   const permission = searchParams.get("permission");
 

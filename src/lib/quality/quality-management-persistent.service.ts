@@ -137,9 +137,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 export interface QualityMetrics {
   id?: string;
-  indicatorId: string;
+  indicatorId: string,
   measurementPeriod: Date;
-  periodType: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annually';
+  periodType: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annually',
   numeratorValue: number;
   denominatorValue: number;
   rate?: number;
@@ -148,7 +148,7 @@ export interface QualityMetrics {
   stratificationData?: Record<string, any>;
   dataQualityScore?: number;
   dataCompletenessRate?: number;
-  dataSource: 'manual' | 'automated' | 'integrated';
+  dataSource: 'manual' | 'automated' | 'integrated',
   verificationStatus: 'pending' | 'verified' | 'rejected';
   enteredBy: string;
   verifiedBy?: string;

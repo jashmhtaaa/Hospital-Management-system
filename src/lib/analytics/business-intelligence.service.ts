@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,23 +19,23 @@ import { EventEmitter } from 'events';
 import { PrismaClient } from '@prisma/client';
 
 export interface AnalyticsReport {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: ReportCategory;
-  type: ReportType;
+  type: ReportType,
   dataSource: DataSource[];
-  parameters: ReportParameter[];
+  parameters: ReportParameter[],
   visualization: VisualizationConfig;
   schedule?: ScheduleConfig;
   recipients: string[];
   lastGenerated?: Date;
   nextGeneration?: Date;
-  status: 'active' | 'inactive' | 'error';
+  status: 'active' | 'inactive' | 'error',
   createdBy: string;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
-  accessControl: AccessControl;
+  accessControl: AccessControl
 }
 
 export type ReportCategory = 
@@ -60,45 +60,45 @@ export type ReportType =
   | 'predictive';
 
 export interface DataSource {
-  id: string;
+  id: string,
   name: string;
-  type: 'database' | 'api' | 'file' | 'external';
+  type: 'database' | 'api' | 'file' | 'external',
   connection: DatabaseConnection | ApiConnection | FileConnection;
-  query: string;
+  query: string,
   refreshInterval: number; // in minutes;
   cacheTtl: number; // in minutes;
 }
 
 export interface DatabaseConnection {
-  host: string;
+  host: string,
   port: number;
   database: string;
   schema?: string;
-  username: string;
+  username: string,
   password: string;
   ssl?: boolean;
 }
 
 export interface ApiConnection {
-  baseUrl: string;
+  baseUrl: string,
   endpoint: string;
   method: 'GET' | 'POST';
   headers?: Record<string, string>;
   authentication?: {
-    type: 'basic' | 'bearer' | 'api_key';
-    credentials: unknown;
+    type: 'basic' | 'bearer' | 'api_key',
+    credentials: unknown
   };
 }
 
 export interface FileConnection {
-  path: string;
+  path: string,
   format: 'csv' | 'xlsx' | 'json' | 'xml';
   delimiter?: string;
   encoding?: string;
 }
 
 export interface ReportParameter {
-  name: string;
+  name: string,
   type: 'string' | 'number' | 'date' | 'boolean' | 'select' | 'multi_select';
   label: string;
   description?: string;
@@ -109,7 +109,7 @@ export interface ReportParameter {
 }
 
 export interface ParameterOption {
-  value: unknown;
+  value: unknown,
   label: string;
   description?: string;
 }
@@ -122,9 +122,9 @@ export interface ParameterValidation {
 }
 
 export interface VisualizationConfig {
-  type: ChartType;
+  type: ChartType,
   layout: LayoutConfig;
-  styling: StylingConfig;
+  styling: StylingConfig,
   interactions: InteractionConfig;
   drillDown?: DrillDownConfig;
 }
@@ -151,10 +151,10 @@ export interface LayoutConfig {
   width?: number;
   height?: number;
   margin?: {
-    top: number;
+    top: number,
     right: number;
-    bottom: number;
-    left: number;
+    bottom: number,
+    left: number
   };
   responsive: boolean;
   title?: string;
@@ -164,9 +164,9 @@ export interface LayoutConfig {
 }
 
 export interface LegendConfig {
-  show: boolean;
+  show: boolean,
   position: 'top' | 'right' | 'bottom' | 'left';
-  align: 'start' | 'center' | 'end';
+  align: 'start' | 'center' | 'end'
 }
 
 export interface AxesConfig {
@@ -184,7 +184,7 @@ export interface AxisConfig {
 }
 
 export interface StylingConfig {
-  theme: 'light' | 'dark' | 'custom';
+  theme: 'light' | 'dark' | 'custom',
   colors: string[];
   fonts?: FontConfig;
   gridLines?: boolean;
@@ -192,15 +192,15 @@ export interface StylingConfig {
 }
 
 export interface FontConfig {
-  family: string;
+  family: string,
   size: number;
-  weight: string;
+  weight: string
 }
 
 export interface InteractionConfig {
-  zoom: boolean;
+  zoom: boolean,
   pan: boolean;
-  crossfilter: boolean;
+  crossfilter: boolean,
   tooltip: TooltipConfig;
   click?: ClickAction;
 }
@@ -218,65 +218,65 @@ export interface ClickAction {
 }
 
 export interface DrillDownConfig {
-  enabled: boolean;
-  levels: DrillDownLevel[];
+  enabled: boolean,
+  levels: DrillDownLevel[]
 }
 
 export interface DrillDownLevel {
-  name: string;
+  name: string,
   field: string;
   chart?: ChartType;
   filters?: FilterConfig[];
 }
 
 export interface FilterConfig {
-  field: string;
+  field: string,
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'between';
-  value: unknown;
+  value: unknown
 }
 
 export interface ScheduleConfig {
-  enabled: boolean;
+  enabled: boolean,
   frequency: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
   interval: number;
   time?: string; // HH:MM format;
   dayOfWeek?: number; // 0-6, Sunday = 0;
   dayOfMonth?: number; // 1-31;
-  timezone: string;
-  format: 'pdf' | 'xlsx' | 'csv' | 'png' | 'email';
+  timezone: string,
+  format: 'pdf' | 'xlsx' | 'csv' | 'png' | 'email'
 }
 
 export interface AccessControl {
-  owner: string;
+  owner: string,
   visibility: 'private' | 'organization' | 'department' | 'public';
-  permissions: Permission[];
-  shares: Share[];
+  permissions: Permission[],
+  shares: Share[]
 }
 
 export interface Permission {
-  userId: string;
+  userId: string,
   role: 'viewer' | 'editor' | 'admin';
-  grantedBy: string;
-  grantedAt: Date;
+  grantedBy: string,
+  grantedAt: Date
 }
 
 export interface Share {
-  id: string;
+  id: string,
   url: string;
   expiresAt?: Date;
   password?: string;
-  downloadEnabled: boolean;
-  createdAt: Date;
+  downloadEnabled: boolean,
+  createdAt: Date
 }
 
 export interface AnalyticsDataset {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   source: DataSource;
-  schema: DataSchema;
+  schema: DataSchema,
   refreshedAt: Date;
-  recordCount: number;
+  recordCount: number,
   sizeBytes: number;
   status: 'ready' | 'loading' | 'error';
   error?: string;
@@ -289,7 +289,7 @@ export interface DataSchema {
 }
 
 export interface DataField {
-  name: string;
+  name: string,
   type: 'string' | 'number' | 'date' | 'boolean' | 'object';
   nullable: boolean;
   description?: string;
@@ -298,29 +298,29 @@ export interface DataField {
 }
 
 export interface ReportExecution {
-  id: string;
+  id: string,
   reportId: string;
   parameters: Record<string, any>;
-  status: 'running' | 'completed' | 'failed';
+  status: 'running' | 'completed' | 'failed',
   startTime: Date;
   endTime?: Date;
   duration?: number;
   resultUrl?: string;
   error?: string;
-  triggeredBy: string;
-  triggerType: 'manual' | 'scheduled' | 'api';
+  triggeredBy: string,
+  triggerType: 'manual' | 'scheduled' | 'api'
 }
 
 export interface AnalyticsInsight {
-  id: string;
+  id: string,
   type: 'anomaly' | 'trend' | 'correlation' | 'prediction' | 'threshold';
-  title: string;
+  title: string,
   description: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   confidence: number; // 0-100;
-  dataPoints: unknown[];
+  dataPoints: unknown[],
   recommendations: string[];
-  category: string;
+  category: string,
   detectedAt: Date;
   validUntil?: Date;
   dismissed: boolean;
@@ -329,11 +329,11 @@ export interface AnalyticsInsight {
 }
 
 export interface KPIDefinition {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: string;
-  formula: string;
+  formula: string,
   unit: string;
   target?: number;
   threshold: {
@@ -341,39 +341,39 @@ export interface KPIDefinition {
     yellow: { min?: number; max?: number };
     red: { min?: number; max?: number };
   };
-  frequency: 'real_time' | 'hourly' | 'daily' | 'weekly' | 'monthly';
+  frequency: 'real_time' | 'hourly' | 'daily' | 'weekly' | 'monthly',
   dataSources: string[];
-  isActive: boolean;
+  isActive: boolean
 }
 
 export interface KPIValue {
-  kpiId: string;
+  kpiId: string,
   timestamp: Date;
   value: number;
   target?: number;
-  status: 'green' | 'yellow' | 'red';
+  status: 'green' | 'yellow' | 'red',
   trend: 'up' | 'down' | 'stable';
   changePercent: number;
   metadata?: Record<string, any>;
 }
 
 export interface AnalyticsAlert {
-  id: string;
+  id: string,
   name: string;
   description: string;
   kpiId?: string;
-  condition: AlertCondition;
+  condition: AlertCondition,
   recipients: AlertRecipient[];
-  channels: AlertChannel[];
+  channels: AlertChannel[],
   isActive: boolean;
   lastTriggered?: Date;
-  triggerCount: number;
+  triggerCount: number,
   createdBy: string;
-  createdAt: Date;
+  createdAt: Date
 }
 
 export interface AlertCondition {
-  field: string;
+  field: string,
   operator: 'greater_than' | 'less_than' | 'equals' | 'not_equals' | 'change_percent';
   value: number;
   duration?: number; // minutes;
@@ -381,60 +381,60 @@ export interface AlertCondition {
 }
 
 export interface AlertRecipient {
-  type: 'user' | 'role' | 'email';
+  type: 'user' | 'role' | 'email',
   identifier: string;
-  priority: 'low' | 'medium' | 'high';
+  priority: 'low' | 'medium' | 'high'
 }
 
 export interface AlertChannel {
-  type: 'email' | 'sms' | 'slack' | 'webhook' | 'in_app';
+  type: 'email' | 'sms' | 'slack' | 'webhook' | 'in_app',
   configuration: unknown;
-  isEnabled: boolean;
+  isEnabled: boolean
 }
 
 export interface DataGovernance {
-  dataClassification: DataClassification[];
+  dataClassification: DataClassification[],
   retentionPolicies: RetentionPolicy[];
-  accessAudit: AccessAuditLog[];
+  accessAudit: AccessAuditLog[],
   dataLineage: DataLineage;
-  qualityRules: DataQualityRule[];
+  qualityRules: DataQualityRule[]
 }
 
 export interface DataClassification {
-  field: string;
+  field: string,
   classification: 'public' | 'internal' | 'confidential' | 'restricted';
-  reason: string;
+  reason: string,
   appliedAt: Date;
-  appliedBy: string;
+  appliedBy: string
 }
 
 export interface RetentionPolicy {
-  dataType: string;
+  dataType: string,
   retentionPeriod: number; // days;
-  action: 'archive' | 'delete' | 'anonymize';
+  action: 'archive' | 'delete' | 'anonymize',
   reason: string;
-  isActive: boolean;
+  isActive: boolean
 }
 
 export interface AccessAuditLog {
-  userId: string;
+  userId: string,
   reportId: string;
-  action: 'view' | 'edit' | 'delete' | 'share' | 'export';
+  action: 'view' | 'edit' | 'delete' | 'share' | 'export',
   timestamp: Date;
-  ipAddress: string;
+  ipAddress: string,
   userAgent: string;
   success: boolean;
   details?: unknown;
 }
 
 export interface DataLineage {
-  sources: LineageNode[];
+  sources: LineageNode[],
   transformations: LineageTransformation[];
-  destinations: LineageNode[];
+  destinations: LineageNode[]
 }
 
 export interface LineageNode {
-  id: string;
+  id: string,
   type: 'table' | 'view' | 'api' | 'file' | 'report';
   name: string;
   schema?: string;
@@ -442,22 +442,22 @@ export interface LineageNode {
 }
 
 export interface LineageTransformation {
-  id: string;
+  id: string,
   type: 'join' | 'filter' | 'aggregate' | 'calculate' | 'pivot';
-  description: string;
+  description: string,
   inputs: string[];
-  outputs: string[];
-  logic: string;
+  outputs: string[],
+  logic: string
 }
 
 export interface DataQualityRule {
-  id: string;
+  id: string,
   name: string;
-  field: string;
+  field: string,
   rule: 'not_null' | 'unique' | 'range' | 'pattern' | 'custom';
-  parameters: unknown;
+  parameters: unknown,
   severity: 'warning' | 'error';
-  isActive: boolean;
+  isActive: boolean
 }
 
 class BusinessIntelligenceService extends EventEmitter {
@@ -502,8 +502,7 @@ class BusinessIntelligenceService extends EventEmitter {
       this.startInsightGeneration();
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      this.emit('bi_service_started');
-
+      this.emit('bi_service_started')
     } catch (error) {
 
       throw error;
@@ -523,7 +522,7 @@ class BusinessIntelligenceService extends EventEmitter {
     this.scheduledJobs.clear();
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.emit('bi_service_stopped');
+    this.emit('bi_service_stopped')
   }
 
   /**
@@ -535,7 +534,7 @@ class BusinessIntelligenceService extends EventEmitter {
       id: uuidv4(),
       status: 'active',
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date()
     };
 
     this.reports.set(newReport.id, newReport);
@@ -630,7 +629,7 @@ class BusinessIntelligenceService extends EventEmitter {
       refreshedAt: new Date(),
       recordCount: 0,
       sizeBytes: 0,
-      status: 'loading';
+      status: 'loading'
     };
 
     this.datasets.set(newDataset.id, newDataset);
@@ -683,7 +682,7 @@ class BusinessIntelligenceService extends EventEmitter {
   async defineKPI(kpi: Omit<KPIDefinition, 'id'>): Promise<string> {
     const newKPI: KPIDefinition = {
       ...kpi,
-      id: uuidv4();
+      id: uuidv4()
     };
 
     this.kpis.set(newKPI.id, newKPI);
@@ -727,7 +726,7 @@ class BusinessIntelligenceService extends EventEmitter {
       ...alert,
       id: uuidv4(),
       triggerCount: 0,
-      createdAt: new Date();
+      createdAt: new Date()
     };
 
     this.alerts.set(newAlert.id, newAlert);
@@ -818,28 +817,28 @@ class BusinessIntelligenceService extends EventEmitter {
       reports: {
         total: allReports.length,
         active: allReports.filter(r => r.status === 'active').length,
-        scheduled: allReports.filter(r => r.schedule?.enabled).length;
+        scheduled: allReports.filter(r => r.schedule?.enabled).length
       },
       datasets: {
         total: allDatasets.length,
         ready: allDatasets.filter(d => d.status === 'ready').length,
         loading: allDatasets.filter(d => d.status === 'loading').length,
-        error: allDatasets.filter(d => d.status === 'error').length;
+        error: allDatasets.filter(d => d.status === 'error').length
       },
       executions: {
         total: allExecutions.length,
         success: allExecutions.filter(e => e.status === 'completed').length,
         failed: allExecutions.filter(e => e.status === 'failed').length,
-        running: allExecutions.filter(e => e.status === 'running').length;
+        running: allExecutions.filter(e => e.status === 'running').length
       },
       insights: {
         total: this.insights.length,
         critical: this.insights.filter(i => i.severity === 'critical' && !i.dismissed).length,
-        dismissed: this.insights.filter(i => i.dismissed).length;
+        dismissed: this.insights.filter(i => i.dismissed).length
       },
       kpis: {
         total: allKPIs.length,
-        active: allKPIs.filter(k => k.isActive).length;
+        active: allKPIs.filter(k => k.isActive).length
       }
     };
   }
@@ -884,7 +883,7 @@ class BusinessIntelligenceService extends EventEmitter {
         },
         frequency: 'daily',
         dataSources: ['patient_surveys'],
-        isActive: true;
+        isActive: true
       });
 
       await this.defineKPI({
@@ -901,7 +900,7 @@ class BusinessIntelligenceService extends EventEmitter {
         },
         frequency: 'daily',
         dataSources: ['admissions'],
-        isActive: true;
+        isActive: true
       });
 
     } catch (error) {
@@ -1031,7 +1030,7 @@ class BusinessIntelligenceService extends EventEmitter {
       case 'equals': return fieldValue === condition.value;
       case 'not_equals': return fieldValue !== condition.value;
       case 'change_percent': return Math.abs(value.changePercent) > condition.value;
-      default: return false;
+      default: return false
     }
   }
 
@@ -1104,7 +1103,7 @@ class BusinessIntelligenceService extends EventEmitter {
         recommendations: ['Investigate data source', 'Review data quality'],
         category: 'Data Quality',
         detectedAt: new Date(),
-        dismissed: false;
+        dismissed: false
       });
     }
 

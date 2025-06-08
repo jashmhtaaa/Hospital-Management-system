@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -78,7 +78,7 @@ const priorityColors: Record<string, string> = {
   'URGENT': 'bg-red-500';
 };
 
-export const HousekeepingDashboard = () {
+export const HousekeepingDashboard = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [locations, setLocations] = useState<any[]>([]);
@@ -102,9 +102,9 @@ export const HousekeepingDashboard = () {
     const priority = searchParams.get('priority') || '';
     const page = parseInt(searchParams.get('page') || '1');
     
-    setActiveTab(tab);
+    setActiveTab(tab),
     setFilterStatus(status);
-    setFilterLocation(location);
+    setFilterLocation(location),
     setFilterPriority(priority);
     setCurrentPage(page);
   }, [searchParams]);
@@ -115,7 +115,7 @@ export const HousekeepingDashboard = () {
       try {
         const response = await fetch('/api/locations');
         if (!response.ok) throw new Error('Failed to fetch locations');
-        const data = await response.json();
+        const data = await response.json(),
         setLocations(data);
       } catch (error) {
 
@@ -155,7 +155,7 @@ export const HousekeepingDashboard = () {
         
         if (!response.ok) throw new Error('Failed to fetch requests');
         
-        const data = await response.json();
+        const data = await response.json(),
         setRequests(data.data);
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
@@ -188,7 +188,7 @@ export const HousekeepingDashboard = () {
   
   // Handle tab change;
   const handleTabChange = (value: string) => {
-    setActiveTab(value);
+    setActiveTab(value),
     setCurrentPage(1);
     
     // Reset status filter when changing tabs to avoid conflicts;
@@ -207,15 +207,15 @@ export const HousekeepingDashboard = () {
   
   // Handle filter changes;
   const applyFilters = () => {
-    setCurrentPage(1);
+    setCurrentPage(1),
     updateUrlParams();
   };
   
   // Reset all filters;
   const resetFilters = () => {
-    setFilterStatus('');
+    setFilterStatus(''),
     setFilterLocation('');
-    setFilterPriority('');
+    setFilterPriority(''),
     setCurrentPage(1);
     
     if (activeTab !== 'all') {
@@ -227,7 +227,7 @@ export const HousekeepingDashboard = () {
   
   // Handle page change;
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setCurrentPage(page)
   };
   
   // Navigate to create new request;
@@ -247,22 +247,21 @@ export const HousekeepingDashboard = () {
     
     switch (status) {
       case 'PENDING':
-        icon = <Clock className="h-3 w-3 mr-1" />;
+        icon = <Clock className="h-3 w-3 mr-1" />
         break;
       case 'ASSIGNED':
-        icon = <User className="h-3 w-3 mr-1" />;
+        icon = <User className="h-3 w-3 mr-1" />
         break;
       case 'IN_PROGRESS':
-        icon = <Clock3 className="h-3 w-3 mr-1" />;
+        icon = <Clock3 className="h-3 w-3 mr-1" />
         break;
       case 'COMPLETED':
-        icon = <CheckCircle2 className="h-3 w-3 mr-1" />;
+        icon = <CheckCircle2 className="h-3 w-3 mr-1" />
         break;
       case 'CANCELLED':
-        icon = <XCircle className="h-3 w-3 mr-1" />;
+        icon = <XCircle className="h-3 w-3 mr-1" />
         break;
-      default:
-        icon = null;
+      default: icon = null
     }
     
     return (
@@ -293,20 +292,20 @@ export const HousekeepingDashboard = () {
         <Card key={i}>;
           <CardHeader className="pb-2">;
             <div className="flex justify-between">;
-              <Skeleton className="h-6 w-1/3" />;
-              <Skeleton className="h-6 w-20" />;
+              <Skeleton className="h-6 w-1/3" />
+              <Skeleton className="h-6 w-20" />
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">;
-              <Skeleton className="h-4 w-full" />;
-              <Skeleton className="h-4 w-2/3" />;
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
             </div>
           </CardContent>
           <CardFooter>
             <div className="flex justify-between w-full">;
-              <Skeleton className="h-4 w-1/4" />;
-              <Skeleton className="h-8 w-24" />;
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-8 w-24" />
             </div>
           </CardFooter>
         </Card>
@@ -319,8 +318,8 @@ export const HousekeepingDashboard = () {
       <div className="flex justify-between items-center">;
         <h1 className="text-2xl font-bold">Housekeeping Management</h1>;
         <Button onClick={handleCreateRequest}>;
-          <Plus className="h-4 w-4 mr-2" />;
-          New Request;
+          <Plus className="h-4 w-4 mr-2" />
+          New Request
         </Button>
       </div>
       
@@ -330,15 +329,15 @@ export const HousekeepingDashboard = () {
           <TabsTrigger value="pending">Pending</TabsTrigger>;
           <TabsTrigger value="inProgress">In Progress</TabsTrigger>;
           <TabsTrigger value="completed">Completed</TabsTrigger>;
-          <TabsTrigger value="urgent">Urgent</TabsTrigger>;
+          <TabsTrigger value="urgent">Urgent</TabsTrigger>
         </TabsList>
         
         <div className="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">;
-          <div>
+<div
             <label className="text-sm font-medium">Status</label>;
             <Select value={filterStatus} onValueChange={setFilterStatus}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Statuses" />;
+                <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Statuses</SelectItem>;
@@ -346,16 +345,16 @@ export const HousekeepingDashboard = () {
                 <SelectItem value="ASSIGNED">Assigned</SelectItem>;
                 <SelectItem value="IN_PROGRESS">In Progress</SelectItem>;
                 <SelectItem value="COMPLETED">Completed</SelectItem>;
-                <SelectItem value="CANCELLED">Cancelled</SelectItem>;
+                <SelectItem value="CANCELLED">Cancelled</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
-          <div>
+<div
             <label className="text-sm font-medium">Location</label>;
             <Select value={filterLocation} onValueChange={setFilterLocation}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Locations" />;
+                <SelectValue placeholder="All Locations" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Locations</SelectItem>;
@@ -368,29 +367,29 @@ export const HousekeepingDashboard = () {
             </Select>
           </div>
           
-          <div>
+<div
             <label className="text-sm font-medium">Priority</label>;
             <Select value={filterPriority} onValueChange={setFilterPriority}>;
               <SelectTrigger>
-                <SelectValue placeholder="All Priorities" />;
+                <SelectValue placeholder="All Priorities" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Priorities</SelectItem>;
                 <SelectItem value="LOW">Low</SelectItem>;
                 <SelectItem value="MEDIUM">Medium</SelectItem>;
                 <SelectItem value="HIGH">High</SelectItem>;
-                <SelectItem value="URGENT">Urgent</SelectItem>;
+                <SelectItem value="URGENT">Urgent</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
           <div className="flex items-end space-x-2">;
             <Button onClick={applyFilters} className="flex-1">;
-              <Filter className="h-4 w-4 mr-2" />;
-              Apply Filters;
+              <Filter className="h-4 w-4 mr-2" />
+              Apply Filters
             </Button>
             <Button variant="outline" onClick={resetFilters}>;
-              <RefreshCw className="h-4 w-4" />;
+              <RefreshCw className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -401,7 +400,7 @@ export const HousekeepingDashboard = () {
           ) : requests.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-10">;
-                <ClipboardList className="h-12 w-12 text-gray-400 mb-4" />;
+                <ClipboardList className="h-12 w-12 text-gray-400 mb-4" />
                 <p className="text-lg font-medium text-gray-900">No requests found</p>;
                 <p className="text-sm text-gray-500 mt-1">;
                   {activeTab === 'all';
@@ -409,8 +408,8 @@ export const HousekeepingDashboard = () {
                     : `There are no ${activeTab === 'inProgress' ? 'in progress' : activeTab} housekeeping requests.`}
                 </p>
                 <Button onClick={handleCreateRequest} className="mt-4">;
-                  <Plus className="h-4 w-4 mr-2" />;
-                  Create New Request;
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create New Request
                 </Button>
               </CardContent>
             </Card>
@@ -420,12 +419,12 @@ export const HousekeepingDashboard = () {
                 <Card key={request.id} className="hover:shadow-md transition-shadow">;
                   <CardHeader className="pb-2">;
                     <div className="flex justify-between items-start">;
-                      <div>
+<div
                         <CardTitle className="text-lg">;
                           {request.requestType.replace(/_/g, ' ')}
                         </CardTitle>
                         <CardDescription className="flex items-center mt-1">;
-                          <MapPin className="h-3 w-3 mr-1" />;
+                          <MapPin className="h-3 w-3 mr-1" />
                           {request.location?.name || 'Unknown Location'}
                         </CardDescription>
                       </div>
@@ -439,38 +438,38 @@ export const HousekeepingDashboard = () {
                     <p className="text-sm line-clamp-2">{request.description}</p>;
                     <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">;
                       <div className="flex items-center">;
-                        <Calendar className="h-3 w-3 mr-1" />;
+                        <Calendar className="h-3 w-3 mr-1" />
                         Created: {format(new Date(request.createdAt), 'MMM d, yyyy')}
                       </div>
                       {request.scheduledDate && (
                         <div className="flex items-center">;
-                          <Clock className="h-3 w-3 mr-1" />;
+                          <Clock className="h-3 w-3 mr-1" />
                           Scheduled: {format(new Date(request.scheduledDate), 'MMM d, yyyy')}
                         </div>
                       )}
                       <div className="flex items-center">;
-                        <User className="h-3 w-3 mr-1" />;
+                        <User className="h-3 w-3 mr-1" />
                         By: {request.requestedByUser?.name || 'Unknown'}
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter className="flex justify-between pt-0">;
                     <div className="text-xs text-gray-500">;
-                      {request.tasks?.length || 0} task(s);
+                      {request.tasks?.length || 0} task(s)
                     </div>
-                    <Button;
-                      variant="outline";
-                      size="sm";
+                    <Button>
+                      variant="outline"
+                      size="sm"
                       onClick={() => handleViewRequest(request.id)}
                     >
-                      View Details;
+                      View Details
                     </Button>
                   </CardFooter>
                 </Card>
               ))}
               
               {totalPages > 1 && (
-                <Pagination;
+                <Pagination>
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}

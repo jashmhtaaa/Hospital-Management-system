@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -73,7 +73,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   
   if (query.patientId) {
     where.invoice = {
-      patientId: query.patientId;
+      patientId: query.patientId
     };
   }
   
@@ -187,7 +187,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
       'PAYMENT_EXCEEDS_OUTSTANDING',
       { 
         paymentAmount: data.amount,
-        outstandingAmount: invoice.outstandingAmount;
+        outstandingAmount: invoice.outstandingAmount
       }
     );
   }
@@ -240,7 +240,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     paymentId: payment.id, 
     invoiceId: data.invoiceId,
     amount: data.amount,
-    method: data.paymentMethod;
+    method: data.paymentMethod
   });
   
   // Generate receipt if required;

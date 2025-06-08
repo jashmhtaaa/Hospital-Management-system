@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,28 +15,28 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 
 interface Theatre {
-  id: string;
+  id: string,
   name: string;
-  type: string;
+  type: string,
   status: 'available' | 'occupied' | 'maintenance';
   currentProcedure?: string;
   nextAvailable?: string;
 }
 
 interface OTTheatreListProps {
-  theatres: Theatre[];
+  theatres: Theatre[]
 }
 
 /**
  * Operation Theatre list component;
  */
-export const OTTheatreList = ({ theatres }: OTTheatreListProps) {
+export const OTTheatreList = ({ theatres }: OTTheatreListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'available': return <Badge variant="success">Available</Badge>;
       case 'occupied': return <Badge variant="danger">Occupied</Badge>;
       case 'maintenance': return <Badge variant="warning">Maintenance</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -60,7 +60,7 @@ export const OTTheatreList = ({ theatres }: OTTheatreListProps) {
             {theatres.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center">;
-                  No theatres available;
+                  No theatres available
                 </TableCell>
               </TableRow>
             ) : (

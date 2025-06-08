@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -78,7 +78,7 @@ export async const errorHandlingMiddleware = (
         method,
         url: SecurityService.sanitizeUrl(url),
         contentType,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     });
     
@@ -100,7 +100,7 @@ export async const errorHandlingMiddleware = (
       userId,
       details: {
         status: response.status,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     });
     
@@ -154,7 +154,7 @@ export async const errorHandlingMiddleware = (
         requestId: crypto.randomUUID(),
         userId: 'system',
         method: request.method,
-        url: request.url;
+        url: request.url
       });
       
       await auditLogger.log({
@@ -168,7 +168,7 @@ export async const errorHandlingMiddleware = (
           status,
           url: SecurityService.sanitizeUrl(request.url),
           method: request.method,
-          timestamp: new Date().toISOString();
+          timestamp: new Date().toISOString()
         }
       });
     } catch (loggingError) {
@@ -182,7 +182,7 @@ export async const errorHandlingMiddleware = (
         error: {
           code,
           message,
-          details: Object.keys(details).length > 0 ? details : undefined;
+          details: Object.keys(details).length > 0 ? details : undefined
         }
       },
       { status }

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,7 +22,7 @@ import { notifyUsers } from '@/lib/notifications';
  * GET /api/diagnostics/radiology/orders;
  * Get radiology orders with optional filtering;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -148,7 +148,7 @@ export async const GET = (request: NextRequest) {
             clinical_information: order.clinical_information ? 
               decryptSensitiveData(order.clinical_information) : null,
             contrast_allergy_details: order.contrast_allergy_details ? 
-              decryptSensitiveData(order.contrast_allergy_details) : null;
+              decryptSensitiveData(order.contrast_allergy_details) : null
           };
         });
 
@@ -187,7 +187,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/radiology/orders;
  * Create a new radiology order;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -321,7 +321,7 @@ export async const POST = (request: NextRequest) {
         patientId,
         modality,
         procedureCode,
-        priority: priority || 'routine';
+        priority: priority || 'routine'
       }
     });
 
@@ -347,7 +347,7 @@ export async const POST = (request: NextRequest) {
         type: 'radiology_order',
         resourceId: result.insertId,
         resourceType: 'radiology_orders',
-        priority: priority === 'stat' ? 'high' : 'medium';
+        priority: priority === 'stat' ? 'high' : 'medium'
       });
     } else {
       // Notify radiology department;
@@ -366,7 +366,7 @@ export async const POST = (request: NextRequest) {
           type: 'radiology_order',
           resourceId: result.insertId,
           resourceType: 'radiology_orders',
-          priority: priority === 'stat' ? 'high' : 'medium';
+          priority: priority === 'stat' ? 'high' : 'medium'
         });
       }
     }
@@ -398,7 +398,7 @@ export async const POST = (request: NextRequest) {
       clinical_information: createdOrder.results[0].clinical_information ? 
         decryptSensitiveData(createdOrder.results[0].clinical_information) : null,
       contrast_allergy_details: createdOrder.results[0].contrast_allergy_details ? 
-        decryptSensitiveData(createdOrder.results[0].contrast_allergy_details) : null;
+        decryptSensitiveData(createdOrder.results[0].contrast_allergy_details) : null
     };
 
     return NextResponse.json(order, { status: 201 });
@@ -415,7 +415,7 @@ export async const POST = (request: NextRequest) {
  * PUT /api/diagnostics/radiology/orders/:id;
  * Update a radiology order;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -756,7 +756,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
           ...body,
           statusChanged,
           oldStatus: statusChanged ? oldStatus : undefined,
-          newStatus: statusChanged ? status : undefined;
+          newStatus: statusChanged ? status : undefined
         }
       });
 
@@ -786,7 +786,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order_update',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: 'medium';
+            priority: 'medium'
           });
         }
         
@@ -799,7 +799,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order_update',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: 'medium';
+            priority: 'medium'
           });
         }
         
@@ -812,7 +812,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order_update',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: 'medium';
+            priority: 'medium'
           });
         }
       }
@@ -827,7 +827,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium';
+            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
           });
         }
       }
@@ -841,13 +841,13 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'radiology_order',
             resourceId: id,
             resourceType: 'radiology_orders',
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium';
+            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
           });
         }
       }
 
       // Invalidate cache;
-      await CacheInvalidation.invalidatePattern('diagnostic:radiology:orders:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: radiology:orders:*')
     }
 
     // Get the updated order;
@@ -876,7 +876,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       contrast_allergy_details: updatedOrder.results[0].contrast_allergy_details ? 
         decryptSensitiveData(updatedOrder.results[0].contrast_allergy_details) : null,
       contrast_reaction_details: updatedOrder.results[0].contrast_reaction_details ? 
-        decryptSensitiveData(updatedOrder.results[0].contrast_reaction_details) : null;
+        decryptSensitiveData(updatedOrder.results[0].contrast_reaction_details) : null
     };
 
     return NextResponse.json(order);
@@ -893,7 +893,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * GET /api/diagnostics/radiology/orders/:id/tracking;
  * Get tracking history for a radiology order;
  */
-export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();

@@ -12,26 +12,26 @@ const ALLOWED_ROLES_BOOK = ["Admin", "Receptionist", "Patient"]; // Doctors usua
 
 // Define interface for the complex query result;
 interface AppointmentQueryResult {
-  appointment_id: number;
+  appointment_id: number,
   patient_id: number;
-  doctor_id: number;
+  doctor_id: number,
   schedule_id: number | null;
   appointment_datetime: string; // ISO String;
-  duration_minutes: number;
+  duration_minutes: number,
   reason: string | null;
-  status: AppointmentStatus;
+  status: AppointmentStatus,
   notes: string | null;
-  booked_by_user_id: number;
+  booked_by_user_id: number,
   created_at: string; // ISO String;
   updated_at: string; // ISO String;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
-  doctor_name: string;
-  doctor_specialty: string;
+  doctor_name: string,
+  doctor_specialty: string
 }
 
 // GET handler for listing appointments;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
     const { searchParams } = new URL(request.url);
@@ -153,7 +153,7 @@ export async const GET = (request: Request) {
                     fullName: appt.doctor_name,
                     userId: 0, // Placeholder;
                     username: "", // Placeholder;
-                    email: "" // Placeholder;
+                    email: "" // Placeholder
                 }
             }
         }));
@@ -184,7 +184,7 @@ const BookAppointmentSchema = z.object({
     status: z.nativeEnum(AppointmentStatus).optional().default(AppointmentStatus.Scheduled),
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
 

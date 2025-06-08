@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -43,10 +43,10 @@ export const DataTable = ({
           <thead className="bg-gray-50">;
             <tr>
               {columns.map((column, index) => (
-                <th;
+                <th>
                   key={index}
-                  scope="col";
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   {column.header}
                 </th>
@@ -56,7 +56,7 @@ export const DataTable = ({
           <tbody className="bg-white divide-y divide-gray-200">;
             {paginatedData.length > 0 ? (
               paginatedData.map((row, rowIndex) => (
-                <tr;
+                <tr>
                   key={rowIndex}
                   onClick={() => onRowClick?.(row)}
                   className={onRowClick ? "cursor-pointer hover:bg-gray-50" : ""}
@@ -70,11 +70,11 @@ export const DataTable = ({
               ));
             ) : (
               <tr>
-                <td;
+                <td>
                   colSpan={columns.length} 
-                  className="px-6 py-4 whitespace-nowrap text-center text-gray-500";
+                  className="px-6 py-4 whitespace-nowrap text-center text-gray-500"
                 >
-                  No data available;
+                  No data available
                 </td>
               </tr>
             )}
@@ -85,53 +85,53 @@ export const DataTable = ({
       {pagination && totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6">;
           <div className="flex flex-1 justify-between sm:hidden">;
-            <button;
+            <button>
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
-                currentPage === 1 ? 'text-gray-300' : 'text-gray-700 hover:bg-gray-50';
+                currentPage === 1 ? 'text-gray-300' : 'text-gray-700 hover: bg-gray-50'
               }`}
             >
-              Previous;
+              Previous
             </button>
-            <button;
+            <button>
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
               className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
-                currentPage === totalPages ? 'text-gray-300' : 'text-gray-700 hover:bg-gray-50';
+                currentPage === totalPages ? 'text-gray-300' : 'text-gray-700 hover: bg-gray-50'
               }`}
             >
-              Next;
+              Next
             </button>
           </div>
           <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">;
-            <div>
+<div
               <p className="text-sm text-gray-700">;
                 Showing <span className="font-medium">{Math.min((currentPage - 1) * pageSize + 1, data.length)}</span> to{' '}
                 <span className="font-medium">{Math.min(currentPage * pageSize, data.length)}</span> of{' '}
-                <span className="font-medium">{data.length}</span> results;
+                <span className="font-medium">{data.length}</span> results
               </p>
             </div>
-            <div>
+<div
               <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">;
-                <button;
+                <button>
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
                   className={`relative inline-flex items-center rounded-l-md px-2 py-2 ${
-                    currentPage === 1 ? 'text-gray-300' : 'text-gray-400 hover:bg-gray-50';
+                    currentPage === 1 ? 'text-gray-300' : 'text-gray-400 hover: bg-gray-50'
                   }`}
                 >
-                  Previous;
+                  Previous
                 </button>
                 {/* Page numbers would go here in a full implementation */}
-                <button;
+                <button>
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
                   className={`relative inline-flex items-center rounded-r-md px-2 py-2 ${
-                    currentPage === totalPages ? 'text-gray-300' : 'text-gray-400 hover:bg-gray-50';
+                    currentPage === totalPages ? 'text-gray-300' : 'text-gray-400 hover: bg-gray-50'
                   }`}
                 >
-                  Next;
+                  Next
                 </button>
               </nav>
             </div>

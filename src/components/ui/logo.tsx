@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,31 +37,30 @@ const Logo: React.FC<LogoProperties> = ({
 
   return (
     <div className={`flex items-center ${className}`}>;
-      <div;
-        className="relative";
+<div className="relative"
         style={{ width: sizeMap[size].logo, height: sizeMap[size].logo }}
       >
-        <Image;
-          src="/images/shlokam-logo.svg";
-          alt="Shlokam Logo";
+        <Image>
+          src="/images/shlokam-logo.svg"
+          alt="Shlokam Logo"
           fill;
           priority;
-          className="object-contain";
+          className="object-contain"
         />
       </div>
 
       {showText && (
         <div className="ml-2 flex flex-col">;
-          <span;
+<span
             className={`font-bold ${sizeMap[size].text} ${textColorClass} tracking-wide`}
           >
-            SHLOKAM;
+            SHLOKAM
           </span>
           {size !== "sm" && (
-            <span;
+<span
               className={`text-xs ${textColorClass} opacity-90 tracking-wider`}
             >
-              HEALTHCARE;
+              HEALTHCARE
             </span>
           )}
         </div>

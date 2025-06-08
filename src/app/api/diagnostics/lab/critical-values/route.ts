@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/lab/critical-values;
  * Get critical value configurations;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -112,7 +112,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/lab/critical-values;
  * Create a new critical value configuration;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -179,7 +179,7 @@ export async const POST = (request: NextRequest) {
       action: 'create',
       resource: 'laboratory_critical_values',
       resourceId: result.insertId,
-      details: body;
+      details: body
     });
 
     // Invalidate cache;
@@ -208,7 +208,7 @@ export async const POST = (request: NextRequest) {
  * PUT /api/diagnostics/lab/critical-values/:id;
  * Update a critical value configuration;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -304,11 +304,11 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         action: 'update',
         resource: 'laboratory_critical_values',
         resourceId: id,
-        details: body;
+        details: body
       });
 
       // Invalidate cache;
-      await CacheInvalidation.invalidatePattern('diagnostic:lab:critical-values:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: lab:critical-values:*')
     }
 
     // Get the updated critical value;
@@ -334,7 +334,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * DELETE /api/diagnostics/lab/critical-values/:id;
  * Delete a critical value configuration;
  */
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();

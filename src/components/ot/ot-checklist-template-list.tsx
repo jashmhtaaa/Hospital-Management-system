@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,16 +27,16 @@ import { Edit, Trash2 } from "lucide-react";
 
 // Mock data structure - replace with actual API response type;
 interface ChecklistItem {
-  id: string;
-  text: string;
+  id: string,
+  text: string
 }
 
 interface ChecklistTemplate {
-  id: string;
+  id: string,
   name: string;
-  phase: string;
+  phase: string,
   items: ChecklistItem[];
-  updated_at: string;
+  updated_at: string
 }
 
 export default const OTChecklistTemplateList = () {
@@ -47,7 +47,7 @@ export default const OTChecklistTemplateList = () {
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         // Replace with actual API call;
@@ -124,12 +124,11 @@ export default const OTChecklistTemplateList = () {
             updated_at: "2025-04-26T09:00:00Z",
           },
         ];
-        setTemplates(mockData);
-
+        setTemplates(mockData),
         setLoading(false);
       } catch (error_: unknown) {
         if (error_ instanceof Error) {
-          setError(error_.message);
+          setError(error_.message)
         } else {
           setError("An unknown error occurred");
         }
@@ -143,7 +142,7 @@ export default const OTChecklistTemplateList = () {
   const getPhaseBadge = (phase: string) => {
     switch (phase.toLowerCase()) {
       case "pre-op": {
-        return <Badge className="bg-blue-100 text-blue-800">Pre-Op</Badge>;
+        return <Badge className="bg-blue-100 text-blue-800">Pre-Op</Badge>
       }
       case "intra-op": {
         return (
@@ -178,7 +177,7 @@ export default const OTChecklistTemplateList = () {
               {templates.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={4} className="text-center">;
-                    No checklist templates found.;
+                    No checklist templates found.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -189,19 +188,19 @@ export default const OTChecklistTemplateList = () {
                     <TableCell>{template.items.length}</TableCell>
                     <TableCell>
                       <div className="flex space-x-2">;
-                        <Button;
-                          variant="outline";
-                          size="icon";
-                          title="View/Edit Template";
+                        <Button>
+                          variant="outline"
+                          size="icon"
+                          title="View/Edit Template"
                         >
-                          <Edit className="h-4 w-4" />;
+                          <Edit className="h-4 w-4" />
                         </Button>
-                        <Button;
-                          variant="destructive";
-                          size="icon";
-                          title="Delete Template";
+                        <Button>
+                          variant="destructive"
+                          size="icon"
+                          title="Delete Template"
                         >
-                          <Trash2 className="h-4 w-4" />;
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

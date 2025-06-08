@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -42,12 +42,12 @@ class CacheService {
       
       this.redisClient.on('error', (err: unknown) => {
 
-        this.connected = false;
+        this.connected = false
       });
       
       this.redisClient.on('connect', () => {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        this.connected = true;
+        this.connected = true
       });
       
       await this.redisClient.connect();
@@ -104,7 +104,7 @@ class CacheService {
       // Fallback to memory cache;
       memoryCache[key] = {
         value,
-        expiry: Date.now() + (ttl * 1000);
+        expiry: Date.now() + (ttl * 1000)
       };
     } catch (error) {
 

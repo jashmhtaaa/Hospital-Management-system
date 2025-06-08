@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -106,7 +106,7 @@ describe('MarketingCampaignService', () => {
       // Arrange;
       const invalidData = {
         ...mockCampaignData,
-        name: '', // Invalid: empty name;
+        name: '', // Invalid: empty name
       };
       
       // Act & Assert;
@@ -243,7 +243,7 @@ describe('MarketingCampaignService', () => {
       const result = await service.getCampaigns({ page: 1, limit: 10 });
       
       // Assert;
-      expect(prisma.marketingCampaign.count).toHaveBeenCalled();
+      expect(prisma.marketingCampaign.count).toHaveBeenCalled(),
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
@@ -343,16 +343,14 @@ describe('MarketingCampaignService', () => {
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
-      });
-      
+      }),
       expect(prisma.marketingCampaign.update).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
         data: {
           ...updateData,
           updatedById: mockUserId,
         },
-      });
-      
+      }),
       expect(result).toEqual({
         ...mockCampaign,
         ...updateData,
@@ -410,8 +408,7 @@ describe('MarketingCampaignService', () => {
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
-      });
-      
+      }),
       expect(prisma.marketingCampaign.delete).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
       });
@@ -481,15 +478,13 @@ describe('MarketingCampaignService', () => {
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
-      });
-      
+      }),
       expect(prisma.campaignChannel.create).toHaveBeenCalledWith({
         data: {
           campaignId: 'campaign-123',
           ...mockChannelData,
         },
-      });
-      
+      }),
       expect(result).toEqual(mockCreatedChannel);
     });
     
@@ -556,19 +551,16 @@ describe('MarketingCampaignService', () => {
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
-      });
-      
+      }),
       expect(prisma.contactSegment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
-      });
-      
+      }),
       expect(prisma.campaignSegment.create).toHaveBeenCalledWith({
         data: {
           campaignId: 'campaign-123',
           segmentId: 'segment-123',
         },
-      });
-      
+      }),
       expect(result).toEqual(mockCampaignSegment);
     });
     
@@ -582,7 +574,7 @@ describe('MarketingCampaignService', () => {
       const result = await service.addCampaignSegment('campaign-123', 'segment-123', mockUserId);
       
       // Assert;
-      expect(prisma.campaignSegment.create).not.toHaveBeenCalled();
+      expect(prisma.campaignSegment.create).not.toHaveBeenCalled(),
       expect(result).toEqual(mockCampaignSegment);
     });
     

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -88,12 +88,12 @@ export default defineConfig({
     
     // JUnit reporter for CI;
     ['junit', { 
-      outputFile: 'test-results/junit/playwright-results.xml';
+      outputFile: 'test-results/junit/playwright-results.xml'
     }],
     
     // JSON reporter;
     ['json', { 
-      outputFile: 'test-results/playwright-results.json';
+      outputFile: 'test-results/playwright-results.json'
     }],
     
     // Allure reporter;

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,32 +16,32 @@ import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption 
 
 // FHIR-compliant DiagnosticReport resource structure;
 interface FHIRDiagnosticReport {
-  resourceType: "DiagnosticReport";
+  resourceType: "DiagnosticReport",
   id: string;
   meta: {
-    versionId: string;
+    versionId: string,
     lastUpdated: string;
     security?: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
   };
-  status: "registered" | "partial" | "preliminary" | "final" | "amended" | "corrected" | "appended" | "cancelled" | "entered-in-error" | "unknown";
+  status: "registered" | "partial" | "preliminary" | "final" | "amended" | "corrected" | "appended" | "cancelled" | "entered-in-error" | "unknown",
   category: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
   };
   code: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   subject: {
     reference: string;
@@ -54,7 +54,7 @@ interface FHIRDiagnosticReport {
     display?: string;
   }>;
   result?: Array<{
-    reference: string;
+    reference: string
   }>;
   conclusion?: string;
 }
@@ -72,7 +72,7 @@ interface LabTestCreateBody {
   
   // Additional coding systems (optional)
   additional_codes?: Array<{
-    system: string;
+    system: string,
     code: string;
     display?: string;
   }>;
@@ -108,10 +108,10 @@ interface LabTestCreateBody {
   
   // Reflex testing rules;
   reflex_rules?: Array<{
-    condition_test_id: number;
+    condition_test_id: number,
     condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
-    condition_value: string;
-    action_test_id: number;
+    condition_value: string,
+    action_test_id: number
   }>;
   
   // Business information;
@@ -130,7 +130,7 @@ interface LabTestCreateBody {
 }
 
 // GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -233,26 +233,26 @@ export async const GET = (request: NextRequest) {
           id: test.id.toString(),
           meta: {
             versionId: "1",
-            lastUpdated: new Date().toISOString();
+            lastUpdated: new Date().toISOString()
           },
           status: "registered",
           category: {
             coding: [{
               system: "http://terminology.hl7.org/CodeSystem/v2-0074",
               code: "LAB",
-              display: "Laboratory";
+              display: "Laboratory"
             }]
           },
           code: {
             coding: [{
               system: "http://loinc.org",
               code: test.loinc_code || "unknown",
-              display: test.loinc_display || test.name;
+              display: test.loinc_display || test.name
             }],
-            text: test.name;
+            text: test.name
           },
           subject: {
-            reference: "Patient/example";
+            reference: "Patient/example"
           }
         };
         
@@ -261,7 +261,7 @@ export async const GET = (request: NextRequest) {
           resource.meta.security = [{
             system: "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
             code: "R",
-            display: "Restricted";
+            display: "Restricted"
           }];
         }
         
@@ -275,11 +275,11 @@ export async const GET = (request: NextRequest) {
         link: [
           {
             relation: "self",
-            url: request.url;
+            url: request.url
           }
         ],
         entry: fhirResources.map(resource => ({
-          resource;
+          resource
         }));
       });
     } else {
@@ -290,7 +290,7 @@ export async const GET = (request: NextRequest) {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize);
+          totalPages: Math.ceil(totalCount / pageSize)
         }
       });
     }
@@ -305,7 +305,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -374,7 +374,7 @@ export async const POST = (request: NextRequest) {
       
       // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
-        patientPreparation: body.patient_preparation;
+        patientPreparation: body.patient_preparation
       });
       
       const insertParameters = [
@@ -542,7 +542,7 @@ export async const POST = (request: NextRequest) {
         panel_items: panelItems,
         reference_ranges: referenceRanges,
         reflex_rules: reflexRules,
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]');
+        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
       };
       
       // Return the created test;
@@ -566,7 +566,7 @@ export async const POST = (request: NextRequest) {
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -627,7 +627,7 @@ export async const PUT = (
         // Validate LOINC code format;
         const loincRegex = /^\d+-\d+$/;
         if (!loincRegex.test(body.loinc_code)) {
-          throw new Error("Invalid LOINC code format. Expected format: #####-#");
+          throw new Error("Invalid LOINC code format. Expected format: #####-#")
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
@@ -691,7 +691,7 @@ export async const PUT = (
       if (body.patient_preparation !== undefined) {
         // Encrypt sensitive data;
         const encryptedData = await encryptSensitiveData({
-          patientPreparation: body.patient_preparation;
+          patientPreparation: body.patient_preparation
         });
         updateFields.push("patient_preparation = ?");
         updateParameters.push(encryptedData.patientPreparation);
@@ -893,7 +893,7 @@ export async const PUT = (
         panel_items: panelItems,
         reference_ranges: referenceRanges,
         reflex_rules: reflexRules,
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]');
+        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
       };
       
       // Return the updated test;
@@ -917,7 +917,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -960,7 +960,7 @@ export async const DELETE = (
       );
       
       return NextResponse.json({
-        message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead.";
+        message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead."
       });
     }
     
@@ -981,7 +981,7 @@ export async const DELETE = (
       await DB.query("COMMIT", []);
       
       return NextResponse.json({
-        message: "Laboratory test deleted successfully";
+        message: "Laboratory test deleted successfully"
       });
     } catch (error) {
       // Rollback transaction on error;

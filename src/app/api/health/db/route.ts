@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,21 +20,21 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 interface DatabaseHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: 'healthy' | 'degraded' | 'unhealthy',
   timestamp: string;
-  responseTime: number;
+  responseTime: number,
   connectionPool: {
-    active: number;
+    active: number,
     idle: number;
-    total: number;
+    total: number
   };
   queries: {
-    slow: number;
-    failed: number;
+    slow: number,
+    failed: number
   };
   migrations: {
-    applied: number;
-    pending: number;
+    applied: number,
+    pending: number
   };
 }
 
@@ -58,7 +58,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
     const connectionPool = {
       active: 5, // These would come from actual pool metrics;
       idle: 3,
-      total: 8;
+      total: 8
     };
     
     const responseTime = Date.now() - startTime;
@@ -70,9 +70,9 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       connectionPool,
       queries: {
         slow: slowQueries,
-        failed: 0 // This would come from monitoring;
+        failed: 0 // This would come from monitoring
       },
-      migrations: migrationStatus;
+      migrations: migrationStatus
     };
     
     const httpStatus = dbHealth.status === 'healthy' ? 200 : 
@@ -93,7 +93,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       timestamp: new Date().toISOString(),
       responseTime: Date.now() - startTime,
       error: 'Database connection failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -133,13 +133,13 @@ async const checkMigrations = (): Promise<{ applied: number; pending: number }> 
     
     return {
       applied: applied[0]?.count || 0,
-      pending: pending[0]?.count || 0;
+      pending: pending[0]?.count || 0
     };
   } catch (error) {
     // If migration table doesn't exist or is inaccessible;
     return {
       applied: 0,
-      pending: 0;
+      pending: 0
     };
   }
 }

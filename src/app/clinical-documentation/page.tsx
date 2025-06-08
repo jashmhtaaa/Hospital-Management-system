@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -52,12 +52,12 @@ export default async const ClinicalDocumentationPage = ({
       <div className="mb-6">;
         <h1 className="text-3xl font-bold">Clinical Documentation</h1>;
         <p className="text-gray-500">;
-          Manage clinical documents for patients;
+          Manage clinical documents for patients
         </p>
       </div>
       
       <Suspense fallback={<div>Loading documents...</div>}>;
-        <DocumentList patientId={patientId} />;
+        <DocumentList patientId={patientId} />
       </Suspense>
     </div>
   );

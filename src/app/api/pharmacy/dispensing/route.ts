@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,7 +33,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -44,7 +44,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const dispensingRepository = {
@@ -55,21 +55,21 @@ const dispensingRepository = {
   findAll: () => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const inventoryRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/dispensing;
  * List medication dispensing records with filtering and pagination;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -135,7 +135,7 @@ export async const GET = (req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length;
+        resultCount: paginatedRecords.length
       }
     });
 
@@ -146,7 +146,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -158,7 +158,7 @@ export async const GET = (req: NextRequest) {
  * POST /api/pharmacy/dispensing;
  * Create a new medication dispensing record;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -225,7 +225,7 @@ export async const POST = (req: NextRequest) {
       status: data.status || 'completed',
       notes: data.notes || '',
       location: data.location || 'main-pharmacy',
-      dispensingType: data.dispensingType || 'outpatient';
+      dispensingType: data.dispensingType || 'outpatient'
     };
 
     // Special handling for controlled substances;
@@ -235,7 +235,7 @@ export async const POST = (req: NextRequest) {
         JSON.stringify({
           witnessId: data.witnessId,
           lockboxNumber: data.lockboxNumber,
-          wastage: data.wastage || 0;
+          wastage: data.wastage || 0
         });
       );
 
@@ -249,7 +249,7 @@ export async const POST = (req: NextRequest) {
           medicationId: prescription.medicationId,
           prescriptionId: data.prescriptionId,
           quantity: data.quantityDispensed,
-          witnessId: data.witnessId;
+          witnessId: data.witnessId
         }
       });
     }
@@ -274,7 +274,7 @@ export async const POST = (req: NextRequest) {
         medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId,
         quantity: data.quantityDispensed,
-        location: data.location;
+        location: data.location
       }
     });
 
@@ -282,7 +282,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: dispensingId,
-        message: 'Medication dispensed successfully';
+        message: 'Medication dispensed successfully'
       }, 
       { status: 201 }
     );

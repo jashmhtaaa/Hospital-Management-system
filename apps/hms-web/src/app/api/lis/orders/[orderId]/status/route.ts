@@ -24,11 +24,11 @@ const updateLabOrderStatusSchema = z.object({
 
 interface RouteContext {
   params: {
-    orderId: string;
+    orderId: string
   };
 }
 
-export async const PUT = (request: NextRequest, { params }: RouteContext) {
+export async const PUT = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
   const { orderId } = params;
@@ -100,12 +100,11 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) {
       orderId, 
       oldStatus: existingOrder.status, 
       newStatus: status, 
-      updatedData: updatedLabOrder;
+      updatedData: updatedLabOrder
     });
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return sendSuccessResponse(updatedLabOrder);
-
+    return sendSuccessResponse(updatedLabOrder)
   } catch (error: unknown) {
 
     let errStatus = 500;

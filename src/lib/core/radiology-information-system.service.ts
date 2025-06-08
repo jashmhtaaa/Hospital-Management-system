@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -119,9 +119,9 @@ export const QualityAssuranceSchema = z.object({
 });
 
 export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
-  id: string;
+  id: string,
   accession_number: string;
-  study_instance_uid: string;
+  study_instance_uid: string,
   status: 'scheduled' | 'arrived' | 'in_progress' | 'completed' | 'cancelled' | 'no_show';
   arrival_time?: Date;
   start_time?: Date;
@@ -133,7 +133,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
   total_images?: number;
   study_size_mb?: number;
   radiation_dose_total?: number;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   patient_age?: number;
@@ -142,7 +142,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
 };
 
 export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
-  id: string;
+  id: string,
   report_number: string;
   status: 'draft' | 'preliminary' | 'final' | 'amended';
   dictated_at?: Date;
@@ -153,72 +153,72 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
   amended_by?: string;
   amendment_reason?: string;
   read_time_minutes?: number;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   radiologist_name?: string;
 };
 
 export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
-  id: string;
+  id: string,
   series_instance_uid: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   transfer_syntax: string;
   compression_type?: string;
-  file_size_mb: number;
+  file_size_mb: number,
   verification_status: 'pending' | 'verified' | 'failed';
   last_accessed?: Date;
-  access_count: number;
+  access_count: number
 };
 
 export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
-  id: string;
+  id: string,
   overall_score: number; // 1-100;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export interface RadiologyWorklistItem {
-  study: ImagingStudy;
+  study: ImagingStudy,
   priority_score: number;
-  estimated_read_time: number;
+  estimated_read_time: number,
   complexity_level: 'low' | 'medium' | 'high';
   subspecialty_required?: string;
-  prior_studies_count: number;
-  critical_finding_likelihood: number;
+  prior_studies_count: number,
+  critical_finding_likelihood: number
 }
 
 export interface RadiologyMetrics {
-  daily_volume: number;
+  daily_volume: number,
   average_read_time: number;
   turnaround_time_stat: number; // minutes;
   turnaround_time_routine: number; // minutes;
-  critical_results_percentage: number;
+  critical_results_percentage: number,
   repeat_rate: number;
-  no_show_rate: number;
+  no_show_rate: number,
   equipment_utilization: number;
   radiologist_productivity: {
-    radiologist_id: string;
+    radiologist_id: string,
     studies_read: number;
-    average_read_time: number;
+    average_read_time: number,
     critical_results: number;
-    amendments: number;
+    amendments: number
   }[];
   modality_distribution: {
-    modality: string;
+    modality: string,
     count: number;
-    percentage: number;
+    percentage: number
   }[];
 }
 
 export interface PACSIntegration {
-  study_id: string;
+  study_id: string,
   pacs_server: string;
   transfer_status: 'pending' | 'in_progress' | 'completed' | 'failed';
   transfer_start_time?: Date;
   transfer_completion_time?: Date;
   error_message?: string;
-  retry_count: number;
+  retry_count: number,
   file_count: number;
   total_size_mb: number;
   verification_hash?: string;
@@ -231,8 +231,7 @@ export class RadiologyInformationSystemService {
   private qualityAssurance: Map<string, QualityAssurance> = new Map();
   private pacsIntegrations: Map<string, PACSIntegration> = new Map();
   private reportTemplates: Map<string, any> = new Map();
-  private equipmentSchedule: Map<string, any[]> = new Map();
-
+  private equipmentSchedule: Map<string, any[]> = new Map(),
   constructor() {
     this.initializeReportTemplates();
     this.initializeEquipmentSchedule();
@@ -461,7 +460,7 @@ export class RadiologyInformationSystemService {
   async completeImagingStudy(
     studyId: string,
     completionData: {
-      total_images: number;
+      total_images: number,
       study_size_mb: number;
       radiation_dose_total?: number;
       notes?: string;
@@ -989,7 +988,7 @@ export class RadiologyInformationSystemService {
    * Get DICOM series for study;
    */
   async getDicomSeries(studyId: string): Promise<DicomSeries[]> {
-    return this.dicomSeries.get(studyId) || [];
+    return this.dicomSeries.get(studyId) || []
   }
 
   /**

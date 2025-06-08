@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -73,7 +73,7 @@ export async const GET = (
           }
         } catch (error: unknown) {
 
-          // Keep responses as original string if parsing fails;
+          // Keep responses as original string if parsing fails
         }
         return result;
       }) || [];
@@ -212,7 +212,7 @@ export async const POST = (
         }
       } catch (error: unknown) {
 
-        // Keep responses as original string if parsing fails;
+        // Keep responses as original string if parsing fails
       }
       return NextResponse.json(finalResult[0], {
         status: existing && existing.length > 0 ? 200 : 201,

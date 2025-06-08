@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -76,10 +76,10 @@ export class FHIRDiagnosticReportUtils {
    * Create a basic lab report;
    */
   static createLabReport(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     encounterId?: string;
-    reportCode: string;
+    reportCode: string,
     reportName: string;
     observations: string[]; // Observation IDs;
     conclusion?: string;
@@ -94,14 +94,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'LAB',
-          display: 'Laboratory';
+          display: 'Laboratory'
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: data.reportCode,
-          display: data.reportName;
+          display: data.reportName
         }]
       },
       subject: {
@@ -138,13 +138,13 @@ export class FHIRDiagnosticReportUtils {
    * Create an imaging report;
    */
   static createImagingReport(data: {
-    patientId: string;
+    patientId: string,
     radiologistId: string;
     encounterId?: string;
-    studyType: string;
+    studyType: string,
     studyName: string;
     imagingStudyId?: string;
-    findings: string;
+    findings: string,
     impression: string;
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
@@ -157,14 +157,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'RAD',
-          display: 'Radiology';
+          display: 'Radiology'
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: data.studyType,
-          display: data.studyName;
+          display: data.studyName
         }]
       },
       subject: {
@@ -205,14 +205,14 @@ export class FHIRDiagnosticReportUtils {
    * Create a pathology report;
    */
   static createPathologyReport(data: {
-    patientId: string;
+    patientId: string,
     pathologistId: string;
     encounterId?: string;
-    specimenId: string;
+    specimenId: string,
     diagnosis: string;
-    grossDescription: string;
+    grossDescription: string,
     microscopicDescription: string;
-    conclusion: string;
+    conclusion: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRDiagnosticReport {
@@ -223,14 +223,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'PAT',
-          display: 'Pathology';
+          display: 'Pathology'
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: '60567-5',
-          display: 'Pathology report';
+          display: 'Pathology report'
         }]
       },
       subject: {
@@ -266,17 +266,17 @@ export class FHIRDiagnosticReportUtils {
    * Create a cardiology report (ECG, Echo, etc.)
    */
   static createCardiologyReport(data: {
-    patientId: string;
+    patientId: string,
     cardiologistId: string;
     encounterId?: string;
-    studyType: 'ECG' | 'ECHO' | 'STRESS_TEST' | 'HOLTER';
+    studyType: 'ECG' | 'ECHO' | 'STRESS_TEST' | 'HOLTER',
     findings: string;
     interpretation: string;
     recommendations?: string;
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
     measurements?: Array<{
-      parameter: string;
+      parameter: string,
       value: string;
       unit?: string;
       normalRange?: string;
@@ -314,14 +314,14 @@ export class FHIRDiagnosticReportUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'CAR',
-          display: 'Cardiology';
+          display: 'Cardiology'
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: study.code,
-          display: study.display;
+          display: study.display
         }]
       },
       subject: {
@@ -356,7 +356,7 @@ export class FHIRDiagnosticReportUtils {
    * Get report code display;
    */
   static getCodeDisplay(report: FHIRDiagnosticReport): string {
-    return report.code.coding?.[0]?.display || report.code.text || 'Unknown Report';
+    return report.code.coding?.[0]?.display || report.code.text || 'Unknown Report'
   }
 
   /**
@@ -393,7 +393,7 @@ export class FHIRDiagnosticReportUtils {
    */
   static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {
     if (typeof report.effective === 'string') {
-      return new Date(report.effective);
+      return new Date(report.effective)
     }
     if (typeof report.effective === 'object' && report.effective.start) {
       return new Date(report.effective.start);
@@ -405,13 +405,13 @@ export class FHIRDiagnosticReportUtils {
    * Format report for display;
    */
   static formatForDisplay(report: FHIRDiagnosticReport): {
-    reportName: string;
+    reportName: string,
     category: string;
-    status: string;
+    status: string,
     effectiveDate: string;
-    performer: string;
+    performer: string,
     isCritical: boolean;
-    hasResults: boolean;
+    hasResults: boolean,
     hasImages: boolean;
     conclusion?: string;
   } {
@@ -426,7 +426,7 @@ export class FHIRDiagnosticReportUtils {
       isCritical: this.isCritical(report),
       hasResults: (report.result?.length || 0) > 0,
       hasImages: (report.media?.length || 0) > 0,
-      conclusion: report.conclusion;
+      conclusion: report.conclusion
     };
   }
 
@@ -537,7 +537,7 @@ export class FHIRDiagnosticReportUtils {
    * Get critical reports;
    */
   static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {
-    return reports.filter(report => this.isCritical(report));
+    return reports.filter(report => this.isCritical(report))
   }
 
   /**
@@ -567,7 +567,7 @@ export class FHIRDiagnosticCodes {
     LIVER_FUNCTION_PANEL: '24325-3',
     THYROID_FUNCTION_PANEL: '24108-3',
     COAGULATION_PANEL: '34714-6',
-    URINALYSIS: '24356-8';
+    URINALYSIS: '24356-8'
   };
 
   /**
@@ -582,7 +582,7 @@ export class FHIRDiagnosticCodes {
     ULTRASOUND_ABDOMEN: '24982-1',
     MAMMOGRAPHY: '24604-1',
     ECHOCARDIOGRAM: '34552-0',
-    EKG: '11524-6';
+    EKG: '11524-6'
   };
 
   /**
@@ -592,7 +592,7 @@ export class FHIRDiagnosticCodes {
     SURGICAL_PATHOLOGY: '60567-5',
     CYTOLOGY: '47527-7',
     AUTOPSY: '18743-5',
-    BONE_MARROW: '33717-0';
+    BONE_MARROW: '33717-0'
   };
 
   /**

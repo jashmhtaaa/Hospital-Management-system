@@ -43,34 +43,34 @@ interface HIPAAConfig {
   readonly dataRetentionPolicyRequired: boolean;
   readonly workforceTrainingRequired: boolean;
   readonly securityOfficerDesignated: boolean;
-  readonly incidentResponsePlanRequired: boolean;
+  readonly incidentResponsePlanRequired: boolean
 }
 
 interface ValidationResult {
-  name: string;
+  name: string,
   passed: boolean;
-  details: string;
+  details: string,
   severity: 'critical' | 'high' | 'medium' | 'low';
   regulation: string; // HIPAA regulation reference
   remediation?: string; // Suggested fix
 }
 
 interface ValidationWarning {
-  name: string;
+  name: string,
   details: string;
-  recommendation: string;
+  recommendation: string
 }
 
 interface ComplianceResults {
-  totalChecks: number;
+  totalChecks: number,
   passedChecks: number;
-  failedChecks: ValidationResult[];
+  failedChecks: ValidationResult[],
   warnings: ValidationWarning[];
   complianceScore: number; // 0-100
-  criticalIssues: number;
+  criticalIssues: number,
   highPriorityIssues: number;
-  lastValidated: Date;
-  validatedBy: string;
+  lastValidated: Date,
+  validatedBy: string
 }
 
 // HIPAA Configuration - Enterprise Healthcare Standards
@@ -176,7 +176,7 @@ function logWarning(name: string, details: string, recommendation: string): void
 // Enhanced file system utilities with error handling
 function fileExists(filePath: string): boolean {
   try {
-    return fs.existsSync(filePath);
+    return fs.existsSync(filePath)
   } catch (error) {
     console.warn(`Error checking file existence: ${filePath}`, error);
     return false;
@@ -294,7 +294,7 @@ function validateAccessControls(): void {
   // 1.3 Check unique user identification
   const authServiceExists = fileExists('./src/lib/security/auth.service.ts');
   if (authServiceExists) {
-    const hasUniqueUserIds = fileContains('./src/lib/security/auth.service.ts', /userId|username|email/);
+    const hasUniqueUserIds = fileContains('./src/lib/security/auth.service.ts', /userId|username|email/),
     logCheck(
       'Unique User Identification',
       hasUniqueUserIds,
@@ -306,7 +306,7 @@ function validateAccessControls(): void {
   }
 
   // 1.4 Check MFA implementation
-  const mfaImplemented = fileContains('./src/lib/security/auth.service.ts', /mfa|2fa|totp|speakeasy/i);
+  const mfaImplemented = fileContains('./src/lib/security/auth.service.ts', /mfa|2fa|totp|speakeasy/i),
   logCheck(
     'Multi-Factor Authentication',
     mfaImplemented,
@@ -321,7 +321,7 @@ function validateAuditControls(): void {
   console.log('\n📊 Validating Audit Controls (§164.312(b))...');
   
   // 2.1 Check audit service implementation
-  const auditServiceExists = fileExists('./src/lib/audit/audit.service.ts');
+  const auditServiceExists = fileExists('./src/lib/audit/audit.service.ts'),
   logCheck(
     'Audit Service Implementation',
     auditServiceExists,
@@ -357,7 +357,7 @@ function validateAuditControls(): void {
   }
 
   // 2.2 Check audit log retention
-  const hasRetentionPolicy = fileContains('./src/lib/audit/audit.service.ts', /retention|archive|deleteOld/i);
+  const hasRetentionPolicy = fileContains('./src/lib/audit/audit.service.ts', /retention|archive|deleteOld/i),
   logCheck(
     'Audit Log Retention Policy',
     hasRetentionPolicy,
@@ -411,7 +411,7 @@ function validateEncryption(): void {
   // 3.2 Check for encryption at rest
   const prismaSchemaExists = fileExists('./prisma/schema.prisma');
   if (prismaSchemaExists) {
-    const hasEncryptedFields = fileContains('./prisma/schema.prisma', /@encrypted|encrypt/i);
+    const hasEncryptedFields = fileContains('./prisma/schema.prisma', /@encrypted|encrypt/i),
     logCheck(
       'Encryption at Rest',
       hasEncryptedFields,
@@ -424,7 +424,7 @@ function validateEncryption(): void {
 
   // 3.3 Check transmission security
   const hasHttpsConfig = fileContains('./next.config.ts', /https|ssl|tls/) || 
-                        fileContains('./next.config.js', /https|ssl|tls/);
+                        fileContains('./next.config.js', /https|ssl|tls/),
   logCheck(
     'Transmission Security (HTTPS/TLS)',
     hasHttpsConfig,
@@ -452,7 +452,7 @@ function validateIntegrityControls(): void {
   );
 
   // 4.2 Check for checksums or hashing
-  const hasIntegrityChecks = fileContains('./src/services/encryption_service_secure.ts', /hash|checksum|integrity/i);
+  const hasIntegrityChecks = fileContains('./src/services/encryption_service_secure.ts', /hash|checksum|integrity/i),
   logCheck(
     'Data Integrity Checks',
     hasIntegrityChecks,
@@ -468,8 +468,7 @@ function validateBusinessAssociateCompliance(): void {
   
   // 5.1 Check for BA agreement documentation
   const baDocsExist = fileExists('./docs/compliance/business-associate-agreements/') ||
-                     fileExists('./docs/business-associate-agreements/');
-  
+                     fileExists('./docs/business-associate-agreements/'),
   logCheck(
     'Business Associate Agreement Documentation',
     baDocsExist,
@@ -497,8 +496,7 @@ function validateBreachNotification(): void {
   
   // 6.1 Check for incident response procedures
   const hasIncidentResponse = fileExists('./docs/security/incident-response-plan.md') ||
-                             fileExists('./src/lib/security/incident-response.service.ts');
-  
+                             fileExists('./src/lib/security/incident-response.service.ts'),
   logCheck(
     'Incident Response Plan',
     hasIncidentResponse,
@@ -510,8 +508,7 @@ function validateBreachNotification(): void {
 
   // 6.2 Check for breach notification service
   const hasBreachNotification = fileExists('./src/lib/security/breach-notification.service.ts') ||
-                               fileContains('./src/lib/notifications/', /breach|incident/i);
-  
+                               fileContains('./src/lib/notifications/', /breach|incident/i),
   logCheck(
     'Breach Notification System',
     hasBreachNotification,
@@ -527,8 +524,7 @@ function validateWorkforceTraining(): void {
   
   // 7.1 Check for training documentation
   const hasTrainingDocs = fileExists('./docs/training/') ||
-                         fileExists('./docs/workforce-training/');
-  
+                         fileExists('./docs/workforce-training/'),
   logCheck(
     'Workforce Training Documentation',
     hasTrainingDocs,
@@ -540,8 +536,7 @@ function validateWorkforceTraining(): void {
 
   // 7.2 Check for security awareness
   const hasSecurityAwareness = fileExists('./docs/security/security-awareness.md') ||
-                              fileExists('./docs/policies/security-policies.md');
-  
+                              fileExists('./docs/policies/security-policies.md'),
   logCheck(
     'Security Awareness Program',
     hasSecurityAwareness,
@@ -637,14 +632,13 @@ function main(): void {
   console.log(`🎯 Target: Zero Critical Issues for Production Readiness\n`);
   
   try {
-    validateAccessControls();
+    validateAccessControls(),
     validateAuditControls();
-    validateEncryption();
+    validateEncryption(),
     validateIntegrityControls();
-    validateBusinessAssociateCompliance();
+    validateBusinessAssociateCompliance(),
     validateBreachNotification();
-    validateWorkforceTraining();
-    
+    validateWorkforceTraining(),
     generateComplianceReport();
   } catch (error) {
     console.error('🚨 Validation script failed:', error);

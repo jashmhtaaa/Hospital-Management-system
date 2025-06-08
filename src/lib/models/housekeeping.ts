@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,25 +18,25 @@ import { HousekeepingRequest, HousekeepingTask, HousekeepingInspection } from '@
  * Maps to FHIR ServiceRequest resource;
  */
 export interface FHIRHousekeepingRequest {
-  resourceType: 'ServiceRequest';
+  resourceType: 'ServiceRequest',
   id: string;
-  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown';
+  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown',
   intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
-  priority: 'routine' | 'urgent' | 'asap' | 'stat';
+  priority: 'routine' | 'urgent' | 'asap' | 'stat',
   category: {
     coding: {
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }[];
   }[];
   code: {
     coding: {
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }[];
-    text: string;
+    text: string
   };
   subject: {
     reference: string;
@@ -57,7 +57,7 @@ export interface FHIRHousekeepingRequest {
   occurrenceDateTime?: string;
   authoredOn: string;
   note?: {
-    text: string;
+    text: string
   }[];
 }
 
@@ -66,22 +66,22 @@ export interface FHIRHousekeepingRequest {
  * Maps to FHIR Task resource;
  */
 export interface FHIRHousekeepingTask {
-  resourceType: 'Task';
+  resourceType: 'Task',
   id: string;
   basedOn: {
-    reference: string;
+    reference: string
   }[];
-  status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error';
+  status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error',
   intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
-  priority: 'routine' | 'urgent' | 'asap' | 'stat';
+  priority: 'routine' | 'urgent' | 'asap' | 'stat',
   description: string;
   focus: {
-    reference: string;
+    reference: string
   };
   for: {
-    reference: string;
+    reference: string
   };
-  authoredOn: string;
+  authoredOn: string,
   lastModified: string;
   requester: {
     reference: string;
@@ -92,7 +92,7 @@ export interface FHIRHousekeepingTask {
     display?: string;
   };
   note?: {
-    text: string;
+    text: string
   }[];
   executionPeriod?: {
     start?: string;
@@ -105,31 +105,31 @@ export interface FHIRHousekeepingTask {
  * Maps to FHIR Location resource;
  */
 export interface FHIRHousekeepingLocation {
-  resourceType: 'Location';
+  resourceType: 'Location',
   id: string;
-  status: 'active' | 'suspended' | 'inactive';
+  status: 'active' | 'suspended' | 'inactive',
   name: string;
   description?: string;
   mode: 'instance' | 'kind';
   type?: {
     coding: {
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }[];
   }[];
   physicalType?: {
     coding: {
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }[];
   };
   managingOrganization?: {
-    reference: string;
+    reference: string
   };
   partOf?: {
-    reference: string;
+    reference: string
   };
 }
 
@@ -138,53 +138,53 @@ export interface FHIRHousekeepingLocation {
  * Maps to FHIR Observation resource;
  */
 export interface FHIRHousekeepingInspection {
-  resourceType: 'Observation';
+  resourceType: 'Observation',
   id: string;
-  status: 'registered' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'cancelled' | 'entered-in-error' | 'unknown';
+  status: 'registered' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'cancelled' | 'entered-in-error' | 'unknown',
   category: {
     coding: {
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }[];
   }[];
   code: {
     coding: {
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }[];
-    text: string;
+    text: string
   };
   subject?: {
-    reference: string;
+    reference: string
   };
-  effectiveDateTime: string;
+  effectiveDateTime: string,
   performer: {
     reference: string;
     display?: string;
   }[];
   valueQuantity?: {
-    value: number;
+    value: number,
     unit: string;
-    system: string;
-    code: string;
+    system: string,
+    code: string
   };
   component?: {
     code: {
       coding: {
-        system: string;
+        system: string,
         code: string;
-        display: string;
+        display: string
       }[];
-      text: string;
+      text: string
     };
     valueString?: string;
     valueQuantity?: {
-      value: number;
+      value: number,
       unit: string;
-      system: string;
-      code: string;
+      system: string,
+      code: string
     };
   }[];
 }
@@ -193,7 +193,7 @@ export interface FHIRHousekeepingInspection {
  * Convert database HousekeepingRequest to FHIR ServiceRequest;
  */
 export const toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
-  location: unknown;
+  location: unknown,
   requestedByUser: unknown;
   tasks?: unknown[];
 }): FHIRHousekeepingRequest {
@@ -232,16 +232,16 @@ export const toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
       coding: [{
         system: 'http://terminology.hl7.org/CodeSystem/service-category',
         code: 'housekeeping',
-        display: 'Housekeeping';
+        display: 'Housekeeping'
       }]
     }],
     code: {
       coding: [{
         system: 'http://hms.local/fhir/CodeSystem/housekeeping-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
-        display: requestTypeMap[request.requestType]?.display || request.requestType;
+        display: requestTypeMap[request.requestType]?.display || request.requestType
       }],
-      text: request.description;
+      text: request.description
     },
     subject: {
       reference: `Location/${request.locationId}`,
@@ -271,7 +271,7 @@ export const toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
 export const toFHIRHousekeepingTask = (task: HousekeepingTask & {
   request: HousekeepingRequest;
   assignedToUser?: unknown;
-  createdByUser: unknown;
+  createdByUser: unknown
 }): FHIRHousekeepingTask {
   // Map status from internal to FHIR status;
   const statusMap: Record<string, 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error'> = {
@@ -310,7 +310,7 @@ export const toFHIRHousekeepingTask = (task: HousekeepingTask & {
     note: task.notes ? [{ text: task.notes }] : [],
     executionPeriod: {
       start: task.startTime?.toISOString(),
-      end: task.endTime?.toISOString();
+      end: task.endTime?.toISOString()
     }
   };
 }
@@ -319,8 +319,8 @@ export const toFHIRHousekeepingTask = (task: HousekeepingTask & {
  * Convert database HousekeepingInspection to FHIR Observation;
  */
 export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection & {
-  location: unknown;
-  inspector: unknown;
+  location: unknown,
+  inspector: unknown
 }): FHIRHousekeepingInspection {
   // Map status from internal to FHIR status;
   const statusMap: Record<string, 'registered' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'cancelled' | 'entered-in-error' | 'unknown'> = {
@@ -337,14 +337,14 @@ export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection 
       coding: [{
         system: 'http://terminology.hl7.org/CodeSystem/observation-category',
         code: 'survey',
-        display: 'Survey';
+        display: 'Survey'
       }]
     }],
     code: {
       coding: [{
         system: 'http://hms.local/fhir/CodeSystem/housekeeping-inspection-type',
         code: inspection.inspectionType.toLowerCase(),
-        display: inspection.inspectionType;
+        display: inspection.inspectionType
       }],
       text: `Housekeeping Inspection - ${inspection.inspectionType}`;
     },
@@ -360,7 +360,7 @@ export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection 
       value: inspection.score,
       unit: 'score',
       system: 'http://unitsofmeasure.org',
-      code: 'score';
+      code: 'score'
     } : undefined,
     component: [
       ...(inspection.findings ? [{
@@ -368,22 +368,22 @@ export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection 
           coding: [{
             system: 'http://hms.local/fhir/CodeSystem/housekeeping-inspection',
             code: 'findings',
-            display: 'Findings';
+            display: 'Findings'
           }],
-          text: 'Findings';
+          text: 'Findings'
         },
-        valueString: inspection.findings;
+        valueString: inspection.findings
       }] : []),
       ...(inspection.recommendations ? [{
         code: {
           coding: [{
             system: 'http://hms.local/fhir/CodeSystem/housekeeping-inspection',
             code: 'recommendations',
-            display: 'Recommendations';
+            display: 'Recommendations'
           }],
-          text: 'Recommendations';
+          text: 'Recommendations'
         },
-        valueString: inspection.recommendations;
+        valueString: inspection.recommendations
       }] : []);
     ]
   };

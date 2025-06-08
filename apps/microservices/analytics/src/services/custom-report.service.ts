@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,30 +24,30 @@ import { AuditService } from '@/lib/security/audit.service';
 
 // Report models;
 export interface ReportTemplate {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: ReportCategory;
-  type: ReportType;
+  type: ReportType,
   dataSource: ReportDataSource;
-  layout: LayoutConfig;
+  layout: LayoutConfig,
   components: ReportComponent[];
-  filters: ReportFilter[];
+  filters: ReportFilter[],
   parameters: ReportParameter[];
-  sorting: ReportSorting[];
+  sorting: ReportSorting[],
   grouping: ReportGrouping[];
-  calculations: ReportCalculation[];
+  calculations: ReportCalculation[],
   formatSettings: FormatSettings;
   schedule?: ReportSchedule;
-  permissions: ReportPermissions;
+  permissions: ReportPermissions,
   createdBy: string;
-  updatedBy: string;
+  updatedBy: string,
   created: Date;
-  updated: Date;
+  updated: Date,
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  version: string;
+  version: string,
   tags: string[];
-  metadata: ReportMetadata;
+  metadata: ReportMetadata
 }
 
 export enum ReportCategory {
@@ -87,44 +87,44 @@ export enum ReportDataSource {
 }
 
 export interface LayoutConfig {
-  orientation: 'PORTRAIT' | 'LANDSCAPE';
+  orientation: 'PORTRAIT' | 'LANDSCAPE',
   pageSize: 'LETTER' | 'LEGAL' | 'A4' | 'CUSTOM';
   customPageSize?: {
-    width: number;
+    width: number,
     height: number;
-    unit: 'MM' | 'CM' | 'INCH';
+    unit: 'MM' | 'CM' | 'INCH'
   };
   margins: {
-    top: number;
+    top: number,
     right: number;
-    bottom: number;
+    bottom: number,
     left: number;
-    unit: 'MM' | 'CM' | 'INCH';
+    unit: 'MM' | 'CM' | 'INCH'
   };
   header: {
-    height: number;
-    content: string;
+    height: number,
+    content: string
   };
   footer: {
-    height: number;
-    content: string;
+    height: number,
+    content: string
   };
   grid: {
-    columns: number;
-    gutter: number;
+    columns: number,
+    gutter: number
   };
-  sections: LayoutSection[];
+  sections: LayoutSection[]
 }
 
 export interface LayoutSection {
-  id: string;
+  id: string,
   name: string;
   title?: string;
-  showTitle: boolean;
+  showTitle: boolean,
   columns: number;
-  startRow: number;
+  startRow: number,
   startColumn: number;
-  width: number;
+  width: number,
   height: number;
   components: string[]; // Array of component IDs;
   background?: string;
@@ -137,25 +137,25 @@ export interface LayoutSection {
 }
 
 export interface ReportComponent {
-  id: string;
+  id: string,
   name: string;
-  type: ComponentType;
+  type: ComponentType,
   dataSource: string;
   query?: string;
   fields: ComponentField[];
   visualization?: VisualizationType;
-  settings: ComponentSettings;
+  settings: ComponentSettings,
   conditionalFormatting: ConditionalFormatting[];
-  interactivity: InteractivityOptions;
+  interactivity: InteractivityOptions,
   position: {
-    row: number;
+    row: number,
     column: number;
-    width: number;
-    height: number;
+    width: number,
+    height: number
   };
   visible: boolean;
   conditionalVisibility?: string;
-  exportable: boolean;
+  exportable: boolean,
   printable: boolean;
   drillThrough?: DrillThroughTarget[];
 }
@@ -205,17 +205,17 @@ export enum VisualizationType {
 }
 
 export interface ComponentField {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   formula?: string;
   description?: string;
-  visible: boolean;
+  visible: boolean,
   sortable: boolean;
-  filterable: boolean;
+  filterable: boolean,
   groupable: boolean;
   width?: number;
   alignment?: 'LEFT' | 'CENTER' | 'RIGHT';
@@ -236,9 +236,9 @@ export interface ComponentSettings {
 }
 
 export interface TableSettings {
-  showHeader: boolean;
+  showHeader: boolean,
   showFooter: boolean;
-  showRowNumbers: boolean;
+  showRowNumbers: boolean,
   alternateRowColors: boolean;
   rowColor?: string;
   alternateRowColor?: string;
@@ -282,28 +282,28 @@ export interface ChartSettings {
     color?: string;
   };
   legend: {
-    show: boolean;
+    show: boolean,
     position: 'top' | 'right' | 'bottom' | 'left';
-    orientation: 'horizontal' | 'vertical';
+    orientation: 'horizontal' | 'vertical'
   };
   axes: {
     xAxis: {
-      title?: string;
+      title?: string,
       showTitle: boolean;
       showLabels: boolean;
       labelRotation?: number;
       min?: number;
       max?: number;
-      gridLines: boolean;
+      gridLines: boolean
     };
     yAxis: {
-      title?: string;
+      title?: string,
       showTitle: boolean;
       showLabels: boolean;
       labelRotation?: number;
       min?: number;
       max?: number;
-      gridLines: boolean;
+      gridLines: boolean
     };
   };
   colors?: string[];
@@ -321,8 +321,8 @@ export interface ChartSettings {
   animation: boolean;
   animationDuration?: number;
   interaction: {
-    zoomType?: 'x' | 'y' | 'xy' | 'none';
-    selectable: boolean;
+    zoomType?: 'x' | 'y' | 'xy' | 'none',
+    selectable: boolean
   };
   dimensionAxis?: 'x' | 'y';
   stacked?: boolean;
@@ -366,7 +366,7 @@ export interface MetricSettings {
   sparklineHeight?: number;
   sparklineColor?: string;
   thresholds?: {
-    value: number;
+    value: number,
     color: string;
     icon?: string;
   }[];
@@ -432,15 +432,15 @@ export interface ImageSettings {
 }
 
 export interface MatrixSettings {
-  rows: string[];
+  rows: string[],
   columns: string[];
-  values: string[];
+  values: string[],
   showTotals: boolean;
   totalPosition: 'top' | 'bottom' | 'left' | 'right';
   totalLabel?: string;
   showSubtotals: boolean;
   subtotalPosition?: 'top' | 'bottom';
-  conditionalFormatting: boolean;
+  conditionalFormatting: boolean,
   heatmap: boolean;
   heatmapSettings?: {
     startColor?: string;
@@ -456,19 +456,19 @@ export interface MatrixSettings {
 }
 
 export interface PivotSettings {
-  rows: string[];
+  rows: string[],
   columns: string[];
-  values: string[];
+  values: string[],
   filters: string[];
-  showTotals: boolean;
+  showTotals: boolean,
   showRowTotals: boolean;
-  showColumnTotals: boolean;
+  showColumnTotals: boolean,
   totalPosition: 'top' | 'bottom' | 'left' | 'right';
   totalLabel?: string;
   showSubtotals: boolean;
   subtotalPosition?: 'top' | 'bottom';
   expandedLevels?: number[];
-  conditionalFormatting: boolean;
+  conditionalFormatting: boolean,
   heatmap: boolean;
   heatmapSettings?: {
     startColor?: string;
@@ -533,9 +533,9 @@ export interface MapSettings {
 }
 
 export interface ConditionalFormatting {
-  id: string;
+  id: string,
   name: string;
-  field: string;
+  field: string,
   format: {
     backgroundColor?: string;
     textColor?: string;
@@ -545,31 +545,31 @@ export interface ConditionalFormatting {
     icon?: string;
   };
   condition: {
-    operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
+    operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in',
     value: unknown;
     value2?: unknown; // For 'between' and 'not_between'
   };
   applyTo?: 'cell' | 'row' | 'column';
-  priority: number;
-  enabled: boolean;
+  priority: number,
+  enabled: boolean
 }
 
 export interface InteractivityOptions {
-  drillDown: boolean;
+  drillDown: boolean,
   drillThrough: boolean;
-  filtering: boolean;
+  filtering: boolean,
   sorting: boolean;
-  selection: boolean;
+  selection: boolean,
   exporting: boolean;
   linkedFiltering?: boolean;
   linkedSelection?: boolean;
-  tooltips: boolean;
+  tooltips: boolean,
   contextMenu: boolean;
   actions?: ReportAction[];
 }
 
 export interface ReportAction {
-  id: string;
+  id: string,
   name: string;
   icon?: string;
   type: 'NAVIGATION' | 'API_CALL' | 'EXPORT' | 'CUSTOM';
@@ -580,37 +580,37 @@ export interface ReportAction {
 }
 
 export interface DrillThroughTarget {
-  id: string;
+  id: string,
   name: string;
   type: 'REPORT' | 'DASHBOARD' | 'URL' | 'DETAIL';
   targetId?: string;
   url?: string;
   parameters: {
-    source: string;
-    target: string;
+    source: string,
+    target: string
   }[];
-  openInNewWindow: boolean;
+  openInNewWindow: boolean
 }
 
 export interface ReportFilter {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'MULTI_SELECT';
-  field: string;
+  field: string,
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
   value?: unknown;
   value2?: unknown; // For 'between' and 'not_between'
   required: boolean;
   defaultValue?: unknown;
-  visible: boolean;
+  visible: boolean,
   order: number;
   controlType: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'DROPDOWN' | 'MULTI_SELECT' | 'CHECKBOX' | 'RADIO' | 'SLIDER' | 'ADVANCED';
   controlSettings?: {
     placeholder?: string;
     options?: {
-      value: unknown;
-      label: string;
+      value: unknown,
+      label: string
     }[];
     optionsUrl?: string;
     minValue?: number;
@@ -631,29 +631,29 @@ export interface ReportFilter {
     custom?: string;
   };
   cascadingFilter?: {
-    parentFilterId: string;
+    parentFilterId: string,
     dependencyField: string;
     valueMapping?: Record<string, any>;
   };
 }
 
 export interface ReportParameter {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'ARRAY' | 'OBJECT';
   description?: string;
   required: boolean;
   defaultValue?: unknown;
-  allowMultiple: boolean;
+  allowMultiple: boolean,
   visible: boolean;
-  order: number;
+  order: number,
   controlType: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'DROPDOWN' | 'MULTI_SELECT' | 'CHECKBOX' | 'RADIO' | 'SLIDER' | 'ADVANCED';
   controlSettings?: {
     placeholder?: string;
     options?: {
-      value: unknown;
-      label: string;
+      value: unknown,
+      label: string
     }[];
     optionsUrl?: string;
     minValue?: number;
@@ -676,41 +676,41 @@ export interface ReportParameter {
 }
 
 export interface ReportSorting {
-  field: string;
+  field: string,
   direction: 'ASC' | 'DESC';
-  order: number;
+  order: number
 }
 
 export interface ReportGrouping {
-  field: string;
+  field: string,
   enabled: boolean;
   order: number;
   groupingFunction?: string;
-  showSubtotals: boolean;
-  collapsed: boolean;
+  showSubtotals: boolean,
+  collapsed: boolean
 }
 
 export interface ReportCalculation {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   formula: string;
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN';
   format?: string;
   description?: string;
-  visible: boolean;
-  scope: 'ROW' | 'GROUP' | 'OVERALL';
+  visible: boolean,
+  scope: 'ROW' | 'GROUP' | 'OVERALL'
 }
 
 export interface FormatSettings {
   numbers: {
     decimalSeparator: '.' | ',';
     thousandsSeparator: ',' | '.' | ' ' | 'none';
-    currency: string;
+    currency: string,
     currencyPosition: 'prefix' | 'suffix';
-    decimalPlaces: number;
+    decimalPlaces: number,
     showZeroValues: boolean;
-    useGrouping: boolean;
+    useGrouping: boolean,
     negativeFormat: 'minus' | 'parentheses' | 'color';
     negativeColor?: string;
     nullDisplay?: string;
@@ -718,10 +718,10 @@ export interface FormatSettings {
   dates: {
     format: string;
     timeFormat?: string;
-    showTime: boolean;
+    showTime: boolean,
     calendarType: 'gregorian' | 'lunar';
-    firstDayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-    locale: string;
+    firstDayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6,
+    locale: string
   };
   text: {
     nullDisplay?: string;
@@ -740,7 +740,7 @@ export interface FormatSettings {
 }
 
 export interface ReportSchedule {
-  enabled: boolean;
+  enabled: boolean,
   frequency: 'ONCE' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY' | 'CUSTOM';
   customExpression?: string; // Cron expression;
   startDate: Date;
@@ -757,33 +757,33 @@ export interface ReportSchedule {
     roles?: string[];
     departments?: string[];
   };
-  outputFormats: ('PDF' | 'EXCEL' | 'CSV' | 'HTML' | 'JSON')[];
+  outputFormats: ('PDF' | 'EXCEL' | 'CSV' | 'HTML' | 'JSON')[],
   deliveryMethod: 'EMAIL' | 'FILE_SHARE' | 'API' | 'PORTAL' | 'CUSTOM';
   deliverySettings?: Record<string, any>;
   dynamicParameters?: Record<string, string>;
-  notifyOnEmpty: boolean;
+  notifyOnEmpty: boolean,
   includeAttachment: boolean;
   parameters?: Record<string, any>;
   lastRun?: Date;
   nextRun?: Date;
-  status: 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'ERROR';
+  status: 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'ERROR'
 }
 
 export interface ReportPermissions {
-  owner: string;
+  owner: string,
   viewRoles: string[];
-  editRoles: string[];
+  editRoles: string[],
   viewUsers: string[];
-  editUsers: string[];
+  editUsers: string[],
   viewDepartments: string[];
-  editDepartments: string[];
+  editDepartments: string[],
   public: boolean;
   shareLink?: string;
   shareLinkExpiration?: Date;
   exportPermissions: {
-    pdf: boolean;
+    pdf: boolean,
     excel: boolean;
-    csv: boolean;
+    csv: boolean,
     image: boolean;
     allowedRoles?: string[];
   };
@@ -792,20 +792,20 @@ export interface ReportPermissions {
 export interface ReportMetadata {
   templateSource: 'CUSTOM' | 'PREDEFINED' | 'DUPLICATE';
   sourceId?: string;
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
   lastViewedDate?: Date;
   lastModifiedDate?: Date;
-  viewCount: number;
+  viewCount: number,
   exportCount: number;
-  scheduleCount: number;
+  scheduleCount: number,
   categories: string[];
   keywords: string[];
   customMetadata?: Record<string, any>;
@@ -813,46 +813,46 @@ export interface ReportMetadata {
 
 // Report data models;
 export interface ReportData {
-  reportId: string;
+  reportId: string,
   timestamp: Date;
   parameters: Record<string, any>;
   filterValues: Record<string, any>;
   components: Record<string, ComponentData>;
   metadata: {
-    executionTime: number;
+    executionTime: number,
     status: 'SUCCESS' | 'PARTIAL' | 'ERROR';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED';
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED',
     rowCount: number;
-    dataTimestamp: Date;
+    dataTimestamp: Date
   };
-  totalPages: number;
+  totalPages: number,
   currentPage: number;
-  hasMoreData: boolean;
+  hasMoreData: boolean
 }
 
 export interface ComponentData {
-  componentId: string;
+  componentId: string,
   data: unknown[];
   columns: ColumnMetadata[];
   aggregations?: Record<string, any>;
-  totalRowCount: number;
+  totalRowCount: number,
   status: 'SUCCESS' | 'ERROR' | 'NO_DATA';
   errorMessage?: string;
   executionTime: number;
   paging?: {
-    page: number;
+    page: number,
     pageSize: number;
-    totalPages: number;
-    totalRows: number;
+    totalPages: number,
+    totalRows: number
   };
 }
 
 export interface ColumnMetadata {
-  name: string;
+  name: string,
   displayName: string;
-  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
+  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY',
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   description?: string;
@@ -870,81 +870,81 @@ export interface ColumnMetadata {
 
 // Regulatory reporting models;
 export interface RegulatoryReport {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   reportType: 'CMS' | 'JCAHO' | 'STATE' | 'FEDERAL' | 'CUSTOM';
-  reportCode: string;
+  reportCode: string,
   regulatoryBody: string;
   frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'ONE_TIME' | 'CUSTOM';
   dueDate?: Date;
   submissionPeriod: {
-    startDate: Date;
-    endDate: Date;
+    startDate: Date,
+    endDate: Date
   };
   reportingPeriod: {
-    startDate: Date;
-    endDate: Date;
+    startDate: Date,
+    endDate: Date
   };
-  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'PENDING_APPROVAL' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMPLETED';
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'PENDING_APPROVAL' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMPLETED',
   dataValidation: DataValidation[];
-  metrics: RegulatoryMetric[];
+  metrics: RegulatoryMetric[],
   attachments: Attachment[];
-  assignedTo: string[];
+  assignedTo: string[],
   approvers: string[];
   submittedBy?: string;
   submittedDate?: Date;
   approvedBy?: string;
   approvedDate?: Date;
-  certifications: Certification[];
+  certifications: Certification[],
   validationStatus: 'NOT_VALIDATED' | 'VALIDATION_IN_PROGRESS' | 'VALIDATION_FAILED' | 'VALIDATION_PASSED';
   submissionMethod: 'ELECTRONIC' | 'MANUAL' | 'API' | 'FILE_UPLOAD';
   submissionUrl?: string;
   submissionCredentials?: {
-    username: string;
-    encryptedPassword: string;
+    username: string,
+    encryptedPassword: string
   };
-  lastUpdated: Date;
+  lastUpdated: Date,
   comments: Comment[];
-  history: HistoryEntry[];
+  history: HistoryEntry[],
   template: boolean;
-  created: Date;
+  created: Date,
   createdBy: string;
-  version: string;
+  version: string,
   metadata: Record<string, any>;
 }
 
 export interface DataValidation {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'COMPLETENESS' | 'CONSISTENCY' | 'ACCURACY' | 'TIMELINESS' | 'CUSTOM';
-  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'FAILED' | 'PASSED';
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'FAILED' | 'PASSED',
   rules: ValidationRule[];
-  errorCount: number;
+  errorCount: number,
   warningCount: number;
   lastValidated?: Date;
   validatedBy?: string;
 }
 
 export interface ValidationRule {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'REQUIRED' | 'FORMAT' | 'RANGE' | 'COMPARISON' | 'DUPLICATE' | 'REFERENCE' | 'FORMULA' | 'CUSTOM';
-  severity: 'ERROR' | 'WARNING' | 'INFO';
+  severity: 'ERROR' | 'WARNING' | 'INFO',
   expression: string;
   field?: string;
-  status: 'NOT_EXECUTED' | 'PASSED' | 'FAILED';
+  status: 'NOT_EXECUTED' | 'PASSED' | 'FAILED',
   errorCount: number;
   errorMessage?: string;
   errorRecords?: unknown[];
 }
 
 export interface RegulatoryMetric {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: string;
   value: unknown;
   format?: string;
@@ -955,30 +955,30 @@ export interface RegulatoryMetric {
   trend?: 'IMPROVING' | 'STABLE' | 'WORSENING';
   previousValue?: unknown;
   previousPeriod?: {
-    startDate: Date;
-    endDate: Date;
+    startDate: Date,
+    endDate: Date
   };
-  historyAvailable: boolean;
+  historyAvailable: boolean
 }
 
 export interface Attachment {
-  id: string;
+  id: string,
   name: string;
   description?: string;
-  fileType: string;
+  fileType: string,
   fileSize: number;
-  uploadDate: Date;
+  uploadDate: Date,
   uploadedBy: string;
-  url: string;
+  url: string,
   category: 'REPORT' | 'SUPPORTING' | 'CERTIFICATION' | 'SUBMISSION' | 'OTHER';
   status: 'TEMPORARY' | 'PERMANENT';
   expirationDate?: Date;
 }
 
 export interface Certification {
-  id: string;
+  id: string,
   type: 'ELECTRONIC_SIGNATURE' | 'ATTESTATION' | 'LEGAL_DOCUMENT' | 'CUSTOM';
-  text: string;
+  text: string,
   certifiedBy: string;
   certificationDate: Date;
   ipAddress?: string;
@@ -987,45 +987,45 @@ export interface Certification {
 }
 
 export interface Comment {
-  id: string;
+  id: string,
   text: string;
-  createdBy: string;
+  createdBy: string,
   createdDate: Date;
   updatedDate?: Date;
   attachments?: string[];
   replyTo?: string;
   mentions?: string[];
-  status: 'ACTIVE' | 'DELETED';
+  status: 'ACTIVE' | 'DELETED'
 }
 
 export interface HistoryEntry {
-  id: string;
+  id: string,
   action: 'CREATED' | 'UPDATED' | 'STATUS_CHANGED' | 'ASSIGNED' | 'VALIDATED' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMMENTED' | 'ATTACHMENT_ADDED' | 'ATTACHMENT_REMOVED' | 'CERTIFIED' | 'CUSTOM';
-  actionBy: string;
+  actionBy: string,
   actionDate: Date;
   details: Record<string, any>;
 }
 
 // Natural language query models;
 export interface NaturalLanguageQuery {
-  id: string;
+  id: string,
   query: string;
   interpretedQuery: {
-    fields: string[];
+    fields: string[],
     filters: {
-      field: string;
+      field: string,
       operator: string;
-      value: unknown;
+      value: unknown
     }[];
     sortBy?: {
-      field: string;
-      direction: 'ASC' | 'DESC';
+      field: string,
+      direction: 'ASC' | 'DESC'
     }[];
     limit?: number;
     groupBy?: string[];
     calculations?: {
-      field: string;
-      function: string;
+      field: string,
+      function: string
     }[];
     timeRange?: {
       period?: string;
@@ -1034,16 +1034,16 @@ export interface NaturalLanguageQuery {
     };
     customFunctions?: Record<string, any>;
   };
-  queryType: 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN';
+  queryType: 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN',
   confidence: number; // 0-100;
   alternativeInterpretations?: {
-    interpretedQuery: unknown;
-    confidence: number;
+    interpretedQuery: unknown,
+    confidence: number
   }[];
-  dataSource: string;
+  dataSource: string,
   executionTime: number;
   error?: string;
-  resultCount: number;
+  resultCount: number,
   timestamp: Date;
   userId: string;
   feedback?: {
@@ -1942,11 +1942,11 @@ export class CustomReportService {
 
   // Private helper methods;
   private validateReportTemplate(template: unknown): void {
-    // Implementation for template validation;
+    // Implementation for template validation
   }
 
   private validateReportTemplateUpdates(updates: Partial<ReportTemplate>): void {
-    // Implementation for update validation;
+    // Implementation for update validation
   }
 
   private applyFiltersToComponent(
@@ -2216,7 +2216,7 @@ export class CustomReportService {
   }
 
   private validateReportSchedule(schedule: unknown): void {
-    // Implementation for schedule validation;
+    // Implementation for schedule validation
   }
 
   private calculateNextRunDate(schedule: ReportSchedule): Date {
@@ -2244,15 +2244,14 @@ export class CustomReportService {
         // This would be a complex implementation;
         nextRun.setDate(nextRun.getDate() + 1);
         break;
-      default:
-        nextRun.setDate(nextRun.getDate() + 1);
+      default: nextRun.setDate(nextRun.getDate() + 1)
     }
     
     return nextRun;
   }
 
   private validateRegulatoryReport(report: unknown): void {
-    // Implementation for report validation;
+    // Implementation for report validation
   }
 
   private async processNaturalLanguageQuery(

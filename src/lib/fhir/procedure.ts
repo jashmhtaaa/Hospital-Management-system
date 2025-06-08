@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -96,10 +96,10 @@ export class FHIRProcedureUtils {
    * Create a basic procedure;
    */
   static createBasicProcedure(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     encounterId?: string;
-    procedureCode: string;
+    procedureCode: string,
     procedureDisplay: string;
     category?: 'surgical' | 'diagnostic' | 'therapeutic' | 'nursing' | 'counseling';
     status?: 'preparation' | 'in-progress' | 'completed' | 'not-done';
@@ -118,7 +118,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: data.procedureCode,
-          display: data.procedureDisplay;
+          display: data.procedureDisplay
         }]
       },
       subject: {
@@ -139,7 +139,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: this.getCategoryCode(data.category),
-          display: data.category.charAt(0).toUpperCase() + data.category.slice(1);
+          display: data.category.charAt(0).toUpperCase() + data.category.slice(1)
         }]
       };
     }
@@ -176,7 +176,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: data.reasonCode,
-          display: data.reasonDisplay;
+          display: data.reasonDisplay
         }]
       }];
     }
@@ -187,7 +187,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: this.getOutcomeCode(data.outcome),
-          display: data.outcome;
+          display: data.outcome
         }]
       };
     }
@@ -196,7 +196,7 @@ export class FHIRProcedureUtils {
     if (data.notes) {
       procedure.note = [{
         text: data.notes,
-        time: new Date().toISOString();
+        time: new Date().toISOString()
       }];
     }
 
@@ -207,11 +207,11 @@ export class FHIRProcedureUtils {
    * Create a surgical procedure;
    */
   static createSurgicalProcedure(data: {
-    patientId: string;
+    patientId: string,
     surgeonId: string;
-    encounterId: string;
+    encounterId: string,
     procedureCode: string;
-    procedureDisplay: string;
+    procedureDisplay: string,
     operatingRoomId: string;
     startTime: string;
     endTime?: string;
@@ -230,10 +230,10 @@ export class FHIRProcedureUtils {
       status: data.endTime ? 'completed' : 'in-progress',
       performedPeriod: {
         start: data.startTime,
-        end: data.endTime;
+        end: data.endTime
       },
       locationId: data.operatingRoomId,
-      notes: data.operativeNotes;
+      notes: data.operativeNotes
     });
 
     // Add surgeon role;
@@ -242,7 +242,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: '304292004',
-          display: 'Surgeon';
+          display: 'Surgeon'
         }]
       };
     }
@@ -255,7 +255,7 @@ export class FHIRProcedureUtils {
             coding: [{
               system: 'http://snomed.info/sct',
               code: '449161006',
-              display: 'Surgical assistant';
+              display: 'Surgical assistant'
             }]
           },
           actor: {
@@ -272,7 +272,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: 'unknown',
-          display: complication;
+          display: complication
         }]
       }));
     }
@@ -284,10 +284,10 @@ export class FHIRProcedureUtils {
    * Create a diagnostic procedure;
    */
   static createDiagnosticProcedure(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     encounterId?: string;
-    procedureCode: string;
+    procedureCode: string,
     procedureDisplay: string;
     performedDateTime: string;
     locationId?: string;
@@ -312,10 +312,10 @@ export class FHIRProcedureUtils {
    * Create a therapeutic procedure;
    */
   static createTherapeuticProcedure(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     encounterId?: string;
-    procedureCode: string;
+    procedureCode: string,
     procedureDisplay: string;
     sessions?: number;
     performedDateTime: string;
@@ -333,7 +333,7 @@ export class FHIRProcedureUtils {
       status: 'completed',
       performedDateTime: data.performedDateTime,
       locationId: data.locationId,
-      notes: data.treatmentResponse;
+      notes: data.treatmentResponse
     });
 
     // Add follow-up if next appointment scheduled;
@@ -342,7 +342,7 @@ export class FHIRProcedureUtils {
         coding: [{
           system: 'http://snomed.info/sct',
           code: '390906007',
-          display: 'Follow-up appointment';
+          display: 'Follow-up appointment'
         }]
       }];
     }
@@ -389,7 +389,7 @@ export class FHIRProcedureUtils {
    * Get procedure display name;
    */
   static getProcedureDisplay(procedure: FHIRProcedure): string {
-    return procedure.code?.coding?.[0]?.display || procedure.code?.text || 'Unknown Procedure';
+    return procedure.code?.coding?.[0]?.display || procedure.code?.text || 'Unknown Procedure'
   }
 
   /**
@@ -404,7 +404,7 @@ export class FHIRProcedureUtils {
    * Get procedure category display;
    */
   static getCategoryDisplay(procedure: FHIRProcedure): string {
-    return procedure.category?.coding?.[0]?.display || 'Unknown';
+    return procedure.category?.coding?.[0]?.display || 'Unknown'
   }
 
   /**
@@ -412,7 +412,7 @@ export class FHIRProcedureUtils {
    */
   static getPerformedDate(procedure: FHIRProcedure): Date | null {
     if (typeof procedure.performed === 'string') {
-      return new Date(procedure.performed);
+      return new Date(procedure.performed)
     }
     if (typeof procedure.performed === 'object' && 'start' in procedure.performed && procedure.performed.start) {
       return new Date(procedure.performed.start);
@@ -436,21 +436,21 @@ export class FHIRProcedureUtils {
    * Check if procedure is completed;
    */
   static isCompleted(procedure: FHIRProcedure): boolean {
-    return procedure.status === 'completed';
+    return procedure.status === 'completed'
   }
 
   /**
    * Check if procedure is in progress;
    */
   static isInProgress(procedure: FHIRProcedure): boolean {
-    return procedure.status === 'in-progress';
+    return procedure.status === 'in-progress'
   }
 
   /**
    * Check if procedure had complications;
    */
   static hasComplications(procedure: FHIRProcedure): boolean {
-    return (procedure.complication?.length || 0) > 0 || (procedure.complicationDetail?.length || 0) > 0;
+    return (procedure.complication?.length || 0) > 0 || (procedure.complicationDetail?.length || 0) > 0
   }
 
   /**
@@ -459,14 +459,14 @@ export class FHIRProcedureUtils {
   static getComplications(procedure: FHIRProcedure): string[] {
     return procedure.complication?.map(comp => 
       comp.coding?.[0]?.display || comp.text || 'Unknown complication'
-    ) || [];
+    ) || []
   }
 
   /**
    * Format procedure for display;
    */
   static formatForDisplay(procedure: FHIRProcedure): {
-    procedure: string;
+    procedure: string,
     category: string;
     status: string;
     performedDate?: string;
@@ -488,7 +488,7 @@ export class FHIRProcedureUtils {
       performer: this.getPrimaryPerformer(procedure) || 'Unknown',
       location: procedure.location?.reference?.replace('Location/', ''),
       hasComplications: this.hasComplications(procedure),
-      outcome: procedure.outcome?.coding?.[0]?.display;
+      outcome: procedure.outcome?.coding?.[0]?.display
     };
   }
 
@@ -547,7 +547,7 @@ export class FHIRProcedureUtils {
       reasonCode: hmsProcedure.indicationCode,
       reasonDisplay: hmsProcedure.indication || hmsProcedure.reason,
       outcome: hmsProcedure.outcome || hmsProcedure.result,
-      notes: hmsProcedure.notes || hmsProcedure.description;
+      notes: hmsProcedure.notes || hmsProcedure.description
     });
   }
 
@@ -593,7 +593,7 @@ export class FHIRProcedureUtils {
    * Get procedures with complications;
    */
   static getProceduresWithComplications(procedures: FHIRProcedure[]): FHIRProcedure[] {
-    return procedures.filter(procedure => this.hasComplications(procedure));
+    return procedures.filter(procedure => this.hasComplications(procedure))
   }
 
   /**
@@ -671,7 +671,7 @@ export class FHIRProcedureCodes {
    */
   static getProcedureComplexity(code: string): 'low' | 'moderate' | 'high' | undefined {
     if (Object.values(this.SURGICAL_PROCEDURES).some(proc => proc.code === code)) {
-      return 'high';
+      return 'high'
     }
     if (Object.values(this.DIAGNOSTIC_PROCEDURES).some(proc => proc.code === code)) {
       return 'moderate';
@@ -686,14 +686,14 @@ export class FHIRProcedureCodes {
    * Check if procedure is surgical;
    */
   static isSurgicalProcedure(code: string): boolean {
-    return Object.values(this.SURGICAL_PROCEDURES).some(proc => proc.code === code);
+    return Object.values(this.SURGICAL_PROCEDURES).some(proc => proc.code === code)
   }
 
   /**
    * Check if procedure is emergency;
    */
   static isEmergencyProcedure(code: string): boolean {
-    return Object.values(this.EMERGENCY_PROCEDURES).some(proc => proc.code === code);
+    return Object.values(this.EMERGENCY_PROCEDURES).some(proc => proc.code === code)
   }
 
   /**

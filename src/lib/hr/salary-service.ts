@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,9 +24,9 @@ export class SalaryService {
     name: string;
     description?: string;
     components: {
-      name: string;
+      name: string,
       type: 'EARNING' | 'DEDUCTION' | 'TAX';
-      calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
+      calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA',
       value: number;
       formula?: string;
       taxable: boolean;
@@ -104,9 +104,9 @@ export class SalaryService {
    * Add a component to a salary structure;
    */
   async addSalaryComponent(structureId: string, data: {
-    name: string;
+    name: string,
     type: 'EARNING' | 'DEDUCTION' | 'TAX';
-    calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
+    calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA',
     value: number;
     formula?: string;
     taxable: boolean;
@@ -152,9 +152,9 @@ export class SalaryService {
    * Assign a salary structure to an employee;
    */
   async assignSalaryStructure(data: {
-    employeeId: string;
+    employeeId: string,
     salaryStructureId: string;
-    baseSalary: number;
+    baseSalary: number,
     effectiveDate: Date;
     endDate?: Date;
     notes?: string;

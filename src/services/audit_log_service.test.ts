@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,16 +37,14 @@ describe("AuditLogService (Placeholder)", () => {
     const status = "SUCCESS";
     const details = { customData: "some value", numberValue: 42 };
 
-    await auditLogService.logEvent(userId, eventType, entityType, entityId, status, details);
-
+    await auditLogService.logEvent(userId, eventType, entityType, entityId, status, details),
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);
     const logOutput = consoleLogSpy.mock.calls[0][0];
     expect(logOutput).toContain("AUDIT_LOG:");
 
     // Parse the JSON part of the log output;
     const jsonPart = logOutput.substring(logOutput.indexOf("{"));
-    const loggedEntry = JSON.parse(jsonPart);
-
+    const loggedEntry = JSON.parse(jsonPart),
     expect(loggedEntry).toMatchObject({
       userId,
       eventType,
@@ -54,8 +52,8 @@ describe("AuditLogService (Placeholder)", () => {
       entityId,
       status,
       details,
-    });
-    expect(loggedEntry.timestamp).toBeDefined();
+    }),
+    expect(loggedEntry.timestamp).toBeDefined(),
     expect(typeof loggedEntry.timestamp).toBe("string");
   });
 
@@ -66,13 +64,11 @@ describe("AuditLogService (Placeholder)", () => {
     const entityId = null;
     const status = "FAILURE";
 
-    await auditLogService.logEvent(userId, eventType, entityType, entityId, status);
-
+    await auditLogService.logEvent(userId, eventType, entityType, entityId, status),
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);
     const logOutput = consoleLogSpy.mock.calls[0][0];
     const jsonPart = logOutput.substring(logOutput.indexOf("{"));
-    const loggedEntry = JSON.parse(jsonPart);
-
+    const loggedEntry = JSON.parse(jsonPart),
     expect(loggedEntry).toMatchObject({
       userId,
       eventType,
@@ -80,7 +76,7 @@ describe("AuditLogService (Placeholder)", () => {
       entityId: "N/A", // Check if null entityId is handled as N/A;
       status,
       details: {}, // Expect empty object if no details provided;
-    });
+    }),
     expect(loggedEntry.timestamp).toBeDefined();
   });
 
@@ -91,13 +87,11 @@ describe("AuditLogService (Placeholder)", () => {
     const status = "ATTEMPT";
     const details = { note: "testing null entity id" };
 
-    await auditLogService.logEvent(userId, eventType, entityType, null, status, details);
-
+    await auditLogService.logEvent(userId, eventType, entityType, null, status, details),
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);
     const logOutput = consoleLogSpy.mock.calls[0][0];
     const jsonPart = logOutput.substring(logOutput.indexOf("{"));
-    const loggedEntry = JSON.parse(jsonPart);
-
+    const loggedEntry = JSON.parse(jsonPart),
     expect(loggedEntry).toMatchObject({
       userId,
       eventType,
@@ -105,7 +99,7 @@ describe("AuditLogService (Placeholder)", () => {
       entityId: "N/A",
       status,
       details,
-    });
+    }),
     expect(loggedEntry.timestamp).toBeDefined();
   });
 });

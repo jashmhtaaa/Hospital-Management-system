@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,13 +32,13 @@ import { format } from "date-fns"; // For date formatting;
 
 // --- INTERFACES ---
 interface Invoice {
-  id: number;
+  id: number,
   invoice_number: string;
-  patient_id: number;
+  patient_id: number,
   patient_name: string; // Assuming joined data or fetched separately;
-  invoice_date: string;
+  invoice_date: string,
   total_amount: number;
-  amount_due: number;
+  amount_due: number,
   status: string; // e.g., draft, finalized, paid, partially_paid, void;
 }
 
@@ -55,7 +55,7 @@ type AllowedBadgeVariant = BadgeProps["variant"];
 const getStatusBadgeVariant = (status: string): AllowedBadgeVariant => {
   switch (status.toLowerCase()) {
     case "paid": {
-      return "default";
+      return "default"
     } // Map "success" to "default";
     case "partially_paid": {
       return "secondary";
@@ -68,7 +68,7 @@ const getStatusBadgeVariant = (status: string): AllowedBadgeVariant => {
       return "destructive";
     }
     default: {
-      return "secondary";
+      return "secondary"
     } // Default to secondary for unknown statuses;
   }
 };
@@ -83,7 +83,7 @@ export default const InvoicesListPage = () {
 
   // Basic fetch function (replace with actual implementation)
   const fetchInvoices = useCallback(async (term: string) => {
-    setIsLoading(true);
+    setIsLoading(true),
     setError(null);
     try {
       // Simulate API call;
@@ -91,10 +91,10 @@ export default const InvoicesListPage = () {
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay;
       // Replace with actual API call: const response = await fetch(`/api/billing/invoices?search=${encodeURIComponent(term)}`);
       // const data = await response.json();
-      // setInvoices(data.invoices || []);
+      // setInvoices(data.invoices || []),
       setInvoices([]); // Set empty for now;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch invoices");
+      setError(err instanceof Error ? err.message : "Failed to fetch invoices"),
       setInvoices([]);
     } finally {
       setIsLoading(false);
@@ -118,7 +118,7 @@ export default const InvoicesListPage = () {
           <Button className="w-full sm:w-auto">;
             {" "}
             {/* Full width on small screens */}
-            <PlusCircle className="mr-2 h-4 w-4" /> Create New Invoice;
+            <PlusCircle className="mr-2 h-4 w-4" /> Create New Invoice
           </Button>
         </Link>
       </div>
@@ -126,10 +126,10 @@ export default const InvoicesListPage = () {
         <div className="relative w-full max-w-md">;
           {" "}
           {/* Adjusted max-width */}
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />;
-          <Input;
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input>
             type="search"
-            placeholder="Search by Invoice #, Patient Name...";
+            placeholder="Search by Invoice #, Patient Name..."
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)} // Use setSearchTerm;
             className="pl-10" // Increased padding for icon;
@@ -159,7 +159,7 @@ export default const InvoicesListPage = () {
               <TableHead className="text-right">Due (₹)</TableHead>{" "}
               {/* Shortened label */}
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>;
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -168,26 +168,26 @@ export default const InvoicesListPage = () {
               (Array.from({ length: 5 }).map((_, index) => (
                 <TableRow key={`skeleton-${index}`}>;
                   <TableCell>
-                    <Skeleton className="h-4 w-24" />;
+                    <Skeleton className="h-4 w-24" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-32" />;
+                    <Skeleton className="h-4 w-32" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-20" />;
+                    <Skeleton className="h-4 w-20" />
                   </TableCell>
                   <TableCell className="text-right">;
-                    <Skeleton className="h-4 w-16 ml-auto" />;
+                    <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
                   <TableCell className="text-right">;
-                    <Skeleton className="h-4 w-16 ml-auto" />;
+                    <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-6 w-20 rounded-full" />;
+                    <Skeleton className="h-6 w-20 rounded-full" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for badge */}
                   <TableCell className="text-right">;
-                    <Skeleton className="h-8 w-10 ml-auto rounded" />;
+                    <Skeleton className="h-8 w-10 ml-auto rounded" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for button */}
                 </TableRow>
@@ -216,9 +216,9 @@ export default const InvoicesListPage = () {
                   </TableCell>{" "}
                   {/* Show dash if 0 due */}
                   <TableCell>
-                    <Badge;
+                    <Badge>
                       variant={getStatusBadgeVariant(invoice.status)}
-                      className="capitalize";
+                      className="capitalize"
                     >
                       {invoice.status.replace("_", " ")}
                     </Badge>
@@ -226,14 +226,14 @@ export default const InvoicesListPage = () {
                   <TableCell className="text-right">;
                     {/* Link to a potential invoice detail page */}
                     {/* <Link href={`/dashboard/billing/invoices/${invoice.id}`} passHref> */}
-                    <Button;
-                      variant="ghost";
-                      size="icon";
-                      title="View Invoice Details";
+                    <Button>
+                      variant="ghost"
+                      size="icon"
+                      title="View Invoice Details"
                     >
                       {" "}
                       {/* Added title */}
-                      <Eye className="h-4 w-4" />;
+                      <Eye className="h-4 w-4" />
                     </Button>
                     {/* </Link> */}
                     {/* Add Edit/Payment buttons here if functionality exists */}
@@ -243,9 +243,9 @@ export default const InvoicesListPage = () {
             ) : (
               // No Invoices Found Row;
               (<TableRow>
-                <TableCell;
+                <TableCell>
                   colSpan={7}
-                  className="h-24 text-center text-muted-foreground";
+                  className="h-24 text-center text-muted-foreground"
                 >
                   {searchTerm;
                     ? `No invoices found matching "${searchTerm}".`

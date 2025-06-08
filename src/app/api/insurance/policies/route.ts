@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -243,7 +243,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     policyId: policy.id, 
     policyNumber: policy.policyNumber,
     patientId: policy.patientId,
-    providerId: policy.insuranceProviderId;
+    providerId: policy.insuranceProviderId
   });
   
   return createSuccessResponse(policy);

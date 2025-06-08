@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,11 +28,11 @@ export class BiomedicalService {
    * Create a new biomedical equipment record;
    */
   async createBiomedicalEquipment(data: {
-    serialNumber: string;
+    serialNumber: string,
     modelNumber: string;
     manufacturer: string;
     manufactureDate?: Date;
-    type: string;
+    type: string,
     category: string;
     status: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'RETIRED';
     location?: string;
@@ -323,7 +323,7 @@ export class BiomedicalService {
   async recordCalibration(
     equipmentId: string,
     data: {
-      date: Date;
+      date: Date,
       performedBy: string;
       result: 'PASS' | 'FAIL' | 'ADJUSTED';
       notes?: string;
@@ -371,9 +371,9 @@ export class BiomedicalService {
   async recordMaintenance(
     equipmentId: string,
     data: {
-      date: Date;
+      date: Date,
       type: 'PREVENTIVE' | 'CORRECTIVE' | 'SAFETY';
-      performedBy: string;
+      performedBy: string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -602,7 +602,7 @@ export class BiomedicalService {
    * New method to support FHIR R5 device catalog;
    */
   createFhirDeviceDefinition(data: {
-    type: string;
+    type: string,
     manufacturer: string;
     modelNumber: string;
     description?: string;
@@ -654,8 +654,7 @@ export class BiomedicalService {
         return 'entered-in-error';
       case 'RETIRED':
         return 'inactive';
-      default:
-        return 'unknown';
+      default: return 'unknown'
     }
   }
 
@@ -664,7 +663,7 @@ export class BiomedicalService {
    */
   private getCalibrationStatus(equipment: unknown): string {
     if (!equipment.nextCalibrationDate) {
-      return 'No calibration required';
+      return 'No calibration required'
     }
 
     const now = new Date();
@@ -703,7 +702,7 @@ export class BiomedicalService {
           cache.del(`${this.CACHE_PREFIX}id:${equipment.id}`),
           cache.del(`${this.CACHE_PREFIX}serial:${equipment.serialNumber}`),
           cache.del(`${this.CACHE_PREFIX}calibration:${equipment.id}`),
-          cache.del(`${this.CACHE_PREFIX}maintenance:${equipment.id}`);
+          cache.del(`${this.CACHE_PREFIX}maintenance:${equipment.id}`)
         ]);
       }
     }
@@ -711,8 +710,8 @@ export class BiomedicalService {
     // Invalidate list caches with pattern matching;
     await Promise.all([
       cache.delPattern(`${this.CACHE_PREFIX}list:*`),
-      cache.delPattern(`${this.CACHE_PREFIX}due-calibration:*`);
-    ]);
+      cache.delPattern(`${this.CACHE_PREFIX}due-calibration: *`)
+    ])
   }
   
   /**

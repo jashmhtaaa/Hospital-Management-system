@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -70,10 +70,9 @@ describe('BiomedicalService', () => {
       const mockEquipment = { id: '123', serialNumber: 'SN123', manufacturer: 'TestMfg' };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockEquipment));
 
-      const result = await biomedicalService.getBiomedicalEquipmentById('123');
-
-      expect(cache.get).toHaveBeenCalledWith('biomedical:id:123');
-      expect(prisma.biomedicalEquipment.findUnique).not.toHaveBeenCalled();
+      const result = await biomedicalService.getBiomedicalEquipmentById('123'),
+      expect(cache.get).toHaveBeenCalledWith('biomedical:id:123'),
+      expect(prisma.biomedicalEquipment.findUnique).not.toHaveBeenCalled(),
       expect(result).toEqual(mockEquipment);
     });
 
@@ -82,9 +81,8 @@ describe('BiomedicalService', () => {
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
 
-      const result = await biomedicalService.getBiomedicalEquipmentById('123');
-
-      expect(cache.get).toHaveBeenCalledWith('biomedical:id:123');
+      const result = await biomedicalService.getBiomedicalEquipmentById('123'),
+      expect(cache.get).toHaveBeenCalledWith('biomedical:id:123'),
       expect(prisma.biomedicalEquipment.findUnique).toHaveBeenCalledWith({
         where: { id: '123' },
         include: expect.any(Object),
@@ -109,10 +107,9 @@ describe('BiomedicalService', () => {
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
 
-      const result = await biomedicalService.listBiomedicalEquipment({});
-
-      expect(cache.get).toHaveBeenCalled();
-      expect(prisma.biomedicalEquipment.findMany).not.toHaveBeenCalled();
+      const result = await biomedicalService.listBiomedicalEquipment({}),
+      expect(cache.get).toHaveBeenCalled(),
+      expect(prisma.biomedicalEquipment.findMany).not.toHaveBeenCalled(),
       expect(result).toEqual(mockResult);
     });
 
@@ -122,13 +119,12 @@ describe('BiomedicalService', () => {
       (prisma.biomedicalEquipment.findMany as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.biomedicalEquipment.count as jest.Mock).mockResolvedValue(1);
 
-      const result = await biomedicalService.listBiomedicalEquipment({});
-
-      expect(cache.get).toHaveBeenCalled();
-      expect(prisma.biomedicalEquipment.findMany).toHaveBeenCalled();
-      expect(prisma.biomedicalEquipment.count).toHaveBeenCalled();
-      expect(cache.set).toHaveBeenCalled();
-      expect(result.equipment).toEqual(mockEquipment);
+      const result = await biomedicalService.listBiomedicalEquipment({}),
+      expect(cache.get).toHaveBeenCalled(),
+      expect(prisma.biomedicalEquipment.findMany).toHaveBeenCalled(),
+      expect(prisma.biomedicalEquipment.count).toHaveBeenCalled(),
+      expect(cache.set).toHaveBeenCalled(),
+      expect(result.equipment).toEqual(mockEquipment),
       expect(result.total).toEqual(1);
     });
 
@@ -138,8 +134,7 @@ describe('BiomedicalService', () => {
       (prisma.biomedicalEquipment.findMany as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.biomedicalEquipment.count as jest.Mock).mockResolvedValue(1);
 
-      await biomedicalService.listBiomedicalEquipment({ cursor: '456' });
-
+      await biomedicalService.listBiomedicalEquipment({ cursor: '456' }),
       expect(prisma.biomedicalEquipment.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           cursor: { id: '456' },
@@ -162,9 +157,8 @@ describe('BiomedicalService', () => {
         type: 'Monitor',
         category: 'Diagnostic',
         status: 'ACTIVE',
-      });
-
-      expect(prisma.biomedicalEquipment.create).toHaveBeenCalled();
+      }),
+      expect(prisma.biomedicalEquipment.create).toHaveBeenCalled(),
       expect(BiomedicalService.prototype.invalidateBiomedicalCache).toHaveBeenCalled();
     });
   });
@@ -177,8 +171,7 @@ describe('BiomedicalService', () => {
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
       jest.spyOn(BiomedicalService.prototype, 'invalidateBiomedicalCache' as any).mockResolvedValue(undefined);
 
-      await biomedicalService.updateBiomedicalEquipment('123', { manufacturer: 'UpdatedMfg' });
-
+      await biomedicalService.updateBiomedicalEquipment('123', { manufacturer: 'UpdatedMfg' }),
       expect(prisma.biomedicalEquipment.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: '123' },
@@ -204,8 +197,8 @@ describe('BiomedicalService', () => {
         nextCalibrationDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       });
 
-      expect(prisma.calibrationRecord.create).toHaveBeenCalled();
-      expect(prisma.biomedicalEquipment.update).toHaveBeenCalled();
+      expect(prisma.calibrationRecord.create).toHaveBeenCalled(),
+      expect(prisma.biomedicalEquipment.update).toHaveBeenCalled(),
       expect(BiomedicalService.prototype.invalidateBiomedicalCache).toHaveBeenCalled();
     });
   });
@@ -224,19 +217,18 @@ describe('BiomedicalService', () => {
         properties: { weight: '5kg', power: '110V' },
       };
 
-      const result = biomedicalService.toFhirDevice(mockEquipment);
-
-      expect(result.resourceType).toEqual('Device');
-      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/Device');
-      expect(result.id).toEqual('123');
-      expect(result.identifier[0].value).toEqual('SN123');
-      expect(result.manufacturer).toEqual('TestMfg');
-      expect(result.serialNumber).toEqual('SN123');
-      expect(result.modelNumber).toEqual('MDL123');
-      expect(result.type.coding[0].code).toEqual('Monitor');
-      expect(result.location.display).toEqual('Ward 1');
-      expect(result.owner.display).toEqual('Cardiology');
-      expect(result.property.length).toEqual(2);
+      const result = biomedicalService.toFhirDevice(mockEquipment),
+      expect(result.resourceType).toEqual('Device'),
+      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/Device'),
+      expect(result.id).toEqual('123'),
+      expect(result.identifier[0].value).toEqual('SN123'),
+      expect(result.manufacturer).toEqual('TestMfg'),
+      expect(result.serialNumber).toEqual('SN123'),
+      expect(result.modelNumber).toEqual('MDL123'),
+      expect(result.type.coding[0].code).toEqual('Monitor'),
+      expect(result.location.display).toEqual('Ward 1'),
+      expect(result.owner.display).toEqual('Cardiology'),
+      expect(result.property.length).toEqual(2),
       expect(result.safety.length).toBeGreaterThan(0);
     });
 
@@ -247,13 +239,12 @@ describe('BiomedicalService', () => {
         modelNumber: 'MDL123',
         description: 'Patient Monitor',
         category: 'Diagnostic',
-      });
-
-      expect(result.resourceType).toEqual('DeviceDefinition');
-      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition');
-      expect(result.manufacturer.display).toEqual('TestMfg');
-      expect(result.modelNumber).toEqual('MDL123');
-      expect(result.description).toEqual('Patient Monitor');
+      }),
+      expect(result.resourceType).toEqual('DeviceDefinition'),
+      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition'),
+      expect(result.manufacturer.display).toEqual('TestMfg'),
+      expect(result.modelNumber).toEqual('MDL123'),
+      expect(result.description).toEqual('Patient Monitor'),
       expect(result.type.coding[0].code).toEqual('Monitor');
     });
   });
@@ -306,13 +297,12 @@ describe('BiomedicalService', () => {
       (prisma.maintenanceRecord.findMany as jest.Mock).mockResolvedValue(mockMaintenanceRecords);
       (prisma.calibrationRecord.findMany as jest.Mock).mockResolvedValue(mockCalibrationRecords);
 
-      const result = await biomedicalService.calculateReliabilityMetrics('123');
-
-      expect(result.serialNumber).toEqual('SN123');
-      expect(result.mtbf).toBeGreaterThan(0);
-      expect(result.calibrationSuccessRate).toBeCloseTo(66.67, 1);
-      expect(result.totalMaintenanceCost).toEqual(300);
-      expect(result.corrective).toEqual(2);
+      const result = await biomedicalService.calculateReliabilityMetrics('123'),
+      expect(result.serialNumber).toEqual('SN123'),
+      expect(result.mtbf).toBeGreaterThan(0),
+      expect(result.calibrationSuccessRate).toBeCloseTo(66.67, 1),
+      expect(result.totalMaintenanceCost).toEqual(300),
+      expect(result.corrective).toEqual(2),
       expect(result.preventive).toEqual(1);
     });
   });
@@ -347,14 +337,13 @@ describe('BiomedicalService', () => {
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.maintenanceRecord.findMany as jest.Mock).mockResolvedValue(mockMaintenanceRecords);
 
-      const result = await biomedicalService.predictMaintenanceNeeds('123');
-
-      expect(result.serialNumber).toEqual('SN123');
-      expect(result.meanTimeBetweenFailures).toBeCloseTo(92, 0);
-      expect(result.nextPredictedFailureDate).toBeDefined();
-      expect(result.recommendedMaintenanceDate).toBeDefined();
-      expect(result.riskScore).toBeGreaterThanOrEqual(0);
-      expect(result.riskScore).toBeLessThanOrEqual(100);
+      const result = await biomedicalService.predictMaintenanceNeeds('123'),
+      expect(result.serialNumber).toEqual('SN123'),
+      expect(result.meanTimeBetweenFailures).toBeCloseTo(92, 0),
+      expect(result.nextPredictedFailureDate).toBeDefined(),
+      expect(result.recommendedMaintenanceDate).toBeDefined(),
+      expect(result.riskScore).toBeGreaterThanOrEqual(0),
+      expect(result.riskScore).toBeLessThanOrEqual(100),
       expect(result.dataPoints).toEqual(3);
     });
 
@@ -371,12 +360,11 @@ describe('BiomedicalService', () => {
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.maintenanceRecord.findMany as jest.Mock).mockResolvedValue(mockMaintenanceRecords);
 
-      const result = await biomedicalService.predictMaintenanceNeeds('123');
-
-      expect(result.serialNumber).toEqual('SN123');
-      expect(result.meanTimeBetweenFailures).toEqual(90);
-      expect(result.nextPredictedFailureDate).toBeDefined();
-      expect(result.reliability).toEqual('Based on manufacturer recommendations');
+      const result = await biomedicalService.predictMaintenanceNeeds('123'),
+      expect(result.serialNumber).toEqual('SN123'),
+      expect(result.meanTimeBetweenFailures).toEqual(90),
+      expect(result.nextPredictedFailureDate).toBeDefined(),
+      expect(result.reliability).toEqual('Based on manufacturer recommendations'),
       expect(result.dataPoints).toEqual(0);
     });
   });

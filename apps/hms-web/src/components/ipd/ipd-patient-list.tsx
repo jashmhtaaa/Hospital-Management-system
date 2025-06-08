@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,34 +16,34 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 interface IPDPatient {
-  id: string;
+  id: string,
   name: string;
-  age: number;
+  age: number,
   gender: string;
-  admissionDate: string;
+  admissionDate: string,
   diagnosis: string;
-  ward: string;
+  ward: string,
   bedNumber: string;
-  attendingDoctor: string;
-  status: 'stable' | 'critical' | 'improving' | 'deteriorating';
+  attendingDoctor: string,
+  status: 'stable' | 'critical' | 'improving' | 'deteriorating'
 }
 
 interface IPDPatientListProps {
-  patients: IPDPatient[];
-  onViewPatient: (patientId: string) => void;
+  patients: IPDPatient[],
+  onViewPatient: (patientId: string) => void
 }
 
 /**
  * IPD Patient List component;
  */
-export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps) {
+export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'stable': return <Badge variant="success">Stable</Badge>;
       case 'critical': return <Badge variant="danger">Critical</Badge>;
       case 'improving': return <Badge variant="info">Improving</Badge>;
       case 'deteriorating': return <Badge variant="warning">Deteriorating</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -69,7 +69,7 @@ export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps)
             {patients.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center">;
-                  No inpatients found;
+                  No inpatients found
                 </TableCell>
               </TableRow>
             ) : (
@@ -87,12 +87,12 @@ export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps)
                   <TableCell>{patient.attendingDoctor}</TableCell>
                   <TableCell>{getStatusBadge(patient.status)}</TableCell>
                   <TableCell>
-                    <Button;
-                      variant="outline";
-                      size="sm";
+                    <Button>
+                      variant="outline"
+                      size="sm"
                       onClick={() => onViewPatient(patient.id)}
                     >
-                      View;
+                      View
                     </Button>
                   </TableCell>
                 </TableRow>

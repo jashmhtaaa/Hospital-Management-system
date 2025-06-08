@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ const LaboratoryPage = () => {
     <div className="container mx-auto p-4">;
       <h1 className="text-2xl font-bold mb-4">Laboratory Management</h1>;
       <p>
-        Laboratory module content goes here. This section is under development.;
+        Laboratory module content goes here. This section is under development.
       </p>
       {/* TODO: Implement Laboratory features (Test Booking, Barcode Tracking, Report Uploading) */}
     </div>

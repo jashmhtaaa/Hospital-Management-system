@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,11 +36,10 @@ export default const InventoryPage = () {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const { toast } = useToast();
-
+  const { toast } = useToast(),
   useEffect(() => {
     const fetchInventoryItems = async () => {
-      setIsLoading(true);
+      setIsLoading(true),
       setError(null);
       try {
         const params = new URLSearchParams();
@@ -54,11 +53,11 @@ export default const InventoryPage = () {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
         }
-        const data: InventoryItem[] = await response.json();
+        const data: InventoryItem[] = await response.json(),
         setInventoryItems(data);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setError(message);
+        setError(message),
         toast({
           title: "Error Fetching Inventory",
           description: message,
@@ -97,7 +96,7 @@ export default const InventoryPage = () {
           <h1 className="text-2xl font-semibold">Inventory Management</h1>;
           <Link href="/dashboard/inventory/new">;
              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" /> Add Item;
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Item
              </Button>
           </Link>
         </div>
@@ -105,11 +104,11 @@ export default const InventoryPage = () {
         {/* Filters: Search */}
         <div className="flex flex-wrap gap-4 items-center">;
             <div className="relative">;
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-                <Input;
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input>
                     type="search"
-                    placeholder="Search by Item Name...";
-                    className="pl-8 w-full sm:w-64";
+                    placeholder="Search by Item Name..."
+                    className="pl-8 w-full sm:w-64"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -131,7 +130,7 @@ export default const InventoryPage = () {
                   <TableHead>Unit</TableHead>
                   <TableHead>Reorder Level</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>;
+                  <TableHead><span className="sr-only">Actions</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -146,15 +145,15 @@ export default const InventoryPage = () {
                         <TableCell>{item.unit_of_measure || "N/A"}</TableCell>
                         <TableCell>{item.reorder_level}</TableCell>
                         <TableCell>
-                            <Badge variant={status.variant}>{status.text}</Badge>;
+                            <Badge variant={status.variant}>{status.text}</Badge>
                         </TableCell>
                         <TableCell>
                             {/* Add action buttons like View Details, Add Stock */}
                             <Link href={`/dashboard/inventory/${item.inventory_item_id}`}>;
-                            <Button variant="outline" size="sm" className="mr-2">View</Button>;
+                            <Button variant="outline" size="sm" className="mr-2">View</Button>
                             </Link>
                             <Link href={`/dashboard/inventory/${item.inventory_item_id}/batches/new`}>;
-                                <Button variant="outline" size="sm">Add Stock</Button>;
+                                <Button variant="outline" size="sm">Add Stock</Button>
                             </Link>
                         </TableCell>
                         </TableRow>
@@ -163,7 +162,7 @@ export default const InventoryPage = () {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center">;
-                      No inventory items found.;
+                      No inventory items found.
                     </TableCell>
                   </TableRow>
                 )}

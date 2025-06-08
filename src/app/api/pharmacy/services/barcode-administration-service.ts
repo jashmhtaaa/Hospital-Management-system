@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,14 +21,14 @@ import { injectable, inject } from 'inversify';
 import { PharmacyDomain } from '../models/domain-models';
 
 interface BarcodeVerificationResult {
-  success: boolean;
+  success: boolean,
   message: string;
   details?: {
-    rightPatient: boolean;
+    rightPatient: boolean,
     rightMedication: boolean;
-    rightDose: boolean;
+    rightDose: boolean,
     rightRoute: boolean;
-    rightTime: boolean;
+    rightTime: boolean
   };
 }
 
@@ -72,7 +72,7 @@ export class BarcodeMedicationAdministrationService {
       if (!patientId || !medicationInfo.medicationId) {
         return {
           success: false,
-          message: 'Invalid barcode format';
+          message: 'Invalid barcode format'
         };
       }
       
@@ -81,7 +81,7 @@ export class BarcodeMedicationAdministrationService {
       if (!prescription) {
         return {
           success: false,
-          message: 'Prescription not found';
+          message: 'Prescription not found'
         };
       }
       
@@ -90,7 +90,7 @@ export class BarcodeMedicationAdministrationService {
       if (!medication) {
         return {
           success: false,
-          message: 'Medication not found';
+          message: 'Medication not found'
         };
       }
       
@@ -212,7 +212,7 @@ export class BarcodeMedicationAdministrationService {
     if (prescription && this.shouldCompletePrescription(prescription)) {
       await this.prescriptionRepository.update({
         ...prescription,
-        status: 'completed';
+        status: 'completed'
       });
     }
     
@@ -348,7 +348,7 @@ export class BarcodeMedicationAdministrationService {
             medicationId: prescription.medicationId,
             medicationName: medication ? medication.name : 'Unknown Medication',
             dosage: prescription.dosage.toString(),
-            priority: prescription.priority;
+            priority: prescription.priority
           });
         }
       }

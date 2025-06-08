@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,27 +17,27 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures;
 interface PrescriptionItem {
-  id: string;
+  id: string,
   medication_id: string;
-  medication_name: string;
+  medication_name: string,
   dosage: string;
-  frequency: string;
+  frequency: string,
   duration: string;
-  dispensed_quantity: number;
-  quantity: number;
+  dispensed_quantity: number,
+  quantity: number
 }
 
 interface Prescription {
-  id: string;
+  id: string,
   date: string;
   status: string; // e.g., 'active', 'partially_dispensed', 'completed';
-  items: PrescriptionItem[];
+  items: PrescriptionItem[]
 }
 
 interface MedicationScheduleItem {
-  id: string;
+  id: string,
   prescription_item_id: string;
-  medication_name: string;
+  medication_name: string,
   scheduled_time: string;
   status: "pending" | "administered" | "skipped" | "held";
   condition?: string;
@@ -47,15 +47,15 @@ interface AdministrationRecord {
   id: string;
   schedule_id?: string; // Link to schedule if applicable;
   prescription_item_id?: string; // Link to prescription item;
-  medication_name: string;
+  medication_name: string,
   administered_at: string;
   administered_by: string; // Name or ID of the nurse;
   notes?: string;
 }
 
 interface IPDPharmacyIntegrationProperties {
-  admissionId: string | null;
-  patientId: string | null;
+  admissionId: string | null,
+  patientId: string | null
 }
 
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
@@ -76,12 +76,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (!admissionId || !patientId) {
-        setLoading(false);
+        setLoading(false),
         setError("Admission ID or Patient ID is missing.");
         return;
       }
 
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
       try {
         // Simulate fetching all data concurrently;
@@ -172,7 +172,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           },
         ];
 
-        setPrescriptions(mockPrescriptions);
+        setPrescriptions(mockPrescriptions),
         setMedicationSchedule(mockSchedule);
         setAdministrationRecords(mockRecords);
       } catch (error_) {
@@ -290,7 +290,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     return (
       <div className="flex justify-center items-center h-64">;
         <Loader2 className="h-8 w-8 animate-spin text-primary" /> Loading;
-        medication schedule...;
+        medication schedule...
       </div>
     );
   }
@@ -307,18 +307,18 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     <div className="bg-white rounded-lg shadow-md overflow-hidden mt-6">;
       <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
         <h2 className="text-lg font-semibold text-gray-800">;
-          Medication Administration Record (MAR);
+          Medication Administration Record (MAR)
         </h2>
       </div>
       <div className="p-6 space-y-8">;
         {/* Medication Schedule */}
-        <div>
+<div
           <h3 className="text-md font-medium text-gray-700 mb-3">;
-            Scheduled Medications;
+            Scheduled Medications
           </h3>
           {medicationSchedule.length === 0 ? (
             <p className="text-sm text-gray-500">;
-              No medications scheduled for this patient.;
+              No medications scheduled for this patient.
             </p>
           ) : (
             <div className="overflow-x-auto border rounded-md">;
@@ -326,22 +326,22 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                 <thead className="bg-gray-50">;
                   <tr>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Time;
+                      Time
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Medication;
+                      Medication
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Dosage;
+                      Dosage
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Condition;
+                      Condition
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Status;
+                      Status
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Action;
+                      Action
                     </th>
                   </tr>
                 </thead>
@@ -361,7 +361,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                         {item.condition || "-"}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap">;
-                        <span;
+<span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             item.status === "administered";
                               ? "bg-green-100 text-green-800"
@@ -377,15 +377,15 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-sm">;
                         {item.status === "pending" && (
-                          <button;
+                          <button>
                             onClick={() => handleAdministerMedication(item)}
                             disabled={loading} // Consider a more specific loading state;
-                            className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed";
+                            className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {loading ? (
-                              <Loader2 className="h-3 w-3 animate-spin inline mr-1" />;
+                              <Loader2 className="h-3 w-3 animate-spin inline mr-1" />
                             ) : undefined}
-                            Administer;
+                            Administer
                           </button>
                         )}
                         {/* Add buttons for Skip, Hold, etc. with appropriate logic */}
@@ -399,13 +399,13 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         </div>
 
         {/* Administration History */}
-        <div>
+<div
           <h3 className="text-md font-medium text-gray-700 mb-3">;
-            Administration History;
+            Administration History
           </h3>
           {administrationRecords.length === 0 ? (
             <p className="text-sm text-gray-500">;
-              No administration records found.;
+              No administration records found.
             </p>
           ) : (
             <div className="overflow-x-auto border rounded-md">;
@@ -413,16 +413,16 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                 <thead className="bg-gray-50">;
                   <tr>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Time;
+                      Time
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Medication;
+                      Medication
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Administered By;
+                      Administered By
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Notes;
+                      Notes
                     </th>
                   </tr>
                 </thead>

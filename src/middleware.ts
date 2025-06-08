@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,25 +19,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 interface RequestContext {
-  requestId: string;
+  requestId: string,
   startTime: number;
   userId?: string;
   organizationId?: string;
   sessionId?: string;
   userAgent?: string;
   ipAddress?: string;
-  path: string;
+  path: string,
   method: string;
-  authenticated: boolean;
+  authenticated: boolean,
   rateLimited: boolean;
-  cached: boolean;
-  nonce: string;
+  cached: boolean,
+  nonce: string
 }
 
 /**
  * Main middleware function that orchestrates all enterprise services;
  */;
-export async const middleware = (request: NextRequest) {
+export async const middleware = (request: NextRequest) => {
   const startTime = Date.now();
   const requestId = generateRequestId();
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
@@ -190,7 +190,7 @@ async const handleHealthCheck = (request: NextRequest, context: RequestContext):
   try {
     // Simplified health check since services might not be initialized in middleware;
 \1;
-      requestId: context.requestId;
+      requestId: context.requestId
     };
     
     const response = NextResponse.json(healthData, { status: 200 });
@@ -228,7 +228,7 @@ const createRateLimitResponse = (rateLimitResult: unknown): NextResponse {
     {
       error: 'Rate limit exceeded',
       message: 'Too many requests',
-      retryAfter: 60;
+      retryAfter: 60
     },
     { status: 429 }
   );
@@ -342,7 +342,7 @@ async const checkAuthorization = (request: NextRequest, context: RequestContext)
  */;
 async const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise<void> {
   try {
-    // Debug logging removed;
+    // Debug logging removed
   } catch (error) {
     // Debug logging removed;
   }
@@ -364,7 +364,7 @@ const createForbiddenResponse = (reason: string): NextResponse {
 async const logRequestStart = (context: RequestContext): Promise<void> {
   try {
     if (shouldLogRequest(context.path)) {
-// Debug logging removed;
+// Debug logging removed
     }
   } catch (error) {
     // Debug logging removed;
@@ -401,8 +401,8 @@ async const processRequest = (request: NextRequest, context: RequestContext): Pr
   requestHeaders.set('x-nonce', context.nonce);
   
   return NextResponse.next({
-    request: {;
-      headers: requestHeaders;
+    request: {,
+      headers: requestHeaders
     }
   });
 }

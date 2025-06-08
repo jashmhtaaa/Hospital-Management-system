@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -84,10 +84,10 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
           throw new Error('Failed to fetch asset data');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setAsset(data);
       } catch (err) {
-        setError(err.message);
+        setError(err.message),
         toast({
           title: "Error",
           description: err.message,
@@ -160,8 +160,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
         return 'destructive';
       case 'LOST':
         return 'outline';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
 
@@ -183,13 +182,13 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/assets')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Assets;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Assets
           </Button>
         </div>
         <div className="flex justify-center items-center h-64">;
@@ -203,25 +202,25 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/assets')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Assets;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Assets
           </Button>
         </div>
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-64">;
-            <AlertTriangle className="h-10 w-10 text-destructive mb-4" />;
+            <AlertTriangle className="h-10 w-10 text-destructive mb-4" />
             <h2 className="text-xl font-semibold mb-2">Error</h2>;
             <p className="text-muted-foreground">{error}</p>;
-            <Button;
-              className="mt-4";
+            <Button>
+              className="mt-4"
               onClick={() => router.push('/dashboard/hr/assets')}
             >
-              Return to Assets;
+              Return to Assets
             </Button>
           </CardContent>
         </Card>
@@ -236,18 +235,18 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
-        <Button;
-          variant="ghost";
-          size="sm";
+        <Button>
+          variant="ghost"
+          size="sm"
           onClick={() => router.push('/dashboard/hr/assets')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />;
-          Back to Assets;
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Assets
         </Button>
       </div>
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
-        <div>
+<div
           <h1 className="text-3xl font-bold">;
             {asset.name}
           </h1>
@@ -258,15 +257,15 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
         
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleEdit}>;
-            <Edit className="h-4 w-4 mr-2" />;
-            Edit;
+            <Edit className="h-4 w-4 mr-2" />
+            Edit
           </Button>
           
           <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>;
             <DialogTrigger asChild>
               <Button variant="destructive">;
-                <Trash className="h-4 w-4 mr-2" />;
-                Delete;
+                <Trash className="h-4 w-4 mr-2" />
+                Delete
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -278,10 +277,10 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
               </DialogHeader>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setConfirmDelete(false)}>
-                  Cancel;
+                  Cancel
                 </Button>
                 <Button variant="destructive" onClick={handleDelete}>;
-                  Delete;
+                  Delete
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -293,7 +292,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
         <TabsList>
           <TabsTrigger value="details">Details</TabsTrigger>;
           <TabsTrigger value="history">History</TabsTrigger>;
-          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>;
+          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
         </TabsList>
         
         <TabsContent value="details" className="mt-4">;
@@ -305,7 +304,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
               <CardContent className="space-y-4">;
                 <div className="flex flex-col items-center">;
                   <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">;
-                    <Package className="h-12 w-12 text-muted-foreground" />;
+                    <Package className="h-12 w-12 text-muted-foreground" />
                   </div>
                   
                   <h3 className="text-xl font-semibold">;
@@ -324,35 +323,35 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
                 
                 <div className="space-y-2">;
                   <div className="flex items-center gap-2">;
-                    <Tag className="h-4 w-4 text-muted-foreground" />;
-                    <div>
+                    <Tag className="h-4 w-4 text-muted-foreground" />
+<div
                       <p className="text-sm text-muted-foreground">Asset Type</p>;
-                      <p className="font-medium">{asset.assetType}</p>;
+                      <p className="font-medium">{asset.assetType}</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2">;
-                    <Building className="h-4 w-4 text-muted-foreground" />;
-                    <div>
+                    <Building className="h-4 w-4 text-muted-foreground" />
+<div
                       <p className="text-sm text-muted-foreground">Department</p>;
-                      <p className="font-medium">{asset.department?.name || 'Not Assigned'}</p>;
+                      <p className="font-medium">{asset.department?.name || 'Not Assigned'}</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2">;
-                    <MapPin className="h-4 w-4 text-muted-foreground" />;
-                    <div>
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+<div
                       <p className="text-sm text-muted-foreground">Location</p>;
-                      <p className="font-medium">{asset.location || 'Not Specified'}</p>;
+                      <p className="font-medium">{asset.location || 'Not Specified'}</p>
                     </div>
                   </div>
                   
                   {asset.assignedTo && (
                     <div className="flex items-center gap-2">;
-                      <User className="h-4 w-4 text-muted-foreground" />;
-                      <div>
+                      <User className="h-4 w-4 text-muted-foreground" />
+<div
                         <p className="text-sm text-muted-foreground">Assigned To</p>;
-                        <p className="font-medium">{asset.assignedTo.firstName} {asset.assignedTo.lastName}</p>;
+                        <p className="font-medium">{asset.assignedTo.firstName} {asset.assignedTo.lastName}</p>
                       </div>
                     </div>
                   )}
@@ -362,17 +361,17 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
                 
                 <div className="flex flex-col gap-2">;
                   <Button onClick={handleAddMaintenance}>;
-                    <Wrench className="h-4 w-4 mr-2" />;
-                    Record Maintenance;
+                    <Wrench className="h-4 w-4 mr-2" />
+                    Record Maintenance
                   </Button>
                   
                   <Button variant="outline" onClick={handleTransfer}>;
-                    <MapPin className="h-4 w-4 mr-2" />;
-                    Transfer Asset;
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Transfer Asset
                   </Button>
                   
                   <Button variant="outline" onClick={handleAssign}>;
-                    <User className="h-4 w-4 mr-2" />;
+                    <User className="h-4 w-4 mr-2" />
                     {asset.assignedTo ? 'Reassign Asset' : 'Assign Asset'}
                   </Button>
                 </div>
@@ -387,48 +386,48 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Manufacturer</p>;
-                    <p className="font-medium">{asset.manufacturer || '—'}</p>;
+                    <p className="font-medium">{asset.manufacturer || '—'}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Model</p>;
-                    <p className="font-medium">{asset.model || '—'}</p>;
+                    <p className="font-medium">{asset.model || '—'}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Purchase Date</p>;
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.purchaseDate)}</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.purchaseDate)}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Purchase Price</p>;
-                    <p className="font-medium">{formatCurrency(asset.purchasePrice)}</p>;
+                    <p className="font-medium">{formatCurrency(asset.purchasePrice)}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Warranty Expiry</p>;
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.warrantyExpiryDate)}</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.warrantyExpiryDate)}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Last Maintenance</p>;
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.lastMaintenanceDate)}</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.lastMaintenanceDate)}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Next Maintenance</p>;
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.nextMaintenanceDate)}</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.nextMaintenanceDate)}</p>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm text-muted-foreground">Created On</p>;
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.createdAt)}</p>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.createdAt)}</p>
                   </div>
                 </div>
                 
                 {asset.tags && asset.tags.length > 0 && (
                   <>
-                    <Separator className="my-6" />;
+                    <Separator className="my-6" />
                     
                     <div className="space-y-2">;
                       <p className="text-sm text-muted-foreground">Tags</p>;
@@ -445,12 +444,12 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
                 
                 {asset.notes && (
                   <>
-                    <Separator className="my-6" />;
+                    <Separator className="my-6" />
                     
                     <div className="space-y-2">;
                       <p className="text-sm text-muted-foreground">Notes</p>;
                       <div className="p-4 bg-muted rounded-md">;
-                        <p className="whitespace-pre-line">{asset.notes}</p>;
+                        <p className="whitespace-pre-line">{asset.notes}</p>
                       </div>
                     </div>
                   </>
@@ -465,7 +464,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
             <CardHeader>
               <CardTitle>Asset History</CardTitle>
               <CardDescription>
-                Track changes and events related to this asset;
+                Track changes and events related to this asset
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -497,33 +496,33 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
                           </TableCell>
                           <TableCell>
                             {history.type === 'TRANSFER' && (
-                              <span>
+<span
                                 Transferred from {history.details.previousLocation ||
                                   'Unknown'} to {history.details.newLocation}
                               </span>
                             )}
                             {history.type === 'ASSIGNMENT' && (
-                              <span>
+<span
                                 Assigned to {history.employee?.firstName} {history.employee?.lastName}
                               </span>
                             )}
                             {history.type === 'UNASSIGNMENT' && (
-                              <span>
+<span
                                 Unassigned from employee;
                               </span>
                             )}
                             {history.type === 'MAINTENANCE' && (
-                              <span>
+<span
                                 {history.details.maintenanceType} maintenance: {history.details.description}
                               </span>
                             )}
                             {history.type === 'DISPOSAL' && (
-                              <span>
+<span
                                 Disposed via {history.details.disposalMethod}: {history.details.reason}
                               </span>
                             )}
                             {history.type === 'STATUS_CHANGE' && (
-                              <span>
+<span
                                 Status changed from {history.details.previousStatus} to {history.details.newStatus}
                               </span>
                             )}
@@ -549,15 +548,15 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">;
-                <div>
+<div
                   <CardTitle>Maintenance Records</CardTitle>
                   <CardDescription>
-                    View and manage maintenance history;
+                    View and manage maintenance history
                   </CardDescription>
                 </div>
                 <Button onClick={handleAddMaintenance}>;
-                  <Wrench className="h-4 w-4 mr-2" />;
-                  Record Maintenance;
+                  <Wrench className="h-4 w-4 mr-2" />
+                  Record Maintenance
                 </Button>
               </div>
             </CardHeader>
@@ -600,12 +599,12 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
                             {formatDateOrPlaceholder(record.nextMaintenanceDate)}
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/assets/${asset.id}/maintenance/${record.id}`)}
                             >
-                              View;
+                              View
                             </Button>
                           </TableCell>
                         </TableRow>

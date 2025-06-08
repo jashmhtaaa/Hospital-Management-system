@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,7 +29,7 @@ export const ProgressNoteSchema = z.object({
     .regex(
       /^\d{2}:\d{2}(:\d{2})?$/,
       "Time must be in HH:MM or HH:MM:SS format";
-    ), // Assuming HH:MM or HH:MM:SS format;
+    ), // Assuming HH: MM or HH:MM:SS format,
   note_type: z.enum(["Doctor", "Nurse", "Consultant"]).optional(), // Optional as it can be set based on user role;
   note_content: z.string().min(1, "Note content cannot be empty"),
   vital_signs: VitalSignsSchema,

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -57,14 +57,13 @@ export default const BillingDashboard = () {
   const [error, setError] = useState<string | null>(null);
   const [billingData, setBillingData] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-
+  const [filterStatus, setFilterStatus] = useState('all'),
   useEffect(() => {
     fetchBillingData();
   }, [activeTab]);
 
   const fetchBillingData = async () => {
-    setLoading(true);
+    setLoading(true),
     setError(null);
     
     try {
@@ -92,8 +91,7 @@ export default const BillingDashboard = () {
         case 'discounts':
           data = generateDiscountsData();
           break;
-        default:
-          data = generateInvoicesData();
+        default: data = generateInvoicesData()
       }
       
       setBillingData(data);
@@ -294,8 +292,8 @@ export default const BillingDashboard = () {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">;
-        <Spinner size="lg" />;
-        <span className="ml-2">Loading billing dashboard...</span>;
+        <Spinner size="lg" />
+        <span className="ml-2">Loading billing dashboard...</span>
       </div>
     );
   }
@@ -307,7 +305,7 @@ export default const BillingDashboard = () {
         <Alert variant="destructive">;
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button className="mt-4" onClick={fetchBillingData}>Retry</Button>;
+        <Button className="mt-4" onClick={fetchBillingData}>Retry</Button>
       </div>
     );
   }
@@ -318,17 +316,17 @@ export default const BillingDashboard = () {
         <h1 className="text-3xl font-bold">Billing Management</h1>;
         <div className="flex space-x-4">;
           <div className="relative">;
-            <Input;
+            <Input>
               type="text"
-              placeholder="Search...";
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64";
+              className="w-64"
             />
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>;
             <SelectTrigger className="w-40">;
-              <SelectValue placeholder="Filter by status" />;
+              <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Statuses</SelectItem>;
@@ -341,7 +339,7 @@ export default const BillingDashboard = () {
                   <SelectItem value="sent">Sent</SelectItem>;
                   <SelectItem value="partial">Partial</SelectItem>;
                   <SelectItem value="paid">Paid</SelectItem>;
-                  <SelectItem value="overdue">Overdue</SelectItem>;
+                  <SelectItem value="overdue">Overdue</SelectItem>
                 </>
               )}
               {activeTab === 'payments' && (
@@ -349,13 +347,13 @@ export default const BillingDashboard = () {
                   <SelectItem value="pending">Pending</SelectItem>;
                   <SelectItem value="processing">Processing</SelectItem>;
                   <SelectItem value="completed">Completed</SelectItem>;
-                  <SelectItem value="failed">Failed</SelectItem>;
+                  <SelectItem value="failed">Failed</SelectItem>
                 </>
               )}
               {(activeTab === 'service-items' || activeTab === 'packages' || activeTab === 'discounts') && (
                 <>
                   <SelectItem value="active">Active</SelectItem>;
-                  <SelectItem value="inactive">Inactive</SelectItem>;
+                  <SelectItem value="inactive">Inactive</SelectItem>
                 </>
               )}
             </SelectContent>
@@ -369,35 +367,35 @@ export default const BillingDashboard = () {
                 <DialogHeader>
                   <DialogTitle>Create New Invoice</DialogTitle>
                   <DialogDescription>
-                    Enter the details to create a new invoice.;
+                    Enter the details to create a new invoice.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">;
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="patientId" className="text-right">;
-                      Patient ID;
+                      Patient ID
                     </Label>
-                    <Input id="patientId" className="col-span-3" />;
+                    <Input id="patientId" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="visitType" className="text-right">;
-                      Visit Type;
+                      Visit Type
                     </Label>
                     <Select>
                       <SelectTrigger className="col-span-3">;
-                        <SelectValue placeholder="Select visit type" />;
+                        <SelectValue placeholder="Select visit type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="OPD">OPD</SelectItem>;
                         <SelectItem value="IPD">IPD</SelectItem>;
                         <SelectItem value="ER">Emergency</SelectItem>;
-                        <SelectItem value="OTHER">Other</SelectItem>;
+                        <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="billDate" className="text-right">;
-                      Bill Date;
+                      Bill Date
                     </Label>
                     <div className="col-span-3">;
                       <DatePicker date={new Date()} onDateChange={() => {}} />
@@ -405,22 +403,22 @@ export default const BillingDashboard = () {
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="billType" className="text-right">;
-                      Bill Type;
+                      Bill Type
                     </Label>
                     <Select>
                       <SelectTrigger className="col-span-3">;
-                        <SelectValue placeholder="Select bill type" />;
+                        <SelectValue placeholder="Select bill type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Regular">Regular</SelectItem>;
                         <SelectItem value="Package">Package</SelectItem>;
-                        <SelectItem value="Consolidated">Consolidated</SelectItem>;
+                        <SelectItem value="Consolidated">Consolidated</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Create</Button>;
+                  <Button type="submit">Create</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -434,29 +432,29 @@ export default const BillingDashboard = () {
                 <DialogHeader>
                   <DialogTitle>Record New Payment</DialogTitle>
                   <DialogDescription>
-                    Enter the details to record a new payment.;
+                    Enter the details to record a new payment.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">;
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="invoiceId" className="text-right">;
-                      Invoice ID;
+                      Invoice ID
                     </Label>
-                    <Input id="invoiceId" className="col-span-3" />;
+                    <Input id="invoiceId" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="amount" className="text-right">;
-                      Amount;
+                      Amount
                     </Label>
-                    <Input id="amount" type="number" className="col-span-3" />;
+                    <Input id="amount" type="number" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="paymentMethod" className="text-right">;
-                      Payment Method;
+                      Payment Method
                     </Label>
                     <Select>
                       <SelectTrigger className="col-span-3">;
-                        <SelectValue placeholder="Select payment method" />;
+                        <SelectValue placeholder="Select payment method" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Cash">Cash</SelectItem>;
@@ -465,19 +463,19 @@ export default const BillingDashboard = () {
                         <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>;
                         <SelectItem value="Online Payment">Online Payment</SelectItem>;
                         <SelectItem value="Insurance">Insurance</SelectItem>;
-                        <SelectItem value="Mobile Payment">Mobile Payment</SelectItem>;
+                        <SelectItem value="Mobile Payment">Mobile Payment</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="referenceNumber" className="text-right">;
-                      Reference Number;
+                      Reference Number
                     </Label>
-                    <Input id="referenceNumber" className="col-span-3" />;
+                    <Input id="referenceNumber" className="col-span-3" />
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Record</Button>;
+                  <Button type="submit">Record</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -491,29 +489,29 @@ export default const BillingDashboard = () {
                 <DialogHeader>
                   <DialogTitle>Add New Service Item</DialogTitle>
                   <DialogDescription>
-                    Enter the details to add a new service item.;
+                    Enter the details to add a new service item.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">;
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="code" className="text-right">;
-                      Code;
+                      Code
                     </Label>
-                    <Input id="code" className="col-span-3" />;
+                    <Input id="code" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="name" className="text-right">;
-                      Name;
+                      Name
                     </Label>
-                    <Input id="name" className="col-span-3" />;
+                    <Input id="name" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="category" className="text-right">;
-                      Category;
+                      Category
                     </Label>
                     <Select>
                       <SelectTrigger className="col-span-3">;
-                        <SelectValue placeholder="Select category" />;
+                        <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Consultation">Consultation</SelectItem>;
@@ -522,25 +520,25 @@ export default const BillingDashboard = () {
                         <SelectItem value="Procedure">Procedure</SelectItem>;
                         <SelectItem value="Room">Room</SelectItem>;
                         <SelectItem value="Physiotherapy">Physiotherapy</SelectItem>;
-                        <SelectItem value="Other">Other</SelectItem>;
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="unitPrice" className="text-right">;
-                      Unit Price;
+                      Unit Price
                     </Label>
-                    <Input id="unitPrice" type="number" className="col-span-3" />;
+                    <Input id="unitPrice" type="number" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">;
                     <Label htmlFor="taxRate" className="text-right">;
-                      Tax Rate (%);
+                      Tax Rate (%)
                     </Label>
-                    <Input id="taxRate" type="number" className="col-span-3" />;
+                    <Input id="taxRate" type="number" className="col-span-3" />
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit">Add</Button>;
+                  <Button type="submit">Add</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -554,7 +552,7 @@ export default const BillingDashboard = () {
           <TabsTrigger value="payments">Payments</TabsTrigger>;
           <TabsTrigger value="service-items">Service Items</TabsTrigger>;
           <TabsTrigger value="packages">Packages</TabsTrigger>;
-          <TabsTrigger value="discounts">Discounts</TabsTrigger>;
+          <TabsTrigger value="discounts">Discounts</TabsTrigger>
         </TabsList>
 
         <TabsContent value="invoices">;
@@ -565,7 +563,7 @@ export default const BillingDashboard = () {
                 <CardDescription>Manage patient invoices and bills</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable;
+                <DataTable>
                   data={filterInvoices()}
                   columns={[
                     { header: 'Invoice ID', accessorKey: 'id' },
@@ -605,7 +603,7 @@ export default const BillingDashboard = () {
                           sent: 'bg-pink-100 text-pink-800',
                           partial: 'bg-sky-100 text-sky-800',
                           paid: 'bg-green-100 text-green-800',
-                          overdue: 'bg-red-100 text-red-800';
+                          overdue: 'bg-red-100 text-red-800'
                         };
                         
                         return (
@@ -621,7 +619,7 @@ export default const BillingDashboard = () {
                         <div className="flex space-x-2">;
                           <Button variant="outline" size="sm">View</Button>;
                           <Button variant="outline" size="sm">Edit</Button>;
-                          <Button variant="outline" size="sm">Print</Button>;
+                          <Button variant="outline" size="sm">Print</Button>
                         </div>
                       );
                     }
@@ -640,7 +638,7 @@ export default const BillingDashboard = () {
                 <CardDescription>Manage payment transactions</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable;
+                <DataTable>
                   data={filterPayments()}
                   columns={[
                     { header: 'Payment ID', accessorKey: 'id' },
@@ -671,7 +669,7 @@ export default const BillingDashboard = () {
                           failed: 'bg-red-100 text-red-800',
                           refunded: 'bg-purple-100 text-purple-800',
                           partially_refunded: 'bg-pink-100 text-pink-800',
-                          cancelled: 'bg-gray-100 text-gray-800';
+                          cancelled: 'bg-gray-100 text-gray-800'
                         };
                         
                         return (
@@ -708,7 +706,7 @@ export default const BillingDashboard = () {
                 <CardDescription>Manage billable service items</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable;
+                <DataTable>
                   data={filterServiceItems()}
                   columns={[
                     { header: 'Code', accessorKey: 'code' },
@@ -759,7 +757,7 @@ export default const BillingDashboard = () {
                 <CardDescription>Manage service packages and bundles</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable;
+                <DataTable>
                   data={filterPackages()}
                   columns={[
                     { header: 'Code', accessorKey: 'code' },
@@ -819,7 +817,7 @@ export default const BillingDashboard = () {
                 <CardDescription>Manage discount rules and policies</CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable;
+                <DataTable>
                   data={filterDiscounts()}
                   columns={[
                     { header: 'Code', accessorKey: 'code' },

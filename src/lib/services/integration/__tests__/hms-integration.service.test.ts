@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -116,8 +116,7 @@ describe('HMSIntegrationService', () => {
         { patientData: true },
         mockUserId,
         mockPatientId;
-      );
-      
+      ),
       expect(prisma.patient.findUnique).toHaveBeenCalledWith({
         where: { id: mockPatientId },
         select: expect.objectContaining({
@@ -131,15 +130,13 @@ describe('HMSIntegrationService', () => {
       expect(AuditLogger).toHaveBeenCalledWith({
         userId: mockUserId,
         userRoles: mockUserRoles,
-      });
-      
+      }),
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.patient.info.request',
         resourceId: mockPatientId,
         userId: mockUserId,
         details: { patientId: mockPatientId },
-      });
-      
+      }),
       expect(result).toEqual(mockPatient);
     });
     
@@ -181,8 +178,8 @@ describe('HMSIntegrationService', () => {
         }),
       });
       
-      expect(result).toHaveProperty('allergies');
-      expect(result).toHaveProperty('diagnoses');
+      expect(result).toHaveProperty('allergies'),
+      expect(result).toHaveProperty('diagnoses'),
       expect(result).toHaveProperty('medications');
     });
   });
@@ -219,8 +216,7 @@ describe('HMSIntegrationService', () => {
         { locationData: true },
         mockUserId,
         mockLocationId;
-      );
-      
+      ),
       expect(prisma.location.findUnique).toHaveBeenCalledWith({
         where: { id: mockLocationId },
         select: expect.objectContaining({
@@ -236,8 +232,7 @@ describe('HMSIntegrationService', () => {
         resourceId: mockLocationId,
         userId: mockUserId,
         details: { locationId: mockLocationId },
-      });
-      
+      }),
       expect(result).toEqual(mockLocation);
     });
     
@@ -288,8 +283,7 @@ describe('HMSIntegrationService', () => {
         { notificationSend: true },
         mockUserId,
         mockRecipientId;
-      );
-      
+      ),
       expect(prisma.notification.create).toHaveBeenCalledWith({
         data: {
           recipientId: mockRecipientId,
@@ -300,8 +294,7 @@ describe('HMSIntegrationService', () => {
           status: 'PENDING',
           createdById: mockUserId,
         },
-      });
-      
+      }),
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.notification.send.request',
         resourceId: mockRecipientId,
@@ -311,8 +304,7 @@ describe('HMSIntegrationService', () => {
           notificationType: 'EMAIL',
           title: 'Test Notification',
         },
-      });
-      
+      }),
       expect(result).toEqual(mockNotification);
     });
   });
@@ -350,8 +342,7 @@ describe('HMSIntegrationService', () => {
         { userId: 'other' },
         mockUserId,
         mockTargetUserId;
-      );
-      
+      ),
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: { id: mockTargetUserId },
         select: expect.objectContaining({
@@ -368,8 +359,7 @@ describe('HMSIntegrationService', () => {
         resourceId: mockTargetUserId,
         userId: mockUserId,
         details: { targetUserId: mockTargetUserId },
-      });
-      
+      }),
       expect(result).toEqual(mockUser);
     });
     
@@ -399,8 +389,7 @@ describe('HMSIntegrationService', () => {
         { userId: 'self' },
         selfUserId,
         selfUserId;
-      );
-      
+      ),
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: { id: selfUserId },
         select: expect.objectContaining({
@@ -410,8 +399,8 @@ describe('HMSIntegrationService', () => {
         }),
       });
       
-      expect(result).toHaveProperty('lastLogin');
-      expect(result).toHaveProperty('createdAt');
+      expect(result).toHaveProperty('lastLogin'),
+      expect(result).toHaveProperty('createdAt'),
       expect(result).toHaveProperty('updatedAt');
     });
     
@@ -464,8 +453,7 @@ describe('HMSIntegrationService', () => {
         'report',
         { reportType: mockReportType },
         mockUserId;
-      );
-      
+      ),
       expect(prisma.report.create).toHaveBeenCalledWith({
         data: {
           type: mockReportType,
@@ -473,15 +461,13 @@ describe('HMSIntegrationService', () => {
           status: 'SUBMITTED',
           submittedById: mockUserId,
         },
-      });
-      
+      }),
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.report.submit.request',
         resourceId: `report-${mockReportType}`,
         userId: mockUserId,
         details: { reportType: mockReportType },
-      });
-      
+      }),
       expect(result).toEqual(mockReport);
     });
   });
@@ -525,22 +511,19 @@ describe('HMSIntegrationService', () => {
         { patientLink: true },
         mockUserId,
         mockRequestId;
-      );
-      
+      ),
       expect(HMSIntegrationService.getPatientInfo).toHaveBeenCalledWith(
         mockPatientId,
         mockUserId,
         mockUserRoles;
-      );
-      
+      ),
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
         where: { id: mockRequestId },
         data: {
           patientId: mockPatientId,
           updatedById: mockUserId,
         },
-      });
-      
+      }),
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.request.patient.link.request',
         resourceId: mockRequestId,
@@ -550,8 +533,7 @@ describe('HMSIntegrationService', () => {
           requestId: mockRequestId,
           patientId: mockPatientId,
         },
-      });
-      
+      }),
       expect(result).toEqual(mockRequest);
     });
     
@@ -587,8 +569,7 @@ describe('HMSIntegrationService', () => {
         { patientLink: true },
         mockUserId,
         mockRequestId;
-      );
-      
+      ),
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
         where: { id: mockRequestId },
         data: {
@@ -638,22 +619,19 @@ describe('HMSIntegrationService', () => {
         { locationLink: true },
         mockUserId,
         mockRequestId;
-      );
-      
+      ),
       expect(HMSIntegrationService.getLocationInfo).toHaveBeenCalledWith(
         mockLocationId,
         mockUserId,
         mockUserRoles;
-      );
-      
+      ),
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
         where: { id: mockRequestId },
         data: {
           locationId: mockLocationId,
           updatedById: mockUserId,
         },
-      });
-      
+      }),
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.request.location.link.request',
         resourceId: mockRequestId,
@@ -663,8 +641,7 @@ describe('HMSIntegrationService', () => {
           requestId: mockRequestId,
           locationId: mockLocationId,
         },
-      });
-      
+      }),
       expect(result).toEqual(mockRequest);
     });
     
@@ -700,8 +677,7 @@ describe('HMSIntegrationService', () => {
         { locationLink: true },
         mockUserId,
         mockRequestId;
-      );
-      
+      ),
       expect(prisma.dietaryRequest.update).toHaveBeenCalledWith({
         where: { id: mockRequestId },
         data: {

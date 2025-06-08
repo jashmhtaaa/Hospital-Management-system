@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ interface OTBookingBody {
 }
 
 // GET /api/ot/bookings - List OT bookings;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const theatreId = searchParams.get("theatreId");
@@ -106,7 +106,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/ot/bookings - Create a new OT booking;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = (await request.json()) as OTBookingBody;
     const {

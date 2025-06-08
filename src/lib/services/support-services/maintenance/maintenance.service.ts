@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,16 +23,16 @@ export interface MaintenanceRequestFilter {
   requestType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface CreateMaintenanceRequestData {
   locationId: string;
   assetId?: string;
-  requestType: string;
+  requestType: string,
   description: string;
-  priority: string;
+  priority: string,
   requestedBy: string;
   scheduledDate?: Date;
   estimatedHours?: number;
@@ -77,7 +77,7 @@ export class MaintenanceService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           workOrders: {
@@ -86,7 +86,7 @@ export class MaintenanceService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             }
@@ -96,7 +96,7 @@ export class MaintenanceService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.maintenanceRequest.count({ where });
+      prisma.maintenanceRequest.count({ where })
     ]);
     
     // Convert to FHIR format if requested;
@@ -109,7 +109,7 @@ export class MaintenanceService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -179,7 +179,7 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -205,7 +205,7 @@ export class MaintenanceService {
         requestId: request.id,
         locationId: locationId,
         assetId: assetId,
-        priority: priority;
+        priority: priority
       }
     });
     
@@ -225,7 +225,7 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         workOrders: {
@@ -234,10 +234,10 @@ export class MaintenanceService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             },
-            parts: true;
+            parts: true
           }
         }
       }
@@ -250,7 +250,7 @@ export class MaintenanceService {
     if (includeFHIR) {
       return {
         data: request,
-        fhir: toFHIRMaintenanceRequest(request);
+        fhir: toFHIRMaintenanceRequest(request)
       };
     }
     
@@ -265,7 +265,7 @@ export class MaintenanceService {
       where: { id },
       include: { 
         location: true,
-        asset: true;
+        asset: true
       }
     });
     
@@ -298,7 +298,7 @@ export class MaintenanceService {
           where: { id: request.assetId },
           data: { 
             status: 'OPERATIONAL',
-            lastMaintenanceDate: new Date();
+            lastMaintenanceDate: new Date()
           }
         });
       }
@@ -314,7 +314,7 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         workOrders: {
@@ -323,7 +323,7 @@ export class MaintenanceService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
@@ -352,7 +352,7 @@ export class MaintenanceService {
         metadata: {
           requestId: request.id,
           oldStatus: request.status,
-          newStatus: data.status;
+          newStatus: data.status
         }
       });
     }
@@ -368,7 +368,7 @@ export class MaintenanceService {
       where: { id: requestId },
       include: { 
         location: true,
-        asset: true;
+        asset: true
       }
     });
     
@@ -407,14 +407,14 @@ export class MaintenanceService {
         createdById: userId,
         notes: data.notes,
         laborCost: data.laborCost,
-        materialCost: data.materialCost;
+        materialCost: data.materialCost
       },
       include: {
         assignedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -441,7 +441,7 @@ export class MaintenanceService {
           workOrderId: workOrder.id,
           requestId: requestId,
           locationId: request.locationId,
-          assetId: request.assetId;
+          assetId: request.assetId
         }
       });
     }
@@ -458,7 +458,7 @@ export class MaintenanceService {
       include: {
         request: {
           include: {
-            asset: true;
+            asset: true
           }
         }
       }
@@ -512,16 +512,16 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         request: {
           include: {
             location: true,
-            asset: true;
+            asset: true
           }
         },
-        parts: true;
+        parts: true
       }
     });
     
@@ -558,7 +558,7 @@ export class MaintenanceService {
             where: { id: workOrder.request.assetId },
             data: { 
               status: 'OPERATIONAL',
-              lastMaintenanceDate: new Date();
+              lastMaintenanceDate: new Date()
             }
           });
         }
@@ -573,7 +573,7 @@ export class MaintenanceService {
           metadata: {
             requestId: workOrder.requestId,
             locationId: workOrder.request.locationId,
-            assetId: workOrder.request.assetId;
+            assetId: workOrder.request.assetId
           }
         });
       }
@@ -616,7 +616,7 @@ export class MaintenanceService {
         await prisma.maintenanceInventory.update({
           where: { id: part.inventoryItemId },
           data: {
-            currentStock: inventoryItem.currentStock - part.quantity;
+            currentStock: inventoryItem.currentStock - part.quantity
           }
         });
         
@@ -647,7 +647,7 @@ export class MaintenanceService {
     const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({
       where: { id: workOrderId },
       data: {
-        materialCost: (workOrder.materialCost || 0) + totalMaterialCost;
+        materialCost: (workOrder.materialCost || 0) + totalMaterialCost
       },
       include: {
         parts: true,
@@ -655,10 +655,10 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
-        request: true;
+        request: true
       }
     });
     
@@ -699,7 +699,7 @@ export class MaintenanceService {
         take: limit,
         orderBy: { name: 'asc' }
       }),
-      prisma.asset.count({ where });
+      prisma.asset.count({ where })
     ]);
     
     // Convert to FHIR format if requested;
@@ -712,7 +712,7 @@ export class MaintenanceService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -729,7 +729,7 @@ export class MaintenanceService {
           take: 5,
           orderBy: { createdAt: 'desc' }
         },
-        maintenanceSchedules: true;
+        maintenanceSchedules: true
       }
     });
     
@@ -740,7 +740,7 @@ export class MaintenanceService {
     if (includeFHIR) {
       return {
         data: asset,
-        fhir: toFHIRAsset(asset);
+        fhir: toFHIRAsset(asset)
       };
     }
     
@@ -781,10 +781,10 @@ export class MaintenanceService {
         model,
         purchaseDate: purchaseDate ? new Date(purchaseDate) : undefined,
         warrantyExpiry: warrantyExpiry ? new Date(warrantyExpiry) : undefined,
-        status: 'OPERATIONAL';
+        status: 'OPERATIONAL'
       },
       include: {
-        location: true;
+        location: true
       }
     });
     
@@ -816,7 +816,7 @@ export class MaintenanceService {
       where: { id },
       data,
       include: {
-        location: true;
+        location: true
       }
     });
     
@@ -852,7 +852,7 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       },
@@ -915,7 +915,7 @@ export class MaintenanceService {
         taskTemplate,
         isActive: true,
         nextRun,
-        createdById: userId;
+        createdById: userId
       },
       include: {
         asset: true,
@@ -924,7 +924,7 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -958,7 +958,7 @@ export class MaintenanceService {
       where: { id },
       include: { 
         asset: true,
-        location: true;
+        location: true
       }
     });
     
@@ -993,7 +993,7 @@ export class MaintenanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1030,12 +1030,12 @@ export class MaintenanceService {
       where: {
         isActive: true,
         nextRun: {
-          lte: now;
+          lte: now
         }
       },
       include: {
         asset: true,
-        location: true;
+        location: true
       }
     });
     
@@ -1105,7 +1105,7 @@ export class MaintenanceService {
     const where: unknown = {};
     if (specialty) {
       where.specialties = {
-        has: specialty;
+        has: specialty
       };
     }
     
@@ -1116,7 +1116,7 @@ export class MaintenanceService {
         take: limit,
         orderBy: { name: 'asc' }
       }),
-      prisma.maintenanceVendor.count({ where });
+      prisma.maintenanceVendor.count({ where })
     ]);
     
     return {
@@ -1125,7 +1125,7 @@ export class MaintenanceService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -1135,7 +1135,7 @@ export class MaintenanceService {
    */
   async createMaintenanceVendor(data: unknown, userId: string): Promise<MaintenanceVendor> {
     const vendor = await prisma.maintenanceVendor.create({
-      data;
+      data
     });
     
     // Create audit log;
@@ -1161,7 +1161,7 @@ export class MaintenanceService {
     if (itemType) where.itemType = itemType;
     if (lowStock === true) {
       where.currentStock = {
-        lte: prisma.maintenanceInventory.fields.minimumStock;
+        lte: prisma.maintenanceInventory.fields.minimumStock
       };
     }
     
@@ -1172,7 +1172,7 @@ export class MaintenanceService {
         take: limit,
         orderBy: { itemName: 'asc' }
       }),
-      prisma.maintenanceInventory.count({ where });
+      prisma.maintenanceInventory.count({ where })
     ]);
     
     return {
@@ -1181,7 +1181,7 @@ export class MaintenanceService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -1229,7 +1229,7 @@ export class MaintenanceService {
         metadata: {
           itemId: updatedItem.id,
           currentStock: updatedItem.currentStock,
-          minimumStock: updatedItem.minimumStock;
+          minimumStock: updatedItem.minimumStock
         }
       });
     }
@@ -1267,10 +1267,10 @@ export class MaintenanceService {
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get request counts by type;
@@ -1278,10 +1278,10 @@ export class MaintenanceService {
       by: ['requestType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get average completion time;
@@ -1298,32 +1298,32 @@ export class MaintenanceService {
       by: ['assetId'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         assetId: {
-          not: null;
+          not: null
         }
       },
       _count: true,
       orderBy: {
         _count: {
-          assetId: 'desc';
+          assetId: 'desc'
         }
       },
-      take: 10;
+      take: 10
     });
     
     // Get asset details for top assets;
     const assetDetails = await prisma.asset.findMany({
       where: {
         id: {
-          in: assetMaintenance.map(am => am.assetId as string);
+          in: assetMaintenance.map(am => am.assetId as string)
         }
       },
       select: {
         id: true,
         name: true,
-        assetType: true;
+        assetType: true
       }
     });
     

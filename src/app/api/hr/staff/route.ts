@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -68,7 +68,7 @@ const updateEmployeeSchema = z.object({
 });
 
 // GET /api/hr/staff;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     
@@ -99,7 +99,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/hr/staff;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
     

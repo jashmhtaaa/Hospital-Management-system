@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ import DashboardClientLayout from './dashboard-client-layout.ts'; // Import the 
 export default const DashboardLayout = ({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return <DashboardClientLayout>{children}</DashboardClientLayout>;
 }

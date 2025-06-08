@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -26,12 +26,12 @@ import { Edit, Trash2 } from "lucide-react";
 
 // Mock data structure - replace with actual API response type;
 interface SurgeryType {
-  id: string;
+  id: string,
   name: string;
-  description: string | null;
+  description: string | null,
   specialty: string | null;
-  estimated_duration_minutes: number | null;
-  updated_at: string;
+  estimated_duration_minutes: number | null,
+  updated_at: string
 }
 
 export default const OTSurgeryTypeList = () {
@@ -42,7 +42,7 @@ export default const OTSurgeryTypeList = () {
   useEffect(() => {
     const fetchSurgeryTypes = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         // Replace with actual API call;
@@ -90,12 +90,11 @@ export default const OTSurgeryTypeList = () {
             updated_at: "2025-04-26T14:00:00Z",
           },
         ];
-        setSurgeryTypes(mockData);
-
+        setSurgeryTypes(mockData),
         setLoading(false);
       } catch (error_: unknown) {
         if (error_ instanceof Error) {
-          setError(error_.message);
+          setError(error_.message)
         } else {
           setError("An unknown error occurred while fetching surgery types");
         }
@@ -126,7 +125,7 @@ export default const OTSurgeryTypeList = () {
               {surgeryTypes.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center">;
-                    No surgery types found.;
+                    No surgery types found.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -142,19 +141,19 @@ export default const OTSurgeryTypeList = () {
                     </TableCell>
                     <TableCell>
                       <div className="flex space-x-2">;
-                        <Button;
-                          variant="outline";
-                          size="icon";
-                          title="Edit Surgery Type";
+                        <Button>
+                          variant="outline"
+                          size="icon"
+                          title="Edit Surgery Type"
                         >
-                          <Edit className="h-4 w-4" />;
+                          <Edit className="h-4 w-4" />
                         </Button>
-                        <Button;
-                          variant="destructive";
-                          size="icon";
-                          title="Delete Surgery Type";
+                        <Button>
+                          variant="destructive"
+                          size="icon"
+                          title="Delete Surgery Type"
                         >
-                          <Trash2 className="h-4 w-4" />;
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

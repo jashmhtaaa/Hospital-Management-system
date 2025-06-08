@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -45,7 +45,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-allergy;
  * Check for drug-allergy interactions for a patient;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -90,7 +90,7 @@ export async const POST = (req: NextRequest) {
       details: {
         medicationIds: data.medicationIds,
         allergyCount: allergies.length,
-        interactionCount: interactions.length;
+        interactionCount: interactions.length
       }
     });
 
@@ -104,7 +104,7 @@ export async const POST = (req: NextRequest) {
           severe: interactions.filter(i => i.severity === 'severe').length,
           moderate: interactions.filter(i => i.severity === 'moderate').length,
           mild: interactions.filter(i => i.severity === 'mild').length,
-          unknown: interactions.filter(i => i.severity === 'unknown').length;
+          unknown: interactions.filter(i => i.severity === 'unknown').length
         }
       }
     }, { status: 200 });

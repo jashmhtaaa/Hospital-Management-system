@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ import { getSession } from "@/lib/session";
 interface TestPanelCreateBody {
   name: string;
   description?: string;
-  category_id: number;
+  category_id: number,
   loinc_code: string;
   loinc_display?: string;
   panel_items: Array<{
@@ -36,7 +36,7 @@ interface TestPanelCreateBody {
 }
 
 // GET /api/diagnostics/lab/test-panels - Get all test panels;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -139,7 +139,7 @@ export async const GET = (request: NextRequest) {
         return {
           ...panel,
           panel_items: items,
-          available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+          available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
         };
       });
     );
@@ -151,7 +151,7 @@ export async const GET = (request: NextRequest) {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
@@ -165,7 +165,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/test-panels - Create a new test panel;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -308,7 +308,7 @@ export async const POST = (request: NextRequest) {
       const completePanel = {
         ...panel,
         panel_items: items,
-        available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+        available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
       };
       
       // Return the created panel;
@@ -332,7 +332,7 @@ export async const POST = (request: NextRequest) {
 export async const GET_BY_ID = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -391,7 +391,7 @@ export async const GET_BY_ID = (
     const completePanel = {
       ...panel,
       panel_items: items,
-      available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+      available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
     };
     
     // Return the panel;
@@ -410,7 +410,7 @@ export async const GET_BY_ID = (
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -471,7 +471,7 @@ export async const PUT = (
         // Validate LOINC code format;
         const loincRegex = /^\d+-\d+$/;
         if (!loincRegex.test(body.loinc_code)) {
-          throw new Error("Invalid LOINC code format. Expected format: #####-#");
+          throw new Error("Invalid LOINC code format. Expected format: #####-#")
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
@@ -604,7 +604,7 @@ export async const PUT = (
       const completePanel = {
         ...panel,
         panel_items: items,
-        available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+        available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
       };
       
       // Return the updated panel;
@@ -628,7 +628,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -671,7 +671,7 @@ export async const DELETE = (
       );
       
       return NextResponse.json({
-        message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead.";
+        message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead."
       });
     }
     
@@ -695,7 +695,7 @@ export async const DELETE = (
       await DB.query("COMMIT", []);
       
       return NextResponse.json({
-        message: "Test panel deleted successfully";
+        message: "Test panel deleted successfully"
       });
     } catch (error) {
       // Rollback transaction on error;

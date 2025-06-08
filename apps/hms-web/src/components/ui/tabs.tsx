@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn("w-full", className)}
       {...props}
@@ -29,7 +29,7 @@ interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1",
@@ -47,7 +47,7 @@ interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ className, isActive, ...props }, ref) => (
-    <button;
+    <button>
       ref={ref}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -66,7 +66,7 @@ interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2",

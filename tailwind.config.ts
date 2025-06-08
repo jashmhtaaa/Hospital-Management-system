@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -70,7 +70,7 @@ const config = {
           "4": "hsl(const(--chart-4))",
           "5": "hsl(const(--chart-5))",
         },
-        sidebar: { // From origin/master;
+        sidebar: { // From origin/master,
           DEFAULT: "hsl(const(--sidebar-background))",
           foreground: "hsl(const(--sidebar-foreground))",
           primary: "hsl(const(--sidebar-primary))",

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,14 +20,13 @@ import { buttonVariants } from "@/components/ui/button";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-const Calendar = ({
-  className,
+const Calendar = ({ className,
   classNames,
   showOutsideDays = true,
-  ...props;
+  ...props
 }: CalendarProps) {
   return (
-    <DayPicker;
+    <DayPicker>
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
@@ -72,10 +71,10 @@ const Calendar = ({
       }}
       components={{
         PreviousMonthButton: ({ className, ...props }: { className?: string }) => (
-          <ChevronLeft className={cn("h-4 w-4", className)} {...props} />;
+          <ChevronLeft className={cn("h-4 w-4", className)} {...props} />
         ),
         NextMonthButton: ({ className, ...props }: { className?: string }) => (
-          <ChevronRight className={cn("h-4 w-4", className)} {...props} />;
+          <ChevronRight className={cn("h-4 w-4", className)} {...props} />
         ),
       }}
       {...props}

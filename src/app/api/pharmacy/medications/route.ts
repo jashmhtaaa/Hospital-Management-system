@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,10 +36,10 @@ import { IronSession } from "iron-session"; // Import IronSession;
 // } // FIX: Commented out body to fix parsing error;
 
 interface MedicationInput {
-  item_code: string;
+  item_code: string,
   generic_name: string;
   brand_name?: string | null;
-  dosage_form: string;
+  dosage_form: string,
   strength: string;
   route?: string | null;
   unit_of_measure: string;
@@ -62,7 +62,7 @@ interface MedicationFilters {
  * GET /api/pharmacy/medications;
  * Retrieves a list of medications, potentially filtered.
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type;
     const session: IronSession<IronSessionData> = await getSession();
@@ -150,7 +150,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/pharmacy/medications;
  * Creates a new medication (Admin or Pharmacist role required).
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type;
     const session: IronSession<IronSessionData> = await getSession();

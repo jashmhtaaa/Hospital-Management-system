@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -83,7 +83,7 @@ const requestTypeColors: Record<string, string> = {
   'NUTRITIONAL_CONSULTATION': 'bg-teal-100 text-teal-800',
 };
 
-export const DietaryDashboard = () {
+export const DietaryDashboard = () => {
   const [activeTab, setActiveTab] = useState('requests');
   const [requests, setRequests] = useState<any[]>([]);
   const [mealPlans, setMealPlans] = useState<any[]>([]);
@@ -138,7 +138,7 @@ export const DietaryDashboard = () {
       const response = await fetch(`/api/support-services/dietary?${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch dietary requests');
       
-      const data = await response.json();
+      const data = await response.json(),
       setRequests(data.data);
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
@@ -159,7 +159,7 @@ export const DietaryDashboard = () {
       const response = await fetch('/api/support-services/dietary/analytics?period=MONTHLY');
       if (!response.ok) throw new Error('Failed to fetch analytics');
       
-      const data = await response.json();
+      const data = await response.json(),
       setAnalytics(data);
     } catch (error) {
 
@@ -185,7 +185,7 @@ export const DietaryDashboard = () {
       patientId: '',
       startDate: null,
       endDate: null,
-    });
+    }),
     setPage(1);
   };
 
@@ -204,7 +204,7 @@ export const DietaryDashboard = () {
       const response = await fetch(`/api/support-services/dietary/${requestId}`);
       if (!response.ok) throw new Error('Failed to fetch request details');
       
-      const data = await response.json();
+      const data = await response.json(),
       setSelectedRequest(data);
       setShowRequestDialog(true);
     } catch (error) {
@@ -223,7 +223,7 @@ export const DietaryDashboard = () {
       const response = await fetch(`/api/support-services/dietary/meal-plans/${mealPlanId}`);
       if (!response.ok) throw new Error('Failed to fetch meal plan details');
       
-      const data = await response.json();
+      const data = await response.json(),
       setSelectedMealPlan(data);
       setShowMealPlanDialog(true);
     } catch (error) {
@@ -247,8 +247,7 @@ export const DietaryDashboard = () {
         body: JSON.stringify({ status }),
       });
       
-      if (!response.ok) throw new Error('Failed to update request status');
-      
+      if (!response.ok) throw new Error('Failed to update request status'),
       toast({
         title: "Status Updated",
         description: `Request status has been updated to ${status}.`,
@@ -296,7 +295,7 @@ export const DietaryDashboard = () {
         <div className="space-y-3">;
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center space-x-4">;
-              <Skeleton className="h-12 w-full" />;
+              <Skeleton className="h-12 w-full" />
             </div>
           ))}
         </div>
@@ -307,12 +306,12 @@ export const DietaryDashboard = () {
       return (
         <div className="text-center py-10">;
           <p className="text-muted-foreground">No dietary requests found.</p>;
-          <Button;
-            variant="outline";
-            className="mt-4";
+          <Button>
+            variant="outline"
+            className="mt-4"
             onClick={() => router.push('/support-services/dietary/new')}
           >
-            <Plus className="mr-2 h-4 w-4" /> Create New Request;
+            <Plus className="mr-2 h-4 w-4" /> Create New Request
           </Button>
         </div>
       );
@@ -345,44 +344,44 @@ export const DietaryDashboard = () {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm">;
                       <span className="sr-only">Open menu</span>;
-                      <ChevronRight className="h-4 w-4" />;
+                      <ChevronRight className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">;
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem onClick={() => viewRequestDetails(request.id)}>
-                      <FileText className="mr-2 h-4 w-4" /> View Details;
+                      <FileText className="mr-2 h-4 w-4" /> View Details
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => router.push(`/support-services/dietary/edit/${request.id}`)}>
-                      <Edit className="mr-2 h-4 w-4" /> Edit Request;
+                      <Edit className="mr-2 h-4 w-4" /> Edit Request
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuLabel>Change Status</DropdownMenuLabel>
                     {request.status !== 'APPROVED' && (
                       <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'APPROVED')}>
-                        Approve;
+                        Approve
                       </DropdownMenuItem>
                     )}
                     {request.status !== 'IN_PREPARATION' && request.status === 'APPROVED' && (
                       <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'IN_PREPARATION')}>
-                        Mark In Preparation;
+                        Mark In Preparation
                       </DropdownMenuItem>
                     )}
                     {request.status !== 'DELIVERED' &&;
                       (request.status === 'APPROVED' || request.status === 'IN_PREPARATION') &&;
                       (
                       <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'DELIVERED')}>
-                        Mark Delivered;
+                        Mark Delivered
                       </DropdownMenuItem>
                     )}
                     {request.status !== 'COMPLETED' && request.status !== 'CANCELLED' && (
                       <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'COMPLETED')}>
-                        Mark Completed;
+                        Mark Completed
                       </DropdownMenuItem>
                     )}
                     {request.status !== 'CANCELLED' && request.status !== 'COMPLETED' && (
                       <DropdownMenuItem onClick={() => updateRequestStatus(request.id, 'CANCELLED')}>
-                        Cancel Request;
+                        Cancel Request
                       </DropdownMenuItem>
                     )}
                   </DropdownMenuContent>
@@ -402,13 +401,13 @@ export const DietaryDashboard = () {
         <div className="flex justify-between items-center">;
           <h3 className="text-lg font-medium">Meal Plans</h3>;
           <Button onClick={() => router.push('/support-services/dietary/meal-plans/new')}>
-            <Plus className="mr-2 h-4 w-4" /> Create Meal Plan;
+            <Plus className="mr-2 h-4 w-4" /> Create Meal Plan
           </Button>
         </div>
         
         {/* Meal plans implementation would go here */}
         <div className="text-center py-10">;
-          <p className="text-muted-foreground">Meal plans feature is under development.</p>;
+          <p className="text-muted-foreground">Meal plans feature is under development.</p>
         </div>
       </div>
     );
@@ -421,19 +420,19 @@ export const DietaryDashboard = () {
         <div className="flex justify-between items-center">;
           <h3 className="text-lg font-medium">Nutritional Profiles</h3>;
           <div className="flex gap-2">;
-            <Input;
-              placeholder="Search patients...";
-              className="max-w-xs";
+            <Input>
+              placeholder="Search patients..."
+              className="max-w-xs"
             />
             <Button variant="outline">;
-              <Search className="h-4 w-4" />;
+              <Search className="h-4 w-4" />
             </Button>
           </div>
         </div>
         
         {/* Nutritional profiles implementation would go here */}
         <div className="text-center py-10">;
-          <p className="text-muted-foreground">Nutritional profiles feature is under development.</p>;
+          <p className="text-muted-foreground">Nutritional profiles feature is under development.</p>
         </div>
       </div>
     );
@@ -445,7 +444,7 @@ export const DietaryDashboard = () {
       return (
         <div className="space-y-3">;
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-[200px] w-full" />;
+            <Skeleton key={i} className="h-[200px] w-full" />
           ))}
         </div>
       );
@@ -457,13 +456,13 @@ export const DietaryDashboard = () {
           <h3 className="text-lg font-medium">Dietary Analytics</h3>;
           <Select defaultValue="MONTHLY" onValueChange={(value) => fetchAnalytics()}>
             <SelectTrigger className="w-[180px]">;
-              <SelectValue placeholder="Select period" />;
+              <SelectValue placeholder="Select period" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="DAILY">Daily (Last 30 days)</SelectItem>;
               <SelectItem value="WEEKLY">Weekly (Last 90 days)</SelectItem>;
               <SelectItem value="MONTHLY">Monthly (Last 12 months)</SelectItem>;
-              <SelectItem value="YEARLY">Yearly (Last 5 years)</SelectItem>;
+              <SelectItem value="YEARLY">Yearly (Last 5 years)</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -478,7 +477,7 @@ export const DietaryDashboard = () {
             <CardContent>
               <div className="h-[200px] flex items-center justify-center">;
                 {/* Chart would go here */}
-                <p className="text-muted-foreground">Chart visualization coming soon</p>;
+                <p className="text-muted-foreground">Chart visualization coming soon</p>
               </div>
               <div className="mt-4 space-y-2">;
                 {analytics.requestsByStatus.map((item: unknown) => (
@@ -487,7 +486,7 @@ export const DietaryDashboard = () {
                       <div className={`w-3 h-3 rounded-full mr-2 ${statusColors[item.status] || 'bg-gray-200'}`}></div>;
                       <span>{item.status.replace(/_/g, ' ')}</span>
                     </div>
-                    <span className="font-medium">{item._count}</span>;
+                    <span className="font-medium">{item._count}</span>
                   </div>
                 ))}
               </div>
@@ -503,7 +502,7 @@ export const DietaryDashboard = () {
             <CardContent>
               <div className="h-[200px] flex items-center justify-center">;
                 {/* Chart would go here */}
-                <p className="text-muted-foreground">Chart visualization coming soon</p>;
+                <p className="text-muted-foreground">Chart visualization coming soon</p>
               </div>
               <div className="mt-4 space-y-2">;
                 {analytics.requestsByType.map((item: unknown) => (
@@ -513,7 +512,7 @@ export const DietaryDashboard = () {
                         'bg-gray-200'}`}></div>
                       <span>{item.requestType.replace(/_/g, ' ')}</span>
                     </div>
-                    <span className="font-medium">{item._count}</span>;
+                    <span className="font-medium">{item._count}</span>
                   </div>
                 ))}
               </div>
@@ -532,27 +531,27 @@ export const DietaryDashboard = () {
                   <div className="bg-blue-50 p-4 rounded-lg text-center">;
                     <p className="text-sm text-muted-foreground">Calories</p>;
                     <p className="text-2xl font-bold">{analytics.averageNutrition.calories}</p>;
-                    <p className="text-xs text-muted-foreground">kcal</p>;
+                    <p className="text-xs text-muted-foreground">kcal</p>
                   </div>
                   <div className="bg-green-50 p-4 rounded-lg text-center">;
                     <p className="text-sm text-muted-foreground">Protein</p>;
                     <p className="text-2xl font-bold">{analytics.averageNutrition.protein}</p>;
-                    <p className="text-xs text-muted-foreground">g</p>;
+                    <p className="text-xs text-muted-foreground">g</p>
                   </div>
                   <div className="bg-yellow-50 p-4 rounded-lg text-center">;
                     <p className="text-sm text-muted-foreground">Carbohydrates</p>;
                     <p className="text-2xl font-bold">{analytics.averageNutrition.carbohydrates}</p>;
-                    <p className="text-xs text-muted-foreground">g</p>;
+                    <p className="text-xs text-muted-foreground">g</p>
                   </div>
                   <div className="bg-red-50 p-4 rounded-lg text-center">;
                     <p className="text-sm text-muted-foreground">Fat</p>;
                     <p className="text-2xl font-bold">{analytics.averageNutrition.fat}</p>;
-                    <p className="text-xs text-muted-foreground">g</p>;
+                    <p className="text-xs text-muted-foreground">g</p>
                   </div>
                 </div>
               ) : (
                 <div className="h-[200px] flex items-center justify-center">;
-                  <p className="text-muted-foreground">No nutritional data available</p>;
+                  <p className="text-muted-foreground">No nutritional data available</p>
                 </div>
               )}
             </CardContent>
@@ -566,24 +565,24 @@ export const DietaryDashboard = () {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">;
-                <div>
+<div
                   <h4 className="text-sm font-medium mb-2">Top Restrictions</h4>;
                   <div className="flex flex-wrap gap-2">;
                     {analytics.topRestrictions.slice(0, 5).map((item: unknown) => (
                       <Badge key={item.name} variant="outline" className="flex items-center gap-1">;
                         {item.name}
-                        <span className="bg-blue-100 text-blue-800 text-xs px-1 rounded-sm">{item.count}</span>;
+                        <span className="bg-blue-100 text-blue-800 text-xs px-1 rounded-sm">{item.count}</span>
                       </Badge>
                     ))}
                   </div>
                 </div>
-                <div>
+<div
                   <h4 className="text-sm font-medium mb-2">Top Allergies</h4>;
                   <div className="flex flex-wrap gap-2">;
                     {analytics.topAllergies.slice(0, 5).map((item: unknown) => (
                       <Badge key={item.name} variant="outline" className="flex items-center gap-1">;
                         {item.name}
-                        <span className="bg-red-100 text-red-800 text-xs px-1 rounded-sm">{item.count}</span>;
+                        <span className="bg-red-100 text-red-800 text-xs px-1 rounded-sm">{item.count}</span>
                       </Badge>
                     ))}
                   </div>
@@ -612,34 +611,34 @@ export const DietaryDashboard = () {
           
           <div className="space-y-6">;
             <div className="flex justify-between items-start">;
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Patient</p>;
-                <p className="font-medium">{selectedRequest.patient?.name || 'Unknown'}</p>;
+                <p className="font-medium">{selectedRequest.patient?.name || 'Unknown'}</p>
               </div>
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Status</p>;
                 {renderStatusBadge(selectedRequest.status)}
               </div>
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Type</p>;
                 {renderRequestTypeBadge(selectedRequest.requestType)}
               </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">;
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Start Date</p>;
                 <p>{format(new Date(selectedRequest.startDate), 'MMM d, yyyy')}</p>
               </div>
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">End Date</p>;
                 <p>{selectedRequest.endDate ? format(new Date(selectedRequest.endDate), 'MMM d, yyyy') : 'Indefinite'}</p>
               </div>
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Requested By</p>;
                 <p>{selectedRequest.requestedByUser?.name || 'Unknown'}</p>
               </div>
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Approved By</p>;
                 <p>{selectedRequest.approvedByUser?.name || 'Not approved yet'}</p>
               </div>
@@ -648,7 +647,7 @@ export const DietaryDashboard = () {
             <Separator />
             
             <div className="space-y-4">;
-              <div>
+<div
                 <p className="text-sm font-medium">Meal Preferences</p>;
                 <div className="flex flex-wrap gap-2 mt-1">;
                   {selectedRequest.mealPreferences.length > 0 ? (
@@ -661,7 +660,7 @@ export const DietaryDashboard = () {
                 </div>
               </div>
               
-              <div>
+<div
                 <p className="text-sm font-medium">Dietary Restrictions</p>;
                 <div className="flex flex-wrap gap-2 mt-1">;
                   {selectedRequest.dietaryRestrictions.length > 0 ? (
@@ -674,7 +673,7 @@ export const DietaryDashboard = () {
                 </div>
               </div>
               
-              <div>
+<div
                 <p className="text-sm font-medium">Allergies</p>;
                 <div className="flex flex-wrap gap-2 mt-1">;
                   {selectedRequest.allergies.length > 0 ? (
@@ -688,33 +687,33 @@ export const DietaryDashboard = () {
               </div>
               
               {selectedRequest.specialInstructions && (
-                <div>
+<div
                   <p className="text-sm font-medium">Special Instructions</p>;
-                  <p className="text-sm mt-1">{selectedRequest.specialInstructions}</p>;
+                  <p className="text-sm mt-1">{selectedRequest.specialInstructions}</p>
                 </div>
               )}
             </div>
             
             <Separator />
             
-            <div>
+<div
               <div className="flex justify-between items-center mb-4">;
                 <p className="text-sm font-medium">Meal Plans</p>;
                 <Button size="sm" variant="outline" onClick={() => router.push(`/support-services/dietary/meal-plans/new?requestId=${selectedRequest.id}`)}>
-                  <Plus className="mr-2 h-4 w-4" /> Add Meal Plan;
+                  <Plus className="mr-2 h-4 w-4" /> Add Meal Plan
                 </Button>
               </div>
               
               {selectedRequest.mealPlans && selectedRequest.mealPlans.length > 0 ? (
                 <div className="space-y-2">;
                   {selectedRequest.mealPlans.map((mealPlan: unknown) => (
-                    <div;
+<div
                       key={mealPlan.id} 
-                      className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer";
+                      className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer"
                       onClick={() => viewMealPlanDetails(mealPlan.id)}
                     >
                       <div className="flex items-center">;
-                        <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />;
+                        <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
                         <span>{format(new Date(mealPlan.date), 'MMM d, yyyy')}</span>
                       </div>
                       <Badge className={statusColors[mealPlan.status] || 'bg-gray-100 text-gray-800'}>;
@@ -732,7 +731,7 @@ export const DietaryDashboard = () {
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowRequestDialog(false)}>Close</Button>
             <Button onClick={() => router.push(`/support-services/dietary/edit/${selectedRequest.id}`)}>
-              <Edit className="mr-2 h-4 w-4" /> Edit Request;
+              <Edit className="mr-2 h-4 w-4" /> Edit Request
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -745,7 +744,7 @@ export const DietaryDashboard = () {
       <div className="flex justify-between items-center">;
         <h2 className="text-3xl font-bold tracking-tight">Dietary Management</h2>;
         <Button onClick={() => router.push('/support-services/dietary/new')}>
-          <Plus className="mr-2 h-4 w-4" /> New Request;
+          <Plus className="mr-2 h-4 w-4" /> New Request
         </Button>
       </div>
       
@@ -754,7 +753,7 @@ export const DietaryDashboard = () {
           <TabsTrigger value="requests">Requests</TabsTrigger>;
           <TabsTrigger value="meal-plans">Meal Plans</TabsTrigger>;
           <TabsTrigger value="profiles">Nutritional Profiles</TabsTrigger>;
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>;
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
         
         <TabsContent value="requests" className="space-y-6">;
@@ -762,7 +761,7 @@ export const DietaryDashboard = () {
             <CardHeader>
               <CardTitle>Dietary Requests</CardTitle>
               <CardDescription>
-                Manage patient dietary requests and meal plans;
+                Manage patient dietary requests and meal plans
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -771,12 +770,12 @@ export const DietaryDashboard = () {
                 <div className="flex flex-wrap gap-4 items-end">;
                   <div className="space-y-2">;
                     <p className="text-sm font-medium">Status</p>;
-                    <Select;
+                    <Select>
                       value={filters.status} 
                       onValueChange={(value) => handleFilterChange('status', value)}
                     >
                       <SelectTrigger className="w-[180px]">;
-                        <SelectValue placeholder="All statuses" />;
+                        <SelectValue placeholder="All statuses" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="">All statuses</SelectItem>;
@@ -785,25 +784,25 @@ export const DietaryDashboard = () {
                         <SelectItem value="IN_PREPARATION">In Preparation</SelectItem>;
                         <SelectItem value="DELIVERED">Delivered</SelectItem>;
                         <SelectItem value="COMPLETED">Completed</SelectItem>;
-                        <SelectItem value="CANCELLED">Cancelled</SelectItem>;
+                        <SelectItem value="CANCELLED">Cancelled</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
                   <div className="space-y-2">;
                     <p className="text-sm font-medium">Request Type</p>;
-                    <Select;
+                    <Select>
                       value={filters.requestType} 
                       onValueChange={(value) => handleFilterChange('requestType', value)}
                     >
                       <SelectTrigger className="w-[180px]">;
-                        <SelectValue placeholder="All types" />;
+                        <SelectValue placeholder="All types" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="">All types</SelectItem>;
                         <SelectItem value="REGULAR_MEAL">Regular Meal</SelectItem>;
                         <SelectItem value="SPECIAL_DIET">Special Diet</SelectItem>;
-                        <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>;
+                        <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -812,20 +811,20 @@ export const DietaryDashboard = () {
                     <p className="text-sm font-medium">Start Date</p>;
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button;
+                        <Button>
                           variant={"outline"}
                           className={cn(
                             "w-[180px] justify-start text-left font-normal",
                             !filters.startDate && "text-muted-foreground";
                           )}
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />;
+                          <CalendarIcon className="mr-2 h-4 w-4" />
                           {filters.startDate ? format(filters.startDate, "PPP") : "Pick a date"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">;
-                        <Calendar;
-                          mode="single";
+                        <Calendar>
+                          mode="single"
                           selected={filters.startDate || undefined}
                           onSelect={(date) => handleFilterChange('startDate', date)}
                           initialFocus;
@@ -835,7 +834,7 @@ export const DietaryDashboard = () {
                   </div>
                   
                   <Button variant="ghost" onClick={resetFilters}>;
-                    <RefreshCw className="mr-2 h-4 w-4" /> Reset Filters;
+                    <RefreshCw className="mr-2 h-4 w-4" /> Reset Filters
                   </Button>
                 </div>
                 
@@ -849,23 +848,23 @@ export const DietaryDashboard = () {
                       Page {page} of {totalPages}
                     </p>
                     <div className="flex items-center space-x-2">;
-                      <Button;
-                        variant="outline";
-                        size="sm";
+                      <Button>
+                        variant="outline"
+                        size="sm"
                         onClick={handlePreviousPage}
                         disabled={page === 1}
                       >
-                        <ChevronLeft className="h-4 w-4" />;
-                        <span className="sr-only">Previous page</span>;
+                        <ChevronLeft className="h-4 w-4" />
+                        <span className="sr-only">Previous page</span>
                       </Button>
-                      <Button;
-                        variant="outline";
-                        size="sm";
+                      <Button>
+                        variant="outline"
+                        size="sm"
                         onClick={handleNextPage}
                         disabled={page === totalPages}
                       >
-                        <ChevronRight className="h-4 w-4" />;
-                        <span className="sr-only">Next page</span>;
+                        <ChevronRight className="h-4 w-4" />
+                        <span className="sr-only">Next page</span>
                       </Button>
                     </div>
                   </div>
@@ -880,7 +879,7 @@ export const DietaryDashboard = () {
             <CardHeader>
               <CardTitle>Meal Plans</CardTitle>
               <CardDescription>
-                Create and manage patient meal plans;
+                Create and manage patient meal plans
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -894,7 +893,7 @@ export const DietaryDashboard = () {
             <CardHeader>
               <CardTitle>Nutritional Profiles</CardTitle>
               <CardDescription>
-                Manage patient nutritional profiles and dietary needs;
+                Manage patient nutritional profiles and dietary needs
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -908,7 +907,7 @@ export const DietaryDashboard = () {
             <CardHeader>
               <CardTitle>Dietary Analytics</CardTitle>
               <CardDescription>
-                View insights and statistics about dietary services;
+                View insights and statistics about dietary services
               </CardDescription>
             </CardHeader>
             <CardContent>

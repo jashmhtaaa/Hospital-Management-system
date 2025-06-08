@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,13 +19,13 @@ import { EncryptionService } from '@/lib/security/encryption.service';
  * Event interface for domain events;
  */
 export interface DomainEvent<T = any> {
-  id: string;
+  id: string,
   type: string;
-  aggregateId: string;
+  aggregateId: string,
   aggregateType: string;
-  version: number;
+  version: number,
   timestamp: Date;
-  data: T;
+  data: T,
   metadata: {
     userId?: string;
     correlationId?: string;
@@ -33,7 +33,7 @@ export interface DomainEvent<T = any> {
     clientIp?: string;
     requestId?: string;
     source?: string;
-    [key: string]: unknown;
+    [key: string]: unknown
   };
 }
 
@@ -46,7 +46,7 @@ export interface EventStore {
   getEventsByType(eventType: string, limit?: number, offset?: number): Promise<DomainEvent[]>;
   subscribeToEvents(eventTypes: string[], consumer: (event: DomainEvent) => Promise<void>): Promise<void>;
   replayEvents(aggregateId: string, aggregateType: string, handler: (event: DomainEvent) => Promise<void>): Promise<void>;
-  replayAllEvents(aggregateType: string, handler: (event: DomainEvent) => Promise<void>): Promise<void>;
+  replayAllEvents(aggregateType: string, handler: (event: DomainEvent) => Promise<void>): Promise<void>
 }
 
 /**
@@ -76,7 +76,7 @@ export class KafkaEventStore implements EventStore {
       } : undefined,
       retry: {
         initialRetryTime: 100,
-        retries: 8;
+        retries: 8
       }
     });
 
@@ -84,7 +84,7 @@ export class KafkaEventStore implements EventStore {
       allowAutoTopicCreation: false,
       transactionalId: `${clientId}-tx`,
       maxInFlightRequests: 5,
-      idempotent: true;
+      idempotent: true
     });
   }
 
@@ -168,7 +168,7 @@ export class KafkaEventStore implements EventStore {
         // Track metrics;
         metricsCollector.incrementCounter('event_store.events_saved', 1, {
           eventType: event.type,
-          aggregateType: event.aggregateType;
+          aggregateType: event.aggregateType
         });
 
         return event;
@@ -182,14 +182,14 @@ export class KafkaEventStore implements EventStore {
         error, 
         eventType: event.type, 
         aggregateId: event.aggregateId, 
-        aggregateType: event.aggregateType;
+        aggregateType: event.aggregateType
       });
 
       // Track error metrics;
       metricsCollector.incrementCounter('event_store.save_errors', 1, {
         eventType: event.type,
         aggregateType: event.aggregateType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -207,7 +207,7 @@ export class KafkaEventStore implements EventStore {
           aggregateType;
         },
         orderBy: {
-          version: 'asc';
+          version: 'asc'
         }
       });
 
@@ -227,7 +227,7 @@ export class KafkaEventStore implements EventStore {
       // Track error metrics;
       metricsCollector.incrementCounter('event_store.retrieval_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -241,13 +241,13 @@ export class KafkaEventStore implements EventStore {
     try {
       const events = await this.prisma.domainEvent.findMany({
         where: {
-          type: eventType;
+          type: eventType
         },
         orderBy: {
-          timestamp: 'asc';
+          timestamp: 'asc'
         },
         take: limit,
-        skip: offset;
+        skip: offset
       });
 
       // Track metrics;
@@ -265,7 +265,7 @@ export class KafkaEventStore implements EventStore {
       // Track error metrics;
       metricsCollector.incrementCounter('event_store.retrieval_errors', 1, {
         eventType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -301,7 +301,7 @@ export class KafkaEventStore implements EventStore {
         maxInFlightRequests: 5,
         retry: {
           initialRetryTime: 300,
-          retries: 10;
+          retries: 10
         }
       });
 
@@ -337,7 +337,7 @@ export class KafkaEventStore implements EventStore {
               const duration = performance.now() - startTime;
               metricsCollector.recordTimer('event_store.event_processing_time', duration, {
                 eventType: event.type,
-                consumerGroup: groupId;
+                consumerGroup: groupId
               });
             }
           } catch (error) {
@@ -347,14 +347,14 @@ export class KafkaEventStore implements EventStore {
               partition,
               offset: message.offset,
               eventType: message.headers?.eventType?.toString() || 'unknown',
-              consumerGroup: groupId;
+              consumerGroup: groupId
             });
 
             // Track error metrics;
             metricsCollector.incrementCounter('event_store.consumer_errors', 1, {
               topic,
               consumerGroup: groupId,
-              errorType: error.name || 'unknown';
+              errorType: error.name || 'unknown'
             });
           }
         }
@@ -377,7 +377,7 @@ export class KafkaEventStore implements EventStore {
 
       // Track error metrics;
       metricsCollector.incrementCounter('event_store.subscription_errors', 1, {
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -418,7 +418,7 @@ export class KafkaEventStore implements EventStore {
       // Track error metrics;
       metricsCollector.incrementCounter('event_store.replay_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -440,14 +440,14 @@ export class KafkaEventStore implements EventStore {
       while (hasMore) {
         const events = await this.prisma.domainEvent.findMany({
           where: {
-            aggregateType;
+            aggregateType
           },
           orderBy: [
             { aggregateId: 'asc' },
             { version: 'asc' }
           ],
           skip: processed,
-          take: batchSize;
+          take: batchSize
         });
         
         if (events.length === 0) {
@@ -485,7 +485,7 @@ export class KafkaEventStore implements EventStore {
       // Track error metrics;
       metricsCollector.incrementCounter('event_store.replay_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -620,7 +620,7 @@ export class KafkaEventStore implements EventStore {
             // If decryption fails, leave as is;
             logger.warn('Failed to decrypt field', { 
               error: error.message,
-              field: key;
+              field: key
             });
           }
         } else if (typeof obj[key] === 'object' && obj[key] !== null) {

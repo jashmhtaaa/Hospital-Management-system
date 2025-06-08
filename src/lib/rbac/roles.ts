@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,18 +15,18 @@ var __DEV__: boolean;
  */
 
 export interface Permission {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   resource: string;
   action: string;
   conditions?: Record<string, unknown>;
 }
 
 export interface Role {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   permissions: Permission[];
   inherits?: string[]; // Role inheritance;
   priority: number; // Higher number = higher priority;
@@ -35,9 +35,9 @@ export interface Role {
 }
 
 export interface UserRole {
-  userId: string;
+  userId: string,
   roleId: string;
-  assignedBy: string;
+  assignedBy: string,
   assignedAt: Date;
   expiresAt?: Date;
   isActive: boolean;

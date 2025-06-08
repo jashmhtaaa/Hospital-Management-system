@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -77,7 +77,7 @@ export class CacheInvalidation {
     await RedisCache.delete(`${config.cache.prefix.report}${reportId}`);
     
     // Invalidate report lists;
-    await RedisCache.deletePattern(`${config.cache.prefix.report}list:*`);
+    await RedisCache.deletePattern(`${config.cache.prefix.report}list: *`)
   }
   
   /**
@@ -94,7 +94,7 @@ export class CacheInvalidation {
     }
     
     // Invalidate panel lists;
-    await RedisCache.deletePattern('diagnostic:lab:panel:list:*');
+    await RedisCache.deletePattern('diagnostic: lab:panel:list:*')
   }
   
   /**

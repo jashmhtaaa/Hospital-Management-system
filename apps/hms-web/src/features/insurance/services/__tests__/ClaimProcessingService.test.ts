@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -35,7 +35,7 @@ describe("ClaimProcessingService", () => {
       // expect(claimResult).toBeDefined();
       // expect(claimResult.status).toEqual("submitted");
       // expect(claimResult.claimId).toBeDefined(); // e.g., from TPA;
-      // expect(InvoiceService.markInvoiceAsClaimed).toHaveBeenCalledWith(invoiceId, claimResult.claimId);
+      // expect(InvoiceService.markInvoiceAsClaimed).toHaveBeenCalledWith(invoiceId, claimResult.claimId),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -47,7 +47,7 @@ describe("ClaimProcessingService", () => {
 
       // Act & Assert;
       // const claimService = new ClaimProcessingService(/* pass mocks */);
-      // await expect(claimService.submitClaim(patientId, invoiceId)).rejects.toThrow("Patient not eligible for claim submission");
+      // await expect(claimService.submitClaim(patientId, invoiceId)).rejects.toThrow("Patient not eligible for claim submission"),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -61,7 +61,7 @@ describe("ClaimProcessingService", () => {
 
       // Act & Assert;
       // const claimService = new ClaimProcessingService(/* pass mocks */);
-      // await expect(claimService.submitClaim(patientId, invoiceId)).rejects.toThrow("TPA Claim Submission Error");
+      // await expect(claimService.submitClaim(patientId, invoiceId)).rejects.toThrow("TPA Claim Submission Error"),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });
@@ -78,7 +78,7 @@ describe("ClaimProcessingService", () => {
 
       // Assert;
       // expect(statusResult).toBeDefined();
-      // expect(statusResult.status).toBeOneOf(["pending", "approved", "denied", "requires_information"]);
+      // expect(statusResult.status).toBeOneOf(["pending", "approved", "denied", "requires_information"]),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });

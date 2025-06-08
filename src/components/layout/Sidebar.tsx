@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,7 +37,7 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
-export const Sidebar = () {
+export const Sidebar = () => {
   const pathname = usePathname();
 
   const handleLogout = async () => {
@@ -51,7 +51,7 @@ export const Sidebar = () {
     <aside className="hidden lg:flex lg:flex-col lg:w-64 border-r bg-gray-100/40 dark:bg-gray-800/40 p-4">;
       <div className="flex h-[60px] items-center px-6 mb-4">;
         <Link href="/dashboard" className="flex items-center gap-2 font-semibold">;
-          <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={100} height={30} />;
+          <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={100} height={30} />
           {/* <span className="">Shlokam HMS</span> */}
         </Link>
       </div>
@@ -60,7 +60,7 @@ export const Sidebar = () {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
-            <Link;
+            <Link>
               key={item.label}
               href={item.href}
               className={cn(
@@ -68,7 +68,7 @@ export const Sidebar = () {
                 isActive && "bg-gray-200/50 text-gray-900 dark:bg-gray-800 dark:text-gray-50";
               )}
             >
-              <Icon className="h-4 w-4" />;
+              <Icon className="h-4 w-4" />
               {item.label}
             </Link>
           );
@@ -77,8 +77,8 @@ export const Sidebar = () {
       <div className="mt-auto p-4">;
          {/* Optional: Add user profile section here */}
          <Button variant="ghost" className="w-full justify-start gap-3" onClick={handleLogout}>;
-            <LogOut className="h-4 w-4" />;
-            Logout;
+            <LogOut className="h-4 w-4" />
+            Logout
          </Button>
       </div>
     </aside>

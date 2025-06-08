@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -82,209 +82,209 @@ import {
 } from 'lucide-react';
 
 interface ExecutiveDashboardData {
-  strategicKPIs: StrategyMetric[];
+  strategicKPIs: StrategyMetric[],
   financialOverview: FinancialOverview;
-  operationalExcellence: OperationalMetrics;
+  operationalExcellence: OperationalMetrics,
   qualityAndSafety: QualityOverview;
-  marketPosition: MarketMetrics;
+  marketPosition: MarketMetrics,
   riskManagement: RiskAssessment;
-  boardMetrics: BoardMetric[];
+  boardMetrics: BoardMetric[],
   initiatives: StrategicInitiative[];
-  alerts: ExecutiveAlert[];
-  benchmarks: BenchmarkData[];
+  alerts: ExecutiveAlert[],
+  benchmarks: BenchmarkData[]
 }
 
 interface StrategyMetric {
-  kpi: string;
+  kpi: string,
   current: number;
-  target: number;
+  target: number,
   benchmark: number;
-  trend: 'positive' | 'negative' | 'neutral';
+  trend: 'positive' | 'negative' | 'neutral',
   changePercent: number;
-  status: 'excellent' | 'good' | 'attention' | 'critical';
+  status: 'excellent' | 'good' | 'attention' | 'critical',
   unit: string;
-  category: 'financial' | 'operational' | 'quality' | 'growth';
+  category: 'financial' | 'operational' | 'quality' | 'growth',
   timeframe: 'YTD' | 'QTD' | 'MTD' | 'annual';
-  priority: 'high' | 'medium' | 'low';
+  priority: 'high' | 'medium' | 'low'
 }
 
 interface FinancialOverview {
   revenue: {
-    current: number;
+    current: number,
     target: number;
-    growth: number;
-    trend: number[];
+    growth: number,
+    trend: number[]
   };
   ebitda: {
-    margin: number;
+    margin: number,
     amount: number;
-    growth: number;
+    growth: number
   };
   cashFlow: {
-    operating: number;
+    operating: number,
     free: number;
     runway: number; // months;
   };
   profitability: {
-    grossMargin: number;
+    grossMargin: number,
     netMargin: number;
-    operatingMargin: number;
+    operatingMargin: number
   };
   costManagement: {
-    costPerPatient: number;
+    costPerPatient: number,
     costReduction: number;
-    efficiency: number;
+    efficiency: number
   };
   reimbursements: {
-    commercial: number;
+    commercial: number,
     medicare: number;
-    medicaid: number;
-    denialRate: number;
+    medicaid: number,
+    denialRate: number
   };
 }
 
 interface OperationalMetrics {
   capacity: {
-    bedUtilization: number;
+    bedUtilization: number,
     orUtilization: number;
-    staffProductivity: number;
-    equipmentEfficiency: number;
+    staffProductivity: number,
+    equipmentEfficiency: number
   };
   throughput: {
-    patientVolume: number;
+    patientVolume: number,
     avgLengthOfStay: number;
-    turnoverRate: number;
-    dischargeEfficiency: number;
+    turnoverRate: number,
+    dischargeEfficiency: number
   };
   technology: {
-    ehrAdoption: number;
+    ehrAdoption: number,
     digitalTransformation: number;
-    systemUptime: number;
-    cyberSecurityScore: number;
+    systemUptime: number,
+    cyberSecurityScore: number
   };
   staffing: {
-    retention: number;
+    retention: number,
     satisfaction: number;
-    productivity: number;
-    trainingCompliance: number;
+    productivity: number,
+    trainingCompliance: number
   };
 }
 
 interface QualityOverview {
   patientSafety: {
-    overallScore: number;
+    overallScore: number,
     incidents: number;
-    mortalityRate: number;
-    infectionRate: number;
+    mortalityRate: number,
+    infectionRate: number
   };
   patientExperience: {
-    satisfaction: number;
+    satisfaction: number,
     nps: number;
-    complaints: number;
-    compliments: number;
+    complaints: number,
+    compliments: number
   };
   clinicalExcellence: {
-    outcomeScores: number;
+    outcomeScores: number,
     readmissionRate: number;
-    complicationRate: number;
-    evidenceBasedCare: number;
+    complicationRate: number,
+    evidenceBasedCare: number
   };
   accreditation: {
-    jcahoScore: number;
+    jcahoScore: number,
     magnet: boolean;
-    leapfrog: string;
-    lastAuditScore: number;
+    leapfrog: string,
+    lastAuditScore: number
   };
 }
 
 interface MarketMetrics {
-  marketShare: number;
+  marketShare: number,
   brandReputation: number;
-  competitivePosition: number;
+  competitivePosition: number,
   patientAcquisition: {
-    newPatients: number;
+    newPatients: number,
     retentionRate: number;
-    acquisitionCost: number;
-    lifetimeValue: number;
+    acquisitionCost: number,
+    lifetimeValue: number
   };
   serviceLines: {
-    name: string;
+    name: string,
     revenue: number;
-    growth: number;
-    marketPosition: number;
+    growth: number,
+    marketPosition: number
   }[];
   partnerships: {
-    strategic: number;
+    strategic: number,
     clinical: number;
-    technology: number;
+    technology: number
   };
 }
 
 interface RiskAssessment {
-  overallRisk: 'low' | 'medium' | 'high' | 'critical';
+  overallRisk: 'low' | 'medium' | 'high' | 'critical',
   riskScore: number;
   categories: {
-    financial: number;
+    financial: number,
     operational: number;
-    regulatory: number;
+    regulatory: number,
     reputation: number;
-    technology: number;
+    technology: number
   };
   mitigation: {
-    active: number;
+    active: number,
     planned: number;
-    completed: number;
+    completed: number
   };
   compliance: {
-    hipaa: number;
+    hipaa: number,
     jacho: number;
-    cms: number;
-    overall: number;
+    cms: number,
+    overall: number
   };
 }
 
 interface BoardMetric {
-  metric: string;
+  metric: string,
   value: string;
-  change: number;
+  change: number,
   status: 'positive' | 'negative' | 'neutral';
-  benchmark: string;
-  priority: 'board' | 'executive' | 'operational';
+  benchmark: string,
+  priority: 'board' | 'executive' | 'operational'
 }
 
 interface StrategicInitiative {
-  id: string;
+  id: string,
   name: string;
-  category: 'growth' | 'efficiency' | 'quality' | 'innovation';
+  category: 'growth' | 'efficiency' | 'quality' | 'innovation',
   progress: number;
-  status: 'on-track' | 'at-risk' | 'delayed' | 'completed';
+  status: 'on-track' | 'at-risk' | 'delayed' | 'completed',
   budget: number;
-  spent: number;
+  spent: number,
   expectedROI: number;
-  timeline: string;
+  timeline: string,
   sponsor: string;
-  lastUpdate: string;
+  lastUpdate: string
 }
 
 interface ExecutiveAlert {
-  id: string;
+  id: string,
   type: 'strategic' | 'financial' | 'operational' | 'regulatory';
-  severity: 'info' | 'warning' | 'critical';
+  severity: 'info' | 'warning' | 'critical',
   title: string;
-  summary: string;
+  summary: string,
   impact: 'high' | 'medium' | 'low';
-  recommendation: string;
+  recommendation: string,
   owner: string;
-  dueDate: string;
+  dueDate: string
 }
 
 interface BenchmarkData {
-  metric: string;
+  metric: string,
   ourValue: number;
-  industryAvg: number;
+  industryAvg: number,
   topQuartile: number;
-  topDecile: number;
-  percentile: number;
+  topDecile: number,
+  percentile: number
 }
 
 const CHART_COLORS = {
@@ -295,7 +295,7 @@ const CHART_COLORS = {
   success: '#16a34a',
   info: '#0891b2',
   purple: '#7c3aed',
-  pink: '#db2777';
+  pink: '#db2777'
 };
 
 export default const ExecutiveDashboard = () {
@@ -303,8 +303,7 @@ export default const ExecutiveDashboard = () {
   const [loading, setLoading] = useState(true);
   const [timeframe, setTimeframe] = useState('YTD');
   const [viewMode, setViewMode] = useState('summary');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-
+  const [selectedCategory, setSelectedCategory] = useState('all'),
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -328,23 +327,23 @@ export default const ExecutiveDashboard = () {
       case 'good': return 'text-blue-600';
       case 'attention': return 'text-yellow-600';
       case 'critical': return 'text-red-600';
-      default: return 'text-gray-600';
+      default: return 'text-gray-600'
     }
   };
 
   const getTrendIcon = (trend: string, change: number = 0) => {
     if (trend === 'positive' || change > 0) {
-      return <ArrowUpRight className="h-4 w-4 text-green-500" />;
+      return <ArrowUpRight className="h-4 w-4 text-green-500" />
     } else if (trend === 'negative' || change < 0) {
-      return <ArrowDownRight className="h-4 w-4 text-red-500" />;
+      return <ArrowDownRight className="h-4 w-4 text-red-500" />
     }
-    return <Minus className="h-4 w-4 text-gray-500" />;
+    return <Minus className="h-4 w-4 text-gray-500" />
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">;
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>;
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -353,7 +352,7 @@ export default const ExecutiveDashboard = () {
     return (
       <div className="flex items-center justify-center h-screen">;
         <Alert className="max-w-md">;
-          <AlertTriangle className="h-4 w-4" />;
+          <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>Failed to load executive dashboard data.</AlertDescription>
         </Alert>
@@ -366,10 +365,10 @@ export default const ExecutiveDashboard = () {
       {/* Executive Header */}
       <div className="bg-white rounded-lg shadow-sm border p-6">;
         <div className="flex items-center justify-between">;
-          <div>
+<div
             <h1 className="text-3xl font-bold text-gray-900">Executive Dashboard</h1>;
             <p className="text-gray-600 mt-1">;
-              Strategic insights and performance metrics for healthcare leadership;
+              Strategic insights and performance metrics for healthcare leadership
             </p>
           </div>
           <div className="flex items-center space-x-4">;
@@ -381,17 +380,17 @@ export default const ExecutiveDashboard = () {
                 <SelectItem value="YTD">Year to Date</SelectItem>;
                 <SelectItem value="QTD">Quarter to Date</SelectItem>;
                 <SelectItem value="MTD">Month to Date</SelectItem>;
-                <SelectItem value="annual">Annual</SelectItem>;
+                <SelectItem value="annual">Annual</SelectItem>
               </SelectContent>
             </Select>
             <Button variant="outline" size="icon">;
-              <Download className="h-4 w-4" />;
+              <Download className="h-4 w-4" />
             </Button>
             <Button variant="outline" size="icon">;
-              <Share className="h-4 w-4" />;
+              <Share className="h-4 w-4" />
             </Button>
             <Button variant="outline" size="icon">;
-              <Settings className="h-4 w-4" />;
+              <Settings className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -402,7 +401,7 @@ export default const ExecutiveDashboard = () {
         {data.strategicKPIs.slice(0, 4).map((kpi, index) => (
           <Card key={index} className="border-l-4 border-l-blue-500">;
             <CardHeader className="pb-2">;
-              <CardTitle className="text-sm text-gray-600">{kpi.kpi}</CardTitle>;
+              <CardTitle className="text-sm text-gray-600">{kpi.kpi}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between mb-2">;
@@ -424,7 +423,7 @@ export default const ExecutiveDashboard = () {
                   <span>Progress to Target</span>
                   <span>{Math.round((kpi.current / kpi.target) * 100)}%</span>
                 </div>
-                <Progress value={(kpi.current / kpi.target) * 100} className="h-2" />;
+                <Progress value={(kpi.current / kpi.target) * 100} className="h-2" />
               </div>
               <div className="flex items-center justify-between mt-2 text-xs">;
                 <span className="text-gray-500">Target: {kpi.target.toLocaleString()}{kpi.unit}</span>;
@@ -449,7 +448,7 @@ export default const ExecutiveDashboard = () {
           <TabsTrigger value="quality">Quality</TabsTrigger>;
           <TabsTrigger value="market">Market</TabsTrigger>;
           <TabsTrigger value="initiatives">Initiatives</TabsTrigger>;
-          <TabsTrigger value="risk">Risk</TabsTrigger>;
+          <TabsTrigger value="risk">Risk</TabsTrigger>
         </TabsList>
 
         {/* Financial Performance */}
@@ -459,7 +458,7 @@ export default const ExecutiveDashboard = () {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">;
-                  <DollarSign className="h-5 w-5" />;
+                  <DollarSign className="h-5 w-5" />
                   <span>Revenue Performance</span>
                 </CardTitle>
                 <CardDescription>Year-over-year revenue analysis and trends</CardDescription>
@@ -467,40 +466,40 @@ export default const ExecutiveDashboard = () {
               <CardContent>
                 <div className="space-y-4">;
                   <div className="grid grid-cols-2 gap-4">;
-                    <div>
+<div
                       <p className="text-sm text-gray-600">Current Revenue</p>;
                       <p className="text-2xl font-bold">;
-                        ${(data.financialOverview.revenue.current / 1000000).toFixed(1)}M;
+                        ${(data.financialOverview.revenue.current / 1000000).toFixed(1)}M
                       </p>
                       <div className="flex items-center text-sm">;
                         {getTrendIcon('positive', data.financialOverview.revenue.growth)}
                         <span className="text-green-600 ml-1">;
-                          +{data.financialOverview.revenue.growth}% YoY;
+                          +{data.financialOverview.revenue.growth}% YoY
                         </span>
                       </div>
                     </div>
-                    <div>
+<div
                       <p className="text-sm text-gray-600">Target</p>;
                       <p className="text-2xl font-bold">;
-                        ${(data.financialOverview.revenue.target / 1000000).toFixed(1)}M;
+                        ${(data.financialOverview.revenue.target / 1000000).toFixed(1)}M
                       </p>
                       <p className="text-sm text-gray-500">;
-                        {Math.round((data.financialOverview.revenue.current / data.financialOverview.revenue.target) * 100)}% achieved;
+                        {Math.round((data.financialOverview.revenue.current / data.financialOverview.revenue.target) * 100)}% achieved
                       </p>
                     </div>
                   </div>
                   <ResponsiveContainer width="100%" height={200}>;
                     <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({
                       month: `Month ${index + 1}`,
-                      revenue: value;
+                      revenue: value
                     }))}>
-                      <CartesianGrid strokeDasharray="3 3" />;
-                      <XAxis dataKey="month" />;
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
                       <YAxis />
                       <Tooltip formatter={(value) => [`$${value}M`, 'Revenue']} />
-                      <Line;
+                      <Line>
                         type="monotone" 
-                        dataKey="revenue";
+                        dataKey="revenue"
                         stroke={CHART_COLORS.primary} 
                         strokeWidth={3}
                         dot={{ r: 4 }}
@@ -520,17 +519,17 @@ export default const ExecutiveDashboard = () {
               <CardContent>
                 <div className="space-y-4">;
                   <div className="grid grid-cols-3 gap-4 text-center">;
-                    <div>
+<div
                       <p className="text-sm text-gray-600">EBITDA Margin</p>;
-                      <p className="text-xl font-bold">{data.financialOverview.ebitda.margin}%</p>;
+                      <p className="text-xl font-bold">{data.financialOverview.ebitda.margin}%</p>
                     </div>
-                    <div>
+<div
                       <p className="text-sm text-gray-600">Operating Margin</p>;
-                      <p className="text-xl font-bold">{data.financialOverview.profitability.operatingMargin}%</p>;
+                      <p className="text-xl font-bold">{data.financialOverview.profitability.operatingMargin}%</p>
                     </div>
-                    <div>
+<div
                       <p className="text-sm text-gray-600">Net Margin</p>;
-                      <p className="text-xl font-bold">{data.financialOverview.profitability.netMargin}%</p>;
+                      <p className="text-xl font-bold">{data.financialOverview.profitability.netMargin}%</p>
                     </div>
                   </div>
                   
@@ -540,11 +539,11 @@ export default const ExecutiveDashboard = () {
                       { name: 'Operating', value: data.financialOverview.profitability.operatingMargin },
                       { name: 'Net', value: data.financialOverview.profitability.netMargin }
                     ]}>
-                      <CartesianGrid strokeDasharray="3 3" />;
-                      <XAxis dataKey="name" />;
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
                       <YAxis />
                       <Tooltip formatter={(value) => [`${value}%`, 'Margin']} />
-                      <Bar dataKey="value" fill={CHART_COLORS.secondary} />;
+                      <Bar dataKey="value" fill={CHART_COLORS.secondary} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -556,21 +555,21 @@ export default const ExecutiveDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Free Cash Flow</CardTitle>;
+                <CardTitle className="text-sm">Free Cash Flow</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
-                  ${(data.financialOverview.cashFlow.free / 1000000).toFixed(1)}M;
+                  ${(data.financialOverview.cashFlow.free / 1000000).toFixed(1)}M
                 </div>
                 <p className="text-xs text-gray-500">;
-                  {data.financialOverview.cashFlow.runway} months runway;
+                  {data.financialOverview.cashFlow.runway} months runway
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Cost per Patient</CardTitle>;
+                <CardTitle className="text-sm">Cost per Patient</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
@@ -579,7 +578,7 @@ export default const ExecutiveDashboard = () {
                 <div className="flex items-center text-xs">;
                   {getTrendIcon('negative', -data.financialOverview.costManagement.costReduction)}
                   <span className="text-green-600 ml-1">;
-                    -{data.financialOverview.costManagement.costReduction}% reduction;
+                    -{data.financialOverview.costManagement.costReduction}% reduction
                   </span>
                 </div>
               </CardContent>
@@ -587,25 +586,25 @@ export default const ExecutiveDashboard = () {
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Denial Rate</CardTitle>;
+                <CardTitle className="text-sm">Denial Rate</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
-                  {data.financialOverview.reimbursements.denialRate}%;
+                  {data.financialOverview.reimbursements.denialRate}%
                 </div>
-                <Progress value={100 - data.financialOverview.reimbursements.denialRate} className="mt-2" />;
+                <Progress value={100 - data.financialOverview.reimbursements.denialRate} className="mt-2" />
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Operating Efficiency</CardTitle>;
+                <CardTitle className="text-sm">Operating Efficiency</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
-                  {data.financialOverview.costManagement.efficiency}%;
+                  {data.financialOverview.costManagement.efficiency}%
                 </div>
-                <Badge variant="default">Above Target</Badge>;
+                <Badge variant="default">Above Target</Badge>
               </CardContent>
             </Card>
           </div>
@@ -620,22 +619,22 @@ export default const ExecutiveDashboard = () {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">;
                 <ResponsiveContainer width="100%" height={250}>;
                   <PieChart>
-                    <Pie;
+                    <Pie>
                       data={[
                         { name: 'Commercial', value: data.financialOverview.reimbursements.commercial },
                         { name: 'Medicare', value: data.financialOverview.reimbursements.medicare },
                         { name: 'Medicaid', value: data.financialOverview.reimbursements.medicaid },
                         { name: 'Other', value: 100 - data.financialOverview.reimbursements.commercial - data.financialOverview.reimbursements.medicare - data.financialOverview.reimbursements.medicaid }
                       ]}
-                      cx="50%";
-                      cy="50%";
+                      cx="50%"
+                      cy="50%"
                       outerRadius={80}
                       fill={CHART_COLORS.primary}
-                      dataKey="value";
+                      dataKey="value"
                       label={({name, value}) => `${name}: ${value}%`}
                     >
                       {[CHART_COLORS.primary, CHART_COLORS.secondary, CHART_COLORS.warning, CHART_COLORS.purple].map((color, index) => (
-                        <Cell key={`cell-${index}`} fill={color} />;
+                        <Cell key={`cell-${index}`} fill={color} />
                       ))}
                     </Pie>
                     <Tooltip />
@@ -647,21 +646,21 @@ export default const ExecutiveDashboard = () {
                     <span>Commercial Insurance</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.financialOverview.reimbursements.commercial}%</div>;
-                      <div className="text-sm text-green-600">+2.3% YoY</div>;
+                      <div className="text-sm text-green-600">+2.3% YoY</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">;
                     <span>Medicare</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.financialOverview.reimbursements.medicare}%</div>;
-                      <div className="text-sm text-gray-500">+0.8% YoY</div>;
+                      <div className="text-sm text-gray-500">+0.8% YoY</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">;
                     <span>Medicaid</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.financialOverview.reimbursements.medicaid}%</div>;
-                      <div className="text-sm text-red-600">-1.1% YoY</div>;
+                      <div className="text-sm text-red-600">-1.1% YoY</div>
                     </div>
                   </div>
                 </div>
@@ -675,48 +674,48 @@ export default const ExecutiveDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Bed Utilization</CardTitle>;
+                <CardTitle className="text-sm">Bed Utilization</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.operationalMetrics.capacity.bedUtilization}%</div>;
-                <Progress value={data.operationalMetrics.capacity.bedUtilization} className="mt-2" />;
-                <p className="text-xs text-gray-500 mt-1">Target: 85%</p>;
+                <Progress value={data.operationalMetrics.capacity.bedUtilization} className="mt-2" />
+                <p className="text-xs text-gray-500 mt-1">Target: 85%</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Staff Productivity</CardTitle>;
+                <CardTitle className="text-sm">Staff Productivity</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.operationalMetrics.capacity.staffProductivity}%</div>;
                 <div className="flex items-center text-xs text-green-600">;
-                  <TrendingUp className="h-3 w-3 mr-1" />;
-                  +3.2% vs last quarter;
+                  <TrendingUp className="h-3 w-3 mr-1" />
+                  +3.2% vs last quarter
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Avg Length of Stay</CardTitle>;
+                <CardTitle className="text-sm">Avg Length of Stay</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.operationalMetrics.throughput.avgLengthOfStay} days</div>;
                 <div className="flex items-center text-xs text-green-600">;
-                  <TrendingDown className="h-3 w-3 mr-1" />;
-                  -0.3 days improvement;
+                  <TrendingDown className="h-3 w-3 mr-1" />
+                  -0.3 days improvement
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">System Uptime</CardTitle>;
+                <CardTitle className="text-sm">System Uptime</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.operationalMetrics.technology.systemUptime}%</div>;
-                <Badge variant="default">Excellent</Badge>;
+                <Badge variant="default">Excellent</Badge>
               </CardContent>
             </Card>
           </div>
@@ -736,7 +735,7 @@ export default const ExecutiveDashboard = () {
                     { name: 'Staff', utilization: data.operationalMetrics.capacity.staffProductivity, fill: CHART_COLORS.warning },
                     { name: 'Equipment', utilization: data.operationalMetrics.capacity.equipmentEfficiency, fill: CHART_COLORS.purple }
                   ]}>
-                    <RadialBar dataKey="utilization" cornerRadius={10} fill={CHART_COLORS.primary} />;
+                    <RadialBar dataKey="utilization" cornerRadius={10} fill={CHART_COLORS.primary} />
                     <Tooltip formatter={(value) => [`${value}%`, 'Utilization']} />
                     <Legend />
                   </RadialBarChart>
@@ -754,22 +753,22 @@ export default const ExecutiveDashboard = () {
                   <div className="flex justify-between items-center">;
                     <span>EHR Adoption</span>
                     <div className="flex items-center space-x-2">;
-                      <Progress value={data.operationalMetrics.technology.ehrAdoption} className="w-24" />;
-                      <span className="font-bold">{data.operationalMetrics.technology.ehrAdoption}%</span>;
+                      <Progress value={data.operationalMetrics.technology.ehrAdoption} className="w-24" />
+                      <span className="font-bold">{data.operationalMetrics.technology.ehrAdoption}%</span>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">;
                     <span>Digital Transformation</span>
                     <div className="flex items-center space-x-2">;
-                      <Progress value={data.operationalMetrics.technology.digitalTransformation} className="w-24" />;
-                      <span className="font-bold">{data.operationalMetrics.technology.digitalTransformation}%</span>;
+                      <Progress value={data.operationalMetrics.technology.digitalTransformation} className="w-24" />
+                      <span className="font-bold">{data.operationalMetrics.technology.digitalTransformation}%</span>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">;
                     <span>Cybersecurity Score</span>
                     <div className="flex items-center space-x-2">;
-                      <Progress value={data.operationalMetrics.technology.cyberSecurityScore} className="w-24" />;
-                      <span className="font-bold">{data.operationalMetrics.technology.cyberSecurityScore}%</span>;
+                      <Progress value={data.operationalMetrics.technology.cyberSecurityScore} className="w-24" />
+                      <span className="font-bold">{data.operationalMetrics.technology.cyberSecurityScore}%</span>
                     </div>
                   </div>
                 </div>
@@ -787,31 +786,31 @@ export default const ExecutiveDashboard = () {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">;
                 <div className="text-center p-4 bg-blue-50 rounded-lg">;
                   <div className="text-2xl font-bold text-blue-600">;
-                    {data.operationalMetrics.staffing.retention}%;
+                    {data.operationalMetrics.staffing.retention}%
                   </div>
                   <p className="text-sm text-gray-600">Staff Retention</p>;
-                  <p className="text-xs text-green-600">+2.3% YoY</p>;
+                  <p className="text-xs text-green-600">+2.3% YoY</p>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-lg">;
                   <div className="text-2xl font-bold text-green-600">;
-                    {data.operationalMetrics.staffing.satisfaction}%;
+                    {data.operationalMetrics.staffing.satisfaction}%
                   </div>
                   <p className="text-sm text-gray-600">Satisfaction Score</p>;
-                  <p className="text-xs text-green-600">+1.8% QoQ</p>;
+                  <p className="text-xs text-green-600">+1.8% QoQ</p>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-lg">;
                   <div className="text-2xl font-bold text-purple-600">;
-                    {data.operationalMetrics.staffing.productivity}%;
+                    {data.operationalMetrics.staffing.productivity}%
                   </div>
                   <p className="text-sm text-gray-600">Productivity Index</p>;
-                  <p className="text-xs text-green-600">+4.1% YoY</p>;
+                  <p className="text-xs text-green-600">+4.1% YoY</p>
                 </div>
                 <div className="text-center p-4 bg-yellow-50 rounded-lg">;
                   <div className="text-2xl font-bold text-yellow-600">;
-                    {data.operationalMetrics.staffing.trainingCompliance}%;
+                    {data.operationalMetrics.staffing.trainingCompliance}%
                   </div>
                   <p className="text-sm text-gray-600">Training Compliance</p>;
-                  <p className="text-xs text-gray-500">Target: 95%</p>;
+                  <p className="text-xs text-gray-500">Target: 95%</p>
                 </div>
               </div>
             </CardContent>
@@ -823,44 +822,44 @@ export default const ExecutiveDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Patient Safety Score</CardTitle>;
+                <CardTitle className="text-sm">Patient Safety Score</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.qualityAndSafety.patientSafety.overallScore}%</div>;
-                <Badge variant="default">Top Decile</Badge>;
+                <Badge variant="default">Top Decile</Badge>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Patient Satisfaction</CardTitle>;
+                <CardTitle className="text-sm">Patient Satisfaction</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.qualityAndSafety.patientExperience.satisfaction}%</div>;
-                <p className="text-xs text-gray-500">HCAHPS Score</p>;
+                <p className="text-xs text-gray-500">HCAHPS Score</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Readmission Rate</CardTitle>;
+                <CardTitle className="text-sm">Readmission Rate</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.qualityAndSafety.clinicalExcellence.readmissionRate}%</div>;
                 <div className="flex items-center text-xs text-green-600">;
-                  <TrendingDown className="h-3 w-3 mr-1" />;
-                  -1.2% improvement;
+                  <TrendingDown className="h-3 w-3 mr-1" />
+                  -1.2% improvement
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">JCAHO Score</CardTitle>;
+                <CardTitle className="text-sm">JCAHO Score</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.qualityAndSafety.accreditation.jcahoScore}%</div>;
-                <Badge variant="default">Accredited</Badge>;
+                <Badge variant="default">Accredited</Badge>
               </CardContent>
             </Card>
           </div>
@@ -880,11 +879,11 @@ export default const ExecutiveDashboard = () {
                     { metric: 'Safety', score: data.qualityAndSafety.patientSafety.overallScore },
                     { metric: 'Experience', score: data.qualityAndSafety.patientExperience.satisfaction }
                   ]}>
-                    <CartesianGrid strokeDasharray="3 3" />;
-                    <XAxis dataKey="metric" />;
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="metric" />
                     <YAxis />
                     <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                    <Bar dataKey="score" fill={CHART_COLORS.secondary} />;
+                    <Bar dataKey="score" fill={CHART_COLORS.secondary} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -901,28 +900,28 @@ export default const ExecutiveDashboard = () {
                     <span>Overall Satisfaction</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.qualityAndSafety.patientExperience.satisfaction}%</div>;
-                      <div className="text-sm text-green-600">+2.1% YoY</div>;
+                      <div className="text-sm text-green-600">+2.1% YoY</div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">;
                     <span>Net Promoter Score</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.qualityAndSafety.patientExperience.nps}</div>;
-                      <div className="text-sm text-green-600">+5 points</div>;
+                      <div className="text-sm text-green-600">+5 points</div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">;
                     <span>Complaints</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.qualityAndSafety.patientExperience.complaints}</div>;
-                      <div className="text-sm text-green-600">-12% reduction</div>;
+                      <div className="text-sm text-green-600">-12% reduction</div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">;
                     <span>Compliments</span>
                     <div className="text-right">;
                       <div className="font-bold">{data.qualityAndSafety.patientExperience.compliments}</div>;
-                      <div className="text-sm text-green-600">+18% increase</div>;
+                      <div className="text-sm text-green-600">+18% increase</div>
                     </div>
                   </div>
                 </div>
@@ -936,44 +935,44 @@ export default const ExecutiveDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Market Share</CardTitle>;
+                <CardTitle className="text-sm">Market Share</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.marketPosition.marketShare}%</div>;
-                <p className="text-xs text-gray-500">Regional market</p>;
+                <p className="text-xs text-gray-500">Regional market</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Brand Reputation</CardTitle>;
+                <CardTitle className="text-sm">Brand Reputation</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.marketPosition.brandReputation}/100</div>;
-                <Badge variant="default">Industry Leading</Badge>;
+                <Badge variant="default">Industry Leading</Badge>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">New Patients</CardTitle>;
+                <CardTitle className="text-sm">New Patients</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.marketPosition.patientAcquisition.newPatients.toLocaleString()}</div>;
                 <div className="flex items-center text-xs text-green-600">;
-                  <TrendingUp className="h-3 w-3 mr-1" />;
-                  +8.5% YoY;
+                  <TrendingUp className="h-3 w-3 mr-1" />
+                  +8.5% YoY
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Retention Rate</CardTitle>;
+                <CardTitle className="text-sm">Retention Rate</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.marketPosition.patientAcquisition.retentionRate}%</div>;
-                <p className="text-xs text-gray-500">Above industry avg</p>;
+                <p className="text-xs text-gray-500">Above industry avg</p>
               </CardContent>
             </Card>
           </div>
@@ -988,15 +987,15 @@ export default const ExecutiveDashboard = () {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">;
                 <ResponsiveContainer width="100%" height={300}>;
                   <BarChart data={data.marketPosition.serviceLines}>;
-                    <CartesianGrid strokeDasharray="3 3" />;
-                    <XAxis dataKey="name" />;
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip formatter={(value, name) => [
                       name === 'revenue' ? `$${value}M` : `${value}%`,
                       name === 'revenue' ? 'Revenue' : 'Growth';
                     ]} />
-                    <Bar dataKey="revenue" fill={CHART_COLORS.primary} />;
-                    <Bar dataKey="growth" fill={CHART_COLORS.secondary} />;
+                    <Bar dataKey="revenue" fill={CHART_COLORS.primary} />
+                    <Bar dataKey="growth" fill={CHART_COLORS.secondary} />
                   </BarChart>
                 </ResponsiveContainer>
                 
@@ -1006,15 +1005,15 @@ export default const ExecutiveDashboard = () {
                       <div className="flex justify-between items-center mb-2">;
                         <span className="font-medium">{service.name}</span>;
                         <Badge variant={service.marketPosition > 80 ? 'default' : 'secondary'}>;
-                          #{service.marketPosition} in market;
+                          #{service.marketPosition} in market
                         </Badge>
                       </div>
                       <div className="grid grid-cols-2 gap-4 text-sm">;
-                        <div>
+<div
                           <p className="text-gray-600">Revenue</p>;
-                          <p className="font-bold">${service.revenue}M</p>;
+                          <p className="font-bold">${service.revenue}M</p>
                         </div>
-                        <div>
+<div
                           <p className="text-gray-600">Growth</p>;
                           <p className={`font-bold ${service.growth > 0 ? 'text-green-600' : 'text-red-600'}`}>;
                             {service.growth > 0 ? '+' : ''}{service.growth}%
@@ -1056,19 +1055,19 @@ export default const ExecutiveDashboard = () {
                           <span>Progress</span>
                           <span>{initiative.progress}%</span>
                         </div>
-                        <Progress value={initiative.progress} className="h-2" />;
+                        <Progress value={initiative.progress} className="h-2" />
                         <div className="grid grid-cols-3 gap-4 text-xs text-gray-600">;
-                          <div>
+<div
                             <p>Budget: ${initiative.budget}M</p>;
-                            <p>Spent: ${initiative.spent}M</p>;
+                            <p>Spent: ${initiative.spent}M</p>
                           </div>
-                          <div>
+<div
                             <p>Expected ROI: {initiative.expectedROI}%</p>;
-                            <p>Timeline: {initiative.timeline}</p>;
+                            <p>Timeline: {initiative.timeline}</p>
                           </div>
-                          <div>
+<div
                             <p>Sponsor: {initiative.sponsor}</p>;
-                            <p>Updated: {initiative.lastUpdate}</p>;
+                            <p>Updated: {initiative.lastUpdate}</p>
                           </div>
                         </div>
                       </div>
@@ -1086,17 +1085,17 @@ export default const ExecutiveDashboard = () {
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>;
                   <PieChart>
-                    <Pie;
+                    <Pie>
                       data={[
                         { name: 'Growth', value: 35, fill: CHART_COLORS.primary },
                         { name: 'Efficiency', value: 25, fill: CHART_COLORS.secondary },
                         { name: 'Quality', value: 20, fill: CHART_COLORS.warning },
                         { name: 'Innovation', value: 20, fill: CHART_COLORS.purple }
                       ]}
-                      cx="50%";
-                      cy="50%";
+                      cx="50%"
+                      cy="50%"
                       outerRadius={80}
-                      dataKey="value";
+                      dataKey="value"
                       label={({name, value}) => `${name}: ${value}%`}
                     />
                     <Tooltip />
@@ -1118,25 +1117,25 @@ export default const ExecutiveDashboard = () {
                   <div className="text-2xl font-bold text-green-600">;
                     {data.initiatives.filter(i => i.status === 'on-track').length}
                   </div>
-                  <p className="text-sm text-gray-600">On Track</p>;
+                  <p className="text-sm text-gray-600">On Track</p>
                 </div>
                 <div className="text-center p-4 bg-yellow-50 rounded-lg">;
                   <div className="text-2xl font-bold text-yellow-600">;
                     {data.initiatives.filter(i => i.status === 'at-risk').length}
                   </div>
-                  <p className="text-sm text-gray-600">At Risk</p>;
+                  <p className="text-sm text-gray-600">At Risk</p>
                 </div>
                 <div className="text-center p-4 bg-red-50 rounded-lg">;
                   <div className="text-2xl font-bold text-red-600">;
                     {data.initiatives.filter(i => i.status === 'delayed').length}
                   </div>
-                  <p className="text-sm text-gray-600">Delayed</p>;
+                  <p className="text-sm text-gray-600">Delayed</p>
                 </div>
                 <div className="text-center p-4 bg-blue-50 rounded-lg">;
                   <div className="text-2xl font-bold text-blue-600">;
                     {Math.round(data.initiatives.reduce((sum, i) => sum + i.expectedROI, 0) / data.initiatives.length)}%
                   </div>
-                  <p className="text-sm text-gray-600">Avg Expected ROI</p>;
+                  <p className="text-sm text-gray-600">Avg Expected ROI</p>
                 </div>
               </div>
             </CardContent>
@@ -1148,7 +1147,7 @@ export default const ExecutiveDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Overall Risk Score</CardTitle>;
+                <CardTitle className="text-sm">Overall Risk Score</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.riskManagement.riskScore}/100</div>;
@@ -1157,40 +1156,40 @@ export default const ExecutiveDashboard = () {
                   data.riskManagement.overallRisk === 'medium' ? 'secondary' :
                   data.riskManagement.overallRisk === 'high' ? 'outline' : 'destructive';
                 }>
-                  {data.riskManagement.overallRisk} risk;
+                  {data.riskManagement.overallRisk} risk
                 </Badge>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Active Mitigations</CardTitle>;
+                <CardTitle className="text-sm">Active Mitigations</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.riskManagement.mitigation.active}</div>;
                 <p className="text-xs text-gray-500">;
-                  {data.riskManagement.mitigation.planned} planned;
+                  {data.riskManagement.mitigation.planned} planned
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Compliance Score</CardTitle>;
+                <CardTitle className="text-sm">Compliance Score</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.riskManagement.compliance.overall}%</div>;
-                <Progress value={data.riskManagement.compliance.overall} className="mt-2" />;
+                <Progress value={data.riskManagement.compliance.overall} className="mt-2" />
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">HIPAA Compliance</CardTitle>;
+                <CardTitle className="text-sm">HIPAA Compliance</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.riskManagement.compliance.hipaa}%</div>;
-                <Badge variant="default">Compliant</Badge>;
+                <Badge variant="default">Compliant</Badge>
               </CardContent>
             </Card>
           </div>
@@ -1211,7 +1210,7 @@ export default const ExecutiveDashboard = () {
                     { name: 'Technology', risk: data.riskManagement.categories.technology, fill: CHART_COLORS.purple },
                     { name: 'Reputation', risk: data.riskManagement.categories.reputation, fill: CHART_COLORS.secondary }
                   ]}>
-                    <RadialBar dataKey="risk" cornerRadius={10} />;
+                    <RadialBar dataKey="risk" cornerRadius={10} />
                     <Tooltip formatter={(value) => [`${value}%`, 'Risk Level']} />
                     <Legend />
                   </RadialBarChart>
@@ -1222,7 +1221,7 @@ export default const ExecutiveDashboard = () {
                     <div key={index} className="flex justify-between items-center">;
                       <span className="capitalize">{category} Risk</span>;
                       <div className="flex items-center space-x-3">;
-                        <Progress value={risk} className="w-24" />;
+                        <Progress value={risk} className="w-24" />
                         <span className="font-bold w-12">{risk}%</span>;
                         <Badge variant={
                           risk < 25 ? 'default' :
@@ -1247,7 +1246,7 @@ export default const ExecutiveDashboard = () {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">;
-            <Briefcase className="h-5 w-5" />;
+            <Briefcase className="h-5 w-5" />
             <span>Board Reporting Metrics</span>
           </CardTitle>
           <CardDescription>Key metrics for board reporting and governance</CardDescription>
@@ -1257,7 +1256,7 @@ export default const ExecutiveDashboard = () {
             {data.boardMetrics.map((metric, index) => (
               <Card key={index} className="border-l-4 border-l-indigo-500">;
                 <CardHeader className="pb-2">;
-                  <CardTitle className="text-sm">{metric.metric}</CardTitle>;
+                  <CardTitle className="text-sm">{metric.metric}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">;
@@ -1287,9 +1286,9 @@ export default const ExecutiveDashboard = () {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">;
-              <AlertTriangle className="h-5 w-5 text-amber-500" />;
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
               <span>Executive Attention Required</span>
-              <Badge variant="outline">{data.alerts.length}</Badge>;
+              <Badge variant="outline">{data.alerts.length}</Badge>
             </CardTitle>
             <CardDescription>Strategic and operational issues requiring leadership attention</CardDescription>
           </CardHeader>
@@ -1300,7 +1299,7 @@ export default const ExecutiveDashboard = () {
                   alert.severity === 'critical' ? 'border-l-red-500' :
                   alert.severity === 'warning' ? 'border-l-yellow-500' : 'border-l-blue-500';
                 }`}>
-                  <AlertTriangle className="h-4 w-4" />;
+                  <AlertTriangle className="h-4 w-4" />
                   <AlertTitle className="flex items-center justify-between">;
                     <span>{alert.title}</span>
                     <div className="flex items-center space-x-2">;
@@ -1315,7 +1314,7 @@ export default const ExecutiveDashboard = () {
                         alert.impact === 'high' ? 'border-red-300' :
                         alert.impact === 'medium' ? 'border-yellow-300' : 'border-blue-300';
                       }>
-                        {alert.impact} impact;
+                        {alert.impact} impact
                       </Badge>
                     </div>
                   </AlertTitle>
@@ -1328,7 +1327,7 @@ export default const ExecutiveDashboard = () {
                     </div>
                     <div className="flex justify-between text-xs text-gray-500">;
                       <span>Owner: {alert.owner}</span>;
-                      <span>Due: {alert.dueDate}</span>;
+                      <span>Due: {alert.dueDate}</span>
                     </div>
                   </AlertDescription>
                 </Alert>
@@ -1356,7 +1355,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         unit: '',
         category: 'financial',
         timeframe: 'YTD',
-        priority: 'high';
+        priority: 'high'
       },
       {
         kpi: 'EBITDA Margin',
@@ -1369,7 +1368,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         unit: '%',
         category: 'financial',
         timeframe: 'YTD',
-        priority: 'high';
+        priority: 'high'
       },
       {
         kpi: 'Patient Satisfaction',
@@ -1382,7 +1381,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         unit: '%',
         category: 'quality',
         timeframe: 'QTD',
-        priority: 'high';
+        priority: 'high'
       },
       {
         kpi: 'Market Share',
@@ -1395,7 +1394,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         unit: '%',
         category: 'growth',
         timeframe: 'annual',
-        priority: 'medium';
+        priority: 'medium'
       }
     ],
     financialOverview: {
@@ -1408,28 +1407,28 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
       ebitda: {
         margin: 18.2,
         amount: 77350000,
-        growth: 12.3;
+        growth: 12.3
       },
       cashFlow: {
         operating: 95000000,
         free: 42000000,
-        runway: 18;
+        runway: 18
       },
       profitability: {
         grossMargin: 65.4,
         netMargin: 12.8,
-        operatingMargin: 16.2;
+        operatingMargin: 16.2
       },
       costManagement: {
         costPerPatient: 8250,
         costReduction: 3.2,
-        efficiency: 91.5;
+        efficiency: 91.5
       },
       reimbursements: {
         commercial: 55,
         medicare: 32,
         medicaid: 13,
-        denialRate: 4.2;
+        denialRate: 4.2
       }
     },
     operationalMetrics: {
@@ -1437,25 +1436,25 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         bedUtilization: 87.3,
         orUtilization: 92.1,
         staffProductivity: 89.7,
-        equipmentEfficiency: 94.2;
+        equipmentEfficiency: 94.2
       },
       throughput: {
         patientVolume: 125000,
         avgLengthOfStay: 4.2,
         turnoverRate: 12.3,
-        dischargeEfficiency: 91.8;
+        dischargeEfficiency: 91.8
       },
       technology: {
         ehrAdoption: 98.5,
         digitalTransformation: 78.2,
         systemUptime: 99.7,
-        cyberSecurityScore: 92.1;
+        cyberSecurityScore: 92.1
       },
       staffing: {
         retention: 91.2,
         satisfaction: 87.5,
         productivity: 93.1,
-        trainingCompliance: 96.8;
+        trainingCompliance: 96.8
       }
     },
     qualityAndSafety: {
@@ -1463,25 +1462,25 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         overallScore: 96.2,
         incidents: 23,
         mortalityRate: 2.1,
-        infectionRate: 1.8;
+        infectionRate: 1.8
       },
       patientExperience: {
         satisfaction: 94.3,
         nps: 73,
         complaints: 45,
-        compliments: 324;
+        compliments: 324
       },
       clinicalExcellence: {
         outcomeScores: 91.7,
         readmissionRate: 8.3,
         complicationRate: 2.9,
-        evidenceBasedCare: 95.1;
+        evidenceBasedCare: 95.1
       },
       accreditation: {
         jcahoScore: 94.8,
         magnet: true,
         leapfrog: 'A',
-        lastAuditScore: 96.2;
+        lastAuditScore: 96.2
       }
     },
     marketPosition: {
@@ -1492,7 +1491,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         newPatients: 15420,
         retentionRate: 89.3,
         acquisitionCost: 285,
-        lifetimeValue: 12500;
+        lifetimeValue: 12500
       },
       serviceLines: [
         { name: 'Cardiology', revenue: 85, growth: 12.3, marketPosition: 1 },
@@ -1503,7 +1502,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
       partnerships: {
         strategic: 8,
         clinical: 12,
-        technology: 5;
+        technology: 5
       }
     },
     riskManagement: {
@@ -1514,18 +1513,18 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         operational: 35,
         regulatory: 20,
         reputation: 15,
-        technology: 40;
+        technology: 40
       },
       mitigation: {
         active: 15,
         planned: 8,
-        completed: 22;
+        completed: 22
       },
       compliance: {
         hipaa: 98.2,
         jacho: 94.8,
         cms: 96.1,
-        overall: 96.4;
+        overall: 96.4
       }
     },
     boardMetrics: [
@@ -1548,7 +1547,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         expectedROI: 24.5,
         timeline: 'Q2 2024',
         sponsor: 'CTO',
-        lastUpdate: '2024-01-15';
+        lastUpdate: '2024-01-15'
       },
       {
         id: '2',
@@ -1561,7 +1560,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         expectedROI: 18.2,
         timeline: 'Q1 2024',
         sponsor: 'CNO',
-        lastUpdate: '2024-01-12';
+        lastUpdate: '2024-01-12'
       },
       {
         id: '3',
@@ -1574,7 +1573,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         expectedROI: 32.1,
         timeline: 'Q3 2024',
         sponsor: 'CFO',
-        lastUpdate: '2024-01-10';
+        lastUpdate: '2024-01-10'
       }
     ],
     alerts: [
@@ -1587,7 +1586,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         impact: 'high',
         recommendation: 'Activate overflow protocols and expedite discharge planning for stable patients.',
         owner: 'Chief Medical Officer',
-        dueDate: '2024-01-17';
+        dueDate: '2024-01-17'
       },
       {
         id: '2',
@@ -1598,7 +1597,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         impact: 'high',
         recommendation: 'Accelerate elective procedures and enhance collection efforts.',
         owner: 'Chief Financial Officer',
-        dueDate: '2024-01-20';
+        dueDate: '2024-01-20'
       }
     ],
     benchmarks: [

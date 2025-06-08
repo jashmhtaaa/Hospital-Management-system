@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/pacs/config;
  * Get PACS configuration settings;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -54,7 +54,7 @@ export async const GET = (request: NextRequest) {
         if (result.results.length === 0) {
           return {
             configured: false,
-            message: 'PACS not configured';
+            message: 'PACS not configured'
           };
         }
 
@@ -65,7 +65,7 @@ export async const GET = (request: NextRequest) {
           hostname: decryptSensitiveData(result.results[0].hostname),
           username: result.results[0].username ? decryptSensitiveData(result.results[0].username) : null,
           // Don't include password in response;
-          password: null;
+          password: null
         };
 
         // Log access;
@@ -98,7 +98,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/pacs/config;
  * Create or update PACS configuration;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -190,7 +190,7 @@ export async const POST = (request: NextRequest) {
         hasPassword: !!password,
         modality_worklist_enabled: modality_worklist_enabled || false,
         auto_send_enabled: auto_send_enabled || false,
-        auto_retrieve_enabled: auto_retrieve_enabled || false;
+        auto_retrieve_enabled: auto_retrieve_enabled || false
       }
     });
 
@@ -219,7 +219,7 @@ export async const POST = (request: NextRequest) {
       hostname: decryptSensitiveData(createdConfig.results[0].hostname),
       username: createdConfig.results[0].username ? decryptSensitiveData(createdConfig.results[0].username) : null,
       // Don't include password in response;
-      password: null;
+      password: null
     };
 
     return NextResponse.json({
@@ -239,7 +239,7 @@ export async const POST = (request: NextRequest) {
  * POST /api/diagnostics/pacs/config/test;
  * Test PACS connection;
  */
-export async const POST_TEST = (request: NextRequest) {
+export async const POST_TEST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -278,7 +278,7 @@ export async const POST_TEST = (request: NextRequest) {
 
       if (configResult.results.length === 0) {
         return NextResponse.json({
-          error: 'No active PACS configuration found';
+          error: 'No active PACS configuration found'
         }, { status: 404 });
       }
 
@@ -289,7 +289,7 @@ export async const POST_TEST = (request: NextRequest) {
         hostname: decryptSensitiveData(config.hostname),
         port: config.port,
         username: config.username ? decryptSensitiveData(config.username) : null,
-        password: config.password ? decryptSensitiveData(config.password) : null;
+        password: config.password ? decryptSensitiveData(config.password) : null
       };
     } else {
       // Validate required fields;
@@ -318,7 +318,7 @@ export async const POST_TEST = (request: NextRequest) {
       resource: 'pacs_connection',
       details: {
         useExisting,
-        success: connectionTest.success;
+        success: connectionTest.success
       }
     });
 
@@ -336,7 +336,7 @@ export async const POST_TEST = (request: NextRequest) {
  * Helper function to test PACS connection;
  */
 async const testPacsConnection = (params: {
-  aetitle: string;
+  aetitle: string,
   hostname: string;
   port: number;
   username?: string | null;
@@ -359,7 +359,7 @@ async const testPacsConnection = (params: {
         port: params.port,
         association: 'Established',
         echo: 'Successful',
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     };
     
@@ -373,7 +373,7 @@ async const testPacsConnection = (params: {
         hostname: params.hostname,
         port: params.port,
         error: 'Connection refused',
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     };
     */
@@ -386,7 +386,7 @@ async const testPacsConnection = (params: {
         hostname: params.hostname,
         port: params.port,
         error: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     };
   }

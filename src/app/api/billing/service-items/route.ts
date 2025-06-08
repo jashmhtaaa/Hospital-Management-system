@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -64,10 +64,10 @@ let nextItemId = 5;
 
 // Define interface for service item input;
 interface ServiceItemInput {
-  item_code: string;
+  item_code: string,
   item_name: string;
   description?: string;
-  category: string;
+  category: string,
   unit_price: number;
   is_taxable?: boolean;
   is_discountable?: boolean;
@@ -75,7 +75,7 @@ interface ServiceItemInput {
 }
 
 // GET /api/billing/service-items - Get list of service items;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing staff)
     if (!(await hasPermission(request, ["billing:read", "admin"]))) {
@@ -142,7 +142,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/billing/service-items - Create a new service item;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing manager)
     if (!(await hasPermission(request, ["billing:manage", "admin"]))) {
@@ -240,7 +240,7 @@ export async const POST = (request: NextRequest) {
       is_discountable: itemData.is_discountable ? 1 : 0,
       is_active: 1, // Default to active;
       // created_by: user.id, // Would use user.id in real implementation;
-      // created_at: new Date().toISOString() // Would use current time;
+      // created_at: new Date().toISOString() // Would use current time
     };
 
     mockServiceItems.push(newItem);

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -194,11 +194,10 @@ describe('SegmentService', () => {
       expect(prisma.contactSegment.findMany).toHaveBeenCalledWith({
         where: { segmentId: 'segment-123' },
         include: { contact: true },
-      });
-      
-      expect(result).toHaveProperty('members');
-      expect(result.members).toHaveLength(2);
-      expect(result.members[0]).toHaveProperty('contact');
+      }),
+      expect(result).toHaveProperty('members'),
+      expect(result.members).toHaveLength(2),
+      expect(result.members[0]).toHaveProperty('contact'),
       expect(result.members[0].contact).toHaveProperty('name');
     });
     
@@ -244,7 +243,7 @@ describe('SegmentService', () => {
       const result = await service.getSegments({ page: 1, limit: 10 });
       
       // Assert;
-      expect(prisma.segment.count).toHaveBeenCalled();
+      expect(prisma.segment.count).toHaveBeenCalled(),
       expect(prisma.segment.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
@@ -361,8 +360,7 @@ describe('SegmentService', () => {
       // Assert;
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
-      });
-      
+      }),
       expect(prisma.segment.update).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
         data: expect.objectContaining({
@@ -450,12 +448,10 @@ describe('SegmentService', () => {
       // Assert;
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
-      });
-      
+      }),
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
         where: { id: 'contact-123' },
-      });
-      
+      }),
       expect(prisma.contactSegment.findUnique).toHaveBeenCalledWith({
         where: {
           segmentId_contactId: {
@@ -463,15 +459,13 @@ describe('SegmentService', () => {
             contactId: 'contact-123',
           },
         },
-      });
-      
+      }),
       expect(prisma.contactSegment.create).toHaveBeenCalledWith({
         data: {
           segmentId: 'segment-123',
           contactId: 'contact-123',
         },
-      });
-      
+      }),
       expect(result).toEqual(mockContactSegment);
     });
     
@@ -510,7 +504,7 @@ describe('SegmentService', () => {
       );
       
       // Assert;
-      expect(prisma.contactSegment.create).not.toHaveBeenCalled();
+      expect(prisma.contactSegment.create).not.toHaveBeenCalled(),
       expect(result).toEqual(mockContactSegment);
     });
     
@@ -570,12 +564,10 @@ describe('SegmentService', () => {
       // Assert;
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
-      });
-      
+      }),
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
         where: { id: 'contact-123' },
-      });
-      
+      }),
       expect(prisma.contactSegment.findUnique).toHaveBeenCalledWith({
         where: {
           segmentId_contactId: {
@@ -583,8 +575,7 @@ describe('SegmentService', () => {
             contactId: 'contact-123',
           },
         },
-      });
-      
+      }),
       expect(prisma.contactSegment.delete).toHaveBeenCalledWith({
         where: {
           segmentId_contactId: {
@@ -592,8 +583,7 @@ describe('SegmentService', () => {
             contactId: 'contact-123',
           },
         },
-      });
-      
+      }),
       expect(result).toEqual({ success: true });
     });
     
@@ -683,8 +673,7 @@ describe('SegmentService', () => {
       // Assert;
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
-      });
-      
+      }),
       expect(prisma.contact.findMany).toHaveBeenCalledWith({
         where: expect.any(Object), // Complex criteria object;
       });
@@ -695,14 +684,13 @@ describe('SegmentService', () => {
       });
       
       // Should only create for contact-2 (not already in segment)
-      expect(prisma.contactSegment.create).toHaveBeenCalledTimes(1);
+      expect(prisma.contactSegment.create).toHaveBeenCalledTimes(1),
       expect(prisma.contactSegment.create).toHaveBeenCalledWith({
         data: {
           segmentId: 'segment-123',
           contactId: 'contact-2',
         },
-      });
-      
+      }),
       expect(result).toEqual({
         matchedCount: 2,
         addedCount: 1,

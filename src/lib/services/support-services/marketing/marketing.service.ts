@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -88,26 +88,26 @@ export class MarketingCampaignService {
           channels: true,
           segments: {
             include: {
-              segment: true;
+              segment: true
             }
           },
           leads: {
             take: 10,
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             }
           },
           analytics: {
             take: 5,
             orderBy: {
-              date: 'desc';
+              date: 'desc'
             }
           },
           createdByUser: {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         }
@@ -198,26 +198,26 @@ export class MarketingCampaignService {
           channels: true,
           segments: {
             include: {
-              segment: true;
+              segment: true
             }
           },
           _count: {
             select: {
               leads: true,
-              activities: true;
+              activities: true
             }
           },
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -227,7 +227,7 @@ export class MarketingCampaignService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -254,7 +254,7 @@ export class MarketingCampaignService {
         where: { id },
         data: {
           ...data,
-          updatedById: userId;
+          updatedById: userId
         }
       });
       
@@ -265,7 +265,7 @@ export class MarketingCampaignService {
         userId,
         details: { 
           campaignName: updatedCampaign.name, 
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
       
@@ -304,7 +304,7 @@ export class MarketingCampaignService {
         userId,
         details: { 
           campaignName: existingCampaign.name,
-          campaignType: existingCampaign.type;
+          campaignType: existingCampaign.type
         }
       });
     } catch (error) {
@@ -338,7 +338,7 @@ export class MarketingCampaignService {
           content: channelData.content,
           schedule: channelData.schedule,
           status: channelData.status || 'DRAFT',
-          metrics: channelData.metrics;
+          metrics: channelData.metrics
         }
       });
       
@@ -350,7 +350,7 @@ export class MarketingCampaignService {
         details: { 
           channelId: channel.id,
           channelType: channel.channelType,
-          channelName: channel.channelName;
+          channelName: channel.channelName
         }
       });
       
@@ -391,7 +391,7 @@ export class MarketingCampaignService {
             include: {
               _count: {
                 select: {
-                  interactions: true;
+                  interactions: true
                 }
               }
             }
@@ -405,7 +405,7 @@ export class MarketingCampaignService {
         select: {
           status: true,
           convertedToPatientId: true,
-          conversionDate: true;
+          conversionDate: true
         }
       });
       
@@ -422,7 +422,7 @@ export class MarketingCampaignService {
           type: existingCampaign.type,
           startDate: existingCampaign.startDate,
           endDate: existingCampaign.endDate,
-          status: existingCampaign.status;
+          status: existingCampaign.status
         },
         metrics: analytics.map(item => item.metrics),
         channels: channels.map(channel => ({
@@ -432,15 +432,15 @@ export class MarketingCampaignService {
           status: channel.status,
           messageCount: channel.messages.length,
           interactionCount: channel.messages.reduce((sum, msg) => sum + msg._count.interactions, 0),
-          metrics: channel.metrics;
+          metrics: channel.metrics
         })),
         leads: {
           total: totalLeads,
           converted: convertedLeads,
           conversionRate: conversionRate.toFixed(2) + '%',
-          byStatus: this.groupLeadsByStatus(leads);
+          byStatus: this.groupLeadsByStatus(leads)
         },
-        timeSeriesData: this.aggregateTimeSeriesData(analytics);
+        timeSeriesData: this.aggregateTimeSeriesData(analytics)
       };
       
       return aggregatedData;
@@ -502,7 +502,7 @@ export class MarketingCampaignService {
         userId,
         details: { 
           segmentId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name
         }
       });
       
@@ -531,25 +531,25 @@ export class MarketingCampaignService {
             {
               system: 'http://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing',
-              display: 'Marketing';
+              display: 'Marketing'
             }
           ]
         }
       ],
       subject: {
         reference: 'Group/marketing-segment',
-        display: 'Marketing Target Audience';
+        display: 'Marketing Target Audience'
       },
       sent: campaign.startDate,
       received: campaign.endDate,
       recipient: [],
       sender: {
         reference: `Organization/hospital`,
-        display: 'Hospital Marketing Department';
+        display: 'Hospital Marketing Department'
       },
       payload: [
         {
-          contentString: campaign.description;
+          contentString: campaign.description
         }
       ],
       note: [
@@ -570,7 +570,7 @@ export class MarketingCampaignService {
             {
               system: 'http://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing',
-              display: 'Marketing';
+              display: 'Marketing'
             }
           ]
         }
@@ -578,7 +578,7 @@ export class MarketingCampaignService {
       priority: 'routine',
       subject: {
         reference: 'Group/marketing-segment',
-        display: 'Marketing Target Audience';
+        display: 'Marketing Target Audience'
       },
       requester: {
         reference: `Practitioner/${campaign.createdById}`,
@@ -587,19 +587,19 @@ export class MarketingCampaignService {
       recipient: [],
       occurrencePeriod: {
         start: campaign.startDate,
-        end: campaign.endDate;
+        end: campaign.endDate
       },
       authoredOn: campaign.createdAt,
       payload: [
         {
-          contentString: campaign.description;
+          contentString: campaign.description
         }
       ]
     };
     
     return {
       communication: communicationResource,
-      communicationRequest: communicationRequestResource;
+      communicationRequest: communicationRequestResource
     };
   }
 
@@ -620,8 +620,7 @@ export class MarketingCampaignService {
         return 'completed';
       case 'CANCELLED':
         return 'stopped';
-      default:
-        return 'unknown';
+      default: return 'unknown'
     }
   }
 
@@ -642,8 +641,7 @@ export class MarketingCampaignService {
         return 'completed';
       case 'CANCELLED':
         return 'revoked';
-      default:
-        return 'unknown';
+      default: return 'unknown'
     }
   }
 
@@ -656,7 +654,7 @@ export class MarketingCampaignService {
       CONTACTED: 0,
       QUALIFIED: 0,
       CONVERTED: 0,
-      LOST: 0;
+      LOST: 0
     };
     
     leads.forEach(lead => {
@@ -727,7 +725,7 @@ export class ContactService {
       
       // Create contact in database;
       const contact = await prisma.contact.create({
-        data: encryptedData;
+        data: encryptedData
       });
       
       // Log audit event;
@@ -737,7 +735,7 @@ export class ContactService {
         userId,
         details: { 
           contactEmail: data.email,
-          contactSource: data.source;
+          contactSource: data.source
         }
       });
       
@@ -763,7 +761,7 @@ export class ContactService {
               id: true,
               firstName: true,
               lastName: true,
-              dateOfBirth: true;
+              dateOfBirth: true
             }
           },
           notes: {
@@ -771,27 +769,27 @@ export class ContactService {
               createdByUser: {
                 select: {
                   id: true,
-                  name: true;
+                  name: true
                 }
               }
             },
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             }
           },
           segmentMembers: {
             where: {
-              isActive: true;
+              isActive: true
             },
             include: {
-              segment: true;
+              segment: true
             }
           },
           _count: {
             select: {
               interactions: true,
               activities: true,
-              leads: true;
+              leads: true
             }
           }
         }
@@ -853,7 +851,7 @@ export class ContactService {
       
       if (tags && tags.length > 0) {
         where.tags = {
-          hasSome: tags;
+          hasSome: tags
         };
       }
       
@@ -866,7 +864,7 @@ export class ContactService {
         include: {
           patient: {
             select: {
-              id: true;
+              id: true
             }
           },
           _count: {
@@ -874,14 +872,14 @@ export class ContactService {
               interactions: true,
               activities: true,
               leads: true,
-              segmentMembers: true;
+              segmentMembers: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -894,7 +892,7 @@ export class ContactService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -922,7 +920,7 @@ export class ContactService {
       // Update contact;
       const updatedContact = await prisma.contact.update({
         where: { id },
-        data: encryptedData;
+        data: encryptedData
       });
       
       // Log audit event;
@@ -931,7 +929,7 @@ export class ContactService {
         resourceId: id,
         userId,
         details: { 
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
       
@@ -969,7 +967,7 @@ export class ContactService {
         resourceId: id,
         userId,
         details: { 
-          contactEmail: existingContact.email;
+          contactEmail: existingContact.email
         }
       });
     } catch (error) {
@@ -999,13 +997,13 @@ export class ContactService {
         data: {
           contactId,
           content,
-          createdById: userId;
+          createdById: userId
         },
         include: {
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         }
@@ -1017,7 +1015,7 @@ export class ContactService {
         resourceId: contactId,
         userId,
         details: { 
-          noteId: note.id;
+          noteId: note.id
         }
       });
       
@@ -1047,7 +1045,7 @@ export class ContactService {
           description: data.description,
           criteria: data.criteria,
           isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId;
+          createdById: userId
         }
       });
       
@@ -1057,7 +1055,7 @@ export class ContactService {
         resourceId: segment.id,
         userId,
         details: { 
-          segmentName: segment.name;
+          segmentName: segment.name
         }
       });
       
@@ -1102,20 +1100,20 @@ export class ContactService {
           _count: {
             select: {
               members: true,
-              campaigns: true;
+              campaigns: true
             }
           },
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -1125,7 +1123,7 @@ export class ContactService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -1161,7 +1159,7 @@ export class ContactService {
         where: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
       
@@ -1174,7 +1172,7 @@ export class ContactService {
         where: {
           segmentId,
           contactId,
-          isActive: false;
+          isActive: false
         }
       });
       
@@ -1183,7 +1181,7 @@ export class ContactService {
           where: { id: inactiveMemebership.id },
           data: {
             isActive: true,
-            removedAt: null;
+            removedAt: null
           }
         });
         
@@ -1194,7 +1192,7 @@ export class ContactService {
           userId,
           details: { 
             contactId,
-            segmentName: existingSegment.name;
+            segmentName: existingSegment.name
           }
         });
         
@@ -1206,7 +1204,7 @@ export class ContactService {
         data: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
       
@@ -1217,7 +1215,7 @@ export class ContactService {
         userId,
         details: { 
           contactId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name
         }
       });
       
@@ -1258,7 +1256,7 @@ export class ContactService {
         where: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
       
@@ -1271,7 +1269,7 @@ export class ContactService {
         where: { id: membership.id },
         data: {
           isActive: false,
-          removedAt: new Date();
+          removedAt: new Date()
         }
       });
       
@@ -1282,7 +1280,7 @@ export class ContactService {
         userId,
         details: { 
           contactId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name
         }
       });
       
@@ -1397,7 +1395,7 @@ export class LeadService {
           assignedToId: data.assignedToId,
           notes: data.notes,
           convertedToPatientId: data.convertedToPatientId,
-          conversionDate: data.conversionDate;
+          conversionDate: data.conversionDate
         },
         include: {
           contact: true,
@@ -1406,7 +1404,7 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         }
@@ -1420,7 +1418,7 @@ export class LeadService {
         details: { 
           contactId: lead.contactId,
           source: lead.source,
-          status: lead.status;
+          status: lead.status
         }
       });
       
@@ -1460,7 +1458,7 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           convertedToPatient: {
@@ -1468,7 +1466,7 @@ export class LeadService {
               id: true,
               firstName: true,
               lastName: true,
-              dateOfBirth: true;
+              dateOfBirth: true
             }
           },
           activities: {
@@ -1476,12 +1474,12 @@ export class LeadService {
               performedByUser: {
                 select: {
                   id: true,
-                  name: true;
+                  name: true
                 }
               }
             },
             orderBy: {
-              timestamp: 'desc';
+              timestamp: 'desc'
             }
           }
         }
@@ -1553,31 +1551,31 @@ export class LeadService {
               firstName: true,
               lastName: true,
               email: true,
-              phone: true;
+              phone: true
             }
           },
           campaign: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           },
           assignedToUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           },
           _count: {
             select: {
-              activities: true;
+              activities: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -1587,7 +1585,7 @@ export class LeadService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -1608,7 +1606,7 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         }
@@ -1634,7 +1632,7 @@ export class LeadService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           }
         }
@@ -1646,7 +1644,7 @@ export class LeadService {
         resourceId: id,
         userId,
         details: { 
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
       
@@ -1655,7 +1653,7 @@ export class LeadService {
         await this.addLeadActivity(id, {
           activityType: 'STATUS_CHANGE',
           description: `Status changed from ${existingLead.status} to ${data.status}`,
-          performedById: userId;
+          performedById: userId
         });
       }
       
@@ -1702,13 +1700,13 @@ export class LeadService {
           activityType: data.activityType,
           description: data.description,
           performedById: data.performedById,
-          metadata: data.metadata;
+          metadata: data.metadata
         },
         include: {
           performedByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         }
@@ -1721,7 +1719,7 @@ export class LeadService {
         userId: data.performedById,
         details: { 
           activityId: activity.id,
-          activityType: data.activityType;
+          activityType: data.activityType
         }
       });
       
@@ -1743,7 +1741,7 @@ export class LeadService {
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId },
         include: {
-          contact: true;
+          contact: true
         }
       });
       
@@ -1776,7 +1774,7 @@ export class LeadService {
         data: {
           status: 'CONVERTED',
           convertedToPatientId: patient.id,
-          conversionDate: new Date();
+          conversionDate: new Date()
         }
       });
       
@@ -1786,7 +1784,7 @@ export class LeadService {
         resourceId: leadId,
         userId,
         details: { 
-          patientId: patient.id;
+          patientId: patient.id
         }
       });
       

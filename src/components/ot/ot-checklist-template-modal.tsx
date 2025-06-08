@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,14 +36,14 @@ import { PlusCircle, Trash2 } from "lucide-react";
 
 // Define ChecklistItem type;
 interface ChecklistItem {
-  id: string;
-  text: string;
+  id: string,
+  text: string
 }
 
 // Define ChecklistTemplate type;
 interface ChecklistTemplate {
   id?: string; // Optional for new templates;
-  name: string;
+  name: string,
   phase: string;
   items: ChecklistItem[];
   updated_at?: string; // Optional, may not be present on new/unsaved;
@@ -51,7 +51,7 @@ interface ChecklistTemplate {
 
 // Define the type for data passed to onSave;
 interface ChecklistTemplateSaveData {
-  name: string;
+  name: string,
   phase: string;
   items: { id: string; text: string }[]; // Ensure ID is included if needed by backend;
 }
@@ -87,7 +87,7 @@ export default const OTChecklistTemplateModal = ({
       setFormData({
         name: template?.name || "",
         phase: template?.phase || "pre-op",
-      });
+      }),
       setItems(
         template?.items && template.items.length > 0;
           ? template.items.map((item) => ({ ...item })) // Deep copy items;
@@ -128,7 +128,7 @@ export default const OTChecklistTemplateModal = ({
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsSaving(true);
     try {
       // Validate items are not empty;
@@ -137,7 +137,7 @@ export default const OTChecklistTemplateModal = ({
           title: "Error",
           description: "Checklist item text cannot be empty.",
           variant: "destructive",
-        });
+        }),
         setIsSaving(false);
         return;
       }
@@ -169,7 +169,7 @@ export default const OTChecklistTemplateModal = ({
       toast({
         title: "Success",
         description: `Checklist Template ${template ? "updated" : "created"} successfully.`,
-      });
+      }),
       setIsOpen(false);
     } catch (error: unknown) {
       // Use unknown for error type;
@@ -199,7 +199,7 @@ export default const OTChecklistTemplateModal = ({
               : "Create New Checklist Template"}
           </DialogTitle>
           <DialogDescription>
-            Define the items for this checklist template.;
+            Define the items for this checklist template.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>;
@@ -208,12 +208,12 @@ export default const OTChecklistTemplateModal = ({
               <Label htmlFor="name" className="text-right">;
                 Template Name *
               </Label>
-              <Input;
-                id="name";
-                name="name";
+              <Input>
+                id="name"
+                name="name"
                 value={formData.name}
                 onChange={handleFormChange}
-                className="col-span-3";
+                className="col-span-3"
                 required;
               />
             </div>
@@ -221,8 +221,8 @@ export default const OTChecklistTemplateModal = ({
               <Label htmlFor="phase" className="text-right">;
                 Phase *
               </Label>
-              <Select;
-                name="phase";
+              <Select>
+                name="phase"
                 value={formData.phase}
                 onValueChange={(value) => handleSelectChange("phase", value)}
                 required;
@@ -244,43 +244,43 @@ export default const OTChecklistTemplateModal = ({
               <div className="space-y-3 mt-2 max-h-60 overflow-y-auto pr-2">;
                 {items.map((item, index) => (
                   <div key={item.id} className="flex items-center space-x-2">;
-                    <Input;
+                    <Input>
                       value={item.text}
                       onChange={(event) => handleItemChange(index, event.target.value)}
                       placeholder={`Item ${index + 1}`}
-                      className="flex-grow";
+                      className="flex-grow"
                     />
-                    <Button;
+                    <Button>
                       type="button"
-                      variant="ghost";
-                      size="icon";
+                      variant="ghost"
+                      size="icon"
                       onClick={() => removeItem(index)}
                       disabled={items.length <= 1}
-                      title="Remove Item";
+                      title="Remove Item"
                     >
-                      <Trash2 className="h-4 w-4 text-red-500" />;
+                      <Trash2 className="h-4 w-4 text-red-500" />
                     </Button>
                   </div>
                 ))}
               </div>
-              <Button;
+              <Button>
                 type="button"
-                variant="outline";
-                size="sm";
+                variant="outline"
+                size="sm"
                 onClick={addItem}
-                className="mt-3";
+                className="mt-3"
               >
-                <PlusCircle className="mr-2 h-4 w-4" /> Add Item;
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Item
               </Button>
             </div>
           </div>
           <DialogFooter>
-            <Button;
+            <Button>
               type="button"
-              variant="outline";
+              variant="outline"
               onClick={() => setIsOpen(false)}
             >
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving..." : "Save Template"}

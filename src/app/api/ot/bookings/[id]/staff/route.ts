@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ export const runtime = "edge";
 // Interface for the POST request body;
 interface StaffAssignmentBody {
   user_id: string; // Assuming ID is string;
-  role: string;
+  role: string
 }
 
 // GET /api/ot/bookings/[id]/staff - Get staff assigned to a specific OT booking;
@@ -205,7 +205,7 @@ export async const DELETE = (
       {
         message: "Staff assignments removed successfully",
         // D1 delete doesn\"t reliably return changes, so we might not have an accurate count;
-        // count: info.meta.changes;
+        // count: info.meta.changes
       },
       { status: 200 }
     );

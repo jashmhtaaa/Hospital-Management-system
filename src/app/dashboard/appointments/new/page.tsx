@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -67,8 +67,7 @@ export default const BookAppointmentPage = () {
         if (!doctorsRes.ok) throw new Error("Failed to fetch doctors");
 
         const patientsData: Patient[] = await patientsRes.json();
-        const doctorsData: Doctor[] = await doctorsRes.json();
-
+        const doctorsData: Doctor[] = await doctorsRes.json(),
         setPatients(patientsData.filter(p => p.is_active)); // Only show active patients;
         setDoctors(doctorsData); // Assuming API returns doctors linked to active users;
 
@@ -78,7 +77,7 @@ export default const BookAppointmentPage = () {
           title: "Error Fetching Data",
           description: message,
           variant: "destructive",
-        });
+        }),
         setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." }]);
       } finally {
         setIsFetchingData(false);
@@ -97,14 +96,14 @@ export default const BookAppointmentPage = () {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsLoading(true);
     setErrors([]);
 
     const validation = BookAppointmentSchema.safeParse(formData);
 
     if (!validation.success) {
-      setErrors(validation.error.errors);
+      setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
         title: "Validation Error",
@@ -149,7 +148,7 @@ export default const BookAppointmentPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]);
+      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Booking Failed",
         description: message,
@@ -161,7 +160,7 @@ export default const BookAppointmentPage = () {
   };
 
   const getError = (fieldName: keyof FormData | "form") => {
-    return errors.find((err) => err.path[0] === fieldName)?.message;
+    return errors.find((err) => err.path[0] === fieldName)?.message
   };
 
   return (
@@ -177,16 +176,16 @@ export default const BookAppointmentPage = () {
               <CardTitle>Appointment Details</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-              <div>
+<div
                 <Label htmlFor="patient_id">Patient *</Label>;
                 <Select name="patient_id" onValueChange={(value) => handleSelectChange("patient_id", value)} required disabled={isLoading}>
                   <SelectTrigger id="patient_id">;
-                    <SelectValue placeholder="Select patient" />;
+                    <SelectValue placeholder="Select patient" />
                   </SelectTrigger>
                   <SelectContent>
                     {patients.map(p => (
                         <SelectItem key={p.patient_id} value={String(p.patient_id)}>;
-                            {p.first_name} {p.last_name} (ID: {p.patient_id});
+                            {p.first_name} {p.last_name} (ID: {p.patient_id})
                         </SelectItem>
                     ))}
                   </SelectContent>
@@ -194,16 +193,16 @@ export default const BookAppointmentPage = () {
                 {getError("patient_id") && <p className="text-sm text-red-500 mt-1">{getError("patient_id")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="doctor_id">Doctor *</Label>;
                 <Select name="doctor_id" onValueChange={(value) => handleSelectChange("doctor_id", value)} required disabled={isLoading}>
                   <SelectTrigger id="doctor_id">;
-                    <SelectValue placeholder="Select doctor" />;
+                    <SelectValue placeholder="Select doctor" />
                   </SelectTrigger>
                   <SelectContent>
                      {doctors.map(d => (
                         <SelectItem key={d.doctor_id} value={String(d.doctor_id)}>;
-                            {d.user?.fullName} ({d.specialty});
+                            {d.user?.fullName} ({d.specialty})
                         </SelectItem>
                     ))}
                   </SelectContent>
@@ -211,18 +210,18 @@ export default const BookAppointmentPage = () {
                 {getError("doctor_id") && <p className="text-sm text-red-500 mt-1">{getError("doctor_id")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="appointment_date">Date *</Label>;
                 <Input id="appointment_date" name="appointment_date" type="date" value={formData.appointment_date ||;
-                  ""} onChange={handleChange} required disabled={isLoading} />;
+                  ""} onChange={handleChange} required disabled={isLoading} />
                 {getError("appointment_date") &&
                   <p className="text-sm text-red-500 mt-1">{getError("appointment_date")}</p>}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="appointment_time">Time *</Label>;
                 <Input id="appointment_time" name="appointment_time" type="time" value={formData.appointment_time ||;
-                  ""} onChange={handleChange} required disabled={isLoading} />;
+                  ""} onChange={handleChange} required disabled={isLoading} />
                  {getError("appointment_time") &&
                    <p className="text-sm text-red-500 mt-1">{getError("appointment_time")}</p>}
              </div>
@@ -230,7 +229,7 @@ export default const BookAppointmentPage = () {
               <div className="md:col-span-2">;
                 <Label htmlFor="reason">Reason for Visit</Label>;
                 <Textarea id="reason" name="reason" value={formData.reason ||;
-                  ""} onChange={handleChange} disabled={isLoading} />;
+                  ""} onChange={handleChange} disabled={isLoading} />
                 {getError("reason") && <p className="text-sm text-red-500 mt-1">{getError("reason")}</p>}
               </div>
             </CardContent>
@@ -240,7 +239,7 @@ export default const BookAppointmentPage = () {
 
           <div className="mt-6 flex justify-end gap-4">;
             <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isLoading || isFetchingData}>;
               {isLoading ? "Booking..." : "Book Appointment"}

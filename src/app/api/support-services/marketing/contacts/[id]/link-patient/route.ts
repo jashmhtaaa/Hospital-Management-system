@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,7 +24,7 @@ const contactService = new ContactService();
 export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

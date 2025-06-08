@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Skeleton = ({ className, ...props }: SkeletonProps) => {
   return (
-    <div;
+<div
       className={cn("animate-pulse rounded-md bg-gray-200", className)}
       {...props}
     />

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -180,7 +180,7 @@ export async const POST = (
       // Build update query dynamically;
       // FIX: Use a more specific type for fieldsToUpdate values;
       const fieldsToUpdate: {
-        [key: string]: string | number | boolean | null;
+        [key: string]: string | number | boolean | null
       } = {};
       if (actual_start_time !== undefined)
         fieldsToUpdate.actual_start_time = actual_start_time;

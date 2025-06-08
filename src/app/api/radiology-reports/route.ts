@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ import { getDB } from "@/lib/database"; // Import getDB;
 
 // Interface for POST request body;
 interface RadiologyReportPostData {
-  study_id: string;
+  study_id: string,
   radiologist_id: string;
   findings?: string | null;
   impression: string;
@@ -27,9 +27,9 @@ interface RadiologyReportPostData {
 
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyReportListItem {
-  id: string;
+  id: string,
   study_id: string;
-  report_datetime: string;
+  report_datetime: string,
   status: string;
   accession_number?: string;
   radiologist_name?: string;
@@ -42,7 +42,7 @@ interface RadiologyReportListItem {
 // Removed custom Session and SessionUser interfaces;
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status)
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession();
@@ -123,7 +123,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST a new Radiology Report (Radiologist or Admin)
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession();
@@ -268,18 +268,18 @@ export async const POST = (request: NextRequest) {
 // Define the expected structure for the query result row;
 interface CreatedRadiologyReportQueryResultRow {
   id: number | string; // Assuming ID can be number or string;
-  order_id: number | string;
+  order_id: number | string,
   study_id: number | string;
-  report_number: string;
+  report_number: string,
   report_content: string | null;
-  findings: string | null;
+  findings: string | null,
   impression: string | null;
   status: string; // e.g., 'preliminary', 'final', 'amended';
-  generated_by: number | string | null;
+  generated_by: number | string | null,
   verified_by: number | string | null;
-  generated_at: string | null;
+  generated_at: string | null,
   verified_at: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at: string,
+  updated_at: string
 }
 

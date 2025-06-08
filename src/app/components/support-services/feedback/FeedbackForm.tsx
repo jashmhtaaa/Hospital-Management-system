@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -86,8 +86,7 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
   });
 
   // Watch for anonymous field changes;
-  const isAnonymous = form.watch('anonymous');
-
+  const isAnonymous = form.watch('anonymous'),
   useEffect(() => {
     setShowContactInfo(isAnonymous);
   }, [isAnonymous]);
@@ -109,7 +108,7 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
         throw new Error(error.error || 'Failed to submit feedback');
       }
 
-      const data = await response.json();
+      const data = await response.json(),
       toast({
         title: "Feedback Submitted",
         description: "Thank you for your feedback!",
@@ -138,32 +137,32 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
       <CardHeader>
         <CardTitle>Submit Feedback</CardTitle>
         <CardDescription>
-          We value your feedback to improve our services. Please fill out the form below.;
+          We value your feedback to improve our services. Please fill out the form below.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
           <div className="space-y-4">;
-            <div>
+<div
               <Label htmlFor="type">Feedback Type</Label>;
-              <Controller;
-                name="type";
+              <Controller>
+                name="type"
                 control={form.control}
                 render={({ field }) => (
-                  <Select;
+                  <Select>
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     disabled={isSubmitting}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select feedback type" />;
+                      <SelectValue placeholder="Select feedback type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>;
                       <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>;
                       <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>;
                       <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>;
-                      <SelectItem value="OTHER">Other</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -173,25 +172,25 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
               )}
             </div>
 
-            <div>
+<div
               <Label htmlFor="source">Feedback Source</Label>;
-              <Controller;
-                name="source";
+              <Controller>
+                name="source"
                 control={form.control}
                 render={({ field }) => (
-                  <Select;
+                  <Select>
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     disabled={isSubmitting}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select feedback source" />;
+                      <SelectValue placeholder="Select feedback source" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="PATIENT">Patient</SelectItem>;
                       <SelectItem value="VISITOR">Visitor</SelectItem>;
                       <SelectItem value="STAFF">Staff</SelectItem>;
-                      <SelectItem value="OTHER">Other</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -201,35 +200,35 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
               )}
             </div>
 
-            <div>
+<div
               <Label>Rating</Label>
-              <Controller;
-                name="rating";
+              <Controller>
+                name="rating"
                 control={form.control}
                 render={({ field }) => (
                   <div className="flex items-center space-x-2 mt-2">;
-                    <RadioGroup;
+                    <RadioGroup>
                       onValueChange={(value) => field.onChange(parseInt(value))}
                       defaultValue={field.value?.toString()}
-                      className="flex space-x-2";
+                      className="flex space-x-2"
                       disabled={isSubmitting}
                     >
                       {[1, 2, 3, 4, 5].map((rating) => (
                         <div key={rating} className="flex flex-col items-center">;
-                          <RadioGroupItem;
+                          <RadioGroupItem>
                             value={rating.toString()}
                             id={`rating-${rating}`}
-                            className="sr-only";
+                            className="sr-only"
                           />
-                          <Label;
+                          <Label>
                             htmlFor={`rating-${rating}`}
-                            className={`cursor-pointer p-2 rounded-full hover:bg-gray-100 ${
-                              field.value === rating ? 'text-yellow-500' : 'text-gray-400';
+                            className={`cursor-pointer p-2 rounded-full hover: bg-gray-100 ${
+                              field.value === rating ? 'text-yellow-500' : 'text-gray-400'
                             }`}
                           >
-                            <Star className="h-8 w-8" fill={field.value >= rating ? 'currentColor' : 'none'} />;
+                            <Star className="h-8 w-8" fill={field.value >= rating ? 'currentColor' : 'none'} />
                           </Label>
-                          <span className="text-xs">{rating}</span>;
+                          <span className="text-xs">{rating}</span>
                         </div>
                       ))}
                     </RadioGroup>
@@ -242,19 +241,19 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
             </div>
 
             {departments.length > 0 && (
-              <div>
+<div
                 <Label htmlFor="departmentId">Department (Optional)</Label>;
-                <Controller;
-                  name="departmentId";
+                <Controller>
+                  name="departmentId"
                   control={form.control}
                   render={({ field }) => (
-                    <Select;
+                    <Select>
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isSubmitting}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select department" />;
+                        <SelectValue placeholder="Select department" />
                       </SelectTrigger>
                       <SelectContent>
                         {departments.map((dept) => (
@@ -270,19 +269,19 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
             )}
 
             {serviceTypes.length > 0 && (
-              <div>
+<div
                 <Label htmlFor="serviceType">Service Type (Optional)</Label>;
-                <Controller;
-                  name="serviceType";
+                <Controller>
+                  name="serviceType"
                   control={form.control}
                   render={({ field }) => (
-                    <Select;
+                    <Select>
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isSubmitting}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select service type" />;
+                        <SelectValue placeholder="Select service type" />
                       </SelectTrigger>
                       <SelectContent>
                         {serviceTypes.map((type) => (
@@ -297,19 +296,19 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
               </div>
             )}
 
-            <div>
+<div
               <Label htmlFor="comments">Comments</Label>;
-              <Textarea;
+              <Textarea>
                 {...form.register('comments')}
-                placeholder="Please share your feedback, suggestions, or concerns...";
-                className="min-h-[120px]";
+                placeholder="Please share your feedback, suggestions, or concerns..."
+                className="min-h-[120px]"
                 disabled={isSubmitting}
               />
             </div>
 
             <div className="flex items-center space-x-2">;
-              <Checkbox;
-                id="anonymous";
+              <Checkbox>
+                id="anonymous"
                 checked={isAnonymous}
                 onCheckedChange={(checked) => {
                   form.setValue('anonymous', checked === true);
@@ -317,7 +316,7 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
                 disabled={isSubmitting}
               />
               <Label htmlFor="anonymous" className="cursor-pointer">;
-                Submit anonymously;
+                Submit anonymously
               </Label>
             </div>
 
@@ -326,28 +325,28 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
                 <p className="text-sm text-gray-500">;
                   If you'd like us to follow up with you, please provide your contact information (optional):
                 </p>
-                <div>
+<div
                   <Label htmlFor="contactInfo.name">Name</Label>;
-                  <Input;
+                  <Input>
                     {...form.register('contactInfo.name')}
-                    placeholder="Your name";
+                    placeholder="Your name"
                     disabled={isSubmitting}
                   />
                 </div>
-                <div>
+<div
                   <Label htmlFor="contactInfo.email">Email</Label>;
-                  <Input;
+                  <Input>
                     {...form.register('contactInfo.email')}
                     type="email"
-                    placeholder="Your email";
+                    placeholder="Your email"
                     disabled={isSubmitting}
                   />
                 </div>
-                <div>
+<div
                   <Label htmlFor="contactInfo.phone">Phone</Label>;
-                  <Input;
+                  <Input>
                     {...form.register('contactInfo.phone')}
-                    placeholder="Your phone number";
+                    placeholder="Your phone number"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -358,8 +357,8 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
           <Button type="submit" className="w-full" disabled={isSubmitting}>;
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
-                Submitting...;
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Submitting...
               </>
             ) : (
               'Submit Feedback';

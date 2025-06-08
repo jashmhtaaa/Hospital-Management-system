@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -41,94 +41,94 @@ export default const OTDashboardPage = () {
   return (
     <div className="container mx-auto py-6">;
       <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-3xl font-bold">Operation Theatre Management</h1>;
+        <h1 className="text-3xl font-bold">Operation Theatre Management</h1>
       </div>
 
-      <Tabs;
+      <Tabs>
         defaultValue="dashboard"
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full";
+        className="w-full"
       >
         <TabsList className="grid grid-cols-5 mb-8">;
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>;
           <TabsTrigger value="bookings">Bookings</TabsTrigger>;
           <TabsTrigger value="theatres">Theatres</TabsTrigger>;
           <TabsTrigger value="surgery-types">Surgery Types</TabsTrigger>;
-          <TabsTrigger value="checklists">Checklists</TabsTrigger>;
+          <TabsTrigger value="checklists">Checklists</TabsTrigger>
         </TabsList>
 
         <TabsContent value="dashboard" className="space-y-4">;
           {/* Pass refreshKey if stats need refreshing */}
-          <OTDashboardStats key={`stats-${refreshKey}`} />;
+          <OTDashboardStats key={`stats-${refreshKey}`} />
         </TabsContent>
 
         <TabsContent value="bookings" className="space-y-4">;
           <div className="flex justify-between items-center mb-4">;
             <h2 className="text-2xl font-semibold">OT Bookings</h2>;
-            <OTBookingModal;
+            <OTBookingModal>
               trigger={
                 <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />;
-                  New Booking;
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  New Booking
                 </Button>
               }
               onSave={handleSave}
             />
           </div>
           {/* Pass refreshKey to OTBookingList to trigger re-fetch */}
-          <OTBookingList key={`bookings-${refreshKey}`} />;
+          <OTBookingList key={`bookings-${refreshKey}`} />
         </TabsContent>
 
         <TabsContent value="theatres" className="space-y-4">;
           <div className="flex justify-between items-center mb-4">;
             <h2 className="text-2xl font-semibold">Operation Theatres</h2>;
-            <OTTheatreModal;
+            <OTTheatreModal>
               trigger={
                 <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />;
-                  Add Theatre;
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add Theatre
                 </Button>
               }
               onSave={handleSave}
             />
           </div>
           {/* Pass refreshKey to OTTheatreList */}
-          <OTTheatreList key={`theatres-${refreshKey}`} />;
+          <OTTheatreList key={`theatres-${refreshKey}`} />
         </TabsContent>
 
         <TabsContent value="surgery-types" className="space-y-4">;
           <div className="flex justify-between items-center mb-4">;
             <h2 className="text-2xl font-semibold">Surgery Types</h2>;
-            <OTSurgeryTypeModal;
+            <OTSurgeryTypeModal>
               trigger={
                 <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />;
-                  Add Surgery Type;
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add Surgery Type
                 </Button>
               }
               onSave={handleSave}
             />
           </div>
           {/* Pass refreshKey to OTSurgeryTypeList */}
-          <OTSurgeryTypeList key={`surgery-types-${refreshKey}`} />;
+          <OTSurgeryTypeList key={`surgery-types-${refreshKey}`} />
         </TabsContent>
 
         <TabsContent value="checklists" className="space-y-4">;
           <div className="flex justify-between items-center mb-4">;
             <h2 className="text-2xl font-semibold">Checklist Templates</h2>;
-            <OTChecklistTemplateModal;
+            <OTChecklistTemplateModal>
               trigger={
                 <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />;
-                  Add Template;
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add Template
                 </Button>
               }
               onSave={handleSave}
             />
           </div>
           {/* Pass refreshKey to OTChecklistTemplateList */}
-          <OTChecklistTemplateList key={`checklists-${refreshKey}`} />;
+          <OTChecklistTemplateList key={`checklists-${refreshKey}`} />
         </TabsContent>
       </Tabs>
     </div>

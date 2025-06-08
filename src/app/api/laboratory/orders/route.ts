@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ interface LabTestInput {
 }
 
 interface LabOrderInput {
-  patient_id: number | string;
+  patient_id: number | string,
   ordering_doctor_id: number | string;
   tests: LabTestInput[];
   order_date?: string; // Optional, defaults to now;
@@ -51,13 +51,13 @@ interface LabOrderUpdateInput {
 
 // Interface representing a full Lab Order object (based on mock data)
 interface LabOrder {
-  id: number;
+  id: number,
   order_number: string;
   patient_id: number | string;
   patient_name?: string;
   ordering_doctor_id: number | string;
   ordering_doctor_name?: string;
-  order_date: string;
+  order_date: string,
   priority: "routine" | "urgent" | "stat";
   status:
     | "pending";
@@ -66,9 +66,9 @@ interface LabOrder {
     | "completed";
     | "verified";
     | "cancelled";
-  sample_collected_at: string | null;
+  sample_collected_at: string | null,
   sample_collected_by: string | null;
-  result_entry_at: string | null;
+  result_entry_at: string | null,
   result_verified_at: string | null;
   notes?: string | null;
   tests: { test_id: number | string; status: string; name?: string }[];
@@ -166,7 +166,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
     );
     // Assuming testsResult.results contains objects matching the tests structure in LabOrder;
     (order as LabOrder).tests = (testsResult.results || []) as { // Changed .rows to .results;
-      test_id: number | string;
+      test_id: number | string,
       status: string;
       name?: string;
     }[];
@@ -205,7 +205,7 @@ async const updateLabOrderInDB = (
 
 // --- API Route Handlers ---
 
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -264,7 +264,7 @@ export async const GET = (request: NextRequest) {
   }
 }
 
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {

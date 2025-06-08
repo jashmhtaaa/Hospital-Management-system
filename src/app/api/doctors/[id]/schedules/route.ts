@@ -20,7 +20,7 @@ const getDoctorId = (pathname: string): number | null {
 }
 
 // GET handler for listing schedules for a specific doctor;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -85,7 +85,7 @@ const AddScheduleSchema = z.object({
     path: ["end_time"],
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

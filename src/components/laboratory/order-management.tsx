@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,25 +34,25 @@ const { RangePicker } = DatePicker;
 
 // Define interfaces for data types;
 interface Patient {
-  id: string;
+  id: string,
   first_name: string;
-  last_name: string;
+  last_name: string
 }
 
 
 interface OrderItem {
-  id: string;
+  id: string,
   name: string;
-  status: "pending" | "in_progress" | "completed" | "canceled";
-  price: number;
+  status: "pending" | "in_progress" | "completed" | "canceled",
+  price: number
 }
 
 interface Order {
-  id: string;
+  id: string,
   patient_name: string;
-  doctor_name: string | null;
+  doctor_name: string | null,
   order_date: string;
-  source: string;
+  source: string,
   priority: "routine" | "urgent" | "stat";
   status: "pending" | "collected" | "processing" | "completed" | "canceled";
   notes?: string;
@@ -78,9 +78,9 @@ interface ApiErrorResponse {
 
 // FIX: Update FilterState to use Dayjs;
 interface FilterState {
-  patientId: string;
+  patientId: string,
   status: string | null;
-  source: string | null;
+  source: string | null,
   dateRange: [Dayjs, Dayjs] | null;
 }
 
@@ -118,7 +118,7 @@ const OrderManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
       // FIX: Type the response data;
-      const data: PatientsApiResponse = await response.json();
+      const data: PatientsApiResponse = await response.json(),
       setPatients(data.results || []); // Use results array or default to empty;
       setError(undefined);
     } catch (error_: unknown) {
@@ -126,7 +126,7 @@ const OrderManagement: React.FC = () => {
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
-      message.error("Failed to load patients");
+      message.error("Failed to load patients"),
       setError(`Failed to load patients: ${messageText}`);
     } finally {
       setLoading(false);
@@ -157,7 +157,7 @@ const OrderManagement: React.FC = () => {
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
-      message.error("Failed to load tests");
+      message.error("Failed to load tests"),
       setError(`Failed to load tests: ${messageText}`);
     } finally {
       setLoading(false);
@@ -166,7 +166,7 @@ const OrderManagement: React.FC = () => {
 
   // Fetch orders with filters;
   const fetchOrders = useCallback(async (): Promise<void> => {
-    setLoading(true);
+    setLoading(true),
     setError(undefined);
     try {
       let url = "/api/laboratory/orders";
@@ -210,21 +210,21 @@ const OrderManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
       // FIX: Type the response data;
-      const data: OrdersApiResponse = await response.json();
+      const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
     } catch (error_: unknown) {
       // FIX: Use unknown;
       // FIX: Prefix unused variable;
       // const _messageText = err instanceof Error ? err.message : 'An unknown error occurred'; // FIX: Commented out unused variable;
 
-      message.error("Failed to load laboratory orders");
+      message.error("Failed to load laboratory orders"),
       setError(
         `Failed to load laboratory orders: ${error_ instanceof Error ? error_.message : "An unknown error occurred"}`
-      ); // FIX: Use error directly;
+      ); // FIX: Use error directly
     } finally {
       setLoading(false);
     }
-    // FIX: Add filters to dependency array;
+    // FIX: Add filters to dependency array
   }, [filters]);
 
   // Fetch order items for a specific order;
@@ -244,7 +244,7 @@ const OrderManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
       // FIX: Type the response data;
-      const data: OrderItemsApiResponse = await response.json();
+      const data: OrderItemsApiResponse = await response.json(),
       setOrderItems(data.results || []);
     } catch (error_: unknown) {
       // FIX: Use unknown;
@@ -259,16 +259,16 @@ const OrderManagement: React.FC = () => {
 
   // Load data on component mount;
   useEffect(() => {
-    fetchPatients();
+    fetchPatients(),
     fetchTests();
     // fetchOrders(); // fetchOrders is called by the filter useEffect;
-    // FIX: Add fetchPatients and fetchTests to dependency array;
+    // FIX: Add fetchPatients and fetchTests to dependency array
   }, [fetchPatients, fetchTests]);
 
   // Reload orders when filters change;
   useEffect(() => {
     fetchOrders();
-    // FIX: Add fetchOrders to dependency array;
+    // FIX: Add fetchOrders to dependency array
   }, [filters, fetchOrders]);
 
   // FIX: Update type for value in handleFilterChange for dateRange;
@@ -299,7 +299,7 @@ const OrderManagement: React.FC = () => {
 
   // View order details;
   const handleViewOrder = async (order: Order): Promise<void> => {
-    setViewingOrder(order);
+    setViewingOrder(order),
     setIsModalVisible(true);
     fetchOrderItems(order.id);
   };
@@ -330,7 +330,7 @@ const OrderManagement: React.FC = () => {
       dataIndex: "order_date",
       key: "order_date",
       width: "15%",
-      render: (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs;
+      render: (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs
     },
     {
       title: "Source",
@@ -369,14 +369,14 @@ const OrderManagement: React.FC = () => {
       title: "Actions",
       key: "actions",
       width: "10%",
-      // FIX: Replace any with unknown for unused first argument;
+      // FIX: Replace any with unknown for unused first argument,
       render: (_: unknown, record: Order) => (
-        <Button;
+        <Button>
           type="link"
           icon={<EyeOutlined />}
           onClick={() => handleViewOrder(record)}
         >
-          View;
+          View
         </Button>
       ),
     },
@@ -413,8 +413,7 @@ const OrderManagement: React.FC = () => {
   return (
     <div className="order-management-container">;
       <Card title="Laboratory Order Management">;
-        <div;
-          className="filter-container";
+<div className="filter-container"
           style={{
             marginBottom: 16,
             display: "flex",
@@ -422,10 +421,10 @@ const OrderManagement: React.FC = () => {
             gap: 16,
           }}
         >
-          <Select;
+          <Select>
             showSearch;
-            placeholder="Search Patient";
-            optionFilterProp="children";
+            placeholder="Search Patient"
+            optionFilterProp="children"
             value={filters.patientId || undefined}
             onChange={(value: string) => handleFilterChange("patientId", value)}
             style={{ width: 200 }}
@@ -442,15 +441,15 @@ const OrderManagement: React.FC = () => {
             allowClear;
           >
             {patients.map((p) => (
-              <Option;
+              <Option>
                 key={p.id}
                 value={p.id}
               >{`${p.first_name} ${p.last_name} (ID: ${p.id})`}</Option>;
             ))}
           </Select>
 
-          <Select;
-            placeholder="Filter by Status";
+          <Select>
+            placeholder="Filter by Status"
             allowClear;
             style={{ width: 150 }}
             value={filters.status}
@@ -462,11 +461,11 @@ const OrderManagement: React.FC = () => {
             <Option value="collected">Collected</Option>;
             <Option value="processing">Processing</Option>;
             <Option value="completed">Completed</Option>;
-            <Option value="canceled">Canceled</Option>;
+            <Option value="canceled">Canceled</Option>
           </Select>
 
-          <Select;
-            placeholder="Filter by Source";
+          <Select>
+            placeholder="Filter by Source"
             allowClear;
             style={{ width: 150 }}
             value={filters.source}
@@ -477,11 +476,11 @@ const OrderManagement: React.FC = () => {
             <Option value="opd">OPD</Option>;
             <Option value="ipd">IPD</Option>;
             <Option value="er">ER</Option>;
-            <Option value="external">External</Option>;
+            <Option value="external">External</Option>
           </Select>
 
           {/* FIX: Use Dayjs for RangePicker value and onChange type */}
-          <RangePicker;
+          <RangePicker>
             value={filters.dateRange}
             onChange={(dates: RangePickerProps["value"]) =>
               handleFilterChange("dateRange", dates);
@@ -489,12 +488,12 @@ const OrderManagement: React.FC = () => {
           />
 
           <Button icon={<ReloadOutlined />} onClick={resetFilters}>;
-            Reset;
+            Reset
           </Button>
         </div>
 
         {error && (
-          <div;
+<div
             style={{
               marginBottom: 16,
               color: "red",
@@ -508,17 +507,17 @@ const OrderManagement: React.FC = () => {
         )}
 
         <Spin spinning={loading}>;
-          <Table;
+          <Table>
             columns={columns}
             dataSource={orders}
-            rowKey="id";
+            rowKey="id"
             pagination={{ pageSize: 10 }}
             locale={{ emptyText: "No laboratory orders found" }}
           />
         </Spin>
       </Card>
       {/* View Order Modal */}
-      <Modal;
+      <Modal>
         title={`Order Details: ${viewingOrder?.id}`}
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
@@ -526,7 +525,7 @@ const OrderManagement: React.FC = () => {
         width={800}
       >
         {viewingOrder && (
-          <div>
+<div
             <p>
               <strong>Patient:</strong> {viewingOrder.patient_name}
             </p>
@@ -543,7 +542,7 @@ const OrderManagement: React.FC = () => {
             </p>
             <p>
               <strong>Priority:</strong>{" "}
-              <Tag;
+              <Tag>
                 color={
                   viewingOrder.priority === "stat";
                     ? "red"
@@ -557,7 +556,7 @@ const OrderManagement: React.FC = () => {
             </p>
             <p>
               <strong>Status:</strong>{" "}
-              <Tag;
+              <Tag>
                 color={
                   viewingOrder.status === "completed";
                     ? "success"
@@ -575,12 +574,12 @@ const OrderManagement: React.FC = () => {
             <h4>Order Items:</h4>;
             <Spin spinning={loadingOrderItems}>;
               {orderItems.length > 0 ? (
-                <Table;
+                <Table>
                   dataSource={orderItems}
                   columns={orderItemColumns} // FIX: Use defined columns;
-                  rowKey="id";
+                  rowKey="id"
                   pagination={false}
-                  size="small";
+                  size="small"
                 />
               ) : (
                 <p>No items found for this order.</p>

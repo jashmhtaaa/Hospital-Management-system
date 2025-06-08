@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,25 +24,25 @@ import { AuditService } from '@/lib/security/audit.service';
 
 // Dashboard models;
 export interface Dashboard {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: DashboardCategory;
-  type: DashboardType;
+  type: DashboardType,
   layout: LayoutConfig;
-  widgets: DashboardWidget[];
+  widgets: DashboardWidget[],
   filters: DashboardFilter[];
   refreshInterval?: number; // seconds;
-  visibilitySettings: VisibilitySettings;
+  visibilitySettings: VisibilitySettings,
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  owner: string;
+  owner: string,
   created: Date;
-  updated: Date;
+  updated: Date,
   tags: string[];
-  favorites: number;
+  favorites: number,
   views: number;
-  version: string;
-  metadata: DashboardMetadata;
+  version: string,
+  metadata: DashboardMetadata
 }
 
 export enum DashboardCategory {
@@ -66,23 +66,23 @@ export enum DashboardType {
 }
 
 export interface LayoutConfig {
-  columns: number;
+  columns: number,
   rowHeight: number;
-  compactType: 'vertical' | 'horizontal' | null;
+  compactType: 'vertical' | 'horizontal' | null,
   preventCollision: boolean;
   layouts: {
-    lg: LayoutItem[];
+    lg: LayoutItem[],
     md: LayoutItem[];
-    sm: LayoutItem[];
-    xs: LayoutItem[];
+    sm: LayoutItem[],
+    xs: LayoutItem[]
   };
 }
 
 export interface LayoutItem {
   i: string; // widget id;
-  x: number;
+  x: number,
   y: number;
-  w: number;
+  w: number,
   h: number;
   minW?: number;
   maxW?: number;
@@ -92,23 +92,23 @@ export interface LayoutItem {
 }
 
 export interface DashboardWidget {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: WidgetType;
-  dataSource: DataSource;
+  dataSource: DataSource,
   visualization: VisualizationType;
-  settings: WidgetSettings;
+  settings: WidgetSettings,
   dimensions: string[];
-  measures: string[];
+  measures: string[],
   filters: WidgetFilter[];
-  actions: WidgetAction[];
+  actions: WidgetAction[],
   drilldowns: WidgetDrilldown[];
   refreshInterval?: number; // seconds;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: 'ACTIVE' | 'INACTIVE',
   created: Date;
-  updated: Date;
-  creator: string;
+  updated: Date,
+  creator: string
 }
 
 export enum WidgetType {
@@ -184,18 +184,18 @@ export interface WidgetSettings {
 }
 
 export interface ChartSettings {
-  chartType: VisualizationType;
+  chartType: VisualizationType,
   stacked: boolean;
-  orientation: 'vertical' | 'horizontal';
+  orientation: 'vertical' | 'horizontal',
   showValues: boolean;
-  showTotal: boolean;
+  showTotal: boolean,
   showAverage: boolean;
-  showTrendline: boolean;
+  showTrendline: boolean,
   showGoal: boolean;
   goalValue?: number;
   goalLine?: 'solid' | 'dashed' | 'dotted';
   goalColor?: string;
-  interactivity: 'none' | 'hover' | 'click';
+  interactivity: 'none' | 'hover' | 'click',
   animation: boolean;
   animationDuration?: number;
   sortBy?: string;
@@ -206,27 +206,27 @@ export interface ChartSettings {
 }
 
 export interface TableSettings {
-  pageSize: number;
+  pageSize: number,
   paginationEnabled: boolean;
-  sortable: boolean;
+  sortable: boolean,
   filterable: boolean;
-  exportable: boolean;
+  exportable: boolean,
   resizable: boolean;
-  highlightRules: HighlightRule[];
+  highlightRules: HighlightRule[],
   columnVisibility: Record<string, boolean>;
   columnWidth: Record<string, number>;
   columnAlignment: Record<string, 'left' | 'center' | 'right'>;
-  stickyHeader: boolean;
+  stickyHeader: boolean,
   stickyFirstColumn: boolean;
   groupBy?: string[];
   aggregations: Record<string, 'sum' | 'avg' | 'min' | 'max' | 'count'>;
-  wrapText: boolean;
+  wrapText: boolean,
   condensed: boolean;
-  showRowNumbers: boolean;
+  showRowNumbers: boolean
 }
 
 export interface HighlightRule {
-  column: string;
+  column: string,
   condition: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'between' | 'contains';
   value: unknown;
   value2?: unknown; // for 'between' condition;
@@ -236,14 +236,14 @@ export interface HighlightRule {
 }
 
 export interface MetricSettings {
-  valueFormat: string;
+  valueFormat: string,
   showTrend: boolean;
   trendPeriod: 'day' | 'week' | 'month' | 'quarter' | 'year' | 'custom';
   customTrendPeriod?: number;
   trendValueFormat?: string;
-  showSparkline: boolean;
+  showSparkline: boolean,
   sparklineType: 'line' | 'bar' | 'area';
-  showComparison: boolean;
+  showComparison: boolean,
   comparisonPeriod: 'previous_period' | 'same_period_last_year' | 'custom';
   customComparisonPeriod?: string;
   thresholds: MetricThreshold[];
@@ -251,14 +251,14 @@ export interface MetricSettings {
   suffix?: string;
   backgroundColor?: string;
   textColor?: string;
-  size: 'small' | 'medium' | 'large';
+  size: 'small' | 'medium' | 'large',
   showTarget: boolean;
   targetValue?: number;
-  iconPosition: 'left' | 'right' | 'top' | 'bottom';
+  iconPosition: 'left' | 'right' | 'top' | 'bottom'
 }
 
 export interface MetricThreshold {
-  condition: 'less_than' | 'greater_than' | 'equals' | 'between';
+  condition: 'less_than' | 'greater_than' | 'equals' | 'between',
   value: number;
   value2?: number; // for 'between' condition;
   color: string;
@@ -266,12 +266,12 @@ export interface MetricThreshold {
 }
 
 export interface MapSettings {
-  mapType: 'region' | 'point' | 'heatmap' | 'flow';
+  mapType: 'region' | 'point' | 'heatmap' | 'flow',
   region: 'world' | 'continent' | 'country' | 'state' | 'county' | 'custom';
   customGeoJson?: string;
-  showLegend: boolean;
+  showLegend: boolean,
   showTooltip: boolean;
-  colorScale: 'sequential' | 'diverging' | 'categorical';
+  colorScale: 'sequential' | 'diverging' | 'categorical',
   colorScheme: string;
   centerLat?: number;
   centerLng?: number;
@@ -285,7 +285,7 @@ export interface MapSettings {
 }
 
 export interface DataLabelSettings {
-  visible: boolean;
+  visible: boolean,
   position: 'inside' | 'outside' | 'auto';
   rotation?: number;
   format?: string;
@@ -304,9 +304,9 @@ export interface DataLabelSettings {
 }
 
 export interface LegendSettings {
-  visible: boolean;
+  visible: boolean,
   position: 'top' | 'right' | 'bottom' | 'left';
-  alignment: 'start' | 'center' | 'end';
+  alignment: 'start' | 'center' | 'end',
   orientation: 'horizontal' | 'vertical';
   font: {
     family?: string;
@@ -319,7 +319,7 @@ export interface LegendSettings {
   itemWidth?: number;
   itemHeight?: number;
   icon?: 'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow' | 'none';
-  scrollable: boolean;
+  scrollable: boolean
 }
 
 export interface AxisSettings {
@@ -345,8 +345,8 @@ export interface AxisSettings {
     gridLines: boolean;
     min?: number;
     max?: number;
-    logarithmic: boolean;
-    reversed: boolean;
+    logarithmic: boolean,
+    reversed: boolean
   };
   yAxis: {
     visible: boolean;
@@ -370,8 +370,8 @@ export interface AxisSettings {
     gridLines: boolean;
     min?: number;
     max?: number;
-    logarithmic: boolean;
-    reversed: boolean;
+    logarithmic: boolean,
+    reversed: boolean
   };
 }
 
@@ -393,7 +393,7 @@ export interface FormatSettings {
     precision?: number;
     locale?: string;
     currencySymbol?: string;
-    showGrouping: boolean;
+    showGrouping: boolean
   };
   dates: {
     format: 'short' | 'medium' | 'long' | 'full' | 'custom';
@@ -411,7 +411,7 @@ export interface FormatSettings {
 export interface TooltipSettings {
   visible: boolean;
   format?: string;
-  shared: boolean;
+  shared: boolean,
   followCursor: boolean;
   content?: string; // template for custom content;
   trigger: 'item' | 'axis' | 'none';
@@ -429,7 +429,7 @@ export interface TooltipSettings {
   padding?: number;
   showDelay?: number;
   hideDelay?: number;
-  animation: boolean;
+  animation: boolean
 }
 
 export interface PredictiveSettings {
@@ -441,7 +441,7 @@ export interface PredictiveSettings {
   confidenceBandColor?: string;
   confidenceBandOpacity?: number;
   seasonality?: 'auto' | 'none' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
-  multipleSeasonality: boolean;
+  multipleSeasonality: boolean,
   trendDamping: boolean;
   anomalyThreshold?: number; // 0-100;
   compareWithHistorical: boolean;
@@ -453,27 +453,27 @@ export interface PredictiveSettings {
 }
 
 export interface DashboardFilter {
-  id: string;
+  id: string,
   name: string;
-  type: FilterType;
+  type: FilterType,
   dataSource: string;
-  field: string;
+  field: string,
   displayName: string;
-  multiSelect: boolean;
+  multiSelect: boolean,
   required: boolean;
   defaultValue?: unknown;
   options?: FilterOption[];
   optionsLoading?: boolean;
-  visibility: 'always' | 'dashboard' | 'expanded' | 'collapsed';
+  visibility: 'always' | 'dashboard' | 'expanded' | 'collapsed',
   sequence: number;
   affects: string[]; // widget ids affected by this filter;
   dependency?: {
     dependsOn: string; // filter id;
-    mappingField: string;
+    mappingField: string
   };
   dateSettings?: DateFilterSettings;
   measureSettings?: MeasureFilterSettings;
-  cascading: boolean;
+  cascading: boolean
 }
 
 export enum FilterType {
@@ -493,7 +493,7 @@ export enum FilterType {
 }
 
 export interface FilterOption {
-  value: unknown;
+  value: unknown,
   label: string;
   icon?: string;
   disabled?: boolean;
@@ -501,15 +501,15 @@ export interface FilterOption {
 }
 
 export interface DateFilterSettings {
-  format: string;
+  format: string,
   granularity: 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second';
   min?: Date;
   max?: Date;
-  presets: DatePreset[];
+  presets: DatePreset[]
 }
 
 export interface DatePreset {
-  label: string;
+  label: string,
   value: string; // e.g., 'last_7_days', 'last_30_days', 'last_quarter';
 }
 
@@ -519,15 +519,15 @@ export interface MeasureFilterSettings {
   step?: number;
   format?: string;
   marks?: {
-    value: number;
-    label: string;
+    value: number,
+    label: string
   }[];
 }
 
 export interface WidgetFilter {
-  id: string;
+  id: string,
   field: string;
-  operator: FilterOperator;
+  operator: FilterOperator,
   value: unknown;
   dynamicValue?: boolean;
   dynamicValueSource?: string;
@@ -557,7 +557,7 @@ export enum FilterOperator {
 }
 
 export interface WidgetAction {
-  id: string;
+  id: string,
   name: string;
   type: ActionType;
   icon?: string;
@@ -568,8 +568,8 @@ export interface WidgetAction {
   parameters?: Record<string, any>;
   requiredRole?: string;
   customHandler?: string;
-  visible: boolean;
-  enabled: boolean;
+  visible: boolean,
+  enabled: boolean
 }
 
 export enum ActionType {
@@ -584,39 +584,39 @@ export enum ActionType {
 }
 
 export interface WidgetDrilldown {
-  id: string;
+  id: string,
   name: string;
   targetWidgetId?: string;
   targetDashboardId?: string;
   mappedFields: {
-    sourceField: string;
-    targetField: string;
+    sourceField: string,
+    targetField: string
   }[];
-  preserveFilters: boolean;
-  openInNewTab: boolean;
+  preserveFilters: boolean,
+  openInNewTab: boolean
 }
 
 export interface VisibilitySettings {
-  roles: string[];
+  roles: string[],
   departments: string[];
-  users: string[];
+  users: string[],
   public: boolean;
   shareableLink?: string;
   linkExpiration?: Date;
-  embeddable: boolean;
-  viewMode: 'view' | 'edit' | 'admin';
+  embeddable: boolean,
+  viewMode: 'view' | 'edit' | 'admin'
 }
 
 export interface DashboardMetadata {
   creationSource: 'TEMPLATE' | 'CUSTOM' | 'DUPLICATE';
   templateId?: string;
   originalDashboardId?: string;
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    userId: string;
-    changes: string;
+    userId: string,
+    changes: string
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
@@ -626,27 +626,27 @@ export interface DashboardMetadata {
 
 // Dashboard data models;
 export interface DashboardData {
-  dashboardId: string;
+  dashboardId: string,
   timestamp: Date;
   filterState: Record<string, any>;
   widgetData: Record<string, WidgetData>;
-  executionTime: number;
+  executionTime: number,
   executionId: string;
-  userContext: UserContext;
-  refreshType: 'auto' | 'manual' | 'initial';
+  userContext: UserContext,
+  refreshType: 'auto' | 'manual' | 'initial'
 }
 
 export interface WidgetData {
-  widgetId: string;
+  widgetId: string,
   widgetName: string;
-  data: unknown;
+  data: unknown,
   columns: DataColumn[];
   totalRows: number;
   aggregations?: Record<string, any>;
-  executionTime: number;
+  executionTime: number,
   dataStatus: 'SUCCESS' | 'PARTIAL' | 'ERROR' | 'EMPTY';
   error?: {
-    code: string;
+    code: string,
     message: string;
     details?: string;
   };
@@ -658,7 +658,7 @@ export interface WidgetData {
 }
 
 export interface DataColumn {
-  name: string;
+  name: string,
   label: string;
   dataType: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'array';
   format?: string;
@@ -674,36 +674,36 @@ export interface DataColumn {
 }
 
 export interface UserContext {
-  userId: string;
+  userId: string,
   roles: string[];
   department?: string;
   preferences: Record<string, any>;
-  timezone: string;
+  timezone: string,
   language: string;
-  deviceType: 'desktop' | 'tablet' | 'mobile';
-  sessionId: string;
+  deviceType: 'desktop' | 'tablet' | 'mobile',
+  sessionId: string
 }
 
 // KPI models;
 export interface KPI {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: KPICategory;
-  type: KPIType;
+  type: KPIType,
   unit: string;
-  formula: string;
+  formula: string,
   dataSource: string;
-  frequency: 'real-time' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual';
+  frequency: 'real-time' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual',
   owner: string;
-  targets: KPITarget[];
+  targets: KPITarget[],
   thresholds: KPIThreshold[];
-  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT';
+  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT',
   visibility: VisibilitySettings;
-  created: Date;
+  created: Date,
   updated: Date;
-  metadata: KPIMetadata;
-  tracking: KPITracking;
+  metadata: KPIMetadata,
+  tracking: KPITracking
 }
 
 export enum KPICategory {
@@ -730,13 +730,13 @@ export enum KPIType {
 }
 
 export interface KPITarget {
-  id: string;
+  id: string,
   value: number;
-  period: string;
+  period: string,
   startDate: Date;
-  endDate: Date;
+  endDate: Date,
   setBy: string;
-  setDate: Date;
+  setDate: Date,
   rationale: string;
   previousTargetValue?: number;
   targetType: 'FIXED' | 'RELATIVE' | 'BENCHMARK';
@@ -748,12 +748,12 @@ export interface KPITarget {
 }
 
 export interface KPIThreshold {
-  id: string;
+  id: string,
   name: string;
-  condition: 'less_than' | 'greater_than' | 'equals' | 'between';
+  condition: 'less_than' | 'greater_than' | 'equals' | 'between',
   value1: number;
   value2?: number; // for 'between' condition;
-  color: string;
+  color: string,
   severity: 'CRITICAL' | 'WARNING' | 'SUCCESS' | 'NEUTRAL' | 'CUSTOM';
   icon?: string;
   alertEnabled: boolean;
@@ -764,12 +764,12 @@ export interface KPIThreshold {
 export interface KPIMetadata {
   creationSource: 'STANDARD' | 'CUSTOM';
   standardId?: string;
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    userId: string;
-    changes: string;
+    userId: string,
+    changes: string
   }[];
   reviewDate?: Date;
   reviewedBy?: string;
@@ -781,10 +781,10 @@ export interface KPIMetadata {
 }
 
 export interface KPITracking {
-  lastCalculated: Date;
+  lastCalculated: Date,
   calculationFrequency: string;
   nextCalculation?: Date;
-  historicalValues: number;
+  historicalValues: number,
   trendDirection: 'IMPROVING' | 'STABLE' | 'WORSENING' | 'UNKNOWN';
   trendPercentage?: number;
   currentValue?: number;
@@ -794,64 +794,64 @@ export interface KPITracking {
   periodOnPeriod?: number;
   targetAchievement?: number; // percentage;
   forecast?: {
-    nextPeriod: number;
+    nextPeriod: number,
     confidence: number; // 0-100;
-    trend: 'IMPROVING' | 'STABLE' | 'WORSENING';
+    trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
   };
 }
 
 // Clinical Quality Dashboard models;
 export interface ClinicalQualityDashboard {
-  id: string;
+  id: string,
   name: string;
   description: string;
   specialty?: string;
   department?: string;
-  measures: QualityMeasure[];
+  measures: QualityMeasure[],
   benchmarks: QualityBenchmark[];
   timeframe: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'CUSTOM';
   customTimeframe?: {
-    start: Date;
-    end: Date;
+    start: Date,
+    end: Date
   };
-  filters: DashboardFilter[];
+  filters: DashboardFilter[],
   stratifications: Stratification[];
-  visualizations: QualityVisualization[];
+  visualizations: QualityVisualization[],
   drilldowns: QualityDrilldown[];
-  alertThresholds: QualityAlertThreshold[];
+  alertThresholds: QualityAlertThreshold[],
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  visibility: VisibilitySettings;
+  visibility: VisibilitySettings,
   metadata: Record<string, any>;
 }
 
 export interface QualityMeasure {
-  id: string;
+  id: string,
   name: string;
-  shortName: string;
+  shortName: string,
   description: string;
-  type: 'PROCESS' | 'OUTCOME' | 'STRUCTURE' | 'PATIENT_EXPERIENCE' | 'EFFICIENCY' | 'CUSTOM';
+  type: 'PROCESS' | 'OUTCOME' | 'STRUCTURE' | 'PATIENT_EXPERIENCE' | 'EFFICIENCY' | 'CUSTOM',
   domain: string;
   source: 'CMS' | 'JCAHO' | 'NCQA' | 'AHRQ' | 'INTERNAL' | 'CUSTOM';
   sourceId?: string;
-  numerator: string;
+  numerator: string,
   denominator: string;
   exclusions?: string;
   riskAdjustment?: string;
   dataElements: string[];
   targetValue?: number;
   weight?: number;
-  improvement: 'INCREASE' | 'DECREASE';
-  status: 'ACTIVE' | 'INACTIVE';
+  improvement: 'INCREASE' | 'DECREASE',
+  status: 'ACTIVE' | 'INACTIVE'
 }
 
 export interface QualityBenchmark {
-  id: string;
+  id: string,
   measureId: string;
-  source: 'NATIONAL' | 'STATE' | 'PEER' | 'PREVIOUS_PERIOD' | 'CUSTOM';
+  source: 'NATIONAL' | 'STATE' | 'PEER' | 'PREVIOUS_PERIOD' | 'CUSTOM',
   value: number;
   period: string;
   description?: string;
@@ -860,9 +860,9 @@ export interface QualityBenchmark {
 }
 
 export interface Stratification {
-  id: string;
+  id: string,
   name: string;
-  field: string;
+  field: string,
   type: 'CATEGORICAL' | 'CONTINUOUS';
   buckets?: {
     name: string;
@@ -870,34 +870,34 @@ export interface Stratification {
     end?: number;
     value?: string;
   }[];
-  enabled: boolean;
-  sequence: number;
+  enabled: boolean,
+  sequence: number
 }
 
 export interface QualityVisualization {
-  id: string;
+  id: string,
   name: string;
-  type: VisualizationType;
+  type: VisualizationType,
   measures: string[];
-  dimensions: string[];
+  dimensions: string[],
   settings: WidgetSettings;
-  sequence: number;
+  sequence: number
 }
 
 export interface QualityDrilldown {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   measures: string[];
-  dimensions: string[];
+  dimensions: string[],
   filters: WidgetFilter[];
-  patientList: boolean;
+  patientList: boolean,
   patientListColumns: string[];
-  actions: QualityAction[];
+  actions: QualityAction[]
 }
 
 export interface QualityAction {
-  id: string;
+  id: string,
   name: string;
   type: 'NAVIGATE' | 'EXPORT' | 'API_CALL' | 'CUSTOM';
   icon?: string;
@@ -907,152 +907,152 @@ export interface QualityAction {
 }
 
 export interface QualityAlertThreshold {
-  id: string;
+  id: string,
   measureId: string;
-  condition: 'BELOW' | 'ABOVE' | 'BETWEEN';
+  condition: 'BELOW' | 'ABOVE' | 'BETWEEN',
   value1: number;
   value2?: number;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
   message: string;
-  recipients: string[];
-  active: boolean;
+  recipients: string[],
+  active: boolean
 }
 
 // Financial Dashboard models;
 export interface FinancialDashboard {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   timeframe: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'CUSTOM';
   customTimeframe?: {
-    start: Date;
-    end: Date;
+    start: Date,
+    end: Date
   };
-  kpis: FinancialKPI[];
+  kpis: FinancialKPI[],
   sections: FinancialSection[];
-  filters: DashboardFilter[];
+  filters: DashboardFilter[],
   budgetComparison: boolean;
-  forecastEnabled: boolean;
+  forecastEnabled: boolean,
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  visibility: VisibilitySettings;
+  visibility: VisibilitySettings
 }
 
 export interface FinancialKPI {
-  id: string;
+  id: string,
   name: string;
-  type: 'REVENUE' | 'EXPENSE' | 'MARGIN' | 'RATIO' | 'VOLUME' | 'CUSTOM';
+  type: 'REVENUE' | 'EXPENSE' | 'MARGIN' | 'RATIO' | 'VOLUME' | 'CUSTOM',
   category: 'PROFITABILITY' | 'LIQUIDITY' | 'EFFICIENCY' | 'GROWTH' | 'CUSTOM';
-  formula: string;
+  formula: string,
   unit: 'CURRENCY' | 'PERCENTAGE' | 'RATIO' | 'COUNT' | 'CUSTOM';
   currencyCode?: string;
   targetValue?: number;
   benchmarkValue?: number;
-  sequence: number;
+  sequence: number,
   visualization: 'NUMBER' | 'TREND' | 'PROGRESS' | 'COMPARISON';
-  thresholds: KPIThreshold[];
+  thresholds: KPIThreshold[]
 }
 
 export interface FinancialSection {
-  id: string;
+  id: string,
   name: string;
   description?: string;
-  type: 'REVENUE' | 'EXPENSE' | 'BALANCE_SHEET' | 'CASH_FLOW' | 'CUSTOM';
+  type: 'REVENUE' | 'EXPENSE' | 'BALANCE_SHEET' | 'CASH_FLOW' | 'CUSTOM',
   widgets: FinancialWidget[];
-  sequence: number;
-  expanded: boolean;
+  sequence: number,
+  expanded: boolean
 }
 
 export interface FinancialWidget {
-  id: string;
+  id: string,
   name: string;
-  type: 'CHART' | 'TABLE' | 'METRIC' | 'TREND' | 'COMPARISON';
+  type: 'CHART' | 'TABLE' | 'METRIC' | 'TREND' | 'COMPARISON',
   dataSource: string;
-  dimensions: string[];
+  dimensions: string[],
   measures: string[];
-  visualization: VisualizationType;
+  visualization: VisualizationType,
   settings: WidgetSettings;
-  sequence: number;
+  sequence: number,
   filters: WidgetFilter[];
-  drilldowns: WidgetDrilldown[];
+  drilldowns: WidgetDrilldown[]
 }
 
 // Operational Dashboard models;
 export interface OperationalDashboard {
-  id: string;
+  id: string,
   name: string;
   description: string;
   department?: string;
-  areas: OperationalArea[];
+  areas: OperationalArea[],
   timeframe: 'REAL_TIME' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
   customTimeframe?: {
-    start: Date;
-    end: Date;
+    start: Date,
+    end: Date
   };
   refreshInterval?: number; // seconds;
-  kpis: OperationalKPI[];
+  kpis: OperationalKPI[],
   sections: OperationalSection[];
-  filters: DashboardFilter[];
+  filters: DashboardFilter[],
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  visibility: VisibilitySettings;
+  visibility: VisibilitySettings
 }
 
 export interface OperationalArea {
-  id: string;
+  id: string,
   name: string;
   type: 'DEPARTMENT' | 'UNIT' | 'SERVICE_LINE' | 'FACILITY' | 'CUSTOM';
   parentId?: string;
-  sequence: number;
+  sequence: number
 }
 
 export interface OperationalKPI {
-  id: string;
+  id: string,
   name: string;
   description?: string;
-  type: 'THROUGHPUT' | 'UTILIZATION' | 'PRODUCTIVITY' | 'QUALITY' | 'SAFETY' | 'CUSTOM';
+  type: 'THROUGHPUT' | 'UTILIZATION' | 'PRODUCTIVITY' | 'QUALITY' | 'SAFETY' | 'CUSTOM',
   formula: string;
   unit: string;
   targetValue?: number;
-  thresholds: KPIThreshold[];
+  thresholds: KPIThreshold[],
   sequence: number;
-  visualization: 'NUMBER' | 'TREND' | 'GAUGE' | 'COMPARISON';
-  updateFrequency: 'REAL_TIME' | 'HOURLY' | 'DAILY' | 'CUSTOM';
+  visualization: 'NUMBER' | 'TREND' | 'GAUGE' | 'COMPARISON',
+  updateFrequency: 'REAL_TIME' | 'HOURLY' | 'DAILY' | 'CUSTOM'
 }
 
 export interface OperationalSection {
-  id: string;
+  id: string,
   name: string;
   description?: string;
-  type: 'CAPACITY' | 'WORKFLOW' | 'RESOURCE' | 'PERFORMANCE' | 'CUSTOM';
+  type: 'CAPACITY' | 'WORKFLOW' | 'RESOURCE' | 'PERFORMANCE' | 'CUSTOM',
   widgets: OperationalWidget[];
-  sequence: number;
-  expanded: boolean;
+  sequence: number,
+  expanded: boolean
 }
 
 export interface OperationalWidget {
-  id: string;
+  id: string,
   name: string;
-  type: 'CHART' | 'TABLE' | 'METRIC' | 'MAP' | 'TIMELINE' | 'CUSTOM';
+  type: 'CHART' | 'TABLE' | 'METRIC' | 'MAP' | 'TIMELINE' | 'CUSTOM',
   dataSource: string;
-  dimensions: string[];
+  dimensions: string[],
   measures: string[];
-  visualization: VisualizationType;
+  visualization: VisualizationType,
   settings: WidgetSettings;
   sequence: number;
   refreshInterval?: number; // seconds;
-  filters: WidgetFilter[];
+  filters: WidgetFilter[],
   drilldowns: WidgetDrilldown[];
   predictive?: {
-    enabled: boolean;
+    enabled: boolean,
     model: string;
-    horizon: number;
+    horizon: number,
     horizonUnit: 'MINUTES' | 'HOURS' | 'DAYS';
     confidenceInterval: number; // 0-100;
   };
@@ -1292,7 +1292,7 @@ export class RealTimeDashboardService {
       filters?: Record<string, any>;
       executionId?: string;
       refreshType?: 'auto' | 'manual' | 'initial';
-      userContext: UserContext;
+      userContext: UserContext
     }
   ): Promise<DashboardData> {
     const startTime = performance.now();
@@ -1973,35 +1973,35 @@ export class RealTimeDashboardService {
 
   // Private helper methods;
   private validateDashboard(dashboard: unknown): void {
-    // Implementation for dashboard validation;
+    // Implementation for dashboard validation
   }
 
   private validateDashboardUpdates(updates: Partial<Dashboard>): void {
-    // Implementation for update validation;
+    // Implementation for update validation
   }
 
   private validateWidget(widget: unknown): void {
-    // Implementation for widget validation;
+    // Implementation for widget validation
   }
 
   private validateWidgetUpdates(updates: Partial<DashboardWidget>): void {
-    // Implementation for widget update validation;
+    // Implementation for widget update validation
   }
 
   private validateKPI(kpi: unknown): void {
-    // Implementation for KPI validation;
+    // Implementation for KPI validation
   }
 
   private validateClinicalQualityDashboard(dashboard: unknown): void {
-    // Implementation for clinical quality dashboard validation;
+    // Implementation for clinical quality dashboard validation
   }
 
   private validateFinancialDashboard(dashboard: unknown): void {
-    // Implementation for financial dashboard validation;
+    // Implementation for financial dashboard validation
   }
 
   private validateOperationalDashboard(dashboard: unknown): void {
-    // Implementation for operational dashboard validation;
+    // Implementation for operational dashboard validation
   }
 
   private getRelevantFilters(

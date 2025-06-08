@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -12,7 +12,7 @@ var __DEV__: boolean;
 import React, { ReactNode } from 'react';
 
 interface DashboardLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 /**
@@ -26,7 +26,7 @@ export default const DashboardLayout = ({ children }: DashboardLayoutProps) {
       <div className="hidden md:flex md:w-64 md:flex-col">;
         <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r">;
           <div className="px-4 py-4">;
-            <h1 className="text-xl font-semibold text-gray-800">HMS Dashboard</h1>;
+            <h1 className="text-xl font-semibold text-gray-800">HMS Dashboard</h1>
           </div>
           <nav className="flex-1 px-2 pb-4 space-y-1">;
             {/* Navigation items would go here */}
@@ -39,7 +39,7 @@ export default const DashboardLayout = ({ children }: DashboardLayoutProps) {
         {/* Header */}
         <header className="w-full">;
           <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b flex items-center justify-between px-4">;
-            <div>
+<div
               {/* Mobile menu button would go here */}
             </div>
             <div className="flex items-center space-x-4">;

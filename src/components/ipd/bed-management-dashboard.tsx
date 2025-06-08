@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,12 +33,12 @@ import {
 
 // Define interfaces;
 interface Bed {
-  id: string;
+  id: string,
   bed_number: string;
   room_number?: string | null;
-  ward: string;
+  ward: string,
   category: "general" | "semi-private" | "private" | "icu";
-  status: "available" | "occupied" | "reserved" | "maintenance";
+  status: "available" | "occupied" | "reserved" | "maintenance",
   price_per_day: number;
   features?: string | null; // Comma-separated string;
   // Add other bed properties if any;
@@ -93,7 +93,7 @@ const BedManagementDashboard: React.FC = () => {
   useEffect(() => {
     const fetchBeds = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         const parameters = new URLSearchParams();
@@ -117,7 +117,7 @@ const BedManagementDashboard: React.FC = () => {
         }
 
         // FIX: Use defined type for success response;
-        const data: BedsApiResponse = await response.json();
+        const data: BedsApiResponse = await response.json(),
         setBeds(Array.isArray(data) ? data : []); // Ensure beds is always an array;
       } catch (error_: unknown) {
         // FIX: Use unknown for catch block;
@@ -126,7 +126,7 @@ const BedManagementDashboard: React.FC = () => {
             ? error_.message;
             : "An unknown error occurred";
 
-        setError(`Failed to load beds: ${message}`);
+        setError(`Failed to load beds: ${message}`),
         setBeds([]); // Clear beds on error;
       } finally {
         setLoading(false);
@@ -154,7 +154,7 @@ const BedManagementDashboard: React.FC = () => {
         return "outline";
       }
       default: {
-        return "default";
+        return "default"
       }
     }
   };
@@ -195,19 +195,19 @@ const BedManagementDashboard: React.FC = () => {
     <div className="space-y-6 p-4">;
       {/* Filter Section */}
       <div className="flex flex-wrap gap-4 items-end">;
-        <div>
-          <label;
-            htmlFor="ward-filter";
-            className="block text-sm font-medium text-gray-700 mb-1";
+<div
+          <label>
+            htmlFor="ward-filter"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Ward;
+            Ward
           </label>
-          <Select;
+          <Select>
             value={filterWard || "All"}
             onValueChange={(value) => handleFilterChange(value, "ward")}
           >
             <SelectTrigger id="ward-filter" className="w-[180px]">;
-              <SelectValue placeholder="Select Ward" />;
+              <SelectValue placeholder="Select Ward" />
             </SelectTrigger>
             <SelectContent>
               {wardOptions.map((ward) => (
@@ -219,19 +219,19 @@ const BedManagementDashboard: React.FC = () => {
           </Select>
         </div>
 
-        <div>
-          <label;
-            htmlFor="category-filter";
-            className="block text-sm font-medium text-gray-700 mb-1";
+<div
+          <label>
+            htmlFor="category-filter"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Category;
+            Category
           </label>
-          <Select;
+          <Select>
             value={filterCategory || "All"}
             onValueChange={(value) => handleFilterChange(value, "category")}
           >
             <SelectTrigger id="category-filter" className="w-[180px]">;
-              <SelectValue placeholder="Select Category" />;
+              <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
               {categoryOptions.map((category) => (
@@ -243,19 +243,19 @@ const BedManagementDashboard: React.FC = () => {
           </Select>
         </div>
 
-        <div>
-          <label;
-            htmlFor="status-filter";
-            className="block text-sm font-medium text-gray-700 mb-1";
+<div
+          <label>
+            htmlFor="status-filter"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Status;
+            Status
           </label>
-          <Select;
+          <Select>
             value={filterStatus || "All"}
             onValueChange={(value) => handleFilterChange(value, "status")}
           >
             <SelectTrigger id="status-filter" className="w-[180px]">;
-              <SelectValue placeholder="Select Status" />;
+              <SelectValue placeholder="Select Status" />
             </SelectTrigger>
             <SelectContent>
               {statusOptions.map((status) => (
@@ -273,26 +273,26 @@ const BedManagementDashboard: React.FC = () => {
         <Card>
           <CardContent className="p-4">;
             <div className="text-2xl font-bold">{availableBeds}</div>;
-            <div className="text-sm text-muted-foreground">Available Beds</div>;
+            <div className="text-sm text-muted-foreground">Available Beds</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">;
             <div className="text-2xl font-bold">{occupiedBeds}</div>;
-            <div className="text-sm text-muted-foreground">Occupied Beds</div>;
+            <div className="text-sm text-muted-foreground">Occupied Beds</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">;
             <div className="text-2xl font-bold">{reservedBeds}</div>;
-            <div className="text-sm text-muted-foreground">Reserved Beds</div>;
+            <div className="text-sm text-muted-foreground">Reserved Beds</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">;
             <div className="text-2xl font-bold">{maintenanceBeds}</div>;
             <div className="text-sm text-muted-foreground">;
-              Under Maintenance;
+              Under Maintenance
             </div>
           </CardContent>
         </Card>
@@ -303,7 +303,7 @@ const BedManagementDashboard: React.FC = () => {
         <CardContent className="p-0">;
           {loading ? (
             <div className="flex justify-center items-center h-64">;
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>;
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
             </div>
           ) : error ? (
             <div className="text-red-500 p-4 text-center">{error}</div>;
@@ -325,7 +325,7 @@ const BedManagementDashboard: React.FC = () => {
                 {beds.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center h-24">;
-                      No beds found matching criteria;
+                      No beds found matching criteria
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -341,7 +341,7 @@ const BedManagementDashboard: React.FC = () => {
                       </TableCell>
                       <TableCell>
                         {/* FIX: Add className for potential custom styling of 'available' status */}
-                        <Badge;
+                        <Badge>
                           variant={getBedStatusVariant(bed.status)}
                           className={`capitalize ${bed.status === "available" ? "text-green-800 bg-green-100 dark:text-green-300 dark:bg-green-900/50" : ""}`}
                         >
@@ -354,10 +354,10 @@ const BedManagementDashboard: React.FC = () => {
                       <TableCell className="max-w-xs truncate">;
                         {bed.features;
                           ? bed.features.split(",").map((feature) => (
-                              <Badge;
+                              <Badge>
                                 key={feature.trim()}
-                                variant="outline";
-                                className="mr-1 mb-1 whitespace-nowrap";
+                                variant="outline"
+                                className="mr-1 mb-1 whitespace-nowrap"
                               >
                                 {feature.trim()}
                               </Badge>
@@ -365,16 +365,16 @@ const BedManagementDashboard: React.FC = () => {
                           : "-"}
                       </TableCell>
                       <TableCell>
-                        <Button;
-                          size="sm";
-                          variant="outline";
-                          className="mr-2 h-8";
+                        <Button>
+                          size="sm"
+                          variant="outline"
+                          className="mr-2 h-8"
                         >
-                          View;
+                          View
                         </Button>
                         {bed.status === "available" && (
                           <Button size="sm" variant="default" className="h-8">;
-                            Assign;
+                            Assign
                           </Button>
                         )}
                         {/* Add more actions like Edit, Change Status etc. */}

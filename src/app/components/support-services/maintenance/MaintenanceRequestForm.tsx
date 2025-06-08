@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -66,14 +66,14 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface Location {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Asset {
-  id: string;
+  id: string,
   name: string;
-  assetType: string;
+  assetType: string
 }
 
 interface MaintenanceRequestFormProps {
@@ -82,11 +82,10 @@ interface MaintenanceRequestFormProps {
   isEditing?: boolean;
 }
 
-export const MaintenanceRequestForm = ({ 
-  onSuccess, 
+export const MaintenanceRequestForm = ({ onSuccess, 
   initialData, 
-  isEditing = false;
-}: MaintenanceRequestFormProps) {
+  isEditing = false
+}: MaintenanceRequestFormProps) => {
   const [locations, setLocations] = useState<Location[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [filteredAssets, setFilteredAssets] = useState<Asset[]>([]);
@@ -111,7 +110,7 @@ export const MaintenanceRequestForm = ({
       try {
         const response = await fetch('/api/locations');
         if (!response.ok) throw new Error('Failed to fetch locations');
-        const data = await response.json();
+        const data = await response.json(),
         setLocations(data);
       } catch (error) {
 
@@ -132,7 +131,7 @@ export const MaintenanceRequestForm = ({
       try {
         const response = await fetch('/api/support-services/maintenance/assets');
         if (!response.ok) throw new Error('Failed to fetch assets');
-        const data = await response.json();
+        const data = await response.json(),
         setAssets(data.data || []);
         
         // If editing and we have an asset ID, filter assets by location;
@@ -220,20 +219,20 @@ export const MaintenanceRequestForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
-        <FormField;
+        <FormField>
           control={form.control}
-          name="locationId";
+          name="locationId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Location</FormLabel>
-              <Select;
+              <Select>
                 onValueChange={(value) => handleLocationChange(value)} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a location" />;
+                    <SelectValue placeholder="Select a location" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -245,33 +244,33 @@ export const MaintenanceRequestForm = ({
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the location that requires maintenance.;
+                Select the location that requires maintenance.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="assetId";
+          name="assetId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Asset (Optional)</FormLabel>
-              <Select;
+              <Select>
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading || !selectedLocation || filteredAssets.length === 0}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select an asset (optional)" />;
+                    <SelectValue placeholder="Select an asset (optional)" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {filteredAssets.map((asset) => (
                     <SelectItem key={asset.id} value={asset.id}>;
-                      {asset.name} ({asset.assetType});
+                      {asset.name} ({asset.assetType})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -288,100 +287,100 @@ export const MaintenanceRequestForm = ({
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="requestType";
+          name="requestType"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Request Type</FormLabel>
-              <Select;
+              <Select>
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select request type" />;
+                    <SelectValue placeholder="Select request type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="REPAIR">Repair</SelectItem>;
                   <SelectItem value="PREVENTIVE">Preventive Maintenance</SelectItem>;
                   <SelectItem value="INSTALLATION">Installation</SelectItem>;
-                  <SelectItem value="INSPECTION">Inspection</SelectItem>;
+                  <SelectItem value="INSPECTION">Inspection</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the type of maintenance service needed.;
+                Select the type of maintenance service needed.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="description";
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea;
-                  placeholder="Provide details about the maintenance request";
-                  className="resize-none";
+                <Textarea>
+                  placeholder="Provide details about the maintenance request"
+                  className="resize-none"
                   {...field}
                   disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
-                Describe what needs to be done and any specific requirements.;
+                Describe what needs to be done and any specific requirements.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="priority";
+          name="priority"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Priority</FormLabel>
-              <Select;
+              <Select>
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select priority level" />;
+                    <SelectValue placeholder="Select priority level" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="LOW">Low</SelectItem>;
                   <SelectItem value="MEDIUM">Medium</SelectItem>;
                   <SelectItem value="HIGH">High</SelectItem>;
-                  <SelectItem value="EMERGENCY">Emergency</SelectItem>;
+                  <SelectItem value="EMERGENCY">Emergency</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the priority level for this request.;
+                Select the priority level for this request.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="scheduledDate";
+          name="scheduledDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">;
               <FormLabel>Scheduled Date (Optional)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
-                    <Button;
+                    <Button>
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
@@ -394,13 +393,13 @@ export const MaintenanceRequestForm = ({
                       ) : (
                         <span>Pick a date</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">;
-                  <Calendar;
-                    mode="single";
+                  <Calendar>
+                    mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) => date < new Date()}
@@ -409,54 +408,54 @@ export const MaintenanceRequestForm = ({
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                Select a date when this service should be performed (optional).;
+                Select a date when this service should be performed (optional).
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="estimatedHours";
+          name="estimatedHours"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Estimated Hours (Optional)</FormLabel>
               <FormControl>
-                <Input;
+                <Input>
                   type="number" 
-                  step="0.5";
-                  min="0.5";
-                  placeholder="Estimated hours to complete";
+                  step="0.5"
+                  min="0.5"
+                  placeholder="Estimated hours to complete"
                   {...field}
                   onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                   disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
-                Estimate how many hours this maintenance task will take.;
+                Estimate how many hours this maintenance task will take.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="notes";
+          name="notes"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Additional Notes (Optional)</FormLabel>
               <FormControl>
-                <Textarea;
-                  placeholder="Any additional information or special instructions";
-                  className="resize-none";
+                <Textarea>
+                  placeholder="Any additional information or special instructions"
+                  className="resize-none"
                   {...field}
                   disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
-                Provide any additional details that might be helpful.;
+                Provide any additional details that might be helpful.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -464,13 +463,13 @@ export const MaintenanceRequestForm = ({
         />
 
         <div className="flex justify-end space-x-4">;
-          <Button;
+          <Button>
             type="button" 
-            variant="outline";
+            variant="outline"
             onClick={() => router.back()}
             disabled={isLoading}
           >
-            Cancel;
+            Cancel
           </Button>
           <Button type="submit" disabled={isLoading}>;
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}

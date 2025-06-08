@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -14,7 +14,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for triage input data;
 interface TriageInput {
-  triage_nurse_id: string | number;
+  triage_nurse_id: string | number,
   esi_level: number; // Emergency Severity Index (1-5);
   vital_signs: Record<string, unknown>; // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
   assessment_notes?: string | null; // FIX: Allow null;
@@ -23,12 +23,12 @@ interface TriageInput {
 
 // Define interface for triage data (including generated fields)
 interface Triage {
-  id: string;
+  id: string,
   visit_id: string;
-  triage_nurse_id: string | number;
+  triage_nurse_id: string | number,
   esi_level: number;
   vital_signs: Record<string, unknown>; // Should be an object;
-  assessment_notes?: string | null; // FIX: Allow null;
+  assessment_notes?: string | null; // FIX: Allow null,
   triage_timestamp: string; // ISO 8601 date string;
 }
 
@@ -75,8 +75,7 @@ export async const GET = (
 
 // POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit;
 export async const POST = (
-  request: NextRequest, // Use NextRequest for json()
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific;

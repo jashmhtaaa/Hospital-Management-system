@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -78,7 +78,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
       try {
         const response = await fetch(`/api/hr/staff/${params.id}`);
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json(),
           setEmployee(data);
         }
       } catch (err) {
@@ -140,13 +140,13 @@ export default const AddQualification = ({ params }: { params: { id: string } })
   return (
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
-        <Button;
-          variant="ghost";
-          size="sm";
+        <Button>
+          variant="ghost"
+          size="sm"
           onClick={() => router.push(`/dashboard/hr/staff/${params.id}`)}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />;
-          Back to Employee Profile;
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Employee Profile
         </Button>
       </div>
       
@@ -161,91 +161,91 @@ export default const AddQualification = ({ params }: { params: { id: string } })
         <CardHeader>
           <CardTitle>Qualification Details</CardTitle>
           <CardDescription>
-            Enter the qualification or certification details;
+            Enter the qualification or certification details
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">;
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="name";
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Qualification Name*</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Registered Nurse, ACLS Certification" {...field} />;
+                        <Input placeholder="e.g., Registered Nurse, ACLS Certification" {...field} />
                       </FormControl>
                       <FormDescription>
-                        The name of the qualification or certification;
+                        The name of the qualification or certification
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="code";
+                  name="code"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Qualification Code*</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., RN, ACLS" {...field} />;
+                        <Input placeholder="e.g., RN, ACLS" {...field} />
                       </FormControl>
                       <FormDescription>
-                        A code or abbreviation for the qualification;
+                        A code or abbreviation for the qualification
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="issuer";
+                  name="issuer"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Issuing Organization</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., American Heart Association" {...field} />;
+                        <Input placeholder="e.g., American Heart Association" {...field} />
                       </FormControl>
                       <FormDescription>
-                        The organization that issued the qualification;
+                        The organization that issued the qualification
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="identifier";
+                  name="identifier"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>License/Certificate Number</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., RN12345" {...field} />;
+                        <Input placeholder="e.g., RN12345" {...field} />
                       </FormControl>
                       <FormDescription>
-                        The unique identifier for this qualification;
+                        The unique identifier for this qualification
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="startDate";
+                  name="startDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">;
                       <FormLabel>Issue Date*</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
-                            <Button;
+                            <Button>
                               variant={"outline"}
                               className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
                             >
@@ -254,13 +254,13 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                               ) : (
                                 <span>Pick a date</span>
                               )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">;
-                          <Calendar;
-                            mode="single";
+                          <Calendar>
+                            mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
@@ -268,23 +268,23 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                         </PopoverContent>
                       </Popover>
                       <FormDescription>
-                        When the qualification was issued;
+                        When the qualification was issued
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="endDate";
+                  name="endDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">;
                       <FormLabel>Expiry Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
-                            <Button;
+                            <Button>
                               variant={"outline"}
                               className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
                             >
@@ -293,13 +293,13 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                               ) : (
                                 <span>No expiry date</span>
                               )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">;
-                          <Calendar;
-                            mode="single";
+                          <Calendar>
+                            mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
@@ -307,21 +307,21 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                         </PopoverContent>
                       </Popover>
                       <FormDescription>
-                        Leave blank if the qualification does not expire;
+                        Leave blank if the qualification does not expire
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="attachment";
+                  name="attachment"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Certificate URL</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://example.com/certificate.pdf" {...field} />;
+                        <Input placeholder="https://example.com/certificate.pdf" {...field} />
                       </FormControl>
                       <FormDescription>
                         URL to the certificate document (if available)
@@ -333,12 +333,12 @@ export default const AddQualification = ({ params }: { params: { id: string } })
               </div>
               
               <div className="flex justify-end gap-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => router.push(`/dashboard/hr/staff/${params.id}`)}
                 >
-                  Cancel;
+                  Cancel
                 </Button>
                 <Button type="submit" disabled={loading}>;
                   {loading ? 'Saving...' : 'Add Qualification'}

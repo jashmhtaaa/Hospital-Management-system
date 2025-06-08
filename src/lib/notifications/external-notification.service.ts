@@ -76,7 +76,7 @@ export type NotificationTemplate = z.infer<typeof NotificationTemplateSchema> & 
 export type NotificationRequest = z.infer<typeof NotificationRequestSchema>;
 
 export interface NotificationResult {
-  id: string;
+  id: string,
   status: 'sent' | 'failed' | 'pending' | 'scheduled';
   providerId?: string; // External provider's message ID
   errorMessage?: string;
@@ -86,18 +86,18 @@ export interface NotificationResult {
 }
 
 export interface NotificationStats {
-  total: number;
+  total: number,
   sent: number;
-  failed: number;
+  failed: number,
   pending: number;
-  deliveryRate: number;
-  totalCost: number;
+  deliveryRate: number,
+  totalCost: number
 }
 
 // SMS Provider Interface
 interface ISMSProvider {
   sendSMS(to: string, message: string, metadata?: Record<string, any>): Promise<{
-    id: string;
+    id: string,
     status: 'sent' | 'failed';
     errorMessage?: string;
     cost?: number;
@@ -107,7 +107,7 @@ interface ISMSProvider {
 // Email Provider Interface
 interface IEmailProvider {
   sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, any>): Promise<{
-    id: string;
+    id: string,
     status: 'sent' | 'failed';
     errorMessage?: string;
     cost?: number;
@@ -117,7 +117,7 @@ interface IEmailProvider {
 // WhatsApp Provider Interface
 interface IWhatsAppProvider {
   sendWhatsApp(to: string, message: string, metadata?: Record<string, any>): Promise<{
-    id: string;
+    id: string,
     status: 'sent' | 'failed';
     errorMessage?: string;
     cost?: number;
@@ -569,11 +569,11 @@ export class ExternalNotificationService {
     patientPhone: string,
     patientEmail: string,
     appointmentDetails: {
-      patientName: string;
+      patientName: string,
       appointmentDate: string;
-      appointmentTime: string;
+      appointmentTime: string,
       doctorName: string;
-      location: string;
+      location: string
     }
   ): Promise<NotificationResult[]> {
     const results: NotificationResult[] = [];
@@ -622,11 +622,11 @@ export class ExternalNotificationService {
     doctorPhone: string,
     doctorEmail: string,
     alertDetails: {
-      patientName: string;
+      patientName: string,
       labTest: string;
-      criticalValue: string;
+      criticalValue: string,
       normalRange: string;
-      urgency: 'high' | 'urgent';
+      urgency: 'high' | 'urgent'
     }
   ): Promise<NotificationResult[]> {
     const results: NotificationResult[] = [];

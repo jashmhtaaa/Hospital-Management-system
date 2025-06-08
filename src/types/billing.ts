@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,10 +28,10 @@ export interface BillableItem {
     item_type: ItemType; // Use enum;
     unit_price: number;
     department?: string | null;
-    is_taxable: boolean;
+    is_taxable: boolean,
     is_active: boolean;
-    created_at: string;
-    updated_at: string;
+    created_at: string,
+    updated_at: string
 }
 
 export enum InvoiceStatus {
@@ -44,21 +44,21 @@ export enum InvoiceStatus {
 }
 
 export interface Invoice {
-    invoice_id: number;
+    invoice_id: number,
     invoice_number: string;
     patient_id: number;
     appointment_id?: number | null;
     admission_id?: number | null;
     invoice_date: string;
     due_date?: string | null;
-    total_amount: number;
+    total_amount: number,
     paid_amount: number;
-    discount_amount: number;
+    discount_amount: number,
     tax_amount: number;
     status: InvoiceStatus; // Use enum;
     notes?: string | null;
     created_by_user_id?: number | null;
-    created_at: string;
+    created_at: string,
     updated_at: string;
     // Optional expanded details;
     patient?: { patient_id: number; first_name: string; last_name: string };
@@ -67,16 +67,16 @@ export interface Invoice {
 }
 
 export interface InvoiceItem {
-    invoice_item_id: number;
+    invoice_item_id: number,
     invoice_id: number;
     billable_item_id: number;
     batch_id?: number | null;
     description?: string | null;
-    quantity: number;
+    quantity: number,
     unit_price: number;
-    discount_amount: number;
+    discount_amount: number,
     tax_amount: number;
-    total_amount: number;
+    total_amount: number,
     created_at: string;
     // Optional expanded details;
     billable_item?: Pick<BillableItem, "item_id" | "item_name" | "item_type">;
@@ -91,15 +91,15 @@ export enum PaymentMethod {
 }
 
 export interface Payment {
-    payment_id: number;
+    payment_id: number,
     invoice_id: number;
-    patient_id: number;
+    patient_id: number,
     payment_date: string;
-    amount_paid: number;
+    amount_paid: number,
     payment_method: PaymentMethod; // Use enum;
     transaction_reference?: string | null;
     notes?: string | null;
     received_by_user_id?: number | null;
-    created_at: string;
+    created_at: string
 }
 

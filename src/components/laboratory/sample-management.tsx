@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,11 +37,11 @@ const { Option } = Select;
 
 // Define interfaces for data structures;
 interface Sample {
-  id: string;
+  id: string,
   barcode: string;
   patient_id: string;
   patient_name?: string; // Optional, might come from join;
-  order_id: string;
+  order_id: string,
   sample_type: string;
   status: "pending" | "collected" | "received" | "rejected" | "processed";
   collected_at?: string | null;
@@ -51,11 +51,11 @@ interface Sample {
   received_by_user_id?: string | null;
   rejection_reason?: string | null;
   notes?: string | null;
-  created_at: string;
+  created_at: string
 }
 
 interface ScanFormValues {
-  barcode: string;
+  barcode: string
 }
 
 interface UpdateFormValues {
@@ -193,7 +193,7 @@ const SampleManagement: React.FC = () => {
   };
 
   const handleResetFilters = (): void => {
-    setSearchText("");
+    setSearchText(""),
     setStatusFilter(undefined);
     // useEffect will trigger fetchSamples due to statusFilter change;
   };
@@ -218,9 +218,9 @@ const SampleManagement: React.FC = () => {
 
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
 
-      message.success("Sample updated successfully");
+      message.success("Sample updated successfully"),
       setIsUpdateModalVisible(false);
-      updateForm.resetFields();
+      updateForm.resetFields(),
       fetchSamples(); // Refresh list;
     } catch (err) { // Changed error to err;
       const messageText =;
@@ -232,7 +232,7 @@ const SampleManagement: React.FC = () => {
 
   // Generic function to update sample status;
   const updateSampleStatus = async (
-    _sample: Sample, // FIX: Prefixed unused parameter;
+    _sample: Sample, // FIX: Prefixed unused parameter,
     newStatus: Sample["status"]
   ): Promise<void> => {
     try {
@@ -249,7 +249,7 @@ const SampleManagement: React.FC = () => {
 
       await new Promise((resolve) => setTimeout(resolve, 300)); // Simulate delay;
 
-      message.success(`Sample marked as ${newStatus}`);
+      message.success(`Sample marked as ${newStatus}`),
       fetchSamples(); // Refresh list;
     } catch (err) { // Changed error to err;
       const messageText =;
@@ -273,7 +273,7 @@ const SampleManagement: React.FC = () => {
       status: "rejected",
       rejection_reason: sample.rejection_reason || "",
       notes: sample.notes || "",
-    });
+    }),
     setIsUpdateModalVisible(true);
   };
 
@@ -284,9 +284,9 @@ const SampleManagement: React.FC = () => {
   };
 
   const handleScanSubmit = (values: ScanFormValues): void => {
-    message.info(`Searching for barcode: ${values.barcode}`);
+    message.info(`Searching for barcode: ${values.barcode}`),
     setIsScanModalVisible(false);
-    setSearchText(values.barcode);
+    setSearchText(values.barcode),
     fetchSamples(); // Trigger search;
     form.resetFields();
   };
@@ -354,28 +354,28 @@ const SampleManagement: React.FC = () => {
         const actions: React.ReactNode[] = [];
 
         actions.push(
-          <Button;
-            key="print";
+          <Button>
+            key="print"
             type="link"
             icon={<PrinterOutlined />}
             onClick={() => handlePrintBarcode(record)}
-            size="small";
+            size="small"
           >
-            Print;
+            Print
           </Button>
         );
 
         switch (record.status) {
           case "pending": {
             actions.push(
-              <Button;
-                key="collect";
+              <Button>
+                key="collect"
                 type="link"
                 icon={<CheckOutlined />}
                 onClick={() => handleCollectSample(record)}
-                size="small";
+                size="small"
               >
-                Collect;
+                Collect
               </Button>
             );
 
@@ -383,24 +383,24 @@ const SampleManagement: React.FC = () => {
           }
           case "collected": {
             actions.push(
-              <Button;
-                key="receive";
+              <Button>
+                key="receive"
                 type="link"
                 icon={<CheckOutlined />}
                 onClick={() => handleReceiveSample(record)}
-                size="small";
+                size="small"
               >
-                Receive;
+                Receive
               </Button>,
-              <Button;
-                key="reject";
+              <Button>
+                key="reject"
                 type="link"
                 danger;
                 icon={<CloseOutlined />}
                 onClick={() => showRejectModal(record)}
-                size="small";
+                size="small"
               >
-                Reject;
+                Reject
               </Button>
             );
 
@@ -421,25 +421,25 @@ const SampleManagement: React.FC = () => {
 
   return (
     <div className="sample-management-container p-4">;
-      <Card;
-        title="Laboratory Sample Management";
+      <Card>
+        title="Laboratory Sample Management"
         extra={
-          <Button;
+          <Button>
             type="primary"
             icon={<BarcodeOutlined />}
             onClick={() => setIsScanModalVisible(true)}
           >
-            Scan Barcode;
+            Scan Barcode
           </Button>
         }
       >
         <div className="filter-container mb-4 flex flex-wrap gap-4 items-center">;
-          <Input;
-            placeholder="Search by barcode or patient...";
+          <Input>
+            placeholder="Search by barcode or patient..."
             prefix={<SearchOutlined />}
             value={searchText}
             onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setSearchText(event.target.value);
+              setSearchText(event.target.value)
             }
             onPressEnter={handleSearch}
             style={{ width: 250 }}
@@ -447,7 +447,7 @@ const SampleManagement: React.FC = () => {
           />
 
           <Select<string | null>
-            placeholder="Filter by status";
+            placeholder="Filter by status"
             allowClear;
             style={{ width: 200 }}
             value={statusFilter}
@@ -457,26 +457,26 @@ const SampleManagement: React.FC = () => {
             <Option value="collected">Collected</Option>;
             <Option value="received">Received</Option>;
             <Option value="rejected">Rejected</Option>;
-            <Option value="processed">Processed</Option>;
+            <Option value="processed">Processed</Option>
           </Select>
 
           <Button onClick={handleSearch}>Search</Button>;
-          <Button onClick={handleResetFilters}>Reset</Button>;
+          <Button onClick={handleResetFilters}>Reset</Button>
         </div>
 
         <Spin spinning={loading}>;
           <Table<Sample>
             columns={columns}
             dataSource={samples}
-            rowKey="id";
+            rowKey="id"
             pagination={{ pageSize: 10, showSizeChanger: true }}
             scroll={{ x: "max-content" }} // Ensure horizontal scroll on smaller screens;
           />
         </Spin>
       </Card>
       {/* Barcode Scan Modal */}
-      <Modal;
-        title="Scan Sample Barcode";
+      <Modal>
+        title="Scan Sample Barcode"
         visible={isScanModalVisible}
         onCancel={() => setIsScanModalVisible(false)}
         footer={undefined}
@@ -484,18 +484,18 @@ const SampleManagement: React.FC = () => {
       >
         <Form<ScanFormValues>
           form={form}
-          layout="vertical";
+          layout="vertical"
           onFinish={handleScanSubmit}
         >
           <Form.Item;
-            name="barcode";
-            label="Barcode";
+            name="barcode"
+            label="Barcode"
             rules={[
               { required: true, message: "Please enter or scan barcode" },
             ]}
           >
-            <Input;
-              placeholder="Scan or enter barcode";
+            <Input>
+              placeholder="Scan or enter barcode"
               autoFocus;
               suffix={<BarcodeOutlined />}
             />
@@ -503,13 +503,13 @@ const SampleManagement: React.FC = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">;
-              Search Sample;
+              Search Sample
             </Button>
           </Form.Item>
         </Form>
       </Modal>
       {/* Update Sample Modal (for Rejection) */}
-      <Modal;
+      <Modal>
         title={`Reject Sample: ${selectedSample?.barcode}`}
         visible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
@@ -518,19 +518,19 @@ const SampleManagement: React.FC = () => {
       >
         <Form<UpdateFormValues>
           form={updateForm}
-          layout="vertical";
+          layout="vertical"
           onFinish={handleUpdateSample}
           initialValues={{ status: "rejected" }} // Set initial status;
         >
           <Form.Item name="status" label="Status">;
             <Select disabled>
-              <Option value="rejected">Rejected</Option>;
+              <Option value="rejected">Rejected</Option>
             </Select>
           </Form.Item>
 
           <Form.Item;
-            name="rejection_reason";
-            label="Rejection Reason";
+            name="rejection_reason"
+            label="Rejection Reason"
             rules={[
               { required: true, message: "Please provide rejection reason" },
             ]}
@@ -545,7 +545,7 @@ const SampleManagement: React.FC = () => {
               <Option value="delayed_transport">Delayed Transport</Option>;
               <Option value="other">;
                 O (Content truncated due to size limit. Use line ranges to read;
-                in chunks)ther;
+                in chunks)ther
               </Option>
             </Select>
           </Form.Item>
@@ -553,13 +553,13 @@ const SampleManagement: React.FC = () => {
           <Form.Item name="notes" label="Additional Notes">;
             <Input.TextArea;
               rows={3}
-              placeholder="Optional details about rejection";
+              placeholder="Optional details about rejection"
             />
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" danger htmlType="submit">;
-              Confirm Rejection;
+              Confirm Rejection
             </Button>
           </Form.Item>
         </Form>

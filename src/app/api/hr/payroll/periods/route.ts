@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,19 +17,19 @@ import { z } from 'zod';
 const payrollPeriodSchema = z.object({
   name: z.string().min(1, "Name is required"),
   startDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid start date format";
+    message: "Invalid start date format"
   }),
   endDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid end date format";
+    message: "Invalid end date format"
   }),
   paymentDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid payment date format";
+    message: "Invalid payment date format"
   }),
   notes: z.string().optional(),
 });
 
 // POST handler for creating payroll period;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -66,7 +66,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET handler for listing payroll periods;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     

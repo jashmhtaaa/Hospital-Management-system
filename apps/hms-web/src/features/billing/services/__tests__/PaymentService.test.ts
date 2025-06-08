@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -40,7 +40,7 @@ describe("PaymentService", () => {
       // expect(paymentResult).toBeDefined();
       // expect(paymentResult.status).toEqual("succeeded");
       // expect(paymentResult.transactionId).toBeDefined();
-      // expect(InvoiceService.markInvoiceAsPaid).toHaveBeenCalledWith(invoiceId, paymentResult.transactionId);
+      // expect(InvoiceService.markInvoiceAsPaid).toHaveBeenCalledWith(invoiceId, paymentResult.transactionId),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -51,7 +51,7 @@ describe("PaymentService", () => {
 
       // Act & Assert;
       // const paymentService = new PaymentService(/* pass mocks */);
-      // await expect(paymentService.processPayment(invoiceId, {} as any)).rejects.toThrow("Invoice not found or already paid");
+      // await expect(paymentService.processPayment(invoiceId, {} as any)).rejects.toThrow("Invoice not found or already paid"),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -63,7 +63,7 @@ describe("PaymentService", () => {
 
       // Act & Assert;
       // const paymentService = new PaymentService(/* pass mocks */);
-      // await expect(paymentService.processPayment(invoiceId, {} as any)).rejects.toThrow("Payment gateway error");
+      // await expect(paymentService.processPayment(invoiceId, {} as any)).rejects.toThrow("Payment gateway error"),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });
@@ -82,7 +82,7 @@ describe("PaymentService", () => {
       // Assert;
       // expect(refundResult).toBeDefined();
       // expect(refundResult.status).toEqual("succeeded");
-      // expect(refundResult.refundTransactionId).toBeDefined();
+      // expect(refundResult.refundTransactionId).toBeDefined(),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });

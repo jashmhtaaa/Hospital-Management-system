@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,28 +23,28 @@ vi.mock('@/lib/prisma', () => ({
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn();
+      count: vi.fn()
     },
     ambulance: {
       findMany: vi.fn(),
       findUnique: vi.fn(),
       count: vi.fn(),
-      update: vi.fn();
+      update: vi.fn()
     },
     ambulanceCrew: {
       findMany: vi.fn(),
       findUnique: vi.fn(),
       count: vi.fn(),
-      update: vi.fn();
+      update: vi.fn()
     },
     ambulanceTripLog: {
-      create: vi.fn();
+      create: vi.fn()
     },
     patient: {
-      findUnique: vi.fn();
+      findUnique: vi.fn()
     },
     user: {
-      findUnique: vi.fn();
+      findUnique: vi.fn()
     }
   }
 }));
@@ -56,7 +56,7 @@ vi.mock('@/lib/security.service', () => ({
     sanitizeObject: vi.fn(obj => obj),
     encryptSensitiveData: vi.fn(data => `encrypted_${data}`),
     decryptSensitiveData: vi.fn(data => data.replace('encrypted_', '')),
-    validateHipaaCompliance: vi.fn(() => true);
+    validateHipaaCompliance: vi.fn(() => true)
   }
 }));
 
@@ -85,7 +85,7 @@ describe('AmbulanceService', () => {
           scheduledTime: new Date(),
           status: 'PENDING',
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date()
         },
         {
           id: '2',
@@ -96,7 +96,7 @@ describe('AmbulanceService', () => {
           scheduledTime: new Date(),
           status: 'ASSIGNED',
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date()
         }
       ];
       
@@ -107,7 +107,7 @@ describe('AmbulanceService', () => {
       // Call the service method;
       const result = await ambulanceService.getAmbulanceTrips({
         page: 1,
-        limit: 10;
+        limit: 10
       });
       
       // Verify Prisma was called with correct arguments;
@@ -126,7 +126,7 @@ describe('AmbulanceService', () => {
           page: 1,
           limit: 10,
           totalItems: 2,
-          totalPages: 1;
+          totalPages: 1
         }
       });
     });
@@ -143,7 +143,7 @@ describe('AmbulanceService', () => {
           scheduledTime: new Date(),
           status: 'PENDING',
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date()
         }
       ];
       
@@ -157,7 +157,7 @@ describe('AmbulanceService', () => {
         priority: 'URGENT',
         requestType: 'EMERGENCY',
         page: 1,
-        limit: 10;
+        limit: 10
       });
       
       // Verify Prisma was called with correct filters;
@@ -166,13 +166,13 @@ describe('AmbulanceService', () => {
           where: {
             status: 'PENDING',
             priority: 'URGENT',
-            requestType: 'EMERGENCY';
+            requestType: 'EMERGENCY'
           }
         });
       );
       
       // Verify result;
-      expect(result.data).toEqual(mockTrips);
+      expect(result.data).toEqual(mockTrips),
       expect(result.pagination.totalItems).toBe(1);
     });
   });
@@ -192,7 +192,7 @@ describe('AmbulanceService', () => {
         contactName: 'John Doe',
         contactPhone: '555-1234',
         medicalEquipmentNeeded: ['OXYGEN', 'STRETCHER'],
-        specialInstructions: 'Patient is elderly and has mobility issues';
+        specialInstructions: 'Patient is elderly and has mobility issues'
       };
       
       const mockCreatedTrip = {
@@ -200,7 +200,7 @@ describe('AmbulanceService', () => {
         ...mockTrip,
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -226,7 +226,7 @@ describe('AmbulanceService', () => {
           contactPhone: '555-1234',
           medicalEquipmentNeeded: ['OXYGEN', 'STRETCHER'],
           specialInstructions: 'Patient is elderly and has mobility issues',
-          status: 'PENDING';
+          status: 'PENDING'
         });
       });
       
@@ -243,7 +243,7 @@ describe('AmbulanceService', () => {
         dropoffLocation: 'City Hospital',
         patientId: 'invalid-patient',
         scheduledTime: new Date(),
-        requestedById: 'user1';
+        requestedById: 'user1'
       };
       
       // Mock Prisma response;
@@ -262,7 +262,7 @@ describe('AmbulanceService', () => {
         dropoffLocation: 'City Hospital',
         scheduledTime: new Date(),
         notes: 'Equipment transport',
-        requestedById: 'user1';
+        requestedById: 'user1'
       };
       
       const mockCreatedTrip = {
@@ -271,7 +271,7 @@ describe('AmbulanceService', () => {
         patientId: null,
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -287,7 +287,7 @@ describe('AmbulanceService', () => {
           requestType: 'NON_EMERGENCY',
           priority: 'MEDIUM',
           patientId: undefined, // No patient ID;
-          status: 'PENDING';
+          status: 'PENDING'
         });
       });
       
@@ -308,7 +308,7 @@ describe('AmbulanceService', () => {
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -320,7 +320,7 @@ describe('AmbulanceService', () => {
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
-        include: expect.any(Object);
+        include: expect.any(Object)
       });
       
       // Verify result;
@@ -350,7 +350,7 @@ describe('AmbulanceService', () => {
         requestedById: 'user1',
         requestedBy: { id: 'user1', name: 'Dr. Smith' },
         createdAt: new Date('2025-05-25T09:30:00Z'),
-        updatedAt: new Date('2025-05-25T09:30:00Z');
+        updatedAt: new Date('2025-05-25T09:30:00Z')
       };
       
       // Mock Prisma response;
@@ -360,16 +360,16 @@ describe('AmbulanceService', () => {
       const result = await ambulanceService.getAmbulanceTripById('1', true);
       
       // Verify result is in FHIR format;
-      expect(result).toHaveProperty('resourceType', 'ServiceRequest');
-      expect(result).toHaveProperty('id', '1');
-      expect(result).toHaveProperty('status', 'active');
-      expect(result).toHaveProperty('intent', 'order');
-      expect(result).toHaveProperty('priority', 'urgent');
-      expect(result).toHaveProperty('subject');
-      expect(result).toHaveProperty('requester');
-      expect(result).toHaveProperty('authoredOn', '2025-05-25T09:30:00Z');
-      expect(result).toHaveProperty('locationReference');
-      expect(result).toHaveProperty('occurrenceDateTime', '2025-05-25T10:00:00Z');
+      expect(result).toHaveProperty('resourceType', 'ServiceRequest'),
+      expect(result).toHaveProperty('id', '1'),
+      expect(result).toHaveProperty('status', 'active'),
+      expect(result).toHaveProperty('intent', 'order'),
+      expect(result).toHaveProperty('priority', 'urgent'),
+      expect(result).toHaveProperty('subject'),
+      expect(result).toHaveProperty('requester'),
+      expect(result).toHaveProperty('authoredOn', '2025-05-25T09:30:00Z'),
+      expect(result).toHaveProperty('locationReference'),
+      expect(result).toHaveProperty('occurrenceDateTime', '2025-05-25T10: 00:00Z')
     });
   });
   
@@ -385,19 +385,19 @@ describe('AmbulanceService', () => {
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       const mockUpdateData = {
         priority: 'HIGH',
         notes: 'Patient condition stabilized',
-        status: 'ASSIGNED';
+        status: 'ASSIGNED'
       };
       
       const mockUpdatedTrip = {
         ...mockExistingTrip,
         ...mockUpdateData,
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -411,7 +411,7 @@ describe('AmbulanceService', () => {
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({
         where: { id: '1' },
         data: mockUpdateData,
-        include: expect.any(Object);
+        include: expect.any(Object)
       });
       
       // Verify result;
@@ -439,14 +439,14 @@ describe('AmbulanceService', () => {
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       const mockAmbulance = {
         id: 'amb1',
         registrationNumber: 'AMB-001',
         type: 'ADVANCED_LIFE_SUPPORT',
-        status: 'AVAILABLE';
+        status: 'AVAILABLE'
       };
       
       const mockCrews = [
@@ -460,7 +460,7 @@ describe('AmbulanceService', () => {
         ambulanceId: 'amb1',
         ambulance: mockAmbulance,
         crew: mockCrews,
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -487,7 +487,7 @@ describe('AmbulanceService', () => {
             connect: [{ id: 'crew1' }, { id: 'crew2' }]
           }
         },
-        include: expect.any(Object);
+        include: expect.any(Object)
       });
       
       // Verify ambulance status was updated;
@@ -504,7 +504,7 @@ describe('AmbulanceService', () => {
         data: expect.objectContaining({
           tripId: '1',
           status: 'ASSIGNED',
-          notes: expect.stringContaining('Ambulance AMB-001 assigned');
+          notes: expect.stringContaining('Ambulance AMB-001 assigned')
         });
       });
       
@@ -523,7 +523,7 @@ describe('AmbulanceService', () => {
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -545,14 +545,14 @@ describe('AmbulanceService', () => {
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       const mockAmbulance = {
         id: 'amb1',
         registrationNumber: 'AMB-001',
         type: 'ADVANCED_LIFE_SUPPORT',
-        status: 'ASSIGNED' // Already assigned;
+        status: 'ASSIGNED' // Already assigned
       };
       
       // Mock Prisma response;
@@ -582,7 +582,7 @@ describe('AmbulanceService', () => {
           { id: 'crew2', name: 'Jane Medic' }
         ],
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       const mockUpdatedTrip = {
@@ -590,7 +590,7 @@ describe('AmbulanceService', () => {
         status: 'EN_ROUTE_TO_PICKUP',
         currentLatitude: 40.7128,
         currentLongitude: -74.0060,
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -613,9 +613,9 @@ describe('AmbulanceService', () => {
         data: {
           status: 'EN_ROUTE_TO_PICKUP',
           currentLatitude: 40.7128,
-          currentLongitude: -74.0060;
+          currentLongitude: -74.0060
         },
-        include: expect.any(Object);
+        include: expect.any(Object)
       });
       
       // Verify trip log was created;
@@ -625,7 +625,7 @@ describe('AmbulanceService', () => {
           status: 'EN_ROUTE_TO_PICKUP',
           notes: 'Ambulance en route to pickup location',
           latitude: 40.7128,
-          longitude: -74.0060;
+          longitude: -74.0060
         });
       });
       
@@ -650,14 +650,14 @@ describe('AmbulanceService', () => {
           { id: 'crew2', name: 'Jane Medic' }
         ],
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       const mockUpdatedTrip = {
         ...mockExistingTrip,
         status: 'COMPLETED',
         completedAt: expect.any(Date),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -679,9 +679,9 @@ describe('AmbulanceService', () => {
         where: { id: '1' },
         data: {
           status: 'COMPLETED',
-          completedAt: expect.any(Date);
+          completedAt: expect.any(Date)
         },
-        include: expect.any(Object);
+        include: expect.any(Object)
       });
       
       // Verify ambulance status was updated;
@@ -698,7 +698,7 @@ describe('AmbulanceService', () => {
         data: expect.objectContaining({
           tripId: '1',
           status: 'COMPLETED',
-          notes: 'Trip completed successfully';
+          notes: 'Trip completed successfully'
         });
       });
       
@@ -717,7 +717,7 @@ describe('AmbulanceService', () => {
         scheduledTime: new Date(),
         status: 'PENDING', // Not assigned yet;
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       
       // Mock Prisma response;
@@ -744,7 +744,7 @@ describe('AmbulanceService', () => {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date()
         },
         {
           id: 'amb2',
@@ -754,7 +754,7 @@ describe('AmbulanceService', () => {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date()
         }
       ];
       
@@ -765,7 +765,7 @@ describe('AmbulanceService', () => {
       // Call the service method;
       const result = await ambulanceService.getAmbulanceVehicles({
         page: 1,
-        limit: 10;
+        limit: 10
       });
       
       // Verify Prisma was called with correct arguments;
@@ -784,7 +784,7 @@ describe('AmbulanceService', () => {
           page: 1,
           limit: 10,
           totalItems: 2,
-          totalPages: 1;
+          totalPages: 1
         }
       });
     });
@@ -800,7 +800,7 @@ describe('AmbulanceService', () => {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date()
         }
       ];
       
@@ -814,7 +814,7 @@ describe('AmbulanceService', () => {
         type: 'ADVANCED_LIFE_SUPPORT',
         available: true,
         page: 1,
-        limit: 10;
+        limit: 10
       });
       
       // Verify Prisma was called with correct filters;
@@ -828,7 +828,7 @@ describe('AmbulanceService', () => {
       );
       
       // Verify result;
-      expect(result.data).toEqual(mockVehicles);
+      expect(result.data).toEqual(mockVehicles),
       expect(result.pagination.totalItems).toBe(1);
     });
   });
@@ -876,9 +876,9 @@ describe('AmbulanceService', () => {
       const result = await ambulanceService.getAmbulanceAnalytics();
       
       // Verify result structure;
-      expect(result).toHaveProperty('totalTrips', 24);
-      expect(result).toHaveProperty('statusDistribution');
-      expect(result).toHaveProperty('requestTypeDistribution');
+      expect(result).toHaveProperty('totalTrips', 24),
+      expect(result).toHaveProperty('statusDistribution'),
+      expect(result).toHaveProperty('requestTypeDistribution'),
       expect(result).toHaveProperty('priorityDistribution');
       
       // Verify specific data;
@@ -915,17 +915,16 @@ describe('AmbulanceService', () => {
         where: {
           createdAt: {
             gte: fromDate,
-            lte: toDate;
+            lte: toDate
           }
         }
-      });
-      
+      }),
       expect(prisma.ambulanceTrip.groupBy).toHaveBeenCalledWith(
         expect.objectContaining({
           where: {
             createdAt: {
               gte: fromDate,
-              lte: toDate;
+              lte: toDate
             }
           }
         });

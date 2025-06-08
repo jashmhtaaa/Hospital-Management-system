@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,7 +31,7 @@ export default async const DocumentViewPage = ({
   return (
     <div className="container mx-auto py-6">;
       <Suspense fallback={<div>Loading document...</div>}>;
-        <DocumentViewer documentId={params.id} />;
+        <DocumentViewer documentId={params.id} />
       </Suspense>
     </div>
   );

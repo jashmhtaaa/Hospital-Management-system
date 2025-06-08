@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,11 +23,11 @@ const biomedicalSchema = z.object({
   manufacturer: z.string().optional(),
   model: z.string().optional(),
   purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   purchasePrice: z.number().optional(),
   warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   location: z.string().optional(),
   departmentId: z.string().optional(),
@@ -46,22 +46,22 @@ const biomedicalSchema = z.object({
     errorMap: () => ({ message: "Invalid risk level" });
   }).optional(),
   lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   calibrationFrequency: z.number().optional(),
   certifications: z.array(z.string()).optional(),
   isReusable: z.boolean().optional(),
   sterilizationRequired: z.boolean().optional(),
   lastSterilizationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
 });
 
 // POST handler for creating biomedical equipment;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -101,7 +101,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET handler for listing biomedical equipment;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     

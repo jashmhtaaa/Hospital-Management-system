@@ -76,11 +76,11 @@ describe('Gap Implementation Integration Tests', () => {
     test('should encrypt and decrypt sensitive healthcare data', async () => {
       const sensitiveData = 'Patient John Doe, SSN: 123-45-6789, Diagnosis: Hypertension';
       
-      const encrypted = await encryptionService.encrypt(sensitiveData, 'patient_records');
-      expect(encrypted).not.toBe(sensitiveData);
+      const encrypted = await encryptionService.encrypt(sensitiveData, 'patient_records'),
+      expect(encrypted).not.toBe(sensitiveData),
       expect(encrypted.length).toBeGreaterThan(0);
       
-      const decrypted = await encryptionService.decrypt(encrypted, 'patient_records');
+      const decrypted = await encryptionService.decrypt(encrypted, 'patient_records'),
       expect(decrypted).toBe(sensitiveData);
     });
 
@@ -96,21 +96,20 @@ describe('Gap Implementation Integration Tests', () => {
 
       const sensitiveFields = ['ssn', 'diagnosis', 'notes'];
       
-      const encrypted = await encryptionService.encryptObject(patientRecord, sensitiveFields);
+      const encrypted = await encryptionService.encryptObject(patientRecord, sensitiveFields),
       expect(encrypted.name).toBe(patientRecord.name); // Non-sensitive field unchanged
       expect(encrypted.ssn).not.toBe(patientRecord.ssn); // Sensitive field encrypted
-      expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis);
+      expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis),
       expect(encrypted.notes).not.toBe(patientRecord.notes);
       
-      const decrypted = await encryptionService.decryptObject(encrypted, sensitiveFields);
+      const decrypted = await encryptionService.decryptObject(encrypted, sensitiveFields),
       expect(decrypted).toEqual(patientRecord);
     });
 
     test('should validate data integrity', async () => {
       const data = 'Critical patient information';
-      const encrypted = await encryptionService.encrypt(data);
-      
-      expect(encryptionService.validateIntegrity(encrypted)).toBe(true);
+      const encrypted = await encryptionService.encrypt(data),
+      expect(encryptionService.validateIntegrity(encrypted)).toBe(true),
       expect(encryptionService.validateIntegrity('invalid_data')).toBe(false);
     });
   });
@@ -130,12 +129,12 @@ describe('Gap Implementation Integration Tests', () => {
         status: 'draft' as const
       };
 
-      const created = await ehrService.createClinicalNote(clinicalNote);
-      expect(created.id).toBeDefined();
+      const created = await ehrService.createClinicalNote(clinicalNote),
+      expect(created.id).toBeDefined(),
       expect(created.patient_id).toBe(clinicalNote.patient_id);
 
-      const retrieved = await ehrService.getClinicalNote(created.id);
-      expect(retrieved).toBeTruthy();
+      const retrieved = await ehrService.getClinicalNote(created.id),
+      expect(retrieved).toBeTruthy(),
       expect(retrieved!.subjective).toBe(clinicalNote.subjective);
     });
 
@@ -167,12 +166,12 @@ describe('Gap Implementation Integration Tests', () => {
         period_start: new Date()
       };
 
-      const created = await ehrService.createCarePlan(carePlan);
-      expect(created.id).toBeDefined();
+      const created = await ehrService.createCarePlan(carePlan),
+      expect(created.id).toBeDefined(),
       expect(created.title).toBe(carePlan.title);
 
-      const retrieved = await ehrService.getCarePlan(created.id);
-      expect(retrieved).toBeTruthy();
+      const retrieved = await ehrService.getCarePlan(created.id),
+      expect(retrieved).toBeTruthy(),
       expect(retrieved!.goals).toHaveLength(1);
     });
 
@@ -187,11 +186,11 @@ describe('Gap Implementation Integration Tests', () => {
         created_by: 'test_doctor_001'
       };
 
-      const created = await ehrService.createProblemListItem(problemItem);
+      const created = await ehrService.createProblemListItem(problemItem),
       expect(created.id).toBeDefined();
 
-      const problemList = await ehrService.getProblemListByPatient('test_patient_001');
-      expect(problemList).toHaveLength(1);
+      const problemList = await ehrService.getProblemListByPatient('test_patient_001'),
+      expect(problemList).toHaveLength(1),
       expect(problemList[0].problem_description).toBe(problemItem.problem_description);
     });
   });
@@ -212,12 +211,12 @@ describe('Gap Implementation Integration Tests', () => {
         createdBy: 'quality_manager_001'
       };
 
-      const created = await qualityService.createQualityIndicator(indicator);
-      expect(created.id).toBeDefined();
+      const created = await qualityService.createQualityIndicator(indicator),
+      expect(created.id).toBeDefined(),
       expect(created.name).toBe(indicator.name);
 
-      const retrieved = await qualityService.getQualityIndicator(created.id);
-      expect(retrieved).toBeTruthy();
+      const retrieved = await qualityService.getQualityIndicator(created.id),
+      expect(retrieved).toBeTruthy(),
       expect(retrieved!.targetValue).toBe(indicator.targetValue);
     });
 
@@ -248,12 +247,12 @@ describe('Gap Implementation Integration Tests', () => {
         enteredBy: 'test_user'
       };
 
-      const recorded = await qualityService.recordQualityMetrics(metrics);
-      expect(recorded.id).toBeDefined();
+      const recorded = await qualityService.recordQualityMetrics(metrics),
+      expect(recorded.id).toBeDefined(),
       expect(recorded.rate).toBe(15); // 15/100 * 100
 
-      const retrieved = await qualityService.getQualityMetrics(createdIndicator.id);
-      expect(retrieved).toHaveLength(1);
+      const retrieved = await qualityService.getQualityMetrics(createdIndicator.id),
+      expect(retrieved).toHaveLength(1),
       expect(retrieved[0].rate).toBe(15);
     });
 
@@ -268,12 +267,12 @@ describe('Gap Implementation Integration Tests', () => {
         createdBy: 'quality_director'
       };
 
-      const created = await qualityService.createQualityAssessment(assessment);
-      expect(created.id).toBeDefined();
+      const created = await qualityService.createQualityAssessment(assessment),
+      expect(created.id).toBeDefined(),
       expect(created.type).toBe(assessment.type);
 
-      const retrieved = await qualityService.getQualityAssessment(created.id);
-      expect(retrieved).toBeTruthy();
+      const retrieved = await qualityService.getQualityAssessment(created.id),
+      expect(retrieved).toBeTruthy(),
       expect(retrieved!.assessors).toHaveLength(2);
     });
   });
@@ -290,8 +289,8 @@ describe('Gap Implementation Integration Tests', () => {
         sender: 'appointment_system'
       };
 
-      const result = await notificationService.sendNotification(notification);
-      expect(result.id).toBeDefined();
+      const result = await notificationService.sendNotification(notification),
+      expect(result.id).toBeDefined(),
       expect(result.status).toBe('sent');
     });
 
@@ -307,8 +306,8 @@ describe('Gap Implementation Integration Tests', () => {
         sender: 'lab_system'
       };
 
-      const result = await notificationService.sendNotification(notification);
-      expect(result.id).toBeDefined();
+      const result = await notificationService.sendNotification(notification),
+      expect(result.id).toBeDefined(),
       expect(result.status).toBe('sent');
     });
 
@@ -323,10 +322,9 @@ describe('Gap Implementation Integration Tests', () => {
           doctorName: 'Dr. Smith',
           location: 'Building A, Room 205'
         }
-      );
-
+      ),
       expect(results).toHaveLength(2); // SMS + Email
-      expect(results[0].status).toBe('sent');
+      expect(results[0].status).toBe('sent'),
       expect(results[1].status).toBe('sent');
     });
 
@@ -341,10 +339,9 @@ describe('Gap Implementation Integration Tests', () => {
           normalRange: '< 0.4 ng/mL',
           urgency: 'urgent'
         }
-      );
-
+      ),
       expect(results).toHaveLength(2); // SMS + Email
-      expect(results[0].status).toBe('sent');
+      expect(results[0].status).toBe('sent'),
       expect(results[1].status).toBe('sent');
     });
   });
@@ -374,12 +371,12 @@ describe('Gap Implementation Integration Tests', () => {
       jest.spyOn(ipdService as any, 'checkBedAvailability').mockResolvedValue(true);
       jest.spyOn(ipdService as any, 'updateBedStatus').mockResolvedValue(undefined);
 
-      const created = await ipdService.createAdmission(admission);
-      expect(created.id).toBeDefined();
+      const created = await ipdService.createAdmission(admission),
+      expect(created.id).toBeDefined(),
       expect(created.patient_id).toBe(admission.patient_id);
 
-      const retrieved = await ipdService.getAdmission(created.id);
-      expect(retrieved).toBeTruthy();
+      const retrieved = await ipdService.getAdmission(created.id),
+      expect(retrieved).toBeTruthy(),
       expect(retrieved!.chief_complaint).toBe(admission.chief_complaint);
     });
 
@@ -403,8 +400,8 @@ describe('Gap Implementation Integration Tests', () => {
       jest.spyOn(ipdService as any, 'checkBedAvailability').mockResolvedValue(true);
       jest.spyOn(ipdService as any, 'completeBedTransfer').mockResolvedValue(undefined);
 
-      const created = await ipdService.transferPatient(transfer);
-      expect(created.id).toBeDefined();
+      const created = await ipdService.transferPatient(transfer),
+      expect(created.id).toBeDefined(),
       expect(created.transfer_type).toBe(transfer.transfer_type);
     });
 
@@ -430,9 +427,9 @@ describe('Gap Implementation Integration Tests', () => {
 
       jest.spyOn(ipdService as any, 'updateBedStatus').mockResolvedValue(undefined);
 
-      const created = await ipdService.dischargePatient(discharge);
-      expect(created.id).toBeDefined();
-      expect(created.discharge_type).toBe(discharge.discharge_type);
+      const created = await ipdService.dischargePatient(discharge),
+      expect(created.id).toBeDefined(),
+      expect(created.discharge_type).toBe(discharge.discharge_type),
       expect(created.length_of_stay).toBeGreaterThan(0);
     });
   });
@@ -468,7 +465,7 @@ describe('Gap Implementation Integration Tests', () => {
       }
 
       // Circuit should now be open
-      const metrics = circuitBreaker.getMetrics();
+      const metrics = circuitBreaker.getMetrics(),
       expect(metrics.failureCount).toBeGreaterThanOrEqual(2);
     });
 
@@ -488,9 +485,8 @@ describe('Gap Implementation Integration Tests', () => {
           baseDelay: 100,
           backoffMultiplier: 2
         }
-      });
-
-      expect(result).toBe('Success after retries');
+      }),
+      expect(result).toBe('Success after retries'),
       expect(attempts).toBe(3);
     });
 
@@ -506,17 +502,15 @@ describe('Gap Implementation Integration Tests', () => {
       const result = await resilienceService.executeWithGracefulDegradation(
         failingOperation,
         fallbackOperation
-      );
-
+      ),
       expect(result).toBe('Fallback response');
     });
 
     test('should provide health check information', async () => {
-      const healthCheck = await resilienceService.healthCheck();
-      
-      expect(healthCheck.status).toMatch(/healthy|degraded|unhealthy/);
-      expect(healthCheck.circuitBreakers).toBeDefined();
-      expect(healthCheck.deadLetterQueueSize).toBeDefined();
+      const healthCheck = await resilienceService.healthCheck(),
+      expect(healthCheck.status).toMatch(/healthy|degraded|unhealthy/),
+      expect(healthCheck.circuitBreakers).toBeDefined(),
+      expect(healthCheck.deadLetterQueueSize).toBeDefined(),
       expect(healthCheck.timestamp).toBeDefined();
     });
   });
@@ -547,7 +541,7 @@ describe('Gap Implementation Integration Tests', () => {
       jest.spyOn(ipdService as any, 'checkBedAvailability').mockResolvedValue(true);
       jest.spyOn(ipdService as any, 'updateBedStatus').mockResolvedValue(undefined);
 
-      const createdAdmission = await ipdService.createAdmission(admission);
+      const createdAdmission = await ipdService.createAdmission(admission),
       expect(createdAdmission.id).toBeDefined();
 
       // Create clinical note
@@ -564,7 +558,7 @@ describe('Gap Implementation Integration Tests', () => {
         status: 'final' as const
       };
 
-      const createdNote = await ehrService.createClinicalNote(clinicalNote);
+      const createdNote = await ehrService.createClinicalNote(clinicalNote),
       expect(createdNote.id).toBeDefined();
 
       // Send notifications
@@ -578,8 +572,7 @@ describe('Gap Implementation Integration Tests', () => {
           doctorName: 'Dr. Emergency',
           location: 'Emergency Department'
         }
-      );
-
+      ),
       expect(notifications).toHaveLength(2);
 
       // Record quality event
@@ -592,7 +585,7 @@ describe('Gap Implementation Integration Tests', () => {
         reportedBy: 'er_nurse_001'
       };
 
-      const createdEvent = await qualityService.createQualityEvent(qualityEvent);
+      const createdEvent = await qualityService.createQualityEvent(qualityEvent),
       expect(createdEvent.id).toBeDefined();
 
       console.log('✅ Complete patient admission workflow test passed');
@@ -622,7 +615,7 @@ describe('Gap Implementation Integration Tests', () => {
       const successful = results.filter(r => r.status === 'fulfilled').length;
       const failed = results.filter(r => r.status === 'rejected').length;
 
-      console.log(`✅ High load test: ${successful} successful, ${failed} failed operations`);
+      console.log(`✅ High load test: ${successful} successful, ${failed} failed operations`),
       expect(successful).toBeGreaterThan(failed);
     });
   });

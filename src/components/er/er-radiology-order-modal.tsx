@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -58,10 +58,10 @@ const radiologyOrderFormSchema = z.object({
 type RadiologyOrderFormValues = z.infer<typeof radiologyOrderFormSchema>;
 
 interface ERRadiologyOrderModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   visitData?: {
-    id: string;
+    id: string,
     patientName: string;
     assignedDoctorId?: string; // Pass assigned doctor if available;
   };
@@ -180,50 +180,50 @@ export default const ERRadiologyOrderModal = ({
           <DialogTitle>Place STAT Radiology Order</DialogTitle>
           <DialogDescription>
             Select procedure for patient: {visitData?.patientName || "N/A"}{" "}
-            (Visit: {visitData?.id || "N/A"});
+            (Visit: {visitData?.id || "N/A"})
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
             {/* Hidden or disabled fields for context */}
-            <FormField;
+            <FormField>
               control={form.control}
-              name="visitId";
+              name="visitId"
               render={({ field }) => <Input type="hidden" {...field} />}
             />
-            <FormField;
+            <FormField>
               control={form.control}
-              name="patientName";
+              name="patientName"
               render={({ field }) => <Input type="hidden" {...field} />}
             />
             {/* TODO: Need a way to select the ordering doctor, ideally from logged-in user or list */}
-            <FormField;
+            <FormField>
               control={form.control}
-              name="orderingDoctorId";
+              name="orderingDoctorId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Ordering Doctor ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Ordering Doctor ID" {...field} />;
+                    <Input placeholder="Enter Ordering Doctor ID" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="procedureTypeId";
+              name="procedureTypeId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Procedure Type</FormLabel>
-                  <Select;
+                  <Select>
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Procedure Type" />;
+                        <SelectValue placeholder="Select Procedure Type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -239,17 +239,17 @@ export default const ERRadiologyOrderModal = ({
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="clinicalNotes";
+              name="clinicalNotes"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     Clinical Notes / Reason for Exam (Optional)
                   </FormLabel>
                   <FormControl>
-                    <Input;
-                      placeholder="e.g., R/O Pneumonia, Trauma assessment";
+                    <Input>
+                      placeholder="e.g., R/O Pneumonia, Trauma assessment"
                       {...field}
                     />
                   </FormControl>
@@ -259,13 +259,13 @@ export default const ERRadiologyOrderModal = ({
             />
 
             <DialogFooter>
-              <Button;
+              <Button>
                 type="button"
-                variant="outline";
+                variant="outline"
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel;
+                Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>;
                 {isLoading ? "Placing Order..." : "Place STAT Order"}

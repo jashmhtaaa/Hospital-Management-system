@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,58 +16,58 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 
 // Define interfaces for data structures;
 interface Patient {
-  id: string;
+  id: string,
   first_name: string;
-  last_name: string;
+  last_name: string,
   gender: string;
-  age: number;
-  phone: string;
+  age: number,
+  phone: string
 }
 
 interface Medication {
-  id: string;
+  id: string,
   generic_name: string;
-  brand_name: string;
+  brand_name: string,
   strength: string;
-  dosage_form: string;
+  dosage_form: string
 }
 
 interface PrescriptionItemInput {
-  medication_id: string;
+  medication_id: string,
   dosage: string;
-  frequency: string;
+  frequency: string,
   duration: string;
   quantity: number | string; // Allow string for input, parse later;
-  instructions: string;
+  instructions: string
 }
 
 interface SelectedMedication extends Medication {
-  dosage: string;
+  dosage: string,
   frequency: string;
-  duration: string;
+  duration: string,
   quantity: string; // Keep as string for input state;
-  instructions: string;
+  instructions: string
 }
 
 interface PrescriptionItemDisplay {
-  medication: string;
+  medication: string,
   dosage: string;
-  frequency: string;
-  duration: string;
+  frequency: string,
+  duration: string
 }
 
 interface Prescription {
-  id: string;
+  id: string,
   date: string;
-  status: "pending" | "dispensed" | "cancelled";
-  items: PrescriptionItemDisplay[];
+  status: "pending" | "dispensed" | "cancelled",
+  items: PrescriptionItemDisplay[]
 }
 
 interface PrescriptionFormData {
-  patient_id: string;
+  patient_id: string,
   doctor_id: string;
-  notes: string;
-  items: PrescriptionItemInput[];
+  notes: string,
+  items: PrescriptionItemInput[]
 }
 
 // Component to integrate Pharmacy with OPD module;
@@ -101,8 +101,7 @@ const OPDPharmacyIntegration: React.FC = () => {
           age: 45,
           phone: "555-1234",
         };
-        setActivePatient(simulatedPatient);
-
+        setActivePatient(simulatedPatient),
         setFormData((previous) => ({
           ...previous,
           patient_id: simulatedPatient.id,
@@ -217,7 +216,7 @@ const OPDPharmacyIntegration: React.FC = () => {
       }
     };
 
-    fetchActivePatient();
+    fetchActivePatient(),
     fetchMedications();
     // Fetch prescriptions depends on activePatient being set first;
     if (activePatient) {
@@ -246,7 +245,7 @@ const OPDPharmacyIntegration: React.FC = () => {
 
   const handleRemoveMedication = (index: number): void => {
     const updatedMeds = [...selectedMedications];
-    updatedMeds.splice(index, 1);
+    updatedMeds.splice(index, 1),
     setSelectedMedications(updatedMeds);
   };
 
@@ -297,7 +296,7 @@ const OPDPharmacyIntegration: React.FC = () => {
         ...formData,
         items,
         // source: 'opd', // Add if API expects it;
-        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it;
+        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it
       };
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -333,7 +332,7 @@ const OPDPharmacyIntegration: React.FC = () => {
       setPrescriptions([newPrescription, ...prescriptions]);
 
       // Reset form state;
-      setSelectedMedications([]);
+      setSelectedMedications([]),
       setFormData((previous) => ({ ...previous, notes: "" }));
     } catch (error) { // FIX: Added error parameter;
       const message =;
@@ -347,7 +346,7 @@ const OPDPharmacyIntegration: React.FC = () => {
   if (loading && !activePatient) {
     return (
       <div className="flex justify-center items-center h-64">;
-        Loading patient data...;
+        Loading patient data...
       </div>
     );
   }
@@ -356,7 +355,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     <div className="bg-white rounded-lg shadow-md overflow-hidden">;
       <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
         <h2 className="text-lg font-semibold text-gray-800">;
-          Prescribe Medications;
+          Prescribe Medications
         </h2>
       </div>
 
@@ -394,15 +393,15 @@ const OPDPharmacyIntegration: React.FC = () => {
           {/* Medication Selection */}
           <div className="mb-6">;
             <label className="block text-sm font-medium text-gray-700 mb-2">;
-              Add Medications;
+              Add Medications
             </label>
             <div className="flex flex-wrap gap-2">;
               {medications.map((med) => (
-                <button;
+                <button>
                   key={med.id}
                   type="button"
                   onClick={() => handleAddMedication(med)}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:bg-blue-200";
+                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:bg-blue-200"
                 >
                   {med.generic_name} {med.strength}
                 </button>
@@ -414,32 +413,32 @@ const OPDPharmacyIntegration: React.FC = () => {
           {selectedMedications.length > 0 && (
             <div className="mb-6">;
               <h3 className="text-md font-medium text-gray-700 mb-2">;
-                Prescription Details;
+                Prescription Details
               </h3>
               <div className="overflow-x-auto">;
                 <table className="min-w-full divide-y divide-gray-200">;
                   <thead className="bg-gray-50">;
                     <tr>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Medication;
+                        Medication
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Dosage;
+                        Dosage
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Frequency;
+                        Frequency
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Duration;
+                        Duration
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Quantity;
+                        Quantity
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Instructions;
+                        Instructions
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                        Action;
+                        Action
                       </th>
                     </tr>
                   </thead>
@@ -450,7 +449,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                           {med.generic_name} {med.strength} {med.dosage_form}
                         </td>
                         <td className="px-3 py-2 whitespace-nowrap">;
-                          <input;
+                          <input>
                             type="text"
                             value={med.dosage}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -460,12 +459,12 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 event.target.value;
                               );
                             }
-                            placeholder="e.g., 1 tablet";
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
+                            placeholder="e.g., 1 tablet"
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
                         <td className="px-3 py-2 whitespace-nowrap">;
-                          <select;
+                          <select>
                             value={med.frequency}
                             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
                               handleMedicationChange(
@@ -474,7 +473,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 event.target.value;
                               );
                             }
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           >
                             <option value="">Select</option>;
                             <option value="OD">Once daily (OD)</option>;
@@ -483,11 +482,11 @@ const OPDPharmacyIntegration: React.FC = () => {
                             <option value="QID">Four times daily (QID)</option>;
                             <option value="QHS">At bedtime (QHS)</option>;
                             <option value="PRN">As needed (PRN)</option>;
-                            <option value="STAT">Immediately (STAT)</option>;
+                            <option value="STAT">Immediately (STAT)</option>
                           </select>
                         </td>
                         <td className="px-3 py-2 whitespace-nowrap">;
-                          <input;
+                          <input>
                             type="text"
                             value={med.duration}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -497,12 +496,12 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 event.target.value;
                               );
                             }
-                            placeholder="e.g., 7 days";
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
+                            placeholder="e.g., 7 days"
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
                         <td className="px-3 py-2 whitespace-nowrap">;
-                          <input;
+                          <input>
                             type="number"
                             value={med.quantity}
                             onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -512,12 +511,12 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 event.target.value;
                               );
                             }
-                            placeholder="Qty";
-                            className="w-16 p-1 text-sm border border-gray-300 rounded-md";
+                            placeholder="Qty"
+                            className="w-16 p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
                         <td className="px-3 py-2 whitespace-nowrap">;
-                          <textarea;
+                          <textarea>
                             value={med.instructions}
                             onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                               handleMedicationChange(
@@ -526,18 +525,18 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 event.target.value;
                               );
                             }
-                            placeholder="e.g., Take with food";
+                            placeholder="e.g., Take with food"
                             rows={1}
-                            className="w-full p-1 text-sm border border-gray-300 rounded-md";
+                            className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
                         <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">;
-                          <button;
+                          <button>
                             type="button"
                             onClick={() => handleRemoveMedication(index)}
-                            className="text-red-600 hover:text-red-800";
+                            className="text-red-600 hover:text-red-800"
                           >
-                            Remove;
+                            Remove
                           </button>
                         </td>
                       </tr>
@@ -550,15 +549,15 @@ const OPDPharmacyIntegration: React.FC = () => {
 
           {/* Notes */}
           <div className="mb-6">;
-            <label;
-              htmlFor="notes";
-              className="block text-sm font-medium text-gray-700";
+            <label>
+              htmlFor="notes"
+              className="block text-sm font-medium text-gray-700"
             >
-              Prescription Notes (Optional);
+              Prescription Notes (Optional)
             </label>
-            <textarea;
-              id="notes";
-              name="notes";
+            <textarea>
+              id="notes"
+              name="notes"
               rows={3}
               value={formData.notes}
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -567,14 +566,14 @@ const OPDPharmacyIntegration: React.FC = () => {
                   notes: event.target.value,
                 }));
               }
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
-              placeholder="Add any specific notes for the pharmacist or patient";
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="Add any specific notes for the pharmacist or patient"
             />
           </div>
 
           {/* Submit Button */}
           <div className="flex justify-end">;
-            <button;
+            <button>
               type="submit"
               disabled={loading || selectedMedications.length === 0}
               className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white ${loading ||;
@@ -588,15 +587,15 @@ const OPDPharmacyIntegration: React.FC = () => {
         {/* Existing Prescriptions */}
         <div className="mt-8">;
           <h3 className="text-md font-medium text-gray-700 mb-4">;
-            Prescription History;
+            Prescription History
           </h3>
           {loading && prescriptions.length === 0 ? (
             <p className="text-sm text-gray-500">;
-              Loading prescription history...;
+              Loading prescription history...
             </p>
           ) : prescriptions.length === 0 ? (
             <p className="text-sm text-gray-500">;
-              No previous prescriptions found for this patient.;
+              No previous prescriptions found for this patient.
             </p>
           ) : (
             <div className="space-y-4">;
@@ -606,7 +605,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                     <span className="font-semibold text-sm">;
                       Prescription #{presc.id}
                     </span>
-                    <span;
+<span
                       className={`text-xs font-medium px-2 py-0.5 rounded-full ${presc.status === "dispensed" ? "bg-green-100 text-green-800" : presc.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}
                     >
                       {presc.status}

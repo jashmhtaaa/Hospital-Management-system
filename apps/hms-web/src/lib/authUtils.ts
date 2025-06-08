@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -14,7 +14,7 @@ import { NextRequest } from "next/server";
 
 // --- AUTH PLACEHOLDERS (To be replaced by actual Auth Module from Manus 9) ---
 export interface User {
-  id: string;
+  id: string,
   name: string;
   // roles: string[]; // Example: ["admin", "doctor", "lab_technician"]
 }

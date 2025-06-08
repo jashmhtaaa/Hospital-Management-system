@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,9 +22,9 @@ export class PayrollService {
    * Create a new payroll period;
    */
   async createPayrollPeriod(data: {
-    name: string;
+    name: string,
     startDate: Date;
-    endDate: Date;
+    endDate: Date,
     paymentDate: Date;
     status: 'DRAFT' | 'PROCESSING' | 'APPROVED' | 'PAID';
     notes?: string;

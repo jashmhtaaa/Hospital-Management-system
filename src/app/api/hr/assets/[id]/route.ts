@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ import { z } from 'zod';
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const asset = await assetService.getAsset(params.id);
     
@@ -48,11 +48,11 @@ const assetUpdateSchema = z.object({
   manufacturer: z.string().optional(),
   model: z.string().optional(),
   purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   purchasePrice: z.number().optional(),
   warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   location: z.string().optional(),
   departmentId: z.string().optional().nullable(),
@@ -68,7 +68,7 @@ const assetUpdateSchema = z.object({
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -108,7 +108,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     await assetService.deleteAsset(params.id);
     

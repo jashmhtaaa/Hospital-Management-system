@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,10 +37,10 @@ type ToasterToast = ToastProps & {
 
 // FIX: Use action types directly if the constant object is removed;
 type ActionType = {
-  ADD_TOAST: "ADD_TOAST";
+  ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST";
-  DISMISS_TOAST: "DISMISS_TOAST";
-  REMOVE_TOAST: "REMOVE_TOAST";
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST"
 };
 
 let count = 0;
@@ -57,19 +57,18 @@ type Action =
   | { type: ActionType["REMOVE_TOAST"]; toastId?: ToasterToast["id"] };
 
 interface State {
-  toasts: ToasterToast[];
+  toasts: ToasterToast[]
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
-    return;
+    return
   }
 
   const timeout = setTimeout(() => {
-    toastTimeouts.delete(toastId);
-     
+    toastTimeouts.delete(toastId),
     dispatch({ type: "REMOVE_TOAST", toastId: toastId });
   }, TOAST_REMOVE_DELAY);
 
@@ -146,8 +145,7 @@ const toast = (properties: Toast) {
 
   const update = (properties_: ToasterToast) =>
     dispatch({ type: "UPDATE_TOAST", toast: { ...properties_, id } });
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
-
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
   dispatch({
     type: "ADD_TOAST",
     toast: {
@@ -155,7 +153,7 @@ const toast = (properties: Toast) {
       id,
       open: true, // This should now be valid;
       onOpenChange: (open: boolean) => {
-        if (!open) dismiss();
+        if (!open) dismiss()
       },
     },
   });
@@ -169,7 +167,7 @@ const toast = (properties: Toast) {
 
 // Keep the context and hook definition, but remove the incomplete parts;
 interface ToastContextProperties {
-  toast: typeof toast;
+  toast: typeof toast,
   dismiss: (toastId?: string) => void;
   toasts: ToasterToast[]; // Add toasts array to the context props;
 }
@@ -192,7 +190,7 @@ const useToast = () {
 
 // Function to set the global dispatch (used by the Toaster component)
 export const setGlobalToastDispatch = (newDispatch: React.Dispatch<Action>) => {
-  dispatch = newDispatch;
+  dispatch = newDispatch
 };
 
 export { useToast, toast, ToastContext }; // Export context for provider usage;

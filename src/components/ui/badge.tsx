@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -40,7 +40,7 @@ export interface BadgeProps;
 
 const Badge = ({ className, variant, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
   );
 }
 

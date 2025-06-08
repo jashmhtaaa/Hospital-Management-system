@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for ER Visit data;
 interface ERVisit {
-  id: string;
+  id: string,
   patient_id: string | number;
   arrival_timestamp: string; // ISO string;
   chief_complaint: string;
@@ -86,8 +86,7 @@ export async const GET = (
 
 // PUT /api/er/visits/[id] - Update a specific ER visit;
 export async const PUT = (
-  request: NextRequest, // Use NextRequest for json()
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific;
@@ -157,12 +156,12 @@ export async const PUT = (
     if (updateData.current_status || updateData.current_location) {
       // FIX: Define type for log entry;
       interface StatusLogEntry {
-        id: string;
+        id: string,
         visit_id: string;
-        status: string | null | undefined;
+        status: string | null | undefined,
         location: string | null | undefined;
-        updated_by_id: string | number | undefined;
-        timestamp: string;
+        updated_by_id: string | number | undefined,
+        timestamp: string
       }
       const logEntry: StatusLogEntry = {
         id: uuidv4(),

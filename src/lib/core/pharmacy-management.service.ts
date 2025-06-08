@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -106,19 +106,19 @@ export const AllergySchema = z.object({
 });
 
 export type Drug = z.infer<typeof DrugSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type Prescription = z.infer<typeof PrescriptionSchema> & {
-  id: string;
+  id: string,
   prescription_number: string;
   status: 'pending' | 'verified' | 'dispensed' | 'picked_up' | 'cancelled' | 'expired';
   verification_date?: Date;
   dispensing_date?: Date;
   pickup_date?: Date;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   prescriber_name?: string;
@@ -128,44 +128,44 @@ export type InventoryItem = z.infer<typeof InventorySchema> & {
   id: string;
   drug_name?: string;
   drug_strength?: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type DispensingRecord = z.infer<typeof DispensingSchema> & {
-  id: string;
+  id: string,
   refill_number: number;
-  total_cost: number;
+  total_cost: number,
   copay_amount: number;
-  insurance_amount: number;
+  insurance_amount: number,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type PatientAllergy = z.infer<typeof AllergySchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export interface DrugInteraction {
-  drug1_ndc: string;
+  drug1_ndc: string,
   drug1_name: string;
-  drug2_ndc: string;
+  drug2_ndc: string,
   drug2_name: string;
-  severity: 'minor' | 'moderate' | 'major' | 'contraindicated';
+  severity: 'minor' | 'moderate' | 'major' | 'contraindicated',
   mechanism: string;
-  clinical_effect: string;
+  clinical_effect: string,
   management: string;
-  documentation_level: 'poor' | 'fair' | 'good' | 'excellent';
+  documentation_level: 'poor' | 'fair' | 'good' | 'excellent'
 }
 
 export interface ClinicalAlert {
-  id: string;
+  id: string,
   patient_id: string;
-  prescription_id: string;
+  prescription_id: string,
   alert_type: 'drug_allergy' | 'drug_interaction' | 'duplicate_therapy' | 'dosing_concern' | 'contraindication';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   message: string;
   recommendation: string;
   override_reason?: string;
@@ -174,7 +174,7 @@ export interface ClinicalAlert {
   acknowledged: boolean;
   acknowledged_by?: string;
   acknowledged_date?: Date;
-  created_at: Date;
+  created_at: Date
 }
 
 export class PharmacyManagementService {
@@ -184,8 +184,7 @@ export class PharmacyManagementService {
   private dispensingRecords: Map<string, DispensingRecord[]> = new Map();
   private allergies: Map<string, PatientAllergy[]> = new Map();
   private drugInteractions: DrugInteraction[] = [];
-  private clinicalAlerts: Map<string, ClinicalAlert[]> = new Map();
-
+  private clinicalAlerts: Map<string, ClinicalAlert[]> = new Map(),
   constructor() {
     this.initializeDrugDatabase();
     this.initializeDrugInteractions();
@@ -715,14 +714,14 @@ export class PharmacyManagementService {
    * Get patient allergies;
    */
   async getPatientAllergies(patientId: string): Promise<PatientAllergy[]> {
-    return this.allergies.get(patientId) || [];
+    return this.allergies.get(patientId) || []
   }
 
   /**
    * Get clinical alerts for prescription;
    */
   async getClinicalAlerts(prescriptionId: string): Promise<ClinicalAlert[]> {
-    return this.clinicalAlerts.get(prescriptionId) || [];
+    return this.clinicalAlerts.get(prescriptionId) || []
   }
 
   /**
@@ -751,13 +750,13 @@ export class PharmacyManagementService {
    * Get pharmacy statistics;
    */
   async getPharmacyStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    totalPrescriptions: number;
+    totalPrescriptions: number,
     dispensedPrescriptions: number;
-    pendingPrescriptions: number;
+    pendingPrescriptions: number,
     totalClinicalAlerts: number;
-    criticalAlerts: number;
+    criticalAlerts: number,
     averageProcessingTime: number;
-    totalRevenue: number;
+    totalRevenue: number
   }> {
     const prescriptions = Array.from(this.prescriptions.values());
     

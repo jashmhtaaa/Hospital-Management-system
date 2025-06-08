@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,8 +24,7 @@ export default const OTDashboardStats = () {
     inProgressSurgeries: 0,
     pendingChecklists: 0,
   });
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true),
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -61,8 +60,7 @@ export default const OTDashboardStats = () {
           availableTheatres: 3,
           inProgressSurgeries: 2,
           pendingChecklists: 4,
-        });
-
+        }),
         setLoading(false);
       } catch (error) { // FIX: Added error parameter to catch block;
 
@@ -74,25 +72,25 @@ export default const OTDashboardStats = () {
   }, []);
 
   return (
-    <div>
+<div
       <h2 className="text-2xl font-semibold mb-4">;
-        Operation Theatre Dashboard;
+        Operation Theatre Dashboard
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">;
             <CardTitle className="text-sm font-medium">;
-              Today&apos;s Surgeries;
+              Today&apos;s Surgeries
             </CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />;
+            <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">;
               {loading ? "Loading..." : stats.todayBookings}
             </div>
             <p className="text-xs text-muted-foreground">;
-              {stats.inProgressSurgeries} currently in progress;
+              {stats.inProgressSurgeries} currently in progress
             </p>
           </CardContent>
         </Card>
@@ -100,31 +98,31 @@ export default const OTDashboardStats = () {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">;
             <CardTitle className="text-sm font-medium">;
-              Upcoming Bookings;
+              Upcoming Bookings
             </CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />;
+            <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">;
               {loading ? "Loading..." : stats.upcomingBookings}
             </div>
-            <p className="text-xs text-muted-foreground">Next 7 days</p>;
+            <p className="text-xs text-muted-foreground">Next 7 days</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">;
             <CardTitle className="text-sm font-medium">;
-              Available Theatres;
+              Available Theatres
             </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />;
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">;
               {loading ? "Loading..." : stats.availableTheatres}
             </div>
             <p className="text-xs text-muted-foreground">;
-              Out of 5 total theatres;
+              Out of 5 total theatres
             </p>
           </CardContent>
         </Card>
@@ -132,16 +130,16 @@ export default const OTDashboardStats = () {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">;
             <CardTitle className="text-sm font-medium">;
-              Pending Checklists;
+              Pending Checklists
             </CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />;
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">;
               {loading ? "Loading..." : stats.pendingChecklists}
             </div>
             <p className="text-xs text-muted-foreground">;
-              Requiring completion;
+              Requiring completion
             </p>
           </CardContent>
         </Card>
@@ -168,8 +166,8 @@ export default const OTDashboardStats = () {
                   <div>John Smith</div>
                   <div>Appendectomy</div>
                   <div>OT-1</div>
-                  <div>
-                    <Badge className="bg-green-500">Completed</Badge>;
+<div
+                    <Badge className="bg-green-500">Completed</Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
@@ -177,8 +175,8 @@ export default const OTDashboardStats = () {
                   <div>Sarah Johnson</div>
                   <div>Cholecystectomy</div>
                   <div>OT-2</div>
-                  <div>
-                    <Badge className="bg-blue-500">In Progress</Badge>;
+<div
+                    <Badge className="bg-blue-500">In Progress</Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
@@ -186,8 +184,8 @@ export default const OTDashboardStats = () {
                   <div>Michael Brown</div>
                   <div>Hernia Repair</div>
                   <div>OT-3</div>
-                  <div>
-                    <Badge className="bg-blue-500">In Progress</Badge>;
+<div
+                    <Badge className="bg-blue-500">In Progress</Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
@@ -195,8 +193,8 @@ export default const OTDashboardStats = () {
                   <div>Emily Davis</div>
                   <div>Thyroidectomy</div>
                   <div>OT-1</div>
-                  <div>
-                    <Badge className="bg-yellow-500">Scheduled</Badge>;
+<div
+                    <Badge className="bg-yellow-500">Scheduled</Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
@@ -204,8 +202,8 @@ export default const OTDashboardStats = () {
                   <div>Robert Wilson</div>
                   <div>Knee Arthroscopy</div>
                   <div>OT-2</div>
-                  <div>
-                    <Badge className="bg-yellow-500">Scheduled</Badge>;
+<div
+                    <Badge className="bg-yellow-500">Scheduled</Badge>
                   </div>
                 </div>
               </>

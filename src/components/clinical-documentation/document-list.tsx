@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -42,29 +42,29 @@ import { format } from 'date-fns';
 import { useToast } from '../../hooks/use-toast';
 
 interface Document {
-  id: string;
+  id: string,
   documentNumber: string;
-  documentType: string;
+  documentType: string,
   documentTitle: string;
-  authoredDate: string;
+  authoredDate: string,
   authorId: string;
-  status: string;
+  status: string,
   patientId: string;
-  isConfidential: boolean;
+  isConfidential: boolean
 }
 
 interface PaginationInfo {
-  total: number;
+  total: number,
   page: number;
-  pageSize: number;
-  totalPages: number;
+  pageSize: number,
+  totalPages: number
 }
 
 interface DocumentListProps {
-  patientId: string;
+  patientId: string
 }
 
-export const DocumentList = ({ patientId }: DocumentListProps) {
+export const DocumentList = ({ patientId }: DocumentListProps) => {
   const router = useRouter();
   const { toast } = useToast();
   
@@ -120,8 +120,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
         throw new Error('Failed to fetch documents');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       setDocuments(data.data);
       setPagination(data.pagination);
     } catch (error) {
@@ -175,8 +174,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
         return 'info';
       case 'Canceled':
         return 'destructive';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
   
@@ -191,12 +189,12 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-6">;
           <div className="w-full md:w-auto">;
-            <Select;
+            <Select>
               value={filters.documentType}
               onValueChange={(value) => handleFilterChange('documentType', value)}
             >
               <SelectTrigger className="w-full md:w-[200px]">;
-                <SelectValue placeholder="Document Type" />;
+                <SelectValue placeholder="Document Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Types</SelectItem>;
@@ -206,18 +204,18 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
                 <SelectItem value="Consultation Note">Consultation Note</SelectItem>;
                 <SelectItem value="Operative Report">Operative Report</SelectItem>;
                 <SelectItem value="Procedure Note">Procedure Note</SelectItem>;
-                <SelectItem value="History and Physical">History and Physical</SelectItem>;
+                <SelectItem value="History and Physical">History and Physical</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
           <div className="w-full md:w-auto">;
-            <Select;
+            <Select>
               value={filters.status}
               onValueChange={(value) => handleFilterChange('status', value)}
             >
               <SelectTrigger className="w-full md:w-[200px]">;
-                <SelectValue placeholder="Status" />;
+                <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Statuses</SelectItem>;
@@ -225,22 +223,22 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
                 <SelectItem value="Preliminary">Preliminary</SelectItem>;
                 <SelectItem value="Final">Final</SelectItem>;
                 <SelectItem value="Amended">Amended</SelectItem>;
-                <SelectItem value="Canceled">Canceled</SelectItem>;
+                <SelectItem value="Canceled">Canceled</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
           <div className="w-full md:w-auto">;
-            <DatePicker;
-              placeholder="From Date";
+            <DatePicker>
+              placeholder="From Date"
               date={filters.dateFrom}
               onSelect={(date) => handleFilterChange('dateFrom', date)}
             />
           </div>
           
           <div className="w-full md:w-auto">;
-            <DatePicker;
-              placeholder="To Date";
+            <DatePicker>
+              placeholder="To Date"
               date={filters.dateTo}
               onSelect={(date) => handleFilterChange('dateTo', date)}
             />
@@ -263,7 +261,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
               {loading && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-6">;
-                    Loading documents...;
+                    Loading documents...
                   </TableCell>
                 </TableRow>
               )}
@@ -271,15 +269,15 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
               {!loading && documents.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-6">;
-                    No documents found;
+                    No documents found
                   </TableCell>
                 </TableRow>
               )}
               
               {!loading && documents.map((document) => (
-                <TableRow;
+                <TableRow>
                   key={document.id}
-                  className="cursor-pointer hover:bg-gray-50";
+                  className="cursor-pointer hover:bg-gray-50"
                   onClick={() => handleDocumentClick(document.id)}
                 >
                   <TableCell>{document.documentType}</TableCell>
@@ -306,7 +304,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
         {/* Pagination */}
         {pagination.totalPages > 1 && (
           <div className="flex justify-center mt-4">;
-            <Pagination;
+            <Pagination>
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
               onPageChange={handlePageChange}
@@ -317,7 +315,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) {
       
       <CardFooter className="flex justify-end">;
         <Button onClick={handleCreateDocument}>;
-          Create Document;
+          Create Document
         </Button>
       </CardFooter>
     </Card>

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ import { getSession } from "@/lib/session"; // Using mock session;
 
 interface SampleInput {
   id?: number; // For updates;
-  order_id: number;
+  order_id: number,
   sample_type: string;
   barcode?: string; // Optional for creation, required for update?
   status?: "collected" | "received" | "processing" | "rejected";
@@ -26,17 +26,17 @@ interface SampleInput {
 }
 
 interface LabSample {
-  id: number;
+  id: number,
   order_id: number;
-  barcode: string;
+  barcode: string,
   sample_type: string;
-  collected_by: number | null;
+  collected_by: number | null,
   collected_at: string | null;
-  received_by: number | null;
+  received_by: number | null,
   received_at: string | null;
-  status: "collected" | "received" | "processing" | "rejected";
+  status: "collected" | "received" | "processing" | "rejected",
   rejection_reason: string | null;
-  notes: string | null;
+  notes: string | null,
   created_at: string;
   updated_at: string;
   // Joined fields;
@@ -49,7 +49,7 @@ interface LabSample {
 // --- API Route Handlers ---
 
 // GET /api/laboratory/samples - Get laboratory samples;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -112,7 +112,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/laboratory/samples - Create or update a laboratory sample;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {

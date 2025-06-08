@@ -34,11 +34,11 @@ import {
 } from './quality-management.service';
 
 export interface QualityPersistenceConfig {
-  enableEncryption: boolean;
+  enableEncryption: boolean,
   auditAllAccess: boolean;
   retentionPeriod: number; // in years
-  automaticArchiving: boolean;
-  encryptSensitiveData: boolean;
+  automaticArchiving: boolean,
+  encryptSensitiveData: boolean
 }
 
 export class QualityPersistenceService {
@@ -591,10 +591,10 @@ export class QualityPersistenceService {
 
   // Data Retention and Archiving
   async archiveOldRecords(): Promise<{
-    archivedIndicators: number;
+    archivedIndicators: number,
     archivedEvents: number;
-    archivedAssessments: number;
-    archivedReports: number;
+    archivedAssessments: number,
+    archivedReports: number
   }> {
     if (!this.config.automaticArchiving) {
       return { archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -99,18 +99,18 @@ export const EDDischargeSchema = z.object({
 });
 
 export type TriageAssessment = z.infer<typeof TriageAssessmentSchema> & {
-  id: string;
+  id: string,
   esi_level: 1 | 2 | 3 | 4 | 5; // Emergency Severity Index;
-  acuity_score: number;
+  acuity_score: number,
   estimated_wait_time: number; // in minutes;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type EDVisit = {
-  id: string;
+  id: string,
   patient_id: string;
-  visit_number: string;
+  visit_number: string,
   arrival_time: Date;
   triage_time?: Date;
   bed_assignment_time?: Date;
@@ -123,7 +123,7 @@ export type EDVisit = {
   chief_complaint: string;
   esi_level?: 1 | 2 | 3 | 4 | 5;
   total_length_of_stay?: number; // in minutes;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   patient_age?: number;
@@ -131,46 +131,46 @@ export type EDVisit = {
 };
 
 export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
-  id: string;
+  id: string,
   start_time: Date;
   end_time?: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type PhysicianAssessment = z.infer<typeof PhysicianAssessmentSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export interface EDCapacity {
-  total_beds: number;
+  total_beds: number,
   occupied_beds: number;
-  available_beds: number;
+  available_beds: number,
   beds_by_type: {
     [key in BedAssignmentSchema['_type']['room_type']]: {
-      total: number;
+      total: number,
       occupied: number;
-      available: number;
+      available: number
     };
   };
-  waiting_patients: number;
+  waiting_patients: number,
   patients_by_esi: {
-    level_1: number;
+    level_1: number,
     level_2: number;
-    level_3: number;
+    level_3: number,
     level_4: number;
-    level_5: number;
+    level_5: number
   };
-  average_wait_time: number;
-  longest_wait_time: number;
+  average_wait_time: number,
+  longest_wait_time: number
 }
 
 export interface EDMetrics {
@@ -181,17 +181,17 @@ export interface EDMetrics {
   admit_rate: number; // percentage;
   return_rate_72h: number; // percentage;
   time_to_pain_medication: number; // minutes (for appropriate patients)
-  throughput_per_hour: number;
+  throughput_per_hour: number
 }
 
 export interface CriticalAlert {
-  id: string;
+  id: string,
   ed_visit_id: string;
-  patient_id: string;
+  patient_id: string,
   alert_type: 'esi_1' | 'esi_2' | 'deterioration' | 'long_wait' | 'fall_risk' | 'isolation' | 'trauma_activation';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   message: string;
-  triggered_time: Date;
+  triggered_time: Date,
   acknowledged: boolean;
   acknowledged_by?: string;
   acknowledged_time?: Date;
@@ -206,8 +206,7 @@ export class EmergencyDepartmentService {
   private physicianAssessments: Map<string, PhysicianAssessment[]> = new Map();
   private discharges: Map<string, EDDischarge> = new Map();
   private criticalAlerts: Map<string, CriticalAlert[]> = new Map();
-  private edBeds: Map<string, { type: BedAssignmentSchema['_type']['room_type']; occupied: boolean; patient_id?: string }> = new Map();
-
+  private edBeds: Map<string, { type: BedAssignmentSchema['_type']['room_type']; occupied: boolean; patient_id?: string }> = new Map(),
   constructor() {
     this.initializeEDBeds();
   }
@@ -756,10 +755,10 @@ export class EmergencyDepartmentService {
   async getEDVisitDetails(visitId: string): Promise<{
     visit: EDVisit;
     triage?: TriageAssessment;
-    bedAssignments: BedAssignment[];
+    bedAssignments: BedAssignment[],
     assessments: PhysicianAssessment[];
     discharge?: EDDischarge;
-    alerts: CriticalAlert[];
+    alerts: CriticalAlert[]
   } | null> {
     const visit = this.edVisits.get(visitId);
     if (!visit) {
@@ -788,9 +787,9 @@ export class EmergencyDepartmentService {
    * Get waiting room status;
    */
   async getWaitingRoomStatus(): Promise<{
-    patients: EDVisit[];
+    patients: EDVisit[],
     totalWaiting: number;
-    averageWaitTime: number;
+    averageWaitTime: number,
     longestWaitTime: number;
     patientsByESI: { [key: string]: number };
   }> {

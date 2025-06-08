@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
@@ -43,7 +43,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -56,7 +56,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/check;
  * Check for drug interactions between medications;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -87,7 +87,7 @@ export async const POST = (req: NextRequest) {
       userId: userId,
       details: {
         medicationIds: data.medicationIds,
-        interactionCount: interactions.length;
+        interactionCount: interactions.length
       }
     });
 
@@ -102,7 +102,7 @@ export async const POST = (req: NextRequest) {
  * GET /api/pharmacy/interactions/patient/[patientId]
  * Check for drug interactions among a patient's active medications;
  */
-export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) {
+export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -143,7 +143,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
       patientId: patientId,
       details: {
         medicationCount: medicationIds.length,
-        interactionCount: interactions.length;
+        interactionCount: interactions.length
       }
     });
 

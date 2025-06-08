@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -60,10 +60,10 @@ const labOrderFormSchema = z.object({
 type LabOrderFormValues = z.infer<typeof labOrderFormSchema>;
 
 interface ERLabOrderModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   visitData?: {
-    id: string;
+    id: string,
     patientName: string;
     assignedDoctorId?: string; // Pass assigned doctor if available;
   };
@@ -72,7 +72,7 @@ interface ERLabOrderModalProperties {
 
 // FIX: Define interface for expected API error response;
 interface ApiErrorResponse {
-  error: string;
+  error: string
 }
 
 // FIX: Define interface for expected API success response;
@@ -139,7 +139,7 @@ export default const ERLabOrderModal = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          // Ensure payload matches backend expectations;
+          // Ensure payload matches backend expectations,
           patient_id: visitData?.id, // Assuming visit ID links to patient;
           visit_id: data.visitId,
           ordering_doctor_id: data.orderingDoctorId,
@@ -181,7 +181,7 @@ export default const ERLabOrderModal = ({
 
       toast({
         title: "Lab Order Submitted",
-        // FIX: Safely access newOrder.id;
+        // FIX: Safely access newOrder.id,
         description: `STAT order ${newOrder?.id || "(ID not returned)"} placed successfully.`,
       });
 
@@ -219,34 +219,34 @@ export default const ERLabOrderModal = ({
           <DialogTitle>Place STAT Lab Order</DialogTitle>
           <DialogDescription>
             Patient: {visitData?.patientName || "N/A"} (Visit ID:{" "}
-            {visitData?.id || "N/A"});
+            {visitData?.id || "N/A"})
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
             {/* Hidden fields for context */}
-            <FormField;
+            <FormField>
               control={form.control}
-              name="visitId";
+              name="visitId"
               render={({ field }) => <Input type="hidden" {...field} />}
             />
-            <FormField;
+            <FormField>
               control={form.control}
-              name="patientName";
+              name="patientName"
               render={({ field }) => <Input type="hidden" {...field} />}
             />
 
             {/* Ordering Doctor - Consider replacing with a Select dropdown fetching doctors */}
-            <FormField;
+            <FormField>
               control={form.control}
-              name="orderingDoctorId";
+              name="orderingDoctorId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Ordering Doctor ID</FormLabel>
                   <FormControl>
                     {/* TODO: Replace with a Select component fetching doctors */}
-                    <Input;
-                      placeholder="Enter Ordering Doctor ID (e.g., from logged in user)";
+                    <Input>
+                      placeholder="Enter Ordering Doctor ID (e.g., from logged in user)"
                       {...field}
                     />
                   </FormControl>
@@ -256,32 +256,32 @@ export default const ERLabOrderModal = ({
             />
 
             {/* Test Selection Checkboxes */}
-            <FormField;
+            <FormField>
               control={form.control}
-              name="selectedTests";
+              name="selectedTests"
               render={() => (
                 <FormItem>
                   <div className="mb-2">;
                     <FormLabel className="text-base">Available Tests</FormLabel>;
                     {/* FIX: Use FormDescription component */}
                     <FormDescription>
-                      Select one or more STAT tests to order.;
+                      Select one or more STAT tests to order.
                     </FormDescription>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 max-h-60 overflow-y-auto p-3 border rounded-md">;
                     {availableTests.map((item) => (
-                      <FormField;
+                      <FormField>
                         key={item.id}
                         control={form.control}
-                        name="selectedTests";
+                        name="selectedTests"
                         render={({ field }) => {
                           return (
-                            <FormItem;
+                            <FormItem>
                               key={item.id}
-                              className="flex flex-row items-center space-x-3 space-y-0 py-1";
+                              className="flex flex-row items-center space-x-3 space-y-0 py-1"
                             >
                               <FormControl>
-                                <Checkbox;
+                                <Checkbox>
                                   checked={field.value?.includes(item.id)}
                                   onCheckedChange={(checked) => {
                                     const currentValue = field.value || [];
@@ -313,22 +313,22 @@ export default const ERLabOrderModal = ({
             />
 
             {/* Clinical Notes */}
-            <FormField;
+            <FormField>
               control={form.control}
-              name="clinicalNotes";
+              name="clinicalNotes"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Clinical Notes (Optional)</FormLabel>
                   <FormControl>
-                    <Input;
-                      placeholder="e.g., Rule out MI, Check electrolytes";
+                    <Input>
+                      placeholder="e.g., Rule out MI, Check electrolytes"
                       {...field}
                       value={field.value ?? ""}
                     />
                   </FormControl>
                   {/* FIX: Use FormDescription component (Optional) */}
                   {/* <FormDescription>
-                    Brief reason for order or relevant clinical info.;
+                    Brief reason for order or relevant clinical info.
                   </FormDescription> */}
                   <FormMessage />
                 </FormItem>
@@ -336,15 +336,15 @@ export default const ERLabOrderModal = ({
             />
 
             <DialogFooter className="pt-4">;
-              <Button;
+              <Button>
                 type="button"
-                variant="outline";
+                variant="outline"
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel;
+                Cancel
               </Button>
-              <Button;
+              <Button>
                 type="submit"
                 disabled={isLoading || !form.formState.isValid}
               >

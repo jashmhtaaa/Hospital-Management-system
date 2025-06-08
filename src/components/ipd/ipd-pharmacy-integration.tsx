@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -41,17 +41,17 @@ import { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Impo
 // const { Option } = Select; // Removed unused variable assignment;
 
 interface IPDPharmacyIntegrationProperties {
-  admissionId: string;
-  prescriptions: IPDPrescription[];
+  admissionId: string,
+  prescriptions: IPDPrescription[]
 }
 
 interface MedicationScheduleItem {
   id: string; // Unique ID for the schedule item (e.g., prescriptionItemId + time)
-  prescriptionItemId: string;
+  prescriptionItemId: string,
   medicationName: string;
-  dosage: string;
+  dosage: string,
   route: string;
-  frequency: string;
+  frequency: string,
   scheduledTime: string; // ISO 8601 format;
   status: "Pending" | "Administered" | "Missed" | "Refused";
   administrationRecordId?: string;
@@ -132,7 +132,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   // Fetch administration records;
   const fetchAdministrationRecords = useCallback(async () => {
-    _setLoading(true);
+    _setLoading(true),
     _setError(null);
     try {
       const response = await fetch(
@@ -141,7 +141,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       if (!response.ok) {
         throw new Error("Failed to fetch administration records");
       }
-      const data: AdminRecordsApiResponse = await response.json();
+      const data: AdminRecordsApiResponse = await response.json(),
       _setAdministrationRecords(data.records || []);
 
       // Update schedule status based on fetched records;
@@ -173,7 +173,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   }, [admissionId]);
 
   useEffect(() => {
-    generateSchedule();
+    generateSchedule(),
     fetchAdministrationRecords();
   }, [generateSchedule, fetchAdministrationRecords]);
 
@@ -217,7 +217,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         throw new Error(errorData.error || "Failed to record administration");
       }
 
-      message.success(`Medication marked as ${status}`);
+      message.success(`Medication marked as ${status}`),
       fetchAdministrationRecords(); // Refresh records and schedule status;
       setIsModalVisible(false);
       form.resetFields();
@@ -264,7 +264,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   };
 
   const handleModalCancel = () => {
-    setIsModalVisible(false);
+    setIsModalVisible(false),
     setSelectedScheduleItem(null);
   };
 
@@ -314,13 +314,13 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         if (record.status === "Pending") {
           return (
             <Button type="primary" onClick={() => showAdministrationModal(record)}>
-              Administer;
+              Administer
             </Button>
           );
         } else if (record.administrationRecordId) {
           // Optionally show details or edit action for recorded administrations;
           return (
-            <Button;
+            <Button>
               type="link"
               onClick={() =>
                 message.info(
@@ -328,7 +328,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                 );
               }
             >
-              View Record;
+              View Record
             </Button>
           );
         }
@@ -340,51 +340,51 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   return (
     <Card title="Medication Administration Schedule (Next 24h)">;
       <Spin spinning={_loading}>;
-        <Table;
+        <Table>
           columns={columns}
           dataSource={_medicationSchedule}
-          rowKey="id";
+          rowKey="id"
           pagination={false}
-          size="small";
+          size="small"
         />
       </Spin>
 
-      <Modal;
+      <Modal>
         title={`Administer: ${selectedScheduleItem?.medicationName}`}
         visible={isModalVisible}
         onOk={handleModalOk} // This might need refinement based on button actions;
         onCancel={handleModalCancel}
         footer={[
           <Button key="cancel" onClick={handleModalCancel}>;
-            Cancel;
+            Cancel
           </Button>,
-          <Button;
-            key="refused";
+          <Button>
+            key="refused"
             onClick={() => {
-              form.setFieldsValue({ refused: true, administered: false });
+              form.setFieldsValue({ refused: true, administered: false }),
               handleModalOk(); // Trigger submission with 'Refused' state;
             }}
           >
-            Mark as Refused;
+            Mark as Refused
           </Button>,
-          <Button;
-            key="missed";
+          <Button>
+            key="missed"
             onClick={() => {
               form.setFieldsValue({ missed: true, administered: false }); // Assuming a 'missed' field or logic;
               handleModalOk(); // Trigger submission with 'Missed' state;
             }}
           >
-            Mark as Missed;
+            Mark as Missed
           </Button>,
-          <Button;
-            key="administered";
+          <Button>
+            key="administered"
             type="primary"
             onClick={() => {
-              form.setFieldsValue({ administered: true, refused: false });
+              form.setFieldsValue({ administered: true, refused: false }),
               handleModalOk(); // Trigger submission with 'Administered' state;
             }}
           >
-            Mark as Administered;
+            Mark as Administered
           </Button>,
         ]}
       >
@@ -401,7 +401,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             <strong>Route:</strong> {selectedScheduleItem?.route}
           </p>
           <Form.Item name="notes" label="Administration Notes">;
-            <Input.TextArea rows={3} />;
+            <Input.TextArea rows={3} />
           </Form.Item>
           {/* Hidden fields to track button press - not ideal, consider state */}
           <Form.Item name="administered" hidden initialValue={false}>;

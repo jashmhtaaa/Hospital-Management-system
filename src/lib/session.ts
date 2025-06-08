@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -42,7 +42,7 @@ if (!sessionPassword || sessionPassword.length < 32) {
 export const sessionOptions: SessionOptions = {
   password: sessionPassword,
   cookieName: "hms-session",
-  // secure: true should be used in production (HTTPS) but can be false for localhost;
+  // secure: true should be used in production (HTTPS) but can be false for localhost,
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7, // 1 week;
@@ -50,7 +50,7 @@ export const sessionOptions: SessionOptions = {
 };
 
 // Function to get the session in App Router Route Handlers or Server Components;
-export async const getSession = () {
+export async const getSession = () => {
   const session = await getIronSession<IronSessionData>(
     await cookies(),
     sessionOptions;

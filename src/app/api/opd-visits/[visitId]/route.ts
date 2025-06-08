@@ -9,21 +9,21 @@ import { z } from "zod";
 
 // Define the expected shape of the database query result;
 interface OPDVisitQueryResult {
-  opd_visit_id: number;
+  opd_visit_id: number,
   patient_id: number;
-  appointment_id: number | null;
+  appointment_id: number | null,
   visit_datetime: string; // Assuming ISO string format;
   visit_type: string; // Should ideally be an enum;
-  doctor_id: number;
+  doctor_id: number,
   department: string;
   status: OPDVisitStatus; // Use the existing enum;
-  notes: string | null;
+  notes: string | null,
   created_by_user_id: number;
   created_at: string; // Assuming ISO string format;
   updated_at: string; // Assuming ISO string format;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
-  doctor_full_name: string;
+  doctor_full_name: string
 }
 
 // Define roles allowed to view/manage OPD visits (adjust as needed)
@@ -40,7 +40,7 @@ const getVisitId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific OPD visit;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);
     const url = new URL(request.url);
     const visitId = getVisitId(url.pathname);
@@ -133,7 +133,7 @@ const UpdateVisitSchema = z.object({
     // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration)
 });
 
-export async const PUT = (request: Request) {
+export async const PUT = (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);
     const url = new URL(request.url);
     const visitId = getVisitId(url.pathname);

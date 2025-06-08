@@ -39,7 +39,7 @@ interface Bed {
   readonly equipment: readonly string[];
   readonly last_cleaned?: string;
   readonly created_at: string;
-  readonly updated_at: string;
+  readonly updated_at: string
 }
 
 interface Patient {
@@ -58,7 +58,7 @@ interface Patient {
 interface EmergencyContact {
   readonly name: string;
   readonly relationship: string;
-  readonly phone: string;
+  readonly phone: string
 }
 
 interface InsuranceInfo {
@@ -84,7 +84,7 @@ interface Admission {
   readonly admission_notes?: string;
   readonly discharge_summary?: string;
   readonly created_at: string;
-  readonly updated_at: string;
+  readonly updated_at: string
 }
 
 interface ProgressNote {
@@ -98,7 +98,7 @@ interface ProgressNote {
   readonly content: string;
   readonly assessment?: string;
   readonly plan?: string;
-  readonly created_at: string;
+  readonly created_at: string
 }
 
 interface VitalSigns {
@@ -128,7 +128,7 @@ interface MedicationOrder {
   readonly end_date?: string;
   readonly prescribing_doctor: string;
   readonly special_instructions?: string;
-  readonly status: 'active' | 'completed' | 'discontinued' | 'on_hold';
+  readonly status: 'active' | 'completed' | 'discontinued' | 'on_hold'
 }
 
 interface IPDStatistics {
@@ -164,12 +164,12 @@ interface TestConfig {
     readonly listBedsMaxTime: number;
     readonly createAdmissionMaxTime: number;
     readonly updateRecordMaxTime: number;
-    readonly searchMaxTime: number;
+    readonly searchMaxTime: number
   };
   readonly testData: {
     readonly mockPatient: Partial<Patient>;
     readonly mockAdmission: Partial<Admission>;
-    readonly mockBed: Partial<Bed>;
+    readonly mockBed: Partial<Bed>
   };
 }
 
@@ -370,19 +370,18 @@ describe('IPD Bed Management API', () => {
         'List beds'
       );
 
-      expect(response.success).toBe(true);
-      expect(response.data).toBeDefined();
+      expect(response.success).toBe(true),
+      expect(response.data).toBeDefined(),
       expect(Array.isArray(response.data?.beds)).toBe(true);
 
       if (response.data?.beds && response.data.beds.length > 0) {
         const sampleBed = response.data.beds[0];
         IPDTestHelper.validateRequiredFields(sampleBed, [
           'id', 'bed_number', 'room_number', 'ward', 'status', 'bed_type'
-        ]);
-
+        ]),
         expect(sampleBed.status).toMatch(/^(available|occupied|maintenance|reserved|blocked)$/);
         expect(sampleBed.bed_type).toMatch(/^(general|icu|isolation|maternity|pediatric|vip)$/);
-        expect(typeof sampleBed.floor).toBe('number');
+        expect(typeof sampleBed.floor).toBe('number'),
         expect(Array.isArray(sampleBed.equipment)).toBe(true);
       }
     });
@@ -434,8 +433,8 @@ describe('IPD Bed Management API', () => {
         '/api/ipd/beds?page=1&limit=10'
       );
 
-      expect(page1Response.success).toBe(true);
-      expect(page1Response.page).toBe(1);
+      expect(page1Response.success).toBe(true),
+      expect(page1Response.page).toBe(1),
       expect(page1Response.limit).toBe(10);
       
       if (page1Response.data?.beds) {
@@ -457,13 +456,13 @@ describe('IPD Bed Management API', () => {
         body: JSON.stringify(newBed)
       });
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        expect(response.data.bed_number).toBe(newBed.bed_number);
-        expect(response.data.room_number).toBe(newBed.room_number);
-        expect(response.data.ward).toBe(newBed.ward);
+        expect(response.data.bed_number).toBe(newBed.bed_number),
+        expect(response.data.room_number).toBe(newBed.room_number),
+        expect(response.data.ward).toBe(newBed.ward),
         expect(response.data.status).toBe('available'); // Default status
         
         IPDTestHelper.createdResources.add(`bed:${response.data.id}`);
@@ -499,7 +498,7 @@ describe('IPD Bed Management API', () => {
         }
       );
 
-      expect(updateResponse.success).toBe(true);
+      expect(updateResponse.success).toBe(true),
       expect(updateResponse.data?.status).toBe('maintenance');
     });
   });
@@ -520,8 +519,8 @@ describe('IPD Admissions API', () => {
         '/api/ipd/admissions'
       );
 
-      expect(response.success).toBe(true);
-      expect(response.data).toBeDefined();
+      expect(response.success).toBe(true),
+      expect(response.data).toBeDefined(),
       expect(Array.isArray(response.data?.admissions)).toBe(true);
 
       if (response.data?.admissions && response.data.admissions.length > 0) {
@@ -529,8 +528,7 @@ describe('IPD Admissions API', () => {
         IPDTestHelper.validateRequiredFields(sampleAdmission, [
           'id', 'admission_number', 'patient_id', 'bed_id', 
           'admission_date', 'status', 'admission_type'
-        ]);
-
+        ]),
         expect(sampleAdmission.status).toMatch(/^(active|discharged|transferred|deceased)$/);
         expect(sampleAdmission.admission_type).toMatch(/^(emergency|elective|observation|day_surgery)$/);
       }
@@ -582,13 +580,13 @@ describe('IPD Admissions API', () => {
         'Create admission'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        expect(response.data.patient_id).toBe(newAdmission.patient_id);
-        expect(response.data.bed_id).toBe(newAdmission.bed_id);
-        expect(response.data.status).toBe('active');
+        expect(response.data.patient_id).toBe(newAdmission.patient_id),
+        expect(response.data.bed_id).toBe(newAdmission.bed_id),
+        expect(response.data.status).toBe('active'),
         expect(response.data.admission_number).toMatch(/^ADM-\d+/);
         
         IPDTestHelper.createdResources.add(`admission:${response.data.id}`);
@@ -672,9 +670,9 @@ describe('IPD Admissions API', () => {
           `/api/ipd/admissions/${createResponse.data.id}`
         );
 
-        expect(getResponse.success).toBe(true);
-        expect(getResponse.data?.id).toBe(createResponse.data.id);
-        expect(getResponse.data?.patient_id).toBe(testPatient.id);
+        expect(getResponse.success).toBe(true),
+        expect(getResponse.data?.id).toBe(createResponse.data.id),
+        expect(getResponse.data?.patient_id).toBe(testPatient.id),
         expect(getResponse.data?.bed_id).toBe(testBed.id);
       }
     });
@@ -717,7 +715,7 @@ describe('IPD Progress Notes API', () => {
         `/api/ipd/admissions/${testAdmission.id}/progress-notes`
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(Array.isArray(response.data?.notes)).toBe(true);
     });
   });
@@ -740,12 +738,12 @@ describe('IPD Progress Notes API', () => {
         }
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        expect(response.data.admission_id).toBe(testAdmission.id);
-        expect(response.data.note_type).toBe(newNote.note_type);
+        expect(response.data.admission_id).toBe(testAdmission.id),
+        expect(response.data.note_type).toBe(newNote.note_type),
         expect(response.data.content).toBe(newNote.content);
       }
     });
@@ -806,12 +804,12 @@ describe('IPD Vital Signs API', () => {
         'Record vital signs'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        expect(response.data.admission_id).toBe(testAdmission.id);
-        expect(response.data.temperature).toBe(vitalSigns.temperature);
+        expect(response.data.admission_id).toBe(testAdmission.id),
+        expect(response.data.temperature).toBe(vitalSigns.temperature),
         expect(response.data.heart_rate).toBe(vitalSigns.heart_rate);
       }
     });
@@ -847,21 +845,20 @@ describe('IPD Dashboard Statistics API', () => {
         '/api/dashboard/ipd-stats'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
         IPDTestHelper.validateRequiredFields(response.data, [
           'activeAdmissions', 'availableBeds', 'occupancyRate', 'totalBeds'
-        ]);
-
-        expect(typeof response.data.activeAdmissions).toBe('number');
-        expect(typeof response.data.availableBeds).toBe('number');
-        expect(typeof response.data.occupancyRate).toBe('number');
+        ]),
+        expect(typeof response.data.activeAdmissions).toBe('number'),
+        expect(typeof response.data.availableBeds).toBe('number'),
+        expect(typeof response.data.occupancyRate).toBe('number'),
         expect(typeof response.data.totalBeds).toBe('number');
 
         // Validate occupancy rate is percentage
-        expect(response.data.occupancyRate).toBeGreaterThanOrEqual(0);
+        expect(response.data.occupancyRate).toBeGreaterThanOrEqual(0),
         expect(response.data.occupancyRate).toBeLessThanOrEqual(100);
 
         // Validate recent admissions if present
@@ -870,8 +867,8 @@ describe('IPD Dashboard Statistics API', () => {
           
           if (response.data.recentAdmissions.length > 0) {
             const sampleAdmission = response.data.recentAdmissions[0];
-            expect(sampleAdmission).toHaveProperty('id');
-            expect(sampleAdmission).toHaveProperty('patient_id');
+            expect(sampleAdmission).toHaveProperty('id'),
+            expect(sampleAdmission).toHaveProperty('patient_id'),
             expect(sampleAdmission).toHaveProperty('admission_date');
           }
         }
@@ -890,8 +887,8 @@ describe('IPD Dashboard Statistics API', () => {
         
         // Each ward should have a numeric occupancy rate
         Object.values(response.data.wardOccupancy).forEach(occupancy => {
-          expect(typeof occupancy).toBe('number');
-          expect(occupancy).toBeGreaterThanOrEqual(0);
+          expect(typeof occupancy).toBe('number'),
+          expect(occupancy).toBeGreaterThanOrEqual(0),
           expect(occupancy).toBeLessThanOrEqual(100);
         });
       }
@@ -927,8 +924,7 @@ describe('IPD Security and Authorization', () => {
       headers: {
         'Authorization': 'Bearer invalid-token'
       }
-    });
-
+    }),
     expect(response.status).toBe(401);
   });
 });
@@ -960,18 +956,17 @@ describe('IPD FHIR Compliance', () => {
       // Get FHIR Encounter resource
       const fhirResponse = await IPDTestHelper.makeAuthenticatedRequest(
         `/api/fhir/Encounter/${admissionResponse.data.id}`
-      );
-
+      ),
       expect(fhirResponse.success).toBe(true);
       
       if (fhirResponse.data) {
         // Validate FHIR Encounter structure
-        expect(fhirResponse.data).toHaveProperty('resourceType');
-        expect(fhirResponse.data.resourceType).toBe('Encounter');
-        expect(fhirResponse.data).toHaveProperty('id');
-        expect(fhirResponse.data).toHaveProperty('status');
-        expect(fhirResponse.data).toHaveProperty('class');
-        expect(fhirResponse.data).toHaveProperty('subject');
+        expect(fhirResponse.data).toHaveProperty('resourceType'),
+        expect(fhirResponse.data.resourceType).toBe('Encounter'),
+        expect(fhirResponse.data).toHaveProperty('id'),
+        expect(fhirResponse.data).toHaveProperty('status'),
+        expect(fhirResponse.data).toHaveProperty('class'),
+        expect(fhirResponse.data).toHaveProperty('subject'),
         expect(fhirResponse.data).toHaveProperty('period');
       }
     }

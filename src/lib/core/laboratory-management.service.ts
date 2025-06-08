@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -92,15 +92,15 @@ export const LabResultSchema = z.object({
 });
 
 export type LabTest = z.infer<typeof LabTestSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type LabOrder = z.infer<typeof LabOrderSchema> & {
-  id: string;
+  id: string,
   order_number: string;
-  status: 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled';
+  status: 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled',
   created_at: Date;
   updated_at: Date;
   tests?: LabTest[];
@@ -109,15 +109,15 @@ export type LabOrder = z.infer<typeof LabOrderSchema> & {
 };
 
 export type SampleCollection = z.infer<typeof SampleCollectionSchema> & {
-  id: string;
+  id: string,
   sample_id: string;
-  status: 'collected' | 'received' | 'processing' | 'resulted' | 'rejected';
+  status: 'collected' | 'received' | 'processing' | 'resulted' | 'rejected',
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type LabResult = z.infer<typeof LabResultSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
   updated_at: Date;
   test_name?: string;
@@ -125,27 +125,27 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
 };
 
 export interface EquipmentInterface {
-  id: string;
+  id: string,
   name: string;
-  model: string;
+  model: string,
   serial_number: string;
-  status: 'online' | 'offline' | 'maintenance' | 'error';
+  status: 'online' | 'offline' | 'maintenance' | 'error',
   supported_tests: string[];
-  last_calibration: Date;
+  last_calibration: Date,
   next_maintenance: Date;
-  connection_status: 'connected' | 'disconnected';
+  connection_status: 'connected' | 'disconnected'
 }
 
 export interface QualityControlResult {
-  id: string;
+  id: string,
   equipment_id: string;
-  test_code: string;
+  test_code: string,
   control_level: 'low' | 'normal' | 'high';
-  expected_value: number;
+  expected_value: number,
   actual_value: number;
-  variance_percentage: number;
+  variance_percentage: number,
   status: 'pass' | 'fail' | 'warning';
-  performed_by: string;
+  performed_by: string,
   performed_date: Date;
   comments?: string;
 }
@@ -156,8 +156,7 @@ export class LaboratoryManagementService {
   private sampleCollections: Map<string, SampleCollection> = new Map();
   private labResults: Map<string, LabResult[]> = new Map();
   private equipment: Map<string, EquipmentInterface> = new Map();
-  private qcResults: Map<string, QualityControlResult[]> = new Map();
-
+  private qcResults: Map<string, QualityControlResult[]> = new Map(),
   constructor() {
     this.initializeDefaultTests();
     this.initializeEquipment();
@@ -511,7 +510,7 @@ export class LaboratoryManagementService {
    */
   private determineAbnormalFlag(numericValue: number | undefined, test: LabTest): LabResult['abnormal_flag'] {
     if (!numericValue || !test.reference_ranges.length) {
-      return 'normal';
+      return 'normal'
     }
 
     // Check critical values first;
@@ -560,7 +559,7 @@ export class LaboratoryManagementService {
    * Get results for an order;
    */
   async getOrderResults(orderId: string): Promise<LabResult[]> {
-    return this.labResults.get(orderId) || [];
+    return this.labResults.get(orderId) || []
   }
 
   /**
@@ -607,12 +606,12 @@ export class LaboratoryManagementService {
    * Get laboratory statistics;
    */
   async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    totalOrders: number;
+    totalOrders: number,
     completedOrders: number;
-    pendingOrders: number;
+    pendingOrders: number,
     averageTurnaroundTime: number;
-    criticalResults: number;
-    qcFailures: number;
+    criticalResults: number,
+    qcFailures: number
   }> {
     const orders = Array.from(this.labOrders.values());
     

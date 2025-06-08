@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,9 +19,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
 
   return (
-    <Sonner;
+    <Sonner>
       theme={theme as ToasterProps["theme"]}
-      className="toaster group";
+      className="toaster group"
       toastOptions={{
         classNames: {
           toast:

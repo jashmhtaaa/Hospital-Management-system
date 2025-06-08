@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -47,7 +47,7 @@ export default async const DocumentEditPage = ({
   return (
     <div className="container mx-auto py-6">;
       <Suspense fallback={<div>Loading document editor...</div>}>;
-        <DocumentEditor;
+        <DocumentEditor>
           documentId={params.id}
           patientId="pat_123456" // This would be fetched from the document in a real implementation;
         />

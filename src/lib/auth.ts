@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -14,13 +14,13 @@ import bcrypt from 'bcryptjs';
 import { NextRequest } from 'next/server';
 
 export interface User {
-  id: string;
+  id: string,
   username: string;
-  email: string;
+  email: string,
   role: string;
   permissions: string[];
   department?: string;
-  isActive: boolean;
+  isActive: boolean
 }
 
 export interface AuthResult {
@@ -58,7 +58,7 @@ export const PERMISSIONS = {
   
   // System;
   SYSTEM_ADMIN: 'system:admin',
-  USER_MANAGEMENT: 'users:manage';
+  USER_MANAGEMENT: 'users:manage'
 } as const;
 
 // Role-based permissions;
@@ -131,13 +131,13 @@ export const generateToken = (user: User): string {
       username: user.username,
       email: user.email,
       role: user.role,
-      permissions: user.permissions;
+      permissions: user.permissions
     };
     
     return jwt.sign(payload, JWT_SECRET, { 
       expiresIn: JWT_EXPIRES_IN,
       issuer: 'HMS-Enterprise',
-      audience: 'HMS-Users';
+      audience: 'HMS-Users'
     });
   } catch (error) {
     throw new Error('Token generation failed');
@@ -151,7 +151,7 @@ export const verifyToken = (token: string): User | null {
   try {
     const decoded = jwt.verify(token, JWT_SECRET, {
       issuer: 'HMS-Enterprise',
-      audience: 'HMS-Users';
+      audience: 'HMS-Users'
     }) as any;
     
     return {
@@ -160,7 +160,7 @@ export const verifyToken = (token: string): User | null {
       email: decoded.email,
       role: decoded.role,
       permissions: decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
-      isActive: true;
+      isActive: true
     };
   } catch (error) {
     return null;

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,19 +36,19 @@ import { PlusCircle, Trash2, Users } from "lucide-react";
 
 // Props for the component;
 interface OTStaffAssignmentProperties {
-  bookingId: string;
+  bookingId: string
 }
 
 // Mock data structures;
 interface AssignedStaff {
-  assignment_id: string;
+  assignment_id: string,
   user_id: string;
-  user_name: string;
-  role: string;
+  user_name: string,
+  role: string
 }
 
 interface User {
-  id: string;
+  id: string,
   name: string;
   role: string; // Assuming user object has a role;
 }
@@ -78,7 +78,7 @@ export default const OTStaffAssignment = ({
 
   const fetchAssignedStaff = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
 
       // Replace with actual API call;
@@ -110,12 +110,11 @@ export default const OTStaffAssignment = ({
           role: "Scrub Nurse",
         },
       ];
-      setAssignedStaff(mockAssigned);
-
+      setAssignedStaff(mockAssigned),
       setLoading(false);
     } catch (error_: unknown) {
       if (error_ instanceof Error) {
-        setError(error_.message);
+        setError(error_.message)
       } else {
         setError("An unknown error occurred while fetching staff");
       }
@@ -172,7 +171,7 @@ export default const OTStaffAssignment = ({
       };
 
       setAssignedStaff((previous) => [...previous, newAssignment]);
-      setSelectedUser("");
+      setSelectedUser(""),
       setSelectedRole("");
       toast({ title: "Success", description: "Staff assigned successfully." });
     } catch (error: unknown) {
@@ -227,8 +226,8 @@ export default const OTStaffAssignment = ({
     <Card>
       <CardHeader>
         <CardTitle className="text-xl flex items-center">;
-          <Users className="mr-2 h-5 w-5" />;
-          Assigned Staff;
+          <Users className="mr-2 h-5 w-5" />
+          Assigned Staff
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -238,13 +237,13 @@ export default const OTStaffAssignment = ({
             <Label htmlFor="user-select">Select User</Label>;
             <Select value={selectedUser} onValueChange={setSelectedUser}>;
               <SelectTrigger id="user-select" className="mt-1">;
-                <SelectValue placeholder="Search and select staff member..." />;
+                <SelectValue placeholder="Search and select staff member..." />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">Select User</SelectItem>;
                 {availableUsers.map((user) => (
                   <SelectItem key={user.id} value={user.id}>;
-                    {user.name} ({user.role});
+                    {user.name} ({user.role})
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -252,25 +251,25 @@ export default const OTStaffAssignment = ({
           </div>
           <div className="w-full md:w-48">;
             <Label htmlFor="role-input">Assign Role</Label>;
-            <Input;
-              id="role-input";
+            <Input>
+              id="role-input"
               value={selectedRole}
               onChange={(event) => setSelectedRole(event.target.value)}
-              placeholder="e.g., Lead Surgeon";
-              className="mt-1";
+              placeholder="e.g., Lead Surgeon"
+              className="mt-1"
             />
           </div>
           <div className="flex items-end">;
-            <Button;
+            <Button>
               onClick={handleAddStaff}
               disabled={isAdding || !selectedUser || !selectedRole}
-              className="w-full md:w-auto";
+              className="w-full md:w-auto"
             >
               {isAdding ? (
                 "Adding...";
               ) : (
                 <>
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add Staff;
+                  <PlusCircle className="mr-2 h-4 w-4" /> Add Staff
                 </>
               )}
             </Button>
@@ -286,14 +285,14 @@ export default const OTStaffAssignment = ({
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Assigned Role</TableHead>
-                <TableHead className="text-right">Actions</TableHead>;
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {assignedStaff.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center">;
-                    No staff assigned yet.;
+                    No staff assigned yet.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -302,13 +301,13 @@ export default const OTStaffAssignment = ({
                     <TableCell>{staff.user_name}</TableCell>
                     <TableCell>{staff.role}</TableCell>
                     <TableCell className="text-right">;
-                      <Button;
-                        variant="ghost";
-                        size="icon";
+                      <Button>
+                        variant="ghost"
+                        size="icon"
                         onClick={() => handleRemoveStaff(staff.assignment_id)}
-                        title="Remove Staff";
+                        title="Remove Staff"
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />;
+                        <Trash2 className="h-4 w-4 text-red-500" />
                       </Button>
                     </TableCell>
                   </TableRow>

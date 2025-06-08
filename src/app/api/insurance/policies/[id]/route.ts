@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -353,7 +353,7 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
     policyId, 
     verificationId: verification.id,
     status: data.eligibilityStatus,
-    method: data.verificationMethod;
+    method: data.verificationMethod
   });
   
   return createSuccessResponse(updatedPolicy);

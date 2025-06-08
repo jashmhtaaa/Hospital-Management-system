@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -60,7 +60,7 @@ const AlertDialogHeader = ({
   className,
   ...props;
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div;
+<div
     className={cn(
       "flex flex-col space-y-2 text-center sm:text-left",
       className;
@@ -74,7 +74,7 @@ const AlertDialogFooter = ({
   className,
   ...props;
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div;
+<div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       className;

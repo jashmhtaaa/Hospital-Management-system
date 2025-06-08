@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,20 +28,20 @@ export interface FHIRSearchParams {
   _sort?: string;
   _include?: string[];
   _revinclude?: string[];
-  [key: string]: unknown;
+  [key: string]: unknown
 }
 
 export interface FHIRSearchResult<T> {
-  resources: T[];
+  resources: T[],
   total: number;
-  hasMore: boolean;
+  hasMore: boolean
 }
 
 export class FHIRDatabaseAdapter {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
+    this.prisma = prisma
   }
 
   /**
@@ -68,8 +68,7 @@ export class FHIRDatabaseAdapter {
         return this.storeEncounter(resource as FHIREncounter) as Promise<T>;
       case 'MedicationRequest':
         return this.storeMedicationRequest(resource as FHIRMedicationRequest) as Promise<T>;
-      default:
-        return this.storeGenericResource(resource);
+      default: return this.storeGenericResource(resource)
     }
   }
 
@@ -107,7 +106,7 @@ export class FHIRDatabaseAdapter {
     resource.meta = {
       ...resource.meta,
       lastUpdated: new Date().toISOString(),
-      versionId: (currentVersion + 1).toString();
+      versionId: (currentVersion + 1).toString()
     };
 
     return this.storeResource(resource);
@@ -177,7 +176,7 @@ export class FHIRDatabaseAdapter {
         gender: fhirPatient.gender || 'unknown',
         phone: phone || '',
         email: email || '',
-        updatedAt: new Date();
+        updatedAt: new Date()
       },
       create: {
         id: fhirPatient.id!,
@@ -187,7 +186,7 @@ export class FHIRDatabaseAdapter {
         dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
         gender: fhirPatient.gender || 'unknown',
         phone: phone || '',
-        email: email || '';
+        email: email || ''
       }
     });
 
@@ -215,7 +214,7 @@ export class FHIRDatabaseAdapter {
       dateOfBirth: patient.dateOfBirth.toISOString().split('T')[0],
       gender: patient.gender,
       phone: patient.phone,
-      email: patient.email;
+      email: patient.email
     });
 
     // Get stored FHIR resource for additional data;
@@ -225,7 +224,7 @@ export class FHIRDatabaseAdapter {
       return {
         ...storedFhir,
         ...fhirPatient,
-        meta: storedFhir.meta;
+        meta: storedFhir.meta
       };
     }
 
@@ -292,7 +291,7 @@ export class FHIRDatabaseAdapter {
         take: _count,
         orderBy: { lastName: 'asc' }
       }),
-      this.prisma.patient.count({ where });
+      this.prisma.patient.count({ where })
     ]);
 
     const fhirPatients = await Promise.all(
@@ -302,7 +301,7 @@ export class FHIRDatabaseAdapter {
     return {
       resources: fhirPatients.filter(Boolean) as FHIRPatient[],
       total,
-      hasMore: _offset + _count < total;
+      hasMore: _offset + _count < total
     };
   }
 
@@ -476,13 +475,13 @@ export class FHIRDatabaseAdapter {
       return {
         resources: resources.map(r => r.content) as T[],
         total,
-        hasMore: _offset + _count < total;
+        hasMore: _offset + _count < total
       };
     } catch (error) {
       return {
         resources: [],
         total: 0,
-        hasMore: false;
+        hasMore: false
       };
     }
   }

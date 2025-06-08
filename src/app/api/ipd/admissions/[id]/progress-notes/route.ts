@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,10 +16,10 @@ import { getSession } from "@/lib/session";
 // Define interface for POST request body;
 interface ProgressNoteInput {
   note_date?: string; // Optional, defaults to now;
-  subjective: string;
+  subjective: string,
   objective: string;
-  assessment: string;
-  plan: string;
+  assessment: string,
+  plan: string
 }
 
 // GET /api/ipd/admissions/[id]/progress-notes - Get all progress notes for an admission;
@@ -184,9 +184,9 @@ export async const POST = (
     const admission =;
       admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results;
         ? (admissionResult.results[0] as { // Changed .rows to .results;
-            id: string;
+            id: string,
             status: string;
-            primary_doctor_id: number;
+            primary_doctor_id: number
           });
         : undefined;
 

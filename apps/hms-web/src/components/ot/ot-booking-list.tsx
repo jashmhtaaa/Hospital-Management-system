@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,33 +15,33 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 
 interface Booking {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   surgeryType: string;
-  surgeon: string;
+  surgeon: string,
   theatre: string;
-  scheduledDate: string;
+  scheduledDate: string,
   scheduledTime: string;
-  duration: string;
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  duration: string,
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled'
 }
 
 interface OTBookingListProps {
-  bookings: Booking[];
+  bookings: Booking[]
 }
 
 /**
  * Operation Theatre booking list component;
  */
-export const OTBookingList = ({ bookings }: OTBookingListProps) {
+export const OTBookingList = ({ bookings }: OTBookingListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -67,7 +67,7 @@ export const OTBookingList = ({ bookings }: OTBookingListProps) {
             {bookings.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center">;
-                  No surgeries scheduled;
+                  No surgeries scheduled
                 </TableCell>
               </TableRow>
             ) : (
@@ -75,14 +75,14 @@ export const OTBookingList = ({ bookings }: OTBookingListProps) {
                 <TableRow key={booking.id}>;
                   <TableCell>
                     <div className="font-medium">{booking.patientName}</div>;
-                    <div className="text-sm text-gray-500">ID: {booking.patientId}</div>;
+                    <div className="text-sm text-gray-500">ID: {booking.patientId}</div>
                   </TableCell>
                   <TableCell>{booking.surgeryType}</TableCell>
                   <TableCell>{booking.surgeon}</TableCell>
                   <TableCell>{booking.theatre}</TableCell>
                   <TableCell>
                     <div>{booking.scheduledDate}</div>
-                    <div className="text-sm text-gray-500">{booking.scheduledTime}</div>;
+                    <div className="text-sm text-gray-500">{booking.scheduledTime}</div>
                   </TableCell>
                   <TableCell>{booking.duration}</TableCell>
                   <TableCell>{getStatusBadge(booking.status)}</TableCell>

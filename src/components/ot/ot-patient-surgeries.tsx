@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,17 +29,17 @@ import { toast } from "@/components/ui/use-toast"; // Import toast;
 
 // Define the structure for a surgery booking;
 interface Surgery {
-  id: string;
+  id: string,
   scheduled_start_time: string; // ISO string or Date object;
   scheduled_end_time: string; // ISO string or Date object;
-  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled";
+  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
   surgery_name: string;
-  theatre_name: string;
-  surgeon_name: string;
+  theatre_name: string,
+  surgeon_name: string
 }
 
 interface OTPatientSurgeriesProperties {
-  patientId: string;
+  patientId: string
 }
 
 export default const OTPatientSurgeries = ({
@@ -53,7 +53,7 @@ export default const OTPatientSurgeries = ({
   useEffect(() => {
     const fetchPatientSurgeries = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -99,7 +99,7 @@ export default const OTPatientSurgeries = ({
             ? error_.message;
             : "An unknown error occurred";
 
-        setError(message);
+        setError(message),
         toast({
           title: "Error",
           description: `Failed to load surgeries: ${message}`,
@@ -119,26 +119,26 @@ export default const OTPatientSurgeries = ({
   const getStatusBadge = (status: Surgery["status"]) => {
     switch (status) {
       case "scheduled": {
-        return <Badge variant="secondary">Scheduled</Badge>;
+        return <Badge variant="secondary">Scheduled</Badge>
       }
       case "confirmed": {
         return (
           <Badge className="bg-blue-100 text-blue-800 border-blue-200">;
-            Confirmed;
+            Confirmed
           </Badge>
         );
       }
       case "in_progress": {
         return (
           <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">;
-            In Progress;
+            In Progress
           </Badge>
         );
       }
       case "completed": {
         return (
           <Badge className="bg-green-100 text-green-800 border-green-200">;
-            Completed;
+            Completed
           </Badge>
         );
       }
@@ -181,15 +181,15 @@ export default const OTPatientSurgeries = ({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg flex items-center">;
-          <Calendar className="mr-2 h-5 w-5 text-primary" />;
-          Upcoming Surgeries & Procedures;
+          <Calendar className="mr-2 h-5 w-5 text-primary" />
+          Upcoming Surgeries & Procedures
         </CardTitle>
       </CardHeader>
       <CardContent>
         {loading && (
           <div className="flex justify-center items-center py-4">;
-            <Loader2 className="h-6 w-6 animate-spin text-primary" />;
-            <span className="ml-2">Loading surgeries...</span>;
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            <span className="ml-2">Loading surgeries...</span>
           </div>
         )}
         {error && (
@@ -199,7 +199,7 @@ export default const OTPatientSurgeries = ({
         )}
         {!loading && !error && surgeries.length === 0 && (
           <div className="text-center py-4 text-muted-foreground">;
-            No upcoming surgeries scheduled for this patient.;
+            No upcoming surgeries scheduled for this patient.
           </div>
         )}
         {!loading && !error && surgeries.length > 0 && (
@@ -212,7 +212,7 @@ export default const OTPatientSurgeries = ({
                   <TableHead>Theatre</TableHead>
                   <TableHead>Surgeon</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Details</TableHead>;
+                  <TableHead className="text-right">Details</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -235,12 +235,12 @@ export default const OTPatientSurgeries = ({
                     <TableCell>{surgery.surgeon_name}</TableCell>
                     <TableCell>{getStatusBadge(surgery.status)}</TableCell>
                     <TableCell className="text-right">;
-                      <Link;
+                      <Link>
                         href={`/dashboard/ot/bookings/${surgery.id}`}
                         passHref;
                       >
                         <Button variant="outline" size="sm">;
-                          View <ArrowRight className="ml-1 h-4 w-4" />;
+                          View <ArrowRight className="ml-1 h-4 w-4" />
                         </Button>
                       </Link>
                     </TableCell>
@@ -254,7 +254,7 @@ export default const OTPatientSurgeries = ({
         <div className="mt-4 flex justify-end">;
           <Link href={`/dashboard/ot?patientId=${patientId}`} passHref>;
             <Button variant="outline" size="sm">;
-              View Full OT Schedule;
+              View Full OT Schedule
             </Button>
           </Link>
         </div>

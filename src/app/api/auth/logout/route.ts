@@ -3,7 +3,7 @@ import { sessionOptions, IronSessionData } from "@/lib/session";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 
-export async const POST = () {
+export async const POST = () => {
   try {
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -65,7 +65,7 @@ export default const EditPatientPage = () {
   const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
   const fetchPatient = useCallback(async () => {
-      setIsLoading(true);
+      setIsLoading(true),
       setErrors([]);
       try {
         const response = await fetch(`/api/patients/${patientId}`);
@@ -82,7 +82,7 @@ export default const EditPatientPage = () {
         setFormData(formattedData);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]);
+        setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
         toast({
           title: "Error Fetching Patient",
           description: message,
@@ -109,7 +109,7 @@ export default const EditPatientPage = () {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsSaving(true);
     setErrors([]);
 
@@ -121,7 +121,7 @@ export default const EditPatientPage = () {
     const validation = PatientUpdateSchema.safeParse(formData);
 
     if (!validation.success) {
-      setErrors(validation.error.errors);
+      setErrors(validation.error.errors),
       setIsSaving(false);
       toast({
         title: "Validation Error",
@@ -144,7 +144,7 @@ export default const EditPatientPage = () {
     }
 
      if (Object.keys(dataToSend).length === 0) {
-        toast({ title: "No Changes", description: "No changes detected to save." });
+        toast({ title: "No Changes", description: "No changes detected to save." }),
         setIsSaving(false);
         return;
     }
@@ -173,7 +173,7 @@ export default const EditPatientPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]);
+      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Update Failed",
         description: message,
@@ -185,7 +185,7 @@ export default const EditPatientPage = () {
   };
 
   const getError = (fieldName: keyof FormData | "form") => {
-    return errors.find((err) => err.path[0] === fieldName)?.message;
+    return errors.find((err) => err.path[0] === fieldName)?.message
   };
 
   if (isLoading) {
@@ -203,36 +203,36 @@ export default const EditPatientPage = () {
               <CardTitle>Patient Demographics</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-              <div>
+<div
                 <Label htmlFor="first_name">First Name *</Label>;
                 <Input id="first_name" name="first_name" value={formData.first_name ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />;
+                  ""} onChange={handleChange} required disabled={isSaving} />
                 {getError("first_name") && <p className="text-sm text-red-500 mt-1">{getError("first_name")}</p>}
               </div>
-              <div>
+<div
                 <Label htmlFor="last_name">Last Name *</Label>;
                 <Input id="last_name" name="last_name" value={formData.last_name ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />;
+                  ""} onChange={handleChange} required disabled={isSaving} />
                  {getError("last_name") && <p className="text-sm text-red-500 mt-1">{getError("last_name")}</p>}
              </div>
-              <div>
+<div
                 <Label htmlFor="date_of_birth">Date of Birth *</Label>;
                 <Input id="date_of_birth" name="date_of_birth" type="date" value={formData.date_of_birth ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />;
+                  ""} onChange={handleChange} required disabled={isSaving} />
                  {getError("date_of_birth") && <p className="text-sm text-red-500 mt-1">{getError("date_of_birth")}</p>}
              </div>
-              <div>
+<div
                 <Label htmlFor="gender">Gender *</Label>;
                 <Select name="gender" value={formData.gender ||;
                   ""} onValueChange={(value) => handleSelectChange("gender", value)} required disabled={isSaving}>
                   <SelectTrigger id="gender">;
-                    <SelectValue placeholder="Select gender" />;
+                    <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Male">Male</SelectItem>;
                     <SelectItem value="Female">Female</SelectItem>;
                     <SelectItem value="Other">Other</SelectItem>;
-                    <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>;
+                    <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
                   </SelectContent>
                 </Select>
                  {getError("gender") && <p className="text-sm text-red-500 mt-1">{getError("gender")}</p>}
@@ -245,46 +245,46 @@ export default const EditPatientPage = () {
               <CardTitle>Contact Information</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-              <div>
+<div
                 <Label htmlFor="phone_number">Phone Number *</Label>;
                 <Input id="phone_number" name="phone_number" type="tel" value={formData.phone_number ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />;
+                  ""} onChange={handleChange} required disabled={isSaving} />
                  {getError("phone_number") && <p className="text-sm text-red-500 mt-1">{getError("phone_number")}</p>}
              </div>
-              <div>
+<div
                 <Label htmlFor="email">Email</Label>;
                 <Input id="email" name="email" type="email" value={formData.email ||;
-                  ""} onChange={handleChange} disabled={isSaving} />;
+                  ""} onChange={handleChange} disabled={isSaving} />
                  {getError("email") && <p className="text-sm text-red-500 mt-1">{getError("email")}</p>}
              </div>
               <div className="md:col-span-2">;
                 <Label htmlFor="address_line1">Address Line 1</Label>;
                 <Input id="address_line1" name="address_line1" value={formData.address_line1 ||;
-                  ""} onChange={handleChange} disabled={isSaving} />;
+                  ""} onChange={handleChange} disabled={isSaving} />
               </div>
               <div className="md:col-span-2">;
                 <Label htmlFor="address_line2">Address Line 2</Label>;
                 <Input id="address_line2" name="address_line2" value={formData.address_line2 ||;
-                  ""} onChange={handleChange} disabled={isSaving} />;
+                  ""} onChange={handleChange} disabled={isSaving} />
               </div>
-              <div>
+<div
                 <Label htmlFor="city">City</Label>;
-                <Input id="city" name="city" value={formData.city || ""} onChange={handleChange} disabled={isSaving} />;
+                <Input id="city" name="city" value={formData.city || ""} onChange={handleChange} disabled={isSaving} />
               </div>
-              <div>
+<div
                 <Label htmlFor="state">State</Label>;
                 <Input id="state" name="state" value={formData.state ||;
-                  ""} onChange={handleChange} disabled={isSaving} />;
+                  ""} onChange={handleChange} disabled={isSaving} />
               </div>
-              <div>
+<div
                 <Label htmlFor="postal_code">Postal Code</Label>;
                 <Input id="postal_code" name="postal_code" value={formData.postal_code ||;
-                  ""} onChange={handleChange} disabled={isSaving} />;
+                  ""} onChange={handleChange} disabled={isSaving} />
               </div>
-              <div>
+<div
                 <Label htmlFor="country">Country</Label>;
                 <Input id="country" name="country" value={formData.country ||;
-                  ""} onChange={handleChange} disabled={isSaving} />;
+                  ""} onChange={handleChange} disabled={isSaving} />
               </div>
             </CardContent>
           </Card>
@@ -294,20 +294,20 @@ export default const EditPatientPage = () {
               <CardTitle>Emergency Contact</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">;
-                 <div>
+<div
                     <Label htmlFor="emergency_contact_name">Name</Label>;
                     <Input id="emergency_contact_name" name="emergency_contact_name" value={formData.emergency_contact_name ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
-                 <div>
+<div
                     <Label htmlFor="emergency_contact_relation">Relation</Label>;
                     <Input id="emergency_contact_relation" name="emergency_contact_relation" value={formData.emergency_contact_relation ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
-                 <div>
+<div
                     <Label htmlFor="emergency_contact_phone">Phone</Label>;
                     <Input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" value={formData.emergency_contact_phone ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
             </CardContent>
            </Card>
@@ -317,25 +317,25 @@ export default const EditPatientPage = () {
               <CardTitle>Medical Information</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-                 <div>
+<div
                     <Label htmlFor="blood_group">Blood Group</Label>;
                     <Input id="blood_group" name="blood_group" value={formData.blood_group ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
                  <div className="md:col-span-2">;
                     <Label htmlFor="allergies">Allergies</Label>;
                     <Textarea id="allergies" name="allergies" value={formData.allergies ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
                  <div className="md:col-span-2">;
                     <Label htmlFor="past_medical_history">Past Medical History</Label>;
                     <Textarea id="past_medical_history" name="past_medical_history" value={formData.past_medical_history ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
                  <div className="md:col-span-2">;
                     <Label htmlFor="current_medications">Current Medications</Label>;
                     <Textarea id="current_medications" name="current_medications" value={formData.current_medications ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
             </CardContent>
            </Card>
@@ -345,15 +345,15 @@ export default const EditPatientPage = () {
               <CardTitle>Insurance Information</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-                 <div>
+<div
                     <Label htmlFor="insurance_provider">Provider</Label>;
                     <Input id="insurance_provider" name="insurance_provider" value={formData.insurance_provider ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
-                 <div>
+<div
                     <Label htmlFor="insurance_policy_number">Policy Number</Label>;
                     <Input id="insurance_policy_number" name="insurance_policy_number" value={formData.insurance_policy_number ||;
-                      ""} onChange={handleChange} disabled={isSaving} />;
+                      ""} onChange={handleChange} disabled={isSaving} />
                  </div>
             </CardContent>
            </Card>
@@ -362,7 +362,7 @@ export default const EditPatientPage = () {
 
           <div className="mt-6 flex justify-end gap-4">;
             <Button type="button" variant="outline" onClick={() => router.back()} disabled={isSaving}>
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving Changes..." : "Save Changes"}

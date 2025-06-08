@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const inventoryRepository = {
@@ -41,7 +41,7 @@ const inventoryRepository = {
   findAll: () => Promise.resolve([]),
   save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const reorderRepository = {
@@ -52,7 +52,7 @@ const reorderRepository = {
   findAll: () => Promise.resolve([]),
   save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const supplierRepository = {
@@ -61,14 +61,14 @@ const supplierRepository = {
   findAll: () => Promise.resolve([]),
   save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/inventory/reorder;
  * List items that need reordering based on threshold levels;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -159,7 +159,7 @@ export async const GET = (req: NextRequest) {
     const statusCounts = {
       critical: reorderItems.filter(item => item.stockStatus === 'critical').length,
       low: reorderItems.filter(item => item.stockStatus === 'low').length,
-      normal: reorderItems.filter(item => item.stockStatus === 'normal').length;
+      normal: reorderItems.filter(item => item.stockStatus === 'normal').length
     };
 
     // Audit logging;
@@ -184,7 +184,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -196,7 +196,7 @@ export async const GET = (req: NextRequest) {
  * POST /api/pharmacy/inventory/reorder;
  * Create a new reorder request;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -231,7 +231,7 @@ export async const POST = (req: NextRequest) {
       return NextResponse.json(
         { 
           error: 'Pending reorder already exists for this medication',
-          existingReorderId: pendingReorder.id;
+          existingReorderId: pendingReorder.id
         },
         { status: 409 }
       );
@@ -252,7 +252,7 @@ export async const POST = (req: NextRequest) {
       notes: data.notes || '',
       priority: data.priority || 'normal',
       expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
-      purchaseOrderNumber: generatePurchaseOrderNumber();
+      purchaseOrderNumber: generatePurchaseOrderNumber()
     };
 
     // Special handling for controlled substances;
@@ -269,7 +269,7 @@ export async const POST = (req: NextRequest) {
           medicationId: data.medicationId,
           quantity: data.quantity,
           supplierId: data.supplierId,
-          purchaseOrderNumber: reorder.purchaseOrderNumber;
+          purchaseOrderNumber: reorder.purchaseOrderNumber
         }
       });
     }
@@ -287,7 +287,7 @@ export async const POST = (req: NextRequest) {
         medicationId: data.medicationId,
         quantity: data.quantity,
         supplierId: data.supplierId,
-        purchaseOrderNumber: reorder.purchaseOrderNumber;
+        purchaseOrderNumber: reorder.purchaseOrderNumber
       }
     });
 
@@ -297,7 +297,7 @@ export async const POST = (req: NextRequest) {
         id: reorderId,
         purchaseOrderNumber: reorder.purchaseOrderNumber,
         requiresApproval: reorder.requiresApproval,
-        message: 'Reorder request created successfully';
+        message: 'Reorder request created successfully'
       }, 
       { status: 201 }
     );

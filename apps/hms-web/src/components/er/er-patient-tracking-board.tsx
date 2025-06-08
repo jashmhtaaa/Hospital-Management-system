@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -14,13 +14,13 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 
 interface Patient {
-  id: string;
+  id: string,
   name: string;
-  age: number;
+  age: number,
   gender: string;
-  chiefComplaint: string;
+  chiefComplaint: string,
   triageLevel: 1 | 2 | 3 | 4 | 5;
-  arrivalTime: string;
+  arrivalTime: string,
   waitTime: string;
   status: 'waiting' | 'in-progress' | 'ready-for-discharge' | 'discharged';
   assignedTo?: string;
@@ -28,21 +28,21 @@ interface Patient {
 }
 
 interface ERPatientTrackingBoardProps {
-  patients: Patient[];
+  patients: Patient[]
 }
 
 /**
  * Emergency Room patient tracking board component;
  */
-export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps) {
+export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps) => {
   const getTriageBadge = (level: number) => {
     switch(level) {
       case 1: return <Badge variant="danger">Level 1</Badge>;
       case 2: return <Badge variant="danger">Level 2</Badge>;
       case 3: return <Badge variant="warning">Level 3</Badge>;
       case 4: return <Badge variant="secondary">Level 4</Badge>;
-      case 5: return <Badge variant="secondary">Level 5</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      case 5: return <Badge variant="secondary">Level 5</Badge>,
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -52,7 +52,7 @@ export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'ready-for-discharge': return <Badge variant="success">Ready for Discharge</Badge>;
       case 'discharged': return <Badge>Discharged</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -74,7 +74,7 @@ export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps
           {patients.length === 0 ? (
             <TableRow>
               <TableCell colSpan={7} className="text-center">;
-                No patients in the emergency department;
+                No patients in the emergency department
               </TableCell>
             </TableRow>
           ) : (

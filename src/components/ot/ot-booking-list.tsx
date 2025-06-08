@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,16 +36,16 @@ import { format } from "date-fns";
 
 // Mock data structure - replace with actual API response type;
 interface Booking {
-  id: string;
+  id: string,
   scheduled_start_time: string;
-  scheduled_end_time: string;
+  scheduled_end_time: string,
   status: string;
-  priority: string;
+  priority: string,
   patient_name: string;
-  patient_mrn: string;
+  patient_mrn: string,
   surgery_name: string;
-  theatre_name: string;
-  surgeon_name: string;
+  theatre_name: string,
+  surgeon_name: string
 }
 
 export default const OTBookingList = () {
@@ -58,12 +58,11 @@ export default const OTBookingList = () {
     surgeonId: "",
     date: "",
   });
-  const [showFilters, setShowFilters] = useState(false);
-
+  const [showFilters, setShowFilters] = useState(false),
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         // Construct query parameters based on filters;
@@ -140,7 +139,7 @@ export default const OTBookingList = () {
         setLoading(false);
       } catch (error_: unknown) {
         if (error_ instanceof Error) {
-          setError(error_.message);
+          setError(error_.message)
         } else {
           setError("An unknown error occurred");
         }
@@ -158,7 +157,7 @@ export default const OTBookingList = () {
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case "scheduled": {
-        return <Badge variant="secondary">Scheduled</Badge>;
+        return <Badge variant="secondary">Scheduled</Badge>
       }
       case "confirmed": {
         return <Badge className="bg-blue-100 text-blue-800">Confirmed</Badge>;
@@ -190,28 +189,28 @@ export default const OTBookingList = () {
       <CardContent className="pt-6">;
         <div className="flex justify-between items-center mb-4">;
           <h3 className="text-lg font-medium">Booking List</h3>;
-          <Button;
-            variant="outline";
-            size="sm";
+          <Button>
+            variant="outline"
+            size="sm"
             onClick={() => setShowFilters(!showFilters)}
           >
-            <Filter className="mr-2 h-4 w-4" /> Filters;
+            <Filter className="mr-2 h-4 w-4" /> Filters
           </Button>
         </div>
 
         {showFilters && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 p-4 border rounded-md bg-muted/40">;
-            <Input;
+            <Input>
               type="date"
               value={filters.date}
               onChange={(event) => handleFilterChange("date", event.target.value)}
             />
-            <Select;
+            <Select>
               value={filters.status}
               onValueChange={(value) => handleFilterChange("status", value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Filter by Status" />;
+                <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Statuses</SelectItem>;
@@ -220,12 +219,12 @@ export default const OTBookingList = () {
                 <SelectItem value="in_progress">In Progress</SelectItem>;
                 <SelectItem value="completed">Completed</SelectItem>;
                 <SelectItem value="cancelled">Cancelled</SelectItem>;
-                <SelectItem value="postponed">Postponed</SelectItem>;
+                <SelectItem value="postponed">Postponed</SelectItem>
               </SelectContent>
             </Select>
             {/* TODO: Add Selects for Theatre and Surgeon (fetch options from API) */}
-            <Input placeholder="Filter by Theatre..." disabled />;
-            <Input placeholder="Filter by Surgeon..." disabled />;
+            <Input placeholder="Filter by Theatre..." disabled />
+            <Input placeholder="Filter by Surgeon..." disabled />
           </div>
         )}
 
@@ -248,7 +247,7 @@ export default const OTBookingList = () {
               {bookings.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center">;
-                    No bookings found.;
+                    No bookings found.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -259,7 +258,7 @@ export default const OTBookingList = () {
                       - {format(new Date(booking.scheduled_end_time), "HH:mm")}
                     </TableCell>
                     <TableCell>
-                      {booking.patient_name} ({booking.patient_mrn});
+                      {booking.patient_name} ({booking.patient_mrn})
                     </TableCell>
                     <TableCell>{booking.surgery_name}</TableCell>
                     <TableCell>{booking.theatre_name}</TableCell>
@@ -267,28 +266,28 @@ export default const OTBookingList = () {
                     <TableCell>{getStatusBadge(booking.status)}</TableCell>
                     <TableCell>
                       <div className="flex space-x-2">;
-                        <Button;
-                          variant="outline";
-                          size="icon";
-                          title="View Details";
+                        <Button>
+                          variant="outline"
+                          size="icon"
+                          title="View Details"
                         >
-                          <Eye className="h-4 w-4" />;
+                          <Eye className="h-4 w-4" />
                         </Button>
-                        <Button;
-                          variant="outline";
-                          size="icon";
-                          title="Edit Booking";
+                        <Button>
+                          variant="outline"
+                          size="icon"
+                          title="Edit Booking"
                         >
-                          <Edit className="h-4 w-4" />;
+                          <Edit className="h-4 w-4" />
                         </Button>
                         {booking.status !== "completed" &&;
                           booking.status !== "cancelled" && (
-                            <Button;
-                              variant="destructive";
-                              size="icon";
-                              title="Cancel Booking";
+                            <Button>
+                              variant="destructive"
+                              size="icon"
+                              title="Cancel Booking"
                             >
-                              <Trash2 className="h-4 w-4" />;
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           )}
                       </div>

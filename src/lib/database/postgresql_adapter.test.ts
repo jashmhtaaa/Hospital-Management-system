@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -51,8 +51,8 @@ describe("PostgresqlAdapter", () => {
 
   describe("connect", () => {
     it("should connect to the pool and release the client", async () => {
-      await adapter.connect();
-      expect(currentMockPool.connect).toHaveBeenCalledTimes(1);
+      await adapter.connect(),
+      expect(currentMockPool.connect).toHaveBeenCalledTimes(1),
       expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
     });
 
@@ -64,7 +64,7 @@ describe("PostgresqlAdapter", () => {
 
   describe("disconnect", () => {
     it("should end the pool", async () => {
-      await adapter.disconnect();
+      await adapter.disconnect(),
       expect(currentMockPool.end).toHaveBeenCalledTimes(1);
     });
      it("should throw an error if disconnecting fails", async () => {
@@ -80,16 +80,16 @@ describe("PostgresqlAdapter", () => {
 
     it("should execute a query and return the result", async () => {
       currentMockPoolClient.query.mockResolvedValueOnce(mockQueryResult as any);
-      const result = await adapter.execute(queryText, params);
-      expect(currentMockPool.connect).toHaveBeenCalledTimes(1);
-      expect(currentMockPoolClient.query).toHaveBeenCalledWith(queryText, params);
-      expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
+      const result = await adapter.execute(queryText, params),
+      expect(currentMockPool.connect).toHaveBeenCalledTimes(1),
+      expect(currentMockPoolClient.query).toHaveBeenCalledWith(queryText, params),
+      expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1),
       expect(result).toEqual(mockQueryResult);
     });
 
     it("should throw an error if query execution fails", async () => {
       currentMockPoolClient.query.mockRejectedValueOnce(new Error("Query failed"));
-      await expect(adapter.execute(queryText, params)).rejects.toThrow("Query failed");
+      await expect(adapter.execute(queryText, params)).rejects.toThrow("Query failed"),
       expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1); // Ensure client is released even on error;
     });
   });
@@ -104,9 +104,9 @@ describe("PostgresqlAdapter", () => {
     describe("beginTransaction", () => {
       it("should begin a transaction and return the client", async () => {
         currentMockPoolClient.query.mockResolvedValueOnce({} as QueryResult); // Mock for BEGIN;
-        const client = await adapter.beginTransaction();
-        expect(currentMockPool.connect).toHaveBeenCalledTimes(1);
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("BEGIN");
+        const client = await adapter.beginTransaction(),
+        expect(currentMockPool.connect).toHaveBeenCalledTimes(1),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("BEGIN"),
         expect(client).toBe(currentMockPoolClient); // Should return the same client instance;
         expect(currentMockPoolClient.release).not.toHaveBeenCalled(); // Client should not be released yet;
       });
@@ -114,7 +114,7 @@ describe("PostgresqlAdapter", () => {
       it("should release client and throw if BEGIN fails", async () => {
         currentMockPool.connect.mockResolvedValue(currentMockPoolClient as unknown as PoolClient); // ensure connect resolves;
         currentMockPoolClient.query.mockRejectedValueOnce(new Error("BEGIN failed"));
-        await expect(adapter.beginTransaction()).rejects.toThrow("BEGIN failed");
+        await expect(adapter.beginTransaction()).rejects.toThrow("BEGIN failed"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
     });
@@ -122,8 +122,8 @@ describe("PostgresqlAdapter", () => {
     describe("commitTransaction", () => {
       it("should commit the transaction and release the client", async () => {
         currentMockPoolClient.query.mockResolvedValueOnce({} as QueryResult); // Mock for COMMIT;
-        await adapter.commitTransaction(currentMockPoolClient as PoolClient);
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT");
+        await adapter.commitTransaction(currentMockPoolClient as PoolClient),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
 
@@ -131,9 +131,9 @@ describe("PostgresqlAdapter", () => {
         currentMockPoolClient.query;
           .mockRejectedValueOnce(new Error("COMMIT failed")) // For COMMIT;
           .mockResolvedValueOnce({} as QueryResult); // For ROLLBACK;
-        await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed");
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT");
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK");
+        await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
 
@@ -141,9 +141,9 @@ describe("PostgresqlAdapter", () => {
         currentMockPoolClient.query;
           .mockRejectedValueOnce(new Error("COMMIT failed")) // For COMMIT;
           .mockRejectedValueOnce(new Error("ROLLBACK also failed")); // For ROLLBACK;
-        await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed");
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT");
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK");
+        await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
     });
@@ -151,15 +151,15 @@ describe("PostgresqlAdapter", () => {
     describe("rollbackTransaction", () => {
       it("should roll back the transaction and release the client", async () => {
         currentMockPoolClient.query.mockResolvedValueOnce({} as QueryResult); // Mock for ROLLBACK;
-        await adapter.rollbackTransaction(currentMockPoolClient as PoolClient);
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK");
+        await adapter.rollbackTransaction(currentMockPoolClient as PoolClient),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
 
       it("should throw an error if ROLLBACK fails but still release client", async () => {
         currentMockPoolClient.query.mockRejectedValueOnce(new Error("ROLLBACK failed"));
-        await expect(adapter.rollbackTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("ROLLBACK failed");
-        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK");
+        await expect(adapter.rollbackTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("ROLLBACK failed"),
+        expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
     });

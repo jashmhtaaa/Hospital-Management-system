@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -72,7 +72,7 @@ export class HMSIntegrationService {
             ? {
                 allergies: true,
                 diagnoses: true,
-                medications: true;
+                medications: true
               }
             : {});
         }
@@ -145,7 +145,7 @@ export class HMSIntegrationService {
           building: true,
           status: true,
           capacity: true,
-          currentOccupancy: true;
+          currentOccupancy: true
         }
       });
       
@@ -226,7 +226,7 @@ export class HMSIntegrationService {
           message,
           metadata,
           status: 'PENDING',
-          createdById: userId;
+          createdById: userId
         }
       });
       
@@ -238,7 +238,7 @@ export class HMSIntegrationService {
         details: { 
           recipientId,
           notificationType,
-          notificationId: notification.id;
+          notificationId: notification.id
         }
       });
       
@@ -304,7 +304,7 @@ export class HMSIntegrationService {
             ? {
                 lastLogin: true,
                 createdAt: true,
-                updatedAt: true;
+                updatedAt: true
               }
             : {});
         }
@@ -373,7 +373,7 @@ export class HMSIntegrationService {
           type: reportType,
           data: reportData,
           status: 'SUBMITTED',
-          submittedById: userId;
+          submittedById: userId
         }
       });
       
@@ -384,7 +384,7 @@ export class HMSIntegrationService {
         userId,
         details: { 
           reportType,
-          reportId: report.id;
+          reportId: report.id
         }
       });
       
@@ -462,7 +462,7 @@ export class HMSIntegrationService {
         where: { id: requestId },
         data: {
           patientId,
-          updatedById: userId;
+          updatedById: userId
         }
       });
       
@@ -551,7 +551,7 @@ export class HMSIntegrationService {
         where: { id: requestId },
         data: {
           locationId,
-          updatedById: userId;
+          updatedById: userId
         }
       });
       

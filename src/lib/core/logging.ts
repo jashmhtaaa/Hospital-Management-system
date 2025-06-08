@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -77,7 +77,7 @@ class DefaultLogger implements Logger {
   private logLevel: 'debug' | 'info' | 'warn' | 'error';
   
   constructor(logLevel: 'debug' | 'info' | 'warn' | 'error' = 'info') {
-    this.logLevel = logLevel;
+    this.logLevel = logLevel
   }
   
   private shouldLog(level: 'debug' | 'info' | 'warn' | 'error'): boolean {
@@ -131,7 +131,7 @@ let currentCorrelationId: string | null = null;
 
 // Set correlation ID for the current context;
 export const setCorrelationId = (correlationId: string): void {
-  currentCorrelationId = correlationId;
+  currentCorrelationId = correlationId
 }
 
 // Get current correlation ID;

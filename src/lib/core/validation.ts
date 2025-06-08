@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -113,7 +113,7 @@ export const claimStatusSchema = z.enum([
 
 // Validation utility functions;
 export const validateId = (id: string): string {
-  return idSchema.parse(id);
+  return idSchema.parse(id)
 }
 
 export const validatePagination = (query: Record<string, any>) {
@@ -131,11 +131,11 @@ export const validateDateRange = (startDate: string, endDate: string) {
 }
 
 export const validateMoney = (amount: number | string): number {
-  return moneySchema.parse(amount);
+  return moneySchema.parse(amount)
 }
 
 export const validatePercentage = (percentage: number | string): number {
-  return percentageSchema.parse(percentage);
+  return percentageSchema.parse(percentage)
 }
 
 // Validation error formatter;

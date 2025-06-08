@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -405,7 +405,7 @@ async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   logger.info('Invoice cancelled', { 
     invoiceId, 
     cancelledBy: data.cancelledBy,
-    reason: data.cancellationReason;
+    reason: data.cancellationReason
   });
   
   return createSuccessResponse(updatedInvoice);

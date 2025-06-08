@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,7 +22,7 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 const Label = forwardRef<HTMLLabelElement, LabelProps>(
   ({ className, children, required, ...props }, ref) => {
     return (
-      <label;
+      <label>
         className={cn(
           "text-sm font-medium text-gray-700",
           className;

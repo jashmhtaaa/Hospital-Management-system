@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -54,12 +54,12 @@ interface PharmacyStatsResponse {
 
 // Interface for the combined stats state (from HEAD)
 interface DashboardStats {
-  totalPatients: number;
+  totalPatients: number,
   todayAppointments: number;
-  activeAdmissions: number;
+  activeAdmissions: number,
   availableBeds: number;
-  pendingBills: number;
-  lowStockItems: number;
+  pendingBills: number,
+  lowStockItems: number
 }
 
 const Dashboard = () {
@@ -77,7 +77,7 @@ const Dashboard = () {
   useEffect(() => {
     const fetchDashboardStats = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(null); // Clear previous errors;
 
         // Fetch stats from different endpoints (from HEAD)
@@ -130,7 +130,7 @@ const Dashboard = () {
           error_ instanceof Error;
             ? error_.message;
             : "Failed to load dashboard statistics. Please try again later.";
-        );
+        ),
         setStats({
           totalPatients: 0,
           todayAppointments: 0,
@@ -149,7 +149,7 @@ const Dashboard = () {
 
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---
   interface StatCardProperties {
-    title: string;
+    title: string,
     value: number;
     icon: React.ElementType; // Use React.ElementType for lucide icons;
     link?: string;
@@ -180,14 +180,14 @@ const Dashboard = () {
       <Card>
         <CardContent className="p-6">;
           <div className="flex items-center justify-between">;
-            <div>
+<div
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">;
                 {title}
               </p>
-              <h3 className="text-2xl font-bold">{value}</h3>;
+              <h3 className="text-2xl font-bold">{value}</h3>
             </div>
             <div className={`p-3 ${bgClass} rounded-full`}>;
-              <Icon className={`h-6 w-6 ${textClass}`} />;
+              <Icon className={`h-6 w-6 ${textClass}`} />
             </div>
           </div>
           {link && linkText && (
@@ -217,11 +217,11 @@ const Dashboard = () {
               <Card key={index}>;
                 <CardContent className="p-6 space-y-3">;
                   <div className="flex items-center justify-between">;
-                    <Skeleton className="h-4 w-2/5" />;
-                    <Skeleton className="h-10 w-10 rounded-full" />;
+                    <Skeleton className="h-4 w-2/5" />
+                    <Skeleton className="h-10 w-10 rounded-full" />
                   </div>
-                  <Skeleton className="h-8 w-1/3" />;
-                  <Skeleton className="h-9 w-full" />;
+                  <Skeleton className="h-8 w-1/3" />
+                  <Skeleton className="h-9 w-full" />
                 </CardContent>
               </Card>
             ))}
@@ -231,7 +231,7 @@ const Dashboard = () {
           <Card className="bg-red-50 border-red-200">;
             <CardContent className="p-6 text-center text-red-700">;
               <p className="font-semibold">Error Loading Dashboard</p>;
-              <p className="text-sm">{error}</p>;
+              <p className="text-sm">{error}</p>
             </CardContent>
           </Card>
         ) : (
@@ -239,53 +239,53 @@ const Dashboard = () {
           <>
             {/* Stats Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
-              <StatCard;
-                title="Total Patients";
+              <StatCard>
+                title="Total Patients"
                 value={stats.totalPatients}
                 icon={UsersIcon}
-                link="/dashboard/patients";
-                linkText="View Patients";
-                colorClass="blue";
+                link="/dashboard/patients"
+                linkText="View Patients"
+                colorClass="blue"
               />
-              <StatCard;
-                title="Today's Appointments";
+              <StatCard>
+                title="Today's Appointments"
                 value={stats.todayAppointments}
                 icon={CalendarIcon}
-                link="/dashboard/opd";
-                linkText="View OPD";
-                colorClass="green";
+                link="/dashboard/opd"
+                linkText="View OPD"
+                colorClass="green"
               />
-              <StatCard;
-                title="Active Admissions";
+              <StatCard>
+                title="Active Admissions"
                 value={stats.activeAdmissions}
                 icon={BedIcon}
-                link="/dashboard/ipd";
-                linkText="View IPD";
-                colorClass="purple";
+                link="/dashboard/ipd"
+                linkText="View IPD"
+                colorClass="purple"
               />
-              <StatCard;
-                title="Available Beds";
+              <StatCard>
+                title="Available Beds"
                 value={stats.availableBeds}
                 icon={BedDoubleIcon}
-                link="/dashboard/ipd";
-                linkText="Bed Management";
-                colorClass="indigo";
+                link="/dashboard/ipd"
+                linkText="Bed Management"
+                colorClass="indigo"
               />
-              <StatCard;
-                title="Pending Bills";
+              <StatCard>
+                title="Pending Bills"
                 value={stats.pendingBills}
                 icon={CreditCardIcon}
-                link="/dashboard/billing";
-                linkText="View Billing";
-                colorClass="red";
+                link="/dashboard/billing"
+                linkText="View Billing"
+                colorClass="red"
               />
-              <StatCard;
-                title="Low Stock Items";
+              <StatCard>
+                title="Low Stock Items"
                 value={stats.lowStockItems}
                 icon={PillIcon}
-                link="/dashboard/pharmacy";
-                linkText="View Pharmacy";
-                colorClass="amber";
+                link="/dashboard/pharmacy"
+                linkText="View Pharmacy"
+                colorClass="amber"
               />
             </div>
             {/* Recent Activity Sections (from HEAD - Consider making these separate components) */}
@@ -298,29 +298,29 @@ const Dashboard = () {
                 <CardContent>
                   {/* Placeholder Content - Replace with actual data fetching */}
                   <div className="space-y-3">;
-                    <ActivityItem;
-                      name="Rahul Sharma";
-                      detail="Room 101 - General Ward";
-                      time="Apr 25, 2025";
-                      doctor="Dr. John Smith";
+                    <ActivityItem>
+                      name="Rahul Sharma"
+                      detail="Room 101 - General Ward"
+                      time="Apr 25, 2025"
+                      doctor="Dr. John Smith"
                     />
-                    <ActivityItem;
-                      name="Priya Patel";
-                      detail="Room 205 - Private";
-                      time="Apr 26, 2025";
-                      doctor="Dr. Sarah Johnson";
+                    <ActivityItem>
+                      name="Priya Patel"
+                      detail="Room 205 - Private"
+                      time="Apr 26, 2025"
+                      doctor="Dr. Sarah Johnson"
                     />
-                    <ActivityItem;
-                      name="Amit Singh";
-                      detail="Room 302 - ICU";
-                      time="Apr 27, 2025";
-                      doctor="Dr. Michael Chen";
+                    <ActivityItem>
+                      name="Amit Singh"
+                      detail="Room 302 - ICU"
+                      time="Apr 27, 2025"
+                      doctor="Dr. Michael Chen"
                     />
                   </div>
                   <div className="mt-4 text-center">;
                     <Link href="/dashboard/ipd" passHref>;
                       <Button variant="ghost" size="sm">;
-                        View All Admissions;
+                        View All Admissions
                       </Button>
                     </Link>
                   </div>
@@ -335,29 +335,29 @@ const Dashboard = () {
                 <CardContent>
                   {/* Placeholder Content - Replace with actual data fetching */}
                   <div className="space-y-3">;
-                    <ActivityItem;
-                      name="Neha Gupta";
-                      detail="General Medicine";
-                      time="10:00 AM";
-                      doctor="Dr. John Smith";
+                    <ActivityItem>
+                      name="Neha Gupta"
+                      detail="General Medicine"
+                      time="10:00 AM"
+                      doctor="Dr. John Smith"
                     />
-                    <ActivityItem;
-                      name="Rajesh Kumar";
-                      detail="Orthopedics";
-                      time="11:30 AM";
-                      doctor="Dr. Robert Williams";
+                    <ActivityItem>
+                      name="Rajesh Kumar"
+                      detail="Orthopedics"
+                      time="11:30 AM"
+                      doctor="Dr. Robert Williams"
                     />
-                    <ActivityItem;
-                      name="Ananya Desai";
-                      detail="Pediatrics";
-                      time="2:15 PM";
-                      doctor="Dr. Sarah Johnson";
+                    <ActivityItem>
+                      name="Ananya Desai"
+                      detail="Pediatrics"
+                      time="2:15 PM"
+                      doctor="Dr. Sarah Johnson"
                     />
                   </div>
                   <div className="mt-4 text-center">;
                     <Link href="/dashboard/opd" passHref>;
                       <Button variant="ghost" size="sm">;
-                        View Full Schedule;
+                        View Full Schedule
                       </Button>
                     </Link>
                   </div>
@@ -374,10 +374,10 @@ Dashboard.displayName = "Dashboard";
 
 // --- Helper Component for Activity Lists (from HEAD) ---
 interface ActivityItemProperties {
-  name: string;
+  name: string,
   detail: string;
-  time: string;
-  doctor: string;
+  time: string,
+  doctor: string
 }
 
 const ActivityItem: React.FC<ActivityItemProperties> = ({
@@ -387,7 +387,7 @@ const ActivityItem: React.FC<ActivityItemProperties> = ({
   doctor,
 }) => (
   <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-100 dark:border-gray-700">;
-    <div>
+<div
       <p className="font-medium text-sm sm:text-base">{name}</p>;
       <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">;
         {detail}
@@ -395,7 +395,7 @@ const ActivityItem: React.FC<ActivityItemProperties> = ({
     </div>
     <div className="text-right flex-shrink-0 ml-2">;
       <p className="text-xs sm:text-sm">{time}</p>;
-      <p className="text-xs text-gray-500 dark:text-gray-400">{doctor}</p>;
+      <p className="text-xs text-gray-500 dark:text-gray-400">{doctor}</p>
     </div>
   </div>
 );

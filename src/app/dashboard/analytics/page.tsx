@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -83,129 +83,129 @@ import {
 } from 'lucide-react';
 
 interface AnalyticsData {
-  realTimeMetrics: RealTimeMetrics;
+  realTimeMetrics: RealTimeMetrics,
   operationalKPIs: OperationalKPI[];
-  departmentPerformance: DepartmentMetrics[];
+  departmentPerformance: DepartmentMetrics[],
   patientFlow: PatientFlowData[];
-  financialMetrics: FinancialMetrics;
+  financialMetrics: FinancialMetrics,
   qualityIndicators: QualityMetrics[];
-  resourceUtilization: ResourceMetrics[];
+  resourceUtilization: ResourceMetrics[],
   predictiveInsights: PredictiveData[];
-  alerts: SystemAlert[];
-  complianceStatus: ComplianceMetrics;
+  alerts: SystemAlert[],
+  complianceStatus: ComplianceMetrics
 }
 
 interface RealTimeMetrics {
-  currentPatients: number;
+  currentPatients: number,
   admissions24h: number;
-  discharges24h: number;
+  discharges24h: number,
   erVisits: number;
-  surgeries: number;
+  surgeries: number,
   bedOccupancy: number;
-  staffOnDuty: number;
+  staffOnDuty: number,
   avgWaitTime: number;
-  criticalAlerts: number;
-  systemHealth: 'excellent' | 'good' | 'warning' | 'critical';
+  criticalAlerts: number,
+  systemHealth: 'excellent' | 'good' | 'warning' | 'critical'
 }
 
 interface OperationalKPI {
-  metric: string;
+  metric: string,
   value: number;
-  target: number;
+  target: number,
   trend: 'up' | 'down' | 'stable';
-  changePercent: number;
+  changePercent: number,
   status: 'excellent' | 'good' | 'warning' | 'critical';
-  unit: string;
-  category: 'patient_care' | 'efficiency' | 'quality' | 'financial';
+  unit: string,
+  category: 'patient_care' | 'efficiency' | 'quality' | 'financial'
 }
 
 interface DepartmentMetrics {
-  department: string;
+  department: string,
   patientVolume: number;
-  efficiency: number;
+  efficiency: number,
   satisfaction: number;
-  revenue: number;
+  revenue: number,
   staffUtilization: number;
-  qualityScore: number;
+  qualityScore: number,
   alerts: number;
-  trend: 'improving' | 'stable' | 'declining';
+  trend: 'improving' | 'stable' | 'declining'
 }
 
 interface PatientFlowData {
-  time: string;
+  time: string,
   admissions: number;
-  discharges: number;
+  discharges: number,
   transfers: number;
-  erVisits: number;
+  erVisits: number,
   outpatient: number;
-  occupancy: number;
+  occupancy: number
 }
 
 interface FinancialMetrics {
-  revenue24h: number;
+  revenue24h: number,
   revenueMonth: number;
-  revenueYear: number;
+  revenueYear: number,
   costPerPatient: number;
-  profitMargin: number;
+  profitMargin: number,
   collectionsRate: number;
-  outstandingAR: number;
+  outstandingAR: number,
   budgetVariance: number;
-  revenuePerBed: number;
-  operatingRatio: number;
+  revenuePerBed: number,
+  operatingRatio: number
 }
 
 interface QualityMetrics {
-  indicator: string;
+  indicator: string,
   score: number;
-  benchmark: number;
+  benchmark: number,
   compliance: number;
-  trend: 'improving' | 'stable' | 'declining';
+  trend: 'improving' | 'stable' | 'declining',
   priority: 'high' | 'medium' | 'low';
-  lastUpdated: string;
+  lastUpdated: string
 }
 
 interface ResourceMetrics {
-  resource: string;
+  resource: string,
   capacity: number;
-  utilized: number;
+  utilized: number,
   utilization: number;
-  peak: number;
+  peak: number,
   efficiency: number;
-  availability: number;
-  cost: number;
+  availability: number,
+  cost: number
 }
 
 interface PredictiveData {
-  prediction: string;
+  prediction: string,
   probability: number;
-  impact: 'high' | 'medium' | 'low';
+  impact: 'high' | 'medium' | 'low',
   timeframe: string;
-  confidence: number;
+  confidence: number,
   recommendation: string;
-  category: 'capacity' | 'quality' | 'financial' | 'staff';
+  category: 'capacity' | 'quality' | 'financial' | 'staff'
 }
 
 interface SystemAlert {
-  id: string;
+  id: string,
   type: 'critical' | 'warning' | 'info';
-  title: string;
+  title: string,
   message: string;
   department?: string;
-  timestamp: string;
+  timestamp: string,
   acknowledged: boolean;
-  priority: number;
+  priority: number
 }
 
 interface ComplianceMetrics {
-  overall: number;
+  overall: number,
   hipaa: number;
-  hitech: number;
+  hitech: number,
   jacho: number;
-  cms: number;
+  cms: number,
   osha: number;
-  lastAudit: string;
+  lastAudit: string,
   nextAudit: string;
-  criticalFindings: number;
+  criticalFindings: number
 }
 
 const COLORS = {
@@ -216,7 +216,7 @@ const COLORS = {
   success: '#22c55e',
   info: '#06b6d4',
   purple: '#8b5cf6',
-  pink: '#ec4899';
+  pink: '#ec4899'
 };
 
 const CHART_COLORS = [COLORS.primary, COLORS.secondary, COLORS.warning, COLORS.danger, COLORS.purple, COLORS.pink];
@@ -255,7 +255,7 @@ export default const AdvancedAnalyticsDashboard = () {
   }, [timeRange, selectedDepartment, refreshInterval, autoRefresh]);
 
   const handleRefresh = () => {
-    setLoading(true);
+    setLoading(true),
     setTimeout(() => {
       setData(generateMockAnalyticsData());
       setLastRefresh(new Date());
@@ -269,7 +269,7 @@ export default const AdvancedAnalyticsDashboard = () {
       case 'good': return 'bg-blue-100 text-blue-800';
       case 'warning': return 'bg-yellow-100 text-yellow-800';
       case 'critical': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800'
     }
   };
 
@@ -277,19 +277,18 @@ export default const AdvancedAnalyticsDashboard = () {
     switch (trend) {
       case 'up':
       case 'improving':
-        return <ChevronUp className="h-4 w-4 text-green-500" />;
+        return <ChevronUp className="h-4 w-4 text-green-500" />
       case 'down':
       case 'declining':
-        return <ChevronDown className="h-4 w-4 text-red-500" />;
-      default:
-        return <div className="h-4 w-4" />;
+        return <ChevronDown className="h-4 w-4 text-red-500" />
+      default: return <div className="h-4 w-4" />
     }
   };
 
   if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-screen">;
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>;
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -298,10 +297,10 @@ export default const AdvancedAnalyticsDashboard = () {
     return (
       <div className="flex items-center justify-center h-screen">;
         <Alert className="max-w-md">;
-          <AlertTriangle className="h-4 w-4" />;
+          <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            Failed to load analytics data. Please try again.;
+            Failed to load analytics data. Please try again.
           </AlertDescription>
         </Alert>
       </div>
@@ -313,15 +312,15 @@ export default const AdvancedAnalyticsDashboard = () {
       {/* Header */}
       <div className="bg-white rounded-lg shadow-sm border p-6">;
         <div className="flex items-center justify-between">;
-          <div>
+<div
             <h1 className="text-3xl font-bold text-gray-900">Advanced Analytics</h1>;
             <p className="text-gray-600 mt-1">;
-              Real-time hospital operations intelligence and insights;
+              Real-time hospital operations intelligence and insights
             </p>
           </div>
           <div className="flex items-center space-x-4">;
             <Badge variant="outline" className="flex items-center space-x-1">;
-              <Wifi className="h-3 w-3" />;
+              <Wifi className="h-3 w-3" />
               <span>Live</span>
             </Badge>
             <div className="text-sm text-gray-500">;
@@ -336,19 +335,19 @@ export default const AdvancedAnalyticsDashboard = () {
                   <SelectItem value="1h">1H</SelectItem>;
                   <SelectItem value="24h">24H</SelectItem>;
                   <SelectItem value="7d">7D</SelectItem>;
-                  <SelectItem value="30d">30D</SelectItem>;
+                  <SelectItem value="30d">30D</SelectItem>
                 </SelectContent>
               </Select>
-              <Button;
-                variant="outline";
-                size="icon";
+              <Button>
+                variant="outline"
+                size="icon"
                 onClick={handleRefresh}
                 disabled={loading}
               >
-                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />;
+                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
               </Button>
               <Button variant="outline" size="icon">;
-                <Settings className="h-4 w-4" />;
+                <Settings className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -360,17 +359,17 @@ export default const AdvancedAnalyticsDashboard = () {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
             <CardTitle className="text-sm font-medium">System Health</CardTitle>;
-            <Shield className="h-4 w-4 text-muted-foreground" />;
+            <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">;
               <Badge className={getStatusColor(data.realTimeMetrics.systemHealth)}>;
                 {data.realTimeMetrics.systemHealth.toUpperCase()}
               </Badge>
-              <CheckCircle className="h-4 w-4 text-green-500" />;
+              <CheckCircle className="h-4 w-4 text-green-500" />
             </div>
             <p className="text-xs text-muted-foreground mt-2">;
-              All systems operational;
+              All systems operational
             </p>
           </CardContent>
         </Card>
@@ -378,13 +377,13 @@ export default const AdvancedAnalyticsDashboard = () {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
             <CardTitle className="text-sm font-medium">Current Patients</CardTitle>;
-            <Users className="h-4 w-4 text-muted-foreground" />;
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.realTimeMetrics.currentPatients}</div>;
             <div className="flex items-center text-xs text-muted-foreground">;
-              <TrendingUp className="h-3 w-3 mr-1 text-green-500" />;
-              +12% from yesterday;
+              <TrendingUp className="h-3 w-3 mr-1 text-green-500" />
+              +12% from yesterday
             </div>
           </CardContent>
         </Card>
@@ -392,11 +391,11 @@ export default const AdvancedAnalyticsDashboard = () {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
             <CardTitle className="text-sm font-medium">Bed Occupancy</CardTitle>;
-            <Bed className="h-4 w-4 text-muted-foreground" />;
+            <Bed className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.realTimeMetrics.bedOccupancy}%</div>;
-            <Progress value={data.realTimeMetrics.bedOccupancy} className="mt-2" />;
+            <Progress value={data.realTimeMetrics.bedOccupancy} className="mt-2" />
             <p className="text-xs text-muted-foreground mt-1">;
               {data.realTimeMetrics.bedOccupancy > 85 ? 'Near capacity' : 'Available capacity'}
             </p>
@@ -406,14 +405,14 @@ export default const AdvancedAnalyticsDashboard = () {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
             <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>;
-            <Bell className="h-4 w-4 text-muted-foreground" />;
+            <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">;
               {data.realTimeMetrics.criticalAlerts}
             </div>
             <p className="text-xs text-muted-foreground">;
-              Requires immediate attention;
+              Requires immediate attention
             </p>
           </CardContent>
         </Card>
@@ -427,7 +426,7 @@ export default const AdvancedAnalyticsDashboard = () {
           <TabsTrigger value="financial">Financial</TabsTrigger>;
           <TabsTrigger value="quality">Quality</TabsTrigger>;
           <TabsTrigger value="predictive">AI Insights</TabsTrigger>;
-          <TabsTrigger value="compliance">Compliance</TabsTrigger>;
+          <TabsTrigger value="compliance">Compliance</TabsTrigger>
         </TabsList>
 
         {/* Operations Analytics */}
@@ -437,7 +436,7 @@ export default const AdvancedAnalyticsDashboard = () {
             {data.operationalKPIs.map((kpi, index) => (
               <Card key={index}>;
                 <CardHeader className="pb-2">;
-                  <CardTitle className="text-sm">{kpi.metric}</CardTitle>;
+                  <CardTitle className="text-sm">{kpi.metric}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">;
@@ -450,14 +449,14 @@ export default const AdvancedAnalyticsDashboard = () {
                         kpi.trend === 'up' ? 'text-green-600' : 
                         kpi.trend === 'down' ? 'text-red-600' : 'text-gray-600';
                       }`}>
-                        {kpi.changePercent}%;
+                        {kpi.changePercent}%
                       </span>
                     </div>
                   </div>
                   <div className="mt-2">;
-                    <Progress;
+                    <Progress>
                       value={(kpi.value / kpi.target) * 100} 
-                      className="h-2";
+                      className="h-2"
                     />
                     <p className="text-xs text-muted-foreground mt-1">;
                       Target: {kpi.target.toLocaleString()}{kpi.unit}
@@ -473,37 +472,37 @@ export default const AdvancedAnalyticsDashboard = () {
             <CardHeader>
               <CardTitle>Patient Flow Analytics</CardTitle>
               <CardDescription>
-                Real-time patient admissions, discharges, and transfers;
+                Real-time patient admissions, discharges, and transfers
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>;
                 <AreaChart data={data.patientFlow}>;
-                  <CartesianGrid strokeDasharray="3 3" />;
-                  <XAxis dataKey="time" />;
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="time" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Area;
+                  <Area>
                     type="monotone" 
-                    dataKey="admissions";
-                    stackId="1";
+                    dataKey="admissions"
+                    stackId="1"
                     stroke={COLORS.primary} 
                     fill={COLORS.primary} 
                     fillOpacity={0.6}
                   />
-                  <Area;
+                  <Area>
                     type="monotone" 
-                    dataKey="discharges";
-                    stackId="1";
+                    dataKey="discharges"
+                    stackId="1"
                     stroke={COLORS.secondary} 
                     fill={COLORS.secondary} 
                     fillOpacity={0.6}
                   />
-                  <Area;
+                  <Area>
                     type="monotone" 
-                    dataKey="transfers";
-                    stackId="1";
+                    dataKey="transfers"
+                    stackId="1"
                     stroke={COLORS.warning} 
                     fill={COLORS.warning} 
                     fillOpacity={0.6}
@@ -518,31 +517,31 @@ export default const AdvancedAnalyticsDashboard = () {
             <CardHeader>
               <CardTitle>Department Performance Matrix</CardTitle>
               <CardDescription>
-                Multi-dimensional performance analysis by department;
+                Multi-dimensional performance analysis by department
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">;
                 <ResponsiveContainer width="100%" height={300}>;
                   <BarChart data={data.departmentPerformance}>;
-                    <CartesianGrid strokeDasharray="3 3" />;
-                    <XAxis dataKey="department" />;
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="department" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="efficiency" fill={COLORS.primary} />;
-                    <Bar dataKey="satisfaction" fill={COLORS.secondary} />;
-                    <Bar dataKey="qualityScore" fill={COLORS.purple} />;
+                    <Bar dataKey="efficiency" fill={COLORS.primary} />
+                    <Bar dataKey="satisfaction" fill={COLORS.secondary} />
+                    <Bar dataKey="qualityScore" fill={COLORS.purple} />
                   </BarChart>
                 </ResponsiveContainer>
                 
                 <ResponsiveContainer width="100%" height={300}>;
                   <ScatterChart data={data.departmentPerformance}>;
                     <CartesianGrid />
-                    <XAxis dataKey="efficiency" name="Efficiency" />;
-                    <YAxis dataKey="satisfaction" name="Satisfaction" />;
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />;
-                    <Scatter name="Departments" data={data.departmentPerformance} fill={COLORS.primary} />;
+                    <XAxis dataKey="efficiency" name="Efficiency" />
+                    <YAxis dataKey="satisfaction" name="Satisfaction" />
+                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                    <Scatter name="Departments" data={data.departmentPerformance} fill={COLORS.primary} />
                   </ScatterChart>
                 </ResponsiveContainer>
               </div>
@@ -566,33 +565,33 @@ export default const AdvancedAnalyticsDashboard = () {
                     <div className="flex items-center space-x-2">;
                       <span className="text-lg font-bold">8.2%</span>;
                       <Badge variant="outline" className="text-green-600">;
-                        -1.3%;
+                        -1.3%
                       </Badge>
                     </div>
                   </div>
-                  <Progress value={82} className="h-2" />;
+                  <Progress value={82} className="h-2" />
                   
                   <div className="flex items-center justify-between">;
                     <span className="text-sm font-medium">Mortality Rate</span>;
                     <div className="flex items-center space-x-2">;
                       <span className="text-lg font-bold">2.1%</span>;
                       <Badge variant="outline" className="text-green-600">;
-                        -0.3%;
+                        -0.3%
                       </Badge>
                     </div>
                   </div>
-                  <Progress value={79} className="h-2" />;
+                  <Progress value={79} className="h-2" />
                   
                   <div className="flex items-center justify-between">;
                     <span className="text-sm font-medium">Infection Rate</span>;
                     <div className="flex items-center space-x-2">;
                       <span className="text-lg font-bold">1.8%</span>;
                       <Badge variant="outline" className="text-red-600">;
-                        +0.2%;
+                        +0.2%
                       </Badge>
                     </div>
                   </div>
-                  <Progress value={88} className="h-2" />;
+                  <Progress value={88} className="h-2" />
                 </div>
               </CardContent>
             </Card>
@@ -606,21 +605,21 @@ export default const AdvancedAnalyticsDashboard = () {
               <CardContent>
                 <ResponsiveContainer width="100%" height={250}>;
                   <PieChart>
-                    <Pie;
+                    <Pie>
                       data={[
                         { name: 'Surgical', value: 94, fill: COLORS.primary },
                         { name: 'Medical', value: 87, fill: COLORS.secondary },
                         { name: 'Emergency', value: 91, fill: COLORS.warning },
                         { name: 'Outpatient', value: 96, fill: COLORS.purple }
                       ]}
-                      cx="50%";
-                      cy="50%";
+                      cx="50%"
+                      cy="50%"
                       outerRadius={80}
-                      dataKey="value";
+                      dataKey="value"
                       label={({name, value}) => `${name}: ${value}%`}
                     >
                       {[].map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />;
+                        <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip />
@@ -635,27 +634,27 @@ export default const AdvancedAnalyticsDashboard = () {
             <CardHeader>
               <CardTitle>Length of Stay Analysis</CardTitle>
               <CardDescription>
-                Average length of stay trends by department;
+                Average length of stay trends by department
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>;
                 <LineChart data={data.patientFlow}>;
-                  <CartesianGrid strokeDasharray="3 3" />;
-                  <XAxis dataKey="time" />;
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="time" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line;
+                  <Line>
                     type="monotone" 
-                    dataKey="admissions";
+                    dataKey="admissions"
                     stroke={COLORS.primary} 
                     strokeWidth={2}
                     dot={{ r: 4 }}
                   />
-                  <Line;
+                  <Line>
                     type="monotone" 
-                    dataKey="discharges";
+                    dataKey="discharges"
                     stroke={COLORS.secondary} 
                     strokeWidth={2}
                     dot={{ r: 4 }}
@@ -671,51 +670,51 @@ export default const AdvancedAnalyticsDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Revenue (24h)</CardTitle>;
+                <CardTitle className="text-sm">Revenue (24h)</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
                   ${data.financialMetrics.revenue24h.toLocaleString()}
                 </div>
                 <p className="text-xs text-muted-foreground">;
-                  +15% vs. yesterday;
+                  +15% vs. yesterday
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Profit Margin</CardTitle>;
+                <CardTitle className="text-sm">Profit Margin</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
-                  {data.financialMetrics.profitMargin}%;
+                  {data.financialMetrics.profitMargin}%
                 </div>
-                <Progress value={data.financialMetrics.profitMargin} className="mt-2" />;
+                <Progress value={data.financialMetrics.profitMargin} className="mt-2" />
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Collections Rate</CardTitle>;
+                <CardTitle className="text-sm">Collections Rate</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
-                  {data.financialMetrics.collectionsRate}%;
+                  {data.financialMetrics.collectionsRate}%
                 </div>
                 <p className="text-xs text-muted-foreground">;
-                  Target: 95%;
+                  Target: 95%
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Operating Ratio</CardTitle>;
+                <CardTitle className="text-sm">Operating Ratio</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">;
-                  {data.financialMetrics.operatingRatio}%;
+                  {data.financialMetrics.operatingRatio}%
                 </div>
                 <Badge variant={data.financialMetrics.operatingRatio > 90 ? "default" : "destructive"}>;
                   {data.financialMetrics.operatingRatio > 90 ? 'Good' : 'Attention Needed'}
@@ -750,14 +749,14 @@ export default const AdvancedAnalyticsDashboard = () {
                         <div className="flex-1">;
                           <div className="flex justify-between text-sm mb-1">;
                             <span>Score: {indicator.score}%</span>;
-                            <span>Target: {indicator.benchmark}%</span>;
+                            <span>Target: {indicator.benchmark}%</span>
                           </div>
-                          <Progress value={indicator.score} className="h-2" />;
+                          <Progress value={indicator.score} className="h-2" />
                         </div>
                         <div className="text-right">;
                           {getTrendIcon(indicator.trend)}
                           <p className="text-xs text-muted-foreground">;
-                            {indicator.compliance}% compliant;
+                            {indicator.compliance}% compliant
                           </p>
                         </div>
                       </div>
@@ -780,7 +779,7 @@ export default const AdvancedAnalyticsDashboard = () {
                     { name: 'Infection Control', value: 98, fill: COLORS.success },
                     { name: 'Surgical Safety', value: 97, fill: COLORS.warning }
                   ]}>
-                    <RadialBar dataKey="value" cornerRadius={10} fill={COLORS.primary} />;
+                    <RadialBar dataKey="value" cornerRadius={10} fill={COLORS.primary} />
                     <Tooltip />
                     <Legend />
                   </RadialBarChart>
@@ -796,11 +795,11 @@ export default const AdvancedAnalyticsDashboard = () {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">;
-                  <Brain className="h-5 w-5" />;
+                  <Brain className="h-5 w-5" />
                   <span>AI-Powered Predictions</span>
                 </CardTitle>
                 <CardDescription>
-                  Machine learning insights and recommendations;
+                  Machine learning insights and recommendations
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -808,15 +807,15 @@ export default const AdvancedAnalyticsDashboard = () {
                   {data.predictiveInsights.map((insight, index) => (
                     <div key={index} className="border rounded-lg p-4">;
                       <div className="flex items-start justify-between mb-2">;
-                        <div>
+<div
                           <h4 className="font-medium">{insight.prediction}</h4>;
-                          <p className="text-sm text-muted-foreground">{insight.timeframe}</p>;
+                          <p className="text-sm text-muted-foreground">{insight.timeframe}</p>
                         </div>
                         <Badge variant={
                           insight.impact === 'high' ? 'destructive' :
                           insight.impact === 'medium' ? 'default' : 'secondary';
                         }>
-                          {insight.impact} impact;
+                          {insight.impact} impact
                         </Badge>
                       </div>
                       <div className="mb-3">;
@@ -824,14 +823,14 @@ export default const AdvancedAnalyticsDashboard = () {
                           <span>Probability</span>
                           <span>{insight.probability}%</span>
                         </div>
-                        <Progress value={insight.probability} className="h-2" />;
+                        <Progress value={insight.probability} className="h-2" />
                       </div>
                       <div className="mb-3">;
                         <div className="flex justify-between text-sm mb-1">;
                           <span>Confidence</span>
                           <span>{insight.confidence}%</span>
                         </div>
-                        <Progress value={insight.confidence} className="h-2" />;
+                        <Progress value={insight.confidence} className="h-2" />
                       </div>
                       <div className="bg-blue-50 rounded p-3">;
                         <p className="text-sm">;
@@ -848,24 +847,24 @@ export default const AdvancedAnalyticsDashboard = () {
               <CardHeader>
                 <CardTitle>Capacity Forecasting</CardTitle>
                 <CardDescription>
-                  Predicted resource utilization over the next 7 days;
+                  Predicted resource utilization over the next 7 days
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>;
                   <LineChart data={data.patientFlow}>;
-                    <CartesianGrid strokeDasharray="3 3" />;
-                    <XAxis dataKey="time" />;
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line;
+                    <Line>
                       type="monotone" 
-                      dataKey="occupancy";
+                      dataKey="occupancy"
                       stroke={COLORS.primary} 
                       strokeWidth={3}
                       dot={{ r: 5 }}
-                      strokeDasharray="5 5";
+                      strokeDasharray="5 5"
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -879,41 +878,41 @@ export default const AdvancedAnalyticsDashboard = () {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Overall Compliance</CardTitle>;
+                <CardTitle className="text-sm">Overall Compliance</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-green-600">;
-                  {data.complianceStatus.overall}%;
+                  {data.complianceStatus.overall}%
                 </div>
-                <Progress value={data.complianceStatus.overall} className="mt-2" />;
+                <Progress value={data.complianceStatus.overall} className="mt-2" />
                 <p className="text-xs text-muted-foreground mt-1">;
-                  Target: 95%;
+                  Target: 95%
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">HIPAA Compliance</CardTitle>;
+                <CardTitle className="text-sm">HIPAA Compliance</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">;
-                  {data.complianceStatus.hipaa}%;
+                  {data.complianceStatus.hipaa}%
                 </div>
-                <Progress value={data.complianceStatus.hipaa} className="mt-2" />;
+                <Progress value={data.complianceStatus.hipaa} className="mt-2" />
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">;
-                <CardTitle className="text-sm">Critical Findings</CardTitle>;
+                <CardTitle className="text-sm">Critical Findings</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-red-600">;
                   {data.complianceStatus.criticalFindings}
                 </div>
                 <p className="text-xs text-muted-foreground">;
-                  Requires immediate attention;
+                  Requires immediate attention
                 </p>
               </CardContent>
             </Card>
@@ -923,7 +922,7 @@ export default const AdvancedAnalyticsDashboard = () {
             <CardHeader>
               <CardTitle>Regulatory Compliance Status</CardTitle>
               <CardDescription>
-                Compliance scores across all regulatory frameworks;
+                Compliance scores across all regulatory frameworks
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -939,8 +938,8 @@ export default const AdvancedAnalyticsDashboard = () {
                     <div key={index} className="flex items-center justify-between">;
                       <span className="font-medium">{item.name}</span>;
                       <div className="flex items-center space-x-3">;
-                        <Progress value={item.score} className="w-24" />;
-                        <span className="text-sm font-medium w-12">{item.score}%</span>;
+                        <Progress value={item.score} className="w-24" />
+                        <span className="text-sm font-medium w-12">{item.score}%</span>
                       </div>
                     </div>
                   ))}
@@ -955,7 +954,7 @@ export default const AdvancedAnalyticsDashboard = () {
                     </div>
                     <div className="flex justify-between">;
                       <span>Next Audit:</span>;
-                      <span className="font-medium">{data.complianceStatus.nextAudit}</span>;
+                      <span className="font-medium">{data.complianceStatus.nextAudit}</span>
                     </div>
                   </div>
                 </div>
@@ -970,12 +969,12 @@ export default const AdvancedAnalyticsDashboard = () {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">;
-              <AlertTriangle className="h-5 w-5 text-red-500" />;
+              <AlertTriangle className="h-5 w-5 text-red-500" />
               <span>Critical Alerts</span>
-              <Badge variant="destructive">{data.alerts.length}</Badge>;
+              <Badge variant="destructive">{data.alerts.length}</Badge>
             </CardTitle>
             <CardDescription>
-              Immediate attention required;
+              Immediate attention required
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -985,7 +984,7 @@ export default const AdvancedAnalyticsDashboard = () {
                   alert.type === 'critical' ? 'border-l-red-500' :
                   alert.type === 'warning' ? 'border-l-yellow-500' : 'border-l-blue-500';
                 }`}>
-                  <AlertTriangle className="h-4 w-4" />;
+                  <AlertTriangle className="h-4 w-4" />
                   <AlertTitle className="flex items-center justify-between">;
                     <span>{alert.title}</span>
                     <div className="flex items-center space-x-2">;
@@ -1029,7 +1028,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
       staffOnDuty: 342,
       avgWaitTime: 24,
       criticalAlerts: 3,
-      systemHealth: 'good';
+      systemHealth: 'good'
     },
     operationalKPIs: [
       {
@@ -1040,7 +1039,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         changePercent: -8,
         status: 'good',
         unit: 'min',
-        category: 'efficiency';
+        category: 'efficiency'
       },
       {
         metric: 'Patient Satisfaction',
@@ -1050,7 +1049,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         changePercent: 3,
         status: 'excellent',
         unit: '%',
-        category: 'patient_care';
+        category: 'patient_care'
       },
       {
         metric: 'Staff Utilization',
@@ -1060,7 +1059,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         changePercent: 0,
         status: 'good',
         unit: '%',
-        category: 'efficiency';
+        category: 'efficiency'
       },
       {
         metric: 'Revenue per Patient',
@@ -1070,7 +1069,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         changePercent: 6,
         status: 'excellent',
         unit: '$',
-        category: 'financial';
+        category: 'financial'
       }
     ],
     departmentPerformance: [
@@ -1083,7 +1082,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         staffUtilization: 94,
         qualityScore: 91,
         alerts: 2,
-        trend: 'improving';
+        trend: 'improving'
       },
       {
         department: 'ICU',
@@ -1094,7 +1093,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         staffUtilization: 88,
         qualityScore: 96,
         alerts: 1,
-        trend: 'stable';
+        trend: 'stable'
       },
       {
         department: 'Surgery',
@@ -1105,7 +1104,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         staffUtilization: 91,
         qualityScore: 97,
         alerts: 0,
-        trend: 'improving';
+        trend: 'improving'
       },
       {
         department: 'Radiology',
@@ -1116,7 +1115,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         staffUtilization: 82,
         qualityScore: 88,
         alerts: 1,
-        trend: 'stable';
+        trend: 'stable'
       }
     ],
     patientFlow: [
@@ -1137,7 +1136,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
       outstandingAR: 4200000,
       budgetVariance: -2.3,
       revenuePerBed: 925,
-      operatingRatio: 91;
+      operatingRatio: 91
     },
     qualityIndicators: [
       {
@@ -1147,7 +1146,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         compliance: 98,
         trend: 'improving',
         priority: 'high',
-        lastUpdated: '2024-01-15';
+        lastUpdated: '2024-01-15'
       },
       {
         indicator: 'Clinical Excellence',
@@ -1156,7 +1155,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         compliance: 96,
         trend: 'stable',
         priority: 'medium',
-        lastUpdated: '2024-01-15';
+        lastUpdated: '2024-01-15'
       },
       {
         indicator: 'Infection Control',
@@ -1165,7 +1164,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         compliance: 99,
         trend: 'improving',
         priority: 'high',
-        lastUpdated: '2024-01-15';
+        lastUpdated: '2024-01-15'
       }
     ],
     resourceUtilization: [
@@ -1177,7 +1176,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         peak: 11,
         efficiency: 92,
         availability: 98,
-        cost: 25000;
+        cost: 25000
       }
     ],
     predictiveInsights: [
@@ -1188,7 +1187,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         timeframe: 'Next 24 hours',
         confidence: 92,
         recommendation: 'Consider discharge planning for stable patients and prepare overflow protocols',
-        category: 'capacity';
+        category: 'capacity'
       },
       {
         prediction: 'Emergency department volume spike expected',
@@ -1197,7 +1196,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         timeframe: 'Next 6 hours',
         confidence: 78,
         recommendation: 'Increase triage staff and prepare fast-track protocols',
-        category: 'capacity';
+        category: 'capacity'
       }
     ],
     alerts: [
@@ -1209,7 +1208,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         department: 'ICU',
         timestamp: '2024-01-15T14:30:00Z',
         acknowledged: false,
-        priority: 1;
+        priority: 1
       },
       {
         id: '2',
@@ -1219,7 +1218,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
         department: 'Emergency',
         timestamp: '2024-01-15T14:25:00Z',
         acknowledged: false,
-        priority: 2;
+        priority: 2
       }
     ],
     complianceStatus: {
@@ -1231,7 +1230,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
       osha: 92,
       lastAudit: '2023-11-15',
       nextAudit: '2024-05-15',
-      criticalFindings: 2;
+      criticalFindings: 2
     }
   };
 }

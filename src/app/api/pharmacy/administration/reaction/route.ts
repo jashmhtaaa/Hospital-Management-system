@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,7 +31,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -42,7 +42,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const reactionRepository = {
@@ -51,14 +51,14 @@ const reactionRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   save: (reaction: unknown) => Promise.resolve(reaction.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * POST /api/pharmacy/administration/reaction;
  * Record adverse medication reaction;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -117,7 +117,7 @@ export async const POST = (req: NextRequest) {
       reportedAt: new Date(),
       isSerious: data.isSerious || false,
       requiresFollowUp: data.requiresFollowUp || false,
-      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null;
+      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null
     };
 
     // Save reaction record;
@@ -145,7 +145,7 @@ export async const POST = (req: NextRequest) {
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId,
         severity: data.severity,
-        isSerious: data.isSerious;
+        isSerious: data.isSerious
       }
     });
 
@@ -154,7 +154,7 @@ export async const POST = (req: NextRequest) {
       { 
         id: reactionId,
         message: 'Adverse reaction recorded successfully',
-        requiresImmediateAttention: data.severity === 'severe' || data.isSerious;
+        requiresImmediateAttention: data.severity === 'severe' || data.isSerious
       }, 
       { status: 201 }
     );
@@ -167,7 +167,7 @@ export async const POST = (req: NextRequest) {
  * GET /api/pharmacy/administration/reaction/patient/[patientId]
  * Get adverse reactions for a specific patient;
  */
-export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) {
+export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -222,7 +222,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
     const severityCounts = {
       mild: filteredRecords.filter(r => r.severity === 'mild').length,
       moderate: filteredRecords.filter(r => r.severity === 'moderate').length,
-      severe: filteredRecords.filter(r => r.severity === 'severe').length;
+      severe: filteredRecords.filter(r => r.severity === 'severe').length
     };
 
     // Audit logging;
@@ -247,7 +247,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

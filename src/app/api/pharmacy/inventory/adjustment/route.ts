@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ const inventoryRepository = {
   save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
-  adjustStock: () => Promise.resolve(true);
+  adjustStock: () => Promise.resolve(true)
 };
 
 const adjustmentRepository = {
@@ -39,14 +39,14 @@ const adjustmentRepository = {
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id');
+  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id')
 };
 
 /**
  * POST /api/pharmacy/inventory/adjustment;
  * Adjust inventory quantity with reason documentation;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -88,7 +88,7 @@ export async const POST = (req: NextRequest) {
       reason: data.reason,
       adjustedBy: userId,
       adjustedAt: new Date(),
-      notes: data.notes || '';
+      notes: data.notes || ''
     };
 
     // Save adjustment record;
@@ -111,7 +111,7 @@ export async const POST = (req: NextRequest) {
           previousQuantity: inventory.quantityOnHand,
           newQuantity: data.newQuantity,
           adjustmentQuantity,
-          reason: data.reason;
+          reason: data.reason
         }
       });
     }
@@ -128,7 +128,7 @@ export async const POST = (req: NextRequest) {
         previousQuantity: inventory.quantityOnHand,
         newQuantity: data.newQuantity,
         adjustmentQuantity,
-        reason: data.reason;
+        reason: data.reason
       }
     });
 
@@ -136,7 +136,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: adjustmentId,
-        message: 'Inventory adjusted successfully';
+        message: 'Inventory adjusted successfully'
       }, 
       { status: 201 }
     );
@@ -149,7 +149,7 @@ export async const POST = (req: NextRequest) {
  * GET /api/pharmacy/inventory/adjustments;
  * List inventory adjustments with filtering options;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -198,7 +198,7 @@ export async const GET = (req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: adjustments.length;
+        resultCount: adjustments.length
       }
     });
 
@@ -209,7 +209,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

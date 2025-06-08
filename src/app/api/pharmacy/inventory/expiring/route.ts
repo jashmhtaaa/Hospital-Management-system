@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,14 +30,14 @@ const inventoryRepository = {
   findExpiring: (daysThreshold: number) => Promise.resolve([]),
   save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/inventory/expiring;
  * List medications approaching expiry date;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -123,7 +123,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

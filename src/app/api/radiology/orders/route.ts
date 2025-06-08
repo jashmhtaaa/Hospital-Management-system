@@ -15,9 +15,9 @@ interface RadiologyOrderFilters {
 }
 
 interface RadiologyOrderInput {
-  patient_id: number;
+  patient_id: number,
   ordering_doctor_id: number;
-  modality: string;
+  modality: string,
   body_part: string;
   order_date?: string;
   priority?: string;
@@ -233,7 +233,7 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
         age: 35,
         gender: "Female",
         contact: "+91-9876543210",
-        medical_record_number: "MRN00101";
+        medical_record_number: "MRN00101"
       }
     },
     {
@@ -261,12 +261,12 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
         age: 28,
         gender: "Male",
         contact: "+91-9876543212",
-        medical_record_number: "MRN00103";
+        medical_record_number: "MRN00103"
       },
       report: {
         findings: "L4-L5 disc herniation with compression of left L5 nerve root. Mild degenerative changes at L3-L4 and L5-S1 levels.",
         impression: "L4-L5 disc herniation with left-sided radiculopathy.",
-        recommendations: "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially.";
+        recommendations: "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially."
       }
     }
   ];
@@ -297,7 +297,7 @@ async const updateRadiologyOrderInDB = (
  * GET /api/radiology/orders;
  * Retrieves a list of radiology orders, potentially filtered.
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -359,7 +359,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/radiology/orders;
  * Creates a new radiology order.
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface;
 
@@ -402,7 +402,7 @@ export async const POST = (request: NextRequest) {
  * It should likely be in /orders/[id]/route.ts.
  * Keeping it here for now to fix TS errors, but should be refactored.
  */
-export async const PUT = (request: NextRequest) {
+export async const PUT = (request: NextRequest) => {
   try {
     const path = request.nextUrl.pathname;
     // This parsing logic is fragile and assumes the ID is the last segment.

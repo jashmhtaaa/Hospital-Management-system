@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,7 +24,7 @@ const templateService = new TemplateService();
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -48,7 +48,7 @@ export async const GET = (
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -77,7 +77,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

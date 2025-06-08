@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,31 +16,31 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 interface RadiologyReport {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   reportDate: string;
-  studyType: string;
+  studyType: string,
   status: 'draft' | 'preliminary' | 'final' | 'amended';
-  radiologist: string;
+  radiologist: string
 }
 
 interface RadiologyReportsListProps {
-  reports: RadiologyReport[];
-  onViewReport: (reportId: string) => void;
+  reports: RadiologyReport[],
+  onViewReport: (reportId: string) => void
 }
 
 /**
  * Radiology reports list component;
  */
-export const RadiologyReportsList = ({ reports, onViewReport }: RadiologyReportsListProps) {
+export const RadiologyReportsList = ({ reports, onViewReport }: RadiologyReportsListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
       case 'preliminary': return <Badge variant="warning">Preliminary</Badge>;
       case 'final': return <Badge variant="success">Final</Badge>;
       case 'amended': return <Badge variant="info">Amended</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -65,7 +65,7 @@ export const RadiologyReportsList = ({ reports, onViewReport }: RadiologyReports
             {reports.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center">;
-                  No radiology reports found;
+                  No radiology reports found
                 </TableCell>
               </TableRow>
             ) : (
@@ -73,19 +73,19 @@ export const RadiologyReportsList = ({ reports, onViewReport }: RadiologyReports
                 <TableRow key={report.id}>;
                   <TableCell>
                     <div className="font-medium">{report.patientName}</div>;
-                    <div className="text-sm text-gray-500">ID: {report.patientId}</div>;
+                    <div className="text-sm text-gray-500">ID: {report.patientId}</div>
                   </TableCell>
                   <TableCell>{report.reportDate}</TableCell>
                   <TableCell>{report.studyType}</TableCell>
                   <TableCell>{getStatusBadge(report.status)}</TableCell>
                   <TableCell>{report.radiologist}</TableCell>
                   <TableCell>
-                    <Button;
-                      variant="outline";
-                      size="sm";
+                    <Button>
+                      variant="outline"
+                      size="sm"
                       onClick={() => onViewReport(report.id)}
                     >
-                      View;
+                      View
                     </Button>
                   </TableCell>
                 </TableRow>

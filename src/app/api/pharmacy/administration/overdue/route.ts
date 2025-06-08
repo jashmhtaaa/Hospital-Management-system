@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,7 +29,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -40,7 +40,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
@@ -52,14 +52,14 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findOverdue: (overdueThreshold: number) => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/administration/overdue;
  * List medications that are overdue for administration;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -167,7 +167,7 @@ export async const GET = (req: NextRequest) {
           overdueMinutes,
           severity,
           isHighAlert: medication.isHighAlert,
-          status: 'overdue';
+          status: 'overdue'
         });
       }
     }
@@ -192,7 +192,7 @@ export async const GET = (req: NextRequest) {
       critical: overdueAdministrations.filter(a => a.severity === 'critical').length,
       high: overdueAdministrations.filter(a => a.severity === 'high').length,
       medium: overdueAdministrations.filter(a => a.severity === 'medium').length,
-      normal: overdueAdministrations.filter(a => a.severity === 'normal').length;
+      normal: overdueAdministrations.filter(a => a.severity === 'normal').length
     };
 
     // Audit logging;
@@ -220,7 +220,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

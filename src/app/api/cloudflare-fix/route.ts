@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -47,7 +47,7 @@ const getCloudflareBindings = (): Environment | undefined {
 }
 
 // FIX: Renamed 'request' to '_request' to satisfy @typescript-eslint/no-unused-vars;
-export async const GET = () {
+export async const GET = () => {
   try {
     // Attempt to get Cloudflare bindings (replace with actual method)
     // FIX: Removed argument from getCloudflareBindings call;
@@ -69,7 +69,7 @@ export async const GET = () {
     // FIX: Ensure the type assertion is correct for D1Database methods;
     const { results } = await environment.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
 
-    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results;
+    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results,
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

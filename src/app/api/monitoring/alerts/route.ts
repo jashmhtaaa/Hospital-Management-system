@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ var __DEV__: boolean;
 import { NextRequest, NextResponse } from 'next/server';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const ruleId = searchParams.get('ruleId');
@@ -101,7 +101,7 @@ export async const GET = (request: NextRequest) {
   }
 }
 
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
     const { action } = body;
@@ -192,7 +192,7 @@ export async const POST = (request: NextRequest) {
   }
 }
 
-export async const PUT = (request: NextRequest) {
+export async const PUT = (request: NextRequest) => {
   try {
     const body = await request.json();
     const { ruleId, enabled } = body;

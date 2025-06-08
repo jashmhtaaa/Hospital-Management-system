@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -13,7 +13,7 @@ var __DEV__: boolean;
 import { User } from './user.ts';
 
 export interface Doctor {
-    doctor_id: number;
+    doctor_id: number,
     user_id: number;
     specialty: string;
     qualifications?: string | null;

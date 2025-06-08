@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,7 +38,7 @@ describe("ChargeCaptureService", () => {
       // Assert: Check if the result is as expected;
       // expect(result).toBeDefined();
       // expect(result.id).toBeDefined();
-      // expect(result.amount).toEqual(chargeData.amount);
+      // expect(result.amount).toEqual(chargeData.amount),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -50,7 +50,7 @@ describe("ChargeCaptureService", () => {
       };
       // Act & Assert;
       // const chargeCaptureService = new ChargeCaptureService(/* pass mocks */);
-      // await expect(chargeCaptureService.createCharge(chargeData as any)).rejects.toThrow("Validation Error or similar");
+      // await expect(chargeCaptureService.createCharge(chargeData as any)).rejects.toThrow("Validation Error or similar"),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });
@@ -67,7 +67,7 @@ describe("ChargeCaptureService", () => {
 
       // Assert;
       // expect(result).toBeDefined();
-      // expect(result.id).toEqual(chargeId);
+      // expect(result.id).toEqual(chargeId),
       expect(true).toBe(true); // Placeholder assertion;
     });
 

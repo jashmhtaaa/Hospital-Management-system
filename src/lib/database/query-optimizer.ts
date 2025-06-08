@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -687,14 +687,14 @@ export class QueryOptimizer {
 export const queryOptimizer = QueryOptimizer.getInstance();
 
 // Utility functions for common optimized patterns;
-export async const getOptimizedPatientData = (patientId: string) {
-  return queryOptimizer.getPatientOptimized(patientId);
+export async const getOptimizedPatientData = (patientId: string) => {
+  return queryOptimizer.getPatientOptimized(patientId)
 }
 
 export async const getOptimizedBillsForPatient = (
   patientId: string,
   limit: number = 10;
-) {
+) => {
   return queryOptimizer.getBillsWithItems({
     patientId,
     limit,
@@ -704,7 +704,7 @@ export async const getOptimizedBillsForPatient = (
 export async const getOptimizedAppointmentsForDoctor = (
   doctorId: string,
   date: Date;
-) {
+) => {
   return queryOptimizer.getAppointmentsWithDetails({
     doctorId,
     date,

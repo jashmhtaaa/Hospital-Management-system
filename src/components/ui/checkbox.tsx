@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ const Checkbox = React.forwardRef<;
     <CheckboxPrimitive.Indicator;
       className={cn("flex items-center justify-center text-current")}
     >
-      <Check className="h-4 w-4" />;
+      <Check className="h-4 w-4" />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ));

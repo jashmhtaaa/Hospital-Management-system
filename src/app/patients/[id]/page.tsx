@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -54,7 +54,7 @@ export default async const PatientDetailPage = ({
   return (
     <div className="container mx-auto py-6">;
       <Suspense fallback={<div>Loading patient details...</div>}>;
-        <PatientDetail patientId={params.id} initialData={patient} />;
+        <PatientDetail patientId={params.id} initialData={patient} />
       </Suspense>
     </div>
   );

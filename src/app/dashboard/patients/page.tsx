@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -41,11 +41,10 @@ export default const PatientsPage = () {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const { toast } = useToast();
-
+  const { toast } = useToast(),
   useEffect(() => {
     const fetchPatients = async () => {
-      setIsLoading(true);
+      setIsLoading(true),
       setError(null);
       try {
         const response = await fetch("/api/patients"); // Use the GET endpoint created earlier;
@@ -54,11 +53,11 @@ export default const PatientsPage = () {
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
         }
-        const data: Patient[] = await response.json();
+        const data: Patient[] = await response.json(),
         setPatients(data);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setError(message);
+        setError(message),
         toast({
           title: "Error Fetching Patients",
           description: message,
@@ -87,18 +86,18 @@ export default const PatientsPage = () {
           <h1 className="text-2xl font-semibold">Patients</h1>;
           <Link href="/dashboard/patients/new">;
              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" /> Add Patient;
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Patient
              </Button>
           </Link>
         </div>
 
         {/* Search Bar */}
         <div className="relative">;
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-            <Input;
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input>
                 type="search"
-                placeholder="Search by name, phone, or email...";
-                className="pl-8 w-full md:w-1/3 lg:w-1/4";
+                placeholder="Search by name, phone, or email..."
+                className="pl-8 w-full md:w-1/3 lg:w-1/4"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -118,7 +117,7 @@ export default const PatientsPage = () {
                   <TableHead>Gender</TableHead>
                   <TableHead>DOB</TableHead>
                   <TableHead>Registered On</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>;
+                  <TableHead><span className="sr-only">Actions</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -136,7 +135,7 @@ export default const PatientsPage = () {
                       <TableCell>
                         {/* Add action buttons like View, Edit */}
                         <Link href={`/dashboard/patients/${patient.patient_id}`}>;
-                           <Button variant="outline" size="sm">View</Button>;
+                           <Button variant="outline" size="sm">View</Button>
                         </Link>
                       </TableCell>
                     </TableRow>
@@ -144,7 +143,7 @@ export default const PatientsPage = () {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center">;
-                      No patients found.;
+                      No patients found.
                     </TableCell>
                   </TableRow>
                 )}

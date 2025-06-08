@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -46,14 +46,13 @@ export default const RadiologyOrderList = () {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(); // Correctly typed state;
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const router = useRouter();
-
+  const router = useRouter(),
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const fetchOrders = async () => {
-    setLoading(true);
+    setLoading(true),
     setError(undefined); // Clear previous errors;
     try {
       const response = await fetch("/api/radiology/orders");
@@ -73,7 +72,7 @@ export default const RadiologyOrderList = () {
 
       setError(
         `Failed to load radiology orders: ${message}. Please try again later.`;
-      );
+      ),
       toast({
         title: "Error Loading Orders",
         description: message,
@@ -117,7 +116,7 @@ export default const RadiologyOrderList = () {
       toast({
         title: "Success",
         description: "Radiology order created successfully.",
-      });
+      }),
       setShowCreateModal(false);
       fetchOrders(); // Refresh the list;
     } catch (error_) {
@@ -149,8 +148,8 @@ export default const RadiologyOrderList = () {
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
 
     return (
-      <Badge;
-        variant="outline";
+      <Badge>
+        variant="outline"
         className={
           statusStyles[status] || "bg-gray-100 text-gray-800 border-gray-200";
         }
@@ -166,13 +165,13 @@ export default const RadiologyOrderList = () {
         <div className="flex justify-between items-center mb-6">;
           <h2 className="text-xl font-semibold">Radiology Orders</h2>;
           <Button onClick={() => setShowCreateModal(true)}>
-            Create New Order;
+            Create New Order
           </Button>
         </div>
 
         {loading ? (
           <div className="flex justify-center items-center h-40">;
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4 border border-red-200 rounded bg-red-50">;
@@ -180,7 +179,7 @@ export default const RadiologyOrderList = () {
           </div>
         ) : orders.length === 0 ? (
           <div className="text-center text-gray-500 p-4">;
-            No radiology orders found.;
+            No radiology orders found.
           </div>
         ) : (
           <div className="overflow-x-auto border rounded-md">;
@@ -192,7 +191,7 @@ export default const RadiologyOrderList = () {
                   <TableHead>Date Ordered</TableHead>
                   <TableHead>Priority</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>;
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -206,7 +205,7 @@ export default const RadiologyOrderList = () {
                       {new Date(order.order_datetime).toLocaleString()}
                     </TableCell>
                     <TableCell>
-                      <Badge;
+                      <Badge>
                         variant={
                           order.priority === "stat";
                             ? "destructive"
@@ -218,12 +217,12 @@ export default const RadiologyOrderList = () {
                     </TableCell>
                     <TableCell>{getStatusBadge(order.status)}</TableCell>
                     <TableCell className="text-right">;
-                      <Button;
-                        variant="outline";
-                        size="sm";
+                      <Button>
+                        variant="outline"
+                        size="sm"
                         onClick={() => handleViewOrder(order.id)}
                       >
-                        View Details;
+                        View Details
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -235,7 +234,7 @@ export default const RadiologyOrderList = () {
       </CardContent>
 
       {/* Pass the required isOpen prop */}
-      <CreateRadiologyOrderModal;
+      <CreateRadiologyOrderModal>
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onSubmit={handleCreateOrder}

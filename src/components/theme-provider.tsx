@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -13,7 +13,7 @@ var __DEV__: boolean;
 
 import * as React from "react";
 
-export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) {
+export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 

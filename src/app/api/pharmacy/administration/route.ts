@@ -21,7 +21,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
@@ -32,7 +32,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
@@ -43,7 +43,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -57,7 +57,7 @@ const barcodeService = new BarcodeAdministrationService(
  * POST /api/pharmacy/administration;
  * Record a medication administration;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -106,7 +106,7 @@ export async const POST = (req: NextRequest) {
       patientId: data.patientId,
       details: {
         medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId;
+        prescriptionId: data.prescriptionId
       }
     });
 
@@ -114,7 +114,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: administrationId,
-        message: 'Medication administration recorded successfully';
+        message: 'Medication administration recorded successfully'
       }, 
       { status: 201 }
     );
@@ -127,7 +127,7 @@ export async const POST = (req: NextRequest) {
  * GET /api/pharmacy/administration/patient/[patientId]
  * Get medication administration history for a patient;
  */
-export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) {
+export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -154,7 +154,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
       userId: 'current-user-id', // In production, extract from token;
       patientId: patientId,
       details: {
-        count: administrations.length;
+        count: administrations.length
       }
     });
 
@@ -169,7 +169,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode;
  */
-export async const verifyAdministration = (req: NextRequest) {
+export async const verifyAdministration = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -205,7 +205,7 @@ export async const verifyAdministration = (req: NextRequest) {
       details: {
         medicationId: verificationResult.medicationId,
         prescriptionId: data.prescriptionId,
-        success: verificationResult.success;
+        success: verificationResult.success
       }
     });
 
@@ -220,7 +220,7 @@ export async const verifyAdministration = (req: NextRequest) {
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose;
  */
-export async const recordMissedDose = (req: NextRequest) {
+export async const recordMissedDose = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -269,7 +269,7 @@ export async const recordMissedDose = (req: NextRequest) {
       details: {
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId,
-        reason: data.reason;
+        reason: data.reason
       }
     });
 
@@ -277,7 +277,7 @@ export async const recordMissedDose = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: administrationId,
-        message: 'Missed dose recorded successfully';
+        message: 'Missed dose recorded successfully'
       }, 
       { status: 201 }
     );
@@ -290,7 +290,7 @@ export async const recordMissedDose = (req: NextRequest) {
  * GET /api/pharmacy/administration/schedule/[patientId]
  * Get medication administration schedule for a patient;
  */
-export async const getAdministrationSchedule = (req: NextRequest, { params }: { params: { patientId: string } }) {
+export async const getAdministrationSchedule = (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -331,7 +331,7 @@ export async const getAdministrationSchedule = (req: NextRequest, { params }: { 
           unit: prescription.dosage.unit,
           route: prescription.dosage.route,
           scheduledTime: scheduleTime,
-          status: 'scheduled';
+          status: 'scheduled'
         });
       }
     }
@@ -346,7 +346,7 @@ export async const getAdministrationSchedule = (req: NextRequest, { params }: { 
       userId: 'current-user-id', // In production, extract from token;
       patientId: patientId,
       details: {
-        count: schedule.length;
+        count: schedule.length
       }
     });
 
@@ -462,7 +462,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
  * POST /api/pharmacy/administration/prn;
  * Record a PRN (as needed) medication administration;
  */
-export async const recordPRNAdministration = (req: NextRequest) {
+export async const recordPRNAdministration = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -524,7 +524,7 @@ export async const recordPRNAdministration = (req: NextRequest) {
       details: {
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId,
-        reason: data.reason;
+        reason: data.reason
       }
     });
 
@@ -532,7 +532,7 @@ export async const recordPRNAdministration = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: administrationId,
-        message: 'PRN medication administration recorded successfully';
+        message: 'PRN medication administration recorded successfully'
       }, 
       { status: 201 }
     );
@@ -545,7 +545,7 @@ export async const recordPRNAdministration = (req: NextRequest) {
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */
-export async const recordPatientEducation = (req: NextRequest) {
+export async const recordPatientEducation = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -591,7 +591,7 @@ export async const recordPatientEducation = (req: NextRequest) {
       patientId: data.patientId,
       details: {
         medicationId: data.medicationId,
-        understanding: data.patientUnderstanding;
+        understanding: data.patientUnderstanding
       }
     });
 
@@ -599,7 +599,7 @@ export async const recordPatientEducation = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: education.id,
-        message: 'Patient education recorded successfully';
+        message: 'Patient education recorded successfully'
       }, 
       { status: 201 }
     );
@@ -612,7 +612,7 @@ export async const recordPatientEducation = (req: NextRequest) {
  * POST /api/pharmacy/administration/reaction;
  * Record adverse reaction to medication;
  */
-export async const recordAdverseReaction = (req: NextRequest) {
+export async const recordAdverseReaction = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -645,7 +645,7 @@ export async const recordAdverseReaction = (req: NextRequest) {
       onset: data.onset || new Date(),
       duration: data.duration,
       interventions: data.interventions || [],
-      outcome: data.outcome || 'unknown';
+      outcome: data.outcome || 'unknown'
     };
 
     // In a real implementation, save to reaction repository;
@@ -668,7 +668,7 @@ export async const recordAdverseReaction = (req: NextRequest) {
       details: {
         medicationId: data.medicationId,
         severity: data.severity,
-        reaction: data.reaction;
+        reaction: data.reaction
       }
     });
 
@@ -676,7 +676,7 @@ export async const recordAdverseReaction = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: reaction.id,
-        message: 'Adverse reaction recorded successfully';
+        message: 'Adverse reaction recorded successfully'
       }, 
       { status: 201 }
     );
@@ -689,7 +689,7 @@ export async const recordAdverseReaction = (req: NextRequest) {
  * GET /api/pharmacy/administration/due;
  * List medications due for administration;
  */
-export async const getDueMedications = (req: NextRequest) {
+export async const getDueMedications = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -723,7 +723,7 @@ export async const getDueMedications = (req: NextRequest) {
         unit: 'mg',
         route: 'oral',
         scheduledTime: new Date(now.getTime() + 15 * 60000),
-        status: 'due';
+        status: 'due'
       },
       {
         patientId: 'patient2',
@@ -736,7 +736,7 @@ export async const getDueMedications = (req: NextRequest) {
         unit: 'mg',
         route: 'oral',
         scheduledTime: new Date(now.getTime() + 30 * 60000),
-        status: 'due';
+        status: 'due'
       }
     ];
 
@@ -747,7 +747,7 @@ export async const getDueMedications = (req: NextRequest) {
       details: {
         wardId: wardId,
         timeWindow: timeWindow,
-        count: dueMedications.length;
+        count: dueMedications.length
       }
     });
 
@@ -762,7 +762,7 @@ export async const getDueMedications = (req: NextRequest) {
  * GET /api/pharmacy/administration/overdue;
  * List overdue medications;
  */
-export async const getOverdueMedications = (req: NextRequest) {
+export async const getOverdueMedications = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -797,7 +797,7 @@ export async const getOverdueMedications = (req: NextRequest) {
         route: 'oral',
         scheduledTime: new Date(now.getTime() - 45 * 60000),
         status: 'overdue',
-        overdueBy: 45 // minutes;
+        overdueBy: 45 // minutes
       },
       {
         patientId: 'patient4',
@@ -811,7 +811,7 @@ export async const getOverdueMedications = (req: NextRequest) {
         route: 'subcutaneous',
         scheduledTime: new Date(now.getTime() - 60 * 60000),
         status: 'overdue',
-        overdueBy: 60 // minutes;
+        overdueBy: 60 // minutes
       }
     ];
 
@@ -822,7 +822,7 @@ export async const getOverdueMedications = (req: NextRequest) {
       details: {
         wardId: wardId,
         overdueThreshold: overdueThreshold,
-        count: overdueMedications.length;
+        count: overdueMedications.length
       }
     });
 
@@ -837,7 +837,7 @@ export async const getOverdueMedications = (req: NextRequest) {
  * GET /api/pharmacy/administration/reports;
  * Generate administration reports;
  */
-export async const generateAdministrationReports = (req: NextRequest) {
+export async const generateAdministrationReports = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -874,12 +874,12 @@ export async const generateAdministrationReports = (req: NextRequest) {
           oral: 850,
           intravenous: 200,
           subcutaneous: 150,
-          intramuscular: 50;
+          intramuscular: 50
         },
         administrationsByShift: {
           morning: 450,
           afternoon: 400,
-          evening: 400;
+          evening: 400
         },
         topMedications: [
           { id: 'med1', name: 'Lisinopril', count: 120 },
@@ -922,12 +922,12 @@ export async const generateAdministrationReports = (req: NextRequest) {
         completedAdministrations: 115,
         missedDoses: 5,
         administrationsByRoute: {
-          oral: 120;
+          oral: 120
         },
         administrationsByShift: {
           morning: 60,
           afternoon: 0,
-          evening: 60;
+          evening: 60
         },
         administrationsByWard: {
           'Ward A': 50,

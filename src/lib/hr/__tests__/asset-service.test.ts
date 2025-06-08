@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -74,10 +74,9 @@ describe('AssetService', () => {
       const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockAsset));
 
-      const result = await assetService.getAssetById('123');
-
-      expect(cache.get).toHaveBeenCalledWith('asset:id:123');
-      expect(prisma.asset.findUnique).not.toHaveBeenCalled();
+      const result = await assetService.getAssetById('123'),
+      expect(cache.get).toHaveBeenCalledWith('asset:id:123'),
+      expect(prisma.asset.findUnique).not.toHaveBeenCalled(),
       expect(result).toEqual(mockAsset);
     });
 
@@ -86,9 +85,8 @@ describe('AssetService', () => {
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.asset.findUnique as jest.Mock).mockResolvedValue(mockAsset);
 
-      const result = await assetService.getAssetById('123');
-
-      expect(cache.get).toHaveBeenCalledWith('asset:id:123');
+      const result = await assetService.getAssetById('123'),
+      expect(cache.get).toHaveBeenCalledWith('asset:id:123'),
       expect(prisma.asset.findUnique).toHaveBeenCalledWith({
         where: { id: '123' },
         include: expect.any(Object),
@@ -113,10 +111,9 @@ describe('AssetService', () => {
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
 
-      const result = await assetService.listAssets({});
-
-      expect(cache.get).toHaveBeenCalled();
-      expect(prisma.asset.findMany).not.toHaveBeenCalled();
+      const result = await assetService.listAssets({}),
+      expect(cache.get).toHaveBeenCalled(),
+      expect(prisma.asset.findMany).not.toHaveBeenCalled(),
       expect(result).toEqual(mockResult);
     });
 
@@ -126,13 +123,12 @@ describe('AssetService', () => {
       (prisma.asset.findMany as jest.Mock).mockResolvedValue(mockAssets);
       (prisma.asset.count as jest.Mock).mockResolvedValue(1);
 
-      const result = await assetService.listAssets({});
-
-      expect(cache.get).toHaveBeenCalled();
-      expect(prisma.asset.findMany).toHaveBeenCalled();
-      expect(prisma.asset.count).toHaveBeenCalled();
-      expect(cache.set).toHaveBeenCalled();
-      expect(result.assets).toEqual(mockAssets);
+      const result = await assetService.listAssets({}),
+      expect(cache.get).toHaveBeenCalled(),
+      expect(prisma.asset.findMany).toHaveBeenCalled(),
+      expect(prisma.asset.count).toHaveBeenCalled(),
+      expect(cache.set).toHaveBeenCalled(),
+      expect(result.assets).toEqual(mockAssets),
       expect(result.total).toEqual(1);
     });
 
@@ -142,8 +138,7 @@ describe('AssetService', () => {
       (prisma.asset.findMany as jest.Mock).mockResolvedValue(mockAssets);
       (prisma.asset.count as jest.Mock).mockResolvedValue(1);
 
-      await assetService.listAssets({ cursor: '456' });
-
+      await assetService.listAssets({ cursor: '456' }),
       expect(prisma.asset.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           cursor: { id: '456' },
@@ -165,9 +160,8 @@ describe('AssetService', () => {
         category: 'IT',
         type: 'Computer',
         status: 'AVAILABLE',
-      });
-
-      expect(prisma.asset.create).toHaveBeenCalled();
+      }),
+      expect(prisma.asset.create).toHaveBeenCalled(),
       expect(AssetService.prototype.invalidateAssetCache).toHaveBeenCalled();
     });
   });
@@ -180,8 +174,7 @@ describe('AssetService', () => {
       // Mock the invalidateAssetCache method to avoid the findFirst call;
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
 
-      await assetService.updateAsset('123', { name: 'Updated Asset' });
-
+      await assetService.updateAsset('123', { name: 'Updated Asset' }),
       expect(prisma.asset.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: '123' },
@@ -209,8 +202,8 @@ describe('AssetService', () => {
         nextMaintenanceDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       });
 
-      expect(prisma.assetMaintenance.create).toHaveBeenCalled();
-      expect(prisma.asset.update).toHaveBeenCalled();
+      expect(prisma.assetMaintenance.create).toHaveBeenCalled(),
+      expect(prisma.asset.update).toHaveBeenCalled(),
       expect(AssetService.prototype.invalidateAssetCache).toHaveBeenCalled();
     });
   });
@@ -234,8 +227,8 @@ describe('AssetService', () => {
         startDate: new Date(),
       });
 
-      expect(prisma.assetAssignment.updateMany).toHaveBeenCalled();
-      expect(prisma.assetAssignment.create).toHaveBeenCalled();
+      expect(prisma.assetAssignment.updateMany).toHaveBeenCalled(),
+      expect(prisma.assetAssignment.create).toHaveBeenCalled(),
       expect(prisma.asset.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: '123' },
@@ -283,13 +276,12 @@ describe('AssetService', () => {
       (prisma.assetAssignment.findMany as jest.Mock).mockResolvedValue(mockAssignments);
       (prisma.assetMaintenance.findMany as jest.Mock).mockResolvedValue(mockMaintenanceRecords);
 
-      const result = await assetService.calculateUtilizationMetrics('123');
-
-      expect(result.assetIdentifier).toEqual('ASSET123');
-      expect(result.totalTimeInUse).toBeGreaterThan(0);
-      expect(result.utilizationRate).toBeGreaterThan(0);
-      expect(result.totalMaintenanceCost).toEqual(250);
-      expect(result.assignmentCount).toEqual(2);
+      const result = await assetService.calculateUtilizationMetrics('123'),
+      expect(result.assetIdentifier).toEqual('ASSET123'),
+      expect(result.totalTimeInUse).toBeGreaterThan(0),
+      expect(result.utilizationRate).toBeGreaterThan(0),
+      expect(result.totalMaintenanceCost).toEqual(250),
+      expect(result.assignmentCount).toEqual(2),
       expect(result.maintenanceCount).toEqual(2);
     });
   });
@@ -340,16 +332,15 @@ describe('AssetService', () => {
         .mockResolvedValueOnce(mockPreventiveRecords);
         .mockResolvedValueOnce(mockCorrectiveRecords);
 
-      const result = await assetService.predictOptimalMaintenanceSchedule('123');
-
-      expect(result.assetIdentifier).toEqual('ASSET123');
-      expect(result.currentMaintenanceInterval).toBeCloseTo(92, 0);
-      expect(result.recommendedMaintenanceInterval).toBeDefined();
-      expect(result.nextRecommendedMaintenanceDate).toBeDefined();
-      expect(result.failureRisk).toBeDefined();
-      expect(result.confidenceLevel).toBeDefined();
-      expect(result.potentialCostSavings).toEqual(250);
-      expect(result.preventiveMaintenanceCount).toEqual(3);
+      const result = await assetService.predictOptimalMaintenanceSchedule('123'),
+      expect(result.assetIdentifier).toEqual('ASSET123'),
+      expect(result.currentMaintenanceInterval).toBeCloseTo(92, 0),
+      expect(result.recommendedMaintenanceInterval).toBeDefined(),
+      expect(result.nextRecommendedMaintenanceDate).toBeDefined(),
+      expect(result.failureRisk).toBeDefined(),
+      expect(result.confidenceLevel).toBeDefined(),
+      expect(result.potentialCostSavings).toEqual(250),
+      expect(result.preventiveMaintenanceCount).toEqual(3),
       expect(result.correctiveMaintenanceCount).toEqual(2);
     });
 
@@ -365,14 +356,13 @@ describe('AssetService', () => {
         .mockResolvedValueOnce([]);
         .mockResolvedValueOnce([]);
 
-      const result = await assetService.predictOptimalMaintenanceSchedule('123');
-
-      expect(result.assetIdentifier).toEqual('ASSET123');
-      expect(result.currentMaintenanceInterval).toEqual(90);
-      expect(result.recommendedMaintenanceInterval).toEqual(90);
-      expect(result.nextRecommendedMaintenanceDate).toBeDefined();
-      expect(result.failureRisk).toEqual('LOW');
-      expect(result.confidenceLevel).toEqual('LOW');
+      const result = await assetService.predictOptimalMaintenanceSchedule('123'),
+      expect(result.assetIdentifier).toEqual('ASSET123'),
+      expect(result.currentMaintenanceInterval).toEqual(90),
+      expect(result.recommendedMaintenanceInterval).toEqual(90),
+      expect(result.nextRecommendedMaintenanceDate).toBeDefined(),
+      expect(result.failureRisk).toEqual('LOW'),
+      expect(result.confidenceLevel).toEqual('LOW'),
       expect(result.dataPoints).toEqual(0);
     });
   });

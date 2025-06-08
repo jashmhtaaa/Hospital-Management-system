@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,7 +28,7 @@ export class EmployeeService {
    * Create a new employee record;
    */
   async createEmployee(data: {
-    employeeId: string;
+    employeeId: string,
     firstName: string;
     lastName: string;
     middleName?: string;
@@ -43,7 +43,7 @@ export class EmployeeService {
     photo?: string;
     emergencyContact?: unknown;
     qualifications?: {
-      code: string;
+      code: string,
       name: string;
       issuer?: string;
       identifier?: string;
@@ -52,7 +52,7 @@ export class EmployeeService {
       attachment?: string;
     }[];
     positions?: {
-      positionId: string;
+      positionId: string,
       isPrimary: boolean;
       startDate: Date;
       endDate?: Date;
@@ -384,7 +384,7 @@ export class EmployeeService {
   async addQualification(
     employeeId: string,
     data: {
-      code: string;
+      code: string,
       name: string;
       issuer?: string;
       identifier?: string;
@@ -468,7 +468,7 @@ export class EmployeeService {
   async assignPosition(
     employeeId: string,
     data: {
-      positionId: string;
+      positionId: string,
       isPrimary: boolean;
       startDate: Date;
       endDate?: Date;
@@ -790,8 +790,7 @@ export class EmployeeService {
         return 'image/gif';
       case 'pdf':
         return 'application/pdf';
-      default:
-        return 'application/octet-stream';
+      default: return 'application/octet-stream'
     }
   }
   
@@ -811,13 +810,13 @@ export class EmployeeService {
         // Invalidate specific employee caches;
         await Promise.all([
           cache.del(`${this.CACHE_PREFIX}id:${employee.id}`),
-          cache.del(`${this.CACHE_PREFIX}employeeId:${employee.employeeId}`);
+          cache.del(`${this.CACHE_PREFIX}employeeId:${employee.employeeId}`)
         ]);
       }
     }
     
     // Invalidate list caches with pattern matching;
-    await cache.delPattern(`${this.CACHE_PREFIX}list:*`);
+    await cache.delPattern(`${this.CACHE_PREFIX}list: *`)
   }
   
   /**
@@ -832,18 +831,18 @@ export class EmployeeService {
       where: {
         endDate: {
           gte: new Date(),
-          lte: thresholdDate;
+          lte: thresholdDate
         }
       },
       include: {
         employee: {
           include: {
-            department: true;
+            department: true
           }
         }
       },
       orderBy: {
-        endDate: 'asc';
+        endDate: 'asc'
       }
     });
   }
@@ -863,7 +862,7 @@ export class EmployeeService {
     const historicalData = await prisma.attendance.findMany({
       where: {
         employee: {
-          departmentId;
+          departmentId
         },
         checkInTime: {
           gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data;
@@ -874,10 +873,10 @@ export class EmployeeService {
           include: {
             positions: {
               include: {
-                position: true;
+                position: true
               },
               where: {
-                isPrimary: true;
+                isPrimary: true
               }
             }
           }
@@ -925,17 +924,17 @@ export class EmployeeService {
         active: true,
         positions: {
           some: {
-            endDate: null;
+            endDate: null
           }
         }
       },
       include: {
         positions: {
           include: {
-            position: true;
+            position: true
           },
           where: {
-            isPrimary: true;
+            isPrimary: true
           }
         }
       }
@@ -968,7 +967,7 @@ export class EmployeeService {
       departmentId,
       predicted: staffingPrediction,
       current: currentStaffingByPosition,
-      gaps: staffingGaps;
+      gaps: staffingGaps
     };
   }
 }

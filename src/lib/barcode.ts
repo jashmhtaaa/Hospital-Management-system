@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -59,7 +59,7 @@ export async const parseBarcodeData = (barcodeData: string): Promise<{
   if (barcodeData.startsWith('SP') && barcodeData.length === 18) {
     return {
       type: 'specimen',
-      id: barcodeData;
+      id: barcodeData
     };
   }
   

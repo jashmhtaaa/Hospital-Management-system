@@ -8,7 +8,7 @@ import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 
 const prisma = new PrismaClient();
 
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
   try {
@@ -35,8 +35,7 @@ export async const GET = (request: NextRequest) {
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_SUCCESS", { path: request.nextUrl.pathname, count: labTestItems.length });
     const duration = Date.now() - start;
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
-    return sendSuccessResponse(labTestItems);
-
+    return sendSuccessResponse(labTestItems)
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
@@ -54,7 +53,7 @@ const createLabTestItemSchema = z.object({
   price: z.number().positive("Price must be positive").optional().nullable(),
 });
 
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 

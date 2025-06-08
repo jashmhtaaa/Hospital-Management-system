@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,9 +34,9 @@ async const main = () {
       case 'rollback':
         const version = args[0];
         if (version) {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         } else {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         }
         await rollback(version);
         break;
@@ -100,8 +100,7 @@ async const createMigration = (name: string) {
 
     const version = await manager.createMigration(name, upSql, downSql);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
-    
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } finally {
     await manager.cleanup();
   }
@@ -133,8 +132,7 @@ async const resetDatabase = () {
     // Run migrations from scratch;
     await migrate();
     
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
-    
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } finally {
     await prisma.$disconnect();
   }
@@ -193,8 +191,7 @@ async const seedDatabase = () {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
-
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } catch (error) {
     // Debug logging removed;
   } finally {

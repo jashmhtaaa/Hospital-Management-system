@@ -54,7 +54,7 @@ interface Medication {
   readonly cost_center?: string;
   readonly created_at: string;
   readonly updated_at: string;
-  readonly active: boolean;
+  readonly active: boolean
 }
 
 type DosageForm = 
@@ -105,7 +105,7 @@ interface InventoryBatch {
   readonly reorder_level: number;
   readonly max_stock_level: number;
   readonly created_at: string;
-  readonly updated_at: string;
+  readonly updated_at: string
 }
 
 type PharmacyLocation = 
@@ -133,7 +133,7 @@ interface Prescription {
   readonly interactions_checked: boolean;
   readonly duplicate_therapy_checked: boolean;
   readonly created_at: string;
-  readonly updated_at: string;
+  readonly updated_at: string
 }
 
 type PrescriptionStatus = 
@@ -164,7 +164,7 @@ interface PrescriptionItem {
   readonly dispensed_quantity?: number;
   readonly remaining_quantity?: number;
   readonly created_at: string;
-  readonly updated_at: string;
+  readonly updated_at: string
 }
 
 type PrescriptionItemStatus = 
@@ -189,7 +189,7 @@ interface DispensingRecord {
   readonly pickup_signature?: string;
   readonly pickup_id_verified: boolean;
   readonly notes?: string;
-  readonly created_at: string;
+  readonly created_at: string
 }
 
 interface DrugInteraction {
@@ -202,7 +202,7 @@ interface DrugInteraction {
   readonly clinical_effect: string;
   readonly management: string;
   readonly evidence_level: EvidenceLevel;
-  readonly last_updated: string;
+  readonly last_updated: string
 }
 
 type InteractionType = 
@@ -226,7 +226,7 @@ interface PharmacyStatistics {
   readonly turnaround_time: number; // Minutes
   readonly reorder_alerts: readonly ReorderAlert[];
   readonly expiry_alerts: readonly ExpiryAlert[];
-  readonly interaction_alerts: readonly InteractionAlert[];
+  readonly interaction_alerts: readonly InteractionAlert[]
 }
 
 interface ReorderAlert {
@@ -236,7 +236,7 @@ interface ReorderAlert {
   readonly reorder_level: number;
   readonly suggested_order_quantity: number;
   readonly supplier: string;
-  readonly priority: 'low' | 'medium' | 'high' | 'critical';
+  readonly priority: 'low' | 'medium' | 'high' | 'critical'
 }
 
 interface ExpiryAlert {
@@ -247,7 +247,7 @@ interface ExpiryAlert {
   readonly days_to_expiry: number;
   readonly quantity: number;
   readonly value: number;
-  readonly action_required: 'monitor' | 'return' | 'dispose';
+  readonly action_required: 'monitor' | 'return' | 'dispose'
 }
 
 interface InteractionAlert {
@@ -278,13 +278,13 @@ interface TestConfig {
     readonly inventoryUpdateMaxTime: number;
     readonly prescriptionProcessingMaxTime: number;
     readonly interactionCheckMaxTime: number;
-    readonly dispensingMaxTime: number;
+    readonly dispensingMaxTime: number
   };
   readonly regulatoryCompliance: {
     readonly validateNDC: boolean;
     readonly requireDEANumber: boolean;
     readonly enforceControlledSubstanceTracking: boolean;
-    readonly mandatoryPatientCounseling: boolean;
+    readonly mandatoryPatientCounseling: boolean
   };
 }
 
@@ -536,13 +536,13 @@ class PharmacyTestHelper {
     ] as const;
 
     requiredFields.forEach(field => {
-      expect(medication).toHaveProperty(field);
+      expect(medication).toHaveProperty(field),
       expect(medication[field]).toBeDefined();
     });
 
     // Validate controlled substance fields
     if (medication.controlled_substance) {
-      expect(medication.controlled_schedule).toBeDefined();
+      expect(medication.controlled_schedule).toBeDefined(),
       expect(['CI', 'CII', 'CIII', 'CIV', 'CV']).toContain(medication.controlled_schedule);
     }
 
@@ -562,17 +562,17 @@ class PharmacyTestHelper {
     ] as const;
 
     requiredFields.forEach(field => {
-      expect(batch).toHaveProperty(field);
+      expect(batch).toHaveProperty(field),
       expect(batch[field]).toBeDefined();
     });
 
     // Validate dates
-    expect(new Date(batch.expiry_date)).toBeInstanceOf(Date);
+    expect(new Date(batch.expiry_date)).toBeInstanceOf(Date),
     expect(new Date(batch.manufacture_date)).toBeInstanceOf(Date);
 
     // Validate quantities are positive
-    expect(batch.quantity).toBeGreaterThanOrEqual(0);
-    expect(batch.unit_cost).toBeGreaterThan(0);
+    expect(batch.quantity).toBeGreaterThanOrEqual(0),
+    expect(batch.unit_cost).toBeGreaterThan(0),
     expect(batch.selling_price).toBeGreaterThan(0);
 
     // Validate enum values
@@ -586,20 +586,20 @@ class PharmacyTestHelper {
     ] as const;
 
     requiredFields.forEach(field => {
-      expect(prescription).toHaveProperty(field);
+      expect(prescription).toHaveProperty(field),
       expect(prescription[field]).toBeDefined();
     });
 
     // Validate prescription items
-    expect(Array.isArray(prescription.items)).toBe(true);
+    expect(Array.isArray(prescription.items)).toBe(true),
     expect(prescription.items.length).toBeGreaterThan(0);
 
     prescription.items.forEach(item => {
-      expect(item).toHaveProperty('medication_id');
-      expect(item).toHaveProperty('quantity');
-      expect(item).toHaveProperty('dosage');
-      expect(item.quantity).toBeGreaterThan(0);
-      expect(item.refills_allowed).toBeGreaterThanOrEqual(0);
+      expect(item).toHaveProperty('medication_id'),
+      expect(item).toHaveProperty('quantity'),
+      expect(item).toHaveProperty('dosage'),
+      expect(item.quantity).toBeGreaterThan(0),
+      expect(item.refills_allowed).toBeGreaterThanOrEqual(0),
       expect(item.refills_remaining).toBeLessThanOrEqual(item.refills_allowed);
     });
 
@@ -668,8 +668,7 @@ class PharmacyTestHelper {
 
 // Drug interaction checking engine for testing
 class InteractionEngine {
-  private knownInteractions: Map<string, DrugInteraction[]> = new Map();
-
+  private knownInteractions: Map<string, DrugInteraction[]> = new Map(),
   constructor() {
     this.initializeKnownInteractions();
   }
@@ -738,13 +737,13 @@ describe('Medication Master Data API', () => {
         'Create medication'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        PharmacyTestHelper.validateMedicationStructure(response.data);
-        expect(response.data.generic_name).toContain('Metformin Hydrochloride');
-        expect(response.data.controlled_substance).toBe(false);
+        PharmacyTestHelper.validateMedicationStructure(response.data),
+        expect(response.data.generic_name).toContain('Metformin Hydrochloride'),
+        expect(response.data.controlled_substance).toBe(false),
         expect(response.data.black_box_warning).toBe(true);
         
         PharmacyTestHelper.createdResources.set(`medication:${response.data.id}`, response.data.id);
@@ -760,14 +759,14 @@ describe('Medication Master Data API', () => {
         }
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        PharmacyTestHelper.validateMedicationStructure(response.data);
-        expect(response.data.controlled_substance).toBe(true);
-        expect(response.data.controlled_schedule).toBe('CII');
-        expect(response.data.narcotic).toBe(true);
+        PharmacyTestHelper.validateMedicationStructure(response.data),
+        expect(response.data.controlled_substance).toBe(true),
+        expect(response.data.controlled_schedule).toBe('CII'),
+        expect(response.data.narcotic).toBe(true),
         expect(response.data.high_alert_medication).toBe(true);
         
         PharmacyTestHelper.createdResources.set(`medication:${response.data.id}`, response.data.id);
@@ -814,16 +813,16 @@ describe('Medication Master Data API', () => {
         'Search medications with filters'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data?.medications) {
-        expect(Array.isArray(response.data.medications)).toBe(true);
+        expect(Array.isArray(response.data.medications)).toBe(true),
         expect(response.data.medications.length).toBeLessThanOrEqual(10);
         
         response.data.medications.forEach(medication => {
-          PharmacyTestHelper.validateMedicationStructure(medication);
-          expect(medication.formulary_status).toBe('preferred');
+          PharmacyTestHelper.validateMedicationStructure(medication),
+          expect(medication.formulary_status).toBe('preferred'),
           expect(medication.active).toBe(true);
         });
       }
@@ -839,7 +838,7 @@ describe('Medication Master Data API', () => {
       expect(response.success).toBe(true);
       
       if (response.data?.medications) {
-        const found = response.data.medications.some(med => med.id === testMedication.id);
+        const found = response.data.medications.some(med => med.id === testMedication.id),
         expect(found).toBe(true);
       }
     });
@@ -853,7 +852,7 @@ describe('Medication Master Data API', () => {
       
       if (response.data?.medications) {
         response.data.medications.forEach(medication => {
-          expect(medication.controlled_substance).toBe(true);
+          expect(medication.controlled_substance).toBe(true),
           expect(medication.controlled_schedule).toBeDefined();
         });
       }
@@ -886,7 +885,7 @@ describe('Medication Master Data API', () => {
         }
       );
 
-      expect(updateResponse.success).toBe(true);
+      expect(updateResponse.success).toBe(true),
       expect(updateResponse.data?.formulary_status).toBe('restricted');
     });
 
@@ -921,9 +920,9 @@ describe('Inventory Management API', () => {
         'Create inventory batch'
       );
 
-      PharmacyTestHelper.validateInventoryBatchStructure(response);
-      expect(response.medication_id).toBe(testMedication.id);
-      expect(response.quality_status).toBe('approved');
+      PharmacyTestHelper.validateInventoryBatchStructure(response),
+      expect(response.medication_id).toBe(testMedication.id),
+      expect(response.quality_status).toBe('approved'),
       expect(response.quarantine_status).toBe(false);
     });
 
@@ -961,9 +960,8 @@ describe('Inventory Management API', () => {
       const controlledBatch = await PharmacyTestHelper.createTestInventoryBatch(
         controlledMedication.id,
         { location: 'controlled_substances_vault' as PharmacyLocation }
-      );
-
-      expect(controlledBatch.location).toBe('controlled_substances_vault');
+      ),
+      expect(controlledBatch.location).toBe('controlled_substances_vault'),
       expect(controlledBatch.barcode).toBeDefined();
     });
   });
@@ -976,11 +974,11 @@ describe('Inventory Management API', () => {
         '/api/pharmacy/inventory'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(Array.isArray(response.data?.inventory)).toBe(true);
       
       if (response.data?.inventory) {
-        const foundBatch = response.data.inventory.find(batch => batch.id === testBatch.id);
+        const foundBatch = response.data.inventory.find(batch => batch.id === testBatch.id),
         expect(foundBatch).toBeDefined();
         
         if (foundBatch) {
@@ -1001,7 +999,7 @@ describe('Inventory Management API', () => {
         thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
         
         response.data.inventory.forEach(batch => {
-          const expiryDate = new Date(batch.expiry_date);
+          const expiryDate = new Date(batch.expiry_date),
           expect(expiryDate.getTime()).toBeLessThanOrEqual(thirtyDaysFromNow.getTime());
         });
       }
@@ -1058,7 +1056,7 @@ describe('Inventory Management API', () => {
         'Update inventory quantity'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data?.quantity).toBe(originalQuantity + adjustmentQuantity);
     });
 
@@ -1094,8 +1092,8 @@ describe('Inventory Management API', () => {
         }
       );
 
-      expect(response.success).toBe(true);
-      expect(response.data?.quality_status).toBe('quarantine');
+      expect(response.success).toBe(true),
+      expect(response.data?.quality_status).toBe('quarantine'),
       expect(response.data?.quarantine_status).toBe(true);
     });
   });
@@ -1126,9 +1124,9 @@ describe('Prescription Processing API', () => {
         'Create prescription'
       );
 
-      PharmacyTestHelper.validatePrescriptionStructure(response);
-      expect(response.patient_id).toBe(testPatient.id);
-      expect(response.prescriber_id).toBe(testPrescriber.id);
+      PharmacyTestHelper.validatePrescriptionStructure(response),
+      expect(response.patient_id).toBe(testPatient.id),
+      expect(response.prescriber_id).toBe(testPrescriber.id),
       expect(response.status).toBe('received');
     });
 
@@ -1180,7 +1178,7 @@ describe('Prescription Processing API', () => {
       expect(response.interactions_checked).toBe(true);
       
       // Verify interaction check was performed
-      const interactions = await PharmacyTestHelper.checkDrugInteractions([warfarin.id, aspirin.id]);
+      const interactions = await PharmacyTestHelper.checkDrugInteractions([warfarin.id, aspirin.id]),
       expect(Array.isArray(interactions)).toBe(true);
     });
 
@@ -1218,11 +1216,11 @@ describe('Prescription Processing API', () => {
         '/api/pharmacy/prescriptions?status=received'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(Array.isArray(response.data?.prescriptions)).toBe(true);
       
       if (response.data?.prescriptions) {
-        const found = response.data.prescriptions.some(p => p.id === testPrescription.id);
+        const found = response.data.prescriptions.some(p => p.id === testPrescription.id),
         expect(found).toBe(true);
         
         response.data.prescriptions.forEach(prescription => {
@@ -1264,7 +1262,7 @@ describe('Prescription Processing API', () => {
         '/api/pharmacy/prescriptions?controlled_substance=true'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(Array.isArray(response.data?.prescriptions)).toBe(true);
     });
   });
@@ -1289,7 +1287,7 @@ describe('Prescription Processing API', () => {
         }
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data?.status).toBe('under_review');
     });
 
@@ -1358,13 +1356,13 @@ describe('Dispensing Operations API', () => {
         'Create dispensing record'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
-        expect(response.data.prescription_id).toBe(testPrescription.id);
-        expect(response.data.quantity_dispensed).toBe(10);
-        expect(response.data.patient_counseled).toBe(true);
+        expect(response.data.prescription_id).toBe(testPrescription.id),
+        expect(response.data.quantity_dispensed).toBe(10),
+        expect(response.data.patient_counseled).toBe(true),
         expect(response.data.medication_guide_provided).toBe(true);
       }
 
@@ -1441,7 +1439,7 @@ describe('Dispensing Operations API', () => {
         `/api/pharmacy/prescriptions/${testPrescription.id}`
       );
 
-      expect(updatedPrescription.data?.items[0].status).toBe('partially_dispensed');
+      expect(updatedPrescription.data?.items[0].status).toBe('partially_dispensed'),
       expect(updatedPrescription.data?.items[0].remaining_quantity).toBe(
         testPrescription.items[0].quantity - partialQuantity
       );
@@ -1454,14 +1452,14 @@ describe('Dispensing Operations API', () => {
         '/api/pharmacy/dispensing/history?patient_id=TEST_PATIENT_001'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(Array.isArray(response.data?.records)).toBe(true);
       
       if (response.data?.records) {
         response.data.records.forEach(record => {
-          expect(record).toHaveProperty('dispensed_by');
-          expect(record).toHaveProperty('dispensed_date');
-          expect(record).toHaveProperty('quantity_dispensed');
+          expect(record).toHaveProperty('dispensed_by'),
+          expect(record).toHaveProperty('dispensed_date'),
+          expect(record).toHaveProperty('quantity_dispensed'),
           expect(record.quantity_dispensed).toBeGreaterThan(0);
         });
       }
@@ -1512,15 +1510,15 @@ describe('Drug Interaction Checking API', () => {
       'Check drug interactions'
     );
 
-    expect(response.success).toBe(true);
+    expect(response.success).toBe(true),
     expect(Array.isArray(response.data?.interactions)).toBe(true);
     
     if (response.data?.interactions && response.data.interactions.length > 0) {
       response.data.interactions.forEach(interaction => {
-        expect(interaction).toHaveProperty('severity');
-        expect(interaction).toHaveProperty('mechanism');
-        expect(interaction).toHaveProperty('clinical_effect');
-        expect(interaction).toHaveProperty('management');
+        expect(interaction).toHaveProperty('severity'),
+        expect(interaction).toHaveProperty('mechanism'),
+        expect(interaction).toHaveProperty('clinical_effect'),
+        expect(interaction).toHaveProperty('management'),
         expect(['minor', 'moderate', 'major', 'contraindicated']).toContain(interaction.severity);
       });
     }
@@ -1553,7 +1551,7 @@ describe('Drug Interaction Checking API', () => {
     if (response.data?.interactions) {
       const duplicateTherapy = response.data.interactions.find(
         interaction => interaction.interaction_type === 'duplicate_therapy'
-      );
+      ),
       expect(duplicateTherapy).toBeDefined();
     }
   });
@@ -1566,29 +1564,29 @@ describe('Pharmacy Analytics & Reporting API', () => {
         '/api/pharmacy/dashboard/statistics'
       );
 
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
       
       if (response.data) {
         // Validate required statistics
-        expect(typeof response.data.total_medications).toBe('number');
-        expect(typeof response.data.active_prescriptions).toBe('number');
-        expect(typeof response.data.pending_prescriptions).toBe('number');
-        expect(typeof response.data.low_stock_items).toBe('number');
-        expect(typeof response.data.expired_items).toBe('number');
-        expect(typeof response.data.controlled_substance_count).toBe('number');
-        expect(typeof response.data.revenue_today).toBe('number');
-        expect(typeof response.data.revenue_month).toBe('number');
-        expect(typeof response.data.dispensing_accuracy).toBe('number');
+        expect(typeof response.data.total_medications).toBe('number'),
+        expect(typeof response.data.active_prescriptions).toBe('number'),
+        expect(typeof response.data.pending_prescriptions).toBe('number'),
+        expect(typeof response.data.low_stock_items).toBe('number'),
+        expect(typeof response.data.expired_items).toBe('number'),
+        expect(typeof response.data.controlled_substance_count).toBe('number'),
+        expect(typeof response.data.revenue_today).toBe('number'),
+        expect(typeof response.data.revenue_month).toBe('number'),
+        expect(typeof response.data.dispensing_accuracy).toBe('number'),
         expect(typeof response.data.turnaround_time).toBe('number');
 
         // Validate percentage values
-        expect(response.data.dispensing_accuracy).toBeGreaterThanOrEqual(0);
+        expect(response.data.dispensing_accuracy).toBeGreaterThanOrEqual(0),
         expect(response.data.dispensing_accuracy).toBeLessThanOrEqual(100);
 
         // Validate alerts arrays
-        expect(Array.isArray(response.data.reorder_alerts)).toBe(true);
-        expect(Array.isArray(response.data.expiry_alerts)).toBe(true);
+        expect(Array.isArray(response.data.reorder_alerts)).toBe(true),
+        expect(Array.isArray(response.data.expiry_alerts)).toBe(true),
         expect(Array.isArray(response.data.interaction_alerts)).toBe(true);
       }
     });
@@ -1602,12 +1600,12 @@ describe('Pharmacy Analytics & Reporting API', () => {
       
       if (response.data?.reorder_alerts) {
         response.data.reorder_alerts.forEach(alert => {
-          expect(alert).toHaveProperty('medication_id');
-          expect(alert).toHaveProperty('current_stock');
-          expect(alert).toHaveProperty('reorder_level');
-          expect(alert).toHaveProperty('suggested_order_quantity');
-          expect(alert).toHaveProperty('priority');
-          expect(['low', 'medium', 'high', 'critical']).toContain(alert.priority);
+          expect(alert).toHaveProperty('medication_id'),
+          expect(alert).toHaveProperty('current_stock'),
+          expect(alert).toHaveProperty('reorder_level'),
+          expect(alert).toHaveProperty('suggested_order_quantity'),
+          expect(alert).toHaveProperty('priority'),
+          expect(['low', 'medium', 'high', 'critical']).toContain(alert.priority),
           expect(alert.current_stock).toBeLessThanOrEqual(alert.reorder_level);
         });
       }
@@ -1622,11 +1620,11 @@ describe('Pharmacy Analytics & Reporting API', () => {
       
       if (response.data?.expiry_alerts) {
         response.data.expiry_alerts.forEach(alert => {
-          expect(alert).toHaveProperty('batch_id');
-          expect(alert).toHaveProperty('expiry_date');
-          expect(alert).toHaveProperty('days_to_expiry');
-          expect(alert).toHaveProperty('action_required');
-          expect(['monitor', 'return', 'dispose']).toContain(alert.action_required);
+          expect(alert).toHaveProperty('batch_id'),
+          expect(alert).toHaveProperty('expiry_date'),
+          expect(alert).toHaveProperty('days_to_expiry'),
+          expect(alert).toHaveProperty('action_required'),
+          expect(['monitor', 'return', 'dispose']).toContain(alert.action_required),
           expect(alert.days_to_expiry).toBeLessThanOrEqual(90);
         });
       }
@@ -1649,8 +1647,7 @@ describe('Pharmacy Security & Compliance', () => {
         headers: {
           'Authorization': 'Bearer invalid-token'
         }
-      });
-
+      }),
       expect(response.status).toBe(401);
     }
   });
@@ -1663,15 +1660,13 @@ describe('Pharmacy Security & Compliance', () => {
     // Any operation on controlled substances should create audit log
     const response = await PharmacyTestHelper.makeAuthenticatedRequest(
       `/api/pharmacy/medications/${controlledMedication.id}`
-    );
-
+    ),
     expect(response.success).toBe(true);
     
     // Verify audit log was created
     const auditResponse = await PharmacyTestHelper.makeAuthenticatedRequest(
       `/api/audit/controlled-substances?medication_id=${controlledMedication.id}`
-    );
-
+    ),
     expect(auditResponse.success).toBe(true);
   });
 
@@ -1748,7 +1743,7 @@ describe('Pharmacy Performance Benchmarks', () => {
 
     // All prescriptions should be created successfully
     prescriptions.forEach(prescription => {
-      expect(prescription.id).toBeDefined();
+      expect(prescription.id).toBeDefined(),
       expect(prescription.status).toBe('received');
     });
 

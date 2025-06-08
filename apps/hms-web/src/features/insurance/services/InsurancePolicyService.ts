@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -58,7 +58,7 @@ export class InsurancePolicyService {
             isActive: policyDetails.isActive !== undefined ? policyDetails.isActive : true,
         };
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return mockPolicy;
+        return mockPolicy
     }
 
     /**
@@ -74,7 +74,7 @@ export class InsurancePolicyService {
             {
                 id: "pol_mock_1", patientId, policyNumber: "XYZ12345", tpaId: "TPA001",
                 coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
-                endDate: new Date("2023-12-31"), isActive: true;
+                endDate: new Date("2023-12-31"), isActive: true
             }
         ];
     }
@@ -101,7 +101,7 @@ export class InsurancePolicyService {
         const mockExistingPolicy: InsurancePolicy = {
             id: policyId, patientId: "pat_mock_1", policyNumber: "XYZ12345", tpaId: "TPA001",
             coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
-            endDate: new Date("2023-12-31"), isActive: true;
+            endDate: new Date("2023-12-31"), isActive: true
         };
         const updatedMockPolicy = { ...mockExistingPolicy, ...updates };
         return updatedMockPolicy;

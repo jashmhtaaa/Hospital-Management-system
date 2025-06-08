@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,29 +15,29 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 
 interface SurgeryType {
-  id: string;
+  id: string,
   name: string;
-  category: string;
+  category: string,
   averageDuration: string;
-  specialEquipment: string[];
+  specialEquipment: string[],
   specialistRequired: string;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: 'low' | 'medium' | 'high'
 }
 
 interface OTSurgeryTypeListProps {
-  surgeryTypes: SurgeryType[];
+  surgeryTypes: SurgeryType[]
 }
 
 /**
  * Operation Theatre surgery type list component;
  */
-export const OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) {
+export const OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) => {
   const getRiskBadge = (risk: string) => {
     switch(risk) {
       case 'low': return <Badge variant="secondary">Low Risk</Badge>;
       case 'medium': return <Badge variant="warning">Medium Risk</Badge>;
       case 'high': return <Badge variant="danger">High Risk</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -61,7 +61,7 @@ export const OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) {
             {surgeryTypes.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center">;
-                  No surgery types defined;
+                  No surgery types defined
                 </TableCell>
               </TableRow>
             ) : (

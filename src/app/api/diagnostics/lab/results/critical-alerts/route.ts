@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ import { notifyUsers } from '@/lib/notifications';
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -160,7 +160,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/lab/results/critical-alerts;
  * Create a new critical result alert;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -229,7 +229,7 @@ export async const POST = (request: NextRequest) {
       action: 'create',
       resource: 'laboratory_critical_alerts',
       resourceId: result.insertId,
-      details: body;
+      details: body
     });
 
     // Send notifications;
@@ -241,7 +241,7 @@ export async const POST = (request: NextRequest) {
         type: 'critical_alert',
         resourceId: result.insertId,
         resourceType: 'laboratory_critical_alerts',
-        priority: 'high';
+        priority: 'high'
       });
     } else {
       // Notify all lab supervisors and managers if unassigned;
@@ -260,7 +260,7 @@ export async const POST = (request: NextRequest) {
           type: 'critical_alert',
           resourceId: result.insertId,
           resourceType: 'laboratory_critical_alerts',
-          priority: 'high';
+          priority: 'high'
         });
       }
     }
@@ -300,7 +300,7 @@ export async const POST = (request: NextRequest) {
  * PUT /api/diagnostics/lab/results/critical-alerts/:id;
  * Update a critical result alert;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -349,7 +349,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       // If resolving, require acknowledgement;
       if (status === 'resolved' && !acknowledgement) {
         return NextResponse.json({ 
-          error: 'Acknowledgement required to resolve critical alert';
+          error: 'Acknowledgement required to resolve critical alert'
         }, { status: 400 });
       }
     }
@@ -394,7 +394,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         action: 'update',
         resource: 'laboratory_critical_alerts',
         resourceId: id,
-        details: body;
+        details: body
       });
 
       // Send notifications for assignment changes;
@@ -407,7 +407,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'critical_alert',
             resourceId: id,
             resourceType: 'laboratory_critical_alerts',
-            priority: 'high';
+            priority: 'high'
           });
         }
       }
@@ -435,13 +435,13 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'critical_alert_update',
             resourceId: id,
             resourceType: 'laboratory_critical_alerts',
-            priority: 'medium';
+            priority: 'medium'
           });
         }
       }
 
       // Invalidate cache;
-      await CacheInvalidation.invalidatePattern('diagnostic:lab:critical-alerts:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: lab:critical-alerts:*')
     }
 
     // Get the updated alert;

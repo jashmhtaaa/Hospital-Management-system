@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,31 +15,31 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Button } from '@/components/ui/button';
 
 interface NursingNote {
-  id: string;
+  id: string,
   date: string;
-  time: string;
+  time: string,
   nurse: string;
-  note: string;
-  category: 'assessment' | 'medication' | 'intervention' | 'observation';
+  note: string,
+  category: 'assessment' | 'medication' | 'intervention' | 'observation'
 }
 
 interface NursingNotesProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  notes: NursingNote[];
+  notes: NursingNote[]
 }
 
 /**
  * IPD Nursing Notes component;
  */
-export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProps) {
+export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProps) => {
   const getCategoryLabel = (category: string) => {
     switch(category) {
       case 'assessment': return 'Assessment';
       case 'medication': return 'Medication';
       case 'intervention': return 'Intervention';
       case 'observation': return 'Observation';
-      default: return 'Other';
+      default: return 'Other'
     }
   };
 
@@ -69,7 +69,7 @@ export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProp
               {notes.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center">;
-                    No nursing notes available;
+                    No nursing notes available
                   </TableCell>
                 </TableRow>
               ) : (
@@ -87,7 +87,7 @@ export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProp
                     <TableCell>
                       <div className="flex space-x-2">;
                         <Button variant="outline" size="sm">View</Button>;
-                        <Button variant="outline" size="sm">Edit</Button>;
+                        <Button variant="outline" size="sm">Edit</Button>
                       </div>
                     </TableCell>
                   </TableRow>

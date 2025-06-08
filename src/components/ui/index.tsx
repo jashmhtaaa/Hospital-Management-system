@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -77,7 +77,7 @@ export const Card = ({
   ...properties;
 }: CardProperties) => {
   return (
-    <div;
+<div
       className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}
       {...properties}
     >
@@ -179,7 +179,7 @@ export const Input = React.forwardRef<
   React.InputHTMLAttributes<HTMLInputElement>
 >(({ className = "", ...properties }, reference) => {
   return (
-    <input;
+    <input>
       ref={reference}
       className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       {...properties}
@@ -194,7 +194,7 @@ export const Label = React.forwardRef<
   React.LabelHTMLAttributes<HTMLLabelElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <label;
+    <label>
       ref={reference}
       className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className}`}
       {...properties}
@@ -211,7 +211,7 @@ export const Textarea = React.forwardRef<
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
 >(({ className = "", ...properties }, reference) => {
   return (
-    <textarea;
+    <textarea>
       ref={reference}
       className={`flex min-h-[80px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       {...properties}
@@ -241,7 +241,7 @@ export const Badge = ({
   };
 
   return (
-    <span;
+<span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${variantStyles[variant ||;
         "default"]} ${className}`}
       {...properties}
@@ -272,9 +272,9 @@ export const Alert = ({
   };
 
   return (
-    <div;
+<div
       className={`p-4 rounded-md border ${variantStyles[variant || "default"]} ${className}`}
-      role="alert";
+      role="alert"
       {...properties}
     >
       {children}
@@ -308,7 +308,7 @@ export const Table = React.forwardRef<
 >(({ children, className = "", ...properties }, reference) => {
   return (
     <div className="w-full overflow-auto">;
-      <table;
+      <table>
         ref={reference}
         className={`w-full caption-bottom text-sm ${className}`}
         {...properties}
@@ -349,7 +349,7 @@ export const TableRow = React.forwardRef<
   React.HTMLAttributes<HTMLTableRowElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <tr;
+    <tr>
       ref={reference}
       className={`border-b border-gray-200 transition-colors hover:bg-gray-50 ${className}`}
       {...properties}
@@ -365,7 +365,7 @@ export const TableHead = React.forwardRef<
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <th;
+    <th>
       ref={reference}
       className={`h-12 px-4 text-left align-middle font-medium text-gray-500 ${className}`}
       {...properties}
@@ -381,7 +381,7 @@ export const TableCell = React.forwardRef<
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <td;
+    <td>
       ref={reference}
       className={`p-4 align-middle ${className}`}
       {...properties}
@@ -394,7 +394,7 @@ TableCell.displayName = "TableCell";
 
 // Define specific props type for Tabs component;
 interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
+  children: React.ReactNode,
   value: string;
   onValueChange: (value: string) => void;
   className?: string;
@@ -446,9 +446,9 @@ export const TabsList = ({
   ...properties;
 }: TabsListProperties) => {
   return (
-    <div;
+<div
       className={`inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 ${className}`}
-      role="tablist";
+      role="tablist"
       {...properties}
     >
       {children}
@@ -460,7 +460,7 @@ TabsList.displayName = "TabsList";
 // Define specific props type for TabsTrigger component;
 interface TabsTriggerProperties;
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children: React.ReactNode,
   value: string;
   className?: string;
   onValueChange?: (value: string) => void; // Received from Tabs;
@@ -478,13 +478,13 @@ export const TabsTrigger = ({
   const isActive = parentValue === value;
 
   return (
-    <button;
+    <button>
       className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 ${
         isActive;
           ? "bg-white text-blue-700 shadow-sm"
-          : "text-gray-600 hover:text-gray-900";
+          : "text-gray-600 hover: text-gray-900"
       } ${className}`}
-      role="tab";
+      role="tab"
       aria-selected={isActive}
       tabIndex={isActive ? 0 : -1}
       onClick={() => onValueChange?.(value)}
@@ -498,7 +498,7 @@ TabsTrigger.displayName = "TabsTrigger";
 
 // Define specific props type for TabsContent component;
 interface TabsContentProperties extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
+  children: React.ReactNode,
   value: string;
   className?: string;
   parentValue?: string; // Received from Tabs;
@@ -516,9 +516,9 @@ export const TabsContent = ({
   if (!isActive) return;
 
   return (
-    <div;
+<div
       className={`mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${className}`}
-      role="tabpanel";
+      role="tabpanel"
       tabIndex={0}
       {...properties}
     >
@@ -630,7 +630,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
     React.useEffect(() => {
       const handleEscape = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
-          setOpen?.(false);
+          setOpen?.(false)
         }
       };
       document.addEventListener("keydown", handleEscape);
@@ -640,7 +640,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
     if (!open) return null;
 
     return (
-      <div;
+<div
         ref={reference}
         className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 ${className}`}
         {...properties}
@@ -650,31 +650,19 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
           setOpen?.(false);
         }}
       >
-        <div;
-          className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative";
+<div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative"
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content;
         >
           {children}
-          <button;
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700";
+          <button>
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
             onClick={() => setOpen?.(false)}
           >
-            <svg;
-              xmlns="http://www.w3.org/2000/svg";
-              width="24";
-              height="24";
-              viewBox="0 0 24 24";
-              fill="none";
-              stroke="currentColor";
-              strokeWidth="2";
-              strokeLinecap="round";
-              strokeLinejoin="round";
-              className="h-4 w-4";
-            >
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <path d="M18 6 6 18"></path>;
-              <path d="m6 6 12 12"></path>;
+              <path d="m6 6 12 12"></path>
             </svg>
-            <span className="sr-only">Close</span>;
+            <span className="sr-only">Close</span>
           </button>
         </div>
       </div>
@@ -695,7 +683,7 @@ export const DialogHeader = ({
   ...properties;
 }: DialogHeaderProperties) => {
   return (
-    <div;
+<div
       className={`flex flex-col space-y-1.5 text-center sm:text-left ${className}`}
       {...properties}
     >
@@ -715,7 +703,7 @@ interface DialogTitleProperties;
 export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProperties>(
   ({ children, className = "", ...properties }, reference) => {
     return (
-      <h2;
+      <h2>
         ref={reference}
         className={`text-lg font-semibold leading-none tracking-tight ${className}`}
         {...properties}
@@ -737,7 +725,7 @@ interface DialogDescriptionProperties;
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProperties>(
   ({ children, className = "", ...properties }, reference) => {
     return (
-      <p;
+      <p>
         ref={reference}
         className={`text-sm text-gray-500 ${className}`}
         {...properties}
@@ -761,7 +749,7 @@ export const DialogFooter = ({
   ...properties;
 }: DialogFooterProperties) => {
   return (
-    <div;
+<div
       className={`flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 ${className}`}
       {...properties}
     >
@@ -787,15 +775,15 @@ export const DatePicker = ({
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleDayClick = (day: Date) => {
-    setDate(day);
+    setDate(day),
     setIsOpen(false);
   };
 
   return (
     <div className={`relative ${className}`}>;
-      <Button;
-        variant="outline";
-        className="w-[280px] justify-start text-left font-normal";
+      <Button>
+        variant="outline"
+        className="w-[280px] justify-start text-left font-normal"
         onClick={() => setIsOpen(!isOpen)}
       >
         {date ? date.toLocaleDateString() : <span>Pick a date</span>}
@@ -817,7 +805,7 @@ export const DatePicker = ({
                 const day = new Date();
                 day.setDate(index + 1);
                 return (
-                  <button;
+                  <button>
                     key={index}
                     className={`p-1 rounded-md hover:bg-gray-100 ${
                       date && date.getDate() === index + 1;
@@ -914,7 +902,7 @@ export const Calendar = ({
       // Add more complex selection logic for multiple/range modes;
 
       days.push(
-        <button;
+        <button>
           key={day}
           className={`p-1.5 rounded-md text-center hover:bg-gray-100 ${
             isSelected ? "bg-blue-600 text-white hover:bg-blue-700" : ""
@@ -939,7 +927,7 @@ export const Calendar = ({
             <div className="flex justify-between items-center mb-2">;
               {index === 0 && (
                 <Button variant="outline" size="icon" onClick={handlePrevMonth}>;
-                  <ChevronLeft className="h-4 w-4" />;
+                  <ChevronLeft className="h-4 w-4" />
                 </Button>
               )}
               <div className="text-sm font-medium">;
@@ -950,7 +938,7 @@ export const Calendar = ({
               </div>
               {index === numberOfMonths - 1 && (
                 <Button variant="outline" size="icon" onClick={handleNextMonth}>;
-                  <ChevronRight className="h-4 w-4" />;
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               )}
             </div>

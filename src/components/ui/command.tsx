@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ const Command = React.forwardRef<;
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>
 >(({ className, ...props }, ref) => (
-  <CommandPrimitive;
+  <CommandPrimitive>
     ref={ref}
     className={cn(
       "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
@@ -49,7 +49,7 @@ const CommandInput = React.forwardRef<;
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
   <div className="flex items-center border-b px-3" data-cmdk-input-wrapper="">;
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />;
+    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input;
       ref={ref}
       className={cn(
@@ -82,7 +82,7 @@ const CommandEmpty = React.forwardRef<;
 >((props, ref) => (
   <CommandPrimitive.Empty;
     ref={ref}
-    className="py-6 text-center text-sm";
+    className="py-6 text-center text-sm"
     {...props}
   />
 ));
@@ -138,7 +138,7 @@ const CommandShortcut = ({
   ...props;
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
-    <span;
+<span
       className={cn(
         "ml-auto text-xs tracking-widest text-muted-foreground",
         className;

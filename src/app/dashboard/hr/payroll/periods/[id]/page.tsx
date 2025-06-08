@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -78,10 +78,10 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
           throw new Error('Failed to fetch payroll period data');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setPayrollPeriod(data);
       } catch (err) {
-        setError(err.message);
+        setError(err.message),
         toast({
           title: "Error",
           description: err.message,
@@ -107,8 +107,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         throw new Error('Failed to generate payroll entries');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       toast({
         title: "Success",
         description: `Generated ${data.entriesGenerated} payroll entries`,
@@ -117,7 +116,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       // Refresh payroll period data;
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
-        const periodData = await periodResponse.json();
+        const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData);
       }
     } catch (err) {
@@ -143,8 +142,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         throw new Error('Failed to approve payroll period');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       toast({
         title: "Success",
         description: `Approved ${data.entriesApproved} payroll entries`,
@@ -153,7 +151,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       // Refresh payroll period data;
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
-        const periodData = await periodResponse.json();
+        const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData);
       }
     } catch (err) {
@@ -185,8 +183,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         throw new Error('Failed to mark payroll period as paid');
       }
       
-      const data = await response.json();
-      
+      const data = await response.json(),
       toast({
         title: "Success",
         description: `Marked ${data.entriesPaid} payroll entries as paid`,
@@ -195,7 +192,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       // Refresh payroll period data;
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
-        const periodData = await periodResponse.json();
+        const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData);
       }
     } catch (err) {
@@ -245,8 +242,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         return 'default';
       case 'PAID':
         return 'success';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
 
@@ -262,13 +258,13 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/payroll')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Payroll;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Payroll
           </Button>
         </div>
         <div className="flex justify-center items-center h-64">;
@@ -282,25 +278,25 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/payroll')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Payroll;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Payroll
           </Button>
         </div>
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-64">;
-            <AlertCircle className="h-10 w-10 text-destructive mb-4" />;
+            <AlertCircle className="h-10 w-10 text-destructive mb-4" />
             <h2 className="text-xl font-semibold mb-2">Error</h2>;
             <p className="text-muted-foreground">{error}</p>;
-            <Button;
-              className="mt-4";
+            <Button>
+              className="mt-4"
               onClick={() => router.push('/dashboard/hr/payroll')}
             >
-              Return to Payroll;
+              Return to Payroll
             </Button>
           </CardContent>
         </Card>
@@ -315,18 +311,18 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
   return (
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
-        <Button;
-          variant="ghost";
-          size="sm";
+        <Button>
+          variant="ghost"
+          size="sm"
           onClick={() => router.push('/dashboard/hr/payroll')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />;
-          Back to Payroll;
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Payroll
         </Button>
       </div>
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
-        <div>
+<div
           <h1 className="text-3xl font-bold">;
             {payrollPeriod.name}
           </h1>
@@ -337,38 +333,38 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         
         <div className="flex gap-2">;
           {payrollPeriod.status === 'DRAFT' && (
-            <Button;
+            <Button>
               onClick={handleGenerateEntries}
               disabled={processingAction}
             >
-              <FileText className="h-4 w-4 mr-2" />;
-              Generate Entries;
+              <FileText className="h-4 w-4 mr-2" />
+              Generate Entries
             </Button>
           )}
           
           {payrollPeriod.status === 'PROCESSING' && (
-            <Button;
+            <Button>
               onClick={handleApprovePeriod}
               disabled={processingAction}
             >
-              <CheckCircle className="h-4 w-4 mr-2" />;
-              Approve Payroll;
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Approve Payroll
             </Button>
           )}
           
           {payrollPeriod.status === 'APPROVED' && (
-            <Button;
+            <Button>
               onClick={handleMarkAsPaid}
               disabled={processingAction}
             >
-              <DollarSign className="h-4 w-4 mr-2" />;
-              Mark as Paid;
+              <DollarSign className="h-4 w-4 mr-2" />
+              Mark as Paid
             </Button>
           )}
           
           <Button variant="outline" onClick={handleExport}>;
-            <Download className="h-4 w-4 mr-2" />;
-            Export;
+            <Download className="h-4 w-4 mr-2" />
+            Export
           </Button>
         </div>
       </div>
@@ -381,24 +377,24 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
           <CardContent className="space-y-4">;
             <div className="space-y-2">;
               <div className="flex items-center gap-2">;
-                <Calendar className="h-4 w-4 text-muted-foreground" />;
-                <div>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+<div
                   <p className="text-sm text-muted-foreground">Period</p>;
-                  <p className="font-medium">{format(new Date(payrollPeriod.startDate), 'PP')} - {format(new Date(payrollPeriod.endDate), 'PP')}</p>;
+                  <p className="font-medium">{format(new Date(payrollPeriod.startDate), 'PP')} - {format(new Date(payrollPeriod.endDate), 'PP')}</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">;
-                <Calendar className="h-4 w-4 text-muted-foreground" />;
-                <div>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+<div
                   <p className="text-sm text-muted-foreground">Payment Date</p>;
-                  <p className="font-medium">{format(new Date(payrollPeriod.paymentDate), 'PP')}</p>;
+                  <p className="font-medium">{format(new Date(payrollPeriod.paymentDate), 'PP')}</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">;
-                <FileText className="h-4 w-4 text-muted-foreground" />;
-                <div>
+                <FileText className="h-4 w-4 text-muted-foreground" />
+<div
                   <p className="text-sm text-muted-foreground">Status</p>;
                   <Badge variant={getStatusBadgeVariant(payrollPeriod.status)}>;
                     {payrollPeriod.status}
@@ -412,13 +408,13 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
             <div className="space-y-2">;
               <p className="text-sm text-muted-foreground">Summary</p>;
               <div className="grid grid-cols-2 gap-2">;
-                <div>
+<div
                   <p className="text-sm text-muted-foreground">Total Entries</p>;
-                  <p className="font-medium">{payrollPeriod.payrollEntries?.length || 0}</p>;
+                  <p className="font-medium">{payrollPeriod.payrollEntries?.length || 0}</p>
                 </div>
-                <div>
+<div
                   <p className="text-sm text-muted-foreground">Created On</p>;
-                  <p className="font-medium">{format(new Date(payrollPeriod.createdAt), 'PP')}</p>;
+                  <p className="font-medium">{format(new Date(payrollPeriod.createdAt), 'PP')}</p>
                 </div>
               </div>
             </div>
@@ -439,7 +435,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
           <CardHeader>
             <CardTitle>Payroll Entries</CardTitle>
             <CardDescription>
-              {payrollPeriod.payrollEntries?.length || 0} employees in this payroll period;
+              {payrollPeriod.payrollEntries?.length || 0} employees in this payroll period
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -448,11 +444,11 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                 {payrollPeriod.status === 'DRAFT' ? (
                   <div className="flex flex-col items-center gap-2">;
                     <p>No payroll entries generated yet.</p>
-                    <Button;
+                    <Button>
                       onClick={handleGenerateEntries}
                       disabled={processingAction}
                     >
-                      Generate Entries;
+                      Generate Entries
                     </Button>
                   </div>
                 ) : (
@@ -496,12 +492,12 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Button;
-                            variant="ghost";
-                            size="sm";
+                          <Button>
+                            variant="ghost"
+                            size="sm"
                             onClick={() => router.push(`/dashboard/hr/payroll/entries/${entry.id}`)}
                           >
-                            View;
+                            View
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -521,28 +517,28 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">;
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Total Base Salary</p>;
                 <p className="text-2xl font-bold">;
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.baseSalary, 0))}
                 </p>
               </div>
               
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Total Gross Salary</p>;
                 <p className="text-2xl font-bold">;
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.grossSalary, 0))}
                 </p>
               </div>
               
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Total Deductions</p>;
                 <p className="text-2xl font-bold">;
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.deductions, 0))}
                 </p>
               </div>
               
-              <div>
+<div
                 <p className="text-sm text-muted-foreground">Total Net Salary</p>;
                 <p className="text-2xl font-bold">;
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.netSalary, 0))}

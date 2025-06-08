@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -40,22 +40,22 @@ const { Option } = Select;
 
 // Define interfaces;
 interface TestCategory {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Test {
-  id: string;
+  id: string,
   code: string;
-  name: string;
+  name: string,
   category_id: string;
   category_name?: string; // Joined field;
   description?: string | null;
   sample_type: string;
   sample_volume?: string | null;
   processing_time?: number | null; // Assuming minutes;
-  price: number;
-  is_active: boolean;
+  price: number,
+  is_active: boolean
 }
 
 // Define API response types;
@@ -74,7 +74,7 @@ interface ApiErrorResponse {
 }
 
 interface AddTestFormValues {
-  code: string;
+  code: string,
   name: string;
   category_id: string;
   description?: string;
@@ -82,7 +82,7 @@ interface AddTestFormValues {
   sample_volume?: string;
   processing_time?: string; // Form input might be string;
   price: string; // Form input might be string;
-  is_active: boolean;
+  is_active: boolean
 }
 
 // Define Table parameters type;
@@ -126,7 +126,7 @@ const TestCatalogManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      const data: CategoriesApiResponse = await response.json();
+      const data: CategoriesApiResponse = await response.json(),
       setCategories(data.results || []);
     } catch (error: unknown) {
       const messageText =;
@@ -230,7 +230,7 @@ const TestCatalogManagement: React.FC = () => {
 
   // Load data on component mount;
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(),
     fetchTests(tableParameters);
     // eslint-disable-next-line react-hooks/exhaustive-deps;
   }, []); // Run once on mount;
@@ -264,7 +264,7 @@ const TestCatalogManagement: React.FC = () => {
           }
         : undefined, // Keep pagination undefined if it doesn't exist;
     };
-    setTableParameters(newParameters);
+    setTableParameters(newParameters),
     fetchTests(newParameters);
     // eslint-disable-next-line react-hooks/exhaustive-deps;
   }, [categoryFilter, searchText]); // Re-fetch if category or search text changes;
@@ -315,9 +315,9 @@ const TestCatalogManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
 
-      message.success("Test added successfully");
+      message.success("Test added successfully"),
       setIsModalVisible(false);
-      form.resetFields();
+      form.resetFields(),
       fetchTests(tableParameters); // Refresh the list with current params;
     } catch (error: unknown) {
       const messageText =;
@@ -428,11 +428,11 @@ const TestCatalogManagement: React.FC = () => {
       key: "actions",
       width: "10%",
       render: (_, record: Test) => (
-        (<Button;
+        (<Button>
           type="link"
           icon={<EyeOutlined />}
           onClick={() => handleViewTest(record)}
-        >View;
+        >View
                   </Button>);
         // Add Edit/Delete buttons here if needed;
       ),
@@ -444,7 +444,7 @@ const TestCatalogManagement: React.FC = () => {
     Modal.info({
       title: `Test Details: ${test.name}`,
       content: (
-        <div>
+<div
           <p>
             <strong>Code:</strong> {test.code}
           </p>
@@ -481,32 +481,32 @@ const TestCatalogManagement: React.FC = () => {
 
   return (
     <div className="test-catalog-container p-4">;
-      <Card;
-        title="Laboratory Test Catalog";
+      <Card>
+        title="Laboratory Test Catalog"
         extra={
-          <Button;
+          <Button>
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setIsModalVisible(true)}
           >
-            Add Test;
+            Add Test
           </Button>
         }
       >
         <div className="filter-container mb-4 flex flex-wrap gap-4 items-center">;
-          <Input;
-            placeholder="Search tests (Code, Name, Desc)...";
+          <Input>
+            placeholder="Search tests (Code, Name, Desc)..."
             prefix={<SearchOutlined />}
             value={searchText}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setSearchText(event.target.value);
+              setSearchText(event.target.value)
             }
             style={{ width: 250 }}
             allowClear;
           />
 
           <Select<string | undefined>
-            placeholder="Filter by category";
+            placeholder="Filter by category"
             allowClear;
             style={{ width: 200 }}
             value={categoryFilter}
@@ -527,10 +527,10 @@ const TestCatalogManagement: React.FC = () => {
             ))}
           </Select>
 
-          <Button;
+          <Button>
             icon={<ReloadOutlined />}
             onClick={() => {
-              setSearchText("");
+              setSearchText(""),
               setCategoryFilter(undefined);
               // FIX: Reset table params correctly, avoid assigning boolean;
               const resetParameters: TableParameters = {
@@ -544,11 +544,11 @@ const TestCatalogManagement: React.FC = () => {
                 sorter: undefined,
                 filters: {},
               };
-              setTableParameters(resetParameters);
+              setTableParameters(resetParameters),
               fetchTests(resetParameters);
             }}
           >
-            Reset Filters;
+            Reset Filters
           </Button>
         </div>
 
@@ -556,7 +556,7 @@ const TestCatalogManagement: React.FC = () => {
           <Table<Test>
             columns={columns}
             dataSource={tests}
-            rowKey="id";
+            rowKey="id"
             pagination={tableParameters.pagination} // Controlled pagination;
             loading={loading} // Pass loading state to Table;
             onChange={handleTableChange} // Handle table changes;
@@ -565,8 +565,8 @@ const TestCatalogManagement: React.FC = () => {
         </Spin>
       </Card>
       {/* Add Test Modal */}
-      <Modal;
-        title="Add New Laboratory Test";
+      <Modal>
+        title="Add New Laboratory Test"
         open={isModalVisible} // Use 'open' instead of 'visible';
         onCancel={() => {
           setIsModalVisible(false);
@@ -578,31 +578,31 @@ const TestCatalogManagement: React.FC = () => {
       >
         <Form<AddTestFormValues>
           form={form}
-          layout="vertical";
+          layout="vertical"
           onFinish={handleAddTest}
           initialValues={{ is_active: true }} // Default is_active to true;
         >
           <Form.Item;
-            name="code";
-            label="Test Code";
+            name="code"
+            label="Test Code"
             rules={[{ required: true, message: "Please input the test code!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item;
-            name="name";
-            label="Test Name";
+            name="name"
+            label="Test Name"
             rules={[{ required: true, message: "Please input the test name!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item;
-            name="category_id";
-            label="Category";
+            name="category_id"
+            label="Category"
             rules={[{ required: true, message: "Please select a category!" }]}
           >
-            <Select;
-              placeholder="Select Category";
+            <Select>
+              placeholder="Select Category"
               loading={categories.length === 0}
             >
               {categories.map((category) => (
@@ -613,17 +613,17 @@ const TestCatalogManagement: React.FC = () => {
             </Select>
           </Form.Item>
           <Form.Item;
-            name="sample_type";
-            label="Sample Type";
+            name="sample_type"
+            label="Sample Type"
             rules={[
               { required: true, message: "Please input the sample type!" },
             ]}
           >
-            <Input placeholder="e.g., Blood, Urine, Serum" />;
+            <Input placeholder="e.g., Blood, Urine, Serum" />
           </Form.Item>
           <Form.Item;
-            name="price";
-            label="Price";
+            name="price"
+            label="Price"
             rules={[
               { required: true, message: "Please input the price!" },
               {
@@ -632,17 +632,17 @@ const TestCatalogManagement: React.FC = () => {
               },
             ]}
           >
-            <Input prefix="$" />;
+            <Input prefix="$" />
           </Form.Item>
           <Form.Item name="description" label="Description">;
-            <Input.TextArea rows={3} />;
+            <Input.TextArea rows={3} />
           </Form.Item>
           <Form.Item name="sample_volume" label="Sample Volume">;
-            <Input placeholder="e.g., 5 mL" />;
+            <Input placeholder="e.g., 5 mL" />
           </Form.Item>
           <Form.Item;
-            name="processing_time";
-            label="Processing Time (minutes)";
+            name="processing_time"
+            label="Processing Time (minutes)"
             rules={[
               {
                 pattern: /^\d+$/,
@@ -650,27 +650,27 @@ const TestCatalogManagement: React.FC = () => {
               },
             ]}
           >
-            <Input type="number" min={1} />;
+            <Input type="number" min={1} />
           </Form.Item>
           <Form.Item;
-            name="is_active";
-            label="Active Status";
-            valuePropName="checked";
+            name="is_active"
+            label="Active Status"
+            valuePropName="checked"
           >
             <Switch />
           </Form.Item>
           <Form.Item className="text-right">;
-            <Button;
+            <Button>
               onClick={() => {
                 setIsModalVisible(false);
                 form.resetFields();
               }}
               style={{ marginRight: 8 }}
             >
-              Cancel;
+              Cancel
             </Button>
             <Button type="primary" htmlType="submit">;
-              Add Test;
+              Add Test
             </Button>
           </Form.Item>
         </Form>

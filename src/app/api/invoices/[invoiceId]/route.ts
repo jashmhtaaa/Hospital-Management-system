@@ -22,44 +22,44 @@ const getInvoiceId = (pathname: string): number | null {
 
 // Define interfaces for the complex query results;
 interface InvoiceQueryResult {
-    invoice_id: number;
+    invoice_id: number,
     invoice_number: string;
-    patient_id: number;
+    patient_id: number,
     appointment_id: number | null;
-    admission_id: number | null;
+    admission_id: number | null,
     invoice_date: string; // ISO String;
     due_date: string | null; // ISO String;
-    total_amount: number;
+    total_amount: number,
     paid_amount: number;
-    discount_amount: number;
+    discount_amount: number,
     tax_amount: number;
-    status: InvoiceStatus;
+    status: InvoiceStatus,
     notes: string | null;
-    created_by_user_id: number;
+    created_by_user_id: number,
     created_at: string; // ISO String;
     updated_at: string; // ISO String;
-    patient_first_name: string;
-    patient_last_name: string;
+    patient_first_name: string,
+    patient_last_name: string
 }
 
 interface InvoiceItemQueryResult {
-    invoice_item_id: number;
+    invoice_item_id: number,
     invoice_id: number;
-    billable_item_id: number;
+    billable_item_id: number,
     batch_id: number | null;
-    description: string;
+    description: string,
     quantity: number;
-    unit_price: number;
+    unit_price: number,
     discount_amount: number;
-    tax_amount: number;
+    tax_amount: number,
     total_amount: number;
     created_at: string; // ISO String;
-    billable_item_name: string;
+    billable_item_name: string,
     billable_item_type: string; // Assuming ItemType is string-based enum;
 }
 
 // GET handler for retrieving a specific invoice with details;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -194,7 +194,7 @@ const UpdateInvoiceSchema = z.object({
     // Other fields like total_amount, paid_amount are usually updated via items/payments;
 });
 
-export async const PUT = (request: Request) {
+export async const PUT = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

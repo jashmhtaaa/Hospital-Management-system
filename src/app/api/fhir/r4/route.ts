@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,7 +22,7 @@ import { FHIRBundle } from '@/lib/fhir/types';
 /**
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction)
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const bundle: FHIRBundle = await request.json();
 
@@ -34,7 +34,7 @@ export async const POST = (request: NextRequest) {
           issue: [{
             severity: 'error',
             code: 'invalid',
-            diagnostics: 'Request must be a FHIR Bundle resource';
+            diagnostics: 'Request must be a FHIR Bundle resource'
           }]
         },
         { 
@@ -52,7 +52,7 @@ export async const POST = (request: NextRequest) {
           issue: [{
             severity: 'error',
             code: 'invalid',
-            diagnostics: 'Bundle type must be "batch" or "transaction"';
+            diagnostics: 'Bundle type must be "batch" or "transaction"'
           }]
         },
         { 
@@ -101,7 +101,7 @@ export async const POST = (request: NextRequest) {
 /**
  * GET /fhir/r4 - FHIR Capability Statement;
  */
-export async const GET = () {
+export async const GET = () => {
   try {
     const capabilityStatement = {
       resourceType: 'CapabilityStatement',
@@ -112,11 +112,11 @@ export async const GET = () {
       kind: 'instance',
       software: {
         name: 'HMS FHIR Server',
-        version: '1.0.0';
+        version: '1.0.0'
       },
       implementation: {
         description: 'Hospital Management System FHIR R4 Server',
-        url: '/fhir/r4';
+        url: '/fhir/r4'
       },
       fhirVersion: '4.0.1',
       format: ['application/fhir+json', 'application/json'],
@@ -128,7 +128,7 @@ export async const GET = () {
             coding: [{
               system: 'http://terminology.hl7.org/CodeSystem/restful-security-service',
               code: 'OAuth',
-              display: 'OAuth';
+              display: 'OAuth'
             }]
           }]
         },
@@ -280,7 +280,7 @@ export async const GET = () {
 /**
  * OPTIONS /fhir/r4 - CORS preflight;
  */
-export async const OPTIONS = () {
+export async const OPTIONS = () => {
   return new NextResponse(null, {
     status: 200,
     headers: {

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -69,10 +69,10 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
           throw new Error('Failed to fetch attendance data');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setAttendance(data);
       } catch (err) {
-        setError(err.message);
+        setError(err.message),
         toast({
           title: "Error",
           description: err.message,
@@ -104,14 +104,13 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
         return 'secondary';
       case 'ON_LEAVE':
         return 'outline';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
 
   // Format time or show placeholder;
   const formatTimeOrPlaceholder = (time: unknown) => {
-    return time ? format(new Date(time), 'h:mm:ss a') : '—';
+    return time ? format(new Date(time), 'h: mm:ss a') : '—'
   };
 
   // Calculate hours worked;
@@ -130,13 +129,13 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/attendance')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Attendance;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Attendance
           </Button>
         </div>
         <div className="flex justify-center items-center h-64">;
@@ -150,25 +149,25 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/attendance')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Attendance;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Attendance
           </Button>
         </div>
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-64">;
-            <AlertCircle className="h-10 w-10 text-destructive mb-4" />;
+            <AlertCircle className="h-10 w-10 text-destructive mb-4" />
             <h2 className="text-xl font-semibold mb-2">Error</h2>;
             <p className="text-muted-foreground">{error}</p>;
-            <Button;
-              className="mt-4";
+            <Button>
+              className="mt-4"
               onClick={() => router.push('/dashboard/hr/attendance')}
             >
-              Return to Attendance;
+              Return to Attendance
             </Button>
           </CardContent>
         </Card>
@@ -183,20 +182,20 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
   return (
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
-        <Button;
-          variant="ghost";
-          size="sm";
+        <Button>
+          variant="ghost"
+          size="sm"
           onClick={() => router.push('/dashboard/hr/attendance')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />;
-          Back to Attendance;
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Attendance
         </Button>
       </div>
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
-        <div>
+<div
           <h1 className="text-3xl font-bold">;
-            Attendance Record;
+            Attendance Record
           </h1>
           <p className="text-muted-foreground">;
             {format(new Date(attendance.date), 'PPPP')}
@@ -205,8 +204,8 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
         
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleEdit}>;
-            <Edit className="h-4 w-4 mr-2" />;
-            Edit Record;
+            <Edit className="h-4 w-4 mr-2" />
+            Edit Record
           </Button>
         </div>
       </div>
@@ -219,7 +218,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
           <CardContent className="space-y-4">;
             <div className="flex flex-col items-center">;
               <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">;
-                <User className="h-12 w-12 text-muted-foreground" />;
+                <User className="h-12 w-12 text-muted-foreground" />
               </div>
               
               <h3 className="text-xl font-semibold">;
@@ -240,18 +239,18 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
             
             <div className="space-y-2">;
               <div className="flex items-center gap-2">;
-                <Building2 className="h-4 w-4 text-muted-foreground" />;
-                <div>
+                <Building2 className="h-4 w-4 text-muted-foreground" />
+<div
                   <p className="text-sm text-muted-foreground">Department</p>;
-                  <p className="font-medium">{attendance.employee.department?.name || 'Not Assigned'}</p>;
+                  <p className="font-medium">{attendance.employee.department?.name || 'Not Assigned'}</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">;
-                <Calendar className="h-4 w-4 text-muted-foreground" />;
-                <div>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+<div
                   <p className="text-sm text-muted-foreground">Date</p>;
-                  <p className="font-medium">{format(new Date(attendance.date), 'PPP')}</p>;
+                  <p className="font-medium">{format(new Date(attendance.date), 'PPP')}</p>
                 </div>
               </div>
             </div>
@@ -266,7 +265,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Status</p>;
-                <div>
+<div
                   <Badge variant={getStatusBadgeVariant(attendance.status)} className="text-base px-3 py-1">;
                     {attendance.status.replace('_', ' ')}
                   </Badge>
@@ -278,12 +277,12 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                 <div className="flex items-center">;
                   {attendance.biometricVerified ? (
                     <>
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-2" />;
+                      <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
                       <span>Verified</span>
                     </>
                   ) : (
                     <>
-                      <XCircle className="h-5 w-5 text-red-500 mr-2" />;
+                      <XCircle className="h-5 w-5 text-red-500 mr-2" />
                       <span>Not Verified</span>
                     </>
                   )}
@@ -293,16 +292,16 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Check In Time</p>;
                 <div className="flex items-center">;
-                  <Clock className="h-5 w-5 text-blue-500 mr-2" />;
-                  <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkInTime)}</span>;
+                  <Clock className="h-5 w-5 text-blue-500 mr-2" />
+                  <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkInTime)}</span>
                 </div>
               </div>
               
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Check Out Time</p>;
                 <div className="flex items-center">;
-                  <Clock className="h-5 w-5 text-blue-500 mr-2" />;
-                  <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkOutTime)}</span>;
+                  <Clock className="h-5 w-5 text-blue-500 mr-2" />
+                  <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkOutTime)}</span>
                 </div>
               </div>
               
@@ -323,7 +322,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
             
             {attendance.notes && (
               <>
-                <Separator className="my-6" />;
+                <Separator className="my-6" />
                 
                 <div className="space-y-2">;
                   <p className="text-sm text-muted-foreground">Notes</p>;

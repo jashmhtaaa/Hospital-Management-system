@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,7 +37,7 @@ export default const ERDashboardPage = () {
       <div className="flex justify-between items-center mb-6">;
         <h1 className="text-3xl font-bold">Emergency Department</h1>;
         <Button onClick={() => setIsRegistrationModalOpen(true)}>
-          Register New Patient;
+          Register New Patient
         </Button>
       </div>
 
@@ -48,7 +48,7 @@ export default const ERDashboardPage = () {
           <TabsTrigger value="tracking">Patient Tracking</TabsTrigger>;
           <TabsTrigger value="triage">Triage</TabsTrigger>;
           <TabsTrigger value="alerts">Critical Alerts</TabsTrigger>;
-          <TabsTrigger value="reports">Reports</TabsTrigger>;
+          <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
         <TabsContent value="tracking" className="mt-4">;
@@ -56,7 +56,7 @@ export default const ERDashboardPage = () {
             <CardHeader>
               <CardTitle>Patient Tracking Board</CardTitle>
               <CardDescription>
-                Real-time view of all patients in the Emergency Department;
+                Real-time view of all patients in the Emergency Department
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -70,7 +70,7 @@ export default const ERDashboardPage = () {
             <CardHeader>
               <CardTitle>Triage Assessment</CardTitle>
               <CardDescription>
-                Perform triage assessment for patients;
+                Perform triage assessment for patients
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -84,7 +84,7 @@ export default const ERDashboardPage = () {
             <CardHeader>
               <CardTitle>Critical Alerts</CardTitle>
               <CardDescription>
-                Active critical alerts requiring attention;
+                Active critical alerts requiring attention
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -98,19 +98,19 @@ export default const ERDashboardPage = () {
             <CardHeader>
               <CardTitle>ER Reports</CardTitle>
               <CardDescription>
-                Analytics and operational reports;
+                Analytics and operational reports
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p>
-                Reports functionality will be implemented in a future iteration.;
+                Reports functionality will be implemented in a future iteration.
               </p>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
 
-      <ERRegistrationModal;
+      <ERRegistrationModal>
         isOpen={isRegistrationModalOpen}
         onClose={() => setIsRegistrationModalOpen(false)}
       />

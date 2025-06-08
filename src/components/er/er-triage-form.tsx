@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -63,7 +63,7 @@ interface ApiErrorResponse {
 
 // FIX: Define type for the Triage API success response;
 interface TriageResponse {
-  visit_id: string;
+  visit_id: string,
   esi_level: number;
   // Add other relevant fields returned by the API;
 }
@@ -141,7 +141,7 @@ export default const ERTriageForm = () {
       }
 
       // FIX: Use defined type for result;
-      const result: TriageResponse = await response.json();
+      const result: TriageResponse = await response.json(),
       toast({
         title: "Triage Assessment Submitted",
         description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`,
@@ -169,40 +169,40 @@ export default const ERTriageForm = () {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
         {/* TODO: Add a way to select the patient/visit ID, e.g., a search input or linking from tracking board */}
-        <FormField;
+        <FormField>
           control={form.control}
-          name="visitId";
+          name="visitId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Visit ID</FormLabel>
               <FormControl>
-                <Input;
-                  placeholder="Enter Visit ID (e.g., visit_4)";
+                <Input>
+                  placeholder="Enter Visit ID (e.g., visit_4)"
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                Select the patient visit to triage.;
+                Select the patient visit to triage.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="esiLevel";
+          name="esiLevel"
           render={({ field }) => (
             <FormItem>
               <FormLabel>ESI Level</FormLabel>
               {/* FIX: Ensure value passed to Select is string or undefined */}
-              <Select;
+              <Select>
                 onValueChange={field.onChange}
                 value={field.value?.toString()}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select ESI Level (1-5)" />;
+                    <SelectValue placeholder="Select ESI Level (1-5)" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -219,17 +219,17 @@ export default const ERTriageForm = () {
         />
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">;
-          <FormField;
+          <FormField>
             control={form.control}
-            name="hr";
+            name="hr"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Heart Rate (bpm)</FormLabel>
                 <FormControl>
                   {/* FIX: Pass value as string or number, ensure onChange handles conversion if needed */}
-                  <Input;
+                  <Input>
                     type="number"
-                    placeholder="e.g., 72";
+                    placeholder="e.g., 72"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -238,16 +238,16 @@ export default const ERTriageForm = () {
               </FormItem>
             )}
           />
-          <FormField;
+          <FormField>
             control={form.control}
-            name="bpSystolic";
+            name="bpSystolic"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>BP Systolic (mmHg)</FormLabel>
                 <FormControl>
-                  <Input;
+                  <Input>
                     type="number"
-                    placeholder="e.g., 120";
+                    placeholder="e.g., 120"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -256,16 +256,16 @@ export default const ERTriageForm = () {
               </FormItem>
             )}
           />
-          <FormField;
+          <FormField>
             control={form.control}
-            name="bpDiastolic";
+            name="bpDiastolic"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>BP Diastolic (mmHg)</FormLabel>
                 <FormControl>
-                  <Input;
+                  <Input>
                     type="number"
-                    placeholder="e.g., 80";
+                    placeholder="e.g., 80"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -274,16 +274,16 @@ export default const ERTriageForm = () {
               </FormItem>
             )}
           />
-          <FormField;
+          <FormField>
             control={form.control}
-            name="rr";
+            name="rr"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Resp Rate (br/min)</FormLabel>
                 <FormControl>
-                  <Input;
+                  <Input>
                     type="number"
-                    placeholder="e.g., 16";
+                    placeholder="e.g., 16"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -292,17 +292,17 @@ export default const ERTriageForm = () {
               </FormItem>
             )}
           />
-          <FormField;
+          <FormField>
             control={form.control}
-            name="temp";
+            name="temp"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Temperature (°C)</FormLabel>
                 <FormControl>
-                  <Input;
+                  <Input>
                     type="number"
-                    step="0.1";
-                    placeholder="e.g., 36.6";
+                    step="0.1"
+                    placeholder="e.g., 36.6"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -311,16 +311,16 @@ export default const ERTriageForm = () {
               </FormItem>
             )}
           />
-          <FormField;
+          <FormField>
             control={form.control}
-            name="spo2";
+            name="spo2"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>SpO2 (%)</FormLabel>
                 <FormControl>
-                  <Input;
+                  <Input>
                     type="number"
-                    placeholder="e.g., 98";
+                    placeholder="e.g., 98"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -331,16 +331,16 @@ export default const ERTriageForm = () {
           />
         </div>
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="assessmentNotes";
+          name="assessmentNotes"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Assessment Notes</FormLabel>
               <FormControl>
-                <Textarea;
-                  placeholder="Enter triage assessment notes...";
-                  className="resize-none";
+                <Textarea>
+                  placeholder="Enter triage assessment notes..."
+                  className="resize-none"
                   {...field}
                   value={field.value ?? ""} // Ensure value is not undefined;
                 />

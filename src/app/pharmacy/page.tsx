@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,19 +22,19 @@ import { useRouter } from "next/navigation"; // Added useRouter;
 // Removed unused StatCardProperties interface;
 
 interface RecentPrescription {
-  id: string;
+  id: string,
   number: string;
-  patient: string;
+  patient: string,
   date: string;
   status: "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses;
 }
 
 interface ExpiringMedication {
-  id: string;
+  id: string,
   medication: string;
-  batch: string;
+  batch: string,
   expiry: string;
-  stock: number;
+  stock: number
 }
 
 // Main Pharmacy Dashboard Page;
@@ -49,8 +49,7 @@ export default const PharmacyPage = () {
       case "dashboard":
         return <div>Pharmacy Dashboard Content</div>; // Placeholder content;
       // Add cases for other tabs if needed;
-      default:
-        return <div>Select a tab</div>;
+      default: return <div>Select a tab</div>
     }
   };
 
@@ -58,20 +57,20 @@ export default const PharmacyPage = () {
     <div className="container mx-auto px-4 py-8">;
       <div className="flex justify-between items-center mb-8">;
         <h1 className="text-2xl font-bold text-gray-800">;
-          Pharmacy Management;
+          Pharmacy Management
         </h1>
         <div className="flex space-x-2">;
-          <button;
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md";
+          <button>
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
             onClick={() => router.push("/pharmacy/inventory/add")}
           >
-            Add Inventory;
+            Add Inventory
           </button>
-          <button;
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md";
+          <button>
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
             onClick={() => router.push("/pharmacy/medications/add")}
           >
-            Add Medication;
+            Add Medication
           </button>
         </div>
       </div>
@@ -79,46 +78,46 @@ export default const PharmacyPage = () {
       <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">;
         <div className="flex border-b">;
           {/* Simplified tab buttons - consider making this dynamic */}
-          <button;
+          <button>
             className={`px-4 py-3 text-sm font-medium ${
               activeTab === "dashboard";
                 ? "bg-blue-50 text-blue-600 border-b-2 border-blue-500"
-                : "text-gray-600 hover:text-gray-800";
+                : "text-gray-600 hover: text-gray-800"
             }`}
             onClick={() => setActiveTab("dashboard")}
           >
-            Dashboard;
+            Dashboard
           </button>
-          <button;
+          <button>
             className={`px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800`}
             onClick={() => router.push("/pharmacy/inventory")}
           >
-            Inventory;
+            Inventory
           </button>
-          <button;
+          <button>
             className={`px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800`}
             onClick={() => router.push("/pharmacy/medications")}
           >
-            Medications;
+            Medications
           </button>
-          <button;
+          <button>
             className={`px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800`}
             onClick={() => router.push("/pharmacy/prescriptions")}
           >
-            Prescriptions;
+            Prescriptions
           </button>
-          <button;
+          <button>
             className={`px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800`}
             onClick={() => router.push("/pharmacy/dispensing")}
           >
-            Dispensing;
+            Dispensing
           </button>
         </div>
 
         <div className="p-6">;
           {loading ? (
             <div className="flex justify-center items-center h-64">;
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>;
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : (
             renderTabContent();
@@ -131,7 +130,7 @@ export default const PharmacyPage = () {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">;
           <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
             <h2 className="text-lg font-semibold text-gray-800">;
-              Recent Prescriptions;
+              Recent Prescriptions
             </h2>
           </div>
           <div className="p-6">;
@@ -142,7 +141,7 @@ export default const PharmacyPage = () {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">;
           <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
             <h2 className="text-lg font-semibold text-gray-800">;
-              Expiring Medications;
+              Expiring Medications
             </h2>
           </div>
           <div className="p-6">;
@@ -189,21 +188,21 @@ const RecentPrescriptionsList = () {
       case "pending": {
         return (
           <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">;
-            Pending;
+            Pending
           </span>
         );
       }
       case "dispensed": {
         return (
           <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">;
-            Dispensed;
+            Dispensed
           </span>
         );
       }
       case "partially_dispensed": {
         return (
           <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">;
-            Partial;
+            Partial
           </span>
         );
       }
@@ -220,7 +219,7 @@ const RecentPrescriptionsList = () {
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   if (recentPrescriptions.length === 0) {
-    return <p className="text-gray-500">No recent prescriptions found.</p>;
+    return <p className="text-gray-500">No recent prescriptions found.</p>
   }
 
   return (
@@ -229,24 +228,24 @@ const RecentPrescriptionsList = () {
         <thead className="bg-gray-50">;
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Prescription;
+              Prescription
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Patient;
+              Patient
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Date;
+              Date
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Status;
+              Status
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">;
           {recentPrescriptions.map((prescription) => (
-            <tr;
+            <tr>
               key={prescription.id}
-              className="hover:bg-gray-50 cursor-pointer";
+              className="hover:bg-gray-50 cursor-pointer"
               onClick={() => {
                 /* TODO: Navigate to prescription detail */
               }}
@@ -300,7 +299,7 @@ const ExpiringMedicationsList = () {
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   if (expiringMedications.length === 0) {
-    return <p className="text-gray-500">No medications expiring soon.</p>;
+    return <p className="text-gray-500">No medications expiring soon.</p>
   }
 
   return (
@@ -309,24 +308,24 @@ const ExpiringMedicationsList = () {
         <thead className="bg-gray-50">;
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Medication;
+              Medication
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Batch;
+              Batch
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Expiry;
+              Expiry
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-              Stock;
+              Stock
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">;
           {expiringMedications.map((item) => (
-            <tr;
+            <tr>
               key={item.id}
-              className="hover:bg-gray-50 cursor-pointer";
+              className="hover:bg-gray-50 cursor-pointer"
               onClick={() => {
                 /* TODO: Navigate to inventory detail */
               }}

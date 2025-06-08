@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ const analyticsService = new AnalyticsService();
  * GET /api/support-services/marketing/analytics/comparative;
  * Get comparative analytics for multiple campaigns;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

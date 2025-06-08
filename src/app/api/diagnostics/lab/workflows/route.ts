@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,7 +18,7 @@ interface TestWorkflowCreateBody {
   name: string;
   description?: string;
   steps: Array<{
-    sequence: number;
+    sequence: number,
     name: string;
     description?: string;
     estimated_time?: number; // in minutes;
@@ -30,7 +30,7 @@ interface TestWorkflowCreateBody {
 }
 
 // GET /api/diagnostics/lab/workflows - Get all test workflows;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -159,7 +159,7 @@ export async const GET = (request: NextRequest) {
         return {
           ...workflow,
           steps,
-          applicable_tests: tests;
+          applicable_tests: tests
         };
       });
     );
@@ -171,7 +171,7 @@ export async const GET = (request: NextRequest) {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
@@ -185,7 +185,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/workflows - Create a new test workflow;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -344,7 +344,7 @@ export async const POST = (request: NextRequest) {
       const completeWorkflow = {
         ...workflow,
         steps,
-        applicable_tests: tests;
+        applicable_tests: tests
       };
       
       // Return the created workflow;
@@ -368,7 +368,7 @@ export async const POST = (request: NextRequest) {
 export async const GET_BY_ID = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -425,7 +425,7 @@ export async const GET_BY_ID = (
     const completeWorkflow = {
       ...workflow,
       steps,
-      applicable_tests: tests;
+      applicable_tests: tests
     };
     
     // Return the workflow;
@@ -444,7 +444,7 @@ export async const GET_BY_ID = (
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -645,7 +645,7 @@ export async const PUT = (
       const completeWorkflow = {
         ...workflow,
         steps,
-        applicable_tests: tests;
+        applicable_tests: tests
       };
       
       // Return the updated workflow;
@@ -669,7 +669,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -712,7 +712,7 @@ export async const DELETE = (
       );
       
       return NextResponse.json({
-        message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead.";
+        message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead."
       });
     }
     
@@ -742,7 +742,7 @@ export async const DELETE = (
       await DB.query("COMMIT", []);
       
       return NextResponse.json({
-        message: "Test workflow deleted successfully";
+        message: "Test workflow deleted successfully"
       });
     } catch (error) {
       // Rollback transaction on error;

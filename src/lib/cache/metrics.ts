@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -46,10 +46,10 @@ export class CacheMetrics {
    * Get cache metrics;
    */
   static getMetrics(): {
-    hits: number;
+    hits: number,
     misses: number;
-    totalRequests: number;
-    hitRate: number;
+    totalRequests: number,
+    hitRate: number
   } {
     return {
       hits: this.hits,

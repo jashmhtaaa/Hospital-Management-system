@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/pacs/worklist;
  * Get modality worklist entries;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -169,7 +169,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/pacs/worklist/sync;
  * Synchronize modality worklist with radiology orders;
  */
-export async const POST_SYNC = (request: NextRequest) {
+export async const POST_SYNC = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -193,7 +193,7 @@ export async const POST_SYNC = (request: NextRequest) {
     
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured or modality worklist not enabled';
+        error: 'PACS not configured or modality worklist not enabled'
       }, { status: 400 });
     }
 
@@ -274,7 +274,7 @@ export async const POST_SYNC = (request: NextRequest) {
         accessionNumber: order.accession_number,
         patientName: `${order.first_name} ${order.last_name}`,
         modality: order.modality,
-        procedureName: order.procedure_name;
+        procedureName: order.procedure_name
       });
     }
     
@@ -311,7 +311,7 @@ export async const POST_SYNC = (request: NextRequest) {
         id: entry.id,
         accessionNumber: entry.accession_number,
         status: entry.order_status,
-        scheduledDate: entry.order_scheduled_date;
+        scheduledDate: entry.order_scheduled_date
       });
     }
     
@@ -322,7 +322,7 @@ export async const POST_SYNC = (request: NextRequest) {
       
       removedEntries.push({
         id: entry.id,
-        accessionNumber: entry.accession_number;
+        accessionNumber: entry.accession_number
       });
     }
     
@@ -334,7 +334,7 @@ export async const POST_SYNC = (request: NextRequest) {
       details: {
         added: newEntries.length,
         updated: updatedEntries.length,
-        removed: removedEntries.length;
+        removed: removedEntries.length
       }
     });
     
@@ -349,7 +349,7 @@ export async const POST_SYNC = (request: NextRequest) {
       details: {
         added: newEntries,
         updated: updatedEntries,
-        removed: removedEntries;
+        removed: removedEntries
       }
     });
   } catch (error) {
@@ -365,7 +365,7 @@ export async const POST_SYNC = (request: NextRequest) {
  * PUT /api/diagnostics/pacs/worklist/:id;
  * Update a modality worklist entry;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -486,7 +486,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
           ...body,
           statusChanged,
           oldStatus: statusChanged ? oldStatus : undefined,
-          newStatus: statusChanged ? status : undefined;
+          newStatus: statusChanged ? status : undefined
         }
       });
 
@@ -511,11 +511,11 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         );
         
         // Invalidate order cache;
-        await CacheInvalidation.invalidatePattern('diagnostic:radiology:orders:*');
+        await CacheInvalidation.invalidatePattern('diagnostic: radiology:orders:*')
       }
 
       // Invalidate worklist cache;
-      await CacheInvalidation.invalidatePattern('diagnostic:pacs:worklist:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: pacs:worklist:*')
     }
 
     // Get the updated worklist entry;

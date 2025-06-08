@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -79,7 +79,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   
   if (query.patientId) {
     where.invoice = {
-      patientId: query.patientId;
+      patientId: query.patientId
     };
   }
   
@@ -226,7 +226,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
       'PATIENT_MISMATCH',
       { 
         invoicePatientId: invoice.patientId,
-        policyPatientId: insurancePolicy.patientId;
+        policyPatientId: insurancePolicy.patientId
       }
     );
   }
@@ -317,7 +317,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
     claimId: claim.id, 
     claimNumber,
     invoiceId: data.invoiceId,
-    insurancePolicyId: data.insurancePolicyId;
+    insurancePolicyId: data.insurancePolicyId
   });
   
   return createSuccessResponse(claim);

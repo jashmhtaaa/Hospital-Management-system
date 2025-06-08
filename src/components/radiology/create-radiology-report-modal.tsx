@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,25 +36,25 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define the type for the form data submitted;
 export interface ReportFormData {
-  study_id: string;
+  study_id: string,
   radiologist_id: string;
-  findings: string | null;
+  findings: string | null,
   impression: string;
-  recommendations: string | null;
+  recommendations: string | null,
   status: "preliminary" | "final" | "addendum"; // Use specific statuses;
 }
 
 // Define the type for Radiologist data fetched from API;
 // Assuming the API returns users with id and name;
 interface Radiologist {
-  id: string;
+  id: string,
   name: string;
   // Add other relevant fields if needed, e.g., email;
 }
 
 // Define the type for the component props;
 interface CreateRadiologyReportModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   onSubmit: (data: ReportFormData) => Promise<void>; // Ensure onSubmit is async;
   studyId: string;
@@ -101,7 +101,7 @@ export default const CreateRadiologyReportModal = ({
     if (!isOpen) return; // Only fetch when modal is open;
 
     const fetchRadiologists = async () => {
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
       try {
         const response = await fetch("/api/users?role=Radiologist"); // Ensure this API endpoint exists and returns Radiologist[]
@@ -149,7 +149,7 @@ export default const CreateRadiologyReportModal = ({
       });
       return;
     }
-    setIsSubmitting(true);
+    setIsSubmitting(true),
     setError(undefined);
     try {
       await onSubmit({
@@ -161,9 +161,9 @@ export default const CreateRadiologyReportModal = ({
         status: status,
       });
       // Reset form on successful submission (optional, parent might handle closing)
-      setFindings("");
+      setFindings(""),
       setImpression("");
-      setRecommendations("");
+      setRecommendations(""),
       setStatus("preliminary");
       // Keep radiologist selected if it's the current user?
       // setRadiologistId("");
@@ -174,7 +174,7 @@ export default const CreateRadiologyReportModal = ({
           ? submitError.message;
           : "An unknown error occurred during submission";
 
-      setError(`Submission failed: ${message}`);
+      setError(`Submission failed: ${message}`),
       toast({
         title: "Submission Failed",
         description: message,
@@ -200,7 +200,7 @@ export default const CreateRadiologyReportModal = ({
         </DialogHeader>
         {loading ? (
           <div className="flex justify-center items-center h-40">;
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4 border border-red-200 rounded bg-red-50">;
@@ -217,7 +217,7 @@ export default const CreateRadiologyReportModal = ({
                 <Label htmlFor="radiologist" className="text-right">;
                   Radiologist *
                 </Label>
-                <Select;
+                <Select>
                   value={radiologistId}
                   onValueChange={setRadiologistId}
                   required;
@@ -229,12 +229,12 @@ export default const CreateRadiologyReportModal = ({
                   }
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Radiologist" />;
+                    <SelectValue placeholder="Select Radiologist" />
                   </SelectTrigger>
                   <SelectContent>
                     {radiologists.length === 0 && (
                       <SelectItem value="" disabled>;
-                        No radiologists found;
+                        No radiologists found
                       </SelectItem>
                     )}
                     {/* Explicitly type 'rad' parameter */}
@@ -250,17 +250,17 @@ export default const CreateRadiologyReportModal = ({
               {/* Findings Textarea */}
               <div className="grid grid-cols-4 items-start gap-4">;
                 <Label htmlFor="findings" className="text-right pt-2">;
-                  Findings;
+                  Findings
                 </Label>
-                <Textarea;
-                  id="findings";
+                <Textarea>
+                  id="findings"
                   value={findings}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setFindings(event.target.value);
+                    setFindings(event.target.value)
                   }
-                  className="col-span-3 min-h-[100px]";
+                  className="col-span-3 min-h-[100px]"
                   disabled={isSubmitting}
-                  placeholder="Describe the findings...";
+                  placeholder="Describe the findings..."
                 />
               </div>
 
@@ -269,42 +269,42 @@ export default const CreateRadiologyReportModal = ({
                 <Label htmlFor="impression" className="text-right pt-2">;
                   Impression *
                 </Label>
-                <Textarea;
-                  id="impression";
+                <Textarea>
+                  id="impression"
                   value={impression}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setImpression(event.target.value);
+                    setImpression(event.target.value)
                   }
-                  className="col-span-3 min-h-[100px]";
+                  className="col-span-3 min-h-[100px]"
                   required;
                   disabled={isSubmitting}
-                  placeholder="Summarize the key findings and diagnosis...";
+                  placeholder="Summarize the key findings and diagnosis..."
                 />
               </div>
 
               {/* Recommendations Textarea */}
               <div className="grid grid-cols-4 items-start gap-4">;
                 <Label htmlFor="recommendations" className="text-right pt-2">;
-                  Recommendations;
+                  Recommendations
                 </Label>
-                <Textarea;
-                  id="recommendations";
+                <Textarea>
+                  id="recommendations"
                   value={recommendations}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setRecommendations(event.target.value);
+                    setRecommendations(event.target.value)
                   }
-                  className="col-span-3 min-h-[80px]";
+                  className="col-span-3 min-h-[80px]"
                   disabled={isSubmitting}
-                  placeholder="Suggest further actions or follow-up...";
+                  placeholder="Suggest further actions or follow-up..."
                 />
               </div>
 
               {/* Status Select */}
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="status" className="text-right">;
-                  Status;
+                  Status
                 </Label>
-                <Select;
+                <Select>
                   value={status}
                   onValueChange={(
                     value: "preliminary" | "final" | "addendum";
@@ -312,7 +312,7 @@ export default const CreateRadiologyReportModal = ({
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Status" />;
+                    <SelectValue placeholder="Select Status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="preliminary">Preliminary</SelectItem>;
@@ -325,20 +325,20 @@ export default const CreateRadiologyReportModal = ({
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button;
+                <Button>
                   type="button"
-                  variant="outline";
+                  variant="outline"
                   onClick={onClose}
                   disabled={isSubmitting}
                 >
-                  Cancel;
+                  Cancel
                 </Button>
               </DialogClose>
               <Button type="submit" disabled={isSubmitting || loading}>;
                 {isSubmitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
-                Create Report;
+                Create Report
               </Button>
             </DialogFooter>
           </form>

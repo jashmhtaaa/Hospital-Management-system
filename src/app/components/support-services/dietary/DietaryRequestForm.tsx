@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -66,8 +66,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface Patient {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface DietaryRequestFormProps {
@@ -115,11 +115,10 @@ const commonAllergies = [
   "Sesame";
 ];
 
-export const DietaryRequestForm = ({ 
-  onSuccess, 
+export const DietaryRequestForm = ({ onSuccess, 
   initialData, 
-  isEditing = false;
-}: DietaryRequestFormProps) {
+  isEditing = false
+}: DietaryRequestFormProps) => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [customPreference, setCustomPreference] = useState<string>('');
@@ -145,7 +144,7 @@ export const DietaryRequestForm = ({
       try {
         const response = await fetch('/api/patients');
         if (!response.ok) throw new Error('Failed to fetch patients');
-        const data = await response.json();
+        const data = await response.json(),
         setPatients(data);
       } catch (error) {
 
@@ -265,20 +264,20 @@ export const DietaryRequestForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
-        <FormField;
+        <FormField>
           control={form.control}
-          name="patientId";
+          name="patientId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Patient</FormLabel>
-              <Select;
+              <Select>
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a patient" />;
+                    <SelectValue placeholder="Select a patient" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -290,37 +289,37 @@ export const DietaryRequestForm = ({
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the patient for this dietary request.;
+                Select the patient for this dietary request.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="requestType";
+          name="requestType"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Request Type</FormLabel>
-              <Select;
+              <Select>
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
                 disabled={isLoading}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select request type" />;
+                    <SelectValue placeholder="Select request type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="REGULAR_MEAL">Regular Meal</SelectItem>;
                   <SelectItem value="SPECIAL_DIET">Special Diet</SelectItem>;
-                  <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>;
+                  <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the type of dietary service needed.;
+                Select the type of dietary service needed.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -328,16 +327,16 @@ export const DietaryRequestForm = ({
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
-          <FormField;
+          <FormField>
             control={form.control}
-            name="startDate";
+            name="startDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">;
                 <FormLabel>Start Date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
-                      <Button;
+                      <Button>
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
@@ -350,13 +349,13 @@ export const DietaryRequestForm = ({
                         ) : (
                           <span>Pick a date</span>
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">;
-                    <Calendar;
-                      mode="single";
+                    <Calendar>
+                      mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < new Date()}
@@ -372,16 +371,16 @@ export const DietaryRequestForm = ({
             )}
           />
 
-          <FormField;
+          <FormField>
             control={form.control}
-            name="endDate";
+            name="endDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">;
                 <FormLabel>End Date (Optional)</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
-                      <Button;
+                      <Button>
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
@@ -394,13 +393,13 @@ export const DietaryRequestForm = ({
                         ) : (
                           <span>Pick a date</span>
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">;
-                    <Calendar;
-                      mode="single";
+                    <Calendar>
+                      mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < (form.getValues('startDate') || new Date())}
@@ -417,9 +416,9 @@ export const DietaryRequestForm = ({
           />
         </div>
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="mealPreferences";
+          name="mealPreferences"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Meal Preferences</FormLabel>
@@ -428,14 +427,14 @@ export const DietaryRequestForm = ({
                   {field.value.map((preference) => (
                     <Badge key={preference} variant="secondary" className="flex items-center gap-1">;
                       {preference}
-                      <Button;
+                      <Button>
                         type="button"
-                        variant="ghost";
-                        size="sm";
-                        className="h-4 w-4 p-0";
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0"
                         onClick={() => removePreference(preference)}
                       >
-                        <X className="h-3 w-3" />;
+                        <X className="h-3 w-3" />
                       </Button>
                     </Badge>
                   ))}
@@ -444,7 +443,7 @@ export const DietaryRequestForm = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">;
                   {commonMealPreferences.map((preference) => (
                     <div key={preference} className="flex items-center space-x-2">;
-                      <Checkbox;
+                      <Checkbox>
                         id={`preference-${preference}`}
                         checked={field.value.includes(preference)}
                         onCheckedChange={(checked) => {
@@ -455,9 +454,9 @@ export const DietaryRequestForm = ({
                           }
                         }}
                       />
-                      <label;
+                      <label>
                         htmlFor={`preference-${preference}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {preference}
                       </label>
@@ -466,34 +465,34 @@ export const DietaryRequestForm = ({
                 </div>
                 
                 <div className="flex items-center space-x-2">;
-                  <Input;
-                    placeholder="Add custom preference";
+                  <Input>
+                    placeholder="Add custom preference"
                     value={customPreference}
                     onChange={(e) => setCustomPreference(e.target.value)}
-                    className="flex-1";
+                    className="flex-1"
                     disabled={isLoading}
                   />
-                  <Button;
+                  <Button>
                     type="button" 
-                    size="sm";
+                    size="sm"
                     onClick={addCustomPreference}
                     disabled={isLoading || !customPreference.trim()}
                   >
-                    <Plus className="h-4 w-4 mr-1" /> Add;
+                    <Plus className="h-4 w-4 mr-1" /> Add
                   </Button>
                 </div>
               </div>
               <FormDescription>
-                Select or add any meal preferences for the patient.;
+                Select or add any meal preferences for the patient.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="dietaryRestrictions";
+          name="dietaryRestrictions"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dietary Restrictions</FormLabel>
@@ -502,14 +501,14 @@ export const DietaryRequestForm = ({
                   {field.value.map((restriction) => (
                     <Badge key={restriction} variant="secondary" className="flex items-center gap-1">;
                       {restriction}
-                      <Button;
+                      <Button>
                         type="button"
-                        variant="ghost";
-                        size="sm";
-                        className="h-4 w-4 p-0";
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0"
                         onClick={() => removeRestriction(restriction)}
                       >
-                        <X className="h-3 w-3" />;
+                        <X className="h-3 w-3" />
                       </Button>
                     </Badge>
                   ))}
@@ -518,7 +517,7 @@ export const DietaryRequestForm = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">;
                   {commonDietaryRestrictions.map((restriction) => (
                     <div key={restriction} className="flex items-center space-x-2">;
-                      <Checkbox;
+                      <Checkbox>
                         id={`restriction-${restriction}`}
                         checked={field.value.includes(restriction)}
                         onCheckedChange={(checked) => {
@@ -529,9 +528,9 @@ export const DietaryRequestForm = ({
                           }
                         }}
                       />
-                      <label;
+                      <label>
                         htmlFor={`restriction-${restriction}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {restriction}
                       </label>
@@ -540,34 +539,34 @@ export const DietaryRequestForm = ({
                 </div>
                 
                 <div className="flex items-center space-x-2">;
-                  <Input;
-                    placeholder="Add custom restriction";
+                  <Input>
+                    placeholder="Add custom restriction"
                     value={customRestriction}
                     onChange={(e) => setCustomRestriction(e.target.value)}
-                    className="flex-1";
+                    className="flex-1"
                     disabled={isLoading}
                   />
-                  <Button;
+                  <Button>
                     type="button" 
-                    size="sm";
+                    size="sm"
                     onClick={addCustomRestriction}
                     disabled={isLoading || !customRestriction.trim()}
                   >
-                    <Plus className="h-4 w-4 mr-1" /> Add;
+                    <Plus className="h-4 w-4 mr-1" /> Add
                   </Button>
                 </div>
               </div>
               <FormDescription>
-                Select or add any dietary restrictions for the patient.;
+                Select or add any dietary restrictions for the patient.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="allergies";
+          name="allergies"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Food Allergies</FormLabel>
@@ -576,14 +575,14 @@ export const DietaryRequestForm = ({
                   {field.value.map((allergy) => (
                     <Badge key={allergy} variant="destructive" className="flex items-center gap-1">;
                       {allergy}
-                      <Button;
+                      <Button>
                         type="button"
-                        variant="ghost";
-                        size="sm";
-                        className="h-4 w-4 p-0";
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0"
                         onClick={() => removeAllergy(allergy)}
                       >
-                        <X className="h-3 w-3" />;
+                        <X className="h-3 w-3" />
                       </Button>
                     </Badge>
                   ))}
@@ -592,7 +591,7 @@ export const DietaryRequestForm = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">;
                   {commonAllergies.map((allergy) => (
                     <div key={allergy} className="flex items-center space-x-2">;
-                      <Checkbox;
+                      <Checkbox>
                         id={`allergy-${allergy}`}
                         checked={field.value.includes(allergy)}
                         onCheckedChange={(checked) => {
@@ -603,9 +602,9 @@ export const DietaryRequestForm = ({
                           }
                         }}
                       />
-                      <label;
+                      <label>
                         htmlFor={`allergy-${allergy}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {allergy}
                       </label>
@@ -614,47 +613,47 @@ export const DietaryRequestForm = ({
                 </div>
                 
                 <div className="flex items-center space-x-2">;
-                  <Input;
-                    placeholder="Add custom allergy";
+                  <Input>
+                    placeholder="Add custom allergy"
                     value={customAllergy}
                     onChange={(e) => setCustomAllergy(e.target.value)}
-                    className="flex-1";
+                    className="flex-1"
                     disabled={isLoading}
                   />
-                  <Button;
+                  <Button>
                     type="button" 
-                    size="sm";
+                    size="sm"
                     onClick={addCustomAllergy}
                     disabled={isLoading || !customAllergy.trim()}
                   >
-                    <Plus className="h-4 w-4 mr-1" /> Add;
+                    <Plus className="h-4 w-4 mr-1" /> Add
                   </Button>
                 </div>
               </div>
               <FormDescription>
-                Select or add any food allergies for the patient.;
+                Select or add any food allergies for the patient.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField;
+        <FormField>
           control={form.control}
-          name="specialInstructions";
+          name="specialInstructions"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Special Instructions (Optional)</FormLabel>
               <FormControl>
-                <Textarea;
-                  placeholder="Any additional information or special instructions";
-                  className="resize-none";
+                <Textarea>
+                  placeholder="Any additional information or special instructions"
+                  className="resize-none"
                   {...field}
                   disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
-                Provide any additional details that might be helpful.;
+                Provide any additional details that might be helpful.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -662,13 +661,13 @@ export const DietaryRequestForm = ({
         />
 
         <div className="flex justify-end space-x-4">;
-          <Button;
+          <Button>
             type="button" 
-            variant="outline";
+            variant="outline"
             onClick={() => router.back()}
             disabled={isLoading}
           >
-            Cancel;
+            Cancel
           </Button>
           <Button type="submit" disabled={isLoading}>;
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}

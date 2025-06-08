@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,37 +24,37 @@ import { AuditService } from '@/lib/security/audit.service';
 
 // Predictive model models;
 export interface PredictiveModel {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: ModelType;
-  category: ModelCategory;
+  category: ModelCategory,
   target: string;
-  features: ModelFeature[];
+  features: ModelFeature[],
   algorithm: Algorithm;
   hyperparameters: Record<string, any>;
-  performanceMetrics: PerformanceMetrics;
+  performanceMetrics: PerformanceMetrics,
   trainingData: {
-    source: string;
+    source: string,
     startDate: Date;
-    endDate: Date;
+    endDate: Date,
     rowCount: number;
-    description: string;
+    description: string
   };
-  validationStrategy: 'cross_validation' | 'train_test_split' | 'time_series_split';
+  validationStrategy: 'cross_validation' | 'train_test_split' | 'time_series_split',
   validationParameters: Record<string, any>;
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  version: string;
+  version: string,
   status: ModelStatus;
   deploymentStatus: DeploymentStatus;
   lastTraining?: Date;
   lastEvaluation?: Date;
   lastDeployment?: Date;
-  mlOpsInfo: MLOpsInfo;
-  metadata: ModelMetadata;
+  mlOpsInfo: MLOpsInfo,
+  metadata: ModelMetadata
 }
 
 export enum ModelType {
@@ -87,12 +87,12 @@ export enum ModelCategory {
 }
 
 export interface ModelFeature {
-  name: string;
+  name: string,
   description: string;
-  dataType: 'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image';
+  dataType: 'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image',
   source: string;
   importance?: number; // 0-100;
-  transformations: string[];
+  transformations: string[],
   statistics: {
     min?: number;
     max?: number;
@@ -134,11 +134,11 @@ export enum Algorithm {
 
 export interface PerformanceMetrics {
   classificationMetrics?: {
-    accuracy: number;
+    accuracy: number,
     precision: number;
-    recall: number;
+    recall: number,
     f1Score: number;
-    auc: number;
+    auc: number,
     aucPR: number;
     specificity: number;
     sensitivityAtSpecificity?: Record<string, number>;
@@ -148,7 +148,7 @@ export interface PerformanceMetrics {
     calibrationCurve?: { predicted: number[]; actual: number[] };
   };
   regressionMetrics?: {
-    mse: number;
+    mse: number,
     rmse: number;
     mae: number;
     mape?: number;
@@ -157,7 +157,7 @@ export interface PerformanceMetrics {
     residualPlot?: { predicted: number[]; residuals: number[] };
   };
   timeSeriesMetrics?: {
-    mse: number;
+    mse: number,
     rmse: number;
     mae: number;
     mape?: number;
@@ -173,23 +173,23 @@ export interface PerformanceMetrics {
     inertia?: number;
   };
   anomalyDetectionMetrics?: {
-    precision: number;
+    precision: number,
     recall: number;
-    f1Score: number;
+    f1Score: number,
     auc: number;
     averagePrecision?: number;
   };
   naturalLanguageMetrics?: {
-    accuracy: number;
+    accuracy: number,
     precision: number;
-    recall: number;
+    recall: number,
     f1Score: number;
     bleu?: number;
     rouge?: Record<string, number>;
     perplexity?: number;
   };
   crossValidationResults?: {
-    folds: number;
+    folds: number,
     mean: Record<string, number>;
     std: Record<string, number>;
     foldResults: Record<string, number[]>;
@@ -221,7 +221,7 @@ export enum DeploymentStatus {
 }
 
 export interface MLOpsInfo {
-  environment: 'development' | 'staging' | 'production';
+  environment: 'development' | 'staging' | 'production',
   runtime: string;
   framework: string;
   containerImage?: string;
@@ -233,29 +233,29 @@ export interface MLOpsInfo {
     metrics?: string;
   };
   resources: {
-    cpu: string;
+    cpu: string,
     memory: string;
     gpu?: string;
   };
   scaling: {
-    minReplicas: number;
+    minReplicas: number,
     maxReplicas: number;
     targetCPUUtilization?: number;
   };
   monitoring: {
-    dataQuality: boolean;
+    dataQuality: boolean,
     modelDrift: boolean;
-    performance: boolean;
+    performance: boolean,
     explainability: boolean;
-    alerts: boolean;
+    alerts: boolean
   };
   version: {
-    current: string;
+    current: string,
     history: {
-      version: string;
+      version: string,
       date: Date;
-      changedBy: string;
-      changes: string;
+      changedBy: string,
+      changes: string
     }[];
   };
   deploymentPipeline: string;
@@ -283,49 +283,49 @@ export interface MLOpsInfo {
 }
 
 export interface ModelMetadata {
-  repository: string;
+  repository: string,
   artifactLocation: string;
   datasetVersions: Record<string, string>;
-  preprocessingPipeline: string;
+  preprocessingPipeline: string,
   references: {
     papers?: string[];
     documentation?: string[];
     codebase?: string;
   };
-  tags: string[];
+  tags: string[],
   owner: {
-    team: string;
-    contact: string;
+    team: string,
+    contact: string
   };
-  reviewers: string[];
+  reviewers: string[],
   usageNotes: string;
-  limitations: string[];
+  limitations: string[],
   ethicalConsiderations: string[];
-  regulatoryStatus: string;
+  regulatoryStatus: string,
   customFields: Record<string, any>;
 }
 
 // Readmission risk models;
 export interface ReadmissionRisk {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  timestamp: Date;
+  timestamp: Date,
   riskScore: number; // 0-100;
   probability: number; // 0-1;
-  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
+  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH',
   timeHorizon: number; // days;
   confidenceInterval: [number, number];
-  riskFactors: RiskFactor[];
+  riskFactors: RiskFactor[],
   protectiveFactors: ProtectiveFactor[];
-  recommendedInterventions: Intervention[];
+  recommendedInterventions: Intervention[],
   modelId: string;
-  modelVersion: string;
+  modelVersion: string,
   explanations: PredictionExplanation;
   historicalPredictions?: {
-    timestamp: Date;
+    timestamp: Date,
     riskScore: number;
-    riskLevel: string;
+    riskLevel: string
   }[];
   actualOutcome?: {
     readmitted: boolean;
@@ -343,40 +343,40 @@ export interface ReadmissionRisk {
 }
 
 export interface RiskFactor {
-  name: string;
+  name: string,
   category: string;
   value: unknown;
   normalRange?: string;
   impact: number; // 0-100;
   trend?: 'IMPROVING' | 'WORSENING' | 'STABLE';
-  description: string;
+  description: string,
   actionable: boolean;
   source: string;
   lastUpdated?: Date;
 }
 
 export interface ProtectiveFactor {
-  name: string;
+  name: string,
   category: string;
-  value: unknown;
+  value: unknown,
   impact: number; // 0-100;
-  description: string;
+  description: string,
   source: string;
   lastUpdated?: Date;
 }
 
 export interface Intervention {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'MEDICATION' | 'PROCEDURE' | 'REFERRAL' | 'EDUCATION' | 'MONITORING' | 'FOLLOW_UP' | 'CARE_COORDINATION' | 'CUSTOM';
-  targetRiskFactors: string[];
+  targetRiskFactors: string[],
   expectedImpact: number; // 0-100;
-  evidence: 'HIGH' | 'MODERATE' | 'LOW' | 'EXPERIMENTAL';
+  evidence: 'HIGH' | 'MODERATE' | 'LOW' | 'EXPERIMENTAL',
   costCategory: 'LOW' | 'MEDIUM' | 'HIGH';
-  timeToImplement: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM';
+  timeToImplement: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM',
   implementationComplexity: 'LOW' | 'MEDIUM' | 'HIGH';
-  requiredResources: string[];
+  requiredResources: string[],
   recommendationStrength: 'STRONG' | 'MODERATE' | 'WEAK';
   workflow?: string;
   orderId?: string;
@@ -387,52 +387,52 @@ export interface PredictionExplanation {
   method: 'SHAP' | 'LIME' | 'PARTIAL_DEPENDENCE' | 'FEATURE_IMPORTANCE' | 'CUSTOM';
   globalExplanation?: {
     featureImportance: {
-      feature: string;
-      importance: number;
+      feature: string,
+      importance: number
     }[];
     featureInteractions?: Record<string, number>;
   };
   localExplanation: {
-    feature: string;
+    feature: string,
     contribution: number;
-    baseValue: number;
+    baseValue: number
   }[];
   counterfactuals?: {
-    feature: string;
+    feature: string,
     currentValue: unknown;
-    requiredValue: unknown;
+    requiredValue: unknown,
     feasibility: number; // 0-100;
   }[];
   similarCases?: {
-    encounterId: string;
+    encounterId: string,
     similarity: number;
-    outcome: string;
+    outcome: string
   }[];
 }
 
 // Length of stay models;
 export interface LengthOfStayPrediction {
-  id: string;
+  id: string,
   patientId: string;
-  encounterId: string;
+  encounterId: string,
   timestamp: Date;
   predictedLOS: number; // days;
   confidenceInterval: [number, number];
-  predictionCategory: 'SHORT' | 'EXPECTED' | 'EXTENDED' | 'PROLONGED';
+  predictionCategory: 'SHORT' | 'EXPECTED' | 'EXTENDED' | 'PROLONGED',
   riskOfExtendedStay: number; // 0-100;
   optimizedLOS: number; // days with interventions;
-  factors: LOSFactor[];
+  factors: LOSFactor[],
   interventions: LOSIntervention[];
-  targetDischargeDate: Date;
+  targetDischargeDate: Date,
   dischargeBarriers: DischargeBarrier[];
-  resourceImplications: ResourceImplication[];
+  resourceImplications: ResourceImplication[],
   modelId: string;
-  modelVersion: string;
+  modelVersion: string,
   explanations: PredictionExplanation;
   historicalPredictions?: {
-    timestamp: Date;
+    timestamp: Date,
     predictedLOS: number;
-    predictionCategory: string;
+    predictionCategory: string
   }[];
   actualOutcome?: {
     actualLOS?: number;
@@ -450,25 +450,25 @@ export interface LengthOfStayPrediction {
 }
 
 export interface LOSFactor {
-  name: string;
+  name: string,
   category: 'CLINICAL' | 'DEMOGRAPHIC' | 'ADMINISTRATIVE' | 'SOCIAL' | 'PROCEDURAL' | 'CUSTOM';
-  value: unknown;
+  value: unknown,
   impact: number; // 0-100;
   trend?: 'IMPROVING' | 'WORSENING' | 'STABLE';
-  description: string;
+  description: string,
   actionable: boolean;
   source: string;
   lastUpdated?: Date;
 }
 
 export interface LOSIntervention {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'CLINICAL' | 'CARE_COORDINATION' | 'ADMINISTRATIVE' | 'SOCIAL' | 'CUSTOM';
-  targetFactors: string[];
+  targetFactors: string[],
   expectedLOSReduction: number; // days;
-  confidence: 'HIGH' | 'MODERATE' | 'LOW';
+  confidence: 'HIGH' | 'MODERATE' | 'LOW',
   implementationTimeframe: 'IMMEDIATE' | 'TODAY' | 'TOMORROW' | 'THIS_WEEK';
   status?: 'RECOMMENDED' | 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'DECLINED';
   assignedTo?: string;
@@ -477,11 +477,11 @@ export interface LOSIntervention {
 }
 
 export interface DischargeBarrier {
-  id: string;
+  id: string,
   name: string;
-  category: 'CLINICAL' | 'SOCIAL' | 'ADMINISTRATIVE' | 'FINANCIAL' | 'CUSTOM';
+  category: 'CLINICAL' | 'SOCIAL' | 'ADMINISTRATIVE' | 'FINANCIAL' | 'CUSTOM',
   description: string;
-  severity: 'HIGH' | 'MEDIUM' | 'LOW';
+  severity: 'HIGH' | 'MEDIUM' | 'LOW',
   estimatedDelayDays: number;
   status: 'ACTIVE' | 'ADDRESSING' | 'RESOLVED';
   resolutionPlan?: string;
@@ -490,7 +490,7 @@ export interface DischargeBarrier {
 }
 
 export interface ResourceImplication {
-  resourceType: string;
+  resourceType: string,
   expectedUtilization: number;
   unit: string;
   costEstimate?: number;
@@ -500,90 +500,90 @@ export interface ResourceImplication {
 
 // Census forecasting models;
 export interface CensusForecast {
-  id: string;
+  id: string,
   facilityId: string;
   unitId?: string;
   serviceLineId?: string;
-  forecastDate: Date;
+  forecastDate: Date,
   generatedAt: Date;
   forecastHorizon: number; // days;
-  intervals: CensusForecastInterval[];
+  intervals: CensusForecastInterval[],
   aggregation: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
-  trends: CensusTrend[];
+  trends: CensusTrend[],
   anomalies: CensusAnomaly[];
-  seasonalPatterns: SeasonalPattern[];
+  seasonalPatterns: SeasonalPattern[],
   modelId: string;
-  modelVersion: string;
+  modelVersion: string,
   modelPerformance: {
-    mape: number;
+    mape: number,
     rmse: number;
-    mae: number;
-    accuracyLastMonth: number;
+    mae: number,
+    accuracyLastMonth: number
   };
   confidenceLevel: number; // 0-100;
-  forecastType: 'BASELINE' | 'OPTIMISTIC' | 'PESSIMISTIC' | 'CUSTOM';
+  forecastType: 'BASELINE' | 'OPTIMISTIC' | 'PESSIMISTIC' | 'CUSTOM',
   externalFactors: ExternalFactor[];
   historicalData: {
-    startDate: Date;
+    startDate: Date,
     endDate: Date;
-    observations: number;
+    observations: number,
     averageCensus: number;
-    peakCensus: number;
-    minCensus: number;
+    peakCensus: number,
+    minCensus: number
   };
 }
 
 export interface CensusForecastInterval {
-  startDateTime: Date;
+  startDateTime: Date,
   endDateTime: Date;
-  predictedCensus: number;
+  predictedCensus: number,
   admissions: number;
-  discharges: number;
+  discharges: number,
   transfers: {
-    in: number;
-    out: number;
+    in: number,
+    out: number
   };
   confidenceInterval: [number, number];
-  occupancyRate: number;
+  occupancyRate: number,
   bedDemand: number;
   staffingDemand: {
-    nurses: number;
+    nurses: number,
     physicians: number;
-    techs: number;
-    others: number;
+    techs: number,
+    others: number
   };
   bedCapacity: number;
   staffingCapacity?: {
-    nurses: number;
+    nurses: number,
     physicians: number;
-    techs: number;
-    others: number;
+    techs: number,
+    others: number
   };
   resourceUtilization: number; // 0-100;
-  overflow: number;
-  status: 'NORMAL' | 'NEAR_CAPACITY' | 'AT_CAPACITY' | 'OVER_CAPACITY';
+  overflow: number,
+  status: 'NORMAL' | 'NEAR_CAPACITY' | 'AT_CAPACITY' | 'OVER_CAPACITY'
 }
 
 export interface CensusTrend {
-  trendType: 'INCREASING' | 'DECREASING' | 'STABLE' | 'FLUCTUATING';
+  trendType: 'INCREASING' | 'DECREASING' | 'STABLE' | 'FLUCTUATING',
   startDate: Date;
-  endDate: Date;
+  endDate: Date,
   magnitude: number;
-  rate: number;
+  rate: number,
   description: string;
   confidence: number; // 0-100;
   factors: {
-    factor: string;
-    contribution: number;
+    factor: string,
+    contribution: number
   }[];
 }
 
 export interface CensusAnomaly {
-  date: Date;
+  date: Date,
   expected: number;
-  actual: number;
+  actual: number,
   deviation: number;
-  deviationPercent: number;
+  deviationPercent: number,
   type: 'SPIKE' | 'DROP' | 'SUSTAINED_INCREASE' | 'SUSTAINED_DECREASE';
   severity: 'LOW' | 'MEDIUM' | 'HIGH';
   explanation?: string;
@@ -591,63 +591,63 @@ export interface CensusAnomaly {
 }
 
 export interface SeasonalPattern {
-  patternType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL';
+  patternType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL',
   description: string;
   strength: number; // 0-100;
   peakTimes?: string[];
   lowTimes?: string[];
   visualData?: {
-    x: string[];
-    y: number[];
+    x: string[],
+    y: number[]
   };
 }
 
 export interface ExternalFactor {
-  name: string;
+  name: string,
   type: 'WEATHER' | 'HOLIDAY' | 'EVENT' | 'EPIDEMIC' | 'CONSTRUCTION' | 'OTHER';
   startDate: Date;
   endDate?: Date;
   impact: number; // -100 to 100;
-  description: string;
+  description: string,
   source: string;
   confidence: number; // 0-100;
 }
 
 // Cost prediction models;
 export interface CostPrediction {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  timestamp: Date;
+  timestamp: Date,
   predictedTotalCost: number;
   confidenceInterval: [number, number];
-  costBreakdown: CostCategory[];
+  costBreakdown: CostCategory[],
   riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
-  costDrivers: CostDriver[];
+  costDrivers: CostDriver[],
   potentialSavings: SavingsOpportunity[];
   benchmarkComparison: {
-    average: number;
+    average: number,
     percentile: number;
     peerComparison: number; // % above/below peer average;
   };
-  modelId: string;
+  modelId: string,
   modelVersion: string;
-  explanations: PredictionExplanation;
+  explanations: PredictionExplanation,
   scenarioAnalysis: CostScenario[];
   reimbursementEstimate?: {
-    expected: number;
+    expected: number,
     method: string;
-    variance: number;
-    marginEstimate: number;
+    variance: number,
+    marginEstimate: number
   };
   historicalCosts?: {
     previousEncounters: {
-      encounterId: string;
+      encounterId: string,
       totalCost: number;
-      date: Date;
+      date: Date
     }[];
-    averageAnnualCost: number;
-    costTrend: 'INCREASING' | 'DECREASING' | 'STABLE';
+    averageAnnualCost: number,
+    costTrend: 'INCREASING' | 'DECREASING' | 'STABLE'
   };
   actualOutcome?: {
     actualCost?: number;
@@ -658,51 +658,51 @@ export interface CostPrediction {
 }
 
 export interface CostCategory {
-  category: string;
+  category: string,
   amount: number;
-  percentage: number;
+  percentage: number,
   confidenceInterval: [number, number];
   comparisonToBenchmark: number; // % above/below benchmark;
   trend: 'INCREASING' | 'DECREASING' | 'STABLE';
   subcategories?: {
-    name: string;
+    name: string,
     amount: number;
-    percentage: number;
+    percentage: number
   }[];
 }
 
 export interface CostDriver {
-  name: string;
+  name: string,
   category: 'CLINICAL' | 'OPERATIONAL' | 'ADMINISTRATIVE' | 'SUPPLY' | 'PHARMACY' | 'CUSTOM';
-  impact: number;
+  impact: number,
   description: string;
-  actionable: boolean;
+  actionable: boolean,
   evidence: 'HIGH' | 'MODERATE' | 'LOW';
-  interventions: string[];
+  interventions: string[]
 }
 
 export interface SavingsOpportunity {
-  id: string;
+  id: string,
   category: string;
-  description: string;
+  description: string,
   potentialSavings: number;
-  implementationDifficulty: 'EASY' | 'MODERATE' | 'DIFFICULT';
+  implementationDifficulty: 'EASY' | 'MODERATE' | 'DIFFICULT',
   timeframe: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM';
-  qualityImpact: 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE' | 'UNKNOWN';
+  qualityImpact: 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE' | 'UNKNOWN',
   requiredActions: string[];
   evidenceLevel: 'HIGH' | 'MODERATE' | 'LOW';
   status?: 'IDENTIFIED' | 'PLANNED' | 'IN_PROGRESS' | 'IMPLEMENTED' | 'DECLINED';
 }
 
 export interface CostScenario {
-  name: string;
+  name: string,
   description: string;
-  assumptions: string[];
+  assumptions: string[],
   predictedCost: number;
-  changeToPrediction: number;
+  changeToPrediction: number,
   changePercentage: number;
   probability: number; // 0-100;
-  triggers: string[];
+  triggers: string[]
 }
 
 @Injectable();
@@ -1379,7 +1379,7 @@ export class PredictiveAnalyticsService {
       facilityId: string;
       unitId?: string;
       serviceLineId?: string;
-      startDate: Date;
+      startDate: Date,
       endDate: Date;
       aggregation?: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
       modelId?: string;
@@ -1852,11 +1852,11 @@ export class PredictiveAnalyticsService {
 
   // Private helper methods;
   private validateModel(model: unknown): void {
-    // Implementation for model validation;
+    // Implementation for model validation
   }
 
   private validateModelUpdates(updates: Partial<PredictiveModel>): void {
-    // Implementation for update validation;
+    // Implementation for update validation
   }
 
   private async startModelTrainingJob(

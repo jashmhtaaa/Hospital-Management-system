@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,27 +15,27 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Button } from '@/components/ui/button';
 
 interface VitalSign {
-  id: string;
+  id: string,
   date: string;
-  time: string;
+  time: string,
   temperature: string;
-  pulse: string;
+  pulse: string,
   respiration: string;
-  bloodPressure: string;
+  bloodPressure: string,
   oxygenSaturation: string;
-  recordedBy: string;
+  recordedBy: string
 }
 
 interface VitalSignsProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  vitalSigns: VitalSign[];
+  vitalSigns: VitalSign[]
 }
 
 /**
  * IPD Vital Signs component;
  */
-export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsProps) {
+export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsProps) => {
   return (
     <Card>
       <CardHeader>
@@ -65,7 +65,7 @@ export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsPro
               {vitalSigns.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={9} className="text-center">;
-                    No vital signs recorded;
+                    No vital signs recorded
                   </TableCell>
                 </TableRow>
               ) : (
@@ -80,7 +80,7 @@ export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsPro
                     <TableCell>{vitalSign.oxygenSaturation}</TableCell>
                     <TableCell>{vitalSign.recordedBy}</TableCell>
                     <TableCell>
-                      <Button variant="outline" size="sm">Edit</Button>;
+                      <Button variant="outline" size="sm">Edit</Button>
                     </TableCell>
                   </TableRow>
                 ));

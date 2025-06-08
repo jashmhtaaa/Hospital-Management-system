@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,12 +38,12 @@ export const DatePicker = ({
   
   return (
     <div className={`relative ${className}`}>;
-      <div;
+<div
         className={`flex items-center border rounded-md p-2 ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'cursor-pointer'}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
-        <CalendarIcon className="mr-2 h-4 w-4" />;
-        <span>
+        <CalendarIcon className="mr-2 h-4 w-4" />
+<span
           {date ? format(date, 'PPP') : placeholder}
         </span>
       </div>
@@ -53,20 +53,20 @@ export const DatePicker = ({
           <div className="calendar-placeholder">;
             {/* In a real implementation, this would be a full calendar component */}
             <div className="text-center p-4">;
-              Calendar UI would render here;
+              Calendar UI would render here
             </div>
             <div className="flex justify-between mt-2">;
-              <button;
-                className="px-3 py-1 bg-gray-200 rounded-md";
+              <button>
+                className="px-3 py-1 bg-gray-200 rounded-md"
                 onClick={() => setIsOpen(false)}
               >
-                Cancel;
+                Cancel
               </button>
-              <button;
-                className="px-3 py-1 bg-blue-500 text-white rounded-md";
+              <button>
+                className="px-3 py-1 bg-blue-500 text-white rounded-md"
                 onClick={() => handleSelect(new Date())}
               >
-                Today;
+                Today
               </button>
             </div>
           </div>

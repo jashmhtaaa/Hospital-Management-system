@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,7 +34,7 @@ describe("EligibilityCheckService", () => {
       // Assert;
       // expect(eligibility).toBeDefined();
       // expect(eligibility.isEligible).toBe(true);
-      // expect(eligibility.coverageDetails).toBeDefined();
+      // expect(eligibility.coverageDetails).toBeDefined(),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -50,7 +50,7 @@ describe("EligibilityCheckService", () => {
 
       // Assert;
       // expect(eligibility).toBeDefined();
-      // expect(eligibility.isEligible).toBe(false);
+      // expect(eligibility.isEligible).toBe(false),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -63,7 +63,7 @@ describe("EligibilityCheckService", () => {
 
       // Act & Assert;
       // const eligibilityService = new EligibilityCheckService(/* pass mocks */);
-      // await expect(eligibilityService.checkEligibility(patientId, policyId, new Date())).rejects.toThrow("TPA API Error");
+      // await expect(eligibilityService.checkEligibility(patientId, policyId, new Date())).rejects.toThrow("TPA API Error"),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });

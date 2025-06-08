@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,24 +16,24 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 
 // Define interfaces for data structures;
 interface DispensingRecord {
-  id: string;
+  id: string,
   prescription_id: string;
-  prescription_item_id: string;
+  prescription_item_id: string,
   medication_id: string;
   generic_name: string;
   brand_name?: string;
-  strength: string;
+  strength: string,
   dosage_form: string;
-  batch_id: string;
+  batch_id: string,
   batch_number: string;
-  quantity: number;
+  quantity: number,
   selling_price: number;
-  dispensed_at: string;
-  billed: boolean;
+  dispensed_at: string,
+  billed: boolean
 }
 
 interface UnbilledItem extends DispensingRecord {
-  subtotal: number;
+  subtotal: number
 }
 
 interface BillingPharmacyIntegrationProperties {
@@ -208,7 +208,7 @@ const BillingPharmacyIntegration: React.FC<;
 
   const handleSelectAllChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.checked) {
-      setSelectedItems([...unbilledItems]);
+      setSelectedItems([...unbilledItems])
     } else {
       setSelectedItems([]);
     }
@@ -217,7 +217,7 @@ const BillingPharmacyIntegration: React.FC<;
   if (loading && unbilledItems.length === 0 && selectedItems.length === 0) {
     return (
       <div className="flex justify-center items-center h-64">;
-        Loading pharmacy billing data...;
+        Loading pharmacy billing data...
       </div>
     );
   }
@@ -230,7 +230,7 @@ const BillingPharmacyIntegration: React.FC<;
     <div className="bg-white rounded-lg shadow-md overflow-hidden mt-6">;
       <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
         <h2 className="text-lg font-semibold text-gray-800">;
-          Pharmacy Billing;
+          Pharmacy Billing
         </h2>
       </div>
 
@@ -238,23 +238,23 @@ const BillingPharmacyIntegration: React.FC<;
         {unbilledItems.length === 0 ? (
           <div className="text-center py-8">;
             <p className="text-gray-500">;
-              No unbilled pharmacy items for this patient.;
+              No unbilled pharmacy items for this patient.
             </p>
           </div>
         ) : (
           <>
             <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">;
               <h3 className="text-md font-medium text-gray-700 mb-2 sm:mb-0">;
-                Unbilled Pharmacy Items;
+                Unbilled Pharmacy Items
               </h3>
               <div className="text-right w-full sm:w-auto">;
                 <div className="text-lg font-bold text-gray-900">;
                   Total Selected: ₹{billTotal.toFixed(2)}
                 </div>
-                <button;
+                <button>
                   onClick={handleGenerateBill}
                   disabled={loading || selectedItems.length === 0}
-                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 w-full sm:w-auto";
+                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 w-full sm:w-auto"
                 >
                   {loading ? "Generating..." : "Generate Bill for Selected"}
                 </button>
@@ -266,7 +266,7 @@ const BillingPharmacyIntegration: React.FC<;
                 <thead className="bg-gray-50">;
                   <tr>
                     <th className="px-4 py-2 w-12">;
-                      <input;
+                      <input>
                         type="checkbox"
                         checked={
                           selectedItems.length === unbilledItems.length &&;
@@ -274,33 +274,33 @@ const BillingPharmacyIntegration: React.FC<;
                         }
                         onChange={handleSelectAllChange}
                         disabled={unbilledItems.length === 0}
-                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500";
-                        aria-label="Select all unbilled items";
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        aria-label="Select all unbilled items"
                       />
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Medication;
+                      Medication
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Batch;
+                      Batch
                     </th>
                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Qty;
+                      Qty
                     </th>
                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Unit Price;
+                      Unit Price
                     </th>
                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Subtotal;
+                      Subtotal
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Dispensed On;
+                      Dispensed On
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">;
                   {unbilledItems.map((item) => (
-                    <tr;
+                    <tr>
                       key={item.id}
                       className={
                         selectedItems.some((index) => index.id === item.id);
@@ -309,7 +309,7 @@ const BillingPharmacyIntegration: React.FC<;
                       }
                     >
                       <td className="px-4 py-2">;
-                        <input;
+                        <input>
                           type="checkbox"
                           checked={selectedItems.some(
                             (index) => index.id === item.id;
@@ -317,7 +317,7 @@ const BillingPharmacyIntegration: React.FC<;
                           onChange={(event: ChangeEvent<HTMLInputElement>) =>
                             handleItemSelection(item, event.target.checked);
                           }
-                          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500";
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                           aria-label={`Select item ${item.generic_name}`}
                         />
                       </td>
@@ -327,7 +327,7 @@ const BillingPharmacyIntegration: React.FC<;
                         </div>
                         {item.brand_name && (
                           <div className="text-sm text-gray-500">;
-                            ({item.brand_name});
+                            ({item.brand_name})
                           </div>
                         )}
                       </td>
@@ -358,23 +358,23 @@ const BillingPharmacyIntegration: React.FC<;
         {recentlyBilledItems.length > 0 && (
           <div className="mt-8">;
             <h3 className="text-md font-medium text-gray-700 mb-2">;
-              Recently Billed Items;
+              Recently Billed Items
             </h3>
             <div className="overflow-x-auto">;
               <table className="min-w-full divide-y divide-gray-200">;
                 <thead className="bg-gray-50">;
                   <tr>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Medication;
+                      Medication
                     </th>
                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Qty;
+                      Qty
                     </th>
                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Amount;
+                      Amount
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
-                      Billed On;
+                      Billed On
                     </th>
                   </tr>
                 </thead>
@@ -387,7 +387,7 @@ const BillingPharmacyIntegration: React.FC<;
                         </div>
                         {item.brand_name && (
                           <div className="text-sm text-gray-500">;
-                            ({item.brand_name});
+                            ({item.brand_name})
                           </div>
                         )}
                       </td>

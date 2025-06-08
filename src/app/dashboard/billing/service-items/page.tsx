@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -48,15 +48,15 @@ import { PlusCircle, Edit, Search } from "lucide-react";
 
 // --- INTERFACES ---
 interface ServiceItem {
-  id: number;
+  id: number,
   item_code: string;
   item_name: string;
   description?: string;
-  category: string;
+  category: string,
   unit_price: number;
-  is_taxable: boolean;
+  is_taxable: boolean,
   is_discountable: boolean;
-  is_active: boolean;
+  is_active: boolean
 }
 
 // FIX: Define interface for API response;
@@ -141,7 +141,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsSubmitting(true);
     try {
       await onSubmit(formData);
@@ -160,32 +160,32 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">;
         {" "}
         {/* Responsive grid */}
-        <div>
+<div
           <Label htmlFor="item_code">Item Code</Label>;
-          <Input;
-            id="item_code";
-            name="item_code";
+          <Input>
+            id="item_code"
+            name="item_code"
             value={formData.item_code || ""}
             onChange={handleChange}
             required;
           />
         </div>
-        <div>
+<div
           <Label htmlFor="item_name">Item Name</Label>;
-          <Input;
-            id="item_name";
-            name="item_name";
+          <Input>
+            id="item_name"
+            name="item_name"
             value={formData.item_name || ""}
             onChange={handleChange}
             required;
           />
         </div>
       </div>
-      <div>
+<div
         <Label htmlFor="description">Description</Label>;
-        <Input;
-          id="description";
-          name="description";
+        <Input>
+          id="description"
+          name="description"
           value={formData.description || ""}
           onChange={handleChange}
         />
@@ -193,16 +193,16 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">;
         {" "}
         {/* Responsive grid */}
-        <div>
+<div
           <Label htmlFor="category">Category</Label>;
-          <Select;
-            name="category";
+          <Select>
+            name="category"
             value={formData.category || ""}
             onValueChange={(value) => handleSelectChange("category", value)}
             required;
           >
             <SelectTrigger id="category">;
-              <SelectValue placeholder="Select category" />;
+              <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Consultation">Consultation</SelectItem>;
@@ -211,18 +211,18 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
               <SelectItem value="Procedure">Procedure</SelectItem>;
               <SelectItem value="Medication">Medication</SelectItem>;
               <SelectItem value="Room Charges">Room Charges</SelectItem>;
-              <SelectItem value="Other">Other</SelectItem>;
+              <SelectItem value="Other">Other</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <div>
+<div
           <Label htmlFor="unit_price">Unit Price (₹)</Label>;
-          <Input;
-            id="unit_price";
-            name="unit_price";
+          <Input>
+            id="unit_price"
+            name="unit_price"
             type="number"
-            step="0.01";
-            min="0";
+            step="0.01"
+            min="0"
             value={formData.unit_price || 0}
             onChange={handleChange}
             required;
@@ -233,37 +233,37 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         {" "}
         {/* Responsive flex wrap */}
         <div className="flex items-center space-x-2">;
-          <Checkbox;
-            id="is_taxable";
-            name="is_taxable";
+          <Checkbox>
+            id="is_taxable"
+            name="is_taxable"
             checked={formData.is_taxable}
             onCheckedChange={(checked) =>
               handleSelectChange("is_taxable", checked as boolean);
             }
           />
-          <Label htmlFor="is_taxable">Taxable</Label>;
+          <Label htmlFor="is_taxable">Taxable</Label>
         </div>
         <div className="flex items-center space-x-2">;
-          <Checkbox;
-            id="is_discountable";
-            name="is_discountable";
+          <Checkbox>
+            id="is_discountable"
+            name="is_discountable"
             checked={formData.is_discountable}
             onCheckedChange={(checked) =>
               handleSelectChange("is_discountable", checked as boolean);
             }
           />
-          <Label htmlFor="is_discountable">Discountable</Label>;
+          <Label htmlFor="is_discountable">Discountable</Label>
         </div>
         <div className="flex items-center space-x-2">;
-          <Checkbox;
-            id="is_active";
-            name="is_active";
+          <Checkbox>
+            id="is_active"
+            name="is_active"
             checked={formData.is_active}
             onCheckedChange={(checked) =>
               handleSelectChange("is_active", checked as boolean);
             }
           />
-          <Label htmlFor="is_active">Active</Label>;
+          <Label htmlFor="is_active">Active</Label>
         </div>
       </div>
       <DialogFooter className="mt-6">;
@@ -271,7 +271,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         {/* Added margin top */}
         <DialogClose asChild>
           <Button type="button" variant="outline" onClick={onCancel}>;
-            Cancel;
+            Cancel
           </Button>
         </DialogClose>
         <Button type="submit" disabled={isSubmitting}>;
@@ -292,7 +292,7 @@ export default const ServiceItemsPage = () {
   const [editingItem, setEditingItem] = useState<ServiceItem | null>(null);
 
   const fetchServiceItems = useCallback(async () => {
-    setIsLoading(true);
+    setIsLoading(true),
     setError(null); // Clear previous errors before fetching;
     try {
       const response = await fetch("/api/billing/service-items");
@@ -309,7 +309,7 @@ export default const ServiceItemsPage = () {
 
       setError(
         error_ instanceof Error ? error_.message : "An unknown error occurred"
-      );
+      ),
       setServiceItems([]); // Clear items on error;
     } finally {
       setIsLoading(false);
@@ -351,7 +351,7 @@ export default const ServiceItemsPage = () {
       }
 
       // Refresh list and close modal on success;
-      await fetchServiceItems();
+      await fetchServiceItems(),
       setIsModalOpen(false);
       setEditingItem(null);
       // Consider showing a success toast message here;
@@ -368,12 +368,12 @@ export default const ServiceItemsPage = () {
   };
 
   const openCreateModal = () => {
-    setEditingItem(null);
+    setEditingItem(null),
     setIsModalOpen(true);
   };
 
   const openEditModal = (item: ServiceItem) => {
-    setEditingItem(item);
+    setEditingItem(item),
     setIsModalOpen(true);
   };
 
@@ -400,7 +400,7 @@ export default const ServiceItemsPage = () {
             <Button onClick={openCreateModal} className="w-full sm:w-auto">;
               {" "}
               {/* Full width on small screens */}
-              <PlusCircle className="mr-2 h-4 w-4" /> Add New Service Item;
+              <PlusCircle className="mr-2 h-4 w-4" /> Add New Service Item
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px]">;
@@ -410,11 +410,11 @@ export default const ServiceItemsPage = () {
               </DialogTitle>
             </DialogHeader>
             {/* Pass error state down if needed, or display globally */}
-            <ServiceItemForm;
+            <ServiceItemForm>
               item={editingItem}
               onSubmit={handleFormSubmit}
               onCancel={() => {
-                setIsModalOpen(false);
+                setIsModalOpen(false),
                 setError(null);
               }} // Clear error on cancel;
             />
@@ -425,10 +425,10 @@ export default const ServiceItemsPage = () {
         <div className="relative w-full max-w-md">;
           {" "}
           {/* Adjusted max-width */}
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />;
-          <Input;
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input>
             type="search"
-            placeholder="Search by name, code, or category...";
+            placeholder="Search by name, code, or category..."
             value={searchTerm}
             onChange={(_event_) => setSearchTerm(_event_.target.value)}
             className="pl-10" // Increased padding for icon;
@@ -455,7 +455,7 @@ export default const ServiceItemsPage = () {
               <TableHead>Category</TableHead>
               <TableHead className="text-right">Price (₹)</TableHead>;
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>;
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -464,23 +464,23 @@ export default const ServiceItemsPage = () {
               (Array.from({ length: 5 }).map((_, index) => (
                 <TableRow key={`skeleton-${index}`}>;
                   <TableCell>
-                    <Skeleton className="h-4 w-20" />;
+                    <Skeleton className="h-4 w-20" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-48" />;
+                    <Skeleton className="h-4 w-48" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-4 w-24" />;
+                    <Skeleton className="h-4 w-24" />
                   </TableCell>
                   <TableCell className="text-right">;
-                    <Skeleton className="h-4 w-16 ml-auto" />;
+                    <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
                   <TableCell>
-                    <Skeleton className="h-6 w-16 rounded-full" />;
+                    <Skeleton className="h-6 w-16 rounded-full" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for badge */}
                   <TableCell className="text-right">;
-                    <Skeleton className="h-8 w-10 ml-auto rounded" />;
+                    <Skeleton className="h-8 w-10 ml-auto rounded" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for button */}
                 </TableRow>
@@ -505,13 +505,13 @@ export default const ServiceItemsPage = () {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">;
-                    <Button;
-                      variant="ghost";
-                      size="icon";
+                    <Button>
+                      variant="ghost"
+                      size="icon"
                       onClick={() => openEditModal(item)}
-                      title="Edit Item";
+                      title="Edit Item"
                     >
-                      <Edit className="h-4 w-4" />;
+                      <Edit className="h-4 w-4" />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -519,9 +519,9 @@ export default const ServiceItemsPage = () {
             ) : (
               // No Items Found Row;
               (<TableRow>
-                <TableCell;
+                <TableCell>
                   colSpan={6} // Adjusted colSpan;
-                  className="h-24 text-center text-muted-foreground";
+                  className="h-24 text-center text-muted-foreground"
                 >
                   {searchTerm;
                     ? `No service items found matching "${searchTerm}".`

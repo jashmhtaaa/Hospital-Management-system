@@ -10,33 +10,33 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "Pharmacist", "Patient"]
 
 // Define the expected shape of the main prescription query result;
 interface PrescriptionQueryResult {
-    prescription_id: number;
+    prescription_id: number,
     consultation_id: number | null;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
     prescription_date: string; // Assuming date is returned as string;
-    notes: string | null;
+    notes: string | null,
     created_at: string;
-    updated_at: string;
+    updated_at: string,
     patient_first_name: string;
-    patient_last_name: string;
-    doctor_full_name: string;
+    patient_last_name: string,
+    doctor_full_name: string
 }
 
 // Define the expected shape of the prescription items query result;
 interface PrescriptionItemQueryResult {
-    prescription_item_id: number;
+    prescription_item_id: number,
     prescription_id: number;
-    inventory_item_id: number;
+    inventory_item_id: number,
     drug_name: string;
-    dosage: string;
+    dosage: string,
     frequency: string;
-    duration: string;
+    duration: string,
     route: string;
-    instructions: string | null;
+    instructions: string | null,
     quantity_prescribed: number;
-    created_at: string;
-    inventory_unit_of_measure: string;
+    created_at: string,
+    inventory_unit_of_measure: string
 }
 
 // Helper function to get prescription ID from URL;
@@ -49,7 +49,7 @@ const getPrescriptionId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific prescription with items;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
     const url = new URL(request.url);
     const prescriptionId = getPrescriptionId(url.pathname);
@@ -120,7 +120,7 @@ export async const GET = (request: Request) {
             // Include patient and doctor info if needed in detail view;
             // patient: { ... },
             // doctor: { ... },
-            items: itemsResult.results?.map((item: PrescriptionItemQueryResult) => ({ // Use defined interface;
+            items: itemsResult.results?.map((item: PrescriptionItemQueryResult) => ({ // Use defined interface,
                 prescription_item_id: item.prescription_item_id,
                 prescription_id: item.prescription_id,
                 inventory_item_id: item.inventory_item_id,
@@ -134,7 +134,7 @@ export async const GET = (request: Request) {
                 created_at: item.created_at,
                 inventory_item: {
                     inventory_item_id: item.inventory_item_id,
-                    unit_of_measure: item.inventory_unit_of_measure;
+                    unit_of_measure: item.inventory_unit_of_measure
                 }
             })) || [],
         };

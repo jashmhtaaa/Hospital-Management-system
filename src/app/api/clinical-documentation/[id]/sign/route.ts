@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../.
 export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     // Get session;
     const session = await getServerSession(authOptions);

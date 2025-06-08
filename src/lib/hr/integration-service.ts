@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -49,7 +49,7 @@ export class IntegrationService {
         phone: true,
         positions: {
           where: {
-            endDate: null;
+            endDate: null
           },
           select: {
             id: true,
@@ -57,7 +57,7 @@ export class IntegrationService {
             department: {
               select: {
                 id: true,
-                name: true;
+                name: true
               }
             }
           }
@@ -65,7 +65,7 @@ export class IntegrationService {
         qualifications: {
           where: {
             expiryDate: {
-              gt: new Date();
+              gt: new Date()
             }
           },
           select: {
@@ -74,7 +74,7 @@ export class IntegrationService {
             name: true,
             issuedBy: true,
             issuedDate: true,
-            expiryDate: true;
+            expiryDate: true
           }
         }
       }
@@ -89,7 +89,7 @@ export class IntegrationService {
     return this.prisma.biomedicalEquipment.findMany({
       where: {
         asset: {
-          status: 'AVAILABLE';
+          status: 'AVAILABLE'
         }
       },
       select: {
@@ -111,7 +111,7 @@ export class IntegrationService {
             department: {
               select: {
                 id: true,
-                name: true;
+                name: true
               }
             }
           }
@@ -128,7 +128,7 @@ export class IntegrationService {
     return this.prisma.asset.findMany({
       where: {
         status: {
-          not: 'DISPOSED';
+          not: 'DISPOSED'
         }
       },
       select: {
@@ -145,10 +145,10 @@ export class IntegrationService {
         department: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         },
-        status: true;
+        status: true
       }
     });
   }
@@ -161,7 +161,7 @@ export class IntegrationService {
     return this.prisma.payrollPeriod.findUnique({
       where: {
         id: periodId,
-        status: 'PAID';
+        status: 'PAID'
       },
       select: {
         id: true,
@@ -182,7 +182,7 @@ export class IntegrationService {
                 department: {
                   select: {
                     id: true,
-                    name: true;
+                    name: true
                   }
                 }
               }
@@ -191,7 +191,7 @@ export class IntegrationService {
             grossSalary: true,
             deductions: true,
             netSalary: true,
-            components: true;
+            components: true
           }
         }
       }
@@ -208,11 +208,11 @@ export class IntegrationService {
         employeeId,
         date: {
           gte: startDate,
-          lte: endDate;
+          lte: endDate
         }
       },
       orderBy: {
-        date: 'asc';
+        date: 'asc'
       }
     });
   }
@@ -226,15 +226,15 @@ export class IntegrationService {
       where: {
         employeeId,
         startDate: {
-          lte: endDate;
+          lte: endDate
         },
         endDate: {
-          gte: startDate;
+          gte: startDate
         },
-        status: 'APPROVED';
+        status: 'APPROVED'
       },
       orderBy: {
-        startDate: 'asc';
+        startDate: 'asc'
       }
     });
   }
@@ -275,7 +275,7 @@ export class IntegrationService {
               notes,
               updatedBy: session.user.email,
               updatedByName: session.user.name,
-              source: 'CLINICAL_MODULE';
+              source: 'CLINICAL_MODULE'
             }
           }
         }
@@ -288,7 +288,7 @@ export class IntegrationService {
    * This allows clinical modules to record equipment maintenance;
    */
   async recordMaintenanceFromClinical(assetId: string, data: {
-    maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'CALIBRATION' | 'INSPECTION';
+    maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'CALIBRATION' | 'INSPECTION',
     date: Date;
     performedBy?: string;
     cost?: number;
@@ -335,7 +335,7 @@ export class IntegrationService {
           description: data.description,
           source: 'CLINICAL_MODULE',
           updatedBy: session.user.email,
-          updatedByName: session.user.name;
+          updatedByName: session.user.name
         },
         employeeId: session.user.employeeId || null,
       },
@@ -369,7 +369,7 @@ export class IntegrationService {
         parentDepartment: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         }
       }

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -86,7 +86,7 @@ export const withErrorHandling = (
           { 
             error: error.message,
             code: error.code,
-            details: error.details;
+            details: error.details
           },
           { status: error.statusCode }
         );
@@ -98,7 +98,7 @@ export const withErrorHandling = (
         { 
           error: 'Internal server error',
           code: 'INTERNAL_ERROR',
-          details: isProd ? undefined : String(error);
+          details: isProd ? undefined : String(error)
         },
         { status: 500 }
       );

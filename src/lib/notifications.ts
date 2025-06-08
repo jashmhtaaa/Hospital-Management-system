@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,9 +22,9 @@ import { DB } from './database.ts';
  * Notification type definition;
  */
 export interface Notification {
-  userId: number;
+  userId: number,
   type: 'critical_value' | 'critical_finding' | 'result_available' | 'specimen_rejected' | 'order_status';
-  title: string;
+  title: string,
   message: string;
   resourceType: string;
   resourceId?: number;
@@ -140,7 +140,7 @@ export async const getUserNotifications = (
     
     return result.results.map((notification: unknown) => ({
       ...notification,
-      metadata: notification.metadata ? JSON.parse(notification.metadata) : null;
+      metadata: notification.metadata ? JSON.parse(notification.metadata) : null
     }));
   } catch (error) {
 

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -35,9 +35,9 @@ export interface ProcedureTypeFormData {
 
 // Define the type for the component props;
 interface CreateProcedureTypeModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
-  onSubmit: (data: ProcedureTypeFormData) => Promise<void>;
+  onSubmit: (data: ProcedureTypeFormData) => Promise<void>
 }
 
 export default const CreateProcedureTypeModal = ({
@@ -64,7 +64,7 @@ export default const CreateProcedureTypeModal = ({
         modality_type: modalityType || undefined, // Ensure null if empty;
       });
       // Reset form on successful submission;
-      setName("");
+      setName(""),
       setDescription("");
       setModalityType("");
       // onClose(); // Keep modal open or close based on parent logic after onSubmit completes;
@@ -90,57 +90,57 @@ export default const CreateProcedureTypeModal = ({
               <Label htmlFor="name" className="text-right">;
                 Name *
               </Label>
-              <Input;
-                id="name";
+              <Input>
+                id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="col-span-3";
+                className="col-span-3"
                 required;
                 disabled={isSubmitting}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="modalityType" className="text-right">;
-                Modality Type;
+                Modality Type
               </Label>
-              <Input;
-                id="modalityType";
+              <Input>
+                id="modalityType"
                 value={modalityType}
                 onChange={(e) => setModalityType(e.target.value)}
-                className="col-span-3";
-                placeholder="e.g., XRAY, CT, MRI, ULTRASOUND";
+                className="col-span-3"
+                placeholder="e.g., XRAY, CT, MRI, ULTRASOUND"
                 disabled={isSubmitting}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="description" className="text-right">;
-                Description;
+                Description
               </Label>
-              <Textarea;
-                id="description";
+              <Textarea>
+                id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="col-span-3";
+                className="col-span-3"
                 disabled={isSubmitting}
               />
             </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button;
+              <Button>
                 type="button"
-                variant="outline";
+                variant="outline"
                 onClick={onClose}
                 disabled={isSubmitting}
               >
-                Cancel;
+                Cancel
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isSubmitting}>;
               {isSubmitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}
-              Add Procedure Type;
+              Add Procedure Type
             </Button>
           </DialogFooter>
         </form>

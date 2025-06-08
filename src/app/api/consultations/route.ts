@@ -24,22 +24,22 @@ const ListConsultationsQuerySchema = z.object({
 
 // Define type for the query result row;
 interface ConsultationListQueryResult {
-    consultation_id: number;
+    consultation_id: number,
     patient_id: number;
-    doctor_id: number;
+    doctor_id: number,
     opd_visit_id: number | null;
-    admission_id: number | null;
+    admission_id: number | null,
     consultation_datetime: string;
-    chief_complaint: string | null;
+    chief_complaint: string | null,
     diagnosis: string | null;
-    created_at: string;
+    created_at: string,
     updated_at: string;
-    patient_first_name: string;
+    patient_first_name: string,
     patient_last_name: string;
-    doctor_full_name: string;
+    doctor_full_name: string
 }
 
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
@@ -178,7 +178,7 @@ const CreateConsultationSchema = z.object({
     path: ["opd_visit_id", "admission_id"],
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 

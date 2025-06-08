@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -52,7 +52,7 @@ describe("AccountsReceivableService", () => {
       // expect(agingReport["0-30 days"]).toBeDefined();
       // expect(agingReport["31-60 days"]).toBeDefined();
       // expect(agingReport["61-90 days"]).toBeDefined();
-      // expect(agingReport["90+ days"]).toBeDefined();
+      // expect(agingReport["90+ days"]).toBeDefined(),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });

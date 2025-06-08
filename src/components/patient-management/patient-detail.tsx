@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -68,12 +68,12 @@ const statusColors: Record<string, string> = {
 
 // Patient interface;
 interface Patient {
-  id: string;
+  id: string,
   mrn: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
   middleName?: string;
-  dateOfBirth: string;
+  dateOfBirth: string,
   gender: string;
   biologicalSex?: string;
   maritalStatus?: string;
@@ -83,9 +83,9 @@ interface Patient {
   nationality?: string;
   religion?: string;
   occupation?: string;
-  status: string;
+  status: string,
   vip: boolean;
-  confidential: boolean;
+  confidential: boolean,
   registrationDate: string;
   updatedAt: string;
   contact?: {
@@ -94,24 +94,24 @@ interface Patient {
     phoneWork?: string;
     phonePreferred: string;
     email?: string;
-    emailOptIn: boolean;
-    smsOptIn: boolean;
+    emailOptIn: boolean,
+    smsOptIn: boolean
   };
   addresses?: {
-    id: string;
+    id: string,
     addressType: string;
-    isPrimary: boolean;
+    isPrimary: boolean,
     addressLine1: string;
     addressLine2?: string;
     city: string;
     state?: string;
-    postalCode: string;
-    country: string;
+    postalCode: string,
+    country: string
   }[];
   identifications?: {
-    id: string;
+    id: string,
     idType: string;
-    idNumber: string;
+    idNumber: string,
     isPrimary: boolean;
     issuingCountry?: string;
     issuingState?: string;
@@ -119,9 +119,9 @@ interface Patient {
     expirationDate?: string;
   }[];
   contacts?: {
-    id: string;
+    id: string,
     firstName: string;
-    lastName: string;
+    lastName: string,
     relationship: string;
     isPrimary: boolean;
     phoneHome?: string;
@@ -129,11 +129,11 @@ interface Patient {
     phoneWork?: string;
     phonePreferred: string;
     email?: string;
-    isLegalGuardian: boolean;
-    hasDecisionMaking: boolean;
+    isLegalGuardian: boolean,
+    hasDecisionMaking: boolean
   }[];
   insurances?: {
-    id: string;
+    id: string,
     insuranceType: string;
     payerName: string;
     planName?: string;
@@ -185,14 +185,14 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         throw new Error('Failed to fetch patient details');
       }
       
-      const data = await response.json();
+      const data = await response.json(),
       setPatient(data);
     } catch (error) {
 
       toast({
         title: 'Error',
         description: 'Failed to fetch patient details. Please try again.',
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -256,7 +256,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         </CardHeader>
         <CardContent className="flex justify-center py-10">;
           <div className="text-center">;
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />;
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
             <p>Loading patient details...</p>
           </div>
         </CardContent>
@@ -274,11 +274,11 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         </CardHeader>
         <CardContent className="flex justify-center py-10">;
           <div className="text-center">;
-            <AlertCircle className="h-8 w-8 mx-auto mb-4 text-destructive" />;
+            <AlertCircle className="h-8 w-8 mx-auto mb-4 text-destructive" />
             <p>Patient information could not be loaded.</p>
             <Button onClick={handleBack} className="mt-4">;
-              <ChevronLeft className="h-4 w-4 mr-2" />;
-              Back to Patient List;
+              <ChevronLeft className="h-4 w-4 mr-2" />
+              Back to Patient List
             </Button>
           </div>
         </CardContent>
@@ -293,21 +293,21 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">;
             <div className="flex items-start gap-4">;
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">;
-                <User className="h-6 w-6 text-primary" />;
+                <User className="h-6 w-6 text-primary" />
               </div>
-              <div>
+<div
                 <div className="flex items-center gap-2">;
                   <CardTitle className="text-2xl">;
                     {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ' ' + patient.middleName : ''}`}
                   </CardTitle>
                   {patient.vip && (
                     <Badge variant="outline" className="border-amber-500 text-amber-500">;
-                      VIP;
+                      VIP
                     </Badge>
                   )}
                   {patient.confidential && (
                     <Badge variant="outline" className="border-destructive text-destructive">;
-                      Confidential;
+                      Confidential
                     </Badge>
                   )}
                 </div>
@@ -317,13 +317,13 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
                     {patient.mrn}
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">;
-                    <Calendar className="h-3.5 w-3.5 mr-1" />;
-                    <span>
+                    <Calendar className="h-3.5 w-3.5 mr-1" />
+<span
                       {formatDate(patient.dateOfBirth)} ({calculateAge(patient.dateOfBirth)} y/o);
                     </span>
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">;
-                    <User className="h-3.5 w-3.5 mr-1" />;
+                    <User className="h-3.5 w-3.5 mr-1" />
                     <span>{patient.gender}</span>
                   </div>
                   <Badge variant={statusColors[patient.status] as any || 'default'}>;
@@ -333,20 +333,20 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">;
                   {patient.contact?.phoneMobile && (
                     <div className="flex items-center text-sm">;
-                      <Phone className="h-3.5 w-3.5 mr-1 text-muted-foreground" />;
+                      <Phone className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
                       <span>{patient.contact.phoneMobile}</span>
                     </div>
                   )}
                   {patient.contact?.email && (
                     <div className="flex items-center text-sm">;
-                      <Mail className="h-3.5 w-3.5 mr-1 text-muted-foreground" />;
+                      <Mail className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
                       <span>{patient.contact.email}</span>
                     </div>
                   )}
                   {patient.addresses && patient.addresses.length > 0 && (
                     <div className="flex items-center text-sm">;
-                      <MapPin className="h-3.5 w-3.5 mr-1 text-muted-foreground" />;
-                      <span>
+                      <MapPin className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
+<span
                         {`${patient.addresses[0].city}${patient.addresses[0].state ? ', ' + patient.addresses[0].state : ''}`}
                       </span>
                     </div>
@@ -355,53 +355,53 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
               </div>
             </div>
             <div className="flex flex-wrap gap-2">;
-              <Button;
-                variant="outline";
-                size="sm";
+              <Button>
+                variant="outline"
+                size="sm"
                 onClick={handleBack}
               >
-                <ChevronLeft className="h-4 w-4 mr-1" />;
-                Back;
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Back
               </Button>
-              <Button;
-                variant="outline";
-                size="sm";
+              <Button>
+                variant="outline"
+                size="sm"
                 onClick={handleRefresh}
               >
-                <RefreshCw className="h-4 w-4 mr-1" />;
-                Refresh;
+                <RefreshCw className="h-4 w-4 mr-1" />
+                Refresh
               </Button>
-              <Button;
-                variant="outline";
-                size="sm";
+              <Button>
+                variant="outline"
+                size="sm"
                 onClick={handlePrint}
               >
-                <Printer className="h-4 w-4 mr-1" />;
-                Print;
+                <Printer className="h-4 w-4 mr-1" />
+                Print
               </Button>
-              <Button;
-                variant="outline";
-                size="sm";
+              <Button>
+                variant="outline"
+                size="sm"
                 onClick={handleEditPatient}
               >
-                <Edit className="h-4 w-4 mr-1" />;
-                Edit;
+                <Edit className="h-4 w-4 mr-1" />
+                Edit
               </Button>
             </div>
           </div>
           
           <div className="flex flex-wrap gap-2 mt-4 text-xs">;
             <div className="flex items-center px-2 py-1 rounded-md bg-muted">;
-              <Clock className="h-3 w-3 mr-1" />;
-              <span>Registered: {formatDate(patient.registrationDate)}</span>;
+              <Clock className="h-3 w-3 mr-1" />
+              <span>Registered: {formatDate(patient.registrationDate)}</span>
             </div>
             <div className="flex items-center px-2 py-1 rounded-md bg-muted">;
-              <Clock className="h-3 w-3 mr-1" />;
-              <span>Last Updated: {formatDistance(new Date(patient.updatedAt), new Date(), { addSuffix: true })}</span>;
+              <Clock className="h-3 w-3 mr-1" />
+              <span>Last Updated: {formatDistance(new Date(patient.updatedAt), new Date(), { addSuffix: true })}</span>
             </div>
             {patient.language && patient.language !== 'English' && (
               <div className="flex items-center px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">;
-                <span>Language: {patient.language}</span>;
+                <span>Language: {patient.language}</span>
               </div>
             )}
           </div>
@@ -411,45 +411,45 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">;
         <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8">;
           <TabsTrigger value="demographics">;
-            <User className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Demographics</span>;
+            <User className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Demographics</span>
           </TabsTrigger>
           <TabsTrigger value="contacts">;
-            <Users className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Contacts</span>;
+            <Users className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Contacts</span>
           </TabsTrigger>
           <TabsTrigger value="insurance">;
-            <Shield className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Insurance</span>;
+            <Shield className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Insurance</span>
           </TabsTrigger>
           <TabsTrigger value="allergies">;
-            <AlertCircle className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Allergies</span>;
+            <AlertCircle className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Allergies</span>
           </TabsTrigger>
           <TabsTrigger value="problems">;
-            <Heart className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Problems</span>;
+            <Heart className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Problems</span>
           </TabsTrigger>
           <TabsTrigger value="appointments">;
-            <Calendar className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Appointments</span>;
+            <Calendar className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Appointments</span>
           </TabsTrigger>
           <TabsTrigger value="visits">;
-            <ClipboardList className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Visits</span>;
+            <ClipboardList className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Visits</span>
           </TabsTrigger>
           <TabsTrigger value="documents">;
-            <FileText className="h-4 w-4 mr-2" />;
-            <span className="hidden sm:inline">Documents</span>;
+            <FileText className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Documents</span>
           </TabsTrigger>
         </TabsList>
         
         <TabsContent value="demographics">;
-          <PatientDemographics patient={patient} onUpdate={fetchPatient} />;
+          <PatientDemographics patient={patient} onUpdate={fetchPatient} />
         </TabsContent>
         
         <TabsContent value="contacts">;
-          <PatientContacts;
+          <PatientContacts>
             patientId={patient.id} 
             contacts={patient.contacts || []} 
             onUpdate={fetchPatient} 
@@ -457,7 +457,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         </TabsContent>
         
         <TabsContent value="insurance">;
-          <PatientInsurance;
+          <PatientInsurance>
             patientId={patient.id} 
             insurances={patient.insurances || []} 
             onUpdate={fetchPatient} 
@@ -465,7 +465,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         </TabsContent>
         
         <TabsContent value="allergies">;
-          <PatientAllergies;
+          <PatientAllergies>
             patientId={patient.id} 
             allergies={patient.allergies || []} 
             onUpdate={fetchPatient} 
@@ -473,7 +473,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         </TabsContent>
         
         <TabsContent value="problems">;
-          <PatientConditions;
+          <PatientConditions>
             patientId={patient.id} 
             conditions={patient.conditions || []} 
             onUpdate={fetchPatient} 
@@ -481,21 +481,21 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
         </TabsContent>
         
         <TabsContent value="appointments">;
-          <PatientAppointments;
+          <PatientAppointments>
             patientId={patient.id} 
             appointments={patient.appointments || []} 
           />
         </TabsContent>
         
         <TabsContent value="visits">;
-          <PatientVisits;
+          <PatientVisits>
             patientId={patient.id} 
             visits={patient.visits || []} 
           />
         </TabsContent>
         
         <TabsContent value="documents">;
-          <PatientDocuments;
+          <PatientDocuments>
             patientId={patient.id} 
             documents={patient.documents || []} 
           />
@@ -504,18 +504,18 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       
       <div className="flex justify-between print:hidden">;
         <Button variant="outline" onClick={handleBack}>;
-          <ChevronLeft className="h-4 w-4 mr-2" />;
-          Back to Patient List;
+          <ChevronLeft className="h-4 w-4 mr-2" />
+          Back to Patient List
         </Button>
         
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleRefresh}>;
-            <RefreshCw className="h-4 w-4 mr-2" />;
-            Refresh;
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
           </Button>
           <Button onClick={handleEditPatient}>;
-            <Edit className="h-4 w-4 mr-2" />;
-            Edit Patient;
+            <Edit className="h-4 w-4 mr-2" />
+            Edit Patient
           </Button>
         </div>
       </div>

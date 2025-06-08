@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,7 +33,7 @@ export default const HRDashboard = () {
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Human Resources & Asset Management</h1>;
         <p className="text-muted-foreground">;
-          Manage staff, attendance, payroll, assets, and biomedical equipment;
+          Manage staff, attendance, payroll, assets, and biomedical equipment
         </p>
       </div>
 
@@ -44,7 +44,7 @@ export default const HRDashboard = () {
           <TabsTrigger value="attendance">Attendance</TabsTrigger>;
           <TabsTrigger value="payroll">Payroll</TabsTrigger>;
           <TabsTrigger value="assets">Assets</TabsTrigger>;
-          <TabsTrigger value="biomedical">Biomedical</TabsTrigger>;
+          <TabsTrigger value="biomedical">Biomedical</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4 mt-4">;
@@ -53,11 +53,11 @@ export default const HRDashboard = () {
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                   <CardTitle className="text-sm font-medium">Staff Management</CardTitle>;
-                  <Users className="h-4 w-4 text-muted-foreground" />;
+                  <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">124</div>;
-                  <p className="text-xs text-muted-foreground">Active employees</p>;
+                  <p className="text-xs text-muted-foreground">Active employees</p>
                 </CardContent>
               </Card>
             </Link>
@@ -66,11 +66,11 @@ export default const HRDashboard = () {
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                   <CardTitle className="text-sm font-medium">Attendance</CardTitle>;
-                  <ClipboardCheck className="h-4 w-4 text-muted-foreground" />;
+                  <ClipboardCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">98%</div>;
-                  <p className="text-xs text-muted-foreground">Current attendance rate</p>;
+                  <p className="text-xs text-muted-foreground">Current attendance rate</p>
                 </CardContent>
               </Card>
             </Link>
@@ -79,11 +79,11 @@ export default const HRDashboard = () {
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                   <CardTitle className="text-sm font-medium">Payroll</CardTitle>;
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />;
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">May 30</div>;
-                  <p className="text-xs text-muted-foreground">Next payroll date</p>;
+                  <p className="text-xs text-muted-foreground">Next payroll date</p>
                 </CardContent>
               </Card>
             </Link>
@@ -92,11 +92,11 @@ export default const HRDashboard = () {
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                   <CardTitle className="text-sm font-medium">Assets</CardTitle>;
-                  <Boxes className="h-4 w-4 text-muted-foreground" />;
+                  <Boxes className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">1,284</div>;
-                  <p className="text-xs text-muted-foreground">Total assets tracked</p>;
+                  <p className="text-xs text-muted-foreground">Total assets tracked</p>
                 </CardContent>
               </Card>
             </Link>
@@ -105,11 +105,11 @@ export default const HRDashboard = () {
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                   <CardTitle className="text-sm font-medium">Biomedical Equipment</CardTitle>;
-                  <Stethoscope className="h-4 w-4 text-muted-foreground" />;
+                  <Stethoscope className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">328</div>;
-                  <p className="text-xs text-muted-foreground">Medical devices</p>;
+                  <p className="text-xs text-muted-foreground">Medical devices</p>
                 </CardContent>
               </Card>
             </Link>
@@ -117,11 +117,11 @@ export default const HRDashboard = () {
             <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                 <CardTitle className="text-sm font-medium">Analytics</CardTitle>;
-                <BarChart className="h-4 w-4 text-muted-foreground" />;
+                <BarChart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">Reports</div>;
-                <p className="text-xs text-muted-foreground">HR & Asset analytics</p>;
+                <p className="text-xs text-muted-foreground">HR & Asset analytics</p>
               </CardContent>
             </Card>
           </div>
@@ -133,7 +133,7 @@ export default const HRDashboard = () {
                 <CardDescription>Latest HR and asset management activities</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Activity feed will appear here</p>;
+                <p className="text-sm text-muted-foreground">Activity feed will appear here</p>
               </CardContent>
             </Card>
             
@@ -143,7 +143,7 @@ export default const HRDashboard = () {
                 <CardDescription>Scheduled maintenance and HR events</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Calendar events will appear here</p>;
+                <p className="text-sm text-muted-foreground">Calendar events will appear here</p>
               </CardContent>
             </Card>
           </div>

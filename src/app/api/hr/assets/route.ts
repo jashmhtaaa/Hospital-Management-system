@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,11 +23,11 @@ const assetSchema = z.object({
   manufacturer: z.string().optional(),
   model: z.string().optional(),
   purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   purchasePrice: z.number().optional(),
   warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   location: z.string().optional(),
   departmentId: z.string().optional(),
@@ -40,7 +40,7 @@ const assetSchema = z.object({
 });
 
 // POST handler for creating asset;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -77,7 +77,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET handler for listing assets;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     

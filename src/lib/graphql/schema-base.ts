@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -78,27 +78,27 @@ export const baseTypeDefs = gql`
 
   # Base interfaces;
   interface Node {
-    id: ID!;
+    id: ID!,
     createdAt: DateTime!;
-    updatedAt: DateTime!;
+    updatedAt: DateTime!
   }
 
   interface AuditableEntity {
-    id: ID!;
+    id: ID!,
     createdAt: DateTime!;
-    updatedAt: DateTime!;
+    updatedAt: DateTime!,
     createdBy: String!;
-    updatedBy: String;
-    version: Int!;
+    updatedBy: String,
+    version: Int!
   }
 
   # Common types;
   type Address {
-    line1: String!;
+    line1: String!,
     line2: String;
-    city: String!;
+    city: String!,
     state: String!;
-    postalCode: String!;
+    postalCode: String!,
     country: String!;
     type: AddressType!
   }
@@ -111,17 +111,17 @@ export const baseTypeDefs = gql`
   }
 
   type ContactInfo {
-    phone: String;
+    phone: String,
     mobile: String;
-    email: String;
-    fax: String;
+    email: String,
+    fax: String
   }
 
   type Identifier {
-    system: String!;
+    system: String!,
     value: String!;
-    type: String;
-    use: IdentifierUse;
+    type: String,
+    use: IdentifierUse
   }
 
   enum IdentifierUse {
@@ -134,38 +134,38 @@ export const baseTypeDefs = gql`
 
   # FHIR-compliant coding;
   type Coding {
-    system: String;
+    system: String,
     version: String;
-    code: String;
+    code: String,
     display: String;
-    userSelected: Boolean;
+    userSelected: Boolean
   }
 
   type CodeableConcept {
     coding: [Coding!]
-    text: String;
+    text: String
   }
 
   # Pagination;
   type PageInfo {
-    hasNextPage: Boolean!;
+    hasNextPage: Boolean!,
     hasPreviousPage: Boolean!;
-    startCursor: String;
+    startCursor: String,
     endCursor: String;
-    total: Int!;
+    total: Int!
   }
 
   # Common input types;
   input PaginationInput {
-    first: Int;
+    first: Int,
     after: String;
-    last: Int;
-    before: String;
+    last: Int,
+    before: String
   }
 
   input SortInput {
-    field: String!;
-    direction: SortDirection!;
+    field: String!,
+    direction: SortDirection!
   }
 
   enum SortDirection {
@@ -174,9 +174,9 @@ export const baseTypeDefs = gql`
   }
 
   input FilterInput {
-    field: String!;
+    field: String!,
     operator: FilterOperator!;
-    value: String!;
+    value: String!
   }
 
   enum FilterOperator {
@@ -198,29 +198,29 @@ export const baseTypeDefs = gql`
 
   # Error handling;
   type Error {
-    code: String!;
+    code: String!,
     message: String!;
-    field: String;
-    details: JSON;
+    field: String,
+    details: JSON
   }
 
   type MutationResponse {
-    success: Boolean!;
+    success: Boolean!,
     errors: [Error!]
-    message: String;
+    message: String
   }
 
   # Real-time notifications;
   type Notification {
-    id: ID!;
+    id: ID!,
     type: NotificationType!
-    title: String!;
+    title: String!,
     message: String!;
-    data: JSON;
+    data: JSON,
     priority: Priority!;
-    timestamp: DateTime!;
+    timestamp: DateTime!,
     userId: String;
-    read: Boolean!;
+    read: Boolean!
   }
 
   enum NotificationType {
@@ -233,22 +233,22 @@ export const baseTypeDefs = gql`
 
   # File upload;
   type FileUpload {
-    id: ID!;
+    id: ID!,
     filename: String!;
-    mimetype: String!;
+    mimetype: String!,
     encoding: String!;
-    url: String!;
+    url: String!,
     size: Int!;
-    uploadedAt: DateTime!;
-    uploadedBy: String!;
+    uploadedAt: DateTime!,
+    uploadedBy: String!
   }
 
   # System health;
   type HealthStatus {
-    service: String!;
+    service: String!,
     status: HealthStatusType!;
-    timestamp: DateTime!;
-    details: JSON;
+    timestamp: DateTime!,
+    details: JSON
   }
 
   enum HealthStatusType {
@@ -267,7 +267,7 @@ export const baseTypeDefs = gql`
     systemInfo: SystemInfo!;
     
     # Current user context;
-    me: User;
+    me: User
   }
 
   # Base mutations (will be extended by each module);
@@ -276,7 +276,7 @@ export const baseTypeDefs = gql`
     uploadFile(file: Upload!): FileUpload!;
     
     # Mark notification as read;
-    markNotificationRead(id: ID!): MutationResponse!;
+    markNotificationRead(id: ID!): MutationResponse!
   }
 
   # Base subscriptions (will be extended by each module);
@@ -285,32 +285,32 @@ export const baseTypeDefs = gql`
     notifications(userId: String): Notification!;
     
     # System health updates;
-    healthUpdates: HealthStatus!;
+    healthUpdates: HealthStatus!
   }
 
   # System info;
   type SystemInfo {
-    version: String!;
+    version: String!,
     environment: String!;
-    uptime: Int!;
+    uptime: Int!,
     timestamp: DateTime!;
-    features: [String!]!;
+    features: [String!]!
   }
 
   # User type (basic structure);
   type User implements Node {
-    id: ID!;
+    id: ID!,
     email: String!;
-    firstName: String!;
+    firstName: String!,
     lastName: String!;
-    fullName: String!;
+    fullName: String!,
     role: String!;
-    department: String;
+    department: String,
     isActive: Boolean!;
-    lastLoginAt: DateTime;
+    lastLoginAt: DateTime,
     createdAt: DateTime!;
-    updatedAt: DateTime!;
-    permissions: [String!]!;
+    updatedAt: DateTime!,
+    permissions: [String!]!
   }
 `;
 
@@ -319,15 +319,15 @@ export const baseResolvers = {
   DateTime: {
     serialize: (date: unknown) => {
       if (date instanceof Date) {
-        return date.toISOString();
+        return date.toISOString()
       }
       return date;
     },
     parseValue: (value: unknown) => {
-      return new Date(value);
+      return new Date(value)
     },
     parseLiteral: (ast: unknown) => {
-      return new Date(ast.value);
+      return new Date(ast.value)
     },
   },
 
@@ -348,9 +348,8 @@ export const baseResolvers = {
             return obj;
           }, {});
         case 'ListValue':
-          return ast.values.map((value: unknown) => value);
-        default:
-          return null;
+          return ast.values.map((value: unknown) => value),
+        default: return null
       }
     },
   },

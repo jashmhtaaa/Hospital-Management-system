@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,9 +36,9 @@ interface ShardConfig {
   
   // For range-based sharding;
   ranges?: Array<{
-    min: number;
+    min: number,
     max: number;
-    shardIndex: number;
+    shardIndex: number
   }>;
   
   // For lookup-based sharding;
@@ -46,7 +46,7 @@ interface ShardConfig {
   
   // Connection details for each shard;
   shardConnections: Array<{
-    shardIndex: number;
+    shardIndex: number,
     connectionString: string;
     isReadOnly?: boolean;
   }>;
@@ -69,7 +69,7 @@ class HashShardResolver implements ShardResolver {
   
   getShardIndex(shardKey: string | number): number {
     if (this.config.customShardingFn) {
-      return this.config.customShardingFn(shardKey);
+      return this.config.customShardingFn(shardKey)
     }
     
     // Default hash function;
@@ -159,7 +159,7 @@ class RangeShardResolver implements ShardResolver {
   
   getShardIndex(shardKey: string | number): number {
     if (this.config.customShardingFn) {
-      return this.config.customShardingFn(shardKey);
+      return this.config.customShardingFn(shardKey)
     }
     
     const keyAsNumber = Number(shardKey);
@@ -253,7 +253,7 @@ class LookupShardResolver implements ShardResolver {
   
   getShardIndex(shardKey: string | number): number {
     if (this.config.customShardingFn) {
-      return this.config.customShardingFn(shardKey);
+      return this.config.customShardingFn(shardKey)
     }
     
     const stringKey = String(shardKey);
@@ -371,7 +371,7 @@ export class ShardingManager {
         // Initialize connection pools for all shards;
         const connections = new Set([
           ...resolver.getAllShardConnections(false),
-          ...resolver.getAllShardConnections(true);
+          ...resolver.getAllShardConnections(true)
         ]);
         
         for (const connectionString of connections) {
@@ -379,7 +379,7 @@ export class ShardingManager {
             const prisma = new PrismaClient({
               datasources: {
                 db: {
-                  url: connectionString;
+                  url: connectionString
                 }
               }
             });
@@ -397,7 +397,7 @@ export class ShardingManager {
       // Track metrics;
       metricsCollector.incrementCounter('database.sharding.initialization', 1, {
         entityCount: String(configs.length),
-        connectionCount: String(this.connectionPools.size);
+        connectionCount: String(this.connectionPools.size)
       });
     } catch (error) {
       logger.error('Failed to initialize ShardingManager', { error });
@@ -405,7 +405,7 @@ export class ShardingManager {
       // Track error metrics;
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         errorType: error.name || 'unknown',
-        operation: 'initialization';
+        operation: 'initialization'
       });
       
       throw error;
@@ -441,7 +441,7 @@ export class ShardingManager {
       // Track metrics;
       metricsCollector.incrementCounter('database.sharding.client_requests', 1, {
         entityName,
-        readOnly: String(readOnly);
+        readOnly: String(readOnly)
       });
       
       return client;
@@ -456,7 +456,7 @@ export class ShardingManager {
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
         errorType: error.name || 'unknown',
-        operation: 'getClient';
+        operation: 'getClient'
       });
       
       throw error;
@@ -489,7 +489,7 @@ export class ShardingManager {
       metricsCollector.incrementCounter('database.sharding.all_clients_requests', 1, {
         entityName,
         readOnly: String(readOnly),
-        clientCount: String(clients.length);
+        clientCount: String(clients.length)
       });
       
       return clients;
@@ -503,7 +503,7 @@ export class ShardingManager {
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
         errorType: error.name || 'unknown',
-        operation: 'getAllClients';
+        operation: 'getAllClients'
       });
       
       throw error;
@@ -549,7 +549,7 @@ export class ShardingManager {
       // Track metrics;
       metricsCollector.recordTimer('database.sharding.cross_shard_execution_time', duration, {
         entityName,
-        readOnly: String(readOnly);
+        readOnly: String(readOnly)
       });
       
       return flatResults;
@@ -563,7 +563,7 @@ export class ShardingManager {
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
         errorType: error.name || 'unknown',
-        operation: 'executeAcrossShards';
+        operation: 'executeAcrossShards'
       });
       
       throw error;
@@ -609,7 +609,7 @@ export class ShardingManager {
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
         errorType: error.name || 'unknown',
-        operation: 'cacheMapping';
+        operation: 'cacheMapping'
       });
     }
   }
@@ -654,7 +654,7 @@ export class ShardingManager {
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
         errorType: error.name || 'unknown',
-        operation: 'getCachedMapping';
+        operation: 'getCachedMapping'
       });
       
       return null;

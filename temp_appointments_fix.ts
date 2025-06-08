@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ import { checkDoctorAvailability } from '@/lib/services/availability.service';
         doctorId,
         {
           start: new Date(scheduledDateTime),
-          end: new Date(new Date(scheduledDateTime).getTime() + (estimatedDuration || 30) * 60000);
+          end: new Date(new Date(scheduledDateTime).getTime() + (estimatedDuration || 30) * 60000)
         }
       );
 
@@ -26,7 +26,7 @@ import { checkDoctorAvailability } from '@/lib/services/availability.service';
           { 
             error: 'Doctor is not available at the requested time',
             conflicts: availabilityCheck.conflicts,
-            suggestions: availabilityCheck.suggestedSlots;
+            suggestions: availabilityCheck.suggestedSlots
           },
           { status: 409 }
         );

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ interface TheatreCreateBody {
 }
 
 // GET /api/ot/theatres - List all operation theatres;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -58,7 +58,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/ot/theatres - Create a new operation theatre;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;

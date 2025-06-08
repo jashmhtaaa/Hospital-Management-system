@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -39,7 +39,7 @@ export default const LoginPage = () {
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsLoading(true);
     setError(null);
 
@@ -71,7 +71,7 @@ export default const LoginPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setError(message);
+      setError(message),
       toast({
         title: "Login Failed",
         description: message,
@@ -86,9 +86,9 @@ export default const LoginPage = () {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">;
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-800">;
         <div className="flex flex-col items-center">;
-          <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={150} height={50} className="mb-4" />;
+          <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={150} height={50} className="mb-4" />
           <h2 className="mt-6 text-2xl font-bold text-center text-gray-900 dark:text-white">;
-            Login;
+            Login
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>;
@@ -98,16 +98,16 @@ export default const LoginPage = () {
             </div>
           )}
           <div className="rounded-md shadow-sm -space-y-px">;
-            <div>
+<div
               <Label htmlFor="identifier">Username or Email</Label>;
-              <Input;
-                id="identifier";
-                name="identifier";
+              <Input>
+                id="identifier"
+                name="identifier"
                 type="text" // Allow both username and email;
-                autoComplete="username email";
+                autoComplete="username email"
                 required;
-                className="mt-1";
-                placeholder="Username or Email";
+                className="mt-1"
+                placeholder="Username or Email"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 disabled={isLoading}
@@ -115,14 +115,14 @@ export default const LoginPage = () {
             </div>
             <div className="pt-4">;
               <Label htmlFor="password">Password</Label>;
-              <Input;
-                id="password";
-                name="password";
+              <Input>
+                id="password"
+                name="password"
                 type="password"
-                autoComplete="current-password";
+                autoComplete="current-password"
                 required;
-                className="mt-1";
-                placeholder="Password";
+                className="mt-1"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
@@ -132,7 +132,7 @@ export default const LoginPage = () {
 
           {/* Add Forgot password link if needed */}
 
-          <div>
+<div
             <Button type="submit" className="w-full" disabled={isLoading}>;
               {isLoading ? "Logging in..." : "Login"}
             </Button>

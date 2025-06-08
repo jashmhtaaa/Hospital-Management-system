@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,11 +37,10 @@ export default const AppointmentsPage = () {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState(""); // Basic search, could be expanded;
   const [dateFilter, setDateFilter] = useState(format(new Date(), "yyyy-MM-dd")); // Default to today;
-  const { toast } = useToast();
-
+  const { toast } = useToast(),
   useEffect(() => {
     const fetchAppointments = async () => {
-      setIsLoading(true);
+      setIsLoading(true),
       setError(null);
       try {
         // Build query params for filtering;
@@ -57,11 +56,11 @@ export default const AppointmentsPage = () {
           const errorData: { error?: string } = await response.json(); // Add type annotation;
           throw new Error(errorData.error || "Failed to fetch appointments");
         }
-        const data: Appointment[] = await response.json();
+        const data: Appointment[] = await response.json(),
         setAppointments(data);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setError(message);
+        setError(message),
         toast({
           title: "Error Fetching Appointments",
           description: message,
@@ -90,7 +89,7 @@ export default const AppointmentsPage = () {
           <h1 className="text-2xl font-semibold">Appointments</h1>;
           <Link href="/dashboard/appointments/new">;
              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" /> Book Appointment;
+                <PlusCircle className="mr-2 h-4 w-4" /> Book Appointment
              </Button>
           </Link>
         </div>
@@ -98,23 +97,23 @@ export default const AppointmentsPage = () {
         {/* Filters: Date and Search */}
         <div className="flex flex-wrap gap-4 items-center">;
             <div className="relative">;
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-                <Input;
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input>
                     type="search"
-                    placeholder="Search Patient or Doctor...";
-                    className="pl-8 w-full sm:w-64";
+                    placeholder="Search Patient or Doctor..."
+                    className="pl-8 w-full sm:w-64"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
-            <div>
+<div
                 <Label htmlFor="date-filter">Date</Label>;
-                <Input;
-                    id="date-filter";
+                <Input>
+                    id="date-filter"
                     type="date"
                     value={dateFilter}
                     onChange={(e) => setDateFilter(e.target.value)}
-                    className="w-full sm:w-auto mt-1";
+                    className="w-full sm:w-auto mt-1"
                 />
             </div>
             {/* TODO: Add Status Filter Dropdown */}
@@ -134,7 +133,7 @@ export default const AppointmentsPage = () {
                   <TableHead>Specialty</TableHead>
                   <TableHead>Reason</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>;
+                  <TableHead><span className="sr-only">Actions</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -155,7 +154,7 @@ export default const AppointmentsPage = () {
                       <TableCell>
                         {/* Add action buttons like View, Edit Status */}
                         <Link href={`/dashboard/appointments/${appt.appointment_id}`}>;
-                           <Button variant="outline" size="sm">View</Button>;
+                           <Button variant="outline" size="sm">View</Button>
                         </Link>
                       </TableCell>
                     </TableRow>
@@ -163,7 +162,7 @@ export default const AppointmentsPage = () {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center">;
-                      No appointments found for the selected date.;
+                      No appointments found for the selected date.
                     </TableCell>
                   </TableRow>
                 )}

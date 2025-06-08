@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,29 +22,29 @@ import { cacheService } from '@/lib/cache/redis-cache';
 import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
 
 export interface Sample {
-  id: string;
+  id: string,
   barcode: string;
   rfidTag?: string;
-  labOrderId: string;
+  labOrderId: string,
   patientId: string;
-  collectedBy: string;
+  collectedBy: string,
   collectedAt: Date;
-  sampleType: SampleType;
+  sampleType: SampleType,
   containerType: string;
   volume?: number;
   unit?: string;
-  status: SampleStatus;
+  status: SampleStatus,
   location: string;
   temperature?: number;
-  priority: Priority;
+  priority: Priority,
   chainOfCustody: ChainOfCustodyEntry[];
   qualityControl: QualityControlResult[];
   processingNotes?: string;
   expiresAt?: Date;
   rejectionReason?: string;
   batchId?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export enum SampleType {
@@ -79,11 +79,11 @@ export enum Priority {
 }
 
 export interface ChainOfCustodyEntry {
-  id: string;
+  id: string,
   sampleId: string;
-  fromUserId: string;
+  fromUserId: string,
   toUserId: string;
-  fromLocation: string;
+  fromLocation: string,
   toLocation: string;
   transferredAt: Date;
   notes?: string;
@@ -92,34 +92,34 @@ export interface ChainOfCustodyEntry {
 }
 
 export interface QualityControlResult {
-  id: string;
+  id: string,
   sampleId: string;
-  testType: string;
+  testType: string,
   parameter: string;
-  value: number;
+  value: number,
   unit: string;
-  expectedRange: string;
+  expectedRange: string,
   status: 'PASS' | 'FAIL' | 'WARNING';
-  performedBy: string;
+  performedBy: string,
   performedAt: Date;
   notes?: string;
 }
 
 export interface SampleRouting {
-  sampleId: string;
+  sampleId: string,
   workflowId: string;
-  currentStep: string;
+  currentStep: string,
   nextSteps: string[];
-  estimatedCompletion: Date;
+  estimatedCompletion: Date,
   priority: Priority;
   assignedTo?: string;
-  department: string;
+  department: string
 }
 
 @Injectable();
 export class SampleManagementService extends FHIRResourceManager<FHIRObservation> {
   constructor(private prisma: PrismaService) {
-    super('Specimen');
+    super('Specimen')
   }
 
   /**
@@ -348,10 +348,10 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Track sample location in real-time;
    */
   async trackSampleLocation(barcode: string): Promise<{
-    sample: Sample;
+    sample: Sample,
     currentLocation: string;
-    history: ChainOfCustodyEntry[];
-    estimatedNextUpdate: Date;
+    history: ChainOfCustodyEntry[],
+    estimatedNextUpdate: Date
   }> {
     try {
       // Try cache first;
@@ -523,7 +523,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   ): Promise<{
     data: { date: Date; value: number; controlLimits: { upper: number; lower: number } }[];
     trends: { slope: number; rSquared: number };
-    outliers: QualityControlResult[];
+    outliers: QualityControlResult[]
   }> {
     try {
       const startDate = new Date();
@@ -672,16 +672,16 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
   // FHIR compliance methods;
   private async createFHIRSpecimen(sample: Sample): Promise<void> {
-    // Implementation to create FHIR Specimen resource;
+    // Implementation to create FHIR Specimen resource
   }
 
   private async updateFHIRSpecimen(sample: Sample): Promise<void> {
-    // Implementation to update FHIR Specimen resource;
+    // Implementation to update FHIR Specimen resource
   }
 
   // Required abstract methods;
   validate(resource: FHIRObservation): boolean {
-    return !!(resource.resourceType && resource.status && resource.code);
+    return !!(resource.resourceType && resource.status && resource.code)
   }
 
   toFHIR(sample: Sample): FHIRObservation {

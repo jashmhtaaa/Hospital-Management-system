@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,9 +30,9 @@ export interface AuditLogContext {
 }
 
 export interface AuditLogEntry {
-  action: string;
+  action: string,
   resourceId: string;
-  userId: string;
+  userId: string,
   details: Record<string, any>;
   severity?: 'info' | 'warning' | 'error' | 'critical';
 }
@@ -48,7 +48,7 @@ export class AuditLogger {
       userAgent: context.userAgent,
       method: context.method,
       url: context.url ? SecurityService.sanitizeUrl(context.url) : undefined,
-      ipAddress: context.ipAddress;
+      ipAddress: context.ipAddress
     };
   }
   
@@ -181,7 +181,7 @@ export class AuditLogger {
       resourceId: entry.resourceId,
       userId: entry.userId,
       severity: entry.severity || this.determineSeverity(entry.action),
-      details: this.sanitizeDetails(entry.details);
+      details: this.sanitizeDetails(entry.details)
     }));
   }
 }

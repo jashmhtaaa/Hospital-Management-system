@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,16 +29,16 @@ type CarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical"
-  setApi?: (api: CarouselApi) => void;
+  setApi?: (api: CarouselApi) => void
 }
 
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0]
   api: ReturnType<typeof useEmblaCarousel>[1]
-  scrollPrev: () => void;
+  scrollPrev: () => void,
   scrollNext: () => void;
-  canScrollPrev: boolean;
-  canScrollNext: boolean;
+  canScrollPrev: boolean,
+  canScrollNext: boolean
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -81,7 +81,7 @@ const Carousel = React.forwardRef<;
 
     const onSelect = React.useCallback((api: CarouselApi) => {
       if (!api) {
-        return;
+        return
       }
 
       setCanScrollPrev(api.canScrollPrev());
@@ -99,10 +99,10 @@ const Carousel = React.forwardRef<;
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === "ArrowLeft") {
-          event.preventDefault();
+          event.preventDefault(),
           scrollPrev();
         } else if (event.key === "ArrowRight") {
-          event.preventDefault();
+          event.preventDefault(),
           scrollNext();
         }
       },
@@ -145,12 +145,12 @@ const Carousel = React.forwardRef<;
           canScrollNext,
         }}
       >
-        <div;
+<div
           ref={ref}
           onKeyDownCapture={handleKeyDown}
           className={cn("relative", className)}
-          role="region";
-          aria-roledescription="carousel";
+          role="region"
+          aria-roledescription="carousel"
           {...props}
         >
           {children}
@@ -169,7 +169,7 @@ const CarouselContent = React.forwardRef<;
 
   return (
     <div ref={carouselRef} className="overflow-hidden">;
-      <div;
+<div
         ref={ref}
         className={cn(
           "flex",
@@ -190,10 +190,10 @@ const CarouselItem = React.forwardRef<;
   const { orientation } = useCarousel();
 
   return (
-    <div;
+<div
       ref={ref}
-      role="group";
-      aria-roledescription="slide";
+      role="group"
+      aria-roledescription="slide"
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
         orientation === "horizontal" ? "pl-4" : "pt-4",
@@ -212,7 +212,7 @@ const CarouselPrevious = React.forwardRef<;
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
-    <Button;
+    <Button>
       ref={ref}
       variant={variant}
       size={size}
@@ -227,8 +227,8 @@ const CarouselPrevious = React.forwardRef<;
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="h-4 w-4" />;
-      <span className="sr-only">Previous slide</span>;
+      <ArrowLeft className="h-4 w-4" />
+      <span className="sr-only">Previous slide</span>
     </Button>
   );
 });
@@ -241,7 +241,7 @@ const CarouselNext = React.forwardRef<;
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
-    <Button;
+    <Button>
       ref={ref}
       variant={variant}
       size={size}
@@ -256,8 +256,8 @@ const CarouselNext = React.forwardRef<;
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="h-4 w-4" />;
-      <span className="sr-only">Next slide</span>;
+      <ArrowRight className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
     </Button>
   );
 });

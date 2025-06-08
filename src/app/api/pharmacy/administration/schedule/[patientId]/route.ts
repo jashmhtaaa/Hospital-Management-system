@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,7 +29,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
@@ -40,7 +40,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
@@ -51,7 +51,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -61,7 +61,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
 export async const GET = (
   req: NextRequest,
   { params }: { params: { patientId: string } }
-) {
+) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -144,7 +144,7 @@ export async const GET = (
           administrationId: matchingAdministration?.id,
           administeredAt: matchingAdministration?.administeredAt,
           administeredBy: matchingAdministration?.administeredBy,
-          notes: matchingAdministration?.notes;
+          notes: matchingAdministration?.notes
         });
       }
     }
@@ -161,7 +161,7 @@ export async const GET = (
       details: {
         count: schedule.length,
         startDate: startDate.toISOString(),
-        endDate: endDate.toISOString();
+        endDate: endDate.toISOString()
       }
     });
 

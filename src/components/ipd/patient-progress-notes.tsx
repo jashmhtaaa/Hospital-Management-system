@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,13 +30,13 @@ import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
 
 // Define interfaces for data structures;
 interface ProgressNote {
-  id: string;
+  id: string,
   admission_id: string;
-  note_date: string;
+  note_date: string,
   subjective: string;
-  objective: string;
+  objective: string,
   assessment: string;
-  plan: string;
+  plan: string,
   doctor_id: string;
   created_at: string;
   // Assuming these come from a join or separate fetch;
@@ -45,18 +45,18 @@ interface ProgressNote {
 }
 
 interface AdmissionInfo {
-  admission_number: string;
+  admission_number: string,
   admission_date: string;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  subjective: string;
+  subjective: string,
   objective: string;
-  assessment: string;
-  plan: string;
+  assessment: string,
+  plan: string
 }
 
 // FIX: Define type for API error response;
@@ -68,13 +68,13 @@ interface FormData {
 type NewNoteResponse = ProgressNote;
 
 interface PatientProgressNotesProperties {
-  admissionId: string | null;
+  admissionId: string | null
 }
 
 // FIX: Create a sub-component to manage individual note tabs state;
 interface NoteDisplayProperties {
-  note: ProgressNote;
-  formatDateTime: (dateString: string | undefined) => string;
+  note: ProgressNote,
+  formatDateTime: (dateString: string | undefined) => string
 }
 
 const NoteDisplay: React.FC<NoteDisplayProperties> = ({
@@ -96,44 +96,44 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
       </div>
 
       {/* FIX: Add value and onValueChange to Tabs */}
-      <Tabs;
+      <Tabs>
         value={activeNoteTab}
         onValueChange={setActiveNoteTab}
-        className="w-full";
+        className="w-full"
       >
         <TabsList className="mb-2 grid w-full grid-cols-4">;
           <TabsTrigger value="subjective">Subjective</TabsTrigger>;
           <TabsTrigger value="objective">Objective</TabsTrigger>;
           <TabsTrigger value="assessment">Assessment</TabsTrigger>;
-          <TabsTrigger value="plan">Plan</TabsTrigger>;
+          <TabsTrigger value="plan">Plan</TabsTrigger>
         </TabsList>
 
-        <TabsContent;
-          value="subjective";
-          className="mt-2 p-3 bg-gray-50 rounded border text-sm";
+        <TabsContent>
+          value="subjective"
+          className="mt-2 p-3 bg-gray-50 rounded border text-sm"
         >
-          <p className="whitespace-pre-wrap">{note.subjective || "-"}</p>;
+          <p className="whitespace-pre-wrap">{note.subjective || "-"}</p>
         </TabsContent>
 
-        <TabsContent;
-          value="objective";
-          className="mt-2 p-3 bg-gray-50 rounded border text-sm";
+        <TabsContent>
+          value="objective"
+          className="mt-2 p-3 bg-gray-50 rounded border text-sm"
         >
-          <p className="whitespace-pre-wrap">{note.objective || "-"}</p>;
+          <p className="whitespace-pre-wrap">{note.objective || "-"}</p>
         </TabsContent>
 
-        <TabsContent;
-          value="assessment";
-          className="mt-2 p-3 bg-gray-50 rounded border text-sm";
+        <TabsContent>
+          value="assessment"
+          className="mt-2 p-3 bg-gray-50 rounded border text-sm"
         >
-          <p className="whitespace-pre-wrap">{note.assessment || "-"}</p>;
+          <p className="whitespace-pre-wrap">{note.assessment || "-"}</p>
         </TabsContent>
 
-        <TabsContent;
-          value="plan";
-          className="mt-2 p-3 bg-gray-50 rounded border text-sm";
+        <TabsContent>
+          value="plan"
+          className="mt-2 p-3 bg-gray-50 rounded border text-sm"
         >
-          <p className="whitespace-pre-wrap">{note.plan || "-"}</p>;
+          <p className="whitespace-pre-wrap">{note.plan || "-"}</p>
         </TabsContent>
       </Tabs>
     </div>
@@ -160,12 +160,12 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (!admissionId) {
-        setLoading(false);
+        setLoading(false),
         setError("Admission ID is missing.");
         return;
       }
 
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
       try {
         // Simulate API call;
@@ -224,7 +224,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           },
         ];
 
-        setPatientInfo(mockPatientInfo);
+        setPatientInfo(mockPatientInfo),
         setProgressNotes(
           mockProgressNotes.sort(
             (a, b) =>
@@ -280,7 +280,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       const submissionData = {
         ...formData,
         note_date: new Date().toISOString(),
-        // doctor_id: session?.user?.id // Get from session;
+        // doctor_id: session?.user?.id // Get from session
       };
 
       // Simulate API call;
@@ -320,8 +320,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         objective: "",
         assessment: "",
         plan: "",
-      });
-
+      }),
       toast({
         title: "Success",
         description: "Progress note added successfully!",
@@ -381,64 +380,64 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           <form onSubmit={handleSubmit} className="space-y-4">;
             <div className="space-y-2">;
               <Label htmlFor="subjective" className="font-medium">;
-                Subjective (Patient reported);
+                Subjective (Patient reported)
               </Label>
-              <Textarea;
-                id="subjective";
-                name="subjective";
+              <Textarea>
+                id="subjective"
+                name="subjective"
                 value={formData.subjective}
                 onChange={handleChange}
                 // required - Removed, allow partial notes;
-                placeholder="Enter patient's reported symptoms and complaints";
-                className="min-h-[80px]";
+                placeholder="Enter patient's reported symptoms and complaints"
+                className="min-h-[80px]"
                 disabled={submitting}
               />
             </div>
 
             <div className="space-y-2">;
               <Label htmlFor="objective" className="font-medium">;
-                Objective (Findings);
+                Objective (Findings)
               </Label>
-              <Textarea;
-                id="objective";
-                name="objective";
+              <Textarea>
+                id="objective"
+                name="objective"
                 value={formData.objective}
                 onChange={handleChange}
                 // required;
-                placeholder="Enter examination findings, vital signs, lab results, etc.";
-                className="min-h-[80px]";
+                placeholder="Enter examination findings, vital signs, lab results, etc."
+                className="min-h-[80px]"
                 disabled={submitting}
               />
             </div>
 
             <div className="space-y-2">;
               <Label htmlFor="assessment" className="font-medium">;
-                Assessment (Diagnosis/Impression);
+                Assessment (Diagnosis/Impression)
               </Label>
-              <Textarea;
-                id="assessment";
-                name="assessment";
+              <Textarea>
+                id="assessment"
+                name="assessment"
                 value={formData.assessment}
                 onChange={handleChange}
                 // required;
-                placeholder="Enter clinical assessment, diagnosis, or differential diagnosis";
-                className="min-h-[80px]";
+                placeholder="Enter clinical assessment, diagnosis, or differential diagnosis"
+                className="min-h-[80px]"
                 disabled={submitting}
               />
             </div>
 
             <div className="space-y-2">;
               <Label htmlFor="plan" className="font-medium">;
-                Plan (Treatment/Management);
+                Plan (Treatment/Management)
               </Label>
-              <Textarea;
-                id="plan";
-                name="plan";
+              <Textarea>
+                id="plan"
+                name="plan"
                 value={formData.plan}
                 onChange={handleChange}
                 // required;
-                placeholder="Enter treatment plan, orders, consultations, follow-up";
-                className="min-h-[80px]";
+                placeholder="Enter treatment plan, orders, consultations, follow-up"
+                className="min-h-[80px]"
                 disabled={submitting}
               />
             </div>
@@ -446,7 +445,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             <div className="flex justify-end">;
               <Button type="submit" disabled={submitting}>;
                 {submitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
                 {submitting ? "Saving..." : "Save Progress Note"}
               </Button>
@@ -461,7 +460,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         <CardContent>
           {loading ? (
             <div className="flex justify-center p-8">;
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
             <div className="text-red-500 p-4 text-center" role="alert">;
@@ -469,13 +468,13 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             </div>
           ) : progressNotes.length === 0 ? (
             <div className="text-gray-500 p-4 text-center">;
-              No progress notes found for this admission.;
+              No progress notes found for this admission.
             </div>
           ) : (
             <div className="space-y-6">;
               {/* FIX: Use the NoteDisplay sub-component */}
               {progressNotes.map((note) => (
-                <NoteDisplay;
+                <NoteDisplay>
                   key={note.id}
                   note={note}
                   formatDateTime={formatDateTime}

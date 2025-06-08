@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,31 +16,31 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 interface RadiologyOrder {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   orderDate: string;
-  studyType: string;
+  studyType: string,
   priority: 'routine' | 'urgent' | 'stat';
-  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported';
-  requestedBy: string;
+  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
+  requestedBy: string
 }
 
 interface RadiologyOrderListProps {
-  orders: RadiologyOrder[];
-  onViewOrder: (orderId: string) => void;
+  orders: RadiologyOrder[],
+  onViewOrder: (orderId: string) => void
 }
 
 /**
  * Radiology order list component;
  */
-export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListProps) {
+export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListProps) => {
   const getPriorityBadge = (priority: string) => {
     switch(priority) {
       case 'routine': return <Badge variant="secondary">Routine</Badge>;
       case 'urgent': return <Badge variant="warning">Urgent</Badge>;
       case 'stat': return <Badge variant="danger">STAT</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -51,7 +51,7 @@ export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListPr
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'reported': return <Badge variant="success">Reported</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -77,7 +77,7 @@ export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListPr
             {orders.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center">;
-                  No radiology orders found;
+                  No radiology orders found
                 </TableCell>
               </TableRow>
             ) : (
@@ -85,7 +85,7 @@ export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListPr
                 <TableRow key={order.id}>;
                   <TableCell>
                     <div className="font-medium">{order.patientName}</div>;
-                    <div className="text-sm text-gray-500">ID: {order.patientId}</div>;
+                    <div className="text-sm text-gray-500">ID: {order.patientId}</div>
                   </TableCell>
                   <TableCell>{order.orderDate}</TableCell>
                   <TableCell>{order.studyType}</TableCell>
@@ -93,12 +93,12 @@ export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListPr
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
                   <TableCell>{order.requestedBy}</TableCell>
                   <TableCell>
-                    <Button;
-                      variant="outline";
-                      size="sm";
+                    <Button>
+                      variant="outline"
+                      size="sm"
                       onClick={() => onViewOrder(order.id)}
                     >
-                      View;
+                      View
                     </Button>
                   </TableCell>
                 </TableRow>

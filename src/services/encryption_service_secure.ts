@@ -12,16 +12,16 @@ export interface IEncryptionService {
   encryptObject(obj: Record<string, any>, fields: string[]): Promise<Record<string, any>>;
   decryptObject(obj: Record<string, any>, fields: string[]): Promise<Record<string, any>>;
   rotateKeys(): Promise<void>;
-  validateIntegrity(encryptedText: string): boolean;
+  validateIntegrity(encryptedText: string): boolean
 }
 
 interface EncryptedData {
-  encrypted: string;
+  encrypted: string,
   iv: string;
-  tag: string;
+  tag: string,
   version: string;
-  algorithm: string;
-  timestamp: number;
+  algorithm: string,
+  timestamp: number
 }
 
 export class SecureEncryptionService implements IEncryptionService {
@@ -60,7 +60,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   private deriveKey(context: string = 'default'): Buffer {
     if (this.keyCache.has(context)) {
-      return this.keyCache.get(context)!;
+      return this.keyCache.get(context)!
     }
 
     // Use PBKDF2 for key derivation
@@ -76,7 +76,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async encrypt(text: string, context: string = 'default'): Promise<string> {
     if (!text || typeof text !== 'string') {
-      throw new Error('Invalid input: text must be a non-empty string');
+      throw new Error('Invalid input: text must be a non-empty string')
     }
 
     try {
@@ -110,7 +110,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async decrypt(encryptedText: string, context: string = 'default'): Promise<string> {
     if (!encryptedText || typeof encryptedText !== 'string') {
-      throw new Error('Invalid input: encryptedText must be a non-empty string');
+      throw new Error('Invalid input: encryptedText must be a non-empty string')
     }
 
     try {
@@ -200,7 +200,7 @@ export class SecureEncryptionService implements IEncryptionService {
       typeof data.version === 'string' &&
       typeof data.algorithm === 'string' &&
       typeof data.timestamp === 'number'
-    );
+    )
   }
 
   /**
@@ -224,13 +224,12 @@ export class SecureEncryptionService implements IEncryptionService {
     console.log('Rotating encryption keys...');
     this.keyCache.clear();
     
-    // In production, this would involve:
-    // 1. Generating new master key
+    // In production, this would involve: // 1. Generating new master key
     // 2. Re-encrypting all data with new key
     // 3. Updating key storage systems
     // 4. Notifying key management systems
     
-    console.log('Key rotation completed');
+    console.log('Key rotation completed')
   }
 
   /**

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,7 +31,7 @@ const inventoryRepository = {
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true);
+  transferStock: () => Promise.resolve(true)
 };
 
 const transferRepository = {
@@ -40,14 +40,14 @@ const transferRepository = {
   findByDestinationLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (transfer: unknown) => Promise.resolve(transfer.id || 'new-id');
+  save: (transfer: unknown) => Promise.resolve(transfer.id || 'new-id')
 };
 
 /**
  * POST /api/pharmacy/inventory/transfer;
  * Transfer inventory between locations;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -94,7 +94,7 @@ export async const POST = (req: NextRequest) {
       transferredBy: userId,
       transferredAt: new Date(),
       notes: data.notes || '',
-      status: 'completed';
+      status: 'completed'
     };
 
     // Save transfer record;
@@ -120,7 +120,7 @@ export async const POST = (req: NextRequest) {
           medicationId: sourceInventory.medicationId,
           sourceLocationId: sourceInventory.locationId,
           destinationLocationId: data.destinationLocationId,
-          quantity: data.quantity;
+          quantity: data.quantity
         }
       });
     }
@@ -135,7 +135,7 @@ export async const POST = (req: NextRequest) {
         sourceInventoryId: data.sourceInventoryId,
         destinationLocationId: data.destinationLocationId,
         medicationId: sourceInventory.medicationId,
-        quantity: data.quantity;
+        quantity: data.quantity
       }
     });
 
@@ -143,7 +143,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: transferId,
-        message: 'Inventory transferred successfully';
+        message: 'Inventory transferred successfully'
       }, 
       { status: 201 }
     );

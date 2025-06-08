@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -43,8 +43,8 @@ interface IPDPatientDetailsProperties {
 
 // FIX: Define type for selected admission state;
 interface SelectedAdmission {
-  admissionId: number;
-  patientId: number;
+  admissionId: number,
+  patientId: number
 }
 
 // --- COMPONENTS ---
@@ -62,10 +62,10 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
 
   return (
     // FIX: Provide value and onValueChange to control the Tabs component;
-    <Tabs;
+    <Tabs>
       value={activeDetailTab}
       onValueChange={setActiveDetailTab}
-      className="w-full";
+      className="w-full"
     >
       <TabsList className="mb-4 grid w-full grid-cols-3 sm:grid-cols-5">;
         {" "}
@@ -74,27 +74,27 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
         <TabsTrigger value="nursing-notes">Nursing Notes</TabsTrigger>;
         <TabsTrigger value="vital-signs">Vital Signs</TabsTrigger>;
         <TabsTrigger value="medications">Medications</TabsTrigger>;
-        <TabsTrigger value="discharge">Discharge</TabsTrigger>;
+        <TabsTrigger value="discharge">Discharge</TabsTrigger>
       </TabsList>
       <TabsContent value="progress-notes">;
         {/* FIX: Pass admissionId as string */}
-        <PatientProgressNotes admissionId={admissionIdString} />;
+        <PatientProgressNotes admissionId={admissionIdString} />
       </TabsContent>
       <TabsContent value="nursing-notes">;
         {/* FIX: Pass admissionId as string */}
-        <NursingNotes admissionId={admissionIdString} />;
+        <NursingNotes admissionId={admissionIdString} />
       </TabsContent>
       <TabsContent value="vital-signs">;
         {/* FIX: Pass admissionId as string */}
-        <VitalSigns admissionId={admissionIdString} />;
+        <VitalSigns admissionId={admissionIdString} />
       </TabsContent>
       <TabsContent value="medications">;
         {/* FIX: Pass admissionId as string */}
-        <MedicationAdministration admissionId={admissionIdString} />;
+        <MedicationAdministration admissionId={admissionIdString} />
       </TabsContent>
       <TabsContent value="discharge">;
         {/* FIX: Pass admissionId as string */}
-        <DischargeSummary admissionId={admissionIdString} />;
+        <DischargeSummary admissionId={admissionIdString} />
       </TabsContent>
     </Tabs>
   );
@@ -109,12 +109,12 @@ const IPDPage = () => {
   // FIX: Add explicit types for parameters;
   const handleViewPatient = (admissionId: number, patientId: number) => {
     // FIX: Correct state update logic;
-    setSelectedAdmission({ admissionId, patientId });
+    setSelectedAdmission({ admissionId, patientId }),
     setActiveTab("patient-details"); // Switch to the patient details tab;
   };
 
   const handleClosePatientDetails = () => {
-    setSelectedAdmission(undefined);
+    setSelectedAdmission(undefined),
     setActiveTab("dashboard"); // Go back to dashboard when closing details;
   };
 
@@ -153,7 +153,7 @@ const IPDPage = () => {
             </CardHeader>
             <CardContent>
               {/* FIX: Pass onViewPatient prop */}
-              <IPDPatientList onViewPatient={handleViewPatient} />;
+              <IPDPatientList onViewPatient={handleViewPatient} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -174,16 +174,16 @@ const IPDPage = () => {
                   Details for Admission ID: {selectedAdmission.admissionId}
                 </CardTitle>
                 {/* FIX: Use imported Button component */}
-                <Button;
-                  variant="outline";
-                  size="sm";
+                <Button>
+                  variant="outline"
+                  size="sm"
                   onClick={handleClosePatientDetails}
                 >
-                  Back to List;
+                  Back to List
                 </Button>
               </CardHeader>
               <CardContent>
-                <IPDPatientDetails;
+                <IPDPatientDetails>
                   // FIX: Add check for selectedAdmission before accessing properties;
                   patientId={selectedAdmission.patientId}
                   admissionId={selectedAdmission.admissionId}

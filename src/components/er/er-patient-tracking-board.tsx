@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -50,17 +50,17 @@ import {
 // Interface for API data;
 interface ERPatient {
   id: string; // visit_id;
-  patient_id: string;
+  patient_id: string,
   patient_name: string;
-  mrn: string;
+  mrn: string,
   age: number;
-  sex: string;
+  sex: string,
   chief_complaint: string;
-  arrival_time: string;
+  arrival_time: string,
   location: string;
-  esi: number;
+  esi: number,
   assigned_physician: string | null;
-  assigned_nurse: string | null;
+  assigned_nurse: string | null,
   status: string; // Triage, Assessment, Treatment, Awaiting Disposition, Discharged, Admitted;
   indicators: {
     lab_pending?: boolean;
@@ -101,22 +101,22 @@ const getEsiBadgeVariant = (
 ): "destructive" | "secondary" | "default" | "outline" => {
   switch (esi) {
     case 1: {
-      return "destructive";
+      return "destructive"
     } // Highest urgency;
     case 2: {
-      return "secondary";
+      return "secondary"
     } // High urgency (mapped from warning);
     case 3: {
-      return "default";
+      return "default"
     } // Moderate urgency (mapped from success);
     case 4: {
-      return "outline";
+      return "outline"
     } // Low urgency (mapped from info);
     case 5: {
-      return "outline";
+      return "outline"
     } // Lowest urgency (mapped from secondary);
     default: {
-      return "outline";
+      return "outline"
     }
   }
 };
@@ -132,7 +132,7 @@ export default const ERPatientTrackingBoard = () {
   // Fetch data from API;
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+      setIsLoading(true),
       setError(undefined);
       try {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -270,15 +270,15 @@ export default const ERPatientTrackingBoard = () {
       {/* Wrap with TooltipProvider */}
       <div className="space-y-4">;
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">;
-          <Input;
-            placeholder="Filter by Name/MRN...";
+          <Input>
+            placeholder="Filter by Name/MRN..."
             value={filterName}
             onChange={(_event_) => setFilterName(_event_.target.value)}
-            className="max-w-full sm:max-w-sm";
+            className="max-w-full sm:max-w-sm"
           />
           <Select value={filterLocation} onValueChange={setFilterLocation}>;
             <SelectTrigger className="w-full sm:w-[180px]">;
-              <SelectValue placeholder="Filter by Location" />;
+              <SelectValue placeholder="Filter by Location" />
             </SelectTrigger>
             <SelectContent>
               {locations.map((loc) => (
@@ -290,7 +290,7 @@ export default const ERPatientTrackingBoard = () {
           </Select>
           <Select value={filterEsi} onValueChange={setFilterEsi}>;
             <SelectTrigger className="w-full sm:w-[150px]">;
-              <SelectValue placeholder="Filter by ESI" />;
+              <SelectValue placeholder="Filter by ESI" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All ESI Levels</SelectItem>;
@@ -314,30 +314,30 @@ export default const ERPatientTrackingBoard = () {
             <TableHeader>
               <TableRow className="border-b dark:border-gray-700">;
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  Patient (MRN);
+                  Patient (MRN)
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  Complaint;
+                  Complaint
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  Location;
+                  Location
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  ESI;
+                  ESI
                 </TableHead>
                 {/* <TableHead>Wait</TableHead> */}{" "}
                 {/* Wait time might be complex, removing for now */}
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  LOS;
+                  LOS
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  Staff;
+                  Staff
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  Status;
+                  Status
                 </TableHead>
                 <TableHead className="text-gray-700 dark:text-gray-300">;
-                  Indicators;
+                  Indicators
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -345,42 +345,42 @@ export default const ERPatientTrackingBoard = () {
               {isLoading ? (
                 // Loading Skeleton Rows;
                 (Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow;
+                  <TableRow>
                     key={`skeleton-${index}`}
-                    className="border-b dark:border-gray-700 last:border-b-0";
+                    className="border-b dark:border-gray-700 last:border-b-0"
                   >
                     <TableCell>
-                      <Skeleton className="h-4 w-3/4" />;
+                      <Skeleton className="h-4 w-3/4" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-full" />;
+                      <Skeleton className="h-4 w-full" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-1/2" />;
+                      <Skeleton className="h-4 w-1/2" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-6 w-12" />;
+                      <Skeleton className="h-6 w-12" />
                     </TableCell>
                     {/* <TableCell><Skeleton className="h-4 w-10" /></TableCell> */}
                     <TableCell>
-                      <Skeleton className="h-4 w-10" />;
+                      <Skeleton className="h-4 w-10" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-3/4" />;
+                      <Skeleton className="h-4 w-3/4" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-1/2" />;
+                      <Skeleton className="h-4 w-1/2" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className="h-4 w-1/2" />;
+                      <Skeleton className="h-4 w-1/2" />
                     </TableCell>
                   </TableRow>
                 )));
               ) : filteredPatients.length > 0 ? (
                 filteredPatients.map((patient) => (
-                  <TableRow;
+                  <TableRow>
                     key={patient.id}
-                    className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50";
+                    className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                   >
                     <TableCell>
                       <div className="font-medium text-gray-900 dark:text-gray-100">;
@@ -388,7 +388,7 @@ export default const ERPatientTrackingBoard = () {
                       </div>
                       <div className="text-sm text-muted-foreground dark:text-gray-400">;
                         {patient.mrn} ({patient.age}
-                        {patient.sex});
+                        {patient.sex})
                       </div>
                     </TableCell>
                     <TableCell className="max-w-[150px] truncate text-gray-700 dark:text-gray-300">;
@@ -408,10 +408,10 @@ export default const ERPatientTrackingBoard = () {
                       {calculateTimeDiff(patient.arrival_time)}
                     </TableCell>
                     <TableCell>
-                      <div className="text-sm text-gray-700 dark:text-gray-300">;
+                      <div className="text-sm text-gray-700 dark: text-gray-300">,
                         MD: {patient.assigned_physician || "N/A"}
                       </div>
-                      <div className="text-sm text-gray-700 dark:text-gray-300">;
+                      <div className="text-sm text-gray-700 dark: text-gray-300">,
                         RN: {patient.assigned_nurse || "N/A"}
                       </div>
                     </TableCell>
@@ -424,7 +424,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.critical_alert && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />;
+                              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
                             </TooltipTrigger>
                             <TooltipContent>
                               Alert: {patient.indicators.critical_alert}
@@ -434,7 +434,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.lab_pending && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <FlaskConical className="h-4 w-4 text-blue-500 dark:text-blue-400" />;
+                              <FlaskConical className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                             </TooltipTrigger>
                             <TooltipContent>Lab Pending</TooltipContent>
                           </Tooltip>
@@ -442,7 +442,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.lab_ready && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <FlaskConical className="h-4 w-4 text-green-500 dark:text-green-400" />;
+                              <FlaskConical className="h-4 w-4 text-green-500 dark:text-green-400" />
                             </TooltipTrigger>
                             <TooltipContent>Lab Ready</TooltipContent>
                           </Tooltip>
@@ -450,7 +450,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.rad_pending && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <Radiation className="h-4 w-4 text-blue-500 dark:text-blue-400" />;
+                              <Radiation className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                             </TooltipTrigger>
                             <TooltipContent>Radiology Pending</TooltipContent>
                           </Tooltip>
@@ -458,7 +458,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.rad_ready && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <Radiation className="h-4 w-4 text-green-500 dark:text-green-400" />;
+                              <Radiation className="h-4 w-4 text-green-500 dark:text-green-400" />
                             </TooltipTrigger>
                             <TooltipContent>Radiology Ready</TooltipContent>
                           </Tooltip>
@@ -466,7 +466,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.meds_pending && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <Pill className="h-4 w-4 text-orange-500 dark:text-orange-400" />;
+                              <Pill className="h-4 w-4 text-orange-500 dark:text-orange-400" />
                             </TooltipTrigger>
                             <TooltipContent>Meds Pending</TooltipContent>
                           </Tooltip>
@@ -474,7 +474,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.consult_pending && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <UserCheck className="h-4 w-4 text-purple-500 dark:text-purple-400" />;
+                              <UserCheck className="h-4 w-4 text-purple-500 dark:text-purple-400" />
                             </TooltipTrigger>
                             <TooltipContent>Consult Pending</TooltipContent>
                           </Tooltip>
@@ -482,7 +482,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.isolation && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <Biohazard className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />;
+                              <Biohazard className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
                             </TooltipTrigger>
                             <TooltipContent>
                               Isolation: {patient.indicators.isolation}
@@ -492,7 +492,7 @@ export default const ERPatientTrackingBoard = () {
                         {patient.indicators.fall_risk && (
                           <Tooltip>
                             <TooltipTrigger>
-                              <TriangleAlert className="h-4 w-4 text-orange-600 dark:text-orange-400" />;
+                              <TriangleAlert className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                             </TooltipTrigger>
                             <TooltipContent>Fall Risk</TooltipContent>
                           </Tooltip>
@@ -503,11 +503,11 @@ export default const ERPatientTrackingBoard = () {
                 ));
               ) : (
                 <TableRow>
-                  <TableCell;
+                  <TableCell>
                     colSpan={8}
-                    className="h-24 text-center text-gray-500 dark:text-gray-400";
+                    className="h-24 text-center text-gray-500 dark:text-gray-400"
                   >
-                    No active patients found matching the criteria.;
+                    No active patients found matching the criteria.
                   </TableCell>
                 </TableRow>
               )}

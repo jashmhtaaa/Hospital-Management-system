@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,7 +34,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -46,7 +46,7 @@ const prescriptionRepository = {
   findAll: () => Promise.resolve([]),
   save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -59,7 +59,7 @@ const interactionService = new DrugInteractionService(
  * GET /api/pharmacy/prescriptions;
  * List prescriptions with filtering and pagination;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -130,7 +130,7 @@ export async const GET = (req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: paginatedPrescriptions.length;
+        resultCount: paginatedPrescriptions.length
       }
     });
 
@@ -141,7 +141,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -153,7 +153,7 @@ export async const GET = (req: NextRequest) {
  * POST /api/pharmacy/prescriptions;
  * Create a new prescription with interaction checking;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -223,7 +223,7 @@ export async const POST = (req: NextRequest) {
         { 
           error: 'Severe drug interactions detected', 
           interactions: severeInteractions,
-          requiresOverride: true;
+          requiresOverride: true
         },
         { status: 409 }
       );
@@ -259,7 +259,7 @@ export async const POST = (req: NextRequest) {
         JSON.stringify({
           dea: data.dea,
           refills: data.refills || 0,
-          writtenDate: new Date();
+          writtenDate: new Date()
         });
       );
     }
@@ -284,7 +284,7 @@ export async const POST = (req: NextRequest) {
         medicationId: data.medicationId,
         interactionCount: allInteractions.length,
         severeInteractionCount: severeInteractions.length,
-        overrideProvided: !!data.interactionOverride;
+        overrideProvided: !!data.interactionOverride
       }
     });
 
@@ -293,7 +293,7 @@ export async const POST = (req: NextRequest) {
       { 
         id: prescriptionId,
         message: 'Prescription created successfully',
-        interactions: allInteractions.length > 0 ? allInteractions : undefined;
+        interactions: allInteractions.length > 0 ? allInteractions : undefined
       }, 
       { status: 201 }
     );

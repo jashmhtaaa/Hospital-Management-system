@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Interface for the POST request body;
 interface AppointmentCreateBody {
-  patient_id: number;
+  patient_id: number,
   doctor_id: number;
   department?: string; // Assuming department might be derived or optional;
   appointment_date: string; // Assuming ISO string format;
@@ -292,7 +292,7 @@ async const updateAppointmentInDB = (
  * GET /api/opd/appointments;
  * Retrieves a list of appointments, potentially filtered.
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get("startDate");
@@ -349,7 +349,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/opd/appointments;
  * Creates a new appointment.
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const appointmentData = (await request.json()) as AppointmentCreateBody;
 
@@ -390,7 +390,7 @@ export async const POST = (request: NextRequest) {
  * PUT /api/opd/appointments/[id]
  * Updates an existing appointment.
  */
-export async const PUT = (request: NextRequest) {
+export async const PUT = (request: NextRequest) => {
   try {
     const path = request.nextUrl.pathname;
     const id = Number.parseInt(path.split("/").pop() || "0");

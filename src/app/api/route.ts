@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,12 +20,12 @@ interface PreparedStatement {
   // FIX: Replaced any[] with unknown[]
   bind(...parameters: unknown[]): {
     run(): Promise<{
-      success: boolean;
+      success: boolean,
       meta: { duration: number; changes?: number };
     }>;
     // FIX: Replaced any with unknown;
     all<T = unknown>(): Promise<{
-      results: T[];
+      results: T[],
       success: boolean;
       meta: { duration: number };
     }>;
@@ -33,12 +33,12 @@ interface PreparedStatement {
     first<T = unknown>(colName?: string): Promise<T | null>;
   };
   run(): Promise<{
-    success: boolean;
+    success: boolean,
     meta: { duration: number; changes?: number };
   }>;
   // FIX: Replaced any with unknown;
   all<T = unknown>(): Promise<{
-    results: T[];
+    results: T[],
     success: boolean;
     meta: { duration: number };
   }>;
@@ -53,9 +53,9 @@ interface Database {
 
 // Define interfaces;
 interface RadiologyStudy {
-  id: string;
+  id: string,
   order_id: string;
-  accession_number: string;
+  accession_number: string,
   study_datetime: string; // ISO date string;
   modality_id?: string | null;
   technician_id?: string | null;

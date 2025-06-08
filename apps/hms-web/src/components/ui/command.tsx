@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Command = React.forwardRef<HTMLDivElement, CommandProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-gray-950",
@@ -33,20 +33,11 @@ interface CommandInputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(
   ({ className, ...props }, ref) => (
     <div className="flex items-center border-b px-3">;
-      <svg;
-        xmlns="http://www.w3.org/2000/svg";
-        viewBox="0 0 24 24";
-        fill="none";
-        stroke="currentColor";
-        strokeWidth="2";
-        strokeLinecap="round";
-        strokeLinejoin="round";
-        className="mr-2 h-4 w-4 shrink-0 opacity-50";
-      >
-        <circle cx="11" cy="11" r="8" />;
-        <path d="m21 21-4.3-4.3" />;
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-4 w-4 shrink-0 opacity-50">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
       </svg>
-      <input;
+      <input>
         ref={ref}
         className={cn(
           "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50",
@@ -63,7 +54,7 @@ interface CommandListProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const CommandList = React.forwardRef<HTMLDivElement, CommandListProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
       {...props}
@@ -76,7 +67,7 @@ interface CommandEmptyProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "py-6 text-center text-sm",
@@ -89,12 +80,12 @@ const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>(
 CommandEmpty.displayName = "CommandEmpty";
 
 interface CommandGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading: React.ReactNode;
+  heading: React.ReactNode
 }
 
 const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(
   ({ className, heading, children, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn("overflow-hidden p-1 text-gray-950", className)}
       {...props}
@@ -115,7 +106,7 @@ interface CommandItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(
   ({ className, onSelect, disabled = false, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-gray-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -131,12 +122,11 @@ CommandItem.displayName = "CommandItem";
 
 interface CommandShortcutProps extends React.HTMLAttributes<HTMLSpanElement> {}
 
-const CommandShortcut = ({
-  className,
-  ...props;
+const CommandShortcut = ({ className,
+  ...props
 }: CommandShortcutProps) => {
   return (
-    <span;
+<span
       className={cn(
         "ml-auto text-xs tracking-widest text-gray-500",
         className;

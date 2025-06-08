@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ export class BiometricService {
    * Register a new biometric template for an employee;
    */
   async registerBiometricTemplate(data: {
-    employeeId: string;
+    employeeId: string,
     templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
     templateData: string;
     deviceId?: string;
@@ -97,9 +97,9 @@ export class BiometricService {
    * This is a placeholder for actual biometric verification logic;
    */
   async verifyBiometric(data: {
-    employeeId: string;
+    employeeId: string,
     templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
-    sampleData: string;
+    sampleData: string
   }) {
     const { employeeId, templateType, sampleData } = data;
     
@@ -152,7 +152,7 @@ export class BiometricService {
    * Register a biometric device;
    */
   async registerBiometricDevice(data: {
-    deviceId: string;
+    deviceId: string,
     deviceType: 'FINGERPRINT_SCANNER' | 'FACIAL_RECOGNITION' | 'IRIS_SCANNER';
     location: string;
     ipAddress?: string;

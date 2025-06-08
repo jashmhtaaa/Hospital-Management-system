@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,15 +18,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 
 interface ERRegistrationModalProps {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
-  onSubmit: (data: unknown) => void;
+  onSubmit: (data: unknown) => void
 }
 
 /**
  * Emergency Room patient registration modal component;
  */
-export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrationModalProps) {
+export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrationModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here;
@@ -44,23 +44,23 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
             <div className="grid grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="firstName">First Name</Label>;
-                <Input id="firstName" placeholder="First name" required />;
+                <Input id="firstName" placeholder="First name" required />
               </div>
               <div className="space-y-2">;
                 <Label htmlFor="lastName">Last Name</Label>;
-                <Input id="lastName" placeholder="Last name" required />;
+                <Input id="lastName" placeholder="Last name" required />
               </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="dob">Date of Birth</Label>;
-                <Input id="dob" type="date" required />;
+                <Input id="dob" type="date" required />
               </div>
               <div className="space-y-2">;
                 <Label htmlFor="gender">Gender</Label>;
-                <Select;
-                  id="gender";
+                <Select>
+                  id="gender"
                   options={[
                     { value: "male", label: "Male" },
                     { value: "female", label: "Female" },
@@ -72,30 +72,30 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
             
             <div className="space-y-2">;
               <Label htmlFor="chiefComplaint">Chief Complaint</Label>;
-              <Textarea id="chiefComplaint" placeholder="Reason for emergency visit" required />;
+              <Textarea id="chiefComplaint" placeholder="Reason for emergency visit" required />
             </div>
             
             <div className="grid grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="contactPhone">Contact Phone</Label>;
-                <Input id="contactPhone" placeholder="Phone number" />;
+                <Input id="contactPhone" placeholder="Phone number" />
               </div>
               <div className="space-y-2">;
                 <Label htmlFor="emergencyContact">Emergency Contact</Label>;
-                <Input id="emergencyContact" placeholder="Emergency contact" />;
+                <Input id="emergencyContact" placeholder="Emergency contact" />
               </div>
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="allergies">Allergies</Label>;
-              <Input id="allergies" placeholder="Known allergies" />;
+              <Input id="allergies" placeholder="Known allergies" />
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>;
-              Cancel;
+              Cancel
             </Button>
-            <Button type="submit">Register Patient</Button>;
+            <Button type="submit">Register Patient</Button>
           </DialogFooter>
         </form>
       </DialogContent>

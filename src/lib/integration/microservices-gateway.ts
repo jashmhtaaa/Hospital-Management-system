@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,9 +22,9 @@ import { cacheService } from '@/lib/cache/redis-cache';
 import { pubsub } from '@/lib/graphql/schema-base';
 
 export interface MicroserviceConfig {
-  name: string;
+  name: string,
   baseUrl: string;
-  healthEndpoint: string;
+  healthEndpoint: string,
   endpoints: Record<string, EndpointConfig>;
   circuitBreakerOptions?: CircuitBreakerOptions;
   authentication?: AuthConfig;
@@ -34,7 +34,7 @@ export interface MicroserviceConfig {
 }
 
 export interface EndpointConfig {
-  path: string;
+  path: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   cacheable?: boolean;
   cacheTTL?: number; // Override default TTL;
@@ -59,49 +59,49 @@ export interface AuthConfig {
 }
 
 export interface RetryConfig {
-  attempts: number;
+  attempts: number,
   delay: number; // milliseconds;
   maxDelay?: number; // milliseconds;
   backoff?: boolean; // exponential backoff;
 }
 
 export interface BatchConfig {
-  maxSize: number;
+  maxSize: number,
   maxDelay: number; // milliseconds;
-  idProperty: string;
+  idProperty: string
 }
 
 export interface ServiceResponse<T> {
-  data: T;
+  data: T,
   status: number;
-  statusText: string;
+  statusText: string,
   headers: Record<string, string>;
-  cached: boolean;
+  cached: boolean,
   duration: number; // milliseconds;
-  timestamp: Date;
+  timestamp: Date
 }
 
 export interface ServiceStatus {
-  name: string;
+  name: string,
   status: 'UP' | 'DOWN' | 'DEGRADED';
-  responseTime: number;
+  responseTime: number,
   lastChecked: Date;
-  message: string;
+  message: string,
   circuitState: 'CLOSED' | 'OPEN' | 'HALF_OPEN';
-  metrics: ServiceMetrics;
+  metrics: ServiceMetrics
 }
 
 export interface ServiceMetrics {
-  requestCount: number;
+  requestCount: number,
   successCount: number;
-  failureCount: number;
+  failureCount: number,
   timeoutCount: number;
-  errorRate: number;
+  errorRate: number,
   avgResponseTime: number;
-  p95ResponseTime: number;
+  p95ResponseTime: number,
   cacheHitRate: number;
-  circuitBreakerTrips: number;
-  retryCount: number;
+  circuitBreakerTrips: number,
+  retryCount: number
 }
 
 @Injectable();
@@ -111,8 +111,7 @@ export class MicroservicesGateway {
   private transforms: Map<string, Function> = new Map();
   private fallbacks: Map<string, Function> = new Map();
   private batchQueues: Map<string, any[]> = new Map();
-  private batchTimers: Map<string, NodeJS.Timeout> = new Map();
-
+  private batchTimers: Map<string, NodeJS.Timeout> = new Map(),
   constructor(private readonly httpService: HttpService) {}
 
   /**
@@ -283,7 +282,7 @@ export class MicroservicesGateway {
         successful: 0, 
         failed: 0, 
         timedOut: 0,
-        total: 0;
+        total: 0
       };
       
       const status: ServiceStatus = {
@@ -610,8 +609,7 @@ export class MicroservicesGateway {
           config.headers.Authorization = `Basic ${auth}`;
           break;
         case 'none':
-        default:
-          break;
+        default: break
       }
     }
     
@@ -713,7 +711,7 @@ export class MicroservicesGateway {
   }
 
   private isBatchable(params: unknown): boolean {
-    return params && typeof params === 'object' && !Array.isArray(params);
+    return params && typeof params === 'object' && !Array.isArray(params)
   }
 
   private async enqueueBatchRequest<T>(

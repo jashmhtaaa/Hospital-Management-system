@@ -42,7 +42,7 @@ interface PerformanceConfig {
   readonly endpoints: readonly EndpointConfig[];
   readonly alerting: AlertConfig;
   readonly reporting: ReportingConfig;
-  readonly healthcareSpecific: HealthcareConfig;
+  readonly healthcareSpecific: HealthcareConfig
 }
 
 interface PerformanceThresholds {
@@ -86,7 +86,7 @@ interface EscalationLevel {
   readonly severity: AlertSeverity;
   readonly thresholdCount: number; // Number of failures before escalation
   readonly timeWindow: number; // Time window in minutes
-  readonly recipients: readonly string[];
+  readonly recipients: readonly string[]
 }
 
 interface ReportingConfig {
@@ -94,7 +94,7 @@ interface ReportingConfig {
   readonly outputDir: string;
   readonly formats: readonly ('json' | 'html' | 'csv' | 'prometheus')[];
   readonly retention: number; // Days to keep reports
-  readonly realTimeMetrics: boolean;
+  readonly realTimeMetrics: boolean
 }
 
 interface HealthcareConfig {
@@ -103,7 +103,7 @@ interface HealthcareConfig {
   readonly emergencyAlertingEnabled: boolean;
   readonly hipaaComplianceChecks: boolean;
   readonly fhirValidationEnabled: boolean;
-  readonly medicalDeviceIntegration: boolean;
+  readonly medicalDeviceIntegration: boolean
 }
 
 type AlertSeverity = 'info' | 'warning' | 'error' | 'critical' | 'emergency';
@@ -138,7 +138,7 @@ interface PerformanceMetrics {
   readonly tlsHandshakeTime: number;
   readonly timeToFirstByte: number;
   readonly contentDownloadTime: number;
-  readonly totalTime: number;
+  readonly totalTime: number
 }
 
 interface SystemMetrics {
@@ -152,7 +152,7 @@ interface SystemMetrics {
     readonly loadAvg: readonly number[];
     readonly freeMem: number;
     readonly totalMem: number;
-    readonly uptime: number;
+    readonly uptime: number
   };
   readonly process: {
     readonly pid: number;
@@ -169,7 +169,7 @@ interface SystemMetrics {
 interface GCMetrics {
   readonly totalTime: number;
   readonly totalCount: number;
-  readonly averageTime: number;
+  readonly averageTime: number
 }
 
 interface Alert {
@@ -203,7 +203,7 @@ interface PerformanceResults {
     readonly totalRequests: number;
     readonly throughput: number; // Requests per second
     readonly p95ResponseTime: number;
-    readonly p99ResponseTime: number;
+    readonly p99ResponseTime: number
   };
   readonly systemMetrics: SystemMetrics;
   readonly alerts: readonly Alert[];
@@ -211,9 +211,9 @@ interface PerformanceResults {
     readonly patientCareEndpointsHealth: number;
     readonly emergencySystemsAvailability: number;
     readonly fhirComplianceScore: number;
-    readonly clinicalWorkflowPerformance: number;
+    readonly clinicalWorkflowPerformance: number
   };
-  readonly recommendations: readonly string[];
+  readonly recommendations: readonly string[]
 }
 
 // Healthcare-optimized configuration with patient safety priorities
@@ -388,10 +388,10 @@ class PerformanceMonitor {
   }
 
   private async makeRequest(url: string, endpoint: EndpointConfig): Promise<{
-    statusCode: number;
+    statusCode: number,
     headers: Record<string, string | string[]>;
-    body: string;
-    contentLength: number;
+    body: string,
+    contentLength: number
   }> {
     return new Promise((resolve, reject) => {
       const urlObj = new URL(url);
@@ -432,7 +432,7 @@ class PerformanceMonitor {
       });
       
       req.on('timeout', () => {
-        req.destroy();
+        req.destroy(),
         reject(new Error(`Request timeout after ${this.config.timeout}ms`));
       });
       
@@ -451,7 +451,7 @@ class PerformanceMonitor {
 
   private getResponseTimeThreshold(endpoint: EndpointConfig): number {
     if (endpoint.maxResponseTime) {
-      return endpoint.maxResponseTime;
+      return endpoint.maxResponseTime
     }
     
     if (endpoint.category === 'emergency') {

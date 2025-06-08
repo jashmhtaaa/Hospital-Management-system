@@ -10,13 +10,13 @@ const prisma = new PrismaClient();
 
 interface RouteContext {
   params: {
-    reportId: string;
+    reportId: string
   };
 }
 
 const labReportStatusValues = Object.values(LabReportStatus);
 
-export async const GET = (request: NextRequest, { params }: RouteContext) {
+export async const GET = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
   const { reportId } = params;
@@ -62,8 +62,7 @@ export async const GET = (request: NextRequest, { params }: RouteContext) {
     await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_SUCCESS", { reportId, data: labReport });
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return sendSuccessResponse(labReport);
-
+    return sendSuccessResponse(labReport)
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) });
@@ -89,7 +88,7 @@ const updateLabReportSchema = z.object({
   storagePath: z.string().min(1).max(1024).optional().nullable(),
 });
 
-export async const PUT = (request: NextRequest, { params }: RouteContext) {
+export async const PUT = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
   const { reportId } = params;
@@ -174,8 +173,7 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) {
     await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_SUCCESS", { reportId, changes: validation.data, updatedData: updatedLabReport });
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return sendSuccessResponse(updatedLabReport);
-
+    return sendSuccessResponse(updatedLabReport)
   } catch (error: unknown) {
 
     let errStatus = 500;
@@ -197,7 +195,7 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) {
   }
 }
 
-export async const DELETE = (request: NextRequest, { params }: RouteContext) {
+export async const DELETE = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
   const { reportId } = params;

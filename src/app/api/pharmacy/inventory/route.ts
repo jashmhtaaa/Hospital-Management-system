@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -35,14 +35,14 @@ const inventoryRepository = {
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true);
+  transferStock: () => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/inventory;
  * List inventory with stock levels and filtering options;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -88,7 +88,7 @@ export async const GET = (req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: paginatedItems.length;
+        resultCount: paginatedItems.length
       }
     });
 
@@ -99,7 +99,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -111,7 +111,7 @@ export async const GET = (req: NextRequest) {
  * POST /api/pharmacy/inventory;
  * Add new inventory item;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -153,7 +153,7 @@ export async const POST = (req: NextRequest) {
         JSON.stringify({
           scheduleClass: data.scheduleClass,
           lockboxNumber: data.lockboxNumber,
-          lastAuditDate: data.lastAuditDate;
+          lastAuditDate: data.lastAuditDate
         });
       );
     }
@@ -171,7 +171,7 @@ export async const POST = (req: NextRequest) {
         medicationId: data.medicationId,
         locationId: data.locationId,
         quantity: data.quantityOnHand,
-        isControlled: data.isControlled || false;
+        isControlled: data.isControlled || false
       }
     });
 
@@ -179,7 +179,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: inventoryItemId,
-        message: 'Inventory item created successfully';
+        message: 'Inventory item created successfully'
       }, 
       { status: 201 }
     );

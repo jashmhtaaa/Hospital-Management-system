@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -153,7 +153,7 @@ export class DashboardResolver {
 
   @Query();
   async kpi(@Args('id') id: string) {
-    return this.dashboardService.getKPIById(id);
+    return this.dashboardService.getKPIById(id)
   }
 
   @Mutation();

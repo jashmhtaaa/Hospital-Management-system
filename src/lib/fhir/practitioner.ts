@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -71,7 +71,7 @@ export class FHIRPractitionerUtils {
    * Create a basic practitioner;
    */
   static createBasicPractitioner(data: {
-    firstName: string;
+    firstName: string,
     lastName: string;
     middleName?: string;
     title?: string;
@@ -80,9 +80,9 @@ export class FHIRPractitionerUtils {
     phone?: string;
     email?: string;
     address?: {
-      street: string;
+      street: string,
       city: string;
-      state: string;
+      state: string,
       zipCode: string;
       country?: string;
     };
@@ -112,11 +112,11 @@ export class FHIRPractitionerUtils {
           coding: [{
             system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
             code: 'NPI',
-            display: 'National Provider Identifier';
+            display: 'National Provider Identifier'
           }]
         },
         system: 'http://hl7.org/fhir/sid/us-npi',
-        value: data.npiNumber;
+        value: data.npiNumber
       });
     }
 
@@ -127,10 +127,10 @@ export class FHIRPractitionerUtils {
           coding: [{
             system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
             code: 'MD',
-            display: 'Medical License number';
+            display: 'Medical License number'
           }]
         },
-        value: data.licenseNumber;
+        value: data.licenseNumber
       });
     }
 
@@ -145,7 +145,7 @@ export class FHIRPractitionerUtils {
       telecom.push({
         system: 'phone',
         value: data.phone,
-        use: 'work';
+        use: 'work'
       });
     }
 
@@ -153,7 +153,7 @@ export class FHIRPractitionerUtils {
       telecom.push({
         system: 'email',
         value: data.email,
-        use: 'work';
+        use: 'work'
       });
     }
 
@@ -169,7 +169,7 @@ export class FHIRPractitionerUtils {
         city: data.address.city,
         state: data.address.state,
         postalCode: data.address.zipCode,
-        country: data.address.country || 'US';
+        country: data.address.country || 'US'
       }];
     }
 
@@ -189,7 +189,7 @@ export class FHIRPractitionerUtils {
           coding: [{
             system: 'http://nucc.org/provider-taxonomy',
             code: this.getSpecialtyCode(specialty),
-            display: specialty;
+            display: specialty
           }]
         }
       }));
@@ -202,14 +202,14 @@ export class FHIRPractitionerUtils {
    * Create a doctor practitioner;
    */
   static createDoctor(data: {
-    firstName: string;
+    firstName: string,
     lastName: string;
     middleName?: string;
     title?: string;
-    specialty: string;
+    specialty: string,
     licenseNumber: string;
     npiNumber?: string;
-    phone: string;
+    phone: string,
     email: string;
     hospitalAffiliation?: string;
     yearsExperience?: number;
@@ -225,7 +225,7 @@ export class FHIRPractitionerUtils {
       licenseNumber: data.licenseNumber,
       npiNumber: data.npiNumber,
       specialties: [data.specialty, ...(data.boardCertifications || [])],
-      active: true;
+      active: true
     });
 
     // Add medical degree qualification;
@@ -238,7 +238,7 @@ export class FHIRPractitionerUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0360',
           code: 'MD',
-          display: 'Doctor of Medicine';
+          display: 'Doctor of Medicine'
         }]
       }
     });
@@ -250,11 +250,11 @@ export class FHIRPractitionerUtils {
    * Create a nurse practitioner;
    */
   static createNurse(data: {
-    firstName: string;
+    firstName: string,
     lastName: string;
     nursingLicense: string;
     specialty?: string;
-    phone: string;
+    phone: string,
     email: string;
     department?: string;
     yearsExperience?: number;
@@ -266,7 +266,7 @@ export class FHIRPractitionerUtils {
       email: data.email,
       licenseNumber: data.nursingLicense,
       specialties: data.specialty ? [data.specialty] : [],
-      active: true;
+      active: true
     });
 
     // Add nursing degree qualification;
@@ -279,7 +279,7 @@ export class FHIRPractitionerUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0360',
           code: 'RN',
-          display: 'Registered Nurse';
+          display: 'Registered Nurse'
         }]
       }
     });
@@ -383,7 +383,7 @@ export class FHIRPractitionerUtils {
    * Check if practitioner is active;
    */
   static isActive(practitioner: FHIRPractitioner): boolean {
-    return practitioner.active !== false;
+    return practitioner.active !== false
   }
 
   /**
@@ -425,15 +425,15 @@ export class FHIRPractitionerUtils {
    * Format practitioner for display;
    */
   static formatForDisplay(practitioner: FHIRPractitioner): {
-    name: string;
+    name: string,
     title: string;
     specialty: string;
     phone?: string;
     email?: string;
     licenseNumber?: string;
     npiNumber?: string;
-    isActive: boolean;
-    type: 'Doctor' | 'Nurse' | 'Other';
+    isActive: boolean,
+    type: 'Doctor' | 'Nurse' | 'Other'
   } {
     return {
       name: this.getDisplayName(practitioner),
@@ -517,12 +517,12 @@ export class FHIRPractitionerUtils {
         city: hmsPractitioner.address.city || '',
         state: hmsPractitioner.address.state || '',
         zipCode: hmsPractitioner.address.zipCode || '',
-        country: hmsPractitioner.address.country;
+        country: hmsPractitioner.address.country
       } : undefined,
       licenseNumber: hmsPractitioner.licenseNumber,
       npiNumber: hmsPractitioner.npiNumber,
       specialties: hmsPractitioner.specialties || (hmsPractitioner.specialty ? [hmsPractitioner.specialty] : []),
-      active: hmsPractitioner.isActive !== false;
+      active: hmsPractitioner.isActive !== false
     });
   }
 
@@ -566,8 +566,7 @@ export class FHIRPractitionerUtils {
           return this.isNurse(practitioner);
         case 'Other':
           return !this.isDoctor(practitioner) && !this.isNurse(practitioner);
-        default:
-          return false;
+        default: return false
       }
     });
   }
@@ -576,7 +575,7 @@ export class FHIRPractitionerUtils {
    * Get active practitioners;
    */
   static getActivePractitioners(practitioners: FHIRPractitioner[]): FHIRPractitioner[] {
-    return practitioners.filter(practitioner => this.isActive(practitioner));
+    return practitioners.filter(practitioner => this.isActive(practitioner))
   }
 }
 
@@ -659,13 +658,13 @@ export class FHIRPractitionerSpecialties {
    * Check if specialty is medical;
    */
   static isMedicalSpecialty(code: string): boolean {
-    return Object.values(this.MEDICAL_SPECIALTIES).some(specialty => specialty.code === code);
+    return Object.values(this.MEDICAL_SPECIALTIES).some(specialty => specialty.code === code)
   }
 
   /**
    * Check if specialty is nursing;
    */
   static isNursingSpecialty(code: string): boolean {
-    return Object.values(this.NURSING_SPECIALTIES).some(specialty => specialty.code === code);
+    return Object.values(this.NURSING_SPECIALTIES).some(specialty => specialty.code === code)
   }
 }

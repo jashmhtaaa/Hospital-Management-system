@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,7 +38,7 @@ const vitalCreateSchema = z.object({
 export async const GET = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
+) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -148,7 +148,7 @@ export async const GET = (
 export async const POST = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
+) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,21 +18,21 @@ import {
   TableBody,
   TableCell,
   Button,
-  // Badge, // FIX: Removed unused import;
+  // Badge, // FIX: Removed unused import
 } from "@/components/ui";
 
 // FIX: Define an interface for the patient data structure;
 interface Inpatient {
   id: string; // Assuming this is the admission ID (string);
-  patient_id: string; // FIX: Add patient_id field;
+  patient_id: string; // FIX: Add patient_id field,
   patient_first_name: string;
-  patient_last_name: string;
+  patient_last_name: string,
   admission_number: string;
   bed_number: string;
   room_number?: string | null;
-  ward: string;
+  ward: string,
   doctor_first_name: string;
-  doctor_last_name: string;
+  doctor_last_name: string,
   admission_date: string; // Assuming ISO date string;
   // Add other relevant fields if needed;
 }
@@ -45,7 +45,7 @@ type InpatientsApiResponse = Inpatient[];
 // FIX: Define props for IPDPatientList;
 interface IPDPatientListProperties {
   // FIX: Ensure prop types match usage in parent (ipd/page.tsx)
-  onViewPatient: (admissionId: number, patientId: number) => void;
+  onViewPatient: (admissionId: number, patientId: number) => void
 }
 
 // FIX: Update component to accept props;
@@ -61,7 +61,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined); // Reset error on new fetch;
         const response = await fetch("/api/ipd/admissions?status=active");
 
@@ -87,7 +87,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
             : "An unknown error occurred";
         setError(
           `Failed to load inpatient list: ${message}. Please try again later.`;
-        );
+        ),
         setPatients([]); // Clear patients on error;
       } finally {
         setLoading(false);
@@ -117,7 +117,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
     <div className="space-y-4">;
       {loading ? (
         <div className="flex justify-center p-8">;
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>;
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
         </div>
       ) : error ? (
         <div className="text-red-500 p-4 text-center">{error}</div>;
@@ -138,7 +138,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
             {patients.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-4">;
-                  No active inpatients found;
+                  No active inpatients found
                 </TableCell>
               </TableRow>
             ) : (
@@ -150,7 +150,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
                   </TableCell>
                   <TableCell>{patient.admission_number}</TableCell>
                   <TableCell>
-                    {patient.bed_number} ({patient.room_number || "N/A"});
+                    {patient.bed_number} ({patient.room_number || "N/A"})
                   </TableCell>
                   <TableCell>{patient.ward}</TableCell>
                   <TableCell>
@@ -161,14 +161,14 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
                   </TableCell>
                   <TableCell>
                     {/* FIX: Add onClick handler */}
-                    <Button;
-                      size="sm";
-                      variant="outline";
+                    <Button>
+                      size="sm"
+                      variant="outline"
                       onClick={() =>
                         handleViewClick(patient.id, patient.patient_id);
                       }
                     >
-                      View Details;
+                      View Details
                     </Button>
                   </TableCell>
                 </TableRow>

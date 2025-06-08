@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -45,7 +45,7 @@ export class PredictiveAnalyticsResolver {
 
   @Query();
   async predictiveModel(@Args('id') id: string) {
-    return this.predictiveAnalyticsService.getModelById(id);
+    return this.predictiveAnalyticsService.getModelById(id)
   }
 
   @Mutation();
@@ -114,7 +114,7 @@ export class PredictiveAnalyticsResolver {
 
   @Query();
   async forecastCensus(@Args('options') options: unknown) {
-    return this.predictiveAnalyticsService.forecastCensus(options);
+    return this.predictiveAnalyticsService.forecastCensus(options)
   }
 
   @Query();

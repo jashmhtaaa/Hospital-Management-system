@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,30 +20,30 @@ import { getDatabaseHealth } from '../database/connection-pool';
 
 // Metric types;
 export interface Metric {
-  name: string;
+  name: string,
   value: number;
   timestamp: Date;
   tags?: Record<string, string>;
-  type: 'counter' | 'gauge' | 'histogram' | 'timer';
+  type: 'counter' | 'gauge' | 'histogram' | 'timer'
 }
 
 export interface HealthMetric {
-  service: string;
+  service: string,
   status: 'healthy' | 'degraded' | 'unhealthy';
   responseTime?: number;
   errorRate?: number;
   details?: unknown;
-  timestamp: Date;
+  timestamp: Date
 }
 
 export interface AlertRule {
-  id: string;
+  id: string,
   name: string;
-  metric: string;
+  metric: string,
   condition: 'gt' | 'lt' | 'eq' | 'gte' | 'lte';
-  threshold: number;
+  threshold: number,
   duration: number; // seconds;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   enabled: boolean;
   notifications: string[]; // channels: email, slack, sms;
 }
@@ -269,7 +269,7 @@ class MetricsCollector {
     this.recordGauge('system.memory_usage', memUsage.heapUsed / memUsage.heapTotal);
 
     // Event loop lag;
-    const start = process.hrtime.bigint();
+    const start = process.hrtime.bigint(),
     setImmediate(() => {
       const lag = Number(process.hrtime.bigint() - start) / 1000000; // Convert to milliseconds;
       this.recordGauge('system.event_loop_lag', lag);
@@ -348,7 +348,7 @@ class MetricsCollector {
   }
 
   removeAlertRule(ruleId: string): void {
-    this.alertRules.delete(ruleId);
+    this.alertRules.delete(ruleId)
   }
 
   private checkAlertRules(metricName: string, value: number): void {
@@ -370,7 +370,7 @@ class MetricsCollector {
       case 'lt': return value < threshold;
       case 'lte': return value <= threshold;
       case 'eq': return value === threshold;
-      default: return false;
+      default: return false
     }
   }
 
@@ -513,7 +513,7 @@ class MetricsCollector {
   startCollection(intervalSeconds: number = 60): void {
     if (this.isCollecting) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      return;
+      return
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -531,7 +531,7 @@ class MetricsCollector {
   stopCollection(): void {
     if (!this.isCollecting) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      return;
+      return
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -546,7 +546,7 @@ class MetricsCollector {
   // Export metrics (for external monitoring systems)
   exportMetrics(format: 'json' | 'prometheus' = 'json'): string {
     if (format === 'prometheus') {
-      return this.exportPrometheusFormat();
+      return this.exportPrometheusFormat()
     }
 
     return JSON.stringify({

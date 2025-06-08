@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,13 +16,13 @@ var __DEV__: boolean;
 
 // Placeholder for actual user repository/data access;
 interface IUserRepository {
-  findByUsername(username: string): Promise<any | null>;
+  findByUsername(username: string): Promise<any | null>
 }
 
 // Placeholder for auth utilities (hashing, token generation)
 interface IAuthUtils {
   verifyPassword(password: string, hash: string): Promise<boolean>;
-  generateToken(userId: string, username: string): Promise<string>;
+  generateToken(userId: string, username: string): Promise<string>
 }
 
 // Placeholder for AuditLogService;

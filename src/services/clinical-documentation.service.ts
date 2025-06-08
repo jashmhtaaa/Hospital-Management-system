@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -117,7 +117,7 @@ export class ClinicalDocumentationService {
       include: {
         sections: {
           orderBy: {
-            sectionOrder: 'asc';
+            sectionOrder: 'asc'
           }
         },
         signatures: true,
@@ -703,7 +703,7 @@ export class ClinicalDocumentationService {
 export interface CreateDocumentDto {
   patientId: string;
   encounterId?: string;
-  documentType: string;
+  documentType: string,
   documentTitle: string;
   content: string;
   templateId?: string;
@@ -711,10 +711,10 @@ export interface CreateDocumentDto {
   attachmentUrls?: string[];
   tags?: string[];
   sections?: {
-    sectionTitle: string;
+    sectionTitle: string,
     sectionType: string;
     sectionOrder?: number;
-    content: string;
+    content: string
   }[];
 }
 
@@ -735,7 +735,7 @@ export interface UpdateDocumentDto {
 }
 
 export interface SignDocumentDto {
-  signerRole: string;
+  signerRole: string,
   signatureType: string;
   attestation?: string;
   ipAddress?: string;
@@ -745,7 +745,7 @@ export interface SignDocumentDto {
 }
 
 export interface CreateAmendmentDto {
-  amendmentType: string;
+  amendmentType: string,
   amendmentReason: string;
   content: string;
   status?: string;
@@ -769,13 +769,13 @@ export interface TemplateFilters {
 }
 
 export interface CreateTemplateDto {
-  templateName: string;
+  templateName: string,
   templateType: string;
   specialtyType?: string;
   description?: string;
   content: string;
   sections?: {
-    sectionTitle: string;
+    sectionTitle: string,
     sectionType: string;
     sectionOrder?: number;
     content: string;
@@ -785,19 +785,19 @@ export interface CreateTemplateDto {
 }
 
 export interface PaginatedResult<T> {
-  data: T[];
+  data: T[],
   pagination: {
-    total: number;
+    total: number,
     page: number;
-    pageSize: number;
-    totalPages: number;
+    pageSize: number,
+    totalPages: number
   };
 }
 
 export interface DocumentWithRelations extends ClinicalDocument {
-  sections: DocumentSection[];
+  sections: DocumentSection[],
   signatures: DocumentSignature[];
-  amendments: DocumentAmendment[];
+  amendments: DocumentAmendment[]
 }
 
 // Export service instance;

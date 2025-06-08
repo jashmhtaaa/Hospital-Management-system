@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -69,7 +69,7 @@ async const generateMRN = (db: D1Database): Promise<string> {
 }
 
 // POST /api/patients/register - Register a new patient;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
     // No session check here, assuming public registration endpoint;
     // Add authentication/authorization if this is an internal endpoint;
 

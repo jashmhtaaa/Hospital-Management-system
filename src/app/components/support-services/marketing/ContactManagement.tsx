@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,7 +24,7 @@ import { useRouter } from 'next/navigation';
 
 interface ContactManagementProps {
   contactId?: string;
-  onSuccess?: (contact: unknown) => void;
+  onSuccess?: (contact: unknown) => void
 }
 
 export default const ContactManagement = ({ contactId, onSuccess }: ContactManagementProps) {
@@ -43,13 +43,13 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       city: '',
       state: '',
       postalCode: '',
-      country: '';
+      country: ''
     },
     preferences: {
       emailOptIn: true,
       smsOptIn: false,
       preferredContactMethod: 'EMAIL',
-      preferredLanguage: 'English';
+      preferredLanguage: 'English'
     },
     customFields: {}
   });
@@ -71,7 +71,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
         const response = await fetch(`/api/support-services/marketing/contacts/${contactId}`);
         if (!response.ok) throw new Error('Failed to fetch contact');
         
-        const data = await response.json();
+        const data = await response.json(),
         setContact(data);
         
         // Set form values from contact data;
@@ -86,13 +86,13 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
             city: '',
             state: '',
             postalCode: '',
-            country: '';
+            country: ''
           },
           preferences: data.preferences || {
             emailOptIn: true,
             smsOptIn: false,
             preferredContactMethod: 'EMAIL',
-            preferredLanguage: 'English';
+            preferredLanguage: 'English'
           },
           customFields: data.customFields || {}
         });
@@ -109,7 +109,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
         
         // Fetch patient data if linked;
         if (data.patientId) {
-          setPatientId(data.patientId);
+          setPatientId(data.patientId),
           fetchPatientData(data.patientId);
         }
         
@@ -137,7 +137,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
         const response = await fetch('/api/support-services/marketing/segments?isActive=true');
         if (!response.ok) throw new Error('Failed to fetch segments');
         
-        const data = await response.json();
+        const data = await response.json(),
         setAvailableSegments(data.data || []);
       } catch (error) {
 
@@ -153,7 +153,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       const response = await fetch(`/api/patients/${id}`);
       if (!response.ok) throw new Error('Failed to fetch patient data');
       
-      const data = await response.json();
+      const data = await response.json(),
       setPatientData(data);
     } catch (error) {
 
@@ -166,7 +166,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       const response = await fetch(`/api/support-services/marketing/contacts/${id}/activities`);
       if (!response.ok) throw new Error('Failed to fetch contact activities');
       
-      const data = await response.json();
+      const data = await response.json(),
       setActivities(data || []);
     } catch (error) {
 
@@ -178,7 +178,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     const { name, value } = e.target;
     
     if (name.includes('.')) {
-      const [parent, child] = name.split('.');
+      const [parent, child] = name.split('.'),
       setFormData({
         ...formData,
         [parent]: {
@@ -197,7 +197,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
   // Handle select changes;
   const handleSelectChange = (name: string, value: string) => {
     if (name.includes('.')) {
-      const [parent, child] = name.split('.');
+      const [parent, child] = name.split('.'),
       setFormData({
         ...formData,
         [parent]: {
@@ -216,7 +216,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
   // Handle checkbox changes;
   const handleCheckboxChange = (name: string, checked: boolean) => {
     if (name.includes('.')) {
-      const [parent, child] = name.split('.');
+      const [parent, child] = name.split('.'),
       setFormData({
         ...formData,
         [parent]: {
@@ -234,7 +234,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
 
   // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(),
     setIsLoading(true);
     
     try {
@@ -254,8 +254,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       
       if (!response.ok) throw new Error('Failed to save contact');
       
-      const savedContact = await response.json();
-      
+      const savedContact = await response.json(),
       toast({
         title: "Success",
         description: `Contact ${contactId ? 'updated' : 'created'} successfully.`,
@@ -293,10 +292,9 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       
       if (!response.ok) throw new Error('Failed to add note');
       
-      const addedNote = await response.json();
+      const addedNote = await response.json(),
       setNotes([...notes, addedNote]);
-      setNewNote('');
-      
+      setNewNote(''),
       toast({
         title: "Success",
         description: "Note added successfully.",
@@ -326,10 +324,9 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       
       if (!response.ok) throw new Error('Failed to link patient');
       
-      const updatedContact = await response.json();
+      const updatedContact = await response.json(),
       setContact(updatedContact);
-      fetchPatientData(patientId);
-      
+      fetchPatientData(patientId),
       toast({
         title: "Success",
         description: "Patient linked successfully.",
@@ -395,7 +392,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
             <TabsTrigger value="details">Contact Details</TabsTrigger>;
             <TabsTrigger value="preferences">Preferences</TabsTrigger>;
             <TabsTrigger value="segments" disabled={!contactId}>Segments</TabsTrigger>;
-            <TabsTrigger value="activity" disabled={!contactId}>Activity</TabsTrigger>;
+            <TabsTrigger value="activity" disabled={!contactId}>Activity</TabsTrigger>
           </TabsList>
           
           <TabsContent value="details">;
@@ -404,25 +401,25 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
                   <div className="space-y-2">;
                     <Label htmlFor="name">Full Name</Label>;
-                    <Input;
-                      id="name";
-                      name="name";
+                    <Input>
+                      id="name"
+                      name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Enter full name";
+                      placeholder="Enter full name"
                       required;
                     />
                   </div>
                   
                   <div className="space-y-2">;
                     <Label htmlFor="email">Email Address</Label>;
-                    <Input;
-                      id="email";
-                      name="email";
+                    <Input>
+                      id="email"
+                      name="email"
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="Enter email address";
+                      placeholder="Enter email address"
                       required;
                     />
                   </div>
@@ -431,23 +428,23 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
                   <div className="space-y-2">;
                     <Label htmlFor="phone">Phone Number</Label>;
-                    <Input;
-                      id="phone";
-                      name="phone";
+                    <Input>
+                      id="phone"
+                      name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      placeholder="Enter phone number";
+                      placeholder="Enter phone number"
                     />
                   </div>
                   
                   <div className="space-y-2">;
                     <Label htmlFor="source">Contact Source</Label>;
-                    <Select;
+                    <Select>
                       value={formData.source}
                       onValueChange={(value) => handleSelectChange('source', value)}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select source" />;
+                        <SelectValue placeholder="Select source" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="WEBSITE">Website</SelectItem>;
@@ -456,7 +453,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                         <SelectItem value="EVENT">Event</SelectItem>;
                         <SelectItem value="PHONE">Phone</SelectItem>;
                         <SelectItem value="WALK_IN">Walk-in</SelectItem>;
-                        <SelectItem value="OTHER">Other</SelectItem>;
+                        <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -464,18 +461,18 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                 
                 <div className="space-y-2">;
                   <Label htmlFor="status">Status</Label>;
-                  <Select;
+                  <Select>
                     value={formData.status}
                     onValueChange={(value) => handleSelectChange('status', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select status" />;
+                      <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="ACTIVE">Active</SelectItem>;
                       <SelectItem value="INACTIVE">Inactive</SelectItem>;
                       <SelectItem value="UNSUBSCRIBED">Unsubscribed</SelectItem>;
-                      <SelectItem value="BOUNCED">Bounced</SelectItem>;
+                      <SelectItem value="BOUNCED">Bounced</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -486,35 +483,35 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                   <div className="space-y-4">;
                     <div className="space-y-2">;
                       <Label htmlFor="address.street">Street Address</Label>;
-                      <Input;
-                        id="address.street";
-                        name="address.street";
+                      <Input>
+                        id="address.street"
+                        name="address.street"
                         value={formData.address.street}
                         onChange={handleInputChange}
-                        placeholder="Enter street address";
+                        placeholder="Enter street address"
                       />
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4">;
                       <div className="space-y-2">;
                         <Label htmlFor="address.city">City</Label>;
-                        <Input;
-                          id="address.city";
-                          name="address.city";
+                        <Input>
+                          id="address.city"
+                          name="address.city"
                           value={formData.address.city}
                           onChange={handleInputChange}
-                          placeholder="Enter city";
+                          placeholder="Enter city"
                         />
                       </div>
                       
                       <div className="space-y-2">;
                         <Label htmlFor="address.state">State/Province</Label>;
-                        <Input;
-                          id="address.state";
-                          name="address.state";
+                        <Input>
+                          id="address.state"
+                          name="address.state"
                           value={formData.address.state}
                           onChange={handleInputChange}
-                          placeholder="Enter state/province";
+                          placeholder="Enter state/province"
                         />
                       </div>
                     </div>
@@ -522,23 +519,23 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                     <div className="grid grid-cols-2 gap-4">;
                       <div className="space-y-2">;
                         <Label htmlFor="address.postalCode">Postal Code</Label>;
-                        <Input;
-                          id="address.postalCode";
-                          name="address.postalCode";
+                        <Input>
+                          id="address.postalCode"
+                          name="address.postalCode"
                           value={formData.address.postalCode}
                           onChange={handleInputChange}
-                          placeholder="Enter postal code";
+                          placeholder="Enter postal code"
                         />
                       </div>
                       
                       <div className="space-y-2">;
                         <Label htmlFor="address.country">Country</Label>;
-                        <Input;
-                          id="address.country";
-                          name="address.country";
+                        <Input>
+                          id="address.country"
+                          name="address.country"
                           value={formData.address.country}
                           onChange={handleInputChange}
-                          placeholder="Enter country";
+                          placeholder="Enter country"
                         />
                       </div>
                     </div>
@@ -552,7 +549,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                     {patientData ? (
                       <div className="p-4 border rounded">;
                         <div className="flex justify-between items-start">;
-                          <div>
+<div
                             <h4 className="font-medium">{patientData.name}</h4>;
                             <p className="text-sm text-muted-foreground">Patient ID: {patientData.id}</p>;
                             {patientData.dateOfBirth && (
@@ -568,15 +565,15 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                       <div className="flex items-end space-x-2">;
                         <div className="flex-1 space-y-2">;
                           <Label htmlFor="patientId">Patient ID</Label>;
-                          <Input;
-                            id="patientId";
+                          <Input>
+                            id="patientId"
                             value={patientId}
                             onChange={(e) => setPatientId(e.target.value)}
-                            placeholder="Enter patient ID to link";
+                            placeholder="Enter patient ID to link"
                           />
                         </div>
                         <Button type="button" onClick={handleLinkPatient}>;
-                          Link Patient;
+                          Link Patient
                         </Button>
                       </div>
                     )}
@@ -591,15 +588,15 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                       <div className="flex items-end space-x-2">;
                         <div className="flex-1 space-y-2">;
                           <Label htmlFor="newNote">Add Note</Label>;
-                          <Input;
-                            id="newNote";
+                          <Input>
+                            id="newNote"
                             value={newNote}
                             onChange={(e) => setNewNote(e.target.value)}
-                            placeholder="Enter a note about this contact";
+                            placeholder="Enter a note about this contact"
                           />
                         </div>
                         <Button type="button" onClick={handleAddNote}>;
-                          Add Note;
+                          Add Note
                         </Button>
                       </div>
                       
@@ -623,12 +620,12 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => router.back()}
                 >
-                  Cancel;
+                  Cancel
                 </Button>
                 <Button type="submit" disabled={isLoading}>;
                   {isLoading ? 'Saving...' : contactId ? 'Update Contact' : 'Create Contact'}
@@ -648,11 +645,11 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                       <div className="space-y-0.5">;
                         <Label htmlFor="preferences.emailOptIn">Email Opt-in</Label>;
                         <p className="text-sm text-muted-foreground">;
-                          Receive marketing emails from us;
+                          Receive marketing emails from us
                         </p>
                       </div>
-                      <Switch;
-                        id="preferences.emailOptIn";
+                      <Switch>
+                        id="preferences.emailOptIn"
                         checked={formData.preferences.emailOptIn}
                         onCheckedChange={(checked) => handleCheckboxChange('preferences.emailOptIn', checked)}
                       />
@@ -662,11 +659,11 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                       <div className="space-y-0.5">;
                         <Label htmlFor="preferences.smsOptIn">SMS Opt-in</Label>;
                         <p className="text-sm text-muted-foreground">;
-                          Receive marketing text messages from us;
+                          Receive marketing text messages from us
                         </p>
                       </div>
-                      <Switch;
-                        id="preferences.smsOptIn";
+                      <Switch>
+                        id="preferences.smsOptIn"
                         checked={formData.preferences.smsOptIn}
                         onCheckedChange={(checked) => handleCheckboxChange('preferences.smsOptIn', checked)}
                       />
@@ -674,30 +671,30 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                     
                     <div className="space-y-2">;
                       <Label htmlFor="preferences.preferredContactMethod">Preferred Contact Method</Label>;
-                      <Select;
+                      <Select>
                         value={formData.preferences.preferredContactMethod}
                         onValueChange={(value) => handleSelectChange('preferences.preferredContactMethod', value)}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select preferred method" />;
+                          <SelectValue placeholder="Select preferred method" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="EMAIL">Email</SelectItem>;
                           <SelectItem value="PHONE">Phone</SelectItem>;
                           <SelectItem value="SMS">SMS</SelectItem>;
-                          <SelectItem value="MAIL">Mail</SelectItem>;
+                          <SelectItem value="MAIL">Mail</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     
                     <div className="space-y-2">;
                       <Label htmlFor="preferences.preferredLanguage">Preferred Language</Label>;
-                      <Select;
+                      <Select>
                         value={formData.preferences.preferredLanguage}
                         onValueChange={(value) => handleSelectChange('preferences.preferredLanguage', value)}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select preferred language" />;
+                          <SelectValue placeholder="Select preferred language" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="English">English</SelectItem>;
@@ -708,7 +705,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                           <SelectItem value="Japanese">Japanese</SelectItem>;
                           <SelectItem value="Korean">Korean</SelectItem>;
                           <SelectItem value="Arabic">Arabic</SelectItem>;
-                          <SelectItem value="Hindi">Hindi</SelectItem>;
+                          <SelectItem value="Hindi">Hindi</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -718,53 +715,53 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                 <div className="space-y-2">;
                   <h3 className="text-lg font-medium">Interest Categories</h3>;
                   <p className="text-sm text-muted-foreground">;
-                    Select topics this contact is interested in;
+                    Select topics this contact is interested in
                   </p>
                   
                   <div className="grid grid-cols-2 gap-2 mt-2">;
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-preventive" />;
-                      <Label htmlFor="interest-preventive">Preventive Care</Label>;
+                      <Checkbox id="interest-preventive" />
+                      <Label htmlFor="interest-preventive">Preventive Care</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-wellness" />;
-                      <Label htmlFor="interest-wellness">Wellness Programs</Label>;
+                      <Checkbox id="interest-wellness" />
+                      <Label htmlFor="interest-wellness">Wellness Programs</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-nutrition" />;
-                      <Label htmlFor="interest-nutrition">Nutrition</Label>;
+                      <Checkbox id="interest-nutrition" />
+                      <Label htmlFor="interest-nutrition">Nutrition</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-fitness" />;
-                      <Label htmlFor="interest-fitness">Fitness</Label>;
+                      <Checkbox id="interest-fitness" />
+                      <Label htmlFor="interest-fitness">Fitness</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-mental" />;
-                      <Label htmlFor="interest-mental">Mental Health</Label>;
+                      <Checkbox id="interest-mental" />
+                      <Label htmlFor="interest-mental">Mental Health</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-family" />;
-                      <Label htmlFor="interest-family">Family Health</Label>;
+                      <Checkbox id="interest-family" />
+                      <Label htmlFor="interest-family">Family Health</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-senior" />;
-                      <Label htmlFor="interest-senior">Senior Care</Label>;
+                      <Checkbox id="interest-senior" />
+                      <Label htmlFor="interest-senior">Senior Care</Label>
                     </div>
                     <div className="flex items-center space-x-2">;
-                      <Checkbox id="interest-specialty" />;
-                      <Label htmlFor="interest-specialty">Specialty Services</Label>;
+                      <Checkbox id="interest-specialty" />
+                      <Label htmlFor="interest-specialty">Specialty Services</Label>
                     </div>
                   </div>
                 </div>
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => setActiveTab("details")}
                 >
-                  Back;
+                  Back
                 </Button>
                 <Button type="submit" disabled={isLoading}>;
                   {isLoading ? 'Saving...' : 'Save Preferences'}
@@ -776,16 +773,16 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
           <TabsContent value="segments">;
             {contactId ? (
               <div className="space-y-6">;
-                <div>
+<div
                   <h3 className="text-lg font-medium">Contact Segments</h3>;
                   <p className="text-sm text-muted-foreground">;
-                    Manage which segments this contact belongs to;
+                    Manage which segments this contact belongs to
                   </p>
                   
                   <div className="mt-4">;
                     <Select onValueChange={handleAddToSegment}>;
                       <SelectTrigger>
-                        <SelectValue placeholder="Add to segment" />;
+                        <SelectValue placeholder="Add to segment" />
                       </SelectTrigger>
                       <SelectContent>
                         {availableSegments;
@@ -803,12 +800,12 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
                   <div className="mt-4 space-y-2">;
                     {segments.map(segment => (
                       <div key={segment.id} className="flex items-center justify-between p-3 border rounded">;
-                        <div>
+<div
                           <h4 className="font-medium">{segment.name}</h4>;
-                          <p className="text-sm text-muted-foreground">{segment.description}</p>;
+                          <p className="text-sm text-muted-foreground">{segment.description}</p>
                         </div>
                         <div className="flex items-center space-x-2">;
-                          <Button variant="outline" size="sm">Remove</Button>;
+                          <Button variant="outline" size="sm">Remove</Button>
                         </div>
                       </div>
                     ))}
@@ -829,10 +826,10 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
           <TabsContent value="activity">;
             {contactId ? (
               <div className="space-y-6">;
-                <div>
+<div
                   <h3 className="text-lg font-medium">Contact Activity</h3>;
                   <p className="text-sm text-muted-foreground">;
-                    Recent interactions and engagement history;
+                    Recent interactions and engagement history
                   </p>
                   
                   <div className="mt-4 space-y-4">;

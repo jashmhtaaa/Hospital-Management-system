@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,12 +38,12 @@ export default const ERDashboardStats = () {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Total Patients</CardTitle>;
-          <Users className="h-4 w-4 text-muted-foreground" />;
+          <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalPatients}</div>;
           <p className="text-xs text-muted-foreground">;
-            {stats.waitingRoom} in waiting room;
+            {stats.waitingRoom} in waiting room
           </p>
         </CardContent>
       </Card>
@@ -51,14 +51,14 @@ export default const ERDashboardStats = () {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">;
-            Average Wait Time;
+            Average Wait Time
           </CardTitle>
-          <Clock className="h-4 w-4 text-muted-foreground" />;
+          <Clock className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.avgWaitTime}</div>;
           <p className="text-xs text-muted-foreground">;
-            For ESI Level 3 patients;
+            For ESI Level 3 patients
           </p>
         </CardContent>
       </Card>
@@ -66,12 +66,12 @@ export default const ERDashboardStats = () {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>;
-          <AlertTriangle className="h-4 w-4 text-red-500" />;
+          <AlertTriangle className="h-4 w-4 text-red-500" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.criticalAlerts}</div>;
           <p className="text-xs text-muted-foreground">;
-            Requiring immediate attention;
+            Requiring immediate attention
           </p>
         </CardContent>
       </Card>
@@ -79,38 +79,38 @@ export default const ERDashboardStats = () {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Bed Occupancy</CardTitle>;
-          <BedDouble className="h-4 w-4 text-muted-foreground" />;
+          <BedDouble className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.occupiedBeds}</div>;
-          <p className="text-xs text-muted-foreground">72% occupancy rate</p>;
+          <p className="text-xs text-muted-foreground">72% occupancy rate</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">;
-            Incoming Ambulances;
+            Incoming Ambulances
           </CardTitle>
-          <Ambulance className="h-4 w-4 text-muted-foreground" />;
+          <Ambulance className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.incomingAmbulances}</div>;
-          <p className="text-xs text-muted-foreground">ETA: 5-10 minutes</p>;
+          <p className="text-xs text-muted-foreground">ETA: 5-10 minutes</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">;
-            Department Activity;
+            Department Activity
           </CardTitle>
-          <Activity className="h-4 w-4 text-muted-foreground" />;
+          <Activity className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">High</div>;
           <p className="text-xs text-muted-foreground">;
-            Peak hours (14:00 - 20:00);
+            Peak hours (14:00 - 20:00)
           </p>
         </CardContent>
       </Card>

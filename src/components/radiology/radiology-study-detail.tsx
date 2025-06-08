@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,13 +31,13 @@ import CreateRadiologyReportModal, {
 
 // Define interfaces;
 interface StudyDetails {
-  id: string;
+  id: string,
   patient_id: string;
   patient_name?: string; // Assuming joined;
   order_id: string;
   procedure_name?: string; // Assuming joined;
   accession_number?: string | null;
-  study_datetime: string;
+  study_datetime: string,
   status: "scheduled" | "acquired" | "reported" | "verified" | string; // Allow string for flexibility;
   modality_name?: string; // Assuming joined;
   technician_name?: string; // Assuming joined;
@@ -74,11 +74,11 @@ export default const RadiologyStudyDetail = () {
   // FIX: Wrap fetchStudyDetails in useCallback;
   const fetchStudyDetails = useCallback(async (): Promise<void> => {
     if (!studyId) {
-      setError("Study ID is missing.");
+      setError("Study ID is missing."),
       setLoading(false);
       return;
     }
-    setLoading(true);
+    setLoading(true),
     setError(undefined);
     try {
       // Simulate API call;
@@ -116,14 +116,14 @@ export default const RadiologyStudyDetail = () {
         };
         setStudy(mockStudy);
       } else {
-        setError("Radiology study not found.");
+        setError("Radiology study not found."),
         setStudy(undefined);
       }
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      setError(`Failed to load study details: ${message}`);
+      setError(`Failed to load study details: ${message}`),
       setStudy(undefined);
     } finally {
       setLoading(false);
@@ -134,7 +134,7 @@ export default const RadiologyStudyDetail = () {
     if (studyId) {
       fetchStudyDetails();
     }
-    // FIX: Add fetchStudyDetails to dependency array;
+    // FIX: Add fetchStudyDetails to dependency array
   }, [studyId, fetchStudyDetails]);
 
   // FIX: Adjust function signature to match the onSubmit prop type expected by the modal;
@@ -164,7 +164,7 @@ export default const RadiologyStudyDetail = () {
         try {
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
-          // FIX: Prefix unused variable with underscore;
+          // FIX: Prefix unused variable with underscore
         } catch {
           /* Ignore if response is not JSON */
         }
@@ -207,8 +207,8 @@ export default const RadiologyStudyDetail = () {
       status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ");
 
     return (
-      <Badge;
-        variant="outline";
+      <Badge>
+        variant="outline"
         className={`${statusStyles[status] || "bg-gray-100 border-gray-200"} font-medium`}
       >
         {displayText}
@@ -219,7 +219,7 @@ export default const RadiologyStudyDetail = () {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">;
-        <Loader2 className="h-16 w-16 animate-spin text-primary" />;
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
@@ -236,23 +236,23 @@ export default const RadiologyStudyDetail = () {
     // This case might be covered by error state if fetch fails, but good to have;
     return (
       <div className="text-center text-gray-500 p-4">;
-        Study details could not be loaded or found.;
+        Study details could not be loaded or found.
       </div>
     );
   }
 
-  return (
+ : return (
     <div className="container mx-auto p-4 space-y-6">;
       <Button variant="outline" onClick={() => router.back()} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Studies;
+        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Studies
       </Button>
 
       <Card>
         <CardHeader>
           <div className="flex justify-between items-start">;
-            <div>
+<div
               <CardTitle className="text-xl">Radiology Study Details</CardTitle>;
-              <CardDescription>Study ID: {study.id}</CardDescription>;
+              <CardDescription>Study ID: {study.id}</CardDescription>
             </div>
             <div className="flex space-x-2">;
               {/* <Button variant="outline" size="icon" title="Edit Study"><Edit className="h-4 w-4" /></Button> */}
@@ -262,18 +262,18 @@ export default const RadiologyStudyDetail = () {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">;
-            <div>
+<div
               <strong>Patient:</strong> {study.patient_name || "N/A"} (ID:{" "}
-              {study.patient_id?.slice(0, 8) || "N/A"});
+              {study.patient_id?.slice(0, 8) || "N/A"})
             </div>
-            <div>
+<div
               <strong>Procedure:</strong> {study.procedure_name || "N/A"}
             </div>
-            <div>
+<div
               <strong>Order ID:</strong>;
-              <Button;
-                variant="link";
-                className="p-0 h-auto ml-1 text-sm";
+              <Button>
+                variant="link"
+                className="p-0 h-auto ml-1 text-sm"
                 onClick={() =>
                   router.push(`/dashboard/radiology/orders/${study.order_id}`);
                 }
@@ -281,22 +281,22 @@ export default const RadiologyStudyDetail = () {
                 {study.order_id}
               </Button>
             </div>
-            <div>
+<div
               <strong>Accession #:</strong> {study.accession_number || "N/A"}
             </div>
-            <div>
+<div
               <strong>Study Date/Time:</strong>{" "}
               {study.study_datetime;
                 ? new Date(study.study_datetime).toLocaleString();
                 : "N/A"}
             </div>
-            <div>
+<div
               <strong>Status:</strong> {getStatusBadge(study.status)}
             </div>
-            <div>
+<div
               <strong>Modality:</strong> {study.modality_name || "N/A"}
             </div>
-            <div>
+<div
               <strong>Technician:</strong> {study.technician_name || "N/A"}
             </div>
             <div className="md:col-span-2">;
@@ -306,7 +306,7 @@ export default const RadiologyStudyDetail = () {
               <strong>Series Description:</strong>{" "}
               {study.series_description || "N/A"}
             </div>
-            <div>
+<div
               <strong>Number of Images:</strong>{" "}
               {study.number_of_images ?? "N/A"}
             </div>
@@ -321,7 +321,7 @@ export default const RadiologyStudyDetail = () {
             <CardTitle>Associated Reports</CardTitle>
             {(study.status === "acquired" || study.status === "reported") && (
               <Button onClick={() => setShowCreateReportModal(true)}>
-                <FileText className="mr-2 h-4 w-4" /> Create Report;
+                <FileText className="mr-2 h-4 w-4" /> Create Report
               </Button>
             )}
           </div>
@@ -337,7 +337,7 @@ export default const RadiologyStudyDetail = () {
       </Card>
 
       {showCreateReportModal && studyId && (
-        <CreateRadiologyReportModal;
+        <CreateRadiologyReportModal>
           isOpen={showCreateReportModal} // Assuming modal uses isOpen prop;
           onClose={() => setShowCreateReportModal(false)}
           onSubmit={handleCreateReport}

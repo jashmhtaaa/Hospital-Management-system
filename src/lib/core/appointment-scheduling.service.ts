@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -87,9 +87,9 @@ export const WaitlistEntrySchema = z.object({
 });
 
 export type Appointment = z.infer<typeof AppointmentSchema> & {
-  id: string;
+  id: string,
   appointment_number: string;
-  status: 'scheduled' | 'confirmed' | 'checked_in' | 'in_progress' | 'completed' | 'cancelled' | 'no_show' | 'rescheduled';
+  status: 'scheduled' | 'confirmed' | 'checked_in' | 'in_progress' | 'completed' | 'cancelled' | 'no_show' | 'rescheduled',
   confirmation_status: 'not_sent' | 'sent' | 'confirmed' | 'declined';
   check_in_time?: Date;
   check_out_time?: Date;
@@ -100,7 +100,7 @@ export type Appointment = z.infer<typeof AppointmentSchema> & {
   cancellation_date?: Date;
   rescheduled_from?: string;
   rescheduled_to?: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   provider_name?: string;
@@ -109,58 +109,58 @@ export type Appointment = z.infer<typeof AppointmentSchema> & {
 };
 
 export type ProviderSchedule = z.infer<typeof ProviderScheduleSchema> & {
-  id: string;
+  id: string,
   schedule_type: 'regular' | 'special' | 'vacation' | 'sick' | 'conference';
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type AppointmentReminder = z.infer<typeof AppointmentReminderSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
-  id: string;
+  id: string,
   entry_date: Date;
   status: 'active' | 'contacted' | 'scheduled' | 'expired' | 'cancelled';
   last_contact_date?: Date;
-  contact_attempts: number;
+  contact_attempts: number,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export interface AvailableSlot {
-  date: string;
+  date: string,
   time: string;
-  duration: number;
+  duration: number,
   provider_id: string;
-  provider_name: string;
+  provider_name: string,
   location: string;
   room_number?: string;
-  appointment_types: string[];
+  appointment_types: string[]
 }
 
 export interface ConflictResult {
-  hasConflict: boolean;
+  hasConflict: boolean,
   conflicts: {
-    type: 'provider_unavailable' | 'room_conflict' | 'patient_double_booked' | 'outside_hours';
+    type: 'provider_unavailable' | 'room_conflict' | 'patient_double_booked' | 'outside_hours',
     message: string;
     conflicting_appointment?: Appointment;
   }[];
 }
 
 export interface AppointmentStats {
-  total_appointments: number;
+  total_appointments: number,
   scheduled: number;
-  confirmed: number;
+  confirmed: number,
   completed: number;
-  cancelled: number;
+  cancelled: number,
   no_shows: number;
-  show_rate: number;
+  show_rate: number,
   average_wait_time: number;
-  provider_utilization: number;
+  provider_utilization: number,
   revenue_generated: number;
   most_common_appointment_types: { type: string; count: number }[];
 }
@@ -618,7 +618,7 @@ export class AppointmentSchedulingService {
     }
 
     if (appointment.status !== 'scheduled' && appointment.status !== 'confirmed') {
-      throw new Error('Cannot check in appointment with status: ' + appointment.status);
+      throw new Error('Cannot check in appointment with status: ' + appointment.status)
     }
 
     appointment.status = 'checked_in';

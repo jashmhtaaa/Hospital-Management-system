@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,10 +27,10 @@ export class AssetService {
    * Create a new asset;
    */
   async createAsset(data: {
-    assetId: string;
+    assetId: string,
     name: string;
     description?: string;
-    category: string;
+    category: string,
     type: string;
     status: 'AVAILABLE' | 'IN_USE' | 'MAINTENANCE' | 'DISPOSED';
     location?: string;
@@ -326,9 +326,9 @@ export class AssetService {
   async recordMaintenance(
     assetId: string,
     data: {
-      date: Date;
+      date: Date,
       type: 'PREVENTIVE' | 'CORRECTIVE' | 'INSPECTION';
-      performedBy: string;
+      performedBy: string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -388,7 +388,7 @@ export class AssetService {
   async assignAsset(
     assetId: string,
     data: {
-      employeeId: string;
+      employeeId: string,
       startDate: Date;
       endDate?: Date;
       notes?: string;
@@ -662,7 +662,7 @@ export class AssetService {
       where: { 
         assetId,
         type: 'PREVENTIVE',
-        status: 'COMPLETED';
+        status: 'COMPLETED'
       },
       orderBy: { date: 'asc' },
     });
@@ -672,7 +672,7 @@ export class AssetService {
       where: { 
         assetId,
         type: 'CORRECTIVE',
-        status: 'COMPLETED';
+        status: 'COMPLETED'
       },
       orderBy: { date: 'asc' },
     });
@@ -783,7 +783,7 @@ export class AssetService {
           cache.del(`${this.CACHE_PREFIX}id:${asset.id}`),
           cache.del(`${this.CACHE_PREFIX}assetId:${asset.assetId}`),
           cache.del(`${this.CACHE_PREFIX}maintenance:${asset.id}`),
-          cache.del(`${this.CACHE_PREFIX}assignments:${asset.id}`);
+          cache.del(`${this.CACHE_PREFIX}assignments:${asset.id}`)
         ]);
       }
     }
@@ -791,8 +791,8 @@ export class AssetService {
     // Invalidate list caches with pattern matching;
     await Promise.all([
       cache.delPattern(`${this.CACHE_PREFIX}list:*`),
-      cache.delPattern(`${this.CACHE_PREFIX}due-maintenance:*`);
-    ]);
+      cache.delPattern(`${this.CACHE_PREFIX}due-maintenance: *`)
+    ])
   }
 }
 

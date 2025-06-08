@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ interface SurgeryTypeCreateBody {
 }
 
 // GET /api/ot/surgery-types - List all surgery types;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
@@ -67,7 +67,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/ot/surgery-types - Create a new surgery type;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = (await request.json()) as SurgeryTypeCreateBody;
     const {

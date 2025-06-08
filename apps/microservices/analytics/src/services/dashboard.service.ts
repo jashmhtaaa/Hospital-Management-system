@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,29 +24,29 @@ import { AuditService } from '@/lib/security/audit.service';
 
 // Dashboard models;
 export interface Dashboard {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: DashboardCategory;
-  layout: DashboardLayout;
+  layout: DashboardLayout,
   widgets: DashboardWidget[];
-  filters: DashboardFilter[];
+  filters: DashboardFilter[],
   theme: DashboardTheme;
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  isPublic: boolean;
+  isPublic: boolean,
   isTemplate: boolean;
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
+  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED',
   permissions: DashboardPermissions;
   refreshRate?: number; // in seconds, undefined for manual refresh only;
   lastRefreshed?: Date;
-  version: string;
+  version: string,
   settings: DashboardSettings;
-  autoRefresh: boolean;
+  autoRefresh: boolean,
   tags: string[];
-  metadata: DashboardMetadata;
+  metadata: DashboardMetadata
 }
 
 export enum DashboardCategory {
@@ -81,38 +81,38 @@ export interface DashboardLayout {
 }
 
 export interface BreakpointLayout {
-  columns: number;
+  columns: number,
   layouts: {
-    widgetId: string;
+    widgetId: string,
     x: number;
-    y: number;
+    y: number,
     w: number;
-    h: number;
+    h: number
   }[];
 }
 
 export interface DashboardWidget {
-  id: string;
+  id: string,
   name: string;
   type: WidgetType;
   description?: string;
-  position: WidgetPosition;
+  position: WidgetPosition,
   dataSource: WidgetDataSource;
-  visualization: WidgetVisualization;
+  visualization: WidgetVisualization,
   interactions: WidgetInteractions;
-  settings: WidgetSettings;
+  settings: WidgetSettings,
   filters: WidgetFilter[];
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
   status: 'ACTIVE' | 'DRAFT' | 'ERROR';
   errorMessage?: string;
   refreshRate?: number; // Override dashboard refresh rate;
   lastRefreshed?: Date;
-  version: string;
+  version: string,
   tags: string[];
-  metadata: WidgetMetadata;
+  metadata: WidgetMetadata
 }
 
 export enum WidgetType {
@@ -133,9 +133,9 @@ export enum WidgetType {
 }
 
 export interface WidgetPosition {
-  x: number;
+  x: number,
   y: number;
-  w: number;
+  w: number,
   h: number;
   minW?: number;
   minH?: number;
@@ -149,7 +149,7 @@ export interface WidgetPosition {
 }
 
 export interface WidgetDataSource {
-  type: 'API' | 'GRAPHQL' | 'SQL' | 'SERVICE' | 'STATIC' | 'REALTIME' | 'CUSTOM';
+  type: 'API' | 'GRAPHQL' | 'SQL' | 'SERVICE' | 'STATIC' | 'REALTIME' | 'CUSTOM',
   config: {
     url?: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -169,21 +169,21 @@ export interface WidgetDataSource {
 }
 
 export interface DataTransformation {
-  type: 'FILTER' | 'SORT' | 'AGGREGATE' | 'PIVOT' | 'CALCULATE' | 'FORMAT' | 'LIMIT' | 'JOIN' | 'CUSTOM';
+  type: 'FILTER' | 'SORT' | 'AGGREGATE' | 'PIVOT' | 'CALCULATE' | 'FORMAT' | 'LIMIT' | 'JOIN' | 'CUSTOM',
   config: Record<string, any>;
 }
 
 export interface WidgetVisualization {
-  type: VisualizationType;
+  type: VisualizationType,
   config: Record<string, any>;
   defaultConfig?: Record<string, any>;
   options?: {
-    showTitle: boolean;
+    showTitle: boolean,
     showLegend: boolean;
-    showTooltips: boolean;
+    showTooltips: boolean,
     showDataLabels: boolean;
-    showAxes: boolean;
-    showGrid: boolean;
+    showAxes: boolean,
+    showGrid: boolean
   };
   theme?: {
     colors: string[];
@@ -248,7 +248,7 @@ export enum VisualizationType {
 
 export interface WidgetInteractions {
   drillDown?: {
-    enabled: boolean;
+    enabled: boolean,
     type: 'WIDGET' | 'DASHBOARD' | 'URL' | 'DETAIL';
     target?: string;
     parameters?: Record<string, string>;
@@ -283,17 +283,17 @@ export interface WidgetInteractions {
 }
 
 export interface WidgetAction {
-  id: string;
+  id: string,
   name: string;
   icon?: string;
-  type: 'NAVIGATE' | 'API_CALL' | 'EXPORT' | 'FILTER' | 'REFRESH' | 'CUSTOM';
+  type: 'NAVIGATE' | 'API_CALL' | 'EXPORT' | 'FILTER' | 'REFRESH' | 'CUSTOM',
   config: Record<string, any>;
   condition?: string;
   permission?: string[];
 }
 
 export interface ContextMenuItem {
-  id: string;
+  id: string,
   label: string;
   icon?: string;
   action: WidgetAction;
@@ -333,39 +333,39 @@ export interface WidgetSettings {
 }
 
 export interface WidgetFilter {
-  id: string;
+  id: string,
   field: string;
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
   value?: unknown;
   value2?: unknown; // For 'between' and 'not_between'
   isDynamic: boolean;
   dynamicSource?: {
-    type: 'DASHBOARD_FILTER' | 'WIDGET_INTERACTION' | 'USER_PROPERTY' | 'GLOBAL_PARAMETER';
+    type: 'DASHBOARD_FILTER' | 'WIDGET_INTERACTION' | 'USER_PROPERTY' | 'GLOBAL_PARAMETER',
     source: string;
     mapping?: Record<string, any>;
   };
 }
 
 export interface DashboardFilter {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   type: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'SELECT' | 'MULTI_SELECT' | 'BOOLEAN' | 'SLIDER' | 'CUSTOM';
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'ARRAY';
   defaultValue?: unknown;
   options?: {
-    value: unknown;
+    value: unknown,
     label: string;
     icon?: string;
   }[];
   optionsSource?: {
-    type: 'STATIC' | 'API' | 'SERVICE';
+    type: 'STATIC' | 'API' | 'SERVICE',
     config: Record<string, any>;
   };
   position: {
     area: 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM' | 'WIDGET';
     widgetId?: string; // If area is 'WIDGET'
-    order: number;
+    order: number
   };
   settings: {
     width?: string | number;
@@ -383,20 +383,20 @@ export interface DashboardFilter {
     max?: number;
     step?: number;
     marks?: {
-      value: number;
-      label: string;
+      value: number,
+      label: string
     }[];
     customComponent?: string;
   };
   dependencies?: {
-    filterId: string;
+    filterId: string,
     condition: string;
     effect: 'ENABLE' | 'DISABLE' | 'SHOW' | 'HIDE' | 'UPDATE_OPTIONS';
     effectConfig?: Record<string, any>;
   }[];
   permissions?: {
-    roles: string[];
-    access: 'VIEW' | 'EDIT';
+    roles: string[],
+    access: 'VIEW' | 'EDIT'
   }[];
   advanced?: boolean;
   hidden?: boolean;
@@ -404,111 +404,111 @@ export interface DashboardFilter {
 }
 
 export interface DashboardTheme {
-  id: string;
+  id: string,
   name: string;
   palette: {
-    primary: string;
+    primary: string,
     secondary: string;
-    success: string;
+    success: string,
     warning: string;
-    error: string;
+    error: string,
     info: string;
-    background: string;
+    background: string,
     surface: string;
-    text: string;
+    text: string,
     textSecondary: string;
-    border: string;
-    chartColors: string[];
+    border: string,
+    chartColors: string[]
   };
   typography: {
-    fontFamily: string;
+    fontFamily: string,
     fontSize: number;
-    fontWeightLight: number;
+    fontWeightLight: number,
     fontWeightRegular: number;
-    fontWeightMedium: number;
+    fontWeightMedium: number,
     fontWeightBold: number;
     h1: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string;
     };
     h2: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string;
     };
     h3: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string;
     };
     h4: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string;
     };
     h5: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string;
     };
     h6: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string;
     };
     body1: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
     };
     body2: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
     };
     caption: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
     };
   };
   shape: {
-    borderRadius: number;
-    borderWidth: number;
+    borderRadius: number,
+    borderWidth: number
   };
-  spacing: number;
+  spacing: number,
   shadows: string[];
   transitions: {
     duration: {
-      shortest: number;
+      shortest: number,
       shorter: number;
-      short: number;
+      short: number,
       standard: number;
-      complex: number;
+      complex: number,
       enteringScreen: number;
-      leavingScreen: number;
+      leavingScreen: number
     };
     easing: {
-      easeInOut: string;
+      easeInOut: string,
       easeOut: string;
-      easeIn: string;
-      sharp: string;
+      easeIn: string,
+      sharp: string
     };
   };
   components?: {
@@ -524,55 +524,55 @@ export interface DashboardTheme {
     tooltipTextColor?: string;
     legendTextColor?: string;
   };
-  dark: boolean;
-  mode: 'light' | 'dark' | 'system';
+  dark: boolean,
+  mode: 'light' | 'dark' | 'system'
 }
 
 export interface DashboardPermissions {
-  owner: string;
+  owner: string,
   viewRoles: string[];
-  editRoles: string[];
+  editRoles: string[],
   viewUsers: string[];
-  editUsers: string[];
+  editUsers: string[],
   viewDepartments: string[];
-  editDepartments: string[];
+  editDepartments: string[],
   public: boolean;
   shareLink?: string;
   shareLinkExpiration?: Date;
   shareLinkPassword?: string;
   exportPermissions: {
-    pdf: boolean;
+    pdf: boolean,
     excel: boolean;
-    png: boolean;
+    png: boolean,
     csv: boolean;
     allowedRoles?: string[];
   };
 }
 
 export interface DashboardSettings {
-  showTitle: boolean;
+  showTitle: boolean,
   showDescription: boolean;
-  showFilters: boolean;
+  showFilters: boolean,
   showTimeRange: boolean;
   timeRangeOptions?: {
-    position: 'TOP' | 'LEFT' | 'RIGHT';
+    position: 'TOP' | 'LEFT' | 'RIGHT',
     defaultRange: 'TODAY' | 'YESTERDAY' | 'LAST_7_DAYS' | 'LAST_30_DAYS' | 'THIS_MONTH' | 'LAST_MONTH' | 'THIS_QUARTER' | 'LAST_QUARTER' | 'THIS_YEAR' | 'LAST_YEAR' | 'CUSTOM';
     availableRanges: string[];
     customRangeLabel?: string;
   };
-  filterBarCollapsible: boolean;
+  filterBarCollapsible: boolean,
   defaultFilterBarCollapsed: boolean;
-  showRefreshButton: boolean;
+  showRefreshButton: boolean,
   showFullscreenButton: boolean;
   showExportButton: boolean;
   exportFormats?: ('PDF' | 'PNG' | 'CSV' | 'EXCEL')[];
-  showSettingsButton: boolean;
+  showSettingsButton: boolean,
   showWidgetTitles: boolean;
-  compactMode: boolean;
+  compactMode: boolean,
   enableWidgetInteractions: boolean;
   enableCrossFiltering: boolean;
   autoSaveInterval?: number;
-  confirmOnDelete: boolean;
+  confirmOnDelete: boolean,
   defaultDateFormat: string;
   defaultNumberFormat: string;
   loadingAnimation?: string;
@@ -584,17 +584,17 @@ export interface DashboardSettings {
 
 export interface DashboardMetadata {
   templateSource?: string;
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
   lastViewedDate?: Date;
-  viewCount: number;
+  viewCount: number,
   exportCount: number;
   favoriteCount: number;
   averageLoadTime?: number;
@@ -605,12 +605,12 @@ export interface DashboardMetadata {
 }
 
 export interface WidgetMetadata {
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   templateSource?: string;
   averageLoadTime?: number;
@@ -624,34 +624,34 @@ export interface WidgetMetadata {
 
 // Dashboard data models;
 export interface DashboardData {
-  dashboardId: string;
+  dashboardId: string,
   timestamp: Date;
   filterValues: Record<string, any>;
   timeRange?: {
-    start: Date;
+    start: Date,
     end: Date;
     preset?: string;
   };
   widgets: Record<string, WidgetData>;
   metadata: {
-    executionTime: number;
+    executionTime: number,
     status: 'SUCCESS' | 'PARTIAL' | 'ERROR';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED';
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED'
   };
 }
 
 export interface WidgetData {
-  widgetId: string;
+  widgetId: string,
   data: unknown;
   columns?: ColumnMetadata[];
   metadata: {
-    executionTime: number;
+    executionTime: number,
     status: 'SUCCESS' | 'ERROR' | 'NO_DATA';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED';
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED',
     dataTimestamp: Date;
     rowCount?: number;
     dataPoints?: number;
@@ -660,9 +660,9 @@ export interface WidgetData {
 }
 
 export interface ColumnMetadata {
-  name: string;
+  name: string,
   displayName: string;
-  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
+  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY',
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   description?: string;
@@ -680,9 +680,9 @@ export interface ColumnMetadata {
 
 // Healthcare-specific KPI models;
 export interface KPI {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   description: string;
   category: KPICategory;
   subcategory?: string;
@@ -692,15 +692,15 @@ export interface KPI {
   threshold?: {
     warning?: number;
     critical?: number;
-    direction: 'ABOVE' | 'BELOW' | 'BETWEEN';
+    direction: 'ABOVE' | 'BELOW' | 'BETWEEN'
   };
-  frequency: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
+  frequency: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY',
   dataSource: {
-    type: 'SQL' | 'API' | 'SERVICE' | 'CALCULATION';
+    type: 'SQL' | 'API' | 'SERVICE' | 'CALCULATION',
     config: Record<string, any>;
   };
   visualization: {
-    defaultType: VisualizationType;
+    defaultType: VisualizationType,
     recommendedTypes: VisualizationType[];
     defaultConfig?: Record<string, any>;
   };
@@ -709,13 +709,13 @@ export interface KPI {
     external?: number;
     source?: string;
   };
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
+  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED',
   tags: string[];
-  metadata: KPIMetadata;
+  metadata: KPIMetadata
 }
 
 export enum KPICategory {
@@ -742,10 +742,10 @@ export interface KPIMetadata {
   limitations?: string;
   interpretationGuidelines?: string;
   changeHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   customMetadata?: Record<string, any>;
 }
@@ -1314,12 +1314,12 @@ export class DashboardService {
     options: {
       filters?: Record<string, any>;
       timeRange?: {
-        start: Date;
+        start: Date,
         end: Date;
         preset?: string;
       };
       refreshCache?: boolean;
-      widgetIds?: string[]; // Optional: only fetch data for specific widgets;
+      widgetIds?: string[]; // Optional: only fetch data for specific widgets
     },
     userId: string;
   ): Promise<DashboardData> {
@@ -1483,7 +1483,7 @@ export class DashboardService {
       format: 'PDF' | 'PNG' | 'CSV' | 'EXCEL';
       filters?: Record<string, any>;
       timeRange?: {
-        start: Date;
+        start: Date,
         end: Date;
         preset?: string;
       };
@@ -1998,8 +1998,8 @@ export class DashboardService {
     kpiId: string,
     options: {
       timeRange?: {
-        start: Date;
-        end: Date;
+        start: Date,
+        end: Date
       };
       filters?: Record<string, any>;
       compareWithPrevious?: boolean;
@@ -2010,17 +2010,17 @@ export class DashboardService {
     target?: number;
     status?: 'ABOVE_TARGET' | 'AT_TARGET' | 'BELOW_TARGET' | 'NO_TARGET';
     comparison?: {
-      previousValue: number;
+      previousValue: number,
       change: number;
-      changePercent: number;
-      trend: 'IMPROVING' | 'STABLE' | 'WORSENING';
+      changePercent: number,
+      trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
     };
     metadata: {
-      calculationTime: number;
+      calculationTime: number,
       calculatedAt: Date;
       period?: {
-        start: Date;
-        end: Date;
+        start: Date,
+        end: Date
       };
     };
   }> {
@@ -2311,7 +2311,7 @@ export class DashboardService {
     widget: DashboardWidget,
     filters: Record<string, any>,
     timeRange?: {
-      start: Date;
+      start: Date,
       end: Date;
       preset?: string;
     }
@@ -2568,8 +2568,8 @@ export class DashboardService {
   private async executeKPICalculation(
     kpi: KPI,
     timeRange?: {
-      start: Date;
-      end: Date;
+      start: Date,
+      end: Date
     },
     filters?: Record<string, any>
   ): Promise<number> {
@@ -2584,8 +2584,8 @@ export class DashboardService {
     end?: Date,
     period: 'DAY' | 'WEEK' | 'MONTH' | 'QUARTER' | 'YEAR' = 'MONTH';
   ): {
-    start: Date;
-    end: Date;
+    start: Date,
+    end: Date
   } {
     // Implementation to calculate previous period;
     const now = new Date();

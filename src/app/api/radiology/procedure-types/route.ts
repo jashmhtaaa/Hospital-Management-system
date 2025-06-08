@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ interface ProcedureTypeInput {
 }
 
 // GET all Radiology Procedure Types;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   const session = await getSession();
   // Allow broader access for viewing procedure types;
   if (
@@ -60,7 +60,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST a new Radiology Procedure Type (Admin only)
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   const session = await getSession();
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
     // Use await, pass request, add optional chaining;

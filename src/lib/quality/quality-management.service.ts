@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,23 +20,23 @@ import { PrismaClient } from '@prisma/client';
 import { getQualityPersistenceService, QualityPersistenceService } from './quality-persistence.service';
 
 export interface QualityIndicator {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: QualityCategory;
-  type: IndicatorType;
+  type: IndicatorType,
   source: QualitySource;
-  measure: QualityMeasure;
+  measure: QualityMeasure,
   target: QualityTarget;
-  calculation: CalculationMethod;
+  calculation: CalculationMethod,
   dataRequirements: DataRequirement[];
-  reportingFrequency: ReportingFrequency;
+  reportingFrequency: ReportingFrequency,
   benchmarks: QualityBenchmark[];
-  isActive: boolean;
+  isActive: boolean,
   isCore: boolean; // Core measure vs custom;
-  createdBy: string;
+  createdBy: string,
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date
 }
 
 export type QualityCategory = 
@@ -74,35 +74,35 @@ export type QualitySource =
   | 'cahps';
 
 export interface QualityMeasure {
-  numerator: string;
+  numerator: string,
   denominator: string;
   exclusions?: string[];
   inclusions?: string[];
   riskAdjustment?: RiskAdjustment;
-  timeframe: string;
-  unit: 'percentage' | 'rate' | 'ratio' | 'count' | 'days' | 'hours' | 'minutes';
+  timeframe: string,
+  unit: 'percentage' | 'rate' | 'ratio' | 'count' | 'days' | 'hours' | 'minutes'
 }
 
 export interface QualityTarget {
-  value: number;
+  value: number,
   operator: 'greater_than' | 'less_than' | 'equal_to' | 'between';
   range?: { min: number; max: number };
   percentile?: number; // Target percentile (e.g., 75th percentile);
-  source: 'internal' | 'benchmark' | 'regulatory' | 'best_practice';
+  source: 'internal' | 'benchmark' | 'regulatory' | 'best_practice',
   validFrom: Date;
   validTo?: Date;
 }
 
 export interface CalculationMethod {
-  formula: string;
+  formula: string,
   variables: CalculationVariable[];
-  conditions: CalculationCondition[];
+  conditions: CalculationCondition[],
   aggregation: 'sum' | 'average' | 'median' | 'count' | 'rate' | 'percentage';
-  period: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual';
+  period: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual'
 }
 
 export interface CalculationVariable {
-  name: string;
+  name: string,
   source: string;
   field: string;
   filters?: FilterCondition[];
@@ -110,92 +110,92 @@ export interface CalculationVariable {
 }
 
 export interface FilterCondition {
-  field: string;
+  field: string,
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'in' | 'not_in' | 'contains';
-  value: unknown;
+  value: unknown
 }
 
 export interface CalculationCondition {
-  field: string;
+  field: string,
   operator: string;
-  value: unknown;
-  action: 'include' | 'exclude' | 'flag';
+  value: unknown,
+  action: 'include' | 'exclude' | 'flag'
 }
 
 export interface DataRequirement {
-  source: string;
+  source: string,
   table: string;
   fields: string[];
   relationships?: DataRelationship[];
-  quality: DataQualityRequirement;
+  quality: DataQualityRequirement
 }
 
 export interface DataRelationship {
-  type: 'one_to_one' | 'one_to_many' | 'many_to_many';
+  type: 'one_to_one' | 'one_to_many' | 'many_to_many',
   foreignKey: string;
-  referenceTable: string;
-  referenceKey: string;
+  referenceTable: string,
+  referenceKey: string
 }
 
 export interface DataQualityRequirement {
   completeness: number; // percentage;
   accuracy: number; // percentage;
   timeliness: number; // hours;
-  consistency: boolean;
+  consistency: boolean
 }
 
 export type ReportingFrequency = 'real_time' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual';
 
 export interface QualityBenchmark {
-  source: string;
+  source: string,
   value: number;
   percentile?: number;
-  year: number;
+  year: number,
   population: string;
   methodology?: string;
   confidence?: number;
 }
 
 export interface RiskAdjustment {
-  method: 'none' | 'stratification' | 'regression' | 'propensity_score';
+  method: 'none' | 'stratification' | 'regression' | 'propensity_score',
   variables: RiskVariable[];
   model?: string;
   version?: string;
 }
 
 export interface RiskVariable {
-  name: string;
+  name: string,
   type: 'demographic' | 'clinical' | 'administrative';
   weight?: number;
   categories?: string[];
 }
 
 export interface QualityEvent {
-  id: string;
+  id: string,
   type: EventType;
-  category: EventCategory;
+  category: EventCategory,
   severity: EventSeverity;
-  title: string;
+  title: string,
   description: string;
   patientId?: string;
   encounterId?: string;
-  department: string;
+  department: string,
   location: string;
-  occurredAt: Date;
+  occurredAt: Date,
   discoveredAt: Date;
-  reportedAt: Date;
+  reportedAt: Date,
   reportedBy: string;
   assignedTo?: string;
   status: EventStatus;
   rootCause?: RootCauseAnalysis;
-  preventionMeasures: PreventionMeasure[];
+  preventionMeasures: PreventionMeasure[],
   relatedEvents: string[];
-  attachments: EventAttachment[];
+  attachments: EventAttachment[],
   isReportable: boolean; // External reporting required;
   notifications: EventNotification[];
   resolution?: EventResolution;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export type EventType = 
@@ -239,52 +239,52 @@ export type EventStatus =
   | 'closed';
 
 export interface RootCauseAnalysis {
-  method: 'rca' | 'fmea' | 'lean' | 'fishbone' | 'five_whys';
+  method: 'rca' | 'fmea' | 'lean' | 'fishbone' | 'five_whys',
   findings: RCAFinding[];
-  contributingFactors: ContributingFactor[];
+  contributingFactors: ContributingFactor[],
   systemIssues: SystemIssue[];
-  humanFactors: HumanFactor[];
+  humanFactors: HumanFactor[],
   recommendations: RCARecommendation[];
-  completedBy: string;
+  completedBy: string,
   completedAt: Date;
   reviewedBy?: string;
   reviewedAt?: Date;
 }
 
 export interface RCAFinding {
-  category: 'immediate' | 'underlying' | 'root';
+  category: 'immediate' | 'underlying' | 'root',
   description: string;
-  evidence: string;
-  impact: 'high' | 'medium' | 'low';
+  evidence: string,
+  impact: 'high' | 'medium' | 'low'
 }
 
 export interface ContributingFactor {
-  category: 'communication' | 'training' | 'staffing' | 'policy' | 'equipment' | 'environment';
+  category: 'communication' | 'training' | 'staffing' | 'policy' | 'equipment' | 'environment',
   description: string;
-  severity: 'major' | 'minor';
-  actionRequired: boolean;
+  severity: 'major' | 'minor',
+  actionRequired: boolean
 }
 
 export interface SystemIssue {
-  system: string;
+  system: string,
   issue: string;
-  impact: string;
+  impact: string,
   priority: 'high' | 'medium' | 'low';
-  owner: string;
+  owner: string
 }
 
 export interface HumanFactor {
-  factor: 'workload' | 'fatigue' | 'stress' | 'knowledge' | 'skill' | 'attention' | 'communication';
+  factor: 'workload' | 'fatigue' | 'stress' | 'knowledge' | 'skill' | 'attention' | 'communication',
   description: string;
-  mitigation: string;
+  mitigation: string
 }
 
 export interface RCARecommendation {
-  id: string;
+  id: string,
   type: 'policy_change' | 'training' | 'system_improvement' | 'process_change' | 'equipment' | 'staffing';
-  description: string;
+  description: string,
   priority: 'high' | 'medium' | 'low';
-  owner: string;
+  owner: string,
   targetDate: Date;
   status: 'pending' | 'in_progress' | 'completed' | 'deferred';
   effectiveness?: 'high' | 'medium' | 'low';
@@ -293,69 +293,69 @@ export interface RCARecommendation {
 }
 
 export interface PreventionMeasure {
-  id: string;
+  id: string,
   type: 'immediate' | 'short_term' | 'long_term';
   description: string;
   implementedAt?: Date;
   implementedBy?: string;
-  effectiveness: 'pending' | 'effective' | 'partially_effective' | 'ineffective';
-  monitoring: MonitoringPlan;
+  effectiveness: 'pending' | 'effective' | 'partially_effective' | 'ineffective',
+  monitoring: MonitoringPlan
 }
 
 export interface MonitoringPlan {
-  frequency: string;
+  frequency: string,
   indicators: string[];
-  responsible: string;
+  responsible: string,
   reportingTo: string;
-  duration: string;
+  duration: string
 }
 
 export interface EventAttachment {
-  id: string;
+  id: string,
   type: 'document' | 'image' | 'video' | 'audio';
-  filename: string;
+  filename: string,
   url: string;
-  size: number;
+  size: number,
   uploadedBy: string;
-  uploadedAt: Date;
+  uploadedAt: Date
 }
 
 export interface EventNotification {
-  recipient: string;
+  recipient: string,
   method: 'email' | 'sms' | 'in_app' | 'phone';
-  sentAt: Date;
+  sentAt: Date,
   acknowledged: boolean;
   acknowledgedAt?: Date;
 }
 
 export interface EventResolution {
-  summary: string;
+  summary: string,
   lessonsLearned: string[];
-  changes: Change[];
+  changes: Change[],
   validatedBy: string;
-  validatedAt: Date;
+  validatedAt: Date,
   followUpRequired: boolean;
   followUpDate?: Date;
 }
 
 export interface Change {
-  type: 'policy' | 'procedure' | 'training' | 'system' | 'equipment';
+  type: 'policy' | 'procedure' | 'training' | 'system' | 'equipment',
   description: string;
-  effectiveDate: Date;
+  effectiveDate: Date,
   owner: string;
-  status: 'planned' | 'implemented' | 'validated';
+  status: 'planned' | 'implemented' | 'validated'
 }
 
 export interface QualityAssessment {
-  id: string;
+  id: string,
   type: AssessmentType;
-  title: string;
+  title: string,
   description: string;
-  scope: AssessmentScope;
+  scope: AssessmentScope,
   criteria: AssessmentCriteria[];
-  assessors: Assessor[];
+  assessors: Assessor[],
   schedule: AssessmentSchedule;
-  findings: AssessmentFinding[];
+  findings: AssessmentFinding[],
   recommendations: AssessmentRecommendation[];
   status: AssessmentStatus;
   score?: number;
@@ -375,7 +375,7 @@ export type AssessmentType =
   | 'survey';
 
 export interface AssessmentScope {
-  departments: string[];
+  departments: string[],
   processes: string[];
   timeframe: { start: Date; end: Date };
   standards: string[];
@@ -383,13 +383,13 @@ export interface AssessmentScope {
 }
 
 export interface AssessmentCriteria {
-  id: string;
+  id: string,
   category: string;
-  description: string;
+  description: string,
   weight: number;
-  requirement: string;
+  requirement: string,
   evidence: string[];
-  scoring: ScoringMethod;
+  scoring: ScoringMethod
 }
 
 export interface ScoringMethod {
@@ -399,65 +399,65 @@ export interface ScoringMethod {
 }
 
 export interface ScoringLevel {
-  score: number;
+  score: number,
   label: string;
-  description: string;
-  criteria: string;
+  description: string,
+  criteria: string
 }
 
 export interface Assessor {
-  id: string;
+  id: string,
   name: string;
-  role: string;
+  role: string,
   credentials: string[];
-  isLead: boolean;
-  isExternal: boolean;
+  isLead: boolean,
+  isExternal: boolean
 }
 
 export interface AssessmentSchedule {
-  plannedStart: Date;
+  plannedStart: Date,
   plannedEnd: Date;
   actualStart?: Date;
   actualEnd?: Date;
-  phases: AssessmentPhase[];
+  phases: AssessmentPhase[]
 }
 
 export interface AssessmentPhase {
-  name: string;
+  name: string,
   description: string;
-  startDate: Date;
+  startDate: Date,
   endDate: Date;
-  activities: string[];
-  deliverables: string[];
+  activities: string[],
+  deliverables: string[]
 }
 
 export interface AssessmentFinding {
-  id: string;
+  id: string,
   type: 'strength' | 'opportunity' | 'nonconformance' | 'observation';
-  severity: 'critical' | 'major' | 'minor' | 'informational';
+  severity: 'critical' | 'major' | 'minor' | 'informational',
   category: string;
-  description: string;
+  description: string,
   evidence: string;
   standard?: string;
   requirement?: string;
-  impact: string;
+  impact: string,
   recommendations: string[];
-  assignedTo: string;
+  assignedTo: string,
   dueDate: Date;
-  status: 'open' | 'in_progress' | 'closed' | 'deferred';
+  status: 'open' | 'in_progress' | 'closed' | 'deferred'
 }
 
 export interface AssessmentRecommendation {
-  id: string;
+  id: string,
   priority: 'high' | 'medium' | 'low';
-  type: 'corrective' | 'preventive' | 'improvement';
+  type: 'corrective' | 'preventive' | 'improvement',
   description: string;
-  rationale: string;
+  rationale: string,
   resources: string[];
-  timeline: string;
+  timeline: string,
   success: string[];
-  owner: string;
-  status: 'pending' | 'approved' | 'rejected' | 'implemented';
+  owner: string,
+  status: 'pending' | 'approved' | 'rejected' | 'implemented'
 }
 
 export type AssessmentStatus = 
@@ -470,30 +470,30 @@ export type AssessmentStatus =
   | 'completed';
 
 export interface Certification {
-  authority: string;
+  authority: string,
   certificate: string;
-  issueDate: Date;
+  issueDate: Date,
   expiryDate: Date;
   scope: string;
   conditions?: string[];
 }
 
 export interface QualityMetrics {
-  indicatorId: string;
+  indicatorId: string,
   period: { start: Date; end: Date };
-  value: number;
+  value: number,
   target: number;
-  numerator: number;
+  numerator: number,
   denominator: number;
-  variance: number;
+  variance: number,
   variancePercent: number;
-  trend: 'improving' | 'stable' | 'declining';
+  trend: 'improving' | 'stable' | 'declining',
   performance: 'exceeds' | 'meets' | 'below' | 'significantly_below';
   benchmarkComparison?: BenchmarkComparison[];
   riskAdjusted?: boolean;
-  dataQuality: DataQualityScore;
+  dataQuality: DataQualityScore,
   calculatedAt: Date;
-  calculatedBy: string;
+  calculatedBy: string,
   validated: boolean;
   validatedBy?: string;
   validatedAt?: Date;
@@ -501,34 +501,34 @@ export interface QualityMetrics {
 }
 
 export interface BenchmarkComparison {
-  source: string;
+  source: string,
   value: number;
-  percentile: number;
+  percentile: number,
   population: string;
-  comparison: 'above' | 'at' | 'below';
-  confidence: number;
+  comparison: 'above' | 'at' | 'below',
+  confidence: number
 }
 
 export interface DataQualityScore {
-  overall: number;
+  overall: number,
   completeness: number;
-  accuracy: number;
+  accuracy: number,
   timeliness: number;
-  consistency: number;
-  issues: string[];
+  consistency: number,
+  issues: string[]
 }
 
 export interface ComplianceReport {
-  id: string;
+  id: string,
   title: string;
   period: { start: Date; end: Date };
-  regulatoryBody: string;
+  regulatoryBody: string,
   standard: string;
-  requirements: ComplianceRequirement[];
+  requirements: ComplianceRequirement[],
   overallCompliance: number;
-  status: 'compliant' | 'non_compliant' | 'conditional' | 'pending';
+  status: 'compliant' | 'non_compliant' | 'conditional' | 'pending',
   findings: ComplianceFinding[];
-  gaps: ComplianceGap[];
+  gaps: ComplianceGap[],
   actionPlan: ActionPlan;
   submittedAt?: Date;
   submittedBy?: string;
@@ -537,9 +537,9 @@ export interface ComplianceReport {
 }
 
 export interface ComplianceRequirement {
-  id: string;
+  id: string,
   section: string;
-  description: string;
+  description: string,
   evidence: string[];
   status: 'met' | 'partially_met' | 'not_met' | 'not_applicable';
   score?: number;
@@ -547,104 +547,104 @@ export interface ComplianceRequirement {
 }
 
 export interface ComplianceFinding {
-  type: 'strength' | 'weakness' | 'violation' | 'opportunity';
+  type: 'strength' | 'weakness' | 'violation' | 'opportunity',
   description: string;
-  impact: 'high' | 'medium' | 'low';
+  impact: 'high' | 'medium' | 'low',
   evidence: string;
-  recommendation: string;
+  recommendation: string
 }
 
 export interface ComplianceGap {
-  requirement: string;
+  requirement: string,
   current: string;
-  target: string;
+  target: string,
   priority: 'critical' | 'high' | 'medium' | 'low';
-  effort: 'low' | 'medium' | 'high';
-  timeline: string;
+  effort: 'low' | 'medium' | 'high',
+  timeline: string
 }
 
 export interface ActionPlan {
-  objectives: string[];
+  objectives: string[],
   actions: ActionItem[];
-  resources: ResourceRequirement[];
+  resources: ResourceRequirement[],
   timeline: ActionTimeline;
-  success: string[];
-  monitoring: MonitoringFramework;
+  success: string[],
+  monitoring: MonitoringFramework
 }
 
 export interface ActionItem {
-  id: string;
+  id: string,
   description: string;
-  type: 'policy' | 'training' | 'system' | 'process' | 'documentation';
+  type: 'policy' | 'training' | 'system' | 'process' | 'documentation',
   priority: 'critical' | 'high' | 'medium' | 'low';
-  owner: string;
+  owner: string,
   startDate: Date;
-  targetDate: Date;
+  targetDate: Date,
   status: 'not_started' | 'in_progress' | 'completed' | 'overdue';
-  dependencies: string[];
+  dependencies: string[],
   progress: number;
-  resources: string[];
+  resources: string[]
 }
 
 export interface ResourceRequirement {
-  type: 'human' | 'financial' | 'technical' | 'infrastructure';
+  type: 'human' | 'financial' | 'technical' | 'infrastructure',
   description: string;
   quantity: number;
   cost?: number;
-  availability: 'available' | 'partial' | 'unavailable';
+  availability: 'available' | 'partial' | 'unavailable'
 }
 
 export interface ActionTimeline {
-  phases: TimelinePhase[];
+  phases: TimelinePhase[],
   milestones: Milestone[];
-  dependencies: Dependency[];
+  dependencies: Dependency[]
 }
 
 export interface TimelinePhase {
-  name: string;
+  name: string,
   start: Date;
-  end: Date;
+  end: Date,
   deliverables: string[];
-  resources: string[];
+  resources: string[]
 }
 
 export interface Milestone {
-  name: string;
+  name: string,
   date: Date;
-  criteria: string;
-  responsible: string;
+  criteria: string,
+  responsible: string
 }
 
 export interface Dependency {
-  from: string;
+  from: string,
   to: string;
   type: 'start_to_start' | 'start_to_finish' | 'finish_to_start' | 'finish_to_finish';
   lag?: number;
 }
 
 export interface MonitoringFramework {
-  indicators: string[];
+  indicators: string[],
   frequency: string;
-  reports: string[];
-  escalation: EscalationProcedure;
+  reports: string[],
+  escalation: EscalationProcedure
 }
 
 export interface EscalationProcedure {
-  levels: EscalationLevel[];
-  triggers: EscalationTrigger[];
+  levels: EscalationLevel[],
+  triggers: EscalationTrigger[]
 }
 
 export interface EscalationLevel {
-  level: number;
+  level: number,
   responsible: string;
-  timeframe: string;
-  actions: string[];
+  timeframe: string,
+  actions: string[]
 }
 
 export interface EscalationTrigger {
-  condition: string;
+  condition: string,
   threshold: unknown;
-  action: string;
+  action: string
 }
 
 class QualityManagementService extends EventEmitter {
@@ -681,8 +681,7 @@ class QualityManagementService extends EventEmitter {
       this.startEventMonitoring();
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      this.emit('quality_service_started');
-
+      this.emit('quality_service_started')
     } catch (error) {
 
       throw error;
@@ -702,7 +701,7 @@ class QualityManagementService extends EventEmitter {
     this.calculationJobs.clear();
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.emit('quality_service_stopped');
+    this.emit('quality_service_stopped')
   }
 
   /**
@@ -797,7 +796,7 @@ class QualityManagementService extends EventEmitter {
       status: 'planned',
       findings: [],
       recommendations: [],
-      createdAt: new Date();
+      createdAt: new Date()
     };
 
     this.assessments.set(newAssessment.id, newAssessment);
@@ -861,12 +860,12 @@ class QualityManagementService extends EventEmitter {
    * Get quality dashboard data;
    */
   async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{
-    overview: QualityOverview;
+    overview: QualityOverview,
     trends: QualityTrend[];
-    events: EventSummary;
+    events: EventSummary,
     indicators: IndicatorSummary[];
-    assessments: AssessmentSummary[];
-    compliance: ComplianceSummary;
+    assessments: AssessmentSummary[],
+    compliance: ComplianceSummary
   }> {
     const endDate = new Date();
     const startDate = this.calculateStartDate(endDate, timeframe);
@@ -884,7 +883,7 @@ class QualityManagementService extends EventEmitter {
       events: eventSummary,
       indicators: indicatorSummary,
       assessments: assessmentSummary,
-      compliance: complianceSummary;
+      compliance: complianceSummary
     };
   }
 
@@ -944,13 +943,13 @@ class QualityManagementService extends EventEmitter {
           numerator: 'Number of CLABSIs',
           denominator: 'Central line days',
           timeframe: 'monthly',
-          unit: 'rate';
+          unit: 'rate'
         },
         target: {
           value: 1.0,
           operator: 'less_than',
           source: 'benchmark',
-          validFrom: new Date();
+          validFrom: new Date()
         },
         calculation: {
           formula: '(CLABSI_count / central_line_days) * 1000',
@@ -960,7 +959,7 @@ class QualityManagementService extends EventEmitter {
           ],
           conditions: [],
           aggregation: 'rate',
-          period: 'monthly';
+          period: 'monthly'
         },
         dataRequirements: [
           {
@@ -976,7 +975,7 @@ class QualityManagementService extends EventEmitter {
         ],
         isActive: true,
         isCore: true,
-        createdBy: 'system';
+        createdBy: 'system'
       });
 
       await this.registerQualityIndicator({
@@ -989,13 +988,13 @@ class QualityManagementService extends EventEmitter {
           numerator: 'Number of patient falls',
           denominator: 'Patient days',
           timeframe: 'monthly',
-          unit: 'rate';
+          unit: 'rate'
         },
         target: {
           value: 3.5,
           operator: 'less_than',
           source: 'benchmark',
-          validFrom: new Date();
+          validFrom: new Date()
         },
         calculation: {
           formula: '(fall_count / patient_days) * 1000',
@@ -1005,7 +1004,7 @@ class QualityManagementService extends EventEmitter {
           ],
           conditions: [],
           aggregation: 'rate',
-          period: 'monthly';
+          period: 'monthly'
         },
         dataRequirements: [
           {
@@ -1021,7 +1020,7 @@ class QualityManagementService extends EventEmitter {
         ],
         isActive: true,
         isCore: true,
-        createdBy: 'system';
+        createdBy: 'system'
       });
 
     } catch (error) {
@@ -1048,7 +1047,7 @@ class QualityManagementService extends EventEmitter {
 
   private startCalculationJob(indicator: QualityIndicator): void {
     if (this.calculationJobs.has(indicator.id)) {
-      this.stopCalculationJob(indicator.id);
+      this.stopCalculationJob(indicator.id)
     }
 
     const intervalMs = this.getCalculationInterval(indicator.calculation.period);
@@ -1116,7 +1115,7 @@ class QualityManagementService extends EventEmitter {
         percentile: b.percentile || 50,
         population: b.population,
         comparison: value < b.value ? 'below' : value > b.value ? 'above' : 'at',
-        confidence: 95;
+        confidence: 95
       })),
       riskAdjusted: indicator.measure.riskAdjustment?.method !== 'none',
       dataQuality: {
@@ -1129,7 +1128,7 @@ class QualityManagementService extends EventEmitter {
       },
       calculatedAt: new Date(),
       calculatedBy: 'system',
-      validated: false;
+      validated: false
     };
   }
 
@@ -1141,7 +1140,7 @@ class QualityManagementService extends EventEmitter {
         indicator: indicator.name,
         value: metrics.value,
         target: metrics.target,
-        severity: 'high';
+        severity: 'high'
       });
     }
   }
@@ -1155,7 +1154,7 @@ class QualityManagementService extends EventEmitter {
         recipient,
         method: 'email',
         sentAt: new Date(),
-        acknowledged: false;
+        acknowledged: false
       };
       
       event.notifications.push(notification);
@@ -1193,7 +1192,7 @@ class QualityManagementService extends EventEmitter {
         department: event.department,
         type: event.type,
         count: recentEvents.length,
-        timeframe: '30_days';
+        timeframe: '30_days'
       });
     }
   }
@@ -1249,7 +1248,7 @@ class QualityManagementService extends EventEmitter {
       case 'weekly': return new Date(date.setDate(date.getDate() - 7));
       case 'monthly': return new Date(date.setMonth(date.getMonth() - 1));
       case 'quarterly': return new Date(date.setMonth(date.getMonth() - 3));
-      default: return new Date(date.setMonth(date.getMonth() - 1));
+      default: return new Date(date.setMonth(date.getMonth() - 1))
     }
   }
 
@@ -1261,7 +1260,7 @@ class QualityManagementService extends EventEmitter {
       case 'monthly': return new Date(date.setMonth(date.getMonth() - 1));
       case 'quarterly': return new Date(date.setMonth(date.getMonth() - 3));
       case 'annual': return new Date(date.setFullYear(date.getFullYear() - 1));
-      default: return new Date(date.setDate(date.getDate() - 1));
+      default: return new Date(date.setDate(date.getDate() - 1))
     }
   }
 
@@ -1272,7 +1271,7 @@ class QualityManagementService extends EventEmitter {
       case 'monthly': return 30 * 24 * 60 * 60 * 1000; // 30 days;
       case 'quarterly': return 90 * 24 * 60 * 60 * 1000; // 90 days;
       case 'annual': return 365 * 24 * 60 * 60 * 1000; // 365 days;
-      default: return 24 * 60 * 60 * 1000;
+      default: return 24 * 60 * 60 * 1000
     }
   }
 
@@ -1283,12 +1282,12 @@ class QualityManagementService extends EventEmitter {
       trend: 'improving',
       criticalEvents: 2,
       openFindings: 8,
-      complianceRate: 96;
+      complianceRate: 96
     };
   }
 
   private async generateQualityTrends(start: Date, end: Date): Promise<any[]> {
-    return [];
+    return []
   }
 
   private async generateEventSummary(start: Date, end: Date): Promise<any> {
@@ -1300,11 +1299,11 @@ class QualityManagementService extends EventEmitter {
   }
 
   private async generateIndicatorSummary(start: Date, end: Date): Promise<any[]> {
-    return [];
+    return []
   }
 
   private async generateAssessmentSummary(start: Date, end: Date): Promise<any[]> {
-    return [];
+    return []
   }
 
   private async generateComplianceSummary(start: Date, end: Date): Promise<any> {
@@ -1336,46 +1335,46 @@ class QualityManagementService extends EventEmitter {
 
 // Type exports for dashboard generation;
 export interface QualityOverview {
-  overallScore: number;
+  overallScore: number,
   trend: 'improving' | 'stable' | 'declining';
-  criticalEvents: number;
+  criticalEvents: number,
   openFindings: number;
-  complianceRate: number;
+  complianceRate: number
 }
 
 export interface QualityTrend {
-  indicator: string;
+  indicator: string,
   values: { date: Date; value: number }[];
-  trend: 'improving' | 'stable' | 'declining';
+  trend: 'improving' | 'stable' | 'declining'
 }
 
 export interface EventSummary {
-  total: number;
+  total: number,
   byType: Record<string, number>;
   bySeverity: Record<string, number>;
 }
 
 export interface IndicatorSummary {
-  id: string;
+  id: string,
   name: string;
-  value: number;
+  value: number,
   target: number;
-  performance: string;
-  trend: string;
+  performance: string,
+  trend: string
 }
 
 export interface AssessmentSummary {
-  id: string;
+  id: string,
   title: string;
   status: string;
   score?: number;
-  findings: number;
+  findings: number
 }
 
 export interface ComplianceSummary {
-  overallCompliance: number;
+  overallCompliance: number,
   gaps: number;
-  upcomingAudits: number;
+  upcomingAudits: number,
   certifications: { valid: number; expiring: number };
 }
 

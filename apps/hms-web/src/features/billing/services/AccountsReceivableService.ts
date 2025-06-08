@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -102,7 +102,7 @@ export class AccountsReceivableService {
         };
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return statement;
+        return statement
     }
 
     /**
@@ -137,7 +137,7 @@ export class AccountsReceivableService {
 
         // Simulate sending email/SMS;
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return notice;
+        return notice
     }
 
     // Further methods for collections management, aging reports etc. can be added here.

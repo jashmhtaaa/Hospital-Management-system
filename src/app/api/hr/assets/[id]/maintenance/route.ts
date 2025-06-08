@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,13 +19,13 @@ const maintenanceSchema = z.object({
     errorMap: () => ({ message: "Invalid maintenance type" });
   }),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   performedBy: z.string().optional(),
   cost: z.number().optional(),
   description: z.string().min(1, "Description is required"),
   nextMaintenanceDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
 });
 
@@ -33,7 +33,7 @@ const maintenanceSchema = z.object({
 export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -77,7 +77,7 @@ export async const POST = (
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const asset = await assetService.getAsset(params.id);
     

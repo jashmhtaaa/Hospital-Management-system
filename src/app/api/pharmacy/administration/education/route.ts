@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,7 +31,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -42,7 +42,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const educationRepository = {
@@ -51,14 +51,14 @@ const educationRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   save: (education: unknown) => Promise.resolve(education.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -118,7 +118,7 @@ export async const POST = (req: NextRequest) {
       followUpDate: data.followUpDate ? new Date(data.followUpDate) : null,
       language: data.language || 'English',
       interpreter: data.interpreter || false,
-      interpreterName: data.interpreterName;
+      interpreterName: data.interpreterName
     };
 
     // Save education record;
@@ -135,7 +135,7 @@ export async const POST = (req: NextRequest) {
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId,
         educationType: data.educationType,
-        topics: data.topics;
+        topics: data.topics
       }
     });
 
@@ -143,7 +143,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: educationId,
-        message: 'Patient education recorded successfully';
+        message: 'Patient education recorded successfully'
       }, 
       { status: 201 }
     );
@@ -156,7 +156,7 @@ export async const POST = (req: NextRequest) {
  * GET /api/pharmacy/administration/education;
  * Get patient education records with filtering options;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -237,7 +237,7 @@ export async const GET = (req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length;
+        resultCount: paginatedRecords.length
       }
     });
 
@@ -248,7 +248,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

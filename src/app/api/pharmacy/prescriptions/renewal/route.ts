@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -56,7 +56,7 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
         userId,
         resourceType: 'Prescription',
         details: 'Attempted to access prescription renewal list without permission',
-        severity: 'WARNING';
+        severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -77,7 +77,7 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
         daysUntilExpiration: 20,
         refillsRemaining: 0,
         lastFillDate: new Date('2025-05-01'),
-        status: 'active';
+        status: 'active'
       },
       {
         id: 'rx456',
@@ -92,7 +92,7 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
         daysUntilExpiration: 6,
         refillsRemaining: 1,
         lastFillDate: new Date('2025-05-01'),
-        status: 'active';
+        status: 'active'
       }
     ];
     
@@ -102,7 +102,7 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
       userId,
       resourceType: 'Prescription',
       details: `Retrieved ${eligiblePrescriptions.length} prescriptions eligible for renewal`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     return NextResponse.json({ prescriptions: eligiblePrescriptions });
@@ -137,7 +137,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
         resourceType: 'Prescription',
         resourceId: prescriptionId,
         details: 'Attempted to request prescription renewal without permission',
-        severity: 'WARNING';
+        severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -161,7 +161,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
       notes: notes || '',
       reviewerId: null,
       reviewDate: null,
-      reviewNotes: null;
+      reviewNotes: null
     };
     
     // Log the renewal request;
@@ -171,7 +171,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
       resourceType: 'Prescription',
       resourceId: prescriptionId,
       details: `Renewal requested for prescription ${prescriptionId}`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     return NextResponse.json({ renewalRequest }, { status: 201 });
@@ -206,7 +206,7 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
         resourceType: 'PrescriptionRenewal',
         resourceId: renewalId,
         details: 'Attempted to approve/deny prescription renewal without permission',
-        severity: 'WARNING';
+        severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -239,7 +239,7 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
       notes: 'Patient requested renewal',
       reviewerId: userId,
       reviewDate: new Date(),
-      reviewNotes: notes || '';
+      reviewNotes: notes || ''
     };
     
     // If approved, create a new prescription;
@@ -265,12 +265,12 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
       resourceType: 'PrescriptionRenewal',
       resourceId: renewalId,
       details: `Renewal ${action}d for request ${renewalId}`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
     
     return NextResponse.json({
       renewalRequest: updatedRenewal,
-      prescription: newPrescription;
+      prescription: newPrescription
     });
   } catch (error) {
     return errorHandler.handleApiError(error, 'Failed to process prescription renewal');

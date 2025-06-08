@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -36,8 +36,8 @@ export interface ModalityFormData {
 // FIX: Define interface for props, including isOpen;
 interface CreateModalityModalProperties {
   isOpen: boolean; // Add isOpen prop;
-  onClose: () => void;
-  onSubmit: (data: ModalityFormData) => Promise<void> | void;
+  onClose: () => void,
+  onSubmit: (data: ModalityFormData) => Promise<void> | void
 }
 
 // FIX: Apply props interface;
@@ -90,50 +90,50 @@ export default const CreateModalityModal = ({
               <Label htmlFor="name" className="text-right">;
                 Name *
               </Label>
-              <Input;
-                id="name";
+              <Input>
+                id="name"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                className="col-span-3";
-                placeholder="e.g., CT Scanner 1, MRI Unit A";
+                className="col-span-3"
+                placeholder="e.g., CT Scanner 1, MRI Unit A"
                 required;
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="location" className="text-right">;
-                Location;
+                Location
               </Label>
-              <Input;
-                id="location";
+              <Input>
+                id="location"
                 value={location}
                 onChange={(event) => setLocation(event.target.value)}
-                className="col-span-3";
-                placeholder="e.g., Room 203, Radiology Wing";
+                className="col-span-3"
+                placeholder="e.g., Room 203, Radiology Wing"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="description" className="text-right">;
-                Description;
+                Description
               </Label>
-              <Textarea;
-                id="description";
+              <Textarea>
+                id="description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                className="col-span-3";
+                className="col-span-3"
               />
             </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline" disabled={isSubmitting}>;
-                Cancel;
+                Cancel
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isSubmitting}>;
               {isSubmitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}
-              Add Modality;
+              Add Modality
             </Button>
           </DialogFooter>
         </form>

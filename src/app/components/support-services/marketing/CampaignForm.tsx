@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -51,7 +51,7 @@ type CampaignFormValues = z.infer<typeof campaignFormSchema>;
 
 interface CampaignFormProps {
   campaignId?: string;
-  onSuccess?: (campaign: unknown) => void;
+  onSuccess?: (campaign: unknown) => void
 }
 
 export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProps) {
@@ -86,7 +86,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
         const response = await fetch(`/api/support-services/marketing/campaigns/${campaignId}`);
         if (!response.ok) throw new Error('Failed to fetch campaign');
         
-        const data = await response.json();
+        const data = await response.json(),
         setCampaign(data);
         
         // Set form values from campaign data;
@@ -104,7 +104,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
         
         // Fetch campaign segments;
         if (data.segments && data.segments.length > 0) {
-          setSelectedSegments(data.segments.map((s: unknown) => s.segment));
+          setSelectedSegments(data.segments.map((s: unknown) => s.segment))
         }
       } catch (error) {
 
@@ -128,7 +128,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
         const response = await fetch('/api/support-services/marketing/segments?isActive=true');
         if (!response.ok) throw new Error('Failed to fetch segments');
         
-        const data = await response.json();
+        const data = await response.json(),
         setAvailableSegments(data.data || []);
       } catch (error) {
 
@@ -159,8 +159,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
       
       if (!response.ok) throw new Error('Failed to save campaign');
       
-      const savedCampaign = await response.json();
-      
+      const savedCampaign = await response.json(),
       toast({
         title: "Success",
         description: `Campaign ${campaignId ? 'updated' : 'created'} successfully.`,
@@ -248,44 +247,44 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
           <TabsList className="grid w-full grid-cols-3">;
             <TabsTrigger value="details">Campaign Details</TabsTrigger>;
             <TabsTrigger value="audience" disabled={!campaignId}>Target Audience</TabsTrigger>;
-            <TabsTrigger value="channels" disabled={!campaignId}>Channels</TabsTrigger>;
+            <TabsTrigger value="channels" disabled={!campaignId}>Channels</TabsTrigger>
           </TabsList>
           
           <TabsContent value="details">;
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="name";
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Campaign Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter campaign name" {...field} />;
+                        <Input placeholder="Enter campaign name" {...field} />
                       </FormControl>
                       <FormDescription>
-                        A descriptive name for your marketing campaign;
+                        A descriptive name for your marketing campaign
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="description";
+                  name="description"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Textarea;
-                          placeholder="Enter campaign description";
-                          className="min-h-[100px]";
+                        <Textarea>
+                          placeholder="Enter campaign description"
+                          className="min-h-[100px]"
                           {...field} 
                         />
                       </FormControl>
                       <FormDescription>
-                        Detailed description of the campaign's purpose and objectives;
+                        Detailed description of the campaign's purpose and objectives
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -293,19 +292,19 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                 />
                 
                 <div className="grid grid-cols-2 gap-4">;
-                  <FormField;
+                  <FormField>
                     control={form.control}
-                    name="type";
+                    name="type"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Campaign Type</FormLabel>
-                        <Select;
+                        <Select>
                           onValueChange={field.onChange} 
                           defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select campaign type" />;
+                              <SelectValue placeholder="Select campaign type" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -315,30 +314,30 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                             <SelectItem value="EVENT">Event</SelectItem>;
                             <SelectItem value="PRINT">Print</SelectItem>;
                             <SelectItem value="DIGITAL_AD">Digital Ad</SelectItem>;
-                            <SelectItem value="OTHER">Other</SelectItem>;
+                            <SelectItem value="OTHER">Other</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormDescription>
-                          The primary channel for this campaign;
+                          The primary channel for this campaign
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   
-                  <FormField;
+                  <FormField>
                     control={form.control}
-                    name="status";
+                    name="status"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Status</FormLabel>
-                        <Select;
+                        <Select>
                           onValueChange={field.onChange} 
                           defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select status" />;
+                              <SelectValue placeholder="Select status" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -347,11 +346,11 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                             <SelectItem value="ACTIVE">Active</SelectItem>;
                             <SelectItem value="PAUSED">Paused</SelectItem>;
                             <SelectItem value="COMPLETED">Completed</SelectItem>;
-                            <SelectItem value="CANCELLED">Cancelled</SelectItem>;
+                            <SelectItem value="CANCELLED">Cancelled</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormDescription>
-                          Current status of the campaign;
+                          Current status of the campaign
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -360,36 +359,36 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">;
-                  <FormField;
+                  <FormField>
                     control={form.control}
-                    name="startDate";
+                    name="startDate"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">;
                         <FormLabel>Start Date</FormLabel>
-                        <DatePicker;
+                        <DatePicker>
                           date={field.value}
                           setDate={field.onChange}
                         />
                         <FormDescription>
-                          When the campaign will start;
+                          When the campaign will start
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   
-                  <FormField;
+                  <FormField>
                     control={form.control}
-                    name="endDate";
+                    name="endDate"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">;
                         <FormLabel>End Date (Optional)</FormLabel>
-                        <DatePicker;
+                        <DatePicker>
                           date={field.value}
                           setDate={field.onChange}
                         />
                         <FormDescription>
-                          When the campaign will end;
+                          When the campaign will end
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -397,53 +396,53 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                   />
                 </div>
                 
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="budget";
+                  name="budget"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Budget (Optional)</FormLabel>
                       <FormControl>
-                        <Input;
+                        <Input>
                           type="number" 
-                          placeholder="Enter budget amount";
+                          placeholder="Enter budget amount"
                           {...field}
                           onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                         />
                       </FormControl>
                       <FormDescription>
-                        Allocated budget for this campaign;
+                        Allocated budget for this campaign
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <div>
+<div
                   <FormLabel>Campaign Goals</FormLabel>
                   <div className="flex items-center space-x-2 mt-2">;
-                    <Input;
-                      placeholder="Enter a campaign goal";
+                    <Input>
+                      placeholder="Enter a campaign goal"
                       value={goalInput}
                       onChange={(e) => setGoalInput(e.target.value)}
                     />
-                    <Button type="button" onClick={handleAddGoal}>Add</Button>;
+                    <Button type="button" onClick={handleAddGoal}>Add</Button>
                   </div>
                   <FormDescription className="mt-2">;
-                    Define the objectives you want to achieve with this campaign;
+                    Define the objectives you want to achieve with this campaign
                   </FormDescription>
                   
                   <div className="mt-4 space-y-2">;
                     {form.watch("goals")?.map((goal, index) => (
                       <div key={index} className="flex items-center justify-between p-2 border rounded">;
                         <span>{goal}</span>
-                        <Button;
+                        <Button>
                           type="button" 
-                          variant="ghost";
-                          size="sm";
+                          variant="ghost"
+                          size="sm"
                           onClick={() => handleRemoveGoal(index)}
                         >
-                          Remove;
+                          Remove
                         </Button>
                       </div>
                     ))}
@@ -456,12 +455,12 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                 </div>
                 
                 <div className="flex justify-end space-x-2">;
-                  <Button;
+                  <Button>
                     type="button" 
-                    variant="outline";
+                    variant="outline"
                     onClick={() => router.back()}
                   >
-                    Cancel;
+                    Cancel
                   </Button>
                   <Button type="submit" disabled={isLoading}>;
                     {isLoading ? 'Saving...' : campaignId ? 'Update Campaign' : 'Create Campaign'}
@@ -474,16 +473,16 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
           <TabsContent value="audience">;
             {campaignId ? (
               <div className="space-y-6">;
-                <div>
+<div
                   <h3 className="text-lg font-medium">Target Segments</h3>;
                   <p className="text-sm text-muted-foreground">;
-                    Select audience segments to target with this campaign;
+                    Select audience segments to target with this campaign
                   </p>
                   
                   <div className="mt-4">;
                     <Select onValueChange={handleAddSegment}>;
                       <SelectTrigger>
-                        <SelectValue placeholder="Add a segment" />;
+                        <SelectValue placeholder="Add a segment" />
                       </SelectTrigger>
                       <SelectContent>
                         {availableSegments;
@@ -501,12 +500,12 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                   <div className="mt-4 space-y-2">;
                     {selectedSegments.map(segment => (
                       <div key={segment.id} className="flex items-center justify-between p-3 border rounded">;
-                        <div>
+<div
                           <h4 className="font-medium">{segment.name}</h4>;
-                          <p className="text-sm text-muted-foreground">{segment.description}</p>;
+                          <p className="text-sm text-muted-foreground">{segment.description}</p>
                         </div>
                         <div className="flex items-center space-x-2">;
-                          <Button variant="outline" size="sm">View</Button>;
+                          <Button variant="outline" size="sm">View</Button>
                         </div>
                       </div>
                     ))}
@@ -517,15 +516,15 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                   </div>
                 </div>
                 
-                <div>
+<div
                   <h3 className="text-lg font-medium">Custom Audience Criteria</h3>;
                   <p className="text-sm text-muted-foreground">;
-                    Define custom criteria for targeting specific audiences;
+                    Define custom criteria for targeting specific audiences
                   </p>
                   
                   {/* Custom audience criteria builder would go here */}
                   <div className="mt-4 p-4 border rounded bg-muted">;
-                    <p className="text-sm">Advanced audience targeting options will be available soon.</p>;
+                    <p className="text-sm">Advanced audience targeting options will be available soon.</p>
                   </div>
                 </div>
               </div>
@@ -539,39 +538,39 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
           <TabsContent value="channels">;
             {campaignId ? (
               <div className="space-y-6">;
-                <div>
+<div
                   <h3 className="text-lg font-medium">Campaign Channels</h3>;
                   <p className="text-sm text-muted-foreground">;
-                    Configure the channels used for this marketing campaign;
+                    Configure the channels used for this marketing campaign
                   </p>
                   
                   <div className="mt-4 space-y-4">;
                     <div className="p-4 border rounded">;
                       <h4 className="font-medium">Email Channel</h4>;
                       <div className="mt-2 grid grid-cols-2 gap-4">;
-                        <div>
+<div
                           <FormLabel>Email Template</FormLabel>
                           <Select>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select template" />;
+                              <SelectValue placeholder="Select template" />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="template1">Monthly Newsletter</SelectItem>;
                               <SelectItem value="template2">Promotional Offer</SelectItem>;
-                              <SelectItem value="template3">Event Invitation</SelectItem>;
+                              <SelectItem value="template3">Event Invitation</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
-                        <div>
+<div
                           <FormLabel>Send Schedule</FormLabel>
                           <Select>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select schedule" />;
+                              <SelectValue placeholder="Select schedule" />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="immediate">Immediate</SelectItem>;
                               <SelectItem value="scheduled">Scheduled</SelectItem>;
-                              <SelectItem value="recurring">Recurring</SelectItem>;
+                              <SelectItem value="recurring">Recurring</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -585,7 +584,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                       <h4 className="font-medium">SMS Channel</h4>;
                       <div className="mt-2">;
                         <FormLabel>Message Template</FormLabel>
-                        <Textarea placeholder="Enter SMS message template" className="mt-1" />;
+                        <Textarea placeholder="Enter SMS message template" className="mt-1" />
                       </div>
                       <div className="mt-4 flex justify-end">;
                         <Button>Configure SMS</Button>
@@ -595,10 +594,10 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
                     <div className="p-4 border rounded">;
                       <h4 className="font-medium">Add Channel</h4>;
                       <p className="text-sm text-muted-foreground mt-1">;
-                        Add additional channels to this campaign;
+                        Add additional channels to this campaign
                       </p>
                       <div className="mt-4 flex justify-end">;
-                        <Button variant="outline">Add Channel</Button>;
+                        <Button variant="outline">Add Channel</Button>
                       </div>
                     </div>
                   </div>
@@ -613,27 +612,27 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
         </Tabs>
       </CardContent>
       <CardFooter className="flex justify-between">;
-        <div>
+<div
           {campaignId && (
             <Button variant="outline" className="text-destructive">;
-              Delete Campaign;
+              Delete Campaign
             </Button>
           )}
         </div>
         <div className="flex space-x-2">;
           {activeTab !== "details" && (
-            <Button;
-              variant="outline";
+            <Button>
+              variant="outline"
               onClick={() => setActiveTab(activeTab === "audience" ? "details" : "audience")}
             >
               {activeTab === "channels" ? "Previous" : "Cancel"}
             </Button>
           )}
           {activeTab !== "channels" && campaignId && (
-            <Button;
+            <Button>
               onClick={() => setActiveTab(activeTab === "details" ? "audience" : "channels")}
             >
-              Next;
+              Next
             </Button>
           )}
         </div>

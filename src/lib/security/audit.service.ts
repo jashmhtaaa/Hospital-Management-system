@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -52,12 +52,12 @@ export interface AuditQuery {
 }
 
 export interface AuditReport {
-  events: AuditEvent[];
+  events: AuditEvent[],
   totalCount: number;
   summary: {
-    totalEvents: number;
+    totalEvents: number,
     successfulEvents: number;
-    failedEvents: number;
+    failedEvents: number,
     severityBreakdown: Record<string, number>;
     topUsers: Array<{ userId: string; count: number }>;
     topResources: Array<{ resource: string; count: number }>;
@@ -122,7 +122,7 @@ export class AuditService {
    */
   async logEvents(events: AuditEvent[]): Promise<void> {
     for (const event of events) {
-      await this.logEvent(event);
+      await this.logEvent(event)
     }
   }
 
@@ -150,9 +150,9 @@ export class AuditService {
           where,
           orderBy: { timestamp: 'desc' },
           take: query.limit || 100,
-          skip: query.offset || 0;
+          skip: query.offset || 0
         }),
-        this.prisma.auditLog.count({ where });
+        this.prisma.auditLog.count({ where })
       ]);
 
       // Generate summary;
@@ -228,7 +228,7 @@ export class AuditService {
         eventType,
         startDate,
         endDate,
-        limit: 1000;
+        limit: 1000
       });
       events.push(...report.events);
     }
@@ -255,9 +255,9 @@ export class AuditService {
         resource: 'audit_logs',
         details: {
           archivedCount: result.count,
-          olderThan: olderThan.toISOString();
+          olderThan: olderThan.toISOString()
         },
-        severity: 'LOW';
+        severity: 'LOW'
       });
 
       return result.count;
@@ -298,7 +298,7 @@ export class AuditService {
         timestamp: event.timestamp || new Date(),
         severity: event.severity || 'LOW',
         outcome: event.outcome || 'SUCCESS',
-        compliance: event.compliance;
+        compliance: event.compliance
       }
     });
   }
@@ -308,7 +308,7 @@ export class AuditService {
       ...event,
       '@timestamp': event.timestamp || new Date(),
       service: 'hms-audit',
-      environment: process.env.NODE_ENV || 'development';
+      environment: process.env.NODE_ENV || 'development'
     });
   }
 
@@ -334,9 +334,9 @@ export class AuditService {
       transports.push(
         new ElasticsearchTransport({
           clientOpts: {
-            node: process.env.ELASTICSEARCH_URL;
+            node: process.env.ELASTICSEARCH_URL
           },
-          index: 'hms-audit-logs';
+          index: 'hms-audit-logs'
         });
       );
     }
@@ -412,15 +412,15 @@ export class AuditService {
         where: { ...where, userId: { not: null } },
         _count: { userId: true },
         orderBy: { _count: { userId: 'desc' } },
-        take: 10;
+        take: 10
       }),
       this.prisma.auditLog.groupBy({
         by: ['resource'],
         where,
         _count: { resource: true },
         orderBy: { _count: { resource: 'desc' } },
-        take: 10;
-      });
+        take: 10
+      })
     ]);
 
     return {
@@ -433,11 +433,11 @@ export class AuditService {
       }, {} as Record<string, number>),
       topUsers: userGroups.map(group => ({
         userId: group.userId || 'unknown',
-        count: group._count.userId;
+        count: group._count.userId
       })),
       topResources: resourceGroups.map(group => ({
         resource: group.resource,
-        count: group._count.resource;
+        count: group._count.resource
       }));
     };
   }
@@ -457,7 +457,7 @@ export class AuditService {
       timestamp: dbEvent.timestamp,
       severity: dbEvent.severity,
       outcome: dbEvent.outcome,
-      compliance: dbEvent.compliance;
+      compliance: dbEvent.compliance
     };
   }
 
@@ -472,7 +472,7 @@ export class AuditService {
 
 // Export convenience function;
 export async const logAuditEvent = (event: AuditEvent): Promise<void> {
-  return AuditService.getInstance().logEvent(event);
+  return AuditService.getInstance().logEvent(event)
 }
 
 // Export singleton instance;

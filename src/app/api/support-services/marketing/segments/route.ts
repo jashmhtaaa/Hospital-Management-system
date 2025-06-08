@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ const segmentService = new SegmentService();
  * GET /api/support-services/marketing/segments;
  * Get all segments with optional filtering;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -57,7 +57,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/support-services/marketing/segments;
  * Create a new segment;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

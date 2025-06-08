@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -92,7 +92,7 @@ export class ClaimProcessingService {
         };
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return statusResponse;
+        return statusResponse
     }
 
     /**
@@ -135,7 +135,7 @@ export class ClaimProcessingService {
             mockClaim.notes = `${mockClaim.notes || ''}\nUpdate: ${statusDetails}`;
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return mockClaim;
+        return mockClaim
     }
 }
 

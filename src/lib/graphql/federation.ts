@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -53,7 +53,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       context.startTime ? performance.now() - context.startTime : 0,
       {
         service: serviceName,
-        operation: operationName;
+        operation: operationName
       }
     );
 
@@ -72,18 +72,18 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       serviceName,
       userId: context.user?.id,
       requestId: context.requestId,
-      correlationId: context.correlationId;
+      correlationId: context.correlationId
     });
     
     metricsCollector.incrementCounter('graphql.federation.errors', 1, {
       service: serviceName,
       operation: operationName,
-      errorType: error.name || 'UnknownError';
+      errorType: error.name || 'UnknownError'
     });
   }
 }
 
-export async const createGraphQLFederationServer = (app: express.Application) {
+export async const createGraphQLFederationServer = (app: express.Application) => {
   // Get the HTTP server instance;
   const httpServer = http.createServer(app);
 
@@ -106,7 +106,7 @@ export async const createGraphQLFederationServer = (app: express.Application) {
       subgraphs: serviceList,
       pollIntervalInMs: 60000, // Poll for schema changes every minute;
       introspectionHeaders: {
-        'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key';
+        'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key'
       }
     }),
     buildService({ name, url }) {
@@ -117,12 +117,12 @@ export async const createGraphQLFederationServer = (app: express.Application) {
       logger.info(`GraphQL federation schema ${isInitialComposition ? 'initialized' : 'updated'}`, { 
         graphRef,
         schemaLength: supergraphSdl.length,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       });
 
       // Track metrics;
       metricsCollector.incrementCounter('graphql.federation.schema_updates', 1, {
-        isInitial: isInitialComposition.toString();
+        isInitial: isInitialComposition.toString()
       });
     },
     experimental_didFailComposition: ({ graphRef, errors, isInitialComposition }) => {
@@ -131,12 +131,12 @@ export async const createGraphQLFederationServer = (app: express.Application) {
         graphRef,
         errors: errors.map(e => e.message),
         isInitialComposition,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       });
 
       // Track metrics;
       metricsCollector.incrementCounter('graphql.federation.schema_errors', 1, {
-        isInitial: isInitialComposition.toString();
+        isInitial: isInitialComposition.toString()
       });
     }
   });
@@ -161,7 +161,7 @@ export async const createGraphQLFederationServer = (app: express.Application) {
           logger.warn('Invalid auth token in GraphQL request', { 
             requestId,
             correlationId,
-            error: error.message;
+            error: error.message
           });
         }
       }
@@ -185,7 +185,7 @@ export async const createGraphQLFederationServer = (app: express.Application) {
             operationName,
             requestId: context.requestId,
             correlationId: context.correlationId,
-            userId: context.user?.id;
+            userId: context.user?.id
           });
           
           return {
@@ -195,7 +195,7 @@ export async const createGraphQLFederationServer = (app: express.Application) {
               
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
                 operation: operationName,
-                hasErrors: (response.errors?.length > 0).toString();
+                hasErrors: (response.errors?.length > 0).toString()
               });
               
               // Log completion;
@@ -204,7 +204,7 @@ export async const createGraphQLFederationServer = (app: express.Application) {
                 duration: `${duration.toFixed(2)}ms`,
                 hasErrors: response.errors?.length > 0,
                 requestId: context.requestId,
-                correlationId: context.correlationId;
+                correlationId: context.correlationId
               });
             }
           };

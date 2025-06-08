@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,15 +27,15 @@ import { useSession } from "next-auth/react";
 
 // Define interfaces for data structures;
 interface RadiologyReport {
-  id: string;
+  id: string,
   patient_id: string;
   patient_name: string; // Assuming this comes from a join or is added;
-  study_id: string;
+  study_id: string,
   procedure_name: string; // Assuming this comes from a join or is added;
   accession_number?: string;
-  report_datetime: string;
+  report_datetime: string,
   status: "preliminary" | "final" | "addendum";
-  radiologist_id: string;
+  radiologist_id: string,
   radiologist_name: string; // Assuming this comes from a join or is added;
   verified_by_id?: string;
   verified_by_name?: string; // Assuming this comes from a join or is added;
@@ -46,7 +46,7 @@ interface RadiologyReport {
 }
 
 interface SessionUser {
-  id: string;
+  id: string,
   role: string; // Define specific roles if possible, e.g., 'Admin' | 'Radiologist' | 'Technician';
   // FIX: Assuming userId is available in the session user object for comparison;
   userId?: string | number;
@@ -80,7 +80,7 @@ const RadiologyReportDetail: React.FC = () => {
 
   // FIX: Wrap fetchReportDetails in useCallback;
   const fetchReportDetails = useCallback(async (): Promise<void> => {
-    setLoading(true);
+    setLoading(true),
     setError(undefined);
     try {
       // Simulate API call;
@@ -130,7 +130,7 @@ const RadiologyReportDetail: React.FC = () => {
     if (reportId) {
       fetchReportDetails();
     }
-    // FIX: Add fetchReportDetails to dependency array;
+    // FIX: Add fetchReportDetails to dependency array
   }, [reportId, fetchReportDetails]);
 
   const handleVerifyReport = async (): Promise<void> => {
@@ -160,13 +160,13 @@ const RadiologyReportDetail: React.FC = () => {
       );
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
 
-      alert("Report verified successfully.");
+      alert("Report verified successfully."),
       fetchReportDetails(); // Refresh details;
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      alert(`Failed to verify report: ${message}`);
+      alert(`Failed to verify report: ${message}`),
       setLoading(false); // Stop loading indicator on error;
     }
     // No finally setLoading(false) here, as fetchReportDetails will handle it on success;
@@ -186,7 +186,7 @@ const RadiologyReportDetail: React.FC = () => {
       addendum: "bg-blue-100 text-blue-800",
     };
     return (
-      <Badge;
+      <Badge>
         className={`${statusStyles[status] || "bg-gray-100 text-gray-800"} hover:bg-opacity-80`}
       >
         {status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ")}
@@ -197,7 +197,7 @@ const RadiologyReportDetail: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">;
-        <Loader2 className="h-16 w-16 animate-spin text-primary" />;
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
@@ -209,7 +209,7 @@ const RadiologyReportDetail: React.FC = () => {
   if (!report) {
     return (
       <div className="text-center text-gray-500 p-4">;
-        Report details could not be loaded.;
+        Report details could not be loaded.
       </div>
     );
   }
@@ -227,12 +227,12 @@ const RadiologyReportDetail: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 space-y-6">;
-      <Button;
-        variant="outline";
+      <Button>
+        variant="outline"
         onClick={() => router.back()}
-        className="mb-4 print:hidden";
+        className="mb-4 print:hidden"
       >
-        <ArrowLeft className="mr-2 h-4 w-4" /> Back;
+        <ArrowLeft className="mr-2 h-4 w-4" /> Back
       </Button>
 
       <Card className="print:shadow-none print:border-none">;
@@ -240,41 +240,41 @@ const RadiologyReportDetail: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start">;
             <div className="mb-2 sm:mb-0">;
               <CardTitle className="text-2xl">Radiology Report</CardTitle>;
-              <CardDescription>Report ID: {report.id}</CardDescription>;
+              <CardDescription>Report ID: {report.id}</CardDescription>
             </div>
             <div className="flex space-x-2 print:hidden">;
               {canEdit && (
-                <Button;
-                  variant="outline";
-                  size="icon";
+                <Button>
+                  variant="outline"
+                  size="icon"
                   onClick={() => setShowEditModal(true)}
-                  title="Edit Report";
+                  title="Edit Report"
                 >
-                  <Edit className="h-4 w-4" />;
+                  <Edit className="h-4 w-4" />
                 </Button>
               )}
               {report.status === "preliminary" && canVerify && (
-                <Button;
-                  variant="outline";
-                  size="icon";
+                <Button>
+                  variant="outline"
+                  size="icon"
                   onClick={handleVerifyReport}
-                  title="Verify Report";
+                  title="Verify Report"
                   disabled={loading}
                 >
                   {loading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />;
+                    <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <CheckCircle className="h-4 w-4 text-green-600" />;
+                    <CheckCircle className="h-4 w-4 text-green-600" />
                   )}
                 </Button>
               )}
-              <Button;
-                variant="outline";
-                size="icon";
+              <Button>
+                variant="outline"
+                size="icon"
                 onClick={handlePrintReport}
-                title="Print Report";
+                title="Print Report"
               >
-                <Printer className="h-4 w-4" />;
+                <Printer className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -282,18 +282,18 @@ const RadiologyReportDetail: React.FC = () => {
         <CardContent className="pt-6 space-y-4">;
           {/* Patient and Study Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 border-b pb-4 mb-4">;
-            <div>
+<div
               <strong>Patient:</strong> {report.patient_name} (ID:{" "}
-              {report.patient_id.slice(0, 8)});
+              {report.patient_id.slice(0, 8)})
             </div>
-            <div>
+<div
               <strong>Procedure:</strong> {report.procedure_name}
             </div>
-            <div>
+<div
               <strong>Study ID:</strong>{" "}
-              <Button;
-                variant="link";
-                className="p-0 h-auto text-base print:text-black print:no-underline";
+              <Button>
+                variant="link"
+                className="p-0 h-auto text-base print:text-black print:no-underline"
                 onClick={() =>
                   router.push(`/dashboard/radiology/studies/${report.study_id}`);
                 }
@@ -301,25 +301,25 @@ const RadiologyReportDetail: React.FC = () => {
                 {report.study_id}
               </Button>
             </div>
-            <div>
+<div
               <strong>Accession #:</strong> {report.accession_number || "N/A"}
             </div>
           </div>
 
           {/* Report Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 mb-4">;
-            <div>
+<div
               <strong>Report Date:</strong>{" "}
               {new Date(report.report_datetime).toLocaleString()}
             </div>
-            <div>
+<div
               <strong>Status:</strong> {getStatusBadge(report.status)}
             </div>
-            <div>
+<div
               <strong>Reporting Radiologist:</strong> {report.radiologist_name}
             </div>
             {report.status === "final" && (
-              <div>
+<div
                 <strong>Verified By:</strong> {report.verified_by_name || "N/A"}{" "}
                 {report.verified_datetime;
                   ? `on ${new Date(report.verified_datetime).toLocaleString()}`
@@ -347,7 +347,7 @@ const RadiologyReportDetail: React.FC = () => {
           {/* Recommendations */}
           <div className="space-y-2">;
             <h3 className="font-semibold text-lg border-b pb-1">;
-              Recommendations;
+              Recommendations
             </h3>
             <p className="whitespace-pre-wrap text-sm leading-relaxed">;
               {report.recommendations || "No recommendations."}
@@ -358,7 +358,7 @@ const RadiologyReportDetail: React.FC = () => {
 
       {/* Placeholder for Edit Modal */}
       {/* {showEditModal && report && (
-        <EditRadiologyReportModal;
+        <EditRadiologyReportModal>
           report={report}
           onClose={() => setShowEditModal(false)}
           onSubmit={handleUpdateReport}

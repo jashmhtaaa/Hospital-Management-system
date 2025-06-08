@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -74,9 +74,9 @@ type ConsultationFormValues = z.infer<typeof consultationFormSchema>; // Uncomme
 
 // Define necessary interfaces based on usage;
 interface Patient {
-  id: string;
+  id: string,
   name: string;
-  age: number;
+  age: number,
   gender: string;
   tokenNumber: number;
   // Add other relevant patient fields if needed;
@@ -165,7 +165,7 @@ export default const OPDConsultationForm = () {
           checkPermission("opd.order_tests"),
           fetchPatientsQueue(),
         ]);
-        setCanPrescribe(prescribePerm);
+        setCanPrescribe(prescribePerm),
         setCanOrderTests(orderTestsPerm);
         setPatients(patientsData);
       } catch (error) {
@@ -247,7 +247,7 @@ export default const OPDConsultationForm = () {
         // Assuming the API returns the visit ID as consultationId;
         router.push(`/dashboard/opd-visits/${result.consultationId}`); // Adjusted route;
       } else {
-        form.reset();
+        form.reset(),
         setSelectedPatient(null); // Clear selected patient;
       }
     } catch (error: unknown) {
@@ -265,14 +265,14 @@ export default const OPDConsultationForm = () {
   }
 
   return (
-    <div>
+<div
       <div className="mb-6">;
-        <Select;
+        <Select>
           onValueChange={handlePatientChange}
           value={form.watch("patientId")} // Use watch to reactively update Select value;
         >
           <SelectTrigger className="w-full">;
-            <SelectValue placeholder="Select a patient from the queue" />;
+            <SelectValue placeholder="Select a patient from the queue" />
           </SelectTrigger>
           <SelectContent>
             {patients.length === 0 && !loadingPermissions ? (
@@ -281,7 +281,7 @@ export default const OPDConsultationForm = () {
                 patients.map((patient) => (
                   <SelectItem key={patient.id} value={patient.id}>;
                     {patient.tokenNumber} - {patient.name} ({patient.age}/
-                    {patient.gender});
+                    {patient.gender})
                   </SelectItem>
                 ));
             )}
@@ -301,12 +301,12 @@ export default const OPDConsultationForm = () {
               <TabsList className="grid w-full grid-cols-4">;
                 <TabsTrigger value="consultation">Consultation</TabsTrigger>;
                 <TabsTrigger value="medications" disabled={!canPrescribe}>;
-                  Medications;
+                  Medications
                 </TabsTrigger>
                 <TabsTrigger value="labTests" disabled={!canOrderTests}>;
-                  Lab Tests;
+                  Lab Tests
                 </TabsTrigger>
-                <TabsTrigger value="followUp">Follow Up</TabsTrigger>;
+                <TabsTrigger value="followUp">Follow Up</TabsTrigger>
               </TabsList>
 
               {/* Consultation Tab */}
@@ -314,28 +314,28 @@ export default const OPDConsultationForm = () {
                 <Card>
                   <CardContent className="pt-6">;
                     <div className="grid gap-4">;
-                      <FormField;
+                      <FormField>
                         control={form.control}
-                        name="chiefComplaint";
+                        name="chiefComplaint"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Chief Complaint</FormLabel>
                             <FormControl>
-                              <Textarea {...field} placeholder="Enter chief complaint" />;
+                              <Textarea {...field} placeholder="Enter chief complaint" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
 
-                      <FormField;
+                      <FormField>
                         control={form.control}
-                        name="presentIllness";
+                        name="presentIllness"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>History of Present Illness</FormLabel>
                             <FormControl>
-                              <Textarea {...field} placeholder="Enter history of present illness" />;
+                              <Textarea {...field} placeholder="Enter history of present illness" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -345,27 +345,27 @@ export default const OPDConsultationForm = () {
                       {/* Vital Signs Section (Example) */}
                       <h3 className="font-medium mt-4">Vital Signs</h3>;
                       <div className="grid grid-cols-2 gap-4">;
-                        <FormField;
+                        <FormField>
                           control={form.control}
-                          name="vitalSigns.temperature";
+                          name="vitalSigns.temperature"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Temperature (°C)</FormLabel>
                               <FormControl>
-                                <Input {...field} type="text" placeholder="e.g., 37.0" />;
+                                <Input {...field} type="text" placeholder="e.g., 37.0" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <FormField;
+                        <FormField>
                           control={form.control}
-                          name="vitalSigns.pulse";
+                          name="vitalSigns.pulse"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Pulse (bpm)</FormLabel>
                               <FormControl>
-                                <Input {...field} type="text" placeholder="e.g., 72" />;
+                                <Input {...field} type="text" placeholder="e.g., 72" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -374,28 +374,28 @@ export default const OPDConsultationForm = () {
                         {/* Add other vital signs fields similarly */}
                       </div>
 
-                      <FormField;
+                      <FormField>
                         control={form.control}
-                        name="diagnosis";
+                        name="diagnosis"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Diagnosis</FormLabel>
                             <FormControl>
-                              <Textarea {...field} placeholder="Enter diagnosis" />;
+                              <Textarea {...field} placeholder="Enter diagnosis" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
 
-                      <FormField;
+                      <FormField>
                         control={form.control}
-                        name="treatmentPlan";
+                        name="treatmentPlan"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Treatment Plan</FormLabel>
                             <FormControl>
-                              <Textarea {...field} placeholder="Enter treatment plan" />;
+                              <Textarea {...field} placeholder="Enter treatment plan" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -411,31 +411,31 @@ export default const OPDConsultationForm = () {
                 <Card>
                   <CardContent className="pt-6 space-y-4">;
                     {(form.watch("medications") || []).map((_, index) => (
-                      <div;
+<div
                         key={index} // Consider using a more stable key if available;
-                        className="grid gap-4 p-4 border rounded-md relative";
+                        className="grid gap-4 p-4 border rounded-md relative"
                       >
-                        <Button;
+                        <Button>
                           type="button"
-                          variant="ghost";
-                          size="sm";
-                          className="absolute top-2 right-2 text-destructive hover:bg-destructive/10";
+                          variant="ghost"
+                          size="sm"
+                          className="absolute top-2 right-2 text-destructive hover:bg-destructive/10"
                           onClick={() => removeMedication(index)}
                         >
-                          Remove;
+                          Remove
                         </Button>
                         <h4 className="font-medium">;
                           Medication {index + 1}
                         </h4>
 
-                        <FormField;
+                        <FormField>
                           control={form.control}
                           name={`medications.${index}.name`}
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Medication Name</FormLabel>
                               <FormControl>
-                                <Input {...field} placeholder="e.g., Paracetamol 500mg" />;
+                                <Input {...field} placeholder="e.g., Paracetamol 500mg" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -443,27 +443,27 @@ export default const OPDConsultationForm = () {
                         />
 
                         <div className="grid grid-cols-2 gap-4">;
-                          <FormField;
+                          <FormField>
                             control={form.control}
                             name={`medications.${index}.dosage`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Dosage</FormLabel>
                                 <FormControl>
-                                  <Input {...field} placeholder="e.g., 1 tablet" />;
+                                  <Input {...field} placeholder="e.g., 1 tablet" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
-                          <FormField;
+                          <FormField>
                             control={form.control}
                             name={`medications.${index}.frequency`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Frequency</FormLabel>
                                 <FormControl>
-                                  <Input {...field} placeholder="e.g., TID" />;
+                                  <Input {...field} placeholder="e.g., TID" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -472,27 +472,27 @@ export default const OPDConsultationForm = () {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">;
-                          <FormField;
+                          <FormField>
                             control={form.control}
                             name={`medications.${index}.duration`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Duration</FormLabel>
                                 <FormControl>
-                                  <Input {...field} placeholder="e.g., 5 days" />;
+                                  <Input {...field} placeholder="e.g., 5 days" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
-                          <FormField;
+                          <FormField>
                             control={form.control}
                             name={`medications.${index}.instructions`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Instructions</FormLabel>
                                 <FormControl>
-                                  <Input {...field} placeholder="e.g., After food" />;
+                                  <Input {...field} placeholder="e.g., After food" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -501,12 +501,12 @@ export default const OPDConsultationForm = () {
                         </div>
                       </div>
                     ))}
-                    <Button;
+                    <Button>
                       type="button"
-                      variant="outline";
+                      variant="outline"
                       onClick={addMedication}
                     >
-                      Add Medication;
+                      Add Medication
                     </Button>
                   </CardContent>
                 </Card>
@@ -528,28 +528,28 @@ export default const OPDConsultationForm = () {
               <TabsContent value="followUp">;
                 <Card>
                   <CardContent className="pt-6 grid gap-4">;
-                    <FormField;
+                    <FormField>
                       control={form.control}
-                      name="followUpDate";
+                      name="followUpDate"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Follow Up Date</FormLabel>
                           <FormControl>
                             {/* TODO: Replace with a Calendar/DatePicker component */}
-                            <Input {...field} type="date" />;
+                            <Input {...field} type="date" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <FormField;
+                    <FormField>
                       control={form.control}
-                      name="notes";
+                      name="notes"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Additional Notes</FormLabel>
                           <FormControl>
-                            <Textarea {...field} placeholder="Enter any additional notes" />;
+                            <Textarea {...field} placeholder="Enter any additional notes" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

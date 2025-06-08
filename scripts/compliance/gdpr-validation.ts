@@ -52,7 +52,7 @@ interface GDPRConfig {
   readonly childDataProtection: boolean; // Special protection for minors
   readonly healthDataProcessing: boolean; // Article 9 special categories
   readonly dataProtectionOfficerRequired: boolean;
-  readonly supervisoryAuthorityContact: boolean;
+  readonly supervisoryAuthorityContact: boolean
 }
 
 interface ValidationResult {
@@ -62,29 +62,29 @@ interface ValidationResult {
   readonly severity: 'critical' | 'high' | 'medium' | 'low';
   readonly gdprArticle: string; // Reference to specific GDPR article
   readonly remediation?: string;
-  readonly category: 'consent' | 'rights' | 'security' | 'governance' | 'transfers' | 'processing';
+  readonly category: 'consent' | 'rights' | 'security' | 'governance' | 'transfers' | 'processing'
 }
 
 interface ValidationWarning {
   readonly name: string;
   readonly details: string;
   readonly recommendation: string;
-  readonly priority: 'high' | 'medium' | 'low';
+  readonly priority: 'high' | 'medium' | 'low'
 }
 
 interface ComplianceResults {
-  totalChecks: number;
+  totalChecks: number,
   passedChecks: number;
-  failedChecks: ValidationResult[];
+  failedChecks: ValidationResult[],
   warnings: ValidationWarning[];
   complianceScore: number; // 0-100
-  criticalIssues: number;
+  criticalIssues: number,
   highPriorityIssues: number;
-  lastValidated: Date;
+  lastValidated: Date,
   validatedBy: string;
-  gdprCompliant: boolean;
+  gdprCompliant: boolean,
   dataProcessingLegal: boolean;
-  dataSubjectRightsImplemented: boolean;
+  dataSubjectRightsImplemented: boolean
 }
 
 interface DataProcessingRecord {
@@ -93,7 +93,7 @@ interface DataProcessingRecord {
   readonly recipients: readonly string[];
   readonly retention: string;
   readonly safeguards: readonly string[];
-  readonly lawfulBasis: 'consent' | 'contract' | 'legal_obligation' | 'vital_interests' | 'public_task' | 'legitimate_interests';
+  readonly lawfulBasis: 'consent' | 'contract' | 'legal_obligation' | 'vital_interests' | 'public_task' | 'legitimate_interests'
 }
 
 // GDPR Configuration for Healthcare Data Processing
@@ -229,7 +229,7 @@ function logWarning(name: string, details: string, recommendation: string, prior
 // Enhanced file system utilities with error handling
 function fileExists(filePath: string): boolean {
   try {
-    return fs.existsSync(filePath);
+    return fs.existsSync(filePath)
   } catch (error) {
     console.warn(`Error checking file existence: ${filePath}`, error);
     return false;
@@ -295,8 +295,7 @@ function validateDataProtectionByDesign(): void {
   // 1.1 Check for privacy-enhancing technologies
   const hasPrivacyTech = fileExists('./src/lib/privacy/') ||
                         fileExists('./src/lib/pseudonymization/') ||
-                        fileExists('./src/lib/anonymization/');
-  
+                        fileExists('./src/lib/anonymization/'),
   logCheck(
     'Privacy-Enhancing Technologies',
     hasPrivacyTech,
@@ -309,8 +308,7 @@ function validateDataProtectionByDesign(): void {
 
   // 1.2 Check for data minimization in schemas
   const hasDataMinimization = fileContains('./prisma/schema.prisma', /@map|optional/i) ||
-                             fileExists('./src/lib/data-minimization/');
-  
+                             fileExists('./src/lib/data-minimization/'),
   logCheck(
     'Data Minimization Implementation',
     hasDataMinimization,
@@ -323,8 +321,7 @@ function validateDataProtectionByDesign(): void {
 
   // 1.3 Check for purpose limitation
   const hasPurposeLimitation = fileContains('./src/lib/audit/', /purpose|reason/i) ||
-                              fileExists('./src/lib/purpose-binding/');
-  
+                              fileExists('./src/lib/purpose-binding/'),
   logCheck(
     'Purpose Limitation Controls',
     hasPurposeLimitation,
@@ -337,8 +334,7 @@ function validateDataProtectionByDesign(): void {
 
   // 1.4 Check for storage limitation
   const hasRetentionPolicy = fileExists('./docs/policies/data-retention-policy.md') ||
-                            fileContains('./src/lib/retention/', /delete|expire|retention/i);
-  
+                            fileContains('./src/lib/retention/', /delete|expire|retention/i),
   logCheck(
     'Storage Limitation Policy',
     hasRetentionPolicy,
@@ -355,8 +351,7 @@ function validateConsentMechanisms(): void {
   
   // 2.1 Check for consent management
   const hasConsentService = fileExists('./src/lib/consent/consent.service.ts') ||
-                           fileExists('./src/lib/privacy/consent-manager.ts');
-  
+                           fileExists('./src/lib/privacy/consent-manager.ts'),
   logCheck(
     'Consent Management Service',
     hasConsentService,
@@ -369,8 +364,7 @@ function validateConsentMechanisms(): void {
 
   if (hasConsentService) {
     // 2.2 Check for consent withdrawal
-    const hasConsentWithdrawal = fileContains('./src/lib/consent/', /withdraw|revoke|opt-out/i);
-    
+    const hasConsentWithdrawal = fileContains('./src/lib/consent/', /withdraw|revoke|opt-out/i),
     logCheck(
       'Consent Withdrawal Mechanism',
       hasConsentWithdrawal,
@@ -382,8 +376,7 @@ function validateConsentMechanisms(): void {
     );
 
     // 2.3 Check for granular consent
-    const hasGranularConsent = fileContains('./src/lib/consent/', /granular|specific|purpose/i);
-    
+    const hasGranularConsent = fileContains('./src/lib/consent/', /granular|specific|purpose/i),
     logCheck(
       'Granular Consent Options',
       hasGranularConsent,
@@ -397,8 +390,7 @@ function validateConsentMechanisms(): void {
 
   // 2.4 Check for child consent protection
   const hasChildConsent = fileExists('./src/lib/consent/child-consent.service.ts') ||
-                         fileContains('./src/lib/consent/', /child|minor|parental/i);
-  
+                         fileContains('./src/lib/consent/', /child|minor|parental/i),
   logCheck(
     'Child Consent Protection',
     hasChildConsent,
@@ -415,8 +407,7 @@ function validateDataSubjectRights(): void {
   
   // 3.1 Check for data subject rights interface
   const hasRightsInterface = fileExists('./src/lib/data-subject-rights/') ||
-                            fileExists('./src/components/privacy/data-rights-portal.tsx');
-  
+                            fileExists('./src/components/privacy/data-rights-portal.tsx'),
   logCheck(
     'Data Subject Rights Interface',
     hasRightsInterface,
@@ -429,8 +420,7 @@ function validateDataSubjectRights(): void {
 
   // 3.2 Check for right of access implementation
   const hasAccessRight = fileExists('./src/lib/data-subject-rights/access.service.ts') ||
-                         fileContains('./src/api/', /data-export|download-data/i);
-  
+                         fileContains('./src/api/', /data-export|download-data/i),
   logCheck(
     'Right of Access Implementation',
     hasAccessRight,
@@ -443,8 +433,7 @@ function validateDataSubjectRights(): void {
 
   // 3.3 Check for right to rectification
   const hasRectificationRight = fileExists('./src/lib/data-subject-rights/rectification.service.ts') ||
-                               fileContains('./src/components/', /edit-profile|update-data/i);
-  
+                               fileContains('./src/components/', /edit-profile|update-data/i),
   logCheck(
     'Right to Rectification',
     hasRectificationRight,
@@ -457,8 +446,7 @@ function validateDataSubjectRights(): void {
 
   // 3.4 Check for right to erasure
   const hasErasureRight = fileExists('./src/lib/data-subject-rights/erasure.service.ts') ||
-                         fileContains('./src/api/', /delete-account|right-to-be-forgotten/i);
-  
+                         fileContains('./src/api/', /delete-account|right-to-be-forgotten/i),
   logCheck(
     'Right to Erasure (Right to be Forgotten)',
     hasErasureRight,
@@ -471,8 +459,7 @@ function validateDataSubjectRights(): void {
 
   // 3.5 Check for data portability
   const hasPortabilityRight = fileExists('./src/lib/data-subject-rights/portability.service.ts') ||
-                             fileContains('./src/api/', /data-portability|export-structured/i);
-  
+                             fileContains('./src/api/', /data-portability|export-structured/i),
   logCheck(
     'Right to Data Portability',
     hasPortabilityRight,
@@ -485,8 +472,7 @@ function validateDataSubjectRights(): void {
 
   // 3.6 Check for right to object
   const hasObjectionRight = fileExists('./src/lib/data-subject-rights/objection.service.ts') ||
-                           fileContains('./src/lib/consent/', /object|opt-out|stop-processing/i);
-  
+                           fileContains('./src/lib/consent/', /object|opt-out|stop-processing/i),
   logCheck(
     'Right to Object',
     hasObjectionRight,
@@ -503,8 +489,7 @@ function validateDataProcessingRecords(): void {
   
   // 4.1 Check for processing records documentation
   const hasProcessingRecords = fileExists('./docs/gdpr/processing-records.md') ||
-                              fileExists('./src/lib/processing-records/');
-  
+                              fileExists('./src/lib/processing-records/'),
   logCheck(
     'Processing Records Documentation',
     hasProcessingRecords,
@@ -517,8 +502,7 @@ function validateDataProcessingRecords(): void {
 
   // 4.2 Check for lawful basis documentation
   const hasLawfulBasis = fileExists('./docs/gdpr/lawful-basis.md') ||
-                        fileContains('./src/lib/processing/', /lawful-basis|legal-ground/i);
-  
+                        fileContains('./src/lib/processing/', /lawful-basis|legal-ground/i),
   logCheck(
     'Lawful Basis Documentation',
     hasLawfulBasis,
@@ -531,8 +515,7 @@ function validateDataProcessingRecords(): void {
 
   // 4.3 Check for automated processing records
   const hasAutomatedRecords = fileExists('./src/lib/audit/processing-audit.service.ts') ||
-                             fileContains('./src/lib/audit/', /processing-log|data-access/i);
-  
+                             fileContains('./src/lib/audit/', /processing-log|data-access/i),
   logCheck(
     'Automated Processing Records',
     hasAutomatedRecords,
@@ -549,8 +532,7 @@ function validateSecurityMeasures(): void {
   
   // 5.1 Check for encryption implementation
   const hasEncryption = fileExists('./src/services/encryption_service_secure.ts') ||
-                       fileContains('./src/lib/security/', /encrypt|crypto/i);
-  
+                       fileContains('./src/lib/security/', /encrypt|crypto/i),
   logCheck(
     'Encryption at Rest and in Transit',
     hasEncryption,
@@ -563,8 +545,7 @@ function validateSecurityMeasures(): void {
 
   // 5.2 Check for pseudonymization
   const hasPseudonymization = fileExists('./src/lib/privacy/pseudonymization.service.ts') ||
-                             fileContains('./src/lib/security/', /pseudonym|hash/i);
-  
+                             fileContains('./src/lib/security/', /pseudonym|hash/i),
   logCheck(
     'Pseudonymization Implementation',
     hasPseudonymization,
@@ -577,8 +558,7 @@ function validateSecurityMeasures(): void {
 
   // 5.3 Check for access controls
   const hasAccessControls = fileExists('./src/lib/rbac/rbac.service.ts') ||
-                           fileExists('./src/lib/security/auth.service.ts');
-  
+                           fileExists('./src/lib/security/auth.service.ts'),
   logCheck(
     'Access Control Mechanisms',
     hasAccessControls,
@@ -591,8 +571,7 @@ function validateSecurityMeasures(): void {
 
   // 5.4 Check for integrity and availability measures
   const hasIntegrityMeasures = fileExists('./src/lib/backup/') ||
-                              fileContains('./src/lib/security/', /integrity|backup|recovery/i);
-  
+                              fileContains('./src/lib/security/', /integrity|backup|recovery/i),
   logCheck(
     'Data Integrity and Availability',
     hasIntegrityMeasures,
@@ -609,8 +588,7 @@ function validateBreachNotification(): void {
   
   // 6.1 Check for breach detection
   const hasBreachDetection = fileExists('./src/lib/security/breach-detection.service.ts') ||
-                            fileContains('./src/lib/monitoring/', /breach|incident/i);
-  
+                            fileContains('./src/lib/monitoring/', /breach|incident/i),
   logCheck(
     'Breach Detection System',
     hasBreachDetection,
@@ -623,8 +601,7 @@ function validateBreachNotification(): void {
 
   // 6.2 Check for breach notification to authority
   const hasAuthorityNotification = fileExists('./src/lib/security/breach-notification.service.ts') ||
-                                   fileContains('./src/lib/notifications/', /authority|supervisory/i);
-  
+                                   fileContains('./src/lib/notifications/', /authority|supervisory/i),
   logCheck(
     'Supervisory Authority Notification',
     hasAuthorityNotification,
@@ -637,8 +614,7 @@ function validateBreachNotification(): void {
 
   // 6.3 Check for data subject notification
   const hasSubjectNotification = fileExists('./src/lib/security/subject-breach-notification.service.ts') ||
-                                fileContains('./src/lib/notifications/', /data-subject|individual/i);
-  
+                                fileContains('./src/lib/notifications/', /data-subject|individual/i),
   logCheck(
     'Data Subject Breach Notification',
     hasSubjectNotification,
@@ -655,8 +631,7 @@ function validateDataTransfers(): void {
   
   // 7.1 Check for transfer impact assessment
   const hasTransferAssessment = fileExists('./docs/gdpr/transfer-impact-assessment.md') ||
-                               fileExists('./src/lib/transfers/');
-  
+                               fileExists('./src/lib/transfers/'),
   logCheck(
     'Transfer Impact Assessment',
     hasTransferAssessment,
@@ -669,8 +644,7 @@ function validateDataTransfers(): void {
 
   // 7.2 Check for adequacy decision compliance
   const hasAdequacyCheck = fileContains('./src/lib/transfers/', /adequacy|safe-harbor|shield/i) ||
-                          fileExists('./docs/gdpr/adequacy-decisions.md');
-  
+                          fileExists('./docs/gdpr/adequacy-decisions.md'),
   logCheck(
     'Adequacy Decision Compliance',
     hasAdequacyCheck,
@@ -683,8 +657,7 @@ function validateDataTransfers(): void {
 
   // 7.3 Check for standard contractual clauses
   const hasSCCs = fileExists('./docs/contracts/standard-contractual-clauses/') ||
-                 fileContains('./src/lib/transfers/', /scc|standard-clauses/i);
-  
+                 fileContains('./src/lib/transfers/', /scc|standard-clauses/i),
   logCheck(
     'Standard Contractual Clauses',
     hasSCCs,
@@ -701,8 +674,7 @@ function validateDPIA(): void {
   
   // 8.1 Check for DPIA documentation
   const hasDPIA = fileExists('./docs/gdpr/dpia/') ||
-                 fileExists('./docs/privacy-impact-assessment.md');
-  
+                 fileExists('./docs/privacy-impact-assessment.md'),
   logCheck(
     'Data Protection Impact Assessment',
     hasDPIA,
@@ -715,8 +687,7 @@ function validateDPIA(): void {
 
   // 8.2 Check for DPIA automation
   const hasDPIAAutomation = fileExists('./src/lib/dpia/') ||
-                           fileContains('./src/lib/risk/', /impact-assessment|dpia/i);
-  
+                           fileContains('./src/lib/risk/', /impact-assessment|dpia/i),
   logCheck(
     'DPIA Automation Tools',
     hasDPIAAutomation,
@@ -733,8 +704,7 @@ function validateDataProtectionOfficer(): void {
   
   // 9.1 Check for DPO designation
   const hasDPODesignation = fileExists('./docs/gdpr/dpo-designation.md') ||
-                           fileExists('./src/lib/dpo/');
-  
+                           fileExists('./src/lib/dpo/'),
   logCheck(
     'Data Protection Officer Designation',
     hasDPODesignation,
@@ -747,8 +717,7 @@ function validateDataProtectionOfficer(): void {
 
   // 9.2 Check for DPO contact information
   const hasDPOContact = fileExists('./docs/privacy-policy.md') &&
-                       fileContains('./docs/privacy-policy.md', /dpo|data.protection.officer/i);
-  
+                       fileContains('./docs/privacy-policy.md', /dpo|data.protection.officer/i),
   logCheck(
     'DPO Contact Information',
     hasDPOContact,
@@ -880,16 +849,15 @@ function main(): void {
   console.log(`🎯 Target: Zero Critical Issues for EU Data Processing\n`);
   
   try {
-    validateDataProtectionByDesign();
+    validateDataProtectionByDesign(),
     validateConsentMechanisms();
-    validateDataSubjectRights();
+    validateDataSubjectRights(),
     validateDataProcessingRecords();
-    validateSecurityMeasures();
+    validateSecurityMeasures(),
     validateBreachNotification();
-    validateDataTransfers();
+    validateDataTransfers(),
     validateDPIA();
-    validateDataProtectionOfficer();
-    
+    validateDataProtectionOfficer(),
     generateGDPRComplianceReport();
   } catch (error) {
     console.error('🚨 GDPR validation script failed:', error);

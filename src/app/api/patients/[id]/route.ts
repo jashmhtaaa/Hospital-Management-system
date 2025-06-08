@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -47,7 +47,7 @@ const patientUpdateSchema = z.object({
 export async const GET = (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
+) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -100,7 +100,7 @@ export async const GET = (
 export async const PUT = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
+) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -193,7 +193,7 @@ export async const PUT = (
 export async const DELETE = (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
-) {
+) => {
     const session = await getSession();
     if (!session.isLoggedIn || !session.user || session.user.roleName !== "Admin") { // Added !session.user check;
         return NextResponse.json({ message: "Forbidden" }, { status: 403 });

@@ -40,9 +40,9 @@ if (!global.fetch) {
 
 // Type definitions for test utilities
 interface MockUser {
-  id: string;
+  id: string,
   email: string;
-  role: string;
+  role: string,
   permissions: string[];
   department?: string;
   isActive: boolean;
@@ -51,9 +51,9 @@ interface MockUser {
 }
 
 interface MockPatient {
-  id: string;
+  id: string,
   mrn: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
   dateOfBirth: Date;
   ssn?: string;
@@ -67,13 +67,13 @@ interface MockPatient {
 }
 
 interface MockEmployee {
-  id: string;
+  id: string,
   employeeId: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
-  email: string;
+  email: string,
   department: string;
-  position: string;
+  position: string,
   isActive: boolean;
   hireDate: Date;
   licenseNumber?: string;
@@ -81,49 +81,49 @@ interface MockEmployee {
 }
 
 interface MockBill {
-  id: string;
+  id: string,
   billNumber: string;
-  patientId: string;
+  patientId: string,
   totalAmount: number;
-  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED',
   items: MockBillItem[];
-  createdAt: Date;
-  dueDate: Date;
+  createdAt: Date,
+  dueDate: Date
 }
 
 interface MockBillItem {
-  id: string;
+  id: string,
   serviceCode: string;
-  description: string;
+  description: string,
   quantity: number;
-  unitPrice: number;
-  totalPrice: number;
+  unitPrice: number,
+  totalPrice: number
 }
 
 interface MockAppointment {
-  id: string;
+  id: string,
   patientId: string;
-  doctorId: string;
+  doctorId: string,
   date: Date;
-  duration: number;
+  duration: number,
   status: 'SCHEDULED' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
   type: string;
   notes?: string;
 }
 
 interface TestUtilities {
-  createMockUser: (overrides?: Partial<MockUser>) => MockUser;
+  createMockUser: (overrides?: Partial<MockUser>) => MockUser,
   createMockPatient: (overrides?: Partial<MockPatient>) => MockPatient;
-  createMockEmployee: (overrides?: Partial<MockEmployee>) => MockEmployee;
+  createMockEmployee: (overrides?: Partial<MockEmployee>) => MockEmployee,
   createMockBill: (overrides?: Partial<MockBill>) => MockBill;
-  createMockAppointment: (overrides?: Partial<MockAppointment>) => MockAppointment;
+  createMockAppointment: (overrides?: Partial<MockAppointment>) => MockAppointment,
   generateMockAuditEvent: (event: string, userId: string, details?: any) => any;
-  createMockLabOrder: (overrides?: any) => any;
+  createMockLabOrder: (overrides?: any) => any,
   createMockPharmacyOrder: (overrides?: any) => any;
-  createMockAdmission: (overrides?: any) => any;
-  simulateHIPAAEvent: (action: string, patientId: string, userId: string) => any;
-  mockSecurityContext: (user: MockUser) => void;
-  resetAllMocks: () => void;
+  createMockAdmission: (overrides?: any) => any,
+  simulateHIPAAEvent: (action: string, patientId: string, userId: string) => any,
+  mockSecurityContext: (user: MockUser) => void,
+  resetAllMocks: () => void
 }
 
 // Enhanced test environment setup

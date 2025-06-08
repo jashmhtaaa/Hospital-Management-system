@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -25,7 +25,7 @@ import { Editor } from '@/components/ui/editor';
 
 interface TemplateEditorProps {
   templateId?: string;
-  onSuccess?: (template: unknown) => void;
+  onSuccess?: (template: unknown) => void
 }
 
 export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditorProps) {
@@ -40,7 +40,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     content: '',
     variables: {},
     previewImage: '',
-    isActive: true;
+    isActive: true
   });
   const [previewData, setPreviewData] = useState<Record<string, string>>({});
   const [renderedContent, setRenderedContent] = useState<string>('');
@@ -57,7 +57,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
         const response = await fetch(`/api/support-services/marketing/templates/${templateId}`);
         if (!response.ok) throw new Error('Failed to fetch template');
         
-        const data = await response.json();
+        const data = await response.json(),
         setTemplate(data);
         
         // Set form values from template data;
@@ -68,7 +68,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
           content: data.content || '',
           variables: data.variables || {},
           previewImage: data.previewImage || '',
-          isActive: data.isActive !== undefined ? data.isActive : true;
+          isActive: data.isActive !== undefined ? data.isActive : true
         });
         
         // Initialize preview data from variables;
@@ -76,7 +76,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
           const initialPreviewData: Record<string, string> = {};
           Object.keys(data.variables).forEach(key => {
             initialPreviewData[key] = `[${key}]`;
-          });
+          }),
           setPreviewData(initialPreviewData);
         }
       } catch (error) {
@@ -115,7 +115,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked;
+      isActive: checked
     });
   };
 
@@ -164,7 +164,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     
     setFormData({
       ...formData,
-      variables: newVariables;
+      variables: newVariables
     });
     
     // Add to preview data;
@@ -174,7 +174,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     });
     
     // Reset inputs;
-    setVariableKey('');
+    setVariableKey(''),
     setVariableDescription('');
   };
 
@@ -185,7 +185,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     
     setFormData({
       ...formData,
-      variables: newVariables;
+      variables: newVariables
     });
     
     // Remove from preview data;
@@ -218,7 +218,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
       
       if (!response.ok) throw new Error('Failed to render template');
       
-      const data = await response.json();
+      const data = await response.json(),
       setRenderedContent(data.renderedContent);
     } catch (error) {
 
@@ -232,7 +232,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
 
   // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(),
     setIsLoading(true);
     
     try {
@@ -252,8 +252,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
       
       if (!response.ok) throw new Error('Failed to save template');
       
-      const savedTemplate = await response.json();
-      
+      const savedTemplate = await response.json(),
       toast({
         title: "Success",
         description: `Template ${templateId ? 'updated' : 'created'} successfully.`,
@@ -291,7 +290,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
           <TabsList className="grid w-full grid-cols-3">;
             <TabsTrigger value="details">Template Details</TabsTrigger>;
             <TabsTrigger value="content">Content Editor</TabsTrigger>;
-            <TabsTrigger value="preview">Preview</TabsTrigger>;
+            <TabsTrigger value="preview">Preview</TabsTrigger>
           </TabsList>
           
           <TabsContent value="details">;
@@ -299,36 +298,36 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
               <div className="space-y-4">;
                 <div className="space-y-2">;
                   <Label htmlFor="name">Template Name</Label>;
-                  <Input;
-                    id="name";
-                    name="name";
+                  <Input>
+                    id="name"
+                    name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Enter template name";
+                    placeholder="Enter template name"
                     required;
                   />
                 </div>
                 
                 <div className="space-y-2">;
                   <Label htmlFor="description">Description</Label>;
-                  <Textarea;
-                    id="description";
-                    name="description";
+                  <Textarea>
+                    id="description"
+                    name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    placeholder="Enter template description";
+                    placeholder="Enter template description"
                     rows={3}
                   />
                 </div>
                 
                 <div className="space-y-2">;
                   <Label htmlFor="type">Template Type</Label>;
-                  <Select;
+                  <Select>
                     value={formData.type}
                     onValueChange={(value) => handleSelectChange('type', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select template type" />;
+                      <SelectValue placeholder="Select template type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="EMAIL">Email</SelectItem>;
@@ -336,29 +335,29 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
                       <SelectItem value="LETTER">Letter</SelectItem>;
                       <SelectItem value="SOCIAL">Social Media</SelectItem>;
                       <SelectItem value="PUSH">Push Notification</SelectItem>;
-                      <SelectItem value="OTHER">Other</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="space-y-2">;
                   <Label htmlFor="previewImage">Preview Image URL (Optional)</Label>;
-                  <Input;
-                    id="previewImage";
-                    name="previewImage";
+                  <Input>
+                    id="previewImage"
+                    name="previewImage"
                     value={formData.previewImage}
                     onChange={handleInputChange}
-                    placeholder="Enter preview image URL";
+                    placeholder="Enter preview image URL"
                   />
                 </div>
                 
                 <div className="flex items-center space-x-2">;
-                  <Switch;
-                    id="isActive";
+                  <Switch>
+                    id="isActive"
                     checked={formData.isActive}
                     onCheckedChange={handleSwitchChange}
                   />
-                  <Label htmlFor="isActive">Active</Label>;
+                  <Label htmlFor="isActive">Active</Label>
                 </div>
                 
                 <div className="space-y-2 border-t pt-4">;
@@ -368,36 +367,36 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">;
-                    <Input;
+                    <Input>
                       value={variableKey}
                       onChange={(e) => setVariableKey(e.target.value)}
-                      placeholder="Variable key (e.g., firstName)";
+                      placeholder="Variable key (e.g., firstName)"
                     />
-                    <Input;
+                    <Input>
                       value={variableDescription}
                       onChange={(e) => setVariableDescription(e.target.value)}
-                      placeholder="Description (optional)";
+                      placeholder="Description (optional)"
                     />
                     <Button type="button" onClick={handleAddVariable}>;
-                      Add Variable;
+                      Add Variable
                     </Button>
                   </div>
                   
                   <div className="space-y-2 mt-2">;
                     {Object.entries(formData.variables).map(([key, description]) => (
                       <div key={key} className="flex items-center justify-between p-2 border rounded">;
-                        <div>
+<div
                           <span className="font-medium">{`{{${key}}}`}</span>;
                           {description !== key && (
                             <p className="text-sm text-muted-foreground">{description}</p>;
                           )}
                         </div>
-                        <Button;
-                          variant="ghost";
-                          size="sm";
+                        <Button>
+                          variant="ghost"
+                          size="sm"
                           onClick={() => handleRemoveVariable(key)}
                         >
-                          Remove;
+                          Remove
                         </Button>
                       </div>
                     ))}
@@ -410,12 +409,12 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => router.back()}
                 >
-                  Cancel;
+                  Cancel
                 </Button>
                 <Button type="submit" disabled={isLoading}>;
                   {isLoading ? 'Saving...' : templateId ? 'Update Template' : 'Create Template'}
@@ -429,28 +428,28 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
               <div className="space-y-2">;
                 <Label>Template Content</Label>
                 <p className="text-sm text-muted-foreground">;
-                  Use {`{{variableName}}`} syntax for variables;
+                  Use {`{{variableName}}`} syntax for variables
                 </p>
                 
                 <div className="border rounded-md">;
-                  <Editor;
+                  <Editor>
                     value={formData.content}
                     onChange={handleContentChange}
-                    placeholder="Enter your template content here...";
-                    minHeight="400px";
+                    placeholder="Enter your template content here..."
+                    minHeight="400px"
                   />
                 </div>
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => setActiveTab("details")}
                 >
-                  Back;
+                  Back
                 </Button>
-                <Button;
+                <Button>
                   type="button" 
                   onClick={handleSubmit} 
                   disabled={isLoading}
@@ -466,7 +465,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
               <div className="space-y-2">;
                 <Label>Preview Variables</Label>
                 <p className="text-sm text-muted-foreground">;
-                  Enter test values for your template variables;
+                  Enter test values for your template variables
                 </p>
                 
                 <div className="space-y-2 mt-2">;
@@ -479,7 +478,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
                         )}
                       </div>
                       <div className="md:col-span-2">;
-                        <Input;
+                        <Input>
                           id={`preview-${key}`}
                           name={key}
                           value={previewData[key] || ''}
@@ -496,11 +495,11 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
                 </div>
                 
                 <div className="flex justify-end mt-4">;
-                  <Button;
+                  <Button>
                     type="button" 
                     onClick={handleRenderPreview}
                   >
-                    Generate Preview;
+                    Generate Preview
                   </Button>
                 </div>
               </div>
@@ -509,7 +508,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
                 <Label>Preview Result</Label>
                 <div className="p-4 border rounded-md bg-white min-h-[200px]">;
                   {renderedContent ? (
-                    <div dangerouslySetInnerHTML={{ __html: renderedContent }} />;
+                    <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
                   ) : (
                     <p className="text-muted-foreground">Click "Generate Preview" to see the rendered template</p>;
                   )}
@@ -517,14 +516,14 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => setActiveTab("content")}
                 >
-                  Back;
+                  Back
                 </Button>
-                <Button;
+                <Button>
                   type="button" 
                   onClick={handleSubmit} 
                   disabled={isLoading}

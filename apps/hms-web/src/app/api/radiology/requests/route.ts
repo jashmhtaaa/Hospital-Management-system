@@ -20,7 +20,7 @@ const createRadiologyRequestSchema = z.object({
   scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." }).optional().nullable(),
 });
 
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -53,7 +53,7 @@ export async const POST = (request: NextRequest) {
     const [patient, orderedByUser, procedures] = await Promise.all([
         prisma.patient.findUnique({ where: { id: patientId } }),
         prisma.user.findUnique({ where: { id: orderedById } }),
-        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } });
+        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } })
     ]);
 
     if (!patient) {
@@ -124,7 +124,7 @@ export async const POST = (request: NextRequest) {
   }
 }
 
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -189,7 +189,7 @@ export async const GET = (request: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.radiologyRequest.count({ where: whereClause });
+      prisma.radiologyRequest.count({ where: whereClause })
     ]);
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: radiologyRequests.length, totalCount });

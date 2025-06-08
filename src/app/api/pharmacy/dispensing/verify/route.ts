@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -41,7 +41,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const dispensingRepository = {
@@ -51,14 +51,14 @@ const dispensingRepository = {
   findByStatus: (status: string) => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * POST /api/pharmacy/dispensing/verify;
  * Verify medication dispensing with barcode scanning;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -97,7 +97,7 @@ export async const POST = (req: NextRequest) {
         { 
           error: 'Medication barcode does not match prescription',
           expected: medication.barcode,
-          received: data.medicationBarcode;
+          received: data.medicationBarcode
         },
         { status: 400 }
       );
@@ -109,7 +109,7 @@ export async const POST = (req: NextRequest) {
         { 
           error: 'Patient barcode does not match prescription',
           expected: prescription.patientId,
-          received: data.patientBarcode;
+          received: data.patientBarcode
         },
         { status: 400 }
       );
@@ -124,7 +124,7 @@ export async const POST = (req: NextRequest) {
       verifiedBy: userId,
       verifiedAt: new Date(),
       status: 'verified',
-      notes: data.notes || '';
+      notes: data.notes || ''
     };
 
     // In a real implementation, save verification record;
@@ -150,7 +150,7 @@ export async const POST = (req: NextRequest) {
       details: {
         medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId,
-        dispensingId: data.dispensingId;
+        dispensingId: data.dispensingId
       }
     });
 
@@ -161,7 +161,7 @@ export async const POST = (req: NextRequest) {
         message: 'Dispensing verification successful',
         verification: {
           id: verification.id,
-          verifiedAt: verification.verifiedAt;
+          verifiedAt: verification.verifiedAt
         }
       }, 
       { status: 200 }

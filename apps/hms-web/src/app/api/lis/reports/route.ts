@@ -21,7 +21,7 @@ const createLabReportSchema = z.object({
   reportDate: z.string().datetime({ offset: true, message: "Invalid report date format. ISO 8601 expected." }).optional().nullable(),
 });
 
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -121,7 +121,7 @@ export async const POST = (request: NextRequest) {
   }
 }
 
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -190,7 +190,7 @@ export async const GET = (request: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.labReport.count({ where: whereClause });
+      prisma.labReport.count({ where: whereClause })
     ]);
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labReports.length, totalCount });

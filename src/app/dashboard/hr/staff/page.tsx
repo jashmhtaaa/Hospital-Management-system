@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -71,7 +71,7 @@ export default const StaffManagement = () {
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0;
+    total: 0
   });
 
   // Fetch employees;
@@ -81,7 +81,7 @@ export default const StaffManagement = () {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString();
+          take: pagination.take.toString()
         });
         
         if (search) queryParams.append('search', search);
@@ -94,11 +94,11 @@ export default const StaffManagement = () {
           throw new Error('Failed to fetch employees');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total;
+          total: data.total
         }));
       } catch (err) {
         setError(err.message);
@@ -117,14 +117,14 @@ export default const StaffManagement = () {
         // Fetch departments;
         const deptResponse = await fetch('/api/hr/departments');
         if (deptResponse.ok) {
-          const deptData = await deptResponse.json();
+          const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
         
         // Fetch positions;
         const posResponse = await fetch('/api/hr/positions');
         if (posResponse.ok) {
-          const posData = await posResponse.json();
+          const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
       } catch (err) {
@@ -140,7 +140,7 @@ export default const StaffManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -149,7 +149,7 @@ export default const StaffManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -160,7 +160,7 @@ export default const StaffManagement = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
   };
 
@@ -179,7 +179,7 @@ export default const StaffManagement = () {
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Staff Management</h1>;
         <p className="text-muted-foreground">;
-          Manage employee profiles, departments, and roles;
+          Manage employee profiles, departments, and roles
         </p>
       </div>
       
@@ -187,17 +187,17 @@ export default const StaffManagement = () {
         <div className="flex flex-col md:flex-row gap-2 md:items-center">;
           <form onSubmit={handleSearch} className="flex gap-2">;
             <div className="relative">;
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-              <Input;
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input>
                 type="search"
-                placeholder="Search employees...";
-                className="pl-8 w-full md:w-[300px]";
+                placeholder="Search employees..."
+                className="pl-8 w-full md:w-[300px]"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <Button type="submit" variant="secondary">;
-              Search;
+              Search
             </Button>
           </form>
         </div>
@@ -205,7 +205,7 @@ export default const StaffManagement = () {
         <div className="flex flex-col md:flex-row gap-2">;
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
             <SelectTrigger className="w-full md:w-[200px]">;
-              <SelectValue placeholder="Filter by Department" />;
+              <SelectValue placeholder="Filter by Department" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All Departments</SelectItem>;
@@ -219,7 +219,7 @@ export default const StaffManagement = () {
           
           <Select value={positionFilter} onValueChange={setPositionFilter}>;
             <SelectTrigger className="w-full md:w-[200px]">;
-              <SelectValue placeholder="Filter by Position" />;
+              <SelectValue placeholder="Filter by Position" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All Positions</SelectItem>;
@@ -232,8 +232,8 @@ export default const StaffManagement = () {
           </Select>
           
           <Button onClick={handleAddEmployee}>;
-            <UserPlus className="mr-2 h-4 w-4" />;
-            Add Employee;
+            <UserPlus className="mr-2 h-4 w-4" />
+            Add Employee
           </Button>
         </div>
       </div>
@@ -244,12 +244,12 @@ export default const StaffManagement = () {
             <CardTitle>Employee Directory</CardTitle>
             <div className="flex gap-2">;
               <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/departments')}>
-                <Building2 className="mr-2 h-4 w-4" />;
-                Departments;
+                <Building2 className="mr-2 h-4 w-4" />
+                Departments
               </Button>
               <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/positions')}>
-                <Briefcase className="mr-2 h-4 w-4" />;
-                Positions;
+                <Briefcase className="mr-2 h-4 w-4" />
+                Positions
               </Button>
             </div>
           </div>
@@ -264,11 +264,11 @@ export default const StaffManagement = () {
             </div>
           ) : loading ? (
             <div className="text-center py-4">;
-              Loading...;
+              Loading...
             </div>
           ) : employees.length === 0 ? (
             <div className="text-center py-4">;
-              No employees found. Try adjusting your filters or add a new employee.;
+              No employees found. Try adjusting your filters or add a new employee.
             </div>
           ) : (
             <Table>
@@ -304,12 +304,12 @@ export default const StaffManagement = () {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Button;
-                        variant="ghost";
-                        size="sm";
+                      <Button>
+                        variant="ghost"
+                        size="sm"
                         onClick={() => handleViewEmployee(employee.id)}
                       >
-                        View;
+                        View
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -322,7 +322,7 @@ export default const StaffManagement = () {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious;
+                <PaginationPrevious>
                   onClick={handlePreviousPage}
                   className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                 />
@@ -333,7 +333,7 @@ export default const StaffManagement = () {
                 </span>
               </PaginationItem>
               <PaginationItem>
-                <PaginationNext;
+                <PaginationNext>
                   onClick={handleNextPage}
                   className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                 />

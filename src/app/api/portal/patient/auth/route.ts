@@ -135,7 +135,7 @@ async const registerPatient = (patientData: RegisterData) {
  * POST /api/portal/patient/auth/register;
  * Authenticates or registers a patient and returns patient data.
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Check if this is a login or register request;
     const path = request.nextUrl.pathname;

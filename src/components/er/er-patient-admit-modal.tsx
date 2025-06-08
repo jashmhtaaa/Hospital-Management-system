@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -66,19 +66,19 @@ const admitFormSchema = z.object({
 type AdmitFormValues = z.infer<typeof admitFormSchema>;
 
 interface ERPatientAdmitModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   visitData?: {
-    id: string;
+    id: string,
     patientName: string;
-    chiefComplaint: string;
+    chiefComplaint: string
   };
   onSuccess?: () => void;
 }
 
 // FIX: Define interface for expected API error response;
 interface ApiErrorResponse {
-  error: string;
+  error: string
 }
 
 // FIX: Define interface for expected admission success response;
@@ -181,7 +181,7 @@ export default const ERPatientAdmitModal = ({
           current_status: "Admitted",
           disposition: "Admitted to IPD",
           // Optionally link admission_id if backend supports it;
-          // admission_id: newAdmission?.id;
+          // admission_id: newAdmission?.id
         }),
       });
 
@@ -216,7 +216,7 @@ export default const ERPatientAdmitModal = ({
       if (onSuccess) {
         onSuccess();
       }
-      form.reset();
+      form.reset(),
       onClose();
     } catch (error: unknown) {
       // FIX: Use unknown for catch block error;
@@ -265,34 +265,34 @@ export default const ERPatientAdmitModal = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">;
-              <FormField;
+              <FormField>
                 control={form.control}
-                name="patientName";
+                name="patientName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Patient Name</FormLabel>
                     <FormControl>
-                      <Input;
+                      <Input>
                         {...field}
                         disabled;
-                        className="bg-gray-100 dark:bg-gray-700";
+                        className="bg-gray-100 dark:bg-gray-700"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField;
+              <FormField>
                 control={form.control}
-                name="visitId";
+                name="visitId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ER Visit ID</FormLabel>
                     <FormControl>
-                      <Input;
+                      <Input>
                         {...field}
                         disabled;
-                        className="bg-gray-100 dark:bg-gray-700";
+                        className="bg-gray-100 dark:bg-gray-700"
                       />
                     </FormControl>
                     <FormMessage />
@@ -301,20 +301,20 @@ export default const ERPatientAdmitModal = ({
               />
             </div>
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="admittingDoctorId";
+              name="admittingDoctorId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Admitting Doctor</FormLabel>
                   {/* TODO: Replace mock data with API fetch for doctors */}
-                  <Select;
+                  <Select>
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Admitting Doctor" />;
+                        <SelectValue placeholder="Select Admitting Doctor" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -330,20 +330,20 @@ export default const ERPatientAdmitModal = ({
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="wardType";
+              name="wardType"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Requested Ward Type</FormLabel>
                   {/* TODO: Replace mock data with API fetch for ward types */}
-                  <Select;
+                  <Select>
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Ward Type" />;
+                        <SelectValue placeholder="Select Ward Type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -359,15 +359,15 @@ export default const ERPatientAdmitModal = ({
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="bedPreference";
+              name="bedPreference"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Bed Preference (Optional)</FormLabel>
                   <FormControl>
-                    <Input;
-                      placeholder="e.g., Near window, ground floor";
+                    <Input>
+                      placeholder="e.g., Near window, ground floor"
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -377,16 +377,16 @@ export default const ERPatientAdmitModal = ({
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="admissionReason";
+              name="admissionReason"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Admission Reason / Diagnosis</FormLabel>
                   <FormControl>
-                    <Textarea;
-                      placeholder="Primary reason for admission...";
-                      className="resize-none";
+                    <Textarea>
+                      placeholder="Primary reason for admission..."
+                      className="resize-none"
                       {...field}
                       rows={3}
                     />
@@ -396,16 +396,16 @@ export default const ERPatientAdmitModal = ({
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="admissionNotes";
+              name="admissionNotes"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Additional Notes (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea;
-                      placeholder="Any additional notes for the admission team...";
-                      className="resize-none";
+                    <Textarea>
+                      placeholder="Any additional notes for the admission team..."
+                      className="resize-none"
                       {...field}
                       value={field.value ?? ""}
                       rows={3}
@@ -417,15 +417,15 @@ export default const ERPatientAdmitModal = ({
             />
 
             <DialogFooter className="pt-4">;
-              <Button;
+              <Button>
                 type="button"
-                variant="outline";
+                variant="outline"
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel;
+                Cancel
               </Button>
-              <Button;
+              <Button>
                 type="submit"
                 disabled={isLoading || !form.formState.isValid}
               >

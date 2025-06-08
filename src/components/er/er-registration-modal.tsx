@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -69,27 +69,27 @@ type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
 // Define interfaces for API responses (adjust based on actual API)
 interface PatientResponse {
-  id: string;
+  id: string,
   mrn: string;
-  first_name: string;
+  first_name: string,
   last_name: string;
-  dob: string;
-  sex: string;
+  dob: string,
+  sex: string
 }
 
 interface ERVisitResponse {
   id: string;
   visit_number?: string; // Optional visit number;
-  patient_id: string;
-  status: string;
+  patient_id: string,
+  status: string
 }
 
 interface ApiErrorResponse {
-  error: string;
+  error: string
 }
 
 interface ERRegistrationModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration;
 }
@@ -122,9 +122,9 @@ export default const ERRegistrationModal = ({
   // Reset form and found patient state when modal closes or opens;
   useEffect(() => {
     if (!isOpen) {
-      form.reset();
+      form.reset(),
       setFoundPatient(undefined);
-      setIsLoading(false);
+      setIsLoading(false),
       setIsSearching(false);
     }
   }, [isOpen, form]);
@@ -154,7 +154,7 @@ export default const ERRegistrationModal = ({
       });
       return;
     }
-    setIsSearching(true);
+    setIsSearching(true),
     setFoundPatient(undefined);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
@@ -175,7 +175,7 @@ export default const ERRegistrationModal = ({
           dob: "1979-01-15", // Example format;
           sex: "Male",
         };
-        setFoundPatient(mockPatient);
+        setFoundPatient(mockPatient),
         toast({
           title: "Patient Found",
           description: `Found ${mockPatient.first_name} ${mockPatient.last_name}.`,
@@ -255,7 +255,7 @@ export default const ERRegistrationModal = ({
       }
 
       // FIX: Use defined type for newVisit;
-      const newVisit: ERVisitResponse = await visitResponse.json();
+      const newVisit: ERVisitResponse = await visitResponse.json(),
       toast({
         title: "ER Visit Registered",
         description: `Visit ${newVisit.visit_number || newVisit.id} created for patient ${patientId}.`,
@@ -264,7 +264,7 @@ export default const ERRegistrationModal = ({
       if (onSuccess) {
         onSuccess(newVisit);
       }
-      form.reset();
+      form.reset(),
       setFoundPatient(undefined);
       onClose(); // Close modal on success;
     } catch (error: unknown) {
@@ -291,7 +291,7 @@ export default const ERRegistrationModal = ({
           <DialogTitle>Register New ER Patient Visit</DialogTitle>
           <DialogDescription>
             Search for an existing patient by MRN or enter details for a new;
-            patient.;
+            patient.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -299,14 +299,14 @@ export default const ERRegistrationModal = ({
             <div className="space-y-2">;
               <FormLabel>Existing Patient Search</FormLabel>
               <div className="flex space-x-2">;
-                <FormField;
+                <FormField>
                   control={form.control}
-                  name="searchMrn";
+                  name="searchMrn"
                   render={({ field }) => (
                     <FormItem className="flex-grow">;
                       <FormControl>
-                        <Input;
-                          placeholder="Enter MRN to search...";
+                        <Input>
+                          placeholder="Enter MRN to search..."
                           {...field}
                           disabled={!!foundPatient}
                         />
@@ -315,7 +315,7 @@ export default const ERRegistrationModal = ({
                     </FormItem>
                   )}
                 />
-                <Button;
+                <Button>
                   type="button"
                   onClick={handleSearchPatient}
                   disabled={isSearching || !!foundPatient}
@@ -326,19 +326,19 @@ export default const ERRegistrationModal = ({
             </div>
 
             <div className="text-center text-sm text-muted-foreground">;
-              OR Enter New Patient Details Below;
+              OR Enter New Patient Details Below
             </div>
 
             <div className="grid grid-cols-2 gap-4">;
-              <FormField;
+              <FormField>
                 control={form.control}
-                name="firstName";
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input;
-                        placeholder="e.g., John";
+                      <Input>
+                        placeholder="e.g., John"
                         {...field}
                         disabled={!!foundPatient}
                       />
@@ -347,15 +347,15 @@ export default const ERRegistrationModal = ({
                   </FormItem>
                 )}
               />
-              <FormField;
+              <FormField>
                 control={form.control}
-                name="lastName";
+                name="lastName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input;
-                        placeholder="e.g., Doe";
+                      <Input>
+                        placeholder="e.g., Doe"
                         {...field}
                         disabled={!!foundPatient}
                       />
@@ -364,17 +364,17 @@ export default const ERRegistrationModal = ({
                   </FormItem>
                 )}
               />
-              <FormField;
+              <FormField>
                 control={form.control}
-                name="dob";
+                name="dob"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Date of Birth</FormLabel>
                     <FormControl>
                       {/* TODO: Replace with a Date Picker component */}
-                      <Input;
+                      <Input>
                         type="date"
-                        placeholder="YYYY-MM-DD";
+                        placeholder="YYYY-MM-DD"
                         {...field}
                         disabled={!!foundPatient}
                       />
@@ -383,26 +383,26 @@ export default const ERRegistrationModal = ({
                   </FormItem>
                 )}
               />
-              <FormField;
+              <FormField>
                 control={form.control}
-                name="sex";
+                name="sex"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sex</FormLabel>
-                    <Select;
+                    <Select>
                       onValueChange={field.onChange}
                       value={field.value}
                       disabled={!!foundPatient}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Sex" />;
+                          <SelectValue placeholder="Select Sex" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="Male">Male</SelectItem>;
                         <SelectItem value="Female">Female</SelectItem>;
-                        <SelectItem value="Other">Other</SelectItem>;
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -411,37 +411,37 @@ export default const ERRegistrationModal = ({
               />
             </div>
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="chiefComplaint";
+              name="chiefComplaint"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Chief Complaint</FormLabel>
                   <FormControl>
-                    <Input placeholder="Reason for visit..." {...field} />;
+                    <Input placeholder="Reason for visit..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField;
+            <FormField>
               control={form.control}
-              name="arrivalMode";
+              name="arrivalMode"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival Mode</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>;
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Arrival Mode" />;
+                        <SelectValue placeholder="Select Arrival Mode" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="Walk-in">Walk-in</SelectItem>;
                       <SelectItem value="Ambulance">Ambulance</SelectItem>;
                       <SelectItem value="Wheelchair">Wheelchair</SelectItem>;
-                      <SelectItem value="Other">Other</SelectItem>;
+                      <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -450,13 +450,13 @@ export default const ERRegistrationModal = ({
             />
 
             <DialogFooter>
-              <Button;
+              <Button>
                 type="button"
-                variant="outline";
+                variant="outline"
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel;
+                Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>;
                 {isLoading ? "Registering..." : "Register Visit"}

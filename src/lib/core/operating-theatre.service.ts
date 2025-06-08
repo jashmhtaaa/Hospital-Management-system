@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -144,7 +144,7 @@ export const AnesthesiaRecordSchema = z.object({
 });
 
 export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
-  id: string;
+  id: string,
   case_number: string;
   status: 'scheduled' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'postponed';
   actual_start_time?: Date;
@@ -156,7 +156,7 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
   complications?: string[];
   cancellation_reason?: string;
   postponement_reason?: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   surgeon_name?: string;
@@ -164,31 +164,31 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
 };
 
 export type ORSchedule = z.infer<typeof ORScheduleSchema> & {
-  id: string;
+  id: string,
   utilization_percentage: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type SurgicalTeam = z.infer<typeof SurgicalTeamSchema> & {
-  id: string;
+  id: string,
   team_complete: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
-  id: string;
+  id: string,
   available: boolean;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   last_used?: Date;
   next_maintenance?: Date;
-  condition: 'excellent' | 'good' | 'fair' | 'poor' | 'out_of_service';
+  condition: 'excellent' | 'good' | 'fair' | 'poor' | 'out_of_service'
 };
 
 export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
   updated_at: Date;
   signed_at?: Date;
@@ -196,68 +196,68 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 };
 
 export interface ORCapacity {
-  total_rooms: number;
+  total_rooms: number,
   active_rooms: number;
-  scheduled_cases: number;
+  scheduled_cases: number,
   in_progress_cases: number;
-  completed_cases: number;
+  completed_cases: number,
   cancelled_cases: number;
-  utilization_rate: number;
+  utilization_rate: number,
   average_turnover_time: number;
   rooms_by_status: {
-    available: number;
+    available: number,
     occupied: number;
-    cleaning: number;
+    cleaning: number,
     setup: number;
-    maintenance: number;
+    maintenance: number
   };
-  upcoming_cases: SurgicalProcedure[];
+  upcoming_cases: SurgicalProcedure[]
 }
 
 export interface ORMetrics {
-  daily_volume: number;
+  daily_volume: number,
   utilization_rate: number;
-  average_case_duration: number;
+  average_case_duration: number,
   average_turnover_time: number;
-  first_case_start_delay: number;
+  first_case_start_delay: number,
   cancellation_rate: number;
-  postponement_rate: number;
+  postponement_rate: number,
   complication_rate: number;
-  on_time_start_rate: number;
+  on_time_start_rate: number,
   surgeon_productivity: {
-    surgeon_id: string;
+    surgeon_id: string,
     cases_performed: number;
-    average_duration: number;
+    average_duration: number,
     complication_rate: number;
-    on_time_rate: number;
+    on_time_rate: number
   }[];
   room_efficiency: {
-    room_id: string;
+    room_id: string,
     utilization_rate: number;
-    cases_performed: number;
-    average_turnover: number;
+    cases_performed: number,
+    average_turnover: number
   }[];
 }
 
 export interface InstrumentCount {
-  instrument_id: string;
+  instrument_id: string,
   instrument_name: string;
-  opening_count: number;
+  opening_count: number,
   closing_count: number;
-  discrepancy: boolean;
+  discrepancy: boolean,
   counted_by: string;
-  count_time: Date;
-  location: 'field' | 'back_table' | 'mayo_stand' | 'basin' | 'floor';
+  count_time: Date,
+  location: 'field' | 'back_table' | 'mayo_stand' | 'basin' | 'floor'
 }
 
 export interface SafetyChecklist {
-  surgery_id: string;
+  surgery_id: string,
   checklist_type: 'sign_in' | 'time_out' | 'sign_out';
-  completed: boolean;
+  completed: boolean,
   completed_by: string;
-  completed_at: Date;
+  completed_at: Date,
   items: {
-    item: string;
+    item: string,
     checked: boolean;
     notes?: string;
   }[];
@@ -271,8 +271,7 @@ export class OperatingTheatreService {
   private anesthesiaRecords: Map<string, AnesthesiaRecord> = new Map();
   private instrumentCounts: Map<string, InstrumentCount[]> = new Map();
   private safetyChecklists: Map<string, SafetyChecklist[]> = new Map();
-  private orRooms: Map<string, any> = new Map();
-
+  private orRooms: Map<string, any> = new Map(),
   constructor() {
     this.initializeORRooms();
     this.initializeSurgicalInstruments();
@@ -631,8 +630,8 @@ export class OperatingTheatreService {
       instrument_id: string;
       opening_count?: number;
       closing_count?: number;
-      location: InstrumentCount['location'];
-      counted_by: string;
+      location: InstrumentCount['location'],
+      counted_by: string
     }[]
   ): Promise<InstrumentCount[]> {
     const counts: InstrumentCount[] = countData.map(data => {
@@ -988,14 +987,14 @@ export class OperatingTheatreService {
    * Get instrument counts for surgery;
    */
   async getInstrumentCounts(surgeryId: string): Promise<InstrumentCount[]> {
-    return this.instrumentCounts.get(surgeryId) || [];
+    return this.instrumentCounts.get(surgeryId) || []
   }
 
   /**
    * Get safety checklists for surgery;
    */
   async getSafetyChecklists(surgeryId: string): Promise<SafetyChecklist[]> {
-    return this.safetyChecklists.get(surgeryId) || [];
+    return this.safetyChecklists.get(surgeryId) || []
   }
 }
 

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -41,7 +41,7 @@ export class AnalyticsService {
       const existingAnalytics = await prisma.campaignAnalytics.findFirst({
         where: {
           campaignId,
-          date: data.date;
+          date: data.date
         }
       });
       
@@ -53,7 +53,7 @@ export class AnalyticsService {
           where: { id: existingAnalytics.id },
           data: {
             metrics: data.metrics,
-            updatedAt: new Date();
+            updatedAt: new Date()
           }
         });
       } else {
@@ -62,7 +62,7 @@ export class AnalyticsService {
           data: {
             campaignId,
             date: data.date,
-            metrics: data.metrics;
+            metrics: data.metrics
           }
         });
       }
@@ -75,7 +75,7 @@ export class AnalyticsService {
         details: { 
           analyticsId: analytics.id,
           date: data.date.toISOString().split('T')[0],
-          metricKeys: Object.keys(data.metrics);
+          metricKeys: Object.keys(data.metrics)
         }
       });
       
@@ -125,7 +125,7 @@ export class AnalyticsService {
       const analyticsData = await prisma.campaignAnalytics.findMany({
         where,
         orderBy: {
-          date: 'asc';
+          date: 'asc'
         }
       });
       
@@ -212,7 +212,7 @@ export class AnalyticsService {
                 id: true,
                 name: true,
                 type: true,
-                status: true;
+                status: true
               }
             });
             
@@ -231,7 +231,7 @@ export class AnalyticsService {
             return {
               campaign,
               totals,
-              analyticsCount: analytics.length;
+              analyticsCount: analytics.length
             };
           } catch (error) {
 
@@ -248,7 +248,7 @@ export class AnalyticsService {
       
       return {
         campaigns: sortedData,
-        comparisonDate: new Date();
+        comparisonDate: new Date()
       };
     } catch (error) {
       throw new DatabaseError('Failed to retrieve comparative analytics', error);
@@ -279,7 +279,7 @@ export class AnalyticsService {
    */
   private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: 'day' | 'week' | 'month'): unknown[] {
     if (!analytics || analytics.length === 0) {
-      return [];
+      return []
     }
     
     const groupedData: Map<string, any> = new Map();
@@ -317,7 +317,7 @@ export class AnalyticsService {
         const updatedMetrics = this.mergeMetrics(existing.metrics, item.metrics);
         groupedData.set(groupKey, {
           ...existing,
-          metrics: updatedMetrics;
+          metrics: updatedMetrics
         });
       }
     });
@@ -426,7 +426,7 @@ export class AnalyticsService {
    */
   private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {
     if (!campaignsData || campaignsData.length === 0) {
-      return [];
+      return []
     }
     
     // Find a common metric to sort by;

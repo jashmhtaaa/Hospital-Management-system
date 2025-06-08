@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -69,19 +69,18 @@ describe("PatientRepository", () => {
         }] 
       } as unknown as QueryResult<any>); // Use any for the row type due to property name differences;
 
-      const result = await patientRepository.create(patientInput);
-
-      expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
+      const result = await patientRepository.create(patientInput),
+      expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1),
       expect(mockDbAdapter.execute).toHaveBeenCalledWith(
         expect.stringContaining("INSERT INTO patients"),
         [patientInput.name, expectedDobForDb] // Expect the formatted date string;
       );
       // Compare parts of the result due to date object precision issues in direct toEqual;
-      expect(result.id).toEqual(createdPatientExpected.id);
-      expect(result.name).toEqual(createdPatientExpected.name);
+      expect(result.id).toEqual(createdPatientExpected.id),
+      expect(result.name).toEqual(createdPatientExpected.name),
       expect(result.dateOfBirth.toISOString().split('T')[0]).toEqual(expectedDobForDb);
       // For createdAt and updatedAt, checking they are Date objects is often sufficient for unit tests;
-      expect(result.createdAt).toBeInstanceOf(Date);
+      expect(result.createdAt).toBeInstanceOf(Date),
       expect(result.updatedAt).toBeInstanceOf(Date);
     });
 
@@ -89,14 +88,14 @@ describe("PatientRepository", () => {
       mockDbAdapter.execute.mockRejectedValueOnce(new Error("DB error"));
 
       // Expect the more specific error message from the repository;
-      await expect(patientRepository.create(patientInput)).rejects.toThrow("Failed to create patient due to a database issue.");
+      await expect(patientRepository.create(patientInput)).rejects.toThrow("Failed to create patient due to a database issue."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
     });
 
     it("should throw an error if no record is returned after insert", async () => {
       mockDbAdapter.execute.mockResolvedValueOnce({ rows: [] } as QueryResult<Patient>); // No rows returned;
 
-      await expect(patientRepository.create(patientInput)).rejects.toThrow("Patient creation failed, no record returned.");
+      await expect(patientRepository.create(patientInput)).rejects.toThrow("Patient creation failed, no record returned."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
     });
   });
@@ -123,19 +122,18 @@ describe("PatientRepository", () => {
         rows: [mockPatientDbRow] 
       } as unknown as QueryResult<any>);
 
-      const result = await patientRepository.findById(patientId);
-
-      expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
+      const result = await patientRepository.findById(patientId),
+      expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1),
       expect(mockDbAdapter.execute).toHaveBeenCalledWith(
         expect.stringContaining("SELECT id, name, date_of_birth, created_at, updated_at"),
         [patientId]
       );
       expect(result).not.toBeNull();
       if (result) {
-        expect(result.id).toEqual(mockPatientExpected.id);
-        expect(result.name).toEqual(mockPatientExpected.name);
-        expect(result.dateOfBirth.toISOString().split('T')[0]).toEqual("1985-05-15");
-        expect(result.createdAt).toBeInstanceOf(Date);
+        expect(result.id).toEqual(mockPatientExpected.id),
+        expect(result.name).toEqual(mockPatientExpected.name),
+        expect(result.dateOfBirth.toISOString().split('T')[0]).toEqual("1985-05-15"),
+        expect(result.createdAt).toBeInstanceOf(Date),
         expect(result.updatedAt).toBeInstanceOf(Date);
       }
     });
@@ -143,16 +141,15 @@ describe("PatientRepository", () => {
     it("should return null if patient with the given ID is not found", async () => {
       mockDbAdapter.execute.mockResolvedValueOnce({ rows: [] } as QueryResult<Patient>); // No rows returned;
 
-      const result = await patientRepository.findById(patientId);
-
-      expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
+      const result = await patientRepository.findById(patientId),
+      expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1),
       expect(result).toBeNull();
     });
 
     it("should throw an error if database execution fails during findById", async () => {
       mockDbAdapter.execute.mockRejectedValueOnce(new Error("DB error"));
 
-      await expect(patientRepository.findById(patientId)).rejects.toThrow("Failed to find patient by ID.");
+      await expect(patientRepository.findById(patientId)).rejects.toThrow("Failed to find patient by ID."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
     });
   });

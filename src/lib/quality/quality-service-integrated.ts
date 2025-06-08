@@ -201,11 +201,11 @@ export class IntegratedQualityService {
 
   // Quality Dashboard (integrated version)
   async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{
-    overview: any;
+    overview: any,
     trends: any[];
-    events: any;
+    events: any,
     assessments: any[];
-    alerts: any[];
+    alerts: any[]
   }> {
     // Get statistics from persistent data
     const stats = await this.getQualityStatistics();
@@ -237,9 +237,9 @@ export class IntegratedQualityService {
 
   // Data Migration (for existing in-memory data)
   async migrateExistingData(userId: string): Promise<{
-    indicatorsMigrated: number;
+    indicatorsMigrated: number,
     eventsMigrated: number;
-    reportsMigrated: number;
+    reportsMigrated: number
   }> {
     let migratedCounts = {
       indicatorsMigrated: 0,
@@ -262,10 +262,10 @@ export class IntegratedQualityService {
 
   // Data Archival and Cleanup
   async archiveOldData(): Promise<{
-    archivedIndicators: number;
+    archivedIndicators: number,
     archivedEvents: number;
-    archivedAssessments: number;
-    archivedReports: number;
+    archivedAssessments: number,
+    archivedReports: number
   }> {
     return await this.persistenceService.archiveOldRecords();
   }
@@ -334,12 +334,12 @@ export class IntegratedQualityService {
    * Health check for the integrated service
    */
   async healthCheck(): Promise<{
-    status: 'healthy' | 'degraded' | 'unhealthy';
+    status: 'healthy' | 'degraded' | 'unhealthy',
     services: {
-      qualityService: boolean;
-      persistenceService: boolean;
+      qualityService: boolean,
+      persistenceService: boolean
     };
-    lastChecked: Date;
+    lastChecked: Date
   }> {
     try {
       // Check if services are responsive

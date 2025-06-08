@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,7 +31,7 @@ import CreateModalityModal, { ModalityFormData } from './create-modality-modal.t
 
 // Define interfaces;
 interface ProcedureType {
-  id: string;
+  id: string,
   name: string;
   modality_type?: string | null;
   description?: string | null;
@@ -39,7 +39,7 @@ interface ProcedureType {
 }
 
 interface Modality {
-  id: string;
+  id: string,
   name: string;
   location?: string | null;
   description?: string | null;
@@ -59,12 +59,12 @@ export default const RadiologySettings = () {
     useState<boolean>(false);
 
   useEffect(() => {
-    fetchProcedureTypes();
+    fetchProcedureTypes(),
     fetchModalities();
   }, []);
 
   const fetchProcedureTypes = async (): Promise<void> => {
-    setLoadingProcedures(true);
+    setLoadingProcedures(true),
     setErrorProcedures(undefined);
     try {
       const response = await fetch("/api/radiology/procedure-types");
@@ -78,12 +78,12 @@ export default const RadiologySettings = () {
         }
         throw new Error(errorMessage);
       }
-      const data: ProcedureType[] = await response.json();
+      const data: ProcedureType[] = await response.json(),
       setProcedureTypes(data || []); // Ensure it's always an array;
     } catch (err) { // Changed 'error' to 'err';
       const message = err instanceof Error ? err.message : "Unknown error"; // Use 'err';
       // Debug logging removed // Use 'err';
-      setErrorProcedures(`Failed to load procedure types: ${message}`);
+      setErrorProcedures(`Failed to load procedure types: ${message}`),
       setProcedureTypes([]); // Clear on error;
     } finally {
       setLoadingProcedures(false);
@@ -91,7 +91,7 @@ export default const RadiologySettings = () {
   };
 
   const fetchModalities = async (): Promise<void> => {
-    setLoadingModalities(true);
+    setLoadingModalities(true),
     setErrorModalities(undefined);
     try {
       const response = await fetch("/api/radiology/modalities");
@@ -105,12 +105,12 @@ export default const RadiologySettings = () {
         }
         throw new Error(errorMessage);
       }
-      const data: Modality[] = await response.json();
+      const data: Modality[] = await response.json(),
       setModalities(data || []); // Ensure it's always an array;
     } catch (err) { // Changed error to err;
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
       // Debug logging removed // Use err;
-      setErrorModalities(`Failed to load modalities: ${message}`);
+      setErrorModalities(`Failed to load modalities: ${message}`),
       setModalities([]); // Clear on error;
     } finally {
       setLoadingModalities(false);
@@ -140,7 +140,7 @@ export default const RadiologySettings = () {
         throw new Error(errorMessage);
       }
 
-      setShowCreateProcedureModal(false);
+      setShowCreateProcedureModal(false),
       fetchProcedureTypes(); // Refresh the list;
       // Consider showing a success message;
     } catch (err) { // Changed error to err;
@@ -173,7 +173,7 @@ export default const RadiologySettings = () {
         throw new Error(errorMessage);
       }
 
-      setShowCreateModalityModal(false);
+      setShowCreateModalityModal(false),
       fetchModalities(); // Refresh the list;
       // Consider showing a success message;
     } catch (err) { // Changed error to err;
@@ -189,22 +189,22 @@ export default const RadiologySettings = () {
         <Tabs defaultValue="procedure-types" className="w-full">;
           <TabsList className="grid w-full grid-cols-2 mb-4">;
             <TabsTrigger value="procedure-types">Procedure Types</TabsTrigger>;
-            <TabsTrigger value="modalities">Modalities</TabsTrigger>;
+            <TabsTrigger value="modalities">Modalities</TabsTrigger>
           </TabsList>
 
           <TabsContent value="procedure-types">;
             <div className="flex justify-between items-center mb-6">;
               <h2 className="text-xl font-semibold">;
-                Radiology Procedure Types;
+                Radiology Procedure Types
               </h2>
               <Button onClick={() => setShowCreateProcedureModal(true)}>
-                <Plus className="h-4 w-4 mr-2" /> Add Procedure Type;
+                <Plus className="h-4 w-4 mr-2" /> Add Procedure Type
               </Button>
             </div>
 
             {loadingProcedures ? (
               <div className="flex justify-center items-center h-40">;
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : errorProcedures ? (
               <div className="text-center text-red-500 p-4 rounded border border-red-200 bg-red-50">;
@@ -223,11 +223,11 @@ export default const RadiologySettings = () {
                   <TableBody>
                     {procedureTypes.length === 0 ? (
                       <TableRow>
-                        <TableCell;
+                        <TableCell>
                           colSpan={3}
-                          className="text-center h-24 text-muted-foreground";
+                          className="text-center h-24 text-muted-foreground"
                         >
-                          No procedure types found.;
+                          No procedure types found.
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -251,13 +251,13 @@ export default const RadiologySettings = () {
             <div className="flex justify-between items-center mb-6">;
               <h2 className="text-xl font-semibold">Radiology Modalities</h2>;
               <Button onClick={() => setShowCreateModalityModal(true)}>
-                <Plus className="h-4 w-4 mr-2" /> Add Modality;
+                <Plus className="h-4 w-4 mr-2" /> Add Modality
               </Button>
             </div>
 
             {loadingModalities ? (
               <div className="flex justify-center items-center h-40">;
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : errorModalities ? (
               <div className="text-center text-red-500 p-4 rounded border border-red-200 bg-red-50">;
@@ -276,11 +276,11 @@ export default const RadiologySettings = () {
                   <TableBody>
                     {modalities.length === 0 ? (
                       <TableRow>
-                        <TableCell;
+                        <TableCell>
                           colSpan={3}
-                          className="text-center h-24 text-muted-foreground";
+                          className="text-center h-24 text-muted-foreground"
                         >
-                          No modalities found.;
+                          No modalities found.
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -303,7 +303,7 @@ export default const RadiologySettings = () {
       </CardContent>
 
       {showCreateProcedureModal && (
-        <CreateProcedureTypeModal;
+        <CreateProcedureTypeModal>
           isOpen={showCreateProcedureModal} // Pass isOpen prop if modal uses it;
           onClose={() => setShowCreateProcedureModal(false)}
           onSubmit={handleCreateProcedureType}
@@ -311,7 +311,7 @@ export default const RadiologySettings = () {
       )}
 
       {showCreateModalityModal && (
-        <CreateModalityModal;
+        <CreateModalityModal>
           isOpen={showCreateModalityModal} // Pass isOpen prop if modal uses it;
           onClose={() => setShowCreateModalityModal(false)}
           onSubmit={handleCreateModality}

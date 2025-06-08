@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,11 +27,11 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast;
 // Define Patient interface (assuming structure based on usage)
 interface Patient {
   id: string; // Changed to string based on usage in handlers;
-  name: string;
+  name: string,
   tokenNumber: number;
   checkInTime: string; // Keep as string, format on display;
   waitingTime: number; // in minutes;
-  status: "waiting" | "in-progress" | "completed" | "cancelled";
+  status: "waiting" | "in-progress" | "completed" | "cancelled",
   doctorName: string; // Assuming this comes from API;
 }
 
@@ -137,18 +137,18 @@ export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
           checkPermission("opd.call_patient"),
           checkPermission("opd.mark_complete"),
         ]);
-        setCanCallPatient(callPerm);
+        setCanCallPatient(callPerm),
         setCanMarkComplete(completePerm);
         // setLoadingPermissions(false); // FIX: Removed call to undefined function;
 
         // Fetch patients;
-        const patientsData = await fetchPatientsQueue();
+        const patientsData = await fetchPatientsQueue(),
         setPatients(patientsData);
 
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "An unknown error occurred";
 
-        setError(message);
+        setError(message),
         toast({ title: "Error", description: `Failed to load patient queue: ${message}`, variant: "destructive" });
       } finally {
         setLoading(false); // Overall loading finished;
@@ -217,7 +217,7 @@ export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
   }
 
   return (
-    <div>
+<div
       <div className="flex justify-between items-center mb-4">;
         <h3 className="text-lg font-medium">Current OPD Queue</h3>;
         {/* Add refresh button? */}
@@ -232,12 +232,12 @@ export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
             <TableHead>Waiting</TableHead>
             <TableHead>Doctor</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>;
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {patients.map((patient) => (
-            <TableRow;
+            <TableRow>
               key={patient.id}
               className={
                 patient.status === "waiting" && patient.waitingTime > 30;
@@ -259,24 +259,24 @@ export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
               <TableCell className="text-right">;
                 <div className="flex justify-end gap-2">;
                   {canCallPatient && patient.status === "waiting" && (
-                    <Button;
-                      variant="default";
-                      size="sm";
+                    <Button>
+                      variant="default"
+                      size="sm"
                       onClick={() => handleCallPatient(patient.id)}
                       disabled={loading} // Disable buttons during actions if needed;
                     >
-                      Call;
+                      Call
                     </Button>
                   )}
                   {canMarkComplete && patient.status === "in-progress" && (
-                    <Button;
-                      variant="default";
-                      className="bg-green-500 hover:bg-green-600 text-white";
-                      size="sm";
+                    <Button>
+                      variant="default"
+                      className="bg-green-500 hover:bg-green-600 text-white"
+                      size="sm"
                       onClick={() => handleCompleteConsultation(patient.id)}
                       disabled={loading} // Disable buttons during actions if needed;
                     >
-                      Complete;
+                      Complete
                     </Button>
                   )}
                   {/* Add other actions like 'View Details' if needed */}

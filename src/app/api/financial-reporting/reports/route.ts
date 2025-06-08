@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -101,7 +101,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
     reportType: query.reportType,
     startDate: query.startDate,
     endDate: query.endDate,
-    format: query.format;
+    format: query.format
   });
   
   return createSuccessResponse({

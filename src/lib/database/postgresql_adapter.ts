@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,7 +33,7 @@ export interface IDatabaseAdapter {
   execute<T = any>(queryText: string, params?: unknown[]): Promise<QueryResult<T>>;
   beginTransaction(): Promise<PoolClient>;
   commitTransaction(client: PoolClient): Promise<void>;
-  rollbackTransaction(client: PoolClient): Promise<void>;
+  rollbackTransaction(client: PoolClient): Promise<void>
 }
 
 /**
@@ -61,7 +61,7 @@ export class PostgresqlAdapter implements IDatabaseAdapter {
     try {
       const client = await this.pool.connect();
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      client.release();
+      client.release()
     } catch (error) {
 
       throw error;
@@ -125,7 +125,7 @@ export class PostgresqlAdapter implements IDatabaseAdapter {
    */
   async commitTransaction(client: PoolClient): Promise<void> {
     try {
-      await client.query("COMMIT");
+      await client.query("COMMIT")
     } catch (error) {
 
       // Attempt to rollback on commit error;
@@ -147,7 +147,7 @@ export class PostgresqlAdapter implements IDatabaseAdapter {
    */
   async rollbackTransaction(client: PoolClient): Promise<void> {
     try {
-      await client.query("ROLLBACK");
+      await client.query("ROLLBACK")
     } catch (error) {
 
       // Even if rollback fails, we must release the client;

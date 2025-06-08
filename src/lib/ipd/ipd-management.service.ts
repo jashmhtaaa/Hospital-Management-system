@@ -189,29 +189,29 @@ export type Transfer = z.infer<typeof TransferSchema> & { id?: string };
 export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string };
 
 export interface IPDStatistics {
-  total_admissions: number;
+  total_admissions: number,
   active_admissions: number;
-  average_length_of_stay: number;
+  average_length_of_stay: number,
   bed_occupancy_rate: number;
-  available_beds: number;
+  available_beds: number,
   total_beds: number;
-  readmission_rate: number;
-  mortality_rate: number;
+  readmission_rate: number,
+  mortality_rate: number
 }
 
 export interface BedAvailability {
-  ward_id: string;
+  ward_id: string,
   ward_name: string;
-  total_beds: number;
+  total_beds: number,
   available_beds: number;
-  occupied_beds: number;
+  occupied_beds: number,
   maintenance_beds: number;
-  occupancy_rate: number;
+  occupancy_rate: number,
   available_bed_details: {
     bed_number: string;
     room_number?: string;
-    bed_type: string;
-    accommodation_class: string;
+    bed_type: string,
+    accommodation_class: string
   }[];
 }
 

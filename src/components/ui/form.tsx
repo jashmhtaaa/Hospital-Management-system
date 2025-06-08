@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>;
 > = {
-  name: TName;
+  name: TName
 }
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
@@ -42,8 +42,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
 const FormField = <;
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>;
->({
-  ...props;
+>({ ...props
 }: ControllerProps<TFieldValues, TName>) => {
   return (
     <FormFieldContext.Provider value={{ name: props.name }}>;
@@ -76,7 +75,7 @@ const useFormField = () => {
 }
 
 type FormItemContextValue = {
-  id: string;
+  id: string
 }
 
 const FormItemContext = React.createContext<FormItemContextValue>(
@@ -91,7 +90,7 @@ const FormItem = React.forwardRef<;
 
   return (
     <FormItemContext.Provider value={{ id }}>;
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />;
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
     </FormItemContext.Provider>
   );
 });
@@ -104,7 +103,7 @@ const FormLabel = React.forwardRef<;
   const { error, formItemId } = useFormField();
 
   return (
-    <Label;
+    <Label>
       ref={ref}
       className={cn(error && "text-destructive", className)}
       htmlFor={formItemId}
@@ -121,7 +120,7 @@ const FormControl = React.forwardRef<;
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 
   return (
-    <Slot;
+    <Slot>
       ref={ref}
       id={formItemId}
       aria-describedby={
@@ -143,7 +142,7 @@ const FormDescription = React.forwardRef<;
   const { formDescriptionId } = useFormField();
 
   return (
-    <p;
+    <p>
       ref={ref}
       id={formDescriptionId}
       className={cn("text-[0.8rem] text-muted-foreground", className)}
@@ -165,7 +164,7 @@ const FormMessage = React.forwardRef<;
   }
 
   return (
-    <p;
+    <p>
       ref={ref}
       id={formMessageId}
       className={cn("text-[0.8rem] font-medium text-destructive", className)}

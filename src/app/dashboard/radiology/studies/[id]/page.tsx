@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,5 +16,5 @@ import React from "react";
 import RadiologyStudyDetail from "@/components/radiology/radiology-study-detail";
 
 export default const StudyDetailPage = () {
-  return <RadiologyStudyDetail />;
+  return <RadiologyStudyDetail />
 }

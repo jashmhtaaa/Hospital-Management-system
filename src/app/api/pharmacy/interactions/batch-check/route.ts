@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,7 +33,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -46,7 +46,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/batch-check;
  * Perform comprehensive batch interaction checking;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -93,7 +93,7 @@ export async const POST = (req: NextRequest) {
           value: lr.value,
           unit: lr.unit,
           referenceRange: lr.referenceRange,
-          abnormalFlag: lr.abnormalFlag;
+          abnormalFlag: lr.abnormalFlag
         }));
       }
     }
@@ -104,7 +104,7 @@ export async const POST = (req: NextRequest) {
       allergies,
       conditions,
       labResults,
-      includeMonographs: data.includeMonographs || false;
+      includeMonographs: data.includeMonographs || false
     });
 
     // Audit logging;
@@ -118,7 +118,7 @@ export async const POST = (req: NextRequest) {
         allergyCount: allergies.length,
         conditionCount: conditions.length,
         labResultCount: labResults.length,
-        interactionCount: results.totalInteractionCount;
+        interactionCount: results.totalInteractionCount
       }
     });
 
@@ -131,7 +131,7 @@ export async const POST = (req: NextRequest) {
         conditionCount: conditions.length,
         labResultCount: labResults.length,
         totalInteractionCount: results.totalInteractionCount,
-        criticalInteractionCount: results.criticalInteractionCount;
+        criticalInteractionCount: results.criticalInteractionCount
       }
     }, { status: 200 });
   } catch (error) {

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,7 +38,7 @@ const { Option } = Select;
 
 // Define interfaces for data types;
 interface LabResult {
-  id: string;
+  id: string,
   order_item_id: string;
   test_name: string;
   parameter_id?: string;
@@ -58,7 +58,7 @@ interface LabResult {
 }
 
 interface LabOrder {
-  id: string;
+  id: string,
   patient_name: string;
   // Add other relevant order fields if needed for display;
 }
@@ -88,14 +88,14 @@ interface ApiErrorResponse {
 }
 
 interface UpdateResultValues {
-  result_value: string;
+  result_value: string,
   is_abnormal: boolean;
   notes?: string;
 }
 
 interface CreateResultValues {
   parameter_id?: string;
-  result_value: string;
+  result_value: string,
   is_abnormal: boolean;
   notes?: string;
 }
@@ -186,7 +186,7 @@ const ResultManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
       // FIX: Type the response data;
-      const data: OrdersApiResponse = await response.json();
+      const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
     } catch (error: unknown) {
       // FIX: Use unknown;
@@ -253,7 +253,7 @@ const ResultManagement: React.FC = () => {
 
   // Load data on component mount;
   useEffect(() => {
-    fetchResults();
+    fetchResults(),
     fetchOrders();
   }, [fetchResults, fetchOrders]);
 
@@ -291,9 +291,9 @@ const ResultManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
 
-      message.success("Result updated successfully");
+      message.success("Result updated successfully"),
       setIsModalVisible(false);
-      form.resetFields();
+      form.resetFields(),
       fetchResults();
     } catch (error: unknown) {
       // FIX: Use unknown;
@@ -333,9 +333,9 @@ const ResultManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
 
-      message.success("Result created successfully");
+      message.success("Result created successfully"),
       setIsEntryModalVisible(false);
-      entryForm.resetFields();
+      entryForm.resetFields(),
       fetchResults();
     } catch (error: unknown) {
       // FIX: Use unknown;
@@ -372,7 +372,7 @@ const ResultManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
 
-      message.success("Result verified successfully");
+      message.success("Result verified successfully"),
       fetchResults();
     } catch (error: unknown) {
       // FIX: Use unknown;
@@ -404,7 +404,7 @@ const ResultManagement: React.FC = () => {
       result_value: result.result_value,
       is_abnormal: result.is_abnormal,
       notes: result.notes || "",
-    });
+    }),
     setIsModalVisible(true);
   };
 
@@ -453,7 +453,7 @@ const ResultManagement: React.FC = () => {
       width: "10%",
       render: (_: unknown, record: LabResult) => {
         if (record.verified_by) {
-          return <Tag color="success">Verified</Tag>;
+          return <Tag color="success">Verified</Tag>
         } else if (record.is_abnormal) {
           return <Tag color="error">Abnormal</Tag>;
         } else {
@@ -478,13 +478,13 @@ const ResultManagement: React.FC = () => {
         // Edit action (only if not verified)
         if (!record.verified_by) {
           actions.push(
-            <Button;
-              key="edit";
+            <Button>
+              key="edit"
               type="link"
               icon={<EditOutlined />}
               onClick={() => showResultUpdateModal(record)}
             >
-              Edit;
+              Edit
             </Button>
           );
         }
@@ -492,13 +492,13 @@ const ResultManagement: React.FC = () => {
         // Verify action (only if not verified and user has permission - permission check omitted for brevity)
         if (!record.verified_by) {
           actions.push(
-            <Button;
-              key="verify";
+            <Button>
+              key="verify"
               type="link"
               icon={<CheckOutlined />}
               onClick={() => handleVerifyResult(record)}
             >
-              Verify;
+              Verify
             </Button>
           );
         }
@@ -510,10 +510,10 @@ const ResultManagement: React.FC = () => {
 
   return (
     <div className="result-management-container">;
-      <Card;
-        title="Laboratory Result Management";
+      <Card>
+        title="Laboratory Result Management"
         extra={
-          <Button;
+          <Button>
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
@@ -523,12 +523,11 @@ const ResultManagement: React.FC = () => {
               );
             }}
           >
-            Enter Results;
+            Enter Results
           </Button>
         }
       >
-        <div;
-          className="filter-container";
+<div className="filter-container"
           style={{
             marginBottom: 16,
             display: "flex",
@@ -536,22 +535,22 @@ const ResultManagement: React.FC = () => {
             gap: 16,
           }}
         >
-          <Input;
-            placeholder="Search results...";
+          <Input>
+            placeholder="Search results..."
             prefix={<SearchOutlined />}
             value={searchText}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setSearchText(event.target.value);
+              setSearchText(event.target.value)
             }
             // onPressEnter={fetchResults} // fetchResults is called via useEffect;
             style={{ width: 250 }}
           />
 
-          <Select;
-            placeholder="Filter by Order";
+          <Select>
+            placeholder="Filter by Order"
             allowClear;
             showSearch;
-            optionFilterProp="children";
+            optionFilterProp="children"
             style={{ width: 250 }}
             value={orderFilter}
             onChange={(value: string | null) => setOrderFilter(value)}
@@ -568,22 +567,22 @@ const ResultManagement: React.FC = () => {
             ))}
           </Select>
 
-          <Button;
+          <Button>
             onClick={() => {
-              setSearchText("");
+              setSearchText(""),
               setOrderFilter(undefined);
               // fetchResults(); // fetchResults is called via useEffect;
             }}
           >
-            Reset Filters;
+            Reset Filters
           </Button>
         </div>
 
         <Spin spinning={loading}>;
-          <Table;
+          <Table>
             columns={columns}
             dataSource={results}
-            rowKey="id";
+            rowKey="id"
             pagination={{ pageSize: 10 }}
             locale={{
               emptyText: loading;
@@ -594,23 +593,23 @@ const ResultManagement: React.FC = () => {
         </Spin>
       </Card>
       {/* Result Update Modal */}
-      <Modal;
-        title="Update Result";
+      <Modal>
+        title="Update Result"
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={[
           <Button key="back" onClick={() => setIsModalVisible(false)}>
-            Cancel;
+            Cancel
           </Button>,
           <Button key="submit" type="primary" onClick={() => form.submit()}>
-            Update Result;
+            Update Result
           </Button>,
         ]}
       >
         <Form form={form} layout="vertical" onFinish={handleUpdateResult}>;
           <Form.Item;
-            name="result_value";
-            label="Result Value";
+            name="result_value"
+            label="Result Value"
             rules={[
               { required: true, message: "Please enter the result value" },
             ]}
@@ -618,31 +617,31 @@ const ResultManagement: React.FC = () => {
             <Input />
           </Form.Item>
           <Form.Item;
-            name="is_abnormal";
-            valuePropName="checked";
-            label="Is Abnormal?";
+            name="is_abnormal"
+            valuePropName="checked"
+            label="Is Abnormal?"
           >
             <Checkbox />
           </Form.Item>
           <Form.Item name="notes" label="Notes">;
-            <Input.TextArea rows={3} />;
+            <Input.TextArea rows={3} />
           </Form.Item>
         </Form>
       </Modal>
       {/* Result Entry Modal (Placeholder/Example) */}
-      <Modal;
+      <Modal>
          title={`Enter Result` /* FIX: Removed reference to undefined selectedOrderItem: for ${selectedOrderItem?.test_name} */}        visible={isEntryModalVisible}
         onCancel={() => setIsEntryModalVisible(false)}
         footer={[
           <Button key="back" onClick={() => setIsEntryModalVisible(false)}>
-            Cancel;
+            Cancel
           </Button>,
-          <Button;
-            key="submit";
+          <Button>
+            key="submit"
             type="primary"
             onClick={() => entryForm.submit()}
           >
-            Save Result;
+            Save Result
           </Button>,
         ]}
       >
@@ -650,8 +649,8 @@ const ResultManagement: React.FC = () => {
           {/* FIX: Commented out parameters section as 'parameters' is not defined;
           {parameters.length > 0 && (
             <Form.Item;
-              name="parameter_id";
-              label="Parameter";
+              name="parameter_id"
+              label="Parameter"
               rules={[{ required: true, message: "Please select a parameter" }]}
             >
               <Select placeholder="Select Parameter">;
@@ -665,8 +664,8 @@ const ResultManagement: React.FC = () => {
           )}
           */}
           <Form.Item;
-            name="result_value";
-            label="Result Value";
+            name="result_value"
+            label="Result Value"
             rules={[
               { required: true, message: "Please enter the result value" },
             ]}
@@ -674,14 +673,14 @@ const ResultManagement: React.FC = () => {
             <Input />
           </Form.Item>
           <Form.Item;
-            name="is_abnormal";
-            valuePropName="checked";
-            label="Is Abnormal?";
+            name="is_abnormal"
+            valuePropName="checked"
+            label="Is Abnormal?"
           >
             <Checkbox />
           </Form.Item>
           <Form.Item name="notes" label="Notes">;
-            <Input.TextArea rows={3} />;
+            <Input.TextArea rows={3} />
           </Form.Item>
         </Form>
       </Modal>

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -106,13 +106,13 @@ export type PatientCreate = z.infer<typeof PatientCreateSchema>;
 export type PatientUpdate = z.infer<typeof PatientUpdateSchema>;
 
 export interface Patient extends PatientCreate {
-  id: string;
+  id: string,
   mrn: string;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   status: 'active' | 'inactive' | 'deceased';
   lastVisit?: Date;
-  totalVisits: number;
+  totalVisits: number
 }
 
 export interface PatientSearchCriteria {
@@ -129,20 +129,20 @@ export interface PatientSearchCriteria {
 }
 
 export interface PatientSearchResult {
-  patients: Patient[];
+  patients: Patient[],
   total: number;
-  page: number;
-  totalPages: number;
+  page: number,
+  totalPages: number
 }
 
 export interface MedicalRecord {
-  id: string;
+  id: string,
   patientId: string;
-  type: 'visit' | 'lab' | 'imaging' | 'procedure' | 'note';
+  type: 'visit' | 'lab' | 'imaging' | 'procedure' | 'note',
   title: string;
-  description: string;
+  description: string,
   providerId: string;
-  providerName: string;
+  providerName: string,
   date: Date;
   status: 'draft' | 'signed' | 'amended';
   attachments?: string[];
@@ -206,7 +206,7 @@ export class PatientManagementService {
         await this.logAuditEvent('patient_created', id, { 
           mrn, 
           name: `${result.hmsPatient.firstName} ${result.hmsPatient.lastName}`,
-          fhirCompliant: true;
+          fhirCompliant: true
         });
         
         return result.hmsPatient;
@@ -221,7 +221,7 @@ export class PatientManagementService {
             dateOfBirth: new Date(hmsPatientData.dateOfBirth),
             gender: hmsPatientData.gender,
             phone: hmsPatientData.phone,
-            email: hmsPatientData.email || '';
+            email: hmsPatientData.email || ''
           }
         });
         
@@ -229,7 +229,7 @@ export class PatientManagementService {
         await this.logAuditEvent('patient_created', id, { 
           mrn, 
           name: `${patient.firstName} ${patient.lastName}`,
-          fhirCompliant: false;
+          fhirCompliant: false
         });
         
         return this.convertPrismaPatientToHMS(patient, hmsPatientData);
@@ -280,7 +280,7 @@ export class PatientManagementService {
         // Log audit trail;
         await this.logAuditEvent('patient_updated', patientId, {
           ...updateData,
-          fhirCompliant: true;
+          fhirCompliant: true
         });
         
         return result.hmsPatient;
@@ -295,14 +295,14 @@ export class PatientManagementService {
             ...(validatedData.gender && { gender: validatedData.gender }),
             ...(validatedData.phone && { phone: validatedData.phone }),
             ...(validatedData.email && { email: validatedData.email }),
-            updatedAt: new Date();
+            updatedAt: new Date()
           }
         });
         
         // Log audit trail;
         await this.logAuditEvent('patient_updated', patientId, {
           ...updateData,
-          fhirCompliant: false;
+          fhirCompliant: false
         });
         
         return this.convertPrismaPatientToHMS(patient, updatedPatientData);
@@ -326,7 +326,7 @@ export class PatientManagementService {
         const fhirSearchParams = FHIRIntegrationUtils.convertHMSSearchToFHIR({
           ...searchCriteria,
           limit,
-          offset: (page - 1) * limit;
+          offset: (page - 1) * limit
         }, 'Patient');
         
         const result = await FHIRPatientIntegration.searchPatients(fhirSearchParams);
@@ -374,7 +374,7 @@ export class PatientManagementService {
             take: limit,
             orderBy: { lastName: 'asc' }
           }),
-          this.prisma.patient.count({ where });
+          this.prisma.patient.count({ where })
         ]);
 
         const totalPages = Math.ceil(total / limit);
@@ -457,12 +457,12 @@ export class PatientManagementService {
         city: '',
         state: '',
         zipCode: '',
-        country: 'US';
+        country: 'US'
       },
       emergencyContact: additionalData?.emergencyContact || {
         name: '',
         relationship: '',
-        phone: '';
+        phone: ''
       },
       insurance: additionalData?.insurance || {
         primary: {
@@ -470,7 +470,7 @@ export class PatientManagementService {
           policyNumber: '',
           subscriberId: '',
           subscriberName: '',
-          relationshipToSubscriber: 'self' as const;
+          relationshipToSubscriber: 'self' as const
         }
       },
       allergies: additionalData?.allergies || [],
@@ -480,7 +480,7 @@ export class PatientManagementService {
         phone: true,
         email: true,
         sms: false,
-        portal: true;
+        portal: true
       }
     };
   }
@@ -490,7 +490,7 @@ export class PatientManagementService {
    */
   async getPatientFHIR(patientId: string): Promise<FHIRPatient | null> {
     if (!this.fhirEnabled) {
-      throw new Error('FHIR integration is disabled');
+      throw new Error('FHIR integration is disabled')
     }
     
     try {
@@ -558,7 +558,7 @@ export class PatientManagementService {
    * Get patient's medical records;
    */
   async getPatientMedicalRecords(patientId: string): Promise<MedicalRecord[]> {
-    return this.medicalRecords.get(patientId) || [];
+    return this.medicalRecords.get(patientId) || []
   }
 
   /**
@@ -600,9 +600,9 @@ export class PatientManagementService {
    * Check patient eligibility for services;
    */
   async checkEligibility(patientId: string, serviceType: string): Promise<{
-    eligible: boolean;
+    eligible: boolean,
     coverage: number;
-    copay: number;
+    copay: number,
     deductible: number;
     reasons?: string[];
   }> {
@@ -632,11 +632,11 @@ export class PatientManagementService {
    * Get patient statistics;
    */
   async getPatientStats(): Promise<{
-    total: number;
+    total: number,
     active: number;
-    inactive: number;
+    inactive: number,
     newThisMonth: number;
-    averageAge: number;
+    averageAge: number
   }> {
     const patients = Array.from(this.patients.values());
     const now = new Date();
@@ -677,9 +677,9 @@ export class PatientManagementService {
    * Export patient data (for patient portal or data requests)
    */
   async exportPatientData(patientId: string): Promise<{
-    demographics: Patient;
+    demographics: Patient,
     medicalRecords: MedicalRecord[];
-    exportDate: Date;
+    exportDate: Date
   }> {
     const patient = this.patients.get(patientId);
     if (!patient) {
@@ -742,7 +742,7 @@ export class PatientManagementService {
     
     await this.logAuditEvent('patients_merged', primaryPatientId, { 
       secondaryPatientId,
-      secondaryMRN: secondaryPatient.mrn;
+      secondaryMRN: secondaryPatient.mrn
     });
     
     return mergedPatient;

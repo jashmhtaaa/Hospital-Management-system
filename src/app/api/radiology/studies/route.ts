@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,22 +21,22 @@ import { getDB } from "@/lib/database"; // Import getDB;
 interface PreparedStatement {
   bind(...parameters: (string | number | null)[]): {
     run(): Promise<{
-      success: boolean;
+      success: boolean,
       meta: { duration: number; changes?: number };
     }>;
     all<T = unknown>(): Promise<{
-      results: T[];
+      results: T[],
       success: boolean;
       meta: { duration: number };
     }>;
     first<T = unknown>(colName?: string): Promise<T | null>;
   };
   run(): Promise<{
-    success: boolean;
+    success: boolean,
     meta: { duration: number; changes?: number };
   }>;
   all<T = unknown>(): Promise<{
-    results: T[];
+    results: T[],
     success: boolean;
     meta: { duration: number };
   }>;
@@ -69,9 +69,9 @@ interface RadiologyStudyPostData {
 
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyStudyListItem {
-  id: string;
+  id: string,
   order_id: string;
-  study_datetime: string;
+  study_datetime: string,
   status: string;
   accession_number?: string | null;
   patient_id?: string;
@@ -81,7 +81,7 @@ interface RadiologyStudyListItem {
 }
 
 // GET all Radiology Studies (filtered by orderId, patientId, status)
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request;
     // Check session and user existence first;
@@ -150,7 +150,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST a new Radiology Study (Technician or Admin)
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request;
     // Check session and user existence first;

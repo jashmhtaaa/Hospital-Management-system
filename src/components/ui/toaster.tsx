@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ import {
   ToastViewport,
 } from "@/components/ui/toast";
 
-export const Toaster = () {
+export const Toaster = () => {
   const { toasts } = useToast();
 
   return (

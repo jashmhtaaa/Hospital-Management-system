@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -25,7 +25,7 @@ var __DEV__: boolean;
  *    - counters table: name(TEXT), value(INTEGER)
  *    - access_logs table: ip(TEXT), path(TEXT), accessed_at(DATETIME)
  */
-export async const incrementAndLog = () {
+export async const incrementAndLog = () => {
   // const cf = await getCloudflareContext()
 \1;
   // Get current count from cookie or start at 0;
@@ -36,7 +36,7 @@ export async const incrementAndLog = () {
   // Store updated count in cookie (expires in 1 year)
   cookieStore.set('page_views', currentCount.toString(), {
     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-    path: '/';
+    path: '/'
   });
 
   // Log this access in memory (will be lost on restart)
@@ -49,7 +49,7 @@ export async const incrementAndLog = () {
   // Store recent access list in cookie;
   cookieStore.set('recent_access', JSON.stringify(recentAccessList), {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week;
-    path: '/';
+    path: '/'
   });
 
   // Database operation example (commented out):
@@ -70,7 +70,7 @@ export async const incrementAndLog = () {
 
   return {
     count: currentCount,
-    recentAccess: recentAccessList;
+    recentAccess: recentAccessList
   }
 }
 
@@ -82,12 +82,12 @@ export async const incrementAndLog = () {
  * 2. Use cf.env.DB.prepare to execute SQL queries;
  * 3. For local development, you can use wrangler to simulate the database;
  */
-export async const getStats = () {
+export async const getStats = () => {
 \1;
   // Get current count from cookie or default to 0;
 \1;
   // Get recent access list from cookie or default to empty array;
 \1;
-    recentAccess: recentAccessList;
+    recentAccess: recentAccessList
   }
 }

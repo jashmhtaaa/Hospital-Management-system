@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -27,7 +27,7 @@ const interactionOverrideRepository = {
   findByInteractionId: (interactionId: string) => Promise.resolve([]),
   save: (override: unknown) => Promise.resolve(override.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -37,7 +37,7 @@ const interactionOverrideRepository = {
 export async const POST = (
   req: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     // Get interaction ID from params;
     const { id } = params;
@@ -73,7 +73,7 @@ export async const POST = (
       overriddenBy: userId,
       overriddenAt: new Date(),
       patientId: data.patientId,
-      prescriptionId: data.prescriptionId;
+      prescriptionId: data.prescriptionId
     };
 
     // Save override record;
@@ -89,7 +89,7 @@ export async const POST = (
       details: {
         overrideId,
         reason: data.reason,
-        prescriptionId: data.prescriptionId;
+        prescriptionId: data.prescriptionId
       }
     });
 
@@ -97,7 +97,7 @@ export async const POST = (
     return NextResponse.json(
       { 
         id: overrideId,
-        message: 'Interaction override recorded successfully';
+        message: 'Interaction override recorded successfully'
       }, 
       { status: 201 }
     );
@@ -110,7 +110,7 @@ export async const POST = (
  * GET /api/pharmacy/interactions/overrides;
  * List interaction overrides with filtering options;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -157,7 +157,7 @@ export async const GET = (req: NextRequest) {
         filter,
         page,
         limit,
-        resultCount: overrides.length;
+        resultCount: overrides.length
       }
     });
 
@@ -168,7 +168,7 @@ export async const GET = (req: NextRequest) {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { useCallback, useState } from 'react';
 
 export interface Toast {
-  id: string;
+  id: string,
   title: string;
   description?: string;
   type: 'success' | 'error' | 'warning' | 'info';
@@ -54,7 +54,7 @@ export const useToast = () {
   }, []);
 
   const dismissToast = useCallback((id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id))
   }, []);
 
   return {

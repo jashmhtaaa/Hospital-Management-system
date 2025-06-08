@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -56,7 +56,7 @@ async const generateMRN = (db: D1Database): Promise<string> {
 }
 
 // GET /api/patients - Fetch list of patients (with filtering/pagination/search)
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -132,7 +132,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/patients - Create a new patient (internal use, registration is separate)
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn || !session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

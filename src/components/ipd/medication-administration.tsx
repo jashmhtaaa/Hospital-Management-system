@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -26,16 +26,16 @@ import {
   TableCell,
   Input,
   Label,
-  // Textarea, // FIX: Removed unused import;
+  // Textarea, // FIX: Removed unused import
 } from "@/components/ui"; // Assuming Select components are also here or adjust import;
 import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures;
 interface MedicationRecord {
-  id: string;
+  id: string,
   administered_time: string;
   medication_name: string; // Assuming this comes from a join;
-  dosage: string;
+  dosage: string,
   route: string;
   administered_by_first_name: string; // Assuming this comes from a join;
   administered_by_last_name: string; // Assuming this comes from a join;
@@ -43,29 +43,29 @@ interface MedicationRecord {
 }
 
 interface Medication {
-  id: string;
+  id: string,
   item_name: string; // Assuming this is the display name;
-  dosage_form: string;
-  strength: string;
+  dosage_form: string,
+  strength: string
 }
 
 interface AdmissionInfo {
-  admission_number: string;
+  admission_number: string,
   admission_date: string;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  medication_id: string;
+  medication_id: string,
   dosage: string;
-  route: string;
-  notes: string;
+  route: string,
+  notes: string
 }
 
 interface MedicationAdministrationProperties {
-  admissionId: string | null;
+  admissionId: string | null
 }
 
 const MedicationAdministration: React.FC<;
@@ -93,13 +93,13 @@ const MedicationAdministration: React.FC<;
   useEffect(() => {
     const fetchMedicationRecords = async (): Promise<void> => {
       if (!admissionId) {
-        setLoading(false);
+        setLoading(false),
         setError("Admission ID is missing.");
         return;
       }
 
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
         // Simulate API call;
         // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`);
@@ -141,7 +141,7 @@ const MedicationAdministration: React.FC<;
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
         };
-        setMedicationRecords(mockRecords);
+        setMedicationRecords(mockRecords),
         setPatientInfo(mockPatientInfo);
       } catch (error_) {
         const message =;
@@ -221,7 +221,7 @@ const MedicationAdministration: React.FC<;
       setSubmitError("Admission ID is missing.");
       return;
     }
-    setSubmitting(true);
+    setSubmitting(true),
     setSubmitError(undefined);
     setSubmitSuccess(false);
 
@@ -234,7 +234,7 @@ const MedicationAdministration: React.FC<;
       const submissionData = {
         ...formData,
         administered_time: new Date().toISOString(),
-        // administered_by_id: session?.user?.id // Get from session in real app;
+        // administered_by_id: session?.user?.id // Get from session in real app
       };
 
       // Simulate API call;
@@ -278,8 +278,7 @@ const MedicationAdministration: React.FC<;
         dosage: "",
         route: "",
         notes: "",
-      });
-
+      }),
       setSubmitSuccess(true);
 
       // Clear success message after 3 seconds;
@@ -349,19 +348,13 @@ const MedicationAdministration: React.FC<;
         </CardHeader>
         <CardContent>
           {submitSuccess && (
-            <div;
-              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4";
-              role="alert";
-            >
+<div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
               Medication administration recorded successfully!
             </div>
           )}
 
           {submitError && (
-            <div;
-              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4";
-              role="alert";
-            >
+<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
               Error: {submitError}
             </div>
           )}
@@ -370,24 +363,24 @@ const MedicationAdministration: React.FC<;
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="medication_id">;
-                  Medication <span className="text-red-500">*</span>;
+                  Medication <span className="text-red-500">*</span>
                 </Label>
-                <select;
-                  id="medication_id";
-                  name="medication_id";
+                <select>
+                  id="medication_id"
+                  name="medication_id"
                   value={formData.medication_id}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   required;
                   disabled={loadingMedications || submitting}
-                  aria-required="true";
+                  aria-required="true"
                 >
                   <option value="">;
                     {loadingMedications ? "Loading..." : "Select Medication"}
                   </option>
                   {medications.map((med) => (
                     <option key={med.id} value={med.id}>;
-                      {med.item_name} ({med.strength} {med.dosage_form});
+                      {med.item_name} ({med.strength} {med.dosage_form})
                     </option>
                   ))}
                 </select>
@@ -395,34 +388,34 @@ const MedicationAdministration: React.FC<;
 
               <div className="space-y-2">;
                 <Label htmlFor="dosage">;
-                  Dosage <span className="text-red-500">*</span>;
+                  Dosage <span className="text-red-500">*</span>
                 </Label>
-                <Input;
-                  id="dosage";
-                  name="dosage";
+                <Input>
+                  id="dosage"
+                  name="dosage"
                   type="text"
-                  placeholder="e.g., 500mg, 1 tablet, 10ml";
+                  placeholder="e.g., 500mg, 1 tablet, 10ml"
                   value={formData.dosage}
                   onChange={handleChange}
                   required;
                   disabled={submitting}
-                  aria-required="true";
+                  aria-required="true"
                 />
               </div>
 
               <div className="space-y-2">;
                 <Label htmlFor="route">;
-                  Administration Route <span className="text-red-500">*</span>;
+                  Administration Route <span className="text-red-500">*</span>
                 </Label>
-                <select;
-                  id="route";
-                  name="route";
+                <select>
+                  id="route"
+                  name="route"
                   value={formData.route}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   required;
                   disabled={submitting}
-                  aria-required="true";
+                  aria-required="true"
                 >
                   <option value="">Select Route</option>;
                   {routeOptions.map((route) => (
@@ -436,18 +429,18 @@ const MedicationAdministration: React.FC<;
               <div className="space-y-2">;
                 <Label htmlFor="notes">Notes</Label>;
                 <Input // Changed to Input, use Textarea if multi-line is needed;
-                  id="notes";
-                  name="notes";
+                  id="notes"
+                  name="notes"
                   type="text"
-                  placeholder="Any additional information (optional)";
+                  placeholder="Any additional information (optional)"
                   value={formData.notes}
                   onChange={handleChange}
                   disabled={submitting}
                 />
-                {/* <Textarea;
-                  id="notes";
-                  name="notes";
-                  placeholder="Any additional information (optional)";
+                {/* <Textarea>
+                  id="notes"
+                  name="notes"
+                  placeholder="Any additional information (optional)"
                   value={formData.notes}
                   onChange={handleChange}
                   disabled={submitting}
@@ -458,7 +451,7 @@ const MedicationAdministration: React.FC<;
             <div className="flex justify-end">;
               <Button type="submit" disabled={submitting || loadingMedications}>;
                 {submitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
                 {submitting ? "Recording..." : "Record Administration"}
               </Button>
@@ -473,7 +466,7 @@ const MedicationAdministration: React.FC<;
         <CardContent>
           {loading ? (
             <div className="flex justify-center p-8">;
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
             <div className="text-red-500 p-4 text-center" role="alert">;
@@ -481,7 +474,7 @@ const MedicationAdministration: React.FC<;
             </div>
           ) : medicationRecords.length === 0 ? (
             <div className="text-gray-500 p-4 text-center">;
-              No medication administration records found for this admission.;
+              No medication administration records found for this admission.
             </div>
           ) : (
             <Table>

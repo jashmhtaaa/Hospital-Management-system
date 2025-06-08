@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,9 +30,9 @@ import {
 } from './roles.ts';
 
 export interface RBACContext {
-  userId: string;
+  userId: string,
   sessionId: string;
-  ipAddress: string;
+  ipAddress: string,
   userAgent: string;
   department?: string;
   location?: string;
@@ -40,13 +40,13 @@ export interface RBACContext {
 }
 
 export interface PermissionCheck {
-  resource: string;
+  resource: string,
   action: string;
   context?: Record<string, unknown>;
 }
 
 export interface RoleAssignment {
-  userId: string;
+  userId: string,
   roleId: string;
   assignedBy: string;
   context?: Record<string, unknown>;
@@ -226,7 +226,7 @@ export class RBACService {
         where: {
           userId: assignment.userId,
           roleId: assignment.roleId,
-          isActive: true;
+          isActive: true
         }
       });
 
@@ -243,7 +243,7 @@ export class RBACService {
           assignedAt: new Date(),
           expiresAt: assignment.expiresAt,
           isActive: true,
-          context: assignment.context;
+          context: assignment.context
         }
       });
 
@@ -260,7 +260,7 @@ export class RBACService {
           roleId: assignment.roleId,
           roleName: role.name,
           expiresAt: assignment.expiresAt,
-          context: assignment.context;
+          context: assignment.context
         },
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent,
@@ -275,7 +275,7 @@ export class RBACService {
         resource: 'user_role',
         details: { 
           error: (error as Error).message,
-          roleId: assignment.roleId;
+          roleId: assignment.roleId
         },
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent,
@@ -305,11 +305,11 @@ export class RBACService {
         where: {
           userId,
           roleId,
-          isActive: true;
+          isActive: true
         },
         data: {
           isActive: false,
-          updatedAt: new Date();
+          updatedAt: new Date()
         }
       });
 
@@ -328,7 +328,7 @@ export class RBACService {
         resource: 'user_role',
         details: {
           roleId,
-          roleName: role.name;
+          roleName: role.name
         },
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent,
@@ -357,7 +357,7 @@ export class RBACService {
    * Get role by ID with inheritance;
    */
   getRole(roleId: string): Role | null {
-    return getRoleWithInheritedPermissions(roleId);
+    return getRoleWithInheritedPermissions(roleId)
   }
 
   /**
@@ -395,11 +395,11 @@ export class RBACService {
         details: {
           action,
           reason,
-          emergencyAccess: true;
+          emergencyAccess: true
         },
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent,
-        severity: 'HIGH';
+        severity: 'HIGH'
       });
 
       // Grant temporary emergency role;
@@ -476,11 +476,11 @@ export class RBACService {
         where: {
           isActive: true,
           expiresAt: {
-            lte: new Date();
+            lte: new Date()
           }
         },
         data: {
-          isActive: false;
+          isActive: false
         }
       });
 

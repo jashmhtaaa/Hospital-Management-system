@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,16 +17,16 @@ import { QueryResult } from "pg";
 
 // Basic Patient interface (could be expanded from a models/entities directory)
 export interface Patient {
-  id: string;
+  id: string,
   name: string;
   dateOfBirth: Date; // Or string, depending on how it's handled;
   // other relevant fields like contactInfo, medicalHistoryId, etc.
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export interface PatientInputData {
-  name: string;
+  name: string,
   dateOfBirth: Date | string;
   // other fields...
 }

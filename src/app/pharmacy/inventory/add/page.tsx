@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,26 +17,26 @@ import { useRouter } from "next/navigation";
 
 // Define interfaces for data structures;
 interface Medication {
-  id: string;
+  id: string,
   generic_name: string;
   brand_name?: string;
-  strength: string;
-  dosage_form: string;
+  strength: string,
+  dosage_form: string
 }
 
 interface InventoryFormData {
-  medication_id: string;
+  medication_id: string,
   batch_number: string;
-  expiry_date: string;
+  expiry_date: string,
   manufacturing_date: string;
-  purchase_date: string;
+  purchase_date: string,
   purchase_price: string; // Keep as string for input;
   selling_price: string; // Keep as string for input;
   initial_quantity: string; // Keep as string for input;
-  supplier: string;
+  supplier: string,
   invoice_number: string;
-  storage_location: string;
-  notes: string;
+  storage_location: string,
+  notes: string
 }
 
 interface InventorySubmitData;
@@ -44,9 +44,9 @@ interface InventorySubmitData;
     InventoryFormData,
     "purchase_price" | "selling_price" | "initial_quantity";
   > {
-  purchase_price: number;
+  purchase_price: number,
   selling_price: number;
-  initial_quantity: number;
+  initial_quantity: number
 }
 
 type FormErrors = Partial<Record<keyof InventoryFormData, string>>;
@@ -186,7 +186,7 @@ const AddInventoryPage: React.FC = () => {
       return;
     }
 
-    setLoading(true);
+    setLoading(true),
     setSubmitError("");
     setSubmitSuccess(false);
 
@@ -251,19 +251,19 @@ const AddInventoryPage: React.FC = () => {
     <div className="container mx-auto px-4 py-8">;
       <div className="flex justify-between items-center mb-6">;
         <h1 className="text-2xl font-bold text-gray-800">;
-          Add New Inventory Batch;
+          Add New Inventory Batch
         </h1>
-        <button;
-          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md";
+        <button>
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
           onClick={() => router.push("/pharmacy/inventory")}
         >
-          Back to Inventory;
+          Back to Inventory
         </button>
       </div>
 
       {submitSuccess && (
         <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-md">;
-          Inventory batch added successfully! Redirecting...;
+          Inventory batch added successfully! Redirecting...
         </div>
       )}
 
@@ -277,16 +277,16 @@ const AddInventoryPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="p-6">;
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
             {/* Medication Selection */}
-            <div>
-              <label;
-                htmlFor="medication_id";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="medication_id"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Medication <span className="text-red-500">*</span>;
+                Medication <span className="text-red-500">*</span>
               </label>
-              <select;
-                id="medication_id";
-                name="medication_id";
+              <select>
+                id="medication_id"
+                name="medication_id"
                 value={formData.medication_id}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.medication_id ? "border-red-500" : "border-gray-300"}`}
@@ -307,9 +307,9 @@ const AddInventoryPage: React.FC = () => {
                 ))}
               </select>
               {errors.medication_id && (
-                <p;
-                  id="medication_id-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="medication_id-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.medication_id}
                 </p>
@@ -317,17 +317,17 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Batch Number */}
-            <div>
-              <label;
-                htmlFor="batch_number";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="batch_number"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Batch Number <span className="text-red-500">*</span>;
+                Batch Number <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="text"
-                id="batch_number";
-                name="batch_number";
+                id="batch_number"
+                name="batch_number"
                 value={formData.batch_number}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.batch_number ? "border-red-500" : "border-gray-300"}`}
@@ -339,9 +339,9 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors.batch_number && (
-                <p;
-                  id="batch_number-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="batch_number-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.batch_number}
                 </p>
@@ -349,17 +349,17 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Expiry Date */}
-            <div>
-              <label;
-                htmlFor="expiry_date";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="expiry_date"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Expiry Date <span className="text-red-500">*</span>;
+                Expiry Date <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="date"
-                id="expiry_date";
-                name="expiry_date";
+                id="expiry_date"
+                name="expiry_date"
                 value={formData.expiry_date}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.expiry_date ? "border-red-500" : "border-gray-300"}`}
@@ -378,36 +378,36 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Manufacturing Date */}
-            <div>
-              <label;
-                htmlFor="manufacturing_date";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="manufacturing_date"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Manufacturing Date;
+                Manufacturing Date
               </label>
-              <input;
+              <input>
                 type="date"
-                id="manufacturing_date";
-                name="manufacturing_date";
+                id="manufacturing_date"
+                name="manufacturing_date"
                 value={formData.manufacturing_date}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
             </div>
 
             {/* Purchase Date */}
-            <div>
-              <label;
-                htmlFor="purchase_date";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="purchase_date"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Purchase Date <span className="text-red-500">*</span>;
+                Purchase Date <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="date"
-                id="purchase_date";
-                name="purchase_date";
+                id="purchase_date"
+                name="purchase_date"
                 value={formData.purchase_date}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.purchase_date ? "border-red-500" : "border-gray-300"}`}
@@ -419,9 +419,9 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors.purchase_date && (
-                <p;
-                  id="purchase_date-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="purchase_date-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.purchase_date}
                 </p>
@@ -429,21 +429,21 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Purchase Price */}
-            <div>
-              <label;
-                htmlFor="purchase_price";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="purchase_price"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Purchase Price (₹) <span className="text-red-500">*</span>;
+                Purchase Price (₹) <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="number"
-                id="purchase_price";
-                name="purchase_price";
+                id="purchase_price"
+                name="purchase_price"
                 value={formData.purchase_price}
                 onChange={handleChange}
-                step="0.01";
-                min="0.01";
+                step="0.01"
+                min="0.01"
                 className={`w-full p-2 border rounded-md ${errors.purchase_price ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
                 required;
@@ -453,9 +453,9 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors.purchase_price && (
-                <p;
-                  id="purchase_price-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="purchase_price-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.purchase_price}
                 </p>
@@ -463,21 +463,21 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Selling Price */}
-            <div>
-              <label;
-                htmlFor="selling_price";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="selling_price"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Selling Price (₹) <span className="text-red-500">*</span>;
+                Selling Price (₹) <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="number"
-                id="selling_price";
-                name="selling_price";
+                id="selling_price"
+                name="selling_price"
                 value={formData.selling_price}
                 onChange={handleChange}
-                step="0.01";
-                min="0.01";
+                step="0.01"
+                min="0.01"
                 className={`w-full p-2 border rounded-md ${errors.selling_price ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
                 required;
@@ -487,9 +487,9 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors.selling_price && (
-                <p;
-                  id="selling_price-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="selling_price-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.selling_price}
                 </p>
@@ -497,20 +497,20 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Initial Quantity */}
-            <div>
-              <label;
-                htmlFor="initial_quantity";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="initial_quantity"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Initial Quantity <span className="text-red-500">*</span>;
+                Initial Quantity <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="number"
-                id="initial_quantity";
-                name="initial_quantity";
+                id="initial_quantity"
+                name="initial_quantity"
                 value={formData.initial_quantity}
                 onChange={handleChange}
-                min="1";
+                min="1"
                 step="1" // Ensure integer input;
                 className={`w-full p-2 border rounded-md ${errors.initial_quantity ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
@@ -521,9 +521,9 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors.initial_quantity && (
-                <p;
-                  id="initial_quantity-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="initial_quantity-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.initial_quantity}
                 </p>
@@ -531,58 +531,58 @@ const AddInventoryPage: React.FC = () => {
             </div>
 
             {/* Supplier */}
-            <div>
-              <label;
-                htmlFor="supplier";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="supplier"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Supplier;
+                Supplier
               </label>
-              <input;
+              <input>
                 type="text"
-                id="supplier";
-                name="supplier";
+                id="supplier"
+                name="supplier"
                 value={formData.supplier}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
             </div>
 
             {/* Invoice Number */}
-            <div>
-              <label;
-                htmlFor="invoice_number";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="invoice_number"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Invoice Number;
+                Invoice Number
               </label>
-              <input;
+              <input>
                 type="text"
-                id="invoice_number";
-                name="invoice_number";
+                id="invoice_number"
+                name="invoice_number"
                 value={formData.invoice_number}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
             </div>
 
             {/* Storage Location */}
-            <div>
-              <label;
-                htmlFor="storage_location";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="storage_location"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Storage Location;
+                Storage Location
               </label>
-              <input;
+              <input>
                 type="text"
-                id="storage_location";
-                name="storage_location";
+                id="storage_location"
+                name="storage_location"
                 value={formData.storage_location}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
             </div>
@@ -590,35 +590,35 @@ const AddInventoryPage: React.FC = () => {
 
           {/* Notes */}
           <div className="mt-6">;
-            <label;
-              htmlFor="notes";
-              className="block text-sm font-medium text-gray-700 mb-1";
+            <label>
+              htmlFor="notes"
+              className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Notes;
+              Notes
             </label>
-            <textarea;
-              id="notes";
-              name="notes";
+            <textarea>
+              id="notes"
+              name="notes"
               value={formData.notes}
               onChange={handleChange}
               rows={3}
-              className="w-full p-2 border border-gray-300 rounded-md";
+              className="w-full p-2 border border-gray-300 rounded-md"
               disabled={loading}
             ></textarea>
           </div>
 
           <div className="mt-8 flex justify-end">;
-            <button;
+            <button>
               type="button"
               onClick={() => router.push("/pharmacy/inventory")}
-              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50";
+              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               disabled={loading}
             >
-              Cancel;
+              Cancel
             </button>
-            <button;
+            <button>
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50";
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
               disabled={loading}
             >
               {loading ? "Saving..." : "Save Inventory Batch"}

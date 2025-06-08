@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
 
 // Define interfaces for data structures;
 interface VitalSignRecord {
-  id: string;
+  id: string,
   admission_id: string;
   record_time: string;
   temperature?: number | string | null;
@@ -49,21 +49,21 @@ interface VitalSignRecord {
 }
 
 interface AdmissionInfo {
-  admission_number: string;
+  admission_number: string,
   admission_date: string;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  temperature: string;
+  temperature: string,
   pulse: string;
-  respiratory_rate: string;
+  respiratory_rate: string,
   blood_pressure: string;
-  oxygen_saturation: string;
+  oxygen_saturation: string,
   pain_level: string;
-  notes: string;
+  notes: string
 }
 
 // FIX: Define type for API success response (new record)
@@ -71,19 +71,19 @@ type NewVitalSignResponse = VitalSignRecord;
 
 // FIX: Define type for submission data;
 interface VitalSignSubmissionData {
-  record_time: string;
+  record_time: string,
   temperature: number | null;
-  pulse: number | null;
+  pulse: number | null,
   respiratory_rate: number | null;
-  blood_pressure: string | null;
+  blood_pressure: string | null,
   oxygen_saturation: number | null;
-  pain_level: number | null;
+  pain_level: number | null,
   notes: string | null;
   // recorded_by_user_id will be added on the server or from session;
 }
 
 interface VitalSignsProperties {
-  admissionId: string | null;
+  admissionId: string | null
 }
 
 const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
@@ -107,12 +107,12 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (!admissionId) {
-        setLoading(false);
+        setLoading(false),
         setError("Admission ID is missing.");
         return;
       }
 
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
       try {
         // Simulate API call;
@@ -170,7 +170,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           },
         ];
 
-        setPatientInfo(mockPatientInfo);
+        setPatientInfo(mockPatientInfo),
         setVitalSigns(
           mockVitalSigns.sort(
             (a, b) =>
@@ -282,8 +282,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         oxygen_saturation: "",
         pain_level: "",
         notes: "",
-      });
-
+      }),
       toast({
         title: "Success",
         description: "Vital signs recorded successfully!",
@@ -344,51 +343,51 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="temperature">Temperature (°C)</Label>;
-                <Input;
-                  id="temperature";
-                  name="temperature";
+                <Input>
+                  id="temperature"
+                  name="temperature"
                   type="number"
-                  step="0.1";
+                  step="0.1"
                   value={formData.temperature}
                   onChange={handleChange}
                   disabled={submitting}
-                  placeholder="e.g., 37.5";
+                  placeholder="e.g., 37.5"
                 />
               </div>
 
               <div className="space-y-2">;
                 <Label htmlFor="pulse">Pulse (bpm)</Label>;
-                <Input;
-                  id="pulse";
-                  name="pulse";
+                <Input>
+                  id="pulse"
+                  name="pulse"
                   type="number"
                   value={formData.pulse}
                   onChange={handleChange}
                   disabled={submitting}
-                  placeholder="e.g., 80";
+                  placeholder="e.g., 80"
                 />
               </div>
 
               <div className="space-y-2">;
                 <Label htmlFor="respiratory_rate">Resp. Rate (bpm)</Label>;
-                <Input;
-                  id="respiratory_rate";
-                  name="respiratory_rate";
+                <Input>
+                  id="respiratory_rate"
+                  name="respiratory_rate"
                   type="number"
                   value={formData.respiratory_rate}
                   onChange={handleChange}
                   disabled={submitting}
-                  placeholder="e.g., 16";
+                  placeholder="e.g., 16"
                 />
               </div>
 
               <div className="space-y-2">;
                 <Label htmlFor="blood_pressure">Blood Pressure (mmHg)</Label>;
-                <Input;
-                  id="blood_pressure";
-                  name="blood_pressure";
+                <Input>
+                  id="blood_pressure"
+                  name="blood_pressure"
                   type="text"
-                  placeholder="e.g., 120/80";
+                  placeholder="e.g., 120/80"
                   value={formData.blood_pressure}
                   onChange={handleChange}
                   disabled={submitting}
@@ -397,53 +396,53 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
               <div className="space-y-2">;
                 <Label htmlFor="oxygen_saturation">Oxygen Saturation (%)</Label>;
-                <Input;
-                  id="oxygen_saturation";
-                  name="oxygen_saturation";
+                <Input>
+                  id="oxygen_saturation"
+                  name="oxygen_saturation"
                   type="number"
-                  step="0.1";
-                  min="0";
-                  max="100";
+                  step="0.1"
+                  min="0"
+                  max="100"
                   value={formData.oxygen_saturation}
                   onChange={handleChange}
                   disabled={submitting}
-                  placeholder="e.g., 98";
+                  placeholder="e.g., 98"
                 />
               </div>
 
               <div className="space-y-2">;
                 <Label htmlFor="pain_level">Pain Level (0-10)</Label>;
-                <Input;
-                  id="pain_level";
-                  name="pain_level";
+                <Input>
+                  id="pain_level"
+                  name="pain_level"
                   type="number"
-                  min="0";
-                  max="10";
+                  min="0"
+                  max="10"
                   value={formData.pain_level}
                   onChange={handleChange}
                   disabled={submitting}
-                  placeholder="e.g., 3";
+                  placeholder="e.g., 3"
                 />
               </div>
             </div>
 
             <div className="space-y-2">;
               <Label htmlFor="notes">Notes</Label>;
-              <Input;
-                id="notes";
-                name="notes";
+              <Input>
+                id="notes"
+                name="notes"
                 type="text"
                 value={formData.notes}
                 onChange={handleChange}
                 disabled={submitting}
-                placeholder="Optional notes (e.g., patient position, activity)";
+                placeholder="Optional notes (e.g., patient position, activity)"
               />
             </div>
 
             <div className="flex justify-end">;
               <Button type="submit" disabled={submitting}>;
                 {submitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
                 {submitting ? "Saving..." : "Record Vitals"}
               </Button>
@@ -458,7 +457,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         <CardContent>
           {loading ? (
             <div className="flex justify-center p-8">;
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
             <div className="text-red-500 p-4 text-center" role="alert">;
@@ -466,7 +465,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             </div>
           ) : vitalSigns.length === 0 ? (
             <div className="text-gray-500 p-4 text-center">;
-              No vital signs recorded for this admission yet.;
+              No vital signs recorded for this admission yet.
             </div>
           ) : (
             <div className="overflow-x-auto">;
@@ -512,8 +511,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
                         {record.recorded_by_first_name}{" "}
                         {record.recorded_by_last_name?.charAt(0)}.
                       </TableCell>
-                      <TableCell;
-                        className="max-w-[150px] truncate";
+                      <TableCell>
+                        className="max-w-[150px] truncate"
                         title={record.notes ?? ""}
                       >
                         {record.notes ?? "-"}

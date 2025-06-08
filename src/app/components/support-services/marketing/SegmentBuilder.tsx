@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,7 +24,7 @@ import { useRouter } from 'next/navigation';
 
 interface SegmentBuilderProps {
   segmentId?: string;
-  onSuccess?: (segment: unknown) => void;
+  onSuccess?: (segment: unknown) => void
 }
 
 export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
@@ -48,7 +48,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
   const [newCondition, setNewCondition] = useState({
     field: 'email',
     operator: 'contains',
-    value: '';
+    value: ''
   });
 
   // Fetch segment data if editing an existing segment;
@@ -61,7 +61,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         const response = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
         if (!response.ok) throw new Error('Failed to fetch segment');
         
-        const data = await response.json();
+        const data = await response.json(),
         setSegment(data);
         
         // Set form values from segment data;
@@ -77,7 +77,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         
         // Set members;
         if (data.members && data.members.length > 0) {
-          setMembers(data.members.map((m: unknown) => m.contact));
+          setMembers(data.members.map((m: unknown) => m.contact))
         }
         
         // Update criteria preview;
@@ -107,7 +107,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         const response = await fetch('/api/support-services/marketing/contacts?status=ACTIVE');
         if (!response.ok) throw new Error('Failed to fetch contacts');
         
-        const data = await response.json();
+        const data = await response.json(),
         setAvailableContacts(data.data || []);
       } catch (error) {
 
@@ -175,8 +175,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         return 'Country';
       case 'createdAt':
         return 'Created Date';
-      default:
-        return field;
+      default: return field
     }
   };
 
@@ -207,8 +206,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         return 'is empty';
       case 'isNotNull':
         return 'is not empty';
-      default:
-        return operator;
+      default: return operator
     }
   };
 
@@ -225,7 +223,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked;
+      isActive: checked
     });
   };
 
@@ -233,14 +231,13 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
   const handleCriteriaTypeChange = (value: string) => {
     const newCriteria = {
       ...formData.criteria,
-      type: value;
+      type: value
     };
     
     setFormData({
       ...formData,
-      criteria: newCriteria;
-    });
-    
+      criteria: newCriteria
+    }),
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
   };
@@ -249,7 +246,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
   const handleConditionFieldChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      field: value;
+      field: value
     });
   };
 
@@ -257,7 +254,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
   const handleConditionOperatorChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      operator: value;
+      operator: value
     });
   };
 
@@ -265,7 +262,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
   const handleConditionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCondition({
       ...newCondition,
-      value: e.target.value;
+      value: e.target.value
     });
   };
 
@@ -287,16 +284,15 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria
     });
     
     // Reset new condition;
     setNewCondition({
       field: 'email',
       operator: 'contains',
-      value: '';
-    });
-    
+      value: ''
+    }),
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
   };
@@ -308,21 +304,20 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     
     const newCriteria = {
       ...formData.criteria,
-      conditions: newConditions;
+      conditions: newConditions
     };
     
     setFormData({
       ...formData,
-      criteria: newCriteria;
-    });
-    
+      criteria: newCriteria
+    }),
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
   };
 
   // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(),
     setIsLoading(true);
     
     try {
@@ -342,8 +337,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       
       if (!response.ok) throw new Error('Failed to save segment');
       
-      const savedSegment = await response.json();
-      
+      const savedSegment = await response.json(),
       toast({
         title: "Success",
         description: `Segment ${segmentId ? 'updated' : 'created'} successfully.`,
@@ -381,8 +375,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       
       if (!response.ok) throw new Error('Failed to apply criteria');
       
-      const result = await response.json();
-      
+      const result = await response.json(),
       toast({
         title: "Success",
         description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`,
@@ -393,7 +386,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       if (segmentResponse.ok) {
         const segmentData = await segmentResponse.json();
         if (segmentData.members) {
-          setMembers(segmentData.members.map((m: unknown) => m.contact));
+          setMembers(segmentData.members.map((m: unknown) => m.contact))
         }
       }
     } catch (error) {
@@ -486,7 +479,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
           <TabsList className="grid w-full grid-cols-3">;
             <TabsTrigger value="details">Segment Details</TabsTrigger>;
             <TabsTrigger value="criteria">Segment Criteria</TabsTrigger>;
-            <TabsTrigger value="members" disabled={!segmentId}>Segment Members</TabsTrigger>;
+            <TabsTrigger value="members" disabled={!segmentId}>Segment Members</TabsTrigger>
           </TabsList>
           
           <TabsContent value="details">;
@@ -494,45 +487,45 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
               <div className="space-y-4">;
                 <div className="space-y-2">;
                   <Label htmlFor="name">Segment Name</Label>;
-                  <Input;
-                    id="name";
-                    name="name";
+                  <Input>
+                    id="name"
+                    name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Enter segment name";
+                    placeholder="Enter segment name"
                     required;
                   />
                 </div>
                 
                 <div className="space-y-2">;
                   <Label htmlFor="description">Description</Label>;
-                  <Textarea;
-                    id="description";
-                    name="description";
+                  <Textarea>
+                    id="description"
+                    name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    placeholder="Enter segment description";
+                    placeholder="Enter segment description"
                     rows={3}
                   />
                 </div>
                 
                 <div className="flex items-center space-x-2">;
-                  <Switch;
-                    id="isActive";
+                  <Switch>
+                    id="isActive"
                     checked={formData.isActive}
                     onCheckedChange={handleSwitchChange}
                   />
-                  <Label htmlFor="isActive">Active</Label>;
+                  <Label htmlFor="isActive">Active</Label>
                 </div>
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => router.back()}
                 >
-                  Cancel;
+                  Cancel
                 </Button>
                 <Button type="submit" disabled={isLoading}>;
                   {isLoading ? 'Saving...' : segmentId ? 'Update Segment' : 'Create Segment'}
@@ -546,16 +539,16 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
               <div className="space-y-4">;
                 <div className="space-y-2">;
                   <Label>Match Type</Label>
-                  <Select;
+                  <Select>
                     value={formData.criteria.type}
                     onValueChange={handleCriteriaTypeChange}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select match type" />;
+                      <SelectValue placeholder="Select match type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="AND">Match ALL conditions (AND)</SelectItem>;
-                      <SelectItem value="OR">Match ANY condition (OR)</SelectItem>;
+                      <SelectItem value="OR">Match ANY condition (OR)</SelectItem>
                     </SelectContent>
                   </Select>
                   <p className="text-sm text-muted-foreground">;
@@ -571,15 +564,15 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                     {formData.criteria.conditions.length > 0 ? (
                       formData.criteria.conditions.map((condition, index) => (
                         <div key={index} className="flex items-center justify-between p-2 border rounded">;
-                          <span>
+<span
                             {getFieldLabel(condition.field)} {getOperatorLabel(condition.operator)} {condition.value}
                           </span>
-                          <Button;
-                            variant="ghost";
-                            size="sm";
+                          <Button>
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleRemoveCondition(index)}
                           >
-                            Remove;
+                            Remove
                           </Button>
                         </div>
                       ));
@@ -592,12 +585,12 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                 <div className="space-y-2 border-t pt-4">;
                   <Label>Add Condition</Label>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">;
-                    <Select;
+                    <Select>
                       value={newCondition.field}
                       onValueChange={handleConditionFieldChange}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select field" />;
+                        <SelectValue placeholder="Select field" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="email">Email</SelectItem>;
@@ -610,16 +603,16 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                         <SelectItem value="address.city">City</SelectItem>;
                         <SelectItem value="address.state">State</SelectItem>;
                         <SelectItem value="address.country">Country</SelectItem>;
-                        <SelectItem value="createdAt">Created Date</SelectItem>;
+                        <SelectItem value="createdAt">Created Date</SelectItem>
                       </SelectContent>
                     </Select>
                     
-                    <Select;
+                    <Select>
                       value={newCondition.operator}
                       onValueChange={handleConditionOperatorChange}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select operator" />;
+                        <SelectValue placeholder="Select operator" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="equals">Equals</SelectItem>;
@@ -632,25 +625,25 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                           (
                           <>
                             <SelectItem value="isTrue">Is true</SelectItem>;
-                            <SelectItem value="isFalse">Is false</SelectItem>;
+                            <SelectItem value="isFalse">Is false</SelectItem>
                           </>
                         )}
                         <SelectItem value="isNull">Is empty</SelectItem>;
-                        <SelectItem value="isNotNull">Is not empty</SelectItem>;
+                        <SelectItem value="isNotNull">Is not empty</SelectItem>
                       </SelectContent>
                     </Select>
                     
                     {!['isTrue', 'isFalse', 'isNull', 'isNotNull'].includes(newCondition.operator) && (
-                      <Input;
+                      <Input>
                         value={newCondition.value}
                         onChange={handleConditionValueChange}
-                        placeholder="Enter value";
+                        placeholder="Enter value"
                       />
                     )}
                   </div>
                   <div className="flex justify-end mt-2">;
                     <Button type="button" onClick={handleAddCondition}>;
-                      Add Condition;
+                      Add Condition
                     </Button>
                   </div>
                 </div>
@@ -658,17 +651,17 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                 <div className="space-y-2 border-t pt-4">;
                   <Label>Segment Preview</Label>
                   <div className="border rounded-md p-4">;
-                    <p className="text-sm">{criteriaPreview}</p>;
+                    <p className="text-sm">{criteriaPreview}</p>
                   </div>
                   <div className="flex justify-between items-center">;
                     <p className="text-sm">Estimated size: <Badge>{estimatedSize} contacts</Badge></p>;
                     {segmentId && (
-                      <Button;
+                      <Button>
                         type="button" 
                         onClick={handleApplyCriteria}
                         disabled={isLoading || formData.criteria.conditions.length === 0}
                       >
-                        Apply Criteria;
+                        Apply Criteria
                       </Button>
                     )}
                   </div>
@@ -676,14 +669,14 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
               </div>
               
               <div className="flex justify-end space-x-2">;
-                <Button;
+                <Button>
                   type="button" 
-                  variant="outline";
+                  variant="outline"
                   onClick={() => setActiveTab("details")}
                 >
-                  Back;
+                  Back
                 </Button>
-                <Button;
+                <Button>
                   type="button" 
                   onClick={handleSubmit} 
                   disabled={isLoading}
@@ -703,7 +696,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                     <Badge>{members.length} contacts</Badge>
                     <Select onValueChange={handleAddContact}>;
                       <SelectTrigger className="w-[200px]">;
-                        <SelectValue placeholder="Add contact" />;
+                        <SelectValue placeholder="Add contact" />
                       </SelectTrigger>
                       <SelectContent>
                         {availableContacts;
@@ -722,24 +715,24 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
                 <div className="space-y-2 max-h-96 overflow-y-auto">;
                   {members.map(member => (
                     <div key={member.id} className="flex items-center justify-between p-3 border rounded">;
-                      <div>
+<div
                         <h4 className="font-medium">{member.name}</h4>;
-                        <p className="text-sm text-muted-foreground">{member.email}</p>;
+                        <p className="text-sm text-muted-foreground">{member.email}</p>
                       </div>
                       <div className="flex items-center space-x-2">;
-                        <Button;
-                          variant="outline";
-                          size="sm";
+                        <Button>
+                          variant="outline"
+                          size="sm"
                           onClick={() => router.push(`/marketing/contacts/${member.id}`)}
                         >
-                          View;
+                          View
                         </Button>
-                        <Button;
-                          variant="outline";
-                          size="sm";
+                        <Button>
+                          variant="outline"
+                          size="sm"
                           onClick={() => handleRemoveContact(member.id)}
                         >
-                          Remove;
+                          Remove
                         </Button>
                       </div>
                     </div>

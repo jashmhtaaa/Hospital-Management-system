@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ import { ipdMiddleware } from '../../middleware/auth';
  * This endpoint handles lab test orders and results;
  * POST /api/ipd/integration/laboratory;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, 'ORDER_LABS');
   if (authResult instanceof NextResponse) {
@@ -86,7 +86,7 @@ export async const POST = (req: NextRequest) {
  * Get pending lab orders for a patient;
  * GET /api/ipd/integration/laboratory/pending-orders;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
@@ -122,7 +122,7 @@ export async const GET = (req: NextRequest) {
  * Get lab results for a patient;
  * GET /api/ipd/integration/laboratory/results;
  */
-export async const getLabResults = (req: NextRequest) {
+export async const getLabResults = (req: NextRequest) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
@@ -167,7 +167,7 @@ export async const getLabResults = (req: NextRequest) {
  * Get detailed lab result;
  * GET /api/ipd/integration/laboratory/results/details;
  */
-export async const getLabResultDetails = (req: NextRequest) {
+export async const getLabResultDetails = (req: NextRequest) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {

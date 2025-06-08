@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -214,7 +214,7 @@ export class SecurityService {
    */
   public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {
     if (!userRoles || !Array.isArray(userRoles) || !requiredRoles || !Array.isArray(requiredRoles)) {
-      return false;
+      return false
     }
     
     // Admin role has access to everything;
@@ -291,8 +291,7 @@ export class SecurityService {
       case 'creditCard':
         return data.replace(/^(\d{4})\d+(\d{4})$/, '$1-****-****-$2');
         
-      default:
-        return data;
+      default: return data
     }
   }
 }

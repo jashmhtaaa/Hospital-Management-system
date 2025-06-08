@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -58,7 +58,7 @@ import { cn } from "@/lib/utils"; // Assuming you have this utility;
 
 // --- INTERFACES ---
 interface Patient {
-  id: number;
+  id: number,
   name: string; // Combined first/last or display name;
   mrn: string;
   first_name?: string; // Optional if 'name' is primary display;
@@ -66,16 +66,16 @@ interface Patient {
 }
 
 interface ServiceItem {
-  id: number;
+  id: number,
   item_code: string;
-  item_name: string;
+  item_name: string,
   category: string;
-  unit_price: number;
+  unit_price: number
 }
 
 interface InvoiceItem extends ServiceItem {
-  quantity: number;
-  subtotal: number;
+  quantity: number,
+  subtotal: number
 }
 
 // --- API Response Interfaces ---
@@ -118,7 +118,7 @@ export default const CreateInvoicePage = () {
 
   // Fetch Patients from real API;
   const fetchPatients = useCallback(async (search: string) => {
-    setLoadingPatients(true);
+    setLoadingPatients(true),
     setError(undefined); // Clear previous errors;
     try {
       const response = await fetch(
@@ -133,7 +133,7 @@ export default const CreateInvoicePage = () {
 
       setError(
         error_ instanceof Error ? error_.message : "Failed to fetch patients"
-      );
+      ),
       setPatients([]); // Clear patients on error;
     } finally {
       setLoadingPatients(false);
@@ -142,7 +142,7 @@ export default const CreateInvoicePage = () {
 
   // Fetch Service Items;
   const fetchServiceItems = useCallback(async (search: string) => {
-    setLoadingServices(true);
+    setLoadingServices(true),
     setError(undefined); // Clear previous errors;
     try {
       const response = await fetch(
@@ -161,7 +161,7 @@ export default const CreateInvoicePage = () {
         error_ instanceof Error;
           ? error_.message;
           : "Failed to fetch service items";
-      );
+      ),
       setServiceItems([]); // Clear service items on error;
     } finally {
       setLoadingServices(false);
@@ -240,7 +240,7 @@ export default const CreateInvoicePage = () {
 
   // Remove item from invoice;
   const removeInvoiceItem = (itemId: number) => {
-    setInvoiceItems(invoiceItems.filter((item) => item.id !== itemId));
+    setInvoiceItems(invoiceItems.filter((item) => item.id !== itemId))
   };
 
   // Calculate total whenever items change;
@@ -256,7 +256,7 @@ export default const CreateInvoicePage = () {
       return;
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true),
     setError(undefined);
 
     try {
@@ -322,7 +322,7 @@ export default const CreateInvoicePage = () {
         {/* Added mb-4 */}
         <h1 className="text-2xl font-semibold">Create New Invoice</h1>;
         <Button variant="outline" onClick={() => router.back()}>
-          Back to Billing;
+          Back to Billing
         </Button>{" "}
         {/* Changed Cancel text */}
       </div>
@@ -340,32 +340,32 @@ export default const CreateInvoicePage = () {
         </CardHeader>
         <CardContent>
           <Label htmlFor="patient-search">Select Patient</Label>;
-          <Popover;
+          <Popover>
             open={isPatientPopoverOpen}
             onOpenChange={setIsPatientPopoverOpen}
           >
             <PopoverTrigger asChild>
-              <Button;
-                variant="outline";
-                role="combobox";
+              <Button>
+                variant="outline"
+                role="combobox"
                 aria-expanded={isPatientPopoverOpen}
-                className="w-full justify-between mt-1";
+                className="w-full justify-between mt-1"
                 disabled={!!selectedPatient} // Disable if patient already selected;
               >
                 {selectedPatient;
                   ? `${selectedPatient.name} (MRN: ${selectedPatient.mrn})` // Added MRN label;
                   : "Select patient..."}
                 {selectedPatient ? (
-                  (<X;
-                    className="ml-2 h-4 w-4 shrink-0 opacity-50 cursor-pointer";
+                  (<X>
+                    className="ml-2 h-4 w-4 shrink-0 opacity-50 cursor-pointer"
                     onClick={(event) => {
                       event.stopPropagation(); // Use the correct event variable;
-                      setSelectedPatient(undefined);
+                      setSelectedPatient(undefined),
                       setPatientSearchTerm("");
                     }}
                   />) // Added cursor-pointer and clear search term;
                 ) : (
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />;
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 )}
               </Button>
             </PopoverTrigger>
@@ -373,15 +373,15 @@ export default const CreateInvoicePage = () {
               <Command shouldFilter={false}>;
                 {" "}
                 {/* Disable default filtering, handled by API */}
-                <CommandInput;
-                  placeholder="Search patient by name or MRN...";
+                <CommandInput>
+                  placeholder="Search patient by name or MRN..."
                   value={patientSearchTerm}
                   onValueChange={setPatientSearchTerm} // Let useEffect handle debounced fetching;
                 />
                 <CommandList>
                   {loadingPatients && (
                     <div className="p-4 text-center text-sm text-muted-foreground">;
-                      Loading patients...;
+                      Loading patients...
                     </div>
                   )}{" "}
                   {/* Improved loading state */}
@@ -390,7 +390,7 @@ export default const CreateInvoicePage = () {
                     patientSearchTerm && (
                       <CommandEmpty>
                         No patient found matching &quot;{patientSearchTerm}
-                        &quot;.;
+                        &quot;.
                       </CommandEmpty>
                     )}
                   {!loadingPatients &&
@@ -403,17 +403,17 @@ export default const CreateInvoicePage = () {
                       {" "}
                       {/* Added heading */}
                       {patients.map((patient) => (
-                        <CommandItem;
+                        <CommandItem>
                           key={patient.id}
                           value={`${patient.name} ${patient.mrn}`} // Value used for potential filtering if enabled later;
                           onSelect={() => {
-                            setSelectedPatient(patient);
+                            setSelectedPatient(patient),
                             setIsPatientPopoverOpen(false);
                             setPatientSearchTerm(""); // Clear search after selection;
                           }}
                           className="cursor-pointer" // Added cursor;
                         >
-                          <Check;
+                          <Check>
                             className={cn(
                               "mr-2 h-4 w-4",
                               selectedPatient?.id === patient.id;
@@ -421,7 +421,7 @@ export default const CreateInvoicePage = () {
                                 : "opacity-0";
                             )}
                           />
-                          {patient.name} (MRN: {patient.mrn});
+                          {patient.name} (MRN: {patient.mrn})
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -446,34 +446,34 @@ export default const CreateInvoicePage = () {
               {" "}
               {/* Full width on small screens */}
               <Label htmlFor="service-search">Add Service/Item</Label>;
-              <Popover;
+              <Popover>
                 open={isServicePopoverOpen}
                 onOpenChange={setIsServicePopoverOpen}
               >
                 <PopoverTrigger asChild>
-                  <Button;
-                    variant="outline";
-                    role="combobox";
+                  <Button>
+                    variant="outline"
+                    role="combobox"
                     aria-expanded={isServicePopoverOpen}
-                    className="w-full justify-between mt-1";
+                    className="w-full justify-between mt-1"
                   >
                     {selectedServiceItem;
                       ? `${selectedServiceItem.item_name} (${selectedServiceItem.item_code})`
                       : "Search service or item..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />;
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[--radix-popover-trigger-width] p-0">;
                   <Command shouldFilter={false}>;
-                    <CommandInput;
-                      placeholder="Search service by name or code...";
+                    <CommandInput>
+                      placeholder="Search service by name or code..."
                       value={serviceSearchTerm}
                       onValueChange={setServiceSearchTerm}
                     />
                     <CommandList>
                       {loadingServices && (
                         <div className="p-4 text-center text-sm text-muted-foreground">;
-                          Loading services...;
+                          Loading services...
                         </div>
                       )}
                       {!loadingServices &&
@@ -481,7 +481,7 @@ export default const CreateInvoicePage = () {
                         serviceSearchTerm && (
                           <CommandEmpty>
                             No service found matching &quot;{serviceSearchTerm}
-                            &quot;.;
+                            &quot;.
                           </CommandEmpty>
                         )}
                       {!loadingServices &&
@@ -492,16 +492,16 @@ export default const CreateInvoicePage = () {
                       {!loadingServices && serviceItems.length > 0 && (
                         <CommandGroup heading="Search Results">;
                           {serviceItems.map((service) => (
-                            <CommandItem;
+                            <CommandItem>
                               key={service.id}
                               value={`${service.item_name} ${service.item_code}`}
                               onSelect={() => {
                                 // setSelectedServiceItem(service); // Don't set here, add directly;
-                                addInvoiceItem(service);
+                                addInvoiceItem(service),
                                 setIsServicePopoverOpen(false);
                                 setServiceSearchTerm(""); // Clear search;
                               }}
-                              className="cursor-pointer";
+                              className="cursor-pointer"
                             >
                               {/* No checkmark needed here as we add directly */}
                               {service.item_name} ({service.item_code}) - {service.unit_price}
@@ -528,7 +528,7 @@ export default const CreateInvoicePage = () {
                     <TableHead className="text-right">Unit Price</TableHead>;
                     <TableHead className="w-24 text-center">Quantity</TableHead>;
                     <TableHead className="text-right">Subtotal</TableHead>;
-                    <TableHead className="w-16"></TableHead>;
+                    <TableHead className="w-16"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -540,26 +540,26 @@ export default const CreateInvoicePage = () {
                         {item.unit_price.toFixed(2)}
                       </TableCell>
                       <TableCell className="text-center">;
-                        <Input;
+                        <Input>
                           type="number"
                           value={item.quantity}
                           onChange={(e) =>
                             updateItemQuantity(item.id, parseInt(e.target.value, 10) || 1);
                           }
-                          className="w-20 text-center mx-auto";
-                          min="1";
+                          className="w-20 text-center mx-auto"
+                          min="1"
                         />
                       </TableCell>
                       <TableCell className="text-right">;
                         {item.subtotal.toFixed(2)}
                       </TableCell>
                       <TableCell>
-                        <Button;
-                          variant="ghost";
-                          size="icon";
+                        <Button>
+                          variant="ghost"
+                          size="icon"
                           onClick={() => removeInvoiceItem(item.id)}
                         >
-                          <X className="h-4 w-4" />;
+                          <X className="h-4 w-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -573,7 +573,7 @@ export default const CreateInvoicePage = () {
           <div className="text-xl font-semibold">;
             Total: {invoiceTotal.toFixed(2)}
           </div>
-          <Button;
+          <Button>
             onClick={handleCreateInvoice}
             disabled={isSubmitting || !selectedPatient || invoiceItems.length === 0}
           >

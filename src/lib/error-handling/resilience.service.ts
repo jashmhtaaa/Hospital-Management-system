@@ -124,18 +124,18 @@ export class SystemError extends BaseError {
 
 // Circuit Breaker Configuration
 interface CircuitBreakerConfig {
-  failureThreshold: number;
+  failureThreshold: number,
   timeout: number;
-  resetTimeout: number;
+  resetTimeout: number,
   monitoringPeriod: number;
   expectedErrors?: ErrorType[];
 }
 
 // Retry Configuration
 interface RetryConfig {
-  maxAttempts: number;
+  maxAttempts: number,
   baseDelay: number;
-  maxDelay: number;
+  maxDelay: number,
   backoffMultiplier: number;
   jitter: boolean;
   retryableErrors?: ErrorType[];
@@ -355,7 +355,7 @@ export class RetryHandler {
 
   private shouldRetry(error: Error, attempt: number): boolean {
     if (attempt >= this.config.maxAttempts) {
-      return false;
+      return false
     }
 
     if (error instanceof BaseError) {
@@ -467,24 +467,24 @@ export interface DeadLetterQueue {
   enqueue(message: any, error: Error, context: Record<string, any>): Promise<void>;
   dequeue(): Promise<any>;
   getQueueSize(): Promise<number>;
-  reprocess(messageId: string): Promise<void>;
+  reprocess(messageId: string): Promise<void>
 }
 
 // Simple In-Memory Dead Letter Queue Implementation
 export class InMemoryDeadLetterQueue implements DeadLetterQueue {
   private queue: Array<{
-    id: string;
+    id: string,
     message: any;
-    error: Error;
+    error: Error,
     context: Record<string, any>;
-    enqueuedAt: Date;
-    attempts: number;
+    enqueuedAt: Date,
+    attempts: number
   }> = [];
   
   private logger: ContextualLogger;
 
   constructor(logger: ContextualLogger) {
-    this.logger = logger;
+    this.logger = logger
   }
 
   async enqueue(message: any, error: Error, context: Record<string, any>): Promise<void> {
@@ -573,7 +573,7 @@ export class ResilienceService {
   }
 
   getCircuitBreaker(name: string): CircuitBreaker | undefined {
-    return this.circuitBreakers.get(name);
+    return this.circuitBreakers.get(name)
   }
 
   // Execute with full resilience patterns
@@ -639,10 +639,10 @@ export class ResilienceService {
 
   // Health Check
   async healthCheck(): Promise<{
-    status: 'healthy' | 'degraded' | 'unhealthy';
+    status: 'healthy' | 'degraded' | 'unhealthy',
     circuitBreakers: Record<string, any>;
-    deadLetterQueueSize: number;
-    timestamp: string;
+    deadLetterQueueSize: number,
+    timestamp: string
   }> {
     const circuitBreakerStatus: Record<string, any> = {};
     let overallStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';

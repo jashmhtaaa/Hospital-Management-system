@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,7 +19,7 @@ interface CalendarProps {
   disabled?: (date: Date) => boolean;
   className?: string;
   month?: Date;
-  onMonthChange?: (month: Date) => void;
+  onMonthChange?: (month: Date) => void
 }
 
 /**
@@ -32,7 +32,7 @@ export const Calendar = ({
   className,
   month,
   onMonthChange,
-}: CalendarProps) {
+}: CalendarProps) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = React.useState(month || today);
   
@@ -94,7 +94,7 @@ export const Calendar = ({
       const isDisabled = disabled ? disabled(date) : false;
       
       days.push(
-        <button;
+        <button>
           key={day}
           type="button"
           className={cn(
@@ -118,24 +118,24 @@ export const Calendar = ({
   return (
     <div className={cn("p-3", className)}>;
       <div className="flex items-center justify-between">;
-        <Button;
-          variant="outline";
-          size="sm";
+        <Button>
+          variant="outline"
+          size="sm"
           onClick={handlePreviousMonth}
-          className="h-7 w-7 p-0";
+          className="h-7 w-7 p-0"
         >
-          &lt;
+          &lt
         </Button>
         <div className="font-medium">;
           {currentMonth.toLocaleString('default', { month: 'long' })} {currentMonth.getFullYear()}
         </div>
-        <Button;
-          variant="outline";
-          size="sm";
+        <Button>
+          variant="outline"
+          size="sm"
           onClick={handleNextMonth}
-          className="h-7 w-7 p-0";
+          className="h-7 w-7 p-0"
         >
-          &gt;
+          &gt
         </Button>
       </div>
       <div className="mt-4 grid grid-cols-7 gap-1 text-center text-xs">;

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for Pre-Authorization data;
 interface PreAuthorization {
-  id: number | string;
+  id: number | string,
   patient_insurance_id: number | string;
   requested_procedure: string;
   estimated_cost?: number | undefined;
@@ -56,7 +56,7 @@ let nextPreAuthId = 3;
 
 // Define interface for pre-authorization creation input;
 interface PreAuthorizationInput {
-  patient_insurance_id: number | string;
+  patient_insurance_id: number | string,
   requested_procedure: string;
   estimated_cost?: number;
   request_date?: string; // Optional, defaults to now;
@@ -189,7 +189,7 @@ async const createPreAuthorizationInDB = (
  * GET /api/insurance/pre-authorizations;
  * Retrieves a list of pre-authorization requests, potentially filtered.
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: PreAuthorizationFilters = {
@@ -221,7 +221,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/insurance/pre-authorizations;
  * Creates a new pre-authorization request.
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
     // Apply type assertion;

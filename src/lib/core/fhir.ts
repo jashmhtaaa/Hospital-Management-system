@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,19 +31,19 @@ export interface FHIRAccount {
   resourceType: FHIRResourceType.ACCOUNT;
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'active' | 'inactive' | 'entered-in-error' | 'on-hold' | 'unknown';
   type?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
     }>;
   };
   subject?: Array<{
-    reference: string;
+    reference: string
   }>;
   servicePeriod?: {
     start: string;
@@ -51,17 +51,17 @@ export interface FHIRAccount {
   };
   coverage?: Array<{
     coverage: {
-      reference: string;
+      reference: string
     };
     priority?: number;
   }>;
   owner?: {
-    reference: string;
+    reference: string
   };
   description?: string;
   balance?: Array<{
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   }>;
 }
 
@@ -70,71 +70,71 @@ export interface FHIRClaim {
   resourceType: FHIRResourceType.CLAIM;
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
-  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
+  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error',
   type: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
     }>;
   };
-  use: 'claim' | 'preauthorization' | 'predetermination';
+  use: 'claim' | 'preauthorization' | 'predetermination',
   patient: {
-    reference: string;
+    reference: string
   };
-  created: string;
+  created: string,
   provider: {
-    reference: string;
+    reference: string
   };
   priority: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
     }>;
   };
   insurance: Array<{
-    sequence: number;
+    sequence: number,
     focal: boolean;
     coverage: {
-      reference: string;
+      reference: string
     };
   }>;
   diagnosis?: Array<{
-    sequence: number;
+    sequence: number,
     diagnosis: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
       }>;
     };
   }>;
   item?: Array<{
-    sequence: number;
+    sequence: number,
     productOrService: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
       }>;
     };
     servicedDate?: string;
     unitPrice?: {
-      value: number;
-      currency: string;
+      value: number,
+      currency: string
     };
     net?: {
-      value: number;
-      currency: string;
+      value: number,
+      currency: string
     };
   }>;
   total?: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
 }
 
@@ -143,26 +143,26 @@ export interface FHIRCoverage {
   resourceType: FHIRResourceType.COVERAGE;
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
   type?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
     }>;
   };
   subscriber?: {
-    reference: string;
+    reference: string
   };
   beneficiary: {
-    reference: string;
+    reference: string
   };
   relationship?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
     }>;
@@ -172,12 +172,12 @@ export interface FHIRCoverage {
     end?: string;
   };
   payor: Array<{
-    reference: string;
+    reference: string
   }>;
   class?: Array<{
     type: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
       }>;
@@ -192,53 +192,53 @@ export interface FHIRInvoice {
   resourceType: FHIRResourceType.INVOICE;
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error';
   subject?: {
-    reference: string;
+    reference: string
   };
   date: string;
   participant?: Array<{
     role?: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
       }>;
     };
     actor: {
-      reference: string;
+      reference: string
     };
   }>;
   issuer?: {
-    reference: string;
+    reference: string
   };
   account?: {
-    reference: string;
+    reference: string
   };
   lineItem?: Array<{
-    sequence: number;
+    sequence: number,
     chargeItem: {
-      reference: string;
+      reference: string
     };
     priceComponent?: Array<{
       type: 'base' | 'surcharge' | 'deduction' | 'discount' | 'tax' | 'informational';
       factor?: number;
       amount?: {
-        value: number;
-        currency: string;
+        value: number,
+        currency: string
       };
     }>;
   }>;
   totalNet?: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
   totalGross?: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
 }
 
@@ -247,8 +247,8 @@ export interface FHIRPaymentReconciliation {
   resourceType: FHIRResourceType.PAYMENT_RECONCILIATION;
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
   period?: {
@@ -257,50 +257,50 @@ export interface FHIRPaymentReconciliation {
   };
   created: string;
   paymentIssuer?: {
-    reference: string;
+    reference: string
   };
   request?: {
-    reference: string;
+    reference: string
   };
   outcome?: 'complete' | 'error' | 'partial';
   disposition?: string;
-  paymentDate: string;
+  paymentDate: string,
   paymentAmount: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
   paymentIdentifier?: {
-    system: string;
-    value: string;
+    system: string,
+    value: string
   };
   detail?: Array<{
     identifier?: {
-      system: string;
-      value: string;
+      system: string,
+      value: string
     };
     type?: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
       }>;
     };
     request?: {
-      reference: string;
+      reference: string
     };
     response?: {
-      reference: string;
+      reference: string
     };
     submitter?: {
-      reference: string;
+      reference: string
     };
     payee?: {
-      reference: string;
+      reference: string
     };
     date?: string;
     amount?: {
-      value: number;
-      currency: string;
+      value: number,
+      currency: string
     };
   }>;
 }
@@ -564,16 +564,14 @@ export const validateFHIRResource = (resource: unknown): boolean {
       return validateFHIRCoverage(resource);
     case FHIRResourceType.INVOICE:
       return validateFHIRInvoice(resource);
-    case FHIRResourceType.PAYMENT_RECONCILIATION:
-      return validateFHIRPaymentReconciliation(resource);
-    default:
-      return false;
+    case FHIRResourceType.PAYMENT_RECONCILIATION: return validateFHIRPaymentReconciliation(resource),
+    default: return false
   }
 }
 
 // Helper validation functions;
 const validateFHIRAccount = (account: unknown): boolean {
-  return !!account.status;
+  return !!account.status
 }
 
 const validateFHIRClaim = (claim: unknown): boolean {

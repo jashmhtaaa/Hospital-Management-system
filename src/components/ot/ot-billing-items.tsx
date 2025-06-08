@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -31,11 +31,11 @@ import { Calculator } from "lucide-react";
 
 // FIX: Define interface for billing item;
 interface BillingItem {
-  id: string;
+  id: string,
   date: string;
-  description: string;
+  description: string,
   category: string;
-  amount: number;
+  amount: number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses;
   surgery_id: string;
   invoice_id?: string;
@@ -68,7 +68,7 @@ const formatCurrency = (amount: number) => {
 const getStatusBadge = (status: BillingItem["status"]) => {
   switch (status) {
     case "billed": {
-      return <Badge className="bg-green-100 text-green-800">Billed</Badge>;
+      return <Badge className="bg-green-100 text-green-800">Billed</Badge>
     }
     case "unbilled": {
       return <Badge variant="secondary">Unbilled</Badge>;
@@ -97,7 +97,7 @@ export default const OTBillingItems = ({
   useEffect(() => {
     const fetchOTBillingItems = async () => {
       try {
-        setLoading(true);
+        setLoading(true),
         setError(undefined);
 
         // Replace with actual API call;
@@ -153,8 +153,7 @@ export default const OTBillingItems = ({
             invoice_id: "INV-001",
           },
         ];
-        setBillingItems(mockData);
-
+        setBillingItems(mockData),
         setLoading(false);
       } catch (error_: unknown) {
         // FIX: Use unknown;
@@ -162,7 +161,7 @@ export default const OTBillingItems = ({
           error_ instanceof Error;
             ? error_.message;
             : "An unknown error occurred";
-        setError(messageText);
+        setError(messageText),
         setLoading(false);
       }
     };
@@ -196,8 +195,8 @@ export default const OTBillingItems = ({
     <Card>
       <CardHeader>
         <CardTitle className="text-xl flex items-center">;
-          <Calculator className="mr-2 h-5 w-5" />;
-          Operation Theatre Charges;
+          <Calculator className="mr-2 h-5 w-5" />
+          Operation Theatre Charges
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -205,7 +204,7 @@ export default const OTBillingItems = ({
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && billingItems.length === 0 && (
           <div className="text-center py-4 text-muted-foreground">;
-            No operation theatre charges found for this patient.;
+            No operation theatre charges found for this patient.
           </div>
         )}
         {!loading && !error && billingItems.length > 0 && (
@@ -227,12 +226,12 @@ export default const OTBillingItems = ({
                   <TableRow key={item.id}>;
                     {!readOnly && (
                       <TableCell>
-                        <input;
+                        <input>
                           type="checkbox"
                           checked={selectedItems.includes(item.id)}
                           onChange={() => handleSelectItem(item.id)}
                           disabled={item.status !== "unbilled"}
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500";
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                       </TableCell>
                     )}
@@ -252,23 +251,23 @@ export default const OTBillingItems = ({
 
             {!readOnly && onAddToBill && (
               <div className="mt-4 flex justify-between items-center">;
-                <div>
+<div
                   {selectedItems.length > 0 ? (
                     <span className="text-sm">;
                       {selectedItems.length} item;
-                      {selectedItems.length === 1 ? "" : "s"} selected;
+                      {selectedItems.length === 1 ? "" : "s"} selected
                     </span>
                   ) : (
                     <span className="text-sm text-muted-foreground">;
-                      Select items to add to bill;
+                      Select items to add to bill
                     </span>
                   )}
                 </div>
-                <Button;
+                <Button>
                   onClick={handleAddToBill}
                   disabled={selectedItems.length === 0}
                 >
-                  Add to Bill;
+                  Add to Bill
                 </Button>
               </div>
             )}

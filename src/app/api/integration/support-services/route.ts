@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -26,7 +26,7 @@ import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middlew
 export async const GET = (
   request: NextRequest,
   { params }: { params: { patientId: string } }
-) {
+) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || 'anonymous';
@@ -41,7 +41,7 @@ export async const GET = (
     
     return NextResponse.json({
       success: true,
-      data: patientInfo;
+      data: patientInfo
     });
   });
 }
@@ -53,7 +53,7 @@ export async const GET = (
 export async const GET = (
   request: NextRequest,
   { params }: { params: { locationId: string } }
-) {
+) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || 'anonymous';
@@ -68,7 +68,7 @@ export async const GET = (
     
     return NextResponse.json({
       success: true,
-      data: locationInfo;
+      data: locationInfo
     });
   });
 }
@@ -77,7 +77,7 @@ export async const GET = (
  * POST /api/integration/support-services/notification;
  * Sends a notification through the HMS Notification System;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || 'anonymous';
@@ -117,7 +117,7 @@ export async const POST = (request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      data: notification;
+      data: notification
     });
   });
 }
@@ -126,7 +126,7 @@ export async const POST = (request: NextRequest) {
  * POST /api/integration/support-services/report;
  * Submits data to the HMS Reporting System;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || 'anonymous';
@@ -163,7 +163,7 @@ export async const POST = (request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      data: report;
+      data: report
     });
   });
 }
@@ -175,7 +175,7 @@ export async const POST = (request: NextRequest) {
 export async const POST = (
   request: NextRequest,
   { params }: { params: { serviceType: string; requestId: string } }
-) {
+) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || 'anonymous';
@@ -214,7 +214,7 @@ export async const POST = (
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type',
             details: {
-              validServiceTypes;
+              validServiceTypes
             }
           }
         },
@@ -233,7 +233,7 @@ export async const POST = (
     
     return NextResponse.json({
       success: true,
-      data: request;
+      data: request
     });
   });
 }
@@ -245,7 +245,7 @@ export async const POST = (
 export async const POST = (
   request: NextRequest,
   { params }: { params: { serviceType: string; requestId: string } }
-) {
+) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || 'anonymous';
@@ -284,7 +284,7 @@ export async const POST = (
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type',
             details: {
-              validServiceTypes;
+              validServiceTypes
             }
           }
         },
@@ -303,7 +303,7 @@ export async const POST = (
     
     return NextResponse.json({
       success: true,
-      data: request;
+      data: request
     });
   });
 }

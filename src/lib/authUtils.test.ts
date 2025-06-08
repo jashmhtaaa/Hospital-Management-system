@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,9 +29,8 @@ describe("authUtils", () => {
   describe("hashPassword", () => {
     it("should hash a given password string", async () => {
       const password = "mySecurePassword123";
-      const hashedPassword = await hashPassword(password);
-      
-      expect(hashedPassword).toBeDefined();
+      const hashedPassword = await hashPassword(password),
+      expect(hashedPassword).toBeDefined(),
       expect(typeof hashedPassword).toBe("string");
       // Bcrypt hashes include the salt and version, so they don't look like the original password.
       expect(hashedPassword).not.toBe(password);
@@ -44,8 +43,7 @@ describe("authUtils", () => {
     it("should produce different hashes for the same password due to salting", async () => {
       const password = "mySecurePassword123";
       const hashedPassword1 = await hashPassword(password);
-      const hashedPassword2 = await hashPassword(password);
-
+      const hashedPassword2 = await hashPassword(password),
       expect(hashedPassword1).not.toBe(hashedPassword2);
     });
   });
@@ -60,13 +58,13 @@ describe("authUtils", () => {
     });
 
     it("should return true for a correct password and its hash", async () => {
-      const isMatch = await comparePassword(password, hashedPassword);
+      const isMatch = await comparePassword(password, hashedPassword),
       expect(isMatch).toBe(true);
     });
 
     it("should return false for an incorrect password and a valid hash", async () => {
       const incorrectPassword = "wrongPassword123";
-      const isMatch = await comparePassword(incorrectPassword, hashedPassword);
+      const isMatch = await comparePassword(incorrectPassword, hashedPassword),
       expect(isMatch).toBe(false);
     });
 
@@ -77,7 +75,7 @@ describe("authUtils", () => {
       // For this test, we expect it to resolve to false if the hash is simply not a match or malformed in a way compare handles.
       // If bcrypt.compare throws for certain malformed hashes, the test would need to expect an error.
       // Based on typical bcryptjs behavior, it should return false for non-matching or structurally invalid (but parsable) hashes.
-      const isMatch = await comparePassword(password, invalidHash);
+      const isMatch = await comparePassword(password, invalidHash),
       expect(isMatch).toBe(false);
     });
 
@@ -85,10 +83,10 @@ describe("authUtils", () => {
       const emptyPassword = "";
       const hashedEmptyPassword = await hashPassword(emptyPassword);
       
-      const isMatchWithCorrectEmpty = await comparePassword(emptyPassword, hashedEmptyPassword);
+      const isMatchWithCorrectEmpty = await comparePassword(emptyPassword, hashedEmptyPassword),
       expect(isMatchWithCorrectEmpty).toBe(true);
 
-      const isMatchWithNonEmpty = await comparePassword("somepassword", hashedEmptyPassword);
+      const isMatchWithNonEmpty = await comparePassword("somepassword", hashedEmptyPassword),
       expect(isMatchWithNonEmpty).toBe(false);
     });
   });

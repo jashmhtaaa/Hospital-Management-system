@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,17 +21,17 @@ import { cache } from '@/lib/cache';
 const prisma = new PrismaClient();
 
 interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: 'healthy' | 'degraded' | 'unhealthy',
   timestamp: string;
-  version: string;
+  version: string,
   environment: string;
-  uptime: number;
+  uptime: number,
   checks: {
-    database: HealthCheck;
+    database: HealthCheck,
     cache: HealthCheck;
-    memory: HealthCheck;
+    memory: HealthCheck,
     disk: HealthCheck;
-    external: HealthCheck;
+    external: HealthCheck
   };
 }
 
@@ -58,7 +58,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       checkCache(),
       checkMemory(),
       checkDisk(),
-      checkExternalServices();
+      checkExternalServices()
     ]);
 
     const checks = {
@@ -66,7 +66,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       cache: getCheckResult(cacheCheck),
       memory: getCheckResult(memoryCheck),
       disk: getCheckResult(diskCheck),
-      external: getCheckResult(externalCheck);
+      external: getCheckResult(externalCheck)
     };
 
     // Determine overall status;
@@ -101,7 +101,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
       error: 'Health check failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -121,14 +121,14 @@ async const checkDatabase = (): Promise<HealthCheck> {
       responseTime,
       details: {
         responseTime: `${responseTime}ms`,
-        connected: true;
+        connected: true
       }
     };
   } catch (error) {
     return {
       status: 'fail',
       error: error.message,
-      responseTime: Date.now() - startTime;
+      responseTime: Date.now() - startTime
     };
   }
 }
@@ -153,7 +153,7 @@ async const checkCache = (): Promise<HealthCheck> {
         responseTime,
         details: {
           responseTime: `${responseTime}ms`,
-          operations: 'read/write successful';
+          operations: 'read/write successful'
         }
       };
     } else {
@@ -167,7 +167,7 @@ async const checkCache = (): Promise<HealthCheck> {
     return {
       status: 'fail',
       error: error.message,
-      responseTime: Date.now() - startTime;
+      responseTime: Date.now() - startTime
     };
   }
 }
@@ -195,7 +195,7 @@ async const checkMemory = (): Promise<HealthCheck> {
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message;
+      error: error.message
     };
   }
 }
@@ -210,13 +210,13 @@ async const checkDisk = (): Promise<HealthCheck> {
       status: 'pass',
       details: {
         accessible: true,
-        note: 'Basic filesystem access check passed';
+        note: 'Basic filesystem access check passed'
       }
     };
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message;
+      error: error.message
     };
   }
 }
@@ -231,20 +231,20 @@ async const checkExternalServices = (): Promise<HealthCheck> {
     return {
       status: 'pass',
       details: {
-        externalServices: 'No critical external dependencies configured';
+        externalServices: 'No critical external dependencies configured'
       }
     };
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message;
+      error: error.message
     };
   }
 }
 
 const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
   if (settledResult.status === 'fulfilled') {
-    return settledResult.value;
+    return settledResult.value
   } else {
     return {
       status: 'fail',

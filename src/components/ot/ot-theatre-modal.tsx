@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,9 +37,9 @@ import { useToast } from "@/components/ui/use-toast";
 // Define Theatre interface;
 interface Theatre {
   id?: string; // Optional for new theatres;
-  name: string;
+  name: string,
   location: string | null;
-  specialty: string | null;
+  specialty: string | null,
   status: string;
   equipment?: string | null; // Assuming simple text for now;
   updated_at?: string; // Optional;
@@ -47,11 +47,11 @@ interface Theatre {
 
 // Define the type for data passed to onSave;
 interface TheatreSaveData {
-  name: string;
+  name: string,
   location: string | null;
-  specialty: string | null;
+  specialty: string | null,
   status: string;
-  equipment: string | null;
+  equipment: string | null
 }
 
 // Props for the modal - use defined types;
@@ -105,7 +105,7 @@ export default const OTTheatreModal = ({
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsSaving(true);
     try {
       const apiData: TheatreSaveData = {
@@ -138,7 +138,7 @@ export default const OTTheatreModal = ({
       toast({
         title: "Success",
         description: `Theatre ${theatre ? "updated" : "created"} successfully.`,
-      });
+      }),
       setIsOpen(false);
     } catch (error: unknown) {
       // Use unknown for error type;
@@ -166,7 +166,7 @@ export default const OTTheatreModal = ({
             {theatre ? "Edit Operation Theatre" : "Add New Operation Theatre"}
           </DialogTitle>
           <DialogDescription>
-            Enter the details for the operation theatre.;
+            Enter the details for the operation theatre.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>;
@@ -175,45 +175,45 @@ export default const OTTheatreModal = ({
               <Label htmlFor="name" className="text-right">;
                 Name *
               </Label>
-              <Input;
-                id="name";
-                name="name";
+              <Input>
+                id="name"
+                name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="col-span-3";
+                className="col-span-3"
                 required;
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="location" className="text-right">;
-                Location;
+                Location
               </Label>
-              <Input;
-                id="location";
-                name="location";
+              <Input>
+                id="location"
+                name="location"
                 value={formData.location || ""}
                 onChange={handleChange}
-                className="col-span-3";
+                className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="specialty" className="text-right">;
-                Specialty;
+                Specialty
               </Label>
-              <Input;
-                id="specialty";
-                name="specialty";
+              <Input>
+                id="specialty"
+                name="specialty"
                 value={formData.specialty || ""}
                 onChange={handleChange}
-                className="col-span-3";
+                className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="status" className="text-right">;
-                Status;
+                Status
               </Label>
-              <Select;
-                name="status";
+              <Select>
+                name="status"
                 value={formData.status}
                 onValueChange={(value) => handleSelectChange("status", value)}
               >
@@ -224,31 +224,31 @@ export default const OTTheatreModal = ({
                   <SelectItem value="available">Available</SelectItem>;
                   <SelectItem value="in_use">In Use</SelectItem>;
                   <SelectItem value="maintenance">Maintenance</SelectItem>;
-                  <SelectItem value="unavailable">Unavailable</SelectItem>;
+                  <SelectItem value="unavailable">Unavailable</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-4 items-start gap-4">;
               <Label htmlFor="equipment" className="text-right pt-2">;
-                Equipment;
+                Equipment
               </Label>
-              <Textarea;
-                id="equipment";
-                name="equipment";
+              <Textarea>
+                id="equipment"
+                name="equipment"
                 value={formData.equipment || ""}
                 onChange={handleChange}
-                className="col-span-3";
-                placeholder="List key equipment available...";
+                className="col-span-3"
+                placeholder="List key equipment available..."
               />
             </div>
           </div>
           <DialogFooter>
-            <Button;
+            <Button>
               type="button"
-              variant="outline";
+              variant="outline"
               onClick={() => setIsOpen(false)}
             >
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving..." : "Save Theatre"}

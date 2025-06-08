@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,7 +15,7 @@ import { getSession } from "@/lib/session";
 
 // Define interface for POST request body;
 interface MedicationAdminInput {
-  medication_id: number | string;
+  medication_id: number | string,
   dosage: string;
   route: string;
   administered_time?: string; // Optional, defaults to now;

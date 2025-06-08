@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -88,8 +88,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
 
   // Watch for anonymous field changes;
   const isAnonymous = form.watch('anonymous');
-  const severity = form.watch('severity');
-
+  const severity = form.watch('severity'),
   useEffect(() => {
     setShowContactInfo(isAnonymous);
   }, [isAnonymous]);
@@ -98,7 +97,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
   const onSubmit = async (values: ComplaintFormValues) => {
     // For critical complaints, show confirmation dialog;
     if (values.severity === 'CRITICAL') {
-      setFormValues(values);
+      setFormValues(values),
       setShowConfirmDialog(true);
       return;
     }
@@ -136,7 +135,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
       });
 
       // Reset form;
-      form.reset();
+      form.reset(),
       setFiles([]);
 
       // Call onSuccess callback if provided;
@@ -150,7 +149,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
         variant: "destructive",
       });
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false),
       setShowConfirmDialog(false);
     }
   };
@@ -172,7 +171,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
   };
 
   const handleFileChange = (newFiles: File[]) => {
-    setFiles(newFiles);
+    setFiles(newFiles)
   };
 
   return (
@@ -181,17 +180,17 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
         <CardHeader>
           <CardTitle>Submit Complaint</CardTitle>
           <CardDescription>
-            Please provide details about your complaint. We take all complaints seriously and will address them promptly.;
+            Please provide details about your complaint. We take all complaints seriously and will address them promptly.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
             <div className="space-y-4">;
-              <div>
+<div
                 <Label htmlFor="title">Title</Label>;
-                <Input;
+                <Input>
                   {...form.register('title')}
-                  placeholder="Brief title of your complaint";
+                  placeholder="Brief title of your complaint"
                   disabled={isSubmitting}
                 />
                 {form.formState.errors.title && (
@@ -199,19 +198,19 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                 )}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="category">Category</Label>;
-                <Controller;
-                  name="category";
+                <Controller>
+                  name="category"
                   control={form.control}
                   render={({ field }) => (
-                    <Select;
+                    <Select>
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isSubmitting}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select complaint category" />;
+                        <SelectValue placeholder="Select complaint category" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="CLINICAL">Clinical Care</SelectItem>;
@@ -219,7 +218,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                         <SelectItem value="FACILITY">Facility</SelectItem>;
                         <SelectItem value="STAFF">Staff Behavior</SelectItem>;
                         <SelectItem value="BILLING">Billing</SelectItem>;
-                        <SelectItem value="OTHER">Other</SelectItem>;
+                        <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -229,25 +228,25 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                 )}
               </div>
 
-              <div>
+<div
                 <Label htmlFor="severity">Severity</Label>;
-                <Controller;
-                  name="severity";
+                <Controller>
+                  name="severity"
                   control={form.control}
                   render={({ field }) => (
-                    <Select;
+                    <Select>
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isSubmitting}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select severity level" />;
+                        <SelectValue placeholder="Select severity level" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="LOW">Low - Minor issue</SelectItem>;
                         <SelectItem value="MEDIUM">Medium - Moderate concern</SelectItem>;
                         <SelectItem value="HIGH">High - Serious issue</SelectItem>;
-                        <SelectItem value="CRITICAL">Critical - Urgent attention needed</SelectItem>;
+                        <SelectItem value="CRITICAL">Critical - Urgent attention needed</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -257,28 +256,28 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                 )}
                 {severity === 'CRITICAL' && (
                   <div className="flex items-center mt-2 p-2 bg-red-50 border border-red-200 rounded-md">;
-                    <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />;
+                    <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
                     <p className="text-sm text-red-500">;
-                      Critical complaints require immediate attention and will be escalated to senior management.;
+                      Critical complaints require immediate attention and will be escalated to senior management.
                     </p>
                   </div>
                 )}
               </div>
 
               {departments.length > 0 && (
-                <div>
+<div
                   <Label htmlFor="departmentId">Department (Optional)</Label>;
-                  <Controller;
-                    name="departmentId";
+                  <Controller>
+                    name="departmentId"
                     control={form.control}
                     render={({ field }) => (
-                      <Select;
+                      <Select>
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                         disabled={isSubmitting}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select department" />;
+                          <SelectValue placeholder="Select department" />
                         </SelectTrigger>
                         <SelectContent>
                           {departments.map((dept) => (
@@ -293,12 +292,12 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                 </div>
               )}
 
-              <div>
+<div
                 <Label htmlFor="description">Description</Label>;
-                <Textarea;
+                <Textarea>
                   {...form.register('description')}
-                  placeholder="Please provide detailed information about your complaint...";
-                  className="min-h-[150px]";
+                  placeholder="Please provide detailed information about your complaint..."
+                  className="min-h-[150px]"
                   disabled={isSubmitting}
                 />
                 {form.formState.errors.description && (
@@ -306,9 +305,9 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                 )}
               </div>
 
-              <div>
+<div
                 <Label>Attachments (Optional)</Label>
-                <FileUploader;
+                <FileUploader>
                   onFilesChange={handleFileChange}
                   maxFiles={5}
                   maxSize={5 * 1024 * 1024} // 5MB;
@@ -323,13 +322,13 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                   disabled={isSubmitting}
                 />
                 <p className="text-xs text-gray-500 mt-1">;
-                  You can upload up to 5 files (images, PDFs, or documents) to support your complaint.;
+                  You can upload up to 5 files (images, PDFs, or documents) to support your complaint.
                 </p>
               </div>
 
               <div className="flex items-center space-x-2">;
-                <Checkbox;
-                  id="anonymous";
+                <Checkbox>
+                  id="anonymous"
                   checked={isAnonymous}
                   onCheckedChange={(checked) => {
                     form.setValue('anonymous', checked === true);
@@ -337,7 +336,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                   disabled={isSubmitting}
                 />
                 <Label htmlFor="anonymous" className="cursor-pointer">;
-                  Submit anonymously;
+                  Submit anonymously
                 </Label>
               </div>
 
@@ -346,28 +345,28 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                   <p className="text-sm text-gray-500">;
                     If you'd like us to follow up with you, please provide your contact information (optional):
                   </p>
-                  <div>
+<div
                     <Label htmlFor="contactInfo.name">Name</Label>;
-                    <Input;
+                    <Input>
                       {...form.register('contactInfo.name')}
-                      placeholder="Your name";
+                      placeholder="Your name"
                       disabled={isSubmitting}
                     />
                   </div>
-                  <div>
+<div
                     <Label htmlFor="contactInfo.email">Email</Label>;
-                    <Input;
+                    <Input>
                       {...form.register('contactInfo.email')}
                       type="email"
-                      placeholder="Your email";
+                      placeholder="Your email"
                       disabled={isSubmitting}
                     />
                   </div>
-                  <div>
+<div
                     <Label htmlFor="contactInfo.phone">Phone</Label>;
-                    <Input;
+                    <Input>
                       {...form.register('contactInfo.phone')}
-                      placeholder="Your phone number";
+                      placeholder="Your phone number"
                       disabled={isSubmitting}
                     />
                   </div>
@@ -378,8 +377,8 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
             <Button type="submit" className="w-full" disabled={isSubmitting}>;
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
-                  Submitting...;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
                 </>
               ) : (
                 'Submit Complaint';
@@ -400,11 +399,11 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center">;
-              <AlertCircle className="h-5 w-5 text-red-500 mr-2" />;
-              Confirm Critical Complaint;
+              <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
+              Confirm Critical Complaint
             </DialogTitle>
             <DialogDescription>
-              You are about to submit a critical complaint. This will be immediately escalated to senior management.;
+              You are about to submit a critical complaint. This will be immediately escalated to senior management.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">;
@@ -420,17 +419,17 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
-              Cancel;
+              Cancel
             </Button>
-            <Button;
-              variant="destructive";
+            <Button>
+              variant="destructive"
               onClick={() => formValues && submitComplaint(formValues)}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
-                  Submitting...;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
                 </>
               ) : (
                 'Confirm & Submit';

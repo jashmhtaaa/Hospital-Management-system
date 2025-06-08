@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -42,7 +42,7 @@ const prescriptionCreateSchema = z.object({
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>;
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination)
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -152,7 +152,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/prescriptions - Create a new prescription;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn || !session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,17 +17,17 @@ import { z } from 'zod';
 const checkOutSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   checkOutTime: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid time format";
+    message: "Invalid time format"
   }),
   biometricData: z.string().optional(),
   notes: z.string().optional(),
 });
 
 // POST handler for check-out;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Parse request body;
     const body = await request.json();

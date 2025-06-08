@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 /**
  * Emergency Room triage form component;
  */
-export const ERTriageForm = () {
+export const ERTriageForm = () => {
   return (
     <Card>
       <CardHeader>
@@ -32,13 +32,13 @@ export const ERTriageForm = () {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="chiefComplaint">Chief Complaint</Label>;
-              <Input id="chiefComplaint" placeholder="Patient's main complaint" />;
+              <Input id="chiefComplaint" placeholder="Patient's main complaint" />
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="triageLevel">Triage Level</Label>;
-              <Select;
-                id="triageLevel";
+              <Select>
+                id="triageLevel"
                 options={[
                   { value: "1", label: "Level 1 - Resuscitation" },
                   { value: "2", label: "Level 2 - Emergency" },
@@ -53,64 +53,64 @@ export const ERTriageForm = () {
           <div className="space-y-2">;
             <Label htmlFor="vitalSigns">Vital Signs</Label>;
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">;
-              <div>
+<div
                 <Label htmlFor="temperature" className="text-xs">Temperature</Label>;
-                <Input id="temperature" placeholder="°C" />;
+                <Input id="temperature" placeholder="°C" />
               </div>
-              <div>
+<div
                 <Label htmlFor="heartRate" className="text-xs">Heart Rate</Label>;
-                <Input id="heartRate" placeholder="bpm" />;
+                <Input id="heartRate" placeholder="bpm" />
               </div>
-              <div>
+<div
                 <Label htmlFor="respRate" className="text-xs">Resp. Rate</Label>;
-                <Input id="respRate" placeholder="/min" />;
+                <Input id="respRate" placeholder="/min" />
               </div>
-              <div>
+<div
                 <Label htmlFor="bloodPressure" className="text-xs">Blood Pressure</Label>;
-                <Input id="bloodPressure" placeholder="mmHg" />;
+                <Input id="bloodPressure" placeholder="mmHg" />
               </div>
-              <div>
+<div
                 <Label htmlFor="oxygenSat" className="text-xs">O2 Saturation</Label>;
-                <Input id="oxygenSat" placeholder="%" />;
+                <Input id="oxygenSat" placeholder="%" />
               </div>
-              <div>
+<div
                 <Label htmlFor="painScore" className="text-xs">Pain Score</Label>;
-                <Input id="painScore" placeholder="0-10" />;
+                <Input id="painScore" placeholder="0-10" />
               </div>
             </div>
           </div>
           
           <div className="space-y-2">;
             <Label htmlFor="symptoms">Symptoms & Observations</Label>;
-            <Textarea id="symptoms" placeholder="Detailed description of symptoms and observations" />;
+            <Textarea id="symptoms" placeholder="Detailed description of symptoms and observations" />
           </div>
           
           <div className="space-y-2">;
             <Label>Critical Indicators</Label>
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2">;
               <div className="flex items-center space-x-2">;
-                <Checkbox id="difficultyBreathing" />;
-                <Label htmlFor="difficultyBreathing" className="text-sm">Difficulty Breathing</Label>;
+                <Checkbox id="difficultyBreathing" />
+                <Label htmlFor="difficultyBreathing" className="text-sm">Difficulty Breathing</Label>
               </div>
               <div className="flex items-center space-x-2">;
-                <Checkbox id="chestPain" />;
-                <Label htmlFor="chestPain" className="text-sm">Chest Pain</Label>;
+                <Checkbox id="chestPain" />
+                <Label htmlFor="chestPain" className="text-sm">Chest Pain</Label>
               </div>
               <div className="flex items-center space-x-2">;
-                <Checkbox id="alteredMentalStatus" />;
-                <Label htmlFor="alteredMentalStatus" className="text-sm">Altered Mental Status</Label>;
+                <Checkbox id="alteredMentalStatus" />
+                <Label htmlFor="alteredMentalStatus" className="text-sm">Altered Mental Status</Label>
               </div>
               <div className="flex items-center space-x-2">;
-                <Checkbox id="severeTrauma" />;
-                <Label htmlFor="severeTrauma" className="text-sm">Severe Trauma</Label>;
+                <Checkbox id="severeTrauma" />
+                <Label htmlFor="severeTrauma" className="text-sm">Severe Trauma</Label>
               </div>
               <div className="flex items-center space-x-2">;
-                <Checkbox id="uncontrolledBleeding" />;
-                <Label htmlFor="uncontrolledBleeding" className="text-sm">Uncontrolled Bleeding</Label>;
+                <Checkbox id="uncontrolledBleeding" />
+                <Label htmlFor="uncontrolledBleeding" className="text-sm">Uncontrolled Bleeding</Label>
               </div>
               <div className="flex items-center space-x-2">;
-                <Checkbox id="stroke" />;
-                <Label htmlFor="stroke" className="text-sm">Stroke Symptoms</Label>;
+                <Checkbox id="stroke" />
+                <Label htmlFor="stroke" className="text-sm">Stroke Symptoms</Label>
               </div>
             </div>
           </div>

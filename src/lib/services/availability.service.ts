@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -12,8 +12,8 @@ var __DEV__: boolean;
 import { prisma } from '@/lib/prisma';
 
 export interface TimeSlot {
-  start: Date;
-  end: Date;
+  start: Date,
+  end: Date
 }
 
 export interface AvailabilityCheck {
@@ -39,10 +39,10 @@ export async const checkDoctorAvailability = (
         status: { in: ['SCHEDULED', 'IN_PROGRESS'] },
         OR: [
           {
-            // Overlapping start time;
+            // Overlapping start time,
             scheduledDateTime: {
               gte: requestedSlot.start,
-              lt: requestedSlot.end;
+              lt: requestedSlot.end
             }
           },
           {
@@ -51,8 +51,8 @@ export async const checkDoctorAvailability = (
               { scheduledDateTime: { lte: requestedSlot.start } },
               { 
                 estimatedDuration: {
-                  // Calculate end time overlap;
-                  gte: Math.floor((requestedSlot.start.getTime() - new Date().getTime()) / (1000 * 60));
+                  // Calculate end time overlap,
+                  gte: Math.floor((requestedSlot.start.getTime() - new Date().getTime()) / (1000 * 60))
                 }
               }
             ]
@@ -73,7 +73,7 @@ export async const checkDoctorAvailability = (
       where: {
         doctorId,
         dayOfWeek,
-        isActive: true;
+        isActive: true
       }
     });
 
@@ -106,7 +106,7 @@ export async const checkDoctorAvailability = (
     return {
       available: conflicts.length === 0,
       conflicts: conflicts.length > 0 ? conflicts : undefined,
-      suggestedSlots: suggestedSlots.length > 0 ? suggestedSlots : undefined;
+      suggestedSlots: suggestedSlots.length > 0 ? suggestedSlots : undefined
     };
 
   } catch (error) {
@@ -131,7 +131,7 @@ async const generateAlternativeSlots = (
       where: {
         doctorId,
         dayOfWeek: dateToCheck.getDay(),
-        isActive: true;
+        isActive: true
       }
     });
 
@@ -153,7 +153,7 @@ async const generateAlternativeSlots = (
           // Check if this slot is available;
           const availabilityCheck = await checkDoctorAvailability(doctorId, {
             start: slotStart,
-            end: slotEnd;
+            end: slotEnd
           });
           
           if (availabilityCheck.available) {
@@ -190,7 +190,7 @@ export async const blockTimeSlot = (
         endTime: timeSlot.end,
         reason,
         blockedBy: userId,
-        isActive: true;
+        isActive: true
       }
     });
   } catch (error) {
@@ -213,7 +213,7 @@ export async const getDoctorSchedule = (
         doctorId,
         scheduledDateTime: {
           gte: startDate,
-          lte: endDate;
+          lte: endDate
         },
         status: { in: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED'] }
       },
@@ -222,12 +222,12 @@ export async const getDoctorSchedule = (
           select: {
             firstName: true,
             lastName: true,
-            contactNumber: true;
+            contactNumber: true
           }
         }
       },
       orderBy: {
-        scheduledDateTime: 'asc';
+        scheduledDateTime: 'asc'
       }
     });
 
@@ -236,7 +236,7 @@ export async const getDoctorSchedule = (
         doctorId,
         startTime: { gte: startDate },
         endTime: { lte: endDate },
-        isActive: true;
+        isActive: true
       }
     });
 
@@ -247,14 +247,14 @@ export async const getDoctorSchedule = (
         start: apt.scheduledDateTime,
         duration: apt.estimatedDuration,
         patient: `${apt.patient.firstName} ${apt.patient.lastName}`,
-        status: apt.status;
+        status: apt.status
       })),
       ...blockedTimes.map(block => ({
         type: 'blocked',
         id: block.id,
         start: block.startTime,
         end: block.endTime,
-        reason: block.reason;
+        reason: block.reason
       }));
     ];
   } catch (error) {

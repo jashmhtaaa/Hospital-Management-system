@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -45,7 +45,7 @@ export class FHIRPatientIntegration {
     
     return {
       hmsPatient: updatedHMSPatient,
-      fhirPatient: result.data!;
+      fhirPatient: result.data!
     };
   }
 
@@ -61,7 +61,7 @@ export class FHIRPatientIntegration {
     
     return {
       hmsPatient: this.convertFHIRToHMS(result.data),
-      fhirPatient: result.data;
+      fhirPatient: result.data
     };
   }
 
@@ -69,9 +69,9 @@ export class FHIRPatientIntegration {
    * Search patients with FHIR compliance;
    */
   static async searchPatients(searchParams: unknown): Promise<{
-    hmsPatients: unknown[];
+    hmsPatients: unknown[],
     fhirBundle: unknown;
-    total: number;
+    total: number
   }> {
     const result = await fhirService.searchPatients(searchParams);
     
@@ -86,7 +86,7 @@ export class FHIRPatientIntegration {
     return {
       hmsPatients,
       fhirBundle: result.data,
-      total: result.data.total || 0;
+      total: result.data.total || 0
     };
   }
 
@@ -104,7 +104,7 @@ export class FHIRPatientIntegration {
       email: FHIRPatientUtils.getPrimaryEmail(fhirPatient) || '',
       active: fhirPatient.active !== false,
       createdAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date(),
-      updatedAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date();
+      updatedAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date()
     };
   }
 }
@@ -129,7 +129,7 @@ export class FHIRAppointmentIntegration {
     
     return {
       hmsAppointment: this.convertFHIRToHMS(result.data!),
-      fhirAppointment: result.data!;
+      fhirAppointment: result.data!
     };
   }
 

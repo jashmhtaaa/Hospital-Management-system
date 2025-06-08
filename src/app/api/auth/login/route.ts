@@ -12,7 +12,7 @@ const LoginSchema = z.object({
   identifier: z.string().min(1, "Username or email is required"), // Can be username or email;
   password: z.string().min(1, "Password is required"),
 });
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
   try {
     const body = await request.json();
     const validation = LoginSchema.safeParse(body);
@@ -43,14 +43,14 @@ export async const POST = (request: Request) {
       .bind(identifier, identifier);
       // Define the expected result type more accurately;
       .first<{
-          userId: number;
+          userId: number,
           username: string;
-          email: string;
+          email: string,
           password_hash: string;
-          fullName: string | null;
+          fullName: string | null,
           roleId: number;
-          isActive: boolean;
-          roleName: string;
+          isActive: boolean,
+          roleName: string
       }>();
 
     if (!userResult) {

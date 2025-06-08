@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,26 +18,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cache } from '@/lib/cache';
 
 interface CacheHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: 'healthy' | 'degraded' | 'unhealthy',
   timestamp: string;
-  responseTime: number;
+  responseTime: number,
   operations: {
     read: { success: boolean; time: number };
     write: { success: boolean; time: number };
     delete: { success: boolean; time: number };
   };
   memory: {
-    used: string;
+    used: string,
     peak: string;
-    fragmentation: number;
+    fragmentation: number
   };
   connections: {
-    active: number;
-    blocked: number;
+    active: number,
+    blocked: number
   };
   keyspace: {
-    keys: number;
-    expires: number;
+    keys: number,
+    expires: number
   };
 }
 
@@ -60,7 +60,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       operations,
       memory: stats.memory,
       connections: stats.connections,
-      keyspace: stats.keyspace;
+      keyspace: stats.keyspace
     };
     
     const httpStatus = cacheHealth.status === 'healthy' ? 200 : 
@@ -81,7 +81,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
       timestamp: new Date().toISOString(),
       responseTime: Date.now() - startTime,
       error: 'Cache system unavailable',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -133,9 +133,9 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
 }
 
 async const getCacheStats = (): Promise<{
-  memory: CacheHealth['memory'];
+  memory: CacheHealth['memory'],
   connections: CacheHealth['connections'];
-  keyspace: CacheHealth['keyspace'];
+  keyspace: CacheHealth['keyspace']
 }> {
   try {
     // These stats would come from your actual cache implementation;
@@ -146,15 +146,15 @@ async const getCacheStats = (): Promise<{
       memory: {
         used: '45.2MB',
         peak: '67.8MB',
-        fragmentation: 1.15;
+        fragmentation: 1.15
       },
       connections: {
         active: 12,
-        blocked: 0;
+        blocked: 0
       },
       keyspace: {
         keys: 2847,
-        expires: 1234;
+        expires: 1234
       }
     };
   } catch (error) {
@@ -163,15 +163,15 @@ async const getCacheStats = (): Promise<{
       memory: {
         used: 'unknown',
         peak: 'unknown',
-        fragmentation: 0;
+        fragmentation: 0
       },
       connections: {
         active: 0,
-        blocked: 0;
+        blocked: 0
       },
       keyspace: {
         keys: 0,
-        expires: 0;
+        expires: 0
       }
     };
   }

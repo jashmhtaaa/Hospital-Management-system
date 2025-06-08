@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,8 +19,8 @@ import { calculateRoute, estimateArrivalTime } from '@/lib/services/support-serv
 export interface AmbulanceFilter {
   status?: string;
   vehicleType?: string;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface AmbulanceTripFilter {
@@ -31,14 +31,14 @@ export interface AmbulanceTripFilter {
   patientId?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface CreateAmbulanceData {
-  registrationNumber: string;
+  registrationNumber: string,
   vehicleType: string;
-  capacity: number;
+  capacity: number,
   features: string[];
   currentLocationId?: string;
   lastMaintenanceDate?: Date;
@@ -46,7 +46,7 @@ export interface CreateAmbulanceData {
 }
 
 export interface CreateAmbulanceTripData {
-  ambulanceId: string;
+  ambulanceId: string,
   tripType: string;
   priority: string;
   patientId?: string;
@@ -87,12 +87,12 @@ export class AmbulanceService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             },
             where: {
-              status: 'ON_DUTY';
+              status: 'ON_DUTY'
             }
           },
           _count: {
@@ -111,7 +111,7 @@ export class AmbulanceService {
         take: limit,
         orderBy: { registrationNumber: 'asc' }
       }),
-      prisma.ambulance.count({ where });
+      prisma.ambulance.count({ where })
     ]);
     
     // Convert to FHIR format;
@@ -124,7 +124,7 @@ export class AmbulanceService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -143,7 +143,7 @@ export class AmbulanceService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
@@ -157,7 +157,7 @@ export class AmbulanceService {
           include: {
             patient: true,
             pickupLocation: true,
-            dropLocation: true;
+            dropLocation: true
           },
           orderBy: { scheduledTime: 'asc' }
         },
@@ -179,7 +179,7 @@ export class AmbulanceService {
     if (includeFHIR) {
       return {
         data: ambulance,
-        fhir: toFHIRAmbulance(ambulance);
+        fhir: toFHIRAmbulance(ambulance)
       };
     }
     
@@ -209,10 +209,10 @@ export class AmbulanceService {
         features: data.features,
         currentLocationId: data.currentLocationId,
         lastMaintenanceDate: data.lastMaintenanceDate,
-        nextMaintenanceDate: data.nextMaintenanceDate;
+        nextMaintenanceDate: data.nextMaintenanceDate
       },
       include: {
-        currentLocation: true;
+        currentLocation: true
       }
     });
     
@@ -256,7 +256,7 @@ export class AmbulanceService {
       where: { id },
       data,
       include: {
-        currentLocation: true;
+        currentLocation: true
       }
     });
     
@@ -279,7 +279,7 @@ export class AmbulanceService {
         entityId: ambulance.id,
         metadata: {
           ambulanceId: ambulance.id,
-          registrationNumber: ambulance.registrationNumber;
+          registrationNumber: ambulance.registrationNumber
         }
       });
     }
@@ -318,14 +318,14 @@ export class AmbulanceService {
               id: true,
               name: true,
               dateOfBirth: true,
-              gender: true;
+              gender: true
             }
           },
           requestedByUser: {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           pickupLocation: true,
@@ -336,7 +336,7 @@ export class AmbulanceService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             }
@@ -346,7 +346,7 @@ export class AmbulanceService {
         take: limit,
         orderBy: { scheduledTime: 'desc' }
       }),
-      prisma.ambulanceTrip.count({ where });
+      prisma.ambulanceTrip.count({ where })
     ]);
     
     // Convert to FHIR format;
@@ -359,7 +359,7 @@ export class AmbulanceService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -377,14 +377,14 @@ export class AmbulanceService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true;
+            gender: true
           }
         },
         requestedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         pickupLocation: true,
@@ -395,12 +395,12 @@ export class AmbulanceService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
         },
-        route: true;
+        route: true
       }
     });
     
@@ -411,7 +411,7 @@ export class AmbulanceService {
     if (includeFHIR) {
       return {
         data: trip,
-        fhir: toFHIRAmbulanceTrip(trip);
+        fhir: toFHIRAmbulanceTrip(trip)
       };
     }
     
@@ -486,7 +486,7 @@ export class AmbulanceService {
         ambulance: true,
         patient: true,
         pickupLocation: true,
-        dropLocation: true;
+        dropLocation: true
       }
     });
     
@@ -500,7 +500,7 @@ export class AmbulanceService {
             tripId: trip.id,
             routeData: routeData.routeData,
             estimatedDistance: routeData.distance,
-            estimatedDuration: routeData.duration;
+            estimatedDuration: routeData.duration
           }
         });
       } catch (error) {
@@ -515,7 +515,7 @@ export class AmbulanceService {
         try {
           await prisma.ambulanceCrew.update({
             where: {
-              id: crewId;
+              id: crewId
             },
             data: {
               trips: {
@@ -555,7 +555,7 @@ export class AmbulanceService {
       metadata: {
         tripId: trip.id,
         ambulanceId: data.ambulanceId,
-        priority: data.priority;
+        priority: data.priority
       }
     });
     
@@ -570,7 +570,7 @@ export class AmbulanceService {
       where: { id },
       include: {
         ambulance: true,
-        patient: true;
+        patient: true
       }
     });
     
@@ -612,7 +612,7 @@ export class AmbulanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -648,17 +648,17 @@ export class AmbulanceService {
           update: {
             routeData: {
               ...locationData,
-              lastUpdated: new Date().toISOString();
+              lastUpdated: new Date().toISOString()
             }
           },
           create: {
             tripId: id,
             routeData: {
               ...locationData,
-              lastUpdated: new Date().toISOString();
+              lastUpdated: new Date().toISOString()
             },
             estimatedDistance: locationData.distance || 0,
-            estimatedDuration: locationData.duration || 0;
+            estimatedDuration: locationData.duration || 0
           }
         });
       } catch (error) {
@@ -684,7 +684,7 @@ export class AmbulanceService {
           title: `Ambulance En Route to Pickup`,
           message: `Ambulance ${trip.ambulance.registrationNumber} is en route to pickup location`,
           recipientIds: [trip.requestedById],
-          entityId: trip.id;
+          entityId: trip.id
         });
         break;
       
@@ -694,7 +694,7 @@ export class AmbulanceService {
           title: `Ambulance Arrived at Pickup`,
           message: `Ambulance ${trip.ambulance.registrationNumber} has arrived at pickup location`,
           recipientIds: [trip.requestedById],
-          entityId: trip.id;
+          entityId: trip.id
         });
         break;
       
@@ -705,7 +705,7 @@ export class AmbulanceService {
           message: `Trip with ambulance ${trip.ambulance.registrationNumber} has been completed`,
           recipientIds: [trip.requestedById],
           recipientRoles: ['AMBULANCE_COORDINATOR'],
-          entityId: trip.id;
+          entityId: trip.id
         });
         break;
     }
@@ -728,13 +728,13 @@ export class AmbulanceService {
         currentLocation: true,
         crew: {
           where: {
-            status: 'ON_DUTY';
+            status: 'ON_DUTY'
           },
           include: {
             user: {
               select: {
                 id: true,
-                name: true;
+                name: true
               }
             }
           }
@@ -748,7 +748,7 @@ export class AmbulanceService {
               // Find trips that might conflict with the scheduled time;
               // Assuming trips take at most 2 hours;
               gte: new Date(scheduledTime.getTime() - 2 * 60 * 60 * 1000),
-              lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000);
+              lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000)
             }
           }
         }
@@ -803,20 +803,20 @@ export class AmbulanceService {
                 ...ambulance,
                 eta: {
                   minutes: eta.duration,
-                  distance: eta.distance;
+                  distance: eta.distance
                 }
               };
             } catch (error) {
 
               return {
                 ...ambulance,
-                eta: null;
+                eta: null
               };
             }
           }
           return {
             ...ambulance,
-            eta: null;
+            eta: null
           };
         });
       );
@@ -877,10 +877,10 @@ export class AmbulanceService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
-          ambulance: true;
+          ambulance: true
         }
       });
       
@@ -910,10 +910,10 @@ export class AmbulanceService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
-          ambulance: true;
+          ambulance: true
         }
       });
       
@@ -938,7 +938,7 @@ export class AmbulanceService {
           ambulanceId,
           role,
           shiftStart: shiftStart.toISOString(),
-          shiftEnd: shiftEnd.toISOString();
+          shiftEnd: shiftEnd.toISOString()
         }
       });
       
@@ -954,7 +954,7 @@ export class AmbulanceService {
       where: { id: crewId },
       include: {
         user: true,
-        ambulance: true;
+        ambulance: true
       }
     });
     
@@ -967,11 +967,11 @@ export class AmbulanceService {
       where: { id: crewId },
       data: {
         status: 'OFF_DUTY',
-        shiftEnd: new Date();
+        shiftEnd: new Date()
       },
       include: {
         user: true,
-        ambulance: true;
+        ambulance: true
       }
     });
     
@@ -1008,10 +1008,10 @@ export class AmbulanceService {
         status: 'SCHEDULED',
         description: data.description,
         scheduledDate: new Date(data.scheduledDate),
-        notes: data.notes;
+        notes: data.notes
       },
       include: {
-        ambulance: true;
+        ambulance: true
       }
     });
     
@@ -1035,7 +1035,7 @@ export class AmbulanceService {
         maintenanceId: maintenance.id,
         ambulanceId,
         maintenanceType: data.maintenanceType,
-        scheduledDate: data.scheduledDate;
+        scheduledDate: data.scheduledDate
       }
     });
     
@@ -1049,7 +1049,7 @@ export class AmbulanceService {
     const maintenance = await prisma.ambulanceMaintenance.findUnique({
       where: { id },
       include: {
-        ambulance: true;
+        ambulance: true
       }
     });
     
@@ -1079,7 +1079,7 @@ export class AmbulanceService {
         data: {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now;
-          status: 'AVAILABLE' // Set ambulance back to available;
+          status: 'AVAILABLE' // Set ambulance back to available
         }
       });
     }
@@ -1094,7 +1094,7 @@ export class AmbulanceService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1116,7 +1116,7 @@ export class AmbulanceService {
         title: `Ambulance Maintenance Completed`,
         message: `Maintenance for ambulance ${maintenance.ambulance.registrationNumber} has been completed`,
         recipientRoles: ['AMBULANCE_COORDINATOR'],
-        entityId: maintenance.id;
+        entityId: maintenance.id
       });
     }
     
@@ -1152,7 +1152,7 @@ export class AmbulanceService {
     const item = await prisma.ambulanceInventory.findUnique({
       where: { id },
       include: {
-        ambulance: true;
+        ambulance: true
       }
     });
     
@@ -1170,7 +1170,7 @@ export class AmbulanceService {
       where: { id },
       data,
       include: {
-        ambulance: true;
+        ambulance: true
       }
     });
     
@@ -1191,7 +1191,7 @@ export class AmbulanceService {
         title: `Low Ambulance Inventory`,
         message: `${updatedItem.itemName} is running low on ambulance ${updatedItem.ambulance.registrationNumber} (${updatedItem.quantity} remaining)`,
         recipientRoles: ['AMBULANCE_COORDINATOR', 'INVENTORY_MANAGER'],
-        entityId: updatedItem.id;
+        entityId: updatedItem.id
       });
     }
     
@@ -1228,10 +1228,10 @@ export class AmbulanceService {
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get trip counts by type;
@@ -1239,10 +1239,10 @@ export class AmbulanceService {
       by: ['tripType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get trip counts by priority;
@@ -1250,10 +1250,10 @@ export class AmbulanceService {
       by: ['priority'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get ambulance utilization;
@@ -1267,7 +1267,7 @@ export class AmbulanceService {
             trips: {
               where: {
                 createdAt: {
-                  gte: startDate;
+                  gte: startDate
                 }
               }
             }
@@ -1282,7 +1282,7 @@ export class AmbulanceService {
         id: ambulance.id,
         registrationNumber: ambulance.registrationNumber,
         vehicleType: ambulance.vehicleType,
-        tripCount: ambulance._count.trips;
+        tripCount: ambulance._count.trips
       }));
       .sort((a, b) => b.tripCount - a.tripCount);
     
@@ -1293,12 +1293,12 @@ export class AmbulanceService {
         startTime: { not: null },
         endTime: { not: null },
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
       select: {
         duration: true,
-        tripType: true;
+        tripType: true
       }
     });
     
@@ -1327,12 +1327,12 @@ export class AmbulanceService {
       by: ['maintenanceType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
       _count: true,
       _sum: {
-        cost: true;
+        cost: true
       }
     });
     

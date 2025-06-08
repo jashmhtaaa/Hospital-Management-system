@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/lab/results/delta-checks;
  * Get delta check configurations;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -112,7 +112,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/lab/results/delta-checks;
  * Create a new delta check configuration;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -165,7 +165,7 @@ export async const POST = (request: NextRequest) {
 
     if (duplicateCheck.results.length > 0) {
       return NextResponse.json({ 
-        error: 'A delta check configuration with these parameters already exists';
+        error: 'A delta check configuration with these parameters already exists'
       }, { status: 409 });
     }
 
@@ -200,7 +200,7 @@ export async const POST = (request: NextRequest) {
       action: 'create',
       resource: 'laboratory_delta_checks',
       resourceId: result.insertId,
-      details: body;
+      details: body
     });
 
     // Invalidate cache;
@@ -229,7 +229,7 @@ export async const POST = (request: NextRequest) {
  * PUT /api/diagnostics/lab/results/delta-checks/:id;
  * Update a delta check configuration;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -329,11 +329,11 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         action: 'update',
         resource: 'laboratory_delta_checks',
         resourceId: id,
-        details: body;
+        details: body
       });
 
       // Invalidate cache;
-      await CacheInvalidation.invalidatePattern('diagnostic:lab:delta-checks:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: lab:delta-checks:*')
     }
 
     // Get the updated delta check;
@@ -359,7 +359,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * DELETE /api/diagnostics/lab/results/delta-checks/:id;
  * Delete a delta check configuration;
  */
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -412,7 +412,7 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
  * POST /api/diagnostics/lab/results/delta-checks/evaluate;
  * Evaluate a result against delta check rules;
  */
-export async const POST_EVALUATE = (request: NextRequest) {
+export async const POST_EVALUATE = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -457,7 +457,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
       return NextResponse.json({
         passed: true,
         message: 'No applicable delta check rules found',
-        details: null;
+        details: null
       });
     }
 
@@ -476,7 +476,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
     const previousResultsResult = await DB.query(previousResultsQuery, [
       testId, 
       patientId, 
-      resultDate || new Date().toISOString();
+      resultDate || new Date().toISOString()
     ]);
     const previousResults = previousResultsResult.results;
 
@@ -485,7 +485,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
       return NextResponse.json({
         passed: true,
         message: 'No previous results found for comparison',
-        details: null;
+        details: null
       });
     }
 
@@ -543,7 +543,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
           previousResult: previousResult,
           absoluteDelta,
           percentDelta,
-          timeWindowHours: timeWindowHours;
+          timeWindowHours: timeWindowHours
         });
         
         // If action is 'block', stop checking further rules;
@@ -563,7 +563,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
         patientId,
         resultValue,
         resultUnits,
-        violations: violations.length;
+        violations: violations.length
       }
     });
 
@@ -571,7 +571,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
       return NextResponse.json({
         passed: true,
         message: 'All delta checks passed',
-        details: null;
+        details: null
       });
     } else {
       // Return the most severe violation;
@@ -592,7 +592,7 @@ export async const POST_EVALUATE = (request: NextRequest) {
           percentDelta: worstViolation.percentDelta,
           timeWindowHours: worstViolation.timeWindowHours,
           action: worstViolation.rule.action,
-          allViolations: violations;
+          allViolations: violations
         }
       });
     }

@@ -19,7 +19,7 @@ const getConsultationId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific consultation with full details;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -44,24 +44,24 @@ export async const GET = (request: Request) {
 
         // 2. Retrieve the main consultation record;
         interface ConsultationQueryResult {
-            consultation_id: number;
+            consultation_id: number,
             patient_id: number;
-            doctor_id: number;
+            doctor_id: number,
             opd_visit_id: number | null;
-            admission_id: number | null;
+            admission_id: number | null,
             consultation_datetime: string;
-            chief_complaint: string | null;
+            chief_complaint: string | null,
             history_of_present_illness: string | null;
-            physical_examination: string | null;
+            physical_examination: string | null,
             diagnosis: string | null;
-            treatment_plan: string | null;
+            treatment_plan: string | null,
             follow_up_instructions: string | null;
-            notes: string | null;
+            notes: string | null,
             created_at: string;
-            updated_at: string;
+            updated_at: string,
             patient_first_name: string;
-            patient_last_name: string;
-            doctor_full_name: string;
+            patient_last_name: string,
+            doctor_full_name: string
         }
 
         const consultResult = await DB.prepare(
@@ -137,7 +137,7 @@ const UpdateConsultationSchema = z.object({
     notes: z.string().optional().nullable(),
 });
 
-export async const PUT = (request: Request) {
+export async const PUT = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

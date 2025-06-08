@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,13 +23,13 @@ interface AlertInput {
 
 // Define interface for alert data (including generated fields)
 interface Alert {
-  id: string;
+  id: string,
   visit_id: string;
-  alert_type: string;
+  alert_type: string,
   activated_by_id: string | number;
-  details?: string | null; // FIX: Changed to allow null to match usage;
+  details?: string | null; // FIX: Changed to allow null to match usage,
   activation_timestamp: string; // ISO 8601 date string;
-  status: string;
+  status: string
 }
 
 // Mock data store for alerts (replace with actual DB interaction)

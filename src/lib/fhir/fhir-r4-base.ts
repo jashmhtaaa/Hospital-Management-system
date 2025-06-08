@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -40,8 +40,8 @@ export interface FHIRMeta {
 
 // FHIR Narrative;
 export interface FHIRNarrative {
-  status: 'generated' | 'extensions' | 'additional' | 'empty';
-  div: string;
+  status: 'generated' | 'extensions' | 'additional' | 'empty',
+  div: string
 }
 
 // FHIR Extension;
@@ -186,8 +186,8 @@ export interface FHIRPatientCommunication {
 }
 
 export interface FHIRPatientLink {
-  other: FHIRReference;
-  type: 'replaced-by' | 'replaces' | 'refer' | 'seealso';
+  other: FHIRReference,
+  type: 'replaced-by' | 'replaces' | 'refer' | 'seealso'
 }
 
 export interface FHIRAttachment {
@@ -262,7 +262,7 @@ export interface FHIRAnnotation {
   authorReference?: FHIRReference;
   authorString?: string;
   time?: string;
-  text: string;
+  text: string
 }
 
 // ServiceRequest Resource (Lab Orders)
@@ -274,7 +274,7 @@ export interface FHIRServiceRequest extends FHIRResource {
   basedOn?: FHIRReference[];
   replaces?: FHIRReference[];
   requisition?: FHIRIdentifier;
-  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown';
+  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown',
   intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
   category?: FHIRCodeableConcept[];
   priority?: 'routine' | 'urgent' | 'asap' | 'stat';
@@ -437,7 +437,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   protected resourceType: string;
 
   constructor(resourceType: string) {
-    this.resourceType = resourceType;
+    this.resourceType = resourceType
   }
 
   // Generate FHIR-compliant ID;
@@ -501,7 +501,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
 
   // Convert to/from internal format;
   abstract toFHIR(internalData: unknown): T;
-  abstract fromFHIR(fhirResource: T): unknown;
+  abstract fromFHIR(fhirResource: T): unknown
 }
 
 // FHIR Bundle for transaction operations;
@@ -517,8 +517,8 @@ export interface FHIRBundle extends FHIRResource {
 }
 
 export interface FHIRBundleLink {
-  relation: string;
-  url: string;
+  relation: string,
+  url: string
 }
 
 export interface FHIRBundleEntry {
@@ -536,7 +536,7 @@ export interface FHIRBundleEntrySearch {
 }
 
 export interface FHIRBundleEntryRequest {
-  method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
   url: string;
   ifNoneMatch?: string;
   ifModifiedSince?: string;
@@ -553,7 +553,7 @@ export interface FHIRBundleEntryResponse {
 }
 
 export interface FHIRSignature {
-  type: FHIRCoding[];
+  type: FHIRCoding[],
   when: string;
   who: FHIRReference;
   onBehalfOf?: FHIRReference;

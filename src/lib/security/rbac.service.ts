@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,13 +21,13 @@ import bcrypt from 'bcryptjs';
 import { EventEmitter } from 'events';
 
 export interface User {
-  id: string;
+  id: string,
   email: string;
-  username: string;
+  username: string,
   firstName: string;
-  lastName: string;
+  lastName: string,
   roles: Role[];
-  permissions: Permission[];
+  permissions: Permission[],
   isActive: boolean;
   isLocked: boolean;
   lastLogin?: Date;
@@ -38,7 +38,7 @@ export interface User {
   organizationId: string;
   practitionerId?: string;
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     updatedAt: Date;
     createdBy: string;
     passwordChangedAt?: Date;
@@ -48,78 +48,78 @@ export interface User {
 }
 
 export interface Role {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   permissions: Permission[];
   isSystem: boolean;
   organizationId?: string;
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     updatedAt: Date;
-    createdBy: string;
+    createdBy: string
   };
 }
 
 export interface Permission {
-  id: string;
+  id: string,
   resource: string;
-  action: string;
+  action: string,
   scope: PermissionScope;
   conditions?: PermissionCondition[];
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     updatedAt: Date;
-    description: string;
+    description: string
   };
 }
 
 export interface PermissionCondition {
-  field: string;
+  field: string,
   operator: 'equals' | 'not_equals' | 'in' | 'not_in' | 'contains' | 'starts_with' | 'ends_with';
-  value: unknown;
+  value: unknown
 }
 
 export type PermissionScope = 'global' | 'organization' | 'department' | 'self' | 'assigned';
 
 export interface AccessContext {
-  userId: string;
+  userId: string,
   organizationId: string;
   department?: string;
   practitionerId?: string;
   ipAddress?: string;
   userAgent?: string;
-  sessionId: string;
+  sessionId: string
 }
 
 export interface AuditLog {
-  id: string;
+  id: string,
   userId: string;
-  action: string;
+  action: string,
   resource: string;
   resourceId?: string;
   organizationId: string;
   department?: string;
-  success: boolean;
+  success: boolean,
   details: unknown;
   ipAddress?: string;
   userAgent?: string;
-  timestamp: Date;
-  sessionId: string;
+  timestamp: Date,
+  sessionId: string
 }
 
 export interface Session {
-  id: string;
+  id: string,
   userId: string;
-  token: string;
+  token: string,
   refreshToken: string;
-  expiresAt: Date;
+  expiresAt: Date,
   refreshExpiresAt: Date;
   isActive: boolean;
   ipAddress?: string;
   userAgent?: string;
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     lastUsed: Date;
     deviceId?: string;
     deviceName?: string;
@@ -132,8 +132,7 @@ export class RBACService extends EventEmitter {
   private jwtRefreshSecret: string;
   private sessions: Map<string, Session> = new Map();
   private permissionCache: Map<string, Permission[]> = new Map();
-  private roleCache: Map<string, Role> = new Map();
-
+  private roleCache: Map<string, Role> = new Map(),
   constructor() {
     super();
     this.prisma = new PrismaClient();
@@ -217,7 +216,7 @@ export class RBACService extends EventEmitter {
       await this.logAuditEvent('authentication_success', 'user', user.id, {
         ipAddress,
         userAgent,
-        sessionId: session.id;
+        sessionId: session.id
       }, user.id, user.organizationId);
 
       this.emit('user_authenticated', { user, session, ipAddress, userAgent });
@@ -252,7 +251,7 @@ export class RBACService extends EventEmitter {
         practitionerId: decoded.practitionerId,
         sessionId: decoded.sessionId,
         ipAddress: session.ipAddress,
-        userAgent: session.userAgent;
+        userAgent: session.userAgent
       };
     } catch (error) {
       return null;
@@ -287,7 +286,7 @@ export class RBACService extends EventEmitter {
 
       return {
         accessToken: newAccessToken,
-        refreshToken: newRefreshToken;
+        refreshToken: newRefreshToken
       };
     } catch (error) {
       return null;
@@ -319,7 +318,7 @@ export class RBACService extends EventEmitter {
       // Log access denied;
       await this.logAuditEvent('access_denied', resource, resourceData?.id, {
         action,
-        reason: 'insufficient_permissions';
+        reason: 'insufficient_permissions'
       }, context.userId, context.organizationId);
 
       return false;

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -25,17 +25,17 @@ interface LabResultInput {
 }
 
 interface LabResult {
-  id: number;
+  id: number,
   order_item_id: number;
-  parameter_id: number | null;
+  parameter_id: number | null,
   result_value: string | number;
-  is_abnormal: boolean;
+  is_abnormal: boolean,
   notes: string | null;
-  performed_by: number;
+  performed_by: number,
   performed_at: string;
-  verified_by: number | null;
+  verified_by: number | null,
   verified_at: string | null;
-  created_at: string;
+  created_at: string,
   updated_at: string;
   // Joined fields;
   test_id?: number;
@@ -51,9 +51,9 @@ interface LabResult {
 }
 
 interface OrderItem {
-  id: number;
+  id: number,
   order_id: number;
-  test_id: number | null;
+  test_id: number | null,
   panel_id: number | null;
   status: string;
   // ... other fields;
@@ -62,7 +62,7 @@ interface OrderItem {
 // Removed unused interfaces: TestParameter, LabTest;
 
 // GET /api/laboratory/results - Get laboratory results;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -144,7 +144,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/laboratory/results - Create or update laboratory results;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {

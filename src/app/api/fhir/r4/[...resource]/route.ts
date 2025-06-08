@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,7 +24,7 @@ import { FHIRMedicationRequest } from '@/lib/fhir/medication';
 
 interface RouteParams {
   params: {
-    resource: string[];
+    resource: string[]
   };
 }
 
@@ -32,7 +32,7 @@ interface RouteParams {
  * GET /fhir/r4/{resourceType} - Search resources;
  * GET /fhir/r4/{resourceType}/{id} - Read resource by ID;
  */
-export async const GET = (request: NextRequest, { params }: RouteParams) {
+export async const GET = (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -111,7 +111,7 @@ export async const GET = (request: NextRequest, { params }: RouteParams) {
 /**
  * POST /fhir/r4/{resourceType} - Create resource;
  */
-export async const POST = (request: NextRequest, { params }: RouteParams) {
+export async const POST = (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -151,8 +151,7 @@ export async const POST = (request: NextRequest, { params }: RouteParams) {
       case 'MedicationRequest':
         result = await fhirService.createMedicationRequest(body as FHIRMedicationRequest);
         break;
-      default:
-        result = await fhirService.createResource(body);
+      default: result = await fhirService.createResource(body)
     }
 
     if (!result.success) {
@@ -199,7 +198,7 @@ export async const POST = (request: NextRequest, { params }: RouteParams) {
 /**
  * PUT /fhir/r4/{resourceType}/{id} - Update resource;
  */
-export async const PUT = (request: NextRequest, { params }: RouteParams) {
+export async const PUT = (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -212,7 +211,7 @@ export async const PUT = (request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'required',
-            diagnostics: 'Resource ID is required for PUT operation';
+            diagnostics: 'Resource ID is required for PUT operation'
           }]
         },
         { 
@@ -298,7 +297,7 @@ export async const PUT = (request: NextRequest, { params }: RouteParams) {
 /**
  * DELETE /fhir/r4/{resourceType}/{id} - Delete resource;
  */
-export async const DELETE = (request: NextRequest, { params }: RouteParams) {
+export async const DELETE = (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -311,7 +310,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'required',
-            diagnostics: 'Resource ID is required for DELETE operation';
+            diagnostics: 'Resource ID is required for DELETE operation'
           }]
         },
         { 
@@ -359,7 +358,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteParams) {
 /**
  * PATCH /fhir/r4/{resourceType}/{id} - Partial update (JSON Patch)
  */
-export async const PATCH = (request: NextRequest, { params }: RouteParams) {
+export async const PATCH = (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -372,7 +371,7 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'required',
-            diagnostics: 'Resource ID is required for PATCH operation';
+            diagnostics: 'Resource ID is required for PATCH operation'
           }]
         },
         { 
@@ -409,7 +408,7 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'not-supported',
-            diagnostics: 'JSON Patch not yet implemented';
+            diagnostics: 'JSON Patch not yet implemented'
           }]
         },
         { 
@@ -425,7 +424,7 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) {
           issue: [{
             severity: 'error',
             code: 'not-supported',
-            diagnostics: 'FHIR Patch not yet implemented';
+            diagnostics: 'FHIR Patch not yet implemented'
           }]
         },
         { 

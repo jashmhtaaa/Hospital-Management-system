@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,7 +22,7 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
     { className, orientation = 'horizontal', decorative = true, ...props },
     ref;
   ) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "shrink-0 bg-gray-200",

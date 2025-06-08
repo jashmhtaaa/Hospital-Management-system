@@ -62,7 +62,6 @@ model Bill {
   updatedAt         DateTime          @updatedAt
   createdBy         String
   departmentId      String?
-  insuranceClaimId  String?           @unique
   // Relations
   billItems         BillItem[]
   payments          Payment[]
@@ -275,7 +274,7 @@ model PolicyVerification {
 model InsuranceClaim {
   id                    String            @id @default(uuid())
   claimNumber           String            @unique
-  invoiceId             String
+  invoiceId             String            @unique
   invoice               Bill              @relation(fields: [invoiceId], references: [id])
   insurancePolicyId     String
   insurancePolicy       InsurancePolicy   @relation(fields: [insurancePolicyId], references: [id])

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -45,12 +45,12 @@ const genId = () {
 
 type Action =
   | {
-      type: "ADD_TOAST" // Use string literal;
-      toast: ToasterToast;
+      type: "ADD_TOAST" // Use string literal,
+      toast: ToasterToast
     }
   | {
-      type: "UPDATE_TOAST" // Use string literal;
-      toast: Partial<ToasterToast>;
+      type: "UPDATE_TOAST" // Use string literal,
+      toast: Partial<ToasterToast>
     }
   | {
       type: "DISMISS_TOAST" // Use string literal;
@@ -69,11 +69,11 @@ const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
-    return;
+    return
   }
 
   const timeout = setTimeout(() => {
-    toastTimeouts.delete(toastId);
+    toastTimeouts.delete(toastId),
     dispatch({
       type: "REMOVE_TOAST",
       toastId: toastId,
@@ -159,8 +159,7 @@ const toast = ({ ...props }: Toast) {
       type: "UPDATE_TOAST",
       toast: { ...props, id },
     });
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
-
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
   dispatch({
     type: "ADD_TOAST",
     toast: {

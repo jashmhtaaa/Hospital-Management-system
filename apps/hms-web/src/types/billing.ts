@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -13,84 +13,84 @@ import { BillingStatus, InvoiceStatus, PaymentMethod, PaymentStatus } from '@pri
 
 // Billing Types;
 export interface BillingItem {
-  id: string;
+  id: string,
   name: string;
   code: string;
   description?: string;
-  category: string;
+  category: string,
   price: number;
-  taxRate: number;
+  taxRate: number,
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export interface Invoice {
-  id: string;
+  id: string,
   invoiceNumber: string;
-  patientId: string;
+  patientId: string,
   patientName: string;
   doctorId?: string;
   doctorName?: string;
-  issueDate: Date;
+  issueDate: Date,
   dueDate: Date;
-  status: InvoiceStatus;
+  status: InvoiceStatus,
   subtotal: number;
-  taxAmount: number;
+  taxAmount: number,
   discountAmount: number;
-  totalAmount: number;
+  totalAmount: number,
   paidAmount: number;
   balanceAmount: number;
   notes?: string;
-  items: InvoiceItem[];
+  items: InvoiceItem[],
   payments: Payment[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export interface InvoiceItem {
-  id: string;
+  id: string,
   invoiceId: string;
-  itemId: string;
+  itemId: string,
   itemName: string;
   itemCode: string;
   description?: string;
-  quantity: number;
+  quantity: number,
   unitPrice: number;
-  taxRate: number;
+  taxRate: number,
   taxAmount: number;
-  discountAmount: number;
+  discountAmount: number,
   totalAmount: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export interface Payment {
-  id: string;
+  id: string,
   paymentNumber: string;
-  invoiceId: string;
+  invoiceId: string,
   patientId: string;
-  patientName: string;
+  patientName: string,
   amount: number;
-  method: PaymentMethod;
+  method: PaymentMethod,
   status: PaymentStatus;
   transactionId?: string;
   notes?: string;
-  receivedBy: string;
+  receivedBy: string,
   receivedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export interface BillingDashboardStats {
-  totalRevenue: number;
+  totalRevenue: number,
   pendingAmount: number;
-  overdueAmount: number;
+  overdueAmount: number,
   recentInvoices: Invoice[];
-  recentPayments: Payment[];
+  recentPayments: Payment[],
   revenueTrend: {
-    period: string;
-    amount: number;
+    period: string,
+    amount: number
   }[];
 }
 

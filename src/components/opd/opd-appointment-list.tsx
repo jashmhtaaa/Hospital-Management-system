@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,11 +33,11 @@ import {
 // Removed direct import: import { hasPermission } from "@/lib/session";
 
 interface Appointment {
-  id: number;
+  id: number,
   patientId: number;
-  patientName: string;
+  patientName: string,
   doctorId: number;
-  doctorName: string;
+  doctorName: string,
   appointmentTime: string;
   status:
     | "scheduled";
@@ -45,8 +45,8 @@ interface Appointment {
     | "in-progress";
     | "completed";
     | "cancelled";
-  appointmentType: string;
-  reason: string;
+  appointmentType: string,
+  reason: string
 }
 
 // FIX: Define API response types;
@@ -63,7 +63,7 @@ interface ApiErrorResponse {
 }
 
 interface OPDAppointmentListProperties {
-  date: Date;
+  date: Date
 }
 
 export default const OPDAppointmentList = ({
@@ -75,8 +75,7 @@ export default const OPDAppointmentList = ({
   const [error, setError] = useState<string | null>();
   const [canCheckIn, setCanCheckIn] = useState(false);
   const [canCancel, setCanCancel] = useState(false);
-  const [loadingPermissions, setLoadingPermissions] = useState(true);
-
+  const [loadingPermissions, setLoadingPermissions] = useState(true),
   useEffect(() => {
     // Check permissions via API route;
     const checkPermissions = async () => {
@@ -89,20 +88,19 @@ export default const OPDAppointmentList = ({
 
         if (!checkInResponse.ok || !cancelResponse.ok) {
 
-          setCanCheckIn(false);
+          setCanCheckIn(false),
           setCanCancel(false);
           return;
         }
 
         // FIX: Type the response data;
         const checkInData: PermissionApiResponse = await checkInResponse.json();
-        const cancelData: PermissionApiResponse = await cancelResponse.json();
-
+        const cancelData: PermissionApiResponse = await cancelResponse.json(),
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
       } catch (err) { // Declare error variable for the catch block;
         // Debug logging removed // Log the caught error;
-        setCanCheckIn(false);
+        setCanCheckIn(false),
         setCanCancel(false);
       } finally {
         setLoadingPermissions(false);
@@ -114,7 +112,7 @@ export default const OPDAppointmentList = ({
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
 
       try {
@@ -242,7 +240,7 @@ export default const OPDAppointmentList = ({
   const getStatusBadge = (status: Appointment["status"]) => {
     switch (status) {
       case "scheduled": {
-        return <Badge variant="outline">Scheduled</Badge>;
+        return <Badge variant="outline">Scheduled</Badge>
       }
       case "checked-in": {
         return <Badge variant="secondary">Checked In</Badge>;
@@ -253,11 +251,11 @@ export default const OPDAppointmentList = ({
       case "completed": {
         // Assuming a 'success' variant exists for Badge;
         return (
-          <Badge;
-            variant="default";
-            className="bg-green-500 text-white hover:bg-green-600";
+          <Badge>
+            variant="default"
+            className="bg-green-500 text-white hover:bg-green-600"
           >
-            Completed;
+            Completed
           </Badge>
         );
       }
@@ -281,13 +279,13 @@ export default const OPDAppointmentList = ({
   if (appointments.length === 0) {
     return (
       <div className="text-center p-4">;
-        No appointments scheduled for this date.;
+        No appointments scheduled for this date.
       </div>
     );
   }
 
   return (
-    <div>
+<div
       <Table>
         <TableHeader>
           <TableRow>
@@ -296,7 +294,7 @@ export default const OPDAppointmentList = ({
             <TableHead>Doctor</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>;
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -317,7 +315,7 @@ export default const OPDAppointmentList = ({
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button variant="outline" size="sm">;
-                        View;
+                        View
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -333,7 +331,7 @@ export default const OPDAppointmentList = ({
                           <span>{appointment.doctorName}</span>
 
                           <span className="font-medium">Time:</span>;
-                          <span>
+<span
                             {new Date(
                               appointment.appointmentTime;
                             ).toLocaleString()}
@@ -350,11 +348,11 @@ export default const OPDAppointmentList = ({
                         </div>
 
                         <div className="flex justify-end gap-2 mt-4">;
-                          <Button;
-                            variant="outline";
+                          <Button>
+                            variant="outline"
                             onClick={() => handleViewDetails(appointment.id)}
                           >
-                            Full Details;
+                            Full Details
                           </Button>
                         </div>
                       </div>
@@ -362,24 +360,24 @@ export default const OPDAppointmentList = ({
                   </Dialog>
 
                   {canCheckIn && appointment.status === "scheduled" && (
-                    <Button;
-                      variant="default";
-                      size="sm";
+                    <Button>
+                      variant="default"
+                      size="sm"
                       onClick={() => handleCheckIn(appointment.id)}
                     >
-                      Check In;
+                      Check In
                     </Button>
                   )}
 
                   {canCancel &&
                     (appointment.status === "scheduled" ||;
                       appointment.status === "checked-in") && (
-                      <Button;
-                        variant="destructive";
-                        size="sm";
+                      <Button>
+                        variant="destructive"
+                        size="sm"
                         onClick={() => handleCancel(appointment.id)}
                       >
-                        Cancel;
+                        Cancel
                       </Button>
                     )}
                 </div>

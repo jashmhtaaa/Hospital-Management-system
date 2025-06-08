@@ -147,9 +147,9 @@ export type ProblemListItem = z.infer<typeof ProblemListSchema>;
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema>;
 
 export interface ClinicalDecisionSupport {
-  id: string;
+  id: string,
   title: string;
-  description: string;
+  description: string,
   trigger_conditions: {
     icd10_codes?: string[];
     snomed_codes?: string[];
@@ -157,14 +157,14 @@ export interface ClinicalDecisionSupport {
     medication_interactions?: string[];
   };
   recommendations: {
-    type: 'alert' | 'suggestion' | 'warning' | 'info';
+    type: 'alert' | 'suggestion' | 'warning' | 'info',
     message: string;
     actions?: string[];
   }[];
-  status: 'active' | 'inactive';
+  status: 'active' | 'inactive',
   created_by: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 }
 
 /**
@@ -688,14 +688,14 @@ export class PersistentElectronicHealthRecordsService {
         if (triggerConditions.icd10_codes && context.icd10_codes) {
           triggered = triggerConditions.icd10_codes.some((code: string) => 
             context.icd10_codes!.includes(code)
-          );
+          )
         }
 
         // Check SNOMED codes
         if (triggerConditions.snomed_codes && context.snomed_codes) {
           triggered = triggered || triggerConditions.snomed_codes.some((code: string) => 
             context.snomed_codes!.includes(code)
-          );
+          )
         }
 
         // Add more trigger condition logic as needed

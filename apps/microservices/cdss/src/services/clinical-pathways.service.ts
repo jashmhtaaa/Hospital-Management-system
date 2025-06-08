@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,30 +24,30 @@ import { AuditService } from '@/lib/security/audit.service';
 
 // Clinical pathway models;
 export interface ClinicalPathway {
-  id: string;
+  id: string,
   name: string;
-  version: string;
+  version: string,
   description: string;
-  status: PathwayStatus;
+  status: PathwayStatus,
   condition: string;
   conditionCode?: string;
   codeSystem?: string;
-  specialty: string[];
+  specialty: string[],
   targetPopulation: TargetPopulation;
-  phases: PathwayPhase[];
+  phases: PathwayPhase[],
   outcomes: PathwayOutcome[];
-  metrics: PathwayMetric[];
+  metrics: PathwayMetric[],
   variance: PathwayVariance[];
-  evidenceLevel: string;
+  evidenceLevel: string,
   guidelines: string[];
-  authors: string[];
+  authors: string[],
   reviewers: string[];
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   effectiveDate: Date;
   expirationDate?: Date;
-  reviewDate: Date;
-  metadata: PathwayMetadata;
+  reviewDate: Date,
+  metadata: PathwayMetadata
 }
 
 export enum PathwayStatus {
@@ -59,7 +59,7 @@ export enum PathwayStatus {
 }
 
 export interface TargetPopulation {
-  description: string;
+  description: string,
   inclusionCriteria: string[];
   exclusionCriteria: string[];
   ageRange?: { min?: number; max?: number };
@@ -70,12 +70,12 @@ export interface TargetPopulation {
 }
 
 export interface PathwayPhase {
-  id: string;
+  id: string,
   name: string;
   description: string;
   estimatedDuration?: number; // days;
   estimatedDurationRange?: { min: number; max: number };
-  durationUnit: 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS';
+  durationUnit: 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS',
   sequence: number;
   activities: PathwayActivity[];
   prerequisites?: string[];
@@ -86,13 +86,13 @@ export interface PathwayPhase {
 }
 
 export interface PathwayActivity {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: ActivityCategory;
-  type: ActivityType;
+  type: ActivityType,
   status: 'REQUIRED' | 'RECOMMENDED' | 'OPTIONAL';
-  timing: ActivityTiming;
+  timing: ActivityTiming,
   roles: string[];
   orderSet?: string;
   formTemplate?: string;
@@ -143,7 +143,7 @@ export enum ActivityType {
 }
 
 export interface ActivityTiming {
-  type: 'RELATIVE' | 'ABSOLUTE' | 'PERIODIC' | 'EVENT_BASED';
+  type: 'RELATIVE' | 'ABSOLUTE' | 'PERIODIC' | 'EVENT_BASED',
   timing: string;
   window?: { start: string; end: string };
   recurrence?: string;
@@ -157,43 +157,43 @@ export interface ActivityTiming {
 }
 
 export interface DecisionPoint {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   condition: string;
-  options: DecisionOption[];
+  options: DecisionOption[],
   decisionLogic: string;
-  requiresDocumentation: boolean;
+  requiresDocumentation: boolean
 }
 
 export interface DecisionOption {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   criteria: string;
   nextActivities: string[];
   outcomeImpact?: string;
 }
 
 export interface PathwayOutcome {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: 'CLINICAL' | 'PROCESS' | 'EXPERIENCE' | 'COST';
   type: 'PRIMARY' | 'SECONDARY';
   targetValue?: string;
   measuredBy: string;
   baseline?: string;
   benchmark?: string;
-  linkedMetrics: string[];
+  linkedMetrics: string[]
 }
 
 export interface PathwayMetric {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: 'PROCESS' | 'OUTCOME' | 'BALANCING' | 'STRUCTURE' | 'EXPERIENCE';
-  calculation: string;
+  calculation: string,
   dataSource: string;
   unit?: string;
   targetValue?: string;
@@ -204,11 +204,11 @@ export interface PathwayMetric {
 }
 
 export interface PathwayVariance {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: 'CLINICAL' | 'OPERATIONAL' | 'PATIENT_RELATED';
-  severity: 'HIGH' | 'MEDIUM' | 'LOW';
+  severity: 'HIGH' | 'MEDIUM' | 'LOW',
   actions: string[];
   preventionStrategies?: string[];
   monitoringParameters?: string[];
@@ -216,17 +216,17 @@ export interface PathwayVariance {
 }
 
 export interface PathwayMetadata {
-  keywords: string[];
+  keywords: string[],
   version: string;
-  source: string;
+  source: string,
   references: Reference[];
-  implementationConsiderations: string[];
+  implementationConsiderations: string[],
   resourceRequirements: string[];
   costImplications?: string;
-  modificationHistory: ModificationRecord[];
+  modificationHistory: ModificationRecord[],
   relatedPathways: string[];
-  qualityMeasures: string[];
-  approvals: Approval[];
+  qualityMeasures: string[],
+  approvals: Approval[]
 }
 
 export interface Reference {
@@ -234,20 +234,20 @@ export interface Reference {
   url?: string;
   pubMedId?: string;
   doi?: string;
-  type: 'JOURNAL' | 'GUIDELINE' | 'BOOK' | 'WEBSITE' | 'OTHER';
+  type: 'JOURNAL' | 'GUIDELINE' | 'BOOK' | 'WEBSITE' | 'OTHER'
 }
 
 export interface ModificationRecord {
-  date: Date;
+  date: Date,
   version: string;
-  modifiedBy: string;
+  modifiedBy: string,
   approvedBy: string;
-  changes: string[];
-  rationale: string;
+  changes: string[],
+  rationale: string
 }
 
 export interface Approval {
-  committee: string;
+  committee: string,
   date: Date;
   level: 'HOSPITAL' | 'DEPARTMENT' | 'SYSTEM';
   comments?: string;
@@ -256,33 +256,33 @@ export interface Approval {
 
 // Order set models;
 export interface OrderSet {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: OrderSetType;
-  status: 'ACTIVE' | 'DRAFT' | 'INACTIVE' | 'RETIRED';
+  status: 'ACTIVE' | 'DRAFT' | 'INACTIVE' | 'RETIRED',
   specialty: string[];
   condition?: string;
-  indication: string;
+  indication: string,
   sections: OrderSetSection[];
-  keywords: string[];
+  keywords: string[],
   usage: {
     frequency: number;
     lastUsed?: Date;
-    providers: number;
-    departments: string[];
+    providers: number,
+    departments: string[]
   };
-  evidenceLevel: string;
+  evidenceLevel: string,
   references: Reference[];
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  reviewDate: Date;
+  reviewDate: Date,
   reviewers: string[];
-  version: string;
+  version: string,
   relatedOrderSets: string[];
-  pathwayIds: string[];
+  pathwayIds: string[]
 }
 
 export enum OrderSetType {
@@ -298,25 +298,25 @@ export enum OrderSetType {
 }
 
 export interface OrderSetSection {
-  id: string;
+  id: string,
   name: string;
   description?: string;
-  sequence: number;
+  sequence: number,
   orderItems: OrderItem[];
   displayCondition?: string;
-  collapsedByDefault: boolean;
+  collapsedByDefault: boolean
 }
 
 export interface OrderItem {
-  id: string;
+  id: string,
   name: string;
   description?: string;
   type: OrderItemType;
   code?: string;
   codeSystem?: string;
-  preselected: boolean;
+  preselected: boolean,
   required: boolean;
-  editable: boolean;
+  editable: boolean,
   status: 'ACTIVE' | 'INACTIVE';
   details: Record<string, any>;
   alternatives?: string[];
@@ -361,37 +361,37 @@ export interface PrescriptionDefaults {
 
 // Patient pathway models;
 export interface PatientPathway {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  pathwayId: string;
+  pathwayId: string,
   pathwayVersion: string;
-  pathwayName: string;
+  pathwayName: string,
   startDate: Date;
   estimatedEndDate?: Date;
   actualEndDate?: Date;
-  status: 'ACTIVE' | 'COMPLETED' | 'DISCONTINUED' | 'ON_HOLD';
+  status: 'ACTIVE' | 'COMPLETED' | 'DISCONTINUED' | 'ON_HOLD',
   currentPhase: string;
   progressPercentage: number;
   discontinuationReason?: string;
-  initiatedBy: string;
+  initiatedBy: string,
   managedBy: string[];
-  phases: PatientPathwayPhase[];
+  phases: PatientPathwayPhase[],
   outcomes: PatientPathwayOutcome[];
-  variances: PatientPathwayVariance[];
+  variances: PatientPathwayVariance[],
   notes: PatientPathwayNote[];
-  metrics: PatientPathwayMetric[];
-  evaluations: PatientPathwayEvaluation[];
+  metrics: PatientPathwayMetric[],
+  evaluations: PatientPathwayEvaluation[]
 }
 
 export interface PatientPathwayPhase {
-  id: string;
+  id: string,
   phaseId: string;
-  phaseName: string;
+  phaseName: string,
   startDate: Date;
   estimatedEndDate?: Date;
   actualEndDate?: Date;
-  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED';
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED',
   completionPercentage: number;
   activities: PatientPathwayActivity[];
   exitCriteriaMet?: boolean;
@@ -399,11 +399,11 @@ export interface PatientPathwayPhase {
 }
 
 export interface PatientPathwayActivity {
-  id: string;
+  id: string,
   activityId: string;
-  activityName: string;
+  activityName: string,
   category: ActivityCategory;
-  type: ActivityType;
+  type: ActivityType,
   status: 'PENDING' | 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED' | 'CANCELLED';
   scheduledDate?: Date;
   dueDate?: Date;
@@ -422,9 +422,9 @@ export interface PatientPathwayActivity {
 }
 
 export interface PatientPathwayOutcome {
-  id: string;
+  id: string,
   outcomeId: string;
-  outcomeName: string;
+  outcomeName: string,
   status: 'PENDING' | 'ACHIEVED' | 'NOT_ACHIEVED' | 'PARTIALLY_ACHIEVED';
   targetValue?: string;
   actualValue?: string;
@@ -436,16 +436,16 @@ export interface PatientPathwayOutcome {
 export interface PatientPathwayVariance {
   id: string;
   varianceId?: string;
-  category: 'CLINICAL' | 'OPERATIONAL' | 'PATIENT_RELATED';
+  category: 'CLINICAL' | 'OPERATIONAL' | 'PATIENT_RELATED',
   type: string;
-  description: string;
+  description: string,
   severity: 'HIGH' | 'MEDIUM' | 'LOW';
-  detectionDate: Date;
+  detectionDate: Date,
   detectedBy: string;
   status: 'ACTIVE' | 'ADDRESSED' | 'RESOLVED';
   phaseId?: string;
   activityId?: string;
-  impact: string;
+  impact: string,
   actions: PatientPathwayVarianceAction[];
   resolution?: string;
   resolutionDate?: Date;
@@ -453,9 +453,9 @@ export interface PatientPathwayVariance {
 }
 
 export interface PatientPathwayVarianceAction {
-  id: string;
+  id: string,
   description: string;
-  assignedTo: string;
+  assignedTo: string,
   status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   dueDate?: Date;
   completedDate?: Date;
@@ -463,18 +463,18 @@ export interface PatientPathwayVarianceAction {
 }
 
 export interface PatientPathwayNote {
-  id: string;
+  id: string,
   date: Date;
-  author: string;
+  author: string,
   text: string;
   category: 'CLINICAL' | 'ADMINISTRATIVE' | 'PROGRESS' | 'VARIANCE' | 'OTHER';
   phaseId?: string;
   activityId?: string;
-  visibility: 'INTERNAL' | 'PATIENT_VISIBLE';
+  visibility: 'INTERNAL' | 'PATIENT_VISIBLE'
 }
 
 export interface PatientPathwayMetric {
-  id: string;
+  id: string,
   metricId: string;
   metricName: string;
   value?: string;
@@ -486,11 +486,11 @@ export interface PatientPathwayMetric {
 }
 
 export interface PatientPathwayEvaluation {
-  id: string;
+  id: string,
   date: Date;
-  evaluator: string;
+  evaluator: string,
   recommendations: string[];
-  pathwayModifications: string[];
+  pathwayModifications: string[],
   quality: {
     adherence: number; // 0-100;
     appropriateness: number; // 0-100;
@@ -503,13 +503,13 @@ export interface PatientPathwayEvaluation {
 
 // Quality measure models;
 export interface QualityMeasure {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: QualityMeasureCategory;
-  type: QualityMeasureType;
+  type: QualityMeasureType,
   domain: QualityMeasureDomain;
-  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED';
+  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED',
   steward: string;
   endorsedBy?: string[];
   nqfId?: string;
@@ -533,13 +533,13 @@ export interface QualityMeasure {
   stratifications?: string[];
   riskAdjustment?: string;
   codesets?: MeasureCodeSet[];
-  references: Reference[];
+  references: Reference[],
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date,
   createdBy: string;
   updatedBy: string;
   implementationNotes?: string;
-  versionHistory: MeasureVersion[];
+  versionHistory: MeasureVersion[]
 }
 
 export enum QualityMeasureCategory {
@@ -574,35 +574,35 @@ export enum QualityMeasureDomain {
 }
 
 export interface MeasureCodeSet {
-  name: string;
+  name: string,
   description: string;
-  codeSystem: string;
-  codes: string[];
+  codeSystem: string,
+  codes: string[]
 }
 
 export interface MeasureVersion {
-  version: string;
+  version: string,
   date: Date;
-  updatedBy: string;
+  updatedBy: string,
   changes: string[];
-  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED';
+  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED'
 }
 
 // Clinical trial models;
 export interface ClinicalTrial {
-  id: string;
+  id: string,
   nctId: string;
   title: string;
   acronym?: string;
-  status: string;
+  status: string,
   phase: string;
-  studyType: string;
+  studyType: string,
   conditions: string[];
-  interventions: TrialIntervention[];
+  interventions: TrialIntervention[],
   sponsors: TrialSponsor[];
   briefSummary: string;
   detailedDescription?: string;
-  eligibility: TrialEligibility;
+  eligibility: TrialEligibility,
   locations: TrialLocation[];
   contacts: TrialContact[];
   startDate?: Date;
@@ -610,7 +610,7 @@ export interface ClinicalTrial {
   primaryCompletionDate?: Date;
   lastUpdateDate: Date;
   enrollment?: number;
-  outcomes: TrialOutcome[];
+  outcomes: TrialOutcome[],
   keywords: string[];
   references: Reference[];
   protocolDocuments?: string[];
@@ -622,7 +622,7 @@ export interface ClinicalTrial {
 }
 
 export interface TrialIntervention {
-  id: string;
+  id: string,
   type: string;
   name: string;
   description?: string;
@@ -630,24 +630,24 @@ export interface TrialIntervention {
 }
 
 export interface TrialSponsor {
-  name: string;
+  name: string,
   type: 'LEAD' | 'COLLABORATOR' | 'FUNDER';
-  class: 'INDUSTRY' | 'NIH' | 'US_FED' | 'OTHER_GOV' | 'NETWORK' | 'INDIVIDUAL' | 'OTHER';
+  class: 'INDUSTRY' | 'NIH' | 'US_FED' | 'OTHER_GOV' | 'NETWORK' | 'INDIVIDUAL' | 'OTHER'
 }
 
 export interface TrialEligibility {
-  criteria: string;
+  criteria: string,
   gender: 'ALL' | 'MALE' | 'FEMALE';
   minimumAge?: string;
   maximumAge?: string;
-  healthyVolunteers: boolean;
+  healthyVolunteers: boolean,
   inclusionCriteria: string[];
   exclusionCriteria: string[];
   structuredCriteria?: Record<string, any>;
 }
 
 export interface TrialLocation {
-  facility: string;
+  facility: string,
   city: string;
   state?: string;
   country: string;
@@ -661,32 +661,32 @@ export interface TrialContact {
   name?: string;
   phone?: string;
   email?: string;
-  type: 'CENTRAL' | 'SITE' | 'PRINCIPAL_INVESTIGATOR' | 'SUB_INVESTIGATOR' | 'STUDY_DIRECTOR';
+  type: 'CENTRAL' | 'SITE' | 'PRINCIPAL_INVESTIGATOR' | 'SUB_INVESTIGATOR' | 'STUDY_DIRECTOR'
 }
 
 export interface TrialOutcome {
-  type: 'PRIMARY' | 'SECONDARY' | 'OTHER';
+  type: 'PRIMARY' | 'SECONDARY' | 'OTHER',
   measure: string;
   timeFrame: string;
   description?: string;
 }
 
 export interface TrialStaff {
-  name: string;
+  name: string,
   role: string;
   department?: string;
   contactInfo?: string;
-  accessLevel: 'FULL' | 'RESTRICTED' | 'VIEW_ONLY';
+  accessLevel: 'FULL' | 'RESTRICTED' | 'VIEW_ONLY'
 }
 
 // Patient trial match models;
 export interface PatientTrialMatch {
-  id: string;
+  id: string,
   patientId: string;
-  trialId: string;
+  trialId: string,
   matchDate: Date;
   matchScore: number; // 0-100;
-  matchSummary: string;
+  matchSummary: string,
   matchDetails: MatchCriteria[];
   status: 'NEW' | 'REVIEWED' | 'DISCUSSED' | 'ENROLLED' | 'DECLINED' | 'INELIGIBLE' | 'REFERRED';
   statusUpdateDate?: Date;
@@ -707,14 +707,14 @@ export interface PatientTrialMatch {
   declineReason?: string;
   ineligibilityReason?: string;
   followUpActions?: string[];
-  notificationsSent: TrialNotification[];
+  notificationsSent: TrialNotification[]
 }
 
 export interface MatchCriteria {
-  criterion: string;
+  criterion: string,
   category: 'INCLUSION' | 'EXCLUSION' | 'DEMOGRAPHIC';
   patientValue?: string;
-  trialValue: string;
+  trialValue: string,
   match: boolean;
   confidence: number; // 0-100;
   notes?: string;
@@ -722,11 +722,11 @@ export interface MatchCriteria {
 }
 
 export interface TrialNotification {
-  id: string;
+  id: string,
   type: 'PROVIDER' | 'PATIENT' | 'RESEARCH_STAFF';
-  recipient: string;
+  recipient: string,
   sentDate: Date;
-  method: 'EMAIL' | 'IN_APP' | 'SMS' | 'PHONE' | 'LETTER';
+  method: 'EMAIL' | 'IN_APP' | 'SMS' | 'PHONE' | 'LETTER',
   status: 'SENT' | 'DELIVERED' | 'READ' | 'FAILED';
   response?: string;
   responseDate?: Date;
@@ -1478,7 +1478,7 @@ export class ClinicalPathwaysService {
   async generateQualityMeasureReport(
     measureId: string,
     parameters: {
-      startDate: Date;
+      startDate: Date,
       endDate: Date;
       department?: string;
       provider?: string;
@@ -1604,11 +1604,11 @@ export class ClinicalPathwaysService {
 
   // Private helper methods;
   private validatePathway(pathway: unknown): void {
-    // Implementation for pathway validation;
+    // Implementation for pathway validation
   }
 
   private validatePathwayUpdates(updates: Partial<ClinicalPathway>): void {
-    // Implementation for update validation;
+    // Implementation for update validation
   }
 
   private async checkPatientEligibility(
@@ -1642,7 +1642,7 @@ export class ClinicalPathwaysService {
   }
 
   private async updatePathwayProgress(patientPathwayId: string): Promise<void> {
-    // Implementation to update pathway progress;
+    // Implementation to update pathway progress
   }
 
   private async checkPhaseCompletion(
@@ -1653,7 +1653,7 @@ export class ClinicalPathwaysService {
   }
 
   private validateOrderSet(orderSet: unknown): void {
-    // Implementation for order set validation;
+    // Implementation for order set validation
   }
 
   private async calculateMeasurePerformance(
@@ -1694,6 +1694,6 @@ export class ClinicalPathwaysService {
     patientId: string,
     matches: PatientTrialMatch[]
   ): Promise<void> {
-    // Implementation to notify providers;
+    // Implementation to notify providers
   }
 }

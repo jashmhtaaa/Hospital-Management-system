@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,8 +20,8 @@ import { DatabaseError } from './errors.ts';
 export interface QueryOptions {
   filters?: Record<string, any>;
   sort?: {
-    field: string;
-    direction: 'asc' | 'desc';
+    field: string,
+    direction: 'asc' | 'desc'
   };
   pagination?: {
     page?: number;
@@ -217,36 +217,36 @@ export class CachedRepository<T, ID> implements Repository<T, ID> {
 
   async findAll(options?: QueryOptions): Promise<T[]> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return this.repository.findAll(options);
+    return this.repository.findAll(options)
   }
 
   async create(data: Partial<T>): Promise<T> {
     const result = await this.repository.create(data);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return result;
+    return result
   }
 
   async update(id: ID, data: Partial<T>): Promise<T> {
     const result = await this.repository.update(id, data);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return result;
+    return result
   }
 
   async delete(id: ID): Promise<boolean> {
     const result = await this.repository.delete(id);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return result;
+    return result
   }
 
   async count(options?: QueryOptions): Promise<number> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return this.repository.count(options);
+    return this.repository.count(options)
   }
 }
 
 // Transaction service interface;
 export interface TransactionService {
-  executeInTransaction<T>(callback: (tx: unknown) => Promise<T>): Promise<T>;
+  executeInTransaction<T>(callback: (tx: unknown) => Promise<T>): Promise<T>
 }
 
 // Prisma transaction service implementation;
@@ -255,7 +255,7 @@ export class PrismaTransactionService implements TransactionService {
 
   async executeInTransaction<T>(callback: (tx: unknown) => Promise<T>): Promise<T> {
     try {
-      return await this.prisma.$transaction(callback);
+      return await this.prisma.$transaction(callback)
     } catch (error) {
       throw new DatabaseError(
         `Transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`,

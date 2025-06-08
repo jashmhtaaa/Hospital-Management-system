@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -99,8 +99,7 @@ describe('Payroll Service', () => {
       // Act & Assert;
       await expect(payrollService.createPayrollPeriod(periodData));
         .rejects;
-        .toThrow('End date must be after start date');
-      
+        .toThrow('End date must be after start date'),
       expect(prisma.payrollPeriod.create).not.toHaveBeenCalled();
     });
   });
@@ -225,14 +224,14 @@ describe('Payroll Service', () => {
       // Assert;
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
-      });
+      }),
       expect(prisma.employee.findMany).toHaveBeenCalledWith({
         where: { isActive: true },
         include: expect.any(Object),
       });
-      expect(prisma.salaryStructure.findMany).toHaveBeenCalled();
-      expect(prisma.attendance.findMany).toHaveBeenCalled();
-      expect(prisma.payrollEntry.create).toHaveBeenCalledTimes(2);
+      expect(prisma.salaryStructure.findMany).toHaveBeenCalled(),
+      expect(prisma.attendance.findMany).toHaveBeenCalled(),
+      expect(prisma.payrollEntry.create).toHaveBeenCalledTimes(2),
       expect(result).toEqual(expect.arrayContaining(mockCreatedEntries));
     });
     
@@ -245,11 +244,10 @@ describe('Payroll Service', () => {
       // Act & Assert;
       await expect(payrollService.generatePayrollEntries(periodId));
         .rejects;
-        .toThrow('Payroll period not found');
-      
+        .toThrow('Payroll period not found'),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
-      });
+      }),
       expect(prisma.employee.findMany).not.toHaveBeenCalled();
     });
     
@@ -269,11 +267,10 @@ describe('Payroll Service', () => {
       // Act & Assert;
       await expect(payrollService.generatePayrollEntries(periodId));
         .rejects;
-        .toThrow('Payroll entries can only be generated for periods in DRAFT status');
-      
+        .toThrow('Payroll entries can only be generated for periods in DRAFT status'),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
-      });
+      }),
       expect(prisma.employee.findMany).not.toHaveBeenCalled();
     });
   });
@@ -358,7 +355,7 @@ describe('Payroll Service', () => {
       // Assert;
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
-      });
+      }),
       expect(prisma.payrollPeriod.update).toHaveBeenCalledWith({
         where: { id: periodId },
         data: {
@@ -379,11 +376,10 @@ describe('Payroll Service', () => {
       // Act & Assert;
       await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'));
         .rejects;
-        .toThrow('Payroll period not found');
-      
+        .toThrow('Payroll period not found'),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
-      });
+      }),
       expect(prisma.payrollPeriod.update).not.toHaveBeenCalled();
     });
     
@@ -401,11 +397,10 @@ describe('Payroll Service', () => {
       // Act & Assert;
       await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'));
         .rejects;
-        .toThrow('Payroll period must be in PROCESSING status to approve');
-      
+        .toThrow('Payroll period must be in PROCESSING status to approve'),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
         where: { id: periodId },
-      });
+      }),
       expect(prisma.payrollPeriod.update).not.toHaveBeenCalled();
     });
   });

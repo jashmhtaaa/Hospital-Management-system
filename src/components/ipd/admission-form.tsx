@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,13 +28,13 @@ import { toast } from "sonner"; // Changed from useToast to sonner;
 import { Loader2 } from "lucide-react";
 
 interface AdmissionFormData {
-  patient_id: string;
+  patient_id: string,
   admission_date: string;
-  admission_type: "planned" | "emergency" | "transfer";
+  admission_type: "planned" | "emergency" | "transfer",
   primary_doctor_id: string;
-  bed_id: string;
+  bed_id: string,
   diagnosis: string;
-  estimated_stay: string;
+  estimated_stay: string
 }
 
 interface ApiErrorResponse {
@@ -43,22 +43,22 @@ interface ApiErrorResponse {
 }
 
 interface AdmissionResponse {
-  id: string;
+  id: string
 }
 
 interface MockPatient {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 interface MockDoctor {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 interface MockBed {
-  id: string;
+  id: string,
   number: string;
-  room: string;
-  ward: string;
+  room: string,
+  ward: string
 }
 
 const AdmissionForm = () => {
@@ -111,7 +111,7 @@ const AdmissionForm = () => {
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault(),
     setLoading(true);
 
     if (
@@ -152,8 +152,7 @@ const AdmissionForm = () => {
 
       toast.success("Admission Successful", { // Changed to sonner toast.success;
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,
-      });
-
+      }),
       setFormData({
         patient_id: "",
         admission_date: new Date().toISOString().split("T")[0],
@@ -187,7 +186,7 @@ const AdmissionForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
             <div className="space-y-2">;
               <Label htmlFor="patient_id">Patient *</Label>;
-              <Select;
+              <Select>
                 value={formData.patient_id}
                 onValueChange={(value) =>
                   handleSelectChange("patient_id", value);
@@ -196,12 +195,12 @@ const AdmissionForm = () => {
                 disabled={loading}
               >
                 <SelectTrigger id="patient_id">;
-                  <SelectValue placeholder="Select Patient" />;
+                  <SelectValue placeholder="Select Patient" />
                 </SelectTrigger>
                 <SelectContent>
                   {patients.length === 0 && (
                     <SelectItem value="" disabled>;
-                      No patients available;
+                      No patients available
                     </SelectItem>
                   )}
                   {patients.map((patient) => (
@@ -215,9 +214,9 @@ const AdmissionForm = () => {
 
             <div className="space-y-2">;
               <Label htmlFor="admission_date">Admission Date *</Label>;
-              <Input;
-                id="admission_date";
-                name="admission_date";
+              <Input>
+                id="admission_date"
+                name="admission_date"
                 type="date"
                 value={formData.admission_date}
                 onChange={handleChange}
@@ -228,7 +227,7 @@ const AdmissionForm = () => {
 
             <div className="space-y-2">;
               <Label htmlFor="admission_type">Admission Type *</Label>;
-              <Select;
+              <Select>
                 value={formData.admission_type}
                 onValueChange={(value) =>
                   handleSelectChange("admission_type", value);
@@ -237,19 +236,19 @@ const AdmissionForm = () => {
                 disabled={loading}
               >
                 <SelectTrigger id="admission_type">;
-                  <SelectValue placeholder="Select Admission Type" />;
+                  <SelectValue placeholder="Select Admission Type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="planned">Planned</SelectItem>;
                   <SelectItem value="emergency">Emergency</SelectItem>;
-                  <SelectItem value="transfer">Transfer</SelectItem>;
+                  <SelectItem value="transfer">Transfer</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">;
               <Label htmlFor="primary_doctor_id">Primary Doctor *</Label>;
-              <Select;
+              <Select>
                 value={formData.primary_doctor_id}
                 onValueChange={(value) =>
                   handleSelectChange("primary_doctor_id", value);
@@ -258,12 +257,12 @@ const AdmissionForm = () => {
                 disabled={loading}
               >
                 <SelectTrigger id="primary_doctor_id">;
-                  <SelectValue placeholder="Select Doctor" />;
+                  <SelectValue placeholder="Select Doctor" />
                 </SelectTrigger>
                 <SelectContent>
                   {doctors.length === 0 && (
                     <SelectItem value="" disabled>;
-                      No doctors available;
+                      No doctors available
                     </SelectItem>
                   )}
                   {doctors.map((doctor) => (
@@ -277,24 +276,24 @@ const AdmissionForm = () => {
 
             <div className="space-y-2">;
               <Label htmlFor="bed_id">Assign Bed *</Label>;
-              <Select;
+              <Select>
                 value={formData.bed_id}
                 onValueChange={(value) => handleSelectChange("bed_id", value)}
                 required;
                 disabled={loading}
               >
                 <SelectTrigger id="bed_id">;
-                  <SelectValue placeholder="Select Bed" />;
+                  <SelectValue placeholder="Select Bed" />
                 </SelectTrigger>
                 <SelectContent>
                   {beds.length === 0 && (
                     <SelectItem value="" disabled>;
-                      No beds available;
+                      No beds available
                     </SelectItem>
                   )}
                   {beds.map((bed) => (
                     <SelectItem key={bed.id} value={bed.id}>;
-                      {bed.number} - {bed.room} ({bed.ward});
+                      {bed.number} - {bed.room} ({bed.ward})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -303,29 +302,29 @@ const AdmissionForm = () => {
 
             <div className="space-y-2">;
               <Label htmlFor="estimated_stay">Estimated Stay (days)</Label>;
-              <Input;
-                id="estimated_stay";
-                name="estimated_stay";
+              <Input>
+                id="estimated_stay"
+                name="estimated_stay"
                 type="number"
-                min="1";
+                min="1"
                 value={formData.estimated_stay}
                 onChange={handleChange}
                 disabled={loading}
-                placeholder="e.g., 5";
+                placeholder="e.g., 5"
               />
             </div>
           </div>
 
           <div className="space-y-2">;
             <Label htmlFor="diagnosis">Diagnosis *</Label>;
-            <Textarea;
-              id="diagnosis";
-              name="diagnosis";
+            <Textarea>
+              id="diagnosis"
+              name="diagnosis"
               value={formData.diagnosis}
               onChange={handleChange}
               required;
               disabled={loading}
-              placeholder="Enter primary diagnosis...";
+              placeholder="Enter primary diagnosis..."
               rows={4}
             />
           </div>
@@ -333,7 +332,7 @@ const AdmissionForm = () => {
           <div className="flex justify-end pt-4">;
             <Button type="submit" disabled={loading}>;
               {loading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}
               {loading ? "Processing..." : "Admit Patient"}
             </Button>

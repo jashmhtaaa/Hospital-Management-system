@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,7 +33,7 @@ describe("InvoiceService", () => {
       // expect(invoice).toBeDefined();
       // expect(invoice.patientId).toEqual(patientId);
       // expect(invoice.totalAmount).toBeGreaterThan(0);
-      // expect(invoice.items.length).toBeGreaterThan(0);
+      // expect(invoice.items.length).toBeGreaterThan(0),
       expect(true).toBe(true); // Placeholder assertion;
     });
 
@@ -64,7 +64,7 @@ describe("InvoiceService", () => {
 
       // Assert;
       // expect(result).toBeDefined();
-      // expect(result.id).toEqual(invoiceId);
+      // expect(result.id).toEqual(invoiceId),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });

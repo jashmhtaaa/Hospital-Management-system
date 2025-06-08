@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -83,10 +83,10 @@ export class FHIRAppointmentUtils {
    * Create a basic FHIR Appointment resource;
    */
   static createBasicAppointment(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     locationId?: string;
-    start: string;
+    start: string,
     end: string;
     appointmentType?: string;
     description?: string;
@@ -104,7 +104,7 @@ export class FHIRAppointmentUtils {
             type: 'Patient'
           },
           required: 'required',
-          status: 'accepted';
+          status: 'accepted'
         },
         {
           actor: {
@@ -112,7 +112,7 @@ export class FHIRAppointmentUtils {
             type: 'Practitioner'
           },
           required: 'required',
-          status: 'accepted';
+          status: 'accepted'
         }
       ]
     };
@@ -125,7 +125,7 @@ export class FHIRAppointmentUtils {
           type: 'Location'
         },
         required: 'required',
-        status: 'accepted';
+        status: 'accepted'
       });
     }
 
@@ -135,7 +135,7 @@ export class FHIRAppointmentUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0276',
           code: data.appointmentType,
-          display: data.appointmentType;
+          display: data.appointmentType
         }]
       };
     }
@@ -211,7 +211,7 @@ export class FHIRAppointmentUtils {
    */
   static getDurationMinutes(appointment: FHIRAppointment): number {
     if (appointment.minutesDuration) {
-      return appointment.minutesDuration;
+      return appointment.minutesDuration
     }
     
     if (appointment.start && appointment.end) {
@@ -235,7 +235,7 @@ export class FHIRAppointmentUtils {
     const timeFormat: Intl.DateTimeFormatOptions = {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true;
+      hour12: true
     };
     
     const startTimeStr = startTime.toLocaleTimeString('en-US', timeFormat);
@@ -332,7 +332,7 @@ export class FHIRAppointmentUtils {
           type: 'Patient'
         },
         required: 'required',
-        status: 'accepted';
+        status: 'accepted'
       });
     }
 
@@ -344,7 +344,7 @@ export class FHIRAppointmentUtils {
           type: 'Practitioner'
         },
         required: 'required',
-        status: 'accepted';
+        status: 'accepted'
       });
     }
 
@@ -356,7 +356,7 @@ export class FHIRAppointmentUtils {
           type: 'Location'
         },
         required: 'required',
-        status: 'accepted';
+        status: 'accepted'
       });
     }
 
@@ -366,7 +366,7 @@ export class FHIRAppointmentUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v2-0276',
           code: hmsAppointment.appointmentType || hmsAppointment.visitType,
-          display: hmsAppointment.appointmentType || hmsAppointment.visitType;
+          display: hmsAppointment.appointmentType || hmsAppointment.visitType
         }]
       };
     }
@@ -432,8 +432,7 @@ export class FHIRAppointmentWorkflow {
       case 'arrived':
       case 'checked-in':
         return 'fulfilled';
-      default:
-        return null;
+      default: return null
     }
   }
 }

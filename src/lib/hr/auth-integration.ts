@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -41,11 +41,11 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email;
+            email: credentials.email
           },
           include: {
             employee: true,
-            roles: true;
+            roles: true
           }
         });
 
@@ -64,7 +64,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           employeeId: user.employee?.id,
-          roles: user.roles.map(role => role.name);
+          roles: user.roles.map(role => role.name)
         };
       }
     });

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,15 +18,15 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
 interface OTTheatreModalProps {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
-  onSubmit: (data: unknown) => void;
+  onSubmit: (data: unknown) => void
 }
 
 /**
  * Operation Theatre management modal component;
  */
-export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProps) {
+export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here;
@@ -43,13 +43,13 @@ export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProp
           <div className="grid gap-4 py-4">;
             <div className="space-y-2">;
               <Label htmlFor="name">Theatre Name</Label>;
-              <Input id="name" placeholder="e.g., OT-1" />;
+              <Input id="name" placeholder="e.g., OT-1" />
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="type">Theatre Type</Label>;
-              <Select;
-                id="type";
+              <Select>
+                id="type"
                 options={[
                   { value: "general", label: "General Surgery" },
                   { value: "cardiac", label: "Cardiac Surgery" },
@@ -62,18 +62,18 @@ export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProp
             
             <div className="space-y-2">;
               <Label htmlFor="capacity">Capacity</Label>;
-              <Input id="capacity" type="number" placeholder="Number of staff" />;
+              <Input id="capacity" type="number" placeholder="Number of staff" />
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="equipment">Equipment</Label>;
-              <Textarea id="equipment" placeholder="List of available equipment" />;
+              <Textarea id="equipment" placeholder="List of available equipment" />
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="status">Status</Label>;
-              <Select;
-                id="status";
+              <Select>
+                id="status"
                 options={[
                   { value: "available", label: "Available" },
                   { value: "occupied", label: "Occupied" },
@@ -84,14 +84,14 @@ export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProp
             
             <div className="space-y-2">;
               <Label htmlFor="notes">Notes</Label>;
-              <Textarea id="notes" placeholder="Additional information" />;
+              <Textarea id="notes" placeholder="Additional information" />
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>;
-              Cancel;
+              Cancel
             </Button>
-            <Button type="submit">Save</Button>;
+            <Button type="submit">Save</Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -90,9 +90,9 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceCodes, diagnosisCodes, totalAmount, notes } = req.body as {
-                patientId: string;
+                patientId: string,
                 policyId: string;
-                serviceCodes: string[];
+                serviceCodes: string[],
                 diagnosisCodes: string[];
                 totalAmount: number;
                 notes?: string;

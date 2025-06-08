@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,8 +24,7 @@ export default const Home = () {
     recentAccess: []
   });
   const [optimisticStats, setOptimisticStats] = useOptimistic(stats);
-  const [, startTransition] = useTransition();
-
+  const [, startTransition] = useTransition(),
   useEffect(() => {
     getStats().then(setStats);
   }, []);
@@ -36,7 +35,7 @@ export default const Home = () {
         count: optimisticStats.count + 1,
         recentAccess: [{ accessed_at: new Date().toISOString() }, ...optimisticStats.recentAccess.slice(0, 4)]
       });
-      const newStats = await incrementAndLog();
+      const newStats = await incrementAndLog(),
       setStats(newStats);
     });
   }
@@ -47,8 +46,8 @@ export default const Home = () {
         <p className="text-2xl font-medium text-center mb-4">Views: {optimisticStats.count}</p>;
         <div className="flex justify-center mb-4">;
           <Button onClick={handleClick}>;
-            <Plus className="h-4 w-4 mr-2" />;
-            Increment;
+            <Plus className="h-4 w-4 mr-2" />
+            Increment
           </Button>
         </div>
         <ScrollArea className="h-[100px]">;

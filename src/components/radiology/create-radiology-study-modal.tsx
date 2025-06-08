@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -35,32 +35,32 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces;
 interface Modality {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Technician {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 // FIX: Export StudyPayload interface;
 export interface StudyPayload {
-  order_id: string;
+  order_id: string,
   accession_number: string | null;
-  study_datetime: string;
+  study_datetime: string,
   modality_id: string | null;
-  technician_id: string;
+  technician_id: string,
   protocol: string | null;
-  series_description: string | null;
+  series_description: string | null,
   number_of_images: number | null;
   status: string; // e.g., "acquired";
 }
 
 interface CreateRadiologyStudyModalProperties {
-  onClose: () => void;
-  onSubmit: (payload: StudyPayload) => Promise<void>;
-  orderId: string;
+  onClose: () => void,
+  onSubmit: (payload: StudyPayload) => Promise<void>,
+  orderId: string
 }
 
 export default const CreateRadiologyStudyModal = ({
@@ -81,11 +81,10 @@ export default const CreateRadiologyStudyModal = ({
   const [technicians, setTechnicians] = useState<Technician[]>([]); // FIX: Type state;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(); // FIX: Type state;
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false),
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true),
       setError(undefined);
       try {
         const [modalitiesResponse, techniciansResponse] = await Promise.all([
@@ -101,11 +100,11 @@ export default const CreateRadiologyStudyModal = ({
         const techniciansData: Technician[] = await techniciansResponse.json();
 
         // Assuming API returns array directly, adjust if it returns { results: [...] }
-        setModalities(modalitiesData);
+        setModalities(modalitiesData),
         setTechnicians(techniciansData);
 
         // Set default study datetime to now;
-        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM;
+        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM
       } catch (error_) {
 
         setError("Failed to load necessary data. Please try again.");
@@ -150,7 +149,7 @@ export default const CreateRadiologyStudyModal = ({
         </DialogHeader>
         {loading ? (
           <div className="flex justify-center items-center h-40">;
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4">{error}</div>;
@@ -159,14 +158,14 @@ export default const CreateRadiologyStudyModal = ({
             <div className="grid gap-4 py-4">;
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="accessionNumber" className="text-right">;
-                  Accession #;
+                  Accession #
                 </Label>
-                <Input;
-                  id="accessionNumber";
+                <Input>
+                  id="accessionNumber"
                   value={accessionNumber}
                   onChange={(e) => setAccessionNumber(e.target.value)}
-                  className="col-span-3";
-                  placeholder="Auto-generated if left blank";
+                  className="col-span-3"
+                  placeholder="Auto-generated if left blank"
                 />
               </div>
 
@@ -174,23 +173,23 @@ export default const CreateRadiologyStudyModal = ({
                 <Label htmlFor="studyDatetime" className="text-right">;
                   Study Date/Time *
                 </Label>
-                <Input;
-                  id="studyDatetime";
+                <Input>
+                  id="studyDatetime"
                   type="datetime-local"
                   value={studyDatetime}
                   onChange={(e) => setStudyDatetime(e.target.value)}
-                  className="col-span-3";
+                  className="col-span-3"
                   required;
                 />
               </div>
 
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="modality" className="text-right">;
-                  Modality;
+                  Modality
                 </Label>
                 <Select value={modalityId} onValueChange={setModalityId}>;
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Modality" />;
+                    <SelectValue placeholder="Select Modality" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">None</SelectItem>;
@@ -207,13 +206,13 @@ export default const CreateRadiologyStudyModal = ({
                 <Label htmlFor="technician" className="text-right">;
                   Technician *
                 </Label>
-                <Select;
+                <Select>
                   value={technicianId}
                   onValueChange={setTechnicianId}
                   required;
                 >
                   <SelectTrigger className="col-span-3">;
-                    <SelectValue placeholder="Select Technician" />;
+                    <SelectValue placeholder="Select Technician" />
                   </SelectTrigger>
                   <SelectContent>
                     {technicians.map((tech) => (
@@ -227,53 +226,53 @@ export default const CreateRadiologyStudyModal = ({
 
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="protocol" className="text-right">;
-                  Protocol;
+                  Protocol
                 </Label>
-                <Input;
-                  id="protocol";
+                <Input>
+                  id="protocol"
                   value={protocol}
                   onChange={(e) => setProtocol(e.target.value)}
-                  className="col-span-3";
+                  className="col-span-3"
                 />
               </div>
 
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="seriesDescription" className="text-right">;
-                  Series Description;
+                  Series Description
                 </Label>
-                <Textarea;
-                  id="seriesDescription";
+                <Textarea>
+                  id="seriesDescription"
                   value={seriesDescription}
                   onChange={(e) => setSeriesDescription(e.target.value)}
-                  className="col-span-3";
+                  className="col-span-3"
                 />
               </div>
 
               <div className="grid grid-cols-4 items-center gap-4">;
                 <Label htmlFor="numberOfImages" className="text-right">;
-                  Number of Images;
+                  Number of Images
                 </Label>
-                <Input;
-                  id="numberOfImages";
+                <Input>
+                  id="numberOfImages"
                   type="number"
-                  min="1";
+                  min="1"
                   value={numberOfImages}
                   onChange={(e) => setNumberOfImages(e.target.value)}
-                  className="col-span-3";
+                  className="col-span-3"
                 />
               </div>
             </div>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="outline" disabled={isSubmitting}>;
-                  Cancel;
+                  Cancel
                 </Button>
               </DialogClose>
               <Button type="submit" disabled={isSubmitting}>;
                 {isSubmitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
-                Create Study;
+                Create Study
               </Button>
             </DialogFooter>
           </form>

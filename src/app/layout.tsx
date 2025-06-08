@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 export default const RootLayout = ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     // Keep lang="en" and dark class from origin/master;
@@ -42,8 +42,8 @@ export default const RootLayout = ({
       {/* Use Geist fonts and antialiased from origin/master */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>;
         {/* Wrap children with ThemeProvider */}
-        <ThemeProvider;
-          attribute="class";
+        <ThemeProvider>
+          attribute="class"
           defaultTheme="system"
           enableSystem;
           disableTransitionOnChange;

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,28 +17,28 @@ import { useRouter } from "next/navigation";
 
 // Define interfaces for data structures;
 interface Category {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Manufacturer {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface MedicationFormData {
-  item_code: string;
+  item_code: string,
   generic_name: string;
-  brand_name: string;
+  brand_name: string,
   category_id: string;
-  manufacturer_id: string;
+  manufacturer_id: string,
   dosage_form: string;
-  strength: string;
+  strength: string,
   route: string;
-  unit_of_measure: string;
+  unit_of_measure: string,
   prescription_required: boolean;
-  narcotic: boolean;
-  description: string;
+  narcotic: boolean,
+  description: string
 }
 
 type FormErrors = Partial<Record<keyof MedicationFormData, string>>;
@@ -88,7 +88,7 @@ const AddMedicationPage: React.FC = () => {
           { id: "mfr_004", name: "Dr. Reddy's Laboratories" },
           { id: "mfr_005", name: "Zydus Cadila" },
         ];
-        setCategories(simulatedCategories);
+        setCategories(simulatedCategories),
         setManufacturers(simulatedManufacturers);
       } catch (error) {
 
@@ -144,7 +144,7 @@ const AddMedicationPage: React.FC = () => {
       return;
     }
 
-    setLoading(true);
+    setLoading(true),
     setSubmitError("");
     setSubmitSuccess(false);
 
@@ -182,7 +182,7 @@ const AddMedicationPage: React.FC = () => {
         prescription_required: false,
         narcotic: false,
         description: "",
-      });
+      }),
       setErrors({}); // Clear errors on success;
 
       // Redirect after a short delay;
@@ -202,17 +202,17 @@ const AddMedicationPage: React.FC = () => {
     <div className="container mx-auto px-4 py-8">;
       <div className="flex justify-between items-center mb-6">;
         <h1 className="text-2xl font-bold text-gray-800">Add New Medication</h1>;
-        <button;
-          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md";
+        <button>
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
           onClick={() => router.push("/pharmacy/medications")} // Assuming this path;
         >
-          Back to Medications;
+          Back to Medications
         </button>
       </div>
 
       {submitSuccess && (
         <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-md">;
-          Medication added successfully! Redirecting...;
+          Medication added successfully! Redirecting...
         </div>
       )}
 
@@ -226,39 +226,39 @@ const AddMedicationPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="p-6">;
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
             {/* Item Code */}
-            <div>
-              <label;
-                htmlFor="item_code";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="item_code"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Item Code (Optional);
+                Item Code (Optional)
               </label>
-              <input;
+              <input>
                 type="text"
-                id="item_code";
-                name="item_code";
+                id="item_code"
+                name="item_code"
                 value={formData.item_code}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
               <p className="mt-1 text-xs text-gray-500">;
-                Leave blank to auto-generate.;
+                Leave blank to auto-generate.
               </p>
             </div>
 
             {/* Generic Name */}
-            <div>
-              <label;
-                htmlFor="generic_name";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="generic_name"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Generic Name <span className="text-red-500">*</span>;
+                Generic Name <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="text"
-                id="generic_name";
-                name="generic_name";
+                id="generic_name"
+                name="generic_name"
                 value={formData.generic_name}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.generic_name ? "border-red-500" : "border-gray-300"}`}
@@ -270,9 +270,9 @@ const AddMedicationPage: React.FC = () => {
                 }
               />
               {errors.generic_name && (
-                <p;
-                  id="generic_name-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="generic_name-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.generic_name}
                 </p>
@@ -280,39 +280,39 @@ const AddMedicationPage: React.FC = () => {
             </div>
 
             {/* Brand Name */}
-            <div>
-              <label;
-                htmlFor="brand_name";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="brand_name"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Brand Name;
+                Brand Name
               </label>
-              <input;
+              <input>
                 type="text"
-                id="brand_name";
-                name="brand_name";
+                id="brand_name"
+                name="brand_name"
                 value={formData.brand_name}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
             </div>
 
             {/* Dosage Form */}
-            <div>
-              <label;
-                htmlFor="dosage_form";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="dosage_form"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Dosage Form <span className="text-red-500">*</span>;
+                Dosage Form <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="text"
-                id="dosage_form";
-                name="dosage_form";
+                id="dosage_form"
+                name="dosage_form"
                 value={formData.dosage_form}
                 onChange={handleChange}
-                placeholder="e.g., Tablet, Capsule, Syrup, Injection";
+                placeholder="e.g., Tablet, Capsule, Syrup, Injection"
                 className={`w-full p-2 border rounded-md ${errors.dosage_form ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
                 required;
@@ -329,20 +329,20 @@ const AddMedicationPage: React.FC = () => {
             </div>
 
             {/* Strength */}
-            <div>
-              <label;
-                htmlFor="strength";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="strength"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Strength <span className="text-red-500">*</span>;
+                Strength <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="text"
-                id="strength";
-                name="strength";
+                id="strength"
+                name="strength"
                 value={formData.strength}
                 onChange={handleChange}
-                placeholder="e.g., 500mg, 10ml, 1g";
+                placeholder="e.g., 500mg, 10ml, 1g"
                 className={`w-full p-2 border rounded-md ${errors.strength ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
                 required;
@@ -359,20 +359,20 @@ const AddMedicationPage: React.FC = () => {
             </div>
 
             {/* Unit of Measure */}
-            <div>
-              <label;
-                htmlFor="unit_of_measure";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="unit_of_measure"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Unit of Measure <span className="text-red-500">*</span>;
+                Unit of Measure <span className="text-red-500">*</span>
               </label>
-              <input;
+              <input>
                 type="text"
-                id="unit_of_measure";
-                name="unit_of_measure";
+                id="unit_of_measure"
+                name="unit_of_measure"
                 value={formData.unit_of_measure}
                 onChange={handleChange}
-                placeholder="e.g., Tablet, Bottle, Vial";
+                placeholder="e.g., Tablet, Bottle, Vial"
                 className={`w-full p-2 border rounded-md ${errors.unit_of_measure ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
                 required;
@@ -382,9 +382,9 @@ const AddMedicationPage: React.FC = () => {
                 }
               />
               {errors.unit_of_measure && (
-                <p;
-                  id="unit_of_measure-error";
-                  className="mt-1 text-sm text-red-500";
+                <p>
+                  id="unit_of_measure-error"
+                  className="mt-1 text-sm text-red-500"
                 >
                   {errors.unit_of_measure}
                 </p>
@@ -392,39 +392,39 @@ const AddMedicationPage: React.FC = () => {
             </div>
 
             {/* Route */}
-            <div>
-              <label;
-                htmlFor="route";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="route"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Route;
+                Route
               </label>
-              <input;
+              <input>
                 type="text"
-                id="route";
-                name="route";
+                id="route"
+                name="route"
                 value={formData.route}
                 onChange={handleChange}
-                placeholder="e.g., Oral, Intravenous, Topical";
-                className="w-full p-2 border border-gray-300 rounded-md";
+                placeholder="e.g., Oral, Intravenous, Topical"
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
             </div>
 
             {/* Category */}
-            <div>
-              <label;
-                htmlFor="category_id";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="category_id"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Category;
+                Category
               </label>
-              <select;
-                id="category_id";
-                name="category_id";
+              <select>
+                id="category_id"
+                name="category_id"
                 value={formData.category_id}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               >
                 <option value="">Select a category</option>;
@@ -437,19 +437,19 @@ const AddMedicationPage: React.FC = () => {
             </div>
 
             {/* Manufacturer */}
-            <div>
-              <label;
-                htmlFor="manufacturer_id";
-                className="block text-sm font-medium text-gray-700 mb-1";
+<div
+              <label>
+                htmlFor="manufacturer_id"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Manufacturer;
+                Manufacturer
               </label>
-              <select;
-                id="manufacturer_id";
-                name="manufacturer_id";
+              <select>
+                id="manufacturer_id"
+                name="manufacturer_id"
                 value={formData.manufacturer_id}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md";
+                className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               >
                 <option value="">Select a manufacturer</option>;
@@ -464,37 +464,37 @@ const AddMedicationPage: React.FC = () => {
             {/* Flags */}
             <div className="col-span-1 md:col-span-2 grid grid-cols-2 gap-6">;
               <div className="flex items-center">;
-                <input;
-                  id="prescription_required";
-                  name="prescription_required";
+                <input>
+                  id="prescription_required"
+                  name="prescription_required"
                   type="checkbox"
                   checked={formData.prescription_required}
                   onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500";
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   disabled={loading}
                 />
-                <label;
-                  htmlFor="prescription_required";
-                  className="ml-2 block text-sm text-gray-900";
+                <label>
+                  htmlFor="prescription_required"
+                  className="ml-2 block text-sm text-gray-900"
                 >
-                  Prescription Required;
+                  Prescription Required
                 </label>
               </div>
               <div className="flex items-center">;
-                <input;
-                  id="narcotic";
-                  name="narcotic";
+                <input>
+                  id="narcotic"
+                  name="narcotic"
                   type="checkbox"
                   checked={formData.narcotic}
                   onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500";
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   disabled={loading}
                 />
-                <label;
-                  htmlFor="narcotic";
-                  className="ml-2 block text-sm text-gray-900";
+                <label>
+                  htmlFor="narcotic"
+                  className="ml-2 block text-sm text-gray-900"
                 >
-                  Narcotic;
+                  Narcotic
                 </label>
               </div>
             </div>
@@ -502,35 +502,35 @@ const AddMedicationPage: React.FC = () => {
 
           {/* Description */}
           <div className="mt-6">;
-            <label;
-              htmlFor="description";
-              className="block text-sm font-medium text-gray-700 mb-1";
+            <label>
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Description;
+              Description
             </label>
-            <textarea;
-              id="description";
-              name="description";
+            <textarea>
+              id="description"
+              name="description"
               value={formData.description}
               onChange={handleChange}
               rows={3}
-              className="w-full p-2 border border-gray-300 rounded-md";
+              className="w-full p-2 border border-gray-300 rounded-md"
               disabled={loading}
             ></textarea>
           </div>
 
           <div className="mt-8 flex justify-end">;
-            <button;
+            <button>
               type="button"
               onClick={() => router.push("/pharmacy/medications")} // Assuming this path;
-              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50";
+              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               disabled={loading}
             >
-              Cancel;
+              Cancel
             </button>
-            <button;
+            <button>
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50";
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
               disabled={loading}
             >
               {loading ? "Saving..." : "Save Medication"}

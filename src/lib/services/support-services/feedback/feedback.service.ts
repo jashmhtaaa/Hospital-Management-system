@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,8 +23,8 @@ export interface FeedbackFilter {
   serviceType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface ComplaintFilter {
@@ -35,12 +35,12 @@ export interface ComplaintFilter {
   assignedToId?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
-  limit: number;
+  page: number,
+  limit: number
 }
 
 export interface CreateFeedbackData {
-  type: string;
+  type: string,
   source: string;
   rating: number;
   comments?: string;
@@ -55,9 +55,9 @@ export interface CreateFeedbackData {
 }
 
 export interface CreateComplaintData {
-  title: string;
+  title: string,
   description: string;
-  category: string;
+  category: string,
   severity: string;
   submittedById?: string;
   patientId?: string;
@@ -103,7 +103,7 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           patient: {
@@ -111,7 +111,7 @@ export class FeedbackService {
               id: true,
               name: true,
               dateOfBirth: true,
-              gender: true;
+              gender: true
             }
           },
           department: true,
@@ -119,7 +119,7 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           responses: {
@@ -128,7 +128,7 @@ export class FeedbackService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             },
@@ -140,7 +140,7 @@ export class FeedbackService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             }
@@ -156,7 +156,7 @@ export class FeedbackService {
                 select: {
                   id: true,
                   name: true,
-                  email: true;
+                  email: true
                 }
               }
             }
@@ -166,7 +166,7 @@ export class FeedbackService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.feedback.count({ where });
+      prisma.feedback.count({ where })
     ]);
     
     // Convert to FHIR format;
@@ -179,7 +179,7 @@ export class FeedbackService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -195,7 +195,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
@@ -203,7 +203,7 @@ export class FeedbackService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true;
+            gender: true
           }
         },
         department: true,
@@ -211,7 +211,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         responses: {
@@ -220,7 +220,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           },
@@ -232,7 +232,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
@@ -243,14 +243,14 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             },
             createdByUser: {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           },
@@ -266,7 +266,7 @@ export class FeedbackService {
     if (includeFHIR) {
       return {
         data: feedback,
-        fhir: toFHIRFeedback(feedback);
+        fhir: toFHIRFeedback(feedback)
       };
     }
     
@@ -314,23 +314,23 @@ export class FeedbackService {
         status: 'NEW',
         tags: data.tags || [],
         anonymous: data.anonymous,
-        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null;
+        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
         submittedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         },
-        department: true;
+        department: true
       }
     });
     
@@ -371,7 +371,7 @@ export class FeedbackService {
         type: data.type,
         rating: data.rating,
         departmentId: data.departmentId,
-        serviceType: data.serviceType;
+        serviceType: data.serviceType
       }
     });
     
@@ -385,7 +385,7 @@ export class FeedbackService {
     const feedback = await prisma.feedback.findUnique({
       where: { id },
       include: {
-        department: true;
+        department: true
       }
     });
     
@@ -400,20 +400,20 @@ export class FeedbackService {
         status,
         reviewedById: userId,
         reviewedAt: new Date(),
-        reviewNotes: reviewNotes || undefined;
+        reviewNotes: reviewNotes || undefined
       },
       include: {
         submittedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         },
         department: true,
@@ -421,7 +421,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -465,7 +465,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -488,7 +488,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -513,7 +513,7 @@ export class FeedbackService {
         entityId: feedbackId,
         metadata: {
           feedbackId,
-          responseId: response.id;
+          responseId: response.id
         }
       });
     }
@@ -541,14 +541,14 @@ export class FeedbackService {
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId;
+        uploadedById: userId
       },
       include: {
         uploadedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -595,7 +595,7 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           patient: {
@@ -603,7 +603,7 @@ export class FeedbackService {
               id: true,
               name: true,
               dateOfBirth: true,
-              gender: true;
+              gender: true
             }
           },
           department: true,
@@ -611,28 +611,28 @@ export class FeedbackService {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           resolvedByUser: {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           escalatedToUser: {
             select: {
               id: true,
               name: true,
-              email: true;
+              email: true
             }
           },
           _count: {
             select: {
               activities: true,
               attachments: true,
-              followUpActions: true;
+              followUpActions: true
             }
           }
         },
@@ -643,7 +643,7 @@ export class FeedbackService {
           { createdAt: 'desc' }
         ]
       }),
-      prisma.complaint.count({ where });
+      prisma.complaint.count({ where })
     ]);
     
     // Convert to FHIR format;
@@ -656,7 +656,7 @@ export class FeedbackService {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -672,7 +672,7 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
@@ -680,7 +680,7 @@ export class FeedbackService {
             id: true,
             name: true,
             dateOfBirth: true,
-            gender: true;
+            gender: true
           }
         },
         department: true,
@@ -688,21 +688,21 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         resolvedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         escalatedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         activities: {
@@ -711,7 +711,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           },
@@ -723,7 +723,7 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           }
@@ -734,14 +734,14 @@ export class FeedbackService {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             },
             createdByUser: {
               select: {
                 id: true,
                 name: true,
-                email: true;
+                email: true
               }
             }
           },
@@ -757,7 +757,7 @@ export class FeedbackService {
     if (includeFHIR) {
       return {
         data: complaint,
-        fhir: toFHIRComplaint(complaint);
+        fhir: toFHIRComplaint(complaint)
       };
     }
     
@@ -801,25 +801,25 @@ export class FeedbackService {
         submittedById: data.anonymous ? null : (data.submittedById || userId),
         patientId: data.patientId,
         departmentId: data.departmentId,
-        dueDate: data.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now;
+        dueDate: data.dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now,
         anonymous: data.anonymous,
-        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null;
+        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
         submittedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         },
-        department: true;
+        department: true
       }
     });
     
@@ -829,7 +829,7 @@ export class FeedbackService {
         complaintId: complaint.id,
         activityType: 'STATUS_CHANGE',
         description: 'Complaint submitted',
-        performedById: userId || 'system';
+        performedById: userId || 'system'
       }
     });
     
@@ -870,7 +870,7 @@ export class FeedbackService {
         complaintId: complaint.id,
         severity: data.severity,
         category: data.category,
-        departmentId: data.departmentId;
+        departmentId: data.departmentId
       }
     });
     
@@ -914,13 +914,13 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         },
         department: true,
@@ -928,21 +928,21 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         resolvedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         escalatedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -954,7 +954,7 @@ export class FeedbackService {
         complaintId: id,
         activityType: 'STATUS_CHANGE',
         description: `Status changed to ${status}${details ? `: ${details}` : ''}`,
-        performedById: userId;
+        performedById: userId
       }
     });
     
@@ -1026,14 +1026,14 @@ export class FeedbackService {
       where: { id },
       data: {
         assignedToId,
-        status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status;
+        status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status
       },
       include: {
         assignedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1045,7 +1045,7 @@ export class FeedbackService {
         complaintId: id,
         activityType: 'ASSIGNMENT',
         description: `Assigned to ${assignedUser.name}`,
-        performedById: userId;
+        performedById: userId
       }
     });
     
@@ -1068,7 +1068,7 @@ export class FeedbackService {
       metadata: {
         complaintId: id,
         severity: complaint.severity,
-        category: complaint.category;
+        category: complaint.category
       }
     });
     
@@ -1103,14 +1103,14 @@ export class FeedbackService {
         escalatedToId,
         escalationReason: reason,
         escalationDate: new Date(),
-        status: 'ESCALATED';
+        status: 'ESCALATED'
       },
       include: {
         escalatedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1122,7 +1122,7 @@ export class FeedbackService {
         complaintId: id,
         activityType: 'ESCALATION',
         description: `Escalated to ${escalatedUser.name}: ${reason}`,
-        performedById: userId;
+        performedById: userId
       }
     });
     
@@ -1171,14 +1171,14 @@ export class FeedbackService {
         complaintId: id,
         activityType: 'COMMENT',
         description: comment,
-        performedById: userId;
+        performedById: userId
       },
       include: {
         performedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1203,7 +1203,7 @@ export class FeedbackService {
         entityId: id,
         metadata: {
           complaintId: id,
-          activityId: activity.id;
+          activityId: activity.id
         }
       });
     }
@@ -1231,14 +1231,14 @@ export class FeedbackService {
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId;
+        uploadedById: userId
       },
       include: {
         uploadedByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1250,7 +1250,7 @@ export class FeedbackService {
         complaintId,
         activityType: 'COMMENT',
         description: `Attached file: ${fileName}`,
-        performedById: userId;
+        performedById: userId
       }
     });
     
@@ -1318,25 +1318,25 @@ export class FeedbackService {
         assignedToId: data.assignedToId,
         feedbackId: data.feedbackId,
         complaintId: data.complaintId,
-        createdById: userId;
+        createdById: userId
       },
       include: {
         assignedToUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         feedback: true,
-        complaint: true;
+        complaint: true
       }
     });
     
@@ -1356,7 +1356,7 @@ export class FeedbackService {
           complaintId: data.complaintId,
           activityType: 'COMMENT',
           description: `Created follow-up action: ${data.actionType} - ${data.description}`,
-          performedById: userId;
+          performedById: userId
         }
       });
     }
@@ -1374,7 +1374,7 @@ export class FeedbackService {
           actionType: data.actionType,
           feedbackId: data.feedbackId,
           complaintId: data.complaintId,
-          dueDate: data.dueDate?.toISOString();
+          dueDate: data.dueDate?.toISOString()
         }
       });
     }
@@ -1390,7 +1390,7 @@ export class FeedbackService {
       where: { id },
       include: {
         feedback: true,
-        complaint: true;
+        complaint: true
       }
     });
     
@@ -1414,18 +1414,18 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         feedback: true,
-        complaint: true;
+        complaint: true
       }
     });
     
@@ -1445,7 +1445,7 @@ export class FeedbackService {
           complaintId: action.complaintId,
           activityType: 'COMMENT',
           description: `Follow-up action status updated to ${status}: ${action.description}`,
-          performedById: userId;
+          performedById: userId
         }
       });
     }
@@ -1461,7 +1461,7 @@ export class FeedbackService {
         actionId: id,
         status,
         feedbackId: action.feedbackId,
-        complaintId: action.complaintId;
+        complaintId: action.complaintId
       }
     });
     
@@ -1480,14 +1480,14 @@ export class FeedbackService {
         serviceType: data.serviceType,
         questions: data.questions,
         isActive: data.isActive !== undefined ? data.isActive : true,
-        createdById: userId;
+        createdById: userId
       },
       include: {
         createdByUser: {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         }
       }
@@ -1543,7 +1543,7 @@ export class FeedbackService {
         serviceId: data.serviceId,
         serviceType: data.serviceType || template.serviceType,
         anonymous: data.anonymous,
-        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null;
+        contactInfo: data.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
         template: true,
@@ -1551,13 +1551,13 @@ export class FeedbackService {
           select: {
             id: true,
             name: true,
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
             id: true,
-            name: true;
+            name: true
           }
         }
       }
@@ -1591,7 +1591,7 @@ export class FeedbackService {
       metadata: {
         surveyId: survey.id,
         templateId,
-        serviceType: data.serviceType || template.serviceType;
+        serviceType: data.serviceType || template.serviceType
       }
     });
     
@@ -1628,10 +1628,10 @@ export class FeedbackService {
       by: ['type'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get feedback counts by source;
@@ -1639,10 +1639,10 @@ export class FeedbackService {
       by: ['source'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get feedback counts by status;
@@ -1650,10 +1650,10 @@ export class FeedbackService {
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get feedback counts by service type;
@@ -1661,13 +1661,13 @@ export class FeedbackService {
       by: ['serviceType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         serviceType: {
-          not: null;
+          not: null
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get feedback counts by department;
@@ -1684,7 +1684,7 @@ export class FeedbackService {
     const ratings = await prisma.feedback.findMany({
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
       select: {
@@ -1693,7 +1693,7 @@ export class FeedbackService {
         departmentId: true,
         department: {
           select: {
-            name: true;
+            name: true
           }
         }
       }
@@ -1751,10 +1751,10 @@ export class FeedbackService {
       by: ['category'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get complaint counts by severity;
@@ -1762,10 +1762,10 @@ export class FeedbackService {
       by: ['severity'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get complaint counts by status;
@@ -1773,10 +1773,10 @@ export class FeedbackService {
       by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
     
     // Get complaint resolution time;
@@ -1784,16 +1784,16 @@ export class FeedbackService {
       where: {
         status: 'RESOLVED',
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         resolutionDate: {
-          not: null;
+          not: null
         }
       },
       select: {
         createdAt: true,
         resolutionDate: true,
-        severity: true;
+        severity: true
       }
     });
     

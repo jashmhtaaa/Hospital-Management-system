@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -74,7 +74,7 @@ export class DrugInteractionService {
         conditionCode: 'N17.9', // Acute kidney failure;
         severity: 'severe',
         description: 'Metformin is contraindicated in acute kidney failure due to increased risk of lactic acidosis',
-        reference: 'https://example.com/interactions/metformin-kidney-failure';
+        reference: 'https://example.com/interactions/metformin-kidney-failure'
       },
       {
         id: 'condint2',
@@ -82,7 +82,7 @@ export class DrugInteractionService {
         conditionCode: 'K92.2', // Gastrointestinal hemorrhage;
         severity: 'severe',
         description: 'Warfarin may exacerbate gastrointestinal bleeding',
-        reference: 'https://example.com/interactions/warfarin-gi-bleeding';
+        reference: 'https://example.com/interactions/warfarin-gi-bleeding'
       },
       {
         id: 'condint3',
@@ -90,7 +90,7 @@ export class DrugInteractionService {
         conditionCode: 'J45.909', // Asthma;
         severity: 'severe',
         description: 'Non-selective beta-blockers can cause bronchospasm in patients with asthma',
-        reference: 'https://example.com/interactions/propranolol-asthma';
+        reference: 'https://example.com/interactions/propranolol-asthma'
       }
     ];
     
@@ -103,7 +103,7 @@ export class DrugInteractionService {
         abnormalFlag: 'L', // Low;
         severity: 'severe',
         description: 'Hypokalemia increases risk of digoxin toxicity',
-        reference: 'https://example.com/interactions/digoxin-hypokalemia';
+        reference: 'https://example.com/interactions/digoxin-hypokalemia'
       },
       {
         id: 'labint2',
@@ -112,7 +112,7 @@ export class DrugInteractionService {
         abnormalFlag: 'H', // High;
         severity: 'severe',
         description: 'Elevated INR indicates increased bleeding risk with warfarin',
-        reference: 'https://example.com/interactions/warfarin-inr';
+        reference: 'https://example.com/interactions/warfarin-inr'
       },
       {
         id: 'labint3',
@@ -121,7 +121,7 @@ export class DrugInteractionService {
         abnormalFlag: 'L', // Low;
         severity: 'severe',
         description: 'Hyponatremia can increase lithium levels and toxicity',
-        reference: 'https://example.com/interactions/lithium-hyponatremia';
+        reference: 'https://example.com/interactions/lithium-hyponatremia'
       }
     ];
   }
@@ -146,7 +146,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: `${medicationId1},${medicationId2}`,
         details: `Checking drug-drug interaction between medications ${medicationId1} and ${medicationId2}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
       
       // Get medication details;
@@ -187,7 +187,7 @@ export class DrugInteractionService {
         return {
           hasInteraction: false,
           medications: [medication1, medication2],
-          interactionType: 'drug-drug';
+          interactionType: 'drug-drug'
         };
       }
       
@@ -196,7 +196,7 @@ export class DrugInteractionService {
         const severityRank: Record<string, number> = {
           severe: 3,
           moderate: 2,
-          mild: 1;
+          mild: 1
         };
         
         return severityRank[current.severity] > severityRank[prev.severity] ? current : prev;
@@ -212,7 +212,7 @@ export class DrugInteractionService {
             interactionId: interaction.id,
             patientId,
             expiresAt: {
-              gt: new Date() // Only active overrides;
+              gt: new Date() // Only active overrides
             }
           }
         });
@@ -227,14 +227,14 @@ export class DrugInteractionService {
             resourceType: 'Medication',
             resourceId: `${medicationId1},${medicationId2}`,
             details: `Applied override for interaction between medications ${medicationId1} and ${medicationId2}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
         } else if (await this.prisma.interactionOverride.findFirst({
           where: {
             interactionId: interaction.id,
             patientId,
             expiresAt: {
-              lte: new Date() // Expired overrides;
+              lte: new Date() // Expired overrides
             }
           }
         })) {
@@ -244,7 +244,7 @@ export class DrugInteractionService {
             resourceType: 'Medication',
             resourceId: `${medicationId1},${medicationId2}`,
             details: `Expired override found for interaction between medications ${medicationId1} and ${medicationId2}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
         }
       }
@@ -258,7 +258,7 @@ export class DrugInteractionService {
         interactionType: 'drug-drug',
         severity: interaction.severity,
         description: interaction.description,
-        reference: interaction.reference;
+        reference: interaction.reference
       };
     } catch (error) {
       // Log the error;
@@ -267,7 +267,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: `${medicationId1},${medicationId2}`,
         details: `Error checking drug-drug interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
       
       throw error;
@@ -292,7 +292,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: medicationId,
         details: `Checking drug-allergy interaction for medication ${medicationId} and patient ${patientId}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
       
       // Get medication details;
@@ -308,7 +308,7 @@ export class DrugInteractionService {
       const allergies = await this.prisma.allergy.findMany({
         where: {
           patientId,
-          status: 'active';
+          status: 'active'
         }
       });
       
@@ -324,7 +324,7 @@ export class DrugInteractionService {
           resourceType: 'Medication',
           resourceId: medicationId,
           details: `Direct allergy match detected for ${medication.name}`,
-          severity: 'WARNING';
+          severity: 'WARNING'
         });
         
         return {
@@ -333,7 +333,7 @@ export class DrugInteractionService {
           interactionType: 'drug-allergy',
           allergen: directMatch.allergen,
           severity: directMatch.severity,
-          reaction: directMatch.reaction;
+          reaction: directMatch.reaction
         };
       }
       
@@ -352,7 +352,7 @@ export class DrugInteractionService {
             resourceType: 'Medication',
             resourceId: medicationId,
             details: `Class-based allergy match detected for ${medication.name} in class ${allergyClass.name}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
           
           return {
@@ -362,7 +362,7 @@ export class DrugInteractionService {
             allergen: allergy.allergen,
             severity: allergy.severity,
             reaction: allergy.reaction,
-            allergyClass: allergyClass.name;
+            allergyClass: allergyClass.name
           };
         }
       }
@@ -371,7 +371,7 @@ export class DrugInteractionService {
       return {
         hasInteraction: false,
         medication,
-        interactionType: 'drug-allergy';
+        interactionType: 'drug-allergy'
       };
     } catch (error) {
       // Log the error;
@@ -380,7 +380,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: medicationId,
         details: `Error checking drug-allergy interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
       
       throw error;
@@ -405,7 +405,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: medicationId,
         details: `Checking drug-condition interaction for medication ${medicationId} and patient ${patientId}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
       
       // Get medication details;
@@ -421,7 +421,7 @@ export class DrugInteractionService {
       const conditions = await this.prisma.condition.findMany({
         where: {
           patientId,
-          status: 'active';
+          status: 'active'
         }
       });
       
@@ -439,7 +439,7 @@ export class DrugInteractionService {
             resourceType: 'Medication',
             resourceId: medicationId,
             details: `Condition interaction detected for ${medication.name} with condition ${condition.name}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
           
           return {
@@ -449,7 +449,7 @@ export class DrugInteractionService {
             interactionType: 'drug-condition',
             severity: interaction.severity,
             description: interaction.description,
-            reference: interaction.reference;
+            reference: interaction.reference
           };
         }
       }
@@ -458,7 +458,7 @@ export class DrugInteractionService {
       return {
         hasInteraction: false,
         medication,
-        interactionType: 'drug-condition';
+        interactionType: 'drug-condition'
       };
     } catch (error) {
       // Log the error;
@@ -467,7 +467,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: medicationId,
         details: `Error checking drug-condition interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
       
       throw error;
@@ -492,7 +492,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: medicationId,
         details: `Checking drug-lab interaction for medication ${medicationId} and patient ${patientId}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
       
       // Get medication details;
@@ -512,11 +512,11 @@ export class DrugInteractionService {
             in: ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags;
           },
           collectedDate: {
-            gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
+            gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
           }
         },
         orderBy: {
-          collectedDate: 'desc';
+          collectedDate: 'desc'
         }
       });
       
@@ -535,7 +535,7 @@ export class DrugInteractionService {
             resourceType: 'Medication',
             resourceId: medicationId,
             details: `Lab interaction detected for ${medication.name} with abnormal ${labResult.name}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
           
           return {
@@ -545,7 +545,7 @@ export class DrugInteractionService {
             interactionType: 'drug-lab',
             severity: interaction.severity,
             description: interaction.description,
-            reference: interaction.reference;
+            reference: interaction.reference
           };
         }
       }
@@ -554,7 +554,7 @@ export class DrugInteractionService {
       return {
         hasInteraction: false,
         medication,
-        interactionType: 'drug-lab';
+        interactionType: 'drug-lab'
       };
     } catch (error) {
       // Log the error;
@@ -563,7 +563,7 @@ export class DrugInteractionService {
         resourceType: 'Medication',
         resourceId: medicationId,
         details: `Error checking drug-lab interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
       
       throw error;
@@ -595,7 +595,7 @@ export class DrugInteractionService {
         resourceType: 'Interaction',
         resourceId: interactionId,
         details: `Creating override for interaction ${interactionId} for patient ${patientId}`,
-        severity: 'WARNING';
+        severity: 'WARNING'
       });
       
       // Calculate expiration date;
@@ -610,7 +610,7 @@ export class DrugInteractionService {
           providerId,
           reason,
           expiresAt,
-          createdAt: new Date();
+          createdAt: new Date()
         }
       });
       
@@ -623,7 +623,7 @@ export class DrugInteractionService {
         resourceType: 'Interaction',
         resourceId: interactionId,
         details: `Error creating interaction override: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
       
       throw error;
@@ -648,7 +648,7 @@ export class DrugInteractionService {
         resourceType: 'Patient',
         resourceId: patientId,
         details: `Performing batch interaction check for ${medicationIds.length} medications`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
       
       const drugDrugInteractions: PharmacyDomain.DrugInteractionResult[] = [];
@@ -726,7 +726,7 @@ export class DrugInteractionService {
         resourceType: 'Patient',
         resourceId: patientId,
         details: `Error performing batch interaction check: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
       
       throw error;

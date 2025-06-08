@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -22,36 +22,36 @@ import { cacheService } from '@/lib/cache/redis-cache';
 import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
 
 export interface ClinicalDocument {
-  id: string;
+  id: string,
   documentType: DocumentType;
-  patientId: string;
+  patientId: string,
   encounterId: string;
-  authorId: string;
+  authorId: string,
   authorRole: string;
-  departmentId: string;
+  departmentId: string,
   serviceId: string;
   templateId?: string;
-  title: string;
+  title: string,
   content: DocumentContent;
-  status: DocumentStatus;
+  status: DocumentStatus,
   confidentialityLevel: ConfidentialityLevel;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   lastModifiedBy: string;
   signedAt?: Date;
   signedBy?: string;
   cosignedAt?: Date;
   cosignedBy?: string;
-  amendmentHistory: Amendment[];
+  amendmentHistory: Amendment[],
   addendumHistory: Addendum[];
-  metadata: DocumentMetadata;
+  metadata: DocumentMetadata,
   structuredData: StructuredClinicalData;
-  qualityMetrics: QualityMetrics;
+  qualityMetrics: QualityMetrics,
   complianceFlags: ComplianceFlag[];
-  attachments: DocumentAttachment[];
+  attachments: DocumentAttachment[],
   version: number;
   parentDocumentId?: string;
-  relatedDocuments: string[];
+  relatedDocuments: string[]
 }
 
 export enum DocumentType {
@@ -93,21 +93,21 @@ export enum DocumentType {
 export interface DocumentContent {
   sections: DocumentSection[];
   freeText?: string;
-  templates: TemplateInstance[];
+  templates: TemplateInstance[],
   multimedia: MultimediaElement[];
-  structuredFields: StructuredField[];
+  structuredFields: StructuredField[]
 }
 
 export interface DocumentSection {
-  id: string;
+  id: string,
   sectionType: SectionType;
-  title: string;
+  title: string,
   content: string;
   structuredData?: unknown;
-  required: boolean;
+  required: boolean,
   order: number;
-  lastModified: Date;
-  modifiedBy: string;
+  lastModified: Date,
+  modifiedBy: string
 }
 
 export enum SectionType {
@@ -147,15 +147,15 @@ export enum SectionType {
 }
 
 export interface TemplateInstance {
-  templateId: string;
+  templateId: string,
   templateName: string;
   variables: Record<string, any>;
-  generatedContent: string;
-  lastGenerated: Date;
+  generatedContent: string,
+  lastGenerated: Date
 }
 
 export interface MultimediaElement {
-  id: string;
+  id: string,
   type: MediaType;
   url: string;
   caption?: string;
@@ -173,7 +173,7 @@ export enum MediaType {
 }
 
 export interface MediaMetadata {
-  filename: string;
+  filename: string,
   fileSize: number;
   mimeType: string;
   dimensions?: { width: number; height: number };
@@ -184,15 +184,15 @@ export interface MediaMetadata {
 }
 
 export interface StructuredField {
-  fieldId: string;
+  fieldId: string,
   fieldType: FieldType;
-  label: string;
+  label: string,
   value: unknown;
   unit?: string;
   normalRange?: string;
-  validationRules: ValidationRule[];
+  validationRules: ValidationRule[],
   isRequired: boolean;
-  isModifiable: boolean;
+  isModifiable: boolean
 }
 
 export enum FieldType {
@@ -213,7 +213,7 @@ export enum FieldType {
 export interface ValidationRule {
   type: 'REQUIRED' | 'MIN_LENGTH' | 'MAX_LENGTH' | 'PATTERN' | 'RANGE' | 'CUSTOM';
   value?: unknown;
-  message: string;
+  message: string
 }
 
 export enum DocumentStatus {
@@ -237,46 +237,46 @@ export enum ConfidentialityLevel {
 }
 
 export interface Amendment {
-  id: string;
+  id: string,
   amendmentDate: Date;
-  amendedBy: string;
+  amendedBy: string,
   reason: string;
-  originalContent: string;
+  originalContent: string,
   amendedContent: string;
   approvedBy?: string;
   approvedAt?: Date;
 }
 
 export interface Addendum {
-  id: string;
+  id: string,
   addendumDate: Date;
-  addedBy: string;
+  addedBy: string,
   content: string;
   reason: string;
   attachments?: string[];
 }
 
 export interface DocumentMetadata {
-  wordCount: number;
+  wordCount: number,
   characterCount: number;
-  sectionCount: number;
+  sectionCount: number,
   completionPercentage: number;
-  lastAutoSave: Date;
+  lastAutoSave: Date,
   timeSpentEditing: number; // minutes;
-  revisionCount: number;
+  revisionCount: number,
   collaborators: string[];
-  tags: string[];
+  tags: string[],
   keywords: string[];
-  clinicalConcepts: ClinicalConcept[];
+  clinicalConcepts: ClinicalConcept[]
 }
 
 export interface ClinicalConcept {
   concept: string;
   conceptId?: string;
-  terminology: 'SNOMED' | 'ICD10' | 'LOINC' | 'RXNORM' | 'CPT';
+  terminology: 'SNOMED' | 'ICD10' | 'LOINC' | 'RXNORM' | 'CPT',
   confidence: number; // 0-100;
   position: { start: number; end: number };
-  context: string;
+  context: string
 }
 
 export interface StructuredClinicalData {
@@ -295,11 +295,11 @@ export interface StructuredClinicalData {
   // Social Determinants;
   socialDeterminants: SocialDeterminant[];
   // Clinical Assessments;
-  assessments: ClinicalAssessment[];
+  assessments: ClinicalAssessment[]
 }
 
 export interface Problem {
-  problemId: string;
+  problemId: string,
   description: string;
   icd10Code?: string;
   snomedCode?: string;
@@ -311,33 +311,33 @@ export interface Problem {
 }
 
 export interface MedicationEntry {
-  medicationId: string;
+  medicationId: string,
   name: string;
   genericName?: string;
-  dosage: string;
+  dosage: string,
   route: string;
   frequency: string;
   startDate?: Date;
   endDate?: Date;
-  prescriber: string;
+  prescriber: string,
   indication: string;
-  status: 'ACTIVE' | 'DISCONTINUED' | 'HELD' | 'COMPLETED';
+  status: 'ACTIVE' | 'DISCONTINUED' | 'HELD' | 'COMPLETED'
 }
 
 export interface AllergyEntry {
-  allergyId: string;
+  allergyId: string,
   allergen: string;
-  allergenType: 'DRUG' | 'FOOD' | 'ENVIRONMENTAL';
+  allergenType: 'DRUG' | 'FOOD' | 'ENVIRONMENTAL',
   reaction: string;
   severity: 'MILD' | 'MODERATE' | 'SEVERE' | 'LIFE_THREATENING';
   onsetDate?: Date;
-  verificationStatus: 'CONFIRMED' | 'UNCONFIRMED' | 'REFUTED';
+  verificationStatus: 'CONFIRMED' | 'UNCONFIRMED' | 'REFUTED'
 }
 
 export interface VitalSignEntry {
-  vitalSignId: string;
+  vitalSignId: string,
   type: 'TEMPERATURE' | 'BLOOD_PRESSURE' | 'HEART_RATE' | 'RESPIRATORY_RATE' | 'OXYGEN_SATURATION' | 'WEIGHT' | 'HEIGHT' | 'BMI' | 'PAIN_SCORE';
-  value: number;
+  value: number,
   unit: string;
   timestamp: Date;
   method?: string;
@@ -346,7 +346,7 @@ export interface VitalSignEntry {
 }
 
 export interface LabResult {
-  resultId: string;
+  resultId: string,
   testName: string;
   loincCode?: string;
   value: string;
@@ -354,17 +354,17 @@ export interface LabResult {
   unit?: string;
   referenceRange?: string;
   abnormalFlag?: string;
-  status: 'FINAL' | 'PRELIMINARY' | 'CORRECTED';
+  status: 'FINAL' | 'PRELIMINARY' | 'CORRECTED',
   collectedAt: Date;
-  resultedAt: Date;
+  resultedAt: Date
 }
 
 export interface ProcedureEntry {
-  procedureId: string;
+  procedureId: string,
   description: string;
   cptCode?: string;
   snomedCode?: string;
-  performedDate: Date;
+  performedDate: Date,
   performer: string;
   location: string;
   outcome?: string;
@@ -372,114 +372,114 @@ export interface ProcedureEntry {
 }
 
 export interface SocialDeterminant {
-  category: 'HOUSING' | 'EMPLOYMENT' | 'EDUCATION' | 'TRANSPORTATION' | 'FOOD_SECURITY' | 'SOCIAL_SUPPORT';
+  category: 'HOUSING' | 'EMPLOYMENT' | 'EDUCATION' | 'TRANSPORTATION' | 'FOOD_SECURITY' | 'SOCIAL_SUPPORT',
   description: string;
-  status: string;
+  status: string,
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
-  interventionsNeeded: string[];
+  interventionsNeeded: string[]
 }
 
 export interface ClinicalAssessment {
-  assessmentId: string;
+  assessmentId: string,
   type: 'NURSING' | 'PHYSICIAN' | 'THERAPY' | 'SOCIAL_WORK' | 'MENTAL_HEALTH';
   scale?: string;
   score?: number;
-  interpretation: string;
+  interpretation: string,
   performedAt: Date;
-  performedBy: string;
-  recommendations: string[];
+  performedBy: string,
+  recommendations: string[]
 }
 
 export interface QualityMetrics {
-  completeness: CompletenessMetrics;
+  completeness: CompletenessMetrics,
   accuracy: AccuracyMetrics;
-  timeliness: TimelinessMetrics;
-  compliance: ComplianceMetrics;
+  timeliness: TimelinessMetrics,
+  compliance: ComplianceMetrics
 }
 
 export interface CompletenessMetrics {
   overallScore: number; // 0-100;
-  requiredSectionsComplete: number;
+  requiredSectionsComplete: number,
   totalRequiredSections: number;
-  missingElements: string[];
+  missingElements: string[],
   optionalSectionsComplete: number;
-  totalOptionalSections: number;
+  totalOptionalSections: number
 }
 
 export interface AccuracyMetrics {
-  spellingErrors: number;
+  spellingErrors: number,
   grammarErrors: number;
-  medicalTerminologyErrors: number;
+  medicalTerminologyErrors: number,
   inconsistencies: Inconsistency[];
-  factualErrors: FactualError[];
+  factualErrors: FactualError[]
 }
 
 export interface Inconsistency {
-  type: string;
+  type: string,
   description: string;
-  location: string;
-  suggestion: string;
+  location: string,
+  suggestion: string
 }
 
 export interface FactualError {
-  type: string;
+  type: string,
   description: string;
-  location: string;
+  location: string,
   expectedValue: string;
-  actualValue: string;
+  actualValue: string
 }
 
 export interface TimelinessMetrics {
-  createdWithinTarget: boolean;
+  createdWithinTarget: boolean,
   targetTime: number; // hours;
   actualTime: number; // hours;
-  signedWithinTarget: boolean;
+  signedWithinTarget: boolean,
   signatureTargetTime: number; // hours;
   actualSignatureTime: number; // hours;
 }
 
 export interface ComplianceMetrics {
-  regulatoryCompliance: RegulatoryCompliance[];
+  regulatoryCompliance: RegulatoryCompliance[],
   institutionalCompliance: InstitutionalCompliance[];
-  specialtyCompliance: SpecialtyCompliance[];
+  specialtyCompliance: SpecialtyCompliance[]
 }
 
 export interface RegulatoryCompliance {
-  regulation: string;
+  regulation: string,
   requirement: string;
-  status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL';
-  details: string;
+  status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL',
+  details: string
 }
 
 export interface InstitutionalCompliance {
-  policy: string;
+  policy: string,
   requirement: string;
-  status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL';
-  details: string;
+  status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL',
+  details: string
 }
 
 export interface SpecialtyCompliance {
-  specialty: string;
+  specialty: string,
   guideline: string;
-  requirement: string;
+  requirement: string,
   status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL';
-  details: string;
+  details: string
 }
 
 export interface ComplianceFlag {
-  type: 'REGULATORY' | 'INSTITUTIONAL' | 'SPECIALTY' | 'QUALITY';
+  type: 'REGULATORY' | 'INSTITUTIONAL' | 'SPECIALTY' | 'QUALITY',
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  description: string;
+  description: string,
   recommendation: string;
-  autoResolvable: boolean;
+  autoResolvable: boolean
 }
 
 export interface DocumentAttachment {
-  id: string;
+  id: string,
   filename: string;
-  fileType: string;
+  fileType: string,
   fileSize: number;
-  uploadedAt: Date;
+  uploadedAt: Date,
   uploadedBy: string;
   url: string;
   thumbnailUrl?: string;
@@ -487,110 +487,110 @@ export interface DocumentAttachment {
 }
 
 export interface DocumentTemplate {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   documentType: DocumentType;
   specialty?: string;
   department?: string;
-  version: string;
+  version: string,
   sections: TemplateSection[];
-  variables: TemplateVariable[];
+  variables: TemplateVariable[],
   rules: TemplateRule[];
-  isActive: boolean;
+  isActive: boolean,
   createdBy: string;
-  createdAt: Date;
+  createdAt: Date,
   lastModified: Date;
-  usage: TemplateUsage;
+  usage: TemplateUsage
 }
 
 export interface TemplateSection {
-  id: string;
+  id: string,
   sectionType: SectionType;
-  title: string;
+  title: string,
   content: string;
-  isRequired: boolean;
+  isRequired: boolean,
   order: number;
   conditionalDisplay?: ConditionalRule[];
-  structuredElements: StructuredElement[];
+  structuredElements: StructuredElement[]
 }
 
 export interface StructuredElement {
-  id: string;
+  id: string,
   type: FieldType;
   label: string;
   defaultValue?: unknown;
   options?: string[];
-  validationRules: ValidationRule[];
+  validationRules: ValidationRule[],
   isRequired: boolean;
   conditionalDisplay?: ConditionalRule[];
 }
 
 export interface ConditionalRule {
-  condition: string;
+  condition: string,
   operator: 'EQUALS' | 'NOT_EQUALS' | 'CONTAINS' | 'GREATER_THAN' | 'LESS_THAN';
-  value: unknown;
-  action: 'SHOW' | 'HIDE' | 'REQUIRE' | 'DISABLE';
+  value: unknown,
+  action: 'SHOW' | 'HIDE' | 'REQUIRE' | 'DISABLE'
 }
 
 export interface TemplateVariable {
-  name: string;
+  name: string,
   type: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN';
   source: 'USER_INPUT' | 'PATIENT_DATA' | 'ENCOUNTER_DATA' | 'SYSTEM_DATA';
   defaultValue?: unknown;
-  description: string;
+  description: string
 }
 
 export interface TemplateRule {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   trigger: RuleTrigger;
-  action: RuleAction;
+  action: RuleAction,
   priority: number;
-  isActive: boolean;
+  isActive: boolean
 }
 
 export interface RuleTrigger {
-  event: 'ON_CREATE' | 'ON_UPDATE' | 'ON_SIGN' | 'ON_FIELD_CHANGE';
-  conditions: TriggerCondition[];
+  event: 'ON_CREATE' | 'ON_UPDATE' | 'ON_SIGN' | 'ON_FIELD_CHANGE',
+  conditions: TriggerCondition[]
 }
 
 export interface TriggerCondition {
-  field: string;
+  field: string,
   operator: string;
-  value: unknown;
+  value: unknown
 }
 
 export interface RuleAction {
-  type: 'POPULATE_FIELD' | 'SHOW_WARNING' | 'REQUIRE_FIELD' | 'RUN_CALCULATION' | 'SEND_ALERT';
+  type: 'POPULATE_FIELD' | 'SHOW_WARNING' | 'REQUIRE_FIELD' | 'RUN_CALCULATION' | 'SEND_ALERT',
   parameters: Record<string, any>;
 }
 
 export interface TemplateUsage {
-  totalUsage: number;
+  totalUsage: number,
   monthlyUsage: number;
   averageCompletionTime: number; // minutes;
-  averageQualityScore: number;
+  averageQualityScore: number,
   userSatisfaction: number;
-  lastUsed: Date;
+  lastUsed: Date
 }
 
 export interface ClinicalDecisionSupport {
-  alerts: CDSAlert[];
+  alerts: CDSAlert[],
   reminders: CDSReminder[];
-  orderSets: OrderSet[];
-  guidelines: ClinicalGuideline[];
+  orderSets: OrderSet[],
+  guidelines: ClinicalGuideline[]
 }
 
 export interface CDSAlert {
-  id: string;
+  id: string,
   type: 'DRUG_INTERACTION' | 'ALLERGY' | 'DUPLICATE_ORDER' | 'CRITICAL_VALUE' | 'CLINICAL_RULE';
-  severity: 'INFO' | 'WARNING' | 'CRITICAL';
+  severity: 'INFO' | 'WARNING' | 'CRITICAL',
   message: string;
-  details: string;
+  details: string,
   recommendations: string[];
-  source: string;
+  source: string,
   triggeredAt: Date;
   acknowledgedAt?: Date;
   acknowledgedBy?: string;
@@ -598,9 +598,9 @@ export interface CDSAlert {
 }
 
 export interface CDSReminder {
-  id: string;
+  id: string,
   type: 'PREVENTIVE_CARE' | 'MEDICATION_RECONCILIATION' | 'FOLLOW_UP' | 'DOCUMENTATION';
-  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH',
   message: string;
   dueDate?: Date;
   actions: ReminderAction[];
@@ -610,112 +610,112 @@ export interface CDSReminder {
 }
 
 export interface ReminderAction {
-  label: string;
+  label: string,
   action: string;
   url?: string;
   parameters?: Record<string, any>;
 }
 
 export interface OrderSet {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   specialty: string;
-  condition: string;
+  condition: string,
   orders: PreferenceOrder[];
-  evidenceLevel: 'A' | 'B' | 'C' | 'D';
+  evidenceLevel: 'A' | 'B' | 'C' | 'D',
   lastReviewed: Date;
-  usage: OrderSetUsage;
+  usage: OrderSetUsage
 }
 
 export interface PreferenceOrder {
-  type: 'MEDICATION' | 'LABORATORY' | 'IMAGING' | 'PROCEDURE' | 'NURSING' | 'DIET';
+  type: 'MEDICATION' | 'LABORATORY' | 'IMAGING' | 'PROCEDURE' | 'NURSING' | 'DIET',
   description: string;
-  isDefault: boolean;
+  isDefault: boolean,
   priority: number;
   parameters: Record<string, any>;
 }
 
 export interface OrderSetUsage {
-  totalUsage: number;
+  totalUsage: number,
   monthlyUsage: number;
-  completionRate: number;
+  completionRate: number,
   modificationRate: number;
-  outcomeData: OutcomeMetric[];
+  outcomeData: OutcomeMetric[]
 }
 
 export interface OutcomeMetric {
-  metric: string;
+  metric: string,
   value: number;
   unit: string;
   comparisonValue?: number;
-  trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
+  trend: 'IMPROVING' | 'STABLE' | 'DECLINING'
 }
 
 export interface ClinicalGuideline {
-  id: string;
+  id: string,
   title: string;
-  description: string;
+  description: string,
   source: string;
-  version: string;
+  version: string,
   effectiveDate: Date;
   expirationDate?: Date;
-  specialty: string;
+  specialty: string,
   conditions: string[];
-  recommendations: GuidelineRecommendation[];
+  recommendations: GuidelineRecommendation[],
   evidenceLevel: 'A' | 'B' | 'C' | 'D';
-  implementation: ImplementationGuide;
+  implementation: ImplementationGuide
 }
 
 export interface GuidelineRecommendation {
-  id: string;
+  id: string,
   recommendation: string;
-  evidenceLevel: 'A' | 'B' | 'C' | 'D';
+  evidenceLevel: 'A' | 'B' | 'C' | 'D',
   strengthOfRecommendation: 'STRONG' | 'WEAK' | 'CONDITIONAL';
-  applicableTo: string[];
+  applicableTo: string[],
   contraindications: string[];
-  monitoring: string[];
-  alternatives: string[];
+  monitoring: string[],
+  alternatives: string[]
 }
 
 export interface ImplementationGuide {
-  triggers: string[];
+  triggers: string[],
   workflow: WorkflowStep[];
-  measures: QualityMeasure[];
+  measures: QualityMeasure[],
   barriers: ImplementationBarrier[];
-  facilitators: string[];
+  facilitators: string[]
 }
 
 export interface WorkflowStep {
-  step: number;
+  step: number,
   description: string;
-  responsible: string;
+  responsible: string,
   timeframe: string;
-  dependencies: string[];
-  outputs: string[];
+  dependencies: string[],
+  outputs: string[]
 }
 
 export interface QualityMeasure {
-  name: string;
+  name: string,
   description: string;
-  numerator: string;
+  numerator: string,
   denominator: string;
-  target: number;
+  target: number,
   unit: string;
-  reportingFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
+  reportingFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY'
 }
 
 export interface ImplementationBarrier {
-  type: 'TECHNICAL' | 'WORKFLOW' | 'FINANCIAL' | 'CULTURAL' | 'REGULATORY';
+  type: 'TECHNICAL' | 'WORKFLOW' | 'FINANCIAL' | 'CULTURAL' | 'REGULATORY',
   description: string;
-  impact: 'LOW' | 'MEDIUM' | 'HIGH';
-  mitigation: string;
+  impact: 'LOW' | 'MEDIUM' | 'HIGH',
+  mitigation: string
 }
 
 @Injectable();
 export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObservation> {
   constructor(private prisma: PrismaService) {
-    super('DocumentReference');
+    super('DocumentReference')
   }
 
   /**
@@ -1093,7 +1093,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
   // Required abstract methods;
   validate(resource: FHIRObservation): boolean {
-    return !!(resource.resourceType && resource.status && resource.code);
+    return !!(resource.resourceType && resource.status && resource.code)
   }
 
   toFHIR(document: ClinicalDocument): FHIRObservation {

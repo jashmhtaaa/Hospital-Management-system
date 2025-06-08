@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,28 +15,28 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 
 interface ChecklistTemplate {
-  id: string;
+  id: string,
   name: string;
-  surgeryType: string;
+  surgeryType: string,
   itemCount: number;
-  lastUpdated: string;
-  status: 'active' | 'draft' | 'archived';
+  lastUpdated: string,
+  status: 'active' | 'draft' | 'archived'
 }
 
 interface OTChecklistTemplateListProps {
-  templates: ChecklistTemplate[];
+  templates: ChecklistTemplate[]
 }
 
 /**
  * Operation Theatre checklist template list component;
  */
-export const OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListProps) {
+export const OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'active': return <Badge variant="success">Active</Badge>;
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
       case 'archived': return <Badge>Archived</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -60,7 +60,7 @@ export const OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListPr
             {templates.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center">;
-                  No checklist templates available;
+                  No checklist templates available
                 </TableCell>
               </TableRow>
             ) : (

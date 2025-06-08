@@ -127,7 +127,7 @@ logCheck(
 
 // 1.3 Check for encryption
 const encryptionServiceImplemented = fileExists('./src/lib/security/encryption.service.ts') || 
-                                    fileExists('./src/services/encryption_service.ts');
+                                    fileExists('./src/services/encryption_service.ts'),
 logCheck(
   'Encryption Implementation', 
   encryptionServiceImplemented,
@@ -147,7 +147,7 @@ logCheck(
 
 // 2.2 Check for privacy policy
 const privacyPolicyImplemented = fileExists('./public/privacy-policy.html') ||
-                                 fileExists('./src/app/privacy-policy/page.tsx');
+                                 fileExists('./src/app/privacy-policy/page.tsx'),
 logCheck(
   'Privacy Policy', 
   privacyPolicyImplemented,
@@ -199,7 +199,7 @@ logCheck(
 const dataProcessingRecordsImplemented = findFilesWithPattern('./src', /data.*processing.*record/i).length > 0 ||
                                         findFilesWithPattern('./docs', /data.*processing.*record/i).length > 0 ||
                                         fileExists('./src/lib/audit.ts') || 
-                                        fileExists('./src/services/audit_log_service.ts');
+                                        fileExists('./src/services/audit_log_service.ts'),
 logCheck(
   'Data Processing Records', 
   dataProcessingRecordsImplemented,
@@ -242,7 +242,7 @@ logCheck(
 // 7.1 Check for data transfer controls
 const dataTransferControlsImplemented = findFilesWithPattern('./src', /data.*transfer/i).length > 0 || 
                                        findFilesWithPattern('./docs', /data.*transfer/i).length > 0 ||
-                                       fileExists('./docs/data-transfer-policy.md');
+                                       fileExists('./docs/data-transfer-policy.md'),
 logCheck(
   'Data Transfer Controls', 
   dataTransferControlsImplemented,
@@ -262,7 +262,7 @@ logCheck(
 
 // 8.1 Check for access control
 const accessControlImplemented = fileExists('./src/lib/rbac/rbac.service.ts') || 
-                                fileExists('./src/lib/auth.ts');
+                                fileExists('./src/lib/auth.ts'),
 logCheck(
   'Access Control', 
   accessControlImplemented,
@@ -280,7 +280,7 @@ logCheck(
 
 // 8.3 Check for audit logging
 const auditLoggingImplemented = fileExists('./src/lib/audit.ts') || 
-                                fileExists('./src/services/audit_log_service.ts');
+                                fileExists('./src/services/audit_log_service.ts'),
 logCheck(
   'Audit Logging', 
   auditLoggingImplemented,

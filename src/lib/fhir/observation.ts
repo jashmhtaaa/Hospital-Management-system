@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -102,9 +102,9 @@ export class FHIRObservationUtils {
     patientId: string;
     practitionerId?: string;
     encounterId?: string;
-    vitalSign: 'blood-pressure' | 'heart-rate' | 'respiratory-rate' | 'body-temperature' | 'body-weight' | 'body-height' | 'oxygen-saturation';
+    vitalSign: 'blood-pressure' | 'heart-rate' | 'respiratory-rate' | 'body-temperature' | 'body-weight' | 'body-height' | 'oxygen-saturation',
     value: number | { systolic: number; diastolic: number };
-    unit: string;
+    unit: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRObservation {
@@ -115,7 +115,7 @@ export class FHIRObservationUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/observation-category',
           code: 'vital-signs',
-          display: 'Vital Signs';
+          display: 'Vital Signs'
         }]
       }],
       code: this.getVitalSignCode(data.vitalSign),
@@ -124,7 +124,7 @@ export class FHIRObservationUtils {
         type: 'Patient'
       },
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString();
+      issued: new Date().toISOString()
     };
 
     // Add encounter if provided;
@@ -151,14 +151,14 @@ export class FHIRObservationUtils {
             coding: [{
               system: 'http://loinc.org',
               code: '8480-6',
-              display: 'Systolic blood pressure';
+              display: 'Systolic blood pressure'
             }]
           },
           value: {
             value: data.value.systolic,
             unit: data.unit,
             system: 'http://unitsofmeasure.org',
-            code: data.unit;
+            code: data.unit
           }
         },
         {
@@ -166,14 +166,14 @@ export class FHIRObservationUtils {
             coding: [{
               system: 'http://loinc.org',
               code: '8462-4',
-              display: 'Diastolic blood pressure';
+              display: 'Diastolic blood pressure'
             }]
           },
           value: {
             value: data.value.diastolic,
             unit: data.unit,
             system: 'http://unitsofmeasure.org',
-            code: data.unit;
+            code: data.unit
           }
         }
       ];
@@ -183,7 +183,7 @@ export class FHIRObservationUtils {
         value: data.value,
         unit: data.unit,
         system: 'http://unitsofmeasure.org',
-        code: data.unit;
+        code: data.unit
       };
     }
 
@@ -197,7 +197,7 @@ export class FHIRObservationUtils {
     patientId: string;
     practitionerId?: string;
     encounterId?: string;
-    testCode: string;
+    testCode: string,
     testName: string;
     value: number | string;
     unit?: string;
@@ -214,14 +214,14 @@ export class FHIRObservationUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/observation-category',
           code: 'laboratory',
-          display: 'Laboratory';
+          display: 'Laboratory'
         }]
       }],
       code: {
         coding: [{
           system: 'http://loinc.org',
           code: data.testCode,
-          display: data.testName;
+          display: data.testName
         }]
       },
       subject: {
@@ -229,7 +229,7 @@ export class FHIRObservationUtils {
         type: 'Patient'
       },
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString();
+      issued: new Date().toISOString()
     };
 
     // Add encounter if provided;
@@ -262,7 +262,7 @@ export class FHIRObservationUtils {
         value: data.value,
         unit: data.unit,
         system: 'http://unitsofmeasure.org',
-        code: data.unit;
+        code: data.unit
       };
     } else {
       observation.value = data.value;
@@ -274,7 +274,7 @@ export class FHIRObservationUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
           code: data.interpretation.toUpperCase(),
-          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1);
+          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1)
         }]
       }];
     }
@@ -287,7 +287,7 @@ export class FHIRObservationUtils {
             value: data.referenceRange.low,
             unit: data.unit || '',
             system: 'http://unitsofmeasure.org',
-            code: data.unit || '';
+            code: data.unit || ''
           }
         }),
         ...(data.referenceRange.high && {
@@ -295,7 +295,7 @@ export class FHIRObservationUtils {
             value: data.referenceRange.high,
             unit: data.unit || '',
             system: 'http://unitsofmeasure.org',
-            code: data.unit || '';
+            code: data.unit || ''
           }
         });
       }];
@@ -308,12 +308,12 @@ export class FHIRObservationUtils {
    * Create a clinical assessment observation;
    */
   static createClinicalAssessmentObservation(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     encounterId?: string;
-    assessmentCode: string;
+    assessmentCode: string,
     assessmentName: string;
-    finding: string;
+    finding: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRObservation {
@@ -324,14 +324,14 @@ export class FHIRObservationUtils {
         coding: [{
           system: 'http://terminology.hl7.org/CodeSystem/observation-category',
           code: 'exam',
-          display: 'Exam';
+          display: 'Exam'
         }]
       }],
       code: {
         coding: [{
           system: 'http://snomed.info/sct',
           code: data.assessmentCode,
-          display: data.assessmentName;
+          display: data.assessmentName
         }]
       },
       subject: {
@@ -374,7 +374,7 @@ export class FHIRObservationUtils {
       coding: [{
         system: 'http://loinc.org',
         code: codeInfo.code,
-        display: codeInfo.display;
+        display: codeInfo.display
       }]
     };
   }
@@ -384,7 +384,7 @@ export class FHIRObservationUtils {
    */
   static getNumericValue(observation: FHIRObservation): number | null {
     if (typeof observation.value === 'object' && 'value' in observation.value) {
-      return observation.value.value || null;
+      return observation.value.value || null
     }
     if (typeof observation.value === 'number') {
       return observation.value;
@@ -397,7 +397,7 @@ export class FHIRObservationUtils {
    */
   static getStringValue(observation: FHIRObservation): string {
     if (typeof observation.value === 'string') {
-      return observation.value;
+      return observation.value
     }
     if (typeof observation.value === 'object' && 'value' in observation.value) {
       return observation.value.value?.toString() || '';
@@ -413,7 +413,7 @@ export class FHIRObservationUtils {
    */
   static getUnit(observation: FHIRObservation): string {
     if (typeof observation.value === 'object' && 'unit' in observation.value) {
-      return observation.value.unit || '';
+      return observation.value.unit || ''
     }
     return '';
   }
@@ -441,7 +441,7 @@ export class FHIRObservationUtils {
    * Get observation code display;
    */
   static getCodeDisplay(observation: FHIRObservation): string {
-    return observation.code.coding?.[0]?.display || observation.code.text || 'Unknown Test';
+    return observation.code.coding?.[0]?.display || observation.code.text || 'Unknown Test'
   }
 
   /**
@@ -471,9 +471,9 @@ export class FHIRObservationUtils {
    * Format observation for display;
    */
   static formatForDisplay(observation: FHIRObservation): {
-    test: string;
+    test: string,
     value: string;
-    unit: string;
+    unit: string,
     status: string;
     isAbnormal: boolean;
     interpretation?: string;
@@ -490,7 +490,7 @@ export class FHIRObservationUtils {
       unit,
       status: observation.status,
       isAbnormal: isWithinRange === false || isCritical,
-      interpretation: observation.interpretation?.[0]?.coding?.[0]?.display;
+      interpretation: observation.interpretation?.[0]?.coding?.[0]?.display
     };
   }
 
@@ -550,12 +550,12 @@ export class FHIRObservationUtils {
       unit: hmsLabResult.unit,
       referenceRange: hmsLabResult.referenceRange ? {
         low: hmsLabResult.referenceRange.min,
-        high: hmsLabResult.referenceRange.max;
+        high: hmsLabResult.referenceRange.max
       } : undefined,
       interpretation: hmsLabResult.interpretation || hmsLabResult.flag,
       effectiveDateTime: hmsLabResult.collectedAt || hmsLabResult.performedAt || hmsLabResult.createdAt,
       status: hmsLabResult.status === 'completed' ? 'final' : 'preliminary',
-      specimenId: hmsLabResult.specimenId;
+      specimenId: hmsLabResult.specimenId
     });
   }
 
@@ -574,11 +574,11 @@ export class FHIRObservationUtils {
         vitalSign: 'blood-pressure',
         value: {
           systolic: hmsVitalSigns.bloodPressure.systolic,
-          diastolic: hmsVitalSigns.bloodPressure.diastolic;
+          diastolic: hmsVitalSigns.bloodPressure.diastolic
         },
         unit: 'mmHg',
         effectiveDateTime: hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final';
+        status: 'final'
       }));
     }
 
@@ -591,7 +591,7 @@ export class FHIRObservationUtils {
         value: hmsVitalSigns.heartRate,
         unit: '/min',
         effectiveDateTime: hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final';
+        status: 'final'
       }));
     }
 
@@ -604,7 +604,7 @@ export class FHIRObservationUtils {
         value: hmsVitalSigns.temperature,
         unit: 'Cel',
         effectiveDateTime: hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final';
+        status: 'final'
       }));
     }
 
@@ -617,7 +617,7 @@ export class FHIRObservationUtils {
         value: hmsVitalSigns.respiratoryRate,
         unit: '/min',
         effectiveDateTime: hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final';
+        status: 'final'
       }));
     }
 
@@ -630,7 +630,7 @@ export class FHIRObservationUtils {
         value: hmsVitalSigns.oxygenSaturation,
         unit: '%',
         effectiveDateTime: hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final';
+        status: 'final'
       }));
     }
 
@@ -675,7 +675,7 @@ export class FHIRLabUtils {
     // Cardiac Markers;
     TROPONIN: '6598-7',
     CK_MB: '13969-1',
-    BNP: '30934-4';
+    BNP: '30934-4'
   };
 
   /**

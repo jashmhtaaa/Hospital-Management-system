@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,17 +32,17 @@ export enum OPDVisitType {
 }
 
 export interface OPDVisit {
-    opd_visit_id: number;
+    opd_visit_id: number,
     patient_id: number;
     appointment_id?: number | null;
-    visit_datetime: string;
+    visit_datetime: string,
     visit_type: OPDVisitType; // Use enum;
     doctor_id: number;
     department?: string | null;
     status: OPDVisitStatus; // Use enum;
     notes?: string | null;
     created_by_user_id?: number | null;
-    created_at: string;
+    created_at: string,
     updated_at: string;
     // Optional expanded details;
     patient?: Pick<Patient, "patient_id" | "first_name" | "last_name">;
@@ -51,7 +51,7 @@ export interface OPDVisit {
 }
 
 export interface PatientVital {
-    vital_id: number;
+    vital_id: number,
     patient_id: number;
     opd_visit_id?: number | null;
     admission_id?: number | null;
@@ -73,7 +73,7 @@ export interface PatientVital {
 }
 
 export interface Consultation {
-    consultation_id: number;
+    consultation_id: number,
     patient_id: number;
     doctor_id: number;
     opd_visit_id?: number | null;
@@ -86,7 +86,7 @@ export interface Consultation {
     treatment_plan?: string | null;
     follow_up_instructions?: string | null;
     notes?: string | null; // Doctor's private notes;
-    created_at: string;
+    created_at: string,
     updated_at: string;
     // Optional expanded details;
     patient?: Pick<Patient, "patient_id" | "first_name" | "last_name">;
@@ -97,13 +97,13 @@ export interface Consultation {
 }
 
 export interface Prescription {
-    prescription_id: number;
-    consultation_id: number | null; // FIX: Allow null;
+    prescription_id: number,
+    consultation_id: number | null; // FIX: Allow null,
     patient_id: number;
-    doctor_id: number;
+    doctor_id: number,
     prescription_date: string;
     notes?: string | null;
-    created_at: string;
+    created_at: string,
     updated_at: string;
     // Optional expanded details;
     items?: PrescriptionItem[];
@@ -111,11 +111,11 @@ export interface Prescription {
 }
 
 export interface PrescriptionItem {
-    prescription_item_id: number;
+    prescription_item_id: number,
     prescription_id: number;
-    inventory_item_id: number;
+    inventory_item_id: number,
     drug_name: string;
-    dosage: string;
+    dosage: string,
     frequency: string;
     duration: string;
     route?: string | null;
@@ -142,14 +142,14 @@ export enum LabOrderItemStatus {
 }
 
 export interface LabOrder {
-    lab_order_id: number;
+    lab_order_id: number,
     consultation_id: number;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
-    order_datetime: string;
+    order_datetime: string,
     status: LabOrderStatus; // Use enum;
     notes?: string | null;
-    created_at: string;
+    created_at: string,
     updated_at: string;
     // Optional expanded details;
     items?: LabOrderItem[];
@@ -159,9 +159,9 @@ export interface LabOrder {
 }
 
 export interface LabOrderItem {
-    lab_order_item_id: number;
+    lab_order_item_id: number,
     lab_order_id: number;
-    billable_item_id: number;
+    billable_item_id: number,
     test_name: string;
     sample_type?: string | null;
     sample_id?: string | null;
@@ -174,7 +174,7 @@ export interface LabOrderItem {
     result_datetime?: string | null;
     result_verified_by_user_id?: number | null;
     status: LabOrderItemStatus; // Use enum;
-    created_at: string;
+    created_at: string,
     updated_at: string;
     // Optional expanded details;
     billable_item?: Pick<BillableItem, "item_id" | "item_code">;

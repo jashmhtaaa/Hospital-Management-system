@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -178,7 +178,7 @@ export class PatientManagementService {
     const patientCount = await prisma.patient.count({
       where: {
         createdAt: {
-          gte: today;
+          gte: today
         }
       }
     });
@@ -217,7 +217,7 @@ export class PatientManagementService {
         await prisma.patientContact.create({
           data: {
             ...validatedContact,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -228,7 +228,7 @@ export class PatientManagementService {
         await prisma.patientAddress.create({
           data: {
             ...validatedAddress,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -239,7 +239,7 @@ export class PatientManagementService {
         await prisma.patientIdentification.create({
           data: {
             ...validatedIdentification,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -250,7 +250,7 @@ export class PatientManagementService {
         await prisma.emergencyContact.create({
           data: {
             ...validatedEmergencyContact,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -261,7 +261,7 @@ export class PatientManagementService {
         await prisma.patientInsurance.create({
           data: {
             ...validatedInsurance,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -276,7 +276,7 @@ export class PatientManagementService {
         resourceId: patient.id,
         description: `Created patient record for ${patient.firstName} ${patient.lastName}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return patient;
@@ -339,7 +339,7 @@ export class PatientManagementService {
         resourceId: patientId,
         description: `Viewed patient record for ${patient.firstName} ${patient.lastName}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return patient;
@@ -378,7 +378,7 @@ export class PatientManagementService {
       // Update patient record;
       const patient = await prisma.patient.update({
         where: { id: patientId },
-        data: validatedPatient;
+        data: validatedPatient
       });
       
       // Update contact information if provided;
@@ -404,7 +404,7 @@ export class PatientManagementService {
         resourceId: patientId,
         description: `Updated patient record for ${patient.firstName} ${patient.lastName}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return patient;
@@ -434,10 +434,10 @@ export class PatientManagementService {
           where: {
             patientId,
             addressType: validatedAddress.addressType,
-            isPrimary: true;
+            isPrimary: true
           },
           data: {
-            isPrimary: false;
+            isPrimary: false
           }
         });
       }
@@ -457,7 +457,7 @@ export class PatientManagementService {
         resourceId: address.id,
         description: `Added address for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return address;
@@ -487,10 +487,10 @@ export class PatientManagementService {
           where: {
             patientId,
             idType: validatedIdentification.idType,
-            isPrimary: true;
+            isPrimary: true
           },
           data: {
-            isPrimary: false;
+            isPrimary: false
           }
         });
       }
@@ -499,7 +499,7 @@ export class PatientManagementService {
       const existingId = await prisma.patientIdentification.findFirst({
         where: {
           idType: validatedIdentification.idType,
-          idNumber: validatedIdentification.idNumber;
+          idNumber: validatedIdentification.idNumber
         }
       });
       
@@ -522,7 +522,7 @@ export class PatientManagementService {
         resourceId: identification.id,
         description: `Added identification for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return identification;
@@ -551,10 +551,10 @@ export class PatientManagementService {
         await prisma.emergencyContact.updateMany({
           where: {
             patientId,
-            isPrimary: true;
+            isPrimary: true
           },
           data: {
-            isPrimary: false;
+            isPrimary: false
           }
         });
       }
@@ -574,7 +574,7 @@ export class PatientManagementService {
         resourceId: contact.id,
         description: `Added emergency contact for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return contact;
@@ -604,7 +604,7 @@ export class PatientManagementService {
         const existingPrimary = await prisma.patientInsurance.findFirst({
           where: {
             patientId,
-            insuranceType: 'Primary';
+            insuranceType: 'Primary'
           }
         });
         
@@ -619,7 +619,7 @@ export class PatientManagementService {
           const existingSecondary = await prisma.patientInsurance.findFirst({
             where: {
               patientId,
-              insuranceType: 'Secondary';
+              insuranceType: 'Secondary'
             }
           });
           
@@ -647,7 +647,7 @@ export class PatientManagementService {
         resourceId: insurance.id,
         description: `Added insurance for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return insurance;
@@ -674,21 +674,21 @@ export class PatientManagementService {
       if (searchParams.mrn) {
         where.mrn = {
           contains: searchParams.mrn,
-          mode: 'insensitive';
+          mode: 'insensitive'
         };
       }
       
       if (searchParams.firstName) {
         where.firstName = {
           contains: searchParams.firstName,
-          mode: 'insensitive';
+          mode: 'insensitive'
         };
       }
       
       if (searchParams.lastName) {
         where.lastName = {
           contains: searchParams.lastName,
-          mode: 'insensitive';
+          mode: 'insensitive'
         };
       }
       
@@ -711,7 +711,7 @@ export class PatientManagementService {
           ...where.contact,
           email: {
             contains: searchParams.email,
-            mode: 'insensitive';
+            mode: 'insensitive'
           }
         };
       }
@@ -738,7 +738,7 @@ export class PatientManagementService {
           take,
           orderBy: { lastName: 'asc' }
         }),
-        prisma.patient.count({ where });
+        prisma.patient.count({ where })
       ]);
       
       // Log audit;
@@ -747,7 +747,7 @@ export class PatientManagementService {
         resourceType: 'Patient',
         description: 'Performed patient search',
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return {
@@ -755,7 +755,7 @@ export class PatientManagementService {
         total,
         page: searchParams.page || 1,
         limit: take,
-        totalPages: Math.ceil(total / take);
+        totalPages: Math.ceil(total / take)
       };
     } catch (error) {
 
@@ -780,7 +780,7 @@ export class PatientManagementService {
         data: {
           status: 'Deceased',
           deceasedDate: data.deceasedDate,
-          deceasedReason: data.deceasedReason;
+          deceasedReason: data.deceasedReason
         }
       });
       
@@ -794,7 +794,7 @@ export class PatientManagementService {
         resourceId: patientId,
         description: `Marked patient ${patientId} as deceased`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return patient;
@@ -833,12 +833,12 @@ export class PatientManagementService {
               appointments: true,
               visits: true,
               vitalSigns: true,
-              immunizations: true;
+              immunizations: true
             }
           }),
           tx.patient.findUnique({
             where: { id: targetPatientId }
-          });
+          })
         ]);
         
         if (!sourcePatient || !targetPatient) {
@@ -863,7 +863,7 @@ export class PatientManagementService {
               isBilling: address.isBilling,
               isShipping: address.isShipping,
               notes: `Merged from patient ${sourcePatientId}: ${address.notes || ''}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -875,7 +875,7 @@ export class PatientManagementService {
             where: {
               patientId: targetPatientId,
               idType: id.idType,
-              idNumber: id.idNumber;
+              idNumber: id.idNumber
             }
           });
           
@@ -891,7 +891,7 @@ export class PatientManagementService {
                 isPrimary: false, // Don't override target's primary IDs;
                 documentImageUrl: id.documentImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${id.notes || ''}`,
-                patientId: targetPatientId;
+                patientId: targetPatientId
               }
             });
           }
@@ -919,7 +919,7 @@ export class PatientManagementService {
               isLegalGuardian: contact.isLegalGuardian,
               hasDecisionMaking: contact.hasDecisionMaking,
               notes: `Merged from patient ${sourcePatientId}: ${contact.notes || ''}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -931,7 +931,7 @@ export class PatientManagementService {
             where: {
               patientId: targetPatientId,
               payerName: insurance.payerName,
-              policyNumber: insurance.policyNumber;
+              policyNumber: insurance.policyNumber
             }
           });
           
@@ -957,7 +957,7 @@ export class PatientManagementService {
                 cardFrontImageUrl: insurance.cardFrontImageUrl,
                 cardBackImageUrl: insurance.cardBackImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || ''}`,
-                patientId: targetPatientId;
+                patientId: targetPatientId
               }
             });
           }
@@ -977,7 +977,7 @@ export class PatientManagementService {
               endDate: allergy.endDate,
               recordedBy: allergy.recordedBy,
               notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ''}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -998,7 +998,7 @@ export class PatientManagementService {
               recordedBy: condition.recordedBy,
               notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ''}`,
               isConfidential: condition.isConfidential,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -1053,7 +1053,7 @@ export class PatientManagementService {
           resourceId: targetPatientId,
           description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
           performedBy: userId,
-          performerRole: await this.authService.getUserRole(userId);
+          performerRole: await this.authService.getUserRole(userId)
         });
         
         return updatedTargetPatient;
@@ -1084,7 +1084,7 @@ export class PatientManagementService {
           addresses: true,
           identifications: true,
           contacts: true,
-          insurances: true;
+          insurances: true
         }
       });
       
@@ -1102,7 +1102,7 @@ export class PatientManagementService {
         resourceId: patientId,
         description: `Viewed MPI for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
       
       return {

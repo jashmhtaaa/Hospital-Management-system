@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -42,8 +42,7 @@ export default const RadiologyReportsList = () {
   const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(); // FIX: Type the state;
-  const router = useRouter();
-
+  const router = useRouter(),
   useEffect(() => {
     fetchReports();
   }, []);
@@ -56,7 +55,7 @@ export default const RadiologyReportsList = () {
         throw new Error("Failed to fetch radiology reports");
       }
       const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[]
-      setReports(data);
+      setReports(data),
       setError(undefined);
     } catch (error_) {
 
@@ -74,7 +73,7 @@ export default const RadiologyReportsList = () {
   // FIX: Type the parameter;
   const getStatusBadge = (status: string) => {
     const statusStyles: { [key: string]: string } = {
-      // FIX: Add index signature;
+      // FIX: Add index signature,
       preliminary: "bg-yellow-100 text-yellow-800",
       final: "bg-green-100 text-green-800",
       addendum: "bg-blue-100 text-blue-800",
@@ -91,18 +90,18 @@ export default const RadiologyReportsList = () {
     <Card>
       <CardContent className="p-6">;
         <div className="flex justify-between items-center mb-6">;
-          <h2 className="text-xl font-semibold">Radiology Reports</h2>;
+          <h2 className="text-xl font-semibold">Radiology Reports</h2>
         </div>
 
         {loading ? (
           <div className="flex justify-center items-center h-40">;
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4">{error}</div>;
         ) : reports.length === 0 ? (
           <div className="text-center text-gray-500 p-4">;
-            No radiology reports found.;
+            No radiology reports found.
           </div>
         ) : (
           <div className="overflow-x-auto">;
@@ -115,7 +114,7 @@ export default const RadiologyReportsList = () {
                   <TableHead>Radiologist</TableHead>
                   <TableHead>Report Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>;
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -130,12 +129,12 @@ export default const RadiologyReportsList = () {
                     </TableCell>
                     <TableCell>{getStatusBadge(report.status)}</TableCell>
                     <TableCell className="text-right">;
-                      <Button;
-                        variant="outline";
-                        size="sm";
+                      <Button>
+                        variant="outline"
+                        size="sm"
                         onClick={() => handleViewReport(report.id)}
                       >
-                        View;
+                        View
                       </Button>
                     </TableCell>
                   </TableRow>

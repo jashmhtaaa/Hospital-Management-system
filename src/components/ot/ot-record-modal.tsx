@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -39,30 +39,30 @@ interface VitalReadings {
 }
 
 interface MedicationAdministered {
-  medication_name: string;
+  medication_name: string,
   dosage: string;
-  time: string;
+  time: string
 }
 
 interface ChecklistResponse {
-  id: string;
+  id: string,
   text: string;
-  checked: boolean;
+  checked: boolean
 }
 
 // Define the OTRecord type;
 interface OTRecord {
   id?: string; // Optional ID for existing records;
-  procedure_notes: string;
+  procedure_notes: string,
   procedure_start_time: string | Date | null;
-  procedure_end_time: string | Date | null;
+  procedure_end_time: string | Date | null,
   anesthesia_type: string;
-  anesthesia_notes: string;
+  anesthesia_notes: string,
   vitals: VitalReadings;
-  medications_administered: MedicationAdministered[];
+  medications_administered: MedicationAdministered[],
   complications: string;
   blood_loss_ml: number | string | null; // Allow string for input;
-  post_op_instructions: string;
+  post_op_instructions: string,
   recovery_notes: string;
   checklist_responses?: ChecklistResponse[]; // Optional checklist responses;
 }
@@ -73,9 +73,9 @@ interface OTRecordSaveData;
     OTRecord,
     "id" | "vitals" | "medications_administered" | "checklist_responses";
   > {
-  booking_id: string;
+  booking_id: string,
   procedure_start_time: string | null;
-  procedure_end_time: string | null;
+  procedure_end_time: string | null,
   blood_loss_ml: number | null;
   checklist_responses: ChecklistResponse[];
   // Include vitals and meds if they are saved separately or structured differently for API;
@@ -83,7 +83,7 @@ interface OTRecordSaveData;
 
 // Props for the modal - use defined types;
 interface OTRecordModalProperties {
-  trigger: React.ReactNode;
+  trigger: React.ReactNode,
   bookingId: string;
   existingRecord?: OTRecord; // Use OTRecord type;
   onSave: (recordData: OTRecordSaveData) => Promise<void>; // Use OTRecordSaveData type;
@@ -194,7 +194,7 @@ export default const OTRecordModal = ({
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsSaving(true);
     try {
       const bloodLoss = formData.blood_loss_ml;
@@ -208,7 +208,7 @@ export default const OTRecordModal = ({
           title: "Error",
           description: "Blood loss must be a non-negative number.",
           variant: "destructive",
-        });
+        }),
         setIsSaving(false);
         return;
       }
@@ -253,7 +253,7 @@ export default const OTRecordModal = ({
       toast({
         title: "Success",
         description: `Operation record ${existingRecord ? "updated" : "created"} successfully.`,
-      });
+      }),
       setIsOpen(false);
     } catch (error: unknown) {
       // Use unknown for error type;
@@ -283,108 +283,108 @@ export default const OTRecordModal = ({
               : "Create Operation Record"}
           </DialogTitle>
           <DialogDescription>
-            Document the details of the surgical procedure.;
+            Document the details of the surgical procedure.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>;
-          <Tabs;
+          <Tabs>
             defaultValue="procedure"
             value={activeTab}
             onValueChange={setActiveTab}
-            className="w-full";
+            className="w-full"
           >
             <TabsList className="grid grid-cols-4 mb-4">;
               <TabsTrigger value="procedure">Procedure</TabsTrigger>;
               <TabsTrigger value="checklist">Checklist</TabsTrigger>;
               <TabsTrigger value="vitals">Vitals & Meds</TabsTrigger>;
-              <TabsTrigger value="post-op">Post-Op</TabsTrigger>;
+              <TabsTrigger value="post-op">Post-Op</TabsTrigger>
             </TabsList>
 
             <TabsContent value="procedure" className="space-y-4">;
               <div className="grid grid-cols-2 gap-4">;
-                <div>
+<div
                   <Label htmlFor="procedure_start_time">Start Time</Label>;
-                  <Input;
-                    id="procedure_start_time";
-                    name="procedure_start_time";
+                  <Input>
+                    id="procedure_start_time"
+                    name="procedure_start_time"
                     type="datetime-local"
                     value={formData.procedure_start_time}
                     onChange={handleChange}
-                    className="mt-1";
+                    className="mt-1"
                   />
                 </div>
-                <div>
+<div
                   <Label htmlFor="procedure_end_time">End Time</Label>;
-                  <Input;
-                    id="procedure_end_time";
-                    name="procedure_end_time";
+                  <Input>
+                    id="procedure_end_time"
+                    name="procedure_end_time"
                     type="datetime-local"
                     value={formData.procedure_end_time}
                     onChange={handleChange}
-                    className="mt-1";
+                    className="mt-1"
                   />
                 </div>
               </div>
 
-              <div>
+<div
                 <Label htmlFor="procedure_notes">Procedure Notes</Label>;
-                <Textarea;
-                  id="procedure_notes";
-                  name="procedure_notes";
+                <Textarea>
+                  id="procedure_notes"
+                  name="procedure_notes"
                   value={formData.procedure_notes}
                   onChange={handleChange}
-                  className="mt-1 h-32";
-                  placeholder="Detailed description of the procedure performed...";
+                  className="mt-1 h-32"
+                  placeholder="Detailed description of the procedure performed..."
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">;
-                <div>
+<div
                   <Label htmlFor="anesthesia_type">Anesthesia Type</Label>;
-                  <Input;
-                    id="anesthesia_type";
-                    name="anesthesia_type";
+                  <Input>
+                    id="anesthesia_type"
+                    name="anesthesia_type"
                     value={formData.anesthesia_type}
                     onChange={handleChange}
-                    className="mt-1";
-                    placeholder="e.g., General, Local, Regional";
+                    className="mt-1"
+                    placeholder="e.g., General, Local, Regional"
                   />
                 </div>
-                <div>
+<div
                   <Label htmlFor="blood_loss_ml">Blood Loss (ml)</Label>;
-                  <Input;
-                    id="blood_loss_ml";
-                    name="blood_loss_ml";
+                  <Input>
+                    id="blood_loss_ml"
+                    name="blood_loss_ml"
                     type="number"
                     value={formData.blood_loss_ml}
                     onChange={handleChange}
-                    className="mt-1";
+                    className="mt-1"
                     min="0" // Add min attribute for validation;
                   />
                 </div>
               </div>
 
-              <div>
+<div
                 <Label htmlFor="anesthesia_notes">Anesthesia Notes</Label>;
-                <Textarea;
-                  id="anesthesia_notes";
-                  name="anesthesia_notes";
+                <Textarea>
+                  id="anesthesia_notes"
+                  name="anesthesia_notes"
                   value={formData.anesthesia_notes}
                   onChange={handleChange}
-                  className="mt-1 h-20";
-                  placeholder="Notes related to anesthesia administration...";
+                  className="mt-1 h-20"
+                  placeholder="Notes related to anesthesia administration..."
                 />
               </div>
 
-              <div>
+<div
                 <Label htmlFor="complications">Complications</Label>;
-                <Textarea;
-                  id="complications";
-                  name="complications";
+                <Textarea>
+                  id="complications"
+                  name="complications"
                   value={formData.complications}
                   onChange={handleChange}
-                  className="mt-1 h-20";
-                  placeholder="Any complications encountered during the procedure...";
+                  className="mt-1 h-20"
+                  placeholder="Any complications encountered during the procedure..."
                 />
               </div>
             </TabsContent>
@@ -397,11 +397,11 @@ export default const OTRecordModal = ({
                 <CardContent>
                   <div className="space-y-4">;
                     {checklistItems.map((item) => (
-                      <div;
+<div
                         key={item.id}
-                        className="flex items-center space-x-2";
+                        className="flex items-center space-x-2"
                       >
-                        <Checkbox;
+                        <Checkbox>
                           id={`checklist-${item.id}`}
                           checked={item.checked}
                           onCheckedChange={(checked) =>
@@ -430,21 +430,21 @@ export default const OTRecordModal = ({
                     form for recording multiple readings.
                   </p>
                   <div className="grid grid-cols-2 gap-4">;
-                    <div>
+<div
                       <Label>Blood Pressure</Label>
-                      <Input placeholder="e.g., 120/80" disabled />;
+                      <Input placeholder="e.g., 120/80" disabled />
                     </div>
-                    <div>
+<div
                       <Label>Pulse Rate</Label>
-                      <Input placeholder="e.g., 72 bpm" disabled />;
+                      <Input placeholder="e.g., 72 bpm" disabled />
                     </div>
-                    <div>
+<div
                       <Label>Oxygen Saturation</Label>
-                      <Input placeholder="e.g., 98%" disabled />;
+                      <Input placeholder="e.g., 98%" disabled />
                     </div>
-                    <div>
+<div
                       <Label>Temperature</Label>
-                      <Input placeholder="e.g., 36.8°C" disabled />;
+                      <Input placeholder="e.g., 36.8°C" disabled />
                     </div>
                   </div>
                 </CardContent>
@@ -454,56 +454,56 @@ export default const OTRecordModal = ({
                 <CardHeader>
                   <CardTitle>
                     Medications Ad (Content truncated due to size limit. Use;
-                    line ranges to read in chunks)ministered;
+                    line ranges to read in chunks)ministered
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">;
                     This section would list medications administered during the;
                     procedure. In a full implementation, this would allow;
-                    adding/editing medication records.;
+                    adding/editing medication records.
                   </p>
-                  <Input placeholder="e.g., Propofol 100mg IV" disabled />;
+                  <Input placeholder="e.g., Propofol 100mg IV" disabled />
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="post-op" className="space-y-4">;
-              <div>
+<div
                 <Label htmlFor="post_op_instructions">;
-                  Post-Op Instructions;
+                  Post-Op Instructions
                 </Label>
-                <Textarea;
-                  id="post_op_instructions";
-                  name="post_op_instructions";
+                <Textarea>
+                  id="post_op_instructions"
+                  name="post_op_instructions"
                   value={formData.post_op_instructions}
                   onChange={handleChange}
-                  className="mt-1 h-24";
-                  placeholder="Instructions for post-operative care...";
+                  className="mt-1 h-24"
+                  placeholder="Instructions for post-operative care..."
                 />
               </div>
-              <div>
+<div
                 <Label htmlFor="recovery_notes">Recovery Notes</Label>;
-                <Textarea;
-                  id="recovery_notes";
-                  name="recovery_notes";
+                <Textarea>
+                  id="recovery_notes"
+                  name="recovery_notes"
                   value={formData.recovery_notes}
                   onChange={handleChange}
-                  className="mt-1 h-24";
-                  placeholder="Notes on patient's recovery status...";
+                  className="mt-1 h-24"
+                  placeholder="Notes on patient's recovery status..."
                 />
               </div>
             </TabsContent>
           </Tabs>
 
           <DialogFooter className="mt-6">;
-            <Button;
+            <Button>
               type="button"
-              variant="outline";
+              variant="outline"
               onClick={() => setIsOpen(false)}
               disabled={isSaving}
             >
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>;
               {isSaving;

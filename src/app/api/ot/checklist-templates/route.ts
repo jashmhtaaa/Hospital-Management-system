@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -17,7 +17,7 @@ export const runtime = "edge";
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file)
 interface ChecklistItem {
   id: string; // Unique ID for the item within the template;
-  text: string;
+  text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types;
   options?: string[]; // For select type;
   required?: boolean;
@@ -25,13 +25,13 @@ interface ChecklistItem {
 
 // Interface for the POST request body;
 interface ChecklistTemplateCreateBody {
-  name: string;
+  name: string,
   phase: "pre-op" | "intra-op" | "post-op";
-  items: ChecklistItem[];
+  items: ChecklistItem[]
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const phase = searchParams.get("phase");
@@ -63,7 +63,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/ot/checklist-templates - Create a new checklist template;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = (await request.json()) as ChecklistTemplateCreateBody;
     const { name, phase, items } = body;

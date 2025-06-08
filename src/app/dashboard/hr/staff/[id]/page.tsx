@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -83,7 +83,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
           throw new Error('Failed to fetch employee data');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setEmployee(data);
       } catch (err) {
         setError(err.message);
@@ -121,7 +121,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
         variant: "destructive",
       });
     } finally {
-      setDeleting(false);
+      setDeleting(false),
       setDeleteDialogOpen(false);
     }
   };
@@ -145,13 +145,13 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/staff')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Staff List;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Staff List
           </Button>
         </div>
         <div className="flex justify-center items-center h-64">;
@@ -165,25 +165,25 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
-          <Button;
-            variant="ghost";
-            size="sm";
+          <Button>
+            variant="ghost"
+            size="sm"
             onClick={() => router.push('/dashboard/hr/staff')}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />;
-            Back to Staff List;
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Staff List
           </Button>
         </div>
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-64">;
-            <AlertCircle className="h-10 w-10 text-destructive mb-4" />;
+            <AlertCircle className="h-10 w-10 text-destructive mb-4" />
             <h2 className="text-xl font-semibold mb-2">Error</h2>;
             <p className="text-muted-foreground">{error}</p>;
-            <Button;
-              className="mt-4";
+            <Button>
+              className="mt-4"
               onClick={() => router.push('/dashboard/hr/staff')}
             >
-              Return to Staff List;
+              Return to Staff List
             </Button>
           </CardContent>
         </Card>
@@ -198,18 +198,18 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
   return (
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
-        <Button;
-          variant="ghost";
-          size="sm";
+        <Button>
+          variant="ghost"
+          size="sm"
           onClick={() => router.push('/dashboard/hr/staff')}
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />;
-          Back to Staff List;
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Staff List
         </Button>
       </div>
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
-        <div>
+<div
           <h1 className="text-3xl font-bold">;
             {employee.firstName} {employee.lastName}
           </h1>
@@ -220,15 +220,15 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
         
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleEdit}>;
-            <Edit className="h-4 w-4 mr-2" />;
-            Edit;
+            <Edit className="h-4 w-4 mr-2" />
+            Edit
           </Button>
           
           <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>;
             <DialogTrigger asChild>
               <Button variant="destructive">;
-                <Trash className="h-4 w-4 mr-2" />;
-                Deactivate;
+                <Trash className="h-4 w-4 mr-2" />
+                Deactivate
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -240,7 +240,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
               </DialogHeader>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-                  Cancel;
+                  Cancel
                 </Button>
                 <Button variant="destructive" onClick={handleDelete} disabled={deleting}>;
                   {deleting ? 'Deactivating...' : 'Deactivate Employee'}
@@ -260,13 +260,13 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
             <div className="flex flex-col items-center">;
               <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center mb-4">;
                 {employee.photo ? (
-                  <img;
+                  <img>
                     src={employee.photo} 
                     alt={`${employee.firstName} ${employee.lastName}`} 
-                    className="w-full h-full rounded-full object-cover";
+                    className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <UserCog className="h-16 w-16 text-muted-foreground" />;
+                  <UserCog className="h-16 w-16 text-muted-foreground" />
                 )}
               </div>
               
@@ -277,7 +277,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
               {employee.department && (
                 <div className="text-center">;
                   <p className="text-sm text-muted-foreground">Department</p>;
-                  <p className="font-medium">{employee.department.name}</p>;
+                  <p className="font-medium">{employee.department.name}</p>
                 </div>
               )}
             </div>
@@ -286,39 +286,39 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
             
             <div className="space-y-2">;
               <div className="flex items-center gap-2">;
-                <Calendar className="h-4 w-4 text-muted-foreground" />;
-                <div>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+<div
                   <p className="text-sm text-muted-foreground">Joined</p>;
-                  <p className="font-medium">{format(new Date(employee.joiningDate), 'PPP')}</p>;
+                  <p className="font-medium">{format(new Date(employee.joiningDate), 'PPP')}</p>
                 </div>
               </div>
               
               {employee.terminationDate && (
                 <div className="flex items-center gap-2">;
-                  <Calendar className="h-4 w-4 text-muted-foreground" />;
-                  <div>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+<div
                     <p className="text-sm text-muted-foreground">Terminated</p>;
-                    <p className="font-medium">{format(new Date(employee.terminationDate), 'PPP')}</p>;
+                    <p className="font-medium">{format(new Date(employee.terminationDate), 'PPP')}</p>
                   </div>
                 </div>
               )}
               
               {employee.birthDate && (
                 <div className="flex items-center gap-2">;
-                  <Calendar className="h-4 w-4 text-muted-foreground" />;
-                  <div>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+<div
                     <p className="text-sm text-muted-foreground">Date of Birth</p>;
-                    <p className="font-medium">{format(new Date(employee.birthDate), 'PPP')}</p>;
+                    <p className="font-medium">{format(new Date(employee.birthDate), 'PPP')}</p>
                   </div>
                 </div>
               )}
               
               {employee.gender && (
                 <div className="flex items-center gap-2">;
-                  <UserCog className="h-4 w-4 text-muted-foreground" />;
-                  <div>
+                  <UserCog className="h-4 w-4 text-muted-foreground" />
+<div
                     <p className="text-sm text-muted-foreground">Gender</p>;
-                    <p className="font-medium">{employee.gender.charAt(0) + employee.gender.slice(1).toLowerCase()}</p>;
+                    <p className="font-medium">{employee.gender.charAt(0) + employee.gender.slice(1).toLowerCase()}</p>
                   </div>
                 </div>
               )}
@@ -329,28 +329,28 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
             <div className="space-y-2">;
               {employee.email && (
                 <div className="flex items-center gap-2">;
-                  <Mail className="h-4 w-4 text-muted-foreground" />;
-                  <div>
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+<div
                     <p className="text-sm text-muted-foreground">Email</p>;
-                    <p className="font-medium">{employee.email}</p>;
+                    <p className="font-medium">{employee.email}</p>
                   </div>
                 </div>
               )}
               
               {employee.phone && (
                 <div className="flex items-center gap-2">;
-                  <Phone className="h-4 w-4 text-muted-foreground" />;
-                  <div>
+                  <Phone className="h-4 w-4 text-muted-foreground" />
+<div
                     <p className="text-sm text-muted-foreground">Phone</p>;
-                    <p className="font-medium">{employee.phone}</p>;
+                    <p className="font-medium">{employee.phone}</p>
                   </div>
                 </div>
               )}
               
               {employee.address && (
                 <div className="flex items-center gap-2">;
-                  <MapPin className="h-4 w-4 text-muted-foreground" />;
-                  <div>
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+<div
                     <p className="text-sm text-muted-foreground">Address</p>;
                     <p className="font-medium">;
                       {employee.address.line && employee.address.line[0]}{' '}
@@ -374,7 +374,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 <TabsList>
                   <TabsTrigger value="positions">Positions</TabsTrigger>;
                   <TabsTrigger value="qualifications">Qualifications</TabsTrigger>;
-                  <TabsTrigger value="emergency">Emergency Contact</TabsTrigger>;
+                  <TabsTrigger value="emergency">Emergency Contact</TabsTrigger>
                 </TabsList>
               </div>
             </CardHeader>
@@ -384,8 +384,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 <div className="flex justify-between items-center">;
                   <h3 className="text-lg font-medium">Positions & Roles</h3>;
                   <Button size="sm" onClick={handleAddPosition}>;
-                    <Plus className="h-4 w-4 mr-2" />;
-                    Add Position;
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Position
                   </Button>
                 </div>
                 
@@ -425,12 +425,12 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/staff/${params.id}/positions/${position.id}`)}
                             >
-                              Edit;
+                              Edit
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -440,12 +440,12 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 ) : (
                   <div className="text-center py-4 border rounded-md bg-muted/20">;
                     <p className="text-muted-foreground">No positions assigned yet</p>;
-                    <Button;
-                      variant="link";
-                      className="mt-2";
+                    <Button>
+                      variant="link"
+                      className="mt-2"
                       onClick={handleAddPosition}
                     >
-                      Assign a position;
+                      Assign a position
                     </Button>
                   </div>
                 )}
@@ -455,8 +455,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 <div className="flex justify-between items-center">;
                   <h3 className="text-lg font-medium">Qualifications & Certifications</h3>;
                   <Button size="sm" onClick={handleAddQualification}>;
-                    <Plus className="h-4 w-4 mr-2" />;
-                    Add Qualification;
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Qualification
                   </Button>
                 </div>
                 
@@ -503,12 +503,12 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/staff/${params.id}/qualifications/${qualification.id}`)}
                             >
-                              Edit;
+                              Edit
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -518,12 +518,12 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 ) : (
                   <div className="text-center py-4 border rounded-md bg-muted/20">;
                     <p className="text-muted-foreground">No qualifications added yet</p>;
-                    <Button;
-                      variant="link";
-                      className="mt-2";
+                    <Button>
+                      variant="link"
+                      className="mt-2"
                       onClick={handleAddQualification}
                     >
-                      Add a qualification;
+                      Add a qualification
                     </Button>
                   </div>
                 )}
@@ -538,36 +538,36 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                     {employee.emergencyContact ? (
                       <div className="space-y-4">;
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-                          <div>
+<div
                             <p className="text-sm text-muted-foreground">Name</p>;
-                            <p className="font-medium">{employee.emergencyContact.name || 'Not provided'}</p>;
+                            <p className="font-medium">{employee.emergencyContact.name || 'Not provided'}</p>
                           </div>
                           
-                          <div>
+<div
                             <p className="text-sm text-muted-foreground">Relationship</p>;
-                            <p className="font-medium">{employee.emergencyContact.relationship || 'Not provided'}</p>;
+                            <p className="font-medium">{employee.emergencyContact.relationship || 'Not provided'}</p>
                           </div>
                           
-                          <div>
+<div
                             <p className="text-sm text-muted-foreground">Phone</p>;
-                            <p className="font-medium">{employee.emergencyContact.phone || 'Not provided'}</p>;
+                            <p className="font-medium">{employee.emergencyContact.phone || 'Not provided'}</p>
                           </div>
                           
-                          <div>
+<div
                             <p className="text-sm text-muted-foreground">Email</p>;
-                            <p className="font-medium">{employee.emergencyContact.email || 'Not provided'}</p>;
+                            <p className="font-medium">{employee.emergencyContact.email || 'Not provided'}</p>
                           </div>
                         </div>
                       </div>
                     ) : (
                       <div className="text-center py-4">;
                         <p className="text-muted-foreground">No emergency contact information provided</p>;
-                        <Button;
-                          variant="link";
-                          className="mt-2";
+                        <Button>
+                          variant="link"
+                          className="mt-2"
                           onClick={handleEdit}
                         >
-                          Add emergency contact;
+                          Add emergency contact
                         </Button>
                       </div>
                     )}

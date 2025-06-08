@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,7 +15,7 @@ import { getSession } from "@/lib/session";
 
 // Interface for the request body when creating a lab test;
 interface LabTestCreateBody {
-  category_id: number;
+  category_id: number,
   code: string;
   name: string;
   description?: string;
@@ -27,7 +27,7 @@ interface LabTestCreateBody {
 }
 
 // GET /api/laboratory/tests - Get all laboratory tests;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
 
@@ -81,7 +81,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/laboratory/tests - Create a new laboratory test;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
 

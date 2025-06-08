@@ -46,7 +46,7 @@ interface HealthConfig {
   readonly retryCount: number;
   readonly continuous: boolean;
   readonly verbose: boolean;
-  readonly environment: 'development' | 'staging' | 'production';
+  readonly environment: 'development' | 'staging' | 'production'
 }
 
 interface HealthThresholds {
@@ -108,23 +108,23 @@ class HealthCheckResult {
 }
 
 interface SystemMetrics {
-  cpuUsage: number;
+  cpuUsage: number,
   memoryUsage: number;
-  diskUsage: number;
+  diskUsage: number,
   uptime: number;
-  loadAverage: number[];
-  networkConnections: number;
+  loadAverage: number[],
+  networkConnections: number
 }
 
 interface AlertPayload {
-  timestamp: string;
+  timestamp: string,
   level: AlertLevel;
-  component: string;
+  component: string,
   status: HealthStatus;
-  message: string;
+  message: string,
   details: HealthCheckDetails;
-  environment: string;
-  checkId: string;
+  environment: string,
+  checkId: string
 }
 
 // Configuration with healthcare-specific defaults
@@ -634,7 +634,7 @@ class HealthMonitor {
       });
       
       request.on('timeout', () => {
-        request.destroy();
+        request.destroy(),
         reject(new Error('Request timeout'));
       });
       
@@ -646,7 +646,7 @@ class HealthMonitor {
 
   private fileExists(filePath: string): boolean {
     try {
-      return require('fs').existsSync(filePath);
+      return require('fs').existsSync(filePath)
     } catch {
       return false;
     }
@@ -725,7 +725,7 @@ class HealthMonitor {
 
   private async sendAlert(result: HealthCheckResult): Promise<void> {
     if (!CONFIG.alertWebhook || this.alertsSent.has(result.checkId)) {
-      return;
+      return
     }
 
     const payload: AlertPayload = {

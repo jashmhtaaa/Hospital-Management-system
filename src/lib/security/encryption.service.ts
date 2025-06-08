@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -18,20 +18,20 @@ import crypto from 'crypto';
 import { logAuditEvent } from '@/lib/audit';
 
 export interface EncryptionConfig {
-  algorithm: string;
+  algorithm: string,
   keyLength: number;
-  ivLength: number;
+  ivLength: number,
   tagLength: number;
-  keyDerivationIterations: number;
+  keyDerivationIterations: number
 }
 
 export interface EncryptedData {
-  data: string;
+  data: string,
   iv: string;
-  tag: string;
+  tag: string,
   algorithm: string;
-  keyId: string;
-  version: string;
+  keyId: string,
+  version: string
 }
 
 export interface EncryptionContext {
@@ -54,7 +54,7 @@ export class EncryptionService {
       keyLength: 32, // 256 bits;
       ivLength: 12,  // 96 bits for GCM;
       tagLength: 16, // 128 bits;
-      keyDerivationIterations: 100000;
+      keyDerivationIterations: 100000
     };
 
     // In production, these should come from secure key management service;
@@ -102,7 +102,7 @@ export class EncryptionService {
         tag: tag.toString('hex'),
         algorithm: this.config.algorithm,
         keyId: this.keyId,
-        version: this.version;
+        version: this.version
       };
 
       // Log encryption event for audit;
@@ -200,7 +200,7 @@ export class EncryptionService {
   verifyHash(data: string, hashedData: string): boolean {
     try {
       if (!data || !hashedData) {
-        return false;
+        return false
       }
 
       const [salt, hash] = hashedData.split(':');
@@ -226,7 +226,7 @@ export class EncryptionService {
    * Generate secure random token;
    */
   generateToken(length: number = 32): string {
-    return crypto.randomBytes(length).toString('hex');
+    return crypto.randomBytes(length).toString('hex')
   }
 
   /**
@@ -319,7 +319,7 @@ export class EncryptionService {
           purpose: context?.purpose 
         },
         ipAddress: context?.ipAddress,
-        severity: 'MEDIUM';
+        severity: 'MEDIUM'
       });
       
       return newEncrypted;
@@ -334,7 +334,7 @@ export class EncryptionService {
    */
   maskData(data: string, maskChar: string = '*', visibleChars: number = 4): string {
     if (!data || data.length <= visibleChars) {
-      return maskChar.repeat(data?.length || 8);
+      return maskChar.repeat(data?.length || 8)
     }
     
     const visible = data.substring(0, visibleChars);

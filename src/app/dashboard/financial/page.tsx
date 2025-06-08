@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -50,7 +50,7 @@ export default const FinancialDashboard = () {
   const [activeTab, setActiveTab] = useState('overview');
   const [dateRange, setDateRange] = useState({
     startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-    endDate: new Date();
+    endDate: new Date()
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export default const FinancialDashboard = () {
   }, [dateRange, activeTab]);
 
   const fetchDashboardData = async () => {
-    setLoading(true);
+    setLoading(true),
     setError(null);
     
     try {
@@ -89,8 +89,7 @@ export default const FinancialDashboard = () {
         case 'reports':
           data = generateReportsData();
           break;
-        default:
-          data = generateOverviewData();
+        default: data = generateOverviewData()
       }
       
       setDashboardData(data);
@@ -335,8 +334,8 @@ export default const FinancialDashboard = () {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">;
-        <Spinner size="lg" />;
-        <span className="ml-2">Loading financial dashboard...</span>;
+        <Spinner size="lg" />
+        <span className="ml-2">Loading financial dashboard...</span>
       </div>
     );
   }
@@ -348,7 +347,7 @@ export default const FinancialDashboard = () {
         <Alert variant="destructive">;
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button className="mt-4" onClick={fetchDashboardData}>Retry</Button>;
+        <Button className="mt-4" onClick={fetchDashboardData}>Retry</Button>
       </div>
     );
   }
@@ -360,19 +359,19 @@ export default const FinancialDashboard = () {
         <div className="flex space-x-4">;
           <div className="flex items-center space-x-2">;
             <span className="text-sm font-medium">From:</span>;
-            <DatePicker;
+            <DatePicker>
               date={dateRange.startDate}
               onDateChange={(date) => setDateRange({ ...dateRange, startDate: date })}
             />
           </div>
           <div className="flex items-center space-x-2">;
             <span className="text-sm font-medium">To:</span>;
-            <DatePicker;
+            <DatePicker>
               date={dateRange.endDate}
               onDateChange={(date) => setDateRange({ ...dateRange, endDate: date })}
             />
           </div>
-          <Button onClick={fetchDashboardData}>Apply</Button>;
+          <Button onClick={fetchDashboardData}>Apply</Button>
         </div>
       </div>
 
@@ -382,7 +381,7 @@ export default const FinancialDashboard = () {
           <TabsTrigger value="revenue">Revenue Analysis</TabsTrigger>;
           <TabsTrigger value="billing">Billing & Payments</TabsTrigger>;
           <TabsTrigger value="insurance">Insurance Claims</TabsTrigger>;
-          <TabsTrigger value="reports">Reports</TabsTrigger>;
+          <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">;
@@ -401,7 +400,7 @@ export default const FinancialDashboard = () {
                              formatCurrency(kpi.value)}
                           </span>
                           <span className={`ml-2 text-sm font-medium ${kpi.changeType === 'increase' ? 'text-green-600' : 'text-red-600'}`}>;
-                            {kpi.changeType === 'increase' ? '↑' : '↓'} {Math.abs(kpi.change)}%;
+                            {kpi.changeType === 'increase' ? '↑' : '↓'} {Math.abs(kpi.change)}%
                           </span>
                         </div>
                       </div>
@@ -417,7 +416,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Monthly comparison for the last 6 months</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <BarChart;
+                    <BarChart>
                       data={dashboardData.revenueChart}
                       height={300}
                     />
@@ -430,7 +429,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Current distribution of invoice status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DonutChart;
+                    <DonutChart>
                       data={dashboardData.billingStatus}
                       height={300}
                     />
@@ -444,7 +443,7 @@ export default const FinancialDashboard = () {
                   <CardDescription>Latest financial activities</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable;
+                  <DataTable>
                     data={dashboardData.recentTransactions}
                     columns={[
                       { header: 'Invoice ID', accessorKey: 'id' },
@@ -468,7 +467,7 @@ export default const FinancialDashboard = () {
                             paid: 'bg-green-100 text-green-800',
                             partial: 'bg-blue-100 text-blue-800',
                             pending: 'bg-yellow-100 text-yellow-800',
-                            overdue: 'bg-red-100 text-red-800';
+                            overdue: 'bg-red-100 text-red-800'
                           };
                           
                           return (
@@ -496,7 +495,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Weekly revenue for the selected period</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <LineChart;
+                    <LineChart>
                       data={dashboardData.revenueTrend}
                       height={300}
                     />
@@ -509,7 +508,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Distribution across hospital departments</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <PieChart;
+                    <PieChart>
                       data={dashboardData.revenueByDepartment}
                       height={300}
                     />
@@ -524,7 +523,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Top revenue-generating services</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable;
+                    <DataTable>
                       data={dashboardData.revenueByService}
                       columns={[
                         { header: 'Service', accessorKey: 'service' },
@@ -549,7 +548,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Distribution of payment methods used</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DonutChart;
+                    <DonutChart>
                       data={dashboardData.paymentMethods}
                       height={300}
                     />
@@ -570,13 +569,13 @@ export default const FinancialDashboard = () {
                     <CardDescription>Current distribution of invoices by status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <BarChart;
+                    <BarChart>
                       data={{
                         labels: dashboardData.invoiceStatus.labels,
                         datasets: [{
                           label: 'Invoices',
                           data: dashboardData.invoiceStatus.data,
-                          backgroundColor: dashboardData.invoiceStatus.backgroundColor;
+                          backgroundColor: dashboardData.invoiceStatus.backgroundColor
                         }]
                       }}
                       height={300}
@@ -590,10 +589,10 @@ export default const FinancialDashboard = () {
                     <CardDescription>Outstanding amounts by age</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <BarChart;
+                    <BarChart>
                       data={{
                         labels: dashboardData.agingAnalysis.labels,
-                        datasets: dashboardData.agingAnalysis.datasets;
+                        datasets: dashboardData.agingAnalysis.datasets
                       }}
                       height={300}
                     />
@@ -608,7 +607,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Latest generated invoices</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable;
+                    <DataTable>
                       data={dashboardData.recentInvoices}
                       columns={[
                         { header: 'Invoice ID', accessorKey: 'id' },
@@ -636,7 +635,7 @@ export default const FinancialDashboard = () {
                               sent: 'bg-pink-100 text-pink-800',
                               partial: 'bg-sky-100 text-sky-800',
                               paid: 'bg-green-100 text-green-800',
-                              overdue: 'bg-red-100 text-red-800';
+                              overdue: 'bg-red-100 text-red-800'
                             };
                             
                             return (
@@ -651,7 +650,7 @@ export default const FinancialDashboard = () {
                           cell: () => (
                             <div className="flex space-x-2">;
                               <Button variant="outline" size="sm">View</Button>;
-                              <Button variant="outline" size="sm">Edit</Button>;
+                              <Button variant="outline" size="sm">Edit</Button>
                             </div>
                           );
                         }
@@ -667,7 +666,7 @@ export default const FinancialDashboard = () {
                   <CardDescription>Latest payment transactions</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable;
+                  <DataTable>
                     data={dashboardData.recentPayments}
                     columns={[
                       { header: 'Payment ID', accessorKey: 'id' },
@@ -689,7 +688,7 @@ export default const FinancialDashboard = () {
                         cell: () => (
                           <div className="flex space-x-2">;
                             <Button variant="outline" size="sm">View</Button>;
-                            <Button variant="outline" size="sm">Receipt</Button>;
+                            <Button variant="outline" size="sm">Receipt</Button>
                           </div>
                         );
                       }
@@ -711,7 +710,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Distribution of claims by status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <PieChart;
+                    <PieChart>
                       data={dashboardData.claimStatus}
                       height={300}
                     />
@@ -724,7 +723,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Monthly submitted vs approved claims</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <LineChart;
+                    <LineChart>
                       data={dashboardData.claimTrend}
                       height={300}
                     />
@@ -739,7 +738,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Performance metrics by insurance provider</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable;
+                    <DataTable>
                       data={dashboardData.topInsuranceProviders}
                       columns={[
                         { header: 'Provider', accessorKey: 'provider' },
@@ -771,7 +770,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Latest insurance claims</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable;
+                    <DataTable>
                       data={dashboardData.recentClaims}
                       columns={[
                         { header: 'Claim ID', accessorKey: 'id' },
@@ -795,7 +794,7 @@ export default const FinancialDashboard = () {
                               approved: 'bg-green-100 text-green-800',
                               partially_approved: 'bg-purple-100 text-purple-800',
                               denied: 'bg-red-100 text-red-800',
-                              appealed: 'bg-pink-100 text-pink-800';
+                              appealed: 'bg-pink-100 text-pink-800'
                             };
                             
                             return (
@@ -816,7 +815,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Common reasons for claim denials</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <PieChart;
+                    <PieChart>
                       data={dashboardData.denialReasons}
                       height={300}
                     />
@@ -837,7 +836,7 @@ export default const FinancialDashboard = () {
                     <CardDescription>Generate financial reports</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable;
+                    <DataTable>
                       data={dashboardData.availableReports}
                       columns={[
                         { header: 'Report ID', accessorKey: 'id' },
@@ -853,7 +852,7 @@ export default const FinancialDashboard = () {
                           cell: () => (
                             <div className="flex space-x-2">;
                               <Button variant="outline" size="sm">Generate</Button>;
-                              <Button variant="outline" size="sm">Schedule</Button>;
+                              <Button variant="outline" size="sm">Schedule</Button>
                             </div>
                           );
                         }
@@ -869,7 +868,7 @@ export default const FinancialDashboard = () {
                   <CardDescription>Automated report generation</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable;
+                  <DataTable>
                     data={dashboardData.scheduledReports}
                     columns={[
                       { header: 'Schedule ID', accessorKey: 'id' },
@@ -886,7 +885,7 @@ export default const FinancialDashboard = () {
                         cell: () => (
                           <div className="flex space-x-2">;
                             <Button variant="outline" size="sm">Edit</Button>;
-                            <Button variant="outline" size="sm">Delete</Button>;
+                            <Button variant="outline" size="sm">Delete</Button>
                           </div>
                         );
                       }

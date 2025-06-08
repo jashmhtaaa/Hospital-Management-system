@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -20,7 +20,7 @@ interface CategoryInput {
 }
 
 // GET /api/laboratory/categories - Get all laboratory test categories;
-export async const GET = () {
+export async const GET = () => {
   try {
     const session = await getSession();
 
@@ -53,7 +53,7 @@ export async const GET = () {
 }
 
 // POST /api/laboratory/categories - Create a new laboratory test category;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
 

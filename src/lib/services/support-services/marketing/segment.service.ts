@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,7 +37,7 @@ export class SegmentService {
           description: data.description,
           criteria: data.criteria,
           isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId;
+          createdById: userId
         }
       });
       
@@ -48,7 +48,7 @@ export class SegmentService {
         userId,
         details: { 
           segmentName: segment.name,
-          hasCriteria: !!segment.criteria;
+          hasCriteria: !!segment.criteria
         }
       });
       
@@ -81,25 +81,25 @@ export class SegmentService {
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           },
           members: includeMembers ? {
             where: {
-              isActive: true;
+              isActive: true
             },
             include: {
-              contact: true;
+              contact: true
             }
           } : false,
           _count: {
             select: {
               members: {
                 where: {
-                  isActive: true;
+                  isActive: true
                 }
               },
-              campaigns: true;
+              campaigns: true
             }
           }
         }
@@ -159,24 +159,24 @@ export class SegmentService {
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           },
           _count: {
             select: {
               members: {
                 where: {
-                  isActive: true;
+                  isActive: true
                 }
               },
-              campaigns: true;
+              campaigns: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -186,7 +186,7 @@ export class SegmentService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -221,7 +221,7 @@ export class SegmentService {
         userId,
         details: { 
           segmentName: updatedSegment.name,
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
       
@@ -272,7 +272,7 @@ export class SegmentService {
             where: { id: existingMember.id },
             data: {
               isActive: true,
-              removedAt: null;
+              removedAt: null
             }
           });
           
@@ -283,7 +283,7 @@ export class SegmentService {
             userId,
             details: { 
               contactId,
-              memberId: updatedMember.id;
+              memberId: updatedMember.id
             }
           });
           
@@ -298,7 +298,7 @@ export class SegmentService {
         data: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
       
@@ -309,7 +309,7 @@ export class SegmentService {
         userId,
         details: { 
           contactId,
-          memberId: member.id;
+          memberId: member.id
         }
       });
       
@@ -350,7 +350,7 @@ export class SegmentService {
         where: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
       
@@ -363,7 +363,7 @@ export class SegmentService {
         where: { id: existingMember.id },
         data: {
           isActive: false,
-          removedAt: new Date();
+          removedAt: new Date()
         }
       });
       
@@ -374,7 +374,7 @@ export class SegmentService {
         userId,
         details: { 
           contactId,
-          memberId: existingMember.id;
+          memberId: existingMember.id
         }
       });
       
@@ -412,7 +412,7 @@ export class SegmentService {
       const matchingContacts = await prisma.contact.findMany({
         where,
         select: {
-          id: true;
+          id: true
         }
       });
       
@@ -425,7 +425,7 @@ export class SegmentService {
           const existingMember = await prisma.segmentMember.findFirst({
             where: {
               segmentId,
-              contactId: contact.id;
+              contactId: contact.id
             }
           });
           
@@ -436,7 +436,7 @@ export class SegmentService {
                 where: { id: existingMember.id },
                 data: {
                   isActive: true,
-                  removedAt: null;
+                  removedAt: null
                 }
               });
               addedCount++;
@@ -447,7 +447,7 @@ export class SegmentService {
               data: {
                 segmentId,
                 contactId: contact.id,
-                isActive: true;
+                isActive: true
               }
             });
             addedCount++;
@@ -465,13 +465,13 @@ export class SegmentService {
         userId,
         details: { 
           matchedContacts: matchingContacts.length,
-          addedContacts: addedCount;
+          addedContacts: addedCount
         }
       });
       
       return {
         added: addedCount,
-        total: matchingContacts.length;
+        total: matchingContacts.length
       };
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ValidationError) {

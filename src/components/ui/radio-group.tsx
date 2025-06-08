@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -45,7 +45,7 @@ const RadioGroupItem = React.forwardRef<;
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">;
-        <Circle className="h-3.5 w-3.5 fill-primary" />;
+        <Circle className="h-3.5 w-3.5 fill-primary" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

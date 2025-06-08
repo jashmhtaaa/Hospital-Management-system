@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services;
@@ -45,7 +45,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-lab;
  * Check for drug-lab result interactions;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -77,7 +77,7 @@ export async const POST = (req: NextRequest) {
         value: lr.value,
         unit: lr.unit,
         referenceRange: lr.referenceRange,
-        abnormalFlag: lr.abnormalFlag;
+        abnormalFlag: lr.abnormalFlag
       }));
     }
 
@@ -96,7 +96,7 @@ export async const POST = (req: NextRequest) {
       details: {
         medicationIds: data.medicationIds,
         labResultCount: labResults.length,
-        interactionCount: interactions.length;
+        interactionCount: interactions.length
       }
     });
 
@@ -109,7 +109,7 @@ export async const POST = (req: NextRequest) {
           critical: interactions.filter(i => i.severity === 'critical').length,
           significant: interactions.filter(i => i.severity === 'significant').length,
           moderate: interactions.filter(i => i.severity === 'moderate').length,
-          minor: interactions.filter(i => i.severity === 'minor').length;
+          minor: interactions.filter(i => i.severity === 'minor').length
         }
       }
     }, { status: 200 });

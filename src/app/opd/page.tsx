@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -49,7 +49,7 @@ export default const OPDDashboard = () {
   useEffect(() => {
     // Check permissions via API;
     const checkPermissions = async () => {
-      setLoadingPermissions(true);
+      setLoadingPermissions(true),
       setPermissionError(undefined);
       try {
         const [createResponse, statsResponse] = await Promise.all([
@@ -114,7 +114,7 @@ export default const OPDDashboard = () {
         <Card className="mb-4 bg-red-50 border-red-200">;
           <CardContent className="p-4 text-center text-red-700">;
             <p className="font-semibold">Permission Error</p>;
-            <p className="text-sm">{permissionError}</p>;
+            <p className="text-sm">{permissionError}</p>
           </CardContent>
         </Card>
       )}
@@ -130,8 +130,8 @@ export default const OPDDashboard = () {
               <CardTitle>Calendar</CardTitle>
             </CardHeader>
             <CardContent>
-              <Calendar;
-                mode="single";
+              <Calendar>
+                mode="single"
                 selected={selectedDate}
                 onSelect={handleDateChange}
                 className="rounded-md border p-0" // Remove default padding if needed;
@@ -139,10 +139,10 @@ export default const OPDDashboard = () {
               />
 
               {loadingPermissions ? (
-                <Skeleton className="h-10 w-full mt-4" />;
+                <Skeleton className="h-10 w-full mt-4" />
               ) : permissions.canCreateAppointment ? (
                 <Button className="w-full mt-4" onClick={handleNewAppointment}>;
-                  New Appointment;
+                  New Appointment
                 </Button>
               ) : undefined}
             </CardContent>
@@ -150,10 +150,10 @@ export default const OPDDashboard = () {
           {loadingPermissions ? (
             <Card className="mt-6">;
               <CardHeader>
-                <Skeleton className="h-6 w-3/4" />;
+                <Skeleton className="h-6 w-3/4" />
               </CardHeader>
               <CardContent>
-                <Skeleton className="h-20 w-full" />;
+                <Skeleton className="h-20 w-full" />
               </CardContent>
             </Card>
           ) : permissions.canViewStatistics ? (
@@ -168,7 +168,7 @@ export default const OPDDashboard = () {
                 {selectedDate && <OPDStatistics date={selectedDate} />}
                 {!selectedDate && (
                   <p className="text-sm text-muted-foreground">;
-                    Select a date to view summary.;
+                    Select a date to view summary.
                   </p>
                 )}
               </CardContent>
@@ -179,7 +179,7 @@ export default const OPDDashboard = () {
         <div className="lg:col-span-3">;
           {" "}
           {/* Adjusted grid span */}
-          <Tabs;
+          <Tabs>
             value={activeTab}
             onValueChange={setActiveTab}
             defaultValue="appointments"
@@ -187,7 +187,7 @@ export default const OPDDashboard = () {
             <TabsList className="grid w-full grid-cols-3">;
               <TabsTrigger value="appointments">Appointments</TabsTrigger>;
               <TabsTrigger value="queue">Patient Queue</TabsTrigger>;
-              <TabsTrigger value="consultation">Consultation</TabsTrigger>;
+              <TabsTrigger value="consultation">Consultation</TabsTrigger>
             </TabsList>
 
             <TabsContent value="appointments" className="mt-4">;
@@ -198,10 +198,10 @@ export default const OPDDashboard = () {
                 </CardHeader>
                 <CardContent>
                   {selectedDate ? (
-                    <OPDAppointmentList date={selectedDate} />;
+                    <OPDAppointmentList date={selectedDate} />
                   ) : (
                     <p className="text-sm text-muted-foreground text-center py-8">;
-                      Select a date to view appointments.;
+                      Select a date to view appointments.
                     </p>
                   )}
                 </CardContent>
@@ -215,10 +215,10 @@ export default const OPDDashboard = () {
                 </CardHeader>
                 <CardContent>
                   {selectedDate ? (
-                    <OPDPatientQueue date={selectedDate} />;
+                    <OPDPatientQueue date={selectedDate} />
                   ) : (
                     <p className="text-sm text-muted-foreground text-center py-8">;
-                      Select a date to view the queue.;
+                      Select a date to view the queue.
                     </p>
                   )}
                 </CardContent>

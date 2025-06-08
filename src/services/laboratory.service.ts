@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -170,7 +170,7 @@ export class LaboratoryService {
     const orderCount = await prisma.labOrder.count({
       where: {
         orderDateTime: {
-          gte: today;
+          gte: today
         }
       }
     });
@@ -201,7 +201,7 @@ export class LaboratoryService {
     const sampleCount = await prisma.labSample.count({
       where: {
         createdAt: {
-          gte: today;
+          gte: today
         }
       }
     });
@@ -246,7 +246,7 @@ export class LaboratoryService {
         resourceType: 'LabTest',
         resourceId: test.id,
         description: `Created lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       return test;
@@ -268,12 +268,12 @@ export class LaboratoryService {
           testParameters: {
             include: {
               referenceRanges: true,
-              criticalRanges: true;
+              criticalRanges: true
             }
           },
           sampleRequirements: {
             include: {
-              sampleType: true;
+              sampleType: true
             }
           }
         }
@@ -289,7 +289,7 @@ export class LaboratoryService {
         resourceType: 'LabTest',
         resourceId: testId,
         description: `Viewed lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       return test;
@@ -342,7 +342,7 @@ export class LaboratoryService {
         resourceType: 'LabTest',
         resourceId: testId,
         description: `Updated lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       return test;
@@ -428,7 +428,7 @@ export class LaboratoryService {
         resourceType: 'LabOrder',
         resourceId: order.id,
         description: `Created lab order: ${order.orderNumber} for patient ${order.patientId}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       // Send notification to lab department;
@@ -462,17 +462,17 @@ export class LaboratoryService {
           orderItems: {
             include: {
               test: true,
-              profile: true;
+              profile: true
             }
           },
           samples: {
             include: {
-              sampleType: true;
+              sampleType: true
             }
           },
           results: {
             include: {
-              parameter: true;
+              parameter: true
             }
           }
         }
@@ -488,7 +488,7 @@ export class LaboratoryService {
         resourceType: 'LabOrder',
         resourceId: orderId,
         description: `Viewed lab order: ${order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       return order;
@@ -533,7 +533,7 @@ export class LaboratoryService {
         resourceType: 'LabOrder',
         resourceId: orderId,
         description: `Updated lab order status: ${order.orderNumber} to ${statusData.status}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       // Send notification for status change;
@@ -580,7 +580,7 @@ export class LaboratoryService {
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
         include: {
-          orderItems: true;
+          orderItems: true
         }
       });
       
@@ -621,7 +621,7 @@ export class LaboratoryService {
           parentSampleId: validatedSample.parentSampleId,
           isAliquot: validatedSample.isAliquot,
           processingNotes: validatedSample.processingNotes,
-          notes: validatedSample.notes;
+          notes: validatedSample.notes
         }
       });
       
@@ -633,7 +633,7 @@ export class LaboratoryService {
             status: 'Collected',
             collectionDateTime: validatedSample.collectionDateTime,
             collectedBy: validatedSample.collectedBy,
-            collectionSite: validatedSample.collectionSite;
+            collectionSite: validatedSample.collectionSite
           }
         });
       }
@@ -645,7 +645,7 @@ export class LaboratoryService {
           data: {
             status: 'In Process',
             specimenReceivedDateTime: validatedSample.receivedDateTime,
-            receivedBy: validatedSample.receivedBy;
+            receivedBy: validatedSample.receivedBy
           }
         });
       }
@@ -656,7 +656,7 @@ export class LaboratoryService {
         resourceType: 'LabSample',
         resourceId: sample.id,
         description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       return sample;
@@ -689,7 +689,7 @@ export class LaboratoryService {
         include: {
           criticalRanges: true,
           referenceRanges: true,
-          test: true;
+          test: true
         }
       });
       
@@ -792,7 +792,7 @@ export class LaboratoryService {
         resourceType: 'LabResult',
         resourceId: result.id,
         description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       // Send notification for critical result;
@@ -815,7 +815,7 @@ export class LaboratoryService {
         include: {
           test: {
             include: {
-              testParameters: true;
+              testParameters: true
             }
           },
           profile: {
@@ -824,7 +824,7 @@ export class LaboratoryService {
                 include: {
                   test: {
                     include: {
-                      testParameters: true;
+                      testParameters: true
                     }
                   }
                 }
@@ -905,10 +905,10 @@ export class LaboratoryService {
         include: {
           parameter: {
             include: {
-              test: true;
+              test: true
             }
           },
-          order: true;
+          order: true
         }
       });
       
@@ -933,7 +933,7 @@ export class LaboratoryService {
         resourceType: 'LabResult',
         resourceId: resultId,
         description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       return result;
@@ -976,15 +976,15 @@ export class LaboratoryService {
       if (searchParams.startDate && searchParams.endDate) {
         where.orderDateTime = {
           gte: new Date(searchParams.startDate),
-          lte: new Date(searchParams.endDate);
+          lte: new Date(searchParams.endDate)
         };
       } else if (searchParams.startDate) {
         where.orderDateTime = {
-          gte: new Date(searchParams.startDate);
+          gte: new Date(searchParams.startDate)
         };
       } else if (searchParams.endDate) {
         where.orderDateTime = {
-          lte: new Date(searchParams.endDate);
+          lte: new Date(searchParams.endDate)
         };
       }
       
@@ -1000,13 +1000,13 @@ export class LaboratoryService {
             orderItems: {
               include: {
                 test: true,
-                profile: true;
+                profile: true
               }
             },
             _count: {
               select: {
                 samples: true,
-                results: true;
+                results: true
               }
             }
           },
@@ -1014,7 +1014,7 @@ export class LaboratoryService {
           take,
           orderBy: { orderDateTime: 'desc' }
         }),
-        prisma.labOrder.count({ where });
+        prisma.labOrder.count({ where })
       ]);
       
       // Log audit;
@@ -1022,7 +1022,7 @@ export class LaboratoryService {
         action: 'Search',
         resourceType: 'LabOrder',
         description: 'Performed lab order search',
-        performedBy: userId;
+        performedBy: userId
       });
       
       return {
@@ -1030,7 +1030,7 @@ export class LaboratoryService {
         total,
         page: searchParams.page || 1,
         limit: take,
-        totalPages: Math.ceil(total / take);
+        totalPages: Math.ceil(total / take)
       };
     } catch (error) {
 
@@ -1047,28 +1047,28 @@ export class LaboratoryService {
       const results = await prisma.labResult.findMany({
         where: {
           order: {
-            patientId: patientId;
+            patientId: patientId
           },
           status: { in: ['Final', 'Preliminary'] }
         },
         include: {
           parameter: {
             include: {
-              test: true;
+              test: true
             }
           },
           order: {
             select: {
               orderNumber: true,
               orderDateTime: true,
-              orderingProviderName: true;
+              orderingProviderName: true
             }
           }
         },
         orderBy: [
           { performedDateTime: 'desc' }
         ],
-        take: options.limit;
+        take: options.limit
       });
       
       // Log audit;
@@ -1076,7 +1076,7 @@ export class LaboratoryService {
         action: 'View',
         resourceType: 'LabResult',
         description: `Viewed lab results for patient ${patientId}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       // If not grouping by test, return the flat list;
@@ -1117,7 +1117,7 @@ export class LaboratoryService {
           performedDateTime: result.performedDateTime,
           status: result.status,
           orderNumber: result.order.orderNumber,
-          orderDateTime: result.order.orderDateTime;
+          orderDateTime: result.order.orderDateTime
         });
         
         return acc;
@@ -1150,7 +1150,7 @@ export class LaboratoryService {
         where: { id: parameterId },
         include: {
           test: true,
-          referenceRanges: true;
+          referenceRanges: true
         }
       });
       
@@ -1163,18 +1163,18 @@ export class LaboratoryService {
         where: {
           parameterId,
           order: {
-            patientId;
+            patientId
           },
           status: { in: ['Final', 'Preliminary'] },
           performedDateTime: startDate ? {
-            gte: startDate;
+            gte: startDate
           } : undefined;
         },
         include: {
           order: {
             select: {
               orderNumber: true,
-              orderDateTime: true;
+              orderDateTime: true
             }
           }
         },
@@ -1186,7 +1186,7 @@ export class LaboratoryService {
         action: 'View',
         resourceType: 'LabResult',
         description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
-        performedBy: userId;
+        performedBy: userId
       });
       
       // Extract reference ranges;
@@ -1197,7 +1197,7 @@ export class LaboratoryService {
         if (refRange.lowerLimit && refRange.upperLimit) {
           referenceRanges = {
             lower: parseFloat(refRange.lowerLimit),
-            upper: parseFloat(refRange.upperLimit);
+            upper: parseFloat(refRange.upperLimit)
           };
         }
       }
@@ -1209,7 +1209,7 @@ export class LaboratoryService {
           name: parameter.parameterName,
           units: parameter.units,
           testName: parameter.test.testName,
-          testCode: parameter.test.testCode;
+          testCode: parameter.test.testCode
         },
         referenceRanges,
         results: results.map(result => ({
@@ -1221,7 +1221,7 @@ export class LaboratoryService {
           isCritical: result.isCritical,
           performedDateTime: result.performedDateTime,
           status: result.status,
-          orderNumber: result.order.orderNumber;
+          orderNumber: result.order.orderNumber
         }));
       };
     } catch (error) {

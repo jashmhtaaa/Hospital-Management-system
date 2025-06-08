@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,7 +34,7 @@ interface RedisClusterConfig {
     
     // Keys/patterns to warm by priority;
     warmingPatterns: Array<{
-      // Pattern to match keys;
+      // Pattern to match keys,
       pattern: string;
       
       // Priority (higher = more important)
@@ -51,7 +51,7 @@ interface RedisClusterConfig {
     warmingInterval: number;
     
     // Maximum number of keys to warm in one cycle;
-    maxKeysPerCycle: number;
+    maxKeysPerCycle: number
   };
   
   // Event-based cache invalidation;
@@ -72,7 +72,7 @@ interface RedisClusterConfig {
     failureThreshold: number;
     
     // Reset timeout in milliseconds;
-    resetTimeout: number;
+    resetTimeout: number
   };
 }
 
@@ -86,8 +86,8 @@ class RedisCircuitBreaker {
   
   constructor(
     private readonly config: {
-      failureThreshold: number;
-      resetTimeout: number;
+      failureThreshold: number,
+      resetTimeout: number
     }
   ) {}
   
@@ -142,7 +142,7 @@ class RedisCircuitBreaker {
         this.isOpen = true;
         logger.warn('Redis circuit breaker: Circuit opened due to failures', {
           failures: this.failures,
-          threshold: this.config.failureThreshold;
+          threshold: this.config.failureThreshold
         });
         
         // Track metrics;
@@ -152,7 +152,7 @@ class RedisCircuitBreaker {
       // Use fallback if provided;
       if (fallback) {
         logger.debug('Redis operation failed, using fallback', {
-          error: error.message;
+          error: error.message
         });
         return fallback();
       }
@@ -177,8 +177,7 @@ export class RedisClusterService {
   private config: RedisClusterConfig;
   private circuitBreaker: RedisCircuitBreaker | null = null;
   private warmingInterval: NodeJS.Timeout | null = null;
-  private localCache: Map<string, { value: unknown; expiry: number }> = new Map();
-  
+  private localCache: Map<string, { value: unknown; expiry: number }> = new Map(),
   constructor(config: RedisClusterConfig, private readonly eventStore?: EventStore) {
     this.config = config;
     
@@ -189,7 +188,7 @@ export class RedisClusterService {
     if (config.circuitBreaker?.enabled) {
       this.circuitBreaker = new RedisCircuitBreaker({
         failureThreshold: config.circuitBreaker.failureThreshold,
-        resetTimeout: config.circuitBreaker.resetTimeout;
+        resetTimeout: config.circuitBreaker.resetTimeout
       });
     }
     
@@ -210,7 +209,7 @@ export class RedisClusterService {
       nodes: config.nodes.length,
       cacheWarming: config.cacheWarming?.enabled || false,
       eventInvalidation: config.eventInvalidation?.enabled || false,
-      circuitBreaker: config.circuitBreaker?.enabled || false;
+      circuitBreaker: config.circuitBreaker?.enabled || false
     });
   }
   
@@ -278,7 +277,7 @@ export class RedisClusterService {
           if (ttl > 0) {
             this.localCache.set(key, {
               value: parsed,
-              expiry: Date.now() + (ttl * 1000);
+              expiry: Date.now() + (ttl * 1000)
             });
           }
         }
@@ -297,7 +296,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'get',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return null;
@@ -342,7 +341,7 @@ export class RedisClusterService {
       if (this.localCache.has(key)) {
         this.localCache.set(key, {
           value,
-          expiry: Date.now() + (ttl * 1000);
+          expiry: Date.now() + (ttl * 1000)
         });
       }
       
@@ -356,7 +355,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'set',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return false;
@@ -368,7 +367,7 @@ export class RedisClusterService {
    */
   async del(...keys: string[]): Promise<number> {
     if (keys.length === 0) {
-      return 0;
+      return 0
     }
     
     try {
@@ -409,7 +408,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'del',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return 0;
@@ -461,7 +460,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'exists',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return false;
@@ -494,7 +493,7 @@ export class RedisClusterService {
       // Track metrics;
       metricsCollector.recordTimer('cache.redis_cluster.keys_time', duration);
       metricsCollector.incrementCounter('cache.redis_cluster.keys_operations', 1, {
-        keyCount: String(result.length);
+        keyCount: String(result.length)
       });
       
       return result;
@@ -507,7 +506,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'keys',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return [];
@@ -535,7 +534,7 @@ export class RedisClusterService {
       
       // Track metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.pattern_invalidations', 1, {
-        keyCount: String(deleted);
+        keyCount: String(deleted)
       });
       
       return deleted;
@@ -548,7 +547,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'invalidatePattern',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return 0;
@@ -560,7 +559,7 @@ export class RedisClusterService {
    */
   async mget(...keys: string[]): Promise<any[]> {
     if (keys.length === 0) {
-      return [];
+      return []
     }
     
     try {
@@ -613,7 +612,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'mget',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return Array(keys.length).fill(null);
@@ -667,7 +666,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'incr',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return 0;
@@ -719,14 +718,14 @@ export class RedisClusterService {
       // Track metrics;
       metricsCollector.recordTimer('cache.redis_cluster.setnx_time', duration);
       metricsCollector.incrementCounter('cache.redis_cluster.setnx_operations', 1, {
-        success: String(result === 1);
+        success: String(result === 1)
       });
       
       // Update local cache if the key was set;
       if (result === 1) {
         this.localCache.set(key, {
           value,
-          expiry: Date.now() + (ttl * 1000);
+          expiry: Date.now() + (ttl * 1000)
         });
       }
       
@@ -740,7 +739,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'setnx',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
       
       return false;
@@ -770,7 +769,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'shutdown',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     }
   }
@@ -786,7 +785,7 @@ export class RedisClusterService {
     
     // Track metrics;
     metricsCollector.incrementCounter('cache.redis_cluster.local_cache_clears', 1, {
-      size: String(size);
+      size: String(size)
     });
   }
   
@@ -800,7 +799,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'cluster',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     });
     
@@ -813,7 +812,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.node_errors', 1, {
         node: `${node.options.host}:${node.options.port}`,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     });
     
@@ -882,7 +881,7 @@ export class RedisClusterService {
     
     logger.info('Started cache warming process', {
       interval: this.config.cacheWarming.warmingInterval,
-      patterns: this.config.cacheWarming.warmingPatterns.length;
+      patterns: this.config.cacheWarming.warmingPatterns.length
     });
   }
   
@@ -923,18 +922,18 @@ export class RedisClusterService {
           
           // Track metrics;
           metricsCollector.incrementCounter('cache.redis_cluster.cache_warmings', 1, {
-            pattern: patternConfig.pattern;
+            pattern: patternConfig.pattern
           });
         } catch (error) {
           logger.error('Error warming cache for pattern', {
             error,
-            pattern: patternConfig.pattern;
+            pattern: patternConfig.pattern
           });
           
           // Track error metrics;
           metricsCollector.incrementCounter('cache.redis_cluster.cache_warming_errors', 1, {
             pattern: patternConfig.pattern,
-            errorType: error.name || 'unknown';
+            errorType: error.name || 'unknown'
           });
         }
       }
@@ -948,7 +947,7 @@ export class RedisClusterService {
         
         // Track metrics;
         metricsCollector.recordTimer('cache.redis_cluster.cache_warming_cycle_time', duration, {
-          warmedCount: String(warmedCount);
+          warmedCount: String(warmedCount)
         });
       }
     } catch (error) {
@@ -957,7 +956,7 @@ export class RedisClusterService {
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'cacheWarming',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     }
   }
@@ -984,7 +983,7 @@ export class RedisClusterService {
       },
       {
         groupId: 'redis-cluster-cache-invalidation',
-        fromBeginning: false;
+        fromBeginning: false
       }
     ).catch(error => {
       logger.error('Error setting up event subscription for cache invalidation', { error });
@@ -1028,7 +1027,7 @@ export class RedisClusterService {
           // Track metrics;
           metricsCollector.incrementCounter('cache.redis_cluster.event_invalidations', invalidated, {
             eventType,
-            pattern: resolvedPattern;
+            pattern: resolvedPattern
           });
         } catch (error) {
           logger.error('Error invalidating pattern from event', {
@@ -1043,13 +1042,13 @@ export class RedisClusterService {
     } catch (error) {
       logger.error('Error handling cache invalidation event', {
         error,
-        eventType: event.type;
+        eventType: event.type
       });
       
       // Track error metrics;
       metricsCollector.incrementCounter('cache.redis_cluster.errors', 1, {
         operation: 'eventInvalidation',
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     }
   }
@@ -1082,7 +1081,7 @@ export class RedisClusterService {
       logger.error('Error resolving pattern with event', {
         error,
         pattern,
-        eventType: event.type;
+        eventType: event.type
       });
       
       // Return original pattern if resolution fails;

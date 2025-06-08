@@ -24,21 +24,21 @@ const ListLabOrdersQuerySchema = z.object({
 
 // Define the expected structure based on the SELECT query;
 interface LabOrderQueryResultRow {
-    lab_order_id: number;
+    lab_order_id: number,
     consultation_id: number | null;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
-    order_datetime: string;
+    order_datetime: string,
     status: LabOrderStatus;
-    notes: string | null;
+    notes: string | null,
     created_at: string;
     updated_at: string; // Assuming this is part of lo.*;
-    patient_first_name: string;
+    patient_first_name: string,
     patient_last_name: string;
-    doctor_full_name: string | null;
+    doctor_full_name: string | null
 }
 
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     // Get cookies and create session;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
@@ -180,7 +180,7 @@ const CreateLabOrderSchema = z.object({
     // Items are added via POST /api/lab-orders/{id}/items;
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     // Get cookies and create session;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);

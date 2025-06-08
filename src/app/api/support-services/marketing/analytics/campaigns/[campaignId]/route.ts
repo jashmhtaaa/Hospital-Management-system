@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,7 +24,7 @@ const analyticsService = new AnalyticsService();
 export async const GET = (
   request: NextRequest,
   { params }: { params: { campaignId: string } }
-) {
+) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -66,7 +66,7 @@ export async const GET = (
 export async const POST = (
   request: NextRequest,
   { params }: { params: { campaignId: string } }
-) {
+) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

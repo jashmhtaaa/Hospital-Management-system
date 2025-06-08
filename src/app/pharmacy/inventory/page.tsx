@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ const PharmacyInventoryPage = () => {
       <h1 className="text-2xl font-bold mb-4">Pharmacy Inventory</h1>;
       <p>
         Pharmacy inventory management content goes here. This section is under;
-        development.;
+        development.
       </p>
       {/* TODO: Implement Pharmacy Inventory features (Stock, Billing, Expiry, etc.) */}
     </div>

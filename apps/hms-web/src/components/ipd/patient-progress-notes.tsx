@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,23 +15,23 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Button } from '@/components/ui/button';
 
 interface ProgressNote {
-  id: string;
+  id: string,
   date: string;
-  time: string;
+  time: string,
   doctor: string;
-  note: string;
+  note: string
 }
 
 interface PatientProgressNotesProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  notes: ProgressNote[];
+  notes: ProgressNote[]
 }
 
 /**
  * IPD Patient Progress Notes component;
  */
-export const PatientProgressNotes = ({ patientId, patientName, notes }: PatientProgressNotesProps) {
+export const PatientProgressNotes = ({ patientId, patientName, notes }: PatientProgressNotesProps) => {
   return (
     <Card>
       <CardHeader>
@@ -57,7 +57,7 @@ export const PatientProgressNotes = ({ patientId, patientName, notes }: PatientP
               {notes.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center">;
-                    No progress notes available;
+                    No progress notes available
                   </TableCell>
                 </TableRow>
               ) : (
@@ -74,7 +74,7 @@ export const PatientProgressNotes = ({ patientId, patientName, notes }: PatientP
                     <TableCell>
                       <div className="flex space-x-2">;
                         <Button variant="outline" size="sm">View</Button>;
-                        <Button variant="outline" size="sm">Edit</Button>;
+                        <Button variant="outline" size="sm">Edit</Button>
                       </div>
                     </TableCell>
                   </TableRow>

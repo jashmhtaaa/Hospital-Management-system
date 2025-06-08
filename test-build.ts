@@ -40,7 +40,7 @@ interface BuildTestConfig {
   readonly enableK8sValidation: boolean;
   readonly failOnWarnings: boolean;
   readonly skipTests: boolean;
-  readonly environment: 'development' | 'staging' | 'production';
+  readonly environment: 'development' | 'staging' | 'production'
 }
 
 interface ValidationResult {
@@ -48,7 +48,7 @@ interface ValidationResult {
   readonly errors: string[];
   readonly warnings: string[];
   readonly info: string[];
-  readonly duration: number;
+  readonly duration: number
 }
 
 interface BuildMetrics {
@@ -58,7 +58,7 @@ interface BuildMetrics {
   readonly overallSuccess: boolean;
   readonly healthcareCompliance: boolean;
   readonly securityScore: number;
-  readonly performanceScore: number;
+  readonly performanceScore: number
 }
 
 // Enterprise build configuration
@@ -149,13 +149,13 @@ async function executeCommand(
         if (stderr) result.errors.push(stderr);
       }
       
-      if (stdout) result.info.push(stdout);
+      if (stdout) result.info.push(stdout),
       resolve(result);
     });
 
     process.on('error', (error) => {
       result.duration = Date.now() - startTime;
-      result.errors.push(`Process error: ${error.message}`);
+      result.errors.push(`Process error: ${error.message}`),
       resolve(result);
     });
 
@@ -526,7 +526,7 @@ class EnterpriseBuildValidator {
 
   // Main validation orchestrator
   async runValidation(): Promise<BuildMetrics> {
-    logStep('🏥 Starting HMS Enterprise Build Validation', '🏗️');
+    logStep('🏥 Starting HMS Enterprise Build Validation', '🏗️'),
     logInfo(`Environment: ${BUILD_CONFIG.environment}`);
     logInfo(`Timeout: ${formatDuration(BUILD_CONFIG.timeout)}`);
 

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ import { generateFhirResource } from '@/lib/fhir';
  * GET /api/diagnostics/reports;
  * Get diagnostic reports with optional filtering;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -145,7 +145,7 @@ export async const GET = (request: NextRequest) {
             ...report,
             content: report.content ? decryptSensitiveData(report.content) : null,
             findings: report.findings ? decryptSensitiveData(report.findings) : null,
-            conclusion: report.conclusion ? decryptSensitiveData(report.conclusion) : null;
+            conclusion: report.conclusion ? decryptSensitiveData(report.conclusion) : null
           };
         });
 
@@ -190,7 +190,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/reports;
  * Create a new diagnostic report;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -332,7 +332,7 @@ export async const POST = (request: NextRequest) {
         reportType,
         title,
         status: status || 'draft',
-        criticalFindings: criticalFindings || false;
+        criticalFindings: criticalFindings || false
       }
     });
 
@@ -366,7 +366,7 @@ export async const POST = (request: NextRequest) {
           type: 'critical_finding',
           resourceId: reportId,
           resourceType: 'diagnostic_reports',
-          priority: 'high';
+          priority: 'high'
         });
       }
     }
@@ -396,7 +396,7 @@ export async const POST = (request: NextRequest) {
       findings: createdReport.results[0].findings ? 
         decryptSensitiveData(createdReport.results[0].findings) : null,
       conclusion: createdReport.results[0].conclusion ? 
-        decryptSensitiveData(createdReport.results[0].conclusion) : null;
+        decryptSensitiveData(createdReport.results[0].conclusion) : null
     };
 
     // Get multimedia attachments;
@@ -421,7 +421,7 @@ export async const POST = (request: NextRequest) {
  * GET /api/diagnostics/reports/:id;
  * Get a specific diagnostic report by ID;
  */
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -472,7 +472,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
           findings: result.results[0].findings ? 
             decryptSensitiveData(result.results[0].findings) : null,
           conclusion: result.results[0].conclusion ? 
-            decryptSensitiveData(result.results[0].conclusion) : null;
+            decryptSensitiveData(result.results[0].conclusion) : null
         };
 
         // Get multimedia attachments;
@@ -517,7 +517,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
  * PUT /api/diagnostics/reports/:id;
  * Update a diagnostic report;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -569,7 +569,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
     // Prevent modification of verified reports unless by admin;
     if (existingReport.status === 'verified' && !isAdmin) {
       return NextResponse.json({ 
-        error: 'Cannot modify a verified report';
+        error: 'Cannot modify a verified report'
       }, { status: 403 });
     }
 
@@ -750,7 +750,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
             type: 'critical_finding',
             resourceId: id,
             resourceType: 'diagnostic_reports',
-            priority: 'high';
+            priority: 'high'
           });
         }
       }
@@ -782,7 +782,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       findings: updatedReport.results[0].findings ? 
         decryptSensitiveData(updatedReport.results[0].findings) : null,
       conclusion: updatedReport.results[0].conclusion ? 
-        decryptSensitiveData(updatedReport.results[0].conclusion) : null;
+        decryptSensitiveData(updatedReport.results[0].conclusion) : null
     };
 
     // Get multimedia attachments;
@@ -807,7 +807,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * POST /api/diagnostics/reports/:id/acknowledge-critical;
  * Acknowledge critical findings in a report;
  */
-export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -837,7 +837,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
     
     if (reportCheck.results.length === 0) {
       return NextResponse.json({ 
-        error: 'Report not found or does not have critical findings';
+        error: 'Report not found or does not have critical findings'
       }, { status: 404 });
     }
 
@@ -848,7 +848,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       return NextResponse.json({ 
         error: 'Critical findings already acknowledged',
         acknowledgedBy: report.critical_findings_acknowledged_by,
-        acknowledgedAt: report.critical_findings_acknowledged_at;
+        acknowledgedAt: report.critical_findings_acknowledged_at
       }, { status: 409 });
     }
 
@@ -872,7 +872,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       resourceId: id,
       details: { 
         reportId: id,
-        acknowledgementNotes: acknowledgementNotes || null;
+        acknowledgementNotes: acknowledgementNotes || null
       }
     });
 
@@ -895,7 +895,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
         type: 'critical_finding_acknowledged',
         resourceId: id,
         resourceType: 'diagnostic_reports',
-        priority: 'medium';
+        priority: 'medium'
       });
     }
 
@@ -907,7 +907,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       success: true,
       message: 'Critical findings acknowledged successfully',
       acknowledgedBy: session.user.id,
-      acknowledgedAt: new Date().toISOString();
+      acknowledgedAt: new Date().toISOString()
     });
   } catch (error) {
 

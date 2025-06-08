@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -24,27 +24,27 @@ import { AuditService } from '@/lib/security/audit.service';
 
 // Alert models;
 export interface AlertDefinition {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: AlertCategory;
-  type: AlertType;
+  type: AlertType,
   severity: AlertSeverity;
-  conditions: AlertCondition[];
+  conditions: AlertCondition[],
   actions: AlertAction[];
-  suppressionRules: SuppressionRule[];
+  suppressionRules: SuppressionRule[],
   escalationRules: EscalationRule[];
-  recipients: AlertRecipient[];
+  recipients: AlertRecipient[],
   schedule: AlertSchedule;
-  acknowledgmentRequired: boolean;
+  acknowledgmentRequired: boolean,
   autoResolve: boolean;
   autoResolveAfter?: number; // minutes;
-  status: 'ACTIVE' | 'INACTIVE' | 'TESTING';
+  status: 'ACTIVE' | 'INACTIVE' | 'TESTING',
   metadata: AlertMetadata;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
-  createdBy: string;
-  updatedBy: string;
+  createdBy: string,
+  updatedBy: string
 }
 
 export enum AlertCategory {
@@ -85,9 +85,9 @@ export enum AlertSeverity {
 }
 
 export interface AlertCondition {
-  id: string;
+  id: string,
   parameter: string;
-  dataSource: string;
+  dataSource: string,
   operator: AlertOperator;
   value: unknown;
   unit?: string;
@@ -122,11 +122,11 @@ export enum AlertOperator {
 }
 
 export interface AlertAction {
-  id: string;
+  id: string,
   type: ActionType;
-  target: string;
+  target: string,
   content: string;
-  priority: number;
+  priority: number,
   deliveryMethod: DeliveryMethod[];
   recipientOverride?: AlertRecipient[];
   conditions?: Record<string, any>;
@@ -165,39 +165,39 @@ export enum DeliveryMethod {
 }
 
 export interface SuppressionRule {
-  id: string;
+  id: string,
   name: string;
   conditions: Record<string, any>;
   duration: number; // seconds;
   startTime?: Date;
   endTime?: Date;
   maxOccurrences?: number;
-  suppressionScope: 'INDIVIDUAL' | 'DEPARTMENT' | 'FACILITY' | 'SYSTEM';
+  suppressionScope: 'INDIVIDUAL' | 'DEPARTMENT' | 'FACILITY' | 'SYSTEM',
   reason: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: 'ACTIVE' | 'INACTIVE',
   createdBy: string;
-  createdAt: Date;
+  createdAt: Date
 }
 
 export interface EscalationRule {
-  id: string;
+  id: string,
   name: string;
-  escalationLevels: EscalationLevel[];
+  escalationLevels: EscalationLevel[],
   escalationDelay: number; // seconds;
-  maxEscalationLevel: number;
+  maxEscalationLevel: number,
   conditions: Record<string, any>;
 }
 
 export interface EscalationLevel {
-  level: number;
+  level: number,
   recipients: AlertRecipient[];
-  actions: AlertAction[];
+  actions: AlertAction[],
   acknowledgmentRequired: boolean;
   escalationDelay: number; // seconds;
 }
 
 export interface AlertRecipient {
-  id: string;
+  id: string,
   type: RecipientType;
   value: string;
   name?: string;
@@ -218,7 +218,7 @@ export enum RecipientType {
 }
 
 export interface AlertSchedule {
-  id: string;
+  id: string,
   type: 'ALWAYS' | 'RECURRING' | 'ONE_TIME';
   timezone: string;
   startDate?: Date;
@@ -231,11 +231,11 @@ export interface AlertSchedule {
 }
 
 export interface AlertMetadata {
-  version: string;
+  version: string,
   tags: string[];
-  source: string;
+  source: string,
   relatedAlerts: string[];
-  references: Reference[];
+  references: Reference[],
   evidenceLevel: string;
   reviewDate?: Date;
   reviewedBy?: string;
@@ -250,24 +250,24 @@ export interface Reference {
   title: string;
   url?: string;
   pubMedId?: string;
-  type: 'JOURNAL' | 'GUIDELINE' | 'REGULATION' | 'INTERNAL' | 'OTHER';
+  type: 'JOURNAL' | 'GUIDELINE' | 'REGULATION' | 'INTERNAL' | 'OTHER'
 }
 
 // Alert instance models;
 export interface AlertInstance {
-  id: string;
+  id: string,
   definitionId: string;
   patientId?: string;
   encounterId?: string;
   resourceId?: string;
   resourceType?: string;
-  title: string;
+  title: string,
   message: string;
-  details: string;
+  details: string,
   category: AlertCategory;
-  type: AlertType;
+  type: AlertType,
   severity: AlertSeverity;
-  status: AlertStatus;
+  status: AlertStatus,
   triggerTime: Date;
   expirationTime?: Date;
   acknowledgedTime?: Date;
@@ -278,9 +278,9 @@ export interface AlertInstance {
   resolutionNote?: string;
   suppressedBy?: string;
   suppressionReason?: string;
-  actions: AlertActionInstance[];
+  actions: AlertActionInstance[],
   escalations: AlertEscalationInstance[];
-  deliveries: AlertDeliveryInstance[];
+  deliveries: AlertDeliveryInstance[],
   relatedAlerts: string[];
   triggerData: Record<string, any>;
   context: Record<string, any>;
@@ -297,9 +297,9 @@ export enum AlertStatus {
 }
 
 export interface AlertActionInstance {
-  id: string;
+  id: string,
   actionId: string;
-  type: ActionType;
+  type: ActionType,
   status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
   executionTime?: Date;
   error?: string;
@@ -307,21 +307,21 @@ export interface AlertActionInstance {
 }
 
 export interface AlertEscalationInstance {
-  id: string;
+  id: string,
   level: number;
-  status: 'PENDING' | 'ACTIVE' | 'ACKNOWLEDGED' | 'ESCALATED' | 'RESOLVED';
+  status: 'PENDING' | 'ACTIVE' | 'ACKNOWLEDGED' | 'ESCALATED' | 'RESOLVED',
   escalatedTime: Date;
   acknowledgedTime?: Date;
   acknowledgedBy?: string;
-  recipients: string[];
+  recipients: string[]
 }
 
 export interface AlertDeliveryInstance {
-  id: string;
+  id: string,
   recipientId: string;
-  recipientType: RecipientType;
+  recipientType: RecipientType,
   recipientValue: string;
-  deliveryMethod: DeliveryMethod;
+  deliveryMethod: DeliveryMethod,
   status: 'PENDING' | 'SENT' | 'DELIVERED' | 'READ' | 'FAILED';
   sentTime?: Date;
   deliveredTime?: Date;
@@ -333,22 +333,22 @@ export interface MLInsights {
   priority: number; // 0-100;
   urgency: number; // 0-100;
   relevance: number; // 0-100;
-  noiseReduction: boolean;
+  noiseReduction: boolean,
   confidence: number; // 0-100;
   patientRisk: number; // 0-100;
-  recommendedActions: string[];
+  recommendedActions: string[],
   explanation: string;
   similarCases?: number;
 }
 
 // Drug interaction alert models;
 export interface DrugInteractionAlert {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  interactions: DrugInteraction[];
+  interactions: DrugInteraction[],
   severity: AlertSeverity;
-  status: AlertStatus;
+  status: AlertStatus,
   createdAt: Date;
   acknowledgedAt?: Date;
   acknowledgedBy?: string;
@@ -357,13 +357,13 @@ export interface DrugInteractionAlert {
 }
 
 export interface DrugInteraction {
-  id: string;
+  id: string,
   drug1: Drug;
-  drug2: Drug;
+  drug2: Drug,
   interactionType: InteractionType;
-  severity: AlertSeverity;
+  severity: AlertSeverity,
   description: string;
-  mechanism: string;
+  mechanism: string,
   recommendation: string;
   evidence: string;
   reference?: string;
@@ -371,18 +371,18 @@ export interface DrugInteraction {
 }
 
 export interface Drug {
-  id: string;
+  id: string,
   name: string;
-  genericName: string;
+  genericName: string,
   brandNames: string[];
-  strength: string;
+  strength: string,
   form: string;
-  route: string;
+  route: string,
   class: string[];
   atcCode?: string;
-  prescribedAt: Date;
+  prescribedAt: Date,
   prescribedBy: string;
-  status: 'ACTIVE' | 'DISCONTINUED' | 'COMPLETED';
+  status: 'ACTIVE' | 'DISCONTINUED' | 'COMPLETED'
 }
 
 export enum InteractionType {
@@ -394,35 +394,35 @@ export enum InteractionType {
 
 // Critical value alert models;
 export interface CriticalValueAlert {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  orderId: string;
+  orderId: string,
   resultId: string;
-  testName: string;
+  testName: string,
   testCode: string;
-  value: string;
+  value: string,
   unit: string;
   referenceRange: string;
   criticalHigh?: string;
   criticalLow?: string;
-  previousResults: PreviousResult[];
+  previousResults: PreviousResult[],
   abnormalFlag: 'HIGH' | 'LOW' | 'CRITICAL_HIGH' | 'CRITICAL_LOW';
-  resultTime: Date;
+  resultTime: Date,
   reportedTime: Date;
   reportedBy: string;
   acknowledgedTime?: Date;
   acknowledgedBy?: string;
   actionTaken?: string;
-  escalations: CriticalValueEscalation[];
+  escalations: CriticalValueEscalation[],
   callbackNumber: string;
-  priority: 'ROUTINE' | 'STAT' | 'CRITICAL';
+  priority: 'ROUTINE' | 'STAT' | 'CRITICAL',
   orderingProvider: string;
-  status: 'PENDING' | 'NOTIFIED' | 'ACKNOWLEDGED' | 'DOCUMENTED' | 'COMPLETED';
+  status: 'PENDING' | 'NOTIFIED' | 'ACKNOWLEDGED' | 'DOCUMENTED' | 'COMPLETED'
 }
 
 export interface PreviousResult {
-  resultId: string;
+  resultId: string,
   value: string;
   unit: string;
   abnormalFlag?: string;
@@ -432,31 +432,31 @@ export interface PreviousResult {
 }
 
 export interface CriticalValueEscalation {
-  level: number;
+  level: number,
   escalatedTime: Date;
-  notifiedProvider: string;
+  notifiedProvider: string,
   notificationMethod: string;
   response?: string;
   responseTime?: Date;
-  status: 'PENDING' | 'NOTIFIED' | 'ACKNOWLEDGED' | 'ESCALATED';
+  status: 'PENDING' | 'NOTIFIED' | 'ACKNOWLEDGED' | 'ESCALATED'
 }
 
 // Patient safety alert models;
 export interface PatientSafetyAlert {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  type: SafetyAlertType;
+  type: SafetyAlertType,
   severity: AlertSeverity;
-  description: string;
+  description: string,
   detectionTime: Date;
-  reportedBy: string;
+  reportedBy: string,
   location: string;
-  category: string;
+  category: string,
   contributingFactors: string[];
-  potentialHarm: string;
+  potentialHarm: string,
   recommendations: string[];
-  immediateActions: string[];
+  immediateActions: string[],
   status: 'ACTIVE' | 'INVESTIGATING' | 'MITIGATED' | 'RESOLVED' | 'CLOSED';
   mitigationPlan?: string;
   rootCauseAnalysis?: string;
@@ -488,39 +488,39 @@ export enum SafetyAlertType {
 
 // Alert analytics models;
 export interface AlertAnalytics {
-  totalAlerts: number;
+  totalAlerts: number,
   activeAlerts: number;
-  resolvedAlerts: number;
+  resolvedAlerts: number,
   acknowledgedAlerts: number;
-  suppressedAlerts: number;
+  suppressedAlerts: number,
   expiredAlerts: number;
-  errorAlerts: number;
+  errorAlerts: number,
   alertsBySeverity: Record<AlertSeverity, number>;
   alertsByCategory: Record<AlertCategory, number>;
   alertsByType: Record<AlertType, number>;
   alertsByStatus: Record<AlertStatus, number>;
-  alertsByHour: number[];
+  alertsByHour: number[],
   alertsByDay: number[];
   alertsByProvider: Record<string, number>;
   responseTimeAverage: number; // seconds;
   escalationRate: number; // percentage;
   overrideRate: number; // percentage;
   topAlertDefinitions: {
-    id: string;
+    id: string,
     name: string;
-    count: number;
-    overrideRate: number;
+    count: number,
+    overrideRate: number
   }[];
   noiseReductionImpact: {
-    alertsBeforeReduction: number;
+    alertsBeforeReduction: number,
     alertsAfterReduction: number;
-    reductionPercentage: number;
+    reductionPercentage: number,
     estimatedTimeSaved: number; // minutes;
   };
   alertFatigue: {
-    overrideRateByHour: number[];
+    overrideRateByHour: number[],
     responseTimeByHour: number[];
-    acknowledgedRateByCount: number[];
+    acknowledgedRateByCount: number[]
   };
 }
 
@@ -1132,17 +1132,17 @@ export class SmartAlertsService {
   async processCriticalLabValue(
     patientId: string,
     result: {
-      orderId: string;
+      orderId: string,
       resultId: string;
-      testName: string;
+      testName: string,
       testCode: string;
-      value: string;
+      value: string,
       unit: string;
       referenceRange: string;
       criticalHigh?: string;
       criticalLow?: string;
-      abnormalFlag: 'HIGH' | 'LOW' | 'CRITICAL_HIGH' | 'CRITICAL_LOW';
-      resultTime: Date;
+      abnormalFlag: 'HIGH' | 'LOW' | 'CRITICAL_HIGH' | 'CRITICAL_LOW',
+      resultTime: Date
     },
     encounterId?: string;
   ): Promise<CriticalValueAlert> {
@@ -1301,8 +1301,8 @@ export class SmartAlertsService {
    */
   async getAlertAnalytics(
     timeRange?: {
-      startDate: Date;
-      endDate: Date;
+      startDate: Date,
+      endDate: Date
     },
     filters?: {
       department?: string;
@@ -1481,25 +1481,25 @@ export class SmartAlertsService {
       };
       
       alertStats[7].forEach((item: unknown) => {
-        alertsBySeverity[item.severity as AlertSeverity] = item._count;
+        alertsBySeverity[item.severity as AlertSeverity] = item._count
       });
       
       // Map category counts;
       const alertsByCategory: Record<AlertCategory, number> = {} as Record<AlertCategory, number>;
       alertStats[8].forEach((item: unknown) => {
-        alertsByCategory[item.category as AlertCategory] = item._count;
+        alertsByCategory[item.category as AlertCategory] = item._count
       });
       
       // Map type counts;
       const alertsByType: Record<AlertType, number> = {} as Record<AlertType, number>;
       alertStats[9].forEach((item: unknown) => {
-        alertsByType[item.type as AlertType] = item._count;
+        alertsByType[item.type as AlertType] = item._count
       });
       
       // Map status counts;
       const alertsByStatus: Record<AlertStatus, number> = {} as Record<AlertStatus, number>;
       alertStats[10].forEach((item: unknown) => {
-        alertsByStatus[item.status as AlertStatus] = item._count;
+        alertsByStatus[item.status as AlertStatus] = item._count
       });
       
       // Get top alert definition details;
@@ -1566,11 +1566,11 @@ export class SmartAlertsService {
 
   // Private helper methods;
   private validateAlertDefinition(definition: unknown): void {
-    // Implementation for definition validation;
+    // Implementation for definition validation
   }
 
   private validateAlertDefinitionUpdates(updates: Partial<AlertDefinition>): void {
-    // Implementation for update validation;
+    // Implementation for update validation
   }
 
   private async checkSuppressionRules(

@@ -20,7 +20,7 @@ const createLabOrderSchema = z.object({
   notes: z.string().max(2000).optional().nullable(),
 });
 
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -53,7 +53,7 @@ export async const POST = (request: NextRequest) {
     const [patient, orderedByUsr, testItems] = await Promise.all([
       prisma.patient.findUnique({ where: { id: patientId } }),
       prisma.user.findUnique({ where: { id: orderedById } }),
-      prisma.labTestItem.findMany({ where: { id: { in: testItemIds } } });
+      prisma.labTestItem.findMany({ where: { id: { in: testItemIds } } })
     ]);
 
     if (!patient) {
@@ -124,7 +124,7 @@ export async const POST = (request: NextRequest) {
   }
 }
 
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
 
@@ -193,7 +193,7 @@ export async const GET = (request: NextRequest) {
         skip,
         take: limit,
       }),
-      prisma.labOrder.count({ where: whereClause });
+      prisma.labOrder.count({ where: whereClause })
     ]);
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ORDERS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labOrders.length, totalCount });

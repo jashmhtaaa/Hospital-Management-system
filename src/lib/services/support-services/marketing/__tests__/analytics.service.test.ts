@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -100,8 +100,7 @@ describe('AnalyticsService', () => {
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
-      });
-      
+      }),
       expect(result).toEqual(expect.objectContaining({
         campaignId: 'campaign-123',
         campaignName: 'Test Campaign',
@@ -275,12 +274,10 @@ describe('AnalyticsService', () => {
         where: {
           id: { in: ['campaign-1', 'campaign-2'] },
         },
-      });
-      
-      expect(service.getCampaignAnalytics).toHaveBeenCalledTimes(2);
-      expect(service.getCampaignAnalytics).toHaveBeenCalledWith('campaign-1', undefined, undefined);
-      expect(service.getCampaignAnalytics).toHaveBeenCalledWith('campaign-2', undefined, undefined);
-      
+      }),
+      expect(service.getCampaignAnalytics).toHaveBeenCalledTimes(2),
+      expect(service.getCampaignAnalytics).toHaveBeenCalledWith('campaign-1', undefined, undefined),
+      expect(service.getCampaignAnalytics).toHaveBeenCalledWith('campaign-2', undefined, undefined),
       expect(result).toEqual({
         campaigns: expect.arrayContaining([
           expect.objectContaining({
@@ -406,8 +403,7 @@ describe('AnalyticsService', () => {
       // Assert;
       expect(prisma.contactActivity.count).toHaveBeenCalledWith({
         where: { contactId: 'contact-123' },
-      });
-      
+      }),
       expect(prisma.contactActivity.groupBy).toHaveBeenCalledWith(
         expect.objectContaining({
           by: ['type'],

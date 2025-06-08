@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ var __DEV__: boolean;
  */
 export interface DBConnection {
   query: (sql: string, params?: unknown[]) => Promise<any>;
-  close: () => Promise<void>;
+  close: () => Promise<void>
 }
 
 /**
@@ -41,7 +41,7 @@ export const DB = (): DBConnection {
         return {
           results: [],
           insertId: 0,
-          affectedRows: 0;
+          affectedRows: 0
         };
       } catch (error) {
 

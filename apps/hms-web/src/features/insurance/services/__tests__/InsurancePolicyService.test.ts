@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -38,7 +38,7 @@ describe("InsurancePolicyService", () => {
       // Assert;
       // expect(result).toBeDefined();
       // expect(result.id).toBeDefined();
-      // expect(result.policyNumber).toEqual(policyData.policyNumber);
+      // expect(result.policyNumber).toEqual(policyData.policyNumber),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });
@@ -55,7 +55,7 @@ describe("InsurancePolicyService", () => {
 
       // Assert;
       // expect(policies).toBeDefined();
-      // expect(policies.length).toBeGreaterThanOrEqual(0);
+      // expect(policies.length).toBeGreaterThanOrEqual(0),
       expect(true).toBe(true); // Placeholder assertion;
     });
   });

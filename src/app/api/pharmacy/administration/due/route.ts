@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -41,7 +41,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
@@ -53,14 +53,14 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findDue: (timeWindow: number) => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/administration/due;
  * List medications due for administration within a specified time window;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -142,7 +142,7 @@ export async const GET = (req: NextRequest) {
           unit: prescription.dosage.unit,
           route: prescription.dosage.route,
           scheduledTime: scheduleTime,
-          status: 'due';
+          status: 'due'
         });
       }
     }
@@ -167,7 +167,7 @@ export async const GET = (req: NextRequest) {
         locationId,
         patientId,
         unitId,
-        resultCount: paginatedAdministrations.length;
+        resultCount: paginatedAdministrations.length
       }
     });
 
@@ -176,13 +176,13 @@ export async const GET = (req: NextRequest) {
       dueAdministrations: paginatedAdministrations,
       timeWindow: {
         start: startTime,
-        end: endTime;
+        end: endTime
       },
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,9 +21,9 @@ export class AttendanceService {
    * Record employee check-in;
    */
   async recordCheckIn(data: {
-    employeeId: string;
+    employeeId: string,
     date: Date;
-    checkInTime: Date;
+    checkInTime: Date,
     biometricVerified: boolean;
     notes?: string;
   }) {
@@ -93,9 +93,9 @@ export class AttendanceService {
    * Record employee check-out;
    */
   async recordCheckOut(data: {
-    employeeId: string;
+    employeeId: string,
     date: Date;
-    checkOutTime: Date;
+    checkOutTime: Date,
     biometricVerified: boolean;
     notes?: string;
   }) {
@@ -322,7 +322,7 @@ export class AttendanceService {
    * Mark employee as absent;
    */
   async markAbsent(data: {
-    employeeId: string;
+    employeeId: string,
     date: Date;
     notes?: string;
   }) {

@@ -182,9 +182,9 @@ export class ICDCodingService {
    * Get ICD code hierarchy (parent/child relationships)
    */
   async getCodeHierarchy(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
-    parents: ICDCode[];
+    parents: ICDCode[],
     children: ICDCode[];
-    siblings: ICDCode[];
+    siblings: ICDCode[]
   }> {
     try {
       // Mock hierarchy data
@@ -231,10 +231,10 @@ export class ICDCodingService {
    * Validate ICD code
    */
   async validateCode(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
-    isValid: boolean;
+    isValid: boolean,
     code: ICDCode | null;
-    validationErrors: string[];
-    suggestions: string[];
+    validationErrors: string[],
+    suggestions: string[]
   }> {
     try {
       const searchResults = await this.searchCodes({ query: code, version, limit: 1 });
@@ -341,12 +341,12 @@ export class ICDCodingService {
     options: CodingAssistanceOptions = {}
   ): Promise<{
     suggestions: Array<{
-      code: string;
+      code: string,
       description: string;
-      confidence: number;
-      reasoning: string;
+      confidence: number,
+      reasoning: string
     }>;
-    confidence: number;
+    confidence: number
   }> {
     try {
       const { suggestionLimit = 5, confidenceThreshold = 0.7 } = options;
@@ -402,15 +402,15 @@ export class ICDCodingService {
    * Get coding statistics and metrics
    */
   async getCodingMetrics(dateRange: { from: Date; to: Date }): Promise<{
-    totalRequests: number;
+    totalRequests: number,
     completedRequests: number;
-    averageCompletionTime: number;
+    averageCompletionTime: number,
     topCodes: Array<{ code: string; count: number; description: string }>;
     coderPerformance: Array<{ coderId: string; requestsCompleted: number; averageConfidence: number }>;
     qualityMetrics: {
-      validationRate: number;
+      validationRate: number,
       rejectionRate: number;
-      averageConfidence: number;
+      averageConfidence: number
     };
   }> {
     try {

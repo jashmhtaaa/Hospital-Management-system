@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ interface ModalityInput {
 }
 
 // GET all Radiology Modalities;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   const session = await getSession();
   if (
     !session?.user ||
@@ -56,7 +56,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST a new Radiology Modality (Admin only)
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   const session = await getSession();
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ var __DEV__: boolean;
 
 // Base application error class;
 export class AppError extends Error {
-  statusCode: number;
+  statusCode: number,
   errorCode: string;
   isOperational: boolean;
   context?: Record<string, any>;

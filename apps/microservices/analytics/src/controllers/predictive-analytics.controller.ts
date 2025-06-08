@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -50,7 +50,7 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 200, description: 'Predictive model details' });
   @ApiResponse({ status: 404, description: 'Model not found' });
   async getModelById(@Param('id') id: string) {
-    return this.predictiveAnalyticsService.getModelById(id);
+    return this.predictiveAnalyticsService.getModelById(id)
   }
 
   @Post('models');
@@ -144,7 +144,7 @@ export class PredictiveAnalyticsController {
   @ApiBody({ description: 'Forecast options' });
   @ApiResponse({ status: 200, description: 'Census forecast' });
   async forecastCensus(@Body() options: unknown, @Req() req: unknown) {
-    return this.predictiveAnalyticsService.forecastCensus(options);
+    return this.predictiveAnalyticsService.forecastCensus(options)
   }
 
   @Post('cost-prediction');

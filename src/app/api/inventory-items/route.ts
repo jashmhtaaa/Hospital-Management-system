@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
 
 // GET handler for listing inventory items;
-export async const GET = (request: Request) {
+export async const GET = (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { searchParams } = new URL(request.url);
@@ -99,7 +99,7 @@ const AddInventoryItemSchema = z.object({
     is_active: z.boolean().optional().default(true),
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 

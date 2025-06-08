@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -196,22 +196,22 @@ export const ClinicalGuidelineSchema = z.object({
 });
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
-  id: string;
+  id: string,
   note_number: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   signed_at?: Date;
   signed_by?: string;
-  amendments: string[];
+  amendments: string[],
   version: number;
   provider_name?: string;
   patient_name?: string;
 };
 
 export type CarePlan = z.infer<typeof CarePlanSchema> & {
-  id: string;
+  id: string,
   care_plan_number: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   version: number;
   last_reviewed_date?: Date;
@@ -219,29 +219,29 @@ export type CarePlan = z.infer<typeof CarePlanSchema> & {
 };
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
-  last_updated_by: string;
+  updated_at: Date,
+  last_updated_by: string
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date,
   usage_count: number;
-  last_used: Date;
+  last_used: Date
 };
 
 export interface ClinicalDecisionSupport {
-  patient_id: string;
+  patient_id: string,
   encounter_id: string;
   alerts: {
-    id: string;
+    id: string,
     type: 'drug_interaction' | 'allergy' | 'guideline_reminder' | 'preventive_care' | 'lab_result' | 'vital_sign';
-    severity: 'info' | 'warning' | 'critical';
+    severity: 'info' | 'warning' | 'critical',
     message: string;
-    recommendation: string;
+    recommendation: string,
     source: string;
     dismissed: boolean;
     dismissed_by?: string;
@@ -249,53 +249,51 @@ export interface ClinicalDecisionSupport {
     dismiss_reason?: string;
   }[];
   guidelines: {
-    guideline_id: string;
+    guideline_id: string,
     name: string;
-    applicable_recommendations: string[];
-    triggered_rules: string[];
+    applicable_recommendations: string[],
+    triggered_rules: string[]
   }[];
 }
 
 export interface QualityMeasure {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   numerator_criteria: string;
-  denominator_criteria: string;
+  denominator_criteria: string,
   patient_applicable: boolean;
-  current_status: 'met' | 'not_met' | 'excluded';
+  current_status: 'met' | 'not_met' | 'excluded',
   performance_rate: number;
-  reporting_period: string;
-  next_opportunity: string;
+  reporting_period: string,
+  next_opportunity: string
 }
 
 export interface ClinicalSummary {
-  patient_id: string;
+  patient_id: string,
   generated_date: Date;
-  summary_type: 'encounter' | 'episodic' | 'comprehensive';
-  
+  summary_type: 'encounter' | 'episodic' | 'comprehensive',
   demographics: {
-    name: string;
+    name: string,
     age: number;
-    gender: string;
-    mrn: string;
+    gender: string,
+    mrn: string
   };
   
-  active_problems: ProblemListItem[];
+  active_problems: ProblemListItem[],
   current_medications: string[];
-  allergies: string[];
+  allergies: string[],
   recent_vitals: unknown;
-  recent_lab_results: unknown[];
-  
+  recent_lab_results: unknown[],
   care_plans: CarePlan[];
-  upcoming_appointments: unknown[];
+  upcoming_appointments: unknown[],
   pending_orders: unknown[];
   
-  quality_measures: QualityMeasure[];
+  quality_measures: QualityMeasure[],
   risk_factors: string[];
   
-  provider_notes: string;
-  last_encounter_date: Date;
+  provider_notes: string,
+  last_encounter_date: Date
 }
 
 export class ElectronicHealthRecordsService {
@@ -304,8 +302,7 @@ export class ElectronicHealthRecordsService {
   private problemLists: Map<string, ProblemListItem[]> = new Map();
   private clinicalGuidelines: Map<string, ClinicalGuideline> = new Map();
   private templates: Map<string, any> = new Map();
-  private decisionSupport: Map<string, ClinicalDecisionSupport> = new Map();
-
+  private decisionSupport: Map<string, ClinicalDecisionSupport> = new Map(),
   constructor() {
     this.initializeClinicalGuidelines();
     this.initializeNoteTemplates();
@@ -808,7 +805,7 @@ export class ElectronicHealthRecordsService {
    * Get clinical decision support alerts;
    */
   async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {
-    return this.decisionSupport.get(encounterId) || null;
+    return this.decisionSupport.get(encounterId) || null
   }
 
   /**

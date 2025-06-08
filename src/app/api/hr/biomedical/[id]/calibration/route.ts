@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ import { z } from 'zod';
 // Schema for calibration record;
 const calibrationSchema = z.object({
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   performedBy: z.string().optional(),
   result: z.enum(['PASS', 'FAIL', 'ADJUSTED'], {
@@ -24,7 +24,7 @@ const calibrationSchema = z.object({
   }),
   notes: z.string().optional(),
   nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   attachments: z.array(z.string()).optional(),
 });
@@ -33,7 +33,7 @@ const calibrationSchema = z.object({
 export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -77,7 +77,7 @@ export async const POST = (
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const calibrationRecords = await biomedicalService.getCalibrationRecords(params.id);
     

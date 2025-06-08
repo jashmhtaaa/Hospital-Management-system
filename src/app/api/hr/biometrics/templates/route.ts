@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -25,7 +25,7 @@ const biometricTemplateSchema = z.object({
 });
 
 // POST handler for registering biometric template;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Parse request body;
     const body = await request.json();
@@ -53,7 +53,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET handler for employee biometric templates;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     const employeeId = searchParams.get('employeeId');

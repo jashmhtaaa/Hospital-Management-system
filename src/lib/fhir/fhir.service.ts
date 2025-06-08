@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -32,7 +32,7 @@ export interface FHIRSearchParams {
   _sort?: string;
   _include?: string[];
   _revinclude?: string[];
-  [key: string]: unknown;
+  [key: string]: unknown
 }
 
 /**
@@ -49,12 +49,12 @@ export interface FHIROperationResult<T = any> {
  * FHIR OperationOutcome for error reporting;
  */
 export interface FHIROperationOutcome extends FHIRBase {
-  resourceType: 'OperationOutcome';
-  issue: FHIROperationOutcomeIssue[];
+  resourceType: 'OperationOutcome',
+  issue: FHIROperationOutcomeIssue[]
 }
 
 export interface FHIROperationOutcomeIssue {
-  severity: 'fatal' | 'error' | 'warning' | 'information';
+  severity: 'fatal' | 'error' | 'warning' | 'information',
   code: string;
   details?: unknown;
   diagnostics?: string;
@@ -98,7 +98,7 @@ export class FHIRService {
       resource.meta = {
         ...resource.meta,
         lastUpdated: new Date().toISOString(),
-        versionId: '1';
+        versionId: '1'
       };
 
       // Store resource in database;
@@ -106,7 +106,7 @@ export class FHIRService {
 
       return {
         success: true,
-        data: resource;
+        data: resource
       };
     } catch (error) {
       return {
@@ -137,7 +137,7 @@ export class FHIRService {
 
       return {
         success: true,
-        data: resource;
+        data: resource
       };
     } catch (error) {
       return {
@@ -183,7 +183,7 @@ export class FHIRService {
       resource.meta = {
         ...resource.meta,
         lastUpdated: new Date().toISOString(),
-        versionId: (currentVersion + 1).toString();
+        versionId: (currentVersion + 1).toString()
       };
 
       // Update resource;
@@ -191,7 +191,7 @@ export class FHIRService {
 
       return {
         success: true,
-        data: resource;
+        data: resource
       };
     } catch (error) {
       return {
@@ -218,7 +218,7 @@ export class FHIRService {
       }
 
       return {
-        success: true;
+        success: true
       };
     } catch (error) {
       return {
@@ -252,7 +252,7 @@ export class FHIRService {
 
       return {
         success: true,
-        data: bundle;
+        data: bundle
       };
     } catch (error) {
       return {
@@ -271,7 +271,7 @@ export class FHIRService {
   }
 
   async createPatient(patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {
-    return this.createResource(patient);
+    return this.createResource(patient)
   }
 
   async getPatient(id: string): Promise<FHIROperationResult<FHIRPatient>> {
@@ -290,7 +290,7 @@ export class FHIRService {
   }
 
   async createAppointment(appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {
-    return this.createResource(appointment);
+    return this.createResource(appointment)
   }
 
   async getAppointment(id: string): Promise<FHIROperationResult<FHIRAppointment>> {
@@ -309,7 +309,7 @@ export class FHIRService {
   }
 
   async createEncounter(encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {
-    return this.createResource(encounter);
+    return this.createResource(encounter)
   }
 
   async getEncounter(id: string): Promise<FHIROperationResult<FHIREncounter>> {
@@ -324,7 +324,7 @@ export class FHIRService {
    * MedicationRequest-specific FHIR operations;
    */
   async createMedicationRequest(medicationRequest: FHIRMedicationRequest): Promise<FHIROperationResult<FHIRMedicationRequest>> {
-    return this.createResource(medicationRequest);
+    return this.createResource(medicationRequest)
   }
 
   async getMedicationRequest(id: string): Promise<FHIROperationResult<FHIRMedicationRequest>> {
@@ -397,12 +397,12 @@ export class FHIRService {
         resourceType: 'Bundle',
         id: uuidv4(),
         type: bundle.type === 'batch' ? 'batch-response' : 'transaction-response',
-        entry: responseEntries;
+        entry: responseEntries
       };
 
       return {
         success: true,
-        data: responseBundle;
+        data: responseBundle
       };
     } catch (error) {
       return {
@@ -433,7 +433,7 @@ export class FHIRService {
       
       return {
         success: true,
-        data: fhirPatient;
+        data: fhirPatient
       };
     } catch (error) {
       return {
@@ -452,7 +452,7 @@ export class FHIRService {
       
       return {
         success: true,
-        data: hmsPatient;
+        data: hmsPatient
       };
     } catch (error) {
       return {
@@ -505,7 +505,7 @@ export class FHIRService {
       issue: diagnostics.map(diagnostic => ({
         severity,
         code: 'processing',
-        diagnostics: diagnostic;
+        diagnostics: diagnostic
       }));
     };
   }
@@ -531,7 +531,7 @@ export class FHIRService {
     try {
       await prisma.patient.update({
         where: { id: patient.id },
-        data: patient;
+        data: patient
       });
     } finally {
       await prisma.$disconnect();
@@ -551,7 +551,7 @@ export class FHIRService {
       dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
       gender: fhirPatient.gender || 'unknown',
       phone: phone || '',
-      email: email || '';
+      email: email || ''
     };
   }
 }

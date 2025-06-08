@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -65,7 +65,7 @@ export enum Action {
 
 // Permission definition type;
 interface Permission {
-  resource: Resource;
+  resource: Resource,
   action: Action;
   constraints?: Record<string, any>;
 }
@@ -74,7 +74,7 @@ interface Permission {
 interface RoleDefinition {
   name: Role;
   inherits?: Role[];
-  permissions: Permission[];
+  permissions: Permission[]
 }
 
 export class RBACService {
@@ -372,7 +372,7 @@ export class RBACService {
             action,
             constraints;
           },
-          severity: 'warning';
+          severity: 'warning'
         }).catch(err => {
 
         });

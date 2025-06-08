@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,7 +23,7 @@ const RegisterSchema = z.object({
   role_name: z.enum(["Admin", "Doctor", "Nurse", "Receptionist", "Lab Technician", "Pharmacist", "Patient"]).default("Patient"),
 });
 
-export async const POST = (request: Request) {
+export async const POST = (request: Request) => {
   try {
     const body = await request.json();
     const validation = RegisterSchema.safeParse(body);

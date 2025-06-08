@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,33 +16,33 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 interface RadiologyStudy {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   studyDate: string;
-  studyType: string;
+  studyType: string,
   modality: string;
-  bodyPart: string;
+  bodyPart: string,
   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
-  technician: string;
+  technician: string
 }
 
 interface RadiologyStudiesListProps {
-  studies: RadiologyStudy[];
-  onViewStudy: (studyId: string) => void;
+  studies: RadiologyStudy[],
+  onViewStudy: (studyId: string) => void
 }
 
 /**
  * Radiology studies list component;
  */
-export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesListProps) {
+export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -69,7 +69,7 @@ export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesL
             {studies.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center">;
-                  No radiology studies found;
+                  No radiology studies found
                 </TableCell>
               </TableRow>
             ) : (
@@ -77,7 +77,7 @@ export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesL
                 <TableRow key={study.id}>;
                   <TableCell>
                     <div className="font-medium">{study.patientName}</div>;
-                    <div className="text-sm text-gray-500">ID: {study.patientId}</div>;
+                    <div className="text-sm text-gray-500">ID: {study.patientId}</div>
                   </TableCell>
                   <TableCell>{study.studyDate}</TableCell>
                   <TableCell>{study.studyType}</TableCell>
@@ -86,12 +86,12 @@ export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesL
                   <TableCell>{getStatusBadge(study.status)}</TableCell>
                   <TableCell>{study.technician}</TableCell>
                   <TableCell>
-                    <Button;
-                      variant="outline";
-                      size="sm";
+                    <Button>
+                      variant="outline"
+                      size="sm"
                       onClick={() => onViewStudy(study.id)}
                     >
-                      View;
+                      View
                     </Button>
                   </TableCell>
                 </TableRow>

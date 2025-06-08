@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -69,7 +69,7 @@ export class ContactService {
         userId,
         details: { 
           contactSource: contact.source,
-          hasPatientRecord: !!contact.patientId;
+          hasPatientRecord: !!contact.patientId
         }
       });
       
@@ -93,14 +93,14 @@ export class ContactService {
         include: {
           notes: {
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             },
             take: 10,
             include: {
               createdByUser: {
                 select: {
                   id: true,
-                  name: true;
+                  name: true
                 }
               }
             }
@@ -108,16 +108,16 @@ export class ContactService {
           patient: includeFHIR ? true : false,
           segmentMembers: {
             where: {
-              isActive: true;
+              isActive: true
             },
             include: {
-              segment: true;
+              segment: true
             }
           },
           leads: {
             take: 5,
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             }
           }
         }
@@ -200,7 +200,7 @@ export class ContactService {
           segmentMembers: {
             some: {
               segmentId,
-              isActive: true;
+              isActive: true
             }
           }
         };
@@ -218,21 +218,21 @@ export class ContactService {
             select: {
               id: true,
               firstName: true,
-              lastName: true;
+              lastName: true
             }
           },
           _count: {
             select: {
               notes: true,
               leads: true,
-              segmentMembers: true;
+              segmentMembers: true
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
       
@@ -245,7 +245,7 @@ export class ContactService {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -285,7 +285,7 @@ export class ContactService {
       // Update contact;
       const updatedContact = await prisma.contact.update({
         where: { id },
-        data: updateData;
+        data: updateData
       });
       
       // Log audit event;
@@ -294,7 +294,7 @@ export class ContactService {
         resourceId: id,
         userId,
         details: { 
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
       
@@ -327,13 +327,13 @@ export class ContactService {
         data: {
           contactId,
           content,
-          createdById: userId;
+          createdById: userId
         },
         include: {
           createdByUser: {
             select: {
               id: true,
-              name: true;
+              name: true
             }
           }
         }
@@ -345,7 +345,7 @@ export class ContactService {
         resourceId: contactId,
         userId,
         details: { 
-          noteId: note.id;
+          noteId: note.id
         }
       });
       
@@ -385,14 +385,14 @@ export class ContactService {
       const updatedContact = await prisma.contact.update({
         where: { id: contactId },
         data: {
-          patientId;
+          patientId
         },
         include: {
           patient: {
             select: {
               id: true,
               firstName: true,
-              lastName: true;
+              lastName: true
             }
           }
         }
@@ -404,7 +404,7 @@ export class ContactService {
         resourceId: contactId,
         userId,
         details: { 
-          patientId;
+          patientId
         }
       });
       
@@ -431,7 +431,7 @@ export class ContactService {
         identifier: [
           {
             system: 'urn:oid:2.16.840.1.113883.2.4.6.3',
-            value: contact.patientId;
+            value: contact.patientId
           }
         ],
         name: [
@@ -445,16 +445,16 @@ export class ContactService {
           {
             system: 'email',
             value: contact.email || '',
-            use: 'home';
+            use: 'home'
           },
           {
             system: 'phone',
             value: contact.phone || '',
-            use: 'mobile';
+            use: 'mobile'
           }
         ],
         gender: contact.gender?.toLowerCase() || 'unknown',
-        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined;
+        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined
       };
     }
     
@@ -465,7 +465,7 @@ export class ContactService {
       identifier: [
         {
           system: 'urn:oid:2.16.840.1.113883.2.4.6.3',
-          value: contact.id;
+          value: contact.id
         }
       ],
       name: [
@@ -479,16 +479,16 @@ export class ContactService {
         {
           system: 'email',
           value: contact.email || '',
-          use: 'home';
+          use: 'home'
         },
         {
           system: 'phone',
           value: contact.phone || '',
-          use: 'mobile';
+          use: 'mobile'
         }
       ],
       gender: contact.gender?.toLowerCase() || 'unknown',
-      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined;
+      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined
     };
   }
 

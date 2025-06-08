@@ -3,8 +3,7 @@ import * as crypto from 'crypto';
 
 describe('SecureEncryptionService', () => {
   let encryptionService: SecureEncryptionService;
-  const testMasterKey = crypto.randomBytes(32).toString('base64');
-
+  const testMasterKey = crypto.randomBytes(32).toString('base64'),
   beforeEach(() => {
     encryptionService = new SecureEncryptionService(testMasterKey);
   });
@@ -17,11 +16,11 @@ describe('SecureEncryptionService', () => {
     test('should encrypt and decrypt text correctly', async () => {
       const originalText = 'Sensitive patient data: John Doe SSN 123-45-6789';
       
-      const encrypted = await encryptionService.encrypt(originalText);
-      expect(encrypted).not.toBe(originalText);
+      const encrypted = await encryptionService.encrypt(originalText),
+      expect(encrypted).not.toBe(originalText),
       expect(encrypted.length).toBeGreaterThan(0);
       
-      const decrypted = await encryptionService.decrypt(encrypted);
+      const decrypted = await encryptionService.decrypt(encrypted),
       expect(decrypted).toBe(originalText);
     });
 
@@ -38,14 +37,12 @@ describe('SecureEncryptionService', () => {
       const text = 'Same text for multiple encryptions';
       
       const encrypted1 = await encryptionService.encrypt(text);
-      const encrypted2 = await encryptionService.encrypt(text);
-      
+      const encrypted2 = await encryptionService.encrypt(text),
       expect(encrypted1).not.toBe(encrypted2);
       
       const decrypted1 = await encryptionService.decrypt(encrypted1);
-      const decrypted2 = await encryptionService.decrypt(encrypted2);
-      
-      expect(decrypted1).toBe(text);
+      const decrypted2 = await encryptionService.decrypt(encrypted2),
+      expect(decrypted1).toBe(text),
       expect(decrypted2).toBe(text);
     });
   });
@@ -57,14 +54,12 @@ describe('SecureEncryptionService', () => {
       const context2 = 'financial_data';
       
       const encrypted1 = await encryptionService.encrypt(text, context1);
-      const encrypted2 = await encryptionService.encrypt(text, context2);
-      
+      const encrypted2 = await encryptionService.encrypt(text, context2),
       expect(encrypted1).not.toBe(encrypted2);
       
       const decrypted1 = await encryptionService.decrypt(encrypted1, context1);
-      const decrypted2 = await encryptionService.decrypt(encrypted2, context2);
-      
-      expect(decrypted1).toBe(text);
+      const decrypted2 = await encryptionService.decrypt(encrypted2, context2),
+      expect(decrypted1).toBe(text),
       expect(decrypted2).toBe(text);
     });
 
@@ -97,18 +92,17 @@ describe('SecureEncryptionService', () => {
       const encrypted = await encryptionService.encryptObject(patientRecord, sensitiveFields);
       
       // Non-sensitive fields should remain unchanged
-      expect(encrypted.id).toBe(patientRecord.id);
-      expect(encrypted.name).toBe(patientRecord.name);
+      expect(encrypted.id).toBe(patientRecord.id),
+      expect(encrypted.name).toBe(patientRecord.name),
       expect(encrypted.created_at).toBe(patientRecord.created_at);
       
       // Sensitive fields should be encrypted
-      expect(encrypted.ssn).not.toBe(patientRecord.ssn);
-      expect(encrypted.email).not.toBe(patientRecord.email);
-      expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis);
+      expect(encrypted.ssn).not.toBe(patientRecord.ssn),
+      expect(encrypted.email).not.toBe(patientRecord.email),
+      expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis),
       expect(encrypted.notes).not.toBe(patientRecord.notes);
       
-      const decrypted = await encryptionService.decryptObject(encrypted, sensitiveFields);
-      
+      const decrypted = await encryptionService.decryptObject(encrypted, sensitiveFields),
       expect(decrypted).toEqual(patientRecord);
     });
 
@@ -120,10 +114,9 @@ describe('SecureEncryptionService', () => {
       };
       
       const encrypted = await encryptionService.encryptObject(complexObject, ['metadata', 'tags', 'measurements']);
-      const decrypted = await encryptionService.decryptObject(encrypted, ['metadata', 'tags', 'measurements']);
-      
-      expect(decrypted.metadata).toEqual(complexObject.metadata);
-      expect(decrypted.tags).toEqual(complexObject.tags);
+      const decrypted = await encryptionService.decryptObject(encrypted, ['metadata', 'tags', 'measurements']),
+      expect(decrypted.metadata).toEqual(complexObject.metadata),
+      expect(decrypted.tags).toEqual(complexObject.tags),
       expect(decrypted.measurements).toEqual(complexObject.measurements);
     });
   });
@@ -131,7 +124,7 @@ describe('SecureEncryptionService', () => {
   describe('Legacy Support', () => {
     test('should handle legacy placeholder format', async () => {
       const legacyEncrypted = 'encrypted_placeholder_legacy_data';
-      const decrypted = await encryptionService.decrypt(legacyEncrypted);
+      const decrypted = await encryptionService.decrypt(legacyEncrypted),
       expect(decrypted).toBe('legacy_data');
     });
   });
@@ -139,10 +132,9 @@ describe('SecureEncryptionService', () => {
   describe('Integrity Validation', () => {
     test('should validate encrypted data integrity', async () => {
       const text = 'Data to validate';
-      const encrypted = await encryptionService.encrypt(text);
-      
-      expect(encryptionService.validateIntegrity(encrypted)).toBe(true);
-      expect(encryptionService.validateIntegrity('invalid_data')).toBe(false);
+      const encrypted = await encryptionService.encrypt(text),
+      expect(encryptionService.validateIntegrity(encrypted)).toBe(true),
+      expect(encryptionService.validateIntegrity('invalid_data')).toBe(false),
       expect(encryptionService.validateIntegrity('')).toBe(false);
     });
 
@@ -181,9 +173,8 @@ describe('SecureEncryptionService', () => {
       const startTime = Date.now();
       const encrypted = await encryptionService.encrypt(largeText);
       const decrypted = await encryptionService.decrypt(encrypted);
-      const endTime = Date.now();
-      
-      expect(decrypted).toBe(largeText);
+      const endTime = Date.now(),
+      expect(decrypted).toBe(largeText),
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
     });
 
@@ -194,8 +185,7 @@ describe('SecureEncryptionService', () => {
       const encrypted = await Promise.all(encryptPromises);
       
       const decryptPromises = encrypted.map(enc => encryptionService.decrypt(enc));
-      const decrypted = await Promise.all(decryptPromises);
-      
+      const decrypted = await Promise.all(decryptPromises),
       expect(decrypted).toEqual(texts);
     });
   });
@@ -203,8 +193,7 @@ describe('SecureEncryptionService', () => {
   describe('Singleton Service', () => {
     test('should return same instance from getEncryptionService', () => {
       const service1 = getEncryptionService();
-      const service2 = getEncryptionService();
-      
+      const service2 = getEncryptionService(),
       expect(service1).toBe(service2);
     });
   });
@@ -263,8 +252,7 @@ describe('Integration Tests', () => {
     ];
     
     const encrypted = await service.encryptObject(patientData, piiFields);
-    const decrypted = await service.decryptObject(encrypted, piiFields);
-    
+    const decrypted = await service.decryptObject(encrypted, piiFields),
     expect(decrypted).toEqual(patientData);
     
     service.destroy();

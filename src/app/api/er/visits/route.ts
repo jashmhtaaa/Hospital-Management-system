@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"; // Import uuid;
 
 // Define interface for ER Visit data;
 interface ERVisit {
-  id: string | number;
+  id: string | number,
   patient_id: string | number;
   patient_name?: string; // Denormalized;
   mrn?: string; // Denormalized, added based on mock data;
@@ -65,7 +65,7 @@ let nextVisitId = 3;
 
 // Define interface for ER Visit creation input;
 interface ERVisitInput {
-  patient_id: number | string;
+  patient_id: number | string,
   chief_complaint: string;
   mode_of_arrival?: string;
   arrival_timestamp?: string; // Optional, defaults to now;
@@ -148,7 +148,7 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
  * GET /api/er/visits;
  * Retrieves a list of ER visits, potentially filtered.
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
@@ -175,7 +175,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/er/visits;
  * Creates a new ER visit record (patient arrival).
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
     // Apply type assertion;

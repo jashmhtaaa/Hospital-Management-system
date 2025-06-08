@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -206,7 +206,7 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'KPI details' });
   @ApiResponse({ status: 404, description: 'KPI not found' });
   async getKPIById(@Param('id') id: string) {
-    return this.dashboardService.getKPIById(id);
+    return this.dashboardService.getKPIById(id)
   }
 
   @Post('kpis');

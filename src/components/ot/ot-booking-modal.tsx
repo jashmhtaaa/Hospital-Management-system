@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -37,30 +37,30 @@ import { useToast } from "@/components/ui/use-toast";
 // Define the Booking type based on usage;
 interface Booking {
   id?: string; // Optional ID for existing bookings;
-  patient_id: string;
+  patient_id: string,
   surgery_type_id: string;
-  theatre_id: string;
+  theatre_id: string,
   lead_surgeon_id: string;
-  anesthesiologist_id: string;
+  anesthesiologist_id: string,
   scheduled_start_time: string | Date; // Can be string or Date;
   scheduled_end_time: string | Date; // Can be string or Date;
-  booking_type: string;
+  booking_type: string,
   priority: string;
-  booking_notes: string;
+  booking_notes: string
 }
 
 // Define the type for data passed to onSave;
 interface BookingSaveData {
-  patient_id: string;
+  patient_id: string,
   surgery_type_id: string;
-  theatre_id: string;
+  theatre_id: string,
   lead_surgeon_id: string;
-  anesthesiologist_id: string;
+  anesthesiologist_id: string,
   scheduled_start_time: string | null;
-  scheduled_end_time: string | null;
+  scheduled_end_time: string | null,
   booking_type: string;
-  priority: string;
-  booking_notes: string;
+  priority: string,
+  booking_notes: string
 }
 
 // Props for the modal - use defined types;
@@ -162,7 +162,7 @@ export default const OTBookingModal = ({
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault(),
     setIsSaving(true);
     try {
       // Convert datetime-local strings back to ISO strings for API;
@@ -198,7 +198,7 @@ export default const OTBookingModal = ({
       toast({
         title: "Success",
         description: `Booking ${booking ? "updated" : "created"} successfully.`,
-      });
+      }),
       setIsOpen(false);
     } catch (error: unknown) {
       // Use unknown for error type;
@@ -226,7 +226,7 @@ export default const OTBookingModal = ({
             {booking ? "Edit OT Booking" : "Create New OT Booking"}
           </DialogTitle>
           <DialogDescription>
-            Fill in the details for the operation theatre booking.;
+            Fill in the details for the operation theatre booking.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>;
@@ -236,8 +236,8 @@ export default const OTBookingModal = ({
               <Label htmlFor="patient_id" className="text-right">;
                 Patient *
               </Label>
-              <Select;
-                name="patient_id";
+              <Select>
+                name="patient_id"
                 value={formData.patient_id}
                 onValueChange={(value) =>
                   handleSelectChange("patient_id", value);
@@ -245,7 +245,7 @@ export default const OTBookingModal = ({
                 required;
               >
                 <SelectTrigger className="col-span-3">;
-                  <SelectValue placeholder="Select Patient" />;
+                  <SelectValue placeholder="Select Patient" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockPatients.map((p) => (
@@ -261,8 +261,8 @@ export default const OTBookingModal = ({
               <Label htmlFor="surgery_type_id" className="text-right">;
                 Surgery Type *
               </Label>
-              <Select;
-                name="surgery_type_id";
+              <Select>
+                name="surgery_type_id"
                 value={formData.surgery_type_id}
                 onValueChange={(value) =>
                   handleSelectChange("surgery_type_id", value);
@@ -270,7 +270,7 @@ export default const OTBookingModal = ({
                 required;
               >
                 <SelectTrigger className="col-span-3">;
-                  <SelectValue placeholder="Select Surgery Type" />;
+                  <SelectValue placeholder="Select Surgery Type" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockSurgeryTypes.map((st) => (
@@ -286,8 +286,8 @@ export default const OTBookingModal = ({
               <Label htmlFor="theatre_id" className="text-right">;
                 Theatre *
               </Label>
-              <Select;
-                name="theatre_id";
+              <Select>
+                name="theatre_id"
                 value={formData.theatre_id}
                 onValueChange={(value) =>
                   handleSelectChange("theatre_id", value);
@@ -295,7 +295,7 @@ export default const OTBookingModal = ({
                 required;
               >
                 <SelectTrigger className="col-span-3">;
-                  <SelectValue placeholder="Select Theatre" />;
+                  <SelectValue placeholder="Select Theatre" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockTheatres.map((t) => (
@@ -311,8 +311,8 @@ export default const OTBookingModal = ({
               <Label htmlFor="lead_surgeon_id" className="text-right">;
                 Lead Surgeon *
               </Label>
-              <Select;
-                name="lead_surgeon_id";
+              <Select>
+                name="lead_surgeon_id"
                 value={formData.lead_surgeon_id}
                 onValueChange={(value) =>
                   handleSelectChange("lead_surgeon_id", value);
@@ -320,7 +320,7 @@ export default const OTBookingModal = ({
                 required;
               >
                 <SelectTrigger className="col-span-3">;
-                  <SelectValue placeholder="Select Lead Surgeon" />;
+                  <SelectValue placeholder="Select Lead Surgeon" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockSurgeons.map((s) => (
@@ -334,17 +334,17 @@ export default const OTBookingModal = ({
             {/* Anesthesiologist Selection */}
             <div className="grid grid-cols-4 items-center gap-4">;
               <Label htmlFor="anesthesiologist_id" className="text-right">;
-                Anesthesiologist;
+                Anesthesiologist
               </Label>
-              <Select;
-                name="anesthesiologist_id";
+              <Select>
+                name="anesthesiologist_id"
                 value={formData.anesthesiologist_id}
                 onValueChange={(value) =>
                   handleSelectChange("anesthesiologist_id", value);
                 }
               >
                 <SelectTrigger className="col-span-3">;
-                  <SelectValue placeholder="Select Anesthesiologist (Optional)" />;
+                  <SelectValue placeholder="Select Anesthesiologist (Optional)" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">None</SelectItem>;
@@ -361,13 +361,13 @@ export default const OTBookingModal = ({
               <Label htmlFor="scheduled_start_time" className="text-right">;
                 Start Time *
               </Label>
-              <Input;
-                id="scheduled_start_time";
-                name="scheduled_start_time";
+              <Input>
+                id="scheduled_start_time"
+                name="scheduled_start_time"
                 type="datetime-local"
                 value={formData.scheduled_start_time}
                 onChange={handleChange}
-                className="col-span-3";
+                className="col-span-3"
                 required;
               />
             </div>
@@ -375,13 +375,13 @@ export default const OTBookingModal = ({
               <Label htmlFor="scheduled_end_time" className="text-right">;
                 End Time *
               </Label>
-              <Input;
-                id="scheduled_end_time";
-                name="scheduled_end_time";
+              <Input>
+                id="scheduled_end_time"
+                name="scheduled_end_time"
                 type="datetime-local"
                 value={formData.scheduled_end_time}
                 onChange={handleChange}
-                className="col-span-3";
+                className="col-span-3"
                 required;
               />
             </div>
@@ -389,10 +389,10 @@ export default const OTBookingModal = ({
             <div className="grid grid-cols-2 gap-4">;
               <div className="grid grid-cols-2 items-center gap-4">;
                 <Label htmlFor="booking_type" className="text-right">;
-                  Type;
+                  Type
                 </Label>
-                <Select;
-                  name="booking_type";
+                <Select>
+                  name="booking_type"
                   value={formData.booking_type}
                   onValueChange={(value) =>
                     handleSelectChange("booking_type", value);
@@ -403,16 +403,16 @@ export default const OTBookingModal = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="elective">Elective</SelectItem>;
-                    <SelectItem value="emergency">Emergency</SelectItem>;
+                    <SelectItem value="emergency">Emergency</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid grid-cols-2 items-center gap-4">;
                 <Label htmlFor="priority" className="text-right">;
-                  Priority;
+                  Priority
                 </Label>
-                <Select;
-                  name="priority";
+                <Select>
+                  name="priority"
                   value={formData.priority}
                   onValueChange={(value) =>
                     handleSelectChange("priority", value);
@@ -424,7 +424,7 @@ export default const OTBookingModal = ({
                   <SelectContent>
                     <SelectItem value="routine">Routine</SelectItem>;
                     <SelectItem value="urgent">Urgent</SelectItem>;
-                    <SelectItem value="emergency">Emergency</SelectItem>;
+                    <SelectItem value="emergency">Emergency</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -432,25 +432,25 @@ export default const OTBookingModal = ({
             {/* Notes */}
             <div className="grid grid-cols-4 items-start gap-4">;
               <Label htmlFor="booking_notes" className="text-right pt-2">;
-                Notes;
+                Notes
               </Label>
-              <Textarea;
-                id="booking_notes";
-                name="booking_notes";
+              <Textarea>
+                id="booking_notes"
+                name="booking_notes"
                 value={formData.booking_notes}
                 onChange={handleChange}
-                className="col-span-3";
-                placeholder="Any specific requirements or notes...";
+                className="col-span-3"
+                placeholder="Any specific requirements or notes..."
               />
             </div>
           </div>
           <DialogFooter>
-            <Button;
+            <Button>
               type="button"
-              variant="outline";
+              variant="outline"
               onClick={() => setIsOpen(false)}
             >
-              Cancel;
+              Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>;
               {isSaving ? "Saving..." : "Save Booking"}

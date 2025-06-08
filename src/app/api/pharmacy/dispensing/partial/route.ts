@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -30,7 +30,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository = {
@@ -41,7 +41,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const dispensingRepository = {
@@ -51,21 +51,21 @@ const dispensingRepository = {
   findByStatus: (status: string) => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const inventoryRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
 };
 
 /**
  * POST /api/pharmacy/dispensing/partial;
  * Record a partial medication dispensing;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -133,7 +133,7 @@ export async const POST = (req: NextRequest) {
           totalPrescribed,
           alreadyDispensed: totalDispensed,
           requested: data.quantityDispensed,
-          maxAllowed: totalPrescribed - totalDispensed;
+          maxAllowed: totalPrescribed - totalDispensed
         },
         { status: 400 }
       );
@@ -157,7 +157,7 @@ export async const POST = (req: NextRequest) {
       remainingQuantity: remainingAfterThisDispensing,
       partialReason: data.partialReason || 'inventory-shortage',
       isPartial: true,
-      isLastDispensing: remainingAfterThisDispensing === 0;
+      isLastDispensing: remainingAfterThisDispensing === 0
     };
 
     // Save dispensing record;
@@ -182,7 +182,7 @@ export async const POST = (req: NextRequest) {
         quantity: data.quantityDispensed,
         remainingQuantity: remainingAfterThisDispensing,
         partialReason: data.partialReason,
-        isLastDispensing: remainingAfterThisDispensing === 0;
+        isLastDispensing: remainingAfterThisDispensing === 0
       }
     });
 
@@ -192,7 +192,7 @@ export async const POST = (req: NextRequest) {
         id: dispensingId,
         message: 'Partial medication dispensing recorded successfully',
         remainingQuantity: remainingAfterThisDispensing,
-        isLastDispensing: remainingAfterThisDispensing === 0;
+        isLastDispensing: remainingAfterThisDispensing === 0
       }, 
       { status: 201 }
     );

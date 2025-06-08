@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -29,7 +29,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
@@ -40,7 +40,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
@@ -51,14 +51,14 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose with reason and documentation;
  */
-export async const POST = (req: NextRequest) {
+export async const POST = (req: NextRequest) => {
   try {
     // Validate request;
     const data = await req.json();
@@ -123,7 +123,7 @@ export async const POST = (req: NextRequest) {
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId,
         reasonCode: data.reasonCode,
-        reason: data.reason;
+        reason: data.reason
       }
     });
 
@@ -131,7 +131,7 @@ export async const POST = (req: NextRequest) {
     return NextResponse.json(
       { 
         id: administrationId,
-        message: 'Missed dose recorded successfully';
+        message: 'Missed dose recorded successfully'
       }, 
       { status: 201 }
     );

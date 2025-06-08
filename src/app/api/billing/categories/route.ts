@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
  * GET /api/billing/categories;
  * Retrieves a list of distinct service item categories.
  */
-export async const GET = () {
+export async const GET = () => {
   try {
     // const { env } = getRequestContext();
 

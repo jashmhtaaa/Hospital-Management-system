@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -21,7 +21,7 @@ import { generateBarcodeData } from '@/lib/barcode';
  * GET /api/diagnostics/lab/specimens;
  * Get laboratory specimens with optional filtering;
  */
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -172,7 +172,7 @@ export async const GET = (request: NextRequest) {
  * POST /api/diagnostics/lab/specimens;
  * Create a new laboratory specimen;
  */
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -262,7 +262,7 @@ export async const POST = (request: NextRequest) {
       action: 'create',
       resource: 'laboratory_specimens',
       resourceId: result.insertId,
-      details: body;
+      details: body
     });
 
     // Create specimen tracking entry;
@@ -312,7 +312,7 @@ export async const POST = (request: NextRequest) {
  * PUT /api/diagnostics/lab/specimens/:id;
  * Update a laboratory specimen;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -497,7 +497,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         action: 'update',
         resource: 'laboratory_specimens',
         resourceId: id,
-        details: body;
+        details: body
       });
 
       // Create tracking entry if status changed or tracking note exists;
@@ -517,7 +517,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Invalidate cache;
-      await CacheInvalidation.invalidatePattern('diagnostic:lab:specimens:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: lab:specimens:*')
     }
 
     // Get the updated specimen;
@@ -550,7 +550,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * GET /api/diagnostics/lab/specimens/:id/tracking;
  * Get tracking history for a specimen;
  */
-export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -614,7 +614,7 @@ export async const GET_TRACKING = (request: NextRequest, { params }: { params: {
  * POST /api/diagnostics/lab/specimens/:id/aliquot;
  * Create an aliquot from a parent specimen;
  */
-export async const POST_ALIQUOT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const POST_ALIQUOT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication;
     const session = await getSession();
@@ -774,7 +774,7 @@ export async const POST_ALIQUOT = (request: NextRequest, { params }: { params: {
  * POST /api/diagnostics/lab/specimens/barcode;
  * Generate barcode for a specimen;
  */
-export async const POST_BARCODE = (request: NextRequest) {
+export async const POST_BARCODE = (request: NextRequest) => {
   try {
     // Authentication;
     const session = await getSession();

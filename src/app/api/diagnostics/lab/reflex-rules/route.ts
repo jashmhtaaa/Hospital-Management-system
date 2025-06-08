@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -15,9 +15,9 @@ import { getSession } from "@/lib/session";
 
 // Interface for the request body when creating a reflex rule;
 interface ReflexRuleCreateBody {
-  condition_test_id: number;
+  condition_test_id: number,
   condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
-  condition_value: string;
+  condition_value: string,
   action_test_id: number;
   priority?: "routine" | "urgent" | "stat";
   description?: string;
@@ -25,7 +25,7 @@ interface ReflexRuleCreateBody {
 }
 
 // GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -105,7 +105,7 @@ export async const GET = (request: NextRequest) {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
@@ -119,7 +119,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -280,7 +280,7 @@ export async const POST = (request: NextRequest) {
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -503,7 +503,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const session = await getSession();
     
@@ -539,7 +539,7 @@ export async const DELETE = (
     );
     
     return NextResponse.json({
-      message: "Reflex rule deleted successfully";
+      message: "Reflex rule deleted successfully"
     });
   } catch (error: unknown) {
 

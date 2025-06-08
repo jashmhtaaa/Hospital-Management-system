@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -23,9 +23,9 @@ import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 
 export interface NotificationMessage {
-  id: string;
+  id: string,
   type: NotificationMessageType;
-  priority: NotificationPriority;
+  priority: NotificationPriority,
   title: string;
   message: string;
   data?: unknown;
@@ -57,19 +57,19 @@ export type NotificationMessageType =
 export type NotificationPriority = 'low' | 'normal' | 'high' | 'critical';
 
 export interface NotificationSubscription {
-  userId: string;
+  userId: string,
   types: NotificationMessageType[];
   departments?: string[];
   roles?: string[];
-  channels: NotificationChannel[];
+  channels: NotificationChannel[],
   preferences: {
     enableSound?: boolean;
     enablePopup?: boolean;
     enableEmail?: boolean;
     enableSMS?: boolean;
     quietHours?: {
-      start: string; // HH:MM;
-      end: string; // HH:MM;
+      start: string; // HH: MM,
+      end: string; // HH: MM
     };
   };
 }
@@ -77,11 +77,11 @@ export interface NotificationSubscription {
 export type NotificationChannel = 'websocket' | 'email' | 'sms' | 'push';
 
 export interface ConnectedClient {
-  id: string;
+  id: string,
   userId: string;
-  ws: WebSocket;
+  ws: WebSocket,
   subscriptions: NotificationSubscription;
-  lastSeen: Date;
+  lastSeen: Date,
   metadata: {
     userAgent?: string;
     ipAddress?: string;
@@ -90,11 +90,11 @@ export interface ConnectedClient {
 }
 
 export interface NotificationHistory {
-  id: string;
+  id: string,
   messageId: string;
-  userId: string;
+  userId: string,
   channel: NotificationChannel;
-  status: 'sent' | 'delivered' | 'read' | 'failed';
+  status: 'sent' | 'delivered' | 'read' | 'failed',
   sentAt: Date;
   deliveredAt?: Date;
   readAt?: Date;
@@ -128,7 +128,7 @@ export class NotificationService extends EventEmitter {
   async initializeWebSocketServer(port = 8080): Promise<void> {
     this.wss = new WebSocketServer({ 
       port,
-      verifyClient: this.verifyClient.bind(this);
+      verifyClient: this.verifyClient.bind(this)
     });
 
     this.wss.on('connection', this.handleConnection.bind(this));
@@ -182,7 +182,7 @@ export class NotificationService extends EventEmitter {
         metadata: {
           userAgent: req.headers['user-agent'],
           ipAddress: req.socket.remoteAddress,
-          platform: this.detectPlatform(req.headers['user-agent'] || '');
+          platform: this.detectPlatform(req.headers['user-agent'] || '')
         }
       };
 
@@ -194,7 +194,7 @@ export class NotificationService extends EventEmitter {
         payload: {
           clientId,
           serverTime: new Date().toISOString(),
-          subscriptions: subscription;
+          subscriptions: subscription
         }
       });
 
@@ -291,7 +291,7 @@ export class NotificationService extends EventEmitter {
     const message: NotificationMessage = {
       ...notification,
       id: uuidv4(),
-      createdAt: new Date().toISOString();
+      createdAt: new Date().toISOString()
     };
 
     // Store notification in database;
@@ -355,10 +355,10 @@ export class NotificationService extends EventEmitter {
       data,
       department,
       requiresAcknowledgment: true,
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours;
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
     }, {
       department,
-      all: !department;
+      all: !department
     });
   }
 
@@ -383,7 +383,7 @@ export class NotificationService extends EventEmitter {
         practitionerId;
       },
       userId: practitionerId,
-      requiresAcknowledgment: true;
+      requiresAcknowledgment: true
     });
   }
 
@@ -407,7 +407,7 @@ export class NotificationService extends EventEmitter {
         value;
       },
       userId: assignedNurseId,
-      requiresAcknowledgment: true;
+      requiresAcknowledgment: true
     });
   }
 
@@ -430,7 +430,7 @@ export class NotificationService extends EventEmitter {
         appointmentId,
         appointmentTime;
       },
-      userId: practitionerId;
+      userId: practitionerId
     });
   }
 
@@ -445,7 +445,7 @@ export class NotificationService extends EventEmitter {
       if (client.userId === message.userId && this.shouldSendToClient(client, message)) {
         this.sendToClient(clientId, {
           type: 'notification',
-          payload: message;
+          payload: message
         });
         sent = true;
       }
@@ -590,7 +590,7 @@ export class NotificationService extends EventEmitter {
         enableSound: true,
         enablePopup: true,
         enableEmail: false,
-        enableSMS: false;
+        enableSMS: false
       }
     };
 
@@ -745,10 +745,10 @@ export class NotificationService extends EventEmitter {
    * Get notification statistics;
    */
   getStatistics(): {
-    connectedClients: number;
+    connectedClients: number,
     connectedUsers: number;
-    queuedMessages: number;
-    subscriptions: number;
+    queuedMessages: number,
+    subscriptions: number
   } {
     const queuedMessages = Array.from(this.messageQueue.values());
       .reduce((total, queue) => total + queue.length, 0);
@@ -757,7 +757,7 @@ export class NotificationService extends EventEmitter {
       connectedClients: this.clients.size,
       connectedUsers: this.getConnectedUserIds().length,
       queuedMessages,
-      subscriptions: this.subscriptions.size;
+      subscriptions: this.subscriptions.size
     };
   }
 

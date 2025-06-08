@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption 
 
 // Interface for the request body when creating a specimen tracking entry;
 interface SpecimenTrackingCreateBody {
-  specimen_id: number;
+  specimen_id: number,
   status: string;
   location: string;
   notes?: string;
@@ -26,7 +26,7 @@ interface SpecimenTrackingCreateBody {
 }
 
 // GET /api/diagnostics/lab/specimen-tracking - Get tracking history for specimens;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -137,7 +137,7 @@ export async const GET = (request: NextRequest) {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
@@ -151,7 +151,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/specimen-tracking - Create a new tracking entry;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -200,7 +200,7 @@ export async const POST = (request: NextRequest) {
     try {
       // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes
       });
       
       // Insert tracking entry;
@@ -290,7 +290,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET /api/diagnostics/lab/specimen-tracking/locations - Get all specimen storage locations;
-export async const GET_LOCATIONS = (request: NextRequest) {
+export async const GET_LOCATIONS = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -323,7 +323,7 @@ export async const GET_LOCATIONS = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/specimen-tracking/scan - Process a barcode/RFID scan;
-export async const POST_SCAN = (request: NextRequest) {
+export async const POST_SCAN = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -334,7 +334,7 @@ export async const POST_SCAN = (request: NextRequest) {
     
     // Parse request body;
     const body = await request.json() as {
-      barcode: string;
+      barcode: string,
       scan_type: "barcode" | "rfid";
       location: string;
       status?: string;
@@ -387,7 +387,7 @@ export async const POST_SCAN = (request: NextRequest) {
     try {
       // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes
       });
       
       // Insert tracking entry;
@@ -478,7 +478,7 @@ export async const POST_SCAN = (request: NextRequest) {
           order_id: specimen.order_id,
           patient_id: tracking.patient_id,
           patient_name: `${tracking.patient_first_name} ${tracking.patient_last_name}`,
-          patient_mrn: tracking.patient_mrn;
+          patient_mrn: tracking.patient_mrn
         }
       }, { status: 201 });
     } catch (error) {
@@ -497,7 +497,7 @@ export async const POST_SCAN = (request: NextRequest) {
 }
 
 // POST /api/diagnostics/lab/specimen-tracking/batch - Process a batch of specimens;
-export async const POST_BATCH = (request: NextRequest) {
+export async const POST_BATCH = (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -508,7 +508,7 @@ export async const POST_BATCH = (request: NextRequest) {
     
     // Parse request body;
     const body = await request.json() as {
-      barcodes: string[];
+      barcodes: string[],
       status: string;
       location: string;
       notes?: string;
@@ -540,7 +540,7 @@ export async const POST_BATCH = (request: NextRequest) {
         if (!specimenCheckResult.results || specimenCheckResult.results.length === 0) {
           errors.push({
             barcode,
-            error: "Specimen not found";
+            error: "Specimen not found"
           });
           continue;
         }
@@ -549,7 +549,7 @@ export async const POST_BATCH = (request: NextRequest) {
         
         // Encrypt sensitive data if needed;
         const encryptedData = await encryptSensitiveData({
-          notes: body.notes;
+          notes: body.notes
         });
         
         // Insert tracking entry;
@@ -597,7 +597,7 @@ export async const POST_BATCH = (request: NextRequest) {
           specimen_id: specimen.id,
           tracking_id: trackingId,
           status: body.status,
-          location: body.location;
+          location: body.location
         });
       }
       

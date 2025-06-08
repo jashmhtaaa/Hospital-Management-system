@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -59,7 +59,7 @@ export class EligibilityCheckService {
             isActive: true,
             coverageStartDate: new Date("2023-01-01"),
             coverageEndDate: new Date("2025-12-31"),
-            // Example: specific services covered or general coverage rules;
+            // Example: specific services covered or general coverage rules,
             coveredServices: ["SVC001", "SVC003"],
             coPayPercentage: 20,
         };

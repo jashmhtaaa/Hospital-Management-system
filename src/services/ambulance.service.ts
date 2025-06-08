@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -581,26 +581,22 @@ export class AmbulanceService {
         case AmbulanceRunStatus.DISPATCHED:
           updateData.dispatchTime = new Date();
           break;
-        case AmbulanceRunStatus.EN_ROUTE_TO_SCENE:
-          if (!currentRun.dispatchTime) {
-            updateData.dispatchTime = new Date();
+        case AmbulanceRunStatus.EN_ROUTE_TO_SCENE: if (!currentRun.dispatchTime) {
+            updateData.dispatchTime = new Date()
           }
           break;
-        case AmbulanceRunStatus.AT_SCENE:
-          if (!currentRun.dispatchTime) {
-            updateData.dispatchTime = new Date();
+        case AmbulanceRunStatus.AT_SCENE: if (!currentRun.dispatchTime) {
+            updateData.dispatchTime = new Date()
           }
           updateData.arrivalAtSceneTime = new Date();
           break;
-        case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION:
-          if (!currentRun.arrivalAtSceneTime) {
-            updateData.arrivalAtSceneTime = new Date();
+        case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION: if (!currentRun.arrivalAtSceneTime) {
+            updateData.arrivalAtSceneTime = new Date()
           }
           updateData.departureFromSceneTime = new Date();
           break;
-        case AmbulanceRunStatus.AT_DESTINATION:
-          if (!currentRun.departureFromSceneTime) {
-            updateData.departureFromSceneTime = new Date();
+        case AmbulanceRunStatus.AT_DESTINATION: if (!currentRun.departureFromSceneTime) {
+            updateData.departureFromSceneTime = new Date()
           }
           updateData.arrivalAtDestinationTime = new Date();
           break;

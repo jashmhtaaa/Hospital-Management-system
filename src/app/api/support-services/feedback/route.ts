@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -65,7 +65,7 @@ const updateComplaintSchema = z.object({
 });
 
 // GET /api/support-services/feedback;
-export async const GET = (request: NextRequest) {
+export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -98,7 +98,7 @@ export async const GET = (request: NextRequest) {
 }
 
 // POST /api/support-services/feedback;
-export async const POST = (request: NextRequest) {
+export async const POST = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -123,7 +123,7 @@ export async const POST = (request: NextRequest) {
 }
 
 // GET /api/support-services/feedback/:id;
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -141,7 +141,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 }
 
 // PATCH /api/support-services/feedback/:id;
-export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -165,7 +165,7 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
 }
 
 // GET /api/support-services/complaints;
-export async const GET_COMPLAINTS = (request: NextRequest) {
+export async const GET_COMPLAINTS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -198,7 +198,7 @@ export async const GET_COMPLAINTS = (request: NextRequest) {
 }
 
 // POST /api/support-services/complaints;
-export async const POST_COMPLAINT = (request: NextRequest) {
+export async const POST_COMPLAINT = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -223,7 +223,7 @@ export async const POST_COMPLAINT = (request: NextRequest) {
 }
 
 // GET /api/support-services/complaints/:id;
-export async const GET_COMPLAINT_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const GET_COMPLAINT_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -241,7 +241,7 @@ export async const GET_COMPLAINT_BY_ID = (request: NextRequest, { params }: { pa
 }
 
 // PATCH /api/support-services/complaints/:id;
-export async const PATCH_COMPLAINT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const PATCH_COMPLAINT = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -265,7 +265,7 @@ export async const PATCH_COMPLAINT = (request: NextRequest, { params }: { params
 }
 
 // POST /api/support-services/complaints/:id/escalate;
-export async const ESCALATE_COMPLAINT = (request: NextRequest, { params }: { params: { id: string } }) {
+export async const ESCALATE_COMPLAINT = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -295,7 +295,7 @@ export async const ESCALATE_COMPLAINT = (request: NextRequest, { params }: { par
 }
 
 // GET /api/support-services/feedback/analytics;
-export async const GET_ANALYTICS = (request: NextRequest) {
+export async const GET_ANALYTICS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {

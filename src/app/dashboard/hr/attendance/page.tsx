@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -77,12 +77,12 @@ export default const AttendanceManagement = () {
   const [departments, setDepartments] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
     from: startOfMonth(new Date()),
-    to: endOfMonth(new Date());
+    to: endOfMonth(new Date())
   });
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0;
+    total: 0
   });
   const [activeTab, setActiveTab] = useState('daily');
 
@@ -93,7 +93,7 @@ export default const AttendanceManagement = () {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString();
+          take: pagination.take.toString()
         });
         
         if (search) queryParams.append('search', search);
@@ -121,14 +121,14 @@ export default const AttendanceManagement = () {
           throw new Error('Failed to fetch attendance records');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setAttendanceRecords(data.records || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0
         }));
       } catch (err) {
-        setError(err.message);
+        setError(err.message),
         toast({
           title: "Error",
           description: err.message,
@@ -148,7 +148,7 @@ export default const AttendanceManagement = () {
       try {
         const response = await fetch('/api/hr/departments');
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json(),
           setDepartments(data.departments || []);
         }
       } catch (err) {
@@ -164,7 +164,7 @@ export default const AttendanceManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -173,7 +173,7 @@ export default const AttendanceManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -184,7 +184,7 @@ export default const AttendanceManagement = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
   };
 
@@ -194,7 +194,7 @@ export default const AttendanceManagement = () {
     // Reset pagination when changing tabs;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
   };
 
@@ -236,14 +236,13 @@ export default const AttendanceManagement = () {
         return 'secondary';
       case 'ON_LEAVE':
         return 'outline';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
 
   // Format time or show placeholder;
   const formatTimeOrPlaceholder = (time: unknown) => {
-    return time ? format(new Date(time), 'h:mm a') : '—';
+    return time ? format(new Date(time), 'h: mm a') : '—'
   };
 
   return (
@@ -251,7 +250,7 @@ export default const AttendanceManagement = () {
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Attendance Management</h1>;
         <p className="text-muted-foreground">;
-          Track and manage employee attendance records;
+          Track and manage employee attendance records
         </p>
       </div>
       
@@ -259,14 +258,14 @@ export default const AttendanceManagement = () {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
           <TabsList>
             <TabsTrigger value="daily">Daily View</TabsTrigger>;
-            <TabsTrigger value="range">Date Range</TabsTrigger>;
+            <TabsTrigger value="range">Date Range</TabsTrigger>
           </TabsList>
           
           <div className="flex flex-wrap gap-2">;
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-[240px] justify-start">;
-                  <CalendarIcon className="mr-2 h-4 w-4" />;
+                  <CalendarIcon className="mr-2 h-4 w-4" />
                   {activeTab === 'daily' ? (
                     dateRange.from ? (
                       format(dateRange.from, 'PPP');
@@ -282,7 +281,7 @@ export default const AttendanceManagement = () {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="end">;
-                <Calendar;
+                <Calendar>
                   mode={activeTab === 'daily' ? "single" : "range"}
                   selected={activeTab === 'daily' ? dateRange.from : dateRange}
                   onSelect={activeTab === 'daily';
@@ -295,8 +294,8 @@ export default const AttendanceManagement = () {
             </Popover>
             
             <Button variant="outline" onClick={handleExport}>;
-              <Download className="mr-2 h-4 w-4" />;
-              Export;
+              <Download className="mr-2 h-4 w-4" />
+              Export
             </Button>
           </div>
         </div>
@@ -305,17 +304,17 @@ export default const AttendanceManagement = () {
           <div className="flex flex-col md:flex-row gap-2 md:items-center">;
             <form onSubmit={handleSearch} className="flex gap-2">;
               <div className="relative">;
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-                <Input;
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input>
                   type="search"
-                  placeholder="Search employees...";
-                  className="pl-8 w-full md:w-[300px]";
+                  placeholder="Search employees..."
+                  className="pl-8 w-full md:w-[300px]"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
               <Button type="submit" variant="secondary">;
-                Search;
+                Search
               </Button>
             </form>
           </div>
@@ -323,7 +322,7 @@ export default const AttendanceManagement = () {
           <div className="flex flex-col md:flex-row gap-2">;
             <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
               <SelectTrigger className="w-full md:w-[180px]">;
-                <SelectValue placeholder="All Departments" />;
+                <SelectValue placeholder="All Departments" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Departments</SelectItem>;
@@ -337,7 +336,7 @@ export default const AttendanceManagement = () {
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>;
               <SelectTrigger className="w-full md:w-[180px]">;
-                <SelectValue placeholder="All Statuses" />;
+                <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Statuses</SelectItem>;
@@ -345,18 +344,18 @@ export default const AttendanceManagement = () {
                 <SelectItem value="LATE">Late</SelectItem>;
                 <SelectItem value="ABSENT">Absent</SelectItem>;
                 <SelectItem value="HALF_DAY">Half Day</SelectItem>;
-                <SelectItem value="ON_LEAVE">On Leave</SelectItem>;
+                <SelectItem value="ON_LEAVE">On Leave</SelectItem>
               </SelectContent>
             </Select>
             
             <Select value={biometricFilter} onValueChange={setBiometricFilter}>;
               <SelectTrigger className="w-full md:w-[180px]">;
-                <SelectValue placeholder="Biometric Verification" />;
+                <SelectValue placeholder="Biometric Verification" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All Records</SelectItem>;
                 <SelectItem value="true">Verified</SelectItem>;
-                <SelectItem value="false">Not Verified</SelectItem>;
+                <SelectItem value="false">Not Verified</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -378,11 +377,11 @@ export default const AttendanceManagement = () {
                 </div>
               ) : loading ? (
                 <div className="text-center py-4">;
-                  Loading...;
+                  Loading...
                 </div>
               ) : attendanceRecords.length === 0 ? (
                 <div className="text-center py-4">;
-                  No attendance records found. Try adjusting your filters.;
+                  No attendance records found. Try adjusting your filters.
                 </div>
               ) : (
                 <div className="overflow-x-auto">;
@@ -423,18 +422,18 @@ export default const AttendanceManagement = () {
                           </TableCell>
                           <TableCell>
                             {record.biometricVerified ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />;
+                              <CheckCircle className="h-5 w-5 text-green-500" />
                             ) : (
-                              <XCircle className="h-5 w-5 text-red-500" />;
+                              <XCircle className="h-5 w-5 text-red-500" />
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/attendance/${record.id}`)}
                             >
-                              View;
+                              View
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -448,7 +447,7 @@ export default const AttendanceManagement = () {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious;
+                    <PaginationPrevious>
                       onClick={handlePreviousPage}
                       className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -460,7 +459,7 @@ export default const AttendanceManagement = () {
                     </span>
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext;
+                    <PaginationNext>
                       onClick={handleNextPage}
                       className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -487,11 +486,11 @@ export default const AttendanceManagement = () {
                 </div>
               ) : loading ? (
                 <div className="text-center py-4">;
-                  Loading...;
+                  Loading...
                 </div>
               ) : attendanceRecords.length === 0 ? (
                 <div className="text-center py-4">;
-                  No attendance records found in the selected date range.;
+                  No attendance records found in the selected date range.
                 </div>
               ) : (
                 <div className="overflow-x-auto">;
@@ -534,18 +533,18 @@ export default const AttendanceManagement = () {
                           </TableCell>
                           <TableCell>
                             {record.biometricVerified ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />;
+                              <CheckCircle className="h-5 w-5 text-green-500" />
                             ) : (
-                              <XCircle className="h-5 w-5 text-red-500" />;
+                              <XCircle className="h-5 w-5 text-red-500" />
                             )}
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/attendance/${record.id}`)}
                             >
-                              View;
+                              View
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -559,7 +558,7 @@ export default const AttendanceManagement = () {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious;
+                    <PaginationPrevious>
                       onClick={handlePreviousPage}
                       className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -571,7 +570,7 @@ export default const AttendanceManagement = () {
                     </span>
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext;
+                    <PaginationNext>
                       onClick={handleNextPage}
                       className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -586,11 +585,11 @@ export default const AttendanceManagement = () {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Present Today</CardTitle>;
+            <CardTitle className="text-sm font-medium">Present Today</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <CheckCircle className="h-5 w-5 text-green-500 mr-2" />;
+              <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'PRESENT').length}
               </span>
@@ -600,11 +599,11 @@ export default const AttendanceManagement = () {
         
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Late Today</CardTitle>;
+            <CardTitle className="text-sm font-medium">Late Today</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <Clock className="h-5 w-5 text-yellow-500 mr-2" />;
+              <Clock className="h-5 w-5 text-yellow-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'LATE').length}
               </span>
@@ -614,11 +613,11 @@ export default const AttendanceManagement = () {
         
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Absent Today</CardTitle>;
+            <CardTitle className="text-sm font-medium">Absent Today</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <XCircle className="h-5 w-5 text-red-500 mr-2" />;
+              <XCircle className="h-5 w-5 text-red-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'ABSENT').length}
               </span>
@@ -628,11 +627,11 @@ export default const AttendanceManagement = () {
         
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">On Leave</CardTitle>;
+            <CardTitle className="text-sm font-medium">On Leave</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <FileText className="h-5 w-5 text-blue-500 mr-2" />;
+              <FileText className="h-5 w-5 text-blue-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {attendanceRecords.filter(r => r.status === 'ON_LEAVE').length}
               </span>

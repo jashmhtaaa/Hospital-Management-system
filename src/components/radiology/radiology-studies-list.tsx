@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,26 +28,25 @@ import { useRouter } from "next/navigation";
 
 // Define interface for Radiology Study data;
 interface RadiologyStudy {
-  id: string;
+  id: string,
   patient_name: string;
-  procedure_name: string;
+  procedure_name: string,
   accession_number: string | null;
   study_datetime: string; // Assuming ISO string format;
-  status: "scheduled" | "acquired" | "reported" | "verified";
+  status: "scheduled" | "acquired" | "reported" | "verified"
 }
 
 export default const RadiologyStudiesList = () {
   const [studies, setStudies] = useState<RadiologyStudy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
-  const router = useRouter();
-
+  const router = useRouter(),
   useEffect(() => {
     fetchStudies();
   }, []);
 
   const fetchStudies = async (): Promise<void> => {
-    setLoading(true);
+    setLoading(true),
     setError(undefined); // Reset error state before fetching;
     try {
       const response = await fetch("/api/radiology/studies");
@@ -98,18 +97,18 @@ export default const RadiologyStudiesList = () {
     <Card>
       <CardContent className="p-6">;
         <div className="flex justify-between items-center mb-6">;
-          <h2 className="text-xl font-semibold">Radiology Studies</h2>;
+          <h2 className="text-xl font-semibold">Radiology Studies</h2>
         </div>
 
         {loading ? (
           <div className="flex justify-center items-center h-40">;
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4">{error}</div>;
         ) : studies.length === 0 ? (
           <div className="text-center text-gray-500 p-4">;
-            No radiology studies found.;
+            No radiology studies found.
           </div>
         ) : (
           <div className="overflow-x-auto">;
@@ -121,7 +120,7 @@ export default const RadiologyStudiesList = () {
                   <TableHead>Accession #</TableHead>
                   <TableHead>Study Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>;
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -135,12 +134,12 @@ export default const RadiologyStudiesList = () {
                     </TableCell>
                     <TableCell>{getStatusBadge(study.status)}</TableCell>
                     <TableCell className="text-right">;
-                      <Button;
-                        variant="outline";
-                        size="sm";
+                      <Button>
+                        variant="outline"
+                        size="sm"
                         onClick={() => handleViewStudy(study.id)}
                       >
-                        View;
+                        View
                       </Button>
                     </TableCell>
                   </TableRow>

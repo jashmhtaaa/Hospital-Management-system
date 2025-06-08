@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -94,21 +94,21 @@ export const PaymentSchema = z.object({
 });
 
 export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type Charge = z.infer<typeof ChargeSchema> & {
-  id: string;
+  id: string,
   charge_number: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   submitted_date?: Date;
   paid_date?: Date;
-  payments_received: number;
+  payments_received: number,
   adjustments: number;
-  balance: number;
+  balance: number,
   aging_days: number;
   service_name?: string;
   patient_name?: string;
@@ -116,75 +116,75 @@ export type Charge = z.infer<typeof ChargeSchema> & {
 };
 
 export type InsuranceClaim = z.infer<typeof InsuranceClaimSchema> & {
-  id: string;
+  id: string,
   claim_number: string;
   status: 'draft' | 'submitted' | 'pending' | 'paid' | 'denied' | 'appealed' | 'closed';
   submission_date?: Date;
   response_date?: Date;
-  paid_amount: number;
+  paid_amount: number,
   denied_amount: number;
   adjustment_amount: number;
   denial_reason?: string;
   remittance_advice?: string;
-  resubmission_count: number;
+  resubmission_count: number,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type Payment = z.infer<typeof PaymentSchema> & {
-  id: string;
+  id: string,
   payment_number: string;
   payment_status: 'pending' | 'processed' | 'posted' | 'rejected';
   processed_date?: Date;
   posted_date?: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export interface FinancialSummary {
-  patient_id: string;
+  patient_id: string,
   total_charges: number;
-  total_payments: number;
+  total_payments: number,
   total_adjustments: number;
-  current_balance: number;
+  current_balance: number,
   insurance_balance: number;
   patient_balance: number;
   last_payment_date?: Date;
   last_statement_date?: Date;
   aging: {
-    current: number;
+    current: number,
     days_30: number;
-    days_60: number;
+    days_60: number,
     days_90: number;
-    days_120_plus: number;
+    days_120_plus: number
   };
 }
 
 export interface RevenueReport {
-  period: string;
+  period: string,
   gross_charges: number;
-  contractual_adjustments: number;
+  contractual_adjustments: number,
   bad_debt_adjustments: number;
-  net_revenue: number;
+  net_revenue: number,
   cash_collections: number;
-  accounts_receivable: number;
+  accounts_receivable: number,
   days_in_ar: number;
-  denial_rate: number;
+  denial_rate: number,
   clean_claim_rate: number;
-  cost_to_collect: number;
+  cost_to_collect: number,
   by_payer: {
-    payer_name: string;
+    payer_name: string,
     charges: number;
-    payments: number;
+    payments: number,
     adjustments: number;
-    net_revenue: number;
+    net_revenue: number
   }[];
   by_service: {
-    service_category: string;
+    service_category: string,
     volume: number;
-    charges: number;
+    charges: number,
     payments: number;
-    net_revenue: number;
+    net_revenue: number
   }[];
 }
 
@@ -192,8 +192,7 @@ export class BillingRevenueCycleService {
   private serviceCatalog: Map<string, ServiceCatalogItem> = new Map();
   private charges: Map<string, Charge> = new Map();
   private claims: Map<string, InsuranceClaim> = new Map();
-  private payments: Map<string, Payment> = new Map();
-
+  private payments: Map<string, Payment> = new Map(),
   constructor() {
     this.initializeServiceCatalog();
   }
@@ -855,13 +854,13 @@ export class BillingRevenueCycleService {
    * Get billing statistics;
    */
   async getBillingStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    total_charges: number;
+    total_charges: number,
     total_payments: number;
-    total_adjustments: number;
+    total_adjustments: number,
     net_collections: number;
-    pending_charges: number;
+    pending_charges: number,
     claim_submission_rate: number;
-    average_payment_time: number;
+    average_payment_time: number,
     top_services: { service_name: string; volume: number; revenue: number }[];
   }> {
     const charges = Array.from(this.charges.values());

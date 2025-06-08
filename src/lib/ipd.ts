@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -14,7 +14,7 @@ import { getDB } from "@/lib/database";
 
 // FIX: Define a more specific type for Admission data;
 interface Admission {
-  id: number;
+  id: number,
   patient_id: string;
   admission_date: string; // ISO string;
   discharge_date?: string | null; // ISO string;
@@ -25,7 +25,7 @@ interface Admission {
   status: "active" | "discharged" | "cancelled"; // Example statuses;
   // Add other relevant fields from your actual schema;
   // FIX: Replace explicit any with unknown for flexibility, but prefer specific types;
-  [key: string]: unknown;
+  [key: string]: unknown
 }
 
 // FIX: Define a type for the expected structure of query results;

@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -34,7 +34,7 @@ const updateEmployeeSchema = z.object({
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const employee = await employeeService.getEmployeeById(params.id);
     
@@ -59,7 +59,7 @@ export async const GET = (
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     const body = await request.json();
     
@@ -99,7 +99,7 @@ export async const PUT = (
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+) => {
   try {
     // Soft delete by setting active to false and recording termination date;
     const employee = await employeeService.updateEmployee(params.id, {

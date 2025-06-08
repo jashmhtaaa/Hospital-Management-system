@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -84,17 +84,17 @@ export default const SelectRolePage = () {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">;
       <div className="w-full max-w-sm p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-800">;
         <div className="flex flex-col items-center">;
-          <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={120} height={40} className="mb-4" />;
+          <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={120} height={40} className="mb-4" />
           <h2 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-white">;
-            Select Role;
+            Select Role
           </h2>
         </div>
         <div className="space-y-4">;
-          <div>
+<div
             <Label htmlFor="role-select">Role</Label>;
             <Select value={selectedRole} onValueChange={setSelectedRole} disabled={isLoading}>;
               <SelectTrigger id="role-select" className="w-full mt-1">;
-                <SelectValue placeholder="Select a role" />;
+                <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
                 {availableRoles.map((role) => (
@@ -105,7 +105,7 @@ export default const SelectRolePage = () {
               </SelectContent>
             </Select>
           </div>
-          <div>
+<div
             <Button onClick={handleContinue} className="w-full" disabled={isLoading || !selectedRole}>;
               {isLoading ? "Continuing..." : "Continue"}
             </Button>

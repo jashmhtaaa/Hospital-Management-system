@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,13 +28,13 @@ import { useToast } from "@/components/ui/use-toast"; // Changed import;
 
 // Mock data structure - replace with API data;
 interface CriticalAlert {
-  id: string;
+  id: string,
   visit_id: string;
   patient_name: string; // Need to join with visits/patients table;
   mrn: string; // Need to join;
   location: string; // Need to join;
   alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.;
-  activation_timestamp: string;
+  activation_timestamp: string,
   status: string; // Active, Acknowledged, Resolved;
   details?: string;
 }
@@ -99,7 +99,7 @@ const getAlertBadgeVariant = (
       return "secondary";
     } // Changed "warning" to "secondary";
     default: {
-      return "default";
+      return "default"
     } // For "Resolved" or other statuses;
   }
 };
@@ -182,34 +182,34 @@ export default const ERCriticalAlerts = () {
           <TableHeader>
             <TableRow className="border-b dark:border-gray-700">;
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Patient (MRN);
+                Patient (MRN)
               </TableHead>
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Location;
+                Location
               </TableHead>
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Alert Type;
+                Alert Type
               </TableHead>
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Activated;
+                Activated
               </TableHead>
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Details;
+                Details
               </TableHead>
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Status;
+                Status
               </TableHead>
               <TableHead className="text-gray-700 dark:text-gray-300">;
-                Actions;
+                Actions
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {activeAlerts.length > 0 ? (
               activeAlerts.map((alert) => (
-                <TableRow;
+                <TableRow>
                   key={alert.id}
-                  className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50";
+                  className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                 >
                   <TableCell>
                     <div className="font-medium text-gray-900 dark:text-gray-100">;
@@ -224,7 +224,7 @@ export default const ERCriticalAlerts = () {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center text-gray-700 dark:text-gray-300">;
-                      <AlertTriangle className="h-4 w-4 mr-1 text-red-600 dark:text-red-400" />;
+                      <AlertTriangle className="h-4 w-4 mr-1 text-red-600 dark:text-red-400" />
                       {alert.alert_type}
                     </div>
                   </TableCell>
@@ -243,22 +243,22 @@ export default const ERCriticalAlerts = () {
                   <TableCell>
                     <div className="flex space-x-2">;
                       {alert.status === "Active" && (
-                        <Button;
-                          variant="outline";
-                          size="sm";
+                        <Button>
+                          variant="outline"
+                          size="sm"
                           onClick={() => handleAcknowledge(alert.id)}
                           disabled={isLoading}
                         >
-                          Ack;
+                          Ack
                         </Button>
                       )}
-                      <Button;
-                        variant="outline";
-                        size="sm";
+                      <Button>
+                        variant="outline"
+                        size="sm"
                         onClick={() => handleResolve(alert.id)}
                         disabled={isLoading}
                       >
-                        Resolve;
+                        Resolve
                       </Button>
                     </div>
                   </TableCell>
@@ -266,11 +266,11 @@ export default const ERCriticalAlerts = () {
               ));
             ) : (
               <TableRow>
-                <TableCell;
+                <TableCell>
                   colSpan={7}
-                  className="h-24 text-center text-gray-500 dark:text-gray-400";
+                  className="h-24 text-center text-gray-500 dark:text-gray-400"
                 >
-                  No active critical alerts.;
+                  No active critical alerts.
                 </TableCell>
               </TableRow>
             )}

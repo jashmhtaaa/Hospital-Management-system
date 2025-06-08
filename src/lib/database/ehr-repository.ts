@@ -9,9 +9,9 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 // Types for EHR entities
 export interface ClinicalNote {
   id?: string;
-  patient_id: string;
+  patient_id: string,
   encounter_id: string;
-  provider_id: string;
+  provider_id: string,
   note_type: 'progress_note' | 'soap_note' | 'admission_note' | 'discharge_summary' | 'consultation_note' | 'procedure_note' | 'nursing_note';
   template_id?: string;
   
@@ -57,8 +57,8 @@ export interface ClinicalNote {
   updated_at?: Date;
   created_by: string;
   updated_by?: string;
-  status: 'draft' | 'final' | 'amended' | 'corrected';
-  version: number;
+  status: 'draft' | 'final' | 'amended' | 'corrected',
+  version: number
 }
 
 export interface CarePlan {
@@ -67,31 +67,31 @@ export interface CarePlan {
   encounter_id?: string;
   title: string;
   description?: string;
-  status: 'draft' | 'active' | 'on_hold' | 'completed' | 'cancelled';
+  status: 'draft' | 'active' | 'on_hold' | 'completed' | 'cancelled',
   intent: 'proposal' | 'plan' | 'order' | 'option';
   
   // Goals and objectives
   goals: {
-    id: string;
+    id: string,
     description: string;
     target_date?: Date;
-    status: 'proposed' | 'accepted' | 'active' | 'on_hold' | 'completed' | 'cancelled';
-    priority: 'low' | 'medium' | 'high';
+    status: 'proposed' | 'accepted' | 'active' | 'on_hold' | 'completed' | 'cancelled',
+    priority: 'low' | 'medium' | 'high'
   }[];
   
   // Activities
   activities: {
-    id: string;
+    id: string,
     title: string;
     description?: string;
     status: 'not_started' | 'scheduled' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled';
     scheduled_date?: Date;
-    category: 'medication' | 'procedure' | 'encounter' | 'observation' | 'other';
+    category: 'medication' | 'procedure' | 'encounter' | 'observation' | 'other'
   }[];
   
   // Care team
   care_team: {
-    provider_id: string;
+    provider_id: string,
     role: string;
     period_start: Date;
     period_end?: Date;
@@ -117,7 +117,7 @@ export interface ProblemListItem {
   problem_description: string;
   icd10_code?: string;
   snomed_code?: string;
-  status: 'active' | 'inactive' | 'resolved';
+  status: 'active' | 'inactive' | 'resolved',
   severity: 'mild' | 'moderate' | 'severe';
   onset_date?: Date;
   resolution_date?: Date;
@@ -134,7 +134,7 @@ export interface ClinicalGuideline {
   id?: string;
   title: string;
   description?: string;
-  version: string;
+  version: string,
   status: 'draft' | 'active' | 'retired';
   
   // Applicable conditions
@@ -143,11 +143,11 @@ export interface ClinicalGuideline {
   
   // Decision support rules
   decision_support_rules: {
-    id: string;
+    id: string,
     condition: string;
-    recommendation: string;
+    recommendation: string,
     evidence_level: string;
-    recommendation_strength: 'strong' | 'conditional';
+    recommendation_strength: 'strong' | 'conditional'
   }[];
   
   // Metadata

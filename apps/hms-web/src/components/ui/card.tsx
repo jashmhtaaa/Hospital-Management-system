@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -16,7 +16,7 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {}
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn(
         "rounded-lg border border-gray-200 bg-white shadow-sm",
@@ -32,7 +32,7 @@ export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 
 const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn("flex flex-col space-y-1.5 p-6", className)}
       {...props}
@@ -45,7 +45,7 @@ export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
 
 const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
   ({ className, ...props }, ref) => (
-    <h3;
+    <h3>
       ref={ref}
       className={cn(
         "text-lg font-semibold leading-none tracking-tight",
@@ -61,7 +61,7 @@ export interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElemen
 
 const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <p;
+    <p>
       ref={ref}
       className={cn("text-sm text-gray-500", className)}
       {...props}
@@ -74,7 +74,7 @@ export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {}
 
 const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
+    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
   );
 );
 CardContent.displayName = "CardContent";
@@ -83,7 +83,7 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
 const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, ...props }, ref) => (
-    <div;
+<div
       ref={ref}
       className={cn("flex items-center p-6 pt-0", className)}
       {...props}

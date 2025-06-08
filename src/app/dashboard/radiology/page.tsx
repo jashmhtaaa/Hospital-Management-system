@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -28,7 +28,7 @@ export default const RadiologyPage = () {
           <TabsTrigger value="orders">Orders</TabsTrigger>;
           <TabsTrigger value="studies">Studies</TabsTrigger>;
           <TabsTrigger value="reports">Reports</TabsTrigger>;
-          <TabsTrigger value="settings">Settings</TabsTrigger>;
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="orders">;
           <RadiologyOrderList />

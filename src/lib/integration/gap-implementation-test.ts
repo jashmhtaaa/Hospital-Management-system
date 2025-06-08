@@ -13,18 +13,18 @@ import { getEHRPersistenceService } from '../core/ehr-persistence.service';
 import { getNotificationService } from '../notifications/external-notification.service';
 
 export interface GapImplementationTestResults {
-  testsRun: number;
+  testsRun: number,
   testsPassed: number;
-  testsFailed: number;
+  testsFailed: number,
   gaps: {
-    icdCoding: boolean;
+    icdCoding: boolean,
     qualityPersistence: boolean;
-    ehrPersistence: boolean;
+    ehrPersistence: boolean,
     externalNotifications: boolean;
-    performanceOptimization: boolean;
+    performanceOptimization: boolean
   };
-  errors: string[];
-  recommendations: string[];
+  errors: string[],
+  recommendations: string[]
 }
 
 export class GapImplementationTester {
@@ -56,11 +56,11 @@ export class GapImplementationTester {
       await this.testICDCodingService();
       results.testsPassed++;
       results.gaps.icdCoding = true;
-      console.log('✅ ICD Coding Service: PASSED');
+      console.log('✅ ICD Coding Service: PASSED')
     } catch (error) {
       results.testsFailed++;
       this.errors.push(`ICD Coding Service: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.log('❌ ICD Coding Service: FAILED');
+      console.log('❌ ICD Coding Service: FAILED')
     }
 
     // Test 2: Quality Persistence Service
@@ -70,11 +70,11 @@ export class GapImplementationTester {
       await this.testQualityPersistenceService();
       results.testsPassed++;
       results.gaps.qualityPersistence = true;
-      console.log('✅ Quality Persistence Service: PASSED');
+      console.log('✅ Quality Persistence Service: PASSED')
     } catch (error) {
       results.testsFailed++;
       this.errors.push(`Quality Persistence: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.log('❌ Quality Persistence Service: FAILED');
+      console.log('❌ Quality Persistence Service: FAILED')
     }
 
     // Test 3: EHR Persistence Service
@@ -84,11 +84,11 @@ export class GapImplementationTester {
       await this.testEHRPersistenceService();
       results.testsPassed++;
       results.gaps.ehrPersistence = true;
-      console.log('✅ EHR Persistence Service: PASSED');
+      console.log('✅ EHR Persistence Service: PASSED')
     } catch (error) {
       results.testsFailed++;
       this.errors.push(`EHR Persistence: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.log('❌ EHR Persistence Service: FAILED');
+      console.log('❌ EHR Persistence Service: FAILED')
     }
 
     // Test 4: External Notifications Service
@@ -98,11 +98,11 @@ export class GapImplementationTester {
       await this.testExternalNotificationsService();
       results.testsPassed++;
       results.gaps.externalNotifications = true;
-      console.log('✅ External Notifications Service: PASSED');
+      console.log('✅ External Notifications Service: PASSED')
     } catch (error) {
       results.testsFailed++;
       this.errors.push(`External Notifications: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.log('❌ External Notifications Service: FAILED');
+      console.log('❌ External Notifications Service: FAILED')
     }
 
     // Test 5: Performance Optimization Service
@@ -112,11 +112,11 @@ export class GapImplementationTester {
       await this.testPerformanceOptimizationService();
       results.testsPassed++;
       results.gaps.performanceOptimization = true;
-      console.log('✅ Performance Optimization Service: PASSED');
+      console.log('✅ Performance Optimization Service: PASSED')
     } catch (error) {
       results.testsFailed++;
       this.errors.push(`Performance Optimization: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.log('❌ Performance Optimization Service: FAILED');
+      console.log('❌ Performance Optimization Service: FAILED')
     }
 
     // Test 6: Integrated Quality Service
@@ -125,11 +125,11 @@ export class GapImplementationTester {
     try {
       await this.testIntegratedQualityService();
       results.testsPassed++;
-      console.log('✅ Integrated Quality Service: PASSED');
+      console.log('✅ Integrated Quality Service: PASSED')
     } catch (error) {
       results.testsFailed++;
       this.errors.push(`Integrated Quality: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.log('❌ Integrated Quality Service: FAILED');
+      console.log('❌ Integrated Quality Service: FAILED')
     }
 
     results.errors = this.errors;
@@ -454,7 +454,7 @@ export class GapImplementationTester {
 
   private generateRecommendations(results: GapImplementationTestResults): void {
     if (results.testsFailed > 0) {
-      this.recommendations.push('Review and fix failing tests before deployment');
+      this.recommendations.push('Review and fix failing tests before deployment')
     }
 
     if (!results.gaps.icdCoding) {

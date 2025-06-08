@@ -53,7 +53,7 @@ interface StressTestConfiguration {
   readonly resourceMonitoring: boolean;
   readonly failureThresholds: FailureThresholds;
   readonly credentials: TestCredentials;
-  readonly endpoints: EndpointConfiguration[];
+  readonly endpoints: EndpointConfiguration[]
 }
 
 interface FailureThresholds {
@@ -61,13 +61,13 @@ interface FailureThresholds {
   readonly maxResponseTime: number;
   readonly criticalServiceMaxErrors: number;
   readonly emergencyServiceMaxLatency: number;
-  readonly recoveryTimeLimit: number;
+  readonly recoveryTimeLimit: number
 }
 
 interface TestCredentials {
   readonly email: string;
   readonly password: string;
-  readonly role: string;
+  readonly role: string
 }
 
 interface EndpointConfiguration {
@@ -76,19 +76,19 @@ interface EndpointConfiguration {
   readonly criticality: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   readonly maxLatency: number;
   readonly payload?: object;
-  readonly healthIndicator: boolean;
+  readonly healthIndicator: boolean
 }
 
 interface AuthenticationResponse {
   readonly tokens: {
     readonly accessToken: string;
     readonly refreshToken: string;
-    readonly expiresIn: number;
+    readonly expiresIn: number
   };
   readonly user: {
     readonly id: string;
     readonly email: string;
-    readonly role: string;
+    readonly role: string
   };
 }
 
@@ -103,14 +103,14 @@ interface StressTestMetrics {
   readonly p99ResponseTime: number;
   readonly systemRecoveryTime?: number;
   readonly criticalFailures: number;
-  readonly resourceUtilization: ResourceMetrics;
+  readonly resourceUtilization: ResourceMetrics
 }
 
 interface ResourceMetrics {
   readonly cpuUtilization: number;
   readonly memoryUtilization: number;
   readonly connectionPoolUsage: number;
-  readonly databaseConnections: number;
+  readonly databaseConnections: number
 }
 
 // Enterprise stress test configuration with breaking point analysis
@@ -750,8 +750,7 @@ export default function(data: { authToken: string }): void {
   // Stress testing think time (shorter than normal)
   const thinkTime = scenario === 'spike_stress' ? 
     randomIntBetween(0.1, 0.5) : 
-    randomIntBetween(0.5, 2);
-  
+    randomIntBetween(0.5, 2),
   sleep(thinkTime);
   
   activeUsersGauge.add(-1);
@@ -1028,5 +1027,5 @@ function generateStressTestHTMLReport(metrics: StressTestMetrics, data: any): st
     </div>
 </body>
 </html>
-  `;
+  `
 }

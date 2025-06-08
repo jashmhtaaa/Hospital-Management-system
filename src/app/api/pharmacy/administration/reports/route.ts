@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -33,14 +33,14 @@ const administrationRepository = {
   generateReport: (criteria: unknown) => Promise.resolve({ data: [], summary: {} }),
   save: (administration: unknown) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true)
 };
 
 /**
  * GET /api/pharmacy/administration/reports;
  * Generate medication administration reports with various filtering options;
  */
-export async const GET = (req: NextRequest) {
+export async const GET = (req: NextRequest) => {
   try {
     // Check authorization;
     const authHeader = req.headers.get('authorization');
@@ -113,7 +113,7 @@ export async const GET = (req: NextRequest) {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length;
+          recordCount: report.data.length
         }
       });
       
@@ -137,7 +137,7 @@ export async const GET = (req: NextRequest) {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length;
+          recordCount: report.data.length
         }
       });
       
@@ -165,7 +165,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     administrationsByShift: {
       morning: 0,
       afternoon: 0,
-      night: 0;
+      night: 0
     },
     administrationsByRoute: {}
   };
@@ -226,7 +226,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
  */
 const convertToCSV = (data: unknown[]): string {
   if (data.length === 0) {
-    return '';
+    return ''
   }
   
   // Get headers from first item;

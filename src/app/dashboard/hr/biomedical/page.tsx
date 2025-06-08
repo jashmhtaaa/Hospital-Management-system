@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -84,7 +84,7 @@ export default const BiomedicalEquipment = () {
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 10,
-    total: 0;
+    total: 0
   });
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
@@ -96,7 +96,7 @@ export default const BiomedicalEquipment = () {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString();
+          take: pagination.take.toString()
         });
         
         if (search) queryParams.append('search', search);
@@ -113,14 +113,14 @@ export default const BiomedicalEquipment = () {
           throw new Error('Failed to fetch biomedical equipment');
         }
         
-        const data = await response.json();
+        const data = await response.json(),
         setEquipment(data.equipment || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0
         }));
       } catch (err) {
-        setError(err.message);
+        setError(err.message),
         toast({
           title: "Error",
           description: err.message,
@@ -142,7 +142,7 @@ export default const BiomedicalEquipment = () {
       try {
         const response = await fetch('/api/hr/departments');
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json(),
           setDepartments(data.departments || []);
         }
       } catch (err) {
@@ -159,7 +159,7 @@ export default const BiomedicalEquipment = () {
       try {
         const response = await fetch('/api/hr/biomedical/statistics');
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json(),
           setStatistics(data);
         }
       } catch (err) {
@@ -175,7 +175,7 @@ export default const BiomedicalEquipment = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -184,7 +184,7 @@ export default const BiomedicalEquipment = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -195,7 +195,7 @@ export default const BiomedicalEquipment = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
   };
 
@@ -205,7 +205,7 @@ export default const BiomedicalEquipment = () {
     // Reset pagination when changing tabs;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
     
     // Set appropriate filters based on tab;
@@ -259,8 +259,7 @@ export default const BiomedicalEquipment = () {
         return 'destructive';
       case 'LOST':
         return 'outline';
-      default:
-        return 'default';
+      default: return 'default'
     }
   };
 
@@ -268,19 +267,18 @@ export default const BiomedicalEquipment = () {
   const getEquipmentTypeIcon = (type: unknown) => {
     switch (type) {
       case 'DIAGNOSTIC':
-        return <Stethoscope className="h-4 w-4" />;
+        return <Stethoscope className="h-4 w-4" />
       case 'THERAPEUTIC':
-        return <Activity className="h-4 w-4" />;
+        return <Activity className="h-4 w-4" />
       case 'MONITORING':
-        return <Thermometer className="h-4 w-4" />;
+        return <Thermometer className="h-4 w-4" />
       case 'LABORATORY':
-        return <Microscope className="h-4 w-4" />;
+        return <Microscope className="h-4 w-4" />
       case 'SURGICAL':
-        return <Scissors className="h-4 w-4" />;
+        return <Scissors className="h-4 w-4" />
       case 'LIFE_SUPPORT':
-        return <Heart className="h-4 w-4" />;
-      default:
-        return <Stethoscope className="h-4 w-4" />;
+        return <Heart className="h-4 w-4" />
+      default: return <Stethoscope className="h-4 w-4" />
     }
   };
 
@@ -293,8 +291,7 @@ export default const BiomedicalEquipment = () {
         return 'secondary';
       case 'CLASS_III':
         return 'destructive';
-      default:
-        return 'outline';
+      default: return 'outline'
     }
   };
 
@@ -309,8 +306,7 @@ export default const BiomedicalEquipment = () {
         return 'warning';
       case 'CRITICAL':
         return 'destructive';
-      default:
-        return 'outline';
+      default: return 'outline'
     }
   };
 
@@ -339,7 +335,7 @@ export default const BiomedicalEquipment = () {
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Biomedical Equipment Management</h1>;
         <p className="text-muted-foreground">;
-          Track and manage specialized medical devices and equipment;
+          Track and manage specialized medical devices and equipment
         </p>
       </div>
       
@@ -348,17 +344,17 @@ export default const BiomedicalEquipment = () {
           <TabsList>
             <TabsTrigger value="all">All Equipment</TabsTrigger>;
             <TabsTrigger value="calibration">Calibration Due</TabsTrigger>;
-            <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>;
+            <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
           
           <div className="flex flex-wrap gap-2">;
             <Button onClick={handleCreateEquipment}>;
-              <Plus className="mr-2 h-4 w-4" />;
-              New Equipment;
+              <Plus className="mr-2 h-4 w-4" />
+              New Equipment
             </Button>
             <Button variant="outline" onClick={handleExport}>;
-              <Download className="mr-2 h-4 w-4" />;
-              Export;
+              <Download className="mr-2 h-4 w-4" />
+              Export
             </Button>
           </div>
         </div>
@@ -377,17 +373,17 @@ export default const BiomedicalEquipment = () {
                 <div className="flex flex-col md:flex-row gap-2 md:items-center">;
                   <form onSubmit={handleSearch} className="flex gap-2">;
                     <div className="relative">;
-                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
-                      <Input;
+                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Input>
                         type="search"
-                        placeholder="Search equipment...";
-                        className="pl-8 w-full md:w-[300px]";
+                        placeholder="Search equipment..."
+                        className="pl-8 w-full md:w-[300px]"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
                     <Button type="submit" variant="secondary">;
-                      Search;
+                      Search
                     </Button>
                   </form>
                 </div>
@@ -395,7 +391,7 @@ export default const BiomedicalEquipment = () {
                 <div className="flex flex-col md:flex-row gap-2">;
                   <Select value={equipmentTypeFilter} onValueChange={setEquipmentTypeFilter}>;
                     <SelectTrigger className="w-full md:w-[180px]">;
-                      <SelectValue placeholder="All Types" />;
+                      <SelectValue placeholder="All Types" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">All Types</SelectItem>;
@@ -405,25 +401,25 @@ export default const BiomedicalEquipment = () {
                       <SelectItem value="LABORATORY">Laboratory</SelectItem>;
                       <SelectItem value="SURGICAL">Surgical</SelectItem>;
                       <SelectItem value="LIFE_SUPPORT">Life Support</SelectItem>;
-                      <SelectItem value="OTHER">Other</SelectItem>;
+                      <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                   
                   <Select value={regulatoryClassFilter} onValueChange={setRegulatoryClassFilter}>;
                     <SelectTrigger className="w-full md:w-[180px]">;
-                      <SelectValue placeholder="All Classes" />;
+                      <SelectValue placeholder="All Classes" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">All Classes</SelectItem>;
                       <SelectItem value="CLASS_I">Class I</SelectItem>;
                       <SelectItem value="CLASS_II">Class II</SelectItem>;
-                      <SelectItem value="CLASS_III">Class III</SelectItem>;
+                      <SelectItem value="CLASS_III">Class III</SelectItem>
                     </SelectContent>
                   </Select>
                   
                   <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
                     <SelectTrigger className="w-full md:w-[180px]">;
-                      <SelectValue placeholder="All Departments" />;
+                      <SelectValue placeholder="All Departments" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">All Departments</SelectItem>;
@@ -443,11 +439,11 @@ export default const BiomedicalEquipment = () {
                 </div>
               ) : loading ? (
                 <div className="text-center py-4">;
-                  Loading...;
+                  Loading...
                 </div>
               ) : equipment.length === 0 ? (
                 <div className="text-center py-4">;
-                  No biomedical equipment found. Try adjusting your filters or create a new equipment record.;
+                  No biomedical equipment found. Try adjusting your filters or create a new equipment record.
                 </div>
               ) : (
                 <div className="overflow-x-auto">;
@@ -490,7 +486,7 @@ export default const BiomedicalEquipment = () {
                           <TableCell>
                             <div className="flex items-center gap-1">;
                               {isCalibrationDue(item.nextCalibrationDate) && (
-                                <AlertTriangle className="h-4 w-4 text-destructive" />;
+                                <AlertTriangle className="h-4 w-4 text-destructive" />
                               )}
                               {formatDateOrPlaceholder(item.nextCalibrationDate)}
                             </div>
@@ -501,12 +497,12 @@ export default const BiomedicalEquipment = () {
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/biomedical/${item.id}`)}
                             >
-                              View;
+                              View
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -520,7 +516,7 @@ export default const BiomedicalEquipment = () {
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious;
+                    <PaginationPrevious>
                       onClick={handlePreviousPage}
                       className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -532,7 +528,7 @@ export default const BiomedicalEquipment = () {
                     </span>
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext;
+                    <PaginationNext>
                       onClick={handleNextPage}
                       className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
                     />
@@ -548,17 +544,17 @@ export default const BiomedicalEquipment = () {
             <CardHeader className="pb-2">;
               <CardTitle>Calibration Schedule</CardTitle>
               <CardDescription>
-                Equipment due for calibration or recently calibrated;
+                Equipment due for calibration or recently calibrated
               </CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
                 <div className="text-center py-4">;
-                  Loading calibration schedule...;
+                  Loading calibration schedule...
                 </div>
               ) : equipment.length === 0 ? (
                 <div className="text-center py-4">;
-                  No equipment due for calibration.;
+                  No equipment due for calibration.
                 </div>
               ) : (
                 <div className="overflow-x-auto">;
@@ -594,7 +590,7 @@ export default const BiomedicalEquipment = () {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-1">;
-                              <AlertTriangle className="h-4 w-4 text-destructive" />;
+                              <AlertTriangle className="h-4 w-4 text-destructive" />
                               {formatDateOrPlaceholder(item.nextCalibrationDate)}
                             </div>
                           </TableCell>
@@ -604,12 +600,12 @@ export default const BiomedicalEquipment = () {
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Button;
-                              variant="ghost";
-                              size="sm";
+                            <Button>
+                              variant="ghost"
+                              size="sm"
                               onClick={() => router.push(`/dashboard/hr/biomedical/${item.id}/calibration/new`)}
                             >
-                              Calibrate;
+                              Calibrate
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -627,13 +623,13 @@ export default const BiomedicalEquipment = () {
             <CardHeader className="pb-2">;
               <CardTitle>Biomedical Equipment Reports & Analytics</CardTitle>
               <CardDescription>
-                View equipment distribution, compliance, and calibration status;
+                View equipment distribution, compliance, and calibration status
               </CardDescription>
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
               <div className="text-center py-4">;
-                Loading biomedical reports...;
+                Loading biomedical reports...
               </div>
             </CardContent>
           </Card>
@@ -643,11 +639,11 @@ export default const BiomedicalEquipment = () {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Total Equipment</CardTitle>;
+            <CardTitle className="text-sm font-medium">Total Equipment</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <Stethoscope className="h-5 w-5 text-blue-500 mr-2" />;
+              <Stethoscope className="h-5 w-5 text-blue-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {statistics?.totalEquipment || 0}
               </span>
@@ -657,11 +653,11 @@ export default const BiomedicalEquipment = () {
         
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Calibration Due</CardTitle>;
+            <CardTitle className="text-sm font-medium">Calibration Due</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <AlertTriangle className="h-5 w-5 text-destructive mr-2" />;
+              <AlertTriangle className="h-5 w-5 text-destructive mr-2" />
               <span className="text-2xl font-bold">;
                 {statistics?.calibrationDue || 0}
               </span>
@@ -671,11 +667,11 @@ export default const BiomedicalEquipment = () {
         
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Class III Devices</CardTitle>;
+            <CardTitle className="text-sm font-medium">Class III Devices</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <Heart className="h-5 w-5 text-red-500 mr-2" />;
+              <Heart className="h-5 w-5 text-red-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {statistics?.equipmentByRegulatoryClass?.find(c => c.class === 'CLASS_III')?.count || 0}
               </span>
@@ -685,11 +681,11 @@ export default const BiomedicalEquipment = () {
         
         <Card>
           <CardHeader className="pb-2">;
-            <CardTitle className="text-sm font-medium">Upcoming Calibrations</CardTitle>;
+            <CardTitle className="text-sm font-medium">Upcoming Calibrations</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">;
-              <Clock className="h-5 w-5 text-yellow-500 mr-2" />;
+              <Clock className="h-5 w-5 text-yellow-500 mr-2" />
               <span className="text-2xl font-bold">;
                 {statistics?.calibrationUpcoming || 0}
               </span>

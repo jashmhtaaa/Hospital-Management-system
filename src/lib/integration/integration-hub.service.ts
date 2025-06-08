@@ -1,10 +1,10 @@
 var __DEV__: boolean;
   interface Window {
-    [key: string]: any;
+    [key: string]: any
   }
   namespace NodeJS {
     interface Global {
-      [key: string]: any;
+      [key: string]: any
     }
   }
 }
@@ -19,23 +19,23 @@ import { EventEmitter } from 'events';
 import { PrismaClient } from '@prisma/client';
 
 export interface IntegrationEndpoint {
-  id: string;
+  id: string,
   name: string;
-  type: IntegrationType;
+  type: IntegrationType,
   status: 'active' | 'inactive' | 'error' | 'testing';
-  configuration: EndpointConfiguration;
+  configuration: EndpointConfiguration,
   credentials: EndpointCredentials;
-  mappings: DataMapping[];
+  mappings: DataMapping[],
   lastSync: Date | null;
-  nextSync: Date | null;
+  nextSync: Date | null,
   syncFrequency: number; // in minutes;
-  errorCount: number;
+  errorCount: number,
   successCount: number;
   lastError?: string;
-  healthCheck: HealthCheckConfig;
+  healthCheck: HealthCheckConfig,
   version: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export type IntegrationType = 
@@ -61,11 +61,11 @@ export type IntegrationType =
 export interface EndpointConfiguration {
   baseUrl?: string;
   apiVersion?: string;
-  timeout: number;
+  timeout: number,
   retryAttempts: number;
   retryDelay: number;
   rateLimit?: {
-    requests: number;
+    requests: number,
     window: number; // in seconds;
   };
   headers?: Record<string, string>;
@@ -77,8 +77,8 @@ export interface EndpointConfiguration {
     ca?: string;
   };
   compression?: boolean;
-  format: 'json' | 'xml' | 'hl7' | 'dicom' | 'csv' | 'pipe_delimited';
-  encoding: 'utf8' | 'utf16' | 'ascii';
+  format: 'json' | 'xml' | 'hl7' | 'dicom' | 'csv' | 'pipe_delimited',
+  encoding: 'utf8' | 'utf16' | 'ascii'
 }
 
 export interface EndpointCredentials {
@@ -98,7 +98,7 @@ export interface EndpointCredentials {
 }
 
 export interface DataMapping {
-  sourceField: string;
+  sourceField: string,
   targetField: string;
   transformation?: DataTransformation;
   required: boolean;
@@ -118,35 +118,35 @@ export interface DataTransformation {
 export interface ValidationRule {
   type: 'required' | 'type' | 'range' | 'regex' | 'length' | 'custom';
   value?: unknown;
-  message: string;
+  message: string
 }
 
 export interface HealthCheckConfig {
-  enabled: boolean;
+  enabled: boolean,
   interval: number; // in minutes;
   endpoint?: string;
-  method: 'GET' | 'POST' | 'HEAD';
+  method: 'GET' | 'POST' | 'HEAD',
   timeout: number;
   expectedStatus: number[];
   expectedContent?: string;
 }
 
 export interface IntegrationMessage {
-  id: string;
+  id: string,
   endpointId: string;
-  direction: 'inbound' | 'outbound';
+  direction: 'inbound' | 'outbound',
   messageType: string;
-  status: 'pending' | 'processing' | 'success' | 'failed' | 'retry';
+  status: 'pending' | 'processing' | 'success' | 'failed' | 'retry',
   priority: 'low' | 'normal' | 'high' | 'critical';
   sourceData: unknown;
   transformedData?: unknown;
   errorMessage?: string;
-  retryCount: number;
+  retryCount: number,
   maxRetries: number;
   createdAt: Date;
   processedAt?: Date;
   acknowledgedAt?: Date;
-  metadata: MessageMetadata;
+  metadata: MessageMetadata
 }
 
 export interface MessageMetadata {
@@ -166,77 +166,77 @@ export interface MessageMetadata {
 }
 
 export interface IntegrationEvent {
-  id: string;
+  id: string,
   endpointId: string;
-  type: 'sync_started' | 'sync_completed' | 'sync_failed' | 'message_received' | 'message_sent' | 'error' | 'status_change';
+  type: 'sync_started' | 'sync_completed' | 'sync_failed' | 'message_received' | 'message_sent' | 'error' | 'status_change',
   severity: 'info' | 'warning' | 'error' | 'critical';
   message: string;
   data?: unknown;
-  timestamp: Date;
+  timestamp: Date,
   resolved: boolean;
   resolvedAt?: Date;
   resolvedBy?: string;
 }
 
 export interface SyncResult {
-  endpointId: string;
+  endpointId: string,
   startTime: Date;
-  endTime: Date;
+  endTime: Date,
   success: boolean;
-  recordsProcessed: number;
+  recordsProcessed: number,
   recordsSuccess: number;
-  recordsFailed: number;
+  recordsFailed: number,
   errors: string[];
-  warnings: string[];
-  metadata: unknown;
+  warnings: string[],
+  metadata: unknown
 }
 
 export interface MessageTransformer {
-  name: string;
+  name: string,
   version: string;
-  inputFormat: string;
+  inputFormat: string,
   outputFormat: string;
   transform(data: unknown, mapping: DataMapping[], context?: unknown): Promise<any>;
-  validate(data: unknown, rules: ValidationRule[]): Promise<ValidationResult>;
+  validate(data: unknown, rules: ValidationRule[]): Promise<ValidationResult>
 }
 
 export interface ValidationResult {
-  valid: boolean;
+  valid: boolean,
   errors: string[];
-  warnings: string[];
+  warnings: string[]
 }
 
 export interface IntegrationStatistics {
-  totalEndpoints: number;
+  totalEndpoints: number,
   activeEndpoints: number;
-  totalMessages: number;
+  totalMessages: number,
   successfulMessages: number;
-  failedMessages: number;
+  failedMessages: number,
   averageProcessingTime: number;
-  uptime: number;
+  uptime: number,
   lastSync: Date | null;
-  errorRate: number;
+  errorRate: number,
   throughput: number; // messages per hour;
-  byEndpoint: EndpointStats[];
-  byMessageType: MessageTypeStats[];
+  byEndpoint: EndpointStats[],
+  byMessageType: MessageTypeStats[]
 }
 
 export interface EndpointStats {
-  endpointId: string;
+  endpointId: string,
   name: string;
-  type: IntegrationType;
+  type: IntegrationType,
   status: string;
-  messagesProcessed: number;
+  messagesProcessed: number,
   successRate: number;
-  averageResponseTime: number;
-  lastActivity: Date | null;
+  averageResponseTime: number,
+  lastActivity: Date | null
 }
 
 export interface MessageTypeStats {
-  messageType: string;
+  messageType: string,
   count: number;
-  successRate: number;
-  averageProcessingTime: number;
+  successRate: number,
+  averageProcessingTime: number
 }
 
 class IntegrationHubService extends EventEmitter {
@@ -248,8 +248,7 @@ class IntegrationHubService extends EventEmitter {
   private syncJobs: Map<string, NodeJS.Timeout> = new Map();
   private healthChecks: Map<string, NodeJS.Timeout> = new Map();
   private isRunning = false;
-  private startTime = new Date();
-
+  private startTime = new Date(),
   constructor() {
     super();
     this.prisma = new PrismaClient();
@@ -279,8 +278,7 @@ class IntegrationHubService extends EventEmitter {
       this.startMessageProcessing();
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      this.emit('hub_started');
-
+      this.emit('hub_started')
     } catch (error) {
 
       throw error;
@@ -304,7 +302,7 @@ class IntegrationHubService extends EventEmitter {
     this.healthChecks.clear();
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.emit('hub_stopped');
+    this.emit('hub_stopped')
   }
 
   /**
@@ -319,7 +317,7 @@ class IntegrationHubService extends EventEmitter {
       lastSync: null,
       nextSync: new Date(Date.now() + config.syncFrequency * 60 * 1000),
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date()
     };
 
     this.endpoints.set(endpoint.id, endpoint);
@@ -356,7 +354,7 @@ class IntegrationHubService extends EventEmitter {
     const updatedEndpoint = {
       ...endpoint,
       ...updates,
-      updatedAt: new Date();
+      updatedAt: new Date()
     };
 
     this.endpoints.set(endpointId, updatedEndpoint);
@@ -501,7 +499,7 @@ class IntegrationHubService extends EventEmitter {
         messagesProcessed: endpointMessages.length,
         successRate: endpointMessages.length > 0 ? (successfulEndpointMessages.length / endpointMessages.length) * 100 : 0,
         averageResponseTime: this.calculateAverageProcessingTime(endpointMessages),
-        lastActivity: endpoint.lastSync;
+        lastActivity: endpoint.lastSync
       };
     });
 
@@ -518,7 +516,7 @@ class IntegrationHubService extends EventEmitter {
         messageType,
         count: messages.length,
         successRate: (successful.length / messages.length) * 100,
-        averageProcessingTime: this.calculateAverageProcessingTime(messages);
+        averageProcessingTime: this.calculateAverageProcessingTime(messages)
       });
     });
 
@@ -534,7 +532,7 @@ class IntegrationHubService extends EventEmitter {
       errorRate: allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
       throughput: this.calculateThroughput(allMessages),
       byEndpoint: endpointStats,
-      byMessageType: messageTypeStats;
+      byMessageType: messageTypeStats
     };
   }
 
@@ -542,7 +540,7 @@ class IntegrationHubService extends EventEmitter {
    * Get endpoint by ID;
    */
   getEndpoint(endpointId: string): IntegrationEndpoint | undefined {
-    return this.endpoints.get(endpointId);
+    return this.endpoints.get(endpointId)
   }
 
   /**
@@ -556,7 +554,7 @@ class IntegrationHubService extends EventEmitter {
    * Get message by ID;
    */
   getMessage(messageId: string): IntegrationMessage | undefined {
-    return this.messages.get(messageId);
+    return this.messages.get(messageId)
   }
 
   /**
@@ -670,14 +668,14 @@ class IntegrationHubService extends EventEmitter {
           retryAttempts: 3,
           retryDelay: 1000,
           format: 'json',
-          encoding: 'utf8';
+          encoding: 'utf8'
         },
         credentials: {
           type: 'oauth2',
           clientId: 'epic_client_id',
           clientSecret: 'epic_client_secret',
           tokenUrl: 'https://api.epic.example.com/oauth2/token',
-          scope: 'patient.read observation.read';
+          scope: 'patient.read observation.read'
         },
         mappings: [],
         syncFrequency: 60,
@@ -689,7 +687,7 @@ class IntegrationHubService extends EventEmitter {
           timeout: 10000,
           expectedStatus: [200]
         },
-        version: '1.0.0';
+        version: '1.0.0'
       });
 
     } catch (error) {
@@ -707,7 +705,7 @@ class IntegrationHubService extends EventEmitter {
 
   private startSyncJob(endpoint: IntegrationEndpoint): void {
     if (this.syncJobs.has(endpoint.id)) {
-      this.stopSyncJob(endpoint.id);
+      this.stopSyncJob(endpoint.id)
     }
 
     const interval = setInterval(async () => {
@@ -735,7 +733,7 @@ class IntegrationHubService extends EventEmitter {
 
   private startHealthCheck(endpoint: IntegrationEndpoint): void {
     if (this.healthChecks.has(endpoint.id)) {
-      this.stopHealthCheck(endpoint.id);
+      this.stopHealthCheck(endpoint.id)
     }
 
     const interval = setInterval(async () => {
@@ -744,7 +742,7 @@ class IntegrationHubService extends EventEmitter {
         await this.updateEndpoint(endpoint.id, { 
           status: 'error', 
           lastError: result.error,
-          errorCount: endpoint.errorCount + 1;
+          errorCount: endpoint.errorCount + 1
         });
         
         this.logEvent(endpoint.id, 'error', 'Health check failed', result.error);
@@ -783,7 +781,7 @@ class IntegrationHubService extends EventEmitter {
         lastSync: new Date(),
         nextSync: new Date(Date.now() + endpoint.syncFrequency * 60 * 1000),
         successCount: endpoint.successCount + result.recordsSuccess,
-        errorCount: endpoint.errorCount + result.recordsFailed;
+        errorCount: endpoint.errorCount + result.recordsFailed
       });
 
       this.logEvent(endpoint.id, 'sync_completed', `Sync completed: ${result.recordsProcessed} records processed`);
@@ -806,7 +804,7 @@ class IntegrationHubService extends EventEmitter {
 
       await this.updateEndpoint(endpoint.id, {
         errorCount: endpoint.errorCount + 1,
-        lastError: error.message;
+        lastError: error.message
       });
 
       this.logEvent(endpoint.id, 'sync_failed', 'Synchronization failed', error.message);
@@ -968,8 +966,7 @@ class IntegrationHubService extends EventEmitter {
         return data.resourceType || 'Unknown';
       case 'hl7_v2':
         return data.substring(0, 3) || 'Unknown'; // MSH, ADT, etc.;
-      default:
-        return 'Unknown';
+      default: return 'Unknown'
     }
   }
 
@@ -982,7 +979,7 @@ class IntegrationHubService extends EventEmitter {
       message,
       data,
       timestamp: new Date(),
-      resolved: false;
+      resolved: false
     };
 
     this.events.push(event);

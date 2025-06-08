@@ -2,10 +2,7 @@
   "name": "shlokam-hms",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    ".",
-    "worker"
-  ],
+
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,11 +10,7 @@
     "lint": "next lint --fix",
     "lint:check": "next lint",
     "lint:ci": "eslint . --ext .ts,.tsx,.js,.jsx --format json --output-file eslint-report.json",
-<<<<<<< HEAD
-    "lint:enterprise": "eslint . --config eslint.config.enterprise.js --ext .ts,.tsx,.js,.jsx",
-=======
     "lint:enterprise": "eslint . --config eslint.config.enterprise.ts --ext .ts,.tsx,.js,.jsx",
->>>>>>> master
     "lint:security": "eslint . --ext .ts,.tsx,.js,.jsx --config eslint.config.security.js",
     "lint:report": "eslint . --ext .ts,.tsx,.js,.jsx --format html --output-file reports/eslint-report.html",
     "lint:fix:all": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
@@ -50,17 +43,10 @@
     "test:e2e:healthcare": "playwright test --config=playwright.healthcare.config.ts",
     "test:smoke:staging": "playwright test --config=playwright.smoke.config.ts",
     "test:production:validation": "playwright test --config=playwright.production.config.ts",
-<<<<<<< HEAD
-    "test:performance": "k6 run tests/performance/load-test.js",
-    "test:performance:quick": "k6 run tests/performance/load-test.js --duration=30s --vus=5",
-    "test:performance:extended": "k6 run tests/performance/load-test.js --duration=10m --vus=50",
-    "test:stress": "k6 run tests/stress/stress-test.js",
-=======
     "test:performance": "k6 run tests/performance/load-test.ts",
     "test:performance:quick": "k6 run tests/performance/load-test.ts --duration=30s --vus=5",
     "test:performance:extended": "k6 run tests/performance/load-test.ts --duration=10m --vus=50",
     "test:stress": "k6 run tests/stress/stress-test.ts",
->>>>>>> master
     "test:accessibility:axe": "axe --dir test-results/accessibility src/",
     "test:accessibility:lighthouse": "lhci autorun",
     "security:audit": "npm audit --audit-level moderate",
@@ -73,11 +59,7 @@
     "fhir:compliance": "npm run fhir:validate:r4 && npm run fhir:structure:validation",
     "fhir:production": "node scripts/fhir/production-validation.js",
     "compliance:hipaa": "python scripts/compliance/hipaa-validation.py",
-<<<<<<< HEAD
-    "compliance:gdpr": "node scripts/compliance/gdpr-validation.js",
-=======
     "compliance:gdpr": "tsx scripts/compliance/gdpr-validation.ts",
->>>>>>> master
     "compliance:full": "npm run compliance:hipaa && npm run compliance:gdpr",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
@@ -108,13 +90,8 @@
     "nx:lint": "nx lint",
     "setup:husky": "husky install",
     "setup:enterprise": "npm run setup:husky && npm run install:microservices && npm run db:generate",
-<<<<<<< HEAD
-    "monitor:health": "node scripts/monitoring/health-check.js",
-    "monitor:performance": "node scripts/monitoring/performance-check.js",
-=======
     "monitor:health": "tsx scripts/monitoring/health-check.ts",
     "monitor:performance": "tsx scripts/monitoring/performance-check.ts",
->>>>>>> master
     "prepare": "husky",
     "postinstall": "npm run db:generate",
     "deploy:staging": "node scripts/deployment/deploy-staging.js",
@@ -225,7 +202,7 @@
     "xss": "^1.0.15",
     "dompurify": "^3.2.0",
     "express-slow-down": "^2.0.3",
-    "@prisma/extension-pulse": "^1.1.0",
+
     "@prisma/extension-accelerate": "^1.1.0"
   },
   "devDependencies": {
@@ -236,14 +213,14 @@
     "@eslint/js": "^9.26.0",
     "@jest/globals": "^29.7.0",
     "@next/bundle-analyzer": "^15.3.1",
-    "@nx/devkit": "^19.0.0",
-    "@nx/eslint": "^19.0.0",
-    "@nx/jest": "^19.0.0",
-    "@nx/js": "^19.0.0",
-    "@nx/next": "^19.0.0",
-    "@nx/node": "^19.0.0",
-    "@nx/react": "^19.0.0",
-    "@nx/workspace": "^19.0.0",
+    "@nx/devkit": "19.8.4",
+    "@nx/eslint": "19.8.4",
+    "@nx/jest": "19.8.4",
+    "@nx/js": "19.8.4",
+    "@nx/next": "19.8.4",
+    "@nx/node": "19.8.4",
+    "@nx/react": "19.8.4",
+    "@nx/workspace": "19.8.4",
     "@opennextjs/cloudflare": "^1.0.0",
     "@playwright/test": "^1.52.0",
     "@prisma/client": "^6.7.0",
@@ -263,7 +240,7 @@
     "@types/qrcode": "^1.5.5",
     "@types/morgan": "^1.9.9",
     "@types/node-cron": "^3.0.11",
-    "@types/dompurify": "^3.0.5",
+
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.32.1",
     "autoprefixer": "^10.0.1",
@@ -284,7 +261,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "^15.5.1",
     "msw": "^2.4.10",
-    "nx": "^19.0.0",
+    "nx": "19.8.4",
     "postcss": "^8",
     "prettier": "^3.5.3",
     "prisma": "^6.7.0",

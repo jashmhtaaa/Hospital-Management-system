@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -19,7 +11,7 @@ import { cache } from '@/lib/cache';
 
 interface CacheHealth {
   status: 'healthy' | 'degraded' | 'unhealthy',
-  timestamp: string;
+  timestamp: string,
   responseTime: number,
   operations: {
     read: { success: boolean; time: number };
@@ -28,7 +20,7 @@ interface CacheHealth {
   };
   memory: {
     used: string,
-    peak: string;
+    peak: string,
     fragmentation: number
   };
   connections: {
@@ -39,17 +31,15 @@ interface CacheHealth {
     keys: number,
     expires: number
   };
-}
-
 export async const GET = (request: NextRequest): Promise<NextResponse> {
   const startTime = Date.now();
   
   try {
-    // Test basic cache operations;
+    // Test basic cache operations
     const operations = await testCacheOperations();
     
     // Get cache statistics (if supported by your cache implementation)
-    const stats = await getCacheStats();
+    const stats = await getCacheStats()
     
     const responseTime = Date.now() - startTime;
     
@@ -90,18 +80,18 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   const testKey = `health-check-${Date.now()}`;
   const testValue = 'cache-test-value';
   
-  // Test write operation;
+  // Test write operation
   const writeStart = Date.now();
   let writeSuccess = false;
   try {
-    await cache.set(testKey, testValue, 30); // 30 second TTL;
+    await cache.set(testKey, testValue, 30); // 30 second TTL
     writeSuccess = true;
   } catch (error) {
 
   }
   const writeTime = Date.now() - writeStart;
   
-  // Test read operation;
+  // Test read operation
   const readStart = Date.now();
   let readSuccess = false;
   try {
@@ -112,12 +102,12 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   }
   const readTime = Date.now() - readStart;
   
-  // Test delete operation;
+  // Test delete operation
   const deleteStart = Date.now();
   let deleteSuccess = false;
   try {
     await cache.del(testKey);
-    // Verify deletion;
+    // Verify deletion
     const deletedValue = await cache.get(testKey);
     deleteSuccess = deletedValue === null;
   } catch (error) {
@@ -134,14 +124,14 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
 
 async const getCacheStats = (): Promise<{
   memory: CacheHealth['memory'],
-  connections: CacheHealth['connections'];
+  connections: CacheHealth['connections'],
   keyspace: CacheHealth['keyspace']
 }> {
   try {
-    // These stats would come from your actual cache implementation;
-    // For Redis, you'd use INFO command, for in-memory cache, different methods;
+    // These stats would come from your actual cache implementation
+    // For Redis, you'd use INFO command, for in-memory cache, different methods
     
-    // Simulated stats - replace with actual cache metrics;
+    // Simulated stats - replace with actual cache metrics
     return {
       memory: {
         used: '45.2MB',
@@ -181,7 +171,7 @@ const determineCacheStatus = (
   operations: CacheHealth['operations'],
   responseTime: number;
 ): 'healthy' | 'degraded' | 'unhealthy' {
-  // Check if any operation failed;
+  // Check if any operation failed
   const anyOperationFailed = !operations.read.success ||;
                            !operations.write.success || 
                            !operations.delete.success;
@@ -190,17 +180,16 @@ const determineCacheStatus = (
     return 'unhealthy';
   }
   
-  // Check response times;
+  // Check response times
   const maxOperationTime = Math.max(
     operations.read.time,
     operations.write.time,
     operations.delete.time;
   );
   
-  // Cache is degraded if any operation takes more than 500ms;
+  // Cache is degraded if any operation takes more than 500ms
   if (maxOperationTime > 500 || responseTime > 1000) {
     return 'degraded';
   }
   
   return 'healthy';
-}

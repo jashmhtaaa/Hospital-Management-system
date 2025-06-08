@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -17,13 +7,13 @@ import { Button } from '@/components/ui/button';
 
 interface IPDPatient {
   id: string,
-  name: string;
+  name: string,
   age: number,
-  gender: string;
+  gender: string,
   admissionDate: string,
-  diagnosis: string;
+  diagnosis: string,
   ward: string,
-  bedNumber: string;
+  bedNumber: string,
   attendingDoctor: string,
   status: 'stable' | 'critical' | 'improving' | 'deteriorating'
 }
@@ -103,4 +93,3 @@ export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps)
       </CardContent>
     </Card>
   );
-}

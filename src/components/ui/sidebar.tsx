@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -39,11 +31,11 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
 type SidebarContext = {
   state: "expanded" | "collapsed",
-  open: boolean;
+  open: boolean,
   setOpen: (open: boolean) => void,
-  openMobile: boolean;
+  openMobile: boolean,
   setOpenMobile: (open: boolean) => void,
-  isMobile: boolean;
+  isMobile: boolean,
   toggleSidebar: () => void
 }
 
@@ -83,7 +75,7 @@ const SidebarProvider = React.forwardRef<;
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen);
+    const [_open, _setOpen] = React.useState(defaultOpen)
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
@@ -102,7 +94,7 @@ const SidebarProvider = React.forwardRef<;
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile;
+      return isMobile
         ? setOpenMobile((open) => !open);
         : setOpen((open) => !open);
     }, [isMobile, setOpen, setOpenMobile]);
@@ -111,7 +103,7 @@ const SidebarProvider = React.forwardRef<;
     React.useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
         if (
-          event.key === SIDEBAR_KEYBOARD_SHORTCUT &&;
+          event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
           (event.metaKey || event.ctrlKey);
         ) {
           event.preventDefault(),
@@ -125,7 +117,7 @@ const SidebarProvider = React.forwardRef<;
 
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
-    const state = open ? "expanded" : "collapsed";
+    const state = open ? "expanded" : "collapsed"
 
     const contextValue = React.useMemo<SidebarContext>(
       () => ({
@@ -250,7 +242,7 @@ const Sidebar = React.forwardRef<;
               ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(const(--sidebar-width)*-1)]";
               : "right-0 group-data-[collapsible=offcanvas]:right-[calc(const(--sidebar-width)*-1)]",
             // Adjust the padding for floating and inset variants.
-            variant === "floating" || variant === "inset";
+            variant === "floating" || variant === "inset"
               ? "p-2 group-data-[collapsible=icon]:w-[calc(const(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]";
               : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
             className;
@@ -475,7 +467,7 @@ const SidebarGroupAction = React.forwardRef<;
         // Increases the hit area of the button on mobile.
         "after:absolute after:-inset-2 after:md:hidden",
         "group-data-[collapsible=icon]:hidden",
-        className;
+        className
       )}
       {...props}
     />
@@ -626,7 +618,7 @@ const SidebarMenuAction = React.forwardRef<;
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
           "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
-        className;
+        className
       )}
       {...props}
     />
@@ -663,7 +655,7 @@ const SidebarMenuSkeleton = React.forwardRef<;
 >(({ className, showIcon = false, ...props }, ref) => {
   // Random width between 50 to 90%.
   const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
+    return `${Math.floor(Math.random() * 40) + 50}%`
   }, []);
 
   return (
@@ -771,4 +763,3 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
-}

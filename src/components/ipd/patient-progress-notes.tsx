@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -23,30 +15,30 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-  Label, // Assuming Label is imported from ui;
+  Label, // Assuming Label is imported from ui
 } from "@/components/ui";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
+import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface ProgressNote {
   id: string,
-  admission_id: string;
+  admission_id: string,
   note_date: string,
-  subjective: string;
+  subjective: string,
   objective: string,
-  assessment: string;
+  assessment: string,
   plan: string,
-  doctor_id: string;
+  doctor_id: string,
   created_at: string;
-  // Assuming these come from a join or separate fetch;
+  // Assuming these come from a join or separate fetch
   doctor_first_name?: string;
   doctor_last_name?: string;
 }
 
 interface AdmissionInfo {
   admission_number: string,
-  admission_date: string;
+  admission_date: string,
   patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
@@ -54,24 +46,24 @@ interface AdmissionInfo {
 
 interface FormData {
   subjective: string,
-  objective: string;
+  objective: string,
   assessment: string,
   plan: string
 }
 
-// FIX: Define type for API error response;
-// interface ApiErrorResponse { // FIX: Removed unused interface;
-//   error?: string;
+// FIX: Define type for API error response
+// interface ApiErrorResponse { // FIX: Removed unused interface
+//   error?: string
 // }
 
 // FIX: Define type for API success response (new note)
-type NewNoteResponse = ProgressNote;
+type NewNoteResponse = ProgressNote
 
 interface PatientProgressNotesProperties {
   admissionId: string | null
 }
 
-// FIX: Create a sub-component to manage individual note tabs state;
+// FIX: Create a sub-component to manage individual note tabs state
 interface NoteDisplayProperties {
   note: ProgressNote,
   formatDateTime: (dateString: string | undefined) => string
@@ -81,7 +73,7 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
   note,
   formatDateTime,
 }) => {
-  // FIX: Add state for the inner Tabs component;
+  // FIX: Add state for the inner Tabs component
   const [activeNoteTab, setActiveNoteTab] = useState("subjective");
 
   return (
@@ -154,9 +146,9 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
-  const { toast } = useToast(); // FIX: Use toast for notifications;
+  const { toast } = useToast(); // FIX: Use toast for notifications
 
-  // Fetch progress notes and admission info;
+  // Fetch progress notes and admission info
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (!admissionId) {
@@ -168,25 +160,25 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       setLoading(true),
       setError(undefined);
       try {
-        // Simulate API call;
-        // const response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`);
+        // Simulate API call
+        // const response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`)
         // if (!response.ok) {
-        //   let errorMsg = "Failed to fetch progress notes";
+        //   let errorMsg = "Failed to fetch progress notes"
         //   try {
-        //       const errorData: ApiErrorResponse = await response.json();
-        //       errorMsg = errorData.error || errorMsg;
+        //       const errorData: ApiErrorResponse = await response.json()
+        //       errorMsg = errorData.error || errorMsg
         //   } catch (jsonError) { /* Ignore */ }
-        //   throw new Error(errorMsg);
+        //   throw new Error(errorMsg)
         // }
         // const data = await response.json(); // Assuming { admission: AdmissionInfo, progress_notes: ProgressNote[] }
-        // setProgressNotes(data.progress_notes?.sort((a, b) => new Date(b.note_date).getTime() - new Date(a.note_date).getTime()) || []);
-        // setPatientInfo(data.admission || null);
+        // setProgressNotes(data.progress_notes?.sort((a, b) => new Date(b.note_date).getTime() - new Date(a.note_date).getTime()) || [])
+        // setPatientInfo(data.admission || null)
 
-        // Mock data simulation;
+        // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000 * 3).toISOString(), // 3 days ago;
+          admission_date: new Date(Date.now() - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -195,7 +187,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           {
             id: "pn_001",
             admission_id: admissionId,
-            note_date: new Date(Date.now() - 3_600_000 * 6).toISOString(), // 6 hours ago;
+            note_date: new Date(Date.now() - 3_600_000 * 6).toISOString(), // 6 hours ago
             subjective:
               "Patient reports feeling slightly better. Cough less frequent.",
             objective:
@@ -210,7 +202,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           {
             id: "pn_002",
             admission_id: admissionId,
-            note_date: new Date(Date.now() - 86_400_000).toISOString(), // 1 day ago;
+            note_date: new Date(Date.now() - 86_400_000).toISOString(), // 1 day ago
             subjective:
               "Patient complaining of persistent cough and mild shortness of breath.",
             objective:
@@ -232,7 +224,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           );
         );
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -265,7 +257,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
     setSubmitting(true);
 
     try {
-      // Basic validation;
+      // Basic validation
       if (
         !formData.subjective &&
         !formData.objective &&
@@ -281,40 +273,40 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         ...formData,
         note_date: new Date().toISOString(),
         // doctor_id: session?.user?.id // Get from session
-      };
+      }
 
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(submissionData),
-      // });
+      // })
       // if (!response.ok) {
-      //   let errorMsg = "Failed to create progress note";
+      //   let errorMsg = "Failed to create progress note"
       //   try {
-      //       const errorData: ApiErrorResponse = await response.json();
-      //       errorMsg = errorData.error || errorMsg;
+      //       const errorData: ApiErrorResponse = await response.json()
+      //       errorMsg = errorData.error || errorMsg
       //   } catch (jsonError) { /* Ignore */ }
-      //   throw new Error(errorMsg);
+      //   throw new Error(errorMsg)
       // }
-      // const newNote: NewNoteResponse = await response.json();
+      // const newNote: NewNoteResponse = await response.json()
 
-      // Mock response;
+      // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
       const newNote: NewNoteResponse = {
         id: `pn_${Date.now()}`,
         admission_id: admissionId,
-        doctor_id: "doc_current", // Replace with actual user ID;
-        doctor_first_name: "Current", // Replace with actual user data;
+        doctor_id: "doc_current", // Replace with actual user ID
+        doctor_first_name: "Current", // Replace with actual user data
         doctor_last_name: "Doctor",
         created_at: new Date().toISOString(),
         ...submissionData,
       };
 
       // Update the progress notes list (prepend new note)
-      setProgressNotes((previous) => [newNote, ...previous]);
+      setProgressNotes((previous) => [newNote, ...previous])
 
-      // Reset form;
+      // Reset form
       setFormData({
         subjective: "",
         objective: "",
@@ -326,7 +318,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         description: "Progress note added successfully!",
       });
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
@@ -336,7 +328,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
     }
   };
 
-  // Format date for display;
+  // Format date for display
   const formatDateTime = (dateString: string | undefined): string => {
     if (!dateString) return "N/A";
     try {
@@ -387,7 +379,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 name="subjective"
                 value={formData.subjective}
                 onChange={handleChange}
-                // required - Removed, allow partial notes;
+                // required - Removed, allow partial notes
                 placeholder="Enter patient's reported symptoms and complaints"
                 className="min-h-[80px]"
                 disabled={submitting}
@@ -403,7 +395,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 name="objective"
                 value={formData.objective}
                 onChange={handleChange}
-                // required;
+                // required
                 placeholder="Enter examination findings, vital signs, lab results, etc."
                 className="min-h-[80px]"
                 disabled={submitting}
@@ -419,7 +411,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 name="assessment"
                 value={formData.assessment}
                 onChange={handleChange}
-                // required;
+                // required
                 placeholder="Enter clinical assessment, diagnosis, or differential diagnosis"
                 className="min-h-[80px]"
                 disabled={submitting}
@@ -435,7 +427,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 name="plan"
                 value={formData.plan}
                 onChange={handleChange}
-                // required;
+                // required
                 placeholder="Enter treatment plan, orders, consultations, follow-up"
                 className="min-h-[80px]"
                 disabled={submitting}

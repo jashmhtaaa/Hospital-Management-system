@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { AccountsReceivableService } from "../../../../features/billing/services/AccountsReceivableService.ts"; // Adjust path as per actual structure;
+import { AccountsReceivableService } from "../../../../features/billing/services/AccountsReceivableService.ts"; // Adjust path as per actual structure
 
 const arService = new AccountsReceivableService();
 
@@ -110,9 +100,9 @@ const arService = new AccountsReceivableService();
  */
 export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
     const { query } = req;
-    // Example: /api/billing/accounts/patient123/balance;
-    // Example: /api/billing/accounts/patient123/statement?startDate=2023-01-01&endDate=2023-03-31;
-    // Example: /api/billing/invoices/inv456/reminders;
+    // Example: /api/billing/accounts/patient123/balance
+    // Example: /api/billing/accounts/patient123/statement?startDate=2023-01-01&endDate=2023-03-31
+    // Example: /api/billing/invoices/inv456/reminders
 
     const pathSegments = req.url?.split("?")[0].split("/").filter(Boolean);
 
@@ -120,7 +110,7 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: "Invalid API path" });
     }
 
-    const mainResource = pathSegments[2]; // 'accounts' or 'invoices';
+    const mainResource = pathSegments[2]; // 'accounts' or 'invoices'
     const resourceId = pathSegments[3];
     const subResource = pathSegments[4];
 
@@ -165,5 +155,3 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         }
         return res.status(500).json({ message: "Server error processing Accounts Receivable request", error: error.message });
     }
-}
-

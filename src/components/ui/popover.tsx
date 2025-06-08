@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -41,4 +33,4 @@ const PopoverContent = React.forwardRef<;
 ));
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor 

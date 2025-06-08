@@ -8,21 +8,21 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
 // Types for EHR entities
 export interface ClinicalNote {
-  id?: string;
+  id?: string
   patient_id: string,
-  encounter_id: string;
+  encounter_id: string,
   provider_id: string,
   note_type: 'progress_note' | 'soap_note' | 'admission_note' | 'discharge_summary' | 'consultation_note' | 'procedure_note' | 'nursing_note';
   template_id?: string;
   
   // SOAP components
-  subjective?: string;
+  subjective?: string
   objective?: string;
   assessment?: string;
   plan?: string;
   
   // Structured data
-  chief_complaint?: string;
+  chief_complaint?: string
   history_of_present_illness?: string;
   review_of_systems?: string;
   past_medical_history?: string;
@@ -34,7 +34,7 @@ export interface ClinicalNote {
   
   // Vital signs
   vital_signs?: {
-    temperature?: number;
+    temperature?: number
     blood_pressure_systolic?: number;
     blood_pressure_diastolic?: number;
     heart_rate?: number;
@@ -46,12 +46,12 @@ export interface ClinicalNote {
   };
   
   // Clinical coding
-  icd10_codes?: string[];
+  icd10_codes?: string[]
   snomed_codes?: string[];
   cpt_codes?: string[];
   
   // Metadata
-  free_text_content?: string;
+  free_text_content?: string
   audio_recording_id?: string;
   created_at?: Date;
   updated_at?: Date;
@@ -59,10 +59,8 @@ export interface ClinicalNote {
   updated_by?: string;
   status: 'draft' | 'final' | 'amended' | 'corrected',
   version: number
-}
-
 export interface CarePlan {
-  id?: string;
+  id?: string,
   patient_id: string;
   encounter_id?: string;
   title: string;
@@ -73,8 +71,8 @@ export interface CarePlan {
   // Goals and objectives
   goals: {
     id: string,
-    description: string;
-    target_date?: Date;
+    description: string
+    target_date?: Date,
     status: 'proposed' | 'accepted' | 'active' | 'on_hold' | 'completed' | 'cancelled',
     priority: 'low' | 'medium' | 'high'
   }[];
@@ -82,8 +80,8 @@ export interface CarePlan {
   // Activities
   activities: {
     id: string,
-    title: string;
-    description?: string;
+    title: string
+    description?: string,
     status: 'not_started' | 'scheduled' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled';
     scheduled_date?: Date;
     category: 'medication' | 'procedure' | 'encounter' | 'observation' | 'other'
@@ -92,24 +90,22 @@ export interface CarePlan {
   // Care team
   care_team: {
     provider_id: string,
-    role: string;
+    role: string
     period_start: Date;
     period_end?: Date;
   }[];
   
   // Clinical coding
-  icd10_codes?: string[];
+  icd10_codes?: string[]
   snomed_codes?: string[];
   
   // Metadata
-  created_at?: Date;
+  created_at?: Date
   updated_at?: Date;
   created_by: string;
   updated_by?: string;
   period_start: Date;
   period_end?: Date;
-}
-
 export interface ProblemListItem {
   id?: string;
   patient_id: string;
@@ -124,12 +120,10 @@ export interface ProblemListItem {
   notes?: string;
   
   // Metadata
-  created_at?: Date;
+  created_at?: Date
   updated_at?: Date;
   created_by: string;
   updated_by?: string;
-}
-
 export interface ClinicalGuideline {
   id?: string;
   title: string;
@@ -138,27 +132,25 @@ export interface ClinicalGuideline {
   status: 'draft' | 'active' | 'retired';
   
   // Applicable conditions
-  icd10_codes?: string[];
+  icd10_codes?: string[]
   snomed_codes?: string[];
   
   // Decision support rules
   decision_support_rules: {
     id: string,
-    condition: string;
+    condition: string
     recommendation: string,
-    evidence_level: string;
+    evidence_level: string,
     recommendation_strength: 'strong' | 'conditional'
   }[];
   
   // Metadata
-  created_at?: Date;
+  created_at?: Date
   updated_at?: Date;
   created_by: string;
   updated_by?: string;
   published_date?: Date;
   review_date?: Date;
-}
-
 export class EHRRepository {
   private prisma: PrismaClient;
   private encryptionService = getEncryptionService();
@@ -170,7 +162,7 @@ export class EHRRepository {
     'past_medical_history', 'medications', 'allergies', 'social_history',
     'family_history', 'physical_examination', 'free_text_content',
     'problem_description', 'notes'
-  ];
+  ]
 
   constructor(prismaClient?: PrismaClient) {
     this.prisma = prismaClient || new PrismaClient();
@@ -183,7 +175,7 @@ export class EHRRepository {
       const encryptedNote = await this.encryptionService.encryptObject(
         note, 
         this.encryptedFields
-      );
+      )
 
       const created = await this.prisma.clinicalNote.create({
         data: {
@@ -236,7 +228,7 @@ export class EHRRepository {
       const encryptedUpdates = await this.encryptionService.encryptObject(
         updates, 
         this.encryptedFields
-      );
+      )
 
       const updated = await this.prisma.clinicalNote.update({
         where: { id },
@@ -281,7 +273,7 @@ export class EHRRepository {
           created_at: new Date(),
           updated_at: new Date()
         }
-      });
+      })
 
       return this.deserializeCarePlan(created);
     } catch (error) {
@@ -322,7 +314,7 @@ export class EHRRepository {
       const encryptedItem = await this.encryptionService.encryptObject(
         item, 
         this.encryptedFields
-      );
+      )
 
       const created = await this.prisma.problemListItem.create({
         data: {
@@ -363,7 +355,7 @@ export class EHRRepository {
           created_at: new Date(),
           updated_at: new Date()
         }
-      });
+      })
 
       return this.deserializeClinicalGuideline(created);
     } catch (error) {
@@ -395,7 +387,7 @@ export class EHRRepository {
 
   // Helper methods for decryption and deserialization
   private async decryptClinicalNote(note: any): Promise<ClinicalNote> {
-    const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields);
+    const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields)
     
     return {
       ...decrypted,
@@ -432,6 +424,5 @@ export class EHRRepository {
 
   // Cleanup
   async disconnect(): Promise<void> {
-    await this.prisma.$disconnect();
+    await this.prisma.$disconnect()
   }
-}

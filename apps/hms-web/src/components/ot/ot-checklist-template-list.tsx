@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -16,9 +6,9 @@ import { Badge } from '@/components/ui/badge';
 
 interface ChecklistTemplate {
   id: string,
-  name: string;
+  name: string,
   surgeryType: string,
-  itemCount: number;
+  itemCount: number,
   lastUpdated: string,
   status: 'active' | 'draft' | 'archived'
 }
@@ -79,4 +69,3 @@ export const OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListPr
       </CardContent>
     </Card>
   );
-}

@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
 
-// Schema for maintenance record;
+// Schema for maintenance record
 const maintenanceSchema = z.object({
   maintenanceType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'CALIBRATION', 'INSPECTION'], {
     errorMap: () => ({ message: "Invalid maintenance type" });
@@ -29,16 +19,16 @@ const maintenanceSchema = z.object({
   }),
 });
 
-// POST handler for recording maintenance;
+// POST handler for recording maintenance
 export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = maintenanceSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -49,7 +39,7 @@ export async const POST = (
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects;
+    // Convert date strings to Date objects
     const maintenanceData = {
       assetId: params.id,
       maintenanceType: data.maintenanceType,
@@ -60,7 +50,7 @@ export async const POST = (
       nextMaintenanceDate: data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined,
     };
     
-    // Record maintenance;
+    // Record maintenance
     const maintenanceRecord = await assetService.recordMaintenance(maintenanceData);
     
     return NextResponse.json(maintenanceRecord);
@@ -73,7 +63,7 @@ export async const POST = (
   }
 }
 
-// GET handler for listing maintenance records;
+// GET handler for listing maintenance records
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -96,4 +86,3 @@ export async const GET = (
       { status: 500 }
     );
   }
-}

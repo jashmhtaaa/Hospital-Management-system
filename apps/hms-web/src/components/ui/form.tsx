@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -126,6 +116,4 @@ const FormSubmit = ({ children, isLoading, className, ...props }: FormSubmitProp
       {isLoading ? "Loading..." : children}
     </Button>
   );
-}
-
 export { Form, FormField, FormInput, FormTextarea, FormSelect, FormSubmit };

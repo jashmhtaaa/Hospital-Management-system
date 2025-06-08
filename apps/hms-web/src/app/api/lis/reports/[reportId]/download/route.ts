@@ -1,4 +1,4 @@
-// app/api/lis/reports/[reportId]/download/route.ts;
+// app/api/lis/reports/[reportId]/download/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
@@ -12,8 +12,6 @@ interface RouteContext {
   params: {
     reportId: string
   };
-}
-
 export async const GET = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
@@ -47,7 +45,7 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
         storagePath: true, 
         labOrder: { select: { patientId: true } } 
       },
-    });
+    })
 
     if (!labReport || !labReport.storagePath || !labReport.fileName || !labReport.fileType) {
       await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED_NOT_FOUND_OR_MISSING_INFO", { reportId });
@@ -67,10 +65,9 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
     return sendSuccessResponse(responsePayload)
   } catch (error: unknown) {
 
-    await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) });
+    await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) })
     const duration = Date.now() - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }
-

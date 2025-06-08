@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -16,16 +6,16 @@ import { Button } from '@/components/ui/button';
 
 interface NursingNote {
   id: string,
-  date: string;
+  date: string,
   time: string,
-  nurse: string;
+  nurse: string,
   note: string,
   category: 'assessment' | 'medication' | 'intervention' | 'observation'
 }
 
 interface NursingNotesProps {
   patientId: string,
-  patientName: string;
+  patientName: string,
   notes: NursingNote[]
 }
 
@@ -99,4 +89,3 @@ export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProp
       </CardContent>
     </Card>
   );
-}

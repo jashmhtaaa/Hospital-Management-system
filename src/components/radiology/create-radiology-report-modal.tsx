@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -32,46 +24,44 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { toast } from "@/components/ui/use-toast"; // Import toast for notifications;
+import { toast } from "@/components/ui/use-toast"; // Import toast for notifications
 
-// Define the type for the form data submitted;
+// Define the type for the form data submitted
 export interface ReportFormData {
   study_id: string,
-  radiologist_id: string;
+  radiologist_id: string,
   findings: string | null,
-  impression: string;
+  impression: string,
   recommendations: string | null,
-  status: "preliminary" | "final" | "addendum"; // Use specific statuses;
+  status: "preliminary" | "final" | "addendum"; // Use specific statuses
 }
 
-// Define the type for Radiologist data fetched from API;
-// Assuming the API returns users with id and name;
+// Define the type for Radiologist data fetched from API
+// Assuming the API returns users with id and name
 interface Radiologist {
   id: string,
   name: string;
-  // Add other relevant fields if needed, e.g., email;
+  // Add other relevant fields if needed, e.g., email
 }
 
-// Define the type for the component props;
+// Define the type for the component props
 interface CreateRadiologyReportModalProperties {
   isOpen: boolean,
-  onClose: () => void;
-  onSubmit: (data: ReportFormData) => Promise<void>; // Ensure onSubmit is async;
+  onClose: () => void,
+  onSubmit: (data: ReportFormData) => Promise<void>; // Ensure onSubmit is async
   studyId: string;
-  patientName?: string; // Optional but helpful context;
-  procedureName?: string; // Optional but helpful context;
+  patientName?: string; // Optional but helpful context
+  procedureName?: string; // Optional but helpful context
 }
 
-// Define a more specific type for the session user if possible;
-// This depends on how the session is configured in [...nextauth].ts;
+// Define a more specific type for the session user if possible
+// This depends on how the session is configured in [...nextauth].ts
 interface SessionUser {
   id: string;
   name?: string | null;
   email?: string | null;
   image?: string | null;
-  role?: string; // Assuming role is part of the user object in the session;
-}
-
+  role?: string; // Assuming role is part of the user object in the session
 export default const CreateRadiologyReportModal = ({
   isOpen,
   onClose,
@@ -80,7 +70,7 @@ export default const CreateRadiologyReportModal = ({
   patientName,
   procedureName,
 }: CreateRadiologyReportModalProperties) {
-  // Cast session user to a more specific type if needed, handle potential null/undefined;
+  // Cast session user to a more specific type if needed, handle potential null/undefined
   const { data: session } = useSession();
   const currentUser = session?.user as SessionUser | undefined;
 
@@ -98,7 +88,7 @@ export default const CreateRadiologyReportModal = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!isOpen) return; // Only fetch when modal is open;
+    if (!isOpen) return; // Only fetch when modal is open
 
     const fetchRadiologists = async () => {
       setLoading(true),
@@ -107,10 +97,10 @@ export default const CreateRadiologyReportModal = ({
         const response = await fetch("/api/users?role=Radiologist"); // Ensure this API endpoint exists and returns Radiologist[]
         if (!response.ok) {
           throw new Error(
-            `Failed to fetch radiologists: ${response.statusText}`;
+            `Failed to fetch radiologists: ${response.statusText}`
           );
         }
-        // Explicitly type the expected response structure;
+        // Explicitly type the expected response structure
         const data: { results: Radiologist[] } | Radiologist[] =;
           await response.json();
         const fetchedRadiologists = Array.isArray(data);
@@ -118,7 +108,7 @@ export default const CreateRadiologyReportModal = ({
           : data.results || [];
         setRadiologists(fetchedRadiologists);
 
-        // Pre-select current user if they are a radiologist and found in the list;
+        // Pre-select current user if they are a radiologist and found in the list
         if (
           currentUser?.role === "Radiologist" &&;
           fetchedRadiologists.some((rad) => rad.id === currentUser.id);
@@ -137,7 +127,7 @@ export default const CreateRadiologyReportModal = ({
       }
     };
     fetchRadiologists();
-  }, [isOpen, currentUser]); // Depend on isOpen and currentUser;
+  }, [isOpen, currentUser]); // Depend on isOpen and currentUser
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -162,12 +152,12 @@ export default const CreateRadiologyReportModal = ({
       });
       // Reset form on successful submission (optional, parent might handle closing)
       setFindings(""),
-      setImpression("");
+      setImpression("")
       setRecommendations(""),
       setStatus("preliminary");
       // Keep radiologist selected if it's the current user?
-      // setRadiologistId("");
-      // onClose(); // Let parent decide whether to close;
+      // setRadiologistId("")
+      // onClose(); // Let parent decide whether to close
     } catch (submitError) {
       const message =;
         submitError instanceof Error;
@@ -186,7 +176,7 @@ export default const CreateRadiologyReportModal = ({
   };
 
   return (
-    // Control dialog open state with isOpen prop;
+    // Control dialog open state with isOpen prop
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
       <DialogContent className="sm:max-w-[600px]">;
         <DialogHeader>
@@ -221,7 +211,7 @@ export default const CreateRadiologyReportModal = ({
                   value={radiologistId}
                   onValueChange={setRadiologistId}
                   required;
-                  // Disable selection if the current user is a radiologist and pre-selected;
+                  // Disable selection if the current user is a radiologist and pre-selected
                   disabled={
                     isSubmitting ||
                     (currentUser?.role === "Radiologist" &&;
@@ -346,4 +336,3 @@ export default const CreateRadiologyReportModal = ({
       </DialogContent>
     </Dialog>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -32,7 +24,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findById: getPrescriptionById,
@@ -56,7 +48,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   delete: () => Promise.resolve(true)
 };
 
-// Initialize services;
+// Initialize services
 const barcodeService = new BarcodeAdministrationService(
   medicationRepository,
   prescriptionRepository,
@@ -69,7 +61,7 @@ const barcodeService = new BarcodeAdministrationService(
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
     if (!validationResult.success) {
@@ -79,16 +71,16 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify the "Five Rights" of medication administration;
+    // Verify the "Five Rights" of medication administration
     const verificationResult = await barcodeService.verifyAdministration(
       data.patientBarcode,
       data.medicationBarcode,
@@ -97,7 +89,7 @@ export async const POST = (req: NextRequest) => {
       data.administeredRoute;
     );
 
-    // If verification failed, return error;
+    // If verification failed, return error
     if (!verificationResult.success) {
       return NextResponse.json(
         { 
@@ -109,7 +101,7 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // If verification succeeded but with warnings, include them in response;
+    // If verification succeeded but with warnings, include them in response
     const response: unknown = { 
       success: true,
       verificationResult;
@@ -119,7 +111,7 @@ export async const POST = (req: NextRequest) => {
       response.warnings = verificationResult.warnings;
     }
 
-    // Audit logging;
+    // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'VERIFY',
       resourceType: 'MedicationAdministration',
@@ -133,9 +125,8 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     return errorHandler(error, 'Error verifying medication administration');
   }
-}

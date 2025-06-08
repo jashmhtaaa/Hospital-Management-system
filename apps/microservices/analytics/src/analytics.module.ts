@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -75,4 +67,4 @@ import { DashboardResolver } from './resolvers/dashboard.resolver.ts';
     DashboardService,
   ],
 });
-export class AnalyticsModule {}
+export class AnalyticsModule {

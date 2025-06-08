@@ -435,8 +435,6 @@ const config: Config = {
     'enzyme-to-json/serializer',
     'jest-serializer-html',
   ],
-};
-
 export default config;
 
 /**

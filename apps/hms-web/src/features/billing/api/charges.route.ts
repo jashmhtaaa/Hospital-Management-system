@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { ChargeCaptureService } from "../../../../features/billing/services/ChargeCaptureService.ts"; // Adjust path as per actual structure;
-import { ChargeInput } from "../../../../features/billing/types.ts"; // Adjust path;
+import { ChargeCaptureService } from "../../../../features/billing/services/ChargeCaptureService.ts"; // Adjust path as per actual structure
+import { ChargeInput } from "../../../../features/billing/types.ts"; // Adjust path
 
 const chargeCaptureService = new ChargeCaptureService();
 
@@ -82,11 +72,9 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
             return res.status(500).json({ message: "Error recording charge", error: error.message });
         }
     }
-    // Add GET handler if needed to retrieve charges via API, though service method exists;
+    // Add GET handler if needed to retrieve charges via API, though service method exists
     // if (req.method === "GET") { ... }
     else {
-        res.setHeader("Allow", ["POST"]);
+        res.setHeader("Allow", ["POST"])
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-}
-

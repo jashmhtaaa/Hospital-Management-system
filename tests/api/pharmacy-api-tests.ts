@@ -30,7 +30,7 @@ import { performance } from 'perf_hooks';
 
 // Type definitions for pharmacy domain objects
 interface Medication {
-  readonly id: string;
+  readonly id: string
   readonly generic_name: string;
   readonly brand_name?: string;
   readonly scientific_name?: string;
@@ -50,7 +50,7 @@ interface Medication {
   readonly storage_requirements: StorageRequirement[];
   readonly manufacturer?: string;
   readonly ndc_number?: string; // National Drug Code
-  readonly formulary_status: FormularyStatus;
+  readonly formulary_status: FormularyStatus
   readonly cost_center?: string;
   readonly created_at: string;
   readonly updated_at: string;
@@ -129,7 +129,7 @@ interface Prescription {
   readonly verbal_order: boolean;
   readonly items: readonly PrescriptionItem[];
   readonly diagnosis_codes: readonly string[]; // ICD-10 codes
-  readonly allergies_checked: boolean;
+  readonly allergies_checked: boolean
   readonly interactions_checked: boolean;
   readonly duplicate_therapy_checked: boolean;
   readonly created_at: string;
@@ -224,7 +224,7 @@ interface PharmacyStatistics {
   readonly dispensing_accuracy: number; // Percentage
   readonly patient_satisfaction: number; // Score out of 10
   readonly turnaround_time: number; // Minutes
-  readonly reorder_alerts: readonly ReorderAlert[];
+  readonly reorder_alerts: readonly ReorderAlert[]
   readonly expiry_alerts: readonly ExpiryAlert[];
   readonly interaction_alerts: readonly InteractionAlert[]
 }
@@ -306,7 +306,7 @@ const PHARMACY_TEST_CONFIG: TestConfig = {
     enforceControlledSubstanceTracking: true,
     mandatoryPatientCounseling: true
   }
-} as const;
+} as const
 
 // Test data with pharmaceutical standards compliance
 const PHARMACY_TEST_DATA = {
@@ -395,11 +395,11 @@ const PHARMACY_TEST_DATA = {
     unit_price: 0.50,
     total_price: 15.00
   }
-} as const;
+} as const
 
 // Pharmacy test helper class with drug safety validations
 class PharmacyTestHelper {
-  private static authToken: string | null = null;
+  private static authToken: string | null = null
   private static createdResources = new Map<string, string>();
   private static interactionEngine: InteractionEngine = new InteractionEngine();
 
@@ -543,16 +543,16 @@ class PharmacyTestHelper {
     // Validate controlled substance fields
     if (medication.controlled_substance) {
       expect(medication.controlled_schedule).toBeDefined(),
-      expect(['CI', 'CII', 'CIII', 'CIV', 'CV']).toContain(medication.controlled_schedule);
+      expect(['CI', 'CII', 'CIII', 'CIV', 'CV']).toContain(medication.controlled_schedule)
     }
 
     // Validate NDC format if present
     if (medication.ndc_number) {
-      expect(medication.ndc_number).toMatch(/^\d{5}-\d{3}-\d{2}$/);
+      expect(medication.ndc_number).toMatch(/^\d{5}-\d{3}-\d{2}$/)
     }
 
     // Validate enum values
-    expect(['preferred', 'non_preferred', 'restricted', 'not_covered']).toContain(medication.formulary_status);
+    expect(['preferred', 'non_preferred', 'restricted', 'not_covered']).toContain(medication.formulary_status)
   }
 
   static validateInventoryBatchStructure(batch: InventoryBatch): void {
@@ -568,15 +568,15 @@ class PharmacyTestHelper {
 
     // Validate dates
     expect(new Date(batch.expiry_date)).toBeInstanceOf(Date),
-    expect(new Date(batch.manufacture_date)).toBeInstanceOf(Date);
+    expect(new Date(batch.manufacture_date)).toBeInstanceOf(Date)
 
     // Validate quantities are positive
     expect(batch.quantity).toBeGreaterThanOrEqual(0),
     expect(batch.unit_cost).toBeGreaterThan(0),
-    expect(batch.selling_price).toBeGreaterThan(0);
+    expect(batch.selling_price).toBeGreaterThan(0)
 
     // Validate enum values
-    expect(['approved', 'quarantine', 'rejected', 'recalled', 'expired']).toContain(batch.quality_status);
+    expect(['approved', 'quarantine', 'rejected', 'recalled', 'expired']).toContain(batch.quality_status)
   }
 
   static validatePrescriptionStructure(prescription: Prescription): void {
@@ -592,7 +592,7 @@ class PharmacyTestHelper {
 
     // Validate prescription items
     expect(Array.isArray(prescription.items)).toBe(true),
-    expect(prescription.items.length).toBeGreaterThan(0);
+    expect(prescription.items.length).toBeGreaterThan(0)
 
     prescription.items.forEach(item => {
       expect(item).toHaveProperty('medication_id'),
@@ -605,7 +605,7 @@ class PharmacyTestHelper {
 
     // Validate enum values
     expect(['received', 'under_review', 'approved', 'rejected', 'in_progress', 
-             'ready_for_pickup', 'dispensed', 'cancelled', 'on_hold']).toContain(prescription.status);
+             'ready_for_pickup', 'dispensed', 'cancelled', 'on_hold']).toContain(prescription.status)
   }
 
   static async measurePerformance<T>(
@@ -670,7 +670,7 @@ class PharmacyTestHelper {
 class InteractionEngine {
   private knownInteractions: Map<string, DrugInteraction[]> = new Map(),
   constructor() {
-    this.initializeKnownInteractions();
+    this.initializeKnownInteractions()
   }
 
   private initializeKnownInteractions(): void {
@@ -686,7 +686,7 @@ class InteractionEngine {
       management: 'Monitor INR closely, consider dose reduction',
       evidence_level: 'excellent',
       last_updated: new Date().toISOString()
-    }]);
+    }])
   }
 
   checkInteractions(medicationIds: string[]): DrugInteraction[] {
@@ -710,7 +710,7 @@ class InteractionEngine {
 
 // Test suite setup and teardown
 beforeAll(async () => {
-  console.log('💊 Starting Pharmacy API Test Suite...');
+  console.log('💊 Starting Pharmacy API Test Suite...')
   await PharmacyTestHelper.authenticate();
 });
 
@@ -735,7 +735,7 @@ describe('Medication Master Data API', () => {
         }),
         PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime,
         'Create medication'
-      );
+      )
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
@@ -900,7 +900,7 @@ describe('Medication Master Data API', () => {
           method: 'PUT',
           body: JSON.stringify({ controlled_substance: false })
         })
-      ).rejects.toThrow();
+      ).rejects.toThrow()
     });
   });
 });
@@ -930,7 +930,7 @@ describe('Inventory Management API', () => {
       const expiredBatchData = {
         ...PHARMACY_TEST_DATA.mockInventoryBatch,
         expiry_date: '2020-01-01' // Expired date
-      };
+      }
 
       await expect(
         PharmacyTestHelper.createTestInventoryBatch(testMedication.id, expiredBatchData)
@@ -990,7 +990,7 @@ describe('Inventory Management API', () => {
     test('should filter by expiry date alerts', async () => {
       const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(
         '/api/pharmacy/inventory?expiry_alert=30' // Next 30 days
-      );
+      )
 
       expect(response.success).toBe(true);
       
@@ -1054,7 +1054,7 @@ describe('Inventory Management API', () => {
         ),
         PHARMACY_TEST_CONFIG.performanceThresholds.inventoryUpdateMaxTime,
         'Update inventory quantity'
-      );
+      )
 
       expect(response.success).toBe(true),
       expect(response.data?.quantity).toBe(originalQuantity + adjustmentQuantity);
@@ -1074,7 +1074,7 @@ describe('Inventory Management API', () => {
             adjustment_reason: 'Test negative inventory'
           })
         })
-      ).rejects.toThrow();
+      ).rejects.toThrow()
     });
 
     test('should update quality status with proper authorization', async () => {
@@ -1108,7 +1108,7 @@ describe('Prescription Processing API', () => {
     testMedication = await PharmacyTestHelper.createTestMedication();
     
     // Mock patient and prescriber creation
-    testPatient = { id: 'TEST_PATIENT_001' };
+    testPatient = { id: 'TEST_PATIENT_001' }
     testPrescriber = { id: 'TEST_PRESCRIBER_001' };
   });
 
@@ -1144,7 +1144,7 @@ describe('Prescription Processing API', () => {
           ...PHARMACY_TEST_DATA.mockPrescriptionItem,
           medication_id: controlledMedication.id
         }]
-      };
+      }
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/prescriptions', {
@@ -1175,11 +1175,11 @@ describe('Prescription Processing API', () => {
       );
 
       // Check if interaction warnings were generated
-      expect(response.interactions_checked).toBe(true);
+      expect(response.interactions_checked).toBe(true)
       
       // Verify interaction check was performed
       const interactions = await PharmacyTestHelper.checkDrugInteractions([warfarin.id, aspirin.id]),
-      expect(Array.isArray(interactions)).toBe(true);
+      expect(Array.isArray(interactions)).toBe(true)
     });
 
     test('should validate dosage and frequency patterns', async () => {
@@ -1311,7 +1311,7 @@ describe('Prescription Processing API', () => {
             body: JSON.stringify({ status: 'ready_for_pickup' })
           }
         )
-      ).rejects.toThrow();
+      ).rejects.toThrow()
     });
   });
 });
@@ -1369,7 +1369,7 @@ describe('Dispensing Operations API', () => {
       // Verify inventory was updated
       const updatedInventory = await PharmacyTestHelper.makeAuthenticatedRequest<InventoryBatch>(
         `/api/pharmacy/inventory/${testInventoryBatch.id}`
-      );
+      )
 
       expect(updatedInventory.data?.quantity).toBe(testInventoryBatch.quantity - 10);
     });
@@ -1382,7 +1382,7 @@ describe('Dispensing Operations API', () => {
         quantity_dispensed: 10,
         dispensed_by: 'test_pharmacist',
         patient_counseled: false // Missing required counseling
-      };
+      }
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/dispensing', {
@@ -1401,7 +1401,7 @@ describe('Dispensing Operations API', () => {
         inventory_batch_id: testInventoryBatch.id,
         quantity_dispensed: prescribedQuantity + 10, // More than prescribed
         dispensed_by: 'test_pharmacist'
-      };
+      }
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/dispensing', {
@@ -1437,7 +1437,7 @@ describe('Dispensing Operations API', () => {
       // Check prescription item status
       const updatedPrescription = await PharmacyTestHelper.makeAuthenticatedRequest<Prescription>(
         `/api/pharmacy/prescriptions/${testPrescription.id}`
-      );
+      )
 
       expect(updatedPrescription.data?.items[0].status).toBe('partially_dispensed'),
       expect(updatedPrescription.data?.items[0].remaining_quantity).toBe(
@@ -1578,16 +1578,16 @@ describe('Pharmacy Analytics & Reporting API', () => {
         expect(typeof response.data.revenue_today).toBe('number'),
         expect(typeof response.data.revenue_month).toBe('number'),
         expect(typeof response.data.dispensing_accuracy).toBe('number'),
-        expect(typeof response.data.turnaround_time).toBe('number');
+        expect(typeof response.data.turnaround_time).toBe('number')
 
         // Validate percentage values
         expect(response.data.dispensing_accuracy).toBeGreaterThanOrEqual(0),
-        expect(response.data.dispensing_accuracy).toBeLessThanOrEqual(100);
+        expect(response.data.dispensing_accuracy).toBeLessThanOrEqual(100)
 
         // Validate alerts arrays
         expect(Array.isArray(response.data.reorder_alerts)).toBe(true),
         expect(Array.isArray(response.data.expiry_alerts)).toBe(true),
-        expect(Array.isArray(response.data.interaction_alerts)).toBe(true);
+        expect(Array.isArray(response.data.interaction_alerts)).toBe(true)
       }
     });
 
@@ -1640,7 +1640,7 @@ describe('Pharmacy Security & Compliance', () => {
       '/api/pharmacy/medications',
       '/api/pharmacy/prescriptions',
       '/api/pharmacy/dispensing'
-    ];
+    ]
 
     for (const endpoint of endpoints) {
       const response = await fetch(`${PHARMACY_TEST_CONFIG.baseUrl}${endpoint}`, {
@@ -1661,13 +1661,13 @@ describe('Pharmacy Security & Compliance', () => {
     const response = await PharmacyTestHelper.makeAuthenticatedRequest(
       `/api/pharmacy/medications/${controlledMedication.id}`
     ),
-    expect(response.success).toBe(true);
+    expect(response.success).toBe(true)
     
     // Verify audit log was created
     const auditResponse = await PharmacyTestHelper.makeAuthenticatedRequest(
       `/api/audit/controlled-substances?medication_id=${controlledMedication.id}`
     ),
-    expect(auditResponse.success).toBe(true);
+    expect(auditResponse.success).toBe(true)
   });
 
   test('should enforce DEA compliance for controlled prescriptions', async () => {
@@ -1744,15 +1744,15 @@ describe('Pharmacy Performance Benchmarks', () => {
     // All prescriptions should be created successfully
     prescriptions.forEach(prescription => {
       expect(prescription.id).toBeDefined(),
-      expect(prescription.status).toBe('received');
+      expect(prescription.status).toBe('received')
     });
 
     // Should handle concurrent operations efficiently
-    expect(duration).toBeLessThan(PHARMACY_TEST_CONFIG.performanceThresholds.prescriptionProcessingMaxTime * 2);
+    expect(duration).toBeLessThan(PHARMACY_TEST_CONFIG.performanceThresholds.prescriptionProcessingMaxTime * 2)
     
     console.log(`${concurrentPrescriptions} concurrent prescriptions processed in ${duration.toFixed(2)}ms`);
   });
 });
 
 // Export for use in other test files
-export { PharmacyTestHelper, PHARMACY_TEST_CONFIG, PHARMACY_TEST_DATA };
+export { PharmacyTestHelper, PHARMACY_TEST_CONFIG, PHARMACY_TEST_DATA 

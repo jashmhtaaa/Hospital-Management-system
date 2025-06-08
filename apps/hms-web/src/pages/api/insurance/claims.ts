@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService.ts"; // Adjust path;
+import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService.ts"; // Adjust path
 
 const claimService = new ClaimProcessingService();
 
@@ -91,9 +81,9 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         try {
             const { patientId, policyId, serviceCodes, diagnosisCodes, totalAmount, notes } = req.body as {
                 patientId: string,
-                policyId: string;
+                policyId: string,
                 serviceCodes: string[],
-                diagnosisCodes: string[];
+                diagnosisCodes: string[],
                 totalAmount: number;
                 notes?: string;
             };
@@ -113,7 +103,7 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
             return res.status(201).json(newClaim);
         } catch (error: unknown) {
 
-            // Determine appropriate status code based on error type if possible;
+            // Determine appropriate status code based on error type if possible
             if (error.message.includes("not found")) {
                 return res.status(404).json({ message: error.message });
             }
@@ -141,5 +131,3 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         res.setHeader("Allow", ["POST", "GET"]);
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-}
-

@@ -1,24 +1,16 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 // SEC-1: Unit Tests for EncryptionService (Placeholder)
 
-import { EncryptionService, IEncryptionService } from './encryption_service.ts';
+import { EncryptionService, IEncryptionService } from './encryption_service.ts'
 
 describe("EncryptionService (Placeholder)", () => {
   let encryptionService: IEncryptionService;
 
   beforeEach(() => {
     encryptionService = new EncryptionService();
-    // Suppress console.warn for these tests as the warning is expected;
+    // Suppress console.warn for these tests as the warning is expected
     jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
@@ -63,7 +55,7 @@ describe("EncryptionService (Placeholder)", () => {
       const decrypted = encryptionService.decrypt(nonPlaceholderText),
       expect(decrypted).toBe(nonPlaceholderText);
 // expect(console.warn).toHaveBeenCalledWith(
-        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: '${nonPlaceholderText}'`;
+        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: '${nonPlaceholderText}'`
       );
     });
 
@@ -86,9 +78,9 @@ describe("EncryptionService (Placeholder)", () => {
     it("should handle empty string if it was not placeholder encrypted", () => {
       const originalText = "";
       const decrypted = encryptionService.decrypt(originalText),
-      expect(decrypted).toBe(""); // It doesn't start with prefix, so returns as is;
+      expect(decrypted).toBe(""); // It doesn't start with prefix, so returns as is
 // expect(console.warn).toHaveBeenCalledWith(
-        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: '${originalText}'`;
+        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: '${originalText}'`
       );
     });
   });

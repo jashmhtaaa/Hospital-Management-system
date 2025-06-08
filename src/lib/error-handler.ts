@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -15,7 +7,7 @@ var __DEV__: boolean;
  * and appropriate status codes for all API responses;
  */
 export class ErrorHandler {
-  // Standard error types with their corresponding status codes;
+  // Standard error types with their corresponding status codes
   private static readonly ERROR_TYPES = {
     NOT_FOUND: 404,
     UNAUTHORIZED: 401,
@@ -27,40 +19,40 @@ export class ErrorHandler {
     SERVICE_UNAVAILABLE: 503,
   };
 
-  // Error codes for specific domain errors;
+  // Error codes for specific domain errors
   private static readonly ERROR_CODES = {
-    // Housekeeping errors;
+    // Housekeeping errors
     HOUSEKEEPING_REQUEST_NOT_FOUND: 'HOUSEKEEPING_REQUEST_NOT_FOUND',
     HOUSEKEEPING_STAFF_NOT_AVAILABLE: 'HOUSEKEEPING_STAFF_NOT_AVAILABLE',
     HOUSEKEEPING_SCHEDULE_CONFLICT: 'HOUSEKEEPING_SCHEDULE_CONFLICT',
     
-    // Maintenance errors;
+    // Maintenance errors
     MAINTENANCE_REQUEST_NOT_FOUND: 'MAINTENANCE_REQUEST_NOT_FOUND',
     MAINTENANCE_ASSET_NOT_FOUND: 'MAINTENANCE_ASSET_NOT_FOUND',
     MAINTENANCE_STAFF_NOT_AVAILABLE: 'MAINTENANCE_STAFF_NOT_AVAILABLE',
     MAINTENANCE_PARTS_UNAVAILABLE: 'MAINTENANCE_PARTS_UNAVAILABLE',
     
-    // Dietary errors;
+    // Dietary errors
     DIETARY_REQUEST_NOT_FOUND: 'DIETARY_REQUEST_NOT_FOUND',
     DIETARY_MENU_NOT_FOUND: 'DIETARY_MENU_NOT_FOUND',
     DIETARY_RESTRICTION_CONFLICT: 'DIETARY_RESTRICTION_CONFLICT',
     
-    // Ambulance errors;
+    // Ambulance errors
     AMBULANCE_NOT_FOUND: 'AMBULANCE_NOT_FOUND',
     AMBULANCE_UNAVAILABLE: 'AMBULANCE_UNAVAILABLE',
     AMBULANCE_CREW_UNAVAILABLE: 'AMBULANCE_CREW_UNAVAILABLE',
     
-    // Feedback errors;
+    // Feedback errors
     FEEDBACK_NOT_FOUND: 'FEEDBACK_NOT_FOUND',
     COMPLAINT_NOT_FOUND: 'COMPLAINT_NOT_FOUND',
     
-    // Marketing errors;
+    // Marketing errors
     CAMPAIGN_NOT_FOUND: 'CAMPAIGN_NOT_FOUND',
     SEGMENT_NOT_FOUND: 'SEGMENT_NOT_FOUND',
     CONTACT_NOT_FOUND: 'CONTACT_NOT_FOUND',
     LEAD_NOT_FOUND: 'LEAD_NOT_FOUND',
     
-    // General errors;
+    // General errors
     VALIDATION_ERROR: 'VALIDATION_ERROR',
     UNAUTHORIZED_ACCESS: 'UNAUTHORIZED_ACCESS',
     PERMISSION_DENIED: 'PERMISSION_DENIED',
@@ -76,22 +68,22 @@ export class ErrorHandler {
    */
   public static processError(error: unknown): {
     status: number,
-    message: string;
+    message: string,
     errorCode: string,
     shouldLog: boolean
   } {
-    // Default values;
+    // Default values
     let status = 500;
     let message = 'An unexpected error occurred';
     let errorCode = this.ERROR_CODES.INTERNAL_SERVER_ERROR;
     let shouldLog = true;
 
-    // Handle known error types;
+    // Handle known error types
     if (error.name === 'NotFoundError' || error.message?.includes('not found')) {
       status = this.ERROR_TYPES.NOT_FOUND;
       message = this.sanitizeErrorMessage(error.message) || 'Resource not found';
       
-      // Determine specific error code based on message content;
+      // Determine specific error code based on message content
       if (error.message?.includes('housekeeping')) {
         errorCode = this.ERROR_CODES.HOUSEKEEPING_REQUEST_NOT_FOUND;
       } else if (error.message?.includes('maintenance')) {
@@ -117,7 +109,7 @@ export class ErrorHandler {
       status = this.ERROR_TYPES.VALIDATION;
       message = 'Validation error';
       errorCode = this.ERROR_CODES.VALIDATION_ERROR;
-      shouldLog = false; // Validation errors are expected and don't need to be logged;
+      shouldLog = false; // Validation errors are expected and don't need to be logged
     } else if (error.name === 'UnauthorizedError') {
       status = this.ERROR_TYPES.UNAUTHORIZED;
       message = 'Unauthorized access';
@@ -130,7 +122,7 @@ export class ErrorHandler {
       status = this.ERROR_TYPES.CONFLICT;
       message = this.sanitizeErrorMessage(error.message) || 'Resource conflict';
       
-      // Determine specific conflict type;
+      // Determine specific conflict type
       if (error.message?.includes('housekeeping schedule')) {
         errorCode = this.ERROR_CODES.HOUSEKEEPING_SCHEDULE_CONFLICT;
       } else if (error.message?.includes('dietary restriction')) {
@@ -149,7 +141,7 @@ export class ErrorHandler {
       message = 'Integration service unavailable';
       errorCode = this.ERROR_CODES.INTEGRATION_ERROR;
     } else if (error.status && typeof error.status === 'number') {
-      // Use the status from the error if available;
+      // Use the status from the error if available
       status = error.status;
       message = this.sanitizeErrorMessage(error.message) || 'An error occurred';
       errorCode = error.code || this.ERROR_CODES.INTERNAL_SERVER_ERROR;
@@ -192,23 +184,23 @@ export class ErrorHandler {
     if (!message) return '';
 
     // Remove any potential PHI (Patient Health Information)
-    let sanitized = message;
-      // Remove any potential patient identifiers;
+    let sanitized = message
+      // Remove any potential patient identifiers
       .replace(/\b(?:patient|person|individual)\s+(?:id|identifier|number)\s*[:=]?\s*\w+/gi, '[REDACTED]');
       // Remove any potential MRN (Medical Record Number)
-      .replace(/\b(?:mrn|medical\s+record\s+number)\s*[:=]?\s*\w+/gi, '[REDACTED]');
+      .replace(/\b(?:mrn|medical\s+record\s+number)\s*[:=]?\s*\w+/gi, '[REDACTED]')
       // Remove any potential SSN (Social Security Number)
-      .replace(/\b(?:ssn|social\s+security)\s*[:=]?\s*[\w-]+/gi, '[REDACTED]');
-      // Remove any potential dates of birth;
+      .replace(/\b(?:ssn|social\s+security)\s*[:=]?\s*[\w-]+/gi, '[REDACTED]')
+      // Remove any potential dates of birth
       .replace(/\b(?:dob|date\s+of\s+birth)\s*[:=]?\s*[\w\/-]+/gi, '[REDACTED]');
-      // Remove any potential email addresses;
+      // Remove any potential email addresses
       .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, '[REDACTED]');
-      // Remove any potential phone numbers;
+      // Remove any potential phone numbers
       .replace(/\b(?:\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g, '[REDACTED]');
-      // Remove any potential addresses;
+      // Remove any potential addresses
       .replace(/\b\d+\s+[A-Za-z\s,]+(?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|court|ct|plaza|plz|square|sq|parkway|pkwy)\b/gi, '[REDACTED]');
 
-    // Ensure the message doesn't contain any stack traces or sensitive paths;
+    // Ensure the message doesn't contain any stack traces or sensitive paths
     sanitized = sanitized;
       .replace(/at\s+[\w\s./<>]+\s+\([\w\s./<>:]+\)/g, '');
       .replace(/file:\/\/\/[\w\s./<>:]+/g, '');
@@ -216,4 +208,3 @@ export class ErrorHandler {
 
     return sanitized;
   }
-}

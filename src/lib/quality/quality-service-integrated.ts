@@ -51,7 +51,7 @@ export class IntegratedQualityService {
     indicator: Omit<QualityIndicator, 'id' | 'createdAt' | 'updatedAt'>,
     userId: string
   ): Promise<string> {
-    const indicatorId = await this.qualityService.registerQualityIndicator(indicator);
+    const indicatorId = await this.qualityService.registerQualityIndicator(indicator)
     
     // Get the full indicator from the service and persist it
     const fullIndicator = {
@@ -59,7 +59,7 @@ export class IntegratedQualityService {
       id: indicatorId,
       createdAt: new Date(),
       updatedAt: new Date()
-    } as QualityIndicator;
+    } as QualityIndicator
     
     await this.persistenceService.saveQualityIndicator(fullIndicator, userId);
     
@@ -85,7 +85,7 @@ export class IntegratedQualityService {
     event: Omit<QualityEvent, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'notifications'>,
     userId: string
   ): Promise<string> {
-    const eventId = await this.qualityService.reportQualityEvent(event);
+    const eventId = await this.qualityService.reportQualityEvent(event)
     
     // Get the full event from the service and persist it
     const fullEvent = {
@@ -95,7 +95,7 @@ export class IntegratedQualityService {
       notifications: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    } as QualityEvent;
+    } as QualityEvent
     
     await this.persistenceService.saveQualityEvent(fullEvent, userId);
     
@@ -115,7 +115,7 @@ export class IntegratedQualityService {
         ...updates,
         id: eventId,
         updatedAt: new Date()
-      } as QualityEvent;
+      } as QualityEvent
       
       await this.persistenceService.saveQualityEvent(updatedEvent, userId);
     }
@@ -139,7 +139,7 @@ export class IntegratedQualityService {
     reportData: Omit<ComplianceReport, 'id' | 'overallCompliance' | 'status'>,
     userId: string
   ): Promise<string> {
-    const reportId = await this.qualityService.generateComplianceReport(reportData);
+    const reportId = await this.qualityService.generateComplianceReport(reportData)
     
     // The quality service should have calculated compliance, but we need to get it
     const fullReport = {
@@ -147,7 +147,7 @@ export class IntegratedQualityService {
       id: reportId,
       overallCompliance: this.calculateOverallCompliance(reportData.requirements || []),
       status: this.determineComplianceStatus(reportData.requirements || [])
-    } as ComplianceReport;
+    } as ComplianceReport
     
     await this.persistenceService.saveComplianceReport(fullReport, userId);
     
@@ -196,24 +196,24 @@ export class IntegratedQualityService {
         compliant: reports.filter(r => r.status === 'compliant').length,
         gaps: reports.reduce((sum, r) => sum + (r.gaps?.length || 0), 0)
       }
-    };
+    }
   }
 
   // Quality Dashboard (integrated version)
   async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{
     overview: any,
-    trends: any[];
+    trends: any[]
     events: any,
-    assessments: any[];
+    assessments: any[],
     alerts: any[]
   }> {
     // Get statistics from persistent data
-    const stats = await this.getQualityStatistics();
+    const stats = await this.getQualityStatistics()
     
     // Get recent events for overview
     const recentEvents = await this.persistenceService.getQualityEvents({
       dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
-    }, 'system');
+    }, 'system')
 
     return {
       overview: {
@@ -232,13 +232,13 @@ export class IntegratedQualityService {
       },
       assessments: [], // Would need assessment data
       alerts: this.generateAlerts(stats, recentEvents)
-    };
+    }
   }
 
   // Data Migration (for existing in-memory data)
   async migrateExistingData(userId: string): Promise<{
     indicatorsMigrated: number,
-    eventsMigrated: number;
+    eventsMigrated: number
     reportsMigrated: number
   }> {
     let migratedCounts = {
@@ -252,7 +252,7 @@ export class IntegratedQualityService {
       // This would require access to the private Maps in the quality service
       // For now, return zeros as the persistence is now the primary storage
       
-      console.log('[Quality Integration] Data migration completed');
+      console.log('[Quality Integration] Data migration completed')
       return migratedCounts;
     } catch (error) {
       console.error('[Quality Integration] Migration error:', error);
@@ -263,7 +263,7 @@ export class IntegratedQualityService {
   // Data Archival and Cleanup
   async archiveOldData(): Promise<{
     archivedIndicators: number,
-    archivedEvents: number;
+    archivedEvents: number
     archivedAssessments: number,
     archivedReports: number
   }> {
@@ -272,7 +272,7 @@ export class IntegratedQualityService {
 
   // Utility Methods
   private calculateOverallCompliance(requirements: any[]): number {
-    if (requirements.length === 0) return 100;
+    if (requirements.length === 0) return 100
     
     const metRequirements = requirements.filter(req => req.status === 'met').length;
     return (metRequirements / requirements.length) * 100;
@@ -310,13 +310,13 @@ export class IntegratedQualityService {
         severity: 'high',
         message: `${stats.events.critical} critical quality events require immediate attention`,
         actionRequired: true
-      });
+      })
     }
 
     // High event frequency alert
     const todayEvents = recentEvents.filter(e => 
       e.eventDate >= new Date(Date.now() - 24 * 60 * 60 * 1000)
-    ).length;
+    ).length
     
     if (todayEvents > 5) {
       alerts.push({
@@ -343,7 +343,7 @@ export class IntegratedQualityService {
   }> {
     try {
       // Check if services are responsive
-      const stats = await this.getQualityStatistics();
+      const stats = await this.getQualityStatistics()
       
       return {
         status: 'healthy',
@@ -367,7 +367,7 @@ export class IntegratedQualityService {
 }
 
 // Singleton instance for application use
-let integratedQualityServiceInstance: IntegratedQualityService | null = null;
+let integratedQualityServiceInstance: IntegratedQualityService | null = null
 
 export const getIntegratedQualityService = (): IntegratedQualityService => {
   if (!integratedQualityServiceInstance) {

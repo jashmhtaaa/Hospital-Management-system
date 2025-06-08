@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client';
 
-// FHIR-compliant interfaces for Maintenance Management;
+// FHIR-compliant interfaces for Maintenance Management
 
 /**
  * FHIR-compliant Maintenance Request;
@@ -19,21 +9,21 @@ import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client'
  */
 export interface FHIRMaintenanceRequest {
   resourceType: 'ServiceRequest',
-  id: string;
+  id: string,
   status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown',
-  intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
+  intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option',
   priority: 'routine' | 'urgent' | 'asap' | 'stat',
   category: {
     coding: {
       system: string,
-      code: string;
+      code: string,
       display: string
     }[];
   }[];
   code: {
     coding: {
       system: string,
-      code: string;
+      code: string,
       display: string
     }[];
     text: string
@@ -67,14 +57,14 @@ export interface FHIRMaintenanceRequest {
  */
 export interface FHIRMaintenanceWorkOrder {
   resourceType: 'Task',
-  id: string;
+  id: string,
   basedOn: {
     reference: string
   }[];
   status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error',
-  intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
+  intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option',
   priority: 'routine' | 'urgent' | 'asap' | 'stat',
-  description: string;
+  description: string,
   focus: {
     reference: string
   };
@@ -82,7 +72,7 @@ export interface FHIRMaintenanceWorkOrder {
     reference: string
   };
   authoredOn: string,
-  lastModified: string;
+  lastModified: string,
   requester: {
     reference: string;
     display?: string;
@@ -106,7 +96,7 @@ export interface FHIRMaintenanceWorkOrder {
  */
 export interface FHIRAsset {
   resourceType: 'Device',
-  id: string;
+  id: string,
   identifier: {
     system: string,
     value: string
@@ -118,7 +108,7 @@ export interface FHIRAsset {
   type: {
     coding: {
       system: string,
-      code: string;
+      code: string,
       display: string
     }[];
     text: string
@@ -143,7 +133,7 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
   requestedByUser: unknown;
   workOrders?: unknown[];
 }): FHIRMaintenanceRequest {
-  // Map status from internal to FHIR status;
+  // Map status from internal to FHIR status
   const statusMap: Record<string, 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown'> = {
     'PENDING': 'draft',
     'ASSIGNED': 'active',
@@ -153,7 +143,7 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
     'CANCELLED': 'revoked';
   };
 
-  // Map priority from internal to FHIR priority;
+  // Map priority from internal to FHIR priority
   const priorityMap: Record<string, 'routine' | 'urgent' | 'asap' | 'stat'> = {
     'LOW': 'routine',
     'MEDIUM': 'routine',
@@ -161,7 +151,7 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
     'EMERGENCY': 'stat';
   };
 
-  // Map request type to FHIR coding;
+  // Map request type to FHIR coding
   const requestTypeMap: Record<string, { code: string, display: string }> = {
     'REPAIR': { code: 'repair', display: 'Repair' },
     'PREVENTIVE': { code: 'preventive', display: 'Preventive Maintenance' },
@@ -212,7 +202,7 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
     occurrenceDateTime: request.scheduledDate?.toISOString(),
     authoredOn: request.createdAt.toISOString(),
     note: request.notes ? [{ text: request.notes }] : []
-  };
+  }
 }
 
 /**
@@ -223,7 +213,7 @@ export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
   assignedToUser?: unknown;
   createdByUser: unknown
 }): FHIRMaintenanceWorkOrder {
-  // Map status from internal to FHIR status;
+  // Map status from internal to FHIR status
   const statusMap: Record<string, 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error'> = {
     'PENDING': 'requested',
     'IN_PROGRESS': 'in-progress',
@@ -232,7 +222,7 @@ export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
     'CANCELLED': 'cancelled';
   };
 
-  // Map priority from internal to FHIR priority;
+  // Map priority from internal to FHIR priority
   const priorityMap: Record<string, 'routine' | 'urgent' | 'asap' | 'stat'> = {
     'LOW': 'routine',
     'MEDIUM': 'routine',
@@ -282,7 +272,7 @@ export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
 export const toFHIRAsset = (asset: Asset & {
   location: unknown
 }): FHIRAsset {
-  // Map status from internal to FHIR status;
+  // Map status from internal to FHIR status
   const statusMap: Record<string, 'active' | 'inactive' | 'entered-in-error' | 'unknown'> = {
     'OPERATIONAL': 'active',
     'NEEDS_REPAIR': 'active',
@@ -290,7 +280,7 @@ export const toFHIRAsset = (asset: Asset & {
     'DECOMMISSIONED': 'inactive';
   };
 
-  // Map asset type to FHIR coding;
+  // Map asset type to FHIR coding
   const assetTypeMap: Record<string, { code: string, display: string }> = {
     'EQUIPMENT': { code: 'equipment', display: 'Medical Equipment' },
     'FACILITY': { code: 'facility', display: 'Facility Asset' },
@@ -309,7 +299,7 @@ export const toFHIRAsset = (asset: Asset & {
       ...(asset.serialNumber ? [{
         system: 'http://hms.local/identifier/serial-number',
         value: asset.serialNumber
-      }] : []);
+      }] : [])
     ],
     status: statusMap[asset.status] || 'unknown',
     manufacturer: asset.manufacturer,
@@ -330,5 +320,4 @@ export const toFHIRAsset = (asset: Asset & {
     note: [],
     manufactureDate: asset.purchaseDate?.toISOString(),
     expirationDate: asset.warrantyExpiry?.toISOString()
-  };
-}
+  }

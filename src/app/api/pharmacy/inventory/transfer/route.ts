@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -32,7 +24,7 @@ const inventoryRepository = {
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
   transferStock: () => Promise.resolve(true)
-};
+}
 
 const transferRepository = {
   findById: (id: string) => Promise.resolve(null),
@@ -49,7 +41,7 @@ const transferRepository = {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateInventoryTransferRequest(data);
     if (!validationResult.success) {
@@ -59,16 +51,16 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify source inventory has sufficient stock;
+    // Verify source inventory has sufficient stock
     const sourceInventory = await inventoryRepository.findById(data.sourceInventoryId);
     if (!sourceInventory) {
       return NextResponse.json({ error: 'Source inventory not found' }, { status: 404 });
@@ -81,7 +73,7 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Create transfer record;
+    // Create transfer record
     const transfer = {
       id: crypto.randomUUID(),
       sourceInventoryId: data.sourceInventoryId,
@@ -97,19 +89,19 @@ export async const POST = (req: NextRequest) => {
       status: 'completed'
     };
 
-    // Save transfer record;
+    // Save transfer record
     const transferId = await transferRepository.save(transfer);
 
-    // Update inventory quantities;
+    // Update inventory quantities
     await inventoryRepository.transferStock(
       data.sourceInventoryId,
       data.destinationLocationId,
       data.quantity;
     );
 
-    // Special handling for controlled substances;
+    // Special handling for controlled substances
     if (sourceInventory.isControlled) {
-      // Additional logging for controlled substances;
+      // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
         action: 'TRANSFER',
         resourceType: 'Inventory',
@@ -125,7 +117,7 @@ export async const POST = (req: NextRequest) => {
       });
     }
 
-    // Regular audit logging;
+    // Regular audit logging
     await auditLog('INVENTORY', {
       action: 'TRANSFER',
       resourceType: 'Inventory',
@@ -139,7 +131,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: transferId,
@@ -150,4 +142,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error transferring inventory');
   }
-}

@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/patients/[id]/edit/page.tsx;
+// src/app/dashboard/patients/[id]/edit/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { Patient } from "@/types/patient";
 
-// Re-use or import the schema if defined elsewhere;
+// Re-use or import the schema if defined elsewhere
 const PatientUpdateSchema = z.object({
     first_name: z.string().min(1).optional(),
     last_name: z.string().min(1).optional(),
@@ -51,7 +43,7 @@ const PatientUpdateSchema = z.object({
     insurance_policy_number: z.string().optional(),
 }).partial().refine(obj => Object.keys(obj).length > 0, { message: "At least one field must be provided for update" });
 
-type FormData = Partial<Patient>; // Use Partial<Patient> for form state;
+type FormData = Partial<Patient>; // Use Partial<Patient> for form state
 
 export default const EditPatientPage = () {
   const params = useParams();
@@ -60,7 +52,7 @@ export default const EditPatientPage = () {
   const patientId = params.id as string;
 
   const [formData, setFormData] = useState<FormData>({});
-  const [isLoading, setIsLoading] = useState(true); // Start loading initially to fetch data;
+  const [isLoading, setIsLoading] = useState(true); // Start loading initially to fetch data
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
@@ -78,9 +70,9 @@ export default const EditPatientPage = () {
         const formattedData = {
             ...data,
             date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "",
-        };
+        }
         setFormData(formattedData);
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
         toast({
@@ -113,12 +105,12 @@ export default const EditPatientPage = () {
     setIsSaving(true);
     setErrors([]);
 
-    // Prepare only changed fields for update;
+    // Prepare only changed fields for update
     // This requires comparing formData with the initially fetched data, which adds complexity.
     // For simplicity, we send all fields and let the backend handle it, or use a library like react-hook-form.
     // Here, we will send the current formData, assuming the schema allows partial updates.
 
-    const validation = PatientUpdateSchema.safeParse(formData);
+    const validation = PatientUpdateSchema.safeParse(formData)
 
     if (!validation.success) {
       setErrors(validation.error.errors),
@@ -131,14 +123,14 @@ export default const EditPatientPage = () {
       return;
     }
 
-    const dataToSend: Partial<Patient> = {}; // Initialize empty object;
+    const dataToSend: Partial<Patient> = {}; // Initialize empty object
     for (const key in validation.data) {
         if (Object.prototype.hasOwnProperty.call(validation.data, key)) {
             const typedKey = key as keyof Patient;
             const value = formData[typedKey];
-            // Only include defined, non-null values that are part of the validated data;
+            // Only include defined, non-null values that are part of the validated data
             if (value !== undefined && value !== null) {
-                 (dataToSend as Record<string, unknown>)[typedKey] = value; // Use Record<string, unknown> instead of any;
+                 (dataToSend as Record<string, unknown>)[typedKey] = value; // Use Record<string, unknown> instead of any
             }
         }
     }
@@ -169,9 +161,9 @@ export default const EditPatientPage = () {
         description: `${formData.first_name} ${formData.last_name} has been successfully updated.`,
       });
 
-      router.push(`/dashboard/patients/${patientId}`); // Redirect back to patient detail view;
+      router.push(`/dashboard/patients/${patientId}`); // Redirect back to patient detail view
 
-    } catch (err: unknown) { // Use unknown;
+    } catch (err: unknown) { // Use unknown
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
@@ -372,5 +364,3 @@ export default const EditPatientPage = () {
       </div>
     </DashboardLayout>
   );
-}
-

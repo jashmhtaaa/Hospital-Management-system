@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -24,16 +16,16 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { toast } from "sonner"; // Changed from useToast to sonner;
+import { toast } from "sonner"; // Changed from useToast to sonner
 import { Loader2 } from "lucide-react";
 
 interface AdmissionFormData {
   patient_id: string,
-  admission_date: string;
+  admission_date: string,
   admission_type: "planned" | "emergency" | "transfer",
-  primary_doctor_id: string;
+  primary_doctor_id: string,
   bed_id: string,
-  diagnosis: string;
+  diagnosis: string,
   estimated_stay: string
 }
 
@@ -56,7 +48,7 @@ interface MockDoctor {
 }
 interface MockBed {
   id: string,
-  number: string;
+  number: string,
   room: string,
   ward: string
 }
@@ -72,7 +64,7 @@ const AdmissionForm = () => {
     estimated_stay: "",
   });
   const [loading, setLoading] = useState(false);
-  // Removed: const { toast } = useToast();
+  // Removed: const { toast } = useToast()
 
   const patients: MockPatient[] = [
     { id: "pat1", name: "Rahul Sharma" },
@@ -120,7 +112,7 @@ const AdmissionForm = () => {
       !formData.bed_id ||
       !formData.diagnosis;
     ) {
-      toast.error("Missing Information", { // Changed to sonner toast.error;
+      toast.error("Missing Information", { // Changed to sonner toast.error
         description:
           "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",
       });
@@ -150,7 +142,7 @@ const AdmissionForm = () => {
 
       const newAdmission: AdmissionResponse = await response.json();
 
-      toast.success("Admission Successful", { // Changed to sonner toast.success;
+      toast.success("Admission Successful", { // Changed to sonner toast.success
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,
       }),
       setFormData({
@@ -168,7 +160,7 @@ const AdmissionForm = () => {
         error instanceof Error;
           ? error.message;
           : "An unexpected error occurred.";
-      toast.error("Admission Failed", { // Changed to sonner toast.error;
+      toast.error("Admission Failed", { // Changed to sonner toast.error
         description: message,
       });
     } finally {

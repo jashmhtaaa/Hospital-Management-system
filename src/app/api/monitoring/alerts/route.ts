@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -23,14 +15,14 @@ export async const GET = (request: NextRequest) => {
     const ruleId = searchParams.get('ruleId');
 
     if (ruleId) {
-      // Return specific alert rule;
-      // This would require adding a method to get specific rules from metricsCollector;
+      // Return specific alert rule
+      // This would require adding a method to get specific rules from metricsCollector
       return NextResponse.json({
         error: 'Specific rule retrieval not implemented yet',
       }, { status: 501 });
     }
 
-    // Return all alert rules and recent alerts;
+    // Return all alert rules and recent alerts
     const alertData = {
       rules: [
         {
@@ -68,7 +60,7 @@ export async const GET = (request: NextRequest) => {
         },
       ],
       recentAlerts: [
-        // This would come from a persistent alert log;
+        // This would come from a persistent alert log
         {
           id: 'alert_1704067200000',
           ruleId: 'memory_usage_high',
@@ -99,8 +91,6 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
-
 export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
@@ -131,7 +121,7 @@ export async const POST = (request: NextRequest) => {
           );
         }
         
-        metricsCollector.addAlertRule(updatedRule); // This will overwrite existing;
+        metricsCollector.addAlertRule(updatedRule); // This will overwrite existing
         return NextResponse.json({ 
           message: 'Alert rule updated',
           ruleId: updatedRule.id,
@@ -161,7 +151,7 @@ export async const POST = (request: NextRequest) => {
           );
         }
         
-        // Simulate an alert trigger for testing;
+        // Simulate an alert trigger for testing
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         
         return NextResponse.json({ 
@@ -171,7 +161,7 @@ export async const POST = (request: NextRequest) => {
             notifications: testRule.notifications,
             timestamp: new Date().toISOString(),
           },
-        });
+        })
 
       default:
         return NextResponse.json(
@@ -190,8 +180,6 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
-
 export async const PUT = (request: NextRequest) => {
   try {
     const body = await request.json();
@@ -204,14 +192,14 @@ export async const PUT = (request: NextRequest) => {
       );
     }
 
-    // This would require updating the metricsCollector to support enabling/disabling rules;
+    // This would require updating the metricsCollector to support enabling/disabling rules
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     return NextResponse.json({
       message: `Alert rule ${enabled ? 'enabled' : 'disabled'}`,
       ruleId,
       enabled,
-    });
+    })
 
   } catch (error) {
 
@@ -223,4 +211,3 @@ export async const PUT = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

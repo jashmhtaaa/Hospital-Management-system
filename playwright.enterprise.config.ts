@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -16,108 +6,108 @@ import { defineConfig, devices } from '@playwright/test';
  * Supports multiple environments, browsers, and testing scenarios;
  */
 export default defineConfig({
-  // Test directory;
+  // Test directory
   testDir: './tests/e2e',
   
-  // Parallel execution;
+  // Parallel execution
   fullyParallel: true,
   
-  // Fail fast in CI;
+  // Fail fast in CI
   forbidOnly: !!process.env.CI,
   
-  // Retry configuration;
+  // Retry configuration
   retries: process.env.CI ? 3 : 1,
   
-  // Maximum number of test failures before stopping;
+  // Maximum number of test failures before stopping
   maxFailures: process.env.CI ? 10 : undefined,
   
-  // Number of parallel workers;
+  // Number of parallel workers
   workers: process.env.CI ? 4 : undefined,
   
-  // Global timeout;
+  // Global timeout
   timeout: 60000,
   
-  // Expect timeout;
+  // Expect timeout
   expect: {
     timeout: 10000,
   },
   
-  // Action timeout;
+  // Action timeout
   use: {
     actionTimeout: 15000,
     navigationTimeout: 30000,
     
-    // Global test settings;
+    // Global test settings
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     
-    // Base URL;
+    // Base URL
     baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     
-    // Browser context options;
+    // Browser context options
     ignoreHTTPSErrors: false,
     acceptDownloads: true,
     
-    // Viewport;
+    // Viewport
     viewport: { width: 1920, height: 1080 },
     
-    // User agent;
+    // User agent
     userAgent: 'HMS-Enterprise-E2E-Tests/1.0',
     
-    // Extra HTTP headers;
+    // Extra HTTP headers
     extraHTTPHeaders: {
       'Accept-Language': 'en-US,en;q=0.9',
       'X-Test-Run': 'true',
     },
     
-    // Storage state for authenticated tests;
+    // Storage state for authenticated tests
     storageState: process.env.STORAGE_STATE_PATH,
   },
   
-  // Reporter configuration;
+  // Reporter configuration
   reporter: [
-    // Console reporter;
+    // Console reporter
     ['list'],
     
-    // HTML reporter;
+    // HTML reporter
     ['html', { 
       outputFolder: 'test-results/playwright-report',
       open: process.env.CI ? 'never' : 'on-failure'
     }],
     
-    // JUnit reporter for CI;
+    // JUnit reporter for CI
     ['junit', { 
       outputFile: 'test-results/junit/playwright-results.xml'
     }],
     
-    // JSON reporter;
+    // JSON reporter
     ['json', { 
       outputFile: 'test-results/playwright-results.json'
     }],
     
-    // Allure reporter;
+    // Allure reporter
     ['allure-playwright', {
       detail: true,
       outputFolder: 'test-results/allure-results',
       suiteTitle: true,
     }],
     
-    // GitHub Actions reporter;
+    // GitHub Actions reporter
     ...(process.env.GITHUB_ACTIONS ? [['github']] : []),
   ],
   
-  // Output directory;
+  // Output directory
   outputDir: 'test-results/playwright-output',
   
-  // Global setup and teardown;
+  // Global setup and teardown
   globalSetup: require.resolve('./tests/setup/global-setup-e2e.ts'),
   globalTeardown: require.resolve('./tests/setup/global-teardown-e2e.ts'),
   
-  // Test projects for different browsers and scenarios;
+  // Test projects for different browsers and scenarios
   projects: [
     // ================================================================
-    // SETUP PROJECTS;
+    // SETUP PROJECTS
     // ================================================================
     {
       name: 'setup-auth',
@@ -129,7 +119,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // DESKTOP BROWSERS - CRITICAL FLOWS;
+    // DESKTOP BROWSERS - CRITICAL FLOWS
     // ================================================================
     {
       name: 'chromium-critical',
@@ -162,7 +152,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // HEALTHCARE WORKFLOW TESTS;
+    // HEALTHCARE WORKFLOW TESTS
     // ================================================================
     {
       name: 'healthcare-workflows-chrome',
@@ -185,7 +175,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // MOBILE BROWSERS;
+    // MOBILE BROWSERS
     // ================================================================
     {
       name: 'mobile-chrome',
@@ -208,7 +198,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // ACCESSIBILITY TESTS;
+    // ACCESSIBILITY TESTS
     // ================================================================
     {
       name: 'accessibility',
@@ -221,7 +211,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // PERFORMANCE TESTS;
+    // PERFORMANCE TESTS
     // ================================================================
     {
       name: 'performance',
@@ -235,19 +225,19 @@ export default defineConfig({
     },
     
     // ================================================================
-    // SECURITY TESTS;
+    // SECURITY TESTS
     // ================================================================
     {
       name: 'security',
       use: { 
         ...devices['Desktop Chrome'],
-        // No auth for security tests;
+        // No auth for security tests
       },
       testMatch: /.*\.security\.spec\.ts/,
     },
     
     // ================================================================
-    // FHIR COMPLIANCE TESTS;
+    // FHIR COMPLIANCE TESTS
     // ================================================================
     {
       name: 'fhir-compliance',
@@ -260,7 +250,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // CROSS-BROWSER COMPATIBILITY;
+    // CROSS-BROWSER COMPATIBILITY
     // ================================================================
     {
       name: 'edge',
@@ -273,7 +263,7 @@ export default defineConfig({
     },
     
     // ================================================================
-    // TABLET TESTS;
+    // TABLET TESTS
     // ================================================================
     {
       name: 'tablet',
@@ -286,7 +276,7 @@ export default defineConfig({
     },
   ],
   
-  // Web server configuration;
+  // Web server configuration
   webServer: process.env.CI ? undefined : {
     command: 'npm run dev',
     url: 'http://localhost:3000',
@@ -300,7 +290,7 @@ export default defineConfig({
     },
   },
   
-  // Metadata;
+  // Metadata
   metadata: {
     'test-environment': process.env.NODE_ENV || 'test',
     'base-url': process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
@@ -308,13 +298,13 @@ export default defineConfig({
     'build-number': process.env.GITHUB_RUN_NUMBER || 'local',
     'commit-sha': process.env.GITHUB_SHA || 'unknown',
   },
-});
+})
 
 // ================================================================
-// ENVIRONMENT-SPECIFIC CONFIGURATIONS;
+// ENVIRONMENT-SPECIFIC CONFIGURATIONS
 // ================================================================
 
-// Staging environment configuration;
+// Staging environment configuration
 export const stagingConfig = defineConfig({
   ...module.exports,
   use: {
@@ -328,9 +318,9 @@ export const stagingConfig = defineConfig({
   },
   retries: 2,
   timeout: 90000,
-});
+})
 
-// Production environment configuration;
+// Production environment configuration
 export const productionConfig = defineConfig({
   ...module.exports,
   use: {
@@ -345,9 +335,9 @@ export const productionConfig = defineConfig({
   retries: 3,
   timeout: 120000,
   testMatch: /.*\.(smoke|critical)\.spec\.ts/,
-});
+})
 
-// Critical flows configuration;
+// Critical flows configuration
 export const criticalConfig = defineConfig({
   ...module.exports,
   testMatch: /.*\.critical\.spec\.ts/,
@@ -367,7 +357,7 @@ export const criticalConfig = defineConfig({
   ],
 });
 
-// Healthcare workflows configuration;
+// Healthcare workflows configuration
 export const healthcareConfig = defineConfig({
   ...module.exports,
   testMatch: /.*\.healthcare\.spec\.ts/,
@@ -384,7 +374,7 @@ export const healthcareConfig = defineConfig({
   ],
 });
 
-// Smoke tests configuration;
+// Smoke tests configuration
 export const smokeConfig = defineConfig({
   ...module.exports,
   testMatch: /.*\.smoke\.spec\.ts/,

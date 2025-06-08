@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -45,7 +35,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-// Form schema validation;
+// Form schema validation
 const documentFormSchema = z.object({
   documentTitle: z.string().min(1, 'Document title is required'),
   documentType: z.string().min(1, 'Document type is required'),
@@ -64,21 +54,21 @@ const documentFormSchema = z.object({
   attachmentUrls: z.array(z.string()).optional(),
 });
 
-// Type for document templates;
+// Type for document templates
 interface DocumentTemplate {
   id: string,
-  templateNumber: string;
+  templateNumber: string,
   templateName: string,
   templateType: string;
   specialtyType?: string;
   content: string,
   sections: {
     id: string,
-    sectionTitle: string;
+    sectionTitle: string,
     sectionType: string,
-    sectionOrder: number;
+    sectionOrder: number,
     content: string,
-    isRequired: boolean;
+    isRequired: boolean,
     defaultExpanded: boolean
   }[];
 }
@@ -88,13 +78,11 @@ interface DocumentEditorProps {
   encounterId?: string;
   documentId?: string;
   onSuccess?: () => void;
-}
-
 export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) => {
   const router = useRouter();
   const { toast } = useToast();
   
-  // State;
+  // State
   const [templates, setTemplates] = useState<DocumentTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -102,7 +90,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
   const [isEditing, setIsEditing] = useState(!!documentId);
   const [activeTab, setActiveTab] = useState('content');
   
-  // Form;
+  // Form
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
     defaultValues: {
@@ -116,7 +104,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     },
   });
   
-  // Fetch document templates;
+  // Fetch document templates
   const fetchTemplates = async () => {
     setLoading(true);
     
@@ -141,7 +129,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Fetch document if editing;
+  // Fetch document if editing
   const fetchDocument = async () => {
     if (!documentId) return;
     
@@ -156,7 +144,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
       
       const data = await response.json();
       
-      // Update form values;
+      // Update form values
       form.reset({
         documentTitle: data.documentTitle,
         documentType: data.documentType,
@@ -178,7 +166,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Effect to fetch templates and document on initial load;
+  // Effect to fetch templates and document on initial load
   useEffect(() => {
     fetchTemplates();
     
@@ -187,7 +175,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     }
   }, [documentId]);
   
-  // Handle template selection;
+  // Handle template selection
   const handleTemplateChange = (templateId: string) => {
     setSelectedTemplate(templateId);
     
@@ -213,7 +201,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (values: z.infer<typeof documentFormSchema>) => {
     setSubmitLoading(true);
     
@@ -228,7 +216,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
       let response;
       
       if (isEditing) {
-        // Update document;
+        // Update document
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
           method: 'PUT',
           headers: {
@@ -237,7 +225,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
           body: JSON.stringify(payload),
         });
       } else {
-        // Create document;
+        // Create document
         response = await fetch('/api/clinical-documentation', {
           method: 'POST',
           headers: {
@@ -261,7 +249,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
       if (onSuccess) {
         onSuccess();
       } else {
-        // Navigate to document view;
+        // Navigate to document view
         router.push(`/clinical-documentation/${data.id}`);
       }
     } catch (error) {
@@ -276,7 +264,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     }
   };
   
-  // Add section handler;
+  // Add section handler
   const handleAddSection = () => {
     const currentSections = form.getValues('sections') || [];
     
@@ -291,12 +279,12 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     ]);
   };
   
-  // Remove section handler;
+  // Remove section handler
   const handleRemoveSection = (index: number) => {
     const currentSections = form.getValues('sections') || [];
     const updatedSections = currentSections.filter((_, i) => i !== index);
     
-    // Update section orders;
+    // Update section orders
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
       sectionOrder: i + 1,
@@ -305,7 +293,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     form.setValue('sections', reorderedSections);
   };
   
-  // Document type options;
+  // Document type options
   const documentTypeOptions = [
     { value: 'Admission Note', label: 'Admission Note' },
     { value: 'Progress Note', label: 'Progress Note' },
@@ -317,7 +305,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     { value: 'Care Plan', label: 'Care Plan' },
   ];
   
-  // Section type options;
+  // Section type options
   const sectionTypeOptions = [
     { value: 'History', label: 'History' },
     { value: 'Physical Exam', label: 'Physical Exam' },
@@ -619,4 +607,3 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
       </CardFooter>
     </Card>
   );
-}

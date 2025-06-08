@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -23,25 +13,25 @@ import { auditLog } from '@/lib/audit';
  */
 export async const GET = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Cache key;
+    // Cache key
     const cacheKey = `diagnostic:pacs:config`;
 
-    // Try to get from cache or fetch from database;
+    // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Get PACS configuration;
+        // Get PACS configuration
         const query = `;
           SELECT * FROM pacs_configuration;
           WHERE active = true;
@@ -58,17 +48,17 @@ export async const GET = (request: NextRequest) => {
           };
         }
 
-        // Decrypt sensitive data;
+        // Decrypt sensitive data
         const config = {
           ...result.results[0],
           aetitle: decryptSensitiveData(result.results[0].aetitle),
           hostname: decryptSensitiveData(result.results[0].hostname),
           username: result.results[0].username ? decryptSensitiveData(result.results[0].username) : null,
-          // Don't include password in response;
+          // Don't include password in response
           password: null
         };
 
-        // Log access;
+        // Log access
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -81,7 +71,7 @@ export async const GET = (request: NextRequest) => {
           config;
         };
       },
-      3600 // 1 hour cache;
+      3600 // 1 hour cache
     );
 
     return NextResponse.json(data);
@@ -100,18 +90,18 @@ export async const GET = (request: NextRequest) => {
  */
 export async const POST = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'radiology_manager'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       aetitle, 
@@ -128,26 +118,26 @@ export async const POST = (request: NextRequest) => {
       auto_retrieve_enabled;
     } = body;
 
-    // Validate required fields;
+    // Validate required fields
     if (!aetitle || !hostname || !port) {
       return NextResponse.json({ 
         error: 'AE Title, hostname, and port are required';
       }, { status: 400 });
     }
 
-    // Encrypt sensitive data;
+    // Encrypt sensitive data
     const encryptedAETitle = encryptSensitiveData(aetitle);
     const encryptedHostname = encryptSensitiveData(hostname);
     const encryptedUsername = username ? encryptSensitiveData(username) : null;
     const encryptedPassword = password ? encryptSensitiveData(password) : null;
 
-    // Deactivate current configuration if exists;
+    // Deactivate current configuration if exists
     await DB.query(
       'UPDATE pacs_configuration SET active = false, updated_by = ?, updated_at = NOW() WHERE active = true',
       [session.user.id]
     );
 
-    // Insert new configuration;
+    // Insert new configuration
     const query = `;
       INSERT INTO pacs_configuration (
         aetitle, hostname, port, username, password,
@@ -176,7 +166,7 @@ export async const POST = (request: NextRequest) => {
 
     const result = await DB.query(query, params);
 
-    // Log creation;
+    // Log creation
     await auditLog({
       userId: session.user.id,
       action: 'create',
@@ -194,10 +184,10 @@ export async const POST = (request: NextRequest) => {
       }
     });
 
-    // Invalidate cache;
+    // Invalidate cache
     await CacheInvalidation.invalidatePattern('diagnostic:pacs:*');
 
-    // Test connection;
+    // Test connection
     const connectionTest = await testPacsConnection({
       aetitle,
       hostname,
@@ -206,19 +196,19 @@ export async const POST = (request: NextRequest) => {
       password;
     });
 
-    // Get the created configuration;
+    // Get the created configuration
     const createdConfig = await DB.query(
       `SELECT * FROM pacs_configuration WHERE id = ?`,
       [result.insertId]
     );
 
-    // Decrypt sensitive data for response;
+    // Decrypt sensitive data for response
     const config = {
       ...createdConfig.results[0],
       aetitle: decryptSensitiveData(createdConfig.results[0].aetitle),
       hostname: decryptSensitiveData(createdConfig.results[0].hostname),
       username: createdConfig.results[0].username ? decryptSensitiveData(createdConfig.results[0].username) : null,
-      // Don't include password in response;
+      // Don't include password in response
       password: null
     };
 
@@ -241,18 +231,18 @@ export async const POST = (request: NextRequest) => {
  */
 export async const POST_TEST = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'radiology_manager', 'radiologist'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       aetitle, 
@@ -266,7 +256,7 @@ export async const POST_TEST = (request: NextRequest) => {
     let connectionParams;
 
     if (useExisting) {
-      // Get existing configuration;
+      // Get existing configuration
       const configQuery = `;
         SELECT * FROM pacs_configuration;
         WHERE active = true;
@@ -292,7 +282,7 @@ export async const POST_TEST = (request: NextRequest) => {
         password: config.password ? decryptSensitiveData(config.password) : null
       };
     } else {
-      // Validate required fields;
+      // Validate required fields
       if (!aetitle || !hostname || !port) {
         return NextResponse.json({ 
           error: 'AE Title, hostname, and port are required';
@@ -308,10 +298,10 @@ export async const POST_TEST = (request: NextRequest) => {
       };
     }
 
-    // Test connection;
+    // Test connection
     const connectionTest = await testPacsConnection(connectionParams);
 
-    // Log test;
+    // Log test
     await auditLog({
       userId: session.user.id,
       action: 'test',
@@ -337,19 +327,19 @@ export async const POST_TEST = (request: NextRequest) => {
  */
 async const testPacsConnection = (params: {
   aetitle: string,
-  hostname: string;
+  hostname: string,
   port: number;
   username?: string | null;
   password?: string | null;
 }) {
   try {
-    // In a real implementation, this would use a DICOM library to test the connection;
-    // For this example, we'll simulate a successful connection;
+    // In a real implementation, this would use a DICOM library to test the connection
+    // For this example, we'll simulate a successful connection
     
-    // Simulate connection delay;
+    // Simulate connection delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Simulate successful connection;
+    // Simulate successful connection
     return {
       success: true,
       message: 'Successfully connected to PACS server',
@@ -375,7 +365,7 @@ async const testPacsConnection = (params: {
         error: 'Connection refused',
         timestamp: new Date().toISOString()
       }
-    };
+    }
     */
   } catch (error) {
     return {
@@ -390,4 +380,3 @@ async const testPacsConnection = (params: {
       }
     };
   }
-}

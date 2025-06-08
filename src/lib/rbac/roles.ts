@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,27 +8,23 @@ var __DEV__: boolean;
 
 export interface Permission {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  resource: string;
+  resource: string,
   action: string;
   conditions?: Record<string, unknown>;
-}
-
 export interface Role {
   id: string,
-  name: string;
+  name: string,
   description: string,
   permissions: Permission[];
-  inherits?: string[]; // Role inheritance;
-  priority: number; // Higher number = higher priority;
+  inherits?: string[]; // Role inheritance
+  priority: number; // Higher number = higher priority
   isActive: boolean;
   metadata?: Record<string, unknown>;
-}
-
 export interface UserRole {
   userId: string,
-  roleId: string;
+  roleId: string,
   assignedBy: string,
   assignedAt: Date;
   expiresAt?: Date;
@@ -44,20 +32,20 @@ export interface UserRole {
   context?: Record<string, unknown>; // Department, location, etc.
 }
 
-// Core Resources;
+// Core Resources
 export enum Resource {
-  // Patient Management;
+  // Patient Management
   PATIENT = 'patient',
   PATIENT_MEDICAL_RECORD = 'patient.medical_record',
   PATIENT_BILLING = 'patient.billing',
   PATIENT_INSURANCE = 'patient.insurance',
   
-  // Staff Management;
+  // Staff Management
   STAFF = 'staff',
   STAFF_SCHEDULE = 'staff.schedule',
   STAFF_PAYROLL = 'staff.payroll',
   
-  // Clinical Operations;
+  // Clinical Operations
   APPOINTMENT = 'appointment',
   CONSULTATION = 'consultation',
   PRESCRIPTION = 'prescription',
@@ -66,36 +54,36 @@ export enum Resource {
   RADIOLOGY_ORDER = 'radiology.order',
   RADIOLOGY_RESULT = 'radiology.result',
   
-  // Pharmacy;
+  // Pharmacy
   MEDICATION = 'medication',
   INVENTORY = 'inventory',
   PHARMACY_BILLING = 'pharmacy.billing',
   
-  // Financial;
+  // Financial
   BILLING = 'billing',
   PAYMENT = 'payment',
   INVOICE = 'invoice',
   FINANCIAL_REPORT = 'financial.report',
   
-  // Administration;
+  // Administration
   SYSTEM_CONFIG = 'system.config',
   USER_MANAGEMENT = 'user.management',
   AUDIT_LOG = 'audit.log',
   BACKUP = 'backup',
   
-  // Emergency & Critical;
+  // Emergency & Critical
   EMERGENCY = 'emergency',
   ICU = 'icu',
   OPERATION_THEATER = 'operation_theater',
   
-  // Support Services;
+  // Support Services
   HOUSEKEEPING = 'housekeeping',
   MAINTENANCE = 'maintenance',
   DIETARY = 'dietary',
   AMBULANCE = 'ambulance',
 }
 
-// Core Actions;
+// Core Actions
 export enum Action {
   CREATE = 'create',
   READ = 'read',
@@ -116,9 +104,9 @@ export enum Action {
   EMERGENCY_ACCESS = 'emergency_access',
 }
 
-// Predefined Permissions;
+// Predefined Permissions
 export const PERMISSIONS: Record<string, Permission> = {
-  // Patient Management Permissions;
+  // Patient Management Permissions
   PATIENT_CREATE: {
     id: 'patient:create',
     name: 'Create Patient',
@@ -164,7 +152,7 @@ export const PERMISSIONS: Record<string, Permission> = {
     action: Action.UPDATE,
   },
   
-  // Clinical Operations;
+  // Clinical Operations
   APPOINTMENT_MANAGE: {
     id: 'appointment:manage',
     name: 'Manage Appointments',
@@ -187,7 +175,7 @@ export const PERMISSIONS: Record<string, Permission> = {
     action: Action.APPROVE,
   },
   
-  // Laboratory;
+  // Laboratory
   LAB_ORDER_CREATE: {
     id: 'lab.order:create',
     name: 'Create Lab Order',
@@ -210,7 +198,7 @@ export const PERMISSIONS: Record<string, Permission> = {
     action: Action.APPROVE,
   },
   
-  // Financial Management;
+  // Financial Management
   BILLING_CREATE: {
     id: 'billing:create',
     name: 'Create Bills',
@@ -240,7 +228,7 @@ export const PERMISSIONS: Record<string, Permission> = {
     action: Action.READ,
   },
   
-  // Administration;
+  // Administration
   USER_MANAGEMENT: {
     id: 'user.management:*',
     name: 'User Management',
@@ -263,7 +251,7 @@ export const PERMISSIONS: Record<string, Permission> = {
     action: Action.READ,
   },
   
-  // Emergency Access;
+  // Emergency Access
   EMERGENCY_OVERRIDE: {
     id: 'emergency:override',
     name: 'Emergency Override',
@@ -273,9 +261,9 @@ export const PERMISSIONS: Record<string, Permission> = {
   },
 };
 
-// Predefined Roles;
+// Predefined Roles
 export const ROLES: Record<string, Role> = {
-  // Administrative Roles;
+  // Administrative Roles
   SUPER_ADMIN: {
     id: 'super_admin',
     name: 'Super Administrator',
@@ -304,7 +292,7 @@ export const ROLES: Record<string, Role> = {
     isActive: true,
   },
   
-  // Clinical Roles;
+  // Clinical Roles
   CHIEF_MEDICAL_OFFICER: {
     id: 'chief_medical_officer',
     name: 'Chief Medical Officer',
@@ -355,7 +343,7 @@ export const ROLES: Record<string, Role> = {
     isActive: true,
   },
   
-  // Laboratory Roles;
+  // Laboratory Roles
   LAB_TECHNICIAN: {
     id: 'lab_technician',
     name: 'Laboratory Technician',
@@ -382,7 +370,7 @@ export const ROLES: Record<string, Role> = {
     isActive: true,
   },
   
-  // Financial Roles;
+  // Financial Roles
   BILLING_CLERK: {
     id: 'billing_clerk',
     name: 'Billing Clerk',
@@ -412,7 +400,7 @@ export const ROLES: Record<string, Role> = {
     isActive: true,
   },
   
-  // Support Roles;
+  // Support Roles
   RECEPTIONIST: {
     id: 'receptionist',
     name: 'Receptionist',
@@ -434,19 +422,19 @@ export const ROLES: Record<string, Role> = {
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PRESCRIPTION_APPROVE,
-      // Additional pharmacy-specific permissions would be added;
+      // Additional pharmacy-specific permissions would be added
     ],
     priority: 600,
     isActive: true,
   },
   
-  // Limited Access Roles;
+  // Limited Access Roles
   PATIENT_PORTAL: {
     id: 'patient_portal',
     name: 'Patient Portal User',
     description: 'Patient self-service portal access',
     permissions: [
-      // Limited patient read access to own records only;
+      // Limited patient read access to own records only
     ],
     priority: 100,
     isActive: true,
@@ -464,7 +452,7 @@ export const ROLES: Record<string, Role> = {
   },
 };
 
-// Role hierarchy and inheritance helper;
+// Role hierarchy and inheritance helper
 export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
   const role = ROLES[roleId];
   if (!role) return null;
@@ -486,7 +474,7 @@ export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
   };
 }
 
-// Permission checker helper;
+// Permission checker helper
 export const hasPermission = (
   userPermissions: Permission[],
   resource: string,
@@ -494,17 +482,17 @@ export const hasPermission = (
   context?: Record<string, unknown>
 ): boolean {
   return userPermissions.some(permission => {
-    // Exact match;
+    // Exact match
     if (permission.resource === resource && permission.action === action) {
       return checkConditions(permission.conditions, context);
     }
     
-    // Wildcard action;
+    // Wildcard action
     if (permission.resource === resource && permission.action === '*') {
       return checkConditions(permission.conditions, context);
     }
     
-    // Wildcard resource and action;
+    // Wildcard resource and action
     if (permission.resource === '*' && permission.action === '*') {
       return checkConditions(permission.conditions, context);
     }
@@ -523,8 +511,6 @@ const checkConditions = (
   return Object.entries(conditions).every(([key, value]) => {
     return context[key] === value;
   });
-}
-
 export default {
   PERMISSIONS,
   ROLES,

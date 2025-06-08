@@ -1,54 +1,46 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from "react"; // Added useState;
-import { useRouter } from "next/navigation"; // Added useRouter;
+import React, { useState } from "react"; // Added useState
+import { useRouter } from "next/navigation"; // Added useRouter
 
-// Removed unused Image import;
-// import Image from 'next/image';
+// Removed unused Image import
+// import Image from 'next/image'
 
-// Define interfaces for component props and data structures;
-// Removed unused StatCardProperties interface;
+// Define interfaces for component props and data structures
+// Removed unused StatCardProperties interface
 
 interface RecentPrescription {
   id: string,
-  number: string;
+  number: string,
   patient: string,
-  date: string;
-  status: "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses;
+  date: string,
+  status: "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses
 }
 
 interface ExpiringMedication {
   id: string,
-  medication: string;
+  medication: string,
   batch: string,
-  expiry: string;
+  expiry: string,
   stock: number
 }
 
-// Main Pharmacy Dashboard Page;
+// Main Pharmacy Dashboard Page
 export default const PharmacyPage = () {
-  const router = useRouter(); // Initialize router;
-  const [activeTab, setActiveTab] = useState("dashboard"); // Initialize activeTab state;
-  const [loading, /*setLoading*/] = useState(false); // Initialize loading state - RE-ADDED;
+  const router = useRouter(); // Initialize router
+  const [activeTab, setActiveTab] = useState("dashboard"); // Initialize activeTab state
+  const [loading, /*setLoading*/] = useState(false); // Initialize loading state - RE-ADDED
 
-  // Placeholder for tab content rendering logic;
+  // Placeholder for tab content rendering logic
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <div>Pharmacy Dashboard Content</div>; // Placeholder content;
-      // Add cases for other tabs if needed;
+        return <div>Pharmacy Dashboard Content</div>; // Placeholder content
+      // Add cases for other tabs if needed
       default: return <div>Select a tab</div>
     }
   };
@@ -153,9 +145,9 @@ export default const PharmacyPage = () {
   );
 }
 
-// Recent Prescriptions List Component;
+// Recent Prescriptions List Component
 const RecentPrescriptionsList = () {
-  // Mock data for recent prescriptions - Typed;
+  // Mock data for recent prescriptions - Typed
   const recentPrescriptions: RecentPrescription[] = [
     {
       id: "presc_1",
@@ -180,10 +172,10 @@ const RecentPrescriptionsList = () {
     },
   ];
 
-  // Typed the status parameter;
+  // Typed the status parameter
   const getStatusBadge = (
     status: RecentPrescription["status"]
-  ): React.ReactElement => { // Changed JSX.Element to React.ReactElement;
+  ): React.ReactElement => { // Changed JSX.Element to React.ReactElement
     switch (status) {
       case "pending": {
         return (
@@ -207,7 +199,7 @@ const RecentPrescriptionsList = () {
         );
       }
       default: {
-        // Handle unknown statuses gracefully;
+        // Handle unknown statuses gracefully
         return (
           <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">;
             {status}
@@ -223,7 +215,7 @@ const RecentPrescriptionsList = () {
   }
 
   return (
-    <div className="overflow-x-auto">;
+    <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">;
         <thead className="bg-gray-50">;
           <tr>
@@ -270,9 +262,9 @@ const RecentPrescriptionsList = () {
   );
 }
 
-// Expiring Medications List Component;
+// Expiring Medications List Component
 const ExpiringMedicationsList = () {
-  // Mock data for expiring medications - Typed;
+  // Mock data for expiring medications - Typed
   const expiringMedications: ExpiringMedication[] = [
     {
       id: "batch_1",
@@ -303,7 +295,7 @@ const ExpiringMedicationsList = () {
   }
 
   return (
-    <div className="overflow-x-auto">;
+    <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">;
         <thead className="bg-gray-50">;
           <tr>
@@ -348,5 +340,3 @@ const ExpiringMedicationsList = () {
       </table>
     </div>
   );
-}
-

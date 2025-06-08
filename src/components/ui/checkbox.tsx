@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -38,4 +30,4 @@ const Checkbox = React.forwardRef<;
 ));
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
-export { Checkbox }
+export { Checkbox 

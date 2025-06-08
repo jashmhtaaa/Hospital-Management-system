@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 // SEC-3: Unit Tests for AuditLogService (Placeholder)
 
-import { AuditLogService, IAuditLogService } from './audit_log_service.ts';
+import { AuditLogService, IAuditLogService } from './audit_log_service.ts'
 
 describe("AuditLogService (Placeholder)", () => {
   let auditLogService: IAuditLogService;
@@ -19,8 +11,8 @@ describe("AuditLogService (Placeholder)", () => {
 
   beforeEach(() => {
     auditLogService = new AuditLogService();
-    // Spy on console.log to check its output;
-    // Suppress console.warn for these tests as the warning is expected;
+    // Spy on console.log to check its output
+    // Suppress console.warn for these tests as the warning is expected
     jest.spyOn(console, "warn").mockImplementation(() => {});
     consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   });
@@ -42,7 +34,7 @@ describe("AuditLogService (Placeholder)", () => {
     const logOutput = consoleLogSpy.mock.calls[0][0];
     expect(logOutput).toContain("AUDIT_LOG:");
 
-    // Parse the JSON part of the log output;
+    // Parse the JSON part of the log output
     const jsonPart = logOutput.substring(logOutput.indexOf("{"));
     const loggedEntry = JSON.parse(jsonPart),
     expect(loggedEntry).toMatchObject({
@@ -73,9 +65,9 @@ describe("AuditLogService (Placeholder)", () => {
       userId,
       eventType,
       entityType,
-      entityId: "N/A", // Check if null entityId is handled as N/A;
+      entityId: "N/A", // Check if null entityId is handled as N/A
       status,
-      details: {}, // Expect empty object if no details provided;
+      details: {}, // Expect empty object if no details provided
     }),
     expect(loggedEntry.timestamp).toBeDefined();
   });

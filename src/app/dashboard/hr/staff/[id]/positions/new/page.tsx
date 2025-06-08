@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -49,7 +39,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from '@/components/ui/use-toast';
 
-// Form schema for position assignment;
+// Form schema for position assignment
 const positionAssignmentSchema = z.object({
   positionId: z.string().min(1, "Position is required"),
   isPrimary: z.boolean().default(false),
@@ -63,7 +53,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);
 
-  // Initialize form;
+  // Initialize form
   const form = useForm({
     resolver: zodResolver(positionAssignmentSchema),
     defaultValues: {
@@ -74,18 +64,18 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
     },
   });
 
-  // Fetch positions and employee data;
+  // Fetch positions and employee data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch positions;
+        // Fetch positions
         const posResponse = await fetch('/api/hr/positions');
         if (posResponse.ok) {
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
         
-        // Fetch employee;
+        // Fetch employee
         const empResponse = await fetch(`/api/hr/staff/${params.id}`);
         if (empResponse.ok) {
           const empData = await empResponse.json(),
@@ -104,12 +94,12 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
     fetchData();
   }, [params.id]);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       
-      // Format dates for API;
+      // Format dates for API
       const formattedData = {
         ...data,
         startDate: format(data.startDate, 'yyyy-MM-dd'),
@@ -134,7 +124,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
         description: "Successfully assigned position to employee",
       });
       
-      // Navigate back to employee profile;
+      // Navigate back to employee profile
       router.push(`/dashboard/hr/staff/${params.id}`);
     } catch (error) {
       toast({
@@ -330,4 +320,3 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
       </Card>
     </div>
   );
-}

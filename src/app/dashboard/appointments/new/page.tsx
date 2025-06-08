@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -28,11 +20,11 @@ import { Patient } from "@/types/patient";
 import { Doctor } from "@/types/doctor";
 import { format } from "date-fns";
 
-// Schema for booking validation;
+// Schema for booking validation
 const BookAppointmentSchema = z.object({
-  patient_id: z.string().min(1, "Patient selection is required"), // Use string initially from select;
-  doctor_id: z.string().min(1, "Doctor selection is required"),   // Use string initially from select;
-  appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD;
+  patient_id: z.string().min(1, "Patient selection is required"), // Use string initially from select
+  doctor_id: z.string().min(1, "Doctor selection is required"),   // Use string initially from select
+  appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD
   appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH:MM format"),
   duration_minutes: z.number().int().positive().optional().default(15),
   reason: z.string().optional(),
@@ -44,8 +36,8 @@ export default const BookAppointmentPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<FormData>>({
-      appointment_date: format(new Date(), "yyyy-MM-dd"), // Default to today;
-      appointment_time: "09:00", // Default time;
+      appointment_date: format(new Date(), "yyyy-MM-dd"), // Default to today
+      appointment_time: "09:00", // Default time
   });
   const [patients, setPatients] = useState<Patient[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -53,7 +45,7 @@ export default const BookAppointmentPage = () {
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
-  // Fetch patients and doctors for dropdowns;
+  // Fetch patients and doctors for dropdowns
   useEffect(() => {
     const fetchData = async () => {
       setIsFetchingData(true);
@@ -68,10 +60,10 @@ export default const BookAppointmentPage = () {
 
         const patientsData: Patient[] = await patientsRes.json();
         const doctorsData: Doctor[] = await doctorsRes.json(),
-        setPatients(patientsData.filter(p => p.is_active)); // Only show active patients;
-        setDoctors(doctorsData); // Assuming API returns doctors linked to active users;
+        setPatients(patientsData.filter(p => p.is_active)); // Only show active patients
+        setDoctors(doctorsData); // Assuming API returns doctors linked to active users
 
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "Could not load patients or doctors.";
         toast({
           title: "Error Fetching Data",
@@ -113,8 +105,8 @@ export default const BookAppointmentPage = () {
       return;
     }
 
-    // Combine date and time into ISO string;
-    const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed;
+    // Combine date and time into ISO string
+    const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed
 
     const dataToSend = {
         patient_id: parseInt(validation.data.patient_id, 10),
@@ -133,7 +125,7 @@ export default const BookAppointmentPage = () {
         body: JSON.stringify(dataToSend),
       });
 
-      const result: { error?: string } = await response.json(); // Add type annotation;
+      const result: { error?: string } = await response.json(); // Add type annotation
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to book appointment");
@@ -144,9 +136,9 @@ export default const BookAppointmentPage = () {
         description: `Appointment scheduled successfully.`,
       });
 
-      router.push("/dashboard/appointments"); // Redirect to appointment list;
+      router.push("/dashboard/appointments"); // Redirect to appointment list
 
-    } catch (err: unknown) { // Use unknown;
+    } catch (err: unknown) { // Use unknown
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
@@ -250,6 +242,3 @@ export default const BookAppointmentPage = () {
       </div>
     </DashboardLayout>
   );
-}
-
-

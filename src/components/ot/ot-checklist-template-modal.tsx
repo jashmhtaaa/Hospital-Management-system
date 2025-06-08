@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -34,35 +26,33 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { PlusCircle, Trash2 } from "lucide-react";
 
-// Define ChecklistItem type;
+// Define ChecklistItem type
 interface ChecklistItem {
   id: string,
   text: string
 }
 
-// Define ChecklistTemplate type;
+// Define ChecklistTemplate type
 interface ChecklistTemplate {
-  id?: string; // Optional for new templates;
+  id?: string; // Optional for new templates
   name: string,
-  phase: string;
+  phase: string,
   items: ChecklistItem[];
-  updated_at?: string; // Optional, may not be present on new/unsaved;
+  updated_at?: string; // Optional, may not be present on new/unsaved
 }
 
-// Define the type for data passed to onSave;
+// Define the type for data passed to onSave
 interface ChecklistTemplateSaveData {
   name: string,
-  phase: string;
-  items: { id: string; text: string }[]; // Ensure ID is included if needed by backend;
+  phase: string,
+  items: { id: string; text: string }[]; // Ensure ID is included if needed by backend
 }
 
-// Props for the modal - use defined types;
+// Props for the modal - use defined types
 interface OTChecklistTemplateModalProperties {
   trigger: React.ReactNode;
-  template?: ChecklistTemplate; // Use ChecklistTemplate type;
-  onSave: (templateData: ChecklistTemplateSaveData) => Promise<void>; // Use specific save data type;
-}
-
+  template?: ChecklistTemplate; // Use ChecklistTemplate type
+  onSave: (templateData: ChecklistTemplateSaveData) => Promise<void>; // Use specific save data type
 export default const OTChecklistTemplateModal = ({
   trigger,
   template,
@@ -75,13 +65,13 @@ export default const OTChecklistTemplateModal = ({
   }));
   const [items, setItems] = useState<ChecklistItem[]>(() =>
     template?.items && template.items.length > 0;
-      ? template.items.map((item) => ({ ...item })) // Deep copy items;
+      ? template.items.map((item) => ({ ...item })) // Deep copy items
       : [{ id: crypto.randomUUID(), text: "" }]
   );
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when template prop changes or modal opens;
+  // Reset form when template prop changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -90,13 +80,13 @@ export default const OTChecklistTemplateModal = ({
       }),
       setItems(
         template?.items && template.items.length > 0;
-          ? template.items.map((item) => ({ ...item })) // Deep copy items;
+          ? template.items.map((item) => ({ ...item })) // Deep copy items
           : [{ id: crypto.randomUUID(), text: "" }]
       );
     } else {
-      // Optionally clear form when closed;
-      // setFormData({ name: "", phase: "pre-op" });
-      // setItems([{ id: crypto.randomUUID(), text: "" }]);
+      // Optionally clear form when closed
+      // setFormData({ name: "", phase: "pre-op" })
+      // setItems([{ id: crypto.randomUUID(), text: "" }])
     }
   }, [template, isOpen]);
 
@@ -121,7 +111,7 @@ export default const OTChecklistTemplateModal = ({
 
   const removeItem = (index: number) => {
     if (items.length > 1) {
-      // Keep at least one item;
+      // Keep at least one item
       const newItems = items.filter((_, index_) => index_ !== index);
       setItems(newItems);
     }
@@ -131,7 +121,7 @@ export default const OTChecklistTemplateModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
-      // Validate items are not empty;
+      // Validate items are not empty
       if (items.some((item) => !item.text.trim())) {
         toast({
           title: "Error",
@@ -144,27 +134,27 @@ export default const OTChecklistTemplateModal = ({
 
       const apiData: ChecklistTemplateSaveData = {
         ...formData,
-        items: items.map((item) => ({ id: item.id, text: item.text.trim() })), // Ensure IDs and trimmed text are sent;
+        items: items.map((item) => ({ id: item.id, text: item.text.trim() })), // Ensure IDs and trimmed text are sent
       };
 
-      // Replace with actual API call;
-      // const url = template ? `/api/ot/checklist-templates/${template.id}` : `/api/ot/checklist-templates`;
-      // const method = template ? "PUT" : "POST";
+      // Replace with actual API call
+      // const url = template ? `/api/ot/checklist-templates/${template.id}` : `/api/ot/checklist-templates`
+      // const method = template ? "PUT" : "POST"
       // const response = await fetch(url, {
       //   method: method,
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to save checklist template");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to save checklist template")
       // }
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list;
+      await onSave(apiData); // Call parent callback to refresh list
 
       toast({
         title: "Success",
@@ -172,7 +162,7 @@ export default const OTChecklistTemplateModal = ({
       }),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type;
+      // Use unknown for error type
 
       let errorMessage = "Failed to save checklist template.";
       if (error instanceof Error) {
@@ -290,4 +280,3 @@ export default const OTChecklistTemplateModal = ({
       </DialogContent>
     </Dialog>
   );
-}

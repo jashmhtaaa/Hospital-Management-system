@@ -1,21 +1,11 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
-// Remove D1Database import if using getDB;
-// import { D1Database } from "@cloudflare/workers-types";
+// Remove D1Database import if using getDB
+// import { D1Database } from "@cloudflare/workers-types"
 import { nanoid } from "nanoid";
-import { getSession } from "@/lib/session"; // Import Session type;
-// import { checkUserRole } from "@/lib/auth";
-import { getDB } from "@/lib/database"; // Import getDB;
+import { getSession } from "@/lib/session"; // Import Session type
+// import { checkUserRole } from "@/lib/auth"
+import { getDB } from "@/lib/database"; // Import getDB
 
 // Define Database interface (can be moved to a shared types file)
 interface PreparedStatement {
@@ -26,7 +16,7 @@ interface PreparedStatement {
     }>;
     all<T = unknown>(): Promise<{
       results: T[],
-      success: boolean;
+      success: boolean,
       meta: { duration: number };
     }>;
     first<T = unknown>(colName?: string): Promise<T | null>;
@@ -37,7 +27,7 @@ interface PreparedStatement {
   }>;
   all<T = unknown>(): Promise<{
     results: T[],
-    success: boolean;
+    success: boolean,
     meta: { duration: number };
   }>;
   first<T = unknown>(colName?: string): Promise<T | null>;
@@ -48,11 +38,11 @@ interface Database {
   exec(sql: string): Promise<{ count: number; duration: number }>;
 }
 
-// Interface for POST request body;
+// Interface for POST request body
 interface RadiologyStudyPostData {
   order_id: string;
   accession_number?: string | null;
-  study_datetime: string; // ISO date string;
+  study_datetime: string; // ISO date string
   modality_id?: string | null;
   technician_id: string;
   protocol?: string | null;
@@ -70,38 +60,38 @@ interface RadiologyStudyPostData {
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyStudyListItem {
   id: string,
-  order_id: string;
+  order_id: string
   study_datetime: string,
   status: string;
   accession_number?: string | null;
   patient_id?: string;
   patient_name?: string;
   procedure_name?: string;
-  // Add other fields from the SELECT query;
+  // Add other fields from the SELECT query
 }
 
 // GET all Radiology Studies (filtered by orderId, patientId, status)
 export async const GET = (request: NextRequest) => {
   try {
-    const session = await getSession(); // Call without request;
-    // Check session and user existence first;
+    const session = await getSession(); // Call without request
+    // Check session and user existence first
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Pass session.user to checkUserRole if needed, or check roleName directly;
-    // Assuming broad read access for authorized users;
+    // Pass session.user to checkUserRole if needed, or check roleName directly
+    // Assuming broad read access for authorized users
     // if (!checkUserRole(session.user, ["Admin", "Doctor", "Receptionist", "Technician", "Radiologist"])) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url)
     const orderId = searchParams.get("orderId");
-    const patientId = searchParams.get("patientId"); // Requires join;
+    const patientId = searchParams.get("patientId"); // Requires join
     const status = searchParams.get("status");
 
-    const database: Database = await getDB(); // Use getDB;
+    const database: Database = await getDB(); // Use getDB
 
-    // Adjust SELECT to match RadiologyStudyListItem;
+    // Adjust SELECT to match RadiologyStudyListItem
     let query = `SELECT;
                    rs.id, rs.order_id, rs.study_datetime, rs.status, rs.accession_number,
                    ro.patient_id,
@@ -132,7 +122,7 @@ export async const GET = (request: NextRequest) => {
     }
     query += " ORDER BY rs.study_datetime DESC";
 
-    // Use the defined Database interface and expect results matching RadiologyStudyListItem;
+    // Use the defined Database interface and expect results matching RadiologyStudyListItem
     const { results } = await database;
       .prepare(query);
       .bind(...parameters);
@@ -152,12 +142,12 @@ export async const GET = (request: NextRequest) => {
 // POST a new Radiology Study (Technician or Admin)
 export async const POST = (request: NextRequest) => {
   try {
-    const session = await getSession(); // Call without request;
-    // Check session and user existence first;
+    const session = await getSession(); // Call without request
+    // Check session and user existence first
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Use roleName for check;
+    // Use roleName for check
     if (
       session.user.roleName !== "Admin" &&;
       session.user.roleName !== "Technician";
@@ -168,8 +158,8 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    const database: Database = await getDB(); // Use getDB;
-    // Use type assertion for request body;
+    const database: Database = await getDB(); // Use getDB
+    // Use type assertion for request body
     const {
       order_id,
       accession_number,
@@ -192,7 +182,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Validate date format;
+    // Validate date format
     if (Number.isNaN(Date.parse(study_datetime))) {
       return NextResponse.json(
         { error: "Invalid study date/time format" },
@@ -201,7 +191,7 @@ export async const POST = (request: NextRequest) => {
     }
 
     // Check if order exists and is in a valid state (e.g., scheduled or pending)
-    const order = await database;
+    const order = await database
       .prepare("SELECT status FROM RadiologyOrders WHERE id = ?");
       .bind(order_id);
       .first<{ status: string }>();
@@ -211,14 +201,14 @@ export async const POST = (request: NextRequest) => {
         { status: 404 }
       );
     }
-    // Add logic here if specific order statuses are required before creating a study;
+    // Add logic here if specific order statuses are required before creating a study
     // Example: if (!["scheduled", "pending"].includes(order.status)) {
-    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 });
+    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 })
     // }
 
-    const id = nanoid();
+    const id = nanoid()
     const now = new Date().toISOString();
-    // Default status could be 'scheduled' or 'in_progress' depending on workflow;
+    // Default status could be 'scheduled' or 'in_progress' depending on workflow
     const studyStatus = status || "in_progress";
 
     await database;
@@ -228,7 +218,7 @@ export async const POST = (request: NextRequest) => {
       .bind(
         id,
         order_id,
-        accession_number ?? null, // Use nullish coalescing;
+        accession_number ?? null, // Use nullish coalescing
         study_datetime,
         modality_id ?? null,
         technician_id ?? null,
@@ -236,12 +226,12 @@ export async const POST = (request: NextRequest) => {
         series_description ?? null,
         number_of_images ?? null,
         studyStatus,
-        now, // created_at;
-        now // updated_at;
+        now, // created_at
+        now // updated_at
       );
       .run();
 
-    // Update the associated order status to 'in_progress' if it's not already completed/cancelled;
+    // Update the associated order status to 'in_progress' if it's not already completed/cancelled
     await database;
       .prepare(
         "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status NOT IN (?, ?, ?)";
@@ -253,10 +243,10 @@ export async const POST = (request: NextRequest) => {
         "completed",
         "cancelled",
         "in_progress";
-      ) // Avoid unnecessary updates;
+      ) // Avoid unnecessary updates
       .run();
 
-    // Fetch the created study to return it;
+    // Fetch the created study to return it
     const createdStudy = await database;
       .prepare("SELECT * FROM RadiologyStudies WHERE id = ?");
       .bind(id);
@@ -270,7 +260,7 @@ export async const POST = (request: NextRequest) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
-    // Handle specific DB errors;
+    // Handle specific DB errors
     if (
       error instanceof Error &&
       error.message?.includes("UNIQUE constraint failed") &&
@@ -285,7 +275,7 @@ export async const POST = (request: NextRequest) => {
       error instanceof Error &&
       error.message?.includes("FOREIGN KEY constraint failed");
     ) {
-      // Could be invalid order_id, modality_id, or technician_id;
+      // Could be invalid order_id, modality_id, or technician_id
       return NextResponse.json(
         { error: "Invalid reference ID (Order, Modality, or Technician)" },
         { status: 400 }
@@ -296,4 +286,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

@@ -1,29 +1,19 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9;
+import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9
 
-// FHIR-compliant Observation resource structure;
+// FHIR-compliant Observation resource structure
 interface FHIRObservation {
   resourceType: "Observation",
-  id: string;
+  id: string,
   meta: {
     versionId: string,
     lastUpdated: string;
     security?: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
   };
@@ -31,14 +21,14 @@ interface FHIRObservation {
   category: Array<{
     coding: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
   }>;
   code: {
     coding: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
     text: string
@@ -58,7 +48,7 @@ interface FHIRObservation {
   }>;
   valueQuantity?: {
     value: number,
-    unit: string;
+    unit: string,
     system: string,
     code: string
   };
@@ -68,7 +58,7 @@ interface FHIRObservation {
   valueCodeableConcept?: {
     coding: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
     text: string
@@ -76,7 +66,7 @@ interface FHIRObservation {
   dataAbsentReason?: {
     coding: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
     text: string
@@ -84,7 +74,7 @@ interface FHIRObservation {
   interpretation?: Array<{
     coding: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
     text: string
@@ -95,13 +85,13 @@ interface FHIRObservation {
   referenceRange?: Array<{
     low?: {
       value: number,
-      unit: string;
+      unit: string,
       system: string,
       code: string
     };
     high?: {
       value: number,
-      unit: string;
+      unit: string,
       system: string,
       code: string
     };
@@ -113,7 +103,7 @@ interface FHIRObservation {
   method?: {
     coding: Array<{
       system: string,
-      code: string;
+      code: string,
       display: string
     }>;
     text: string
@@ -124,63 +114,63 @@ interface FHIRObservation {
   };
 }
 
-// Interface for the request body when creating a laboratory result;
+// Interface for the request body when creating a laboratory result
 interface LabResultCreateBody {
-  // Basic result information;
+  // Basic result information
   order_item_id: number;
   parameter_id?: number;
   
-  // Result value - one of these must be provided;
+  // Result value - one of these must be provided
   result_value_numeric?: number;
   result_value_text?: string;
   result_value_coded?: string;
   result_value_boolean?: boolean;
   
-  // Result metadata;
+  // Result metadata
   unit?: string;
   unit_code?: string;
   unit_system?: string;
   
-  // Interpretation;
+  // Interpretation
   interpretation?: "normal" | "abnormal" | "critical-high" | "critical-low" | "high" | "low" | "off-scale-high" | "off-scale-low";
   
-  // Method information;
+  // Method information
   method?: string;
   method_code?: string;
   method_system?: string;
   
-  // Device information;
+  // Device information
   device_id?: number;
   device_name?: string;
   
-  // Verification;
+  // Verification
   verified_by?: number;
   verified_at?: string;
   verification_signature?: string;
   
-  // Additional information;
+  // Additional information
   notes?: string;
   is_corrected?: boolean;
   correction_reason?: string;
   previous_result_id?: number;
   
-  // Delta check;
+  // Delta check
   delta_check_performed?: boolean;
   delta_check_passed?: boolean;
   delta_check_notes?: string;
 }
 
-// GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering;
+// GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering
 export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const orderId = searchParams.get("orderId");
     const orderItemId = searchParams.get("orderItemId");
@@ -194,12 +184,12 @@ export async const GET = (request: NextRequest) => {
     const verified = searchParams.get("verified");
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const format = searchParams.get("format") || "default"; // 'default' or 'fhir';
+    const format = searchParams.get("format") || "default"; // 'default' or 'fhir'
     
-    // Calculate offset for pagination;
+    // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
     
-    // Build query;
+    // Build query
     let query = `;
       SELECT;
         r.*,
@@ -237,7 +227,7 @@ export async const GET = (request: NextRequest) => {
         lab_specimens s ON o.specimen_id = s.id;
     `;
     
-    // Add filters;
+    // Add filters
     const parameters: unknown[] = [];
     const conditions: string[] = [];
     
@@ -298,18 +288,18 @@ export async const GET = (request: NextRequest) => {
       query += " WHERE " + conditions.join(" AND ");
     }
     
-    // Add ordering;
+    // Add ordering
     query += " ORDER BY r.performed_at DESC";
     
-    // Add pagination;
+    // Add pagination
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query;
+    // Execute query
     const resultsQueryResult = await DB.query(query, parameters);
     const results = resultsQueryResult.results || [];
     
-    // Get total count for pagination;
+    // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_results r JOIN lab_order_items oi ON r.order_item_id = oi.id JOIN lab_orders o ON oi.order_id = o.id";
     
     if (conditions.length > 0) {
@@ -319,11 +309,11 @@ export async const GET = (request: NextRequest) => {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Format response based on requested format;
+    // Format response based on requested format
     if (format === 'fhir') {
-      // Transform to FHIR Observation resources;
+      // Transform to FHIR Observation resources
       const fhirResources = await Promise.all(results.map(async (result) => {
-        // Get reference ranges for this test/parameter;
+        // Get reference ranges for this test/parameter
         let referenceRanges = [];
         if (result.parameter_id) {
           const rangesQuery = `;
@@ -366,7 +356,7 @@ export async const GET = (request: NextRequest) => {
           },
           subject: {
             reference: `Patient/${result.patient_id}`,
-            display: `${result.patient_first_name} ${result.patient_last_name}`;
+            display: `${result.patient_first_name} ${result.patient_last_name}`
           },
           effectiveDateTime: result.performed_at,
           performer: [
@@ -377,7 +367,7 @@ export async const GET = (request: NextRequest) => {
           ]
         };
         
-        // Add verification information if verified;
+        // Add verification information if verified
         if (result.verified_by) {
           resource.issued = result.verified_at;
           if (!resource.performer) resource.performer = [];
@@ -387,14 +377,14 @@ export async const GET = (request: NextRequest) => {
           });
         }
         
-        // Add specimen reference if available;
+        // Add specimen reference if available
         if (result.specimen_barcode) {
           resource.specimen = {
             reference: `Specimen/${result.specimen_id || 'unknown'}`;
           };
         }
         
-        // Add method if available;
+        // Add method if available
         if (result.method) {
           resource.method = {
             coding: [
@@ -405,10 +395,10 @@ export async const GET = (request: NextRequest) => {
               }
             ],
             text: result.method
-          };
+          }
         }
         
-        // Add device if available;
+        // Add device if available
         if (result.device_id) {
           resource.device = {
             reference: `Device/${result.device_id}`,
@@ -416,14 +406,14 @@ export async const GET = (request: NextRequest) => {
           };
         }
         
-        // Add result value based on type;
+        // Add result value based on type
         if (result.result_value_numeric !== null && result.result_value_numeric !== undefined) {
           resource.valueQuantity = {
             value: result.result_value_numeric,
             unit: result.unit || "",
             system: result.unit_system || "http://unitsofmeasure.org",
             code: result.unit_code || result.unit || ""
-          };
+          }
         } else if (result.result_value_text) {
           resource.valueString = result.result_value_text;
         } else if (result.result_value_coded) {
@@ -436,23 +426,23 @@ export async const GET = (request: NextRequest) => {
               }
             ],
             text: result.result_value_coded
-          };
+          }
         } else if (result.result_value_boolean !== null && result.result_value_boolean !== undefined) {
           resource.valueBoolean = result.result_value_boolean;
         } else if (result.result_value) {
-          // Legacy field - try to determine type;
+          // Legacy field - try to determine type
           if (!isNaN(Number(result.result_value))) {
             resource.valueQuantity = {
               value: Number(result.result_value),
               unit: result.unit || "",
               system: result.unit_system || "http://unitsofmeasure.org",
               code: result.unit_code || result.unit || ""
-            };
+            }
           } else {
             resource.valueString = result.result_value;
           }
         } else {
-          // No result value;
+          // No result value
           resource.dataAbsentReason = {
             coding: [
               {
@@ -462,10 +452,10 @@ export async const GET = (request: NextRequest) => {
               }
             ],
             text: "Result value not provided"
-          };
+          }
         }
         
-        // Add interpretation if available;
+        // Add interpretation if available
         if (result.interpretation) {
           resource.interpretation = [
             {
@@ -478,10 +468,10 @@ export async const GET = (request: NextRequest) => {
               ],
               text: result.interpretation
             }
-          ];
+          ]
         }
         
-        // Add notes if available;
+        // Add notes if available
         if (result.notes || result.delta_check_notes || result.correction_reason) {
           resource.note = [];
           
@@ -504,7 +494,7 @@ export async const GET = (request: NextRequest) => {
           }
         }
         
-        // Add reference ranges if available;
+        // Add reference ranges if available
         if (referenceRanges.length > 0) {
           resource.referenceRange = referenceRanges.map(range => {
             const refRange: unknown = {};
@@ -515,7 +505,7 @@ export async const GET = (request: NextRequest) => {
                 unit: range.unit || "",
                 system: "http://unitsofmeasure.org",
                 code: range.unit || ""
-              };
+              }
             }
             
             if (range.value_high !== null && range.value_high !== undefined) {
@@ -524,7 +514,7 @@ export async const GET = (request: NextRequest) => {
                 unit: range.unit || "",
                 system: "http://unitsofmeasure.org",
                 code: range.unit || ""
-              };
+              }
             }
             
             if (range.text_value) {
@@ -553,7 +543,7 @@ export async const GET = (request: NextRequest) => {
           });
         }
         
-        // Add security tag for sensitive results if needed;
+        // Add security tag for sensitive results if needed
         if (result.is_sensitive) {
           resource.meta.security = [
             {
@@ -561,7 +551,7 @@ export async const GET = (request: NextRequest) => {
               code: "R",
               display: "Restricted"
             }
-          ];
+          ]
         }
         
         return resource;
@@ -582,7 +572,7 @@ export async const GET = (request: NextRequest) => {
         }));
       });
     } else {
-      // Return default format with pagination metadata;
+      // Return default format with pagination metadata
       return NextResponse.json({
         data: results,
         pagination: {
@@ -603,20 +593,20 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features;
+// POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features
 export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as LabResultCreateBody;
     
-    // Validate required fields;
+    // Validate required fields
     if (!body.order_item_id) {
       return NextResponse.json(
         { error: "Order item ID is required" },
@@ -624,7 +614,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Validate that at least one result value is provided;
+    // Validate that at least one result value is provided
     if (
       body.result_value_numeric === undefined &&;
       body.result_value_text === undefined &&;
@@ -637,7 +627,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Check if order item exists;
+    // Check if order item exists
     const orderItemCheckResult = await DB.query(
       `SELECT;
         oi.*, 
@@ -664,7 +654,7 @@ export async const POST = (request: NextRequest) => {
     
     const orderItem = orderItemCheckResult.results[0];
     
-    // Check if parameter exists if provided;
+    // Check if parameter exists if provided
     if (body.parameter_id) {
       const parameterCheckResult = await DB.query(
         "SELECT * FROM lab_test_parameters WHERE id = ?",
@@ -679,7 +669,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Check if device exists if provided;
+    // Check if device exists if provided
     if (body.device_id) {
       const deviceCheckResult = await DB.query(
         "SELECT * FROM lab_devices WHERE id = ?",
@@ -694,7 +684,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Check if previous result exists if this is a correction;
+    // Check if previous result exists if this is a correction
     if (body.is_corrected && !body.previous_result_id) {
       return NextResponse.json(
         { error: "Previous result ID is required for corrections" },
@@ -716,10 +706,10 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Perform delta check if requested;
+    // Perform delta check if requested
     let deltaCheckResult = null;
     if (body.delta_check_performed) {
-      // Get previous results for this patient, test, and parameter;
+      // Get previous results for this patient, test, and parameter
       const previousResultsQuery = `;
         SELECT;
           r.*
@@ -756,13 +746,13 @@ export async const POST = (request: NextRequest) => {
       if (previousResult &&
         body.result_value_numeric !== undefined &&;
         previousResult.result_value_numeric !== undefined) {
-        // Calculate delta;
+        // Calculate delta
         const currentValue = body.result_value_numeric;
         const previousValue = previousResult.result_value_numeric;
         const absoluteDelta = Math.abs(currentValue - previousValue);
         const percentDelta = (absoluteDelta / previousValue) * 100;
         
-        // Get delta check rules;
+        // Get delta check rules
         const deltaRulesQuery = `;
           SELECT * FROM lab_delta_check_rules;
           WHERE test_id = ? ${body.parameter_id ? "AND parameter_id = ?" : ""}
@@ -781,7 +771,7 @@ export async const POST = (request: NextRequest) => {
         let deltaCheckNotes = "";
         
         if (deltaRule) {
-          // Apply delta check rule;
+          // Apply delta check rule
           if (deltaRule.absolute_change_limit !== null && absoluteDelta > deltaRule.absolute_change_limit) {
             deltaCheckPassed = false;
             deltaCheckNotes = `Absolute change (${absoluteDelta.toFixed(2)}) exceeds limit (${deltaRule.absolute_change_limit})`;
@@ -790,7 +780,7 @@ export async const POST = (request: NextRequest) => {
             deltaCheckNotes = `Percent change (${percentDelta.toFixed(2)}%) exceeds limit (${deltaRule.percent_change_limit}%)`;
           }
         } else {
-          // Default delta check if no rule exists;
+          // Default delta check if no rule exists
           if (percentDelta > 80) {
             deltaCheckPassed = false;
             deltaCheckNotes = `Large percent change (${percentDelta.toFixed(2)}%) from previous result`;
@@ -813,10 +803,10 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Determine interpretation if not provided;
+    // Determine interpretation if not provided
     let interpretation = body.interpretation;
     if (!interpretation && body.result_value_numeric !== undefined) {
-      // Get reference ranges for this test/parameter;
+      // Get reference ranges for this test/parameter
       const rangesQuery = `;
         SELECT * FROM lab_test_reference_ranges;
         WHERE test_id = ? ${body.parameter_id ? "AND parameter_id = ?" : ""}
@@ -832,14 +822,14 @@ export async const POST = (request: NextRequest) => {
       const ranges = rangesResult.results || [];
       
       if (ranges.length > 0) {
-        // Find applicable reference range;
+        // Find applicable reference range
         const applicableRanges = ranges.filter(range => {
-          // Check gender if specified;
+          // Check gender if specified
           if (range.gender && orderItem.patient_gender && range.gender !== orderItem.patient_gender) {
             return false;
           }
           
-          // Check age if specified;
+          // Check age if specified
           if ((range.age_low !== null || range.age_high !== null) && orderItem.patient_age) {
             if (range.age_low !== null && orderItem.patient_age < range.age_low) {
               return false;
@@ -855,7 +845,7 @@ export async const POST = (request: NextRequest) => {
         if (applicableRanges.length > 0) {
           const range = applicableRanges[0];
           
-          // Check if result is critical;
+          // Check if result is critical
           if (range.is_critical) {
             if (range.critical_low !== null && body.result_value_numeric < range.critical_low) {
               interpretation = "critical-low";
@@ -864,7 +854,7 @@ export async const POST = (request: NextRequest) => {
             }
           }
           
-          // If not critical, check if abnormal;
+          // If not critical, check if abnormal
           if (!interpretation) {
             if (range.value_low !== null && body.result_value_numeric < range.value_low) {
               interpretation = "low";
@@ -878,11 +868,11 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // If this is a correction, update the previous result status;
+      // If this is a correction, update the previous result status
       if (body.is_corrected && body.previous_result_id) {
         await DB.query(
           "UPDATE lab_results SET status = 'corrected', updated_at = NOW() WHERE id = ?",
@@ -890,14 +880,14 @@ export async const POST = (request: NextRequest) => {
         );
       }
       
-      // Encrypt sensitive data if needed;
+      // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
         notes: body.notes,
         correctionReason: body.correction_reason,
         deltaCheckNotes: deltaCheckResult?.notes
       });
       
-      // Insert result;
+      // Insert result
       const insertQuery = `;
         INSERT INTO lab_results (
           order_item_id, parameter_id, 
@@ -949,7 +939,7 @@ export async const POST = (request: NextRequest) => {
       const result = await DB.query(insertQuery, insertParameters);
       const resultId = result.insertId;
       
-      // Check if all parameters for this order item have results;
+      // Check if all parameters for this order item have results
       let allParametersCompleted = false;
       
       if (orderItem.test_id) {
@@ -961,7 +951,7 @@ export async const POST = (request: NextRequest) => {
         const parameters = parametersResult.results || [];
         
         if (parameters.length > 0) {
-          // Test has parameters, check if all have results;
+          // Test has parameters, check if all have results
           const parameterIds = parameters.map(p => p.id);
           
           const resultsCountQuery = `;
@@ -979,22 +969,22 @@ export async const POST = (request: NextRequest) => {
           
           allParametersCompleted = resultCounts.every(rc => rc.result_count > 0);
         } else {
-          // Test has no defined parameters, so one result completes it;
+          // Test has no defined parameters, so one result completes it
           allParametersCompleted = true;
         }
       } else {
-        // No test ID, so one result completes it;
+        // No test ID, so one result completes it
         allParametersCompleted = true;
       }
       
-      // Update order item status if all parameters are completed;
+      // Update order item status if all parameters are completed
       if (allParametersCompleted) {
         await DB.query(
           "UPDATE lab_order_items SET status = ? WHERE id = ?",
           ["completed", body.order_item_id]
         );
         
-        // Check if all items in the order are completed;
+        // Check if all items in the order are completed
         const orderItemsQuery = `;
           SELECT status FROM lab_order_items WHERE order_id = ?;
         `;
@@ -1004,14 +994,14 @@ export async const POST = (request: NextRequest) => {
         
         const allOrderItemsCompleted = orderItems.every(item => item.status === "completed");
         
-        // Update order status if all items are completed;
+        // Update order status if all items are completed
         if (allOrderItemsCompleted) {
           await DB.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
           );
           
-          // Create report if needed;
+          // Create report if needed
           const reportCheckQuery = `;
             SELECT id FROM lab_reports WHERE order_id = ?;
           `;
@@ -1036,7 +1026,7 @@ export async const POST = (request: NextRequest) => {
         }
       }
       
-      // Create critical result alert if interpretation is critical;
+      // Create critical result alert if interpretation is critical
       if (interpretation === "critical-high" || interpretation === "critical-low") {
         await DB.query(
           `INSERT INTO lab_critical_alerts (
@@ -1060,10 +1050,10 @@ export async const POST = (request: NextRequest) => {
         );
       }
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Fetch the created result;
+      // Fetch the created result
       const fetchQuery = `;
         SELECT;
           r.*,
@@ -1105,15 +1095,15 @@ export async const POST = (request: NextRequest) => {
         throw new Error("Failed to retrieve created result");
       }
       
-      // Include delta check result if performed;
+      // Include delta check result if performed
       if (deltaCheckResult) {
         createdResult.delta_check_details = deltaCheckResult;
       }
       
-      // Return the created result;
+      // Return the created result
       return NextResponse.json(createdResult, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -1127,7 +1117,7 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// PUT /api/diagnostics/lab/results/:id - Update a laboratory result;
+// PUT /api/diagnostics/lab/results/:id - Update a laboratory result
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -1135,14 +1125,14 @@ export async const PUT = (
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     const resultId = params.id;
     
-    // Check if result exists;
+    // Check if result exists
     const resultCheckResult = await DB.query(
       `SELECT;
         r.*,
@@ -1166,7 +1156,7 @@ export async const PUT = (
     
     const existingResult = resultCheckResult.results[0];
     
-    // Check if result is already verified and not being corrected;
+    // Check if result is already verified and not being corrected
     const body = await request.json() as Partial<LabResultCreateBody>;
     
     if (existingResult.verified_by && !body.is_corrected) {
@@ -1176,13 +1166,13 @@ export async const PUT = (
       );
     }
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // If this is being converted to a correction, create a new result instead;
+      // If this is being converted to a correction, create a new result instead
       if (body.is_corrected && !existingResult.is_corrected) {
-        // Create a new result as a correction;
+        // Create a new result as a correction
         const correctionBody: LabResultCreateBody = {
           order_item_id: existingResult.order_item_id,
           parameter_id: existingResult.parameter_id,
@@ -1205,19 +1195,19 @@ export async const PUT = (
           previous_result_id: existingResult.id
         };
         
-        // Mark the existing result as corrected;
+        // Mark the existing result as corrected
         await DB.query(
           "UPDATE lab_results SET status = 'corrected', updated_at = NOW() WHERE id = ?",
           [existingResult.id]
         );
         
-        // Encrypt sensitive data if needed;
+        // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
           notes: correctionBody.notes,
           correctionReason: correctionBody.correction_reason
         });
         
-        // Insert correction;
+        // Insert correction
         const insertQuery = `;
           INSERT INTO lab_results (
             order_item_id, parameter_id, 
@@ -1265,10 +1255,10 @@ export async const PUT = (
         const result = await DB.query(insertQuery, insertParameters);
         const newResultId = result.insertId;
         
-        // Commit transaction;
+        // Commit transaction
         await DB.query("COMMIT", []);
         
-        // Fetch the created correction;
+        // Fetch the created correction
         const fetchQuery = `;
           SELECT;
             r.*,
@@ -1315,14 +1305,14 @@ export async const PUT = (
           message: "Created new result as a correction"
         }, { status: 201 });
       } else {
-        // Regular update of an unverified result;
-        // Encrypt sensitive data if needed;
+        // Regular update of an unverified result
+        // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
           notes: body.notes,
           correctionReason: body.correction_reason
         });
         
-        // Build update query;
+        // Build update query
         let updateQuery = "UPDATE lab_results SET ";
         const updateFields: string[] = [];
         const updateParameters: unknown[] = [];
@@ -1397,7 +1387,7 @@ export async const PUT = (
           updateParameters.push(encryptedData.notes);
         }
         
-        // Handle verification;
+        // Handle verification
         if (body.verified_by !== undefined) {
           updateFields.push("verified_by = ?");
           updateParameters.push(body.verified_by);
@@ -1413,7 +1403,7 @@ export async const PUT = (
           }
         }
         
-        // Only proceed if there are fields to update;
+        // Only proceed if there are fields to update
         if (updateFields.length === 0) {
           return NextResponse.json(
             { error: "No fields to update" },
@@ -1421,19 +1411,19 @@ export async const PUT = (
           );
         }
         
-        // Add updated_at field;
+        // Add updated_at field
         updateFields.push("updated_at = NOW()");
         
-        // Complete the query;
+        // Complete the query
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(resultId);
         
-        // Execute update;
+        // Execute update
         await DB.query(updateQuery, updateParameters);
         
-        // Create critical result alert if interpretation is critical;
+        // Create critical result alert if interpretation is critical
         if (body.interpretation === "critical-high" || body.interpretation === "critical-low") {
-          // Check if alert already exists;
+          // Check if alert already exists
           const alertCheckQuery = `;
             SELECT id FROM lab_critical_alerts WHERE result_id = ?;
           `;
@@ -1464,10 +1454,10 @@ export async const PUT = (
           }
         }
         
-        // Commit transaction;
+        // Commit transaction
         await DB.query("COMMIT", []);
         
-        // Fetch the updated result;
+        // Fetch the updated result
         const fetchQuery = `;
           SELECT;
             r.*,
@@ -1509,11 +1499,11 @@ export async const PUT = (
           throw new Error("Failed to retrieve updated result");
         }
         
-        // Return the updated result;
+        // Return the updated result
         return NextResponse.json(updatedResult);
       }
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -1527,7 +1517,7 @@ export async const PUT = (
   }
 }
 
-// POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result;
+// POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result
 export async const POST_VERIFY = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -1535,19 +1525,19 @@ export async const POST_VERIFY = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab technicians, lab managers, and pathologists can verify results;
+    // Only lab technicians, lab managers, and pathologists can verify results
     if (!["lab_technician", "lab_manager", "pathologist"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const resultId = params.id;
     
-    // Check if result exists;
+    // Check if result exists
     const resultCheckResult = await DB.query(
       "SELECT * FROM lab_results WHERE id = ?",
       [resultId]
@@ -1562,7 +1552,7 @@ export async const POST_VERIFY = (
     
     const existingResult = resultCheckResult.results[0];
     
-    // Check if result is already verified;
+    // Check if result is already verified
     if (existingResult.verified_by) {
       return NextResponse.json(
         { error: "Result is already verified" },
@@ -1570,22 +1560,22 @@ export async const POST_VERIFY = (
       );
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as {
       verification_signature?: string;
       notes?: string;
     };
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Encrypt sensitive data if needed;
+      // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
         notes: body.notes
       });
       
-      // Update result;
+      // Update result
       const updateQuery = `;
         UPDATE lab_results SET;
           verified_by = ?,
@@ -1607,10 +1597,10 @@ export async const POST_VERIFY = (
       
       await DB.query(updateQuery, updateParameters);
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Fetch the verified result;
+      // Fetch the verified result
       const fetchQuery = `;
         SELECT;
           r.*,
@@ -1652,13 +1642,13 @@ export async const POST_VERIFY = (
         throw new Error("Failed to retrieve verified result");
       }
       
-      // Return the verified result;
+      // Return the verified result
       return NextResponse.json({
         ...verifiedResult,
         message: "Result verified successfully"
       });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -1672,26 +1662,26 @@ export async const POST_VERIFY = (
   }
 }
 
-// GET /api/diagnostics/lab/results/critical - Get critical results;
+// GET /api/diagnostics/lab/results/critical - Get critical results
 export async const GET_CRITICAL = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     
-    // Calculate offset for pagination;
+    // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
     
-    // Build query;
+    // Build query
     let query = `;
       SELECT;
         a.*,
@@ -1719,7 +1709,7 @@ export async const GET_CRITICAL = (request: NextRequest) => {
         users u ON a.created_by = u.id;
     `;
     
-    // Add filters;
+    // Add filters
     const parameters: unknown[] = [];
     
     if (status) {
@@ -1727,18 +1717,18 @@ export async const GET_CRITICAL = (request: NextRequest) => {
       parameters.push(status);
     }
     
-    // Add ordering;
+    // Add ordering
     query += " ORDER BY a.created_at DESC";
     
-    // Add pagination;
+    // Add pagination
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query;
+    // Execute query
     const alertsResult = await DB.query(query, parameters);
     const alerts = alertsResult.results || [];
     
-    // Get total count for pagination;
+    // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_critical_alerts a";
     
     if (status) {
@@ -1748,7 +1738,7 @@ export async const GET_CRITICAL = (request: NextRequest) => {
     const countResult = await DB.query(countQuery, status ? [status] : []);
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Return alerts with pagination metadata;
+    // Return alerts with pagination metadata
     return NextResponse.json({
       data: alerts,
       pagination: {
@@ -1768,7 +1758,7 @@ export async const GET_CRITICAL = (request: NextRequest) => {
   }
 }
 
-// PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status;
+// PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status
 export async const PUT_CRITICAL = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -1776,14 +1766,14 @@ export async const PUT_CRITICAL = (
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     const alertId = params.id;
     
-    // Check if alert exists;
+    // Check if alert exists
     const alertCheckResult = await DB.query(
       "SELECT * FROM lab_critical_alerts WHERE id = ?",
       [alertId]
@@ -1796,7 +1786,7 @@ export async const PUT_CRITICAL = (
       );
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as {
       status: "pending" | "acknowledged" | "notified" | "resolved";
       acknowledged_by?: number;
@@ -1805,7 +1795,7 @@ export async const PUT_CRITICAL = (
       resolution_notes?: string;
     };
     
-    // Validate status;
+    // Validate status
     if (!body.status || !["pending", "acknowledged", "notified", "resolved"].includes(body.status)) {
       return NextResponse.json(
         { error: "Invalid status" },
@@ -1813,13 +1803,13 @@ export async const PUT_CRITICAL = (
       );
     }
     
-    // Encrypt sensitive data if needed;
+    // Encrypt sensitive data if needed
     const encryptedData = await encryptSensitiveData({
       resolutionNotes: body.resolution_notes,
       notifiedTo: body.notified_to
     });
     
-    // Update alert;
+    // Update alert
     const updateQuery = `;
       UPDATE lab_critical_alerts SET;
         status = ?,
@@ -1850,7 +1840,7 @@ export async const PUT_CRITICAL = (
     
     await DB.query(updateQuery, updateParameters);
     
-    // Fetch the updated alert;
+    // Fetch the updated alert
     const fetchQuery = `;
       SELECT;
         a.*,
@@ -1893,7 +1883,7 @@ export async const PUT_CRITICAL = (
       throw new Error("Failed to retrieve updated alert");
     }
     
-    // Return the updated alert;
+    // Return the updated alert
     return NextResponse.json(updatedAlert);
   } catch (error: unknown) {
 
@@ -1905,7 +1895,7 @@ export async const PUT_CRITICAL = (
   }
 }
 
-// Helper function to map HMS status to FHIR status;
+// Helper function to map HMS status to FHIR status
 const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
   switch (status) {
     case "registered":
@@ -1926,7 +1916,7 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
   }
 }
 
-// Helper function to map HMS interpretation to FHIR interpretation;
+// Helper function to map HMS interpretation to FHIR interpretation
 const mapInterpretationToFHIR = (interpretation: string): string {
   switch (interpretation) {
     case "normal":
@@ -1947,4 +1937,3 @@ const mapInterpretationToFHIR = (interpretation: string): string {
       return "<";
     default: return "N"
   }
-}

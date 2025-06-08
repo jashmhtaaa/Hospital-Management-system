@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -20,25 +12,23 @@ interface OPDStatisticsProperties {
 
 interface StatisticsData {
   totalAppointments: number,
-  checkedIn: number;
+  checkedIn: number,
   completed: number,
-  cancelled: number;
-  averageWaitTime: number; // in minutes;
+  cancelled: number,
+  averageWaitTime: number; // in minutes
   doctorPerformance: {
     doctorName: string,
-    patientsServed: number;
-    averageConsultationTime: number; // in minutes;
+    patientsServed: number,
+    averageConsultationTime: number; // in minutes
   }[];
 }
 
-// FIX: Define API response types;
-// Assuming the API returns the StatisticsData object directly;
+// FIX: Define API response types
+// Assuming the API returns the StatisticsData object directly
 type StatisticsApiResponse = StatisticsData;
 
 interface ApiErrorResponse {
   error?: string;
-}
-
 export default const OPDStatistics = ({ date }: OPDStatisticsProperties) {
   const [statistics, setStatistics] = useState<StatisticsData | null>();
   const [loading, setLoading] = useState(true);
@@ -66,17 +56,17 @@ export default const OPDStatistics = ({ date }: OPDStatisticsProperties) {
           throw new Error(errorMessage);
         }
 
-        // FIX: Type the response data;
+        // FIX: Type the response data
         const data: StatisticsApiResponse = await response.json();
-        // Validate the structure if necessary before setting state;
+        // Validate the structure if necessary before setting state
         if (data && typeof data === "object" && "totalAppointments" in data) {
           setStatistics(data);
         } else {
 
-          setStatistics(undefined); // Set to null or handle appropriately;
+          setStatistics(undefined); // Set to null or handle appropriately
         }
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown
         const messageText =;
           error_ instanceof Error;
             ? error_.message;
@@ -189,7 +179,7 @@ export default const OPDStatistics = ({ date }: OPDStatisticsProperties) {
             </div>
             <div className="h-1.5 bg-gray-200 rounded-full">;
 <div className="h-1.5 bg-blue-500 rounded-full"
-                // FIX: Ensure divisor is not zero if doctorPerformance can be empty;
+                // FIX: Ensure divisor is not zero if doctorPerformance can be empty
                 style={{
                   width: `${Math.min(100, (doctor.patientsServed / Math.max(...statistics.doctorPerformance.map((d) => d.patientsServed), 1)) * 100)}%`,
                 }}
@@ -200,4 +190,3 @@ export default const OPDStatistics = ({ date }: OPDStatisticsProperties) {
       </div>
     </div>
   );
-}

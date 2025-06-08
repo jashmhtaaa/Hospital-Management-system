@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
 
-// GET handler for retrieving a specific asset;
+// GET handler for retrieving a specific asset
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -38,7 +28,7 @@ export async const GET = (
   }
 }
 
-// Schema for asset update;
+// Schema for asset update
 const assetUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   assetType: z.enum(['EQUIPMENT', 'FURNITURE', 'IT', 'VEHICLE', 'BUILDING', 'OTHER'], {
@@ -64,16 +54,16 @@ const assetUpdateSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-// PUT handler for updating an asset;
+// PUT handler for updating an asset
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = assetUpdateSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -84,14 +74,14 @@ export async const PUT = (
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects;
+    // Convert date strings to Date objects
     const assetData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
       warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined,
     };
     
-    // Update asset;
+    // Update asset
     const asset = await assetService.updateAsset(params.id, assetData);
     
     return NextResponse.json(asset);
@@ -104,7 +94,7 @@ export async const PUT = (
   }
 }
 
-// DELETE handler for deleting an asset;
+// DELETE handler for deleting an asset
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -120,4 +110,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -21,11 +13,11 @@ const prisma = new PrismaClient();
 
 interface DatabaseHealth {
   status: 'healthy' | 'degraded' | 'unhealthy',
-  timestamp: string;
+  timestamp: string,
   responseTime: number,
   connectionPool: {
     active: number,
-    idle: number;
+    idle: number,
     total: number
   };
   queries: {
@@ -36,27 +28,25 @@ interface DatabaseHealth {
     applied: number,
     pending: number
   };
-}
-
 export async const GET = (request: NextRequest): Promise<NextResponse> {
   const startTime = Date.now();
   
   try {
-    // Basic connectivity test;
+    // Basic connectivity test
     await prisma.$queryRaw`SELECT 1 as test`;
     
-    // Check database version and basic info;
+    // Check database version and basic info
     const versionResult = await prisma.$queryRaw`SELECT version() as version`;
     
     // Check for slow queries (example - adjust based on your monitoring needs)
-    const slowQueries = await checkSlowQueries();
+    const slowQueries = await checkSlowQueries()
     
-    // Check migration status;
+    // Check migration status
     const migrationStatus = await checkMigrations();
     
     // Simulate connection pool status (adjust based on your actual connection pool)
     const connectionPool = {
-      active: 5, // These would come from actual pool metrics;
+      active: 5, // These would come from actual pool metrics
       idle: 3,
       total: 8
     };
@@ -73,7 +63,7 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
         failed: 0 // This would come from monitoring
       },
       migrations: migrationStatus
-    };
+    }
     
     const httpStatus = dbHealth.status === 'healthy' ? 200 : 
                       dbHealth.status === 'degraded' ? 200 : 503;
@@ -100,8 +90,8 @@ export async const GET = (request: NextRequest): Promise<NextResponse> {
 
 async const checkSlowQueries = (): Promise<number> {
   try {
-    // This is a simplified example - in production you'd query actual slow query logs;
-    // PostgreSQL example: query pg_stat_statements for slow queries;
+    // This is a simplified example - in production you'd query actual slow query logs
+    // PostgreSQL example: query pg_stat_statements for slow queries
     const result = await prisma.$queryRaw`;
       SELECT COUNT(*) as slow_count;
       FROM pg_stat_statements;
@@ -110,14 +100,14 @@ async const checkSlowQueries = (): Promise<number> {
     
     return result[0]?.slow_count || 0;
   } catch (error) {
-    // If pg_stat_statements extension is not available, return 0;
+    // If pg_stat_statements extension is not available, return 0
     return 0;
   }
 }
 
 async const checkMigrations = (): Promise<{ applied: number; pending: number }> {
   try {
-    // Check applied migrations;
+    // Check applied migrations
     const applied = await prisma.$queryRaw`;
       SELECT COUNT(*) as count;
       FROM _prisma_migrations;
@@ -125,7 +115,7 @@ async const checkMigrations = (): Promise<{ applied: number; pending: number }> 
     ` as any[];
     
     // Check pending migrations (simplified - in practice you'd compare with migration files)
-    const pending = await prisma.$queryRaw`;
+    const pending = await prisma.$queryRaw`
       SELECT COUNT(*) as count;
       FROM _prisma_migrations;
       WHERE finished_at IS NULL;
@@ -136,7 +126,7 @@ async const checkMigrations = (): Promise<{ applied: number; pending: number }> 
       pending: pending[0]?.count || 0
     };
   } catch (error) {
-    // If migration table doesn't exist or is inaccessible;
+    // If migration table doesn't exist or is inaccessible
     return {
       applied: 0,
       pending: 0
@@ -145,15 +135,14 @@ async const checkMigrations = (): Promise<{ applied: number; pending: number }> 
 }
 
 const determineDbStatus = (responseTime: number, slowQueries: number): 'healthy' | 'degraded' | 'unhealthy' {
-  // Database is unhealthy if response time > 5 seconds;
+  // Database is unhealthy if response time > 5 seconds
   if (responseTime > 5000) {
     return 'unhealthy';
   }
   
-  // Database is degraded if response time > 1 second or there are slow queries;
+  // Database is degraded if response time > 1 second or there are slow queries
   if (responseTime > 1000 || slowQueries > 10) {
     return 'degraded';
   }
   
   return 'healthy';
-}

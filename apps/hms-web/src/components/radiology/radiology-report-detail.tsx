@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,15 +6,15 @@ import { Button } from '@/components/ui/button';
 
 interface RadiologyReport {
   id: string,
-  patientName: string;
+  patientName: string,
   patientId: string,
-  reportDate: string;
+  reportDate: string,
   studyType: string,
-  modality: string;
+  modality: string,
   status: 'draft' | 'preliminary' | 'final' | 'amended',
-  radiologist: string;
+  radiologist: string,
   findings: string,
-  impression: string;
+  impression: string,
   recommendations: string
 }
 
@@ -121,4 +111,3 @@ export const RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) =>
       </CardContent>
     </Card>
   );
-}

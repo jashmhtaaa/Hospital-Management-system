@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/page.tsx;
+// src/app/dashboard/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master;
+import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master
 import {
   UsersIcon,
   CalendarIcon,
@@ -31,11 +23,11 @@ import {
   BedDoubleIcon,
   CreditCardIcon,
   PillIcon,
-} from "lucide-react"; // Use lucide-react icons;
+} from "lucide-react"; // Use lucide-react icons
 
 // --- INTERFACES for API Responses (from HEAD) ---
 interface OpdStatsResponse {
-  totalPatients?: number;
+  totalPatients?: number
   todayAppointments?: number;
 }
 
@@ -55,9 +47,9 @@ interface PharmacyStatsResponse {
 // Interface for the combined stats state (from HEAD)
 interface DashboardStats {
   totalPatients: number,
-  todayAppointments: number;
+  todayAppointments: number
   activeAdmissions: number,
-  availableBeds: number;
+  availableBeds: number,
   pendingBills: number,
   lowStockItems: number
 }
@@ -78,10 +70,10 @@ const Dashboard = () {
     const fetchDashboardStats = async () => {
       try {
         setLoading(true),
-        setError(null); // Clear previous errors;
+        setError(null); // Clear previous errors
 
         // Fetch stats from different endpoints (from HEAD)
-        const [opdResponse, ipdResponse, billingResponse, pharmacyResponse] =;
+        const [opdResponse, ipdResponse, billingResponse, pharmacyResponse] =
           await Promise.all([
             fetch("/api/dashboard/opd-stats"),
             fetch("/api/dashboard/ipd-stats"),
@@ -89,7 +81,7 @@ const Dashboard = () {
             fetch("/api/dashboard/pharmacy-stats"),
           ]);
 
-        // Check all responses;
+        // Check all responses
         if (
           !opdResponse.ok ||
           !ipdResponse.ok ||
@@ -150,8 +142,8 @@ const Dashboard = () {
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---
   interface StatCardProperties {
     title: string,
-    value: number;
-    icon: React.ElementType; // Use React.ElementType for lucide icons;
+    value: number
+    icon: React.ElementType; // Use React.ElementType for lucide icons
     link?: string;
     linkText?: string;
     colorClass?: string; // e.g., "blue", "green"
@@ -160,19 +152,19 @@ const Dashboard = () {
   const StatCard: React.FC<StatCardProperties> = ({
     title,
     value,
-    icon: Icon, // Destructure icon as Icon component;
+    icon: Icon, // Destructure icon as Icon component
     link,
     linkText,
     colorClass = "gray",
   }) => {
     // Ensure Tailwind safelists or recognizes these dynamic classes:
-    // bg-blue-100 text-blue-600;
-    // bg-green-100 text-green-600;
-    // bg-purple-100 text-purple-600;
-    // bg-indigo-100 text-indigo-600;
-    // bg-red-100 text-red-600;
-    // bg-amber-100 text-amber-600;
-    // bg-gray-100 text-gray-600;
+    // bg-blue-100 text-blue-600
+    // bg-green-100 text-green-600
+    // bg-purple-100 text-purple-600
+    // bg-indigo-100 text-indigo-600
+    // bg-red-100 text-red-600
+    // bg-amber-100 text-amber-600
+    // bg-gray-100 text-gray-600
     const bgClass = `bg-${colorClass}-100`;
     const textClass = `text-${colorClass}-600`;
 
@@ -208,11 +200,11 @@ const Dashboard = () {
   // --- JSX (Using DashboardLayout) ---
   return (
     <DashboardLayout>
-      <div className="space-y-6">;
+      <div className="space-y-6">
         <h1 className="text-2xl font-bold">Dashboard</h1> {/* Keep title consistent */}
         {loading ? (
           // Skeleton Loading State (from HEAD)
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, index) => (
               <Card key={index}>;
                 <CardContent className="p-6 space-y-3">;
@@ -228,7 +220,7 @@ const Dashboard = () {
           </div>
         ) : error ? (
           // Error State (from HEAD)
-          <Card className="bg-red-50 border-red-200">;
+          <Card className="bg-red-50 border-red-200">
             <CardContent className="p-6 text-center text-red-700">;
               <p className="font-semibold">Error Loading Dashboard</p>;
               <p className="text-sm">{error}</p>
@@ -238,7 +230,7 @@ const Dashboard = () {
           // Data Loaded State (from HEAD)
           <>
             {/* Stats Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <StatCard>
                 title="Total Patients"
                 value={stats.totalPatients}
@@ -375,7 +367,7 @@ Dashboard.displayName = "Dashboard";
 // --- Helper Component for Activity Lists (from HEAD) ---
 interface ActivityItemProperties {
   name: string,
-  detail: string;
+  detail: string
   time: string,
   doctor: string
 }

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -70,7 +60,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
   const [activeTab, setActiveTab] = useState('details');
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  // Fetch asset data;
+  // Fetch asset data
   useEffect(() => {
     const fetchAsset = async () => {
       try {
@@ -101,12 +91,12 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
     fetchAsset();
   }, [params.id]);
 
-  // Handle edit navigation;
+  // Handle edit navigation
   const handleEdit = () => {
     router.push(`/dashboard/hr/assets/${params.id}/edit`);
   };
 
-  // Handle delete;
+  // Handle delete
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/hr/assets/${params.id}`, {
@@ -132,22 +122,22 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
     }
   };
 
-  // Handle maintenance record;
+  // Handle maintenance record
   const handleAddMaintenance = () => {
     router.push(`/dashboard/hr/assets/${params.id}/maintenance/new`);
   };
 
-  // Handle asset transfer;
+  // Handle asset transfer
   const handleTransfer = () => {
     router.push(`/dashboard/hr/assets/${params.id}/transfer`);
   };
 
-  // Handle asset assignment;
+  // Handle asset assignment
   const handleAssign = () => {
     router.push(`/dashboard/hr/assets/${params.id}/assign`);
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'AVAILABLE':
@@ -164,7 +154,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
     }
   };
 
-  // Format currency;
+  // Format currency
   const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
@@ -173,7 +163,7 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
     }).format(amount);
   };
 
-  // Format date or show placeholder;
+  // Format date or show placeholder
   const formatDateOrPlaceholder = (date: unknown) => {
     return date ? format(new Date(date), 'PPP') : '—';
   };
@@ -619,4 +609,3 @@ export default const AssetDetail = ({ params }: { params: { id: string } }) {
       </Tabs>
     </div>
   );
-}

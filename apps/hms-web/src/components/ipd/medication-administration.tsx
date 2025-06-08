@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -17,9 +7,9 @@ import { Button } from '@/components/ui/button';
 
 interface Medication {
   id: string,
-  name: string;
+  name: string,
   dose: string,
-  route: string;
+  route: string,
   frequency: string,
   startDate: string;
   endDate?: string;
@@ -28,9 +18,9 @@ interface Medication {
 
 interface MedicationAdministration {
   id: string,
-  medicationId: string;
+  medicationId: string,
   medicationName: string,
-  dose: string;
+  dose: string,
   route: string,
   scheduledTime: string;
   administeredTime?: string;
@@ -41,7 +31,7 @@ interface MedicationAdministration {
 
 interface MedicationAdministrationProps {
   patientId: string,
-  patientName: string;
+  patientName: string,
   medications: Medication[],
   administrations: MedicationAdministration[]
 }
@@ -169,4 +159,3 @@ export const MedicationAdministration = ({ patientId,
       </CardContent>
     </Card>
   );
-}

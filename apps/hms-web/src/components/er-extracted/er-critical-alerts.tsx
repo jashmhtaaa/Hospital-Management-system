@@ -4,11 +4,11 @@ import { Badge } from '@/components/ui/badge';
 
 interface Alert {
   id: string,
-  patientId: string;
+  patientId: string,
   patientName: string,
-  alertType: 'critical' | 'urgent' | 'warning';
+  alertType: 'critical' | 'urgent' | 'warning',
   message: string,
-  timestamp: string;
+  timestamp: string,
   acknowledged: boolean
 }
 
@@ -39,7 +39,7 @@ export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCritica
             <line x1="12" y1="9" x2="12" y2="13" />
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
-          Critical Alerts;
+          Critical Alerts
           {alerts.filter(a => !a.acknowledged).length > 0 && (
             <Badge variant="danger" className="ml-2">;
               {alerts.filter(a => !a.acknowledged).length} New
@@ -84,4 +84,3 @@ export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCritica
       </CardContent>
     </Card>
   );
-}

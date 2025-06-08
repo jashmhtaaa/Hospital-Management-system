@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -22,12 +12,12 @@ import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 
-// Define column types for campaign table;
+// Define column types for campaign table
 type Campaign = {
   id: string,
-  name: string;
+  name: string,
   type: string,
-  status: string;
+  status: string,
   startDate: string;
   endDate?: string;
   segmentCount: number;
@@ -38,14 +28,14 @@ type Campaign = {
   };
 };
 
-// Define column types for contact table;
+// Define column types for contact table
 type Contact = {
   id: string,
-  name: string;
+  name: string,
   email: string;
   phone?: string;
   source: string,
-  status: string;
+  status: string,
   createdAt: string;
   lastActivity?: string;
 };
@@ -63,7 +53,7 @@ export default const MarketingDashboard = () {
   const [contactFilter, setContactFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Define columns for campaign table;
+  // Define columns for campaign table
   const campaignColumns: ColumnDef<Campaign>[] = [
     {
       accessorKey: 'name',
@@ -166,7 +156,7 @@ export default const MarketingDashboard = () {
     },
   ];
 
-  // Define columns for contact table;
+  // Define columns for contact table
   const contactColumns: ColumnDef<Contact>[] = [
     {
       accessorKey: 'name',
@@ -246,30 +236,30 @@ export default const MarketingDashboard = () {
     },
   ];
 
-  // Fetch data on component mount;
+  // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch campaigns;
+        // Fetch campaigns
         const campaignsResponse = await fetch('/api/support-services/marketing/campaigns');
         if (!campaignsResponse.ok) throw new Error('Failed to fetch campaigns');
         const campaignsData = await campaignsResponse.json(),
         setCampaigns(campaignsData.data || []);
         
-        // Fetch contacts;
+        // Fetch contacts
         const contactsResponse = await fetch('/api/support-services/marketing/contacts');
         if (!contactsResponse.ok) throw new Error('Failed to fetch contacts');
         const contactsData = await contactsResponse.json(),
         setContacts(contactsData.data || []);
         
-        // Fetch segments;
+        // Fetch segments
         const segmentsResponse = await fetch('/api/support-services/marketing/segments');
         if (!segmentsResponse.ok) throw new Error('Failed to fetch segments');
         const segmentsData = await segmentsResponse.json(),
         setSegments(segmentsData.data || []);
         
-        // Fetch templates;
+        // Fetch templates
         const templatesResponse = await fetch('/api/support-services/marketing/templates');
         if (!templatesResponse.ok) throw new Error('Failed to fetch templates');
         const templatesData = await templatesResponse.json(),
@@ -289,7 +279,7 @@ export default const MarketingDashboard = () {
     fetchData();
   }, []);
 
-  // Filter campaigns based on selected filter and search query;
+  // Filter campaigns based on selected filter and search query
   const filteredCampaigns = campaigns.filter(campaign => {
     if (campaignFilter !== 'all' && campaign.status !== campaignFilter) {
       return false;
@@ -302,7 +292,7 @@ export default const MarketingDashboard = () {
     return true;
   });
 
-  // Filter contacts based on selected filter and search query;
+  // Filter contacts based on selected filter and search query
   const filteredContacts = contacts.filter(contact => {
     if (contactFilter !== 'all' && contact.status !== contactFilter) {
       return false;
@@ -316,7 +306,7 @@ export default const MarketingDashboard = () {
     return true;
   });
 
-  // Sample data for charts;
+  // Sample data for charts
   const campaignPerformanceData = {
     labels: ['Campaign 1', 'Campaign 2', 'Campaign 3', 'Campaign 4', 'Campaign 5'],
     datasets: [
@@ -730,4 +720,3 @@ export default const MarketingDashboard = () {
       </Tabs>
     </div>
   );
-}

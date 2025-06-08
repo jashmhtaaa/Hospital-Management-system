@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -18,15 +10,13 @@ import { performance } from 'perf_hooks';
 import { cacheService } from '../cache/redis-cache';
 import { getDatabaseHealth } from '../database/connection-pool';
 
-// Metric types;
+// Metric types
 export interface Metric {
   name: string,
-  value: number;
+  value: number,
   timestamp: Date;
   tags?: Record<string, string>;
   type: 'counter' | 'gauge' | 'histogram' | 'timer'
-}
-
 export interface HealthMetric {
   service: string,
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -34,18 +24,16 @@ export interface HealthMetric {
   errorRate?: number;
   details?: unknown;
   timestamp: Date
-}
-
 export interface AlertRule {
   id: string,
-  name: string;
+  name: string,
   metric: string,
-  condition: 'gt' | 'lt' | 'eq' | 'gte' | 'lte';
+  condition: 'gt' | 'lt' | 'eq' | 'gte' | 'lte',
   threshold: number,
-  duration: number; // seconds;
+  duration: number; // seconds
   severity: 'low' | 'medium' | 'high' | 'critical',
-  enabled: boolean;
-  notifications: string[]; // channels: email, slack, sms;
+  enabled: boolean,
+  notifications: string[]; // channels: email, slack, sms
 }
 
 class MetricsCollector {
@@ -68,73 +56,73 @@ class MetricsCollector {
   }
 
   private initializeAlertRules(): void {
-    // Database response time alert;
+    // Database response time alert
     this.addAlertRule({
       id: 'db_response_time',
       name: 'Database Response Time High',
       metric: 'database.response_time',
       condition: 'gt',
-      threshold: 2000, // 2 seconds;
-      duration: 300, // 5 minutes;
+      threshold: 2000, // 2 seconds
+      duration: 300, // 5 minutes
       severity: 'high',
       enabled: true,
       notifications: ['email', 'slack'],
     });
 
-    // Error rate alert;
+    // Error rate alert
     this.addAlertRule({
       id: 'error_rate_high',
       name: 'Error Rate High',
       metric: 'api.error_rate',
       condition: 'gt',
-      threshold: 0.05, // 5%;
-      duration: 180, // 3 minutes;
+      threshold: 0.05, // 5%
+      duration: 180, // 3 minutes
       severity: 'critical',
       enabled: true,
       notifications: ['email', 'slack', 'sms'],
     });
 
-    // Memory usage alert;
+    // Memory usage alert
     this.addAlertRule({
       id: 'memory_usage_high',
       name: 'Memory Usage High',
       metric: 'system.memory_usage',
       condition: 'gt',
-      threshold: 0.85, // 85%;
-      duration: 600, // 10 minutes;
+      threshold: 0.85, // 85%
+      duration: 600, // 10 minutes
       severity: 'medium',
       enabled: true,
       notifications: ['email'],
     });
 
-    // Active sessions alert;
+    // Active sessions alert
     this.addAlertRule({
       id: 'active_sessions_high',
       name: 'Active Sessions High',
       metric: 'auth.active_sessions',
       condition: 'gt',
       threshold: 500,
-      duration: 300, // 5 minutes;
+      duration: 300, // 5 minutes
       severity: 'medium',
       enabled: true,
       notifications: ['email', 'slack'],
     });
 
-    // Cache hit rate low;
+    // Cache hit rate low
     this.addAlertRule({
       id: 'cache_hit_rate_low',
       name: 'Cache Hit Rate Low',
       metric: 'cache.hit_rate',
       condition: 'lt',
-      threshold: 0.70, // 70%;
-      duration: 900, // 15 minutes;
+      threshold: 0.70, // 70%
+      duration: 900, // 15 minutes
       severity: 'low',
       enabled: true,
       notifications: ['email'],
     });
   }
 
-  // Metric collection methods;
+  // Metric collection methods
   recordMetric(name: string, value: number, type: Metric['type'] = 'gauge', tags?: Record<string, string>): void {
     const metric: Metric = {
       name,
@@ -151,12 +139,12 @@ class MetricsCollector {
     const metricArray = this.metrics.get(name)!;
     metricArray.push(metric);
 
-    // Keep only last 1000 metrics per type;
+    // Keep only last 1000 metrics per type
     if (metricArray.length > 1000) {
       metricArray.shift();
     }
 
-    // Check alert rules;
+    // Check alert rules
     this.checkAlertRules(name, value);
   }
 
@@ -172,7 +160,7 @@ class MetricsCollector {
     this.recordMetric(name, duration, 'timer', tags);
   }
 
-  // Performance timing decorator;
+  // Performance timing decorator
   async measurePerformance<T>(
     operationName: string,
     operation: () => Promise<T>,
@@ -194,9 +182,9 @@ class MetricsCollector {
     }
   }
 
-  // Health monitoring;
+  // Health monitoring
   async collectHealthMetrics(): Promise<void> {
-    // Database health;
+    // Database health
     try {
       const startTime = performance.now();
       const dbHealth = await getDatabaseHealth();
@@ -224,7 +212,7 @@ class MetricsCollector {
       });
     }
 
-    // Cache health;
+    // Cache health
     try {
       const startTime = performance.now();
       const cacheHealth = await cacheService.getHealthStatus();
@@ -256,33 +244,33 @@ class MetricsCollector {
       });
     }
 
-    // System metrics;
+    // System metrics
     this.collectSystemMetrics();
   }
 
   private collectSystemMetrics(): void {
-    // Memory usage;
+    // Memory usage
     const memUsage = process.memoryUsage();
     this.recordGauge('system.memory.rss', memUsage.rss);
     this.recordGauge('system.memory.heap_used', memUsage.heapUsed);
     this.recordGauge('system.memory.heap_total', memUsage.heapTotal);
     this.recordGauge('system.memory_usage', memUsage.heapUsed / memUsage.heapTotal);
 
-    // Event loop lag;
+    // Event loop lag
     const start = process.hrtime.bigint(),
     setImmediate(() => {
-      const lag = Number(process.hrtime.bigint() - start) / 1000000; // Convert to milliseconds;
+      const lag = Number(process.hrtime.bigint() - start) / 1000000; // Convert to milliseconds
       this.recordGauge('system.event_loop_lag', lag);
     });
 
-    // Uptime;
+    // Uptime
     this.recordGauge('system.uptime', process.uptime());
 
     // CPU usage (basic)
-    this.recordGauge('system.cpu_usage', process.cpuUsage().user + process.cpuUsage().system);
+    this.recordGauge('system.cpu_usage', process.cpuUsage().user + process.cpuUsage().system)
   }
 
-  // API metrics tracking;
+  // API metrics tracking
   trackApiCall(endpoint: string, method: string, statusCode: number, responseTime: number): void {
     const tags = { endpoint, method, status: statusCode.toString() };
     
@@ -293,12 +281,12 @@ class MetricsCollector {
       this.incrementCounter('api.errors_total', 1, tags);
     }
 
-    // Calculate error rate;
+    // Calculate error rate
     this.calculateErrorRate();
   }
 
   private calculateErrorRate(): void {
-    const totalRequests = this.getMetricSum('api.requests_total', 300); // Last 5 minutes;
+    const totalRequests = this.getMetricSum('api.requests_total', 300); // Last 5 minutes
     const totalErrors = this.getMetricSum('api.errors_total', 300);
     
     if (totalRequests > 0) {
@@ -307,7 +295,7 @@ class MetricsCollector {
     }
   }
 
-  // Business metrics;
+  // Business metrics
   trackPatientRegistration(): void {
     this.incrementCounter('business.patient_registrations', 1);
   }
@@ -336,13 +324,13 @@ class MetricsCollector {
   }
 
   private updateActiveSessionCount(): void {
-    // This would typically query the session store;
-    // For now, we'll use a placeholder;
-    const activeSessions = Math.floor(Math.random() * 100); // Placeholder;
+    // This would typically query the session store
+    // For now, we'll use a placeholder
+    const activeSessions = Math.floor(Math.random() * 100); // Placeholder
     this.recordGauge('auth.active_sessions', activeSessions);
   }
 
-  // Alert system;
+  // Alert system
   addAlertRule(rule: AlertRule): void {
     this.alertRules.set(rule.id, rule);
   }
@@ -386,7 +374,7 @@ class MetricsCollector {
       timestamp: new Date(),
     };
 
-    // Send notifications;
+    // Send notifications
     for (const channel of rule.notifications) {
       await this.sendNotification(channel, alert);
     }
@@ -413,21 +401,21 @@ class MetricsCollector {
   }
 
   private async sendEmailAlert(alert: unknown): Promise<void> {
-    // Email alert implementation;
+    // Email alert implementation
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async sendSlackAlert(alert: unknown): Promise<void> {
-    // Slack alert implementation;
+    // Slack alert implementation
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async sendSmsAlert(alert: unknown): Promise<void> {
-    // SMS alert implementation;
+    // SMS alert implementation
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
-  // Data access methods;
+  // Data access methods
   getMetrics(name: string, timeWindowSeconds?: number): Metric[] {
     const metrics = this.metrics.get(name) || [];
     
@@ -461,17 +449,17 @@ class MetricsCollector {
     return new Map(this.healthMetrics);
   }
 
-  // Dashboard data;
+  // Dashboard data
   getDashboardMetrics(): unknown {
     return {
-      // System health;
+      // System health
       health: {
         database: this.healthMetrics.get('database')?.status || 'unknown',
         cache: this.healthMetrics.get('cache')?.status || 'unknown',
         overall: this.calculateOverallHealth(),
       },
       
-      // Performance metrics;
+      // Performance metrics
       performance: {
         avgResponseTime: this.getMetricAverage('api.response_time', 300),
         errorRate: this.getLatestMetric('api.error_rate')?.value || 0,
@@ -479,7 +467,7 @@ class MetricsCollector {
         databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0,
       },
       
-      // Business metrics;
+      // Business metrics
       business: {
         patientsRegisteredToday: this.getMetricSum('business.patient_registrations', 86400),
         appointmentsBookedToday: this.getMetricSum('business.appointments_booked', 86400),
@@ -487,7 +475,7 @@ class MetricsCollector {
         labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),
       },
       
-      // System metrics;
+      // System metrics
       system: {
         memoryUsage: this.getLatestMetric('system.memory_usage')?.value || 0,
         activeSessions: this.getLatestMetric('auth.active_sessions')?.value || 0,
@@ -509,7 +497,7 @@ class MetricsCollector {
     }
   }
 
-  // Collection control;
+  // Collection control
   startCollection(intervalSeconds: number = 60): void {
     if (this.isCollecting) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -517,12 +505,12 @@ class MetricsCollector {
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.isCollecting = true;
+    this.isCollecting = true
 
-    // Initial collection;
+    // Initial collection
     this.collectHealthMetrics();
 
-    // Set up interval;
+    // Set up interval
     this.collectionInterval = setInterval(() => {
       this.collectHealthMetrics();
     }, intervalSeconds * 1000);
@@ -535,7 +523,7 @@ class MetricsCollector {
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.isCollecting = false;
+    this.isCollecting = false
 
     if (this.collectionInterval) {
       clearInterval(this.collectionInterval);
@@ -553,7 +541,7 @@ class MetricsCollector {
       timestamp: new Date().toISOString(),
       metrics: Object.fromEntries(this.metrics),
       health: Object.fromEntries(this.healthMetrics),
-    }, null, 2);
+    }, null, 2)
   }
 
   private exportPrometheusFormat(): string {
@@ -572,10 +560,10 @@ class MetricsCollector {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const metricsCollector = MetricsCollector.getInstance();
 
-// Middleware for Express/Next.js to automatically track API calls;
+// Middleware for Express/Next.js to automatically track API calls
 export const createMetricsMiddleware = () {
   return (req: unknown, res: unknown, next: unknown) => {
     const startTime = performance.now();
@@ -594,6 +582,4 @@ export const createMetricsMiddleware = () {
     
     next();
   };
-}
-
 export default metricsCollector;

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -34,12 +26,12 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
-// Initialize services;
+// Initialize services
 const interactionService = new DrugInteractionService(
   medicationRepository,
-  null // No need for prescription repository in this endpoint;
+  null // No need for prescription repository in this endpoint
 );
 
 /**
@@ -48,7 +40,7 @@ const interactionService = new DrugInteractionService(
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateBatchInteractionCheckRequest(data);
     if (!validationResult.success) {
@@ -58,34 +50,34 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get patient data if patientId is provided;
+    // Get patient data if patientId is provided
     let allergies = data.allergies || [];
     let conditions = data.conditions || [];
     let labResults = data.labResults || [];
     
     if (data.patientId) {
-      // Fetch patient allergies if not provided;
+      // Fetch patient allergies if not provided
       if (allergies.length === 0) {
         const patientAllergies = await getPatientAllergies(data.patientId);
         allergies = patientAllergies.map(a => a.allergen);
       }
       
-      // Fetch patient conditions if not provided;
+      // Fetch patient conditions if not provided
       if (conditions.length === 0) {
         const patientConditions = await getPatientConditions(data.patientId);
         conditions = patientConditions.map(c => c.code);
       }
       
-      // Fetch patient lab results if not provided;
+      // Fetch patient lab results if not provided
       if (labResults.length === 0) {
         const patientLabResults = await getPatientLabResults(data.patientId);
         labResults = patientLabResults.map(lr => ({
@@ -98,7 +90,7 @@ export async const POST = (req: NextRequest) => {
       }
     }
 
-    // Perform batch interaction checks;
+    // Perform batch interaction checks
     const results = await interactionService.batchCheckInteractions({
       medicationIds: data.medicationIds,
       allergies,
@@ -107,7 +99,7 @@ export async const POST = (req: NextRequest) => {
       includeMonographs: data.includeMonographs || false
     });
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'BATCH_CHECK',
       resourceType: 'DrugInteraction',
@@ -122,7 +114,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       results,
       metadata: {
@@ -137,4 +129,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error performing batch interaction check');
   }
-}

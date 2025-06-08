@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -27,24 +19,22 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CreateRadiologyOrderModal, {
   OrderPayload,
-} from './create-radiology-order-modal.ts'; // Import OrderPayload;
-import { toast } from "@/components/ui/use-toast"; // Import toast for notifications;
+} from './create-radiology-order-modal.ts'; // Import OrderPayload
+import { toast } from "@/components/ui/use-toast"; // Import toast for notifications
 
-// Define interface for the order data;
+// Define interface for the order data
 interface RadiologyOrder {
   id: string;
-  patient_name?: string; // Make optional if not always present;
-  procedure_name?: string; // Make optional if not always present;
-  order_datetime: string; // Or Date if API returns Date object;
-  priority: "routine" | "stat"; // Use specific types;
-  status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled"; // Use specific types;
-  // Add other fields returned by the API as needed;
-}
-
+  patient_name?: string; // Make optional if not always present
+  procedure_name?: string; // Make optional if not always present
+  order_datetime: string; // Or Date if API returns Date object
+  priority: "routine" | "stat"; // Use specific types
+  status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled"; // Use specific types
+  // Add other fields returned by the API as needed
 export default const RadiologyOrderList = () {
-  const [orders, setOrders] = useState<RadiologyOrder[]>([]); // Correctly typed state;
+  const [orders, setOrders] = useState<RadiologyOrder[]>([]); // Correctly typed state
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(); // Correctly typed state;
+  const [error, setError] = useState<string | null>(); // Correctly typed state
   const [showCreateModal, setShowCreateModal] = useState(false);
   const router = useRouter(),
   useEffect(() => {
@@ -53,7 +43,7 @@ export default const RadiologyOrderList = () {
 
   const fetchOrders = async () => {
     setLoading(true),
-    setError(undefined); // Clear previous errors;
+    setError(undefined); // Clear previous errors
     try {
       const response = await fetch("/api/radiology/orders");
       if (!response.ok) {
@@ -61,7 +51,7 @@ export default const RadiologyOrderList = () {
           `Failed to fetch radiology orders: ${response.statusText}`;
         );
       }
-      // Assume API returns an object with a 'results' array or the array directly;
+      // Assume API returns an object with a 'results' array or the array directly
       const data: { results: RadiologyOrder[] } | RadiologyOrder[] =;
         await response.json();
       const fetchedOrders = Array.isArray(data) ? data : data.results || [];
@@ -83,12 +73,12 @@ export default const RadiologyOrderList = () {
     }
   };
 
-  // Correctly type the parameter;
+  // Correctly type the parameter
   const handleViewOrder = (orderId: string) => {
     router.push(`/dashboard/radiology/orders/${orderId}`);
   };
 
-  // Correctly type the parameter using the imported OrderPayload;
+  // Correctly type the parameter using the imported OrderPayload
   const handleCreateOrder = async (orderData: OrderPayload) => {
     try {
       const response = await fetch("/api/radiology/orders", {
@@ -102,12 +92,12 @@ export default const RadiologyOrderList = () {
       if (!response.ok) {
         let errorMessage = "Failed to create radiology order";
         try {
-          // Attempt to parse error message from response body;
+          // Attempt to parse error message from response body
           const errorData: { error?: string; message?: string } =;
             await response.json();
           errorMessage = errorData.error || errorData.message || errorMessage;
         } catch {
-          // If response is not JSON or doesn't contain error details, use the status text;
+          // If response is not JSON or doesn't contain error details, use the status text
           errorMessage = `${errorMessage}: ${response.statusText}`;
         }
         throw new Error(errorMessage);
@@ -118,7 +108,7 @@ export default const RadiologyOrderList = () {
         description: "Radiology order created successfully.",
       }),
       setShowCreateModal(false);
-      fetchOrders(); // Refresh the list;
+      fetchOrders(); // Refresh the list
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
@@ -128,13 +118,13 @@ export default const RadiologyOrderList = () {
         description: message,
         variant: "destructive",
       });
-      // Keep the modal open on error so the user can retry or correct input;
+      // Keep the modal open on error so the user can retry or correct input
     }
   };
 
-  // Type the parameter and add index signature to statusStyles;
+  // Type the parameter and add index signature to statusStyles
   const getStatusBadge = (status: RadiologyOrder["status"]) => {
-    // Define styles for specific statuses;
+    // Define styles for specific statuses
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
       pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
       scheduled: "bg-blue-100 text-blue-800 border-blue-200",
@@ -144,7 +134,7 @@ export default const RadiologyOrderList = () {
     };
 
     // Format status text (capitalize first letter, replace underscores)
-    const formattedStatus =;
+    const formattedStatus =
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
 
     return (
@@ -241,4 +231,3 @@ export default const RadiologyOrderList = () {
       />
     </Card>
   );
-}

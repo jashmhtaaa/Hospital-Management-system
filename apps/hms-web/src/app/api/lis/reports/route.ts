@@ -1,4 +1,4 @@
-// app/api/lis/reports/route.ts;
+// app/api/lis/reports/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabOrderStatus, LabReportStatus } from "@prisma/client";
 import { z } from "zod";
@@ -42,9 +42,9 @@ export async const POST = (request: NextRequest) => {
     const body: unknown = await request.json();
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const validation = createLabReportSchema.safeParse(body);
+    const validation = createLabReportSchema.safeParse(body)
     if (!validation.success) {
-      // Debug logging removed);
+      // Debug logging removed)
       await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -89,10 +89,10 @@ export async const POST = (request: NextRequest) => {
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_SUCCESS", { path: request.nextUrl.pathname, reportId: newLabReport.id, data: newLabReport });
+    await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_SUCCESS", { path: request.nextUrl.pathname, reportId: newLabReport.id, data: newLabReport })
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return sendSuccessResponse(newLabReport, 201);
+    return sendSuccessResponse(newLabReport, 201)
 
   } catch (error: unknown) {
 
@@ -119,8 +119,6 @@ export async const POST = (request: NextRequest) => {
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-}
-
 export async const GET = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
@@ -191,7 +189,7 @@ export async const GET = (request: NextRequest) => {
         take: limit,
       }),
       prisma.labReport.count({ where: whereClause })
-    ]);
+    ])
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labReports.length, totalCount });
     const duration = Date.now() - start;
@@ -205,7 +203,7 @@ export async const GET = (request: NextRequest) => {
         totalCount,
         totalPages: Math.ceil(totalCount / limit),
       }
-    });
+    })
 
   } catch (error: unknown) {
 
@@ -215,4 +213,3 @@ export async const GET = (request: NextRequest) => {
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }
-

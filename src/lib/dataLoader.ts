@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import DataLoader from 'dataloader';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
@@ -29,7 +19,7 @@ export const createLoaders = () {
         where: { id: { in: ids as string[] } },
       });
       
-      // Maintain order of requested IDs;
+      // Maintain order of requested IDs
       return ids.map(id => patients.find(p => p.id === id) || null);
     }),
     

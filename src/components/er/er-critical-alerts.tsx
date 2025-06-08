@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERCriticalAlerts.tsx;
+// src/components/er/ERCriticalAlerts.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -24,22 +16,22 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast"; // Changed import;
+import { useToast } from "@/components/ui/use-toast"; // Changed import
 
-// Mock data structure - replace with API data;
+// Mock data structure - replace with API data
 interface CriticalAlert {
   id: string,
-  visit_id: string;
-  patient_name: string; // Need to join with visits/patients table;
-  mrn: string; // Need to join;
-  location: string; // Need to join;
-  alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.;
+  visit_id: string,
+  patient_name: string; // Need to join with visits/patients table
+  mrn: string; // Need to join
+  location: string; // Need to join
+  alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.
   activation_timestamp: string,
-  status: string; // Active, Acknowledged, Resolved;
+  status: string; // Active, Acknowledged, Resolved
   details?: string;
 }
 
-// Mock data - replace with API fetch;
+// Mock data - replace with API fetch
 const mockAlerts: CriticalAlert[] = [
   {
     id: "alert_uuid_1",
@@ -87,7 +79,7 @@ const mockAlerts: CriticalAlert[] = [
   },
 ];
 
-// FIX: Adjust return type to match allowed Badge variants;
+// FIX: Adjust return type to match allowed Badge variants
 const getAlertBadgeVariant = (
   status: string;
 ): "destructive" | "secondary" | "default" => {
@@ -97,33 +89,33 @@ const getAlertBadgeVariant = (
     }
     case "Acknowledged": {
       return "secondary";
-    } // Changed "warning" to "secondary";
+    } // Changed "warning" to "secondary"
     default: {
       return "default"
-    } // For "Resolved" or other statuses;
+    } // For "Resolved" or other statuses
   }
 };
 
 export default const ERCriticalAlerts = () {
   const [alerts, setAlerts] = useState<CriticalAlert[]>(mockAlerts);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // Added hook call;
+  const { toast } = useToast(); // Added hook call
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // useEffect(() => {
-  //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts;
+  //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts
   //     .then(res => res.json())
-  //     .then(data => setAlerts(data));
-  // }, []);
+  //     .then(data => setAlerts(data))
+  // }, [])
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
   const handleAcknowledge = async (alertId: string) => {
-    setIsLoading(true);
+    setIsLoading(true)
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
       setAlerts((previousAlerts) =>
         previousAlerts.map((alert) =>
@@ -150,11 +142,11 @@ export default const ERCriticalAlerts = () {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
       setAlerts(
         (previousAlerts) =>
-          previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view;
+          previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view
       );
       toast({
         title: "Alert Resolved",
@@ -279,4 +271,3 @@ export default const ERCriticalAlerts = () {
       </div>
     </div>
   );
-}

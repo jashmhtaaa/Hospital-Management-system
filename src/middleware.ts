@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -27,9 +19,9 @@ interface RequestContext {
   userAgent?: string;
   ipAddress?: string;
   path: string,
-  method: string;
+  method: string,
   authenticated: boolean,
-  rateLimited: boolean;
+  rateLimited: boolean,
   cached: boolean,
   nonce: string
 }
@@ -42,7 +34,7 @@ export async const middleware = (request: NextRequest) => {
   const requestId = generateRequestId();
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
   
-  // Initialize request context;
+  // Initialize request context
   const context: RequestContext = {
     requestId,
     startTime,
@@ -57,30 +49,30 @@ export async const middleware = (request: NextRequest) => {
   };
 
   try {
-    // Skip middleware for certain paths;
+    // Skip middleware for certain paths
     if (shouldSkipMiddleware(request.nextUrl.pathname)) {
       return applySecurityHeaders(NextResponse.next(), context);
     }
 
-    // 1. Health Check Endpoint;
+    // 1. Health Check Endpoint
     if (request.nextUrl.pathname === '/api/health') {
       return handleHealthCheck(request, context);
     }
 
-    // 2. Rate Limiting;
+    // 2. Rate Limiting
     const rateLimitResult = await checkRateLimit(request, context);
     if (!rateLimitResult.allowed) {
       return applySecurityHeaders(createRateLimitResponse(rateLimitResult), context);
     }
 
-    // 3. Authentication & Authorization;
+    // 3. Authentication & Authorization
     const authResult = await authenticateRequest(request, context);
     if (!authResult.success && requiresAuth(request.nextUrl.pathname)) {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context);
     }
 
     // 4. Cache Check (for GET requests)
-    let cacheResult: unknown = null;
+    let cacheResult: unknown = null
     if (request.method === 'GET' && isCacheable(request.nextUrl.pathname)) {
       cacheResult = await checkCache(request, context);
       if (cacheResult?.hit) {
@@ -88,7 +80,7 @@ export async const middleware = (request: NextRequest) => {
       }
     }
 
-    // 5. Request Authorization Check;
+    // 5. Request Authorization Check
     if (context.authenticated) {
       const authzResult = await checkAuthorization(request, context);
       if (!authzResult.allowed) {
@@ -98,20 +90,20 @@ export async const middleware = (request: NextRequest) => {
     }
 
     // 6. Audit Logging (Pre-request)
-    await logRequestStart(context);
+    await logRequestStart(context)
 
-    // 7. Create enhanced request with context;
+    // 7. Create enhanced request with context
     const response = await processRequest(request, context);
 
-    // 8. Post-processing;
+    // 8. Post-processing
     await postProcessResponse(request, response, context);
 
     return applySecurityHeaders(response, context);
 
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
     
-    // Log error;
+    // Log error
     await logSecurityEvent(;
       'middleware_error',
       'critical',
@@ -120,7 +112,7 @@ export async const middleware = (request: NextRequest) => {
       { error: error.message, stack: error.stack }
     );
 
-    // Return error response;
+    // Return error response
 \1;
     );
     
@@ -132,11 +124,11 @@ export async const middleware = (request: NextRequest) => {
  * Apply comprehensive security headers including CSP;
  */;
 const applySecurityHeaders = (response: NextResponse, context: RequestContext): NextResponse {
-  // CSP directives;
+  // CSP directives
 \1;
   ].join('; ');
 
-  // Apply security headers;
+  // Apply security headers
   response.headers.set('Content-Security-Policy', cspHeader);
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
@@ -188,8 +180,8 @@ const shouldSkipMiddleware = (pathname: string): boolean {
  */;
 async const handleHealthCheck = (request: NextRequest, context: RequestContext): Promise<NextResponse> {
   try {
-    // Simplified health check since services might not be initialized in middleware;
-\1;
+    // Simplified health check since services might not be initialized in middleware
+\1,
       requestId: context.requestId
     };
     
@@ -207,15 +199,15 @@ async const handleHealthCheck = (request: NextRequest, context: RequestContext):
  */;
 async const checkRateLimit = (request: NextRequest, context: RequestContext) {
   try {
-    // Simplified rate limiting - in production this would use the rate limiter service;
-    // For now, implement basic IP-based rate limiting;
+    // Simplified rate limiting - in production this would use the rate limiter service
+    // For now, implement basic IP-based rate limiting
     const key = `rate_limit:${context.ipAddress}:${context.path}`;
     
-    // This would normally use Redis or the rate limiter service;
-    // For now, allow all requests;
+    // This would normally use Redis or the rate limiter service
+    // For now, allow all requests
     return { allowed: true };
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
     return { allowed: true };
   }
 }
@@ -248,10 +240,10 @@ async const authenticateRequest = (request: NextRequest, context: RequestContext
       return { success: false, error: 'No authentication token' };
     }
     
-    // Simplified token validation - in production this would use the RBAC service;
+    // Simplified token validation - in production this would use the RBAC service
     // For now, assume valid tokens start with 'valid_'
     if (token.startsWith('valid_')) {
-      context.userId = 'user_123';
+      context.userId = 'user_123'
       context.organizationId = 'org_456';
       context.sessionId = 'session_789';
       context.authenticated = true;
@@ -260,7 +252,7 @@ async const authenticateRequest = (request: NextRequest, context: RequestContext
     
     return { success: false, error: 'Invalid token' };
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
     return { success: false, error: 'Authentication failed' };
   }
 }
@@ -290,10 +282,10 @@ const createUnauthorizedResponse = (error: string): NextResponse {
  */;
 async const checkCache = (request: NextRequest, context: RequestContext) {
   try {
-    // Simplified caching - in production this would use the cache service;
+    // Simplified caching - in production this would use the cache service
     return { hit: false };
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
     return { hit: false };
   }
 }
@@ -328,11 +320,11 @@ const createCachedResponse = (data: unknown, headers: Record<string, string> = {
  */;
 async const checkAuthorization = (request: NextRequest, context: RequestContext) {
   try {
-    // Simplified authorization - in production this would use the RBAC service;
-    // For now, allow all authenticated requests;
+    // Simplified authorization - in production this would use the RBAC service
+    // For now, allow all authenticated requests
     return { allowed: true };
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
     return { allowed: false, reason: 'Authorization check failed' };
   }
 }
@@ -344,7 +336,7 @@ async const logUnauthorizedAccess = (context: RequestContext, reason: string): P
   try {
     // Debug logging removed
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
   }
 }
 
@@ -367,7 +359,7 @@ async const logRequestStart = (context: RequestContext): Promise<void> {
 // Debug logging removed
     }
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
   }
 }
 
@@ -391,7 +383,7 @@ const shouldLogRequest = (path: string): boolean {
  * Process the request (pass to Next.js);
  */;
 async const processRequest = (request: NextRequest, context: RequestContext): Promise<NextResponse> {
-  // Add context headers for downstream handlers;
+  // Add context headers for downstream handlers
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-request-id', context.requestId);
   requestHeaders.set('x-user-id', context.userId || '');
@@ -419,15 +411,15 @@ async const postProcessResponse = (;
   const responseTime = endTime - context.startTime;
   
   try {
-    // Add response headers;
+    // Add response headers
     response.headers.set('X-Response-Time', `${responseTime}ms`);
     
-    // Log completion for important requests;
+    // Log completion for important requests
     if (shouldLogRequest(context.path)) {
-// Debug logging removed;
+// Debug logging removed
     }
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
   }
 }
 
@@ -447,9 +439,8 @@ async const logSecurityEvent = (;
       requestId: context.requestId,
       ipAddress: context.ipAddress,
       path: context.path,
-      metadata;
+      metadata
     });
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
   }
-}

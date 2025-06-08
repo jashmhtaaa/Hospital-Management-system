@@ -27,7 +27,7 @@ import fetch from 'node-fetch';
 
 // Global polyfills for Node.js environment
 if (!global.TextEncoder) {
-  global.TextEncoder = TextEncoder;
+  global.TextEncoder = TextEncoder
 }
 
 if (!global.TextDecoder) {
@@ -41,7 +41,7 @@ if (!global.fetch) {
 // Type definitions for test utilities
 interface MockUser {
   id: string,
-  email: string;
+  email: string
   role: string,
   permissions: string[];
   department?: string;
@@ -52,9 +52,9 @@ interface MockUser {
 
 interface MockPatient {
   id: string,
-  mrn: string;
+  mrn: string,
   firstName: string,
-  lastName: string;
+  lastName: string,
   dateOfBirth: Date;
   ssn?: string;
   phone?: string;
@@ -68,13 +68,13 @@ interface MockPatient {
 
 interface MockEmployee {
   id: string,
-  employeeId: string;
+  employeeId: string,
   firstName: string,
-  lastName: string;
+  lastName: string,
   email: string,
-  department: string;
+  department: string,
   position: string,
-  isActive: boolean;
+  isActive: boolean,
   hireDate: Date;
   licenseNumber?: string;
   certifications?: string[];
@@ -82,44 +82,44 @@ interface MockEmployee {
 
 interface MockBill {
   id: string,
-  billNumber: string;
+  billNumber: string,
   patientId: string,
-  totalAmount: number;
+  totalAmount: number,
   status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED',
-  items: MockBillItem[];
+  items: MockBillItem[],
   createdAt: Date,
   dueDate: Date
 }
 
 interface MockBillItem {
   id: string,
-  serviceCode: string;
+  serviceCode: string,
   description: string,
-  quantity: number;
+  quantity: number,
   unitPrice: number,
   totalPrice: number
 }
 
 interface MockAppointment {
   id: string,
-  patientId: string;
+  patientId: string,
   doctorId: string,
-  date: Date;
+  date: Date,
   duration: number,
-  status: 'SCHEDULED' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
+  status: 'SCHEDULED' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED',
   type: string;
   notes?: string;
 }
 
 interface TestUtilities {
   createMockUser: (overrides?: Partial<MockUser>) => MockUser,
-  createMockPatient: (overrides?: Partial<MockPatient>) => MockPatient;
+  createMockPatient: (overrides?: Partial<MockPatient>) => MockPatient,
   createMockEmployee: (overrides?: Partial<MockEmployee>) => MockEmployee,
-  createMockBill: (overrides?: Partial<MockBill>) => MockBill;
+  createMockBill: (overrides?: Partial<MockBill>) => MockBill,
   createMockAppointment: (overrides?: Partial<MockAppointment>) => MockAppointment,
   generateMockAuditEvent: (event: string, userId: string, details?: any) => any;
   createMockLabOrder: (overrides?: any) => any,
-  createMockPharmacyOrder: (overrides?: any) => any;
+  createMockPharmacyOrder: (overrides?: any) => any,
   createMockAdmission: (overrides?: any) => any,
   simulateHIPAAEvent: (action: string, patientId: string, userId: string) => any,
   mockSecurityContext: (user: MockUser) => void,
@@ -127,13 +127,13 @@ interface TestUtilities {
 }
 
 // Enhanced test environment setup
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'test'
 process.env.JWT_SECRET = 'test-jwt-secret-key-for-healthcare-testing';
 process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key-for-healthcare-testing';
 process.env.ENCRYPTION_KEY = 'test-encryption-key-32-bytes-long!';
-process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test';
-process.env.REDIS_URL = 'redis://localhost:6379/1';
-process.env.TEST_DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test';
+process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test'
+process.env.REDIS_URL = 'redis://localhost:6379/1'
+process.env.TEST_DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test'
 process.env.AUDIT_LOG_LEVEL = 'debug';
 process.env.HIPAA_COMPLIANCE_MODE = 'strict';
 process.env.SECURITY_AUDIT_ENABLED = 'true';
@@ -141,25 +141,25 @@ process.env.MOCK_EXTERNAL_SERVICES = 'true';
 process.env.TEST_TIMEOUT = '30000';
 
 // Console setup for clean test output
-const originalConsoleError = console.error;
+const originalConsoleError = console.error
 const originalConsoleWarn = console.warn;
 const originalConsoleLog = console.log;
 
 beforeAll(() => {
   // Suppress noisy console output in tests unless debugging
   if (!process.env.DEBUG_TESTS) {
-    console.error = jest.fn();
+    console.error = jest.fn()
     console.warn = jest.fn();
     console.log = jest.fn();
   }
   
   // Set up timezone for consistent testing
-  process.env.TZ = 'UTC';
+  process.env.TZ = 'UTC'
 });
 
 afterAll(() => {
   // Restore original console methods
-  console.error = originalConsoleError;
+  console.error = originalConsoleError
   console.warn = originalConsoleWarn;
   console.log = originalConsoleLog;
 });
@@ -181,7 +181,7 @@ jest.mock('@prisma/client', () => {
     aggregate: jest.fn().mockReturnValue({}),
     groupBy: jest.fn().mockReturnValue([]),
     upsert: jest.fn().mockImplementation(({ create }) => ({ id: 'mock-upsert-id', ...create })),
-  });
+  })
 
   const mockPrismaClient = {
     // Core healthcare models
@@ -259,7 +259,7 @@ jest.mock('@prisma/client', () => {
     $executeRawUnsafe: jest.fn().mockResolvedValue(1),
     $queryRaw: jest.fn().mockResolvedValue([]),
     $queryRawUnsafe: jest.fn().mockResolvedValue([]),
-  };
+  }
 
   return {
     PrismaClient: jest.fn(() => mockPrismaClient),
@@ -306,7 +306,7 @@ jest.mock('@/lib/cache', () => ({
     sadd: jest.fn().mockResolvedValue(1),
     smembers: jest.fn().mockResolvedValue([]),
   },
-}));
+}))
 
 // Enhanced Authentication Service Mock
 jest.mock('@/lib/auth', () => ({
@@ -325,7 +325,7 @@ jest.mock('@/lib/auth', () => ({
   validateMFA: jest.fn().mockResolvedValue(true),
   generateMFASecret: jest.fn().mockReturnValue('mock-mfa-secret'),
   verifyMFAToken: jest.fn().mockResolvedValue(true),
-}));
+}))
 
 // Enhanced Audit Service Mock
 jest.mock('@/lib/audit', () => ({
@@ -337,7 +337,7 @@ jest.mock('@/lib/audit', () => ({
   logSecurityEvent: jest.fn().mockResolvedValue(undefined),
   logHIPAAEvent: jest.fn().mockResolvedValue(undefined),
   generateAuditReport: jest.fn().mockResolvedValue({ events: [], summary: {} }),
-}));
+}))
 
 // Enhanced Security Service Mock
 jest.mock('@/lib/security', () => ({
@@ -351,7 +351,7 @@ jest.mock('@/lib/security', () => ({
   validateCSRF: jest.fn().mockResolvedValue(true),
   generateSecureToken: jest.fn().mockReturnValue('secure-token'),
   hashSensitiveData: jest.fn().mockImplementation((data: string) => `sha256_${data}`),
-}));
+}))
 
 // Encryption Service Mock
 jest.mock('@/services/encryption_service', () => ({
@@ -361,7 +361,7 @@ jest.mock('@/services/encryption_service', () => ({
     encryptPHI: jest.fn().mockImplementation((phi: any) => ({ ...phi, encrypted: true })),
     decryptPHI: jest.fn().mockImplementation((phi: any) => ({ ...phi, encrypted: false })),
   },
-}));
+}))
 
 // Notification Service Mock
 jest.mock('@/lib/notifications', () => ({
@@ -370,7 +370,7 @@ jest.mock('@/lib/notifications', () => ({
   sendEmail: jest.fn().mockResolvedValue({ id: 'email-id', sent: true }),
   sendPush: jest.fn().mockResolvedValue({ id: 'push-id', sent: true }),
   logNotification: jest.fn().mockResolvedValue(undefined),
-}));
+}))
 
 // Payment Service Mock
 jest.mock('@/lib/payment', () => ({
@@ -386,7 +386,7 @@ jest.mock('@/lib/payment', () => ({
     amount: 100.00,
   }),
   validatePaymentMethod: jest.fn().mockResolvedValue(true),
-}));
+}))
 
 // FHIR Service Mock
 jest.mock('@/lib/fhir', () => ({
@@ -396,7 +396,7 @@ jest.mock('@/lib/fhir', () => ({
   deleteFHIRResource: jest.fn().mockResolvedValue(true),
   validateFHIRResource: jest.fn().mockResolvedValue(true),
   convertToFHIR: jest.fn().mockImplementation((data: any) => ({ resourceType: 'Patient', ...data })),
-}));
+}))
 
 // Next.js Router Mock
 jest.mock('next/router', () => ({
@@ -424,7 +424,7 @@ jest.mock('next/router', () => ({
     },
   })),
   withRouter: jest.fn((Component) => Component),
-}));
+}))
 
 // Next.js App Router Navigation Mock
 jest.mock('next/navigation', () => ({
@@ -441,7 +441,7 @@ jest.mock('next/navigation', () => ({
   useParams: jest.fn(() => ({})),
   redirect: jest.fn(),
   notFound: jest.fn(),
-}));
+}))
 
 // Web APIs Mock
 Object.defineProperty(window, 'matchMedia', {
@@ -456,7 +456,7 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-});
+})
 
 // Observer APIs Mock
 global.IntersectionObserver = jest.fn().mockImplementation((callback, options) => ({
@@ -466,7 +466,7 @@ global.IntersectionObserver = jest.fn().mockImplementation((callback, options) =
   root: null,
   rootMargin: '',
   thresholds: [],
-}));
+}))
 
 global.ResizeObserver = jest.fn().mockImplementation((callback) => ({
   observe: jest.fn(),
@@ -482,7 +482,7 @@ global.MutationObserver = jest.fn().mockImplementation((callback) => ({
 
 // Storage APIs Mock
 const createStorageMock = (name: string) => {
-  const storage: { [key: string]: string } = {};
+  const storage: { [key: string]: string } = {}
   return {
     getItem: jest.fn((key: string) => storage[key] || null),
     setItem: jest.fn((key: string, value: string) => { storage[key] = value; }),
@@ -516,7 +516,7 @@ if (!global.crypto) {
 
 // URL and URLSearchParams for Node.js
 if (!global.URL) {
-  global.URL = require('url').URL;
+  global.URL = require('url').URL
 }
 
 if (!global.URLSearchParams) {
@@ -525,14 +525,14 @@ if (!global.URLSearchParams) {
 
 // Clean up after each test
 afterEach(() => {
-  jest.clearAllMocks();
+  jest.clearAllMocks()
   
   // Clear storage mocks
-  global.localStorage.clear();
+  global.localStorage.clear()
   global.sessionStorage.clear();
   
   // Reset timers
-  jest.clearAllTimers();
+  jest.clearAllTimers()
 });
 
 // Global test utilities with healthcare-specific helpers
@@ -693,7 +693,7 @@ const testUtils: TestUtilities = {
   }),
 
   mockSecurityContext: (user: MockUser) => {
-    process.env.TEST_USER_ID = user.id;
+    process.env.TEST_USER_ID = user.id
     process.env.TEST_USER_ROLE = user.role;
     process.env.TEST_USER_PERMISSIONS = user.permissions.join(',');
   },
@@ -708,7 +708,7 @@ const testUtils: TestUtilities = {
 
 // Make test utilities available globally
 declare global {
-  const testUtils: TestUtilities;
+  const testUtils: TestUtilities
   
   namespace jest {
     interface Matchers<R> {
@@ -725,7 +725,7 @@ global.testUtils = testUtils;
 // Custom Jest matchers for healthcare testing
 expect.extend({
   toBeValidHIPAALog(received) {
-    const required = ['timestamp', 'userId', 'action', 'resourceType', 'resourceId'];
+    const required = ['timestamp', 'userId', 'action', 'resourceType', 'resourceId']
     const hasAllFields = required.every(field => received && received[field]);
     
     if (hasAllFields) {
@@ -789,7 +789,7 @@ expect.extend({
       return {
         message: () => `Expected ${received} not to meet healthcare standards`,
         pass: true,
-      };
+      }
     } else {
       return {
         message: () => `Expected ${received} to meet healthcare standards (proper ID, timestamps, masked PII)`,
@@ -802,11 +802,11 @@ expect.extend({
 // Mock timers setup
 jest.useFakeTimers({
   doNotFake: ['nextTick', 'setImmediate'],
-});
+})
 
 // Set up global error handlers for tests
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
 });
 
 process.on('uncaughtException', (error) => {
@@ -814,5 +814,4 @@ process.on('uncaughtException', (error) => {
 });
 
 // Export test utilities for external use
-export { testUtils };
-export type { MockUser, MockPatient, MockEmployee, MockBill, MockAppointment };
+export { testUtils export type { MockUser, MockPatient, MockEmployee, MockBill, MockAppointment };

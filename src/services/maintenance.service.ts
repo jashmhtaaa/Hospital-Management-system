@@ -1,24 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { z } from 'zod';
 
-// Create enums to match Prisma schema;
+// Create enums to match Prisma schema
 export enum MaintenanceRequestStatus {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED';
-}
-
 export enum MaintenanceRequestPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
@@ -26,7 +14,7 @@ export enum MaintenanceRequestPriority {
   URGENT = 'URGENT';
 }
 
-// Validation schemas;
+// Validation schemas
 export const createMaintenanceRequestSchema = z.object({
   equipmentId: z.string().optional(),
   description: z.string().min(1, 'Description is required'),
@@ -46,7 +34,7 @@ export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.par
 export type CreateMaintenanceRequestInput = z.infer<typeof createMaintenanceRequestSchema>;
 export type UpdateMaintenanceRequestInput = z.infer<typeof updateMaintenanceRequestSchema>;
 
-// Import prisma client;
+// Import prisma client
 import { prisma } from '../lib/prisma';
 
 /**
@@ -60,10 +48,10 @@ export class MaintenanceService {
    */
   async createRequest(data: CreateMaintenanceRequestInput) {
     try {
-      // Validate input data;
+      // Validate input data
       const validatedData = createMaintenanceRequestSchema.parse(data);
       
-      // Create the request;
+      // Create the request
       const request = await prisma.maintenanceRequest.create({
         data: validatedData,
       });
@@ -165,13 +153,13 @@ export class MaintenanceService {
    */
   async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
     try {
-      // Validate input data;
+      // Validate input data
       const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated;
+      // Remove id from the data to be updated
       const { id: _, ...updateData } = validatedData;
       
-      // Update the request;
+      // Update the request
       const request = await prisma.maintenanceRequest.update({
         where: { id },
         data: updateData,
@@ -299,5 +287,5 @@ export class MaintenanceService {
   }
 }
 
-// Export a singleton instance;
+// Export a singleton instance
 export const maintenanceService = new MaintenanceService();

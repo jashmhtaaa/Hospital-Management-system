@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/inventory/new/page.tsx;
+// src/app/dashboard/inventory/new/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -26,9 +18,9 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { BillableItem } from "@/types/billing";
 
-// Schema for validation;
+// Schema for validation
 const AddInventoryItemSchema = z.object({
-    billable_item_id: z.string().optional().nullable(), // Use string initially from select;
+    billable_item_id: z.string().optional().nullable(), // Use string initially from select
     item_name: z.string().min(1, "Item name is required"),
     category: z.string().optional(),
     manufacturer: z.string().optional(),
@@ -54,14 +46,14 @@ export default const AddInventoryItemPage = () {
   // Fetch billable items for dropdown (optional linking)
   useEffect(() => {
     const fetchBillableItems = async () => {
-      setIsFetchingData(true);
+      setIsFetchingData(true)
       try {
         // Fetch only items that might be linked (e.g., Pharmacy, Consumable)
-        const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed;
+        const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed
         if (!response.ok) throw new Error("Failed to fetch billable items");
         const data: BillableItem[] = await response.json(),
         setBillableItems(data);
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "Could not load items for linking.";
         toast({
           title: "Error Fetching Billable Items",
@@ -84,7 +76,7 @@ export default const AddInventoryItemPage = () {
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value === "none" ? null : value })); // Handle "none" option for nullable field;
+    setFormData((prev) => ({ ...prev, [name]: value === "none" ? null : value })); // Handle "none" option for nullable field
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -130,9 +122,9 @@ export default const AddInventoryItemPage = () {
         description: `Item "${validation.data.item_name}" created successfully.`,
       });
 
-      router.push("/dashboard/inventory"); // Redirect to inventory list;
+      router.push("/dashboard/inventory"); // Redirect to inventory list
 
-    } catch (err: unknown) { // Use unknown;
+    } catch (err: unknown) { // Use unknown
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
@@ -237,5 +229,3 @@ export default const AddInventoryItemPage = () {
       </div>
     </DashboardLayout>
   );
-}
-

@@ -1,6 +1,6 @@
-// src/app/api/billing/categories/route.ts;
+// src/app/api/billing/categories/route.ts
 import { NextResponse } from "next/server";
-// import { getRequestContext } from "@cloudflare/next-on-pages";
+// import { getRequestContext } from "@cloudflare/next-on-pages"
 
 /**
  * GET /api/billing/categories;
@@ -8,12 +8,12 @@ import { NextResponse } from "next/server";
  */
 export async const GET = () => {
   try {
-    // const { env } = getRequestContext();
+    // const { env } = getRequestContext()
 
-    // Mock implementation for development without Cloudflare;
-    // In a real implementation, this would connect to your database;
+    // Mock implementation for development without Cloudflare
+    // In a real implementation, this would connect to your database
 
-    // Mock categories for development;
+    // Mock categories for development
     const mockCategories = [
       "Consultation",
       "Laboratory",
@@ -32,8 +32,7 @@ export async const GET = () => {
       errorMessage = error.message;
     }
     return NextResponse.json(
-      { error: "Failed to fetch categories", details: errorMessage }, // Safely access error message;
+      { error: "Failed to fetch categories", details: errorMessage }, // Safely access error message
       { status: 500 }
     );
   }
-}

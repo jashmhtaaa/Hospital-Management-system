@@ -24,7 +24,7 @@ export const NotificationConfigSchema = z.object({
     config: z.record(z.string()),
     enabled: z.boolean().default(true),
   }).optional(),
-});
+})
 
 // Notification Template Schema
 export const NotificationTemplateSchema = z.object({
@@ -48,7 +48,7 @@ export const NotificationTemplateSchema = z.object({
   priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
   status: z.enum(['active', 'inactive', 'draft']).default('active'),
   createdBy: z.string(),
-});
+})
 
 // Notification Request Schema
 export const NotificationRequestSchema = z.object({
@@ -68,10 +68,10 @@ export const NotificationRequestSchema = z.object({
   scheduledAt: z.date().optional(), // For scheduled notifications
   metadata: z.record(z.any()).optional(),
   sender: z.string(),
-});
+})
 
 // Type definitions
-export type NotificationConfig = z.infer<typeof NotificationConfigSchema>;
+export type NotificationConfig = z.infer<typeof NotificationConfigSchema>
 export type NotificationTemplate = z.infer<typeof NotificationTemplateSchema> & { id?: string };
 export type NotificationRequest = z.infer<typeof NotificationRequestSchema>;
 
@@ -79,17 +79,15 @@ export interface NotificationResult {
   id: string,
   status: 'sent' | 'failed' | 'pending' | 'scheduled';
   providerId?: string; // External provider's message ID
-  errorMessage?: string;
+  errorMessage?: string
   sentAt?: Date;
   deliveredAt?: Date;
   cost?: number;
-}
-
 export interface NotificationStats {
   total: number,
-  sent: number;
+  sent: number,
   failed: number,
-  pending: number;
+  pending: number,
   deliveryRate: number,
   totalCost: number
 }
@@ -98,7 +96,7 @@ export interface NotificationStats {
 interface ISMSProvider {
   sendSMS(to: string, message: string, metadata?: Record<string, any>): Promise<{
     id: string,
-    status: 'sent' | 'failed';
+    status: 'sent' | 'failed'
     errorMessage?: string;
     cost?: number;
   }>;
@@ -108,7 +106,7 @@ interface ISMSProvider {
 interface IEmailProvider {
   sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, any>): Promise<{
     id: string,
-    status: 'sent' | 'failed';
+    status: 'sent' | 'failed'
     errorMessage?: string;
     cost?: number;
   }>;
@@ -118,7 +116,7 @@ interface IEmailProvider {
 interface IWhatsAppProvider {
   sendWhatsApp(to: string, message: string, metadata?: Record<string, any>): Promise<{
     id: string,
-    status: 'sent' | 'failed';
+    status: 'sent' | 'failed'
     errorMessage?: string;
     cost?: number;
   }>;
@@ -126,7 +124,7 @@ interface IWhatsAppProvider {
 
 // Twilio SMS Provider Implementation
 class TwilioSMSProvider implements ISMSProvider {
-  private accountSid: string;
+  private accountSid: string
   private authToken: string;
   private fromNumber: string;
 
@@ -143,12 +141,12 @@ class TwilioSMSProvider implements ISMSProvider {
   async sendSMS(to: string, message: string, metadata?: Record<string, any>) {
     try {
       // In production, use actual Twilio SDK
-      // const client = twilio(this.accountSid, this.authToken);
+      // const client = twilio(this.accountSid, this.authToken)
       // const result = await client.messages.create({
       //   body: message,
       //   from: this.fromNumber,
       //   to: to
-      // });
+      // })
 
       // Mock implementation for demonstration
       const result = {
@@ -156,7 +154,7 @@ class TwilioSMSProvider implements ISMSProvider {
         status: 'sent' as const,
         errorCode: null,
         price: '-0.0075', // Typical SMS cost
-      };
+      }
 
       console.log(`[TWILIO SMS] Sent to ${to}: ${message.substring(0, 50)}...`);
       
@@ -178,7 +176,7 @@ class TwilioSMSProvider implements ISMSProvider {
 
 // SendGrid Email Provider Implementation
 class SendGridEmailProvider implements IEmailProvider {
-  private apiKey: string;
+  private apiKey: string
   private fromEmail: string;
   private fromName: string;
 
@@ -195,22 +193,22 @@ class SendGridEmailProvider implements IEmailProvider {
   async sendEmail(to: string, subject: string, body: string, isHtml: boolean = true, metadata?: Record<string, any>) {
     try {
       // In production, use actual SendGrid SDK
-      // const sgMail = require('@sendgrid/mail');
-      // sgMail.setApiKey(this.apiKey);
+      // const sgMail = require('@sendgrid/mail')
+      // sgMail.setApiKey(this.apiKey)
       // const msg = {
       //   to,
       //   from: { email: this.fromEmail, name: this.fromName },
       //   subject,
       //   [isHtml ? 'html' : 'text']: body,
       //   customArgs: metadata
-      // };
-      // const result = await sgMail.send(msg);
+      // }
+      // const result = await sgMail.send(msg)
 
       // Mock implementation for demonstration
       const result = {
         messageId: `${Date.now()}.${Math.random().toString(36).substr(2, 9)}@sendgrid.net`,
         statusCode: 202,
-      };
+      }
 
       console.log(`[SENDGRID EMAIL] Sent to ${to}: ${subject}`);
       
@@ -218,7 +216,7 @@ class SendGridEmailProvider implements IEmailProvider {
         id: result.messageId,
         status: 'sent' as const,
         cost: 0.001, // Typical email cost
-      };
+      }
     } catch (error) {
       console.error('[SENDGRID EMAIL] Error:', error);
       return {
@@ -232,7 +230,7 @@ class SendGridEmailProvider implements IEmailProvider {
 
 // Twilio WhatsApp Provider Implementation
 class TwilioWhatsAppProvider implements IWhatsAppProvider {
-  private accountSid: string;
+  private accountSid: string
   private authToken: string;
   private fromNumber: string;
 
@@ -249,12 +247,12 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
   async sendWhatsApp(to: string, message: string, metadata?: Record<string, any>) {
     try {
       // In production, use actual Twilio SDK
-      // const client = twilio(this.accountSid, this.authToken);
+      // const client = twilio(this.accountSid, this.authToken)
       // const result = await client.messages.create({
       //   body: message,
       //   from: `whatsapp:${this.fromNumber}`,
       //   to: `whatsapp:${to}`
-      // });
+      // })
 
       // Mock implementation for demonstration
       const result = {
@@ -262,7 +260,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         status: 'sent' as const,
         errorCode: null,
         price: '-0.005', // Typical WhatsApp cost
-      };
+      }
 
       console.log(`[TWILIO WHATSAPP] Sent to ${to}: ${message.substring(0, 50)}...`);
       
@@ -304,15 +302,15 @@ export class ExternalNotificationService {
     if (this.config.sms?.enabled) {
       switch (this.config.sms.provider) {
         case 'twilio':
-          this.smsProvider = new TwilioSMSProvider(this.config.sms.config);
+          this.smsProvider = new TwilioSMSProvider(this.config.sms.config)
           break;
         case 'aws_sns':
           // Initialize AWS SNS provider
-          console.warn('AWS SNS provider not implemented yet');
+          console.warn('AWS SNS provider not implemented yet')
           break;
         case 'messagebird':
           // Initialize MessageBird provider
-          console.warn('MessageBird provider not implemented yet');
+          console.warn('MessageBird provider not implemented yet')
           break;
       }
     }
@@ -321,19 +319,19 @@ export class ExternalNotificationService {
     if (this.config.email?.enabled) {
       switch (this.config.email.provider) {
         case 'sendgrid':
-          this.emailProvider = new SendGridEmailProvider(this.config.email.config);
+          this.emailProvider = new SendGridEmailProvider(this.config.email.config)
           break;
         case 'aws_ses':
           // Initialize AWS SES provider
-          console.warn('AWS SES provider not implemented yet');
+          console.warn('AWS SES provider not implemented yet')
           break;
         case 'mailgun':
           // Initialize Mailgun provider
-          console.warn('Mailgun provider not implemented yet');
+          console.warn('Mailgun provider not implemented yet')
           break;
         case 'smtp':
           // Initialize SMTP provider
-          console.warn('SMTP provider not implemented yet');
+          console.warn('SMTP provider not implemented yet')
           break;
       }
     }
@@ -342,15 +340,15 @@ export class ExternalNotificationService {
     if (this.config.whatsapp?.enabled) {
       switch (this.config.whatsapp.provider) {
         case 'twilio':
-          this.whatsappProvider = new TwilioWhatsAppProvider(this.config.whatsapp.config);
+          this.whatsappProvider = new TwilioWhatsAppProvider(this.config.whatsapp.config)
           break;
         case 'whatsapp_business':
           // Initialize WhatsApp Business API provider
-          console.warn('WhatsApp Business API provider not implemented yet');
+          console.warn('WhatsApp Business API provider not implemented yet')
           break;
         case 'messagebird':
           // Initialize MessageBird WhatsApp provider
-          console.warn('MessageBird WhatsApp provider not implemented yet');
+          console.warn('MessageBird WhatsApp provider not implemented yet')
           break;
       }
     }
@@ -359,11 +357,11 @@ export class ExternalNotificationService {
   // Template Management
   async createTemplate(template: NotificationTemplate): Promise<NotificationTemplate & { id: string }> {
     try {
-      const validated = NotificationTemplateSchema.parse(template);
+      const validated = NotificationTemplateSchema.parse(template)
       
       // Store template in database (assuming a NotificationTemplate model exists)
       // For now, we'll use a simple storage mechanism
-      const id = `template_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const id = `template_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       
       console.log(`[NOTIFICATION] Template created: ${validated.name} (${id})`);
       
@@ -389,20 +387,20 @@ export class ExternalNotificationService {
       priority: 'medium',
       status: 'active',
       createdBy: 'system',
-    };
+    }
   }
 
   // Core Notification Methods
   async sendNotification(request: NotificationRequest): Promise<NotificationResult> {
     try {
-      const validated = NotificationRequestSchema.parse(request);
+      const validated = NotificationRequestSchema.parse(request)
       
       let finalMessage = validated.message;
       let subject = validated.subject;
 
       // If template is specified, load and process it
       if (validated.templateId) {
-        const template = await this.getTemplate(validated.templateId);
+        const template = await this.getTemplate(validated.templateId)
         if (template) {
           finalMessage = this.processTemplate(template.body, validated.variables || {});
           if (template.subject) {
@@ -413,11 +411,11 @@ export class ExternalNotificationService {
 
       // If scheduled, store for later processing
       if (validated.scheduledAt && validated.scheduledAt > new Date()) {
-        return this.scheduleNotification(validated, finalMessage, subject);
+        return this.scheduleNotification(validated, finalMessage, subject)
       }
 
       // Send immediately
-      return this.sendImmediateNotification(validated, finalMessage, subject);
+      return this.sendImmediateNotification(validated, finalMessage, subject)
     } catch (error) {
       throw new Error(`Failed to send notification: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -479,14 +477,14 @@ export class ExternalNotificationService {
 
         case 'push':
           // Implement push notification logic
-          throw new Error('Push notifications not implemented yet');
+          throw new Error('Push notifications not implemented yet')
 
         default:
           throw new Error(`Unsupported notification type: ${request.type}`);
       }
 
       // Log notification in database (implement actual storage)
-      await this.logNotification(notificationId, request, result);
+      await this.logNotification(notificationId, request, result)
 
       return {
         id: notificationId,
@@ -504,7 +502,7 @@ export class ExternalNotificationService {
         id: '',
         status: 'failed',
         errorMessage,
-      });
+      })
 
       return {
         id: notificationId,
@@ -523,7 +521,7 @@ export class ExternalNotificationService {
     const notificationId = `scheduled_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // In production, store in database and use a job queue (Bull, Agenda, etc.)
-    console.log(`[NOTIFICATION] Scheduled notification ${notificationId} for ${request.scheduledAt}`);
+    console.log(`[NOTIFICATION] Scheduled notification ${notificationId} for ${request.scheduledAt}`)
     
     return {
       id: notificationId,
@@ -534,10 +532,10 @@ export class ExternalNotificationService {
 
   // Bulk Notifications
   async sendBulkNotifications(requests: NotificationRequest[]): Promise<NotificationResult[]> {
-    const results: NotificationResult[] = [];
+    const results: NotificationResult[] = []
     
     // Process in batches to avoid overwhelming providers
-    const batchSize = 10;
+    const batchSize = 10
     for (let i = 0; i < requests.length; i += batchSize) {
       const batch = requests.slice(i, i + batchSize);
       const batchPromises = batch.map(request => this.sendNotification(request));
@@ -557,7 +555,7 @@ export class ExternalNotificationService {
 
       // Brief delay between batches
       if (i + batchSize < requests.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 1000))
       }
     }
 
@@ -570,9 +568,9 @@ export class ExternalNotificationService {
     patientEmail: string,
     appointmentDetails: {
       patientName: string,
-      appointmentDate: string;
+      appointmentDate: string
       appointmentTime: string,
-      doctorName: string;
+      doctorName: string,
       location: string
     }
   ): Promise<NotificationResult[]> {
@@ -586,7 +584,7 @@ export class ExternalNotificationService {
         message: `Dear ${appointmentDetails.patientName}, your appointment with Dr. ${appointmentDetails.doctorName} is scheduled for ${appointmentDetails.appointmentDate} at ${appointmentDetails.appointmentTime}. Location: ${appointmentDetails.location}`,
         priority: 'medium',
         sender: 'appointment_system',
-      });
+      })
       results.push(smsResult);
     }
 
@@ -611,7 +609,7 @@ export class ExternalNotificationService {
         `,
         priority: 'medium',
         sender: 'appointment_system',
-      });
+      })
       results.push(emailResult);
     }
 
@@ -623,9 +621,9 @@ export class ExternalNotificationService {
     doctorEmail: string,
     alertDetails: {
       patientName: string,
-      labTest: string;
+      labTest: string,
       criticalValue: string,
-      normalRange: string;
+      normalRange: string,
       urgency: 'high' | 'urgent'
     }
   ): Promise<NotificationResult[]> {
@@ -639,7 +637,7 @@ export class ExternalNotificationService {
         message: `CRITICAL LAB ALERT: ${alertDetails.patientName} - ${alertDetails.labTest}: ${alertDetails.criticalValue} (Normal: ${alertDetails.normalRange}). Immediate attention required.`,
         priority: alertDetails.urgency,
         sender: 'lab_system',
-      });
+      })
       results.push(smsResult);
     }
 
@@ -668,7 +666,7 @@ export class ExternalNotificationService {
 
   // Analytics and Reporting
   async getNotificationStats(filters?: {
-    type?: string;
+    type?: string
     dateFrom?: Date;
     dateTo?: Date;
     sender?: string;
@@ -682,12 +680,12 @@ export class ExternalNotificationService {
       pending: 20,
       deliveryRate: 95.0,
       totalCost: 45.50,
-    };
+    }
   }
 
   // Utility Methods
   private processTemplate(template: string, variables: Record<string, string>): string {
-    let processed = template;
+    let processed = template
     Object.entries(variables).forEach(([key, value]) => {
       const regex = new RegExp(`{{${key}}}`, 'g');
       processed = processed.replace(regex, value);
@@ -701,12 +699,12 @@ export class ExternalNotificationService {
     result: { id: string; status: string; errorMessage?: string; cost?: number }
   ): Promise<void> {
     // In production, store in database
-    console.log(`[NOTIFICATION LOG] ${id}: ${result.status} - ${request.type} to ${request.recipient.phone || request.recipient.email}`);
+    console.log(`[NOTIFICATION LOG] ${id}: ${result.status} - ${request.type} to ${request.recipient.phone || request.recipient.email}`)
   }
 
   // Cleanup
   async disconnect(): Promise<void> {
-    await this.prisma.$disconnect();
+    await this.prisma.$disconnect()
   }
 }
 
@@ -740,14 +738,14 @@ export const createNotificationService = (config?: Partial<NotificationConfig>):
       },
       enabled: true,
     },
-  };
+  }
 
   const mergedConfig = { ...defaultConfig, ...config };
   return new ExternalNotificationService(mergedConfig);
 };
 
 // Export singleton instance
-let notificationServiceInstance: ExternalNotificationService | null = null;
+let notificationServiceInstance: ExternalNotificationService | null = null
 
 export const getNotificationService = (config?: Partial<NotificationConfig>): ExternalNotificationService => {
   if (!notificationServiceInstance) {

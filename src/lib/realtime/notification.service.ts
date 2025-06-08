@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -24,9 +16,9 @@ import { PrismaClient } from '@prisma/client';
 
 export interface NotificationMessage {
   id: string,
-  type: NotificationMessageType;
+  type: NotificationMessageType,
   priority: NotificationPriority,
-  title: string;
+  title: string,
   message: string;
   data?: unknown;
   userId?: string;
@@ -38,8 +30,6 @@ export interface NotificationMessage {
   acknowledged?: boolean;
   acknowledgedAt?: string;
   acknowledgedBy?: string;
-}
-
 export type NotificationMessageType = 
   | 'patient_admission';
   | 'patient_discharge';
@@ -70,37 +60,31 @@ export interface NotificationSubscription {
     quietHours?: {
       start: string; // HH: MM,
       end: string; // HH: MM
-    };
+    }
   };
-}
-
 export type NotificationChannel = 'websocket' | 'email' | 'sms' | 'push';
 
 export interface ConnectedClient {
   id: string,
-  userId: string;
+  userId: string,
   ws: WebSocket,
-  subscriptions: NotificationSubscription;
+  subscriptions: NotificationSubscription,
   lastSeen: Date,
   metadata: {
     userAgent?: string;
     ipAddress?: string;
     platform?: string;
   };
-}
-
 export interface NotificationHistory {
   id: string,
-  messageId: string;
+  messageId: string,
   userId: string,
-  channel: NotificationChannel;
+  channel: NotificationChannel,
   status: 'sent' | 'delivered' | 'read' | 'failed',
   sentAt: Date;
   deliveredAt?: Date;
   readAt?: Date;
   failureReason?: string;
-}
-
 export class NotificationService extends EventEmitter {
   private wss: WebSocketServer | null = null;
   private clients: Map<string, ConnectedClient> = new Map();
@@ -115,10 +99,10 @@ export class NotificationService extends EventEmitter {
     this.prisma = new PrismaClient();
     this.jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
     
-    // Clean up inactive clients every 30 seconds;
+    // Clean up inactive clients every 30 seconds
     setInterval(() => this.cleanupInactiveClients(), 30000);
     
-    // Process message queue every 5 seconds;
+    // Process message queue every 5 seconds
     setInterval(() => this.processMessageQueue(), 5000);
   }
 
@@ -140,7 +124,7 @@ export class NotificationService extends EventEmitter {
   }
 
   /**
-   * Verify client authentication;
+   * Verify client authentication
    */
   private async verifyClient(info: { req: IncomingMessage }): Promise<boolean> {
     try {
@@ -170,7 +154,7 @@ export class NotificationService extends EventEmitter {
       const clientId = uuidv4();
       const userId = decoded.userId;
 
-      // Get user subscription preferences;
+      // Get user subscription preferences
       const subscription = await this.getUserSubscription(userId);
 
       const client: ConnectedClient = {
@@ -188,7 +172,7 @@ export class NotificationService extends EventEmitter {
 
       this.clients.set(clientId, client);
 
-      // Send welcome message;
+      // Send welcome message
       this.sendToClient(clientId, {
         type: 'connection_established',
         payload: {
@@ -198,15 +182,15 @@ export class NotificationService extends EventEmitter {
         }
       });
 
-      // Send queued messages;
+      // Send queued messages
       await this.sendQueuedMessages(userId);
 
-      // Handle client messages;
+      // Handle client messages
       ws.on('message', (data) => this.handleClientMessage(clientId, data));
       ws.on('close', () => this.handleClientDisconnect(clientId));
       ws.on('error', (error) => this.handleClientError(clientId, error));
 
-      // Send ping every 30 seconds;
+      // Send ping every 30 seconds
       const pingInterval = setInterval(() => {
         if (ws.readyState === WebSocket.OPEN) {
           ws.ping();
@@ -217,7 +201,7 @@ export class NotificationService extends EventEmitter {
       }, 30000);
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      this.emit('client_connected', { clientId, userId });
+      this.emit('client_connected', { clientId, userId })
 
     } catch (error) {
 
@@ -262,13 +246,13 @@ export class NotificationService extends EventEmitter {
   }
 
   /**
-   * Handle client disconnect;
+   * Handle client disconnect
    */
   private handleClientDisconnect(clientId: string): void {
     const client = this.clients.get(clientId);
     if (client) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      this.clients.delete(clientId);
+      this.clients.delete(clientId)
       this.emit('client_disconnected', { clientId, userId: client.userId });
     }
   }
@@ -294,18 +278,18 @@ export class NotificationService extends EventEmitter {
       createdAt: new Date().toISOString()
     };
 
-    // Store notification in database;
+    // Store notification in database
     await this.storeNotification(message);
 
-    // Send to connected clients immediately;
+    // Send to connected clients immediately
     const sent = await this.sendToUser(message);
 
-    // Queue for offline users if not sent;
+    // Queue for offline users if not sent
     if (!sent && message.userId) {
       this.queueMessage(message.userId, message);
     }
 
-    // Send via other channels if configured;
+    // Send via other channels if configured
     await this.sendViaOtherChannels(message);
 
     this.emit('notification_sent', message);
@@ -359,7 +343,7 @@ export class NotificationService extends EventEmitter {
     }, {
       department,
       all: !department
-    });
+    })
   }
 
   /**
@@ -474,19 +458,19 @@ export class NotificationService extends EventEmitter {
   private shouldSendToClient(client: ConnectedClient, message: NotificationMessage): boolean {
     const subscription = client.subscriptions;
 
-    // Check message type subscription;
+    // Check message type subscription
     if (!subscription.types.includes(message.type)) {
       return false;
     }
 
-    // Check department filter;
+    // Check department filter
     if (subscription.departments && subscription.departments.length > 0) {
       if (!message.department || !subscription.departments.includes(message.department)) {
         return false;
       }
     }
 
-    // Check quiet hours;
+    // Check quiet hours
     if (subscription.preferences.quietHours) {
       const now = new Date();
       const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -511,7 +495,7 @@ export class NotificationService extends EventEmitter {
     const queue = this.messageQueue.get(userId)!;
     queue.push(message);
 
-    // Limit queue size to prevent memory issues;
+    // Limit queue size to prevent memory issues
     if (queue.length > 100) {
       queue.shift();
     }
@@ -538,7 +522,7 @@ export class NotificationService extends EventEmitter {
     const now = new Date();
     
     for (const [userId, messages] of this.messageQueue.entries()) {
-      // Remove expired messages;
+      // Remove expired messages
       const validMessages = messages.filter(msg => {
         if (!msg.expiresAt) return true;
         return new Date(msg.expiresAt) > now;
@@ -555,7 +539,7 @@ export class NotificationService extends EventEmitter {
    */
   private cleanupInactiveClients(): void {
     const now = new Date();
-    const inactiveThreshold = 5 * 60 * 1000; // 5 minutes;
+    const inactiveThreshold = 5 * 60 * 1000; // 5 minutes
 
     for (const [clientId, client] of this.clients.entries()) {
       if (now.getTime() - client.lastSeen.getTime() > inactiveThreshold) {
@@ -569,15 +553,15 @@ export class NotificationService extends EventEmitter {
   }
 
   /**
-   * Get user subscription preferences;
+   * Get user subscription preferences
    */
   private async getUserSubscription(userId: string): Promise<NotificationSubscription> {
-    // Try to get from cache first;
+    // Try to get from cache first
     if (this.subscriptions.has(userId)) {
       return this.subscriptions.get(userId)!;
     }
 
-    // Default subscription for all notification types;
+    // Default subscription for all notification types
     const defaultSubscription: NotificationSubscription = {
       userId,
       types: [
@@ -594,8 +578,8 @@ export class NotificationService extends EventEmitter {
       }
     };
 
-    // In a real implementation, this would query the database;
-    // For now, store in memory cache;
+    // In a real implementation, this would query the database
+    // For now, store in memory cache
     this.subscriptions.set(userId, defaultSubscription);
     return defaultSubscription;
   }
@@ -608,7 +592,7 @@ export class NotificationService extends EventEmitter {
     const updated = { ...current, ...subscription };
     this.subscriptions.set(userId, updated);
 
-    // In a real implementation, this would update the database;
+    // In a real implementation, this would update the database
     this.emit('subscription_updated', { userId, subscription: updated });
   }
 
@@ -626,12 +610,12 @@ export class NotificationService extends EventEmitter {
     }
 
     if (criteria.all) {
-      // Return all connected users;
+      // Return all connected users
       return Array.from(new Set(Array.from(this.clients.values()).map(client => client.userId)));
     }
 
-    // In a real implementation, this would query the database based on department/role;
-    // For now, return connected users;
+    // In a real implementation, this would query the database based on department/role
+    // For now, return connected users
     return Array.from(new Set(Array.from(this.clients.values()).map(client => client.userId)));
   }
 
@@ -640,7 +624,7 @@ export class NotificationService extends EventEmitter {
    */
   private async storeNotification(notification: NotificationMessage): Promise<void> {
     try {
-      // In a real implementation, this would store in the database;
+      // In a real implementation, this would store in the database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
@@ -651,7 +635,7 @@ export class NotificationService extends EventEmitter {
    * Send via other channels (email, SMS, push)
    */
   private async sendViaOtherChannels(message: NotificationMessage): Promise<void> {
-    if (!message.userId) return;
+    if (!message.userId) return
 
     const subscription = await this.getUserSubscription(message.userId);
     
@@ -680,42 +664,42 @@ export class NotificationService extends EventEmitter {
    * Send email notification;
    */
   private async sendEmail(message: NotificationMessage): Promise<void> {
-    // Implementation would integrate with email service;
+    // Implementation would integrate with email service
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   /**
-   * Send SMS notification;
+   * Send SMS notification
    */
   private async sendSMS(message: NotificationMessage): Promise<void> {
-    // Implementation would integrate with SMS service;
+    // Implementation would integrate with SMS service
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   /**
-   * Send push notification;
+   * Send push notification
    */
   private async sendPushNotification(message: NotificationMessage): Promise<void> {
-    // Implementation would integrate with push notification service;
+    // Implementation would integrate with push notification service
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   /**
-   * Acknowledge notification;
+   * Acknowledge notification
    */
   private async acknowledgeNotification(notificationId: string, userId: string): Promise<void> {
-    // Update notification as acknowledged;
+    // Update notification as acknowledged
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.emit('notification_acknowledged', { notificationId, userId });
+    this.emit('notification_acknowledged', { notificationId, userId })
   }
 
   /**
    * Mark notification as read;
    */
   private async markNotificationAsRead(notificationId: string, userId: string): Promise<void> {
-    // Update notification as read;
+    // Update notification as read
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.emit('notification_read', { notificationId, userId });
+    this.emit('notification_read', { notificationId, userId })
   }
 
   /**
@@ -746,7 +730,7 @@ export class NotificationService extends EventEmitter {
    */
   getStatistics(): {
     connectedClients: number,
-    connectedUsers: number;
+    connectedUsers: number,
     queuedMessages: number,
     subscriptions: number
   } {
@@ -783,5 +767,5 @@ export class NotificationService extends EventEmitter {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const notificationService = new NotificationService();

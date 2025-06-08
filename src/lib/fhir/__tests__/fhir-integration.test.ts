@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -19,7 +11,7 @@ import { FHIRIntegrationUtils } from '../fhir-integration';
 
 describe('FHIR R4 Integration Tests', () => {
   beforeAll(async () => {
-    // Initialize FHIR integration;
+    // Initialize FHIR integration
     await FHIRIntegrationUtils.initializeFHIRIntegration();
   });
 

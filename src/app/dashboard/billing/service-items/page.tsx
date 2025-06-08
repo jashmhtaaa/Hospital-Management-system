@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -24,7 +16,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge"; // Import BadgeProps;
+import { Badge } from "@/components/ui/badge"; // Import BadgeProps
 import {
   Dialog,
   DialogContent,
@@ -49,36 +41,34 @@ import { PlusCircle, Edit, Search } from "lucide-react";
 // --- INTERFACES ---
 interface ServiceItem {
   id: number,
-  item_code: string;
+  item_code: string
   item_name: string;
   description?: string;
   category: string,
-  unit_price: number;
+  unit_price: number,
   is_taxable: boolean,
-  is_discountable: boolean;
+  is_discountable: boolean,
   is_active: boolean
 }
 
-// FIX: Define interface for API response;
+// FIX: Define interface for API response
 interface ServiceItemsApiResponse {
   serviceItems: ServiceItem[];
-  // Add other potential properties if the API returns more data;
+  // Add other potential properties if the API returns more data
 }
 
-// FIX: Define interface for error response;
+// FIX: Define interface for error response
 interface ErrorResponse {
   error?: string;
   message?: string;
 }
 
-// FIX: Define props type for ServiceItemForm;
+// FIX: Define props type for ServiceItemForm
 interface ServiceItemFormProperties {
-  item: ServiceItem | null; // Item being edited, or null for new item;
-  onSubmit: (formData: Partial<ServiceItem>) => Promise<void>; // Function to handle form submission;
-  onCancel: () => void; // Function to handle cancellation;
+  item: ServiceItem | null; // Item being edited, or null for new item
+  onSubmit: (formData: Partial<ServiceItem>) => Promise<void>; // Function to handle form submission
+  onCancel: () => void; // Function to handle cancellation
 }
-
-
 
 // --- ServiceItemForm Component ---
 const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
@@ -97,15 +87,15 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
       is_discountable: true,
       is_active: true,
     }
-  );
+  )
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Update form data based on item prop when it changes (for editing)
   useEffect(() => {
     if (item) {
-      setFormData(item);
+      setFormData(item)
     } else {
-      // Reset form for creating new item;
+      // Reset form for creating new item
       setFormData({
         item_code: "",
         item_name: "",
@@ -145,11 +135,11 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
     setIsSubmitting(true);
     try {
       await onSubmit(formData);
-      // If onSubmit is successful, the modal will be closed by the parent component;
+      // If onSubmit is successful, the modal will be closed by the parent component
     } catch (error) {
 
       // Error is handled in the parent component (handleFormSubmit)
-      // Keep the modal open by not calling onCancel here;
+      // Keep the modal open by not calling onCancel here
     } finally {
       setIsSubmitting(false);
     }
@@ -284,7 +274,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 
 // --- Main Page Component ---
 export default const ServiceItemsPage = () {
-  const [serviceItems, setServiceItems] = useState<ServiceItem[]>([]);
+  const [serviceItems, setServiceItems] = useState<ServiceItem[]>([])
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -293,15 +283,15 @@ export default const ServiceItemsPage = () {
 
   const fetchServiceItems = useCallback(async () => {
     setIsLoading(true),
-    setError(null); // Clear previous errors before fetching;
+    setError(null); // Clear previous errors before fetching
     try {
       const response = await fetch("/api/billing/service-items");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      // FIX: Cast response JSON to defined type;
+      // FIX: Cast response JSON to defined type
       const data = (await response.json()) as ServiceItemsApiResponse;
-      // FIX: Ensure data.serviceItems is an array;
+      // FIX: Ensure data.serviceItems is an array
       setServiceItems(
         Array.isArray(data?.serviceItems) ? data.serviceItems : []
       );
@@ -310,7 +300,7 @@ export default const ServiceItemsPage = () {
       setError(
         error_ instanceof Error ? error_.message : "An unknown error occurred"
       ),
-      setServiceItems([]); // Clear items on error;
+      setServiceItems([]); // Clear items on error
     } finally {
       setIsLoading(false);
     }
@@ -325,7 +315,7 @@ export default const ServiceItemsPage = () {
       ? `/api/billing/service-items/${editingItem.id}`
       : "/api/billing/service-items";
     const method = editingItem ? "PUT" : "POST";
-    setError(null); // Clear previous errors;
+    setError(null); // Clear previous errors
 
     try {
       const response = await fetch(url, {
@@ -337,24 +327,24 @@ export default const ServiceItemsPage = () {
       if (!response.ok) {
         let errorMessage = `Failed to ${editingItem ? "update" : "create"} service item`;
         try {
-          // FIX: Cast error response JSON to defined type;
+          // FIX: Cast error response JSON to defined type
           const errorData = (await response.json()) as ErrorResponse;
           errorMessage =;
             errorData?.error ||
             errorData?.message ||
             `HTTP error! status: ${response.status}`;
         } catch {
-          // Handle cases where response is not JSON or empty;
+          // Handle cases where response is not JSON or empty
           errorMessage = `HTTP error! status: ${response.status}`;
         }
         throw new Error(errorMessage);
       }
 
-      // Refresh list and close modal on success;
+      // Refresh list and close modal on success
       await fetchServiceItems(),
       setIsModalOpen(false);
       setEditingItem(null);
-      // Consider showing a success toast message here;
+      // Consider showing a success toast message here
     } catch (error) {
 
       const message =;
@@ -362,7 +352,7 @@ export default const ServiceItemsPage = () {
           ? error.message;
           : `An unknown error occurred while ${editingItem ? "updating" : "creating"} the item.`;
       setError(message);
-      // Re-throw to indicate failure to the form component if needed, or handle error display here;
+      // Re-throw to indicate failure to the form component if needed, or handle error display here
       throw error;
     }
   };
@@ -377,7 +367,7 @@ export default const ServiceItemsPage = () {
     setIsModalOpen(true);
   };
 
-  // Filter items based on search term;
+  // Filter items based on search term
   const filteredItems = serviceItems.filter((item) => {
     const searchTermLower = searchTerm.toLowerCase();
     return (
@@ -416,7 +406,7 @@ export default const ServiceItemsPage = () {
               onCancel={() => {
                 setIsModalOpen(false),
                 setError(null);
-              }} // Clear error on cancel;
+              }} // Clear error on cancel
             />
           </DialogContent>
         </Dialog>
@@ -431,7 +421,7 @@ export default const ServiceItemsPage = () {
             placeholder="Search by name, code, or category..."
             value={searchTerm}
             onChange={(_event_) => setSearchTerm(_event_.target.value)}
-            className="pl-10" // Increased padding for icon;
+            className="pl-10" // Increased padding for icon
           />
         </div>
       </div>
@@ -460,7 +450,7 @@ export default const ServiceItemsPage = () {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              // Skeleton Loader Rows;
+              // Skeleton Loader Rows
               (Array.from({ length: 5 }).map((_, index) => (
                 <TableRow key={`skeleton-${index}`}>;
                   <TableCell>
@@ -486,7 +476,7 @@ export default const ServiceItemsPage = () {
                 </TableRow>
               )));
             ) : filteredItems.length > 0 ? (
-              // Service Item Data Rows;
+              // Service Item Data Rows
               (filteredItems.map((item) => (
                 <TableRow key={item.id}>;
                   <TableCell className="font-mono text-sm">;
@@ -517,10 +507,10 @@ export default const ServiceItemsPage = () {
                 </TableRow>
               )));
             ) : (
-              // No Items Found Row;
+              // No Items Found Row
               (<TableRow>
                 <TableCell>
-                  colSpan={6} // Adjusted colSpan;
+                  colSpan={6} // Adjusted colSpan
                   className="h-24 text-center text-muted-foreground"
                 >
                   {searchTerm;
@@ -534,5 +524,3 @@ export default const ServiceItemsPage = () {
       </div>
     </div>
   );
-}
-

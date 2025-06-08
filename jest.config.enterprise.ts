@@ -28,7 +28,7 @@ import nextJest from 'next/jest';
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
   dir: './',
-});
+})
 
 // Enterprise Jest configuration for healthcare applications
 const enterpriseJestConfig: Config = {
@@ -676,10 +676,10 @@ const enterpriseJestConfig: Config = {
   
   // Test Result Processor (Deprecated but kept for compatibility)
   testResultsProcessor: undefined,
-};
+}
 
 // Export the Jest configuration
-export default createJestConfig(enterpriseJestConfig);
+export default createJestConfig(enterpriseJestConfig)
 
 /**
  * Healthcare Test Organization Strategy:

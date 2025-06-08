@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { EventStore } from './event-store.ts';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
@@ -41,9 +31,9 @@ export class EventReplayService {
     try {
       logger.info(`Starting event replay for aggregate: ${aggregateType}:${aggregateId}`);
       
-      // Use distributed lock to prevent concurrent replays of the same aggregate;
+      // Use distributed lock to prevent concurrent replays of the same aggregate
       const lockKey = `replay:${aggregateType}:${aggregateId}`;
-      const lockResult = await this.lockManager.acquireLock(lockKey, 300000); // 5 minute timeout;
+      const lockResult = await this.lockManager.acquireLock(lockKey, 300000); // 5 minute timeout
       
       if (!lockResult.acquired) {
         throw new Error(`Replay already in progress for ${aggregateType}:${aggregateId}`);
@@ -52,12 +42,12 @@ export class EventReplayService {
       try {
         const startTime = performance.now();
         
-        // Get all events for the aggregate;
+        // Get all events for the aggregate
         await this.eventStore.replayEvents(aggregateId, aggregateType, handler);
         
         const duration = performance.now() - startTime;
         
-        // Track metrics;
+        // Track metrics
         metricsCollector.recordTimer('event_replay.aggregate_replay_time', duration, {
           aggregateType,
         });
@@ -66,7 +56,7 @@ export class EventReplayService {
           duration: `${duration.toFixed(2)}ms`;
         });
       } finally {
-        // Release lock when done;
+        // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
@@ -76,7 +66,7 @@ export class EventReplayService {
         aggregateId;
       });
       
-      // Track error metrics;
+      // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown'
@@ -111,9 +101,9 @@ export class EventReplayService {
     try {
       logger.info(`Starting full event replay for aggregate type: ${aggregateType}`);
       
-      // Use distributed lock to prevent concurrent replays of the same aggregate type;
+      // Use distributed lock to prevent concurrent replays of the same aggregate type
       const lockKey = `replay:${aggregateType}:all`;
-      const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout;
+      const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout
       
       if (!lockResult.acquired) {
         throw new Error(`Full replay already in progress for ${aggregateType}`);
@@ -122,12 +112,12 @@ export class EventReplayService {
       try {
         const startTime = performance.now();
         
-        // Get all events for the aggregate type and process in batches;
+        // Get all events for the aggregate type and process in batches
         await this.eventStore.replayAllEvents(aggregateType, handler, batchSize);
         
         const duration = performance.now() - startTime;
         
-        // Track metrics;
+        // Track metrics
         metricsCollector.recordTimer('event_replay.full_replay_time', duration, {
           aggregateType,
         });
@@ -136,7 +126,7 @@ export class EventReplayService {
           duration: `${duration.toFixed(2)}ms`;
         });
       } finally {
-        // Release lock when done;
+        // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
@@ -145,7 +135,7 @@ export class EventReplayService {
         aggregateType;
       });
       
-      // Track error metrics;
+      // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown',
@@ -171,9 +161,9 @@ export class EventReplayService {
     try {
       logger.info(`Starting materialized view rebuild: ${viewName}`);
       
-      // Use distributed lock to prevent concurrent rebuilds of the same view;
+      // Use distributed lock to prevent concurrent rebuilds of the same view
       const lockKey = `view-rebuild:${viewName}`;
-      const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout;
+      const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout
       
       if (!lockResult.acquired) {
         throw new Error(`View rebuild already in progress for ${viewName}`);
@@ -182,7 +172,7 @@ export class EventReplayService {
       try {
         const startTime = performance.now();
         
-        // Process each event type sequentially;
+        // Process each event type sequentially
         for (const eventType of eventTypes) {
           let offset = 0;
           const limit = 100;
@@ -196,21 +186,21 @@ export class EventReplayService {
               break;
             }
             
-            // Process events;
+            // Process events
             for (const event of events) {
               await handler(event);
             }
             
             offset += events.length;
             
-            // Log progress;
+            // Log progress
             logger.debug(`Processed ${offset} events of type ${eventType} for view ${viewName}`);
           }
         }
         
         const duration = performance.now() - startTime;
         
-        // Track metrics;
+        // Track metrics
         metricsCollector.recordTimer('event_replay.view_rebuild_time', duration, {
           viewName,
         });
@@ -219,7 +209,7 @@ export class EventReplayService {
           duration: `${duration.toFixed(2)}ms`;
         });
       } finally {
-        // Release lock when done;
+        // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
@@ -228,7 +218,7 @@ export class EventReplayService {
         viewName;
       });
       
-      // Track error metrics;
+      // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         viewName,
         errorType: error.name || 'unknown',
@@ -257,9 +247,9 @@ export class EventReplayService {
     try {
       logger.info(`Starting disaster recovery process for ${aggregateTypes.length} aggregate types`);
       
-      // Use distributed lock to prevent concurrent disaster recovery processes;
+      // Use distributed lock to prevent concurrent disaster recovery processes
       const lockKey = 'disaster-recovery';
-      const lockResult = await this.lockManager.acquireLock(lockKey, 86400000); // 24 hour timeout;
+      const lockResult = await this.lockManager.acquireLock(lockKey, 86400000); // 24 hour timeout
       
       if (!lockResult.acquired) {
         throw new Error('Disaster recovery process already in progress');
@@ -268,7 +258,7 @@ export class EventReplayService {
       try {
         const startTime = performance.now();
         
-        // Process each aggregate type in order;
+        // Process each aggregate type in order
         for (const aggregateType of aggregateTypes) {
           if (!handlers[aggregateType]) {
             logger.warn(`No handler defined for aggregate type: ${aggregateType}, skipping`);
@@ -277,7 +267,7 @@ export class EventReplayService {
           
           logger.info(`Disaster recovery: Processing aggregate type ${aggregateType}`);
           
-          // Notify progress if callback provided;
+          // Notify progress if callback provided
           if (notifyProgress) {
             await notifyProgress({
               step: 'start',
@@ -286,7 +276,7 @@ export class EventReplayService {
             });
           }
           
-          // Replay all events for this aggregate type;
+          // Replay all events for this aggregate type
           await this.replayAllAggregates(
             aggregateType,
             handlers[aggregateType],
@@ -305,7 +295,7 @@ export class EventReplayService {
             }
           );
           
-          // Notify completion of this aggregate type;
+          // Notify completion of this aggregate type
           if (notifyProgress) {
             await notifyProgress({
               step: 'complete',
@@ -319,7 +309,7 @@ export class EventReplayService {
         
         const duration = performance.now() - startTime;
         
-        // Track metrics;
+        // Track metrics
         metricsCollector.recordTimer('event_replay.disaster_recovery_time', duration);
         
         logger.info(`Completed disaster recovery process`, {
@@ -327,7 +317,7 @@ export class EventReplayService {
           aggregateTypesProcessed: aggregateTypes.length
         });
       } finally {
-        // Release lock when done;
+        // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
@@ -336,7 +326,7 @@ export class EventReplayService {
         aggregateTypes;
       });
       
-      // Track error metrics;
+      // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         errorType: error.name || 'unknown',
         replayType: 'disaster-recovery'
@@ -365,19 +355,19 @@ export class EventReplayService {
     try {
       logger.info(`Starting consistency validation for ${aggregateType}:${aggregateId}`);
       
-      // Get current state from data store;
+      // Get current state from data store
       const currentState = await getCurrentState();
       
-      // Get all events for the aggregate;
+      // Get all events for the aggregate
       const events = await this.eventStore.getEvents(aggregateId, aggregateType);
       
-      // Build state from events;
+      // Build state from events
       const rebuiltState = await buildState(events);
       
-      // Compare states;
+      // Compare states
       const result = compareStates(currentState, rebuiltState);
       
-      // Track metrics;
+      // Track metrics
       metricsCollector.incrementCounter('event_replay.consistency_checks', 1, {
         aggregateType,
         isConsistent: result.isConsistent.toString()
@@ -396,7 +386,7 @@ export class EventReplayService {
         aggregateId;
       });
       
-      // Track error metrics;
+      // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown',
@@ -406,4 +396,3 @@ export class EventReplayService {
       throw error;
     }
   }
-}

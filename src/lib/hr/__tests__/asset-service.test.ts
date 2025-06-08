@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 import { AssetService } from '../asset-service';
 import { PrismaClient } from '@prisma/client';
 import { cache } from '@/lib/cache';
 
-// Mock PrismaClient;
+// Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
     asset: {
@@ -44,7 +34,7 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-// Mock cache service;
+// Mock cache service
 jest.mock('@/lib/cache', () => ({
   cache: {
     get: jest.fn(),
@@ -151,7 +141,7 @@ describe('AssetService', () => {
     it('should create asset and invalidate cache', async () => {
       const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
       (prisma.asset.create as jest.Mock).mockResolvedValue(mockAsset);
-      // Mock the invalidateAssetCache method to avoid the findFirst call;
+      // Mock the invalidateAssetCache method to avoid the findFirst call
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
 
       await assetService.createAsset({
@@ -171,7 +161,7 @@ describe('AssetService', () => {
       const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
       (prisma.asset.findUnique as jest.Mock).mockResolvedValue({ assetId: 'ASSET123' });
       (prisma.asset.update as jest.Mock).mockResolvedValue(mockAsset);
-      // Mock the invalidateAssetCache method to avoid the findFirst call;
+      // Mock the invalidateAssetCache method to avoid the findFirst call
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
 
       await assetService.updateAsset('123', { name: 'Updated Asset' }),
@@ -190,7 +180,7 @@ describe('AssetService', () => {
       const mockMaintenance = { id: '456', assetId: '123', date: new Date(), type: 'PREVENTIVE' };
       (prisma.assetMaintenance.create as jest.Mock).mockResolvedValue(mockMaintenance);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
-      // Mock the invalidateAssetCache method to avoid the findFirst call;
+      // Mock the invalidateAssetCache method to avoid the findFirst call
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
 
       await assetService.recordMaintenance('123', {
@@ -219,7 +209,7 @@ describe('AssetService', () => {
       };
       (prisma.assetAssignment.create as jest.Mock).mockResolvedValue(mockAssignment);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
-      // Mock the invalidateAssetCache method to avoid the findFirst call;
+      // Mock the invalidateAssetCache method to avoid the findFirst call
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
 
       await assetService.assignAsset('123', {
@@ -255,7 +245,7 @@ describe('AssetService', () => {
         },
         {
           startDate: new Date('2023-07-01'),
-          endDate: null, // Current assignment;
+          endDate: null, // Current assignment
         },
       ];
       

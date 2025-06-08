@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/layout/Sidebar.tsx;
+// src/components/layout/Sidebar.tsx
 "use client";
 
 import Link from "next/link";
@@ -27,7 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
-// Define navigation items;
+// Define navigation items
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/patients", label: "Patients", icon: Users },
@@ -43,8 +35,8 @@ export const Sidebar = () => {
   const handleLogout = async () => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // Redirect to login page after logout;
-    // router.push("/login");
+    // Redirect to login page after logout
+    // router.push("/login")
   };
 
   return (
@@ -83,5 +75,3 @@ export const Sidebar = () => {
       </div>
     </aside>
   );
-}
-

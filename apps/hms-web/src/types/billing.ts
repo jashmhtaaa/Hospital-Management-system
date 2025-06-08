@@ -1,99 +1,79 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { BillingStatus, InvoiceStatus, PaymentMethod, PaymentStatus } from '@prisma/client';
 
-// Billing Types;
+// Billing Types
 export interface BillingItem {
   id: string,
-  name: string;
+  name: string,
   code: string;
   description?: string;
   category: string,
-  price: number;
+  price: number,
   taxRate: number,
-  isActive: boolean;
+  isActive: boolean,
   createdAt: Date,
   updatedAt: Date
-}
-
 export interface Invoice {
   id: string,
-  invoiceNumber: string;
+  invoiceNumber: string,
   patientId: string,
   patientName: string;
   doctorId?: string;
   doctorName?: string;
   issueDate: Date,
-  dueDate: Date;
+  dueDate: Date,
   status: InvoiceStatus,
-  subtotal: number;
+  subtotal: number,
   taxAmount: number,
-  discountAmount: number;
+  discountAmount: number,
   totalAmount: number,
-  paidAmount: number;
+  paidAmount: number,
   balanceAmount: number;
   notes?: string;
   items: InvoiceItem[],
-  payments: Payment[];
+  payments: Payment[],
   createdAt: Date,
   updatedAt: Date
-}
-
 export interface InvoiceItem {
   id: string,
-  invoiceId: string;
+  invoiceId: string,
   itemId: string,
-  itemName: string;
+  itemName: string,
   itemCode: string;
   description?: string;
   quantity: number,
-  unitPrice: number;
+  unitPrice: number,
   taxRate: number,
-  taxAmount: number;
+  taxAmount: number,
   discountAmount: number,
-  totalAmount: number;
+  totalAmount: number,
   createdAt: Date,
   updatedAt: Date
-}
-
 export interface Payment {
   id: string,
-  paymentNumber: string;
+  paymentNumber: string,
   invoiceId: string,
-  patientId: string;
+  patientId: string,
   patientName: string,
-  amount: number;
+  amount: number,
   method: PaymentMethod,
   status: PaymentStatus;
   transactionId?: string;
   notes?: string;
   receivedBy: string,
-  receivedAt: Date;
+  receivedAt: Date,
   createdAt: Date,
   updatedAt: Date
-}
-
 export interface BillingDashboardStats {
   totalRevenue: number,
-  pendingAmount: number;
+  pendingAmount: number,
   overdueAmount: number,
-  recentInvoices: Invoice[];
+  recentInvoices: Invoice[],
   recentPayments: Payment[],
   revenueTrend: {
     period: string,
     amount: number
   }[];
-}
-
 export interface BillingSearchParams {
   query?: string;
   status?: BillingStatus;
@@ -103,4 +83,3 @@ export interface BillingSearchParams {
   doctorId?: string;
   page?: number;
   limit?: number;
-}

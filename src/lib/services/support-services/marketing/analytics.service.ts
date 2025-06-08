@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { CampaignAnalytics } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
@@ -25,10 +15,10 @@ export class AnalyticsService {
    */
   async recordAnalytics(campaignId: string, data: { date: Date; metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
     try {
-      // Validate analytics data;
+      // Validate analytics data
       this.validateAnalyticsData(data);
       
-      // Check if campaign exists;
+      // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id: campaignId }
       });
@@ -37,7 +27,7 @@ export class AnalyticsService {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
       
-      // Check if analytics for this date already exists;
+      // Check if analytics for this date already exists
       const existingAnalytics = await prisma.campaignAnalytics.findFirst({
         where: {
           campaignId,
@@ -48,7 +38,7 @@ export class AnalyticsService {
       let analytics;
       
       if (existingAnalytics) {
-        // Update existing analytics;
+        // Update existing analytics
         analytics = await prisma.campaignAnalytics.update({
           where: { id: existingAnalytics.id },
           data: {
@@ -57,7 +47,7 @@ export class AnalyticsService {
           }
         });
       } else {
-        // Create new analytics;
+        // Create new analytics
         analytics = await prisma.campaignAnalytics.create({
           data: {
             campaignId,
@@ -67,7 +57,7 @@ export class AnalyticsService {
         });
       }
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: existingAnalytics ? 'analytics.update' : 'analytics.create',
         resourceId: campaignId,
@@ -99,7 +89,7 @@ export class AnalyticsService {
     try {
       const { startDate, endDate, metrics } = filters;
       
-      // Check if campaign exists;
+      // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id: campaignId }
       });
@@ -108,7 +98,7 @@ export class AnalyticsService {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
       
-      // Build where clause based on filters;
+      // Build where clause based on filters
       const where: unknown = { campaignId };
       
       if (startDate || endDate) {
@@ -121,7 +111,7 @@ export class AnalyticsService {
         }
       }
       
-      // Get analytics data;
+      // Get analytics data
       const analyticsData = await prisma.campaignAnalytics.findMany({
         where,
         orderBy: {
@@ -129,7 +119,7 @@ export class AnalyticsService {
         }
       });
       
-      // Filter metrics if specified;
+      // Filter metrics if specified
       if (metrics && metrics.length > 0) {
         return analyticsData.map(item => ({
           ...item,
@@ -158,23 +148,23 @@ export class AnalyticsService {
     try {
       const { startDate, endDate, metrics, groupBy = 'day' } = filters;
       
-      // Get raw analytics data;
+      // Get raw analytics data
       const analyticsData = await this.getCampaignAnalytics(campaignId, {
         startDate,
         endDate,
         metrics;
       });
       
-      // Group data by specified interval;
+      // Group data by specified interval
       const groupedData = this.groupAnalyticsByInterval(analyticsData, groupBy);
       
-      // Calculate totals;
+      // Calculate totals
       const totals = this.calculateAnalyticsTotals(analyticsData);
       
-      // Calculate averages;
+      // Calculate averages
       const averages = this.calculateAnalyticsAverages(analyticsData);
       
-      // Calculate trends;
+      // Calculate trends
       const trends = this.calculateAnalyticsTrends(analyticsData);
       
       return {
@@ -202,7 +192,7 @@ export class AnalyticsService {
     try {
       const { startDate, endDate, metrics } = filters;
       
-      // Get data for each campaign;
+      // Get data for each campaign
       const campaignsData = await Promise.all(
         campaignIds.map(async (campaignId) => {
           try {
@@ -240,11 +230,11 @@ export class AnalyticsService {
         });
       );
       
-      // Filter out null results;
+      // Filter out null results
       const validCampaignsData = campaignsData.filter(data => data !== null);
       
       // Sort by performance (using first metric as sorting criteria)
-      const sortedData = this.sortCampaignsByPerformance(validCampaignsData);
+      const sortedData = this.sortCampaignsByPerformance(validCampaignsData)
       
       return {
         campaigns: sortedData,
@@ -290,21 +280,21 @@ export class AnalyticsService {
       
       switch (interval) {
         case 'day':
-          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD;
+          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
           break;
         case 'week':
-          // Get the Monday of the week;
+          // Get the Monday of the week
           const day = date.getDay();
           const diff = date.getDate() - day + (day === 0 ? -6 : 1);
           const monday = new Date(date);
           monday.setDate(diff);
-          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday;
+          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday
           break;
         case 'month':
-          groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM;
+          groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM
           break;
         default:
-          groupKey = date.toISOString().split('T')[0]; // Default to day;
+          groupKey = date.toISOString().split('T')[0]; // Default to day
       }
       
       if (!groupedData.has(groupKey)) {
@@ -322,7 +312,7 @@ export class AnalyticsService {
       }
     });
     
-    // Convert map to array and sort by interval;
+    // Convert map to array and sort by interval
     return Array.from(groupedData.values()).sort((a, b) => a.interval.localeCompare(b.interval));
   }
 
@@ -394,18 +384,18 @@ export class AnalyticsService {
       return {};
     }
     
-    // Sort by date;
+    // Sort by date
     const sortedAnalytics = [...analytics].sort((a, b) => 
       new Date(a.date).getTime() - new Date(b.date).getTime();
     );
     
-    // Get first and last data points;
+    // Get first and last data points
     const first = sortedAnalytics[0];
     const last = sortedAnalytics[sortedAnalytics.length - 1];
     
     const trends: unknown = {};
     
-    // Calculate percentage change for each metric;
+    // Calculate percentage change for each metric
     Object.entries(last.metrics).forEach(([key, value]) => {
       if (typeof value === 'number' && typeof first.metrics[key] === 'number' && first.metrics[key] !== 0) {
         const change = value - first.metrics[key];
@@ -429,7 +419,7 @@ export class AnalyticsService {
       return []
     }
     
-    // Find a common metric to sort by;
+    // Find a common metric to sort by
     const firstCampaign = campaignsData[0];
     const metrics = firstCampaign.totals ? Object.keys(firstCampaign.totals) : [];
     
@@ -437,14 +427,14 @@ export class AnalyticsService {
       return campaignsData;
     }
     
-    // Prioritize important metrics for sorting;
+    // Prioritize important metrics for sorting
     const sortMetric = ['conversions', 'leads', 'clicks', 'impressions'].find(m => metrics.includes(m)) || metrics[0];
     
-    // Sort by the selected metric;
+    // Sort by the selected metric
     return [...campaignsData].sort((a, b) => {
       const valueA = a.totals && a.totals[sortMetric] ? a.totals[sortMetric] : 0;
       const valueB = b.totals && b.totals[sortMetric] ? b.totals[sortMetric] : 0;
-      return valueB - valueA; // Descending order;
+      return valueB - valueA; // Descending order
     });
   }
 
@@ -454,12 +444,12 @@ export class AnalyticsService {
   private validateAnalyticsData(data: { date: Date; metrics: unknown }): void {
     const errors: string[] = [];
     
-    // Date is required;
+    // Date is required
     if (!data.date) {
       errors.push('Analytics date is required');
     }
     
-    // Metrics is required and must be an object;
+    // Metrics is required and must be an object
     if (!data.metrics || typeof data.metrics !== 'object') {
       errors.push('Analytics metrics must be a valid object');
     }
@@ -468,4 +458,3 @@ export class AnalyticsService {
       throw new ValidationError('Analytics validation failed', errors);
     }
   }
-}

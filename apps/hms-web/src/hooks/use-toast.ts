@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 import { useCallback, useState } from 'react';
 
@@ -18,8 +8,6 @@ export interface Toast {
   description?: string;
   type: 'success' | 'error' | 'warning' | 'info';
   duration?: number;
-}
-
 export interface ToastOptions {
   title: string;
   description?: string;
@@ -45,7 +33,7 @@ export const useToast = () {
 
     setToasts((prevToasts) => [...prevToasts, newToast]);
 
-    // Auto-dismiss toast after duration;
+    // Auto-dismiss toast after duration
     setTimeout(() => {
       setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
     }, newToast.duration);
@@ -62,4 +50,3 @@ export const useToast = () {
     dismissToast,
     toasts,
   };
-}

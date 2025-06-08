@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/patients/new/page.tsx;
+// src/app/dashboard/patients/new/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -25,14 +17,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
-// Re-use or import the schema if defined elsewhere;
+// Re-use or import the schema if defined elsewhere
 const PatientRegistrationSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in YYYY-MM-DD format"),
   gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]),
   phone_number: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Invalid email address").optional().or(z.literal("")), // Optional but must be valid email if provided;
+  email: z.string().email("Invalid email address").optional().or(z.literal("")), // Optional but must be valid email if provided
   address_line1: z.string().optional(),
   address_line2: z.string().optional(),
   city: z.string().optional(),
@@ -106,9 +98,9 @@ export default const AddPatientPage = () {
         description: `${validation.data.first_name} ${validation.data.last_name} has been successfully registered.`,
       });
 
-      router.push("/dashboard/patients"); // Redirect to patient list;
+      router.push("/dashboard/patients"); // Redirect to patient list
 
-    } catch (err: unknown) { // Use unknown;
+    } catch (err: unknown) { // Use unknown
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
@@ -284,5 +276,3 @@ export default const AddPatientPage = () {
       </div>
     </DashboardLayout>
   );
-}
-

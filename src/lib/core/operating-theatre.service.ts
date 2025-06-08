@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,7 +8,7 @@ var __DEV__: boolean;
 
 import { z } from 'zod';
 
-// Operating Theatre Schemas;
+// Operating Theatre Schemas
 export const SurgicalProcedureSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
   surgeon_id: z.string().min(1, 'Primary surgeon is required'),
@@ -26,7 +18,7 @@ export const SurgicalProcedureSchema = z.object({
   icd10_diagnosis_codes: z.array(z.string()).min(1, 'At least one diagnosis code is required'),
   procedure_type: z.enum(['elective', 'urgent', 'emergent', 'trauma']),
   surgical_specialty: z.string().min(1, 'Surgical specialty is required'),
-  estimated_duration: z.number().min(30).max(720), // 30 minutes to 12 hours;
+  estimated_duration: z.number().min(30).max(720), // 30 minutes to 12 hours
   complexity_level: z.enum(['low', 'moderate', 'high', 'complex']),
   urgency: z.enum(['routine', 'urgent', 'stat', 'emergent']).default('routine'),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid scheduled date'),
@@ -56,9 +48,9 @@ export const ORScheduleSchema = z.object({
   date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid date'),
   start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
   end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-  turnover_time: z.number().min(15).max(60).default(30), // minutes;
-  room_setup_time: z.number().min(15).max(60).default(30), // minutes;
-  cleanup_time: z.number().min(15).max(60).default(30), // minutes;
+  turnover_time: z.number().min(15).max(60).default(30), // minutes
+  room_setup_time: z.number().min(15).max(60).default(30), // minutes
+  cleanup_time: z.number().min(15).max(60).default(30), // minutes
   block_type: z.enum(['scheduled', 'emergency', 'add_on', 'blocked']),
   assigned_surgeon: z.string().optional(),
   assigned_team: z.array(z.string()).default([]),
@@ -145,7 +137,7 @@ export const AnesthesiaRecordSchema = z.object({
 
 export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
   id: string,
-  case_number: string;
+  case_number: string,
   status: 'scheduled' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'postponed';
   actual_start_time?: Date;
   actual_end_time?: Date;
@@ -165,21 +157,21 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
 
 export type ORSchedule = z.infer<typeof ORScheduleSchema> & {
   id: string,
-  utilization_percentage: number;
+  utilization_percentage: number,
   created_at: Date,
   updated_at: Date
 };
 
 export type SurgicalTeam = z.infer<typeof SurgicalTeamSchema> & {
   id: string,
-  team_complete: boolean;
+  team_complete: boolean,
   created_at: Date,
   updated_at: Date
 };
 
 export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
   id: string,
-  available: boolean;
+  available: boolean,
   created_at: Date,
   updated_at: Date;
   last_used?: Date;
@@ -189,7 +181,7 @@ export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
 
 export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
   id: string,
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   signed_at?: Date;
   signed_by?: string;
@@ -197,72 +189,64 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
 export interface ORCapacity {
   total_rooms: number,
-  active_rooms: number;
+  active_rooms: number,
   scheduled_cases: number,
-  in_progress_cases: number;
+  in_progress_cases: number,
   completed_cases: number,
-  cancelled_cases: number;
+  cancelled_cases: number,
   utilization_rate: number,
-  average_turnover_time: number;
+  average_turnover_time: number,
   rooms_by_status: {
     available: number,
-    occupied: number;
+    occupied: number,
     cleaning: number,
-    setup: number;
+    setup: number,
     maintenance: number
   };
   upcoming_cases: SurgicalProcedure[]
-}
-
 export interface ORMetrics {
   daily_volume: number,
-  utilization_rate: number;
+  utilization_rate: number,
   average_case_duration: number,
-  average_turnover_time: number;
+  average_turnover_time: number,
   first_case_start_delay: number,
-  cancellation_rate: number;
+  cancellation_rate: number,
   postponement_rate: number,
-  complication_rate: number;
+  complication_rate: number,
   on_time_start_rate: number,
   surgeon_productivity: {
     surgeon_id: string,
-    cases_performed: number;
+    cases_performed: number,
     average_duration: number,
-    complication_rate: number;
+    complication_rate: number,
     on_time_rate: number
   }[];
   room_efficiency: {
     room_id: string,
-    utilization_rate: number;
+    utilization_rate: number,
     cases_performed: number,
     average_turnover: number
   }[];
-}
-
 export interface InstrumentCount {
   instrument_id: string,
-  instrument_name: string;
+  instrument_name: string,
   opening_count: number,
-  closing_count: number;
+  closing_count: number,
   discrepancy: boolean,
-  counted_by: string;
+  counted_by: string,
   count_time: Date,
   location: 'field' | 'back_table' | 'mayo_stand' | 'basin' | 'floor'
-}
-
 export interface SafetyChecklist {
   surgery_id: string,
-  checklist_type: 'sign_in' | 'time_out' | 'sign_out';
+  checklist_type: 'sign_in' | 'time_out' | 'sign_out',
   completed: boolean,
-  completed_by: string;
+  completed_by: string,
   completed_at: Date,
   items: {
     item: string,
     checked: boolean;
     notes?: string;
   }[];
-}
-
 export class OperatingTheatreService {
   private surgicalProcedures: Map<string, SurgicalProcedure> = new Map();
   private orSchedules: Map<string, ORSchedule[]> = new Map();
@@ -390,7 +374,7 @@ export class OperatingTheatreService {
     const procedureId = uuidv4();
     const caseNumber = this.generateCaseNumber();
 
-    // Find available OR room;
+    // Find available OR room
     const orRoom = await this.findAvailableORRoom(
       validatedData.scheduled_date,
       validatedData.scheduled_start_time,
@@ -410,7 +394,7 @@ export class OperatingTheatreService {
 
     this.surgicalProcedures.set(procedureId, procedure);
 
-    // Schedule OR room;
+    // Schedule OR room
     if (orRoom) {
       await this.scheduleORRoom(orRoom, validatedData.scheduled_date, validatedData.scheduled_start_time, validatedData.estimated_duration, procedureId);
     }
@@ -439,7 +423,7 @@ export class OperatingTheatreService {
     const scheduledDateTime = new Date(`${date} ${startTime}`);
     const endTime = new Date(scheduledDateTime.getTime() + duration * 60000);
 
-    // Check preferred room first;
+    // Check preferred room first
     if (preference && this.orRooms.has(preference)) {
       const roomSchedule = this.orSchedules.get(preference) || [];
       const isAvailable = !roomSchedule.some(schedule => {
@@ -456,7 +440,7 @@ export class OperatingTheatreService {
       }
     }
 
-    // Find any available room;
+    // Find any available room
     for (const [roomId] of this.orRooms.entries()) {
       const roomSchedule = this.orSchedules.get(roomId) || [];
       const isAvailable = !roomSchedule.some(schedule => {
@@ -497,7 +481,7 @@ export class OperatingTheatreService {
       end_time: endTime.toTimeString().slice(0, 5),
       block_type: 'scheduled',
       assigned_team: [],
-      utilization_percentage: 85, // Estimated;
+      utilization_percentage: 85, // Estimated
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -515,7 +499,7 @@ export class OperatingTheatreService {
     
     const teamId = uuidv4();
     
-    // Check if team is complete;
+    // Check if team is complete
     const teamComplete = !!(
       validatedData.primary_surgeon &&
       validatedData.circulating_nurse &&
@@ -547,7 +531,7 @@ export class OperatingTheatreService {
       throw new Error('Procedure is not ready to start');
     }
 
-    // Verify safety checklist;
+    // Verify safety checklist
     const checklists = this.safetyChecklists.get(procedureId) || [];
     const timeoutCompleted = checklists.some(c => c.checklist_type === 'time_out' && c.completed);
     
@@ -559,7 +543,7 @@ export class OperatingTheatreService {
     procedure.actual_start_time = new Date();
     procedure.updated_at = new Date();
 
-    // Update OR room status;
+    // Update OR room status
     if (procedure.or_room_assigned) {
       const room = this.orRooms.get(procedure.or_room_assigned);
       if (room) {
@@ -607,7 +591,7 @@ export class OperatingTheatreService {
     procedure.estimated_blood_loss = completionData.estimated_blood_loss;
     procedure.updated_at = now;
 
-    // Update OR room status;
+    // Update OR room status
     if (procedure.or_room_assigned) {
       const room = this.orRooms.get(procedure.or_room_assigned);
       if (room) {
@@ -734,14 +718,14 @@ export class OperatingTheatreService {
 
     const utilizationRate = activeRooms > 0 ? (inProgressCases / activeRooms) * 100 : 0;
 
-    // Calculate average turnover time;
+    // Calculate average turnover time
     const completedToday = procedures.filter(p => 
       p.status === 'completed' &&;
       p.actual_end_time &&
       p.actual_end_time.toISOString().split('T')[0] === today;
     );
     
-    const averageTurnoverTime = 30; // Simplified - would calculate from actual room turnover data;
+    const averageTurnoverTime = 30; // Simplified - would calculate from actual room turnover data
 
     const roomsByStatus = rooms.reduce((acc, room) => {
       acc[room.status as keyof typeof acc]++;
@@ -749,7 +733,7 @@ export class OperatingTheatreService {
     }, { available: 0, occupied: 0, cleaning: 0, setup: 0, maintenance: 0 });
 
     // Get upcoming cases (next 4 hours)
-    const now = new Date();
+    const now = new Date()
     const nextFourHours = new Date(now.getTime() + 4 * 60 * 60 * 1000);
     
     const upcomingCases = procedures.filter(p => {
@@ -788,19 +772,19 @@ export class OperatingTheatreService {
 
     const dailyVolume = filteredProcedures.length;
     
-    // Calculate utilization rate;
-    const totalRoomHours = Array.from(this.orRooms.values()).length * 8; // Assume 8 hours per room per day;
+    // Calculate utilization rate
+    const totalRoomHours = Array.from(this.orRooms.values()).length * 8; // Assume 8 hours per room per day
     const usedHours = filteredProcedures;
       .filter(p => p.actual_duration);
       .reduce((sum, p) => sum + (p.actual_duration! / 60), 0);
     const utilizationRate = totalRoomHours > 0 ? (usedHours / totalRoomHours) * 100 : 0;
 
-    // Calculate average case duration;
+    // Calculate average case duration
     const completedCases = filteredProcedures.filter(p => p.actual_duration);
     const averageCaseDuration = completedCases.length > 0 ?;
       completedCases.reduce((sum, p) => sum + p.actual_duration!, 0) / completedCases.length : 0;
 
-    // Calculate rates;
+    // Calculate rates
     const totalScheduled = filteredProcedures.length;
     const cancelled = filteredProcedures.filter(p => p.status === 'cancelled').length;
     const postponed = filteredProcedures.filter(p => p.status === 'postponed').length;
@@ -810,18 +794,18 @@ export class OperatingTheatreService {
     const postponementRate = totalScheduled > 0 ? (postponed / totalScheduled) * 100 : 0;
     const complicationRate = completedCases.length > 0 ? (withComplications / completedCases.length) * 100 : 0;
 
-    // Calculate on-time start rate;
+    // Calculate on-time start rate
     const onTimeStarts = completedCases.filter(p => {
       if (!p.actual_start_time) return false;
       const scheduledStart = new Date(`${p.scheduled_date} ${p.scheduled_start_time}`);
       const actualStart = p.actual_start_time;
       const delayMinutes = (actualStart.getTime() - scheduledStart.getTime()) / (1000 * 60);
-      return delayMinutes <= 15; // Consider on-time if within 15 minutes;
+      return delayMinutes <= 15; // Consider on-time if within 15 minutes
     }).length;
     
     const onTimeStartRate = completedCases.length > 0 ? (onTimeStarts / completedCases.length) * 100 : 0;
 
-    // Surgeon productivity;
+    // Surgeon productivity
     const surgeonStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
       if (!p.surgeon_id) return;
@@ -860,7 +844,7 @@ export class OperatingTheatreService {
       on_time_rate: stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0,
     }));
 
-    // Room efficiency;
+    // Room efficiency
     const roomStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
       if (!p.or_room_assigned) return;
@@ -875,7 +859,7 @@ export class OperatingTheatreService {
       current.cases_performed++;
       if (p.actual_duration) {
         current.total_duration += p.actual_duration;
-        current.total_turnover += 30; // Simplified turnover time;
+        current.total_turnover += 30; // Simplified turnover time
       }
       
       roomStats.set(p.or_room_assigned, current);
@@ -883,7 +867,7 @@ export class OperatingTheatreService {
 
     const roomEfficiency = Array.from(roomStats.values()).map(stats => ({
       room_id: stats.room_id,
-      utilization_rate: (stats.total_duration / (8 * 60)) * 100, // Assume 8-hour day;
+      utilization_rate: (stats.total_duration / (8 * 60)) * 100, // Assume 8-hour day
       cases_performed: stats.cases_performed,
       average_turnover: stats.cases_performed > 0 ? stats.total_turnover / stats.cases_performed : 0,
     }));
@@ -892,8 +876,8 @@ export class OperatingTheatreService {
       daily_volume: dailyVolume,
       utilization_rate: Math.round(utilizationRate * 100) / 100,
       average_case_duration: Math.round(averageCaseDuration * 100) / 100,
-      average_turnover_time: 30, // Simplified;
-      first_case_start_delay: 12, // Simplified;
+      average_turnover_time: 30, // Simplified
+      first_case_start_delay: 12, // Simplified
       cancellation_rate: Math.round(cancellationRate * 100) / 100,
       postponement_rate: Math.round(postponementRate * 100) / 100,
       complication_rate: Math.round(complicationRate * 100) / 100,
@@ -929,7 +913,7 @@ export class OperatingTheatreService {
     
     let filteredProcedures = Array.from(this.surgicalProcedures.values());
 
-    // Apply filters;
+    // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
       if (value) {
         filteredProcedures = filteredProcedures.filter(procedure => {
@@ -942,14 +926,14 @@ export class OperatingTheatreService {
       }
     });
 
-    // Sort by scheduled date/time;
+    // Sort by scheduled date/time
     filteredProcedures.sort((a, b) => {
       const dateTimeA = new Date(`${a.scheduled_date} ${a.scheduled_start_time}`);
       const dateTimeB = new Date(`${b.scheduled_date} ${b.scheduled_start_time}`);
       return dateTimeA.getTime() - dateTimeB.getTime();
     });
 
-    // Pagination;
+    // Pagination
     const total = filteredProcedures.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -998,5 +982,5 @@ export class OperatingTheatreService {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const operatingTheatreService = new OperatingTheatreService();

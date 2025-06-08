@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -34,33 +26,31 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define Theatre interface;
+// Define Theatre interface
 interface Theatre {
-  id?: string; // Optional for new theatres;
+  id?: string; // Optional for new theatres
   name: string,
-  location: string | null;
+  location: string | null,
   specialty: string | null,
   status: string;
-  equipment?: string | null; // Assuming simple text for now;
-  updated_at?: string; // Optional;
+  equipment?: string | null; // Assuming simple text for now
+  updated_at?: string; // Optional
 }
 
-// Define the type for data passed to onSave;
+// Define the type for data passed to onSave
 interface TheatreSaveData {
   name: string,
-  location: string | null;
+  location: string | null,
   specialty: string | null,
-  status: string;
+  status: string,
   equipment: string | null
 }
 
-// Props for the modal - use defined types;
+// Props for the modal - use defined types
 interface OTTheatreModalProperties {
   trigger: React.ReactNode;
-  theatre?: Theatre; // Use Theatre type;
-  onSave: (theatreData: TheatreSaveData) => Promise<void>; // Use TheatreSaveData type;
-}
-
+  theatre?: Theatre; // Use Theatre type
+  onSave: (theatreData: TheatreSaveData) => Promise<void>; // Use TheatreSaveData type
 export default const OTTheatreModal = ({
   trigger,
   theatre,
@@ -77,7 +67,7 @@ export default const OTTheatreModal = ({
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when theatre prop changes or modal opens;
+  // Reset form when theatre prop changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -88,8 +78,8 @@ export default const OTTheatreModal = ({
         equipment: theatre?.equipment || "",
       });
     } else {
-      // Optionally clear form when closed;
-      // setFormData({ name: "", ... });
+      // Optionally clear form when closed
+      // setFormData({ name: "", ... })
     }
   }, [theatre, isOpen]);
 
@@ -116,24 +106,24 @@ export default const OTTheatreModal = ({
         equipment: formData.equipment || null,
       };
 
-      // Replace with actual API call;
-      // const url = theatre?.id ? `/api/ot/theatres/${theatre.id}` : `/api/ot/theatres`;
-      // const method = theatre?.id ? "PUT" : "POST";
+      // Replace with actual API call
+      // const url = theatre?.id ? `/api/ot/theatres/${theatre.id}` : `/api/ot/theatres`
+      // const method = theatre?.id ? "PUT" : "POST"
       // const response = await fetch(url, {
       //   method: method,
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to save theatre");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to save theatre")
       // }
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list;
+      await onSave(apiData); // Call parent callback to refresh list
 
       toast({
         title: "Success",
@@ -141,7 +131,7 @@ export default const OTTheatreModal = ({
       }),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type;
+      // Use unknown for error type
 
       let errorMessage = "Failed to save theatre.";
       if (error instanceof Error) {
@@ -258,4 +248,3 @@ export default const OTTheatreModal = ({
       </DialogContent>
     </Dialog>
   );
-}

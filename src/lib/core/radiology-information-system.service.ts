@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,7 +8,7 @@ var __DEV__: boolean;
 
 import { z } from 'zod';
 
-// Radiology Schemas;
+// Radiology Schemas
 export const ImagingStudySchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
   ordering_provider_id: z.string().min(1, 'Ordering provider is required'),
@@ -35,7 +27,7 @@ export const ImagingStudySchema = z.object({
   special_instructions: z.string().optional(),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid scheduled date'),
   scheduled_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-  estimated_duration: z.number().min(5).max(240), // 5 minutes to 4 hours;
+  estimated_duration: z.number().min(5).max(240), // 5 minutes to 4 hours
   room_preference: z.string().optional(),
   equipment_preference: z.string().optional(),
   radiologist_preference: z.string().optional(),
@@ -59,7 +51,7 @@ export const ImagingReportSchema = z.object({
   critical_result_communicated: z.boolean().default(false),
   critical_result_communication_time: z.string().optional(),
   critical_result_communicated_to: z.string().optional(),
-  birads_score: z.enum(['0', '1', '2', '3', '4', '4A', '4B', '4C', '5', '6']).optional(), // For mammography;
+  birads_score: z.enum(['0', '1', '2', '3', '4', '4A', '4B', '4C', '5', '6']).optional(), // For mammography
   followup_required: z.boolean().default(false),
   followup_timeframe: z.string().optional(),
   dictation_time: z.string().optional(),
@@ -85,8 +77,8 @@ export const DicomSeriesSchema = z.object({
   image_orientation: z.string().optional(),
   contrast_agent: z.string().optional(),
   radiation_dose: z.number().optional(),
-  kvp: z.number().optional(), // X-ray tube voltage;
-  mas: z.number().optional(), // Milliampere-seconds;
+  kvp: z.number().optional(), // X-ray tube voltage
+  mas: z.number().optional(), // Milliampere-seconds
   exposure_time: z.number().optional(),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
@@ -120,7 +112,7 @@ export const QualityAssuranceSchema = z.object({
 
 export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
   id: string,
-  accession_number: string;
+  accession_number: string,
   study_instance_uid: string,
   status: 'scheduled' | 'arrived' | 'in_progress' | 'completed' | 'cancelled' | 'no_show';
   arrival_time?: Date;
@@ -143,7 +135,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
 
 export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
   id: string,
-  report_number: string;
+  report_number: string,
   status: 'draft' | 'preliminary' | 'final' | 'amended';
   dictated_at?: Date;
   transcribed_at?: Date;
@@ -160,9 +152,9 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
 
 export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
   id: string,
-  series_instance_uid: string;
+  series_instance_uid: string,
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
   transfer_syntax: string;
   compression_type?: string;
   file_size_mb: number,
@@ -173,57 +165,51 @@ export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
 
 export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
   id: string,
-  overall_score: number; // 1-100;
+  overall_score: number; // 1-100
   created_at: Date,
   updated_at: Date
 };
 
 export interface RadiologyWorklistItem {
   study: ImagingStudy,
-  priority_score: number;
+  priority_score: number,
   estimated_read_time: number,
   complexity_level: 'low' | 'medium' | 'high';
   subspecialty_required?: string;
   prior_studies_count: number,
   critical_finding_likelihood: number
-}
-
 export interface RadiologyMetrics {
   daily_volume: number,
-  average_read_time: number;
-  turnaround_time_stat: number; // minutes;
-  turnaround_time_routine: number; // minutes;
+  average_read_time: number,
+  turnaround_time_stat: number; // minutes
+  turnaround_time_routine: number; // minutes
   critical_results_percentage: number,
-  repeat_rate: number;
+  repeat_rate: number,
   no_show_rate: number,
-  equipment_utilization: number;
+  equipment_utilization: number,
   radiologist_productivity: {
     radiologist_id: string,
-    studies_read: number;
+    studies_read: number,
     average_read_time: number,
-    critical_results: number;
+    critical_results: number,
     amendments: number
   }[];
   modality_distribution: {
     modality: string,
-    count: number;
+    count: number,
     percentage: number
   }[];
-}
-
 export interface PACSIntegration {
   study_id: string,
-  pacs_server: string;
+  pacs_server: string,
   transfer_status: 'pending' | 'in_progress' | 'completed' | 'failed';
   transfer_start_time?: Date;
   transfer_completion_time?: Date;
   error_message?: string;
   retry_count: number,
-  file_count: number;
+  file_count: number,
   total_size_mb: number;
   verification_hash?: string;
-}
-
 export class RadiologyInformationSystemService {
   private imagingStudies: Map<string, ImagingStudy> = new Map();
   private imagingReports: Map<string, ImagingReport> = new Map();
@@ -329,7 +315,7 @@ export class RadiologyInformationSystemService {
 
     this.imagingStudies.set(studyId, study);
     
-    // Schedule equipment if possible;
+    // Schedule equipment if possible
     await this.scheduleEquipment(study);
     
     return study;
@@ -348,7 +334,7 @@ export class RadiologyInformationSystemService {
    * Generate study instance UID;
    */
   private generateStudyInstanceUID(): string {
-    // Simplified UID generation - in real implementation, use proper DICOM UID;
+    // Simplified UID generation - in real implementation, use proper DICOM UID
     return `1.2.840.113619.2.1.${Date.now()}.${Math.floor(Math.random() * 1000000)}`;
   }
 
@@ -356,14 +342,14 @@ export class RadiologyInformationSystemService {
    * Schedule equipment for study;
    */
   private async scheduleEquipment(study: ImagingStudy): Promise<void> {
-    // Find available equipment based on study type;
+    // Find available equipment based on study type
     const equipmentCandidates = this.getEquipmentCandidates(study.study_type);
     
     for (const equipmentId of equipmentCandidates) {
       const schedule = this.equipmentSchedule.get(equipmentId) || [];
       const scheduledDateTime = new Date(`${study.scheduled_date} ${study.scheduled_time}`);
       
-      // Check if equipment is available;
+      // Check if equipment is available
       const isAvailable = !schedule.some(appointment => {
         const appointmentStart = new Date(appointment.start_time);
         const appointmentEnd = new Date(appointment.end_time);
@@ -374,7 +360,7 @@ export class RadiologyInformationSystemService {
       });
       
       if (isAvailable) {
-        // Schedule the equipment;
+        // Schedule the equipment
         schedule.push({
           study_id: study.id,
           start_time: scheduledDateTime.toISOString(),
@@ -385,7 +371,7 @@ export class RadiologyInformationSystemService {
         
         this.equipmentSchedule.set(equipmentId, schedule);
         
-        // Update study with assigned equipment;
+        // Update study with assigned equipment
         study.equipment_used = equipmentId;
         this.imagingStudies.set(study.id, study);
         break;
@@ -484,7 +470,7 @@ export class RadiologyInformationSystemService {
 
     this.imagingStudies.set(studyId, study);
 
-    // Initiate PACS transfer;
+    // Initiate PACS transfer
     await this.initiatePACSTransfer(studyId);
 
     return study;
@@ -510,7 +496,7 @@ export class RadiologyInformationSystemService {
 
     // Simulate PACS transfer (in real implementation, this would be actual DICOM transfer)
     setTimeout(async () => {
-      await this.completePACSTransfer(studyId);
+      await this.completePACSTransfer(studyId)
     }, 5000);
   }
 
@@ -560,7 +546,7 @@ export class RadiologyInformationSystemService {
 
     this.imagingReports.set(reportId, report);
 
-    // Update study with reading radiologist;
+    // Update study with reading radiologist
     study.reading_radiologist = validatedData.radiologist_id;
     study.updated_at = new Date();
     this.imagingStudies.set(study.id, study);
@@ -596,14 +582,14 @@ export class RadiologyInformationSystemService {
     report.signed_by = radiologistId;
     report.updated_at = now;
 
-    // Calculate read time;
+    // Calculate read time
     if (report.dictated_at) {
       report.read_time_minutes = Math.round((now.getTime() - report.dictated_at.getTime()) / (1000 * 60));
     }
 
     this.imagingReports.set(reportId, report);
 
-    // Handle critical results;
+    // Handle critical results
     if (report.critical_result && !report.critical_result_communicated) {
       await this.handleCriticalResult(report);
     }
@@ -615,7 +601,7 @@ export class RadiologyInformationSystemService {
    * Handle critical result communication;
    */
   private async handleCriticalResult(report: ImagingReport): Promise<void> {
-    // In real implementation, this would trigger alerts and notifications;
+    // In real implementation, this would trigger alerts and notifications
 
       report_id: report.id,
       study_id: report.study_id,
@@ -625,9 +611,9 @@ export class RadiologyInformationSystemService {
     });
 
     // Mark as communicated (simplified)
-    report.critical_result_communicated = true;
+    report.critical_result_communicated = true
     report.critical_result_communication_time = new Date().toISOString();
-    report.critical_result_communicated_to = 'Ordering Provider'; // Simplified;
+    report.critical_result_communicated_to = 'Ordering Provider'; // Simplified
     this.imagingReports.set(report.id, report);
   }
 
@@ -646,13 +632,13 @@ export class RadiologyInformationSystemService {
       series_instance_uid: seriesInstanceUID,
       created_at: new Date(),
       updated_at: new Date(),
-      transfer_syntax: '1.2.840.10008.1.2.1', // Explicit VR Little Endian;
-      file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image;
+      transfer_syntax: '1.2.840.10008.1.2.1', // Explicit VR Little Endian
+      file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image
       verification_status: 'pending',
       access_count: 0,
     };
 
-    // Add to study's series list;
+    // Add to study's series list
     const studySeries = this.dicomSeries.get(validatedData.study_id) || [];
     studySeries.push(series);
     this.dicomSeries.set(validatedData.study_id, studySeries);
@@ -675,7 +661,7 @@ export class RadiologyInformationSystemService {
     
     const qaId = uuidv4();
     
-    // Calculate overall score;
+    // Calculate overall score
     const scores = {
       excellent: 100,
       good: 85,
@@ -692,7 +678,7 @@ export class RadiologyInformationSystemService {
     
     let overallScore = (imageQualityScore + positioningScore + exposureScore) / 3;
     
-    // Apply penalties;
+    // Apply penalties
     if (validatedData.artifacts_present) overallScore -= 10;
     if (validatedData.motion_artifact) overallScore -= 15;
     if (validatedData.repeat_required) overallScore -= 20;
@@ -724,7 +710,7 @@ export class RadiologyInformationSystemService {
     const completedStudies = Array.from(this.imagingStudies.values());
       .filter(study => study.status === 'completed');
 
-    // Filter out studies that already have final reports;
+    // Filter out studies that already have final reports
     const studiesNeedingReads = completedStudies.filter(study => {
       const reports = Array.from(this.imagingReports.values());
         .filter(report => report.study_id === study.id);
@@ -732,8 +718,8 @@ export class RadiologyInformationSystemService {
     });
 
     const worklistItems: RadiologyWorklistItem[] = studiesNeedingReads.map(study => {
-      // Calculate priority score;
-      let priorityScore = 50; // Base score;
+      // Calculate priority score
+      let priorityScore = 50; // Base score
       
       switch (study.urgency) {
         case 'stat': priorityScore += 50; break;
@@ -742,11 +728,11 @@ export class RadiologyInformationSystemService {
         case 'routine': break;
       }
       
-      // Add time-based priority;
+      // Add time-based priority
       const hoursWaiting = (new Date().getTime() - (study.completion_time?.getTime() || 0)) / (1000 * 60 * 60);
       priorityScore += Math.min(hoursWaiting * 2, 30);
 
-      // Estimate read time based on study type;
+      // Estimate read time based on study type
       const readTimes: Record<string, number> = {
         'x_ray': 5,
         'ct_scan': 15,
@@ -760,7 +746,7 @@ export class RadiologyInformationSystemService {
       
       const estimatedReadTime = readTimes[study.study_type] || 15;
       
-      // Determine complexity;
+      // Determine complexity
       let complexityLevel: 'low' | 'medium' | 'high' = 'medium';
       if (study.study_type === 'x_ray' || study.study_type === 'ultrasound') {
         complexityLevel = 'low';
@@ -773,15 +759,15 @@ export class RadiologyInformationSystemService {
         priority_score: priorityScore,
         estimated_read_time: estimatedReadTime,
         complexity_level: complexityLevel,
-        prior_studies_count: 0, // Simplified;
-        critical_finding_likelihood: Math.random() * 20, // Simplified percentage;
+        prior_studies_count: 0, // Simplified
+        critical_finding_likelihood: Math.random() * 20, // Simplified percentage
       };
     });
 
     // Sort by priority score (highest first)
-    worklistItems.sort((a, b) => b.priority_score - a.priority_score);
+    worklistItems.sort((a, b) => b.priority_score - a.priority_score)
 
-    // Apply filters;
+    // Apply filters
     let filteredItems = worklistItems;
     
     if (urgency) {
@@ -819,13 +805,13 @@ export class RadiologyInformationSystemService {
 
     const dailyVolume = filteredStudies.length;
     
-    // Calculate average read time;
+    // Calculate average read time
     const reportsWithReadTime = filteredReports.filter(report => report.read_time_minutes);
     const averageReadTime = reportsWithReadTime.length > 0 ?;
       reportsWithReadTime.reduce((sum, report) => sum + (report.read_time_minutes ||
         0), 0) / reportsWithReadTime.length : 0;
 
-    // Calculate turnaround times;
+    // Calculate turnaround times
     const statStudies = filteredStudies.filter(study => study.urgency === 'stat' && study.completion_time);
     const routineStudies = filteredStudies.filter(study => study.urgency === 'routine' && study.completion_time);
     
@@ -845,7 +831,7 @@ export class RadiologyInformationSystemService {
         return sum;
       }, 0) / routineStudies.length : 0;
 
-    // Calculate other metrics;
+    // Calculate other metrics
     const criticalReports = filteredReports.filter(report => report.critical_result);
     const criticalResultsPercentage = filteredReports.length > 0 ?;
       (criticalReports.length / filteredReports.length) * 100 : 0;
@@ -854,16 +840,16 @@ export class RadiologyInformationSystemService {
     const noShowRate = filteredStudies.length > 0 ?;
       (noShowStudies.length / filteredStudies.length) * 100 : 0;
 
-    // Calculate repeat rate from QA data;
+    // Calculate repeat rate from QA data
     const qaRecords = Array.from(this.qualityAssurance.values());
     const repeatsRequired = qaRecords.filter(qa => qa.repeat_required);
     const repeatRate = qaRecords.length > 0 ?;
       (repeatsRequired.length / qaRecords.length) * 100 : 0;
 
     // Equipment utilization (simplified)
-    const equipmentUtilization = 75; // Simplified calculation;
+    const equipmentUtilization = 75; // Simplified calculation
 
-    // Radiologist productivity;
+    // Radiologist productivity
     const radiologistStats = new Map<string, any>();
     filteredReports.forEach(report => {
       if (!report.radiologist_id) return;
@@ -892,7 +878,7 @@ export class RadiologyInformationSystemService {
       amendments: stats.amendments,
     }));
 
-    // Modality distribution;
+    // Modality distribution
     const modalityCount = new Map<string, number>();
     filteredStudies.forEach(study => {
       modalityCount.set(study.study_type, (modalityCount.get(study.study_type) || 0) + 1);
@@ -938,7 +924,7 @@ export class RadiologyInformationSystemService {
     
     let filteredStudies = Array.from(this.imagingStudies.values());
 
-    // Apply filters;
+    // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
       if (value) {
         filteredStudies = filteredStudies.filter(study => {
@@ -951,14 +937,14 @@ export class RadiologyInformationSystemService {
       }
     });
 
-    // Sort by scheduled date/time;
+    // Sort by scheduled date/time
     filteredStudies.sort((a, b) => {
       const dateTimeA = new Date(`${a.scheduled_date} ${a.scheduled_time}`);
       const dateTimeB = new Date(`${b.scheduled_date} ${b.scheduled_time}`);
       return dateTimeB.getTime() - dateTimeA.getTime();
     });
 
-    // Pagination;
+    // Pagination
     const total = filteredStudies.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -1002,5 +988,5 @@ export class RadiologyInformationSystemService {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const radiologyInformationSystemService = new RadiologyInformationSystemService();

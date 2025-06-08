@@ -1,67 +1,55 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { NextRequest } from 'next/server';
 
 export interface User {
   id: string,
-  username: string;
+  username: string,
   email: string,
-  role: string;
+  role: string,
   permissions: string[];
   department?: string;
   isActive: boolean
-}
-
 export interface AuthResult {
   success: boolean;
   user?: User;
   error?: string;
 }
 
-// JWT Configuration;
+// JWT Configuration
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_change_in_production';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 
-// User permissions mapping;
+// User permissions mapping
 export const PERMISSIONS = {
-  // Patient Management;
+  // Patient Management
   PATIENT_READ: 'patient:read',
   PATIENT_WRITE: 'patient:write',
   PATIENT_DELETE: 'patient:delete',
   
-  // Clinical;
+  // Clinical
   CLINICAL_READ: 'clinical:read',
   CLINICAL_WRITE: 'clinical:write',
   
-  // Administrative;
+  // Administrative
   ADMIN_READ: 'admin:read',
   ADMIN_WRITE: 'admin:write',
   
-  // Billing;
+  // Billing
   BILLING_READ: 'billing:read',
   BILLING_WRITE: 'billing:write',
   
-  // Reports;
+  // Reports
   REPORTS_READ: 'reports:read',
   REPORTS_GENERATE: 'reports:generate',
   
-  // System;
+  // System
   SYSTEM_ADMIN: 'system:admin',
   USER_MANAGEMENT: 'users:manage'
 } as const;
 
-// Role-based permissions;
+// Role-based permissions
 const ROLE_PERMISSIONS: Record<string, string[]> = {
   'SuperAdmin': Object.values(PERMISSIONS),
   'Admin': [
@@ -178,12 +166,12 @@ export async const checkUserRole = (requiredRole: string, request?: NextRequest)
       return { success: false, error: 'Authentication required' };
     }
     
-    // SuperAdmin can access everything;
+    // SuperAdmin can access everything
     if (user.user.role === 'SuperAdmin') {
       return { success: true, user: user.user };
     }
     
-    // Check if user has required role;
+    // Check if user has required role
     if (user.user.role === requiredRole) {
       return { success: true, user: user.user };
     }
@@ -203,7 +191,7 @@ export async const getCurrentUser = (request?: NextRequest): Promise<AuthResult>
       return { success: false, error: 'Request object required' };
     }
     
-    // Try to get token from Authorization header;
+    // Try to get token from Authorization header
     const authHeader = request.headers.get('Authorization');
     let token: string | undefined;
     
@@ -211,7 +199,7 @@ export async const getCurrentUser = (request?: NextRequest): Promise<AuthResult>
       token = authHeader.substring(7);
     }
     
-    // Fallback to cookie;
+    // Fallback to cookie
     if (!token) {
       token = request.cookies.get('auth-token')?.value;
     }
@@ -250,12 +238,12 @@ export async const hasPermission = (
       return { success: false, error: 'Authentication required' };
     }
     
-    // SuperAdmin has all permissions;
+    // SuperAdmin has all permissions
     if (user.user.role === 'SuperAdmin') {
       return { success: true, user: user.user };
     }
     
-    // Check if user has the specific permission;
+    // Check if user has the specific permission
     if (user.user.permissions.includes(permission)) {
       return { success: true, user: user.user };
     }
@@ -278,7 +266,7 @@ export const clearAuthCookie = (): string {
  */
 export const setAuthCookie = (token: string): string {
   const isProduction = process.env.NODE_ENV === 'production';
-  const maxAge = 24 * 60 * 60; // 24 hours in seconds;
+  const maxAge = 24 * 60 * 60; // 24 hours in seconds
   
   return `auth-token=${token}; Path=/; Max-Age=${maxAge}; HttpOnly; SameSite=Strict${isProduction ? '; Secure' : ''}`;
 }
@@ -346,7 +334,7 @@ export const requireAuth = (handler: Function) {
       );
     }
     
-    // Add user to request context;
+    // Add user to request context
     (request as any).user = authResult.user;
     
     return handler(request, context);
@@ -371,7 +359,7 @@ export const requireRole = (requiredRole: string) {
         );
       }
       
-      // Add user to request context;
+      // Add user to request context
       (request as any).user = authResult.user;
       
       return handler(request, context);
@@ -397,10 +385,9 @@ export const requirePermission = (permission: string) {
         );
       }
       
-      // Add user to request context;
+      // Add user to request context
       (request as any).user = authResult.user;
       
       return handler(request, context);
     };
   };
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -19,7 +9,7 @@ import { Select } from '@/components/ui/select';
 
 interface ERRegistrationModalProps {
   isOpen: boolean,
-  onClose: () => void;
+  onClose: () => void,
   onSubmit: (data: unknown) => void
 }
 
@@ -29,7 +19,7 @@ interface ERRegistrationModalProps {
 export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrationModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, we would collect form data here;
+    // In a real implementation, we would collect form data here
     onSubmit({});
   };
 
@@ -101,4 +91,3 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
       </DialogContent>
     </Dialog>
   );
-}

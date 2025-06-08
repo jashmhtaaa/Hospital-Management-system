@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// OPD Dashboard Page;
+// OPD Dashboard Page
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -23,22 +15,20 @@ import OPDAppointmentList from "@/components/opd/opd-appointment-list";
 import OPDPatientQueue from "@/components/opd/opd-patient-queue";
 import OPDConsultationForm from "@/components/opd/opd-consultation-form";
 import OPDStatistics from "@/components/opd/opd-statistics";
-import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading states;
-// import { hasPermission } from "@/lib/session"; // Direct permission check might be better done server-side or via dedicated hook;
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading states
+// import { hasPermission } from "@/lib/session"; // Direct permission check might be better done server-side or via dedicated hook
 
 // --- INTERFACES ---
-// FIX: Define interface for the permission check API response;
+// FIX: Define interface for the permission check API response
 interface PermissionCheckResponse {
   hasPermission: boolean;
-  // Add other potential properties if the API returns more;
-}
-
+  // Add other potential properties if the API returns more
 export default const OPDDashboard = () {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("appointments");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date();
-  ); // Allow undefined for calendar;
+  ); // Allow undefined for calendar
   const [permissions, setPermissions] = useState({
     canCreateAppointment: false,
     canViewStatistics: false,
@@ -47,7 +37,7 @@ export default const OPDDashboard = () {
   const [permissionError, setPermissionError] = useState<string | null>();
 
   useEffect(() => {
-    // Check permissions via API;
+    // Check permissions via API
     const checkPermissions = async () => {
       setLoadingPermissions(true),
       setPermissionError(undefined);
@@ -57,7 +47,7 @@ export default const OPDDashboard = () {
           fetch("/api/session/check-permission?permission=statistics:view"),
         ]);
 
-        // Check responses before parsing JSON;
+        // Check responses before parsing JSON
         if (!createResponse.ok || !statsResponse.ok) {
           const failedResponse = createResponse.ok ? statsResponse : createResponse;
           throw new Error(
@@ -65,11 +55,11 @@ export default const OPDDashboard = () {
           );
         }
 
-        // FIX: Cast JSON responses to the defined type;
+        // FIX: Cast JSON responses to the defined type
         const createData = (await createResponse.json()) as PermissionCheckResponse;
         const statsData = (await statsResponse.json()) as PermissionCheckResponse;
 
-        // FIX: Safely access hasPermission property;
+        // FIX: Safely access hasPermission property
         setPermissions({
           canCreateAppointment: createData?.hasPermission ?? false,
           canViewStatistics: statsData?.hasPermission ?? false,
@@ -79,7 +69,7 @@ export default const OPDDashboard = () {
         setPermissionError(
           error instanceof Error ? error.message : "Failed to load permissions."
         );
-        // Set permissions to false on error;
+        // Set permissions to false on error
         setPermissions({
           canCreateAppointment: false,
           canViewStatistics: false,
@@ -93,15 +83,15 @@ export default const OPDDashboard = () {
   }, []);
 
   const handleDateChange = (date: Date | undefined) => {
-    setSelectedDate(date); // Update state with selected date (or undefined);
+    setSelectedDate(date); // Update state with selected date (or undefined)
   };
 
   const handleNewAppointment = () => {
     // Navigate to the new appointment page (adjust path if needed)
-    router.push("/dashboard/opd/appointments/new");
+    router.push("/dashboard/opd/appointments/new")
   };
 
-  // Use optional chaining for selectedDate in case it's undefined initially;
+  // Use optional chaining for selectedDate in case it's undefined initially
   const formattedDate = selectedDate;
     ? selectedDate.toLocaleDateString();
     : "Selected Date";
@@ -134,8 +124,8 @@ export default const OPDDashboard = () {
                 mode="single"
                 selected={selectedDate}
                 onSelect={handleDateChange}
-                className="rounded-md border p-0" // Remove default padding if needed;
-                // initialFocus // Add if you want calendar focused on load;
+                className="rounded-md border p-0" // Remove default padding if needed
+                // initialFocus // Add if you want calendar focused on load
               />
 
               {loadingPermissions ? (
@@ -242,4 +232,3 @@ export default const OPDDashboard = () {
       </div>
     </div>
   );
-}

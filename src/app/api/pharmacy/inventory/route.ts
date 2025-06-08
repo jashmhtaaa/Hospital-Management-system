@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -36,7 +28,7 @@ const inventoryRepository = {
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
   transferStock: () => Promise.resolve(true)
-};
+}
 
 /**
  * GET /api/pharmacy/inventory;
@@ -44,16 +36,16 @@ const inventoryRepository = {
  */
 export async const GET = (req: NextRequest) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get query parameters;
+    // Get query parameters
     const url = new URL(req.url);
     const locationId = url.searchParams.get('locationId');
     const medicationId = url.searchParams.get('medicationId');
@@ -62,7 +54,7 @@ export async const GET = (req: NextRequest) => {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Build filter criteria;
+    // Build filter criteria
     const filter: unknown = {};
     if (locationId) filter.locationId = locationId;
     if (medicationId) filter.medicationId = medicationId;
@@ -70,16 +62,16 @@ export async const GET = (req: NextRequest) => {
     if (!includeZeroStock) filter.quantityOnHand = { gt: 0 };
 
     // Get inventory items (mock implementation)
-    const inventoryItems = await inventoryRepository.findAll();
+    const inventoryItems = await inventoryRepository.findAll()
     const total = inventoryItems.length;
 
-    // Apply pagination;
+    // Apply pagination
     const paginatedItems = inventoryItems.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources;
+    // Map to FHIR resources
     const fhirInventoryItems = paginatedItems.map(FHIRMapper.toFHIRInventoryItem);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('INVENTORY', {
       action: 'LIST',
       resourceType: 'Inventory',
@@ -92,7 +84,7 @@ export async const GET = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       items: fhirInventoryItems,
       pagination: {
@@ -113,7 +105,7 @@ export async const GET = (req: NextRequest) => {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateInventoryRequest(data);
     if (!validationResult.success) {
@@ -123,16 +115,16 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Create inventory item;
+    // Create inventory item
     const inventoryItem = new PharmacyDomain.InventoryItem(
       data.id || crypto.randomUUID(),
       data.medicationId,
@@ -146,9 +138,9 @@ export async const POST = (req: NextRequest) => {
       data.notes || '';
     );
 
-    // Special handling for controlled substances;
+    // Special handling for controlled substances
     if (data.isControlled) {
-      // Encrypt controlled substance data;
+      // Encrypt controlled substance data
       inventoryItem.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           scheduleClass: data.scheduleClass,
@@ -158,10 +150,10 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Save inventory item;
+    // Save inventory item
     const inventoryItemId = await inventoryRepository.save(inventoryItem);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('INVENTORY', {
       action: 'CREATE',
       resourceType: 'Inventory',
@@ -175,7 +167,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: inventoryItemId,
@@ -186,4 +178,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error creating inventory item');
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -61,7 +51,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Status badge color mapping;
+// Status badge color mapping
 const statusColors: Record<string, string> = {
   'PENDING': 'bg-yellow-500',
   'ASSIGNED': 'bg-blue-500',
@@ -70,7 +60,7 @@ const statusColors: Record<string, string> = {
   'CANCELLED': 'bg-gray-500';
 };
 
-// Priority badge color mapping;
+// Priority badge color mapping
 const priorityColors: Record<string, string> = {
   'LOW': 'bg-blue-500',
   'MEDIUM': 'bg-yellow-500',
@@ -94,7 +84,7 @@ export const HousekeepingDashboard = () => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
-  // Load initial data from URL params;
+  // Load initial data from URL params
   useEffect(() => {
     const tab = searchParams.get('tab') || 'all';
     const status = searchParams.get('status') || '';
@@ -109,7 +99,7 @@ export const HousekeepingDashboard = () => {
     setCurrentPage(page);
   }, [searchParams]);
   
-  // Fetch locations for filtering;
+  // Fetch locations for filtering
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -125,19 +115,19 @@ export const HousekeepingDashboard = () => {
     fetchLocations();
   }, []);
   
-  // Fetch housekeeping requests;
+  // Fetch housekeeping requests
   useEffect(() => {
     const fetchRequests = async () => {
       setIsLoading(true);
       try {
-        // Build query parameters;
+        // Build query parameters
         const params = new URLSearchParams();
         
         if (filterStatus) params.append('status', filterStatus);
         if (filterLocation) params.append('locationId', filterLocation);
         if (filterPriority) params.append('priority', filterPriority);
         
-        // Handle tab-specific filters;
+        // Handle tab-specific filters
         if (activeTab === 'pending') {
           params.set('status', 'PENDING');
         } else if (activeTab === 'inProgress') {
@@ -173,7 +163,7 @@ export const HousekeepingDashboard = () => {
     fetchRequests();
   }, [activeTab, filterStatus, filterLocation, filterPriority, currentPage, toast]);
   
-  // Update URL with current filters;
+  // Update URL with current filters
   const updateUrlParams = () => {
     const params = new URLSearchParams();
     
@@ -186,12 +176,12 @@ export const HousekeepingDashboard = () => {
     router.push(`/support-services/housekeeping?${params.toString()}`);
   };
   
-  // Handle tab change;
+  // Handle tab change
   const handleTabChange = (value: string) => {
     setActiveTab(value),
     setCurrentPage(1);
     
-    // Reset status filter when changing tabs to avoid conflicts;
+    // Reset status filter when changing tabs to avoid conflicts
     if (value === 'pending') {
       setFilterStatus('PENDING');
     } else if (value === 'inProgress') {
@@ -205,13 +195,13 @@ export const HousekeepingDashboard = () => {
     }
   };
   
-  // Handle filter changes;
+  // Handle filter changes
   const applyFilters = () => {
     setCurrentPage(1),
     updateUrlParams();
   };
   
-  // Reset all filters;
+  // Reset all filters
   const resetFilters = () => {
     setFilterStatus(''),
     setFilterLocation('');
@@ -225,22 +215,22 @@ export const HousekeepingDashboard = () => {
     }
   };
   
-  // Handle page change;
+  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   };
   
-  // Navigate to create new request;
+  // Navigate to create new request
   const handleCreateRequest = () => {
     router.push('/support-services/housekeeping/new');
   };
   
-  // Navigate to request details;
+  // Navigate to request details
   const handleViewRequest = (id: string) => {
     router.push(`/support-services/housekeeping/${id}`);
   };
   
-  // Render status badge;
+  // Render status badge
   const renderStatusBadge = (status: string) => {
     const color = statusColors[status] || 'bg-gray-500';
     let icon;
@@ -272,7 +262,7 @@ export const HousekeepingDashboard = () => {
     );
   };
   
-  // Render priority badge;
+  // Render priority badge
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || 'bg-gray-500';
     let icon = priority === 'URGENT' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
@@ -285,7 +275,7 @@ export const HousekeepingDashboard = () => {
     );
   };
   
-  // Render loading skeleton;
+  // Render loading skeleton
   const renderSkeleton = () => (
     <div className="space-y-4">;
       {[...Array(5)].map((_, i) => (
@@ -481,4 +471,3 @@ export const HousekeepingDashboard = () => {
       </Tabs>
     </div>
   );
-}

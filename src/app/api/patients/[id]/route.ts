@@ -1,22 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
 import { Patient } from "@/types/patient";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 
-// Zod schema for patient update;
+// Zod schema for patient update
 const patientUpdateSchema = z.object({
     mrn: z.string().optional(),
     first_name: z.string().min(1, "First name is required").optional(),
@@ -43,7 +33,7 @@ const patientUpdateSchema = z.object({
     insurance_policy_number: z.string().optional().nullable(),
 }).partial();
 
-// GET /api/patients/[id] - Fetch a specific patient by ID;
+// GET /api/patients/[id] - Fetch a specific patient by ID
 export async const GET = (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -96,7 +86,7 @@ export async const GET = (
     }
 }
 
-// PUT /api/patients/[id] - Update an existing patient;
+// PUT /api/patients/[id] - Update an existing patient
 export async const PUT = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -105,7 +95,7 @@ export async const PUT = (
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in;
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -138,7 +128,7 @@ export async const PUT = (
         }
 
         const now = new Date().toISOString();
-        const userId = session.user.userId; // session.user is now guaranteed to be defined;
+        const userId = session.user.userId; // session.user is now guaranteed to be defined
 
         const fieldsToUpdate: Record<string, string | number | boolean | Date | null | undefined> = { ...updateData };
         fieldsToUpdate.updated_at = now;
@@ -194,8 +184,8 @@ export async const DELETE = (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {
-    const session = await getSession();
-    if (!session.isLoggedIn || !session.user || session.user.roleName !== "Admin") { // Added !session.user check;
+    const session = await getSession()
+    if (!session.isLoggedIn || !session.user || session.user.roleName !== "Admin") { // Added !session.user check
         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
@@ -237,5 +227,3 @@ export async const DELETE = (
             { status: 500 }
         );
     }
-}
-

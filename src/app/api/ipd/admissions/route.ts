@@ -4,17 +4,17 @@ import {
   getAdmissionByIdFromDB,
   createAdmissionInDB,
   updateAdmissionInDB,
-  AdmissionFilters, // Import AdmissionFilters from lib;
-  CreateAdmissionData, // FIX: Import CreateAdmissionData;
+  AdmissionFilters, // Import AdmissionFilters from lib
+  CreateAdmissionData, // FIX: Import CreateAdmissionData
   UpdateAdmissionData, // FIX: Import UpdateAdmissionData
-} from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction;
+} from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction
 
-// FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput;
+// FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput
 // interface AdmissionInput { ... }
 // interface AdmissionUpdateInput { ... }
 
 /**
- * GET /api/ipd/admissions;
+ * GET /api/ipd/admissions
  * Retrieves a list of admissions, optionally filtered by query parameters.
  * Can also retrieve a single admission by ID if provided as a query parameter.
  */
@@ -24,9 +24,9 @@ export async const GET = (request: NextRequest) => {
     const admissionId = searchParams.get("id");
 
     const filters: AdmissionFilters = {};
-    // Populate filters from searchParams;
+    // Populate filters from searchParams
     for (const [key, value] of searchParams.entries()) {
-      // Ensure only valid filter keys are added;
+      // Ensure only valid filter keys are added
       if (
         [
           "patient_id",
@@ -49,7 +49,7 @@ export async const GET = (request: NextRequest) => {
           ) {
             filters[filterKey] = value;
           } else {
-            // Optionally handle invalid status value, e.g., ignore or return error;
+            // Optionally handle invalid status value, e.g., ignore or return error
 
           }
         } else {
@@ -58,7 +58,7 @@ export async const GET = (request: NextRequest) => {
       }
     }
 
-    // If an ID is provided, attempt to fetch a single admission;
+    // If an ID is provided, attempt to fetch a single admission
     if (admissionId) {
       const id = Number.parseInt(admissionId);
       if (Number.isNaN(id) || id <= 0) {
@@ -67,7 +67,7 @@ export async const GET = (request: NextRequest) => {
           { status: 400 }
         );
       } else {
-        // Simulate fetching a single admission by ID;
+        // Simulate fetching a single admission by ID
         const admission = await getAdmissionByIdFromDB(id);
         if (!admission) {
           return NextResponse.json(
@@ -79,13 +79,13 @@ export async const GET = (request: NextRequest) => {
       }
     }
 
-    // Otherwise, return filtered list;
+    // Otherwise, return filtered list
     const admissions = await getAdmissionsFromDB(filters);
 
     return NextResponse.json({ admissions });
   } catch (error: unknown) {
 
-    // Fixed: Safely access error message;
+    // Fixed: Safely access error message
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
@@ -101,27 +101,27 @@ export async const GET = (request: NextRequest) => {
  */
 export async const POST = (request: NextRequest) => {
   try {
-    // FIX: Use imported CreateAdmissionData type;
+    // FIX: Use imported CreateAdmissionData type
     const admissionData = (await request.json()) as CreateAdmissionData;
 
     // FIX: Update validation based on CreateAdmissionData fields (patient_id is required)
-    // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData;
+    // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData
     if (
       !admissionData.patient_id /* Add other required fields from CreateAdmissionData */
     ) {
       return NextResponse.json(
-        { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields;
+        { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields
         { status: 400 }
       );
     }
 
-    // Simulate creating the admission in the database;
+    // Simulate creating the admission in the database
     const newAdmission = await createAdmissionInDB(admissionData);
 
     return NextResponse.json({ admission: newAdmission }, { status: 201 });
   } catch (error: unknown) {
 
-    // Fixed: Safely access error message;
+    // Fixed: Safely access error message
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
@@ -141,7 +141,7 @@ export async const POST = (request: NextRequest) => {
 export async const PUT = (request: NextRequest) => {
   try {
     // This manual path parsing is fragile. Consider using dynamic routes.
-    const path = request.nextUrl.pathname;
+    const path = request.nextUrl.pathname
     const idString = path.split("/").pop();
     const id = idString ? Number.parseInt(idString) : 0;
 
@@ -152,10 +152,10 @@ export async const PUT = (request: NextRequest) => {
       );
     }
 
-    // FIX: Use imported UpdateAdmissionData type;
+    // FIX: Use imported UpdateAdmissionData type
     const updateData = (await request.json()) as UpdateAdmissionData;
 
-    // Simulate updating the admission in the database;
+    // Simulate updating the admission in the database
     const updatedAdmission = await updateAdmissionInDB(id, updateData);
 
     if (!updatedAdmission) {
@@ -168,7 +168,7 @@ export async const PUT = (request: NextRequest) => {
     return NextResponse.json({ admission: updatedAdmission });
   } catch (error: unknown) {
 
-    // Fixed: Safely access error message;
+    // Fixed: Safely access error message
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
@@ -176,4 +176,3 @@ export async const PUT = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -43,32 +33,30 @@ import { useToast } from '../../hooks/use-toast';
 
 interface Document {
   id: string,
-  documentNumber: string;
+  documentNumber: string,
   documentType: string,
-  documentTitle: string;
+  documentTitle: string,
   authoredDate: string,
-  authorId: string;
+  authorId: string,
   status: string,
-  patientId: string;
+  patientId: string,
   isConfidential: boolean
 }
 
 interface PaginationInfo {
   total: number,
-  page: number;
+  page: number,
   pageSize: number,
   totalPages: number
 }
 
 interface DocumentListProps {
   patientId: string
-}
-
 export const DocumentList = ({ patientId }: DocumentListProps) => {
   const router = useRouter();
   const { toast } = useToast();
   
-  // State;
+  // State
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({
     total: 0,
@@ -84,14 +72,14 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
     dateTo: null as Date | null,
   });
   
-  // Fetch documents;
+  // Fetch documents
   const fetchDocuments = async () => {
     if (!patientId) return;
     
     setLoading(true);
     
     try {
-      // Build query parameters;
+      // Build query parameters
       const params = new URLSearchParams();
       params.append('patientId', patientId);
       params.append('page', pagination.page.toString());
@@ -113,7 +101,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
         params.append('dateTo', filters.dateTo.toISOString());
       }
       
-      // Fetch documents;
+      // Fetch documents
       const response = await fetch(`/api/clinical-documentation?${params.toString()}`);
       
       if (!response.ok) {
@@ -135,33 +123,33 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
     }
   };
   
-  // Effect to fetch documents on initial load and when filters or pagination change;
+  // Effect to fetch documents on initial load and when filters or pagination change
   useEffect(() => {
     fetchDocuments();
   }, [patientId, pagination.page, pagination.pageSize, filters]);
   
-  // Handle filter changes;
+  // Handle filter changes
   const handleFilterChange = (name: string, value: unknown) => {
     setFilters(prev => ({ ...prev, [name]: value }));
-    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page;
+    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
   };
   
-  // Handle page change;
+  // Handle page change
   const handlePageChange = (page: number) => {
     setPagination(prev => ({ ...prev, page }));
   };
   
-  // Handle document click;
+  // Handle document click
   const handleDocumentClick = (documentId: string) => {
     router.push(`/clinical-documentation/${documentId}`);
   };
   
-  // Handle create document;
+  // Handle create document
   const handleCreateDocument = () => {
     router.push(`/clinical-documentation/create?patientId=${patientId}`);
   };
   
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'Draft':
@@ -320,4 +308,3 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
       </CardFooter>
     </Card>
   );
-}

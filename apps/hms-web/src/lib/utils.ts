@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -14,4 +6,3 @@ var __DEV__: boolean;
  */
 export const cn = (...classes: (string | undefined)[]) {
   return classes.filter(Boolean).join(' ')
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../services/clinical-documentation.service';
@@ -25,13 +15,13 @@ export async const GET = (
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Get session;
+    // Get session
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Get document;
+    // Get document
     const document = await clinicalDocumentationService.getDocumentById(
       params.id,
       session.user.id;
@@ -66,16 +56,16 @@ export async const PUT = (
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Get session;
+    // Get session
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Update document;
+    // Update document
     const document = await clinicalDocumentationService.updateDocument(
       params.id,
       body,
@@ -99,4 +89,3 @@ export async const PUT = (
     
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}

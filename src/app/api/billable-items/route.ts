@@ -1,4 +1,4 @@
-// app/api/billable-items/route.ts;
+// app/api/billable-items/route.ts
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { sessionOptions, IronSessionData } from "@/lib/session";
 import { getIronSession } from "iron-session";
@@ -7,14 +7,14 @@ import { BillableItem, ItemType } from "@/types/billing";
 import { z } from "zod";
 
 // Define roles allowed to view/manage billable items (adjust as needed)
-const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Pharmacist", "Billing Staff"]; // Add Billing Staff role if needed;
+const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Pharmacist", "Billing Staff"]; // Add Billing Staff role if needed
 const ALLOWED_ROLES_MANAGE = ["Admin", "Billing Staff"];
 export async const GET = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { searchParams } = new URL(request.url);
 
-    // 1. Check Authentication & Authorization;
+    // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
@@ -30,7 +30,7 @@ export async const GET = (request: Request) => {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Build query based on filters;
+        // 2. Build query based on filters
         let query = "SELECT * FROM BillableItems WHERE is_active = TRUE";
         const queryParams: (string | boolean)[] = [];
 
@@ -48,12 +48,12 @@ export async const GET = (request: Request) => {
 
         query += " ORDER BY item_name";
 
-        // 3. Retrieve items;
+        // 3. Retrieve items
         const itemsResult = await DB.prepare(query).bind(...queryParams).all<BillableItem>();
 
         const items = itemsResult.results || [];
 
-        // 4. Return item list;
+        // 4. Return item list
         return new Response(JSON.stringify(items), {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -67,14 +67,14 @@ export async const GET = (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
-} // End of GET function;
+} // End of GET function
 
-// POST handler for adding a new billable item;
+// POST handler for adding a new billable item
 const AddBillableItemSchema = z.object({
     item_code: z.string().optional(),
     item_name: z.string().min(1, "Item name is required"),
     description: z.string().optional(),
-    item_type: z.nativeEnum(ItemType), // Use ItemType enum defined in types/billing.ts;
+    item_type: z.nativeEnum(ItemType), // Use ItemType enum defined in types/billing.ts
     unit_price: z.number().nonnegative("Unit price must be non-negative"),
     department: z.string().optional(),
     is_taxable: z.boolean().optional().default(true),
@@ -85,7 +85,7 @@ export async const POST = (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
-    // 1. Check Authentication & Authorization;
+    // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
@@ -113,7 +113,7 @@ export async const POST = (request: Request) => {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Insert new item;
+        // 2. Insert new item
         const insertResult = await DB.prepare(
             "INSERT INTO BillableItems (item_code, item_name, description, item_type, unit_price, department, is_taxable, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
@@ -130,10 +130,10 @@ export async const POST = (request: Request) => {
         .run();
 
         if (!insertResult.success) {
-            // Check for unique constraint failure specifically;
+            // Check for unique constraint failure specifically
             if (insertResult.error?.includes("UNIQUE constraint failed")) {
                  return new Response(JSON.stringify({ error: "Item code already exists" }), {
-                    status: 409, // Conflict;
+                    status: 409, // Conflict
                     headers: { "Content-Type": "application/json" },
                 });
             }
@@ -147,20 +147,19 @@ export async const POST = (request: Request) => {
             throw new Error("Failed to retrieve item ID after creation.");
         }
 
-        // 3. Return success response;
+        // 3. Return success response
         return new Response(JSON.stringify({ message: "Billable item added successfully", itemId: newItemId }), {
-            status: 201, // Created;
+            status: 201, // Created
             headers: { "Content-Type": "application/json" },
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        // Avoid duplicate check for UNIQUE constraint if already handled;
+        // Avoid duplicate check for UNIQUE constraint if already handled
         const statusCode = error instanceof Error && error.message.includes("UNIQUE constraint failed") ? 409 : 500;
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Item code already exists" : "Internal Server Error", details: errorMessage }), {
             status: statusCode,
             headers: { "Content-Type": "application/json" },
         });
     }
-}

@@ -1,28 +1,20 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 // ARCH-2: Implement Service Layer Abstraction (Initial Services)
 // SEC-1: Implement Field-Level Encryption for PHI (Placeholder Service)
 // SEC-3: Implement Comprehensive Audit Logging (Initial Service & Integration)
-// Research notes: research_notes_service_layer_typescript_docs.md, research_notes_service_layer_clean_architecture.md, research_notes_encryption_service.md, research_notes_audit_logging.md;
+// Research notes: research_notes_service_layer_typescript_docs.md, research_notes_service_layer_clean_architecture.md, research_notes_encryption_service.md, research_notes_audit_logging.md
 
 import { IPatientRepository, Patient, PatientInputData } from "../repositories/patient_repository.ts";
 import { IEncryptionService } from './encryption_service.ts';
-import { IAuditLogService } from './audit_log_service.ts'; // Import AuditLogService interface;
+import { IAuditLogService } from './audit_log_service.ts'; // Import AuditLogService interface
 
 export class PatientService {
   constructor(
     private patientRepository: IPatientRepository,
     private encryptionService: IEncryptionService,
-    private auditLogService: IAuditLogService // Inject AuditLogService;
+    private auditLogService: IAuditLogService // Inject AuditLogService
   ) {}
 
   /**
@@ -36,7 +28,7 @@ export class PatientService {
     let auditStatus = "FAILURE";
     let createdPatientId: string | null = null;
     try {
-      // Encrypt PHI fields;
+      // Encrypt PHI fields
       const encryptedPatientData: PatientInputData = {
         ...patientInputData,
         name: this.encryptionService.encrypt(patientInputData.name),
@@ -54,7 +46,7 @@ export class PatientService {
         "Patient",
         newPatientFromRepo.id,
         "SUCCESS",
-        { inputName: patientInputData.name } // Log non-sensitive part of input for context;
+        { inputName: patientInputData.name } // Log non-sensitive part of input for context
       );
       return newPatientFromRepo;
     } catch (error: unknown) {
@@ -62,11 +54,11 @@ export class PatientService {
         performingUserId,
         "PATIENT_REGISTRATION_FAILED",
         "Patient",
-        null, // No patient ID created yet;
+        null, // No patient ID created yet
         "FAILURE",
         { error: error.message, inputName: patientInputData.name }
       );
-      throw error; // Re-throw the error after logging;
+      throw error; // Re-throw the error after logging
     }
   }
 
@@ -92,7 +84,7 @@ export class PatientService {
         return null;
       }
 
-      // Decrypt PHI fields;
+      // Decrypt PHI fields
       const decryptedPatient: Patient = {
         ...patientFromRepo,
         name: this.encryptionService.decrypt(patientFromRepo.name),
@@ -116,8 +108,6 @@ export class PatientService {
         "FAILURE",
         { error: error.message }
       );
-      throw error; // Re-throw the error after logging;
+      throw error; // Re-throw the error after logging
     }
   }
-}
-

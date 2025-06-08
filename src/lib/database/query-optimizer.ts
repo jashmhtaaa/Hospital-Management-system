@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -18,7 +10,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 import { prisma } from './connection-pool.ts';
 import { cache } from '@/lib/cache';
 
-// Query optimization patterns for common scenarios;
+// Query optimization patterns for common scenarios
 export class QueryOptimizer {
   private static instance: QueryOptimizer;
   private readonly client: PrismaClient;
@@ -40,7 +32,7 @@ export class QueryOptimizer {
 
   // Instead of: patients.forEach(p => getBillsForPatient(p.id))
   async getPatientsWithBills(filters?: {
-    active?: boolean;
+    active?: boolean
     limit?: number;
     offset?: number;
   }) {
@@ -63,7 +55,7 @@ export class QueryOptimizer {
             billDate: true,
           },
           orderBy: { billDate: 'desc' },
-          take: 10, // Limit related records;
+          take: 10, // Limit related records
         },
         _count: {
           select: {
@@ -78,13 +70,13 @@ export class QueryOptimizer {
       orderBy: { createdAt: 'desc' },
     });
 
-    await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
+    await cache.set(cacheKey, result, 300); // Cache for 5 minutes
     return result;
   }
 
   // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id))
   async getPatientsWithUpcomingAppointments(days: number = 30) {
-    const cacheKey = `patients_upcoming_appointments:${days}`;
+    const cacheKey = `patients_upcoming_appointments:${days}`
     const cached = await cache.get(cacheKey);
     if (cached) return cached;
 
@@ -132,7 +124,7 @@ export class QueryOptimizer {
       orderBy: { lastName: 'asc' },
     });
 
-    await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
+    await cache.set(cacheKey, result, 600); // Cache for 10 minutes
     return result;
   }
 
@@ -142,7 +134,7 @@ export class QueryOptimizer {
 
   // Instead of: bills.forEach(b => getBillItemsForBill(b.id))
   async getBillsWithItems(filters?: {
-    patientId?: string;
+    patientId?: string
     status?: string;
     dateFrom?: Date;
     dateTo?: Date;
@@ -209,13 +201,13 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Optimized outstanding bills calculation;
+  // Optimized outstanding bills calculation
   async getOutstandingBillsSummary() {
     const cacheKey = 'outstanding_bills_summary';
     const cached = await cache.get(cacheKey);
     if (cached) return cached;
 
-    // Use raw SQL for better performance on aggregations;
+    // Use raw SQL for better performance on aggregations
     const result = await this.client.$queryRaw`;
       SELECT;
         COUNT(*) as total_bills,
@@ -236,7 +228,7 @@ export class QueryOptimizer {
 
   // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId))
   async getAppointmentsWithDetails(filters?: {
-    doctorId?: string;
+    doctorId?: string
     date?: Date;
     status?: string;
     departmentId?: string;
@@ -272,7 +264,7 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Doctor's schedule optimization;
+  // Doctor's schedule optimization
   async getDoctorScheduleOptimized(
     doctorId: string,
     startDate: Date,
@@ -307,7 +299,7 @@ export class QueryOptimizer {
       orderBy: { startTime: 'asc' },
     });
 
-    await cache.set(cacheKey, result, 1800); // Cache for 30 minutes;
+    await cache.set(cacheKey, result, 1800); // Cache for 30 minutes
     return result;
   }
 
@@ -317,7 +309,7 @@ export class QueryOptimizer {
 
   // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id))
   async getAdmissionsWithDetails(filters?: {
-    wardId?: string;
+    wardId?: string
     doctorId?: string;
     status?: string;
     limit?: number;
@@ -353,7 +345,7 @@ export class QueryOptimizer {
             oxygenSaturation: true,
           },
           orderBy: { recordedAt: 'desc' },
-          take: 5, // Latest 5 vital signs;
+          take: 5, // Latest 5 vital signs
         },
         medications: {
           select: {
@@ -364,7 +356,7 @@ export class QueryOptimizer {
             administeredBy: true,
           },
           orderBy: { administeredAt: 'desc' },
-          take: 10, // Latest 10 medications;
+          take: 10, // Latest 10 medications
         },
         _count: {
           select: {
@@ -382,7 +374,7 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Ward occupancy optimization;
+  // Ward occupancy optimization
   async getWardOccupancyOptimized() {
     const cacheKey = 'ward_occupancy';
     const cached = await cache.get(cacheKey);
@@ -400,7 +392,7 @@ export class QueryOptimizer {
       ORDER BY ward_id;
     ` as any[];
 
-    await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
+    await cache.set(cacheKey, result, 600); // Cache for 10 minutes
     return result;
   }
 
@@ -410,7 +402,7 @@ export class QueryOptimizer {
 
   // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id))
   async getLabOrdersWithResults(filters?: {
-    patientId?: string;
+    patientId?: string
     doctorId?: string;
     status?: string;
     dateFrom?: Date;
@@ -470,7 +462,7 @@ export class QueryOptimizer {
     return result;
   }
 
-  // Critical lab results optimization;
+  // Critical lab results optimization
   async getCriticalLabResults(hours: number = 24) {
     const cacheKey = `critical_lab_results:${hours}`;
     const cached = await cache.get(cacheKey);
@@ -515,7 +507,7 @@ export class QueryOptimizer {
       orderBy: { reportedDate: 'desc' },
     });
 
-    await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
+    await cache.set(cacheKey, result, 300); // Cache for 5 minutes
     return result;
   }
 
@@ -559,7 +551,7 @@ export class QueryOptimizer {
             lastResponseDate: true,
           },
           orderBy: { submittedAt: 'desc' },
-          take: 10, // Latest 10 claims;
+          take: 10, // Latest 10 claims
         },
         verifications: {
           select: {
@@ -569,7 +561,7 @@ export class QueryOptimizer {
             verifiedBy: true,
           },
           orderBy: { verifiedAt: 'desc' },
-          take: 3, // Latest 3 verifications;
+          take: 3, // Latest 3 verifications
         },
         _count: {
           select: {
@@ -637,7 +629,7 @@ export class QueryOptimizer {
     return this.patientLoader.get(patientId);
   }
 
-  // Clear dataloader cache periodically;
+  // Clear dataloader cache periodically
   clearDataLoaderCache() {
     this.patientLoader.clear();
   }
@@ -647,7 +639,7 @@ export class QueryOptimizer {
    */
 
   async analyzeSlowQueries() {
-    // This would integrate with PostgreSQL's pg_stat_statements;
+    // This would integrate with PostgreSQL's pg_stat_statements
     const result = await this.client.$queryRaw`;
       SELECT;
         query,
@@ -677,20 +669,18 @@ export class QueryOptimizer {
       cacheHitRate: 0,
     };
 
-    // This would be populated with actual metrics;
+    // This would be populated with actual metrics
     await cache.set(cacheKey, stats, 60);
     return stats;
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const queryOptimizer = QueryOptimizer.getInstance();
 
-// Utility functions for common optimized patterns;
+// Utility functions for common optimized patterns
 export async const getOptimizedPatientData = (patientId: string) => {
   return queryOptimizer.getPatientOptimized(patientId)
-}
-
 export async const getOptimizedBillsForPatient = (
   patientId: string,
   limit: number = 10;
@@ -699,8 +689,6 @@ export async const getOptimizedBillsForPatient = (
     patientId,
     limit,
   });
-}
-
 export async const getOptimizedAppointmentsForDoctor = (
   doctorId: string,
   date: Date;
@@ -709,6 +697,4 @@ export async const getOptimizedAppointmentsForDoctor = (
     doctorId,
     date,
   });
-}
-
 export default queryOptimizer;

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -30,19 +20,19 @@ export default async const PatientsPage = ({
     status?: string;
   }
 }) {
-  // Get session;
+  // Get session
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated;
+  // Redirect to login if not authenticated
   if (!session) {
     redirect('/login');
   }
   
-  // Parse pagination parameters;
+  // Parse pagination parameters
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
   const limit = searchParams.limit ? parseInt(searchParams.limit) : 10;
   
-  // Build search filters;
+  // Build search filters
   const filters: unknown = {};
   if (searchParams.mrn) filters.mrn = searchParams.mrn;
   if (searchParams.firstName) filters.firstName = searchParams.firstName;
@@ -53,19 +43,19 @@ export default async const PatientsPage = ({
   if (searchParams.status) filters.status = searchParams.status;
   
   // Fetch patients data (server-side)
-  let initialData;
+  let initialData
   try {
-    // Build query parameters;
+    // Build query parameters
     const params = new URLSearchParams();
     params.append('page', page.toString());
     params.append('limit', limit.toString());
     
-    // Add filters if they have values;
+    // Add filters if they have values
     Object.entries(filters).forEach(([key, value]) => {
       if (value) params.append(key, value as string);
     });
     
-    // Fetch patients;
+    // Fetch patients
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients?${params.toString()}`, {
       cache: 'no-store',
       headers: {
@@ -78,7 +68,7 @@ export default async const PatientsPage = ({
     }
   } catch (error) {
 
-    // Will let client-side handling take over;
+    // Will let client-side handling take over
   }
   
   return (
@@ -88,4 +78,3 @@ export default async const PatientsPage = ({
       </Suspense>
     </div>
   );
-}

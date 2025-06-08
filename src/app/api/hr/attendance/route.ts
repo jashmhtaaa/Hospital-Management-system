@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
 
-// Schema for check-in request;
+// Schema for check-in request
 const checkInSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
@@ -26,13 +16,13 @@ const checkInSchema = z.object({
   notes: z.string().optional(),
 });
 
-// POST handler for check-in;
+// POST handler for check-in
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = checkInSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -43,7 +33,7 @@ export async const POST = (request: NextRequest) => {
     
     const { employeeId, date, checkInTime, biometricData, notes } = validationResult.data;
     
-    // Verify biometric data if provided;
+    // Verify biometric data if provided
     let biometricVerified = false;
     if (biometricData) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
@@ -55,7 +45,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Record check-in;
+    // Record check-in
     const attendance = await attendanceService.recordCheckIn({
       employeeId,
       date: new Date(date),
@@ -74,16 +64,16 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET handler for attendance records;
+// GET handler for attendance records
 export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     
-    // Parse pagination parameters;
+    // Parse pagination parameters
     const skip = parseInt(searchParams.get('skip') || '0');
     const take = parseInt(searchParams.get('take') || '10');
     
-    // Parse filter parameters;
+    // Parse filter parameters
     const date = searchParams.get('date') ? new Date(searchParams.get('date')) : undefined;
     const startDate = searchParams.get('startDate') ? new Date(searchParams.get('startDate')) : undefined;
     const endDate = searchParams.get('endDate') ? new Date(searchParams.get('endDate')) : undefined;
@@ -93,7 +83,7 @@ export async const GET = (request: NextRequest) => {
       ? searchParams.get('biometricVerified') === 'true';
       : undefined;
     
-    // Get attendance records;
+    // Get attendance records
     const result = await attendanceService.listAttendance({
       skip,
       take,
@@ -113,4 +103,3 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -16,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 
 interface Theatre {
   id: string,
-  name: string;
+  name: string,
   type: string,
   status: 'available' | 'occupied' | 'maintenance';
   currentProcedure?: string;
@@ -79,4 +69,3 @@ export const OTTheatreList = ({ theatres }: OTTheatreListProps) => {
       </CardContent>
     </Card>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -37,4 +29,4 @@ const HoverCardContent = React.forwardRef<;
 ));
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
 
-export { HoverCard, HoverCardTrigger, HoverCardContent }
+export { HoverCard, HoverCardTrigger, HoverCardContent 

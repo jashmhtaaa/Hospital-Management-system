@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -43,7 +33,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-// Define the form schema with Zod;
+// Define the form schema with Zod
 const formSchema = z.object({
   locationId: z.string({
     required_error: "Please select a location",
@@ -72,7 +62,7 @@ interface Location {
 
 interface Asset {
   id: string,
-  name: string;
+  name: string,
   assetType: string
 }
 
@@ -80,8 +70,6 @@ interface MaintenanceRequestFormProps {
   onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
-}
-
 export const MaintenanceRequestForm = ({ onSuccess, 
   initialData, 
   isEditing = false
@@ -94,7 +82,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
   const { toast } = useToast();
   const router = useRouter();
 
-  // Initialize the form with react-hook-form;
+  // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -104,7 +92,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
     },
   });
 
-  // Fetch locations when component mounts;
+  // Fetch locations when component mounts
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -125,7 +113,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
     fetchLocations();
   }, [toast]);
 
-  // Fetch assets when component mounts;
+  // Fetch assets when component mounts
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -134,7 +122,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
         const data = await response.json(),
         setAssets(data.data || []);
         
-        // If editing and we have an asset ID, filter assets by location;
+        // If editing and we have an asset ID, filter assets by location
         if (selectedLocation) {
           setFilteredAssets(data.data.filter((asset: Asset) => 
             asset.locationId === selectedLocation;
@@ -155,21 +143,21 @@ export const MaintenanceRequestForm = ({ onSuccess,
     fetchAssets();
   }, [toast, selectedLocation]);
 
-  // Filter assets when location changes;
+  // Filter assets when location changes
   const handleLocationChange = (locationId: string) => {
     setSelectedLocation(locationId);
     form.setValue('locationId', locationId);
     
-    // Clear asset selection if location changes;
+    // Clear asset selection if location changes
     if (form.getValues('assetId')) {
       form.setValue('assetId', undefined);
     }
     
-    // Filter assets by location;
+    // Filter assets by location
     setFilteredAssets(assets.filter(asset => asset.locationId === locationId));
   };
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
@@ -478,4 +466,3 @@ export const MaintenanceRequestForm = ({ onSuccess,
       </form>
     </Form>
   );
-}

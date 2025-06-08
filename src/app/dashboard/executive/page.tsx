@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -83,61 +75,61 @@ import {
 
 interface ExecutiveDashboardData {
   strategicKPIs: StrategyMetric[],
-  financialOverview: FinancialOverview;
+  financialOverview: FinancialOverview,
   operationalExcellence: OperationalMetrics,
-  qualityAndSafety: QualityOverview;
+  qualityAndSafety: QualityOverview,
   marketPosition: MarketMetrics,
-  riskManagement: RiskAssessment;
+  riskManagement: RiskAssessment,
   boardMetrics: BoardMetric[],
-  initiatives: StrategicInitiative[];
+  initiatives: StrategicInitiative[],
   alerts: ExecutiveAlert[],
   benchmarks: BenchmarkData[]
 }
 
 interface StrategyMetric {
   kpi: string,
-  current: number;
+  current: number,
   target: number,
-  benchmark: number;
+  benchmark: number,
   trend: 'positive' | 'negative' | 'neutral',
-  changePercent: number;
+  changePercent: number,
   status: 'excellent' | 'good' | 'attention' | 'critical',
-  unit: string;
+  unit: string,
   category: 'financial' | 'operational' | 'quality' | 'growth',
-  timeframe: 'YTD' | 'QTD' | 'MTD' | 'annual';
+  timeframe: 'YTD' | 'QTD' | 'MTD' | 'annual',
   priority: 'high' | 'medium' | 'low'
 }
 
 interface FinancialOverview {
   revenue: {
     current: number,
-    target: number;
+    target: number,
     growth: number,
     trend: number[]
   };
   ebitda: {
     margin: number,
-    amount: number;
+    amount: number,
     growth: number
   };
   cashFlow: {
     operating: number,
-    free: number;
-    runway: number; // months;
+    free: number,
+    runway: number; // months
   };
   profitability: {
     grossMargin: number,
-    netMargin: number;
+    netMargin: number,
     operatingMargin: number
   };
   costManagement: {
     costPerPatient: number,
-    costReduction: number;
+    costReduction: number,
     efficiency: number
   };
   reimbursements: {
     commercial: number,
-    medicare: number;
+    medicare: number,
     medicaid: number,
     denialRate: number
   };
@@ -146,25 +138,25 @@ interface FinancialOverview {
 interface OperationalMetrics {
   capacity: {
     bedUtilization: number,
-    orUtilization: number;
+    orUtilization: number,
     staffProductivity: number,
     equipmentEfficiency: number
   };
   throughput: {
     patientVolume: number,
-    avgLengthOfStay: number;
+    avgLengthOfStay: number,
     turnoverRate: number,
     dischargeEfficiency: number
   };
   technology: {
     ehrAdoption: number,
-    digitalTransformation: number;
+    digitalTransformation: number,
     systemUptime: number,
     cyberSecurityScore: number
   };
   staffing: {
     retention: number,
-    satisfaction: number;
+    satisfaction: number,
     productivity: number,
     trainingCompliance: number
   };
@@ -173,25 +165,25 @@ interface OperationalMetrics {
 interface QualityOverview {
   patientSafety: {
     overallScore: number,
-    incidents: number;
+    incidents: number,
     mortalityRate: number,
     infectionRate: number
   };
   patientExperience: {
     satisfaction: number,
-    nps: number;
+    nps: number,
     complaints: number,
     compliments: number
   };
   clinicalExcellence: {
     outcomeScores: number,
-    readmissionRate: number;
+    readmissionRate: number,
     complicationRate: number,
     evidenceBasedCare: number
   };
   accreditation: {
     jcahoScore: number,
-    magnet: boolean;
+    magnet: boolean,
     leapfrog: string,
     lastAuditScore: number
   };
@@ -199,45 +191,45 @@ interface QualityOverview {
 
 interface MarketMetrics {
   marketShare: number,
-  brandReputation: number;
+  brandReputation: number,
   competitivePosition: number,
   patientAcquisition: {
     newPatients: number,
-    retentionRate: number;
+    retentionRate: number,
     acquisitionCost: number,
     lifetimeValue: number
   };
   serviceLines: {
     name: string,
-    revenue: number;
+    revenue: number,
     growth: number,
     marketPosition: number
   }[];
   partnerships: {
     strategic: number,
-    clinical: number;
+    clinical: number,
     technology: number
   };
 }
 
 interface RiskAssessment {
   overallRisk: 'low' | 'medium' | 'high' | 'critical',
-  riskScore: number;
+  riskScore: number,
   categories: {
     financial: number,
-    operational: number;
+    operational: number,
     regulatory: number,
-    reputation: number;
+    reputation: number,
     technology: number
   };
   mitigation: {
     active: number,
-    planned: number;
+    planned: number,
     completed: number
   };
   compliance: {
     hipaa: number,
-    jacho: number;
+    jacho: number,
     cms: number,
     overall: number
   };
@@ -245,44 +237,44 @@ interface RiskAssessment {
 
 interface BoardMetric {
   metric: string,
-  value: string;
+  value: string,
   change: number,
-  status: 'positive' | 'negative' | 'neutral';
+  status: 'positive' | 'negative' | 'neutral',
   benchmark: string,
   priority: 'board' | 'executive' | 'operational'
 }
 
 interface StrategicInitiative {
   id: string,
-  name: string;
+  name: string,
   category: 'growth' | 'efficiency' | 'quality' | 'innovation',
-  progress: number;
+  progress: number,
   status: 'on-track' | 'at-risk' | 'delayed' | 'completed',
-  budget: number;
+  budget: number,
   spent: number,
-  expectedROI: number;
+  expectedROI: number,
   timeline: string,
-  sponsor: string;
+  sponsor: string,
   lastUpdate: string
 }
 
 interface ExecutiveAlert {
   id: string,
-  type: 'strategic' | 'financial' | 'operational' | 'regulatory';
+  type: 'strategic' | 'financial' | 'operational' | 'regulatory',
   severity: 'info' | 'warning' | 'critical',
-  title: string;
+  title: string,
   summary: string,
-  impact: 'high' | 'medium' | 'low';
+  impact: 'high' | 'medium' | 'low',
   recommendation: string,
-  owner: string;
+  owner: string,
   dueDate: string
 }
 
 interface BenchmarkData {
   metric: string,
-  ourValue: number;
+  ourValue: number,
   industryAvg: number,
-  topQuartile: number;
+  topQuartile: number,
   topDecile: number,
   percentile: number
 }
@@ -308,7 +300,7 @@ export default const ExecutiveDashboard = () {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Simulate API call;
+        // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000));
         setData(generateMockExecutiveData());
       } catch (error) {
@@ -1340,7 +1332,7 @@ export default const ExecutiveDashboard = () {
   );
 }
 
-// Mock data generation function for executive dashboard;
+// Mock data generation function for executive dashboard
 const generateMockExecutiveData = (): ExecutiveDashboardData {
   return {
     strategicKPIs: [

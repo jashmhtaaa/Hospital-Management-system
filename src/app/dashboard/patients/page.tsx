@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/patients/page.tsx;
+// src/app/dashboard/patients/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -26,16 +18,14 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Search } from "lucide-react";
-import { Patient } from "@/types/patient"; // Assuming Patient type exists;
+import { Patient } from "@/types/patient"; // Assuming Patient type exists
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
-// Define interface for error response;
+// Define interface for error response
 interface ErrorResponse {
   error?: string;
   message?: string;
-}
-
 export default const PatientsPage = () {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,15 +37,15 @@ export default const PatientsPage = () {
       setIsLoading(true),
       setError(null);
       try {
-        const response = await fetch("/api/patients"); // Use the GET endpoint created earlier;
+        const response = await fetch("/api/patients"); // Use the GET endpoint created earlier
         if (!response.ok) {
-          // FIX: Cast error response JSON to defined type;
+          // FIX: Cast error response JSON to defined type
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
         }
         const data: Patient[] = await response.json(),
         setPatients(data);
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
@@ -154,5 +144,3 @@ export default const PatientsPage = () {
       </div>
     </DashboardLayout>
   );
-}
-

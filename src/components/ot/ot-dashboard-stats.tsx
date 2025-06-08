@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -30,30 +22,30 @@ export default const OTDashboardStats = () {
       try {
         setLoading(true);
 
-        // In a real implementation, these would be actual API calls;
-        // For now, we'll simulate with mock data;
+        // In a real implementation, these would be actual API calls
+        // For now, we'll simulate with mock data
 
-        // Fetch today's bookings count;
-        // const todayBookingsRes = await fetch('/api/ot/bookings?startDate=today&endDate=today');
-        // const todayBookingsData = await todayBookingsRes.json();
+        // Fetch today's bookings count
+        // const todayBookingsRes = await fetch('/api/ot/bookings?startDate=today&endDate=today')
+        // const todayBookingsData = await todayBookingsRes.json()
 
         // Fetch upcoming bookings (next 7 days)
-        // const upcomingBookingsRes = await fetch('/api/ot/bookings?startDate=tomorrow&endDate=7days');
-        // const upcomingBookingsData = await upcomingBookingsRes.json();
+        // const upcomingBookingsRes = await fetch('/api/ot/bookings?startDate=tomorrow&endDate=7days')
+        // const upcomingBookingsData = await upcomingBookingsRes.json()
 
-        // Fetch available theatres;
-        // const theatresRes = await fetch('/api/ot/theatres?status=available');
-        // const theatresData = await theatresRes.json();
+        // Fetch available theatres
+        // const theatresRes = await fetch('/api/ot/theatres?status=available')
+        // const theatresData = await theatresRes.json()
 
-        // Fetch in-progress surgeries;
-        // const inProgressRes = await fetch('/api/ot/bookings?status=in_progress');
-        // const inProgressData = await inProgressRes.json();
+        // Fetch in-progress surgeries
+        // const inProgressRes = await fetch('/api/ot/bookings?status=in_progress')
+        // const inProgressData = await inProgressRes.json()
 
-        // Fetch pending checklists;
-        // const checklistsRes = await fetch('/api/ot/checklist-responses?status=pending');
-        // const checklistsData = await checklistsRes.json();
+        // Fetch pending checklists
+        // const checklistsRes = await fetch('/api/ot/checklist-responses?status=pending')
+        // const checklistsData = await checklistsRes.json()
 
-        // Mock data for demonstration;
+        // Mock data for demonstration
         setStats({
           todayBookings: 5,
           upcomingBookings: 12,
@@ -62,7 +54,7 @@ export default const OTDashboardStats = () {
           pendingChecklists: 4,
         }),
         setLoading(false);
-      } catch (error) { // FIX: Added error parameter to catch block;
+      } catch (error) { // FIX: Added error parameter to catch block
 
         setLoading(false);
       }
@@ -213,4 +205,3 @@ export default const OTDashboardStats = () {
       </Card>
     </div>
   );
-}

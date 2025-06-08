@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { Invoice } from "@/types/billing";
@@ -16,7 +6,7 @@ import { getSession } from "@/lib/session";
 import { z } from "zod";
 import type { D1ResultWithMeta, D1Database, D1PreparedStatement, D1Result } from "@/types/cloudflare";
 
-// Zod schema for invoice creation;
+// Zod schema for invoice creation
 const invoiceCreateSchema = z.object({
   patient_id: z.number(),
   consultation_id: z.number().optional().nullable(),
@@ -40,7 +30,7 @@ const invoiceCreateSchema = z.object({
 
 // Helper function to generate the next invoice number (example implementation)
 async const generateInvoiceNumber = (db: D1Database): Promise<string> {
-  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>();
+  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>()
   const nextId = (result?.maxId || 0) + 1;
   return `INV-${String(nextId).padStart(6, "0")}`;
 }
@@ -48,7 +38,7 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination)
 export async const GET = (request: NextRequest) => {
   try {
-    const session = await getSession();
+    const session = await getSession()
     if (!session.isLoggedIn) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -141,14 +131,13 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-
-// POST /api/invoices - Create a new invoice;
+// POST /api/invoices - Create a new invoice
 export async const POST = (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in;
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -185,7 +174,7 @@ export async const POST = (request: NextRequest) => {
             totalAmount,
             invoiceData.status,
             invoiceData.notes || null,
-            session.user.userId, // session.user is now guaranteed to be defined;
+            session.user.userId, // session.user is now guaranteed to be defined
             now,
             now;
         );
@@ -238,5 +227,3 @@ export async const POST = (request: NextRequest) => {
             { status: 500 }
         );
     }
-}
-

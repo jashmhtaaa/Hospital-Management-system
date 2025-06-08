@@ -1,78 +1,70 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface Patient {
   id: string,
-  first_name: string;
+  first_name: string,
   last_name: string,
-  gender: string;
+  gender: string,
   age: number,
   phone: string
 }
 
 interface Medication {
   id: string,
-  generic_name: string;
+  generic_name: string,
   brand_name: string,
-  strength: string;
+  strength: string,
   dosage_form: string
 }
 
 interface PrescriptionItemInput {
   medication_id: string,
-  dosage: string;
+  dosage: string,
   frequency: string,
-  duration: string;
-  quantity: number | string; // Allow string for input, parse later;
+  duration: string,
+  quantity: number | string; // Allow string for input, parse later
   instructions: string
 }
 
 interface SelectedMedication extends Medication {
   dosage: string,
-  frequency: string;
+  frequency: string,
   duration: string,
-  quantity: string; // Keep as string for input state;
+  quantity: string; // Keep as string for input state
   instructions: string
 }
 
 interface PrescriptionItemDisplay {
   medication: string,
-  dosage: string;
+  dosage: string,
   frequency: string,
   duration: string
 }
 
 interface Prescription {
   id: string,
-  date: string;
+  date: string,
   status: "pending" | "dispensed" | "cancelled",
   items: PrescriptionItemDisplay[]
 }
 
 interface PrescriptionFormData {
   patient_id: string,
-  doctor_id: string;
+  doctor_id: string,
   notes: string,
   items: PrescriptionItemInput[]
 }
 
-// Component to integrate Pharmacy with OPD module;
+// Component to integrate Pharmacy with OPD module
 const OPDPharmacyIntegration: React.FC = () => {
   // const router = useRouter(); // Removed unused variable (and missing import)
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true)
   const [activePatient, setActivePatient] = useState<Patient | null>();
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
@@ -82,16 +74,16 @@ const OPDPharmacyIntegration: React.FC = () => {
   const [formData, setFormData] = useState<Omit<PrescriptionFormData, "items">>(
     {
       patient_id: "",
-      doctor_id: "", // This should ideally come from auth context;
+      doctor_id: "", // This should ideally come from auth context
       notes: "",
     }
   );
 
   useEffect(() => {
-    // Fetch active patient from OPD context;
+    // Fetch active patient from OPD context
     const fetchActivePatient = async (): Promise<void> => {
       try {
-        // Simulate fetching active patient;
+        // Simulate fetching active patient
         const simulatedPatient: Patient = {
           id: "pat_12345",
           first_name: "John",
@@ -104,18 +96,18 @@ const OPDPharmacyIntegration: React.FC = () => {
         setFormData((previous) => ({
           ...previous,
           patient_id: simulatedPatient.id,
-          doctor_id: "doc_67890", // Simulate logged-in doctor ID;
+          doctor_id: "doc_67890", // Simulate logged-in doctor ID
         }));
       } catch (error) {
 
         // Handle error appropriately (e.g., show message)
       }
-    };
+    }
 
-    // Fetch medications for prescribing;
+    // Fetch medications for prescribing
     const fetchMedications = async (): Promise<void> => {
       try {
-        // Simulate fetching medications;
+        // Simulate fetching medications
         const simulatedMedications: Medication[] = [
           {
             id: "med_001",
@@ -156,24 +148,24 @@ const OPDPharmacyIntegration: React.FC = () => {
         setMedications(simulatedMedications);
       } catch (error) {
 
-        // Handle error appropriately;
+        // Handle error appropriately
       }
     };
 
-    // Fetch existing prescriptions for this patient;
+    // Fetch existing prescriptions for this patient
     const fetchPrescriptions = async (): Promise<void> => {
-      // Guard clause if patient ID isn't set yet;
+      // Guard clause if patient ID isn't set yet
       if (!activePatient?.id) {
-        // Check activePatient.id directly;
-        setLoading(false); // Set loading false if no patient yet;
+        // Check activePatient.id directly
+        setLoading(false); // Set loading false if no patient yet
         return;
       }
       try {
-        // Simulate fetching prescriptions for the active patient;
-        // const response = await fetch(`/api/pharmacy/prescriptions?patientId=${activePatient.id}`);
-        // if (!response.ok) throw new Error('Failed to fetch prescriptions');
-        // const data = await response.json();
-        // setPrescriptions(data.prescriptions || []);
+        // Simulate fetching prescriptions for the active patient
+        // const response = await fetch(`/api/pharmacy/prescriptions?patientId=${activePatient.id}`)
+        // if (!response.ok) throw new Error('Failed to fetch prescriptions')
+        // const data = await response.json()
+        // setPrescriptions(data.prescriptions || [])
 
         const simulatedPrescriptions: Prescription[] = [
           {
@@ -212,7 +204,7 @@ const OPDPharmacyIntegration: React.FC = () => {
         setPrescriptions(simulatedPrescriptions);
       } catch (error) {
 
-        // Handle error appropriately;
+        // Handle error appropriately
       } finally {
         setLoading(false);
       }
@@ -220,16 +212,16 @@ const OPDPharmacyIntegration: React.FC = () => {
 
     fetchActivePatient(),
     fetchMedications();
-    // Fetch prescriptions depends on activePatient being set first;
+    // Fetch prescriptions depends on activePatient being set first
     if (activePatient) {
       fetchPrescriptions();
     } else {
-      // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change;
-      setLoading(false); // Set loading false if no patient yet;
+      // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change
+      setLoading(false); // Set loading false if no patient yet
     }
 
     // Dependency array needs careful consideration. Fetching prescriptions depends on activePatient.
-  }, [activePatient]); // Re-run if activePatient changes;
+  }, [activePatient]); // Re-run if activePatient changes
 
   const handleAddMedication = (medication: Medication): void => {
     if (!selectedMedications.some((med) => med.id === medication.id)) {
@@ -259,7 +251,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     const updatedMeds = [...selectedMedications];
     // Ensure the field exists on the object before assignment (though TS should catch this)
     if (field in updatedMeds[index]) {
-      updatedMeds[index][field] = value; // Removed 'as any';
+      updatedMeds[index][field] = value; // Removed 'as any'
     }
     setSelectedMedications(updatedMeds);
   };
@@ -275,7 +267,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     setLoading(true);
 
     try {
-      // Prepare prescription items with proper types;
+      // Prepare prescription items with proper types
       const items: PrescriptionItemInput[] = selectedMedications.map((med) => {
         const quantity = Number.parseInt(med.quantity);
         if (Number.isNaN(quantity) || quantity <= 0) {
@@ -296,29 +288,29 @@ const OPDPharmacyIntegration: React.FC = () => {
       const prescriptionData: PrescriptionFormData = {
         ...formData,
         items,
-        // source: 'opd', // Add if API expects it;
+        // source: 'opd', // Add if API expects it
         // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it
-      };
+      }
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch('/api/pharmacy/prescriptions', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(prescriptionData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || 'Failed to create prescription');
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || 'Failed to create prescription')
       // }
 
-      // Simulate successful submission;
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay;
+      // Simulate successful submission
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
 
       alert("Prescription created successfully!");
 
-      // Add the new prescription to the local state for display;
+      // Add the new prescription to the local state for display
       const newPrescription: Prescription = {
         id: `presc_${Date.now()}`,
         date: new Date().toISOString().split("T")[0],
@@ -332,11 +324,11 @@ const OPDPharmacyIntegration: React.FC = () => {
       };
       setPrescriptions([newPrescription, ...prescriptions]);
 
-      // Reset form state;
+      // Reset form state
       setSelectedMedications([]),
       setFormData((previous) => ({
         ...previous,
-        notes: "", // Reset notes field;
+        notes: "", // Reset notes field
       }));
     } catch (error) {
 

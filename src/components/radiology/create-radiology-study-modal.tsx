@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -33,7 +25,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
-// Define interfaces;
+// Define interfaces
 interface Modality {
   id: string,
   name: string
@@ -44,31 +36,29 @@ interface Technician {
   name: string
 }
 
-// FIX: Export StudyPayload interface;
+// FIX: Export StudyPayload interface
 export interface StudyPayload {
   order_id: string,
-  accession_number: string | null;
+  accession_number: string | null,
   study_datetime: string,
-  modality_id: string | null;
+  modality_id: string | null,
   technician_id: string,
-  protocol: string | null;
+  protocol: string | null,
   series_description: string | null,
-  number_of_images: number | null;
-  status: string; // e.g., "acquired";
+  number_of_images: number | null,
+  status: string; // e.g., "acquired"
 }
 
 interface CreateRadiologyStudyModalProperties {
   onClose: () => void,
   onSubmit: (payload: StudyPayload) => Promise<void>,
   orderId: string
-}
-
 export default const CreateRadiologyStudyModal = ({
   onClose,
   onSubmit,
   orderId,
 }: CreateRadiologyStudyModalProperties) {
-  // FIX: Type props;
+  // FIX: Type props
   const [accessionNumber, setAccessionNumber] = useState("");
   const [studyDatetime, setStudyDatetime] = useState("");
   const [modalityId, setModalityId] = useState("");
@@ -77,10 +67,10 @@ export default const CreateRadiologyStudyModal = ({
   const [seriesDescription, setSeriesDescription] = useState("");
   const [numberOfImages, setNumberOfImages] = useState("");
 
-  const [modalities, setModalities] = useState<Modality[]>([]); // FIX: Type state;
-  const [technicians, setTechnicians] = useState<Technician[]>([]); // FIX: Type state;
+  const [modalities, setModalities] = useState<Modality[]>([]); // FIX: Type state
+  const [technicians, setTechnicians] = useState<Technician[]>([]); // FIX: Type state
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(); // FIX: Type state;
+  const [error, setError] = useState<string | null>(); // FIX: Type state
   const [isSubmitting, setIsSubmitting] = useState(false),
   useEffect(() => {
     const fetchData = async () => {
@@ -89,25 +79,25 @@ export default const CreateRadiologyStudyModal = ({
       try {
         const [modalitiesResponse, techniciansResponse] = await Promise.all([
           fetch("/api/radiology/modalities"),
-          fetch("/api/users?role=Technician"), // Assuming API endpoint exists to fetch technicians;
+          fetch("/api/users?role=Technician"), // Assuming API endpoint exists to fetch technicians
         ]);
 
         if (!modalitiesResponse.ok) throw new Error("Failed to fetch modalities");
         if (!techniciansResponse.ok) throw new Error("Failed to fetch technicians");
 
-        // FIX: Type the fetched data before setting state;
+        // FIX: Type the fetched data before setting state
         const modalitiesData: Modality[] = await modalitiesResponse.json();
         const techniciansData: Technician[] = await techniciansResponse.json();
 
         // Assuming API returns array directly, adjust if it returns { results: [...] }
         setModalities(modalitiesData),
-        setTechnicians(techniciansData);
+        setTechnicians(techniciansData)
 
-        // Set default study datetime to now;
+        // Set default study datetime to now
         setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM
       } catch (error_) {
 
-        setError("Failed to load necessary data. Please try again.");
+        setError("Failed to load necessary data. Please try again.")
       } finally {
         setLoading(false);
       }
@@ -115,7 +105,7 @@ export default const CreateRadiologyStudyModal = ({
     fetchData();
   }, []);
 
-  // FIX: Type the event parameter;
+  // FIX: Type the event parameter
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!studyDatetime || !technicianId) {
@@ -136,7 +126,7 @@ export default const CreateRadiologyStudyModal = ({
       number_of_images: numberOfImages;
         ? Number.parseInt(numberOfImages, 10);
         : null,
-      status: "acquired", // Default status for new study;
+      status: "acquired", // Default status for new study
     });
     setIsSubmitting(false);
   };
@@ -280,4 +270,3 @@ export default const CreateRadiologyStudyModal = ({
       </DialogContent>
     </Dialog>
   );
-}

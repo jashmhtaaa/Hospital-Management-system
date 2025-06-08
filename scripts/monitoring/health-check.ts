@@ -37,7 +37,7 @@ import { URL } from 'url';
 
 // Type definitions for health monitoring
 interface HealthConfig {
-  readonly baseUrl: string;
+  readonly baseUrl: string
   readonly databaseUrl: string;
   readonly redisUrl: string;
   readonly alertWebhook: string;
@@ -62,7 +62,7 @@ interface HealthThresholds {
   readonly pharmacyIntegrationResponseTime: number; // milliseconds
 }
 
-type HealthStatus = 'healthy' | 'degraded' | 'unhealthy' | 'critical';
+type HealthStatus = 'healthy' | 'degraded' | 'unhealthy' | 'critical'
 type ComponentType = 'api' | 'database' | 'cache' | 'external' | 'security' | 'compliance' | 'system';
 type AlertLevel = 'info' | 'warning' | 'error' | 'critical';
 
@@ -109,20 +109,20 @@ class HealthCheckResult {
 
 interface SystemMetrics {
   cpuUsage: number,
-  memoryUsage: number;
+  memoryUsage: number,
   diskUsage: number,
-  uptime: number;
+  uptime: number,
   loadAverage: number[],
   networkConnections: number
 }
 
 interface AlertPayload {
   timestamp: string,
-  level: AlertLevel;
+  level: AlertLevel,
   component: string,
-  status: HealthStatus;
+  status: HealthStatus,
   message: string,
-  details: HealthCheckDetails;
+  details: HealthCheckDetails,
   environment: string,
   checkId: string
 }
@@ -139,11 +139,11 @@ const CONFIG: HealthConfig = {
   continuous: process.argv.includes('--continuous'),
   verbose: process.argv.includes('--verbose') || process.env.NODE_ENV === 'development',
   environment: (process.env.NODE_ENV as 'development' | 'staging' | 'production') || 'development'
-} as const;
+} as const
 
 // Healthcare-specific monitoring class
 class HealthMonitor {
-  private results: HealthCheckResult[] = [];
+  private results: HealthCheckResult[] = []
   private alertsSent = new Set<string>();
   private lastHealthyTimestamp = new Date();
   private consecutiveFailures = 0;
@@ -160,7 +160,7 @@ class HealthMonitor {
     emergencyResponseTime: 500, // 500ms - emergency department priority
     labIntegrationResponseTime: 3000, // 3 seconds - lab results
     pharmacyIntegrationResponseTime: 2500 // 2.5 seconds - medication orders
-  } as const;
+  } as const
 
   // Critical endpoints for healthcare operations
   private readonly criticalEndpoints = [
@@ -179,7 +179,7 @@ class HealthMonitor {
     '/api/opd/queue',
     '/api/ot/schedule',
     '/api/icu/monitoring'
-  ] as const;
+  ] as const
 
   // External healthcare integrations
   private readonly externalServices = [
@@ -189,7 +189,7 @@ class HealthMonitor {
     { name: 'Electronic Health Records', endpoint: '/api/ehr/health' },
     { name: 'Insurance Verification', endpoint: '/api/insurance/health' },
     { name: 'Emergency Alert System', endpoint: '/api/emergency/health' }
-  ] as const;
+  ] as const
 
   constructor() {
     this.log('🏥 Health Monitor initialized with healthcare-specific thresholds');
@@ -219,10 +219,10 @@ class HealthMonitor {
         this.checkExternalServices(),
         this.checkSecurityPosture(),
         this.checkHIPAACompliance()
-      ]);
+      ])
 
       // Collect all results
-      this.collectResults(currentResults, systemMetrics, 'System Health');
+      this.collectResults(currentResults, systemMetrics, 'System Health')
       this.collectResults(currentResults, apiResults, 'API Endpoints');
       this.collectResults(currentResults, databaseResults, 'Database');
       this.collectResults(currentResults, cacheResults, 'Cache');
@@ -233,10 +233,10 @@ class HealthMonitor {
       this.results = currentResults;
       
       // Generate health summary
-      await this.generateHealthSummary();
+      await this.generateHealthSummary()
       
       // Send alerts for critical issues
-      await this.processAlerts(currentResults);
+      await this.processAlerts(currentResults)
 
       const totalTime = performance.now() - startTime;
       this.log(`✅ Health check completed in ${totalTime.toFixed(2)}ms`);
@@ -290,7 +290,7 @@ class HealthMonitor {
       if (metrics.cpuUsage > this.thresholds.cpuUsage || 
           metrics.memoryUsage > this.thresholds.memoryUsage ||
           metrics.diskUsage > this.thresholds.diskUsage) {
-        status = 'degraded';
+        status = 'degraded'
         alertLevel = 'warning';
       }
       
@@ -343,7 +343,7 @@ class HealthMonitor {
         
         // Check response time thresholds
         if (endpoint.includes('/emergency/') && duration > this.thresholds.emergencyResponseTime) {
-          status = 'critical';
+          status = 'critical'
           alertLevel = 'critical';
         } else if (duration > this.thresholds.apiResponseTime) {
           status = 'degraded';
@@ -352,7 +352,7 @@ class HealthMonitor {
         
         // Check HTTP status
         if (response.statusCode >= 500) {
-          status = 'critical';
+          status = 'critical'
           alertLevel = 'critical';
         } else if (response.statusCode >= 400) {
           status = 'degraded';
@@ -392,7 +392,7 @@ class HealthMonitor {
     try {
       // Simulate database health check
       // In real implementation, this would connect to actual database
-      const duration = performance.now() - startTime;
+      const duration = performance.now() - startTime
       
       let status: HealthStatus = 'healthy';
       let alertLevel: AlertLevel = 'info';
@@ -412,7 +412,7 @@ class HealthMonitor {
           connectionCount: Math.floor(Math.random() * 50) + 10 // Simulated
         },
         alertLevel
-      );
+      )
     } catch (error) {
       return new HealthCheckResult(
         'Database Connection',
@@ -430,7 +430,7 @@ class HealthMonitor {
     
     try {
       // Simulate Redis/cache health check
-      const duration = performance.now() - startTime;
+      const duration = performance.now() - startTime
       
       return new HealthCheckResult(
         'Redis Cache',
@@ -466,7 +466,7 @@ class HealthMonitor {
         let alertLevel: AlertLevel = 'info';
         
         // Apply service-specific thresholds
-        let threshold = this.thresholds.apiResponseTime;
+        let threshold = this.thresholds.apiResponseTime
         if (service.name.includes('Laboratory')) {
           threshold = this.thresholds.labIntegrationResponseTime;
         } else if (service.name.includes('Pharmacy')) {
@@ -519,7 +519,7 @@ class HealthMonitor {
         this.fileExists('./src/lib/security/auth.service.ts'),
         this.fileExists('./src/services/encryption_service_secure.ts'),
         this.fileExists('./src/lib/audit/audit.service.ts')
-      ];
+      ]
       
       const allSecure = securityChecks.every(check => check);
       const duration = performance.now() - startTime;
@@ -557,7 +557,7 @@ class HealthMonitor {
       // Simulate HIPAA compliance check
       // In real implementation, this would run the HIPAA validation script
       const complianceScore = 95; // Simulated score
-      const duration = performance.now() - startTime;
+      const duration = performance.now() - startTime
       
       let status: HealthStatus = 'healthy';
       let alertLevel: AlertLevel = 'info';
@@ -610,7 +610,7 @@ class HealthMonitor {
       uptime: os.uptime(),
       loadAverage: os.loadavg(),
       networkConnections: 0 // Simulated
-    };
+    }
   }
 
   private async makeHttpRequest(url: string): Promise<{ statusCode: number; data: string }> {
@@ -668,7 +668,7 @@ class HealthMonitor {
 
     // Save summary to file
     try {
-      const reportDir = './docs/monitoring';
+      const reportDir = './docs/monitoring'
       await fs.mkdir(reportDir, { recursive: true });
       await fs.writeFile(
         path.join(reportDir, 'health-check-report.json'),
@@ -713,7 +713,7 @@ class HealthMonitor {
     // Only send warning alerts if not too many recent alerts
     if (warningAlerts.length > 0 && this.shouldSendWarningAlerts()) {
       for (const alert of warningAlerts) {
-        await this.sendAlert(alert);
+        await this.sendAlert(alert)
       }
     }
   }
@@ -737,7 +737,7 @@ class HealthMonitor {
       details: result.details,
       environment: CONFIG.environment,
       checkId: result.checkId
-    };
+    }
 
     try {
       await this.makeHttpRequest(CONFIG.alertWebhook);
@@ -772,7 +772,7 @@ class HealthMonitor {
 
     // Show critical issues
     if (summary.criticalCount > 0) {
-      console.log('\n🚨 CRITICAL ISSUES:');
+      console.log('\n🚨 CRITICAL ISSUES:')
       this.results
         .filter(r => r.status === 'critical')
         .forEach(r => {
@@ -782,7 +782,7 @@ class HealthMonitor {
 
     // Show degraded services
     if (summary.degradedCount > 0) {
-      console.log('\n⚠️  DEGRADED SERVICES:');
+      console.log('\n⚠️  DEGRADED SERVICES:')
       this.results
         .filter(r => r.status === 'degraded')
         .forEach(r => {
@@ -811,16 +811,16 @@ class HealthMonitor {
     };
 
     // Initial check
-    await runCheck();
+    await runCheck()
 
     // Set up interval
-    setInterval(runCheck, CONFIG.checkInterval);
+    setInterval(runCheck, CONFIG.checkInterval)
   }
 }
 
 // Main execution
 async function main(): Promise<void> {
-  const monitor = new HealthMonitor();
+  const monitor = new HealthMonitor()
 
   if (CONFIG.continuous) {
     await monitor.startContinuousMonitoring();
@@ -828,7 +828,7 @@ async function main(): Promise<void> {
     const results = await monitor.performHealthCheck();
     
     // Exit with error code if there are critical issues
-    const criticalIssues = results.filter(r => r.status === 'critical').length;
+    const criticalIssues = results.filter(r => r.status === 'critical').length
     process.exit(criticalIssues > 0 ? 1 : 0);
   }
 }
@@ -836,9 +836,7 @@ async function main(): Promise<void> {
 // Execute if run directly
 if (require.main === module) {
   main().catch((error) => {
-    console.error('🚨 Health check monitor failed:', error);
+    console.error('🚨 Health check monitor failed:', error)
     process.exit(1);
   });
-}
-
 export { HealthMonitor, type HealthCheckResult, type HealthConfig };

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -50,7 +40,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from '@/components/ui/use-toast';
 
-// Form schema for employee creation;
+// Form schema for employee creation
 const employeeFormSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
@@ -85,7 +75,7 @@ export default const NewEmployee = () {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
 
-  // Initialize form;
+  // Initialize form
   const form = useForm({
     resolver: zodResolver(employeeFormSchema),
     defaultValues: {
@@ -117,7 +107,7 @@ export default const NewEmployee = () {
     },
   });
 
-  // Fetch departments for dropdown;
+  // Fetch departments for dropdown
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -147,12 +137,12 @@ export default const NewEmployee = () {
     fetchUsers();
   }, []);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       
-      // Format dates for API;
+      // Format dates for API
       const formattedData = {
         ...data,
         birthDate: data.birthDate ? format(data.birthDate, 'yyyy-MM-dd') : undefined,
@@ -178,7 +168,7 @@ export default const NewEmployee = () {
         description: `Successfully created employee record for ${newEmployee.firstName} ${newEmployee.lastName}`,
       });
       
-      // Navigate back to staff list;
+      // Navigate back to staff list
       router.push('/dashboard/hr/staff');
     } catch (error) {
       toast({
@@ -644,4 +634,3 @@ export default const NewEmployee = () {
       </Card>
     </div>
   );
-}

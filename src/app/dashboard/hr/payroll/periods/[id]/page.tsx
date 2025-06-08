@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -64,7 +54,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
   const [error, setError] = useState<any | null>(null);
   const [processingAction, setProcessingAction] = useState(false);
 
-  // Fetch payroll period data;
+  // Fetch payroll period data
   useEffect(() => {
     const fetchPayrollPeriod = async () => {
       try {
@@ -95,7 +85,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     fetchPayrollPeriod();
   }, [params.id]);
 
-  // Generate payroll entries;
+  // Generate payroll entries
   const handleGenerateEntries = async () => {
     try {
       setProcessingAction(true);
@@ -113,7 +103,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         description: `Generated ${data.entriesGenerated} payroll entries`,
       });
       
-      // Refresh payroll period data;
+      // Refresh payroll period data
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
         const periodData = await periodResponse.json(),
@@ -130,7 +120,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     }
   };
 
-  // Approve payroll period;
+  // Approve payroll period
   const handleApprovePeriod = async () => {
     try {
       setProcessingAction(true);
@@ -148,7 +138,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         description: `Approved ${data.entriesApproved} payroll entries`,
       });
       
-      // Refresh payroll period data;
+      // Refresh payroll period data
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
         const periodData = await periodResponse.json(),
@@ -165,7 +155,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     }
   };
 
-  // Mark payroll period as paid;
+  // Mark payroll period as paid
   const handleMarkAsPaid = async () => {
     try {
       setProcessingAction(true);
@@ -189,7 +179,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         description: `Marked ${data.entriesPaid} payroll entries as paid`,
       });
       
-      // Refresh payroll period data;
+      // Refresh payroll period data
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
         const periodData = await periodResponse.json(),
@@ -206,16 +196,16 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     }
   };
 
-  // Export payroll data;
+  // Export payroll data
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
         title: "Export Started",
         description: "Your payroll report is being generated and will download shortly.",
       });
       
-      // Simulate download delay;
+      // Simulate download delay
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -231,7 +221,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     }
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'DRAFT':
@@ -246,7 +236,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     }
   };
 
-  // Format currency;
+  // Format currency
   const formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -550,4 +540,3 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       )}
     </div>
   );
-}

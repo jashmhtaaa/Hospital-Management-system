@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -14,19 +6,19 @@ var __DEV__: boolean;
  * TypeScript interfaces corresponding to the Prisma schema for Marketing CRM;
  */
 
-// Marketing Campaign Model;
+// Marketing Campaign Model
 export interface MarketingCampaign {
   id: string,
   name: string;
   description?: string;
-  type: string; // EMAIL, SMS, SOCIAL_MEDIA, EVENT, PRINT, DIGITAL_AD, OTHER;
-  status: string; // DRAFT, SCHEDULED, ACTIVE, PAUSED, COMPLETED, CANCELLED;
+  type: string; // EMAIL, SMS, SOCIAL_MEDIA, EVENT, PRINT, DIGITAL_AD, OTHER
+  status: string; // DRAFT, SCHEDULED, ACTIVE, PAUSED, COMPLETED, CANCELLED
   startDate: Date;
   endDate?: Date;
   budget?: number;
   targetAudience?: unknown; // Target demographics, interests, etc.
-  goals: string[]; // Campaign goals;
-  kpis?: unknown; // Key Performance Indicators;
+  goals: string[]; // Campaign goals
+  kpis?: unknown; // Key Performance Indicators
   createdById: string;
   createdByUser?: User;
   updatedById?: string;
@@ -40,58 +32,58 @@ export interface MarketingCampaign {
   analytics?: CampaignAnalytics[];
 }
 
-// Campaign Channel Model;
+// Campaign Channel Model
 export interface CampaignChannel {
   id: string,
   campaignId: string;
   campaign?: MarketingCampaign;
-  channelType: string; // EMAIL, SMS, SOCIAL_MEDIA, EVENT, PRINT, DIGITAL_AD, OTHER;
-  channelName: string; // Specific channel name (e.g., "Facebook", "Email Newsletter");
-  content?: unknown; // Channel-specific content;
-  schedule?: unknown; // Delivery schedule;
-  status: string; // DRAFT, SCHEDULED, ACTIVE, COMPLETED, CANCELLED;
-  metrics?: unknown; // Channel-specific metrics;
+  channelType: string; // EMAIL, SMS, SOCIAL_MEDIA, EVENT, PRINT, DIGITAL_AD, OTHER
+  channelName: string; // Specific channel name (e.g., "Facebook", "Email Newsletter")
+  content?: unknown; // Channel-specific content
+  schedule?: unknown; // Delivery schedule
+  status: string; // DRAFT, SCHEDULED, ACTIVE, COMPLETED, CANCELLED
+  metrics?: unknown; // Channel-specific metrics
   createdAt: Date,
   updatedAt: Date;
   messages?: MarketingMessage[];
 }
 
-// Marketing Message Model;
+// Marketing Message Model
 export interface MarketingMessage {
   id: string,
   channelId: string;
   channel?: CampaignChannel;
-  subject?: string; // For email, SMS;
-  content: string; // Message content;
-  template?: string; // Template identifier;
-  mediaUrls: string[]; // URLs to images, videos, etc.;
+  subject?: string; // For email, SMS
+  content: string; // Message content
+  template?: string; // Template identifier
+  mediaUrls: string[]; // URLs to images, videos, etc.
   scheduledDate?: Date;
   sentDate?: Date;
-  status: string; // DRAFT, SCHEDULED, SENT, FAILED;
-  metadata?: unknown; // Additional message data;
+  status: string; // DRAFT, SCHEDULED, SENT, FAILED
+  metadata?: unknown; // Additional message data
   createdAt: Date,
   updatedAt: Date;
   interactions?: MessageInteraction[];
 }
 
-// Message Interaction Model;
+// Message Interaction Model
 export interface MessageInteraction {
   id: string,
   messageId: string;
   message?: MarketingMessage;
   contactId?: string;
   contact?: Contact;
-  interactionType: string; // OPEN, CLICK, REPLY, UNSUBSCRIBE, BOUNCE;
+  interactionType: string; // OPEN, CLICK, REPLY, UNSUBSCRIBE, BOUNCE
   timestamp: Date;
-  metadata?: unknown; // Additional interaction data;
+  metadata?: unknown; // Additional interaction data
   ipAddress?: string;
   userAgent?: string;
-  url?: string; // For click interactions;
+  url?: string; // For click interactions
 }
 
 // Contact Model (for marketing purposes)
 export interface Contact {
-  id: string;
+  id: string
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -101,12 +93,12 @@ export interface Contact {
   gender?: string;
   occupation?: string;
   organization?: string;
-  source?: string; // How the contact was acquired;
-  status: string; // ACTIVE, INACTIVE, UNSUBSCRIBED, BOUNCED;
+  source?: string; // How the contact was acquired
+  status: string; // ACTIVE, INACTIVE, UNSUBSCRIBED, BOUNCED
   tags: string[];
-  preferences?: unknown; // Communication preferences;
-  patientId?: string; // Link to patient if applicable;
-  patient?: unknown; // Patient reference;
+  preferences?: unknown; // Communication preferences
+  patientId?: string; // Link to patient if applicable
+  patient?: unknown; // Patient reference
   createdAt: Date,
   updatedAt: Date;
   notes?: ContactNote[];
@@ -116,7 +108,7 @@ export interface Contact {
   leads?: Lead[];
 }
 
-// Contact Note Model;
+// Contact Note Model
 export interface ContactNote {
   id: string,
   contactId: string;
@@ -128,28 +120,28 @@ export interface ContactNote {
   updatedAt: Date
 }
 
-// Marketing Activity Model;
+// Marketing Activity Model
 export interface MarketingActivity {
   id: string;
   campaignId?: string;
   campaign?: MarketingCampaign;
   contactId?: string;
   contact?: Contact;
-  activityType: string; // EMAIL_SENT, SMS_SENT, WEBSITE_VISIT, FORM_SUBMISSION, EVENT_REGISTRATION, etc.;
+  activityType: string; // EMAIL_SENT, SMS_SENT, WEBSITE_VISIT, FORM_SUBMISSION, EVENT_REGISTRATION, etc.
   description?: string;
   timestamp: Date;
-  metadata?: unknown; // Additional activity data;
-  url?: string; // Related URL if applicable;
+  metadata?: unknown; // Additional activity data
+  url?: string; // Related URL if applicable
   ipAddress?: string;
   userAgent?: string;
 }
 
-// Contact Segment Model;
+// Contact Segment Model
 export interface ContactSegment {
   id: string,
   name: string;
   description?: string;
-  criteria?: unknown; // Segmentation criteria;
+  criteria?: unknown; // Segmentation criteria
   isActive: boolean,
   createdById: string;
   createdByUser?: User;
@@ -159,7 +151,7 @@ export interface ContactSegment {
   campaigns?: CampaignSegment[];
 }
 
-// Segment Member Model;
+// Segment Member Model
 export interface SegmentMember {
   id: string,
   segmentId: string;
@@ -174,67 +166,67 @@ export interface SegmentMember {
 // Campaign Segment Model (Many-to-Many)
 export interface CampaignSegment {
   id: string,
-  campaignId: string;
-  campaign?: MarketingCampaign;
+  campaignId: string
+  campaign?: MarketingCampaign,
   segmentId: string;
   segment?: ContactSegment;
   createdAt: Date
 }
 
-// Lead Model;
+// Lead Model
 export interface Lead {
   id: string,
   contactId: string;
   contact?: Contact;
   campaignId?: string;
   campaign?: MarketingCampaign;
-  source: string; // WEBSITE, REFERRAL, EVENT, ADVERTISEMENT, etc.;
-  status: string; // NEW, CONTACTED, QUALIFIED, CONVERTED, LOST;
-  score?: number; // Lead score;
+  source: string; // WEBSITE, REFERRAL, EVENT, ADVERTISEMENT, etc.
+  status: string; // NEW, CONTACTED, QUALIFIED, CONVERTED, LOST
+  score?: number; // Lead score
   assignedToId?: string;
   assignedToUser?: User;
   notes?: string;
   convertedToPatientId?: string;
-  convertedToPatient?: unknown; // Patient reference;
+  convertedToPatient?: unknown; // Patient reference
   conversionDate?: Date;
   createdAt: Date,
   updatedAt: Date;
   activities?: LeadActivity[];
 }
 
-// Lead Activity Model;
+// Lead Activity Model
 export interface LeadActivity {
   id: string,
   leadId: string;
   lead?: Lead;
-  activityType: string; // NOTE, CALL, EMAIL, MEETING, STATUS_CHANGE, etc.;
+  activityType: string; // NOTE, CALL, EMAIL, MEETING, STATUS_CHANGE, etc.
   description: string,
   performedById: string;
   performedByUser?: User;
   timestamp: Date;
-  metadata?: unknown; // Additional activity data;
+  metadata?: unknown; // Additional activity data
 }
 
-// Campaign Analytics Model;
+// Campaign Analytics Model
 export interface CampaignAnalytics {
   id: string,
   campaignId: string;
   campaign?: MarketingCampaign;
   date: Date,
-  metrics: unknown; // Various metrics (impressions, clicks, conversions, etc.);
+  metrics: unknown; // Various metrics (impressions, clicks, conversions, etc.)
   createdAt: Date,
   updatedAt: Date
 }
 
-// Marketing Template Model;
+// Marketing Template Model
 export interface MarketingTemplate {
   id: string,
   name: string;
   description?: string;
   type: string; // EMAIL, SMS, SOCIAL_POST, LANDING_PAGE, etc.
-  content: string; // HTML, text, or JSON content;
-  variables?: unknown; // Template variables;
-  previewImage?: string; // URL to template preview image;
+  content: string; // HTML, text, or JSON content
+  variables?: unknown; // Template variables
+  previewImage?: string; // URL to template preview image
   isActive: boolean,
   createdById: string;
   createdByUser?: User;
@@ -242,19 +234,19 @@ export interface MarketingTemplate {
   updatedAt: Date
 }
 
-// Marketing Event Model;
+// Marketing Event Model
 export interface MarketingEvent {
   id: string,
   name: string;
   description?: string;
-  eventType: string; // WEBINAR, CONFERENCE, WORKSHOP, HEALTH_CAMP, etc.;
+  eventType: string; // WEBINAR, CONFERENCE, WORKSHOP, HEALTH_CAMP, etc.
   startDate: Date,
   endDate: Date;
   location?: string;
   virtualLink?: string;
   capacity?: number;
   registrationLink?: string;
-  status: string; // PLANNED, OPEN, FULL, ONGOING, COMPLETED, CANCELLED;
+  status: string; // PLANNED, OPEN, FULL, ONGOING, COMPLETED, CANCELLED
   createdById: string;
   createdByUser?: User;
   createdAt: Date,
@@ -262,31 +254,31 @@ export interface MarketingEvent {
   registrations?: EventRegistration[];
 }
 
-// Event Registration Model;
+// Event Registration Model
 export interface EventRegistration {
   id: string,
   eventId: string;
   event?: MarketingEvent;
   contactId?: string;
   patientId?: string;
-  patient?: unknown; // Patient reference;
+  patient?: unknown; // Patient reference
   name: string,
   email: string;
   phone?: string;
-  status: string; // REGISTERED, CONFIRMED, ATTENDED, NO_SHOW, CANCELLED;
+  status: string; // REGISTERED, CONFIRMED, ATTENDED, NO_SHOW, CANCELLED
   registrationDate: Date;
-  metadata?: unknown; // Additional registration data;
+  metadata?: unknown; // Additional registration data
 }
 
 // User interface (partial, only for marketing relations)
 export interface User {
-  id: string;
+  id: string
   name?: string;
   email?: string;
-  // Other user fields would be defined elsewhere;
+  // Other user fields would be defined elsewhere
 }
 
-// Campaign Status enum;
+// Campaign Status enum
 export enum CampaignStatus {
   DRAFT = 'DRAFT',
   SCHEDULED = 'SCHEDULED',
@@ -296,7 +288,7 @@ export enum CampaignStatus {
   CANCELLED = 'CANCELLED';
 }
 
-// Campaign Type enum;
+// Campaign Type enum
 export enum CampaignType {
   EMAIL = 'EMAIL',
   SMS = 'SMS',
@@ -307,7 +299,7 @@ export enum CampaignType {
   OTHER = 'OTHER';
 }
 
-// Channel Type enum;
+// Channel Type enum
 export enum ChannelType {
   EMAIL = 'EMAIL',
   SMS = 'SMS',
@@ -318,7 +310,7 @@ export enum ChannelType {
   OTHER = 'OTHER';
 }
 
-// Message Status enum;
+// Message Status enum
 export enum MessageStatus {
   DRAFT = 'DRAFT',
   SCHEDULED = 'SCHEDULED',
@@ -326,7 +318,7 @@ export enum MessageStatus {
   FAILED = 'FAILED';
 }
 
-// Interaction Type enum;
+// Interaction Type enum
 export enum InteractionType {
   OPEN = 'OPEN',
   CLICK = 'CLICK',
@@ -335,7 +327,7 @@ export enum InteractionType {
   BOUNCE = 'BOUNCE';
 }
 
-// Contact Status enum;
+// Contact Status enum
 export enum ContactStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
@@ -343,7 +335,7 @@ export enum ContactStatus {
   BOUNCED = 'BOUNCED';
 }
 
-// Lead Status enum;
+// Lead Status enum
 export enum LeadStatus {
   NEW = 'NEW',
   CONTACTED = 'CONTACTED',
@@ -352,7 +344,7 @@ export enum LeadStatus {
   LOST = 'LOST';
 }
 
-// Lead Source enum;
+// Lead Source enum
 export enum LeadSource {
   WEBSITE = 'WEBSITE',
   REFERRAL = 'REFERRAL',
@@ -362,7 +354,7 @@ export enum LeadSource {
   OTHER = 'OTHER';
 }
 
-// Event Status enum;
+// Event Status enum
 export enum EventStatus {
   PLANNED = 'PLANNED',
   OPEN = 'OPEN',
@@ -372,11 +364,10 @@ export enum EventStatus {
   CANCELLED = 'CANCELLED';
 }
 
-// Registration Status enum;
+// Registration Status enum
 export enum RegistrationStatus {
   REGISTERED = 'REGISTERED',
   CONFIRMED = 'CONFIRMED',
   ATTENDED = 'ATTENDED',
   NO_SHOW = 'NO_SHOW',
   CANCELLED = 'CANCELLED';
-}

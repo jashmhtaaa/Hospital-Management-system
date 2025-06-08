@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERPatientAdmitModal.tsx;
+// src/components/er/ERPatientAdmitModal.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -42,13 +34,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// FIX: Remove direct import of toast;
-// import { toast } from "@/components/ui/use-toast";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Use the hook;
+// FIX: Remove direct import of toast
+// import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast"; // FIX: Use the hook
 
 // --- INTERFACES ---
 
-// Define the schema for the admission form using Zod;
+// Define the schema for the admission form using Zod
 const admitFormSchema = z.object({
   visitId: z.string().min(1, { message: "Visit ID is required." }),
   patientName: z.string().min(1, { message: "Patient name is required." }),
@@ -70,23 +62,21 @@ interface ERPatientAdmitModalProperties {
   onClose: () => void;
   visitData?: {
     id: string,
-    patientName: string;
+    patientName: string,
     chiefComplaint: string
   };
   onSuccess?: () => void;
 }
 
-// FIX: Define interface for expected API error response;
+// FIX: Define interface for expected API error response
 interface ApiErrorResponse {
   error: string
 }
 
-// FIX: Define interface for expected admission success response;
+// FIX: Define interface for expected admission success response
 interface AdmissionSuccessResponse {
-  id: string; // Assuming the API returns the new admission ID;
-  // Add other properties returned by the API on success;
-}
-
+  id: string; // Assuming the API returns the new admission ID
+  // Add other properties returned by the API on success
 export default const ERPatientAdmitModal = ({
   isOpen,
   onClose,
@@ -94,7 +84,7 @@ export default const ERPatientAdmitModal = ({
   onSuccess,
 }: ERPatientAdmitModalProperties) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // FIX: Use the hook;
+  const { toast } = useToast(); // FIX: Use the hook
 
   const form = useForm<AdmitFormValues>({
     resolver: zodResolver(admitFormSchema),
@@ -109,28 +99,28 @@ export default const ERPatientAdmitModal = ({
     },
   });
 
-  // Update form when visitData changes;
+  // Update form when visitData changes
   useEffect(() => {
-    // FIX: Changed useState to useEffect;
+    // FIX: Changed useState to useEffect
     if (visitData) {
       form.reset({
         visitId: visitData.id,
         patientName: visitData.patientName,
-        admittingDoctorId: "", // Keep doctor selection empty;
+        admittingDoctorId: "", // Keep doctor selection empty
         admissionNotes: "",
         wardType: "",
         bedPreference: "",
         admissionReason: visitData.chiefComplaint || "",
       });
     }
-  }, [visitData, form]); // FIX: Added dependencies;
+  }, [visitData, form]); // FIX: Added dependencies
 
   async const onSubmit = (data: AdmitFormValues) {
     setIsLoading(true);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     try {
-      // Step 1: Create IPD admission;
+      // Step 1: Create IPD admission
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const admissionResponse = await fetch("/api/ipd/admissions", {
         method: "POST",
@@ -144,9 +134,9 @@ export default const ERPatientAdmitModal = ({
           admission_notes: data.admissionNotes || undefined,
           source: "ER",
         }),
-      });
+      })
 
-      // Try parsing JSON regardless of status for error messages;
+      // Try parsing JSON regardless of status for error messages
       let admissionResponseData: unknown;
       try {
         admissionResponseData = await admissionResponse.json();
@@ -156,11 +146,11 @@ export default const ERPatientAdmitModal = ({
             `HTTP error ${admissionResponse.status}: Failed to create admission. Invalid response from server.`;
           );
         }
-        admissionResponseData = {}; // OK but no JSON body;
+        admissionResponseData = {}; // OK but no JSON body
       }
 
       if (!admissionResponse.ok) {
-        // FIX: Cast errorData and access error message safely;
+        // FIX: Cast errorData and access error message safely
         const errorData = admissionResponseData as ApiErrorResponse;
         throw new Error(
           errorData?.error ||
@@ -168,11 +158,11 @@ export default const ERPatientAdmitModal = ({
         );
       }
 
-      // FIX: Cast newAdmission to the success response type;
+      // FIX: Cast newAdmission to the success response type
       const newAdmission = admissionResponseData as AdmissionSuccessResponse;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      // Step 2: Update ER visit status;
+      // Step 2: Update ER visit status
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const visitResponse = await fetch(`/api/er/visits/${data.visitId}`, {
         method: "PUT",
@@ -180,10 +170,10 @@ export default const ERPatientAdmitModal = ({
         body: JSON.stringify({
           current_status: "Admitted",
           disposition: "Admitted to IPD",
-          // Optionally link admission_id if backend supports it;
+          // Optionally link admission_id if backend supports it
           // admission_id: newAdmission?.id
         }),
-      });
+      })
 
       let visitResponseData: unknown;
       try {
@@ -194,11 +184,11 @@ export default const ERPatientAdmitModal = ({
             `HTTP error ${visitResponse.status}: Failed to update ER visit status. Invalid response from server.`;
           );
         }
-        visitResponseData = {}; // OK but no JSON body;
+        visitResponseData = {}; // OK but no JSON body
       }
 
       if (!visitResponse.ok) {
-        // FIX: Cast errorData and access error message safely;
+        // FIX: Cast errorData and access error message safely
         const errorData = visitResponseData as ApiErrorResponse;
         throw new Error(
           errorData?.error ||
@@ -211,7 +201,7 @@ export default const ERPatientAdmitModal = ({
       toast({
         title: "Patient Admitted",
         description: `Admission ${newAdmission?.id || "(ID not returned)"} created. Awaiting bed assignment.`,
-      });
+      })
 
       if (onSuccess) {
         onSuccess();
@@ -219,7 +209,7 @@ export default const ERPatientAdmitModal = ({
       form.reset(),
       onClose();
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block error;
+      // FIX: Use unknown for catch block error
 
       toast({
         title: "Admission Failed",
@@ -234,7 +224,7 @@ export default const ERPatientAdmitModal = ({
     }
   }
 
-  // Mock data for doctors and ward types - Replace with API fetches;
+  // Mock data for doctors and ward types - Replace with API fetches
   const doctors = [
     { id: "doctor_1", name: "Dr. Smith" },
     { id: "doctor_2", name: "Dr. Jones" },
@@ -437,4 +427,3 @@ export default const ERPatientAdmitModal = ({
       </DialogContent>
     </Dialog>
   );
-}

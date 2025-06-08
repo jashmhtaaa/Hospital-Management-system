@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect, ChangeEvent, useCallback } from "react";
 import {
   Card,
@@ -35,18 +25,18 @@ import type { ColumnsType } from "antd/es/table";
 
 const { Option } = Select;
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface Sample {
   id: string,
-  barcode: string;
+  barcode: string,
   patient_id: string;
-  patient_name?: string; // Optional, might come from join;
+  patient_name?: string; // Optional, might come from join
   order_id: string,
-  sample_type: string;
+  sample_type: string,
   status: "pending" | "collected" | "received" | "rejected" | "processed";
   collected_at?: string | null;
   collected_by_user_id?: string | null;
-  collector_name?: string; // Optional, might come from join;
+  collector_name?: string; // Optional, might come from join
   received_at?: string | null;
   received_by_user_id?: string | null;
   rejection_reason?: string | null;
@@ -59,7 +49,7 @@ interface ScanFormValues {
 }
 
 interface UpdateFormValues {
-  status: "rejected"; // Only handling rejection in this modal;
+  status: "rejected"; // Only handling rejection in this modal
   rejection_reason: string;
   notes?: string;
 }
@@ -76,25 +66,25 @@ const SampleManagement: React.FC = () => {
   const [form] = Form.useForm<ScanFormValues>();
   const [updateForm] = Form.useForm<UpdateFormValues>();
 
-  // Fetch samples with optional filters;
+  // Fetch samples with optional filters
   const fetchSamples = useCallback(async (): Promise<void> => {
     setLoading(true);
     try {
-      // Simulate API call;
-      // let url = '/api/laboratory/samples';
-      // const params = new URLSearchParams();
+      // Simulate API call
+      // let url = '/api/laboratory/samples'
+      // const params = new URLSearchParams()
       // if (statusFilter) {
-      //   params.append('status', statusFilter);
+      //   params.append('status', statusFilter)
       // }
       // if (params.toString()) {
-      //   url += `?${params.toString()}`;
+      //   url += `?${params.toString()}`
       // }
-      // const response = await fetch(url);
-      // if (!response.ok) throw new Error('Failed to fetch samples');
-      // const data = await response.json();
-      // let fetchedSamples: Sample[] = data.results || data || [];
+      // const response = await fetch(url)
+      // if (!response.ok) throw new Error('Failed to fetch samples')
+      // const data = await response.json()
+      // let fetchedSamples: Sample[] = data.results || data || []
 
-      // Mock Data;
+      // Mock Data
       await new Promise((resolve) => setTimeout(resolve, 500));
       let mockSamples: Sample[] = [
         {
@@ -152,7 +142,7 @@ const SampleManagement: React.FC = () => {
         },
       ];
 
-      // Apply filters locally for mock data;
+      // Apply filters locally for mock data
       if (statusFilter) {
         mockSamples = mockSamples.filter(
           (sample) => sample.status === statusFilter;
@@ -173,88 +163,88 @@ const SampleManagement: React.FC = () => {
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         );
       );
-    } catch (err) { // Changed error to err;
+    } catch (err) { // Changed error to err
       const messageText =;
-        err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
-      // Debug logging removed // Use err;
+        err instanceof Error ? err.message : "An unknown error occurred."; // Use err
+      // Debug logging removed // Use err
       message.error(`Failed to load laboratory samples: ${messageText}`);
     } finally {
       setLoading(false);
     }
   }, [statusFilter, searchText]);
 
-  // Load data on component mount and when filters change;
+  // Load data on component mount and when filters change
   useEffect(() => {
     fetchSamples();
-  }, [statusFilter, fetchSamples]); // Re-fetch only when statusFilter changes, search is handled manually;
+  }, [statusFilter, fetchSamples]); // Re-fetch only when statusFilter changes, search is handled manually
 
   const handleSearch = (): void => {
-    fetchSamples(); // Trigger fetch when search button/enter is pressed;
+    fetchSamples(); // Trigger fetch when search button/enter is pressed
   };
 
   const handleResetFilters = (): void => {
     setSearchText(""),
     setStatusFilter(undefined);
-    // useEffect will trigger fetchSamples due to statusFilter change;
+    // useEffect will trigger fetchSamples due to statusFilter change
   };
 
   // Handle updating a sample (specifically rejection in this modal)
   const handleUpdateSample = async (
      
-    _values: UpdateFormValues;
+    _values: UpdateFormValues
   ): Promise<void> => {
     if (!selectedSample) return;
     try {
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/laboratory/samples/${selectedSample.id}`, {
-      //   method: 'PUT', // Or PATCH;
+      //   method: 'PUT', // Or PATCH
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(values),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || 'Failed to update sample');
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || 'Failed to update sample')
       // }
 
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
 
       message.success("Sample updated successfully"),
       setIsUpdateModalVisible(false);
       updateForm.resetFields(),
-      fetchSamples(); // Refresh list;
-    } catch (err) { // Changed error to err;
+      fetchSamples(); // Refresh list
+    } catch (err) { // Changed error to err
       const messageText =;
-        err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
-      // Debug logging removed // Use err;
+        err instanceof Error ? err.message : "An unknown error occurred."; // Use err
+      // Debug logging removed // Use err
       message.error(`Failed to update sample: ${messageText}`);
     }
   };
 
-  // Generic function to update sample status;
+  // Generic function to update sample status
   const updateSampleStatus = async (
     _sample: Sample, // FIX: Prefixed unused parameter,
     newStatus: Sample["status"]
   ): Promise<void> => {
     try {
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/laboratory/samples/${sample.id}/status`, {
       //   method: 'PUT',
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify({ status: newStatus }),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || `Failed to update status to ${newStatus}`);
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || `Failed to update status to ${newStatus}`)
       // }
 
-      await new Promise((resolve) => setTimeout(resolve, 300)); // Simulate delay;
+      await new Promise((resolve) => setTimeout(resolve, 300)); // Simulate delay
 
       message.success(`Sample marked as ${newStatus}`),
-      fetchSamples(); // Refresh list;
-    } catch (err) { // Changed error to err;
+      fetchSamples(); // Refresh list
+    } catch (err) { // Changed error to err
       const messageText =;
-        err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
-      // Debug logging removed // Use err;
+        err instanceof Error ? err.message : "An unknown error occurred."; // Use err
+      // Debug logging removed // Use err
       message.error(`Failed to update status: ${messageText}`);
     }
   };
@@ -279,19 +269,19 @@ const SampleManagement: React.FC = () => {
 
   const handlePrintBarcode = (sample: Sample): void => {
     message.info(`Printing barcode for sample ${sample.barcode}`);
-    // In a real implementation, this would trigger a print job via browser print API or dedicated service;
-    // window.print(); // Example, would need specific content to print;
+    // In a real implementation, this would trigger a print job via browser print API or dedicated service
+    // window.print(); // Example, would need specific content to print
   };
 
   const handleScanSubmit = (values: ScanFormValues): void => {
     message.info(`Searching for barcode: ${values.barcode}`),
     setIsScanModalVisible(false);
     setSearchText(values.barcode),
-    fetchSamples(); // Trigger search;
+    fetchSamples(); // Trigger search
     form.resetFields();
   };
 
-  // Table columns definition;
+  // Table columns definition
   const columns: ColumnsType<Sample> = [
     {
       title: "Barcode",
@@ -322,7 +312,7 @@ const SampleManagement: React.FC = () => {
         if (status === "collected") color = "processing";
         if (status === "received") color = "success";
         if (status === "rejected") color = "error";
-        if (status === "processed") color = "warning"; // Example for processed;
+        if (status === "processed") color = "warning"; // Example for processed
         return <Tag color={color}>{status.toUpperCase()}</Tag>;
       },
     },
@@ -339,10 +329,10 @@ const SampleManagement: React.FC = () => {
       dataIndex: "collected_at",
       key: "collected_at",
       width: "15%",
-      render: (date: string | null | undefined, record: Sample) => // Added record here;
+      render: (date: string | null | undefined, record: Sample) => // Added record here
         date;
           ? moment(date).format("YYYY-MM-DD HH:mm");
-          : record.status === "pending" // Changed status to record.status;
+          : record.status === "pending" // Changed status to record.status
             ? "Not collected"
             : "N/A",
     },
@@ -407,11 +397,11 @@ const SampleManagement: React.FC = () => {
             break;
           }
           case "received": {
-            // Add action for 'Process' or similar if needed;
+            // Add action for 'Process' or similar if needed
 
             break;
           }
-          // No default;
+          // No default
         }
 
         return <Space size="small">{actions}</Space>;
@@ -470,7 +460,7 @@ const SampleManagement: React.FC = () => {
             dataSource={samples}
             rowKey="id"
             pagination={{ pageSize: 10, showSizeChanger: true }}
-            scroll={{ x: "max-content" }} // Ensure horizontal scroll on smaller screens;
+            scroll={{ x: "max-content" }} // Ensure horizontal scroll on smaller screens
           />
         </Spin>
       </Card>
@@ -480,7 +470,7 @@ const SampleManagement: React.FC = () => {
         visible={isScanModalVisible}
         onCancel={() => setIsScanModalVisible(false)}
         footer={undefined}
-        destroyOnClose // Reset form state when closed;
+        destroyOnClose // Reset form state when closed
       >
         <Form<ScanFormValues>
           form={form}
@@ -514,13 +504,13 @@ const SampleManagement: React.FC = () => {
         visible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
         footer={undefined}
-        destroyOnClose // Reset form state when closed;
+        destroyOnClose // Reset form state when closed
       >
         <Form<UpdateFormValues>
           form={updateForm}
           layout="vertical"
           onFinish={handleUpdateSample}
-          initialValues={{ status: "rejected" }} // Set initial status;
+          initialValues={{ status: "rejected" }} // Set initial status
         >
           <Form.Item name="status" label="Status">;
             <Select disabled>

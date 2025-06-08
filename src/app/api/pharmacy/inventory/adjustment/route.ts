@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -31,7 +23,7 @@ const inventoryRepository = {
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true)
-};
+}
 
 const adjustmentRepository = {
   findById: (id: string) => Promise.resolve(null),
@@ -48,7 +40,7 @@ const adjustmentRepository = {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateInventoryAdjustmentRequest(data);
     if (!validationResult.success) {
@@ -58,25 +50,25 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify inventory exists;
+    // Verify inventory exists
     const inventory = await inventoryRepository.findById(data.inventoryId);
     if (!inventory) {
       return NextResponse.json({ error: 'Inventory not found' }, { status: 404 });
     }
 
-    // Calculate adjustment quantity;
+    // Calculate adjustment quantity
     const adjustmentQuantity = data.newQuantity - inventory.quantityOnHand;
 
-    // Create adjustment record;
+    // Create adjustment record
     const adjustment = {
       id: crypto.randomUUID(),
       inventoryId: data.inventoryId,
@@ -91,15 +83,15 @@ export async const POST = (req: NextRequest) => {
       notes: data.notes || ''
     };
 
-    // Save adjustment record;
+    // Save adjustment record
     const adjustmentId = await adjustmentRepository.save(adjustment);
 
-    // Update inventory quantity;
+    // Update inventory quantity
     await inventoryRepository.adjustStock(data.inventoryId, data.newQuantity);
 
-    // Special handling for controlled substances;
+    // Special handling for controlled substances
     if (inventory.isControlled) {
-      // Additional logging for controlled substances;
+      // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
         action: 'ADJUST',
         resourceType: 'Inventory',
@@ -116,7 +108,7 @@ export async const POST = (req: NextRequest) => {
       });
     }
 
-    // Regular audit logging;
+    // Regular audit logging
     await auditLog('INVENTORY', {
       action: 'ADJUST',
       resourceType: 'Inventory',
@@ -132,7 +124,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: adjustmentId,
@@ -151,16 +143,16 @@ export async const POST = (req: NextRequest) => {
  */
 export async const GET = (req: NextRequest) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get query parameters;
+    // Get query parameters
     const url = new URL(req.url);
     const inventoryId = url.searchParams.get('inventoryId');
     const locationId = url.searchParams.get('locationId');
@@ -171,14 +163,14 @@ export async const GET = (req: NextRequest) => {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Build filter criteria;
+    // Build filter criteria
     const filter: unknown = {};
     if (inventoryId) filter.inventoryId = inventoryId;
     if (locationId) filter.locationId = locationId;
     if (medicationId) filter.medicationId = medicationId;
     if (reason) filter.reason = reason;
     
-    // Add date range if provided;
+    // Add date range if provided
     if (startDate || endDate) {
       filter.adjustedAt = {};
       if (startDate) filter.adjustedAt.gte = new Date(startDate);
@@ -186,10 +178,10 @@ export async const GET = (req: NextRequest) => {
     }
 
     // Get adjustments (mock implementation)
-    const adjustments = []; // In production, query database with filter, pagination;
-    const total = 0; // In production, get total count;
+    const adjustments = []; // In production, query database with filter, pagination
+    const total = 0; // In production, get total count
 
-    // Audit logging;
+    // Audit logging
     await auditLog('INVENTORY', {
       action: 'LIST_ADJUSTMENTS',
       resourceType: 'Inventory',
@@ -202,7 +194,7 @@ export async const GET = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       adjustments,
       pagination: {
@@ -215,4 +207,3 @@ export async const GET = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error retrieving inventory adjustments');
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -21,7 +11,7 @@ import {
 import { ValidationError } from '@/lib/core/errors';
 import { logger } from '@/lib/core/logging';
 
-// Schema for financial report query parameters;
+// Schema for financial report query parameters
 const reportQuerySchema = z.object({
   reportType: z.enum([
     'revenue', 
@@ -41,15 +31,15 @@ const reportQuerySchema = z.object({
   format: z.enum(['json', 'csv', 'pdf', 'excel']).optional().default('json'),
 });
 
-// GET handler for generating financial reports;
+// GET handler for generating financial reports
 export const GET = withErrorHandling(async (req: NextRequest) => {
-  // Validate query parameters;
+  // Validate query parameters
   const query = validateQuery(reportQuerySchema)(req);
   
-  // Check permissions;
+  // Check permissions
   await checkPermission(permissionService, 'read', 'financialReport')(req);
   
-  // Parse dates;
+  // Parse dates
   let startDate: Date, endDate: Date;
   try {
     startDate = new Date(query.startDate);
@@ -62,7 +52,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
     throw new ValidationError('Invalid date format', 'INVALID_DATE_FORMAT');
   }
   
-  // Generate report based on type;
+  // Generate report based on type
   let reportData;
   switch (query.reportType) {
     case 'revenue':
@@ -93,9 +83,9 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
       throw new ValidationError(`Unsupported report type: ${query.reportType}`, 'UNSUPPORTED_REPORT_TYPE');
   }
   
-  // Format report based on requested format;
-  // For now, we'll just return JSON;
-  // In a real implementation, this would generate CSV, PDF, or Excel files;
+  // Format report based on requested format
+  // For now, we'll just return JSON
+  // In a real implementation, this would generate CSV, PDF, or Excel files
   
   logger.info('Financial report generated', { 
     reportType: query.reportType,
@@ -114,7 +104,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   });
 });
 
-// Helper function to generate revenue report;
+// Helper function to generate revenue report
 async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: string, departmentId?: string) {
   const where: unknown = {
     billDate: {
@@ -127,7 +117,7 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
     where.departmentId = departmentId;
   }
   
-  // Group by time period;
+  // Group by time period
   let groupByFormat: unknown;
   switch (groupBy) {
     case 'day':
@@ -167,14 +157,14 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
       };
   }
   
-  // In a real implementation, this would use Prisma's aggregation features;
-  // For now, we'll simulate the data;
+  // In a real implementation, this would use Prisma's aggregation features
+  // For now, we'll simulate the data
   
-  // Simulate monthly revenue data;
+  // Simulate monthly revenue data
   const months = getMonthsBetweenDates(startDate, endDate);
   const revenueData = months.map(month => {
     return {
-      period: month.toISOString().substring(0, 7), // YYYY-MM format;
+      period: month.toISOString().substring(0, 7), // YYYY-MM format
       totalRevenue: Math.floor(Math.random() * 500000) + 100000,
       paidRevenue: Math.floor(Math.random() * 400000) + 50000,
       outstandingRevenue: Math.floor(Math.random() * 200000) + 10000,
@@ -191,13 +181,13 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
   };
 }
 
-// Helper function to generate expenses report;
+// Helper function to generate expenses report
 async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: string, departmentId?: string) {
-  // Simulate monthly expense data;
+  // Simulate monthly expense data
   const months = getMonthsBetweenDates(startDate, endDate);
   const expenseData = months.map(month => {
     return {
-      period: month.toISOString().substring(0, 7), // YYYY-MM format;
+      period: month.toISOString().substring(0, 7), // YYYY-MM format
       totalExpenses: Math.floor(Math.random() * 300000) + 50000,
       categories: {
         salaries: Math.floor(Math.random() * 150000) + 30000,
@@ -224,13 +214,13 @@ async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: s
   };
 }
 
-// Helper function to generate profit/loss report;
+// Helper function to generate profit/loss report
 async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy: string) {
-  // Get revenue and expense data;
+  // Get revenue and expense data
   const revenueData = await generateRevenueReport(startDate, endDate, groupBy);
   const expenseData = await generateExpensesReport(startDate, endDate, groupBy);
   
-  // Calculate profit/loss;
+  // Calculate profit/loss
   const profitLossData = {
     summary: {
       totalRevenue: revenueData.summary.totalRevenue,
@@ -253,9 +243,9 @@ async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy:
   return profitLossData;
 }
 
-// Helper function to generate accounts receivable report;
+// Helper function to generate accounts receivable report
 async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) {
-  // Simulate accounts receivable aging data;
+  // Simulate accounts receivable aging data
   const agingData = {
     current: Math.floor(Math.random() * 200000) + 50000,
     '1-30': Math.floor(Math.random() * 150000) + 30000,
@@ -264,7 +254,7 @@ async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) 
     '91+': Math.floor(Math.random() * 30000) + 5000,
   };
   
-  // Simulate top outstanding invoices;
+  // Simulate top outstanding invoices
   const topOutstandingInvoices = Array.from({ length: 10 }, (_, i) => {
     return {
       invoiceId: `INV-${Math.floor(Math.random() * 10000)}`,
@@ -284,7 +274,7 @@ async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) 
   };
 }
 
-// Helper function to generate insurance claims report;
+// Helper function to generate insurance claims report
 async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, insuranceProviderId?: string) {
   const where: unknown = {
     createdAt: {
@@ -299,7 +289,7 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
     };
   }
   
-  // Simulate claims status data;
+  // Simulate claims status data
   const claimsStatusData = {
     draft: Math.floor(Math.random() * 50) + 10,
     submitted: Math.floor(Math.random() * 100) + 20,
@@ -312,10 +302,10 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
     closed: Math.floor(Math.random() * 150) + 30,
   };
   
-  // Calculate totals;
+  // Calculate totals
   const totalClaims = Object.values(claimsStatusData).reduce((sum: unknown, value) => sum + value, 0);
   
-  // Simulate financial data;
+  // Simulate financial data
   const financialData = {
     totalClaimedAmount: Math.floor(Math.random() * 1000000) + 200000,
     totalApprovedAmount: Math.floor(Math.random() * 800000) + 150000,
@@ -323,7 +313,7 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
     averageProcessingDays: Math.floor(Math.random() * 20) + 5,
   };
   
-  // Simulate top insurance providers;
+  // Simulate top insurance providers
   const topProviders = Array.from({ length: 5 }, (_, i) => {
     return {
       providerId: `INS-${i + 1}`,
@@ -346,9 +336,9 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
   };
 }
 
-// Helper function to generate payment collection report;
+// Helper function to generate payment collection report
 async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, groupBy: string) {
-  // Simulate payment method data;
+  // Simulate payment method data
   const paymentMethodData = {
     cash: Math.floor(Math.random() * 100000) + 20000,
     check: Math.floor(Math.random() * 50000) + 10000,
@@ -360,14 +350,14 @@ async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, g
     mobile_payment: Math.floor(Math.random() * 80000) + 15000,
   };
   
-  // Calculate total;
+  // Calculate total
   const totalPayments = Object.values(paymentMethodData).reduce((sum: unknown, value) => sum + value, 0);
   
-  // Simulate monthly payment data;
+  // Simulate monthly payment data
   const months = getMonthsBetweenDates(startDate, endDate);
   const paymentTrendData = months.map(month => {
     return {
-      period: month.toISOString().substring(0, 7), // YYYY-MM format;
+      period: month.toISOString().substring(0, 7), // YYYY-MM format
       totalCollected: Math.floor(Math.random() * 200000) + 50000,
       paymentMethods: {
         cash: Math.floor(Math.random() * 20000) + 5000,
@@ -391,9 +381,9 @@ async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, g
   };
 }
 
-// Helper function to generate department revenue report;
+// Helper function to generate department revenue report
 async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
-  // Simulate department revenue data;
+  // Simulate department revenue data
   const departmentData = [
     {
       departmentId: 'DEPT-1',
@@ -402,7 +392,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       paidRevenue: Math.floor(Math.random() * 400000) + 80000,
       outstandingRevenue: Math.floor(Math.random() * 100000) + 20000,
       patientCount: Math.floor(Math.random() * 2000) + 500,
-      averageRevenuePerPatient: 0, // Calculated below;
+      averageRevenuePerPatient: 0, // Calculated below
     },
     {
       departmentId: 'DEPT-2',
@@ -411,7 +401,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       paidRevenue: Math.floor(Math.random() * 600000) + 150000,
       outstandingRevenue: Math.floor(Math.random() * 200000) + 50000,
       patientCount: Math.floor(Math.random() * 1000) + 200,
-      averageRevenuePerPatient: 0, // Calculated below;
+      averageRevenuePerPatient: 0, // Calculated below
     },
     {
       departmentId: 'DEPT-3',
@@ -420,7 +410,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       paidRevenue: Math.floor(Math.random() * 300000) + 60000,
       outstandingRevenue: Math.floor(Math.random() * 100000) + 20000,
       patientCount: Math.floor(Math.random() * 1500) + 300,
-      averageRevenuePerPatient: 0, // Calculated below;
+      averageRevenuePerPatient: 0, // Calculated below
     },
     {
       departmentId: 'DEPT-4',
@@ -429,7 +419,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       paidRevenue: Math.floor(Math.random() * 250000) + 50000,
       outstandingRevenue: Math.floor(Math.random() * 50000) + 10000,
       patientCount: Math.floor(Math.random() * 3000) + 1000,
-      averageRevenuePerPatient: 0, // Calculated below;
+      averageRevenuePerPatient: 0, // Calculated below
     },
     {
       departmentId: 'DEPT-5',
@@ -438,7 +428,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       paidRevenue: Math.floor(Math.random() * 300000) + 60000,
       outstandingRevenue: Math.floor(Math.random() * 50000) + 10000,
       patientCount: Math.floor(Math.random() * 2500) + 800,
-      averageRevenuePerPatient: 0, // Calculated below;
+      averageRevenuePerPatient: 0, // Calculated below
     },
     {
       departmentId: 'DEPT-6',
@@ -447,19 +437,19 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       paidRevenue: Math.floor(Math.random() * 400000) + 80000,
       outstandingRevenue: Math.floor(Math.random() * 50000) + 10000,
       patientCount: Math.floor(Math.random() * 4000) + 1500,
-      averageRevenuePerPatient: 0, // Calculated below;
+      averageRevenuePerPatient: 0, // Calculated below
     },
   ];
   
-  // Calculate average revenue per patient;
+  // Calculate average revenue per patient
   departmentData.forEach(dept => {
     dept.averageRevenuePerPatient = Math.round(dept.totalRevenue / dept.patientCount);
   });
   
-  // Sort by total revenue;
+  // Sort by total revenue
   departmentData.sort((a, b) => b.totalRevenue - a.totalRevenue);
   
-  // Calculate totals;
+  // Calculate totals
   const totalRevenue = departmentData.reduce((sum, dept) => sum + dept.totalRevenue, 0);
   const totalPaidRevenue = departmentData.reduce((sum, dept) => sum + dept.paidRevenue, 0);
   const totalOutstandingRevenue = departmentData.reduce((sum, dept) => sum + dept.outstandingRevenue, 0);
@@ -477,91 +467,91 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
   };
 }
 
-// Helper function to generate service revenue report;
+// Helper function to generate service revenue report
 async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
-  // Simulate service revenue data;
+  // Simulate service revenue data
   const serviceData = [
     {
       serviceId: 'SVC-1',
       serviceName: 'General Consultation',
       totalRevenue: Math.floor(Math.random() * 200000) + 50000,
       serviceCount: Math.floor(Math.random() * 2000) + 500,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-2',
       serviceName: 'Specialist Consultation',
       totalRevenue: Math.floor(Math.random() * 300000) + 80000,
       serviceCount: Math.floor(Math.random() * 1500) + 300,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-3',
       serviceName: 'Laboratory Tests',
       totalRevenue: Math.floor(Math.random() * 250000) + 60000,
       serviceCount: Math.floor(Math.random() * 3000) + 1000,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-4',
       serviceName: 'X-Ray',
       totalRevenue: Math.floor(Math.random() * 150000) + 40000,
       serviceCount: Math.floor(Math.random() * 1000) + 200,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-5',
       serviceName: 'CT Scan',
       totalRevenue: Math.floor(Math.random() * 180000) + 50000,
       serviceCount: Math.floor(Math.random() * 500) + 100,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-6',
       serviceName: 'MRI',
       totalRevenue: Math.floor(Math.random() * 220000) + 60000,
       serviceCount: Math.floor(Math.random() * 400) + 80,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-7',
       serviceName: 'Surgery - Minor',
       totalRevenue: Math.floor(Math.random() * 280000) + 70000,
       serviceCount: Math.floor(Math.random() * 300) + 50,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-8',
       serviceName: 'Surgery - Major',
       totalRevenue: Math.floor(Math.random() * 400000) + 100000,
       serviceCount: Math.floor(Math.random() * 200) + 30,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-9',
       serviceName: 'Physiotherapy',
       totalRevenue: Math.floor(Math.random() * 120000) + 30000,
       serviceCount: Math.floor(Math.random() * 1200) + 300,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
     {
       serviceId: 'SVC-10',
       serviceName: 'Medications',
       totalRevenue: Math.floor(Math.random() * 350000) + 80000,
       serviceCount: Math.floor(Math.random() * 5000) + 2000,
-      averageRevenuePerService: 0, // Calculated below;
+      averageRevenuePerService: 0, // Calculated below
     },
   ];
   
-  // Calculate average revenue per service;
+  // Calculate average revenue per service
   serviceData.forEach(service => {
     service.averageRevenuePerService = Math.round(service.totalRevenue / service.serviceCount);
   });
   
-  // Sort by total revenue;
+  // Sort by total revenue
   serviceData.sort((a, b) => b.totalRevenue - a.totalRevenue);
   
-  // Calculate totals;
+  // Calculate totals
   const totalRevenue = serviceData.reduce((sum, service) => sum + service.totalRevenue, 0);
   const totalServiceCount = serviceData.reduce((sum, service) => sum + service.serviceCount, 0);
   
@@ -575,19 +565,18 @@ async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
   };
 }
 
-// Helper function to get months between two dates;
+// Helper function to get months between two dates
 const getMonthsBetweenDates = (startDate: Date, endDate: Date) {
   const months = [];
   const currentDate = new Date(startDate);
   
-  // Set to first day of month;
+  // Set to first day of month
   currentDate.setDate(1);
   
-  // Loop through months;
+  // Loop through months
   while (currentDate <= endDate) {
     months.push(new Date(currentDate));
     currentDate.setMonth(currentDate.getMonth() + 1);
   }
   
   return months;
-}

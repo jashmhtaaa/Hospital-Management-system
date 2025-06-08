@@ -1,24 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { z } from 'zod';
 
-// Create enums to match Prisma schema;
+// Create enums to match Prisma schema
 export enum HousekeepingTaskStatus {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED';
-}
-
 export enum HousekeepingTaskPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
@@ -26,7 +14,7 @@ export enum HousekeepingTaskPriority {
   URGENT = 'URGENT';
 }
 
-// Validation schemas;
+// Validation schemas
 export const createHousekeepingTaskSchema = z.object({
   taskName: z.string().min(1, 'Task name is required'),
   description: z.string().optional(),
@@ -46,7 +34,7 @@ export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial
 export type CreateHousekeepingTaskInput = z.infer<typeof createHousekeepingTaskSchema>;
 export type UpdateHousekeepingTaskInput = z.infer<typeof updateHousekeepingTaskSchema>;
 
-// Import prisma client;
+// Import prisma client
 import { prisma } from '../lib/prisma';
 
 /**
@@ -60,10 +48,10 @@ export class HousekeepingService {
    */
   async createTask(data: CreateHousekeepingTaskInput) {
     try {
-      // Validate input data;
+      // Validate input data
       const validatedData = createHousekeepingTaskSchema.parse(data);
       
-      // Create the task;
+      // Create the task
       const task = await prisma.housekeepingTask.create({
         data: validatedData,
       });
@@ -161,13 +149,13 @@ export class HousekeepingService {
    */
   async updateTask(id: string, data: UpdateHousekeepingTaskInput) {
     try {
-      // Validate input data;
+      // Validate input data
       const validatedData = updateHousekeepingTaskSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated;
+      // Remove id from the data to be updated
       const { id: _, ...updateData } = validatedData;
       
-      // Update the task;
+      // Update the task
       const task = await prisma.housekeepingTask.update({
         where: { id },
         data: updateData,
@@ -295,5 +283,5 @@ export class HousekeepingService {
   }
 }
 
-// Export a singleton instance;
+// Export a singleton instance
 export const housekeepingService = new HousekeepingService();

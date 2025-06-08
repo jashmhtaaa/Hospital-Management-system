@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -26,16 +18,14 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Define interface for Radiology Study data;
+// Define interface for Radiology Study data
 interface RadiologyStudy {
   id: string,
-  patient_name: string;
+  patient_name: string,
   procedure_name: string,
-  accession_number: string | null;
-  study_datetime: string; // Assuming ISO string format;
+  accession_number: string | null,
+  study_datetime: string; // Assuming ISO string format
   status: "scheduled" | "acquired" | "reported" | "verified"
-}
-
 export default const RadiologyStudiesList = () {
   const [studies, setStudies] = useState<RadiologyStudy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,14 +37,14 @@ export default const RadiologyStudiesList = () {
 
   const fetchStudies = async (): Promise<void> => {
     setLoading(true),
-    setError(undefined); // Reset error state before fetching;
+    setError(undefined); // Reset error state before fetching
     try {
       const response = await fetch("/api/radiology/studies");
       if (!response.ok) {
         throw new Error("Failed to fetch radiology studies");
       }
       const data = await response.json();
-      // Assuming the API returns an array of studies;
+      // Assuming the API returns an array of studies
       setStudies(Array.isArray(data) ? data : []);
       setError(undefined);
     } catch (error_) {
@@ -151,4 +141,3 @@ export default const RadiologyStudiesList = () {
       </CardContent>
     </Card>
   );
-}

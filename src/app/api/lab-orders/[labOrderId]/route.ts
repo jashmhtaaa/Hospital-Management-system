@@ -1,64 +1,62 @@
-// app/api/lab-orders/[labOrderId]/route.ts;
+// app/api/lab-orders/[labOrderId]/route.ts
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { sessionOptions, IronSessionData } from "@/lib/session";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
-import { LabOrder, LabOrderStatus, LabOrderItem, LabOrderItemStatus } from "@/types/opd"; // Added LabOrderItemStatus;
+import { LabOrder, LabOrderStatus, LabOrderItem, LabOrderItemStatus } from "@/types/opd"; // Added LabOrderItemStatus
 import { z } from "zod";
-// Removed unused D1Result import;
+// Removed unused D1Result import
 
 // Define roles allowed to view/update lab orders (adjust as needed)
-const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "LabTechnician", "Patient"]; // Patient can view own;
-const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // Roles involved in the lab process;
+const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "LabTechnician", "Patient"]; // Patient can view own
+const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // Roles involved in the lab process
 
-// Define interface for lab order query result;
+// Define interface for lab order query result
 interface LabOrderQueryResult {
     lab_order_id: number,
-    consultation_id: number | null;
+    consultation_id: number | null,
     patient_id: number,
-    doctor_id: number;
+    doctor_id: number,
     order_datetime: string,
-    status: LabOrderStatus;
+    status: LabOrderStatus,
     notes: string | null,
-    created_at: string;
+    created_at: string,
     updated_at: string,
-    patient_first_name: string;
+    patient_first_name: string,
     patient_last_name: string,
     doctor_full_name: string | null
 }
 
-// Define interface for lab order item query result;
+// Define interface for lab order item query result
 interface LabOrderItemQueryResult {
     lab_order_item_id: number,
-    lab_order_id: number;
+    lab_order_id: number,
     billable_item_id: number,
-    test_name: string;
+    test_name: string,
     sample_type: string | null,
-    sample_id: string | null;
+    sample_id: string | null,
     sample_collection_datetime: string | null,
-    sample_collected_by_user_id: number | null;
+    sample_collected_by_user_id: number | null,
     result_value: string | null,
-    result_unit: string | null;
+    result_unit: string | null,
     reference_range: string | null,
-    result_notes: string | null;
+    result_notes: string | null,
     result_datetime: string | null,
-    result_verified_by_user_id: number | null;
+    result_verified_by_user_id: number | null,
     status: string,
-    created_at: string;
+    created_at: string,
     updated_at: string,
-    billable_item_code: string;
+    billable_item_code: string,
     sample_collected_by_user_full_name: string | null,
     result_verified_by_user_full_name: string | null
-}
-
 export async const GET = (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
-    // Pass cookies() directly;
+    // Pass cookies() directly
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { labOrderId: labOrderIdString } = await params;
     const labOrderId = parseInt(labOrderIdString, 10);
 
-    // 1. Check Authentication & Authorization;
+    // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
@@ -72,7 +70,7 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
         const { env } = context;
         const { DB } = env;
 
-        // 2. Retrieve the main lab order record with patient and doctor details;
+        // 2. Retrieve the main lab order record with patient and doctor details
         const orderResult = await DB.prepare(
             `SELECT;
                 lo.*, 
@@ -89,7 +87,7 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }
 
-        // 3. Authorization check for Patients and Doctors;
+        // 3. Authorization check for Patients and Doctors
         if (session.user.roleName === "Patient") {
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
             if (!patientProfile || orderResult.patient_id !== patientProfile.patient_id) {
@@ -100,11 +98,11 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
             if (!userDoctorProfile || orderResult.doctor_id !== userDoctorProfile.doctor_id) {
                  // Allow viewing if not the ordering doctor? Or restrict? For now, restrict.
-                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 });
+                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 })
             }
         }
 
-        // 4. Retrieve associated lab order items;
+        // 4. Retrieve associated lab order items
         const itemsResult = await DB.prepare(
             `SELECT loi.*, bi.item_code as billable_item_code,
                     sc_user.full_name as sample_collected_by_user_full_name,
@@ -116,18 +114,18 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
              WHERE loi.lab_order_id = ? ORDER BY loi.lab_order_item_id`;
         ).bind(labOrderId).all<LabOrderItemQueryResult>();
 
-        // 5. Format the final response;
+        // 5. Format the final response
         const labOrder: LabOrder = {
             lab_order_id: orderResult.lab_order_id,
             consultation_id: orderResult.consultation_id!,
             patient_id: orderResult.patient_id,
-            doctor_id: orderResult.doctor_id!, // Add non-null assertion;
+            doctor_id: orderResult.doctor_id!, // Add non-null assertion
             order_datetime: orderResult.order_datetime,
             status: orderResult.status!,
             notes: orderResult.notes,
             created_at: orderResult.created_at,
             updated_at: orderResult.updated_at,
-            // Include patient and doctor info if needed in detail view;
+            // Include patient and doctor info if needed in detail view
             patient: {
                 patient_id: orderResult.patient_id,
                 first_name: orderResult.patient_first_name,
@@ -152,7 +150,7 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
                 result_notes: item.result_notes,
                 result_datetime: item.result_datetime,
                 result_verified_by_user_id: item.result_verified_by_user_id,
-                status: item.status as LabOrderItemStatus, // Cast string to enum;
+                status: item.status as LabOrderItemStatus, // Cast string to enum
                 created_at: item.created_at,
                 updated_at: item.updated_at,
                 billable_item: {
@@ -170,7 +168,7 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
             })) as LabOrderItem[] || [],
         };
 
-        // 6. Return the detailed lab order;
+        // 6. Return the detailed lab order
         return new Response(JSON.stringify(labOrder), { status: 200 });
 
     } catch (error) {
@@ -184,17 +182,17 @@ export async const GET = (_request: Request, { params }: { params: Promise<{ lab
 const UpdateLabOrderSchema = z.object({
     status: z.nativeEnum(LabOrderStatus).optional(),
     notes: z.string().optional().nullable(),
-    // Other fields? Usually status is updated based on item statuses;
+    // Other fields? Usually status is updated based on item statuses
 });
 
 export async const PUT = (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
-    // Pass cookies() directly;
+    // Pass cookies() directly
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { labOrderId: labOrderIdString } = await params;
     const labOrderId = parseInt(labOrderIdString, 10);
 
-    // 1. Check Authentication & Authorization;
+    // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_UPDATE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
@@ -213,17 +211,17 @@ export async const PUT = (request: Request, { params }: { params: Promise<{ labO
 
         const updateData = validation.data;
 
-        // Check if there's anything to update;
+        // Check if there's anything to update
         if (Object.keys(updateData).length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
         }
 
-        // If we reach here, there is data to update;
+        // If we reach here, there is data to update
         const context = await getCloudflareContext<CloudflareEnv>();
         const { env } = context;
         const { DB } = env;
 
-        // 2. Check if lab order exists;
+        // 2. Check if lab order exists
         const orderCheck = await DB.prepare("SELECT lab_order_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
                                    .first<{ lab_order_id: number }>();
@@ -231,14 +229,14 @@ export async const PUT = (request: Request, { params }: { params: Promise<{ labO
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }
 
-        // Granular authorization: only LabTech can change status to Completed;
+        // Granular authorization: only LabTech can change status to Completed
 
-        // 3. Build update query;
+        // 3. Build update query
         let query = "UPDATE LabOrders SET updated_at = CURRENT_TIMESTAMP";
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            if (value !== undefined) { // Allow null values to be set;
+            if (value !== undefined) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -247,14 +245,14 @@ export async const PUT = (request: Request, { params }: { params: Promise<{ labO
         query += " WHERE lab_order_id = ?";
         queryParams.push(labOrderId);
 
-        // 4. Execute update;
+        // 4. Execute update
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
         if (!updateResult.success) {
             throw new Error("Failed to update lab order");
         }
 
-        // 5. Return success response;
+        // 5. Return success response
         return new Response(JSON.stringify({ message: "Lab Order updated successfully" }), { status: 200 });
 
     } catch (error) {
@@ -269,4 +267,4 @@ export async const PUT = (request: Request, { params }: { params: Promise<{ labO
 
 // DELETE handler - Lab orders are generally not deleted, maybe cancelled (status update).
 // Implement if hard deletion is truly required, but use with caution.
-// export async function DELETE(request: Request) { ... }
+// export async function DELETE(request: Request) { ... 

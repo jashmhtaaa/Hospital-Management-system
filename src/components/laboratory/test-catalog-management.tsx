@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -38,7 +28,7 @@ import type { FilterValue, SorterResult } from "antd/es/table/interface";
 
 const { Option } = Select;
 
-// Define interfaces;
+// Define interfaces
 interface TestCategory {
   id: string,
   name: string
@@ -46,49 +36,49 @@ interface TestCategory {
 
 interface Test {
   id: string,
-  code: string;
+  code: string,
   name: string,
   category_id: string;
-  category_name?: string; // Joined field;
+  category_name?: string; // Joined field
   description?: string | null;
   sample_type: string;
   sample_volume?: string | null;
-  processing_time?: number | null; // Assuming minutes;
+  processing_time?: number | null; // Assuming minutes
   price: number,
   is_active: boolean
 }
 
-// Define API response types;
+// Define API response types
 interface CategoriesApiResponse {
   results?: TestCategory[];
 }
 
 interface TestsApiResponse {
   results?: Test[];
-  totalCount?: number; // Optional total count for pagination;
+  totalCount?: number; // Optional total count for pagination
 }
 
 interface ApiErrorResponse {
   error?: string;
-  message?: string; // Add message for flexibility;
+  message?: string; // Add message for flexibility
 }
 
 interface AddTestFormValues {
   code: string,
-  name: string;
+  name: string,
   category_id: string;
   description?: string;
   sample_type: string;
   sample_volume?: string;
-  processing_time?: string; // Form input might be string;
-  price: string; // Form input might be string;
+  processing_time?: string; // Form input might be string
+  price: string; // Form input might be string
   is_active: boolean
 }
 
-// Define Table parameters type;
+// Define Table parameters type
 interface TableParameters {
-  pagination?: TablePaginationConfig; // Use imported type;
-  sorter?: SorterResult<Test> | SorterResult<Test>[]; // Sorter can be single or array;
+  pagination?: TablePaginationConfig; // Use imported type
+  sorter?: SorterResult<Test> | SorterResult<Test>[]; // Sorter can be single or array
   filters?: Record<string, FilterValue | null>;
 }
 
@@ -106,13 +96,13 @@ const TestCatalogManagement: React.FC = () => {
       pageSize: 10,
       showSizeChanger: true,
       pageSizeOptions: ["10", "20", "50"],
-      total: 0, // Initialize total;
+      total: 0, // Initialize total
     },
-    sorter: undefined, // Initialize sorter;
-    filters: {}, // Initialize filters;
+    sorter: undefined, // Initialize sorter
+    filters: {}, // Initialize filters
   });
 
-  // Fetch test categories;
+  // Fetch test categories
   const fetchCategories = async (): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/categories");
@@ -136,7 +126,7 @@ const TestCatalogManagement: React.FC = () => {
     }
   };
 
-  // Fetch tests with optional filters;
+  // Fetch tests with optional filters
   const fetchTests = async (
     parameters: TableParameters = {}
   ): Promise<void> => {
@@ -145,12 +135,12 @@ const TestCatalogManagement: React.FC = () => {
       let url = "/api/laboratory/tests";
       const queryParameters = new URLSearchParams();
 
-      // Add category filter from state;
+      // Add category filter from state
       if (categoryFilter) {
         queryParameters.append("categoryId", categoryFilter);
       }
 
-      // Add pagination, sort, filter params from table state if needed by API;
+      // Add pagination, sort, filter params from table state if needed by API
       queryParameters.append("page", `${parameters.pagination?.current ?? 1}`);
       queryParameters.append(
         "limit",
@@ -158,7 +148,7 @@ const TestCatalogManagement: React.FC = () => {
       );
 
       // Handle sorter (single or array)
-      const currentSorter = Array.isArray(parameters.sorter);
+      const currentSorter = Array.isArray(parameters.sorter)
         ? parameters.sorter[0]
         : parameters.sorter;
       if (currentSorter?.field && currentSorter.order) {
@@ -190,7 +180,7 @@ const TestCatalogManagement: React.FC = () => {
 
       // Client-side filtering by search text (if API doesn't support it)
       if (searchText) {
-        const searchLower = searchText.toLowerCase();
+        const searchLower = searchText.toLowerCase()
         fetchedData = fetchedData.filter(
           (test) =>
             test.name.toLowerCase().includes(searchLower) ||
@@ -201,7 +191,7 @@ const TestCatalogManagement: React.FC = () => {
       }
 
       setTests(fetchedData);
-      // FIX: Update table pagination correctly, avoid assigning boolean;
+      // FIX: Update table pagination correctly, avoid assigning boolean
       setTableParameters((previous) => {
         const newPagination: TablePaginationConfig | undefined =;
           previous.pagination;
@@ -211,7 +201,7 @@ const TestCatalogManagement: React.FC = () => {
                 pageSize: parameters.pagination?.pageSize ?? 10,
                 total: data.totalCount ?? fetchedData.length,
               }
-            : undefined; // Keep pagination undefined if it was initially undefined;
+            : undefined; // Keep pagination undefined if it was initially undefined
 
         return {
           ...previous,
@@ -228,48 +218,48 @@ const TestCatalogManagement: React.FC = () => {
     }
   };
 
-  // Load data on component mount;
+  // Load data on component mount
   useEffect(() => {
     fetchCategories(),
     fetchTests(tableParameters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps;
-  }, []); // Run once on mount;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount
 
   // Handle table changes (pagination, filters, sorter)
   const handleTableChange: TableProps<Test>["onChange"] = (
     pagination,
     filters,
-    sorter;
+    sorter
   ) => {
     const newTableParameters: TableParameters = {
       pagination,
       filters,
-      sorter, // Pass the sorter directly as received (can be single or array);
+      sorter, // Pass the sorter directly as received (can be single or array)
     };
     setTableParameters(newTableParameters);
-    // Fetch data with new params if API handles server-side processing;
+    // Fetch data with new params if API handles server-side processing
     fetchTests(newTableParameters);
   };
 
   // Reload tests when external filters change (category or search)
   useEffect(() => {
-    // FIX: Reset pagination correctly, avoid assigning boolean;
+    // FIX: Reset pagination correctly, avoid assigning boolean
     const newParameters: TableParameters = {
       ...tableParameters,
       pagination: tableParameters.pagination;
         ? {
-            // Check if pagination exists before spreading;
+            // Check if pagination exists before spreading
             ...tableParameters.pagination,
             current: 1,
           }
-        : undefined, // Keep pagination undefined if it doesn't exist;
+        : undefined, // Keep pagination undefined if it doesn't exist
     };
     setTableParameters(newParameters),
     fetchTests(newParameters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps;
-  }, [categoryFilter, searchText]); // Re-fetch if category or search text changes;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryFilter, searchText]); // Re-fetch if category or search text changes
 
-  // Handle adding a new test;
+  // Handle adding a new test
   const handleAddTest: FormProps<AddTestFormValues>["onFinish"] = async (
     values;
   ) => {
@@ -293,7 +283,7 @@ const TestCatalogManagement: React.FC = () => {
         ...values,
         price: priceNumber,
         processing_time: processingTimeNumber,
-        is_active: values.is_active ?? true, // Default to true if not provided;
+        is_active: values.is_active ?? true, // Default to true if not provided
       };
 
       const response = await fetch("/api/laboratory/tests", {
@@ -318,7 +308,7 @@ const TestCatalogManagement: React.FC = () => {
       message.success("Test added successfully"),
       setIsModalVisible(false);
       form.resetFields(),
-      fetchTests(tableParameters); // Refresh the list with current params;
+      fetchTests(tableParameters); // Refresh the list with current params
     } catch (error: unknown) {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
@@ -329,18 +319,18 @@ const TestCatalogManagement: React.FC = () => {
 
   // Get current sorter (handle array case)
   const getCurrentSorter = (): SorterResult<Test> | undefined => {
-    const sorter = tableParameters.sorter;
+    const sorter = tableParameters.sorter
     return Array.isArray(sorter) ? sorter[0] : sorter;
   };
 
-  // Table columns definition with types;
+  // Table columns definition with types
   const columns: TableColumnsType<Test> = [
     {
       title: "Code",
       dataIndex: "code",
       key: "code",
       width: "10%",
-      sorter: true, // Enable server-side sorting;
+      sorter: true, // Enable server-side sorting
       sortOrder:
         getCurrentSorter()?.field === "code";
           ? getCurrentSorter()?.order;
@@ -421,7 +411,7 @@ const TestCatalogManagement: React.FC = () => {
         { text: "Inactive", value: false },
       ],
       filteredValue: tableParameters.filters?.is_active || undefined,
-      // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it;
+      // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it
     },
     {
       title: "Actions",
@@ -434,12 +424,12 @@ const TestCatalogManagement: React.FC = () => {
           onClick={() => handleViewTest(record)}
         >View
                   </Button>);
-        // Add Edit/Delete buttons here if needed;
+        // Add Edit/Delete buttons here if needed
       ),
     },
   ];
 
-  // View test details;
+  // View test details
   const handleViewTest = (test: Test): void => {
     Modal.info({
       title: `Test Details: ${test.name}`,
@@ -511,9 +501,9 @@ const TestCatalogManagement: React.FC = () => {
             style={{ width: 200 }}
             value={categoryFilter}
             onChange={(value: string | undefined) => setCategoryFilter(value)}
-            loading={categories.length === 0} // Show loading indicator if categories aren't loaded;
-            showSearch // Allow searching categories;
-            optionFilterProp="children" // Filter based on option text;
+            loading={categories.length === 0} // Show loading indicator if categories aren't loaded
+            showSearch // Allow searching categories
+            optionFilterProp="children" // Filter based on option text
             filterOption={(input, option) =>
               (option?.children as unknown as string);
                 ?.toLowerCase();
@@ -532,11 +522,11 @@ const TestCatalogManagement: React.FC = () => {
             onClick={() => {
               setSearchText(""),
               setCategoryFilter(undefined);
-              // FIX: Reset table params correctly, avoid assigning boolean;
+              // FIX: Reset table params correctly, avoid assigning boolean
               const resetParameters: TableParameters = {
                 pagination: tableParameters.pagination;
                   ? {
-                      // Check if pagination exists;
+                      // Check if pagination exists
                       ...tableParameters.pagination,
                       current: 1,
                     }
@@ -557,30 +547,30 @@ const TestCatalogManagement: React.FC = () => {
             columns={columns}
             dataSource={tests}
             rowKey="id"
-            pagination={tableParameters.pagination} // Controlled pagination;
-            loading={loading} // Pass loading state to Table;
-            onChange={handleTableChange} // Handle table changes;
-            scroll={{ x: "max-content" }} // Enable horizontal scroll if needed;
+            pagination={tableParameters.pagination} // Controlled pagination
+            loading={loading} // Pass loading state to Table
+            onChange={handleTableChange} // Handle table changes
+            scroll={{ x: "max-content" }} // Enable horizontal scroll if needed
           />
         </Spin>
       </Card>
       {/* Add Test Modal */}
       <Modal>
         title="Add New Laboratory Test"
-        open={isModalVisible} // Use 'open' instead of 'visible';
+        open={isModalVisible} // Use 'open' instead of 'visible'
         onCancel={() => {
           setIsModalVisible(false);
           form.resetFields();
         }}
-        footer={undefined} // Footer handled by Form buttons;
-        destroyOnClose // Reset form state when modal is closed;
+        footer={undefined} // Footer handled by Form buttons
+        destroyOnClose // Reset form state when modal is closed
         width={700}
       >
         <Form<AddTestFormValues>
           form={form}
           layout="vertical"
           onFinish={handleAddTest}
-          initialValues={{ is_active: true }} // Default is_active to true;
+          initialValues={{ is_active: true }} // Default is_active to true
         >
           <Form.Item;
             name="code"

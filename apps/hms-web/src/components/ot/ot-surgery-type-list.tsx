@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -16,11 +6,11 @@ import { Badge } from '@/components/ui/badge';
 
 interface SurgeryType {
   id: string,
-  name: string;
+  name: string,
   category: string,
-  averageDuration: string;
+  averageDuration: string,
   specialEquipment: string[],
-  specialistRequired: string;
+  specialistRequired: string,
   riskLevel: 'low' | 'medium' | 'high'
 }
 
@@ -80,4 +70,3 @@ export const OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) => {
       </CardContent>
     </Card>
   );
-}

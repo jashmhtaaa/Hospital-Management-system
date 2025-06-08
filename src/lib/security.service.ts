@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -39,24 +31,24 @@ export class SecurityService {
     if (!data) return data;
     
     try {
-      // Generate a random initialization vector;
+      // Generate a random initialization vector
       const iv = crypto.randomBytes(this.IV_LENGTH);
       
-      // Create cipher;
+      // Create cipher
       const cipher = crypto.createCipheriv(
         this.ENCRYPTION_ALGORITHM, 
         Buffer.from(this.ENCRYPTION_KEY), 
         iv;
       );
       
-      // Encrypt the data;
+      // Encrypt the data
       let encrypted = cipher.update(data, 'utf8', 'hex');
       encrypted += cipher.final('hex');
       
-      // Get the authentication tag;
+      // Get the authentication tag
       const authTag = cipher.getAuthTag().toString('hex');
       
-      // Return the IV, auth tag, and encrypted data as a single string;
+      // Return the IV, auth tag, and encrypted data as a single string
       return `${iv.toString('hex')}:${authTag}:${encrypted}`;
     } catch (error) {
 
@@ -73,24 +65,24 @@ export class SecurityService {
     if (!encryptedData || !encryptedData.includes(':')) return encryptedData;
     
     try {
-      // Split the encrypted data into its components;
+      // Split the encrypted data into its components
       const [ivHex, authTagHex, encryptedHex] = encryptedData.split(':');
       
-      // Convert hex strings back to buffers;
+      // Convert hex strings back to buffers
       const iv = Buffer.from(ivHex, 'hex');
       const authTag = Buffer.from(authTagHex, 'hex');
       
-      // Create decipher;
+      // Create decipher
       const decipher = crypto.createDecipheriv(
         this.ENCRYPTION_ALGORITHM, 
         Buffer.from(this.ENCRYPTION_KEY), 
         iv;
       );
       
-      // Set the authentication tag;
+      // Set the authentication tag
       decipher.setAuthTag(authTag);
       
-      // Decrypt the data;
+      // Decrypt the data
       let decrypted = decipher.update(encryptedHex, 'hex', 'utf8');
       decrypted += decipher.final('utf8');
       
@@ -108,22 +100,22 @@ export class SecurityService {
    */
   public static async verifyToken(token: string): Promise<any> {
     try {
-      // In a real implementation, this would use a proper JWT library;
-      // For this example, we'll simulate token verification;
+      // In a real implementation, this would use a proper JWT library
+      // For this example, we'll simulate token verification
       
-      // Split the token into parts;
+      // Split the token into parts
       const [headerB64, payloadB64, signature] = token.split('.');
       
-      // Decode the payload;
+      // Decode the payload
       const payload = JSON.parse(Buffer.from(payloadB64, 'base64').toString());
       
-      // Check if token is expired;
+      // Check if token is expired
       if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
         throw new Error('Token expired');
       }
       
       // Verify signature (simplified for example)
-      const expectedSignature = crypto;
+      const expectedSignature = crypto
         .createHmac('sha256', this.JWT_SECRET);
         .update(`${headerB64}.${payloadB64}`);
         .digest('base64url');
@@ -150,7 +142,7 @@ export class SecurityService {
     try {
       const urlObj = new URL(url);
       
-      // Remove sensitive query parameters;
+      // Remove sensitive query parameters
       const sensitiveParams = ['token', 'password', 'secret', 'key', 'auth'];
       sensitiveParams.forEach(param => {
         if (urlObj.searchParams.has(param)) {
@@ -160,7 +152,7 @@ export class SecurityService {
       
       return urlObj.toString();
     } catch (error) {
-      // If URL parsing fails, do basic redaction;
+      // If URL parsing fails, do basic redaction
       return url.replace(/([?&](token|password|secret|key|auth)=)[^&]+/gi, '$1[REDACTED]');
     }
   }
@@ -173,20 +165,20 @@ export class SecurityService {
   public static sanitizeErrorMessage(message: string): string {
     if (!message) return message;
     
-    // Redact potential PHI/PII patterns;
+    // Redact potential PHI/PII patterns
     const sanitized = message;
-      // Redact email addresses;
+      // Redact email addresses
       .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '[EMAIL REDACTED]');
-      // Redact phone numbers;
+      // Redact phone numbers
       .replace(/(\+\d{1,3}[\s-])?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/g, '[PHONE REDACTED]');
-      // Redact SSNs;
+      // Redact SSNs
       .replace(/\d{3}-\d{2}-\d{4}/g, '[SSN REDACTED]');
-      // Redact credit card numbers;
+      // Redact credit card numbers
       .replace(/\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}/g, '[CC REDACTED]');
       // Redact patient IDs (assuming format like P12345678)
-      .replace(/\b[P]\d{8}\b/g, '[PATIENT ID REDACTED]');
+      .replace(/\b[P]\d{8}\b/g, '[PATIENT ID REDACTED]')
       // Redact names (this is a simplified approach)
-      .replace(/\b(Mr\.|Mrs\.|Ms\.|Dr\.)\s+[A-Z][a-z]+\s+[A-Z][a-z]+\b/g, '[NAME REDACTED]');
+      .replace(/\b(Mr\.|Mrs\.|Ms\.|Dr\.)\s+[A-Z][a-z]+\s+[A-Z][a-z]+\b/g, '[NAME REDACTED]')
     
     return sanitized;
   }
@@ -200,7 +192,7 @@ export class SecurityService {
   public static hasRole(userRoles: string[], requiredRole: string): boolean {
     if (!userRoles || !Array.isArray(userRoles)) return false;
     
-    // Admin role has access to everything;
+    // Admin role has access to everything
     if (userRoles.includes('admin')) return true;
     
     return userRoles.includes(requiredRole);
@@ -217,7 +209,7 @@ export class SecurityService {
       return false
     }
     
-    // Admin role has access to everything;
+    // Admin role has access to everything
     if (userRoles.includes('admin')) return true;
     
     return requiredRoles.some(role => userRoles.includes(role));
@@ -294,4 +286,3 @@ export class SecurityService {
       default: return data
     }
   }
-}

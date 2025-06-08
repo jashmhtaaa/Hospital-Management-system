@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -45,7 +35,7 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
-// Define the form schema with Zod;
+// Define the form schema with Zod
 const formSchema = z.object({
   patientId: z.string({
     required_error: "Please select a patient",
@@ -76,7 +66,7 @@ interface DietaryRequestFormProps {
   isEditing?: boolean;
 }
 
-// Common dietary restrictions;
+// Common dietary restrictions
 const commonDietaryRestrictions = [
   "Gluten-Free",
   "Dairy-Free",
@@ -90,7 +80,7 @@ const commonDietaryRestrictions = [
   "Halal";
 ];
 
-// Common meal preferences;
+// Common meal preferences
 const commonMealPreferences = [
   "No Spicy Food",
   "Soft Foods Only",
@@ -102,7 +92,7 @@ const commonMealPreferences = [
   "Warm Foods";
 ];
 
-// Common allergies;
+// Common allergies
 const commonAllergies = [
   "Peanuts",
   "Tree Nuts",
@@ -127,7 +117,7 @@ export const DietaryRequestForm = ({ onSuccess,
   const { toast } = useToast();
   const router = useRouter();
 
-  // Initialize the form with react-hook-form;
+  // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -138,7 +128,7 @@ export const DietaryRequestForm = ({ onSuccess,
     },
   });
 
-  // Fetch patients when component mounts;
+  // Fetch patients when component mounts
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -159,7 +149,7 @@ export const DietaryRequestForm = ({ onSuccess,
     fetchPatients();
   }, [toast]);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
@@ -210,7 +200,7 @@ export const DietaryRequestForm = ({ onSuccess,
     }
   };
 
-  // Handle adding custom preference;
+  // Handle adding custom preference
   const addCustomPreference = () => {
     if (customPreference.trim() === '') return;
     
@@ -221,7 +211,7 @@ export const DietaryRequestForm = ({ onSuccess,
     setCustomPreference('');
   };
 
-  // Handle adding custom restriction;
+  // Handle adding custom restriction
   const addCustomRestriction = () => {
     if (customRestriction.trim() === '') return;
     
@@ -232,7 +222,7 @@ export const DietaryRequestForm = ({ onSuccess,
     setCustomRestriction('');
   };
 
-  // Handle adding custom allergy;
+  // Handle adding custom allergy
   const addCustomAllergy = () => {
     if (customAllergy.trim() === '') return;
     
@@ -243,19 +233,19 @@ export const DietaryRequestForm = ({ onSuccess,
     setCustomAllergy('');
   };
 
-  // Handle removing preference;
+  // Handle removing preference
   const removePreference = (preference: string) => {
     const currentPreferences = form.getValues('mealPreferences');
     form.setValue('mealPreferences', currentPreferences.filter(p => p !== preference));
   };
 
-  // Handle removing restriction;
+  // Handle removing restriction
   const removeRestriction = (restriction: string) => {
     const currentRestrictions = form.getValues('dietaryRestrictions');
     form.setValue('dietaryRestrictions', currentRestrictions.filter(r => r !== restriction));
   };
 
-  // Handle removing allergy;
+  // Handle removing allergy
   const removeAllergy = (allergy: string) => {
     const currentAllergies = form.getValues('allergies');
     form.setValue('allergies', currentAllergies.filter(a => a !== allergy));
@@ -676,4 +666,3 @@ export const DietaryRequestForm = ({ onSuccess,
       </form>
     </Form>
   );
-}

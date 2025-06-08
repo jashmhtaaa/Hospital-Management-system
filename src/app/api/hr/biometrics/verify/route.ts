@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { biometricService } from '@/lib/hr/biometric-service';
 import { z } from 'zod';
 
-// Schema for biometric verification;
+// Schema for biometric verification
 const biometricVerificationSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
@@ -22,13 +12,13 @@ const biometricVerificationSchema = z.object({
   sampleData: z.string().min(1, "Sample data is required"),
 });
 
-// POST handler for verifying biometric data;
+// POST handler for verifying biometric data
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = biometricVerificationSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -37,7 +27,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Verify biometric data;
+    // Verify biometric data
     const result = await biometricService.verifyBiometric(validationResult.data);
     
     return NextResponse.json(result);
@@ -48,4 +38,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

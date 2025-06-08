@@ -1,21 +1,13 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// Example API route for IPD (Inpatient Department) Management;
+// Example API route for IPD (Inpatient Department) Management
 import { NextRequest } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { z } from "zod";
 import { IPDProductionService } from "@/lib/ipd-service.production";
 
-// Schema for IPD Admission;
+// Schema for IPD Admission
 const AdmissionSchema = z.object({
   patient_id: z.number(),
   doctor_id: z.number(),
@@ -43,11 +35,11 @@ export async function GET(request: NextRequest) {
   try {
     // Use production IPD service instead of mock
 
-    // Get DB instance from Cloudflare context;
+    // Get DB instance from Cloudflare context
     const { env } = await getCloudflareContext();
     const { DB: database } = env;
 
-    // Get query parameters;
+    // Get query parameters
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get("patientId");
     const doctorId = searchParams.get("doctorId");
@@ -57,7 +49,7 @@ export async function GET(request: NextRequest) {
     const limit = Number.parseInt(searchParams.get("limit") || "50");
     const offset = Number.parseInt(searchParams.get("offset") || "0");
 
-    // Build query conditions;
+    // Build query conditions
     const conditions: string[] = [];
     const parameters: (string | number)[] = [];
 
@@ -90,7 +82,7 @@ export async function GET(request: NextRequest) {
       conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
     // Query to get admissions with patient and doctor names (using mock db.query)
-    // Assuming db.query exists and returns { rows: [...] } based on db.ts mock;
+    // Assuming db.query exists and returns { rows: [...] } based on db.ts mock
     const query = `;
       SELECT;
         a.admission_id, 
@@ -146,20 +138,18 @@ export async function GET(request: NextRequest) {
       }
     );
   }
-}
-
 export async function POST(request: NextRequest) {
   try {
     // Use production IPD service instead of mock
-    const ipdService = new IPDProductionService();
+    const ipdService = new IPDProductionService()
 
-    // Get DB instance from Cloudflare context;
+    // Get DB instance from Cloudflare context
     const { env } = await getCloudflareContext();
     const { DB: database } = env;
 
     const data = await request.json();
 
-    // Validate input data;
+    // Validate input data
     const validationResult = AdmissionSchema.safeParse(data);
     if (!validationResult.success) {
       return new Response(
@@ -177,7 +167,7 @@ export async function POST(request: NextRequest) {
     const admissionData = validationResult.data;
 
     // Mock checks (replace with actual DB queries later)
-    // Assuming db.query exists and returns { rows: [...] } based on db.ts mock;
+    // Assuming db.query exists and returns { rows: [...] } based on db.ts mock
     const patientCheckResult = await database.prepare(
       "SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE";
     ).bind(admissionData.patient_id).all();
@@ -230,7 +220,7 @@ export async function POST(request: NextRequest) {
         insuranceProvider: data.insurance_id,
         admissionNotes: data.admission_notes,
         admittedBy: '1' // TODO: Get from authenticated user context
-      };
+      }
 
       const admissionId = await ipdService.createAdmission(admissionData);
 
@@ -241,7 +231,7 @@ export async function POST(request: NextRequest) {
         room: data.room_id || '',
         bedNumber: data.bed_id,
         assignedBy: '1' // TODO: Get from authenticated user context
-      });
+      })
 
       return new Response(
         JSON.stringify({
@@ -255,7 +245,7 @@ export async function POST(request: NextRequest) {
       );
     } catch (txError) {
 
-      // No rollback needed for mock DB;
+      // No rollback needed for mock DB
       const errorMessage =;
         txError instanceof Error ? txError.message : String(txError);
       return new Response(
@@ -280,4 +270,3 @@ export async function POST(request: NextRequest) {
       }
     );
   }
-}

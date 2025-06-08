@@ -1,35 +1,25 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
 export const runtime = "edge";
 
-// Interface for the PUT request body;
+// Interface for the PUT request body
 interface TheatreUpdateBody {
   name?: string;
   location?: string;
   specialty?: string;
   status?: string; // e.g., "available", "in_use", "maintenance"
-  equipment?: string | null; // Assuming JSON string or simple text for equipment list;
+  equipment?: string | null; // Assuming JSON string or simple text for equipment list
 }
 
-// GET /api/ot/theatres/[id] - Get details of a specific operation theatre;
+// GET /api/ot/theatres/[id] - Get details of a specific operation theatre
 export async const GET = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!theatreId) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
@@ -65,13 +55,13 @@ export async const GET = (
   }
 }
 
-// PUT /api/ot/theatres/[id] - Update an existing operation theatre;
+// PUT /api/ot/theatres/[id] - Update an existing operation theatre
 export async const PUT = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!theatreId) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
@@ -82,7 +72,7 @@ export async const PUT = (
     const body = (await _request.json()) as TheatreUpdateBody;
     const { name, location, specialty, status, equipment } = body;
 
-    // Basic validation - ensure at least one field is being updated;
+    // Basic validation - ensure at least one field is being updated
     if (
       name === undefined &&;
       location === undefined &&;
@@ -99,8 +89,8 @@ export async const PUT = (
     const DB = process.env.DB as unknown as D1Database;
     const now = new Date().toISOString();
 
-    // Construct the update query dynamically;
-    // FIX: Use specific type for fieldsToUpdate;
+    // Construct the update query dynamically
+    // FIX: Use specific type for fieldsToUpdate
     const fieldsToUpdate: { [key: string]: string | null } = {};
     if (name !== undefined) fieldsToUpdate.name = name;
     if (location !== undefined) fieldsToUpdate.location = location;
@@ -122,7 +112,7 @@ export async const PUT = (
       .run();
 
     if (info.meta.changes === 0) {
-      // Check if the theatre actually exists before returning 404;
+      // Check if the theatre actually exists before returning 404
       const { results: checkExists } = await DB.prepare(
         "SELECT id FROM OperationTheatres WHERE id = ?";
       );
@@ -134,10 +124,10 @@ export async const PUT = (
           { status: 404 }
         );
       }
-      // If it exists but no changes were made, return 200 OK with current data;
+      // If it exists but no changes were made, return 200 OK with current data
     }
 
-    // Fetch the updated theatre details;
+    // Fetch the updated theatre details
     const { results } = await DB.prepare(
       "SELECT * FROM OperationTheatres WHERE id = ?";
     );
@@ -153,11 +143,11 @@ export async const PUT = (
 
     return NextResponse.json(results[0]);
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     if (errorMessage?.includes("UNIQUE constraint failed")) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage
       return NextResponse.json(
         {
           message: "Operation theatre name must be unique",
@@ -173,13 +163,13 @@ export async const PUT = (
   }
 }
 
-// DELETE /api/ot/theatres/[id] - Delete an operation theatre;
+// DELETE /api/ot/theatres/[id] - Delete an operation theatre
 export async const DELETE = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!theatreId) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
@@ -189,7 +179,7 @@ export async const DELETE = (
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const DB = process.env.DB as unknown as D1Database;
+    const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare("DELETE FROM OperationTheatres WHERE id = ?");
       .bind(theatreId);
       .run();
@@ -206,12 +196,12 @@ export async const DELETE = (
       { status: 200 }
     );
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    // Handle potential foreign key constraint errors if bookings exist;
+    // Handle potential foreign key constraint errors if bookings exist
     if (errorMessage?.includes("FOREIGN KEY constraint failed")) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage
       return NextResponse.json(
         {
           message: "Cannot delete theatre with existing bookings",
@@ -225,5 +215,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}
-

@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-      // Granular authorization: only LabTech can change status to Completed;
+      // Granular authorization: only LabTech can change status to Completed
       if (status && status === 'COMPLETED') {
         const authResult = await checkUserRole('LabTechnician', request);
         if (!authResult.success) {
@@ -20,7 +12,7 @@ var __DEV__: boolean;
         }
       }
 
-      // Only doctors can cancel orders;
+      // Only doctors can cancel orders
       if (status && status === 'CANCELLED') {
         const authResult = await checkUserRole('Doctor', request);
         if (!authResult.success) {
@@ -29,4 +21,4 @@ var __DEV__: boolean;
             { status: 403 }
           );
         }
-      }
+      

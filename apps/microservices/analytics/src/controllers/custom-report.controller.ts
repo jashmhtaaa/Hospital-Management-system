@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -190,4 +182,3 @@ export class CustomReportController {
   ) {
     return this.customReportService.provideQueryFeedback(id, feedback, req.user.id);
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from "tailwindcss-animate";
 
@@ -19,7 +9,7 @@ const config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  prefix: "", // From HEAD;
+  prefix: "", // From HEAD
   theme: {
     container: {
       center: true,
@@ -63,7 +53,7 @@ const config = {
           DEFAULT: "hsl(const(--card))",
           foreground: "hsl(const(--card-foreground))",
         },
-        chart: { // From HEAD;
+        chart: { // From HEAD
           "1": "hsl(const(--chart-1))",
           "2": "hsl(const(--chart-2))",
           "3": "hsl(const(--chart-3))",
@@ -103,7 +93,7 @@ const config = {
     },
   },
   plugins: [tailwindcssAnimate],
-} satisfies Config;
+} satisfies Config
 
 export default config;
 

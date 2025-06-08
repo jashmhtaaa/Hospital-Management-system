@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,7 +8,7 @@ var __DEV__: boolean;
 
 import { z } from 'zod';
 
-// Common validation schemas;
+// Common validation schemas
 export const idSchema = z.string().uuid();
 
 export const paginationSchema = z.object({
@@ -37,14 +29,14 @@ export const dateRangeSchema = z.object({
   path: ["endDate"],
 });
 
-// Financial validation schemas;
+// Financial validation schemas
 export const moneySchema = z.coerce.number().multipleOf(0.01);
 
 export const percentageSchema = z.coerce.number().min(0).max(100);
 
 export const taxRateSchema = z.coerce.number().min(0).max(100);
 
-// Healthcare-specific validation schemas;
+// Healthcare-specific validation schemas
 export const icd10CodeSchema = z.string().regex(/^[A-Z][0-9][0-9AB]\.?[0-9A-Z]{0,4}$/);
 
 export const cptCodeSchema = z.string().regex(/^[0-9]{5}$/);
@@ -53,7 +45,7 @@ export const hcpcsCodeSchema = z.string().regex(/^[A-Z][0-9]{4}$/);
 
 export const npiSchema = z.string().regex(/^[0-9]{10}$/);
 
-// Billing validation schemas;
+// Billing validation schemas
 export const invoiceStatusSchema = z.enum([
   'draft',
   'pending',
@@ -88,7 +80,7 @@ export const paymentStatusSchema = z.enum([
   'cancelled',
 ]);
 
-// Insurance validation schemas;
+// Insurance validation schemas
 export const insuranceVerificationStatusSchema = z.enum([
   'pending',
   'verified',
@@ -111,37 +103,28 @@ export const claimStatusSchema = z.enum([
   'closed',
 ]);
 
-// Validation utility functions;
+// Validation utility functions
 export const validateId = (id: string): string {
   return idSchema.parse(id)
-}
-
 export const validatePagination = (query: Record<string, any>) {
   return paginationSchema.parse({
     page: query.page,
     pageSize: query.pageSize,
   });
-}
-
 export const validateDateRange = (startDate: string, endDate: string) {
   return dateRangeSchema.parse({
     startDate,
     endDate,
   });
-}
-
 export const validateMoney = (amount: number | string): number {
   return moneySchema.parse(amount)
-}
-
 export const validatePercentage = (percentage: number | string): number {
   return percentageSchema.parse(percentage)
 }
 
-// Validation error formatter;
+// Validation error formatter
 export const formatZodError = (error: z.ZodError) {
   return error.errors.map(err => ({
     path: err.path.join('.'),
     message: err.message,
   }));
-}

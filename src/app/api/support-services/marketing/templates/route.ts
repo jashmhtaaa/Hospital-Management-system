@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -28,7 +18,7 @@ export async const GET = (request: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
       
-      // Parse query parameters;
+      // Parse query parameters
       const filters = {
         type: searchParams.get('type') || undefined,
         isActive: searchParams.has('isActive');
@@ -77,4 +67,3 @@ export async const POST = (request: NextRequest) => {
       auditAction: 'TEMPLATE_CREATE',
     }
   );
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { LaboratoryService, LabOrderSchema, LabCancelSchema, LabResultNotificationSchema } from '@/services/integration/LaboratoryService';
 import { handleApiError } from '@/lib/api/errorHandler';
@@ -21,17 +11,17 @@ import { ipdMiddleware } from '../../middleware/auth';
  * POST /api/ipd/integration/laboratory;
  */
 export async const POST = (req: NextRequest) => {
-  // Check authentication and authorization;
+  // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'ORDER_LABS');
   if (authResult instanceof NextResponse) {
-    return authResult; // This is an error response;
+    return authResult; // This is an error response
   }
 
   try {
     const body = await req.json();
     logger.info({ route: 'POST /api/ipd/integration/laboratory', actionType: body.actionType }, 'Processing laboratory request');
     
-    // Validate request body;
+    // Validate request body
     if (!body.actionType || !body.encounterId) {
       return NextResponse.json(
         { error: 'Missing required fields: actionType, encounterId' },
@@ -39,10 +29,10 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Create laboratory service instance;
+    // Create laboratory service instance
     const laboratoryService = new LaboratoryService();
 
-    // Process different laboratory action types;
+    // Process different laboratory action types
     switch (body.actionType) {
       case 'ORDER':
         try {
@@ -87,10 +77,10 @@ export async const POST = (req: NextRequest) => {
  * GET /api/ipd/integration/laboratory/pending-orders;
  */
 export async const GET = (req: NextRequest) => {
-  // Check authentication and authorization;
+  // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
-    return authResult; // This is an error response;
+    return authResult; // This is an error response
   }
 
   try {
@@ -106,10 +96,10 @@ export async const GET = (req: NextRequest) => {
     
     logger.info({ route: 'GET /api/ipd/integration/laboratory', patientId }, 'Getting pending laboratory orders');
     
-    // Create laboratory service instance;
+    // Create laboratory service instance
     const laboratoryService = new LaboratoryService();
     
-    // Get pending lab orders;
+    // Get pending lab orders
     const pendingOrders = await laboratoryService.getPendingLabOrders(patientId);
     
     return NextResponse.json(pendingOrders);
@@ -123,10 +113,10 @@ export async const GET = (req: NextRequest) => {
  * GET /api/ipd/integration/laboratory/results;
  */
 export async const getLabResults = (req: NextRequest) => {
-  // Check authentication and authorization;
+  // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
-    return authResult; // This is an error response;
+    return authResult; // This is an error response
   }
 
   try {
@@ -151,10 +141,10 @@ export async const getLabResults = (req: NextRequest) => {
       includeDetails;
     }, 'Getting laboratory results');
     
-    // Create laboratory service instance;
+    // Create laboratory service instance
     const laboratoryService = new LaboratoryService();
     
-    // Get lab results;
+    // Get lab results
     const labResults = await laboratoryService.getLabResults(patientId, encounterId, limit, includeDetails);
     
     return NextResponse.json(labResults);
@@ -168,10 +158,10 @@ export async const getLabResults = (req: NextRequest) => {
  * GET /api/ipd/integration/laboratory/results/details;
  */
 export async const getLabResultDetails = (req: NextRequest) => {
-  // Check authentication and authorization;
+  // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
-    return authResult; // This is an error response;
+    return authResult; // This is an error response
   }
 
   try {
@@ -187,14 +177,13 @@ export async const getLabResultDetails = (req: NextRequest) => {
     
     logger.info({ route: 'GET /api/ipd/integration/laboratory/results/details', orderId }, 'Getting laboratory result details');
     
-    // Create laboratory service instance;
+    // Create laboratory service instance
     const laboratoryService = new LaboratoryService();
     
-    // Get lab result details;
+    // Get lab result details
     const resultDetails = await laboratoryService.getLabResultDetails(orderId, authResult.user.id);
     
     return NextResponse.json(resultDetails);
   } catch (error) {
     return handleApiError(error);
   }
-}

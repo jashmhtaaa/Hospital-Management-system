@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -17,13 +7,13 @@ import { Button } from '@/components/ui/button';
 
 interface RadiologyStudy {
   id: string,
-  patientName: string;
+  patientName: string,
   patientId: string,
-  studyDate: string;
+  studyDate: string,
   studyType: string,
-  modality: string;
+  modality: string,
   bodyPart: string,
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled',
   technician: string
 }
 
@@ -102,4 +92,3 @@ export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesL
       </CardContent>
     </Card>
   );
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -51,11 +41,11 @@ import { format } from 'date-fns';
 
 interface DocumentSection {
   id: string,
-  documentId: string;
+  documentId: string,
   sectionTitle: string,
-  sectionType: string;
+  sectionType: string,
   sectionOrder: number,
-  content: string;
+  content: string,
   authorId: string,
   authoredDate: string;
   updatedById?: string;
@@ -66,9 +56,9 @@ interface DocumentSection {
 
 interface DocumentSignature {
   id: string,
-  documentId: string;
+  documentId: string,
   signerId: string,
-  signerRole: string;
+  signerRole: string,
   signatureDate: string,
   signatureType: string;
   attestation?: string;
@@ -80,13 +70,13 @@ interface DocumentSignature {
 
 interface DocumentAmendment {
   id: string,
-  documentId: string;
+  documentId: string,
   amendmentNumber: string,
-  amendmentType: string;
+  amendmentType: string,
   amendmentReason: string,
-  content: string;
+  content: string,
   authorId: string,
-  authoredDate: string;
+  authoredDate: string,
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
@@ -96,13 +86,13 @@ interface DocumentAmendment {
 
 interface Document {
   id: string,
-  documentNumber: string;
+  documentNumber: string,
   patientId: string;
   encounterId?: string;
   documentType: string,
-  documentTitle: string;
+  documentTitle: string,
   authorId: string,
-  authoredDate: string;
+  authoredDate: string,
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
@@ -110,24 +100,22 @@ interface Document {
   content: string;
   templateId?: string;
   isConfidential: boolean,
-  attachmentUrls: string[];
+  attachmentUrls: string[],
   tags: string[],
-  createdAt: string;
+  createdAt: string,
   updatedAt: string,
-  sections: DocumentSection[];
+  sections: DocumentSection[],
   signatures: DocumentSignature[],
   amendments: DocumentAmendment[]
 }
 
 interface DocumentViewerProps {
   documentId: string
-}
-
 export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const router = useRouter();
   const { toast } = useToast();
   
-  // State;
+  // State
   const [document, setDocument] = useState<Document | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('content');
@@ -148,7 +136,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   });
   const [submitting, setSubmitting] = useState(false);
   
-  // Fetch document;
+  // Fetch document
   const fetchDocument = async () => {
     setLoading(true);
     
@@ -173,12 +161,12 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     }
   };
   
-  // Effect to fetch document on initial load;
+  // Effect to fetch document on initial load
   useEffect(() => {
     fetchDocument();
   }, [documentId]);
   
-  // Handle sign document;
+  // Handle sign document
   const handleSignDocument = async () => {
     setSubmitting(true);
     
@@ -201,7 +189,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         description: 'Document signed successfully',
       });
       
-      // Close dialog and reset form;
+      // Close dialog and reset form
       setSignatureDialogOpen(false),
       setSignatureData({
         signerRole: '',
@@ -211,7 +199,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         finalize: false,
       });
       
-      // Refresh document;
+      // Refresh document
       fetchDocument();
     } catch (error) {
 
@@ -225,7 +213,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     }
   };
   
-  // Handle create amendment;
+  // Handle create amendment
   const handleCreateAmendment = async () => {
     setSubmitting(true);
     
@@ -248,7 +236,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         description: 'Amendment created successfully',
       });
       
-      // Close dialog and reset form;
+      // Close dialog and reset form
       setAmendmentDialogOpen(false),
       setAmendmentData({
         amendmentType: 'Addendum',
@@ -257,7 +245,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         status: 'Draft',
       });
       
-      // Refresh document;
+      // Refresh document
       fetchDocument();
     } catch (error) {
 
@@ -271,7 +259,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     }
   };
   
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'Draft':
@@ -288,12 +276,12 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     }
   };
   
-  // Handle edit document;
+  // Handle edit document
   const handleEditDocument = () => {
     router.push(`/clinical-documentation/${documentId}/edit`);
   };
   
-  // Helper function to format date;
+  // Helper function to format date
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'MMM dd, yyyy h: mm a')
   };
@@ -833,4 +821,3 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       </CardFooter>
     </Card>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -37,18 +29,18 @@ const _interactionService = new DrugInteractionService(prisma, auditLogger);
  */
 export async const GET = (req: NextRequest): Promise<NextResponse> {
   try {
-    // Extract query parameters;
+    // Extract query parameters
     const searchParams = req.nextUrl.searchParams;
     const _patientId = searchParams.get('patientId');
     const daysToExpiration = parseInt(searchParams.get('daysToExpiration') || '30', 10);
     
-    // Validate user permissions;
+    // Validate user permissions
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token;
+    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
     const hasPermission = await rbacService.hasPermission(userId, 'prescription:read');
     if (!hasPermission) {
       auditLogger.logEvent({
@@ -61,8 +53,8 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     
-    // In a real implementation, this would query the database for prescriptions;
-    // that are nearing expiration or have a limited number of refills remaining;
+    // In a real implementation, this would query the database for prescriptions
+    // that are nearing expiration or have a limited number of refills remaining
     const eligiblePrescriptions = [
       {
         id: 'rx123',
@@ -96,7 +88,7 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
       }
     ];
     
-    // Log the successful retrieval;
+    // Log the successful retrieval
     auditLogger.logEvent({
       eventType: 'PRESCRIPTION_RENEWAL_LIST_ACCESSED',
       userId,
@@ -118,17 +110,17 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
  */
 export async const POST = (req: NextRequest): Promise<NextResponse> {
   try {
-    // Extract request body;
+    // Extract request body
     const body = await req.json();
     const { prescriptionId, patientId, notes } = body;
     
-    // Validate user permissions;
+    // Validate user permissions
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token;
+    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
     const hasPermission = await rbacService.hasPermission(userId, 'prescription:renew:request');
     if (!hasPermission) {
       auditLogger.logEvent({
@@ -142,7 +134,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     
-    // Validate required fields;
+    // Validate required fields
     if (!prescriptionId || !patientId) {
       return NextResponse.json(
         { error: 'Missing required fields: prescriptionId and patientId are required' },
@@ -150,7 +142,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
       );
     }
     
-    // In a real implementation, this would create a renewal request in the database;
+    // In a real implementation, this would create a renewal request in the database
     const renewalRequest = {
       id: `renewal-${Date.now()}`,
       prescriptionId,
@@ -164,7 +156,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
       reviewNotes: null
     };
     
-    // Log the renewal request;
+    // Log the renewal request
     auditLogger.logEvent({
       eventType: 'PRESCRIPTION_RENEWAL_REQUESTED',
       userId,
@@ -187,17 +179,17 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
  */
 export async const PUT = (req: NextRequest): Promise<NextResponse> {
   try {
-    // Extract request body;
+    // Extract request body
     const body = await req.json();
     const { renewalId, action, notes } = body;
     
-    // Validate user permissions;
+    // Validate user permissions
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token;
+    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
     const hasPermission = await rbacService.hasPermission(userId, 'prescription:renew:approve');
     if (!hasPermission) {
       auditLogger.logEvent({
@@ -211,7 +203,7 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     
-    // Validate required fields;
+    // Validate required fields
     if (!renewalId || !action) {
       return NextResponse.json(
         { error: 'Missing required fields: renewalId and action are required' },
@@ -219,7 +211,7 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
       );
     }
     
-    // Validate action;
+    // Validate action
     if (action !== 'approve' && action !== 'deny') {
       return NextResponse.json(
         { error: 'Invalid action: must be either "approve" or "deny"' },
@@ -227,14 +219,14 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
       );
     }
     
-    // In a real implementation, this would update the renewal request in the database;
-    // and create a new prescription if approved;
+    // In a real implementation, this would update the renewal request in the database
+    // and create a new prescription if approved
     const updatedRenewal = {
       id: renewalId,
       prescriptionId: 'rx123',
       patientId: 'patient456',
       requesterId: 'user789',
-      requestDate: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago;
+      requestDate: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
       status: action === 'approve' ? 'approved' : 'denied',
       notes: 'Patient requested renewal',
       reviewerId: userId,
@@ -242,7 +234,7 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
       reviewNotes: notes || ''
     };
     
-    // If approved, create a new prescription;
+    // If approved, create a new prescription
     let newPrescription: Record<string, unknown> | null = null;
     if (action === 'approve') {
       newPrescription = {
@@ -251,14 +243,14 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
         medicationId: 'med789',
         prescriberId: userId,
         issueDate: new Date(),
-        expirationDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now;
+        expirationDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
         refillsRemaining: 3,
         status: 'active',
         renewalId;
       };
     }
     
-    // Log the renewal action;
+    // Log the renewal action
     auditLogger.logEvent({
       eventType: action === 'approve' ? 'PRESCRIPTION_RENEWAL_APPROVED' : 'PRESCRIPTION_RENEWAL_DENIED',
       userId,
@@ -275,4 +267,3 @@ export async const PUT = (req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     return errorHandler.handleApiError(error, 'Failed to process prescription renewal');
   }
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -20,11 +12,11 @@ import { PrismaClient } from '@prisma/client';
 
 export interface AnalyticsReport {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  category: ReportCategory;
+  category: ReportCategory,
   type: ReportType,
-  dataSource: DataSource[];
+  dataSource: DataSource[],
   parameters: ReportParameter[],
   visualization: VisualizationConfig;
   schedule?: ScheduleConfig;
@@ -32,12 +24,10 @@ export interface AnalyticsReport {
   lastGenerated?: Date;
   nextGeneration?: Date;
   status: 'active' | 'inactive' | 'error',
-  createdBy: string;
+  createdBy: string,
   createdAt: Date,
-  updatedAt: Date;
+  updatedAt: Date,
   accessControl: AccessControl
-}
-
 export type ReportCategory = 
   | 'executive';
   | 'financial';
@@ -61,74 +51,58 @@ export type ReportType =
 
 export interface DataSource {
   id: string,
-  name: string;
+  name: string,
   type: 'database' | 'api' | 'file' | 'external',
-  connection: DatabaseConnection | ApiConnection | FileConnection;
+  connection: DatabaseConnection | ApiConnection | FileConnection,
   query: string,
-  refreshInterval: number; // in minutes;
-  cacheTtl: number; // in minutes;
-}
-
+  refreshInterval: number; // in minutes
+  cacheTtl: number; // in minutes
 export interface DatabaseConnection {
   host: string,
-  port: number;
+  port: number,
   database: string;
   schema?: string;
   username: string,
   password: string;
   ssl?: boolean;
-}
-
 export interface ApiConnection {
   baseUrl: string,
-  endpoint: string;
+  endpoint: string,
   method: 'GET' | 'POST';
   headers?: Record<string, string>;
   authentication?: {
     type: 'basic' | 'bearer' | 'api_key',
     credentials: unknown
   };
-}
-
 export interface FileConnection {
   path: string,
   format: 'csv' | 'xlsx' | 'json' | 'xml';
   delimiter?: string;
   encoding?: string;
-}
-
 export interface ReportParameter {
   name: string,
-  type: 'string' | 'number' | 'date' | 'boolean' | 'select' | 'multi_select';
+  type: 'string' | 'number' | 'date' | 'boolean' | 'select' | 'multi_select',
   label: string;
   description?: string;
   required: boolean;
   defaultValue?: unknown;
   options?: ParameterOption[];
   validation?: ParameterValidation;
-}
-
 export interface ParameterOption {
   value: unknown,
   label: string;
   description?: string;
-}
-
 export interface ParameterValidation {
   min?: number;
   max?: number;
   pattern?: string;
   message?: string;
-}
-
 export interface VisualizationConfig {
   type: ChartType,
-  layout: LayoutConfig;
+  layout: LayoutConfig,
   styling: StylingConfig,
   interactions: InteractionConfig;
   drillDown?: DrillDownConfig;
-}
-
 export type ChartType = 
   | 'line';
   | 'bar';
@@ -152,7 +126,7 @@ export interface LayoutConfig {
   height?: number;
   margin?: {
     top: number,
-    right: number;
+    right: number,
     bottom: number,
     left: number
   };
@@ -161,19 +135,13 @@ export interface LayoutConfig {
   subtitle?: string;
   legend?: LegendConfig;
   axes?: AxesConfig;
-}
-
 export interface LegendConfig {
   show: boolean,
-  position: 'top' | 'right' | 'bottom' | 'left';
+  position: 'top' | 'right' | 'bottom' | 'left',
   align: 'start' | 'center' | 'end'
-}
-
 export interface AxesConfig {
   x?: AxisConfig;
   y?: AxisConfig;
-}
-
 export interface AxisConfig {
   title?: string;
   type?: 'linear' | 'logarithmic' | 'datetime' | 'category';
@@ -181,85 +149,61 @@ export interface AxisConfig {
   max?: number;
   format?: string;
   tickInterval?: number;
-}
-
 export interface StylingConfig {
   theme: 'light' | 'dark' | 'custom',
   colors: string[];
   fonts?: FontConfig;
   gridLines?: boolean;
   dataLabels?: boolean;
-}
-
 export interface FontConfig {
   family: string,
-  size: number;
+  size: number,
   weight: string
-}
-
 export interface InteractionConfig {
   zoom: boolean,
-  pan: boolean;
+  pan: boolean,
   crossfilter: boolean,
   tooltip: TooltipConfig;
   click?: ClickAction;
-}
-
 export interface TooltipConfig {
   enabled: boolean;
   format?: string;
   fields?: string[];
-}
-
 export interface ClickAction {
   type: 'drill_down' | 'filter' | 'navigate' | 'custom';
   target?: string;
   parameters?: Record<string, string>;
-}
-
 export interface DrillDownConfig {
   enabled: boolean,
   levels: DrillDownLevel[]
-}
-
 export interface DrillDownLevel {
   name: string,
   field: string;
   chart?: ChartType;
   filters?: FilterConfig[];
-}
-
 export interface FilterConfig {
   field: string,
-  operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'between';
+  operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'between',
   value: unknown
-}
-
 export interface ScheduleConfig {
   enabled: boolean,
-  frequency: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+  frequency: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly',
   interval: number;
-  time?: string; // HH:MM format;
-  dayOfWeek?: number; // 0-6, Sunday = 0;
-  dayOfMonth?: number; // 1-31;
+  time?: string; // HH:MM format
+  dayOfWeek?: number; // 0-6, Sunday = 0
+  dayOfMonth?: number; // 1-31
   timezone: string,
   format: 'pdf' | 'xlsx' | 'csv' | 'png' | 'email'
-}
-
 export interface AccessControl {
   owner: string,
-  visibility: 'private' | 'organization' | 'department' | 'public';
+  visibility: 'private' | 'organization' | 'department' | 'public',
   permissions: Permission[],
   shares: Share[]
-}
-
 export interface Permission {
   userId: string,
-  role: 'viewer' | 'editor' | 'admin';
+  role: 'viewer' | 'editor' | 'admin',
   grantedBy: string,
   grantedAt: Date
-}
-
 export interface Share {
   id: string,
   url: string;
@@ -267,39 +211,31 @@ export interface Share {
   password?: string;
   downloadEnabled: boolean,
   createdAt: Date
-}
-
 export interface AnalyticsDataset {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  source: DataSource;
+  source: DataSource,
   schema: DataSchema,
-  refreshedAt: Date;
+  refreshedAt: Date,
   recordCount: number,
-  sizeBytes: number;
+  sizeBytes: number,
   status: 'ready' | 'loading' | 'error';
   error?: string;
-}
-
 export interface DataSchema {
   fields: DataField[];
   primaryKey?: string;
   indexes?: string[];
-}
-
 export interface DataField {
   name: string,
-  type: 'string' | 'number' | 'date' | 'boolean' | 'object';
+  type: 'string' | 'number' | 'date' | 'boolean' | 'object',
   nullable: boolean;
   description?: string;
   format?: string;
   enum?: unknown[];
-}
-
 export interface ReportExecution {
   id: string,
-  reportId: string;
+  reportId: string,
   parameters: Record<string, any>;
   status: 'running' | 'completed' | 'failed',
   startTime: Date;
@@ -309,30 +245,26 @@ export interface ReportExecution {
   error?: string;
   triggeredBy: string,
   triggerType: 'manual' | 'scheduled' | 'api'
-}
-
 export interface AnalyticsInsight {
   id: string,
-  type: 'anomaly' | 'trend' | 'correlation' | 'prediction' | 'threshold';
+  type: 'anomaly' | 'trend' | 'correlation' | 'prediction' | 'threshold',
   title: string,
-  description: string;
+  description: string,
   severity: 'low' | 'medium' | 'high' | 'critical',
-  confidence: number; // 0-100;
+  confidence: number; // 0-100
   dataPoints: unknown[],
-  recommendations: string[];
+  recommendations: string[],
   category: string,
   detectedAt: Date;
   validUntil?: Date;
   dismissed: boolean;
   dismissedBy?: string;
   dismissedAt?: Date;
-}
-
 export interface KPIDefinition {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  category: string;
+  category: string,
   formula: string,
   unit: string;
   target?: number;
@@ -342,121 +274,95 @@ export interface KPIDefinition {
     red: { min?: number; max?: number };
   };
   frequency: 'real_time' | 'hourly' | 'daily' | 'weekly' | 'monthly',
-  dataSources: string[];
+  dataSources: string[],
   isActive: boolean
-}
-
 export interface KPIValue {
   kpiId: string,
-  timestamp: Date;
+  timestamp: Date,
   value: number;
   target?: number;
   status: 'green' | 'yellow' | 'red',
-  trend: 'up' | 'down' | 'stable';
+  trend: 'up' | 'down' | 'stable',
   changePercent: number;
   metadata?: Record<string, any>;
-}
-
 export interface AnalyticsAlert {
   id: string,
-  name: string;
+  name: string,
   description: string;
   kpiId?: string;
   condition: AlertCondition,
-  recipients: AlertRecipient[];
+  recipients: AlertRecipient[],
   channels: AlertChannel[],
   isActive: boolean;
   lastTriggered?: Date;
   triggerCount: number,
-  createdBy: string;
+  createdBy: string,
   createdAt: Date
-}
-
 export interface AlertCondition {
   field: string,
-  operator: 'greater_than' | 'less_than' | 'equals' | 'not_equals' | 'change_percent';
+  operator: 'greater_than' | 'less_than' | 'equals' | 'not_equals' | 'change_percent',
   value: number;
-  duration?: number; // minutes;
-  consecutive?: number; // consecutive violations;
-}
-
+  duration?: number; // minutes
+  consecutive?: number; // consecutive violations
 export interface AlertRecipient {
   type: 'user' | 'role' | 'email',
-  identifier: string;
+  identifier: string,
   priority: 'low' | 'medium' | 'high'
-}
-
 export interface AlertChannel {
   type: 'email' | 'sms' | 'slack' | 'webhook' | 'in_app',
-  configuration: unknown;
+  configuration: unknown,
   isEnabled: boolean
-}
-
 export interface DataGovernance {
   dataClassification: DataClassification[],
-  retentionPolicies: RetentionPolicy[];
+  retentionPolicies: RetentionPolicy[],
   accessAudit: AccessAuditLog[],
-  dataLineage: DataLineage;
+  dataLineage: DataLineage,
   qualityRules: DataQualityRule[]
-}
-
 export interface DataClassification {
   field: string,
-  classification: 'public' | 'internal' | 'confidential' | 'restricted';
+  classification: 'public' | 'internal' | 'confidential' | 'restricted',
   reason: string,
-  appliedAt: Date;
+  appliedAt: Date,
   appliedBy: string
-}
-
 export interface RetentionPolicy {
   dataType: string,
-  retentionPeriod: number; // days;
+  retentionPeriod: number; // days
   action: 'archive' | 'delete' | 'anonymize',
-  reason: string;
+  reason: string,
   isActive: boolean
-}
-
 export interface AccessAuditLog {
   userId: string,
-  reportId: string;
+  reportId: string,
   action: 'view' | 'edit' | 'delete' | 'share' | 'export',
-  timestamp: Date;
+  timestamp: Date,
   ipAddress: string,
-  userAgent: string;
+  userAgent: string,
   success: boolean;
   details?: unknown;
-}
-
 export interface DataLineage {
   sources: LineageNode[],
-  transformations: LineageTransformation[];
+  transformations: LineageTransformation[],
   destinations: LineageNode[]
-}
-
 export interface LineageNode {
   id: string,
-  type: 'table' | 'view' | 'api' | 'file' | 'report';
+  type: 'table' | 'view' | 'api' | 'file' | 'report',
   name: string;
   schema?: string;
   description?: string;
-}
-
 export interface LineageTransformation {
   id: string,
-  type: 'join' | 'filter' | 'aggregate' | 'calculate' | 'pivot';
+  type: 'join' | 'filter' | 'aggregate' | 'calculate' | 'pivot',
   description: string,
-  inputs: string[];
+  inputs: string[],
   outputs: string[],
   logic: string
-}
-
 export interface DataQualityRule {
   id: string,
-  name: string;
+  name: string,
   field: string,
-  rule: 'not_null' | 'unique' | 'range' | 'pattern' | 'custom';
+  rule: 'not_null' | 'unique' | 'range' | 'pattern' | 'custom',
   parameters: unknown,
-  severity: 'warning' | 'error';
+  severity: 'warning' | 'error',
   isActive: boolean
 }
 
@@ -486,26 +392,26 @@ class BusinessIntelligenceService extends EventEmitter {
     try {
       this.isRunning = true;
 
-      // Load reports and datasets;
+      // Load reports and datasets
       await this.loadReports();
       await this.loadDatasets();
       await this.loadKPIs();
       await this.loadAlerts();
 
-      // Start scheduled jobs;
+      // Start scheduled jobs
       this.startScheduledJobs();
 
-      // Start KPI monitoring;
+      // Start KPI monitoring
       this.startKPIMonitoring();
 
-      // Start insight generation;
+      // Start insight generation
       this.startInsightGeneration();
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.emit('bi_service_started')
     } catch (error) {
 
-      throw error;
+      throw error
     }
   }
 
@@ -517,7 +423,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
     this.isRunning = false;
 
-    // Stop all scheduled jobs;
+    // Stop all scheduled jobs
     this.scheduledJobs.forEach(job => clearInterval(job));
     this.scheduledJobs.clear();
 
@@ -526,7 +432,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   /**
-   * Create a new analytics report;
+   * Create a new analytics report
    */
   async createReport(report: Omit<AnalyticsReport, 'id' | 'createdAt' | 'updatedAt' | 'status'>): Promise<string> {
     const newReport: AnalyticsReport = {
@@ -539,20 +445,20 @@ class BusinessIntelligenceService extends EventEmitter {
 
     this.reports.set(newReport.id, newReport);
 
-    // Start scheduled job if configured;
+    // Start scheduled job if configured
     if (newReport.schedule?.enabled) {
       this.startScheduledJob(newReport);
     }
 
-    // Persist to database;
+    // Persist to database
     try {
-      // In production, save to database;
+      // In production, save to database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
     }
 
-    this.emit('report_created', newReport);
+    this.emit('report_created', newReport)
     return newReport.id;
   }
 
@@ -578,7 +484,7 @@ class BusinessIntelligenceService extends EventEmitter {
     this.executions.set(execution.id, execution);
 
     try {
-      // Execute report;
+      // Execute report
       const result = await this.performReportExecution(report, parameters);
       
       execution.status = 'completed';
@@ -634,7 +540,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
     this.datasets.set(newDataset.id, newDataset);
 
-    // Load dataset data;
+    // Load dataset data
     setImmediate(() => this.refreshDataset(newDataset.id));
 
     this.emit('dataset_created', newDataset);
@@ -652,7 +558,7 @@ class BusinessIntelligenceService extends EventEmitter {
       dataset.status = 'loading';
       this.datasets.set(datasetId, dataset);
 
-      // Fetch data from source;
+      // Fetch data from source
       const data = await this.fetchDatasetData(dataset);
 
       dataset.status = 'ready';
@@ -688,7 +594,7 @@ class BusinessIntelligenceService extends EventEmitter {
     this.kpis.set(newKPI.id, newKPI);
     this.kpiValues.set(newKPI.id, []);
 
-    // Start monitoring if active;
+    // Start monitoring if active
     if (newKPI.isActive) {
       this.startKPICollection(newKPI);
     }
@@ -843,11 +749,11 @@ class BusinessIntelligenceService extends EventEmitter {
     };
   }
 
-  // Private methods;
+  // Private methods
 
   private async loadReports(): Promise<void> {
     try {
-      // In production, load from database;
+      // In production, load from database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
@@ -856,7 +762,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async loadDatasets(): Promise<void> {
     try {
-      // In production, load from database;
+      // In production, load from database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
@@ -865,10 +771,10 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async loadKPIs(): Promise<void> {
     try {
-      // In production, load from database;
+      // In production, load from database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       
-      // Sample KPIs;
+      // Sample KPIs
       await this.defineKPI({
         name: 'Patient Satisfaction',
         description: 'Overall patient satisfaction score',
@@ -910,7 +816,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async loadAlerts(): Promise<void> {
     try {
-      // In production, load from database;
+      // In production, load from database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
@@ -920,7 +826,7 @@ class BusinessIntelligenceService extends EventEmitter {
   private startScheduledJobs(): void {
     this.reports.forEach(report => {
       if (report.schedule?.enabled) {
-        this.startScheduledJob(report);
+        this.startScheduledJob(report)
       }
     });
   }
@@ -942,19 +848,19 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private startKPIMonitoring(): void {
-    // Monitor KPIs every 5 minutes;
+    // Monitor KPIs every 5 minutes
     setInterval(() => {
       this.collectKPIValues();
     }, 5 * 60 * 1000);
   }
 
   private startKPICollection(kpi: KPIDefinition): void {
-    // Start individual KPI collection;
+    // Start individual KPI collection
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private startInsightGeneration(): void {
-    // Generate insights every hour;
+    // Generate insights every hour
     setInterval(() => {
       this.generateAllInsights();
     }, 60 * 60 * 1000);
@@ -969,14 +875,14 @@ class BusinessIntelligenceService extends EventEmitter {
         const values = this.kpiValues.get(kpi.id) || [];
         values.push(value);
         
-        // Keep only last 1000 values;
+        // Keep only last 1000 values
         if (values.length > 1000) {
           values.splice(0, values.length - 1000);
         }
         
         this.kpiValues.set(kpi.id, values);
 
-        // Check alerts;
+        // Check alerts
         this.checkKPIAlerts(kpi, value);
 
       } catch (error) {
@@ -986,7 +892,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {
-    // Mock KPI calculation - in production, this would execute the formula;
+    // Mock KPI calculation - in production, this would execute the formula
     const mockValue = Math.random() * 100;
     const target = kpi.target || 0;
     const trend = mockValue > target * 0.95 ? 'up' : mockValue < target * 0.85 ? 'down' : 'stable';
@@ -1004,7 +910,7 @@ class BusinessIntelligenceService extends EventEmitter {
       target,
       status,
       trend,
-      changePercent: (Math.random() - 0.5) * 10, // -5% to +5%;
+      changePercent: (Math.random() - 0.5) * 10, // -5% to +5%
       metadata: {}
     };
   }
@@ -1022,7 +928,7 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private evaluateAlertCondition(condition: AlertCondition, value: KPIValue): boolean {
-    const fieldValue = value.value; // Simplified - would need to handle different fields;
+    const fieldValue = value.value; // Simplified - would need to handle different fields
     
     switch (condition.operator) {
       case 'greater_than': return fieldValue > condition.value;
@@ -1038,7 +944,7 @@ class BusinessIntelligenceService extends EventEmitter {
     alert.lastTriggered = new Date();
     alert.triggerCount++;
     
-    // Send notifications via configured channels;
+    // Send notifications via configured channels
     alert.channels.forEach(channel => {
       if (channel.isEnabled) {
         this.sendAlertNotification(alert, value, channel);
@@ -1049,20 +955,20 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private sendAlertNotification(alert: AnalyticsAlert, value: KPIValue, channel: AlertChannel): void {
-    // Send notification via specified channel;
+    // Send notification via specified channel
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async generateAllInsights(): Promise<void> {
     for (const dataset of this.datasets.values()) {
       if (dataset.status === 'ready') {
-        await this.generateInsights(dataset.id);
+        await this.generateInsights(dataset.id)
       }
     }
   }
 
   private async performReportExecution(report: AnalyticsReport, parameters: Record<string, any>): Promise<{ url: string; data: unknown }> {
-    // Mock report execution;
+    // Mock report execution
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     return {
@@ -1072,25 +978,25 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private async fetchReportData(report: AnalyticsReport, parameters: Record<string, any>): Promise<any> {
-    // Mock data fetching;
+    // Mock data fetching
     return { data: [], parameters };
   }
 
   private transformReportData(data: unknown, report: AnalyticsReport): unknown {
-    // Transform data based on report configuration;
+    // Transform data based on report configuration
     return data;
   }
 
   private async fetchDatasetData(dataset: AnalyticsDataset): Promise<any> {
-    // Mock dataset data fetching;
+    // Mock dataset data fetching
     return [];
   }
 
   private async analyzeDataForInsights(data: unknown[], dataset: AnalyticsDataset): Promise<AnalyticsInsight[]> {
-    // Mock insight generation;
+    // Mock insight generation
     const insights: AnalyticsInsight[] = [];
     
-    // Simulate anomaly detection;
+    // Simulate anomaly detection
     if (Math.random() > 0.8) {
       insights.push({
         id: uuidv4(),
@@ -1111,18 +1017,18 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 
   private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {
-    // Mock export;
+    // Mock export
     return `/exports/${report.id}_${Date.now()}.${format}`;
   }
 
   private calculateScheduleInterval(schedule: ScheduleConfig): number {
-    // Calculate interval in milliseconds;
+    // Calculate interval in milliseconds
     switch (schedule.frequency) {
       case 'hourly': return 60 * 60 * 1000 * schedule.interval;
       case 'daily': return 24 * 60 * 60 * 1000 * schedule.interval;
       case 'weekly': return 7 * 24 * 60 * 60 * 1000 * schedule.interval;
       case 'monthly': return 30 * 24 * 60 * 60 * 1000 * schedule.interval;
-      default: return 24 * 60 * 60 * 1000; // Default to daily;
+      default: return 24 * 60 * 60 * 1000; // Default to daily
     }
   }
 
@@ -1146,5 +1052,5 @@ class BusinessIntelligenceService extends EventEmitter {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const businessIntelligence = new BusinessIntelligenceService();

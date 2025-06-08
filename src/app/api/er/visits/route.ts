@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from "next/server"; // Import uuid;
+import { NextRequest, NextResponse } from "next/server"; // Import uuid
 
-// Define interface for ER Visit data;
+// Define interface for ER Visit data
 interface ERVisit {
   id: string | number,
   patient_id: string | number;
-  patient_name?: string; // Denormalized;
-  mrn?: string; // Denormalized, added based on mock data;
-  arrival_timestamp: string; // ISO string;
+  patient_name?: string; // Denormalized
+  mrn?: string; // Denormalized, added based on mock data
+  arrival_timestamp: string; // ISO string
   chief_complaint: string;
-  mode_of_arrival?: string; // Added based on mock data;
-  triage_level?: number | undefined; // Added based on mock data, allow undefined;
-  // FIX: Allow undefined for optional fields based on usage;
+  mode_of_arrival?: string; // Added based on mock data
+  triage_level?: number | undefined; // Added based on mock data, allow undefined
+  // FIX: Allow undefined for optional fields based on usage
   assigned_physician_id?: string | number | undefined;
   assigned_nurse_id?: string | number | undefined;
   current_location?: string | undefined;
   current_status?: string | undefined;
   disposition?: string | undefined;
   discharge_timestamp?: string | undefined;
-  created_at?: string; // ISO string;
-  updated_at?: string; // ISO string;
-  // Add other relevant fields based on your schema;
+  created_at?: string; // ISO string
+  updated_at?: string; // ISO string
+  // Add other relevant fields based on your schema
 }
 
 // Mock data store for ER visits (replace with actual DB interaction)
@@ -27,9 +27,9 @@ const mockVisits: ERVisit[] = [
   {
     id: 1,
     patient_id: 101,
-    patient_name: "John Doe", // Denormalized for easier display;
-    mrn: "MRN001", // Denormalized;
-    arrival_timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago;
+    patient_name: "John Doe", // Denormalized for easier display
+    mrn: "MRN001", // Denormalized
+    arrival_timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
     chief_complaint: "Chest pain",
     mode_of_arrival: "Ambulance",
     triage_level: 2, // ESI level (if available early)
@@ -47,44 +47,44 @@ const mockVisits: ERVisit[] = [
     patient_id: 102,
     patient_name: "Jane Smith",
     mrn: "MRN002",
-    arrival_timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago;
+    arrival_timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
     chief_complaint: "Shortness of breath",
     mode_of_arrival: "Walk-in",
     triage_level: 3,
     current_status: "Under Assessment",
     current_location: "Triage Room 1",
-    assigned_physician_id: 201, // Example physician ID;
-    assigned_nurse_id: 301, // Example nurse ID;
+    assigned_physician_id: 201, // Example physician ID
+    assigned_nurse_id: 301, // Example nurse ID
     disposition: undefined,
     discharge_timestamp: undefined,
     created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago;
+    updated_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
   },
 ];
 let nextVisitId = 3;
 
-// Define interface for ER Visit creation input;
+// Define interface for ER Visit creation input
 interface ERVisitInput {
   patient_id: number | string,
   chief_complaint: string;
   mode_of_arrival?: string;
-  arrival_timestamp?: string; // Optional, defaults to now;
-  // Other initial fields might be relevant depending on workflow;
+  arrival_timestamp?: string; // Optional, defaults to now
+  // Other initial fields might be relevant depending on workflow
 }
 
-// Define interface for ER Visit update input (used in PUT) - Belongs in [id]/route.ts;
+// Define interface for ER Visit update input (used in PUT) - Belongs in [id]/route.ts
 // interface ERVisitUpdateInput {
-//   assigned_physician_id?: number | string | null;
-//   assigned_nurse_id?: number | string | null;
-//   current_location?: string | null;
-//   current_status?: string | null;
-//   disposition?: string | null;
-//   discharge_timestamp?: string | null;
-//   triage_level?: number | null; // Might be updated post-triage;
-//   // Add other updatable fields as needed;
+//   assigned_physician_id?: number | string | null
+//   assigned_nurse_id?: number | string | null
+//   current_location?: string | null
+//   current_status?: string | null
+//   disposition?: string | null
+//   discharge_timestamp?: string | null
+//   triage_level?: number | null; // Might be updated post-triage
+//   // Add other updatable fields as needed
 // }
 
-// Define interface for ER Visit filters;
+// Define interface for ER Visit filters
 interface ERVisitFilters {
   status?: string | undefined;
   location?: string | undefined;
@@ -95,7 +95,7 @@ interface ERVisitFilters {
 async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // Apply filters if implemented (example)
-  let filtered = [...mockVisits];
+  let filtered = [...mockVisits]
   if (filters.status) {
     filtered = filtered.filter(
       (v) => v.current_status?.toLowerCase() === filters.status!.toLowerCase();
@@ -107,7 +107,7 @@ async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
         v.current_location?.toLowerCase() === filters.location!.toLowerCase();
     );
   }
-  // Add date filtering if needed;
+  // Add date filtering if needed
 
   return filtered.sort(
     (a, b) =>
@@ -118,15 +118,15 @@ async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
 
 // Helper function to simulate DB interaction (POST)
 async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
-  // Added return type;
+  // Added return type
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  const now = new Date().toISOString();
-  // FIX: Ensure newVisit matches the ERVisit interface;
+  const now = new Date().toISOString()
+  // FIX: Ensure newVisit matches the ERVisit interface
   const newVisit: ERVisit = {
     id: nextVisitId++,
     patient_id: data.patient_id,
-    patient_name: `Patient ${data.patient_id}`, // Fetch or pass patient name;
-    mrn: `MRN${String(data.patient_id).padStart(3, "0")}`, // Fetch or pass MRN;
+    patient_name: `Patient ${data.patient_id}`, // Fetch or pass patient name
+    mrn: `MRN${String(data.patient_id).padStart(3, "0")}`, // Fetch or pass MRN
     arrival_timestamp: data.arrival_timestamp || now,
     chief_complaint: data.chief_complaint,
     mode_of_arrival: data.mode_of_arrival || "Unknown",
@@ -140,7 +140,7 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
     created_at: now,
     updated_at: now,
   };
-  mockVisits.push(newVisit); // This should now be type-compatible;
+  mockVisits.push(newVisit); // This should now be type-compatible
   return newVisit;
 }
 
@@ -178,7 +178,7 @@ export async const GET = (request: NextRequest) => {
 export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
-    // Apply type assertion;
+    // Apply type assertion
     const visitData = body as ERVisitInput;
 
     // Basic validation (add more comprehensive validation)
@@ -186,10 +186,10 @@ export async const POST = (request: NextRequest) => {
       return NextResponse.json(
         { error: "Missing required fields (patient_id, chief_complaint)" },
         { status: 400 }
-      );
+      )
     }
 
-    // Simulate creating the ER visit in the database;
+    // Simulate creating the ER visit in the database
     const newVisit = await createERVisitInDB(visitData);
 
     return NextResponse.json({ visit: newVisit }, { status: 201 });

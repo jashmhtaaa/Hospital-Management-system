@@ -28,13 +28,13 @@ import { execSync } from 'child_process';
 
 // Type definitions for GDPR compliance
 interface GDPRConfig {
-  readonly consentRequired: boolean;
+  readonly consentRequired: boolean
   readonly rightToAccessRequired: boolean;
   readonly rightToBeForgottenRequired: boolean;
   readonly dataPortabilityRequired: boolean;
   readonly dataProcessingRecordsRequired: boolean;
   readonly dpiaRequired: boolean; // Data Protection Impact Assessment
-  readonly breachNotificationRequired: boolean;
+  readonly breachNotificationRequired: boolean
   readonly dataTransferControlsRequired: boolean;
   readonly privacyPolicyRequired: boolean;
   readonly cookieConsentRequired: boolean;
@@ -51,7 +51,7 @@ interface GDPRConfig {
   readonly internationalTransferSafeguards: boolean;
   readonly childDataProtection: boolean; // Special protection for minors
   readonly healthDataProcessing: boolean; // Article 9 special categories
-  readonly dataProtectionOfficerRequired: boolean;
+  readonly dataProtectionOfficerRequired: boolean
   readonly supervisoryAuthorityContact: boolean
 }
 
@@ -61,7 +61,7 @@ interface ValidationResult {
   readonly details: string;
   readonly severity: 'critical' | 'high' | 'medium' | 'low';
   readonly gdprArticle: string; // Reference to specific GDPR article
-  readonly remediation?: string;
+  readonly remediation?: string
   readonly category: 'consent' | 'rights' | 'security' | 'governance' | 'transfers' | 'processing'
 }
 
@@ -74,16 +74,16 @@ interface ValidationWarning {
 
 interface ComplianceResults {
   totalChecks: number,
-  passedChecks: number;
+  passedChecks: number,
   failedChecks: ValidationResult[],
-  warnings: ValidationWarning[];
+  warnings: ValidationWarning[],
   complianceScore: number; // 0-100
   criticalIssues: number,
-  highPriorityIssues: number;
+  highPriorityIssues: number
   lastValidated: Date,
-  validatedBy: string;
+  validatedBy: string,
   gdprCompliant: boolean,
-  dataProcessingLegal: boolean;
+  dataProcessingLegal: boolean,
   dataSubjectRightsImplemented: boolean
 }
 
@@ -123,7 +123,7 @@ const GDPR_CONFIG: GDPRConfig = {
   healthDataProcessing: true, // Article 9 - Special categories of data
   dataProtectionOfficerRequired: true, // Articles 37-39 - DPO requirements
   supervisoryAuthorityContact: true // Article 57 - Authority cooperation
-} as const;
+} as const
 
 // Healthcare data processing categories for GDPR Article 30 records
 const HEALTHCARE_PROCESSING_CATEGORIES: readonly DataProcessingRecord[] = [
@@ -159,7 +159,7 @@ const HEALTHCARE_PROCESSING_CATEGORIES: readonly DataProcessingRecord[] = [
     safeguards: ['aggregation', 'statistical_disclosure_control'],
     lawfulBasis: 'public_task'
   }
-] as const;
+] as const
 
 // Results collection with enhanced GDPR tracking
 const results: ComplianceResults = {
@@ -175,7 +175,7 @@ const results: ComplianceResults = {
   gdprCompliant: false,
   dataProcessingLegal: false,
   dataSubjectRightsImplemented: false
-};
+}
 
 // Enhanced logging functions with GDPR-specific severity tracking
 function logCheck(
@@ -187,7 +187,7 @@ function logCheck(
   category: ValidationResult['category'] = 'processing',
   remediation?: string
 ): void {
-  results.totalChecks++;
+  results.totalChecks++
   
   if (passed) {
     results.passedChecks++;
@@ -231,7 +231,7 @@ function fileExists(filePath: string): boolean {
   try {
     return fs.existsSync(filePath)
   } catch (error) {
-    console.warn(`Error checking file existence: ${filePath}`, error);
+    console.warn(`Error checking file existence: ${filePath}`, error)
     return false;
   }
 }
@@ -290,7 +290,7 @@ function getFileContent(filePath: string): string | null {
 
 // Main GDPR validation functions
 function validateDataProtectionByDesign(): void {
-  console.log('\n🔐 Validating Data Protection by Design (Article 25)...');
+  console.log('\n🔐 Validating Data Protection by Design (Article 25)...')
   
   // 1.1 Check for privacy-enhancing technologies
   const hasPrivacyTech = fileExists('./src/lib/privacy/') ||
@@ -304,7 +304,7 @@ function validateDataProtectionByDesign(): void {
     'GDPR Article 25',
     'security',
     'Implement pseudonymization, anonymization, and other privacy-enhancing technologies'
-  );
+  )
 
   // 1.2 Check for data minimization in schemas
   const hasDataMinimization = fileContains('./prisma/schema.prisma', /@map|optional/i) ||
@@ -317,7 +317,7 @@ function validateDataProtectionByDesign(): void {
     'GDPR Article 5(1)(c)',
     'processing',
     'Implement data minimization principles in data collection and processing'
-  );
+  )
 
   // 1.3 Check for purpose limitation
   const hasPurposeLimitation = fileContains('./src/lib/audit/', /purpose|reason/i) ||
@@ -330,7 +330,7 @@ function validateDataProtectionByDesign(): void {
     'GDPR Article 5(1)(b)',
     'governance',
     'Implement purpose binding and limitation controls for data processing'
-  );
+  )
 
   // 1.4 Check for storage limitation
   const hasRetentionPolicy = fileExists('./docs/policies/data-retention-policy.md') ||
@@ -343,7 +343,7 @@ function validateDataProtectionByDesign(): void {
     'GDPR Article 5(1)(e)',
     'governance',
     'Implement automated data retention and deletion policies'
-  );
+  )
 }
 
 function validateConsentMechanisms(): void {
@@ -360,7 +360,7 @@ function validateConsentMechanisms(): void {
     'GDPR Article 7',
     'consent',
     'Implement comprehensive consent management system'
-  );
+  )
 
   if (hasConsentService) {
     // 2.2 Check for consent withdrawal
@@ -373,7 +373,7 @@ function validateConsentMechanisms(): void {
       'GDPR Article 7(3)',
       'consent',
       'Provide easy mechanism for users to withdraw consent'
-    );
+    )
 
     // 2.3 Check for granular consent
     const hasGranularConsent = fileContains('./src/lib/consent/', /granular|specific|purpose/i),
@@ -385,7 +385,7 @@ function validateConsentMechanisms(): void {
       'GDPR Article 7(4)',
       'consent',
       'Implement granular consent for different processing purposes'
-    );
+    )
   }
 
   // 2.4 Check for child consent protection
@@ -399,7 +399,7 @@ function validateConsentMechanisms(): void {
     'GDPR Article 8',
     'consent',
     'Implement special consent mechanisms for children under 16'
-  );
+  )
 }
 
 function validateDataSubjectRights(): void {
@@ -416,7 +416,7 @@ function validateDataSubjectRights(): void {
     'GDPR Article 12',
     'rights',
     'Implement user-friendly interface for exercising data subject rights'
-  );
+  )
 
   // 3.2 Check for right of access implementation
   const hasAccessRight = fileExists('./src/lib/data-subject-rights/access.service.ts') ||
@@ -429,7 +429,7 @@ function validateDataSubjectRights(): void {
     'GDPR Article 15',
     'rights',
     'Implement automated data export for subject access requests'
-  );
+  )
 
   // 3.3 Check for right to rectification
   const hasRectificationRight = fileExists('./src/lib/data-subject-rights/rectification.service.ts') ||
@@ -442,7 +442,7 @@ function validateDataSubjectRights(): void {
     'GDPR Article 16',
     'rights',
     'Allow users to correct inaccurate personal data'
-  );
+  )
 
   // 3.4 Check for right to erasure
   const hasErasureRight = fileExists('./src/lib/data-subject-rights/erasure.service.ts') ||
@@ -455,7 +455,7 @@ function validateDataSubjectRights(): void {
     'GDPR Article 17',
     'rights',
     'Implement secure data deletion for erasure requests'
-  );
+  )
 
   // 3.5 Check for data portability
   const hasPortabilityRight = fileExists('./src/lib/data-subject-rights/portability.service.ts') ||
@@ -468,7 +468,7 @@ function validateDataSubjectRights(): void {
     'GDPR Article 20',
     'rights',
     'Provide structured data export in machine-readable format'
-  );
+  )
 
   // 3.6 Check for right to object
   const hasObjectionRight = fileExists('./src/lib/data-subject-rights/objection.service.ts') ||
@@ -481,7 +481,7 @@ function validateDataSubjectRights(): void {
     'GDPR Article 21',
     'rights',
     'Allow users to object to certain types of processing'
-  );
+  )
 }
 
 function validateDataProcessingRecords(): void {
@@ -498,7 +498,7 @@ function validateDataProcessingRecords(): void {
     'GDPR Article 30',
     'governance',
     'Maintain detailed records of all processing activities'
-  );
+  )
 
   // 4.2 Check for lawful basis documentation
   const hasLawfulBasis = fileExists('./docs/gdpr/lawful-basis.md') ||
@@ -511,7 +511,7 @@ function validateDataProcessingRecords(): void {
     'GDPR Article 6',
     'governance',
     'Document lawful basis for each processing activity'
-  );
+  )
 
   // 4.3 Check for automated processing records
   const hasAutomatedRecords = fileExists('./src/lib/audit/processing-audit.service.ts') ||
@@ -524,7 +524,7 @@ function validateDataProcessingRecords(): void {
     'GDPR Article 30(1)',
     'governance',
     'Implement automated logging of all data processing activities'
-  );
+  )
 }
 
 function validateSecurityMeasures(): void {
@@ -541,7 +541,7 @@ function validateSecurityMeasures(): void {
     'GDPR Article 32(1)(a)',
     'security',
     'Implement strong encryption for all personal data'
-  );
+  )
 
   // 5.2 Check for pseudonymization
   const hasPseudonymization = fileExists('./src/lib/privacy/pseudonymization.service.ts') ||
@@ -554,7 +554,7 @@ function validateSecurityMeasures(): void {
     'GDPR Article 32(1)(a)',
     'security',
     'Implement pseudonymization for privacy protection'
-  );
+  )
 
   // 5.3 Check for access controls
   const hasAccessControls = fileExists('./src/lib/rbac/rbac.service.ts') ||
@@ -567,7 +567,7 @@ function validateSecurityMeasures(): void {
     'GDPR Article 32(1)(b)',
     'security',
     'Implement robust access control and authentication'
-  );
+  )
 
   // 5.4 Check for integrity and availability measures
   const hasIntegrityMeasures = fileExists('./src/lib/backup/') ||
@@ -580,7 +580,7 @@ function validateSecurityMeasures(): void {
     'GDPR Article 32(1)(b)',
     'security',
     'Implement data backup, recovery, and integrity verification'
-  );
+  )
 }
 
 function validateBreachNotification(): void {
@@ -597,7 +597,7 @@ function validateBreachNotification(): void {
     'GDPR Article 33(1)',
     'security',
     'Implement automated breach detection and alerting'
-  );
+  )
 
   // 6.2 Check for breach notification to authority
   const hasAuthorityNotification = fileExists('./src/lib/security/breach-notification.service.ts') ||
@@ -610,7 +610,7 @@ function validateBreachNotification(): void {
     'GDPR Article 33(1)',
     'governance',
     'Implement 72-hour breach notification to supervisory authority'
-  );
+  )
 
   // 6.3 Check for data subject notification
   const hasSubjectNotification = fileExists('./src/lib/security/subject-breach-notification.service.ts') ||
@@ -623,7 +623,7 @@ function validateBreachNotification(): void {
     'GDPR Article 34(1)',
     'governance',
     'Implement data subject breach notification for high-risk breaches'
-  );
+  )
 }
 
 function validateDataTransfers(): void {
@@ -640,7 +640,7 @@ function validateDataTransfers(): void {
     'GDPR Article 44',
     'transfers',
     'Conduct transfer impact assessment for international data transfers'
-  );
+  )
 
   // 7.2 Check for adequacy decision compliance
   const hasAdequacyCheck = fileContains('./src/lib/transfers/', /adequacy|safe-harbor|shield/i) ||
@@ -653,7 +653,7 @@ function validateDataTransfers(): void {
     'GDPR Article 45',
     'transfers',
     'Validate adequacy decisions for international transfers'
-  );
+  )
 
   // 7.3 Check for standard contractual clauses
   const hasSCCs = fileExists('./docs/contracts/standard-contractual-clauses/') ||
@@ -666,7 +666,7 @@ function validateDataTransfers(): void {
     'GDPR Article 46',
     'transfers',
     'Implement standard contractual clauses for data transfers'
-  );
+  )
 }
 
 function validateDPIA(): void {
@@ -683,7 +683,7 @@ function validateDPIA(): void {
     'GDPR Article 35(1)',
     'governance',
     'Conduct DPIA for high-risk processing activities'
-  );
+  )
 
   // 8.2 Check for DPIA automation
   const hasDPIAAutomation = fileExists('./src/lib/dpia/') ||
@@ -696,7 +696,7 @@ function validateDPIA(): void {
     'GDPR Article 35(7)',
     'governance',
     'Implement automated DPIA tools for systematic assessment'
-  );
+  )
 }
 
 function validateDataProtectionOfficer(): void {
@@ -713,7 +713,7 @@ function validateDataProtectionOfficer(): void {
     'GDPR Article 37(1)',
     'governance',
     'Designate Data Protection Officer for healthcare data processing'
-  );
+  )
 
   // 9.2 Check for DPO contact information
   const hasDPOContact = fileExists('./docs/privacy-policy.md') &&
@@ -726,15 +726,15 @@ function validateDataProtectionOfficer(): void {
     'GDPR Article 37(7)',
     'governance',
     'Publish DPO contact information in privacy policy'
-  );
+  )
 }
 
 function generateGDPRComplianceReport(): void {
   // Calculate compliance score
-  results.complianceScore = Math.round((results.passedChecks / results.totalChecks) * 100);
+  results.complianceScore = Math.round((results.passedChecks / results.totalChecks) * 100)
   
   // Determine overall GDPR compliance status
-  results.gdprCompliant = results.criticalIssues === 0 && results.complianceScore >= 90;
+  results.gdprCompliant = results.criticalIssues === 0 && results.complianceScore >= 90
   results.dataProcessingLegal = results.failedChecks.filter(f => f.category === 'processing' && f.severity === 'critical').length === 0;
   results.dataSubjectRightsImplemented = results.failedChecks.filter(f => f.category === 'rights' && f.severity === 'critical').length === 0;
 
@@ -751,7 +751,7 @@ function generateGDPRComplianceReport(): void {
   console.log(`📅 Validated: ${results.lastValidated.toISOString()}`);
   
   // Compliance status
-  let status = '🔴 NON-COMPLIANT';
+  let status = '🔴 NON-COMPLIANT'
   let recommendation = 'Critical GDPR violations must be resolved before processing EU personal data';
   
   if (results.gdprCompliant) {
@@ -772,7 +772,7 @@ function generateGDPRComplianceReport(): void {
   
   // Failed checks by category
   if (results.failedChecks.length > 0) {
-    console.log('\n❌ FAILED CHECKS BY CATEGORY:');
+    console.log('\n❌ FAILED CHECKS BY CATEGORY:')
     console.log('-'.repeat(50));
     
     const categories = ['consent', 'rights', 'security', 'governance', 'transfers', 'processing'] as const;
@@ -798,7 +798,7 @@ function generateGDPRComplianceReport(): void {
   
   // Warnings
   if (results.warnings.length > 0) {
-    console.log('\n⚠️  GDPR WARNINGS:');
+    console.log('\n⚠️  GDPR WARNINGS:')
     console.log('-'.repeat(40));
     
     results.warnings.forEach((warning, index) => {
@@ -811,7 +811,7 @@ function generateGDPRComplianceReport(): void {
   }
   
   // Healthcare-specific GDPR notes
-  console.log('\n🏥 HEALTHCARE-SPECIFIC GDPR CONSIDERATIONS:');
+  console.log('\n🏥 HEALTHCARE-SPECIFIC GDPR CONSIDERATIONS:')
   console.log('-'.repeat(50));
   console.log('• Health data is a special category requiring explicit consent (Art. 9)');
   console.log('• Child patient data requires parental consent under 16 (Art. 8)');
@@ -821,10 +821,10 @@ function generateGDPRComplianceReport(): void {
   console.log('• DPIA required for systematic health data monitoring');
   
   // Save results to file
-  const reportPath = './docs/compliance/gdpr-validation-report.json';
+  const reportPath = './docs/compliance/gdpr-validation-report.json'
   try {
     // Ensure directory exists
-    const dir = path.dirname(reportPath);
+    const dir = path.dirname(reportPath)
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -838,12 +838,12 @@ function generateGDPRComplianceReport(): void {
   console.log('='.repeat(80));
   
   // Exit with appropriate code
-  process.exit(results.criticalIssues > 0 ? 1 : 0);
+  process.exit(results.criticalIssues > 0 ? 1 : 0)
 }
 
 // Main execution
 function main(): void {
-  console.log('🇪🇺 Starting GDPR Compliance Validation for Healthcare System...');
+  console.log('🇪🇺 Starting GDPR Compliance Validation for Healthcare System...')
   console.log(`📋 Validating against EU General Data Protection Regulation`);
   console.log(`🏥 Healthcare-specific requirements included`);
   console.log(`🎯 Target: Zero Critical Issues for EU Data Processing\n`);
@@ -867,9 +867,7 @@ function main(): void {
 
 // Execute if run directly
 if (require.main === module) {
-  main();
-}
-
+  main()
 export {
   main as validateGDPRCompliance,
   GDPR_CONFIG,

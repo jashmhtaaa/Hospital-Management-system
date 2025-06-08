@@ -1,27 +1,16 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
-}
-
 import React from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 
 interface Patient {
   id: string,
-  name: string;
+  name: string,
   age: number,
-  gender: string;
+  gender: string,
   chiefComplaint: string,
-  triageLevel: 1 | 2 | 3 | 4 | 5;
+  triageLevel: 1 | 2 | 3 | 4 | 5,
   arrivalTime: string,
-  waitTime: string;
+  waitTime: string,
   status: 'waiting' | 'in-progress' | 'ready-for-discharge' | 'discharged';
   assignedTo?: string;
   location?: string;
@@ -99,4 +88,3 @@ export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps
       </Table>
     </div>
   );
-}

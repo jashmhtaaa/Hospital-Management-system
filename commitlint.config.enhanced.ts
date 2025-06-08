@@ -190,7 +190,7 @@ const Configuration: UserConfig = {
               return [
                 false,
                 'HIPAA, security, and compliance commits must include detailed body (min 50 characters) explaining the changes and impact',
-              ];
+              ]
             }
           }
           return [true];
@@ -203,7 +203,7 @@ const Configuration: UserConfig = {
               parsed.footer.includes('Refs:') || 
               parsed.footer.includes('Fixes:') || 
               parsed.footer.includes('Closes:')
-            );
+            )
             if (!hasReference) {
               return [
                 false,
@@ -221,7 +221,7 @@ const Configuration: UserConfig = {
               return [
                 false,
                 'Database migration commits must include rollback strategy in body',
-              ];
+              ]
             }
           }
           return [true];
@@ -234,7 +234,7 @@ const Configuration: UserConfig = {
               return [
                 false,
                 'Security-related commits must include "Security-Review: [reviewer-name]" in footer',
-              ];
+              ]
             }
           }
           return [true];
@@ -384,8 +384,6 @@ const Configuration: UserConfig = {
       },
     },
   },
-};
-
 export default Configuration;
 
 /**

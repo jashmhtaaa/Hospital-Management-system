@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -26,20 +18,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-// Define the type for the form data;
+// Define the type for the form data
 export interface ProcedureTypeFormData {
   name: string;
   description?: string | null;
   modality_type?: string | null;
 }
 
-// Define the type for the component props;
+// Define the type for the component props
 interface CreateProcedureTypeModalProperties {
   isOpen: boolean,
-  onClose: () => void;
+  onClose: () => void,
   onSubmit: (data: ProcedureTypeFormData) => Promise<void>
-}
-
 export default const CreateProcedureTypeModal = ({
   isOpen,
   onClose,
@@ -61,23 +51,23 @@ export default const CreateProcedureTypeModal = ({
       await onSubmit({
         name,
         description,
-        modality_type: modalityType || undefined, // Ensure null if empty;
+        modality_type: modalityType || undefined, // Ensure null if empty
       });
-      // Reset form on successful submission;
+      // Reset form on successful submission
       setName(""),
       setDescription("");
       setModalityType("");
-      // onClose(); // Keep modal open or close based on parent logic after onSubmit completes;
-    } catch (error) { // FIX: Added error parameter;
+      // onClose(); // Keep modal open or close based on parent logic after onSubmit completes
+    } catch (error) { // FIX: Added error parameter
 
-      // Optionally show an error message to the user;
+      // Optionally show an error message to the user
       alert("Failed to add procedure type. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Use the isOpen prop to control the dialog's open state;
+  // Use the isOpen prop to control the dialog's open state
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
       <DialogContent className="sm:max-w-[425px]">;
@@ -147,4 +137,3 @@ export default const CreateProcedureTypeModal = ({
       </DialogContent>
     </Dialog>
   );
-}

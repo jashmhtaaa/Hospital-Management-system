@@ -1,23 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
-}
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 interface ERDashboardStatsProps {
   totalPatients: number,
-  criticalCases: number;
+  criticalCases: number,
   waitingPatients: number,
-  averageWaitTime: string;
+  averageWaitTime: string,
   occupiedBeds: number,
   totalBeds: number
 }
@@ -44,7 +33,7 @@ export const ERDashboardStats = ({ totalPatients,
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalPatients}</div>;
+          <div className="text-2xl font-bold">{totalPatients}</div>
           <p className="text-xs text-gray-500">;
             {criticalCases > 0 && (
               <Badge variant="danger" className="ml-1">;
@@ -64,7 +53,7 @@ export const ERDashboardStats = ({ totalPatients,
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{waitingPatients}</div>;
+          <div className="text-2xl font-bold">{waitingPatients}</div>
           <p className="text-xs text-gray-500">Avg. wait: {averageWaitTime}</p>
         </CardContent>
       </Card>
@@ -80,7 +69,7 @@ export const ERDashboardStats = ({ totalPatients,
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{occupiedBeds}/{totalBeds}</div>;
+          <div className="text-2xl font-bold">{occupiedBeds}/{totalBeds}</div>
           <p className="text-xs text-gray-500">;
             {Math.round((occupiedBeds / totalBeds) * 100)}% occupancy rate
           </p>
@@ -88,4 +77,3 @@ export const ERDashboardStats = ({ totalPatients,
       </Card>
     </div>
   );
-}

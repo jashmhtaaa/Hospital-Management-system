@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
 
-// Schema for calibration record;
+// Schema for calibration record
 const calibrationSchema = z.object({
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
     message: "Invalid date format"
@@ -29,16 +19,16 @@ const calibrationSchema = z.object({
   attachments: z.array(z.string()).optional(),
 });
 
-// POST handler for recording calibration;
+// POST handler for recording calibration
 export async const POST = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = calibrationSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -49,7 +39,7 @@ export async const POST = (
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects;
+    // Convert date strings to Date objects
     const calibrationData = {
       biomedicalEquipmentId: params.id,
       date: new Date(data.date),
@@ -60,7 +50,7 @@ export async const POST = (
       attachments: data.attachments,
     };
     
-    // Record calibration;
+    // Record calibration
     const calibrationRecord = await biomedicalService.recordCalibration(calibrationData);
     
     return NextResponse.json(calibrationRecord);
@@ -73,7 +63,7 @@ export async const POST = (
   }
 }
 
-// GET handler for listing calibration records;
+// GET handler for listing calibration records
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -89,4 +79,3 @@ export async const GET = (
       { status: 500 }
     );
   }
-}

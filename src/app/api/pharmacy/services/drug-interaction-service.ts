@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -24,7 +16,7 @@ export class DrugInteractionService {
   private prisma: PrismaClient;
   private auditLogger: AuditLogger;
   
-  // Reference data for drug classes and interactions;
+  // Reference data for drug classes and interactions
   private allergyClasses: Array<{id: string; name: string; medications: string[]}>;
   private conditionInteractions: Array<{id: string; medicationName: string; conditionCode: string; severity: string; description: string; reference: string}>;
   private labInteractions: Array<{id: string; medicationName: string; labCode: string; abnormalFlag: string; severity: string; description: string; reference: string}>;
@@ -33,7 +25,7 @@ export class DrugInteractionService {
     this.prisma = prisma;
     this.auditLogger = auditLogger;
     
-    // Initialize reference data;
+    // Initialize reference data
     this.initializeReferenceData();
   }
   
@@ -42,7 +34,7 @@ export class DrugInteractionService {
    * This would typically be loaded from a database or external service;
    */
   private initializeReferenceData(): void {
-    // Initialize allergy classes;
+    // Initialize allergy classes
     this.allergyClasses = [
       {
         id: 'class1',
@@ -66,12 +58,12 @@ export class DrugInteractionService {
       }
     ];
     
-    // Initialize condition interactions;
+    // Initialize condition interactions
     this.conditionInteractions = [
       {
         id: 'condint1',
         medicationName: 'Metformin',
-        conditionCode: 'N17.9', // Acute kidney failure;
+        conditionCode: 'N17.9', // Acute kidney failure
         severity: 'severe',
         description: 'Metformin is contraindicated in acute kidney failure due to increased risk of lactic acidosis',
         reference: 'https://example.com/interactions/metformin-kidney-failure'
@@ -79,7 +71,7 @@ export class DrugInteractionService {
       {
         id: 'condint2',
         medicationName: 'Warfarin',
-        conditionCode: 'K92.2', // Gastrointestinal hemorrhage;
+        conditionCode: 'K92.2', // Gastrointestinal hemorrhage
         severity: 'severe',
         description: 'Warfarin may exacerbate gastrointestinal bleeding',
         reference: 'https://example.com/interactions/warfarin-gi-bleeding'
@@ -87,20 +79,20 @@ export class DrugInteractionService {
       {
         id: 'condint3',
         medicationName: 'Propranolol',
-        conditionCode: 'J45.909', // Asthma;
+        conditionCode: 'J45.909', // Asthma
         severity: 'severe',
         description: 'Non-selective beta-blockers can cause bronchospasm in patients with asthma',
         reference: 'https://example.com/interactions/propranolol-asthma'
       }
-    ];
+    ]
     
-    // Initialize lab interactions;
+    // Initialize lab interactions
     this.labInteractions = [
       {
         id: 'labint1',
         medicationName: 'Digoxin',
-        labCode: '2823-3', // Potassium;
-        abnormalFlag: 'L', // Low;
+        labCode: '2823-3', // Potassium
+        abnormalFlag: 'L', // Low
         severity: 'severe',
         description: 'Hypokalemia increases risk of digoxin toxicity',
         reference: 'https://example.com/interactions/digoxin-hypokalemia'
@@ -108,8 +100,8 @@ export class DrugInteractionService {
       {
         id: 'labint2',
         medicationName: 'Warfarin',
-        labCode: '6301-6', // INR;
-        abnormalFlag: 'H', // High;
+        labCode: '6301-6', // INR
+        abnormalFlag: 'H', // High
         severity: 'severe',
         description: 'Elevated INR indicates increased bleeding risk with warfarin',
         reference: 'https://example.com/interactions/warfarin-inr'
@@ -117,13 +109,13 @@ export class DrugInteractionService {
       {
         id: 'labint3',
         medicationName: 'Lithium',
-        labCode: '2951-2', // Sodium;
-        abnormalFlag: 'L', // Low;
+        labCode: '2951-2', // Sodium
+        abnormalFlag: 'L', // Low
         severity: 'severe',
         description: 'Hyponatremia can increase lithium levels and toxicity',
         reference: 'https://example.com/interactions/lithium-hyponatremia'
       }
-    ];
+    ]
   }
   
   /**
@@ -140,7 +132,7 @@ export class DrugInteractionService {
     patientId?: string;
   ): Promise<PharmacyDomain.DrugInteractionResult> {
     try {
-      // Log the interaction check;
+      // Log the interaction check
       this.auditLogger.logEvent({
         eventType: 'INTERACTION_CHECK',
         resourceType: 'Medication',
@@ -149,7 +141,7 @@ export class DrugInteractionService {
         severity: 'INFO'
       });
       
-      // Get medication details;
+      // Get medication details
       const medication1 = await this.prisma.medication.findUnique({
         where: { id: medicationId1 }
       });
@@ -162,7 +154,7 @@ export class DrugInteractionService {
         throw new Error('One or both medications not found');
       }
       
-      // Check for interactions in the database;
+      // Check for interactions in the database
       const interactions = await this.prisma.medication.findMany({
         where: {
           OR: [
@@ -182,7 +174,7 @@ export class DrugInteractionService {
         }
       });
       
-      // If no interactions found, return negative result;
+      // If no interactions found, return negative result
       if (interactions.length === 0) {
         return {
           hasInteraction: false,
@@ -191,7 +183,7 @@ export class DrugInteractionService {
         };
       }
       
-      // Get the most severe interaction;
+      // Get the most severe interaction
       const interaction = interactions.reduce((prev, current) => {
         const severityRank: Record<string, number> = {
           severe: 3,
@@ -202,7 +194,7 @@ export class DrugInteractionService {
         return severityRank[current.severity] > severityRank[prev.severity] ? current : prev;
       });
       
-      // Check if there's an override for this interaction;
+      // Check if there's an override for this interaction
       let isOverridden = false;
       let overrideReason = '';
       
@@ -215,13 +207,13 @@ export class DrugInteractionService {
               gt: new Date() // Only active overrides
             }
           }
-        });
+        })
         
         if (override) {
           isOverridden = true;
           overrideReason = override.reason;
           
-          // Log the override application;
+          // Log the override application
           this.auditLogger.logEvent({
             eventType: 'INTERACTION_OVERRIDE_APPLIED',
             resourceType: 'Medication',
@@ -238,7 +230,7 @@ export class DrugInteractionService {
             }
           }
         })) {
-          // Log expired override;
+          // Log expired override
           this.auditLogger.logEvent({
             eventType: 'EXPIRED_OVERRIDE_IGNORED',
             resourceType: 'Medication',
@@ -249,7 +241,7 @@ export class DrugInteractionService {
         }
       }
       
-      // Return interaction result;
+      // Return interaction result
       return {
         hasInteraction: true,
         isOverridden,
@@ -261,7 +253,7 @@ export class DrugInteractionService {
         reference: interaction.reference
       };
     } catch (error) {
-      // Log the error;
+      // Log the error
       this.auditLogger.logEvent({
         eventType: 'INTERACTION_CHECK_ERROR',
         resourceType: 'Medication',
@@ -286,7 +278,7 @@ export class DrugInteractionService {
     patientId: string;
   ): Promise<PharmacyDomain.DrugAllergyInteractionResult> {
     try {
-      // Log the interaction check;
+      // Log the interaction check
       this.auditLogger.logEvent({
         eventType: 'ALLERGY_INTERACTION_CHECK',
         resourceType: 'Medication',
@@ -295,7 +287,7 @@ export class DrugInteractionService {
         severity: 'INFO'
       });
       
-      // Get medication details;
+      // Get medication details
       const medication = await this.prisma.medication.findUnique({
         where: { id: medicationId }
       });
@@ -304,7 +296,7 @@ export class DrugInteractionService {
         throw new Error('Medication not found');
       }
       
-      // Get patient allergies;
+      // Get patient allergies
       const allergies = await this.prisma.allergy.findMany({
         where: {
           patientId,
@@ -312,13 +304,13 @@ export class DrugInteractionService {
         }
       });
       
-      // Check for direct allergen match;
+      // Check for direct allergen match
       const directMatch = allergies.find(allergy => 
         allergy.allergen.toLowerCase() === medication.name.toLowerCase();
       );
       
       if (directMatch) {
-        // Log the interaction detection;
+        // Log the interaction detection
         this.auditLogger.logEvent({
           eventType: 'ALLERGY_INTERACTION_DETECTED',
           resourceType: 'Medication',
@@ -337,7 +329,7 @@ export class DrugInteractionService {
         };
       }
       
-      // Check for class-based allergen match;
+      // Check for class-based allergen match
       for (const allergy of allergies) {
         const allergyClass = this.allergyClasses.find(cls => 
           cls.name.toLowerCase() === allergy.allergen.toLowerCase();
@@ -346,7 +338,7 @@ export class DrugInteractionService {
         if (allergyClass && allergyClass.medications.some(med => 
           med.toLowerCase() === medication.name.toLowerCase();
         )) {
-          // Log the interaction detection;
+          // Log the interaction detection
           this.auditLogger.logEvent({
             eventType: 'ALLERGY_INTERACTION_DETECTED',
             resourceType: 'Medication',
@@ -367,14 +359,14 @@ export class DrugInteractionService {
         }
       }
       
-      // No interaction found;
+      // No interaction found
       return {
         hasInteraction: false,
         medication,
         interactionType: 'drug-allergy'
       };
     } catch (error) {
-      // Log the error;
+      // Log the error
       this.auditLogger.logEvent({
         eventType: 'ALLERGY_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication',
@@ -399,7 +391,7 @@ export class DrugInteractionService {
     patientId: string;
   ): Promise<PharmacyDomain.DrugConditionInteractionResult> {
     try {
-      // Log the interaction check;
+      // Log the interaction check
       this.auditLogger.logEvent({
         eventType: 'CONDITION_INTERACTION_CHECK',
         resourceType: 'Medication',
@@ -408,7 +400,7 @@ export class DrugInteractionService {
         severity: 'INFO'
       });
       
-      // Get medication details;
+      // Get medication details
       const medication = await this.prisma.medication.findUnique({
         where: { id: medicationId }
       });
@@ -417,7 +409,7 @@ export class DrugInteractionService {
         throw new Error('Medication not found');
       }
       
-      // Get patient conditions;
+      // Get patient conditions
       const conditions = await this.prisma.condition.findMany({
         where: {
           patientId,
@@ -425,7 +417,7 @@ export class DrugInteractionService {
         }
       });
       
-      // Check for condition interactions;
+      // Check for condition interactions
       for (const condition of conditions) {
         const interaction = this.conditionInteractions.find(int => 
           int.medicationName.toLowerCase() === medication.name.toLowerCase() &&;
@@ -433,7 +425,7 @@ export class DrugInteractionService {
         );
         
         if (interaction) {
-          // Log the interaction detection;
+          // Log the interaction detection
           this.auditLogger.logEvent({
             eventType: 'CONDITION_INTERACTION_DETECTED',
             resourceType: 'Medication',
@@ -454,14 +446,14 @@ export class DrugInteractionService {
         }
       }
       
-      // No interaction found;
+      // No interaction found
       return {
         hasInteraction: false,
         medication,
         interactionType: 'drug-condition'
       };
     } catch (error) {
-      // Log the error;
+      // Log the error
       this.auditLogger.logEvent({
         eventType: 'CONDITION_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication',
@@ -486,7 +478,7 @@ export class DrugInteractionService {
     patientId: string;
   ): Promise<PharmacyDomain.DrugLabInteractionResult> {
     try {
-      // Log the interaction check;
+      // Log the interaction check
       this.auditLogger.logEvent({
         eventType: 'LAB_INTERACTION_CHECK',
         resourceType: 'Medication',
@@ -495,7 +487,7 @@ export class DrugInteractionService {
         severity: 'INFO'
       });
       
-      // Get medication details;
+      // Get medication details
       const medication = await this.prisma.medication.findUnique({
         where: { id: medicationId }
       });
@@ -509,7 +501,7 @@ export class DrugInteractionService {
         where: {
           patientId,
           abnormalFlag: {
-            in: ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags;
+            in: ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags
           },
           collectedDate: {
             gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
@@ -518,9 +510,9 @@ export class DrugInteractionService {
         orderBy: {
           collectedDate: 'desc'
         }
-      });
+      })
       
-      // Check for lab interactions;
+      // Check for lab interactions
       for (const labResult of labResults) {
         const interaction = this.labInteractions.find(int => 
           int.medicationName.toLowerCase() === medication.name.toLowerCase() &&;
@@ -529,7 +521,7 @@ export class DrugInteractionService {
         );
         
         if (interaction) {
-          // Log the interaction detection;
+          // Log the interaction detection
           this.auditLogger.logEvent({
             eventType: 'LAB_INTERACTION_DETECTED',
             resourceType: 'Medication',
@@ -550,14 +542,14 @@ export class DrugInteractionService {
         }
       }
       
-      // No interaction found;
+      // No interaction found
       return {
         hasInteraction: false,
         medication,
         interactionType: 'drug-lab'
       };
     } catch (error) {
-      // Log the error;
+      // Log the error
       this.auditLogger.logEvent({
         eventType: 'LAB_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication',
@@ -588,7 +580,7 @@ export class DrugInteractionService {
     durationDays: number;
   ): Promise<PharmacyDomain.InteractionOverride> {
     try {
-      // Log the override creation;
+      // Log the override creation
       this.auditLogger.logEvent({
         eventType: 'INTERACTION_OVERRIDE_CREATED',
         userId: providerId,
@@ -598,11 +590,11 @@ export class DrugInteractionService {
         severity: 'WARNING'
       });
       
-      // Calculate expiration date;
+      // Calculate expiration date
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + durationDays);
       
-      // Create the override in the database;
+      // Create the override in the database
       const override = await this.prisma.interactionOverride.create({
         data: {
           interactionId,
@@ -616,7 +608,7 @@ export class DrugInteractionService {
       
       return override;
     } catch (error) {
-      // Log the error;
+      // Log the error
       this.auditLogger.logEvent({
         eventType: 'INTERACTION_OVERRIDE_ERROR',
         userId: providerId,
@@ -642,7 +634,7 @@ export class DrugInteractionService {
     patientId: string;
   ): Promise<PharmacyDomain.BatchInteractionResult> {
     try {
-      // Log the batch check;
+      // Log the batch check
       this.auditLogger.logEvent({
         eventType: 'BATCH_INTERACTION_CHECK',
         resourceType: 'Patient',
@@ -656,7 +648,7 @@ export class DrugInteractionService {
       const drugConditionInteractions: PharmacyDomain.DrugConditionInteractionResult[] = [];
       const drugLabInteractions: PharmacyDomain.DrugLabInteractionResult[] = [];
       
-      // Check drug-drug interactions;
+      // Check drug-drug interactions
       for (let i = 0; i < medicationIds.length; i++) {
         for (let j = i + 1; j < medicationIds.length; j++) {
           const interaction = await this.checkDrugDrugInteraction(
@@ -671,7 +663,7 @@ export class DrugInteractionService {
         }
       }
       
-      // Check drug-allergy interactions;
+      // Check drug-allergy interactions
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugAllergyInteraction(medicationId, patientId);
         
@@ -680,7 +672,7 @@ export class DrugInteractionService {
         }
       }
       
-      // Check drug-condition interactions;
+      // Check drug-condition interactions
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugConditionInteraction(medicationId, patientId);
         
@@ -689,7 +681,7 @@ export class DrugInteractionService {
         }
       }
       
-      // Check drug-lab interactions;
+      // Check drug-lab interactions
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugLabInteraction(medicationId, patientId);
         
@@ -698,7 +690,7 @@ export class DrugInteractionService {
         }
       }
       
-      // Determine if there are any severe interactions;
+      // Determine if there are any severe interactions
       const hasSevereInteractions = [
         ...drugDrugInteractions,
         ...drugAllergyInteractions,
@@ -720,7 +712,7 @@ export class DrugInteractionService {
                          drugLabInteractions.length;
       };
     } catch (error) {
-      // Log the error;
+      // Log the error
       this.auditLogger.logEvent({
         eventType: 'BATCH_INTERACTION_CHECK_ERROR',
         resourceType: 'Patient',
@@ -732,4 +724,3 @@ export class DrugInteractionService {
       throw error;
     }
   }
-}

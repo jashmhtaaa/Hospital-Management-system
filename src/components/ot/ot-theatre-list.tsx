@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -22,19 +14,17 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
 import { Edit, Trash2, Activity, WifiOff } from "lucide-react";
 
-// Mock data structure - replace with actual API response type;
+// Mock data structure - replace with actual API response type
 interface Theatre {
   id: string,
-  name: string;
+  name: string,
   location: string | null,
-  specialty: string | null;
+  specialty: string | null,
   status: string,
   updated_at: string
-}
-
 export default const OTTheatreList = () {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,16 +36,16 @@ export default const OTTheatreList = () {
         setLoading(true),
         setError(undefined);
 
-        // Replace with actual API call;
-        // const response = await fetch("/api/ot/theatres");
+        // Replace with actual API call
+        // const response = await fetch("/api/ot/theatres")
         // if (!response.ok) {
-        //   throw new Error("Failed to fetch theatres");
+        //   throw new Error("Failed to fetch theatres")
         // }
-        // const data = await response.json();
-        // setTheatres(data);
+        // const data = await response.json()
+        // setTheatres(data)
 
-        // Mock data for demonstration;
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
+        // Mock data for demonstration
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: Theatre[] = [
           {
             id: "theatre-1",
@@ -187,4 +177,3 @@ export default const OTTheatreList = () {
       </CardContent>
     </Card>
   );
-}

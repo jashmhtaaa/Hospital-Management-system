@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintActivity, ComplaintAttachment, FollowUpAction, FeedbackSurveyTemplate, FeedbackSurvey } from '@prisma/client';
 
-// FHIR-compliant interfaces for Feedback & Complaint Management;
+// FHIR-compliant interfaces for Feedback & Complaint Management
 
 /**
  * FHIR-compliant Feedback;
@@ -19,7 +9,7 @@ import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintAct
  */
 export interface FHIRFeedback {
   resourceType: 'QuestionnaireResponse',
-  id: string;
+  id: string,
   status: 'in-progress' | 'completed' | 'amended' | 'entered-in-error' | 'stopped';
   subject?: {
     reference: string;
@@ -57,7 +47,7 @@ export interface FHIRFeedback {
   meta?: {
     tag?: {
       system: string,
-      code: string;
+      code: string,
       display: string
     }[];
   };
@@ -69,12 +59,12 @@ export interface FHIRFeedback {
  */
 export interface FHIRComplaint {
   resourceType: 'Communication',
-  id: string;
+  id: string,
   status: 'preparation' | 'in-progress' | 'not-done' | 'on-hold' | 'stopped' | 'completed' | 'entered-in-error' | 'unknown',
   category: {
     coding: {
       system: string,
-      code: string;
+      code: string,
       display: string
     }[];
   }[];
@@ -117,7 +107,7 @@ export interface FHIRComplaint {
  */
 export interface FHIRFollowUpAction {
   resourceType: 'Task',
-  id: string;
+  id: string,
   identifier: {
     system: string,
     value: string
@@ -128,7 +118,7 @@ export interface FHIRFollowUpAction {
   code: {
     coding: {
       system: string,
-      code: string;
+      code: string,
       display: string
     }[];
     text: string
@@ -180,7 +170,7 @@ export interface FHIRFeedbackSurveyTemplate {
   purpose?: string;
   item?: {
     linkId: string,
-    text: string;
+    text: string,
     type: 'group' | 'display' | 'boolean' | 'decimal' | 'integer' | 'date' | 'dateTime' | 'time' | 'string' | 'text' | 'url' | 'choice' | 'open-choice' | 'attachment' | 'reference' | 'quantity';
     required?: boolean;
     repeats?: boolean;
@@ -194,7 +184,7 @@ export interface FHIRFeedbackSurveyTemplate {
       valueTime?: string;
       valueUri?: string;
     }[];
-    item?: unknown[]; // For nested items;
+    item?: unknown[]; // For nested items
   }[];
 }
 
@@ -208,7 +198,7 @@ export const toFHIRFeedback = (feedback: Feedback & {
   responses?: FeedbackResponse[];
   attachments?: FeedbackAttachment[];
 }): FHIRFeedback {
-  // Map status from internal to FHIR status;
+  // Map status from internal to FHIR status
   const statusMap: Record<string, 'in-progress' | 'completed' | 'amended' | 'entered-in-error' | 'stopped'> = {
     'NEW': 'completed',
     'REVIEWED': 'completed',
@@ -216,7 +206,7 @@ export const toFHIRFeedback = (feedback: Feedback & {
     'CLOSED': 'completed';
   };
 
-  // Create items array for feedback data;
+  // Create items array for feedback data
   const items = [
     {
       linkId: 'type',
@@ -235,7 +225,7 @@ export const toFHIRFeedback = (feedback: Feedback & {
     }
   ];
 
-  // Add comments if present;
+  // Add comments if present
   if (feedback.comments) {
     items.push({
       linkId: 'comments',
@@ -244,7 +234,7 @@ export const toFHIRFeedback = (feedback: Feedback & {
     });
   }
 
-  // Add responses if present;
+  // Add responses if present
   if (feedback.responses && feedback.responses.length > 0) {
     feedback.responses.forEach((response, index) => {
       items.push({
@@ -255,7 +245,7 @@ export const toFHIRFeedback = (feedback: Feedback & {
     });
   }
 
-  // Add attachments if present;
+  // Add attachments if present
   if (feedback.attachments && feedback.attachments.length > 0) {
     feedback.attachments.forEach((attachment, index) => {
       items.push({
@@ -273,31 +263,31 @@ export const toFHIRFeedback = (feedback: Feedback & {
     });
   }
 
-  // Create tags for metadata;
+  // Create tags for metadata
   const tags = [
     {
       system: 'http://hms.local/fhir/CodeSystem/feedback-status',
       code: feedback.status.toLowerCase(),
       display: feedback.status
     }
-  ];
+  ]
 
-  // Add service type tag if present;
+  // Add service type tag if present
   if (feedback.serviceType) {
     tags.push({
       system: 'http://hms.local/fhir/CodeSystem/service-type',
       code: feedback.serviceType.toLowerCase(),
       display: feedback.serviceType
-    });
+    })
   }
 
-  // Add department tag if present;
+  // Add department tag if present
   if (feedback.department) {
     tags.push({
       system: 'http://hms.local/fhir/CodeSystem/department',
       code: feedback.department.id,
       display: feedback.department.name
-    });
+    })
   }
 
   return {
@@ -339,7 +329,7 @@ export const toFHIRComplaint = (complaint: Complaint & {
   activities?: ComplaintActivity[];
   attachments?: ComplaintAttachment[];
 }): FHIRComplaint {
-  // Map status from internal to FHIR status;
+  // Map status from internal to FHIR status
   const statusMap: Record<string, 'preparation' | 'in-progress' | 'not-done' | 'on-hold' | 'stopped' | 'completed' | 'entered-in-error' | 'unknown'> = {
     'SUBMITTED': 'preparation',
     'UNDER_INVESTIGATION': 'in-progress',
@@ -348,7 +338,7 @@ export const toFHIRComplaint = (complaint: Complaint & {
     'ESCALATED': 'in-progress';
   };
 
-  // Map severity to FHIR priority;
+  // Map severity to FHIR priority
   const priorityMap: Record<string, 'routine' | 'urgent' | 'asap' | 'stat'> = {
     'LOW': 'routine',
     'MEDIUM': 'routine',
@@ -356,21 +346,21 @@ export const toFHIRComplaint = (complaint: Complaint & {
     'CRITICAL': 'stat';
   };
 
-  // Map category to FHIR category coding;
+  // Map category to FHIR category coding
   const categoryCoding = {
     system: 'http://hms.local/fhir/CodeSystem/complaint-category',
     code: complaint.category.toLowerCase(),
     display: complaint.category
-  };
+  }
 
-  // Create payload for complaint details;
+  // Create payload for complaint details
   const payload = [
     {
       contentString: complaint.description
     }
   ];
 
-  // Add attachments if present;
+  // Add attachments if present
   if (complaint.attachments && complaint.attachments.length > 0) {
     complaint.attachments.forEach(attachment => {
       payload.push({
@@ -384,7 +374,7 @@ export const toFHIRComplaint = (complaint: Complaint & {
     });
   }
 
-  // Create notes for activities and resolution details;
+  // Create notes for activities and resolution details
   const notes = [];
 
   if (complaint.activities && complaint.activities.length > 0) {
@@ -408,7 +398,7 @@ export const toFHIRComplaint = (complaint: Complaint & {
     });
   }
 
-  // Create recipients array;
+  // Create recipients array
   const recipients = [];
 
   if (complaint.assignedToId) {
@@ -463,7 +453,7 @@ export const toFHIRFollowUpAction = (action: FollowUpAction & {
   complaint?: unknown;
   createdByUser?: unknown;
 }): FHIRFollowUpAction {
-  // Map status from internal to FHIR status;
+  // Map status from internal to FHIR status
   const statusMap: Record<string, 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error'> = {
     'PLANNED': 'requested',
     'IN_PROGRESS': 'in-progress',
@@ -471,15 +461,15 @@ export const toFHIRFollowUpAction = (action: FollowUpAction & {
     'CANCELLED': 'cancelled';
   };
 
-  // Map action type to FHIR code;
+  // Map action type to FHIR code
   const actionTypeCode = {
     system: 'http://hms.local/fhir/CodeSystem/follow-up-action-type',
     code: action.actionType.toLowerCase(),
-    display: action.actionType.replace(/_/g, ' ');
+    display: action.actionType.replace(/_/g, ' ')
   };
 
   // Determine focus (feedback or complaint)
-  let focus;
+  let focus
   if (action.feedbackId) {
     focus = {
       reference: `QuestionnaireResponse/${action.feedbackId}`,
@@ -506,7 +496,7 @@ export const toFHIRFollowUpAction = (action: FollowUpAction & {
     priority: action.dueDate && new Date(action.dueDate) < new Date() ? 'urgent' : 'routine',
     code: {
       coding: [actionTypeCode],
-      text: action.actionType.replace(/_/g, ' ');
+      text: action.actionType.replace(/_/g, ' ')
     },
     description: action.description,
     focus: focus,
@@ -538,10 +528,10 @@ export const toFHIRFollowUpAction = (action: FollowUpAction & {
 export const toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate & {
   createdByUser?: unknown
 }): FHIRFeedbackSurveyTemplate {
-  // Parse questions from JSON;
+  // Parse questions from JSON
   const questions = template.questions as any[];
   
-  // Map questions to FHIR items;
+  // Map questions to FHIR items
   const items = questions.map(question => {
     const item: unknown = {
       linkId: question.id || `question-${Math.random().toString(36).substring(2, 11)}`,
@@ -550,7 +540,7 @@ export const toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate & 
       required: question.required || false
     };
 
-    // Add answer options if present;
+    // Add answer options if present
     if (question.options && Array.isArray(question.options) && question.options.length > 0) {
       item.answerOption = question.options.map((option: unknown) => {
         if (typeof option === 'string') {
@@ -587,7 +577,7 @@ export const toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate & 
     description: template.description || `Survey template for ${template.serviceType}`,
     purpose: `Collect feedback for ${template.serviceType} services`,
     item: items
-  };
+  }
 }
 
 /**
@@ -628,4 +618,3 @@ const mapQuestionTypeToFHIR = (type: string): string {
       return 'group';
     default: return 'string'
   }
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -51,8 +43,6 @@ export interface FHIROperationResult<T = any> {
 export interface FHIROperationOutcome extends FHIRBase {
   resourceType: 'OperationOutcome',
   issue: FHIROperationOutcomeIssue[]
-}
-
 export interface FHIROperationOutcomeIssue {
   severity: 'fatal' | 'error' | 'warning' | 'information',
   code: string;
@@ -79,7 +69,7 @@ export class FHIRService {
    */
   async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {
     try {
-      // Validate resource;
+      // Validate resource
       const validation = this.validateResource(resource);
       if (!validation.valid) {
         return {
@@ -89,19 +79,19 @@ export class FHIRService {
         };
       }
 
-      // Generate ID if not provided;
+      // Generate ID if not provided
       if (!resource.id) {
         resource.id = uuidv4();
       }
 
-      // Set meta information;
+      // Set meta information
       resource.meta = {
         ...resource.meta,
         lastUpdated: new Date().toISOString(),
         versionId: '1'
       };
 
-      // Store resource in database;
+      // Store resource in database
       await this.dbAdapter.storeResource(resource);
 
       return {
@@ -157,7 +147,7 @@ export class FHIRService {
     resource: T;
   ): Promise<FHIROperationResult<T>> {
     try {
-      // Check if resource exists;
+      // Check if resource exists
       const existingResource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
       if (!existingResource) {
         return {
@@ -167,7 +157,7 @@ export class FHIRService {
         };
       }
 
-      // Validate resource;
+      // Validate resource
       const validation = this.validateResource(resource);
       if (!validation.valid) {
         return {
@@ -177,7 +167,7 @@ export class FHIRService {
         };
       }
 
-      // Update meta information;
+      // Update meta information
       const currentVersion = parseInt(existingResource.meta?.versionId || '1');
       resource.id = id;
       resource.meta = {
@@ -186,7 +176,7 @@ export class FHIRService {
         versionId: (currentVersion + 1).toString()
       };
 
-      // Update resource;
+      // Update resource
       await this.dbAdapter.updateResource(resourceType, id, resource);
 
       return {
@@ -418,7 +408,7 @@ export class FHIRService {
    */
   async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {
     try {
-      // This would retrieve the HMS patient and convert to FHIR;
+      // This would retrieve the HMS patient and convert to FHIR
       const hmsPatient = await this.getHMSPatient(hmsPatientId);
       
       if (!hmsPatient) {
@@ -446,7 +436,7 @@ export class FHIRService {
 
   async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<any>> {
     try {
-      // This would convert FHIR patient to HMS format and update HMS database;
+      // This would convert FHIR patient to HMS format and update HMS database
       const hmsPatient = this.convertFHIRPatientToHMS(fhirPatient);
       await this.updateHMSPatient(hmsPatient);
       
@@ -473,7 +463,7 @@ export class FHIRService {
       errors.push('resourceType is required');
     }
 
-    // Resource-specific validation;
+    // Resource-specific validation
     switch (resource.resourceType) {
       case 'Patient':
         const patientValidation = FHIRPatientUtils.validatePatient(resource as FHIRPatient);
@@ -514,7 +504,7 @@ export class FHIRService {
    * HMS Integration methods;
    */
   private async getHMSPatient(id: string): Promise<any> {
-    // Get HMS patient from database;
+    // Get HMS patient from database
     const prisma = new PrismaClient();
     try {
       return await prisma.patient.findUnique({
@@ -526,7 +516,7 @@ export class FHIRService {
   }
 
   private async updateHMSPatient(patient: unknown): Promise<void> {
-    // Update HMS patient in database;
+    // Update HMS patient in database
     const prisma = new PrismaClient();
     try {
       await prisma.patient.update({

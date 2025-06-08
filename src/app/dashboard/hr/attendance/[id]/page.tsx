@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -55,7 +45,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | null>(null);
 
-  // Fetch attendance data;
+  // Fetch attendance data
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
@@ -86,12 +76,12 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
     fetchAttendance();
   }, [params.id]);
 
-  // Handle edit navigation;
+  // Handle edit navigation
   const handleEdit = () => {
     router.push(`/dashboard/hr/attendance/${params.id}/edit`);
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'PRESENT':
@@ -108,12 +98,12 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
     }
   };
 
-  // Format time or show placeholder;
+  // Format time or show placeholder
   const formatTimeOrPlaceholder = (time: unknown) => {
     return time ? format(new Date(time), 'h: mm:ss a') : '—'
   };
 
-  // Calculate hours worked;
+  // Calculate hours worked
   const calculateHoursWorked = (checkInTime, checkOutTime) => {
     if (!checkInTime || !checkOutTime) return '—';
     
@@ -337,4 +327,3 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
       </div>
     </div>
   );
-}

@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { z } from 'zod';
 
-// Create enums to match Prisma schema;
+// Create enums to match Prisma schema
 export enum DietType {
   REGULAR = 'REGULAR',
   VEGETARIAN = 'VEGETARIAN',
@@ -23,15 +13,13 @@ export enum DietType {
   SOFT = 'SOFT',
   NPO = 'NPO',
   CUSTOM = 'CUSTOM';
-}
-
 export enum DietOrderStatus {
   ACTIVE = 'ACTIVE',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED';
 }
 
-// Validation schemas;
+// Validation schemas
 export const createDietOrderSchema = z.object({
   patientId: z.string().min(1, 'Patient ID is required'),
   dietType: z.nativeEnum(DietType),
@@ -50,7 +38,7 @@ export const updateDietOrderSchema = createDietOrderSchema.partial().extend({
 export type CreateDietOrderInput = z.infer<typeof createDietOrderSchema>;
 export type UpdateDietOrderInput = z.infer<typeof updateDietOrderSchema>;
 
-// Import prisma client;
+// Import prisma client
 import { prisma } from '../lib/prisma';
 
 /**
@@ -64,10 +52,10 @@ export class DietaryService {
    */
   async createOrder(data: CreateDietOrderInput) {
     try {
-      // Validate input data;
+      // Validate input data
       const validatedData = createDietOrderSchema.parse(data);
       
-      // Create the diet order;
+      // Create the diet order
       const order = await prisma.dietOrder.create({
         data: validatedData,
       });
@@ -106,7 +94,7 @@ export class DietaryService {
           where.patientId = filters.patientId;
         }
         if (filters.activeOn) {
-          // Find orders active on the specified date;
+          // Find orders active on the specified date
           where.startDate = { lte: filters.activeOn };
           where.OR = [
             { endDate: null },
@@ -169,13 +157,13 @@ export class DietaryService {
    */
   async updateOrder(id: string, data: UpdateDietOrderInput) {
     try {
-      // Validate input data;
+      // Validate input data
       const validatedData = updateDietOrderSchema.parse({ ...data, id });
       
-      // Remove id from the data to be updated;
+      // Remove id from the data to be updated
       const { id: _, ...updateData } = validatedData;
       
-      // Update the diet order;
+      // Update the diet order
       const order = await prisma.dietOrder.update({
         where: { id },
         data: updateData,
@@ -306,5 +294,5 @@ export class DietaryService {
   }
 }
 
-// Export a singleton instance;
+// Export a singleton instance
 export const dietaryService = new DietaryService();

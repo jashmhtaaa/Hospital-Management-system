@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -21,15 +13,15 @@ import { createHash } from 'crypto';
  * @returns A unique barcode data string;
  */
 export async const generateBarcodeData = (specimenId: string): Promise<string> {
-  // Create a unique barcode ID based on specimen ID and timestamp;
+  // Create a unique barcode ID based on specimen ID and timestamp
   const timestamp = Date.now().toString();
   const uniqueString = `${specimenId}-${timestamp}`;
   
-  // Create a hash of the unique string to ensure uniqueness and fixed length;
+  // Create a hash of the unique string to ensure uniqueness and fixed length
   const hash = createHash('sha256').update(uniqueString).digest('hex').substring(0, 16);
   
   // Format as a CODE128 compatible string (alphanumeric)
-  // Prefix with SP for specimen;
+  // Prefix with SP for specimen
   return `SP${hash.toUpperCase()}`;
 }
 
@@ -40,8 +32,8 @@ export async const generateBarcodeData = (specimenId: string): Promise<string> {
  * @returns A base64 encoded image string;
  */
 export async const generateBarcodeImage = (barcodeData: string, format: 'CODE128' | 'QR' | 'DATA_MATRIX' = 'CODE128'): Promise<string> {
-  // In a real implementation, this would use a barcode generation library;
-  // For this example, we'll return a placeholder;
+  // In a real implementation, this would use a barcode generation library
+  // For this example, we'll return a placeholder
   return `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`;
 }
 
@@ -55,7 +47,7 @@ export async const parseBarcodeData = (barcodeData: string): Promise<{
   id?: string,
   timestamp?: number;
 }> {
-  // Check if this is a specimen barcode;
+  // Check if this is a specimen barcode
   if (barcodeData.startsWith('SP') && barcodeData.length === 18) {
     return {
       type: 'specimen',
@@ -63,7 +55,7 @@ export async const parseBarcodeData = (barcodeData: string): Promise<{
     };
   }
   
-  // Unknown barcode format;
+  // Unknown barcode format
   return {
     type: 'unknown'
   };
@@ -75,7 +67,6 @@ export async const parseBarcodeData = (barcodeData: string): Promise<{
  * @returns True if the barcode exists, false otherwise;
  */
 export async const validateBarcode = (barcodeData: string): Promise<boolean> {
-  // In a real implementation, this would check the database;
-  // For this example, we'll return true for any well-formed specimen barcode;
+  // In a real implementation, this would check the database
+  // For this example, we'll return true for any well-formed specimen barcode
   return barcodeData.startsWith('SP') && barcodeData.length === 18;
-}

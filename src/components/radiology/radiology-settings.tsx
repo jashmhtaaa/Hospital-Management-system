@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -26,16 +18,16 @@ import {
 import { Loader2, Plus } from "lucide-react";
 import CreateProcedureTypeModal, {
   ProcedureTypeFormData,
-} from './create-procedure-type-modal.ts'; // Assuming modal exports form data type;
-import CreateModalityModal, { ModalityFormData } from './create-modality-modal.ts'; // Assuming modal exports form data type;
+} from './create-procedure-type-modal.ts'; // Assuming modal exports form data type
+import CreateModalityModal, { ModalityFormData } from './create-modality-modal.ts'; // Assuming modal exports form data type
 
-// Define interfaces;
+// Define interfaces
 interface ProcedureType {
   id: string,
   name: string;
   modality_type?: string | null;
   description?: string | null;
-  // Add other fields if available from API;
+  // Add other fields if available from API
 }
 
 interface Modality {
@@ -43,9 +35,7 @@ interface Modality {
   name: string;
   location?: string | null;
   description?: string | null;
-  // Add other fields if available from API;
-}
-
+  // Add other fields if available from API
 export default const RadiologySettings = () {
   const [procedureTypes, setProcedureTypes] = useState<ProcedureType[]>([]);
   const [modalities, setModalities] = useState<Modality[]>([]);
@@ -79,12 +69,12 @@ export default const RadiologySettings = () {
         throw new Error(errorMessage);
       }
       const data: ProcedureType[] = await response.json(),
-      setProcedureTypes(data || []); // Ensure it's always an array;
-    } catch (err) { // Changed 'error' to 'err';
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use 'err';
-      // Debug logging removed // Use 'err';
+      setProcedureTypes(data || []); // Ensure it's always an array
+    } catch (err) { // Changed 'error' to 'err'
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use 'err'
+      // Debug logging removed // Use 'err'
       setErrorProcedures(`Failed to load procedure types: ${message}`),
-      setProcedureTypes([]); // Clear on error;
+      setProcedureTypes([]); // Clear on error
     } finally {
       setLoadingProcedures(false);
     }
@@ -106,12 +96,12 @@ export default const RadiologySettings = () {
         throw new Error(errorMessage);
       }
       const data: Modality[] = await response.json(),
-      setModalities(data || []); // Ensure it's always an array;
-    } catch (err) { // Changed error to err;
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
-      // Debug logging removed // Use err;
+      setModalities(data || []); // Ensure it's always an array
+    } catch (err) { // Changed error to err
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use err
+      // Debug logging removed // Use err
       setErrorModalities(`Failed to load modalities: ${message}`),
-      setModalities([]); // Clear on error;
+      setModalities([]); // Clear on error
     } finally {
       setLoadingModalities(false);
     }
@@ -141,12 +131,12 @@ export default const RadiologySettings = () {
       }
 
       setShowCreateProcedureModal(false),
-      fetchProcedureTypes(); // Refresh the list;
-      // Consider showing a success message;
-    } catch (err) { // Changed error to err;
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
-      // Debug logging removed // Use err;
-      alert(`Error: ${message}`); // Replace alert with a better notification system (e.g., toast);
+      fetchProcedureTypes(); // Refresh the list
+      // Consider showing a success message
+    } catch (err) { // Changed error to err
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use err
+      // Debug logging removed // Use err
+      alert(`Error: ${message}`); // Replace alert with a better notification system (e.g., toast)
     }
   };
 
@@ -174,12 +164,12 @@ export default const RadiologySettings = () {
       }
 
       setShowCreateModalityModal(false),
-      fetchModalities(); // Refresh the list;
-      // Consider showing a success message;
-    } catch (err) { // Changed error to err;
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
-      // Debug logging removed // Use err;
-      alert(`Error: ${message}`); // Replace alert with a better notification system;
+      fetchModalities(); // Refresh the list
+      // Consider showing a success message
+    } catch (err) { // Changed error to err
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use err
+      // Debug logging removed // Use err
+      alert(`Error: ${message}`); // Replace alert with a better notification system
     }
   };
 
@@ -304,7 +294,7 @@ export default const RadiologySettings = () {
 
       {showCreateProcedureModal && (
         <CreateProcedureTypeModal>
-          isOpen={showCreateProcedureModal} // Pass isOpen prop if modal uses it;
+          isOpen={showCreateProcedureModal} // Pass isOpen prop if modal uses it
           onClose={() => setShowCreateProcedureModal(false)}
           onSubmit={handleCreateProcedureType}
         />
@@ -312,11 +302,10 @@ export default const RadiologySettings = () {
 
       {showCreateModalityModal && (
         <CreateModalityModal>
-          isOpen={showCreateModalityModal} // Pass isOpen prop if modal uses it;
+          isOpen={showCreateModalityModal} // Pass isOpen prop if modal uses it
           onClose={() => setShowCreateModalityModal(false)}
           onSubmit={handleCreateModality}
         />
       )}
     </Card>
   );
-}

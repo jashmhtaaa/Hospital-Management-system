@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -25,8 +15,6 @@ import { useRouter } from 'next/navigation';
 interface SegmentBuilderProps {
   segmentId?: string;
   onSuccess?: (segment: unknown) => void
-}
-
 export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,7 +39,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     value: ''
   });
 
-  // Fetch segment data if editing an existing segment;
+  // Fetch segment data if editing an existing segment
   useEffect(() => {
     const fetchSegment = async () => {
       if (!segmentId) return;
@@ -64,7 +52,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         const data = await response.json(),
         setSegment(data);
         
-        // Set form values from segment data;
+        // Set form values from segment data
         setFormData({
           name: data.name || '',
           description: data.description || '',
@@ -75,15 +63,15 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
           }
         });
         
-        // Set members;
+        // Set members
         if (data.members && data.members.length > 0) {
           setMembers(data.members.map((m: unknown) => m.contact))
         }
         
-        // Update criteria preview;
+        // Update criteria preview
         updateCriteriaPreview(data.criteria);
         
-        // Get estimated size;
+        // Get estimated size
         fetchEstimatedSize(data.criteria);
       } catch (error) {
 
@@ -100,7 +88,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     fetchSegment();
   }, [segmentId]);
 
-  // Fetch available contacts;
+  // Fetch available contacts
   useEffect(() => {
     const fetchContacts = async () => {
       try {
@@ -117,7 +105,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     fetchContacts();
   }, []);
 
-  // Update criteria preview;
+  // Update criteria preview
   const updateCriteriaPreview = (criteria: unknown) => {
     if (!criteria || !criteria.conditions || criteria.conditions.length === 0) {
       setCriteriaPreview('No conditions defined');
@@ -134,7 +122,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     setCriteriaPreview(conditionStrings.join(` ${joinWord} `));
   };
 
-  // Get estimated size;
+  // Get estimated size
   const fetchEstimatedSize = async (criteria: unknown) => {
     if (!criteria || !criteria.conditions || criteria.conditions.length === 0) {
       setEstimatedSize(0);
@@ -142,15 +130,15 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     }
     
     try {
-      // This would be a real API call in production;
-      // For now, we'll simulate with a random number;
+      // This would be a real API call in production
+      // For now, we'll simulate with a random number
       setEstimatedSize(Math.floor(Math.random() * 100) + 1);
     } catch (error) {
 
     }
   };
 
-  // Get field label;
+  // Get field label
   const getFieldLabel = (field: string): string => {
     switch (field) {
       case 'email':
@@ -179,7 +167,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Get operator label;
+  // Get operator label
   const getOperatorLabel = (operator: string): string => {
     switch (operator) {
       case 'equals':
@@ -210,7 +198,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Handle form input changes;
+  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -219,7 +207,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     });
   };
 
-  // Handle switch changes;
+  // Handle switch changes
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
@@ -227,7 +215,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     });
   };
 
-  // Handle criteria type change;
+  // Handle criteria type change
   const handleCriteriaTypeChange = (value: string) => {
     const newCriteria = {
       ...formData.criteria,
@@ -242,7 +230,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     fetchEstimatedSize(newCriteria);
   };
 
-  // Handle new condition field change;
+  // Handle new condition field change
   const handleConditionFieldChange = (value: string) => {
     setNewCondition({
       ...newCondition,
@@ -250,7 +238,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     });
   };
 
-  // Handle new condition operator change;
+  // Handle new condition operator change
   const handleConditionOperatorChange = (value: string) => {
     setNewCondition({
       ...newCondition,
@@ -258,7 +246,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     });
   };
 
-  // Handle new condition value change;
+  // Handle new condition value change
   const handleConditionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCondition({
       ...newCondition,
@@ -266,7 +254,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     });
   };
 
-  // Add condition to criteria;
+  // Add condition to criteria
   const handleAddCondition = () => {
     if (!newCondition.value && !['isTrue', 'isFalse', 'isNull', 'isNotNull'].includes(newCondition.operator)) {
       toast({
@@ -287,7 +275,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       criteria: newCriteria
     });
     
-    // Reset new condition;
+    // Reset new condition
     setNewCondition({
       field: 'email',
       operator: 'contains',
@@ -297,7 +285,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     fetchEstimatedSize(newCriteria);
   };
 
-  // Remove condition from criteria;
+  // Remove condition from criteria
   const handleRemoveCondition = (index: number) => {
     const newConditions = [...formData.criteria.conditions];
     newConditions.splice(index, 1);
@@ -315,7 +303,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     fetchEstimatedSize(newCriteria);
   };
 
-  // Handle form submission;
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
     setIsLoading(true);
@@ -360,7 +348,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Apply segment criteria;
+  // Apply segment criteria
   const handleApplyCriteria = async () => {
     if (!segmentId) return;
     
@@ -381,7 +369,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
         description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`,
       });
       
-      // Refresh members;
+      // Refresh members
       const segmentResponse = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
       if (segmentResponse.ok) {
         const segmentData = await segmentResponse.json();
@@ -401,7 +389,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Add contact to segment;
+  // Add contact to segment
   const handleAddContact = async (contactId: string) => {
     if (!segmentId) return;
     
@@ -416,7 +404,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       
       if (!response.ok) throw new Error('Failed to add contact');
       
-      // Update members;
+      // Update members
       const contact = availableContacts.find(c => c.id === contactId);
       if (contact) {
         setMembers([...members, contact]);
@@ -436,7 +424,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     }
   };
 
-  // Remove contact from segment;
+  // Remove contact from segment
   const handleRemoveContact = async (contactId: string) => {
     if (!segmentId) return;
     
@@ -447,7 +435,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       
       if (!response.ok) throw new Error('Failed to remove contact');
       
-      // Update members;
+      // Update members
       setMembers(members.filter(m => m.id !== contactId));
       
       toast({
@@ -753,4 +741,3 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
       </CardContent>
     </Card>
   );
-}

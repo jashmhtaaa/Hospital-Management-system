@@ -10,7 +10,7 @@ console.log('🏗️ Starting build test...');
 
 // Test 1: Check if package.json is valid
 try {
-    const packageJson = require('./package.json');
+    const packageJson = require('./package.json')
     console.log('✅ package.json is valid JSON');
 } catch (e) {
     console.error('❌ package.json has syntax errors:', e.message);
@@ -19,19 +19,19 @@ try {
 
 // Test 2: Check if tsconfig.json is valid (if exists)
 try {
-    require('./tsconfig.json');
+    require('./tsconfig.json')
     console.log('✅ tsconfig.json is valid JSON');
 } catch (e) {
     console.log('⚠️ tsconfig.json not found or invalid, continuing...');
 }
 
 // Test 3: Try to run Next.js build (with timeout)
-console.log('🔨 Attempting Next.js build...');
+console.log('🔨 Attempting Next.js build...')
 
 const buildProcess = spawn('npx', ['next', 'build'], {
     stdio: 'pipe',
     timeout: 60000 // 1 minute timeout
-});
+})
 
 let buildOutput = '';
 buildProcess.stdout.on('data', (data) => {
@@ -63,7 +63,7 @@ buildProcess.on('error', (error) => {
 // Timeout handler
 setTimeout(() => {
     if (!buildProcess.killed) {
-        buildProcess.kill();
+        buildProcess.kill()
         console.log('⏰ Build test timed out after 1 minute');
         console.log('📊 Partial build output:');
         console.log(buildOutput);

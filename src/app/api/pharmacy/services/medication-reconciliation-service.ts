@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -44,7 +36,7 @@ export class MedicationReconciliationService {
     targetType: 'inpatient' | 'outpatient',
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationResult> {
-    // Log the start of reconciliation;
+    // Log the start of reconciliation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_STARTED',
       userId: providerId,
@@ -54,16 +46,16 @@ export class MedicationReconciliationService {
       severity: 'INFO'
     });
 
-    // Get source medications;
+    // Get source medications
     const sourceMedications = await this.getMedicationsByType(patientId, sourceType);
     
-    // Get target medications;
+    // Get target medications
     const targetMedications = await this.getMedicationsByType(patientId, targetType);
     
-    // Identify discrepancies;
+    // Identify discrepancies
     const discrepancies = this.identifyDiscrepancies(sourceMedications, targetMedications);
     
-    // Create reconciliation record;
+    // Create reconciliation record
     const reconciliation: PharmacyDomain.MedicationReconciliation = {
       id: `recon-${Date.now()}`,
       patientId,
@@ -76,7 +68,7 @@ export class MedicationReconciliationService {
       actions: []
     };
     
-    // Log the completion of reconciliation;
+    // Log the completion of reconciliation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_COMPLETED',
       userId: providerId,
@@ -105,10 +97,10 @@ export class MedicationReconciliationService {
     patientId: string,
     type: 'admission' | 'discharge' | 'transfer' | 'inpatient' | 'outpatient'
   ): Promise<PharmacyDomain.Medication[]> {
-    // In a real implementation, this would query the database based on type;
-    // For now, we'll simulate different medication lists;
+    // In a real implementation, this would query the database based on type
+    // For now, we'll simulate different medication lists
     
-    // Common medications across all types;
+    // Common medications across all types
     const commonMedications = [
       new PharmacyDomain.Medication(
         'med1',
@@ -134,7 +126,7 @@ export class MedicationReconciliationService {
       );
     ];
     
-    // Type-specific medications;
+    // Type-specific medications
     switch (type) {
       case 'admission':
         return [
@@ -269,7 +261,7 @@ export class MedicationReconciliationService {
     // Check for medications in source but not in target (potential omissions)
     for (const sourceMed of sourceMedications) {
       const targetMed = targetMedications.find(med => 
-        med.name === sourceMed.name && med.strength === sourceMed.strength && med.form === sourceMed.form;
+        med.name === sourceMed.name && med.strength === sourceMed.strength && med.form === sourceMed.form
       );
       
       if (!targetMed) {
@@ -287,7 +279,7 @@ export class MedicationReconciliationService {
     // Check for medications in target but not in source (potential additions)
     for (const targetMed of targetMedications) {
       const sourceMed = sourceMedications.find(med => 
-        med.name === targetMed.name && med.strength === targetMed.strength && med.form === targetMed.form;
+        med.name === targetMed.name && med.strength === targetMed.strength && med.form === targetMed.form
       );
       
       if (!sourceMed) {
@@ -304,7 +296,7 @@ export class MedicationReconciliationService {
     
     // Check for dosing discrepancies (same medication but different dose)
     for (const sourceMed of sourceMedications) {
-      const targetMed = targetMedications.find(med => med.name === sourceMed.name && med.form === sourceMed.form);
+      const targetMed = targetMedications.find(med => med.name === sourceMed.name && med.form === sourceMed.form)
       
       if (targetMed && (targetMed.strength !== sourceMed.strength || targetMed.unit !== sourceMed.unit)) {
         discrepancies.push({
@@ -333,17 +325,17 @@ export class MedicationReconciliationService {
     medication1: PharmacyDomain.Medication,
     medication2?: PharmacyDomain.Medication;
   ): 'high' | 'medium' | 'low' {
-    // High-alert medications always get high severity;
+    // High-alert medications always get high severity
     if (medication1.isHighAlert || (medication2 && medication2.isHighAlert)) {
       return 'high';
     }
     
-    // Controlled substances get at least medium severity;
+    // Controlled substances get at least medium severity
     if (medication1.isControlled || (medication2 && medication2.isControlled)) {
       return 'medium';
     }
     
-    // Default to low severity;
+    // Default to low severity
     return 'low';
   }
   
@@ -364,10 +356,10 @@ export class MedicationReconciliationService {
     providerId: string,
     notes?: string;
   ): Promise<PharmacyDomain.MedicationReconciliation> {
-    // In a real implementation, this would update the database;
-    // For now, we'll simulate the resolution;
+    // In a real implementation, this would update the database
+    // For now, we'll simulate the resolution
     
-    // Log the resolution;
+    // Log the resolution
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_DISCREPANCY_RESOLVED',
       userId: providerId,
@@ -377,7 +369,7 @@ export class MedicationReconciliationService {
       severity: 'INFO'
     });
     
-    // Create resolution action;
+    // Create resolution action
     const resolutionAction: PharmacyDomain.ReconciliationAction = {
       id: `action-${Date.now()}`,
       discrepancyId,
@@ -387,8 +379,8 @@ export class MedicationReconciliationService {
       notes: notes || ''
     };
     
-    // In a real implementation, this would return the updated reconciliation from the database;
-    // For now, we'll return a simulated response;
+    // In a real implementation, this would return the updated reconciliation from the database
+    // For now, we'll return a simulated response
     return {
       id: reconciliationId,
       patientId: 'patient123',
@@ -413,10 +405,10 @@ export class MedicationReconciliationService {
     reconciliationId: string,
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliation> {
-    // In a real implementation, this would update the database;
-    // For now, we'll simulate the completion;
+    // In a real implementation, this would update the database
+    // For now, we'll simulate the completion
     
-    // Log the completion;
+    // Log the completion
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_FINALIZED',
       userId: providerId,
@@ -426,8 +418,8 @@ export class MedicationReconciliationService {
       severity: 'INFO'
     });
     
-    // In a real implementation, this would return the updated reconciliation from the database;
-    // For now, we'll return a simulated response;
+    // In a real implementation, this would return the updated reconciliation from the database
+    // For now, we'll return a simulated response
     return {
       id: reconciliationId,
       patientId: 'patient123',
@@ -450,8 +442,8 @@ export class MedicationReconciliationService {
   async generateReconciliationReport(
     reconciliationId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationReport> {
-    // In a real implementation, this would query the database;
-    // For now, we'll return a simulated report;
+    // In a real implementation, this would query the database
+    // For now, we'll return a simulated report
     
     return {
       reconciliationId,
@@ -527,8 +519,8 @@ export class MedicationReconciliationService {
   async getReconciliationHistory(
     _patientId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationSummary[]> {
-    // In a real implementation, this would query the database;
-    // For now, we'll return simulated history;
+    // In a real implementation, this would query the database
+    // For now, we'll return simulated history
     
     return [
       {
@@ -537,7 +529,7 @@ export class MedicationReconciliationService {
         providerId: 'provider456',
         sourceType: 'admission',
         targetType: 'inpatient',
-        reconciliationDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago;
+        reconciliationDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
         status: 'completed',
         discrepancyCount: 3,
         resolvedCount: 3
@@ -548,7 +540,7 @@ export class MedicationReconciliationService {
         providerId: 'provider789',
         sourceType: 'transfer',
         targetType: 'inpatient',
-        reconciliationDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago;
+        reconciliationDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         status: 'completed',
         discrepancyCount: 2,
         resolvedCount: 2
@@ -591,7 +583,7 @@ export class MedicationReconciliationService {
     route: string,
     duration: string;
   ): Promise<PharmacyDomain.MedicationOrder> {
-    // Log the order creation;
+    // Log the order creation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_ORDER_FROM_RECONCILIATION',
       userId: providerId,
@@ -601,8 +593,8 @@ export class MedicationReconciliationService {
       severity: 'INFO'
     });
     
-    // In a real implementation, this would create an order in the database;
-    // For now, we'll return a simulated order;
+    // In a real implementation, this would create an order in the database
+    // For now, we'll return a simulated order
     return {
       id: `order-${Date.now()}`,
       patientId: 'patient123',
@@ -629,7 +621,7 @@ export class MedicationReconciliationService {
     reconciliationId: string,
     _sessionId: string;
   ): Promise<boolean> {
-    // Log the timeout;
+    // Log the timeout
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_SESSION_TIMEOUT',
       resourceType: 'MedicationReconciliation',
@@ -638,8 +630,8 @@ export class MedicationReconciliationService {
       severity: 'WARNING'
     });
     
-    // In a real implementation, this would save the current state;
-    // For now, we'll just return success;
+    // In a real implementation, this would save the current state
+    // For now, we'll just return success
     return true;
   }
   
@@ -652,8 +644,8 @@ export class MedicationReconciliationService {
   async getPendingReconciliations(
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationSummary[]> {
-    // In a real implementation, this would query the database;
-    // For now, we'll return simulated pending reconciliations;
+    // In a real implementation, this would query the database
+    // For now, we'll return simulated pending reconciliations
     
     return [
       {
@@ -662,7 +654,7 @@ export class MedicationReconciliationService {
         providerId,
         sourceType: 'admission',
         targetType: 'inpatient',
-        reconciliationDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago;
+        reconciliationDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         status: 'in-progress',
         discrepancyCount: 5,
         resolvedCount: 2
@@ -673,11 +665,10 @@ export class MedicationReconciliationService {
         providerId,
         sourceType: 'discharge',
         targetType: 'outpatient',
-        reconciliationDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago;
+        reconciliationDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
         status: 'in-progress',
         discrepancyCount: 3,
         resolvedCount: 0
       }
     ];
   }
-}

@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-import React, { useState, useEffect, FormEvent } from "react"; // Added FormEvent;
+import React, { useState, useEffect, FormEvent } from "react"; // Added FormEvent
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,7 +13,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-// import { Input } from "@/components/ui/input"; // Unused;
+// import { Input } from "@/components/ui/input"; // Unused
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -33,40 +25,38 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
-// Define interfaces for data types;
+// Define interfaces for data types
 interface Patient {
   id: string,
-  name: string; // Assuming patient object has a name property;
-  // Add other relevant patient fields if needed;
+  name: string; // Assuming patient object has a name property
+  // Add other relevant patient fields if needed
 }
 
 interface ProcedureType {
   id: string,
   name: string;
-  // Add other relevant procedure type fields if needed;
+  // Add other relevant procedure type fields if needed
 }
 
 interface Doctor {
   id: string,
-  name: string; // Assuming user/doctor object has a name property;
-  // Add other relevant doctor fields if needed;
+  name: string; // Assuming user/doctor object has a name property
+  // Add other relevant doctor fields if needed
 }
 
-// FIX: Export the payload type;
+// FIX: Export the payload type
 export interface OrderPayload {
   patient_id: string,
-  procedure_type_id: string;
+  procedure_type_id: string,
   clinical_indication: string,
-  priority: "routine" | "stat";
+  priority: "routine" | "stat",
   referring_doctor_id: string | null
 }
 
 interface CreateRadiologyOrderModalProperties {
-  isOpen: boolean; // Add isOpen prop to control visibility from parent;
+  isOpen: boolean; // Add isOpen prop to control visibility from parent
   onClose: () => void,
   onSubmit: (payload: OrderPayload) => Promise<void>
-}
-
 export default const CreateRadiologyOrderModal = ({
   isOpen,
   onClose,
@@ -76,7 +66,7 @@ export default const CreateRadiologyOrderModal = ({
   const [procedureTypeId, setProcedureTypeId] = useState<string>("");
   const [clinicalIndication, setClinicalIndication] = useState<string>("");
   const [priority, setPriority] = useState<"routine" | "stat">("routine");
-  const [referringDoctorId, setReferringDoctorId] = useState<string>(""); // Store as string, convert to null on submit if empty;
+  const [referringDoctorId, setReferringDoctorId] = useState<string>(""); // Store as string, convert to null on submit if empty
 
   const [patients, setPatients] = useState<Patient[]>([]);
   const [procedureTypes, setProcedureTypes] = useState<ProcedureType[]>([]);
@@ -86,18 +76,18 @@ export default const CreateRadiologyOrderModal = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    // Only fetch data if the modal is open;
+    // Only fetch data if the modal is open
     if (!isOpen) return;
 
     const fetchData = async () => {
       setLoading(true),
       setError(undefined);
       try {
-        // Assuming API endpoints return { results: [...] } or just [...] directly;
+        // Assuming API endpoints return { results: [...] } or just [...] directly
         const [patientsResponse, proceduresResponse, doctorsResponse] = await Promise.all([
-          fetch("/api/patients"), // Adjust if endpoint differs;
+          fetch("/api/patients"), // Adjust if endpoint differs
           fetch("/api/radiology/procedure-types"),
-          fetch("/api/users?role=Doctor"), // Adjust if endpoint differs;
+          fetch("/api/users?role=Doctor"), // Adjust if endpoint differs
         ]);
 
         if (!patientsResponse.ok)
@@ -111,7 +101,7 @@ export default const CreateRadiologyOrderModal = ({
         if (!doctorsResponse.ok)
           throw new Error(`Failed to fetch doctors: ${doctorsResponse.statusText}`);
 
-        // Explicitly type the JSON response;
+        // Explicitly type the JSON response
         const patientsData: { results: Patient[] } | Patient[] =;
           await patientsResponse.json();
         const proceduresData: { results: ProcedureType[] } | ProcedureType[] =;
@@ -121,7 +111,7 @@ export default const CreateRadiologyOrderModal = ({
 
         // Handle potential API response structures (e.g., { results: [...] })
         setPatients(
-          Array.isArray(patientsData);
+          Array.isArray(patientsData)
             ? patientsData;
             : patientsData.results || []
         );
@@ -147,47 +137,47 @@ export default const CreateRadiologyOrderModal = ({
       }
     };
     fetchData();
-  }, [isOpen]); // Re-fetch when modal opens;
+  }, [isOpen]); // Re-fetch when modal opens
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!patientId || !procedureTypeId || !clinicalIndication) {
-      // Consider using a toast notification instead of alert;
+      // Consider using a toast notification instead of alert
       alert(
         "Please fill in all required fields (Patient, Procedure Type, Clinical Indication).";
       );
       return;
     }
     setIsSubmitting(true),
-    setError(undefined); // Clear previous errors;
+    setError(undefined); // Clear previous errors
     try {
       await onSubmit({
         patient_id: patientId,
         procedure_type_id: procedureTypeId,
         clinical_indication: clinicalIndication,
         priority: priority,
-        referring_doctor_id: referringDoctorId || null, // Convert empty string to null;
+        referring_doctor_id: referringDoctorId || null, // Convert empty string to null
       });
-      // Reset form state after successful submission;
+      // Reset form state after successful submission
       setPatientId(""),
       setProcedureTypeId("");
       setClinicalIndication(""),
       setPriority("routine");
       setReferringDoctorId("");
-      // onClose(); // Parent component should handle closing the modal;
+      // onClose(); // Parent component should handle closing the modal
     } catch (submitError) {
       const message =;
         submitError instanceof Error;
           ? submitError.message;
           : "An unknown error occurred during submission";
 
-      setError(`Submission failed: ${message}`); // Show error to user;
+      setError(`Submission failed: ${message}`); // Show error to user
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Use the isOpen prop passed from the parent to control the dialog;
+  // Use the isOpen prop passed from the parent to control the dialog
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
       <DialogContent className="sm:max-w-[500px]">;
@@ -359,4 +349,3 @@ export default const CreateRadiologyOrderModal = ({
       </DialogContent>
     </Dialog>
   );
-}

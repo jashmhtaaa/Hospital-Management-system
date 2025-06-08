@@ -1,24 +1,14 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
 import { HousekeepingService } from '@/lib/services/support-services/housekeeping/housekeeping.service';
 import { z } from 'zod';
 
-// Initialize service;
+// Initialize service
 const housekeepingService = new HousekeepingService();
 
-// Request validation schemas;
+// Request validation schemas
 const createRequestSchema = z.object({
   locationId: z.string().uuid(),
   requestType: z.enum(['CLEANING', 'DISINFECTION', 'LINEN_CHANGE', 'WASTE_DISPOSAL', 'OTHER']),
@@ -39,12 +29,12 @@ const updateRequestSchema = z.object({
   assignedToId: z.string().uuid().optional(),
 });
 
-// GET /api/support-services/housekeeping/requests;
+// GET /api/support-services/housekeeping/requests
 export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
@@ -57,7 +47,7 @@ export async const GET = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get housekeeping requests with filters;
+      // Get housekeeping requests with filters
       const result = await housekeepingService.getHousekeepingRequests(filters);
       
       return NextResponse.json(result);
@@ -69,19 +59,19 @@ export async const GET = (request: NextRequest) => {
   );
 }
 
-// POST /api/support-services/housekeeping/requests;
+// POST /api/support-services/housekeeping/requests
 export async const POST = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = createRequestSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Create housekeeping request;
+      // Create housekeeping request
       const result = await housekeepingService.createHousekeepingRequest(sanitizedData);
       
       return NextResponse.json(result, { status: 201 });
@@ -93,12 +83,12 @@ export async const POST = (request: NextRequest) => {
   );
 }
 
-// GET /api/support-services/housekeeping/requests/:id;
+// GET /api/support-services/housekeeping/requests/:id
 export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Get housekeeping request by ID;
+      // Get housekeeping request by ID
       const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
       const result = await housekeepingService.getHousekeepingRequestById(params.id, includeFHIR);
       
@@ -111,19 +101,19 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
   );
 }
 
-// PATCH /api/support-services/housekeeping/requests/:id;
+// PATCH /api/support-services/housekeeping/requests/:id
 export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = updateRequestSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Update housekeeping request;
+      // Update housekeeping request
       const result = await housekeepingService.updateHousekeepingRequest(params.id, sanitizedData);
       
       return NextResponse.json(result);
@@ -135,12 +125,12 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
   );
 }
 
-// DELETE /api/support-services/housekeeping/requests/:id;
+// DELETE /api/support-services/housekeeping/requests/:id
 export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Delete housekeeping request;
+      // Delete housekeeping request
       await housekeepingService.deleteHousekeepingRequest(params.id);
       
       return NextResponse.json({ success: true });
@@ -152,12 +142,12 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
   );
 }
 
-// POST /api/support-services/housekeeping/requests/:id/assign;
+// POST /api/support-services/housekeeping/requests/:id/assign
 export async const ASSIGN = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { staffId } = body;
       
@@ -165,7 +155,7 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
         return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
       }
       
-      // Assign housekeeping request;
+      // Assign housekeeping request
       const result = await housekeepingService.assignHousekeepingRequest(params.id, staffId);
       
       return NextResponse.json(result);
@@ -177,16 +167,16 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
   );
 }
 
-// POST /api/support-services/housekeeping/requests/:id/complete;
+// POST /api/support-services/housekeeping/requests/:id/complete
 export async const COMPLETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { notes, completedById } = body;
       
-      // Complete housekeeping request;
+      // Complete housekeeping request
       const result = await housekeepingService.completeHousekeepingRequest(
         params.id,
         completedById,
@@ -202,17 +192,17 @@ export async const COMPLETE = (request: NextRequest, { params }: { params: { id:
   );
 }
 
-// GET /api/support-services/housekeeping/analytics;
+// GET /api/support-services/housekeeping/analytics
 export async const GET_ANALYTICS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const fromDate = searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
       const toDate = searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
       
-      // Get housekeeping analytics;
+      // Get housekeeping analytics
       const result = await housekeepingService.getHousekeepingAnalytics(fromDate, toDate);
       
       return NextResponse.json(result);
@@ -222,4 +212,3 @@ export async const GET_ANALYTICS = (request: NextRequest) => {
       auditAction: 'HOUSEKEEPING_ANALYTICS_VIEW',
     }
   );
-}

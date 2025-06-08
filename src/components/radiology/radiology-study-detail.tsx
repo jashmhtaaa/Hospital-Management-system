@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-import React, { useState, useEffect, ReactNode, useCallback } from "react"; // FIX: Add useCallback;
+import React, { useState, useEffect, ReactNode, useCallback } from "react"; // FIX: Add useCallback
 import { useParams, useRouter } from "next/navigation";
 import {
   Card,
@@ -22,46 +14,44 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-// FIX: Remove unused Edit, Trash2;
+// FIX: Remove unused Edit, Trash2
 import { Loader2, ArrowLeft, FileText } from "lucide-react";
 import CreateRadiologyReportModal, {
   ReportFormData as ModalReportFormData,
-} from './create-radiology-report-modal.ts'; // Import the form data type;
-// import RadiologyReportsList from './RadiologyReportsList.ts'; // Assuming this exists;
+} from './create-radiology-report-modal.ts'; // Import the form data type
+// import RadiologyReportsList from './RadiologyReportsList.ts'; // Assuming this exists
 
-// Define interfaces;
+// Define interfaces
 interface StudyDetails {
   id: string,
   patient_id: string;
-  patient_name?: string; // Assuming joined;
+  patient_name?: string; // Assuming joined
   order_id: string;
-  procedure_name?: string; // Assuming joined;
+  procedure_name?: string; // Assuming joined
   accession_number?: string | null;
   study_datetime: string,
-  status: "scheduled" | "acquired" | "reported" | "verified" | string; // Allow string for flexibility;
-  modality_name?: string; // Assuming joined;
-  technician_name?: string; // Assuming joined;
+  status: "scheduled" | "acquired" | "reported" | "verified" | string; // Allow string for flexibility
+  modality_name?: string; // Assuming joined
+  technician_name?: string; // Assuming joined
   protocol?: string | null;
   series_description?: string | null;
   number_of_images?: number | null;
-  // Add other relevant fields;
+  // Add other relevant fields
 }
 
-// FIX: Remove unused ReportData interface;
+// FIX: Remove unused ReportData interface
 // interface ReportData {
-//   study_id: string;
-//   report_text: string;
-//   findings?: string;
-//   impression: string;
-//   radiologist_id: string; // Should come from session;
-//   // Add other report fields;
+//   study_id: string
+//   report_text: string
+//   findings?: string
+//   impression: string
+//   radiologist_id: string; // Should come from session
+//   // Add other report fields
 // }
 
-// Define props if needed, though useParams covers the ID;
-// interface RadiologyStudyDetailProps {}
-
-export default const RadiologyStudyDetail = () {
-  const parameters = useParams();
+// Define props if needed, though useParams covers the ID
+// interface RadiologyStudyDetailProps {export default const RadiologyStudyDetail = () {
+  const parameters = useParams()
   const router = useRouter();
   const studyId = typeof parameters.id === "string" ? parameters.id : undefined;
 
@@ -71,7 +61,7 @@ export default const RadiologyStudyDetail = () {
   const [showCreateReportModal, setShowCreateReportModal] =;
     useState<boolean>(false);
 
-  // FIX: Wrap fetchStudyDetails in useCallback;
+  // FIX: Wrap fetchStudyDetails in useCallback
   const fetchStudyDetails = useCallback(async (): Promise<void> => {
     if (!studyId) {
       setError("Study ID is missing."),
@@ -81,24 +71,24 @@ export default const RadiologyStudyDetail = () {
     setLoading(true),
     setError(undefined);
     try {
-      // Simulate API call;
-      // const response = await fetch(`/api/radiology/studies/${studyId}`);
+      // Simulate API call
+      // const response = await fetch(`/api/radiology/studies/${studyId}`)
       // if (!response.ok) {
       //   if (response.status === 404) {
-      //     setError("Radiology study not found.");
+      //     setError("Radiology study not found.")
       //   } else {
-      //     const errorData = await response.json().catch(() => ({}));
-      //     throw new Error(errorData.error || "Failed to fetch study details");
+      //     const errorData = await response.json().catch(() => ({}))
+      //     throw new Error(errorData.error || "Failed to fetch study details")
       //   }
       // } else {
-      //   const data: StudyDetails = await response.json();
-      //   setStudy(data);
+      //   const data: StudyDetails = await response.json()
+      //   setStudy(data)
       // }
 
-      // Mock Data;
+      // Mock Data
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (studyId === "study_123") {
-        // Example ID;
+        // Example ID
         const mockStudy: StudyDetails = {
           id: studyId,
           patient_id: "p001",
@@ -106,7 +96,7 @@ export default const RadiologyStudyDetail = () {
           order_id: "ord_001",
           procedure_name: "Chest X-Ray, 2 Views",
           accession_number: "ACC123456",
-          study_datetime: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday;
+          study_datetime: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
           status: "acquired",
           modality_name: "X-Ray",
           technician_name: "Tech Sarah",
@@ -128,16 +118,16 @@ export default const RadiologyStudyDetail = () {
     } finally {
       setLoading(false);
     }
-  }, [studyId]); // Add studyId dependency;
+  }, [studyId]); // Add studyId dependency
 
   useEffect(() => {
     if (studyId) {
       fetchStudyDetails();
     }
     // FIX: Add fetchStudyDetails to dependency array
-  }, [studyId, fetchStudyDetails]);
+  }, [studyId, fetchStudyDetails])
 
-  // FIX: Adjust function signature to match the onSubmit prop type expected by the modal;
+  // FIX: Adjust function signature to match the onSubmit prop type expected by the modal
   const handleCreateReport = async (
     formData: ModalReportFormData;
   ): Promise<void> => {
@@ -146,18 +136,18 @@ export default const RadiologyStudyDetail = () {
       return;
     }
     try {
-      // formData already contains study_id and radiologist_id from the modal;
+      // formData already contains study_id and radiologist_id from the modal
       // const reportData: ReportData = {
       //   ...formData,
       //   study_id: studyId,
-      //   radiologist_id: "rad_current", // Replace with actual ID from session;
-      // };
+      //   radiologist_id: "rad_current", // Replace with actual ID from session
+      // }
 
-      // Simulate API call;
+      // Simulate API call
       const response = await fetch("/api/radiology/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Use the formData directly;
+        body: JSON.stringify(formData), // Use the formData directly
       });
       if (!response.ok) {
         let errorMessage = "Failed to create radiology report";
@@ -168,14 +158,14 @@ export default const RadiologyStudyDetail = () {
         } catch {
           /* Ignore if response is not JSON */
         }
-        throw new Error(errorMessage);
+        throw new Error(errorMessage)
       }
 
-      // await new Promise(resolve => setTimeout(resolve, 600)); // Simulate delay;
+      // await new Promise(resolve => setTimeout(resolve, 600)); // Simulate delay
 
       alert("Report created successfully (simulated).");
       setShowCreateReportModal(false);
-      // Refresh study details or associated reports list;
+      // Refresh study details or associated reports list
       fetchStudyDetails();
     } catch (error_) {
       const message =;
@@ -185,14 +175,14 @@ export default const RadiologyStudyDetail = () {
     }
   };
 
-  // Add handleDeleteStudy if needed;
+  // Add handleDeleteStudy if needed
   // const handleDeleteStudy = async (): Promise<void> => {
-  //   if (!studyId || !confirm("Are you sure you want to delete this study?")) return;
+  //   if (!studyId || !confirm("Are you sure you want to delete this study?")) return
   //   try {
-  //     // API call to delete;
-  //     router.push('/dashboard/radiology/studies'); // Redirect after delete;
+  //     // API call to delete
+  //     router.push('/dashboard/radiology/studies'); // Redirect after delete
   //   } catch (err) { /* ... */ }
-  // };
+  // }
 
   const getStatusBadge = (status: string | undefined): ReactNode => {
     if (!status) return <Badge className="bg-gray-100">Unknown</Badge>;
@@ -233,8 +223,8 @@ export default const RadiologyStudyDetail = () {
   }
 
   if (!study) {
-    // This case might be covered by error state if fetch fails, but good to have;
-    return (
+    // This case might be covered by error state if fetch fails, but good to have
+   : return (
       <div className="text-center text-gray-500 p-4">;
         Study details could not be loaded or found.
       </div>
@@ -338,14 +328,13 @@ export default const RadiologyStudyDetail = () {
 
       {showCreateReportModal && studyId && (
         <CreateRadiologyReportModal>
-          isOpen={showCreateReportModal} // Assuming modal uses isOpen prop;
+          isOpen={showCreateReportModal} // Assuming modal uses isOpen prop
           onClose={() => setShowCreateReportModal(false)}
           onSubmit={handleCreateReport}
           studyId={studyId}
-          patientName={study.patient_name || "N/A"} // Pass necessary info;
+          patientName={study.patient_name || "N/A"} // Pass necessary info
           procedureName={study.procedure_name || "N/A"}
         />
       )}
     </div>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -19,311 +11,241 @@ import { cacheService } from '@/lib/cache/redis-cache';
 
 export interface FHIRAnalytics {
   resourceCounts: ResourceCount[],
-  resourceGrowth: ResourceGrowth[];
+  resourceGrowth: ResourceGrowth[],
   patientStatistics: PatientStatistics,
-  clinicalMetrics: ClinicalMetrics;
+  clinicalMetrics: ClinicalMetrics,
   operationalMetrics: OperationalMetrics,
-  interoperabilityMetrics: InteroperabilityMetrics;
+  interoperabilityMetrics: InteroperabilityMetrics,
   complianceMetrics: ComplianceMetrics,
-  qualityMetrics: QualityMetrics;
+  qualityMetrics: QualityMetrics,
   performanceMetrics: PerformanceMetrics,
   timestamp: Date
-}
-
 export interface ResourceCount {
   resourceType: string,
-  count: number;
+  count: number,
   activeCount: number,
-  inactiveCount: number;
+  inactiveCount: number,
   deletedCount: number,
   errorCount: number
-}
-
 export interface ResourceGrowth {
   resourceType: string,
-  period: string;
+  period: string,
   count: number,
-  growthRate: number;
+  growthRate: number,
   projectedGrowth: number
-}
-
 export interface PatientStatistics {
   totalPatients: number,
-  activePatients: number;
+  activePatients: number,
   inactivePatients: number,
-  newPatientsLast30Days: number;
+  newPatientsLast30Days: number,
   demographicDistribution: DemographicDistribution,
-  conditionPrevalence: ConditionPrevalence[];
+  conditionPrevalence: ConditionPrevalence[],
   encounterStatistics: EncounterStatistics
-}
-
 export interface DemographicDistribution {
   ageGroups: Distribution[],
-  genderDistribution: Distribution[];
+  genderDistribution: Distribution[],
   ethnicityDistribution: Distribution[],
   locationDistribution: Distribution[]
-}
-
 export interface Distribution {
   category: string,
-  count: number;
+  count: number,
   percentage: number
-}
-
 export interface ConditionPrevalence {
   condition: string,
-  code: string;
+  code: string,
   system: string,
-  count: number;
+  count: number,
   prevalence: number,
   trend: string
-}
-
 export interface EncounterStatistics {
   totalEncounters: number,
-  encountersByType: Distribution[];
+  encountersByType: Distribution[],
   averageLengthOfStay: number,
-  readmissionRate: number;
+  readmissionRate: number,
   visitFrequency: number
-}
-
 export interface ClinicalMetrics {
   diagnosticMetrics: DiagnosticMetrics,
-  medicationMetrics: MedicationMetrics;
+  medicationMetrics: MedicationMetrics,
   procedureMetrics: ProcedureMetrics,
-  observationTrends: ObservationTrend[];
+  observationTrends: ObservationTrend[],
   clinicalOutcomes: ClinicalOutcome[]
-}
-
 export interface DiagnosticMetrics {
   totalDiagnosticReports: number,
-  reportsPerPatient: number;
+  reportsPerPatient: number,
   resultsCompletionTime: number,
-  abnormalResultRate: number;
+  abnormalResultRate: number,
   criticalResultRate: number,
   testUtilization: TestUtilization[]
-}
-
 export interface TestUtilization {
   testName: string,
-  code: string;
+  code: string,
   count: number,
-  costTotal: number;
+  costTotal: number,
   overutilizationRate: number,
   appropriatenessScore: number
-}
-
 export interface MedicationMetrics {
   totalMedications: number,
-  activePerPatient: number;
+  activePerPatient: number,
   mostPrescribedMedications: MedicationUsage[],
-  adherenceRate: number;
+  adherenceRate: number,
   adverseEventRate: number,
-  medicationErrors: number;
+  medicationErrors: number,
   drugInteractionRate: number
-}
-
 export interface MedicationUsage {
   medication: string,
-  code: string;
+  code: string,
   count: number,
-  percentage: number;
+  percentage: number,
   cost: number,
   effectiveness: number
-}
-
 export interface ProcedureMetrics {
   totalProcedures: number,
-  proceduresPerPatient: number;
+  proceduresPerPatient: number,
   mostCommonProcedures: ProcedureUsage[],
-  complicationRate: number;
+  complicationRate: number,
   successRate: number,
   revisionRate: number
-}
-
 export interface ProcedureUsage {
   procedure: string,
-  code: string;
+  code: string,
   count: number,
-  percentage: number;
+  percentage: number,
   cost: number,
   averageDuration: number
-}
-
 export interface ObservationTrend {
   observationType: string,
-  code: string;
+  code: string,
   averageValue: number,
-  unit: string;
+  unit: string,
   trend: string,
-  abnormalRate: number;
+  abnormalRate: number,
   observationsPerPatient: number
-}
-
 export interface ClinicalOutcome {
   outcome: string,
-  measure: string;
+  measure: string,
   value: number,
-  target: number;
+  target: number,
   trend: string,
   benchmarkComparison: number
-}
-
 export interface OperationalMetrics {
   resourceCreationRate: number,
-  resourceUpdateRate: number;
+  resourceUpdateRate: number,
   apiUtilization: APIUtilization,
-  userActivity: UserActivity[];
+  userActivity: UserActivity[],
   integrationActivity: IntegrationActivity[],
   errorRates: ErrorRate[]
-}
-
 export interface APIUtilization {
   totalRequests: number,
-  requestsPerSecond: number;
+  requestsPerSecond: number,
   requestsByResource: Distribution[],
-  requestsByOperation: Distribution[];
+  requestsByOperation: Distribution[],
   averageResponseTime: number,
   errorRate: number
-}
-
 export interface UserActivity {
   userType: string,
-  activeUsers: number;
+  activeUsers: number,
   requestsPerUser: number,
-  resourcesAccessed: string[];
+  resourcesAccessed: string[],
   operationsPerformed: Distribution[]
-}
-
 export interface IntegrationActivity {
   system: string,
-  incoming: number;
+  incoming: number,
   outgoing: number,
-  successRate: number;
+  successRate: number,
   errorRate: number,
   averageProcessingTime: number
-}
-
 export interface ErrorRate {
   category: string,
-  count: number;
+  count: number,
   rate: number,
-  impactLevel: string;
+  impactLevel: string,
   mostCommonErrors: string[]
-}
-
 export interface InteroperabilityMetrics {
   totalExchanges: number,
-  exchangesByPartner: Distribution[];
+  exchangesByPartner: Distribution[],
   exchangesByResourceType: Distribution[],
-  standardsCompliance: StandardsCompliance[];
+  standardsCompliance: StandardsCompliance[],
   mappingAccuracy: number,
   dataQualityScore: number
-}
-
 export interface StandardsCompliance {
   standard: string,
-  complianceRate: number;
+  complianceRate: number,
   validationErrors: number,
-  validationWarnings: number;
+  validationWarnings: number,
   extensionUsage: number
-}
-
 export interface ComplianceMetrics {
   hipaaCompliance: ComplianceScore,
-  gdprCompliance: ComplianceScore;
+  gdprCompliance: ComplianceScore,
   hitrustCompliance: ComplianceScore,
-  regulatoryIssues: RegulatoryIssue[];
+  regulatoryIssues: RegulatoryIssue[],
   consentManagement: ConsentManagement,
   auditEvents: AuditEventMetrics
-}
-
 export interface ComplianceScore {
   overallScore: number,
-  issueCount: number;
+  issueCount: number,
   criticalIssues: number,
-  complianceByCategory: Distribution[];
+  complianceByCategory: Distribution[],
   remediationItems: string[]
-}
-
 export interface RegulatoryIssue {
   category: string,
-  severity: string;
+  severity: string,
   description: string,
-  affectedResources: number;
+  affectedResources: number,
   remediation: string
-}
-
 export interface ConsentManagement {
   totalConsents: number,
-  activeConsents: number;
+  activeConsents: number,
   consentsByType: Distribution[],
-  expiringNext30Days: number;
+  expiringNext30Days: number,
   consentErrors: number
-}
-
 export interface AuditEventMetrics {
   totalEvents: number,
-  eventsByType: Distribution[];
+  eventsByType: Distribution[],
   eventsByOutcome: Distribution[],
-  securityEvents: number;
+  securityEvents: number,
   privacyEvents: number
-}
-
 export interface QualityMetrics {
   dataCompleteness: number,
-  dataAccuracy: number;
+  dataAccuracy: number,
   dataTimeliness: number,
-  dataConsistency: number;
+  dataConsistency: number,
   codingAccuracy: number,
-  valueSetAdherence: number;
+  valueSetAdherence: number,
   profileConformance: number,
   qualityByResourceType: ResourceQuality[]
-}
-
 export interface ResourceQuality {
   resourceType: string,
-  completeness: number;
+  completeness: number,
   accuracy: number,
-  consistency: number;
+  consistency: number,
   qualityIssues: QualityIssue[]
-}
-
 export interface QualityIssue {
   issueType: string,
-  description: string;
+  description: string,
   count: number,
-  impact: string;
+  impact: string,
   recommendation: string
-}
-
 export interface PerformanceMetrics {
   averageResponseTime: number,
-  p95ResponseTime: number;
+  p95ResponseTime: number,
   p99ResponseTime: number,
-  throughput: number;
+  throughput: number,
   concurrentUsers: number,
-  errorRate: number;
+  errorRate: number,
   resourceBySize: ResourceSize[],
   queryPerformance: QueryPerformance[]
-}
-
 export interface ResourceSize {
   resourceType: string,
-  averageSize: number;
+  averageSize: number,
   maxSize: number,
-  totalStorage: number;
+  totalStorage: number,
   growthRate: number
-}
-
 export interface QueryPerformance {
   queryType: string,
-  averageTime: number;
+  averageTime: number,
   resourceType: string,
-  parameters: string[];
+  parameters: string[],
   optimizationOpportunities: string[]
-}
-
 export class FHIRAnalyticsService {
   /**
    * Get comprehensive FHIR analytics;
@@ -332,11 +254,11 @@ export class FHIRAnalyticsService {
     const startTime = performance.now();
     
     try {
-      // Try cache first;
+      // Try cache first
       const cached = await cacheService.getCachedResult('fhir_analytics:', timeframe);
       if (cached) return cached;
 
-      // Generate comprehensive analytics;
+      // Generate comprehensive analytics
       const [
         resourceCounts,
         resourceGrowth,
@@ -372,10 +294,10 @@ export class FHIRAnalyticsService {
         timestamp: new Date(),
       };
 
-      // Cache analytics;
-      await cacheService.cacheResult('fhir_analytics:', timeframe, analytics, 3600); // 1 hour;
+      // Cache analytics
+      await cacheService.cacheResult('fhir_analytics:', timeframe, analytics, 3600); // 1 hour
 
-      // Record metrics;
+      // Record metrics
       const duration = performance.now() - startTime;
       metricsCollector.recordTimer('fhir.analytics_generation_time', duration);
 
@@ -391,14 +313,14 @@ export class FHIRAnalyticsService {
    */
   async getPatientAnalytics(patientId: string): Promise<PatientFHIRAnalytics> {
     try {
-      // Try cache first;
+      // Try cache first
       const cached = await cacheService.getCachedResult('patient_fhir_analytics:', patientId);
       if (cached) return cached;
 
-      // Get patient FHIR resources;
+      // Get patient FHIR resources
       const resources = await this.getPatientResources(patientId);
 
-      // Generate patient analytics;
+      // Generate patient analytics
       const analytics: PatientFHIRAnalytics = {
         patientId,
         resourceCounts: this.countPatientResources(resources),
@@ -411,8 +333,8 @@ export class FHIRAnalyticsService {
         lastUpdated: new Date(),
       };
 
-      // Cache analytics;
-      await cacheService.cacheResult('patient_fhir_analytics:', patientId, analytics, 1800); // 30 minutes;
+      // Cache analytics
+      await cacheService.cacheResult('patient_fhir_analytics:', patientId, analytics, 1800); // 30 minutes
 
       return analytics;
     } catch (error) {
@@ -428,15 +350,15 @@ export class FHIRAnalyticsService {
     cohortDefinition: CohortDefinition;
   ): Promise<PopulationHealthMetrics> {
     try {
-      // Define cache key based on cohort parameters;
+      // Define cache key based on cohort parameters
       const cacheKey = `population_health:${JSON.stringify(cohortDefinition)}`;
       const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey);
       if (cached) return cached;
 
-      // Build cohort;
+      // Build cohort
       const cohort = await this.buildCohort(cohortDefinition);
 
-      // Generate population health metrics;
+      // Generate population health metrics
       const metrics: PopulationHealthMetrics = {
         cohortSize: cohort.length,
         cohortDefinition,
@@ -451,8 +373,8 @@ export class FHIRAnalyticsService {
         timestamp: new Date(),
       };
 
-      // Cache metrics;
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, metrics, 7200); // 2 hours;
+      // Cache metrics
+      await cacheService.cacheResult('fhir_analytics:', cacheKey, metrics, 7200); // 2 hours
 
       return metrics;
     } catch (error) {
@@ -468,15 +390,15 @@ export class FHIRAnalyticsService {
     parameters: TrendAnalysisParameters;
   ): Promise<ClinicalTrendReport> {
     try {
-      // Define cache key based on trend parameters;
+      // Define cache key based on trend parameters
       const cacheKey = `clinical_trends:${JSON.stringify(parameters)}`;
       const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey);
       if (cached) return cached;
 
-      // Get data for trend analysis;
+      // Get data for trend analysis
       const data = await this.getTrendData(parameters);
 
-      // Perform trend analysis;
+      // Perform trend analysis
       const trends: ClinicalTrendReport = {
         parameters,
         timeSeries: this.generateTimeSeries(data, parameters),
@@ -490,8 +412,8 @@ export class FHIRAnalyticsService {
         timestamp: new Date(),
       };
 
-      // Cache trend report;
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, trends, 7200); // 2 hours;
+      // Cache trend report
+      await cacheService.cacheResult('fhir_analytics:', cacheKey, trends, 7200); // 2 hours
 
       return trends;
     } catch (error) {
@@ -509,17 +431,17 @@ export class FHIRAnalyticsService {
     timeframe: string;
   ): Promise<ComparativeAnalytics> {
     try {
-      // Define cache key;
+      // Define cache key
       const cacheKey = `comparative:${entities.join('-')}:${metrics.join('-')}:${timeframe}`;
       const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey);
       if (cached) return cached;
 
-      // Get data for each entity;
+      // Get data for each entity
       const entityData = await Promise.all(
         entities.map(entity => this.getEntityMetrics(entity, metrics, timeframe));
       );
 
-      // Generate comparative analytics;
+      // Generate comparative analytics
       const analytics: ComparativeAnalytics = {
         entities,
         metrics,
@@ -533,8 +455,8 @@ export class FHIRAnalyticsService {
         visualizationData: this.prepareComparativeVisualizationData(entityData, metrics),
       };
 
-      // Cache analytics;
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, analytics, 86400); // 24 hours;
+      // Cache analytics
+      await cacheService.cacheResult('fhir_analytics:', cacheKey, analytics, 86400); // 24 hours
 
       return analytics;
     } catch (error) {
@@ -543,19 +465,19 @@ export class FHIRAnalyticsService {
     }
   }
 
-  // Private helper methods;
+  // Private helper methods
   private async getResourceCounts(): Promise<ResourceCount[]> {
-    // Implementation to fetch resource counts;
+    // Implementation to fetch resource counts
     return [];
   }
 
   private async getResourceGrowth(timeframe: string): Promise<ResourceGrowth[]> {
-    // Implementation to analyze resource growth;
+    // Implementation to analyze resource growth
     return [];
   }
 
   private async getPatientStatistics(timeframe: string): Promise<PatientStatistics> {
-    // Implementation to generate patient statistics;
+    // Implementation to generate patient statistics
     return {
       totalPatients: 0,
       activePatients: 0,
@@ -581,22 +503,22 @@ export class FHIRAnalyticsService {
   // Additional helper methods would be implemented here...
 
   private async getPatientResources(patientId: string): Promise<any[]> {
-    // Implementation to fetch patient FHIR resources;
+    // Implementation to fetch patient FHIR resources
     return [];
   }
 
   private countPatientResources(resources: unknown[]): ResourceCount[] {
-    // Implementation to count patient resources by type;
+    // Implementation to count patient resources by type
     return [];
   }
 
   private generatePatientTimeline(resources: unknown[]): TimelineEvent[] {
-    // Implementation to generate patient timeline;
+    // Implementation to generate patient timeline
     return [];
   }
 
   private async generateClinicalSummary(resources: unknown[]): Promise<ClinicalSummary> {
-    // Implementation to generate clinical summary;
+    // Implementation to generate clinical summary
     return {
       conditions: [],
       medications: [],
@@ -610,124 +532,108 @@ export class FHIRAnalyticsService {
   }
 
   private analyzeTrends(resources: unknown[]): ObservationTrend[] {
-    // Implementation to analyze trends;
+    // Implementation to analyze trends
     return [];
   }
 
   private async identifyCareGaps(patientId: string, resources: unknown[]): Promise<CareGap[]> {
-    // Implementation to identify care gaps;
+    // Implementation to identify care gaps
     return [];
   }
 
   private assessResourceQuality(resources: unknown[]): ResourceQuality[] {
-    // Implementation to assess resource quality;
+    // Implementation to assess resource quality
     return [];
   }
 
   private calculateDataCompleteness(resources: unknown[]): number {
-    // Implementation to calculate data completeness;
+    // Implementation to calculate data completeness
     return 0;
   }
 
   private async buildCohort(definition: CohortDefinition): Promise<any[]> {
-    // Implementation to build cohort based on definition;
+    // Implementation to build cohort based on definition
     return [];
   }
 
   // Additional helper methods would be implemented here...
 }
 
-// Additional interfaces for extended functionality;
+// Additional interfaces for extended functionality
 export interface PatientFHIRAnalytics {
   patientId: string,
-  resourceCounts: ResourceCount[];
+  resourceCounts: ResourceCount[],
   timeline: TimelineEvent[],
-  clinicalSummary: ClinicalSummary;
+  clinicalSummary: ClinicalSummary,
   trendAnalysis: ObservationTrend[],
-  careGaps: CareGap[];
+  careGaps: CareGap[],
   resourceQuality: ResourceQuality[],
-  dataCompleteness: number;
+  dataCompleteness: number,
   lastUpdated: Date
-}
-
 export interface TimelineEvent {
   date: Date,
-  eventType: string;
+  eventType: string,
   resourceType: string,
-  resourceId: string;
+  resourceId: string,
   description: string,
   category: string;
   severity?: string;
   relatedEvents?: string[];
-}
-
 export interface ClinicalSummary {
   conditions: ConditionSummary[],
-  medications: MedicationSummary[];
+  medications: MedicationSummary[],
   allergies: AllergySummary[],
-  procedures: ProcedureSummary[];
+  procedures: ProcedureSummary[],
   vitalStats: VitalStatsSummary[],
-  labResults: LabResultSummary[];
+  labResults: LabResultSummary[],
   immunizations: ImmunizationSummary[],
   socialFactors: SocialFactorSummary[]
-}
-
 export interface ConditionSummary {
   condition: string,
-  code: string;
+  code: string,
   system: string;
   onsetDate?: Date;
   endDate?: Date;
   status: string;
   severity?: string;
   notes?: string;
-}
-
 export interface MedicationSummary {
   medication: string,
-  code: string;
+  code: string,
   dosage: string;
   startDate?: Date;
   endDate?: Date;
   status: string;
   prescriber?: string;
   reason?: string;
-}
-
 export interface AllergySummary {
   allergen: string,
-  code: string;
+  code: string,
   system: string;
   reaction?: string;
   severity?: string;
   onsetDate?: Date;
   status: string
-}
-
 export interface ProcedureSummary {
   procedure: string,
-  code: string;
+  code: string,
   system: string,
   date: Date;
   performer?: string;
   outcome?: string;
   notes?: string;
-}
-
 export interface VitalStatsSummary {
   type: string,
-  code: string;
+  code: string,
   system: string,
-  latestValue: number;
+  latestValue: number,
   unit: string,
-  date: Date;
+  date: Date,
   trend: string;
   referenceRange?: string;
-}
-
 export interface LabResultSummary {
   test: string,
-  code: string;
+  code: string,
   system: string,
   latestValue: string;
   unit?: string;
@@ -735,37 +641,29 @@ export interface LabResultSummary {
   status: string;
   referenceRange?: string;
   interpretation?: string;
-}
-
 export interface ImmunizationSummary {
   vaccine: string,
-  code: string;
+  code: string,
   system: string,
-  date: Date;
+  date: Date,
   status: string;
   dueDate?: Date;
-}
-
 export interface SocialFactorSummary {
   factor: string,
-  category: string;
+  category: string,
   status: string;
   notes?: string;
-}
-
 export interface CareGap {
   type: string,
   description: string;
   dueDate?: Date;
   overdue: boolean,
-  priority: string;
+  priority: string,
   recommendation: string;
   relatedConditions?: string[];
-}
-
 export interface CohortDefinition {
   name: string,
-  description: string;
+  description: string,
   inclusionCriteria: Criterion[],
   exclusionCriteria: Criterion[];
   timeframe?: string;
@@ -777,417 +675,323 @@ export interface CohortDefinition {
   procedures?: string[];
   encounters?: string[];
   observations?: ObservationCriterion[];
-}
-
 export interface Criterion {
   resourceType: string,
-  field: string;
+  field: string,
   operator: string,
   value: unknown;
   timeConstraint?: string;
-}
-
 export interface ObservationCriterion {
   code: string,
-  system: string;
+  system: string,
   operator: string,
   value: unknown;
   unit?: string;
   timeConstraint?: string;
-}
-
 export interface PopulationHealthMetrics {
   cohortSize: number,
-  cohortDefinition: CohortDefinition;
+  cohortDefinition: CohortDefinition,
   demographicSummary: DemographicSummary,
-  conditionPrevalence: ConditionPrevalence[];
+  conditionPrevalence: ConditionPrevalence[],
   riskStratification: RiskStratification,
-  careQualityMetrics: CareQualityMetric[];
+  careQualityMetrics: CareQualityMetric[],
   utilization: UtilizationMetrics,
-  outcomes: OutcomeMetric[];
+  outcomes: OutcomeMetric[],
   costAnalysis: CostAnalysis,
-  interventionOpportunities: InterventionOpportunity[];
+  interventionOpportunities: InterventionOpportunity[],
   timestamp: Date
-}
-
 export interface DemographicSummary {
   ageDistribution: AgeDistribution,
-  genderDistribution: Distribution[];
+  genderDistribution: Distribution[],
   ethnicityDistribution: Distribution[],
-  locationDistribution: Distribution[];
+  locationDistribution: Distribution[],
   insuranceDistribution: Distribution[],
   socioeconomicFactors: SocioeconomicFactor[]
-}
-
 export interface AgeDistribution {
   meanAge: number,
-  medianAge: number;
+  medianAge: number,
   ageGroups: Distribution[],
   ageRange: { min: number; max: number };
-}
-
 export interface SocioeconomicFactor {
   factor: string,
-  distribution: Distribution[];
+  distribution: Distribution[],
   impact: number
-}
-
 export interface RiskStratification {
   lowRisk: number,
-  moderateRisk: number;
+  moderateRisk: number,
   highRisk: number,
-  veryHighRisk: number;
+  veryHighRisk: number,
   riskCategories: RiskCategory[],
-  riskFactorPrevalence: RiskFactorPrevalence[];
+  riskFactorPrevalence: RiskFactorPrevalence[],
   changeOverTime: RiskChangeOverTime
-}
-
 export interface RiskCategory {
   category: string,
-  count: number;
+  count: number,
   percentage: number,
-  averageRiskScore: number;
+  averageRiskScore: number,
   keyCharacteristics: string[]
-}
-
 export interface RiskFactorPrevalence {
   factor: string,
-  count: number;
+  count: number,
   prevalence: number,
-  relativePriority: number;
+  relativePriority: number,
   modifiable: boolean
-}
-
 export interface RiskChangeOverTime {
   periods: string[],
-  riskDistributions: number[][];
+  riskDistributions: number[][],
   trend: string,
   significantChanges: SignificantChange[]
-}
-
 export interface SignificantChange {
   metric: string,
-  beforeValue: number;
+  beforeValue: number,
   afterValue: number,
-  percentChange: number;
+  percentChange: number,
   significanceLevel: number,
   description: string
-}
-
 export interface CareQualityMetric {
   metric: string,
-  description: string;
+  description: string,
   value: number,
-  target: number;
+  target: number,
   benchmark: number,
-  trend: string;
+  trend: string,
   disparities: Disparity[]
-}
-
 export interface Disparity {
   group: string,
-  value: number;
+  value: number,
   reference: number,
-  gap: number;
+  gap: number,
   trend: string
-}
-
 export interface UtilizationMetrics {
   overallMetrics: OverallUtilization,
-  byServiceType: ServiceUtilization[];
+  byServiceType: ServiceUtilization[],
   byProvider: ProviderUtilization[],
-  byLocation: LocationUtilization[];
+  byLocation: LocationUtilization[],
   temporalPatterns: TemporalPattern[],
   utilizationDrivers: UtilizationDriver[]
-}
-
 export interface OverallUtilization {
   totalEncounters: number,
-  encountersPerPatient: number;
+  encountersPerPatient: number,
   bedDays: number,
-  averageLengthOfStay: number;
+  averageLengthOfStay: number,
   readmissionRate: number,
-  emergencyUtilization: number;
+  emergencyUtilization: number,
   preventableUtilization: number
-}
-
 export interface ProviderUtilization {
   provider: string,
-  encounterCount: number;
+  encounterCount: number,
   patientCount: number,
-  averageCost: number;
+  averageCost: number,
   qualityScore: number,
   efficacyScore: number
-}
-
 export interface LocationUtilization {
   location: string,
-  encounterCount: number;
+  encounterCount: number,
   patientCount: number,
-  occupancyRate: number;
+  occupancyRate: number,
   averageLengthOfStay: number,
   readmissionRate: number
-}
-
 export interface TemporalPattern {
   timeFrame: string,
-  pattern: string;
+  pattern: string,
   peak: { time: string; value: number };
   trough: { time: string; value: number };
   seasonality: boolean,
   trend: string
-}
-
 export interface UtilizationDriver {
   driver: string,
-  impact: number;
+  impact: number,
   affectedPopulation: number,
-  preventability: number;
+  preventability: number,
   interventionOpportunities: string[]
-}
-
 export interface OutcomeMetric {
   outcome: string,
-  description: string;
+  description: string,
   value: number,
-  target: number;
+  target: number,
   benchmark: number,
-  trend: string;
+  trend: string,
   clinicalSignificance: string,
   disparities: Disparity[]
-}
-
 export interface CostAnalysis {
   totalCost: number,
-  costPerPatient: number;
+  costPerPatient: number,
   costByCategory: CostByCategory[],
-  costByCondition: CostByCondition[];
+  costByCondition: CostByCondition[],
   costDrivers: CostDriver[],
-  costProjection: CostProjection;
+  costProjection: CostProjection,
   savingsOpportunities: SavingsOpportunity[]
-}
-
 export interface CostByCategory {
   category: string,
-  cost: number;
+  cost: number,
   percentage: number,
-  costPerPatient: number;
+  costPerPatient: number,
   trend: string
-}
-
 export interface CostByCondition {
   condition: string,
-  cost: number;
+  cost: number,
   prevalence: number,
-  costPerPatient: number;
+  costPerPatient: number,
   preventableCost: number
-}
-
 export interface CostDriver {
   driver: string,
-  impact: number;
+  impact: number,
   affectedPopulation: number,
-  preventability: number;
+  preventability: number,
   interventionOpportunities: string[]
-}
-
 export interface CostProjection {
   periods: string[],
-  projectedCosts: number[];
+  projectedCosts: number[],
   scenarios: CostScenario[]
-}
-
 export interface CostScenario {
   name: string,
-  description: string;
+  description: string,
   projectedCosts: number[],
-  savingsVsBaseline: number[];
+  savingsVsBaseline: number[],
   assumptions: string[]
-}
-
 export interface SavingsOpportunity {
   opportunity: string,
-  potentialSavings: number;
+  potentialSavings: number,
   implementation: ImplementationDetails,
-  roi: number;
+  roi: number,
   timeToRealizeSavings: string
-}
-
 export interface ImplementationDetails {
   difficulty: string,
-  cost: number;
+  cost: number,
   timeframe: string,
   resources: string[]
-}
-
 export interface InterventionOpportunity {
   target: string,
-  population: number;
+  population: number,
   description: string,
-  expectedImpact: ExpectedImpact;
+  expectedImpact: ExpectedImpact,
   implementation: ImplementationDetails,
-  evidenceLevel: string;
+  evidenceLevel: string,
   priority: string
-}
-
 export interface ExpectedImpact {
   clinicalImpact: string,
-  costImpact: number;
+  costImpact: number,
   timeToImpact: string,
   confidenceLevel: number
-}
-
 export interface TrendAnalysisParameters {
   metricType: string,
   resourceTypes: string[];
   codes?: string[];
   startDate: Date,
-  endDate: Date;
+  endDate: Date,
   interval: string;
   stratifyBy?: string[];
   filters?: Criterion[];
-}
-
 export interface ClinicalTrendReport {
   parameters: TrendAnalysisParameters,
-  timeSeries: TimeSeriesData[];
+  timeSeries: TimeSeriesData[],
   statisticalAnalysis: StatisticalAnalysis,
-  significantChanges: SignificantChange[];
+  significantChanges: SignificantChange[],
   seasonalPatterns: SeasonalPattern[],
-  correlations: Correlation[];
+  correlations: Correlation[],
   anomalies: Anomaly[],
-  predictions: Prediction[];
+  predictions: Prediction[],
   visualizationData: VisualizationData,
   timestamp: Date
-}
-
 export interface TimeSeriesData {
   metric: string;
   stratification?: string;
   timePoints: string[],
-  values: number[];
+  values: number[],
   trend: string
-}
-
 export interface StatisticalAnalysis {
   metric: string,
-  mean: number;
+  mean: number,
   median: number,
-  standardDeviation: number;
+  standardDeviation: number,
   min: number,
-  max: number;
+  max: number,
   percentiles: Record<string, number>;
   linearTrend: { slope: number; intercept: number; rSquared: number };
-}
-
 export interface SeasonalPattern {
   metric: string,
-  period: string;
+  period: string,
   amplitude: number,
-  phase: number;
+  phase: number,
   significance: number,
-  peaks: string[];
+  peaks: string[],
   troughs: string[]
-}
-
 export interface Correlation {
   metric1: string,
-  metric2: string;
+  metric2: string,
   correlationCoefficient: number,
-  pValue: number;
+  pValue: number,
   relationship: string,
-  causationLikelihood: number;
+  causationLikelihood: number,
   description: string
-}
-
 export interface Anomaly {
   metric: string,
-  timePoint: string;
+  timePoint: string,
   expectedValue: number,
-  actualValue: number;
+  actualValue: number,
   deviation: number,
-  significance: number;
+  significance: number,
   possibleCauses: string[]
-}
-
 export interface Prediction {
   metric: string,
-  timePoints: string[];
+  timePoints: string[],
   predictedValues: number[],
   confidenceIntervals: [number, number][];
   method: string,
   accuracy: number
-}
-
 export interface VisualizationData {
   chartTypes: Record<string, ChartSpecification>;
   dataExport: Record<string, any>;
-}
-
 export interface ChartSpecification {
   type: string,
-  title: string;
+  title: string,
   xAxis: string,
-  yAxis: string;
+  yAxis: string,
   series: DataSeries[];
   annotations?: Annotation[];
-}
-
 export interface DataSeries {
   name: string,
-  data: unknown[];
+  data: unknown[],
   type: string
-}
-
 export interface Annotation {
   x: unknown,
-  y: unknown;
+  y: unknown,
   text: string,
   type: string
-}
-
 export interface ComparativeAnalytics {
   entities: string[],
-  metrics: string[];
+  metrics: string[],
   timeframe: string,
-  comparisonDate: Date;
+  comparisonDate: Date,
   metricComparisons: MetricComparison[],
-  statisticalSignificance: SignificanceTest[];
+  statisticalSignificance: SignificanceTest[],
   rankings: Ranking[],
-  benchmarks: Benchmark[];
+  benchmarks: Benchmark[],
   improvementOpportunities: ImprovementOpportunity[],
   visualizationData: VisualizationData
-}
-
 export interface MetricComparison {
   metric: string,
-  description: string;
+  description: string,
   values: Record<string, number>;
   meanValue: number,
-  medianValue: number;
+  medianValue: number,
   minValue: number,
-  maxValue: number;
+  maxValue: number,
   standardDeviation: number,
   coefficientOfVariation: number
-}
-
 export interface SignificanceTest {
   metric: string,
-  testType: string;
+  testType: string,
   pValue: number,
-  isSignificant: boolean;
+  isSignificant: boolean,
   effectSize: number,
   interpretation: string
-}
-
 export interface Ranking {
   metric: string,
   entityRankings: { entity: string; rank: number; value: number }[];
   topPerformer: string,
-  bottomPerformer: string;
+  bottomPerformer: string,
   medianPerformer: string
-}
-
 export interface Benchmark {
   metric: string;
   nationalBenchmark?: number;
@@ -1195,17 +999,13 @@ export interface Benchmark {
   specialtyBenchmark?: number;
   topDecile: number,
   bottomDecile: number
-}
-
 export interface ImprovementOpportunity {
   entity: string,
-  metric: string;
+  metric: string,
   currentValue: number,
-  targetValue: number;
+  targetValue: number,
   gap: number,
-  potentialImpact: string;
+  potentialImpact: string,
   recommendedActions: string[],
   priority: string
-}
-
 export default FHIRAnalyticsService;

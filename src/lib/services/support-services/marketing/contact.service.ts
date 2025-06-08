@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Contact, ContactNote, ContactStatus } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { encryptData, decryptData } from '@/lib/encryption';
@@ -30,10 +20,10 @@ export class ContactService {
    */
   async createContact(data: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<Contact> {
     try {
-      // Validate contact data;
+      // Validate contact data
       this.validateContactData(data);
       
-      // Encrypt sensitive data;
+      // Encrypt sensitive data
       const encryptedData = {
         ...data,
         email: data.email ? encryptData(data.email) : undefined,
@@ -42,7 +32,7 @@ export class ContactService {
         dateOfBirth: data.dateOfBirth,
       };
       
-      // Create contact in database;
+      // Create contact in database
       const contact = await prisma.contact.create({
         data: {
           firstName: encryptedData.firstName,
@@ -62,7 +52,7 @@ export class ContactService {
         },
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'contact.create',
         resourceId: contact.id,
@@ -73,7 +63,7 @@ export class ContactService {
         }
       });
       
-      // Decrypt sensitive data before returning;
+      // Decrypt sensitive data before returning
       return this.decryptContactData(contact);
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -127,10 +117,10 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
       
-      // Decrypt sensitive data;
+      // Decrypt sensitive data
       const decryptedContact = this.decryptContactData(contact);
       
-      // Generate FHIR representation if requested;
+      // Generate FHIR representation if requested
       const result: unknown = decryptedContact;
       if (includeFHIR) {
         result.fhir = this.generateContactFHIR(decryptedContact);
@@ -168,7 +158,7 @@ export class ContactService {
         limit = 10;
       } = filters;
       
-      // Build where clause based on filters;
+      // Build where clause based on filters
       const where: unknown = {};
       
       if (status) {
@@ -193,7 +183,7 @@ export class ContactService {
         ];
       }
       
-      // Handle segment filter;
+      // Handle segment filter
       let segmentFilter = {};
       if (segmentId) {
         segmentFilter = {
@@ -207,10 +197,10 @@ export class ContactService {
         Object.assign(where, segmentFilter);
       }
       
-      // Get total count for pagination;
+      // Get total count for pagination
       const total = await prisma.contact.count({ where });
       
-      // Get contacts with pagination;
+      // Get contacts with pagination
       const contacts = await prisma.contact.findMany({
         where,
         include: {
@@ -236,7 +226,7 @@ export class ContactService {
         }
       });
       
-      // Decrypt sensitive data;
+      // Decrypt sensitive data
       const decryptedContacts = contacts.map(contact => this.decryptContactData(contact));
       
       return {
@@ -258,7 +248,7 @@ export class ContactService {
    */
   async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {
     try {
-      // Check if contact exists;
+      // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id }
       });
@@ -267,7 +257,7 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
       
-      // Encrypt sensitive data if provided;
+      // Encrypt sensitive data if provided
       const updateData: unknown = { ...data };
       
       if (data.email) {
@@ -282,13 +272,13 @@ export class ContactService {
         updateData.address = encryptData(JSON.stringify(data.address));
       }
       
-      // Update contact;
+      // Update contact
       const updatedContact = await prisma.contact.update({
         where: { id },
         data: updateData
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'contact.update',
         resourceId: id,
@@ -298,7 +288,7 @@ export class ContactService {
         }
       });
       
-      // Decrypt sensitive data before returning;
+      // Decrypt sensitive data before returning
       return this.decryptContactData(updatedContact);
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -313,7 +303,7 @@ export class ContactService {
    */
   async addContactNote(contactId: string, content: string, userId: string): Promise<ContactNote> {
     try {
-      // Check if contact exists;
+      // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -322,7 +312,7 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Create note;
+      // Create note
       const note = await prisma.contactNote.create({
         data: {
           contactId,
@@ -339,7 +329,7 @@ export class ContactService {
         }
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'contact.note.add',
         resourceId: contactId,
@@ -363,7 +353,7 @@ export class ContactService {
    */
   async linkContactToPatient(contactId: string, patientId: string, userId: string): Promise<Contact> {
     try {
-      // Check if contact exists;
+      // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -372,7 +362,7 @@ export class ContactService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Check if patient exists;
+      // Check if patient exists
       const existingPatient = await prisma.patient.findUnique({
         where: { id: patientId }
       });
@@ -381,7 +371,7 @@ export class ContactService {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
       
-      // Update contact with patient link;
+      // Update contact with patient link
       const updatedContact = await prisma.contact.update({
         where: { id: contactId },
         data: {
@@ -398,7 +388,7 @@ export class ContactService {
         }
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'contact.link.patient',
         resourceId: contactId,
@@ -408,7 +398,7 @@ export class ContactService {
         }
       });
       
-      // Decrypt sensitive data before returning;
+      // Decrypt sensitive data before returning
       return this.decryptContactData(updatedContact);
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -423,7 +413,7 @@ export class ContactService {
    * Maps to FHIR Patient and RelatedPerson resources;
    */
   private generateContactFHIR(contact: Contact): unknown {
-    // If contact is linked to a patient, use Patient resource;
+    // If contact is linked to a patient, use Patient resource
     if (contact.patientId && contact.patient) {
       return {
         resourceType: 'Patient',
@@ -458,7 +448,7 @@ export class ContactService {
       };
     }
     
-    // Otherwise use RelatedPerson resource;
+    // Otherwise use RelatedPerson resource
     return {
       resourceType: 'RelatedPerson',
       id: `contact-${contact.id}`,
@@ -498,22 +488,22 @@ export class ContactService {
   private validateContactData(data: Partial<Contact>): void {
     const errors: string[] = [];
     
-    // Email or phone is required;
+    // Email or phone is required
     if (!data.email && !data.phone) {
       errors.push('Either email or phone is required');
     }
     
-    // Validate email format if provided;
+    // Validate email format if provided
     if (data.email && !this.isValidEmail(data.email)) {
       errors.push('Invalid email format');
     }
     
-    // Validate phone format if provided;
+    // Validate phone format if provided
     if (data.phone && !this.isValidPhone(data.phone)) {
       errors.push('Invalid phone format');
     }
     
-    // Check for valid status;
+    // Check for valid status
     if (data.status && !Object.values(ContactStatus).includes(data.status as ContactStatus)) {
       errors.push(`Invalid status: ${data.status}`);
     }
@@ -535,7 +525,7 @@ export class ContactService {
    * Validate phone format;
    */
   private isValidPhone(phone: string): boolean {
-    // Allow various phone formats;
+    // Allow various phone formats
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
     return phoneRegex.test(phone);
   }
@@ -565,4 +555,3 @@ export class ContactService {
       return contact;
     }
   }
-}

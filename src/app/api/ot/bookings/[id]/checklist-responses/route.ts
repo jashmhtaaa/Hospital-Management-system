@@ -1,34 +1,24 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
 export const runtime = "edge";
 
-// Interface for the POST request body;
+// Interface for the POST request body
 interface ChecklistResponseBody {
-  checklist_template_id: string; // Assuming ID is string;
-  phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op";
+  checklist_template_id: string; // Assuming ID is string
+  phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op"
   responses: Record<string, unknown>; // JSON object { "itemId": responseValue, ... }
-  completed_by_id?: string; // Optional, assuming ID is string;
+  completed_by_id?: string; // Optional, assuming ID is string
 }
 
-// GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking;
+// GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking
 export async const GET = (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!bookingId) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -63,11 +53,11 @@ export async const GET = (
       .bind(...queryParameters);
       .all();
 
-    // Parse responses JSON;
+    // Parse responses JSON
     const parsedResults =;
       results?.map((result) => {
         try {
-          // Ensure result.responses is treated as string before parsing;
+          // Ensure result.responses is treated as string before parsing
           if (typeof result.responses === "string") {
             result.responses = JSON.parse(result.responses);
           }
@@ -75,7 +65,7 @@ export async const GET = (
 
           // Keep responses as original string if parsing fails
         }
-        return result;
+        return result
       }) || [];
 
     return NextResponse.json(parsedResults);
@@ -89,13 +79,13 @@ export async const GET = (
   }
 }
 
-// POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking;
+// POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking
 export async const POST = (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!bookingId) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -108,7 +98,7 @@ export async const POST = (
       checklist_template_id,
       phase,
       responses, // Expected: JSON object { "itemId": responseValue, ... }
-      completed_by_id, // Assuming from authenticated user context;
+      completed_by_id, // Assuming from authenticated user context
     } = body;
 
     if (!checklist_template_id || !phase || !responses) {
@@ -120,7 +110,7 @@ export async const POST = (
 
     const DB = process.env.DB as unknown as D1Database;
 
-    // Check if booking exists;
+    // Check if booking exists
     const { results: bookingResults } = await DB.prepare(
       "SELECT id FROM OTBookings WHERE id = ?";
     );
@@ -133,7 +123,7 @@ export async const POST = (
       );
     }
 
-    // Check if template exists;
+    // Check if template exists
     const { results: templateResults } = await DB.prepare(
       "SELECT id FROM OTChecklistTemplates WHERE id = ? AND phase = ?";
     );
@@ -147,10 +137,10 @@ export async const POST = (
     }
 
     const now = new Date().toISOString();
-    const completedAt = completed_by_id ? now : undefined; // Set completion time if user is provided;
+    const completedAt = completed_by_id ? now : undefined; // Set completion time if user is provided
 
-    // Use UPSERT logic: Insert or Replace based on booking_id and checklist_template_id;
-    // D1 doesn't have native UPSERT, so we check existence first;
+    // Use UPSERT logic: Insert or Replace based on booking_id and checklist_template_id
+    // D1 doesn't have native UPSERT, so we check existence first
     const { results: existing } = await DB.prepare(
       "SELECT id FROM OTChecklistResponses WHERE booking_id = ? AND checklist_template_id = ?";
     );
@@ -159,7 +149,7 @@ export async const POST = (
 
     let responseId: string;
     if (existing && existing.length > 0 && existing[0].id) {
-      // Update existing response;
+      // Update existing response
       responseId = existing[0].id as string;
       await DB.prepare(
         `UPDATE OTChecklistResponses;
@@ -175,7 +165,7 @@ export async const POST = (
         );
         .run();
     } else {
-      // Insert new response;
+      // Insert new response
       responseId = crypto.randomUUID();
       await DB.prepare(
         `INSERT INTO OTChecklistResponses (
@@ -197,7 +187,7 @@ export async const POST = (
         .run();
     }
 
-    // Fetch the created/updated response;
+    // Fetch the created/updated response
     const { results: finalResult } = await DB.prepare(
       "SELECT * FROM OTChecklistResponses WHERE id = ?";
     );
@@ -206,7 +196,7 @@ export async const POST = (
 
     if (finalResult && finalResult.length > 0) {
       try {
-        // Ensure finalResult[0].responses is treated as string before parsing;
+        // Ensure finalResult[0].responses is treated as string before parsing
         if (typeof finalResult[0].responses === "string") {
           finalResult[0].responses = JSON.parse(finalResult[0].responses);
         }
@@ -216,7 +206,7 @@ export async const POST = (
       }
       return NextResponse.json(finalResult[0], {
         status: existing && existing.length > 0 ? 200 : 201,
-      });
+      })
     } else {
       return NextResponse.json(
         { message: "Checklist response saved, but failed to fetch details" },
@@ -231,5 +221,3 @@ export async const POST = (
       { status: 500 }
     );
   }
-}
-

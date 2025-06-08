@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -14,23 +6,23 @@ var __DEV__: boolean;
  * Exports all core utilities for easy access;
  */
 
-// Error handling;
+// Error handling
 export * from './errors.ts';
 
-// Repository pattern;
+// Repository pattern
 export * from './repository.ts';
 
-// Service layer;
+// Service layer
 export * from './service.ts';
 
-// Middleware;
+// Middleware
 export * from './middleware.ts';
 
-// Logging;
+// Logging
 export * from './logging.ts';
 
-// Validation;
+// Validation
 export * from './validation.ts';
 
-// FHIR utilities;
+// FHIR utilities
 export * from './fhir.ts';

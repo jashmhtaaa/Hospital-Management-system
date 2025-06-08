@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -31,13 +23,9 @@ export interface FHIRConditionStage {
   summary?: FHIRCodeableConcept;
   assessment?: FHIRReference[];
   type?: FHIRCodeableConcept;
-}
-
 export interface FHIRConditionEvidence {
   code?: FHIRCodeableConcept[];
   detail?: FHIRReference[];
-}
-
 export interface FHIRCondition extends FHIRBase {
   resourceType: 'Condition';
   identifier?: FHIRIdentifier[];
@@ -47,7 +35,7 @@ export interface FHIRCondition extends FHIRBase {
   severity?: FHIRCodeableConcept;
   code?: FHIRCodeableConcept;
   bodySite?: FHIRCodeableConcept[];
-  subject: FHIRReference; // Patient | Group;
+  subject: FHIRReference; // Patient | Group
   encounter?: FHIRReference;
   onset?: string | FHIRAge | FHIRPeriod | FHIRRange;
   abatement?: string | FHIRAge | FHIRPeriod | FHIRRange | boolean;
@@ -59,7 +47,7 @@ export interface FHIRCondition extends FHIRBase {
   note?: FHIRAnnotation[];
 }
 
-// Condition Search Parameters;
+// Condition Search Parameters
 export interface FHIRConditionSearchParams {
   _id?: string;
   identifier?: string;
@@ -79,7 +67,7 @@ export interface FHIRConditionSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR Condition operations;
+// Helper functions for FHIR Condition operations
 export class FHIRConditionUtils {
   /**
    * Create a basic condition/diagnosis;
@@ -141,9 +129,9 @@ export class FHIRConditionUtils {
         type: 'Practitioner'
       },
       recordedDate: data.recordedDate || new Date().toISOString()
-    };
+    }
 
-    // Add encounter if provided;
+    // Add encounter if provided
     if (data.encounterId) {
       condition.encounter = {
         reference: `Encounter/${data.encounterId}`,
@@ -151,7 +139,7 @@ export class FHIRConditionUtils {
       };
     }
 
-    // Add severity if provided;
+    // Add severity if provided
     if (data.severity) {
       condition.severity = {
         coding: [{
@@ -159,15 +147,15 @@ export class FHIRConditionUtils {
           code: this.getSeverityCode(data.severity),
           display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1)
         }]
-      };
+      }
     }
 
-    // Add onset date if provided;
+    // Add onset date if provided
     if (data.onsetDate) {
       condition.onset = data.onsetDate;
     }
 
-    // Add notes if provided;
+    // Add notes if provided
     if (data.notes) {
       condition.note = [{
         text: data.notes,
@@ -183,9 +171,9 @@ export class FHIRConditionUtils {
    */
   static createChronicCondition(data: {
     patientId: string,
-    practitionerId: string;
+    practitionerId: string,
     conditionCode: string,
-    conditionDisplay: string;
+    conditionDisplay: string,
     onsetDate: string;
     severity?: 'mild' | 'moderate' | 'severe';
     managementNotes?: string;
@@ -205,9 +193,9 @@ export class FHIRConditionUtils {
    */
   static createAcuteCondition(data: {
     patientId: string,
-    practitionerId: string;
+    practitionerId: string,
     encounterId: string,
-    conditionCode: string;
+    conditionCode: string,
     conditionDisplay: string;
     severity?: 'mild' | 'moderate' | 'severe';
     onsetDate?: string;
@@ -228,9 +216,9 @@ export class FHIRConditionUtils {
    */
   static createResolvedCondition(data: {
     patientId: string,
-    practitionerId: string;
+    practitionerId: string,
     conditionCode: string,
-    conditionDisplay: string;
+    conditionDisplay: string,
     onsetDate: string,
     abatementDate: string;
     resolutionNotes?: string;
@@ -359,7 +347,7 @@ export class FHIRConditionUtils {
     if (!onsetDate) return null;
 
     const endDate = this.getAbatementDate(condition) || new Date();
-    return Math.floor((endDate.getTime() - onsetDate.getTime()) / (1000 * 60 * 60 * 24)); // days;
+    return Math.floor((endDate.getTime() - onsetDate.getTime()) / (1000 * 60 * 60 * 24)); // days
   }
 
   /**
@@ -367,9 +355,9 @@ export class FHIRConditionUtils {
    */
   static formatForDisplay(condition: FHIRCondition): {
     condition: string,
-    clinicalStatus: string;
+    clinicalStatus: string,
     verificationStatus: string,
-    category: string;
+    category: string,
     severity: string;
     onsetDate?: string;
     duration?: string;
@@ -406,12 +394,12 @@ export class FHIRConditionUtils {
       errors.push('subject is required');
     }
 
-    // Either code or category must be present;
+    // Either code or category must be present
     if (!condition.code && !condition.category) {
       errors.push('Either code or category must be present');
     }
 
-    // Validate clinical status values if present;
+    // Validate clinical status values if present
     if (condition.clinicalStatus) {
       const validClinicalStatuses = ['active', 'recurrence', 'relapse', 'inactive', 'remission', 'resolved'];
       const clinicalStatus = condition.clinicalStatus.coding?.[0]?.code;
@@ -420,7 +408,7 @@ export class FHIRConditionUtils {
       }
     }
 
-    // Validate verification status values if present;
+    // Validate verification status values if present
     if (condition.verificationStatus) {
       const validVerificationStatuses = ['unconfirmed', 'provisional', 'differential', 'confirmed', 'refuted', 'entered-in-error'];
       const verificationStatus = condition.verificationStatus.coding?.[0]?.code;
@@ -527,7 +515,7 @@ export class FHIRConditionUtils {
   }
 }
 
-// Common condition codes and classifications;
+// Common condition codes and classifications
 export class FHIRConditionCodes {
   /**
    * Common chronic conditions;
@@ -609,4 +597,3 @@ export class FHIRConditionCodes {
     const condition = Object.values(allConditions).find(cond => cond.code === code);
     return condition?.display || 'Unknown Condition';
   }
-}

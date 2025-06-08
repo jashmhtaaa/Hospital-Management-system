@@ -1,31 +1,21 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 import { nanoid } from "nanoid";
 import { getSession } from "@/lib/session";
 import { checkUserRole } from "@/lib/auth";
 
-// Define interface for POST request body;
+// Define interface for POST request body
 interface ProcedureTypeInput {
   name?: string;
   description?: string;
   modality_type?: string;
 }
 
-// GET all Radiology Procedure Types;
+// GET all Radiology Procedure Types
 export async const GET = (request: NextRequest) => {
   const session = await getSession();
-  // Allow broader access for viewing procedure types;
+  // Allow broader access for viewing procedure types
   if (
     !session?.user ||
     !(await checkUserRole(request, [
@@ -46,7 +36,7 @@ export async const GET = (request: NextRequest) => {
     ).all();
     return NextResponse.json(results);
   } catch (error: unknown) {
-    // FIX: Replaced any with unknown;
+    // FIX: Replaced any with unknown
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     return NextResponse.json(
@@ -61,16 +51,16 @@ export async const GET = (request: NextRequest) => {
 
 // POST a new Radiology Procedure Type (Admin only)
 export async const POST = (request: NextRequest) => {
-  const session = await getSession();
+  const session = await getSession()
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
-    // Use await, pass request, add optional chaining;
+    // Use await, pass request, add optional chaining
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   const DB = process.env.DB as unknown as D1Database;
   try {
     const { name, description, modality_type } =;
-      (await request.json()) as ProcedureTypeInput; // Cast to ProcedureTypeInput;
+      (await request.json()) as ProcedureTypeInput; // Cast to ProcedureTypeInput
 
     if (!name) {
       return NextResponse.json(
@@ -79,7 +69,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Check if name already exists;
+    // Check if name already exists
     const existingType = await DB.prepare(
       "SELECT id FROM RadiologyProcedureTypes WHERE name = ?";
     );
@@ -106,12 +96,12 @@ export async const POST = (request: NextRequest) => {
       { status: 201 }
     );
   } catch (error: unknown) {
-    // FIX: Replaced any with unknown;
+    // FIX: Replaced any with unknown
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    // Handle potential unique constraint violation if check fails due to race condition;
+    // Handle potential unique constraint violation if check fails due to race condition
     if (errorMessage?.includes("UNIQUE constraint failed")) {
-      // FIX: Check errorMessage instead of e.message;
+      // FIX: Check errorMessage instead of e.message
       return NextResponse.json(
         { error: "Procedure type with this name already exists" },
         { status: 409 }
@@ -125,4 +115,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

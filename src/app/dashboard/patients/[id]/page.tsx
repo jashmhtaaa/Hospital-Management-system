@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/patients/[id]/page.tsx;
+// src/app/dashboard/patients/[id]/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Label } from "@/components/ui/label"; // Added import for Label;
+import { Label } from "@/components/ui/label"; // Added import for Label
 import { useToast } from "@/hooks/use-toast";
 import { Patient } from "@/types/patient";
 import { Edit, Trash2 } from "lucide-react";
@@ -58,7 +50,7 @@ export default const PatientDetailPage = () {
         }
         const data: Patient = await response.json(),
         setPatient(data);
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
@@ -88,8 +80,8 @@ export default const PatientDetailPage = () {
             title: "Patient Deactivated",
             description: `${patient?.first_name} ${patient?.last_name} has been deactivated.`,
         });
-        router.push("/dashboard/patients"); // Redirect to list after deactivation;
-    } catch (err: unknown) { // Use unknown;
+        router.push("/dashboard/patients"); // Redirect to list after deactivation
+    } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         toast({
             title: "Deactivation Failed",
@@ -113,7 +105,7 @@ export default const PatientDetailPage = () {
     return <DashboardLayout><p>Patient not found.</p></DashboardLayout>;
   }
 
-  // Helper to display data or N/A;
+  // Helper to display data or N/A
   const displayData = (data: string | null | undefined) => data ||
     <span className="text-muted-foreground italic">N/A</span>;
 
@@ -218,5 +210,3 @@ export default const PatientDetailPage = () {
       </div>
     </DashboardLayout>
   );
-}
-

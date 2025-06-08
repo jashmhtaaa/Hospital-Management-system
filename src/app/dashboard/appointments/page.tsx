@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-// export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic'
 
 import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -29,36 +21,36 @@ import { PlusCircle, Search } from "lucide-react";
 import { Appointment } from "@/types/appointment";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { format } from "date-fns"; // For date formatting;
+import { format } from "date-fns"; // For date formatting
 
 export default const AppointmentsPage = () {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState(""); // Basic search, could be expanded;
-  const [dateFilter, setDateFilter] = useState(format(new Date(), "yyyy-MM-dd")); // Default to today;
+  const [searchTerm, setSearchTerm] = useState(""); // Basic search, could be expanded
+  const [dateFilter, setDateFilter] = useState(format(new Date(), "yyyy-MM-dd")); // Default to today
   const { toast } = useToast(),
   useEffect(() => {
     const fetchAppointments = async () => {
       setIsLoading(true),
       setError(null);
       try {
-        // Build query params for filtering;
+        // Build query params for filtering
         const params = new URLSearchParams();
         if (dateFilter) {
             params.append("startDate", dateFilter);
-            params.append("endDate", dateFilter); // Filter for a single day for now;
+            params.append("endDate", dateFilter); // Filter for a single day for now
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-        const response = await fetch(`/api/appointments?${params.toString()}`);
+        const response = await fetch(`/api/appointments?${params.toString()}`)
         if (!response.ok) {
-          const errorData: { error?: string } = await response.json(); // Add type annotation;
+          const errorData: { error?: string } = await response.json(); // Add type annotation
           throw new Error(errorData.error || "Failed to fetch appointments");
         }
         const data: Appointment[] = await response.json(),
         setAppointments(data);
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
@@ -72,12 +64,12 @@ export default const AppointmentsPage = () {
     };
 
     fetchAppointments();
-  }, [toast, dateFilter]); // Re-fetch when dateFilter changes;
+  }, [toast, dateFilter]); // Re-fetch when dateFilter changes
 
   // Simple client-side filtering (can be combined with backend filtering)
   const filteredAppointments = appointments.filter((appt) =>
     `${appt.patient?.first_name} ${appt.patient?.last_name}`
-      .toLowerCase();
+      .toLowerCase()
       .includes(searchTerm.toLowerCase()) ||
     appt.doctor?.user?.fullName?.toLowerCase().includes(searchTerm.toLowerCase());
   );
@@ -175,8 +167,6 @@ export default const AppointmentsPage = () {
   );
 }
 
-// Add Label component import if not globally available;
+// Add Label component import if not globally available
 import { Label } from "@/components/ui/label";
-
-
 

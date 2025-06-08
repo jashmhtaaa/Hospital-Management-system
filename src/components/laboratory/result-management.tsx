@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
@@ -22,24 +12,24 @@ import {
   Form,
   Tag,
   Checkbox,
-} from "antd"; // FIX: Import Checkbox;
+} from "antd"; // FIX: Import Checkbox
 import {
   PlusOutlined,
   SearchOutlined,
   CheckOutlined,
-  // CloseOutlined, // FIX: Removed unused import;
+  // CloseOutlined, // FIX: Removed unused import
   EditOutlined,
 } from "@ant-design/icons";
-// import dayjs from "dayjs"; // FIX: Removed unused import;
-// import type { Dayjs } from "dayjs"; // FIX: Removed unused import;
+// import dayjs from "dayjs"; // FIX: Removed unused import
+// import type { Dayjs } from "dayjs"; // FIX: Removed unused import
 
 const { Option } = Select;
-// const { TabPane } = Tabs; // FIX: Removed unused import;
+// const { TabPane } = Tabs; // FIX: Removed unused import
 
-// Define interfaces for data types;
+// Define interfaces for data types
 interface LabResult {
   id: string,
-  order_item_id: string;
+  order_item_id: string,
   test_name: string;
   parameter_id?: string;
   parameter_name?: string;
@@ -60,17 +50,17 @@ interface LabResult {
 interface LabOrder {
   id: string,
   patient_name: string;
-  // Add other relevant order fields if needed for display;
+  // Add other relevant order fields if needed for display
 }
 
-// interface LabParameter { // FIX: Commented out unused interface;
-//   id: string;
-//   name: string;
-//   unit?: string;
-//   // Add other relevant parameter fields if needed;
+// interface LabParameter { // FIX: Commented out unused interface
+//   id: string
+//   name: string
+//   unit?: string
+//   // Add other relevant parameter fields if needed
 // }
 
-// FIX: Define API response types;
+// FIX: Define API response types
 interface ResultsApiResponse {
   results?: LabResult[];
 }
@@ -79,12 +69,12 @@ interface OrdersApiResponse {
   results?: LabOrder[];
 }
 
-// interface OrderItemsApiResponse { // Removed unused interface;
-//   results?: LabOrderItem[];
+// interface OrderItemsApiResponse { // Removed unused interface
+//   results?: LabOrderItem[]
 // }
 
 interface ApiErrorResponse {
-  error?: string;
+  error?: string
 }
 
 interface UpdateResultValues {
@@ -109,15 +99,15 @@ const ResultManagement: React.FC = () => {
   const [isEntryModalVisible, setIsEntryModalVisible] =;
     useState<boolean>(false);
   const [selectedResult, setSelectedResult] = useState<LabResult | null>();
-  // const [selectedOrderItem, setSelectedOrderItem] = // Removed unused state;
-  //   useState<LabOrderItem | null>();
+  // const [selectedOrderItem, setSelectedOrderItem] = // Removed unused state
+  //   useState<LabOrderItem | null>()
   const [form] = Form.useForm<UpdateResultValues>();
   const [entryForm] = Form.useForm<CreateResultValues>();
-  const [orders, setOrders] = useState<LabOrder[]>([]); // For order selection;
+  const [orders, setOrders] = useState<LabOrder[]>([]); // For order selection
   // const [orderItems, setOrderItems] = useState<LabOrderItem[]>([]); // FIX: Removed unused state variable (for result entry)
-  // const [_parameters, _setParameters] = useState<LabParameter[]>([]); // For parameter selection;
+  // const [_parameters, _setParameters] = useState<LabParameter[]>([]); // For parameter selection
 
-  // Fetch results with optional filters;
+  // Fetch results with optional filters
   const fetchResults = useCallback(async (): Promise<void> => {
     setLoading(true);
     try {
@@ -143,12 +133,12 @@ const ResultManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data
       const data: ResultsApiResponse = await response.json();
 
       let fetchedResults: LabResult[] = data.results || [];
 
-      // Filter by search text if provided;
+      // Filter by search text if provided
       if (searchText) {
         const searchLower = searchText.toLowerCase();
         fetchedResults = fetchedResults.filter(
@@ -161,7 +151,7 @@ const ResultManagement: React.FC = () => {
 
       setResults(fetchedResults);
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -171,7 +161,7 @@ const ResultManagement: React.FC = () => {
     }
   }, [orderFilter, searchText]);
 
-  // Fetch orders for filter dropdown;
+  // Fetch orders for filter dropdown
   const fetchOrders = useCallback(async (): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/orders");
@@ -185,11 +175,11 @@ const ResultManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data
       const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -197,79 +187,79 @@ const ResultManagement: React.FC = () => {
     }
   }, []);
 
-  // Fetch order items for a specific order;
-  // const fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function;
+  // Fetch order items for a specific order
+  // const fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function
   //   try {
-  //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
+  //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`)
   //     if (!response.ok) {
-  //       let errorMessage = "Failed to fetch order items";
+  //       let errorMessage = "Failed to fetch order items"
   //       try {
-  //         const errorData: ApiErrorResponse = await response.json();
-  //         errorMessage = errorData.error || errorMessage;
+  //         const errorData: ApiErrorResponse = await response.json()
+  //         errorMessage = errorData.error || errorMessage
   //       } catch {
   //         /* Ignore */
   //       }
-  //       throw new Error(errorMessage);
+  //       throw new Error(errorMessage)
   //     }
-  //     // FIX: Type the response data;
-  //     const data: OrderItemsApiResponse = await response.json();
-  //     setOrderItems(data.results || []);
+  //     // FIX: Type the response data
+  //     const data: OrderItemsApiResponse = await response.json()
+  //     setOrderItems(data.results || [])
   //   } catch (error: unknown) {
-  //     // FIX: Use unknown;
+  //     // FIX: Use unknown
   //     const messageText =
-  //       error instanceof Error ? error.message : "An unknown error occurred";
+  //       error instanceof Error ? error.message : "An unknown error occurred"
   //     // Debug logging removed
-  //     message.error(`Failed to load order items: ${messageText}`);
+  //     message.error(`Failed to load order items: ${messageText}`)
   //   }
-  // };
+  // }
 
-  // Fetch parameters for a specific test;
-  // const fetchParameters = async (testId: string): Promise<void> => { // Removed unused function;
+  // Fetch parameters for a specific test
+  // const fetchParameters = async (testId: string): Promise<void> => { // Removed unused function
   //   try {
   //     const response = await fetch(
   //       `/api/laboratory/tests/${testId}/parameters`
-  //     );
+  //     )
   //     if (!response.ok) {
-  //       let errorMessage = "Failed to fetch test parameters";
+  //       let errorMessage = "Failed to fetch test parameters"
   //       try {
-  //         const errorData: ApiErrorResponse = await response.json();
-  //         errorMessage = errorData.error || errorMessage;
+  //         const errorData: ApiErrorResponse = await response.json()
+  //         errorMessage = errorData.error || errorMessage
   //       } catch {
   //         /* Ignore */
   //       }
-  //       throw new Error(errorMessage);
+  //       throw new Error(errorMessage)
   //     }
-  //     // FIX: Type the response data;
-  //     const data: ParametersApiResponse = await response.json();
-  //     setParameters(data.results || []);
+  //     // FIX: Type the response data
+  //     const data: ParametersApiResponse = await response.json()
+  //     setParameters(data.results || [])
   //   } catch (error: unknown) {
-  //     // FIX: Use unknown;
+  //     // FIX: Use unknown
   //     const messageText =
-  //       error instanceof Error ? error.message : "An unknown error occurred";
+  //       error instanceof Error ? error.message : "An unknown error occurred"
   //     // Debug logging removed
-  //     message.error(`Failed to load test parameters: ${messageText}`);
+  //     message.error(`Failed to load test parameters: ${messageText}`)
   //   }
-  // };
+  // }
 
-  // Load data on component mount;
+  // Load data on component mount
   useEffect(() => {
     fetchResults(),
     fetchOrders();
   }, [fetchResults, fetchOrders]);
 
-  // Reload results when filters change;
+  // Reload results when filters change
   useEffect(() => {
     fetchResults();
-  }, [orderFilter, searchText, fetchResults]); // Also refetch on search text change;
+  }, [orderFilter, searchText, fetchResults]); // Also refetch on search text change
 
-  // Handle updating a result;
+  // Handle updating a result
   const handleUpdateResult = async (
     values: UpdateResultValues;
   ): Promise<void> => {
     if (!selectedResult) return;
     try {
       const response = await fetch("/api/laboratory/results", {
-        method: "POST", // Assuming POST handles updates via ID;
+        method: "POST", // Assuming POST handles updates via ID
         headers: {
           "Content-Type": "application/json",
         },
@@ -280,7 +270,7 @@ const ResultManagement: React.FC = () => {
       });
 
       if (!response.ok) {
-        // FIX: Type the error response;
+        // FIX: Type the error response
         let errorMessage = "Failed to update result";
         try {
           const errorData: ApiErrorResponse = await response.json();
@@ -296,7 +286,7 @@ const ResultManagement: React.FC = () => {
       form.resetFields(),
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -304,11 +294,11 @@ const ResultManagement: React.FC = () => {
     }
   };
 
-  // Handle creating a new result;
+  // Handle creating a new result
   const handleCreateResult = async (
     values: CreateResultValues;
   ): Promise<void> => {
-    // if (!selectedOrderItem) return; // FIX: selectedOrderItem is not defined;
+    // if (!selectedOrderItem) return; // FIX: selectedOrderItem is not defined
     try {
       const response = await fetch("/api/laboratory/results", {
         method: "POST",
@@ -316,13 +306,13 @@ const ResultManagement: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // order_item_id: selectedOrderItem.id, // FIX: selectedOrderItem is not defined;
+          // order_item_id: selectedOrderItem.id, // FIX: selectedOrderItem is not defined
           ...values,
         }),
       });
 
       if (!response.ok) {
-        // FIX: Type the error response;
+        // FIX: Type the error response
         let errorMessage = "Failed to create result";
         try {
           const errorData: ApiErrorResponse = await response.json();
@@ -338,7 +328,7 @@ const ResultManagement: React.FC = () => {
       entryForm.resetFields(),
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -346,11 +336,11 @@ const ResultManagement: React.FC = () => {
     }
   };
 
-  // Handle verifying a result;
+  // Handle verifying a result
   const handleVerifyResult = async (result: LabResult): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/results", {
-        method: "POST", // Assuming POST handles verification;
+        method: "POST", // Assuming POST handles verification
         headers: {
           "Content-Type": "application/json",
         },
@@ -361,7 +351,7 @@ const ResultManagement: React.FC = () => {
       });
 
       if (!response.ok) {
-        // FIX: Type the error response;
+        // FIX: Type the error response
         let errorMessage = "Failed to verify result";
         try {
           const errorData: ApiErrorResponse = await response.json();
@@ -375,7 +365,7 @@ const ResultManagement: React.FC = () => {
       message.success("Result verified successfully"),
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -383,21 +373,21 @@ const ResultManagement: React.FC = () => {
     }
   };
 
-  // Show result entry modal;
-  // const showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function;
-  //   setSelectedOrderItem(orderItem);
-  //   entryForm.resetFields();
-  //   setParameters([]); // Reset parameters;
+  // Show result entry modal
+  // const showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function
+  //   setSelectedOrderItem(orderItem)
+  //   entryForm.resetFields()
+  //   setParameters([]); // Reset parameters
   //
-  //   // If the test has parameters, fetch them;
+  //   // If the test has parameters, fetch them
   //   if (orderItem.test_id) {
-  //     fetchParameters(orderItem.test_id);
+  //     fetchParameters(orderItem.test_id)
   //   }
   //
-  //   setIsEntryModalVisible(true);
-  // };
+  //   setIsEntryModalVisible(true)
+  // }
 
-  // Show result update modal;
+  // Show result update modal
   const showResultUpdateModal = (result: LabResult): void => {
     setSelectedResult(result);
     form.setFieldsValue({
@@ -408,7 +398,7 @@ const ResultManagement: React.FC = () => {
     setIsModalVisible(true);
   };
 
-  // Table columns;
+  // Table columns
   const columns = [
     {
       title: "Test",
@@ -441,7 +431,7 @@ const ResultManagement: React.FC = () => {
       key: "reference_range",
       width: "15%",
       render: (_: unknown, record: LabResult) => {
-        // Simplified - in a real app, you'd use patient gender/age to determine which range to show;
+        // Simplified - in a real app, you'd use patient gender/age to determine which range to show
         return (
           record.reference_range_male || record.reference_range_female || "N/A";
         );
@@ -486,7 +476,7 @@ const ResultManagement: React.FC = () => {
             >
               Edit
             </Button>
-          );
+          )
         }
 
         // Verify action (only if not verified and user has permission - permission check omitted for brevity)
@@ -500,7 +490,7 @@ const ResultManagement: React.FC = () => {
             >
               Verify
             </Button>
-          );
+          )
         }
 
         return actions.length > 0 ? <>{actions}</> : "N/A";
@@ -519,7 +509,7 @@ const ResultManagement: React.FC = () => {
             onClick={() => {
               // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
               message.info(
-                "Select an order/item to enter results for (feature pending).";
+                "Select an order/item to enter results for (feature pending)."
               );
             }}
           >
@@ -542,7 +532,7 @@ const ResultManagement: React.FC = () => {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setSearchText(event.target.value)
             }
-            // onPressEnter={fetchResults} // fetchResults is called via useEffect;
+            // onPressEnter={fetchResults} // fetchResults is called via useEffect
             style={{ width: 250 }}
           />
 
@@ -571,7 +561,7 @@ const ResultManagement: React.FC = () => {
             onClick={() => {
               setSearchText(""),
               setOrderFilter(undefined);
-              // fetchResults(); // fetchResults is called via useEffect;
+              // fetchResults(); // fetchResults is called via useEffect
             }}
           >
             Reset Filters
@@ -654,7 +644,7 @@ const ResultManagement: React.FC = () => {
               rules={[{ required: true, message: "Please select a parameter" }]}
             >
               <Select placeholder="Select Parameter">;
-                {parameters.map((p: unknown) => ( // Added 'any' type temporarily if uncommented;
+                {parameters.map((p: unknown) => ( // Added 'any' type temporarily if uncommented
                   <Option key={p.id} value={p.id}>;
                     {p.name}
                   </Option>

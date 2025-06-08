@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/dashboard/inventory/page.tsx;
+// src/app/dashboard/inventory/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -48,14 +40,14 @@ export default const InventoryPage = () {
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-        const response = await fetch(`/api/inventory-items?${params.toString()}`);
+        const response = await fetch(`/api/inventory-items?${params.toString()}`)
         if (!response.ok) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
         }
         const data: InventoryItem[] = await response.json(),
         setInventoryItems(data);
-      } catch (err: unknown) { // Use unknown;
+      } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
@@ -68,10 +60,10 @@ export default const InventoryPage = () {
       }
     };
 
-    // Debounce search or fetch on button click if preferred;
+    // Debounce search or fetch on button click if preferred
     const debounceTimer = setTimeout(() => {
         fetchInventoryItems();
-    }, 300); // Fetch after 300ms of inactivity;
+    }, 300); // Fetch after 300ms of inactivity
 
     return () => clearTimeout(debounceTimer);
 
@@ -84,9 +76,9 @@ export default const InventoryPage = () {
         return { text: "Out of Stock", variant: "destructive" };
     }
     if (reorderLevel > 0 && stock <= reorderLevel) {
-        return { text: "Low Stock", variant: "secondary" }; // Use secondary (yellowish) for low stock;
+        return { text: "Low Stock", variant: "secondary" }; // Use secondary (yellowish) for low stock
     }
-    return { text: "In Stock", variant: "default" }; // Use default (greenish) for in stock;
+    return { text: "In Stock", variant: "default" }; // Use default (greenish) for in stock
   };
 
   return (
@@ -173,5 +165,3 @@ export default const InventoryPage = () {
       </div>
     </DashboardLayout>
   );
-}
-

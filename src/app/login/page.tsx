@@ -1,35 +1,25 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/login/page.tsx;
-"use client"; // Add this directive for client-side interactivity;
+// src/app/login/page.tsx
+"use client"; // Add this directive for client-side interactivity
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Use next/navigation for App Router;
+import { useRouter } from "next/navigation"; // Use next/navigation for App Router
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { useToast } from "@/hooks/use-toast"; // Assuming use-toast hook is available from template;
+import { useToast } from "@/hooks/use-toast"; // Assuming use-toast hook is available from template
 
-// Define interface for the expected API response;
+// Define interface for the expected API response
 interface LoginApiResponse {
   error?: string;
   user?: {
     username?: string;
-    // Add other user properties if known/needed;
+    // Add other user properties if known/needed
   };
-  // Add other potential properties;
-}
-
+  // Add other potential properties
 export default const LoginPage = () {
   const router = useRouter();
   const { toast } = useToast();
@@ -52,24 +42,24 @@ export default const LoginPage = () {
         body: JSON.stringify({ identifier, password }),
       });
 
-      // Add type assertion for the response data;
+      // Add type assertion for the response data
       const data = await response.json() as LoginApiResponse;
 
       if (!response.ok) {
         throw new Error(data.error || "Login failed");
       }
 
-      // Login successful;
+      // Login successful
       toast({
         title: "Login Successful",
-        description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining;
+        description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining
       });
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      // For now, redirect to a placeholder dashboard;
+      // For now, redirect to a placeholder dashboard
       router.push("/dashboard");
 
-    } catch (err: unknown) { // Use unknown;
+    } catch (err: unknown) { // Use unknown
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setError(message),
       toast({
@@ -103,7 +93,7 @@ export default const LoginPage = () {
               <Input>
                 id="identifier"
                 name="identifier"
-                type="text" // Allow both username and email;
+                type="text" // Allow both username and email
                 autoComplete="username email"
                 required;
                 className="mt-1"
@@ -141,5 +131,3 @@ export default const LoginPage = () {
       </div>
     </div>
   );
-}
-

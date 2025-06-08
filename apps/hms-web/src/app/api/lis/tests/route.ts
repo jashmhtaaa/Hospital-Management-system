@@ -1,4 +1,4 @@
-// app/api/lis/tests/route.ts;
+// app/api/lis/tests/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { z } from "zod";
@@ -30,7 +30,7 @@ export async const GET = (request: NextRequest) => {
       orderBy: {
         name: "asc",
       },
-    });
+    })
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_SUCCESS", { path: request.nextUrl.pathname, count: labTestItems.length });
     const duration = Date.now() - start;
@@ -38,7 +38,7 @@ export async const GET = (request: NextRequest) => {
     return sendSuccessResponse(labTestItems)
   } catch (error: unknown) {
 
-    await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
+    await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) })
     const duration = Date.now() - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
@@ -74,10 +74,10 @@ export async const POST = (request: NextRequest) => {
     const body: unknown = await request.json();
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
 
-    const validation = createLabTestItemSchema.safeParse(body);
+    const validation = createLabTestItemSchema.safeParse(body)
 
     if (!validation.success) {
-      // Debug logging removed);
+      // Debug logging removed)
       await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -97,10 +97,10 @@ export async const POST = (request: NextRequest) => {
     });
 
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
-    await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_SUCCESS", { path: request.nextUrl.pathname, testItemId: newLabTestItem.id, data: newLabTestItem });
+    await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_SUCCESS", { path: request.nextUrl.pathname, testItemId: newLabTestItem.id, data: newLabTestItem })
     const duration = Date.now() - start;
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
-    return sendSuccessResponse(newLabTestItem, 201);
+    return sendSuccessResponse(newLabTestItem, 201)
 
   } catch (error: unknown) {
 
@@ -115,7 +115,7 @@ export async const POST = (request: NextRequest) => {
         errMessage = "Conflict: Lab test item with this code or name already exists.";
         const target = Array.isArray(error.meta?.target) ? error.meta.target.join(", ") : String(error.meta?.target);
         errDetails = `A lab test item with the same unique field (e.g., \"code\" or \"name\") already exists. Fields: ${target}`;
-        // Debug logging removed for user ${userId}. Details: ${errDetails}`);
+        // Debug logging removed for user ${userId}. Details: ${errDetails}`)
       }
     }
     await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
@@ -124,4 +124,3 @@ export async const POST = (request: NextRequest) => {
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
-

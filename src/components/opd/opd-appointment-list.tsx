@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -20,25 +12,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Assuming these will be created;
+} from "@/components/ui/table"; // Assuming these will be created
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created;
+import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"; // Assuming this exists or will be created;
-// Removed direct import: import { hasPermission } from "@/lib/session";
+} from "@/components/ui/dialog"; // Assuming this exists or will be created
+// Removed direct import: import { hasPermission } from "@/lib/session"
 
 interface Appointment {
   id: number,
-  patientId: number;
+  patientId: number,
   patientName: string,
-  doctorId: number;
+  doctorId: number,
   doctorName: string,
-  appointmentTime: string;
+  appointmentTime: string,
   status:
     | "scheduled";
     | "checked-in";
@@ -49,14 +41,14 @@ interface Appointment {
   reason: string
 }
 
-// FIX: Define API response types;
+// FIX: Define API response types
 interface PermissionApiResponse {
   hasPermission?: boolean;
   error?: string;
 }
 
 // Assuming the API returns an array directly, adjust if it returns { results: Appointment[] }
-type AppointmentsApiResponse = Appointment[];
+type AppointmentsApiResponse = Appointment[]
 
 interface ApiErrorResponse {
   error?: string;
@@ -64,8 +56,6 @@ interface ApiErrorResponse {
 
 interface OPDAppointmentListProperties {
   date: Date
-}
-
 export default const OPDAppointmentList = ({
   date,
 }: OPDAppointmentListProperties) {
@@ -77,7 +67,7 @@ export default const OPDAppointmentList = ({
   const [canCancel, setCanCancel] = useState(false);
   const [loadingPermissions, setLoadingPermissions] = useState(true),
   useEffect(() => {
-    // Check permissions via API route;
+    // Check permissions via API route
     const checkPermissions = async () => {
       setLoadingPermissions(true);
       try {
@@ -93,13 +83,13 @@ export default const OPDAppointmentList = ({
           return;
         }
 
-        // FIX: Type the response data;
+        // FIX: Type the response data
         const checkInData: PermissionApiResponse = await checkInResponse.json();
         const cancelData: PermissionApiResponse = await cancelResponse.json(),
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
-      } catch (err) { // Declare error variable for the catch block;
-        // Debug logging removed // Log the caught error;
+      } catch (err) { // Declare error variable for the catch block
+        // Debug logging removed // Log the caught error
         setCanCheckIn(false),
         setCanCancel(false);
       } finally {
@@ -130,18 +120,18 @@ export default const OPDAppointmentList = ({
           throw new Error(errorMessage);
         }
 
-        // FIX: Type the response data;
+        // FIX: Type the response data
         const data: AppointmentsApiResponse = await response.json();
-        // Ensure data is an array before setting state;
+        // Ensure data is an array before setting state
         if (Array.isArray(data)) {
           setAppointments(data);
         } else {
-          // Handle cases where API might return { results: [...] } or other formats;
+          // Handle cases where API might return { results: [...] } or other formats
 
-          setAppointments([]); // Default to empty array on unexpected format;
+          setAppointments([]); // Default to empty array on unexpected format
         }
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown
         const messageText =;
           error_ instanceof Error;
             ? error_.message;
@@ -177,7 +167,7 @@ export default const OPDAppointmentList = ({
         throw new Error(errorMessage);
       }
 
-      // Update the appointment status in the local state;
+      // Update the appointment status in the local state
       setAppointments(
         appointments.map((appointment) =>
           appointment.id === appointmentId;
@@ -186,12 +176,12 @@ export default const OPDAppointmentList = ({
         );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      alert(`Error: ${messageText}`); // Placeholder alert;
+      alert(`Error: ${messageText}`); // Placeholder alert
     }
   };
 
@@ -215,7 +205,7 @@ export default const OPDAppointmentList = ({
         throw new Error(errorMessage);
       }
 
-      // Update the appointment status in the local state;
+      // Update the appointment status in the local state
       setAppointments(
         appointments.map((appointment) =>
           appointment.id === appointmentId;
@@ -224,12 +214,12 @@ export default const OPDAppointmentList = ({
         );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      alert(`Error: ${messageText}`); // Placeholder alert;
+      alert(`Error: ${messageText}`); // Placeholder alert
     }
   };
 
@@ -249,7 +239,7 @@ export default const OPDAppointmentList = ({
         return <Badge variant="default">In Progress</Badge>;
       }
       case "completed": {
-        // Assuming a 'success' variant exists for Badge;
+        // Assuming a 'success' variant exists for Badge
         return (
           <Badge>
             variant="default"
@@ -388,4 +378,3 @@ export default const OPDAppointmentList = ({
       </Table>
     </div>
   );
-}

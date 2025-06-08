@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -23,29 +15,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Calendar, ArrowRight, Loader2 } from "lucide-react"; // Added Loader2;
+import { Calendar, ArrowRight, Loader2 } from "lucide-react"; // Added Loader2
 import Link from "next/link";
-import { toast } from "@/components/ui/use-toast"; // Import toast;
+import { toast } from "@/components/ui/use-toast"; // Import toast
 
-// Define the structure for a surgery booking;
+// Define the structure for a surgery booking
 interface Surgery {
   id: string,
-  scheduled_start_time: string; // ISO string or Date object;
-  scheduled_end_time: string; // ISO string or Date object;
+  scheduled_start_time: string; // ISO string or Date object
+  scheduled_end_time: string; // ISO string or Date object
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
-  surgery_name: string;
+  surgery_name: string,
   theatre_name: string,
   surgeon_name: string
 }
 
 interface OTPatientSurgeriesProperties {
   patientId: string
-}
-
 export default const OTPatientSurgeries = ({
   patientId,
 }: OTPatientSurgeriesProperties) {
-  // FIX: Use the Surgery interface for state typing;
+  // FIX: Use the Surgery interface for state typing
   const [surgeries, setSurgeries] = useState<Surgery[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -57,15 +47,15 @@ export default const OTPatientSurgeries = ({
         setError(undefined);
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        // const response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming;
+        // const response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming
         // if (!response.ok) {
-        //   throw new Error(`Failed to fetch patient surgeries: ${response.statusText}`);
+        //   throw new Error(`Failed to fetch patient surgeries: ${response.statusText}`)
         // }
-        // const data: { results: Surgery[] } | Surgery[] = await response.json();
-        // const fetchedSurgeries = Array.isArray(data) ? data : data.results || [];
-        // setSurgeries(fetchedSurgeries);
+        // const data: { results: Surgery[] } | Surgery[] = await response.json()
+        // const fetchedSurgeries = Array.isArray(data) ? data : data.results || []
+        // setSurgeries(fetchedSurgeries)
 
-        // Mock data for demonstration - Ensure it matches the Surgery interface;
+        // Mock data for demonstration - Ensure it matches the Surgery interface
         const mockData: Surgery[] = [
           {
             id: "booking-1",
@@ -80,20 +70,20 @@ export default const OTPatientSurgeries = ({
             id: "booking-2",
             scheduled_start_time: "2025-04-28T14:00:00Z",
             scheduled_end_time: "2025-04-28T16:00:00Z",
-            status: "completed", // Example of a past surgery;
+            status: "completed", // Example of a past surgery
             surgery_name: "Wound Debridement",
             theatre_name: "OT-3",
             surgeon_name: "Dr. Bob White",
           },
         ];
-        // Example: Filter mock data to show only upcoming/scheduled;
+        // Example: Filter mock data to show only upcoming/scheduled
         setSurgeries(
           mockData.filter(
             (s) => s.status === "scheduled" || s.status === "confirmed"
           );
         );
       } catch (error_: unknown) {
-        // FIX: Use unknown for error type;
+        // FIX: Use unknown for error type
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -115,7 +105,7 @@ export default const OTPatientSurgeries = ({
     }
   }, [patientId]);
 
-  // FIX: Type the status parameter using the Surgery interface;
+  // FIX: Type the status parameter using the Surgery interface
   const getStatusBadge = (status: Surgery["status"]) => {
     switch (status) {
       case "scheduled": {
@@ -147,7 +137,7 @@ export default const OTPatientSurgeries = ({
       }
       default: {
         return <Badge>{status}</Badge>;
-      } // Fallback for unexpected statuses;
+      } // Fallback for unexpected statuses
     }
   };
 
@@ -261,4 +251,3 @@ export default const OTPatientSurgeries = ({
       </CardContent>
     </Card>
   );
-}

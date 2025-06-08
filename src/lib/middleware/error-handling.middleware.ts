@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -35,7 +27,7 @@ export async const errorHandlingMiddleware = (
   handler: (request: NextRequest) => Promise<NextResponse>;
 ): Promise<NextResponse> {
   try {
-    // Extract request information for logging;
+    // Extract request information for logging
     const requestId = crypto.randomUUID();
     const method = request.method;
     const url = request.url;
@@ -43,7 +35,7 @@ export async const errorHandlingMiddleware = (
     const contentType = request.headers.get('content-type');
     const authHeader = request.headers.get('authorization');
     
-    // Extract user information from auth token if present;
+    // Extract user information from auth token if present
     let userId = 'anonymous';
     let userRoles: string[] = [];
     
@@ -54,12 +46,12 @@ export async const errorHandlingMiddleware = (
         userId = decodedToken.userId;
         userRoles = decodedToken.roles || [];
       } catch (error) {
-        // Token verification failed, continue as anonymous;
+        // Token verification failed, continue as anonymous
 
       }
     }
     
-    // Create audit context;
+    // Create audit context
     const auditLogger = new AuditLogger({
       requestId,
       userId,
@@ -80,9 +72,9 @@ export async const errorHandlingMiddleware = (
         contentType,
         timestamp: new Date().toISOString()
       }
-    });
+    })
     
-    // Attach audit logger to request for use in handlers;
+    // Attach audit logger to request for use in handlers
     const requestWithContext = new NextRequest(request, {
       auditLogger,
       userId,
@@ -90,7 +82,7 @@ export async const errorHandlingMiddleware = (
       requestId;
     });
     
-    // Execute the handler;
+    // Execute the handler
     const response = await handler(requestWithContext);
     
     // Log successful response (excluding sensitive data)
@@ -102,18 +94,18 @@ export async const errorHandlingMiddleware = (
         status: response.status,
         timestamp: new Date().toISOString()
       }
-    });
+    })
     
     return response;
   } catch (error) {
 
-    // Default error values;
+    // Default error values
     let status = 500;
     let message = 'Internal server error';
     let code = 'INTERNAL_SERVER_ERROR';
     let details = {};
     
-    // Map known error types to appropriate responses;
+    // Map known error types to appropriate responses
     if (error instanceof ValidationError) {
       status = 400;
       message = error.message;
@@ -139,16 +131,16 @@ export async const errorHandlingMiddleware = (
       status = 502;
       message = 'External service error';
       code = 'EXTERNAL_SERVICE_ERROR';
-      // Don't expose external service details in response;
+      // Don't expose external service details in response
       details = { service: error.serviceName };
     } else if (error instanceof DatabaseError) {
       status = 500;
       message = 'Database operation failed';
       code = 'DATABASE_ERROR';
-      // Don't expose database details in response;
+      // Don't expose database details in response
     }
     
-    // Log error with appropriate sanitization for HIPAA compliance;
+    // Log error with appropriate sanitization for HIPAA compliance
     try {
       const auditLogger = new AuditLogger({
         requestId: crypto.randomUUID(),
@@ -175,7 +167,7 @@ export async const errorHandlingMiddleware = (
 
     }
     
-    // Return standardized error response;
+    // Return standardized error response
     return NextResponse.json(
       {
         success: false,
@@ -188,4 +180,3 @@ export async const errorHandlingMiddleware = (
       { status }
     );
   }
-}

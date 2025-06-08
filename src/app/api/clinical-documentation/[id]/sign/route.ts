@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../../services/clinical-documentation.service';
@@ -25,16 +15,16 @@ export async const POST = (
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Get session;
+    // Get session
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate required fields;
+    // Validate required fields
     if (!body.signerRole) {
       return NextResponse.json({ error: 'Signer role is required' }, { status: 400 });
     }
@@ -43,7 +33,7 @@ export async const POST = (
       return NextResponse.json({ error: 'Signature type is required' }, { status: 400 });
     }
     
-    // Sign document;
+    // Sign document
     const signature = await clinicalDocumentationService.signDocument(
       params.id,
       {
@@ -75,4 +65,3 @@ export async const POST = (
     
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}

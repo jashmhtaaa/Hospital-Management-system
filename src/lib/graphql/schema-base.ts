@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -17,42 +9,42 @@ var __DEV__: boolean;
 import { gql } from 'graphql-tag';
 import { PubSub } from 'graphql-subscriptions';
 
-// GraphQL PubSub instance for real-time subscriptions;
+// GraphQL PubSub instance for real-time subscriptions
 export const pubsub = new PubSub();
 
-// Subscription event types;
+// Subscription event types
 export const SUBSCRIPTION_EVENTS = {
-  // Laboratory events;
+  // Laboratory events
   LAB_ORDER_CREATED: 'LAB_ORDER_CREATED',
   LAB_RESULT_UPDATED: 'LAB_RESULT_UPDATED',
   CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT',
   SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED',
   
-  // Pharmacy events;
+  // Pharmacy events
   PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED',
   MEDICATION_DISPENSED: 'MEDICATION_DISPENSED',
   DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT',
   INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK',
   
-  // Emergency Department events;
+  // Emergency Department events
   PATIENT_TRIAGED: 'PATIENT_TRIAGED',
   BED_ASSIGNMENT_CHANGED: 'BED_ASSIGNMENT_CHANGED',
   CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT',
   ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT',
   
-  // Clinical Documentation events;
+  // Clinical Documentation events
   CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED',
   CARE_PLAN_UPDATED: 'CARE_PLAN_UPDATED',
   QUALITY_METRIC_ALERT: 'QUALITY_METRIC_ALERT',
   
-  // Patient Management events;
+  // Patient Management events
   PATIENT_REGISTERED: 'PATIENT_REGISTERED',
   PATIENT_UPDATED: 'PATIENT_UPDATED',
   APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED',
   INSURANCE_VERIFIED: 'INSURANCE_VERIFIED',
 } as const;
 
-// Base GraphQL types;
+// Base GraphQL types
 export const baseTypeDefs = gql`
   scalar DateTime;
   scalar JSON;
@@ -79,15 +71,15 @@ export const baseTypeDefs = gql`
   # Base interfaces;
   interface Node {
     id: ID!,
-    createdAt: DateTime!;
+    createdAt: DateTime!,
     updatedAt: DateTime!
   }
 
   interface AuditableEntity {
     id: ID!,
-    createdAt: DateTime!;
+    createdAt: DateTime!,
     updatedAt: DateTime!,
-    createdBy: String!;
+    createdBy: String!,
     updatedBy: String,
     version: Int!
   }
@@ -95,11 +87,11 @@ export const baseTypeDefs = gql`
   # Common types;
   type Address {
     line1: String!,
-    line2: String;
+    line2: String,
     city: String!,
-    state: String!;
+    state: String!,
     postalCode: String!,
-    country: String!;
+    country: String!,
     type: AddressType!
   }
 
@@ -112,14 +104,14 @@ export const baseTypeDefs = gql`
 
   type ContactInfo {
     phone: String,
-    mobile: String;
+    mobile: String,
     email: String,
     fax: String
   }
 
   type Identifier {
     system: String!,
-    value: String!;
+    value: String!,
     type: String,
     use: IdentifierUse
   }
@@ -135,9 +127,9 @@ export const baseTypeDefs = gql`
   # FHIR-compliant coding;
   type Coding {
     system: String,
-    version: String;
+    version: String,
     code: String,
-    display: String;
+    display: String,
     userSelected: Boolean
   }
 
@@ -149,16 +141,16 @@ export const baseTypeDefs = gql`
   # Pagination;
   type PageInfo {
     hasNextPage: Boolean!,
-    hasPreviousPage: Boolean!;
+    hasPreviousPage: Boolean!,
     startCursor: String,
-    endCursor: String;
+    endCursor: String,
     total: Int!
   }
 
   # Common input types;
   input PaginationInput {
     first: Int,
-    after: String;
+    after: String,
     last: Int,
     before: String
   }
@@ -175,7 +167,7 @@ export const baseTypeDefs = gql`
 
   input FilterInput {
     field: String!,
-    operator: FilterOperator!;
+    operator: FilterOperator!,
     value: String!
   }
 
@@ -199,7 +191,7 @@ export const baseTypeDefs = gql`
   # Error handling;
   type Error {
     code: String!,
-    message: String!;
+    message: String!,
     field: String,
     details: JSON
   }
@@ -215,11 +207,11 @@ export const baseTypeDefs = gql`
     id: ID!,
     type: NotificationType!
     title: String!,
-    message: String!;
+    message: String!,
     data: JSON,
-    priority: Priority!;
+    priority: Priority!,
     timestamp: DateTime!,
-    userId: String;
+    userId: String,
     read: Boolean!
   }
 
@@ -234,11 +226,11 @@ export const baseTypeDefs = gql`
   # File upload;
   type FileUpload {
     id: ID!,
-    filename: String!;
+    filename: String!,
     mimetype: String!,
-    encoding: String!;
+    encoding: String!,
     url: String!,
-    size: Int!;
+    size: Int!,
     uploadedAt: DateTime!,
     uploadedBy: String!
   }
@@ -246,7 +238,7 @@ export const baseTypeDefs = gql`
   # System health;
   type HealthStatus {
     service: String!,
-    status: HealthStatusType!;
+    status: HealthStatusType!,
     timestamp: DateTime!,
     details: JSON
   }
@@ -291,30 +283,30 @@ export const baseTypeDefs = gql`
   # System info;
   type SystemInfo {
     version: String!,
-    environment: String!;
+    environment: String!,
     uptime: Int!,
-    timestamp: DateTime!;
+    timestamp: DateTime!,
     features: [String!]!
   }
 
   # User type (basic structure);
   type User implements Node {
     id: ID!,
-    email: String!;
+    email: String!,
     firstName: String!,
-    lastName: String!;
+    lastName: String!,
     fullName: String!,
-    role: String!;
+    role: String!,
     department: String,
-    isActive: Boolean!;
+    isActive: Boolean!,
     lastLoginAt: DateTime,
-    createdAt: DateTime!;
+    createdAt: DateTime!,
     updatedAt: DateTime!,
     permissions: [String!]!
   }
 `;
 
-// Base resolvers;
+// Base resolvers
 export const baseResolvers = {
   DateTime: {
     serialize: (date: unknown) => {
@@ -356,7 +348,7 @@ export const baseResolvers = {
 
   Query: {
     health: async () => {
-      // Implementation would check actual services;
+      // Implementation would check actual services
       return [
         {
           service: 'database',
@@ -401,24 +393,24 @@ export const baseResolvers = {
 
   Mutation: {
     uploadFile: async (parent, { file }, context) => {
-      // File upload implementation;
+      // File upload implementation
       const { createReadStream, filename, mimetype, encoding } = await file;
       
-      // Implementation would save file and return metadata;
+      // Implementation would save file and return metadata
       return {
         id: 'file-' + Date.now(),
         filename,
         mimetype,
         encoding,
         url: `/uploads/${filename}`,
-        size: 1024, // Would be actual file size;
+        size: 1024, // Would be actual file size
         uploadedAt: new Date(),
         uploadedBy: context.user?.id || 'system',
       };
     },
 
     markNotificationRead: async (parent, { id }, context) => {
-      // Implementation would update notification status;
+      // Implementation would update notification status
       return {
         success: true,
         message: 'Notification marked as read',
@@ -443,13 +435,13 @@ export const baseResolvers = {
   User: {
     fullName: (parent) => `${parent.firstName} ${parent.lastName}`,
     permissions: async (parent, args, context) => {
-      // Implementation would fetch user permissions from RBAC system;
+      // Implementation would fetch user permissions from RBAC system
       return parent.permissions || [];
     },
   },
 };
 
-// Utility functions for GraphQL;
+// Utility functions for GraphQL
 export class GraphQLUtils {
   static formatError(error: unknown) {
     return {
@@ -546,7 +538,7 @@ export class GraphQLUtils {
     })) || [];
   }
 
-  // Real-time notification utilities;
+  // Real-time notification utilities
   static async publishNotification(
     type: string,
     title: string,
@@ -585,9 +577,9 @@ export class GraphQLUtils {
     return healthUpdate;
   }
 
-  // FHIR integration utilities;
+  // FHIR integration utilities
   static fhirToGraphQL(fhirResource: unknown, resourceType: string) {
-    // Convert FHIR resource to GraphQL format;
+    // Convert FHIR resource to GraphQL format
     const graphqlResource = {
       id: fhirResource.id,
       resourceType,
@@ -595,7 +587,7 @@ export class GraphQLUtils {
       ...fhirResource,
     };
 
-    // Convert FHIR dates to GraphQL DateTime format;
+    // Convert FHIR dates to GraphQL DateTime format
     if (fhirResource.meta?.lastUpdated) {
       graphqlResource.updatedAt = new Date(fhirResource.meta.lastUpdated);
     }
@@ -604,7 +596,7 @@ export class GraphQLUtils {
   }
 
   static graphqlToFHIR(graphqlData: unknown, resourceType: string) {
-    // Convert GraphQL data to FHIR format;
+    // Convert GraphQL data to FHIR format
     const fhirResource = {
       resourceType,
       id: graphqlData.id,
@@ -616,13 +608,11 @@ export class GraphQLUtils {
       ...graphqlData,
     };
 
-    // Remove GraphQL-specific fields;
+    // Remove GraphQL-specific fields
     delete fhirResource.createdAt;
     delete fhirResource.updatedAt;
     delete fhirResource.__typename;
 
     return fhirResource;
   }
-}
-
 export default GraphQLUtils;

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -36,4 +28,4 @@ const Progress = React.forwardRef<;
 ));
 Progress.displayName = ProgressPrimitive.Root.displayName;
 
-export { Progress }
+export { Progress 

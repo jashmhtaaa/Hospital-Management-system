@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -25,36 +17,34 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ArrowLeft, Trash2, FilePlus } from "lucide-react";
 import CreateRadiologyStudyModal, {
   StudyPayload,
-} from './create-radiology-study-modal.ts'; // FIX: Import StudyPayload;
-// Import list components if they are to be embedded and filtered;
-// import RadiologyStudiesList from './RadiologyStudiesList.ts';
-// import RadiologyReportsList from './RadiologyReportsList.ts';
+} from './create-radiology-study-modal.ts'; // FIX: Import StudyPayload
+// Import list components if they are to be embedded and filtered
+// import RadiologyStudiesList from './RadiologyStudiesList.ts'
+// import RadiologyReportsList from './RadiologyReportsList.ts'
 
-// Define interface for Radiology Order data;
+// Define interface for Radiology Order data
 interface RadiologyOrder {
   id: string,
-  patient_name: string;
+  patient_name: string,
   patient_id: string,
-  procedure_name: string;
-  order_datetime: string; // Assuming ISO string format;
+  procedure_name: string,
+  order_datetime: string; // Assuming ISO string format
   status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled",
-  priority: "routine" | "urgent" | "stat";
+  priority: "routine" | "urgent" | "stat",
   referring_doctor_name: string | null,
   clinical_indication: string
 }
 
-// FIX: Remove unused CreateStudyData interface;
+// FIX: Remove unused CreateStudyData interface
 // interface CreateStudyData {
-//   orderId: string;
-//   modality_id: string;
-//   scheduled_datetime: string;
-//   notes?: string;
-// }
-
-export default const RadiologyOrderDetail = () {
-  const parameters = useParams();
+//   orderId: string
+//   modality_id: string
+//   scheduled_datetime: string
+//   notes?: string
+// export default const RadiologyOrderDetail = () {
+  const parameters = useParams()
   const router = useRouter();
-  const orderId = parameters.id as string; // Assume id is always a string;
+  const orderId = parameters.id as string; // Assume id is always a string
 
   const [order, setOrder] = useState<RadiologyOrder | null>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,7 +54,7 @@ export default const RadiologyOrderDetail = () {
 
   const fetchOrderDetails = React.useCallback(async (): Promise<void> => {
     setLoading(true),
-    setError(undefined); // Reset error state;
+    setError(undefined); // Reset error state
     try {
       const response = await fetch(`/api/radiology/orders/${orderId}`);
       if (response.ok) {
@@ -74,9 +64,9 @@ export default const RadiologyOrderDetail = () {
       } else {
         if (response.status === 404) {
           setError("Radiology order not found."),
-          setOrder(undefined); // Ensure order is null if not found;
+          setOrder(undefined); // Ensure order is null if not found
         } else {
-          // FIX: Type the error data using type assertion;
+          // FIX: Type the error data using type assertion
           const errorData = (await response;
             .json();
             .catch(() => ({ error: "Failed to parse error response" }))) as {
@@ -92,19 +82,19 @@ export default const RadiologyOrderDetail = () {
       setError(
         `Failed to load order details: ${errorMessage}. Please try again later.`;
       ),
-      setOrder(undefined); // Ensure order is null on error;
+      setOrder(undefined); // Ensure order is null on error
     } finally {
       setLoading(false);
     }
-  }, [orderId]); // Added orderId dependency for useCallback;
+  }, [orderId]); // Added orderId dependency for useCallback
 
   useEffect(() => {
     if (orderId) {
       fetchOrderDetails();
     }
-  }, [orderId, fetchOrderDetails]); // Added fetchOrderDetails dependency;
+  }, [orderId, fetchOrderDetails]); // Added fetchOrderDetails dependency
 
-  // FIX: Use imported StudyPayload type;
+  // FIX: Use imported StudyPayload type
   const handleCreateStudy = async (studyData: StudyPayload): Promise<void> => {
     try {
       const response = await fetch("/api/radiology/studies", {
@@ -112,12 +102,12 @@ export default const RadiologyOrderDetail = () {
         headers: {
           "Content-Type": "application/json",
         },
-        // Ensure studyData includes the orderId;
+        // Ensure studyData includes the orderId
         body: JSON.stringify({ ...studyData, orderId: orderId }),
       });
 
       if (!response.ok) {
-        // FIX: Type the error data using type assertion;
+        // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
           .catch(() => ({ error: "Failed to parse error response" }))) as {
@@ -127,9 +117,9 @@ export default const RadiologyOrderDetail = () {
       }
 
       setShowCreateStudyModal(false);
-      // Refresh order details which might implicitly refresh related studies/reports lists;
+      // Refresh order details which might implicitly refresh related studies/reports lists
       fetchOrderDetails();
-      // Consider adding a success message;
+      // Consider adding a success message
       alert("Radiology study created successfully.");
     } catch (error_) {
 
@@ -148,7 +138,7 @@ export default const RadiologyOrderDetail = () {
         method: "DELETE",
       });
       if (!response.ok) {
-        // FIX: Type the error data using type assertion;
+        // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
           .catch(() => ({ error: "Failed to parse error response" }))) as {
@@ -157,7 +147,7 @@ export default const RadiologyOrderDetail = () {
         throw new Error(errorData.error || "Failed to cancel order");
       }
       alert("Order cancelled successfully.");
-      router.push("/dashboard/radiology"); // Go back to the list;
+      router.push("/dashboard/radiology"); // Go back to the list
     } catch (error_) {
 
       const errorMessage =;
@@ -193,7 +183,7 @@ export default const RadiologyOrderDetail = () {
     );
   }
 
-  // Separate check for error after loading;
+  // Separate check for error after loading
   if (error) {
     return (
       <div className="container mx-auto p-4 space-y-6">;
@@ -212,7 +202,7 @@ export default const RadiologyOrderDetail = () {
   // If not loading and no error, but order is still null (e.g., 404 handled)
   if (!order) {
     return (
-      <div className="container mx-auto p-4 space-y-6">;
+      <div className="container mx-auto p-4 space-y-6">
         <Button>
           variant="outline"
           onClick={() => router.back()}
@@ -227,7 +217,7 @@ export default const RadiologyOrderDetail = () {
     );
   }
 
-  // If order exists, render the details;
+  // If order exists, render the details
   return (
     <div className="container mx-auto p-4 space-y-6">;
       <Button variant="outline" onClick={() => router.back()} className="mb-4">
@@ -330,11 +320,10 @@ export default const RadiologyOrderDetail = () {
       {showCreateStudyModal && (
         <CreateRadiologyStudyModal>
           onClose={() => setShowCreateStudyModal(false)}
-          onSubmit={handleCreateStudy} // Pass the typed handler;
+          onSubmit={handleCreateStudy} // Pass the typed handler
           orderId={order.id}
-          // Pass any other required props to the modal;
+          // Pass any other required props to the modal
         />
       )}
     </div>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -34,7 +26,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository = {
   findById: getPrescriptionById,
@@ -71,16 +63,16 @@ const inventoryRepository = {
  */
 export async const GET = (req: NextRequest) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get query parameters;
+    // Get query parameters
     const url = new URL(req.url);
     const patientId = url.searchParams.get('patientId');
     const prescriptionId = url.searchParams.get('prescriptionId');
@@ -90,13 +82,13 @@ export async const GET = (req: NextRequest) => {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Build filter criteria;
+    // Build filter criteria
     const filter: unknown = {};
     if (patientId) filter.patientId = patientId;
     if (prescriptionId) filter.prescriptionId = prescriptionId;
     if (status) filter.status = status;
     
-    // Add date range if provided;
+    // Add date range if provided
     if (startDate || endDate) {
       filter.dispensedAt = {};
       if (startDate) filter.dispensedAt.gte = new Date(startDate);
@@ -104,9 +96,9 @@ export async const GET = (req: NextRequest) => {
     }
 
     // Get dispensing records (mock implementation)
-    const dispensingRecords = await dispensingRepository.findAll();
+    const dispensingRecords = await dispensingRepository.findAll()
     
-    // Apply filters;
+    // Apply filters
     let filteredRecords = dispensingRecords;
     if (patientId) {
       filteredRecords = filteredRecords.filter(d => d.patientId === patientId);
@@ -120,13 +112,13 @@ export async const GET = (req: NextRequest) => {
     
     const total = filteredRecords.length;
 
-    // Apply pagination;
+    // Apply pagination
     const paginatedRecords = filteredRecords.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources;
+    // Map to FHIR resources
     const fhirDispensingRecords = paginatedRecords.map(FHIRMapper.toFHIRMedicationDispense);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DISPENSING', {
       action: 'LIST',
       resourceType: 'MedicationDispense',
@@ -139,7 +131,7 @@ export async const GET = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       dispensingRecords: fhirDispensingRecords,
       pagination: {
@@ -160,7 +152,7 @@ export async const GET = (req: NextRequest) => {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateDispensingRequest(data);
     if (!validationResult.success) {
@@ -170,34 +162,34 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify prescription exists;
+    // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!prescription) {
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
-    // Verify medication exists;
+    // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!medication) {
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
-    // Verify patient exists;
+    // Verify patient exists
     const patient = await getPatientById(prescription.patientId);
     if (!patient) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Check inventory availability;
+    // Check inventory availability
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
     const availableInventory = inventoryItems.find(item => 
       item.quantityOnHand >= data.quantityDispensed &&;
@@ -211,7 +203,7 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Create dispensing record;
+    // Create dispensing record
     const dispensing = {
       id: data.id || crypto.randomUUID(),
       prescriptionId: data.prescriptionId,
@@ -228,9 +220,9 @@ export async const POST = (req: NextRequest) => {
       dispensingType: data.dispensingType || 'outpatient'
     };
 
-    // Special handling for controlled substances;
+    // Special handling for controlled substances
     if (medication.isControlled) {
-      // Encrypt controlled substance data;
+      // Encrypt controlled substance data
       dispensing.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           witnessId: data.witnessId,
@@ -239,7 +231,7 @@ export async const POST = (req: NextRequest) => {
         });
       );
 
-      // Additional logging for controlled substances;
+      // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
         action: 'DISPENSE',
         resourceType: 'MedicationDispense',
@@ -254,16 +246,16 @@ export async const POST = (req: NextRequest) => {
       });
     }
 
-    // Save dispensing record;
+    // Save dispensing record
     const dispensingId = await dispensingRepository.save(dispensing);
 
-    // Update inventory;
+    // Update inventory
     await inventoryRepository.adjustStock(
       availableInventory.id,
       availableInventory.quantityOnHand - data.quantityDispensed;
     );
 
-    // Regular audit logging;
+    // Regular audit logging
     await auditLog('DISPENSING', {
       action: 'CREATE',
       resourceType: 'MedicationDispense',
@@ -278,7 +270,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: dispensingId,
@@ -289,4 +281,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error dispensing medication');
   }
-}

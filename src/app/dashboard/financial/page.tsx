@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 'use client';
@@ -65,13 +57,13 @@ export default const FinancialDashboard = () {
     setError(null);
     
     try {
-      // In a real implementation, this would fetch data from the API;
-      // For now, we'll simulate the data;
+      // In a real implementation, this would fetch data from the API
+      // For now, we'll simulate the data
       
-      // Simulate API call delay;
+      // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Generate simulated data based on active tab;
+      // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
         case 'overview':
@@ -101,7 +93,7 @@ export default const FinancialDashboard = () {
     }
   };
 
-  // Simulated data generators;
+  // Simulated data generators
   const generateOverviewData = () => {
     return {
       kpis: [
@@ -330,7 +322,7 @@ export default const FinancialDashboard = () {
     };
   };
 
-  // Render loading state;
+  // Render loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">;
@@ -340,7 +332,7 @@ export default const FinancialDashboard = () {
     );
   }
 
-  // Render error state;
+  // Render error state
   if (error) {
     return (
       <div className="p-4">;
@@ -899,4 +891,3 @@ export default const FinancialDashboard = () {
       </Tabs>
     </div>
   );
-}

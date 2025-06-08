@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -36,14 +26,14 @@ export const Calendar = ({
   const today = new Date();
   const [currentMonth, setCurrentMonth] = React.useState(month || today);
   
-  // Get days in month;
+  // Get days in month
   const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
   };
   
   // Get day of week for first day of month (0 = Sunday, 6 = Saturday)
   const getFirstDayOfMonth = (year: number, month: number) => {
-    return new Date(year, month, 1).getDay();
+    return new Date(year, month, 1).getDay()
   };
   
   const handlePreviousMonth = () => {
@@ -73,12 +63,12 @@ export const Calendar = ({
     
     const days = [];
     
-    // Add empty cells for days before the first day of the month;
+    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`empty-${i}`} className="h-9 w-9"></div>);
     }
     
-    // Add cells for each day of the month;
+    // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       const isSelected = selected &&;
@@ -152,6 +142,4 @@ export const Calendar = ({
       </div>
     </div>
   );
-}
-
 export { CalendarIcon };

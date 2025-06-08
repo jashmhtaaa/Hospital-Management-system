@@ -1,22 +1,14 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// types/patient.ts;
+// types/patient.ts
 
 export interface Patient {
     patient_id: number;
-    user_id?: number | null; // Link to Users table;
+    user_id?: number | null; // Link to Users table
     first_name: string,
-    last_name: string;
-    date_of_birth: string; // Store as YYYY-MM-DD string or Date object;
+    last_name: string,
+    date_of_birth: string; // Store as YYYY-MM-DD string or Date object
     gender: "Male" | "Female" | "Other" | "Prefer not to say",
     phone_number: string;
     email?: string | null;
@@ -35,9 +27,7 @@ export interface Patient {
     current_medications?: string | null;
     insurance_provider?: string | null;
     insurance_policy_number?: string | null;
-    registration_date: string; // ISO string or Date object;
+    registration_date: string; // ISO string or Date object
     registered_by_user_id?: number | null;
     is_active: boolean,
-    updated_at: string; // ISO string or Date object;
-}
-
+    updated_at: string; // ISO string or Date object

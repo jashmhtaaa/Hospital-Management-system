@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -15,7 +7,7 @@ export const dynamic = 'force-dynamic';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface Category {
   id: string,
   name: string
@@ -28,15 +20,15 @@ interface Manufacturer {
 
 interface MedicationFormData {
   item_code: string,
-  generic_name: string;
+  generic_name: string,
   brand_name: string,
-  category_id: string;
+  category_id: string,
   manufacturer_id: string,
-  dosage_form: string;
+  dosage_form: string,
   strength: string,
-  route: string;
+  route: string,
   unit_of_measure: string,
-  prescription_required: boolean;
+  prescription_required: boolean,
   narcotic: boolean,
   description: string
 }
@@ -67,10 +59,10 @@ const AddMedicationPage: React.FC = () => {
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
   useEffect(() => {
-    // Fetch categories and manufacturers for dropdowns;
+    // Fetch categories and manufacturers for dropdowns
     const fetchData = async (): Promise<void> => {
       try {
-        // Simulate fetching data;
+        // Simulate fetching data
         const simulatedCategories: Category[] = [
           { id: "cat_001", name: "Antibiotics" },
           { id: "cat_002", name: "Analgesics" },
@@ -92,7 +84,7 @@ const AddMedicationPage: React.FC = () => {
         setManufacturers(simulatedManufacturers);
       } catch (error) {
 
-        // Handle error appropriately, e.g., set an error state;
+        // Handle error appropriately, e.g., set an error state
       }
     };
 
@@ -103,14 +95,14 @@ const AddMedicationPage: React.FC = () => {
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
   ): void => {
     const { name, value, type } = event.target;
-    const checked = (event.target as HTMLInputElement).checked; // Type assertion for checked property;
+    const checked = (event.target as HTMLInputElement).checked; // Type assertion for checked property
 
     setFormData((previous) => ({
       ...previous,
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Clear error for the field being changed;
+    // Clear error for the field being changed
     if (errors[name as keyof MedicationFormData]) {
       setErrors((previous) => ({ ...previous, [name]: "" }));
     }
@@ -119,7 +111,7 @@ const AddMedicationPage: React.FC = () => {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Required fields check;
+    // Required fields check
     const requiredFields: (keyof MedicationFormData)[] = [
       "generic_name",
       "dosage_form",
@@ -149,26 +141,26 @@ const AddMedicationPage: React.FC = () => {
     setSubmitSuccess(false);
 
     try {
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch('/api/pharmacy/medications', {
       //   method: 'POST',
       //   headers: {
       //     'Content-Type': 'application/json',
       //   },
       //   body: JSON.stringify(formData),
-      // });
+      // })
 
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || 'Failed to add medication');
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || 'Failed to add medication')
       // }
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
       setSubmitSuccess(true);
 
-      // Reset form;
+      // Reset form
       setFormData({
         item_code: "",
         generic_name: "",
@@ -183,11 +175,11 @@ const AddMedicationPage: React.FC = () => {
         narcotic: false,
         description: "",
       }),
-      setErrors({}); // Clear errors on success;
+      setErrors({}); // Clear errors on success
 
-      // Redirect after a short delay;
+      // Redirect after a short delay
       setTimeout(() => {
-        router.push("/pharmacy/medications"); // Assuming this is the correct path;
+        router.push("/pharmacy/medications"); // Assuming this is the correct path
       }, 2000);
     } catch (error) {
       const message =;
@@ -204,7 +196,7 @@ const AddMedicationPage: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800">Add New Medication</h1>;
         <button>
           className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
-          onClick={() => router.push("/pharmacy/medications")} // Assuming this path;
+          onClick={() => router.push("/pharmacy/medications")} // Assuming this path
         >
           Back to Medications
         </button>
@@ -522,7 +514,7 @@ const AddMedicationPage: React.FC = () => {
           <div className="mt-8 flex justify-end">;
             <button>
               type="button"
-              onClick={() => router.push("/pharmacy/medications")} // Assuming this path;
+              onClick={() => router.push("/pharmacy/medications")} // Assuming this path
               className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               disabled={loading}
             >

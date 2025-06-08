@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -42,7 +32,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from '@/components/ui/use-toast';
 
-// Form schema for qualification;
+// Form schema for qualification
 const qualificationSchema = z.object({
   code: z.string().min(1, "Qualification code is required"),
   name: z.string().min(1, "Qualification name is required"),
@@ -58,7 +48,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);
 
-  // Initialize form;
+  // Initialize form
   const form = useForm({
     resolver: zodResolver(qualificationSchema),
     defaultValues: {
@@ -72,7 +62,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
     },
   });
 
-  // Fetch employee data;
+  // Fetch employee data
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
@@ -94,12 +84,12 @@ export default const AddQualification = ({ params }: { params: { id: string } })
     fetchEmployee();
   }, [params.id]);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (data) => {
     try {
       setLoading(true);
       
-      // Format dates for API;
+      // Format dates for API
       const formattedData = {
         ...data,
         startDate: format(data.startDate, 'yyyy-MM-dd'),
@@ -124,7 +114,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
         description: "Successfully added qualification to employee record",
       });
       
-      // Navigate back to employee profile;
+      // Navigate back to employee profile
       router.push(`/dashboard/hr/staff/${params.id}`);
     } catch (error) {
       toast({
@@ -332,7 +322,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                 />
               </div>
               
-              <div className="flex justify-end gap-2">;
+              <div className="flex justify-end gap-2">
                 <Button>
                   type="button" 
                   variant="outline"
@@ -351,4 +341,3 @@ export default const AddQualification = ({ params }: { params: { id: string } })
       </Card>
     </div>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,7 +8,7 @@ var __DEV__: boolean;
 
 import { z } from 'zod';
 
-// Billing Schemas;
+// Billing Schemas
 export const ServiceCatalogSchema = z.object({
   service_code: z.string().min(1, 'Service code is required'),
   cpt_code: z.string().optional(),
@@ -95,19 +87,19 @@ export const PaymentSchema = z.object({
 
 export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {
   id: string,
-  created_at: Date;
+  created_at: Date,
   updated_at: Date
 };
 
 export type Charge = z.infer<typeof ChargeSchema> & {
   id: string,
-  charge_number: string;
+  charge_number: string,
   created_at: Date,
   updated_at: Date;
   submitted_date?: Date;
   paid_date?: Date;
   payments_received: number,
-  adjustments: number;
+  adjustments: number,
   balance: number,
   aging_days: number;
   service_name?: string;
@@ -117,23 +109,23 @@ export type Charge = z.infer<typeof ChargeSchema> & {
 
 export type InsuranceClaim = z.infer<typeof InsuranceClaimSchema> & {
   id: string,
-  claim_number: string;
+  claim_number: string,
   status: 'draft' | 'submitted' | 'pending' | 'paid' | 'denied' | 'appealed' | 'closed';
   submission_date?: Date;
   response_date?: Date;
   paid_amount: number,
-  denied_amount: number;
+  denied_amount: number,
   adjustment_amount: number;
   denial_reason?: string;
   remittance_advice?: string;
   resubmission_count: number,
-  created_at: Date;
+  created_at: Date,
   updated_at: Date
 };
 
 export type Payment = z.infer<typeof PaymentSchema> & {
   id: string,
-  payment_number: string;
+  payment_number: string,
   payment_status: 'pending' | 'processed' | 'posted' | 'rejected';
   processed_date?: Date;
   posted_date?: Date;
@@ -143,51 +135,47 @@ export type Payment = z.infer<typeof PaymentSchema> & {
 
 export interface FinancialSummary {
   patient_id: string,
-  total_charges: number;
+  total_charges: number,
   total_payments: number,
-  total_adjustments: number;
+  total_adjustments: number,
   current_balance: number,
-  insurance_balance: number;
+  insurance_balance: number,
   patient_balance: number;
   last_payment_date?: Date;
   last_statement_date?: Date;
   aging: {
     current: number,
-    days_30: number;
+    days_30: number,
     days_60: number,
-    days_90: number;
+    days_90: number,
     days_120_plus: number
   };
-}
-
 export interface RevenueReport {
   period: string,
-  gross_charges: number;
+  gross_charges: number,
   contractual_adjustments: number,
-  bad_debt_adjustments: number;
+  bad_debt_adjustments: number,
   net_revenue: number,
-  cash_collections: number;
+  cash_collections: number,
   accounts_receivable: number,
-  days_in_ar: number;
+  days_in_ar: number,
   denial_rate: number,
-  clean_claim_rate: number;
+  clean_claim_rate: number,
   cost_to_collect: number,
   by_payer: {
     payer_name: string,
-    charges: number;
+    charges: number,
     payments: number,
-    adjustments: number;
+    adjustments: number,
     net_revenue: number
   }[];
   by_service: {
     service_category: string,
-    volume: number;
+    volume: number,
     charges: number,
-    payments: number;
+    payments: number,
     net_revenue: number
   }[];
-}
-
 export class BillingRevenueCycleService {
   private serviceCatalog: Map<string, ServiceCatalogItem> = new Map();
   private charges: Map<string, Charge> = new Map();
@@ -316,7 +304,7 @@ export class BillingRevenueCycleService {
   async createCharge(chargeData: z.infer<typeof ChargeSchema>): Promise<Charge> {
     const validatedData = ChargeSchema.parse(chargeData);
     
-    // Validate service exists;
+    // Validate service exists
     const service = this.serviceCatalog.get(validatedData.service_code);
     if (!service) {
       throw new Error(`Service not found: ${validatedData.service_code}`);
@@ -357,7 +345,7 @@ export class BillingRevenueCycleService {
   async createInsuranceClaim(claimData: z.infer<typeof InsuranceClaimSchema>): Promise<InsuranceClaim> {
     const validatedData = InsuranceClaimSchema.parse(claimData);
     
-    // Validate charges exist;
+    // Validate charges exist
     const chargeIds = validatedData.charges;
     const charges = chargeIds.map(id => this.charges.get(id)).filter(Boolean) as Charge[];
     
@@ -411,7 +399,7 @@ export class BillingRevenueCycleService {
     claim.submission_date = new Date();
     claim.updated_at = new Date();
 
-    // Update related charges;
+    // Update related charges
     claim.charges.forEach(chargeId => {
       const charge = this.charges.get(chargeId);
       if (charge) {
@@ -454,7 +442,7 @@ export class BillingRevenueCycleService {
     claim.remittance_advice = responseData.remittance_advice;
     claim.updated_at = new Date();
 
-    // Update related charges;
+    // Update related charges
     if (responseData.status === 'paid') {
       const paymentPerCharge = claim.paid_amount / claim.charges.length;
       claim.charges.forEach(chargeId => {
@@ -548,7 +536,7 @@ export class BillingRevenueCycleService {
       throw new Error('Payment must be processed before posting');
     }
 
-    // Apply payment to charges;
+    // Apply payment to charges
     payment.applied_charges.forEach(({ charge_id, applied_amount }) => {
       const charge = this.charges.get(charge_id);
       if (charge) {
@@ -585,7 +573,7 @@ export class BillingRevenueCycleService {
     const totalAdjustments = patientCharges.reduce((sum, charge) => sum + charge.adjustments, 0);
     const currentBalance = totalCharges - totalPayments - totalAdjustments;
 
-    // Calculate aging;
+    // Calculate aging
     const now = new Date();
     const aging = patientCharges.reduce((acc, charge) => {
       if (charge.balance <= 0) return acc;
@@ -609,8 +597,8 @@ export class BillingRevenueCycleService {
     }, { current: 0, days_30: 0, days_60: 0, days_90: 0, days_120_plus: 0 });
 
     // Estimate insurance vs patient balance (simplified)
-    const insuranceBalance = currentBalance * 0.8; // Assume 80% insurance responsibility;
-    const patientBalance = currentBalance * 0.2; // Assume 20% patient responsibility;
+    const insuranceBalance = currentBalance * 0.8; // Assume 80% insurance responsibility
+    const patientBalance = currentBalance * 0.2; // Assume 20% patient responsibility
 
     return {
       patient_id: patientId,
@@ -648,19 +636,19 @@ export class BillingRevenueCycleService {
 
     const grossCharges = periodCharges.reduce((sum, charge) => sum + charge.total_charge, 0);
     const contractualAdjustments = periodCharges.reduce((sum, charge) => sum + charge.adjustments, 0);
-    const badDebtAdjustments = 0; // Simplified;
+    const badDebtAdjustments = 0; // Simplified
     const netRevenue = grossCharges - contractualAdjustments - badDebtAdjustments;
     const cashCollections = periodPayments.reduce((sum, payment) => sum + payment.payment_amount, 0);
 
-    // Calculate accounts receivable;
+    // Calculate accounts receivable
     const allCharges = Array.from(this.charges.values());
     const accountsReceivable = allCharges.reduce((sum, charge) => sum + charge.balance, 0);
 
-    // Calculate metrics;
+    // Calculate metrics
     const daysInAR = accountsReceivable > 0 ? (accountsReceivable / (netRevenue / 30)) : 0;
-    const denialRate = 15; // Simplified - would be calculated from actual denials;
-    const cleanClaimRate = 85; // Simplified;
-    const costToCollect = 8; // Simplified - percentage of revenue;
+    const denialRate = 15; // Simplified - would be calculated from actual denials
+    const cleanClaimRate = 85; // Simplified
+    const costToCollect = 8; // Simplified - percentage of revenue
 
     // By payer analysis (simplified)
     const byPayer = [
@@ -692,9 +680,9 @@ export class BillingRevenueCycleService {
         adjustments: contractualAdjustments * 0.05,
         net_revenue: netRevenue * 0.1,
       },
-    ];
+    ]
 
-    // By service analysis;
+    // By service analysis
     const serviceStats = new Map<string, { volume: number; charges: number; payments: number }>();
     
     periodCharges.forEach(charge => {
@@ -714,7 +702,7 @@ export class BillingRevenueCycleService {
       volume: stats.volume,
       charges: stats.charges,
       payments: stats.payments,
-      net_revenue: stats.payments, // Simplified;
+      net_revenue: stats.payments, // Simplified
     }));
 
     return {
@@ -763,7 +751,7 @@ export class BillingRevenueCycleService {
     
     let filteredCharges = Array.from(this.charges.values());
 
-    // Apply filters;
+    // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
       if (value) {
         filteredCharges = filteredCharges.filter(charge => {
@@ -777,9 +765,9 @@ export class BillingRevenueCycleService {
     });
 
     // Sort by creation date (newest first)
-    filteredCharges.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    filteredCharges.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())
 
-    // Pagination;
+    // Pagination
     const total = filteredCharges.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -821,7 +809,7 @@ export class BillingRevenueCycleService {
     
     let filteredClaims = Array.from(this.claims.values());
 
-    // Apply filters;
+    // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
       if (value) {
         filteredClaims = filteredClaims.filter(claim => {
@@ -836,12 +824,12 @@ export class BillingRevenueCycleService {
 
     // Sort by submission date (newest first)
     filteredClaims.sort((a, b) => {
-      const dateA = a.submission_date || a.created_at;
+      const dateA = a.submission_date || a.created_at
       const dateB = b.submission_date || b.created_at;
       return dateB.getTime() - dateA.getTime();
     });
 
-    // Pagination;
+    // Pagination
     const total = filteredClaims.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -855,11 +843,11 @@ export class BillingRevenueCycleService {
    */
   async getBillingStatistics(dateFrom?: string, dateTo?: string): Promise<{
     total_charges: number,
-    total_payments: number;
+    total_payments: number,
     total_adjustments: number,
-    net_collections: number;
+    net_collections: number,
     pending_charges: number,
-    claim_submission_rate: number;
+    claim_submission_rate: number,
     average_payment_time: number,
     top_services: { service_name: string; volume: number; revenue: number }[];
   }> {
@@ -890,7 +878,7 @@ export class BillingRevenueCycleService {
     const submittedCharges = filteredCharges.filter(charge => charge.charge_status !== 'pending').length;
     const claimSubmissionRate = filteredCharges.length > 0 ? (submittedCharges / filteredCharges.length) * 100 : 0;
 
-    // Calculate average payment time;
+    // Calculate average payment time
     const paidCharges = filteredCharges.filter(charge => charge.paid_date && charge.submitted_date);
     const totalPaymentDays = paidCharges.reduce((sum, charge) => {
       if (charge.paid_date && charge.submitted_date) {
@@ -900,7 +888,7 @@ export class BillingRevenueCycleService {
     }, 0);
     const averagePaymentTime = paidCharges.length > 0 ? totalPaymentDays / paidCharges.length : 0;
 
-    // Top services by volume and revenue;
+    // Top services by volume and revenue
     const serviceStats = new Map<string, { volume: number; revenue: number }>();
     filteredCharges.forEach(charge => {
       const serviceName = charge.service_name || charge.service_code;
@@ -928,5 +916,5 @@ export class BillingRevenueCycleService {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const billingRevenueCycleService = new BillingRevenueCycleService();

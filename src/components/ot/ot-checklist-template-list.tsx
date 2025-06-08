@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -22,10 +14,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
 import { Edit, Trash2 } from "lucide-react";
 
-// Mock data structure - replace with actual API response type;
+// Mock data structure - replace with actual API response type
 interface ChecklistItem {
   id: string,
   text: string
@@ -33,12 +25,10 @@ interface ChecklistItem {
 
 interface ChecklistTemplate {
   id: string,
-  name: string;
+  name: string,
   phase: string,
-  items: ChecklistItem[];
+  items: ChecklistItem[],
   updated_at: string
-}
-
 export default const OTChecklistTemplateList = () {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,16 +40,16 @@ export default const OTChecklistTemplateList = () {
         setLoading(true),
         setError(undefined);
 
-        // Replace with actual API call;
-        // const response = await fetch("/api/ot/checklist-templates");
+        // Replace with actual API call
+        // const response = await fetch("/api/ot/checklist-templates")
         // if (!response.ok) {
-        //   throw new Error("Failed to fetch checklist templates");
+        //   throw new Error("Failed to fetch checklist templates")
         // }
-        // const data = await response.json();
-        // setTemplates(data);
+        // const data = await response.json()
+        // setTemplates(data)
 
-        // Mock data for demonstration;
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
+        // Mock data for demonstration
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: ChecklistTemplate[] = [
           {
             id: "clt-1",
@@ -213,4 +203,3 @@ export default const OTChecklistTemplateList = () {
       </CardContent>
     </Card>
   );
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { integrationService } from '@/lib/hr/integration-service';
 
@@ -31,4 +21,3 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

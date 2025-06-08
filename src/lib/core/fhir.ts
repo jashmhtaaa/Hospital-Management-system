@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -14,7 +6,7 @@ var __DEV__: boolean;
  * Provides standardized FHIR resource handling and validation;
  */
 
-// FHIR Resource Types relevant to Financial Management;
+// FHIR Resource Types relevant to Financial Management
 export enum FHIRResourceType {
   ACCOUNT = 'Account',
   CLAIM = 'Claim',
@@ -28,7 +20,7 @@ export enum FHIRResourceType {
 
 // FHIR Account resource interface (simplified)
 export interface FHIRAccount {
-  resourceType: FHIRResourceType.ACCOUNT;
+  resourceType: FHIRResourceType.ACCOUNT
   id?: string;
   identifier?: Array<{
     system: string,
@@ -67,7 +59,7 @@ export interface FHIRAccount {
 
 // FHIR Claim resource interface (simplified)
 export interface FHIRClaim {
-  resourceType: FHIRResourceType.CLAIM;
+  resourceType: FHIRResourceType.CLAIM
   id?: string;
   identifier?: Array<{
     system: string,
@@ -98,7 +90,7 @@ export interface FHIRClaim {
   };
   insurance: Array<{
     sequence: number,
-    focal: boolean;
+    focal: boolean,
     coverage: {
       reference: string
     };
@@ -140,7 +132,7 @@ export interface FHIRClaim {
 
 // FHIR Coverage resource interface (simplified)
 export interface FHIRCoverage {
-  resourceType: FHIRResourceType.COVERAGE;
+  resourceType: FHIRResourceType.COVERAGE
   id?: string;
   identifier?: Array<{
     system: string,
@@ -189,7 +181,7 @@ export interface FHIRCoverage {
 
 // FHIR Invoice resource interface (simplified)
 export interface FHIRInvoice {
-  resourceType: FHIRResourceType.INVOICE;
+  resourceType: FHIRResourceType.INVOICE
   id?: string;
   identifier?: Array<{
     system: string,
@@ -244,7 +236,7 @@ export interface FHIRInvoice {
 
 // FHIR PaymentReconciliation resource interface (simplified)
 export interface FHIRPaymentReconciliation {
-  resourceType: FHIRResourceType.PAYMENT_RECONCILIATION;
+  resourceType: FHIRResourceType.PAYMENT_RECONCILIATION
   id?: string;
   identifier?: Array<{
     system: string,
@@ -305,9 +297,9 @@ export interface FHIRPaymentReconciliation {
   }>;
 }
 
-// Utility function to convert internal invoice to FHIR Invoice;
+// Utility function to convert internal invoice to FHIR Invoice
 export const convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
-  // Map internal invoice status to FHIR Invoice status;
+  // Map internal invoice status to FHIR Invoice status
   const statusMap: Record<string, 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error'> = {
     draft: 'draft',
     pending: 'draft',
@@ -378,12 +370,12 @@ export const convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
       value: invoice.totalAmount,
       currency: 'USD',
     },
-  };
+  }
 }
 
-// Utility function to convert internal claim to FHIR Claim;
+// Utility function to convert internal claim to FHIR Claim
 export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
-  // Map internal claim status to FHIR Claim status;
+  // Map internal claim status to FHIR Claim status
   const statusMap: Record<string, 'active' | 'cancelled' | 'draft' | 'entered-in-error'> = {
     draft: 'draft',
     pending: 'active',
@@ -480,10 +472,10 @@ export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
       value: claim.totalAmount,
       currency: 'USD',
     },
-  };
+  }
 }
 
-// Utility function to convert internal coverage to FHIR Coverage;
+// Utility function to convert internal coverage to FHIR Coverage
 export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
   return {
     resourceType: FHIRResourceType.COVERAGE,
@@ -543,13 +535,13 @@ export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
         name: coverage.groupName,
       },
     ],
-  };
+  }
 }
 
-// Utility function to validate FHIR resources;
+// Utility function to validate FHIR resources
 export const validateFHIRResource = (resource: unknown): boolean {
-  // This would typically use a FHIR validation library;
-  // For now, we'll do basic validation;
+  // This would typically use a FHIR validation library
+  // For now, we'll do basic validation
   
   if (!resource || !resource.resourceType) {
     return false;
@@ -569,7 +561,7 @@ export const validateFHIRResource = (resource: unknown): boolean {
   }
 }
 
-// Helper validation functions;
+// Helper validation functions
 const validateFHIRAccount = (account: unknown): boolean {
   return !!account.status
 }
@@ -603,4 +595,3 @@ const validateFHIRPaymentReconciliation = (paymentReconciliation: unknown): bool
          !!paymentReconciliation.created && 
          !!paymentReconciliation.paymentDate && 
          !!paymentReconciliation.paymentAmount;
-}

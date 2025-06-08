@@ -1,24 +1,14 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
 import { FeedbackService } from '@/lib/services/support-services/feedback/feedback.service';
 import { z } from 'zod';
 
-// Initialize service;
+// Initialize service
 const feedbackService = new FeedbackService();
 
-// Validation schemas;
+// Validation schemas
 const createFeedbackSchema = z.object({
   type: z.enum(['GENERAL', 'SERVICE', 'STAFF', 'FACILITY', 'CARE', 'OTHER']),
   subject: z.string().min(3).max(100),
@@ -64,12 +54,12 @@ const updateComplaintSchema = z.object({
   escalationLevel: z.enum(['DEPARTMENT', 'MANAGEMENT', 'EXECUTIVE', 'EXTERNAL']).optional(),
 });
 
-// GET /api/support-services/feedback;
+// GET /api/support-services/feedback
 export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         type: searchParams.get('type') || undefined,
@@ -85,7 +75,7 @@ export async const GET = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get feedback with filters;
+      // Get feedback with filters
       const result = await feedbackService.getFeedback(filters);
       
       return NextResponse.json(result);
@@ -97,37 +87,37 @@ export async const GET = (request: NextRequest) => {
   );
 }
 
-// POST /api/support-services/feedback;
+// POST /api/support-services/feedback
 export async const POST = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = createFeedbackSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Create feedback;
+      // Create feedback
       const result = await feedbackService.createFeedback(sanitizedData);
       
       return NextResponse.json(result, { status: 201 });
     },
     {
-      // Allow anonymous feedback submission;
+      // Allow anonymous feedback submission
       skipAuth: true,
       auditAction: 'FEEDBACK_CREATE',
     }
   );
 }
 
-// GET /api/support-services/feedback/:id;
+// GET /api/support-services/feedback/:id
 export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Get feedback by ID;
+      // Get feedback by ID
       const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
       const result = await feedbackService.getFeedbackById(params.id, includeFHIR);
       
@@ -140,19 +130,19 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
   );
 }
 
-// PATCH /api/support-services/feedback/:id;
+// PATCH /api/support-services/feedback/:id
 export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = updateFeedbackSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Update feedback;
+      // Update feedback
       const result = await feedbackService.updateFeedback(params.id, sanitizedData);
       
       return NextResponse.json(result);
@@ -164,12 +154,12 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
   );
 }
 
-// GET /api/support-services/complaints;
+// GET /api/support-services/complaints
 export async const GET_COMPLAINTS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         category: searchParams.get('category') || undefined,
@@ -185,7 +175,7 @@ export async const GET_COMPLAINTS = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get complaints with filters;
+      // Get complaints with filters
       const result = await feedbackService.getComplaints(filters);
       
       return NextResponse.json(result);
@@ -197,37 +187,37 @@ export async const GET_COMPLAINTS = (request: NextRequest) => {
   );
 }
 
-// POST /api/support-services/complaints;
+// POST /api/support-services/complaints
 export async const POST_COMPLAINT = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = createComplaintSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Create complaint;
+      // Create complaint
       const result = await feedbackService.createComplaint(sanitizedData);
       
       return NextResponse.json(result, { status: 201 });
     },
     {
-      // Allow anonymous complaint submission;
+      // Allow anonymous complaint submission
       skipAuth: true,
       auditAction: 'COMPLAINT_CREATE',
     }
   );
 }
 
-// GET /api/support-services/complaints/:id;
+// GET /api/support-services/complaints/:id
 export async const GET_COMPLAINT_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Get complaint by ID;
+      // Get complaint by ID
       const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
       const result = await feedbackService.getComplaintById(params.id, includeFHIR);
       
@@ -240,19 +230,19 @@ export async const GET_COMPLAINT_BY_ID = (request: NextRequest, { params }: { pa
   );
 }
 
-// PATCH /api/support-services/complaints/:id;
+// PATCH /api/support-services/complaints/:id
 export async const PATCH_COMPLAINT = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = updateComplaintSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Update complaint;
+      // Update complaint
       const result = await feedbackService.updateComplaint(params.id, sanitizedData);
       
       return NextResponse.json(result);
@@ -264,12 +254,12 @@ export async const PATCH_COMPLAINT = (request: NextRequest, { params }: { params
   );
 }
 
-// POST /api/support-services/complaints/:id/escalate;
+// POST /api/support-services/complaints/:id/escalate
 export async const ESCALATE_COMPLAINT = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { escalationLevel, reason, escalatedById } = body;
       
@@ -277,7 +267,7 @@ export async const ESCALATE_COMPLAINT = (request: NextRequest, { params }: { par
         return NextResponse.json({ error: 'Escalation level is required' }, { status: 400 });
       }
       
-      // Escalate complaint;
+      // Escalate complaint
       const result = await feedbackService.escalateComplaint(
         params.id,
         escalationLevel,
@@ -294,18 +284,18 @@ export async const ESCALATE_COMPLAINT = (request: NextRequest, { params }: { par
   );
 }
 
-// GET /api/support-services/feedback/analytics;
+// GET /api/support-services/feedback/analytics
 export async const GET_ANALYTICS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const fromDate = searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
       const toDate = searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
       const departmentId = searchParams.get('departmentId') || undefined;
       
-      // Get feedback analytics;
+      // Get feedback analytics
       const result = await feedbackService.getFeedbackAnalytics(fromDate, toDate, departmentId);
       
       return NextResponse.json(result);
@@ -315,4 +305,3 @@ export async const GET_ANALYTICS = (request: NextRequest) => {
       auditAction: 'FEEDBACK_ANALYTICS_VIEW',
     }
   );
-}

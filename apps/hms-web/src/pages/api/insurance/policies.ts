@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService.ts"; // Adjust path as per actual structure;
-import { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path;
+import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService.ts"; // Adjust path as per actual structure
+import { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path
 
 const policyService = new InsurancePolicyService();
 
@@ -163,9 +153,9 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
                 if (typeof patientId === 'string') {
                     const policies = await policyService.getInsurancePoliciesForPatient(patientId);
                     // if (policies.length === 0) {
-                    //     return res.status(404).json({ message: `No policies found for patient ${patientId}` });
+                    //     return res.status(404).json({ message: `No policies found for patient ${patientId}` })
                     // }
-                    return res.status(200).json(policies);
+                    return res.status(200).json(policies)
                 } else {
                     return res.status(400).json({ message: "Patient ID query parameter is required." });
                 }
@@ -196,5 +186,3 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         }
         return res.status(500).json({ message: "Error processing insurance policy request", error: error.message });
     }
-}
-

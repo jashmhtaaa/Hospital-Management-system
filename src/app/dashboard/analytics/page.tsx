@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -84,127 +76,127 @@ import {
 
 interface AnalyticsData {
   realTimeMetrics: RealTimeMetrics,
-  operationalKPIs: OperationalKPI[];
+  operationalKPIs: OperationalKPI[],
   departmentPerformance: DepartmentMetrics[],
-  patientFlow: PatientFlowData[];
+  patientFlow: PatientFlowData[],
   financialMetrics: FinancialMetrics,
-  qualityIndicators: QualityMetrics[];
+  qualityIndicators: QualityMetrics[],
   resourceUtilization: ResourceMetrics[],
-  predictiveInsights: PredictiveData[];
+  predictiveInsights: PredictiveData[],
   alerts: SystemAlert[],
   complianceStatus: ComplianceMetrics
 }
 
 interface RealTimeMetrics {
   currentPatients: number,
-  admissions24h: number;
+  admissions24h: number,
   discharges24h: number,
-  erVisits: number;
+  erVisits: number,
   surgeries: number,
-  bedOccupancy: number;
+  bedOccupancy: number,
   staffOnDuty: number,
-  avgWaitTime: number;
+  avgWaitTime: number,
   criticalAlerts: number,
   systemHealth: 'excellent' | 'good' | 'warning' | 'critical'
 }
 
 interface OperationalKPI {
   metric: string,
-  value: number;
+  value: number,
   target: number,
-  trend: 'up' | 'down' | 'stable';
+  trend: 'up' | 'down' | 'stable',
   changePercent: number,
-  status: 'excellent' | 'good' | 'warning' | 'critical';
+  status: 'excellent' | 'good' | 'warning' | 'critical',
   unit: string,
   category: 'patient_care' | 'efficiency' | 'quality' | 'financial'
 }
 
 interface DepartmentMetrics {
   department: string,
-  patientVolume: number;
+  patientVolume: number,
   efficiency: number,
-  satisfaction: number;
+  satisfaction: number,
   revenue: number,
-  staffUtilization: number;
+  staffUtilization: number,
   qualityScore: number,
-  alerts: number;
+  alerts: number,
   trend: 'improving' | 'stable' | 'declining'
 }
 
 interface PatientFlowData {
   time: string,
-  admissions: number;
+  admissions: number,
   discharges: number,
-  transfers: number;
+  transfers: number,
   erVisits: number,
-  outpatient: number;
+  outpatient: number,
   occupancy: number
 }
 
 interface FinancialMetrics {
   revenue24h: number,
-  revenueMonth: number;
+  revenueMonth: number,
   revenueYear: number,
-  costPerPatient: number;
+  costPerPatient: number,
   profitMargin: number,
-  collectionsRate: number;
+  collectionsRate: number,
   outstandingAR: number,
-  budgetVariance: number;
+  budgetVariance: number,
   revenuePerBed: number,
   operatingRatio: number
 }
 
 interface QualityMetrics {
   indicator: string,
-  score: number;
+  score: number,
   benchmark: number,
-  compliance: number;
+  compliance: number,
   trend: 'improving' | 'stable' | 'declining',
-  priority: 'high' | 'medium' | 'low';
+  priority: 'high' | 'medium' | 'low',
   lastUpdated: string
 }
 
 interface ResourceMetrics {
   resource: string,
-  capacity: number;
+  capacity: number,
   utilized: number,
-  utilization: number;
+  utilization: number,
   peak: number,
-  efficiency: number;
+  efficiency: number,
   availability: number,
   cost: number
 }
 
 interface PredictiveData {
   prediction: string,
-  probability: number;
+  probability: number,
   impact: 'high' | 'medium' | 'low',
-  timeframe: string;
+  timeframe: string,
   confidence: number,
-  recommendation: string;
+  recommendation: string,
   category: 'capacity' | 'quality' | 'financial' | 'staff'
 }
 
 interface SystemAlert {
   id: string,
-  type: 'critical' | 'warning' | 'info';
+  type: 'critical' | 'warning' | 'info',
   title: string,
   message: string;
   department?: string;
   timestamp: string,
-  acknowledged: boolean;
+  acknowledged: boolean,
   priority: number
 }
 
 interface ComplianceMetrics {
   overall: number,
-  hipaa: number;
+  hipaa: number,
   hitech: number,
-  jacho: number;
+  jacho: number,
   cms: number,
-  osha: number;
+  osha: number,
   lastAudit: string,
-  nextAudit: string;
+  nextAudit: string,
   criticalFindings: number
 }
 
@@ -230,12 +222,12 @@ export default const AdvancedAnalyticsDashboard = () {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
-  // Simulate real-time data updates;
+  // Simulate real-time data updates
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // In production, this would fetch from your analytics API;
+        // In production, this would fetch from your analytics API
         await new Promise(resolve => setTimeout(resolve, 1000));
         setData(generateMockAnalyticsData());
         setLastRefresh(new Date());
@@ -1015,7 +1007,7 @@ export default const AdvancedAnalyticsDashboard = () {
   );
 }
 
-// Mock data generation function;
+// Mock data generation function
 const generateMockAnalyticsData = (): AnalyticsData {
   return {
     realTimeMetrics: {

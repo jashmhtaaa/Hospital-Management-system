@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { prisma } from '@/lib/prisma';
 import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintActivity, ComplaintAttachment, FollowUpAction, FeedbackSurveyTemplate, FeedbackSurvey } from '@prisma/client';
 import { createAuditLog } from '@/lib/audit-logging';
@@ -25,8 +15,6 @@ export interface FeedbackFilter {
   endDate?: Date;
   page: number,
   limit: number
-}
-
 export interface ComplaintFilter {
   category?: string;
   severity?: string;
@@ -37,11 +25,9 @@ export interface ComplaintFilter {
   endDate?: Date;
   page: number,
   limit: number
-}
-
 export interface CreateFeedbackData {
   type: string,
-  source: string;
+  source: string,
   rating: number;
   comments?: string;
   submittedById?: string;
@@ -52,11 +38,9 @@ export interface CreateFeedbackData {
   tags?: string[];
   anonymous: boolean;
   contactInfo?: unknown;
-}
-
 export interface CreateComplaintData {
   title: string,
-  description: string;
+  description: string,
   category: string,
   severity: string;
   submittedById?: string;
@@ -65,8 +49,6 @@ export interface CreateComplaintData {
   anonymous: boolean;
   contactInfo?: unknown;
   dueDate?: Date;
-}
-
 export class FeedbackService {
   private notificationService: NotificationService;
   
@@ -88,7 +70,7 @@ export class FeedbackService {
     if (departmentId) where.departmentId = departmentId;
     if (serviceType) where.serviceType = serviceType;
     
-    // Date range filter for createdAt;
+    // Date range filter for createdAt
     if (startDate || endDate) {
       where.createdAt = {};
       if (startDate) where.createdAt.gte = startDate;
@@ -169,7 +151,7 @@ export class FeedbackService {
       prisma.feedback.count({ where })
     ]);
     
-    // Convert to FHIR format;
+    // Convert to FHIR format
     const fhirFeedback = feedback.map(item => toFHIRFeedback(item));
     
     return {
@@ -277,7 +259,7 @@ export class FeedbackService {
    * Create new feedback;
    */
   async createFeedback(data: CreateFeedbackData, userId?: string): Promise<Feedback> {
-    // Validate department if provided;
+    // Validate department if provided
     if (data.departmentId) {
       const department = await prisma.department.findUnique({
         where: { id: data.departmentId }
@@ -288,7 +270,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate patient if provided;
+    // Validate patient if provided
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -299,7 +281,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the feedback;
+    // Create the feedback
     const feedback = await prisma.feedback.create({
       data: {
         type: data.type,
@@ -334,7 +316,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     if (userId) {
       await createAuditLog({
         action: 'CREATE',
@@ -345,7 +327,7 @@ export class FeedbackService {
       });
     }
     
-    // Send notification to department managers or service managers;
+    // Send notification to department managers or service managers
     let recipientRoles = ['FEEDBACK_MANAGER'];
     let notificationTitle = 'New Feedback Received';
     let notificationMessage = `New ${data.type} feedback received`;
@@ -393,7 +375,7 @@ export class FeedbackService {
       throw new Error('Feedback not found');
     }
     
-    // Update the feedback;
+    // Update the feedback
     const updatedFeedback = await prisma.feedback.update({
       where: { id },
       data: {
@@ -427,7 +409,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'FEEDBACK',
@@ -436,7 +418,7 @@ export class FeedbackService {
       details: `Updated feedback status to ${status}`;
     });
     
-    // Send notification to submitter if not anonymous and has user account;
+    // Send notification to submitter if not anonymous and has user account
     if (!feedback.anonymous && feedback.submittedById) {
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_STATUS_UPDATE',
@@ -475,7 +457,7 @@ export class FeedbackService {
       throw new Error('Feedback not found');
     }
     
-    // Create the response;
+    // Create the response
     const response = await prisma.feedbackResponse.create({
       data: {
         feedbackId,
@@ -494,7 +476,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FEEDBACK_RESPONSE',
@@ -503,7 +485,7 @@ export class FeedbackService {
       details: `Added response to feedback ${feedbackId}`;
     });
     
-    // Send notification to submitter if not anonymous and has user account;
+    // Send notification to submitter if not anonymous and has user account
     if (isPublic && !feedback.anonymous && feedback.submittedById) {
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_RESPONSE',
@@ -533,7 +515,7 @@ export class FeedbackService {
       throw new Error('Feedback not found');
     }
     
-    // Create the attachment;
+    // Create the attachment
     const attachment = await prisma.feedbackAttachment.create({
       data: {
         feedbackId,
@@ -554,7 +536,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FEEDBACK_ATTACHMENT',
@@ -580,7 +562,7 @@ export class FeedbackService {
     if (departmentId) where.departmentId = departmentId;
     if (assignedToId) where.assignedToId = assignedToId;
     
-    // Date range filter for createdAt;
+    // Date range filter for createdAt
     if (startDate || endDate) {
       where.createdAt = {};
       if (startDate) where.createdAt.gte = startDate;
@@ -646,7 +628,7 @@ export class FeedbackService {
       prisma.complaint.count({ where })
     ]);
     
-    // Convert to FHIR format;
+    // Convert to FHIR format
     const fhirComplaints = complaints.map(complaint => toFHIRComplaint(complaint));
     
     return {
@@ -768,7 +750,7 @@ export class FeedbackService {
    * Create new complaint;
    */
   async createComplaint(data: CreateComplaintData, userId?: string): Promise<Complaint> {
-    // Validate department if provided;
+    // Validate department if provided
     if (data.departmentId) {
       const department = await prisma.department.findUnique({
         where: { id: data.departmentId }
@@ -779,7 +761,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate patient if provided;
+    // Validate patient if provided
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -790,7 +772,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the complaint;
+    // Create the complaint
     const complaint = await prisma.complaint.create({
       data: {
         title: data.title,
@@ -821,9 +803,9 @@ export class FeedbackService {
         },
         department: true
       }
-    });
+    })
     
-    // Create initial activity;
+    // Create initial activity
     await prisma.complaintActivity.create({
       data: {
         complaintId: complaint.id,
@@ -833,7 +815,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     if (userId) {
       await createAuditLog({
         action: 'CREATE',
@@ -844,14 +826,14 @@ export class FeedbackService {
       });
     }
     
-    // Send notification to complaint managers;
+    // Send notification to complaint managers
     let recipientRoles = ['COMPLAINT_MANAGER'];
     
     if (data.departmentId) {
       recipientRoles.push('DEPARTMENT_MANAGER');
     }
     
-    // High and critical complaints should notify higher management;
+    // High and critical complaints should notify higher management
     if (data.severity === 'HIGH' || data.severity === 'CRITICAL') {
       recipientRoles.push('QUALITY_MANAGER');
       
@@ -891,7 +873,7 @@ export class FeedbackService {
     
     const updateData: unknown = { status };
     
-    // Handle status-specific updates;
+    // Handle status-specific updates
     switch (status) {
       case 'RESOLVED':
         updateData.resolutionDetails = details || undefined;
@@ -905,7 +887,7 @@ export class FeedbackService {
         break;
     }
     
-    // Update the complaint;
+    // Update the complaint
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: updateData,
@@ -948,7 +930,7 @@ export class FeedbackService {
       }
     });
     
-    // Create activity;
+    // Create activity
     await prisma.complaintActivity.create({
       data: {
         complaintId: id,
@@ -958,7 +940,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'COMPLAINT',
@@ -967,7 +949,7 @@ export class FeedbackService {
       details: `Updated complaint status to ${status}`;
     });
     
-    // Send notification to submitter if not anonymous and has user account;
+    // Send notification to submitter if not anonymous and has user account
     if (!complaint.anonymous && complaint.submittedById) {
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_STATUS_UPDATE',
@@ -982,7 +964,7 @@ export class FeedbackService {
       });
     }
     
-    // Send notification to assigned user;
+    // Send notification to assigned user
     if (complaint.assignedToId) {
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_STATUS_UPDATE',
@@ -1012,7 +994,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Validate assigned user;
+    // Validate assigned user
     const assignedUser = await prisma.user.findUnique({
       where: { id: assignedToId }
     });
@@ -1021,7 +1003,7 @@ export class FeedbackService {
       throw new Error('Assigned user not found');
     }
     
-    // Update the complaint;
+    // Update the complaint
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: {
@@ -1039,7 +1021,7 @@ export class FeedbackService {
       }
     });
     
-    // Create activity;
+    // Create activity
     await prisma.complaintActivity.create({
       data: {
         complaintId: id,
@@ -1049,7 +1031,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'COMPLAINT',
@@ -1058,7 +1040,7 @@ export class FeedbackService {
       details: `Assigned complaint to ${assignedUser.name}`;
     });
     
-    // Send notification to assigned user;
+    // Send notification to assigned user
     await this.notificationService.sendNotification({
       type: 'COMPLAINT_ASSIGNED',
       title: 'Complaint Assigned',
@@ -1087,7 +1069,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Validate escalated user;
+    // Validate escalated user
     const escalatedUser = await prisma.user.findUnique({
       where: { id: escalatedToId }
     });
@@ -1096,7 +1078,7 @@ export class FeedbackService {
       throw new Error('Escalation user not found');
     }
     
-    // Update the complaint;
+    // Update the complaint
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: {
@@ -1116,7 +1098,7 @@ export class FeedbackService {
       }
     });
     
-    // Create activity;
+    // Create activity
     await prisma.complaintActivity.create({
       data: {
         complaintId: id,
@@ -1126,7 +1108,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'COMPLAINT',
@@ -1135,7 +1117,7 @@ export class FeedbackService {
       details: `Escalated complaint to ${escalatedUser.name}`;
     });
     
-    // Send notification to escalated user;
+    // Send notification to escalated user
     await this.notificationService.sendNotification({
       type: 'COMPLAINT_ESCALATED',
       title: 'Complaint Escalated',
@@ -1165,7 +1147,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Create activity;
+    // Create activity
     const activity = await prisma.complaintActivity.create({
       data: {
         complaintId: id,
@@ -1184,7 +1166,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'COMPLAINT_ACTIVITY',
@@ -1193,7 +1175,7 @@ export class FeedbackService {
       details: `Added comment to complaint ${id}`;
     });
     
-    // Send notification to assigned user if comment is from someone else;
+    // Send notification to assigned user if comment is from someone else
     if (complaint.assignedToId && complaint.assignedToId !== userId) {
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_COMMENT',
@@ -1223,7 +1205,7 @@ export class FeedbackService {
       throw new Error('Complaint not found');
     }
     
-    // Create the attachment;
+    // Create the attachment
     const attachment = await prisma.complaintAttachment.create({
       data: {
         complaintId,
@@ -1244,7 +1226,7 @@ export class FeedbackService {
       }
     });
     
-    // Create activity;
+    // Create activity
     await prisma.complaintActivity.create({
       data: {
         complaintId,
@@ -1254,7 +1236,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'COMPLAINT_ATTACHMENT',
@@ -1270,12 +1252,12 @@ export class FeedbackService {
    * Create follow-up action;
    */
   async createFollowUpAction(data: unknown, userId: string): Promise<FollowUpAction> {
-    // Validate that either feedback or complaint is provided;
+    // Validate that either feedback or complaint is provided
     if (!data.feedbackId && !data.complaintId) {
       throw new Error('Either feedback or complaint must be provided');
     }
     
-    // Validate feedback if provided;
+    // Validate feedback if provided
     if (data.feedbackId) {
       const feedback = await prisma.feedback.findUnique({
         where: { id: data.feedbackId }
@@ -1286,7 +1268,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate complaint if provided;
+    // Validate complaint if provided
     if (data.complaintId) {
       const complaint = await prisma.complaint.findUnique({
         where: { id: data.complaintId }
@@ -1297,7 +1279,7 @@ export class FeedbackService {
       }
     }
     
-    // Validate assigned user if provided;
+    // Validate assigned user if provided
     if (data.assignedToId) {
       const assignedUser = await prisma.user.findUnique({
         where: { id: data.assignedToId }
@@ -1308,7 +1290,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the follow-up action;
+    // Create the follow-up action
     const action = await prisma.followUpAction.create({
       data: {
         actionType: data.actionType,
@@ -1340,7 +1322,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FOLLOW_UP_ACTION',
@@ -1349,7 +1331,7 @@ export class FeedbackService {
       details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ''}${data.complaintId ? ` for complaint ${data.complaintId}` : ''}`
     });
     
-    // If complaint, add activity;
+    // If complaint, add activity
     if (data.complaintId) {
       await prisma.complaintActivity.create({
         data: {
@@ -1361,7 +1343,7 @@ export class FeedbackService {
       });
     }
     
-    // Send notification to assigned user;
+    // Send notification to assigned user
     if (data.assignedToId) {
       await this.notificationService.sendNotification({
         type: 'FOLLOW_UP_ACTION_ASSIGNED',
@@ -1400,12 +1382,12 @@ export class FeedbackService {
     
     const updateData: unknown = { status };
     
-    // If status is COMPLETED, set completedDate;
+    // If status is COMPLETED, set completedDate
     if (status === 'COMPLETED') {
       updateData.completedDate = new Date();
     }
     
-    // Update the action;
+    // Update the action
     const updatedAction = await prisma.followUpAction.update({
       where: { id },
       data: updateData,
@@ -1429,7 +1411,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'FOLLOW_UP_ACTION',
@@ -1438,7 +1420,7 @@ export class FeedbackService {
       details: `Updated follow-up action status to ${status}`;
     });
     
-    // If complaint, add activity;
+    // If complaint, add activity
     if (action.complaintId) {
       await prisma.complaintActivity.create({
         data: {
@@ -1450,7 +1432,7 @@ export class FeedbackService {
       });
     }
     
-    // Send notification to creator;
+    // Send notification to creator
     await this.notificationService.sendNotification({
       type: 'FOLLOW_UP_ACTION_STATUS',
       title: 'Follow-up Action Status Updated',
@@ -1472,7 +1454,7 @@ export class FeedbackService {
    * Create feedback survey template;
    */
   async createSurveyTemplate(data: unknown, userId: string): Promise<FeedbackSurveyTemplate> {
-    // Create the template;
+    // Create the template
     const template = await prisma.feedbackSurveyTemplate.create({
       data: {
         name: data.name,
@@ -1493,7 +1475,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'FEEDBACK_SURVEY_TEMPLATE',
@@ -1509,7 +1491,7 @@ export class FeedbackService {
    * Submit feedback survey;
    */
   async submitSurvey(templateId: string, responses: unknown, data: unknown, userId?: string): Promise<FeedbackSurvey> {
-    // Validate template;
+    // Validate template
     const template = await prisma.feedbackSurveyTemplate.findUnique({
       where: { id: templateId }
     });
@@ -1522,7 +1504,7 @@ export class FeedbackService {
       throw new Error('Survey template is not active');
     }
     
-    // Validate patient if provided;
+    // Validate patient if provided
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -1533,7 +1515,7 @@ export class FeedbackService {
       }
     }
     
-    // Create the survey;
+    // Create the survey
     const survey = await prisma.feedbackSurvey.create({
       data: {
         templateId,
@@ -1563,7 +1545,7 @@ export class FeedbackService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     if (userId) {
       await createAuditLog({
         action: 'CREATE',
@@ -1574,7 +1556,7 @@ export class FeedbackService {
       });
     }
     
-    // Send notification to service managers;
+    // Send notification to service managers
     let recipientRoles = ['FEEDBACK_MANAGER'];
     
     if (data.serviceType || template.serviceType) {
@@ -1602,28 +1584,28 @@ export class FeedbackService {
    * Get feedback analytics;
    */
   async getFeedbackAnalytics(period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY') {
-    // Get date range based on period;
+    // Get date range based on period
     const now = new Date();
     let startDate: Date;
     
     switch (period) {
       case 'DAILY':
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days;
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days
         break;
       case 'WEEKLY':
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days;
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days
         break;
       case 'MONTHLY':
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months;
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months
         break;
       case 'YEARLY':
-        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
+        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
         break;
       default:
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days
     }
     
-    // Get feedback counts by type;
+    // Get feedback counts by type
     const feedbackByType = await prisma.feedback.groupBy({
       by: ['type'],
       where: {
@@ -1634,7 +1616,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get feedback counts by source;
+    // Get feedback counts by source
     const feedbackBySource = await prisma.feedback.groupBy({
       by: ['source'],
       where: {
@@ -1645,7 +1627,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get feedback counts by status;
+    // Get feedback counts by status
     const feedbackByStatus = await prisma.feedback.groupBy({
       by: ['status'],
       where: {
@@ -1656,7 +1638,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get feedback counts by service type;
+    // Get feedback counts by service type
     const feedbackByServiceType = await prisma.feedback.groupBy({
       by: ['serviceType'],
       where: {
@@ -1670,7 +1652,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get feedback counts by department;
+    // Get feedback counts by department
     const feedbackByDepartment = await prisma.$queryRaw`;
       SELECT d.name as department, COUNT(*) as count;
       FROM Feedback f;
@@ -1680,7 +1662,7 @@ export class FeedbackService {
       ORDER BY count DESC;
     `;
     
-    // Get average ratings;
+    // Get average ratings
     const ratings = await prisma.feedback.findMany({
       where: {
         createdAt: {
@@ -1699,12 +1681,12 @@ export class FeedbackService {
       }
     });
     
-    // Calculate overall average rating;
+    // Calculate overall average rating
     const overallRating = ratings.length > 0;
       ? ratings.reduce((sum, item) => sum + item.rating, 0) / ratings.length;
       : 0;
     
-    // Calculate average rating by service type;
+    // Calculate average rating by service type
     const ratingsByServiceType: Record<string, { count: number, sum: number, avg: number }> = {};
     
     ratings.forEach(item => {
@@ -1718,13 +1700,13 @@ export class FeedbackService {
       }
     });
     
-    // Calculate averages;
+    // Calculate averages
     Object.keys(ratingsByServiceType).forEach(type => {
       const data = ratingsByServiceType[type];
       data.avg = data.sum / data.count;
     });
     
-    // Calculate average rating by department;
+    // Calculate average rating by department
     const ratingsByDepartment: Record<string, { count: number, sum: number, avg: number }> = {};
     
     ratings.forEach(item => {
@@ -1740,13 +1722,13 @@ export class FeedbackService {
       }
     });
     
-    // Calculate averages;
+    // Calculate averages
     Object.keys(ratingsByDepartment).forEach(dept => {
       const data = ratingsByDepartment[dept];
       data.avg = data.sum / data.count;
     });
     
-    // Get complaint counts by category;
+    // Get complaint counts by category
     const complaintsByCategory = await prisma.complaint.groupBy({
       by: ['category'],
       where: {
@@ -1757,7 +1739,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get complaint counts by severity;
+    // Get complaint counts by severity
     const complaintsBySeverity = await prisma.complaint.groupBy({
       by: ['severity'],
       where: {
@@ -1768,7 +1750,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get complaint counts by status;
+    // Get complaint counts by status
     const complaintsByStatus = await prisma.complaint.groupBy({
       by: ['status'],
       where: {
@@ -1779,7 +1761,7 @@ export class FeedbackService {
       _count: true
     });
     
-    // Get complaint resolution time;
+    // Get complaint resolution time
     const resolvedComplaints = await prisma.complaint.findMany({
       where: {
         status: 'RESOLVED',
@@ -1797,7 +1779,7 @@ export class FeedbackService {
       }
     });
     
-    // Calculate average resolution time;
+    // Calculate average resolution time
     const resolutionTimes: Record<string, { count: number, totalDays: number, avgDays: number }> = {
       overall: { count: 0, totalDays: 0, avgDays: 0 },
       LOW: { count: 0, totalDays: 0, avgDays: 0 },
@@ -1818,7 +1800,7 @@ export class FeedbackService {
       }
     });
     
-    // Calculate averages;
+    // Calculate averages
     Object.keys(resolutionTimes).forEach(key => {
       const data = resolutionTimes[key];
       data.avgDays = data.count > 0 ? data.totalDays / data.count : 0;
@@ -1840,4 +1822,3 @@ export class FeedbackService {
       period;
     };
   }
-}

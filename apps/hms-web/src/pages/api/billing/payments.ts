@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { PaymentService } from "../../../../features/billing/services/PaymentService.ts"; // Adjust path as per actual structure;
+import { PaymentService } from "../../../../features/billing/services/PaymentService.ts"; // Adjust path as per actual structure
 
 const paymentService = new PaymentService();
 
@@ -31,7 +21,7 @@ const paymentService = new PaymentService();
  *               - paymentDetails // This would contain amount, payment method token, etc.
  *             properties:
  *               invoiceId:
- *                 type: string;
+ *                 type: string
  *                 description: The ID of the invoice being paid.
  *               paymentDetails:
  *                 type: object;
@@ -40,7 +30,7 @@ const paymentService = new PaymentService();
  *                   amount:
  *                     type: number;
  *                     description: The amount being paid.
- *                   payment_method_token: // Example, actual structure depends on gateway;
+ *                   payment_method_token: // Example, actual structure depends on gateway
  *                     type: string;
  *                     description: Token representing the payment method from the payment gateway.
  *                   currency:
@@ -98,11 +88,11 @@ const paymentService = new PaymentService();
 // - Database interactions to record payment success/failure and update invoice status.
 // - Adherence to PCI DSS compliance if handling sensitive cardholder data directly.
 
-// For the purpose of this exercise, we'll assume the actual payment processing logic;
+// For the purpose of this exercise, we'll assume the actual payment processing logic
 // is handled by the `PaymentService` and we are defining the API contract here.
 
 export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
-    const { invoiceId, ...paymentDetails } = req.body;
+    const { invoiceId, ...paymentDetails } = req.body
 
     if (req.method === "POST") {
         if (!invoiceId || !paymentDetails) {
@@ -110,50 +100,50 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         }
 
         try {
-            // In a real application, you would pass necessary details from paymentDetails;
+            // In a real application, you would pass necessary details from paymentDetails
             // to an instance of PaymentService to process the payment.
-            // For example: const paymentResult = await paymentService.processPayment(invoiceId, paymentDetails);
+            // For example: const paymentResult = await paymentService.processPayment(invoiceId, paymentDetails)
             // Then, depending on paymentResult, send appropriate response.
 
-            // Mocking a successful payment processing for now;
-            // This would typically involve calls to a payment gateway;
+            // Mocking a successful payment processing for now
+            // This would typically involve calls to a payment gateway
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
             
-            // Simulate payment processing delay;
+            // Simulate payment processing delay
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Assume payment is successful and a transaction ID is generated;
+            // Assume payment is successful and a transaction ID is generated
             const transactionId = `txn_${Date.now()}`;
             
-            // Here, you would typically update your database to reflect the payment;
+            // Here, you would typically update your database to reflect the payment
             // For example, mark the invoice as paid, record the transaction, etc.
 
             return res.status(200).json({ 
                 message: "Payment processed successfully", 
                 transactionId: transactionId
-            });
+            })
 
         } catch (error: unknown) {
 
             return res.status(500).json({ message: "Error processing payment", error: error.message });
         }
     }
-    // Handle GET request for retrieving payment history for an invoiceId;
+    // Handle GET request for retrieving payment history for an invoiceId
     else if (req.method === "GET") {
         const invId = req.query.invoiceId;
         if (typeof invId === 'string') {
             try {
-                // const payments = await paymentService.getPaymentsForInvoice(invId);
+                // const payments = await paymentService.getPaymentsForInvoice(invId)
                 // This is a placeholder for fetching payment history. 
                 // In a real scenario, you would query your database for payments related to the invoiceId.
                 const mockPayments = [
                     { paymentId: 'pay_1', amount: 50.00, date: '2023-01-15', method: 'Credit Card' },
                     { paymentId: 'pay_2', amount: 25.50, date: '2023-02-01', method: 'PayPal' }
-                ];
+                ]
                 // Filter mock payments by invoiceId (even though it's not used in this mock example)
                 // This is just to illustrate where such logic would go.
-                const paymentsForInvoice = mockPayments.filter(p => true); // Replace true with actual filtering logic;
+                const paymentsForInvoice = mockPayments.filter(p => true); // Replace true with actual filtering logic
 
                 if (paymentsForInvoice.length === 0) {
                     return res.status(404).json({ message: `No payments found for invoice ${invId}` });
@@ -170,5 +160,3 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         res.setHeader("Allow", ["POST", "GET"]);
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-}
-

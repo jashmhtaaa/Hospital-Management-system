@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -23,30 +15,26 @@ import { pubsub } from '@/lib/graphql/schema-base';
 
 export interface MicroserviceConfig {
   name: string,
-  baseUrl: string;
+  baseUrl: string,
   healthEndpoint: string,
   endpoints: Record<string, EndpointConfig>;
   circuitBreakerOptions?: CircuitBreakerOptions;
   authentication?: AuthConfig;
-  cacheTTL?: number; // Default cache TTL in seconds;
-  timeout?: number; // Default timeout in milliseconds;
+  cacheTTL?: number; // Default cache TTL in seconds
+  timeout?: number; // Default timeout in milliseconds
   retry?: RetryConfig;
-}
-
 export interface EndpointConfig {
   path: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   cacheable?: boolean;
-  cacheTTL?: number; // Override default TTL;
-  timeout?: number; // Override default timeout;
-  retry?: RetryConfig; // Override default retry;
-  transform?: string; // Name of transform function;
-  circuitBreakerOptions?: CircuitBreakerOptions; // Override default circuit breaker;
-  fallback?: string; // Name of fallback function;
+  cacheTTL?: number; // Override default TTL
+  timeout?: number; // Override default timeout
+  retry?: RetryConfig; // Override default retry
+  transform?: string; // Name of transform function
+  circuitBreakerOptions?: CircuitBreakerOptions; // Override default circuit breaker
+  fallback?: string; // Name of fallback function
   batch?: BatchConfig;
   headers?: Record<string, string>;
-}
-
 export interface AuthConfig {
   type: 'bearer' | 'apikey' | 'basic' | 'none';
   key?: string;
@@ -56,50 +44,40 @@ export interface AuthConfig {
   username?: string;
   password?: string;
   refreshEndpoint?: string;
-}
-
 export interface RetryConfig {
   attempts: number,
-  delay: number; // milliseconds;
-  maxDelay?: number; // milliseconds;
-  backoff?: boolean; // exponential backoff;
-}
-
+  delay: number; // milliseconds
+  maxDelay?: number; // milliseconds
+  backoff?: boolean; // exponential backoff
 export interface BatchConfig {
   maxSize: number,
-  maxDelay: number; // milliseconds;
+  maxDelay: number; // milliseconds
   idProperty: string
-}
-
 export interface ServiceResponse<T> {
   data: T,
-  status: number;
+  status: number,
   statusText: string,
   headers: Record<string, string>;
   cached: boolean,
-  duration: number; // milliseconds;
+  duration: number; // milliseconds
   timestamp: Date
-}
-
 export interface ServiceStatus {
   name: string,
-  status: 'UP' | 'DOWN' | 'DEGRADED';
+  status: 'UP' | 'DOWN' | 'DEGRADED',
   responseTime: number,
-  lastChecked: Date;
+  lastChecked: Date,
   message: string,
-  circuitState: 'CLOSED' | 'OPEN' | 'HALF_OPEN';
+  circuitState: 'CLOSED' | 'OPEN' | 'HALF_OPEN',
   metrics: ServiceMetrics
-}
-
 export interface ServiceMetrics {
   requestCount: number,
-  successCount: number;
+  successCount: number,
   failureCount: number,
-  timeoutCount: number;
+  timeoutCount: number,
   errorRate: number,
-  avgResponseTime: number;
+  avgResponseTime: number,
   p95ResponseTime: number,
-  cacheHitRate: number;
+  cacheHitRate: number,
   circuitBreakerTrips: number,
   retryCount: number
 }
@@ -124,7 +102,7 @@ export class MicroservicesGateway {
     
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
-    // Schedule health check;
+    // Schedule health check
     this.scheduleHealthCheck(config.name);
   }
 
@@ -154,11 +132,11 @@ export class MicroservicesGateway {
     const startTime = performance.now();
     
     try {
-      // Get service and endpoint configuration;
+      // Get service and endpoint configuration
       const service = this.getServiceConfig(serviceName);
       const endpoint = this.getEndpointConfig(service, endpointName);
       
-      // Check cache if endpoint is cacheable;
+      // Check cache if endpoint is cacheable
       if (endpoint.cacheable) {
         const cacheKey = this.generateCacheKey(serviceName, endpointName, params);
         const cached = await cacheService.getCachedResult('ms_gateway:', cacheKey);
@@ -178,12 +156,12 @@ export class MicroservicesGateway {
         }
       }
       
-      // Check if endpoint supports batching;
+      // Check if endpoint supports batching
       if (endpoint.batch && this.isBatchable(params)) {
         return await this.enqueueBatchRequest<T>(serviceName, endpointName, params, headers);
       }
       
-      // Get circuit breaker;
+      // Get circuit breaker
       const circuitBreakerKey = `${serviceName}:${endpointName}`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
       
@@ -191,11 +169,11 @@ export class MicroservicesGateway {
         throw new Error(`Circuit breaker not found for ${circuitBreakerKey}`);
       }
       
-      // Prepare request;
+      // Prepare request
       const url = this.buildUrl(service, endpoint, params);
       const requestConfig = await this.buildRequestConfig(service, endpoint, headers);
       
-      // Execute request with circuit breaker;
+      // Execute request with circuit breaker
       const response = await circuitBreaker.fire(async () => {
         return await this.executeRequest<T>(
           endpoint.method,
@@ -206,7 +184,7 @@ export class MicroservicesGateway {
         );
       });
       
-      // Apply transform if configured;
+      // Apply transform if configured
       const transformedData = endpoint.transform && this.transforms.has(endpoint.transform);
         ? this.transforms.get(endpoint.transform)!(response.data);
         : response.data;
@@ -221,24 +199,24 @@ export class MicroservicesGateway {
         timestamp: new Date(),
       };
       
-      // Cache result if endpoint is cacheable;
+      // Cache result if endpoint is cacheable
       if (endpoint.cacheable) {
         const cacheKey = this.generateCacheKey(serviceName, endpointName, params);
-        const ttl = endpoint.cacheTTL || service.cacheTTL || 300; // Default 5 minutes;
+        const ttl = endpoint.cacheTTL || service.cacheTTL || 300; // Default 5 minutes
         
         await cacheService.cacheResult('ms_gateway:', cacheKey, result, ttl);
       }
       
-      // Record metrics;
+      // Record metrics
       this.recordMetrics(serviceName, endpointName, true, result.duration);
       
       return result;
     } catch (error) {
 
-      // Record metrics;
+      // Record metrics
       this.recordMetrics(serviceName, endpointName, false, performance.now() - startTime);
       
-      // Try fallback if configured;
+      // Try fallback if configured
       const endpoint = this.getEndpointConfig(this.getServiceConfig(serviceName), endpointName);
       
       if (endpoint.fallback && this.fallbacks.has(endpoint.fallback)) {
@@ -275,7 +253,7 @@ export class MicroservicesGateway {
       const response = await this.httpService.get(url).toPromise();
       const responseTime = performance.now() - startTime;
       
-      // Get circuit breaker stats;
+      // Get circuit breaker stats
       const circuitBreakerKey = `${serviceName}:health`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
       const stats = circuitBreaker?.stats || { 
@@ -299,10 +277,10 @@ export class MicroservicesGateway {
           timeoutCount: stats.timedOut,
           errorRate: stats.total > 0 ? (stats.failed + stats.timedOut) / stats.total : 0,
           avgResponseTime: responseTime,
-          p95ResponseTime: responseTime, // Would be calculated from collected samples;
-          cacheHitRate: 0, // Would be calculated from collected metrics;
-          circuitBreakerTrips: 0, // Would be collected from circuit breaker events;
-          retryCount: 0, // Would be collected from retry metrics;
+          p95ResponseTime: responseTime, // Would be calculated from collected samples
+          cacheHitRate: 0, // Would be calculated from collected metrics
+          circuitBreakerTrips: 0, // Would be collected from circuit breaker events
+          retryCount: 0, // Would be collected from retry metrics
         },
       };
       
@@ -375,14 +353,14 @@ export class MicroservicesGateway {
    */
   async refreshServiceConfig(serviceName: string): Promise<void> {
     try {
-      // This would typically fetch updated configuration from a config service;
+      // This would typically fetch updated configuration from a config service
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       
-      // For now, just reset circuit breakers;
+      // For now, just reset circuit breakers
       const service = this.getServiceConfig(serviceName);
       this.setupCircuitBreakers(service);
       
-      // Clear caches for this service;
+      // Clear caches for this service
       await this.clearServiceCache(serviceName);
     } catch (error) {
 
@@ -399,11 +377,11 @@ export class MicroservicesGateway {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
-      throw error;
+      throw error
     }
   }
 
-  // Private helper methods;
+  // Private helper methods
   private getServiceConfig(serviceName: string): MicroserviceConfig {
     const service = this.services.get(serviceName);
     
@@ -425,7 +403,7 @@ export class MicroservicesGateway {
   }
 
   private setupCircuitBreakers(service: MicroserviceConfig): void {
-    // Create circuit breaker for health endpoint;
+    // Create circuit breaker for health endpoint
     const healthCircuitBreakerKey = `${service.name}:health`;
     const healthCircuitBreaker = new CircuitBreaker(
       async () => {
@@ -443,7 +421,7 @@ export class MicroservicesGateway {
     this.setupCircuitBreakerEvents(healthCircuitBreakerKey, healthCircuitBreaker);
     this.circuitBreakers.set(healthCircuitBreakerKey, healthCircuitBreaker);
     
-    // Create circuit breakers for each endpoint;
+    // Create circuit breakers for each endpoint
     for (const [endpointName, endpoint] of Object.entries(service.endpoints)) {
       const circuitBreakerKey = `${service.name}:${endpointName}`;
       const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {
@@ -485,7 +463,7 @@ export class MicroservicesGateway {
         endpoint: endpointName || 'health',
       });
       
-      // Publish event;
+      // Publish event
       pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
         circuitBreakerStateChange: {
           serviceName,
@@ -498,7 +476,7 @@ export class MicroservicesGateway {
     
     circuitBreaker.on('close', () => {
 
-      // Publish event;
+      // Publish event
       pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
         circuitBreakerStateChange: {
           serviceName,
@@ -511,7 +489,7 @@ export class MicroservicesGateway {
     
     circuitBreaker.on('halfOpen', () => {
 
-      // Publish event;
+      // Publish event
       pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
         circuitBreakerStateChange: {
           serviceName,
@@ -542,7 +520,7 @@ export class MicroservicesGateway {
   ): string {
     let url = `${service.baseUrl}${endpoint.path}`;
     
-    // Replace path parameters;
+    // Replace path parameters
     if (params && typeof params === 'object') {
       const pathParams = Object.entries(params).filter(([key, value]) => {
         return endpoint.path.includes(`:${key}`);
@@ -553,7 +531,7 @@ export class MicroservicesGateway {
       }
     }
     
-    // Add query parameters for GET requests;
+    // Add query parameters for GET requests
     if (endpoint.method === 'GET' && params && typeof params === 'object') {
       const queryParams = Object.entries(params).filter(([key, value]) => {
         return !endpoint.path.includes(`:${key}`);
@@ -592,7 +570,7 @@ export class MicroservicesGateway {
       timeout: endpoint.timeout || service.timeout || 30000,
     };
     
-    // Add authentication;
+    // Add authentication
     if (service.authentication) {
       switch (service.authentication.type) {
         case 'bearer':
@@ -617,7 +595,7 @@ export class MicroservicesGateway {
   }
 
   private async getAuthToken(service: MicroserviceConfig): Promise<string> {
-    // This would typically check token expiration and refresh if needed;
+    // This would typically check token expiration and refresh if needed
     if (service.authentication?.type === 'bearer') {
       return service.authentication.token || '';
     }
@@ -668,7 +646,7 @@ export class MicroservicesGateway {
       } catch (error) {
         lastError = error;
         
-        // Don't retry if we've reached max attempts or certain status codes;
+        // Don't retry if we've reached max attempts or certain status codes
         if (
           attempts >= maxAttempts ||;
           (error.response && [400, 401, 403, 404, 422].includes(error.response.status));
@@ -676,22 +654,22 @@ export class MicroservicesGateway {
           break;
         }
         
-        // Calculate delay with exponential backoff if enabled;
+        // Calculate delay with exponential backoff if enabled
         let delay = initialDelay;
         if (backoff) {
           delay = Math.min(initialDelay * Math.pow(2, attempts - 1), maxDelay);
         }
         
-        // Debug logging removed`);
+        // Debug logging removed`)
         
-        // Record retry metric;
+        // Record retry metric
         metricsCollector.incrementCounter('gateway.retries', 1, {
           url,
           method,
           statusCode: error.response?.status?.toString() || 'unknown',
         });
         
-        // Wait before retrying;
+        // Wait before retrying
         if (delay > 0) {
           await new Promise(resolve => setTimeout(resolve, delay));
         }
@@ -725,10 +703,10 @@ export class MicroservicesGateway {
       const endpoint = this.getEndpointConfig(service, endpointName);
       const batchConfig = endpoint.batch!;
       
-      // Create batch queue key;
+      // Create batch queue key
       const batchKey = `${serviceName}:${endpointName}`;
       
-      // Add request to queue;
+      // Add request to queue
       const queue = this.batchQueues.get(batchKey) || [];
       const request = {
         params,
@@ -740,7 +718,7 @@ export class MicroservicesGateway {
       queue.push(request);
       this.batchQueues.set(batchKey, queue);
       
-      // Start timer if not already running;
+      // Start timer if not already running
       if (!this.batchTimers.has(batchKey)) {
         const timer = setTimeout(
           () => this.processBatch(serviceName, endpointName),
@@ -750,13 +728,13 @@ export class MicroservicesGateway {
         this.batchTimers.set(batchKey, timer);
       }
       
-      // Process batch immediately if max size reached;
+      // Process batch immediately if max size reached
       if (queue.length >= batchConfig.maxSize) {
-        // Clear timer;
+        // Clear timer
         clearTimeout(this.batchTimers.get(batchKey));
         this.batchTimers.delete(batchKey);
         
-        // Process batch;
+        // Process batch
         this.processBatch(serviceName, endpointName);
       }
     });
@@ -770,10 +748,10 @@ export class MicroservicesGateway {
       return;
     }
     
-    // Clear queue;
+    // Clear queue
     this.batchQueues.set(batchKey, []);
     
-    // Clear timer if exists;
+    // Clear timer if exists
     if (this.batchTimers.has(batchKey)) {
       clearTimeout(this.batchTimers.get(batchKey));
       this.batchTimers.delete(batchKey);
@@ -784,10 +762,10 @@ export class MicroservicesGateway {
       const endpoint = this.getEndpointConfig(service, endpointName);
       const batchConfig = endpoint.batch!;
       
-      // Extract IDs for batch request;
+      // Extract IDs for batch request
       const ids = queue.map(req => req.params[batchConfig.idProperty]);
       
-      // Make batch request;
+      // Make batch request
       const batchResponse = await this.call(
         serviceName,
         endpointName,
@@ -795,7 +773,7 @@ export class MicroservicesGateway {
         queue[0].headers;
       );
       
-      // Distribute results;
+      // Distribute results
       const results = batchResponse.data;
       
       for (const request of queue) {
@@ -819,7 +797,7 @@ export class MicroservicesGateway {
         }
       }
     } catch (error) {
-      // Reject all requests in the queue;
+      // Reject all requests in the queue
       for (const request of queue) {
         request.reject(error);
       }
@@ -832,14 +810,14 @@ export class MicroservicesGateway {
     success: boolean,
     duration: number;
   ): void {
-    // Record request count;
+    // Record request count
     metricsCollector.incrementCounter('gateway.requests', 1, {
       service: serviceName,
       endpoint: endpointName,
       success: success.toString(),
     });
     
-    // Record response time;
+    // Record response time
     metricsCollector.recordTimer('gateway.response_time', duration, {
       service: serviceName,
       endpoint: endpointName,
@@ -847,7 +825,7 @@ export class MicroservicesGateway {
   }
 
   private scheduleHealthCheck(serviceName: string): void {
-    // Schedule initial health check;
+    // Schedule initial health check
     setTimeout(async () => {
       try {
         await this.getServiceStatus(serviceName);
@@ -855,21 +833,19 @@ export class MicroservicesGateway {
 
       }
       
-      // Schedule recurring health checks;
+      // Schedule recurring health checks
       setInterval(async () => {
         try {
           const status = await this.getServiceStatus(serviceName);
           
-          // Publish health status update;
+          // Publish health status update
           pubsub.publish('SERVICE_HEALTH_UPDATE', {
             serviceHealthUpdate: status,
           });
         } catch (error) {
 
         }
-      }, 60000); // Check every minute;
-    }, 5000); // Initial delay;
+      }, 60000); // Check every minute
+    }, 5000); // Initial delay
   }
-}
-
 export default MicroservicesGateway;

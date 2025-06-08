@@ -1,21 +1,11 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 
-// Zod schema for creating patient vitals;
+// Zod schema for creating patient vitals
 const vitalCreateSchema = z.object({
     visit_id: z.number().optional().nullable(),
     record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
@@ -34,7 +24,7 @@ const vitalCreateSchema = z.object({
     notes: z.string().optional().nullable(),
 });
 
-// GET /api/patients/[id]/vitals - Fetch vitals for a specific patient;
+// GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
 export async const GET = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -144,7 +134,7 @@ export async const GET = (
     }
 }
 
-// POST /api/patients/[id]/vitals - Record new vitals for a patient;
+// POST /api/patients/[id]/vitals - Record new vitals for a patient
 export async const POST = (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -153,7 +143,7 @@ export async const POST = (
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in;
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -189,7 +179,7 @@ export async const POST = (
 
         const vitalData = validationResult.data;
         const now = new Date().toISOString();
-        const userId = session.user.userId; // session.user is now guaranteed to be defined;
+        const userId = session.user.userId; // session.user is now guaranteed to be defined
 
         let bmi: number | undefined | null = vitalData.bmi;
         if (vitalData.height_cm && vitalData.weight_kg && bmi === undefined) {
@@ -247,5 +237,3 @@ export async const POST = (
             headers: { "Content-Type": "application/json" },
         });
     }
-}
-

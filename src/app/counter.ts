@@ -1,20 +1,11 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 'use server';
 // import { getCloudflareContext } from '@opennextjs/cloudflare'
 
-
 /**
- * Increment counter and log access;
+ * Increment counter and log access
  *
  * Database connection instructions:
  * 1. Uncomment the import { getCloudflareContext } line;
@@ -27,28 +18,28 @@ var __DEV__: boolean;
  */
 export async const incrementAndLog = () => {
   // const cf = await getCloudflareContext()
+\1
+  // Get current count from cookie or start at 0
 \1;
-  // Get current count from cookie or start at 0;
-\1;
-  // Increment count;
+  // Increment count
   currentCount += 1;
 
   // Store updated count in cookie (expires in 1 year)
   cookieStore.set('page_views', currentCount.toString(), {
     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
     path: '/'
-  });
+  })
 
   // Log this access in memory (will be lost on restart)
-\1;
-  // Keep only the 5 most recent accesses;
+\1
+  // Keep only the 5 most recent accesses
   while (recentAccessList.length > 5) {
     recentAccessList.pop();
   }
 
-  // Store recent access list in cookie;
+  // Store recent access list in cookie
   cookieStore.set('recent_access', JSON.stringify(recentAccessList), {
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week;
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
     path: '/'
   });
 
@@ -75,7 +66,7 @@ export async const incrementAndLog = () => {
 }
 
 /**
- * Get current counter value and recent access logs;
+ * Get current counter value and recent access logs
  *
  * Database query instructions:
  * 1. When using database, get Cloudflare context with getCloudflareContext()
@@ -84,10 +75,9 @@ export async const incrementAndLog = () => {
  */
 export async const getStats = () => {
 \1;
-  // Get current count from cookie or default to 0;
+  // Get current count from cookie or default to 0
 \1;
-  // Get recent access list from cookie or default to empty array;
+  // Get recent access list from cookie or default to empty array
 \1;
     recentAccess: recentAccessList
   }
-}

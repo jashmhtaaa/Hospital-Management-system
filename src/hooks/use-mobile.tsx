@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 768;
@@ -27,4 +17,3 @@ export const useIsMobile = () => {
   }, []);
 
   return !!isMobile;
-}

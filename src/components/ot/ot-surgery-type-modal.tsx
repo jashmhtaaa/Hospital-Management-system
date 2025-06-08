@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -27,35 +19,33 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define SurgeryType interface;
+// Define SurgeryType interface
 interface SurgeryType {
-  id?: string; // Optional for new types;
+  id?: string; // Optional for new types
   name: string,
-  description: string | null;
+  description: string | null,
   specialty: string | null,
-  estimated_duration_minutes: number | string | null; // Allow string for input;
-  required_staff?: unknown; // JSON structure, use unknown for now;
-  required_equipment?: unknown; // JSON structure, use unknown for now;
-  updated_at?: string; // Optional;
+  estimated_duration_minutes: number | string | null; // Allow string for input
+  required_staff?: unknown; // JSON structure, use unknown for now
+  required_equipment?: unknown; // JSON structure, use unknown for now
+  updated_at?: string; // Optional
 }
 
-// Define the type for data passed to onSave;
+// Define the type for data passed to onSave
 interface SurgeryTypeSaveData {
   name: string,
-  description: string | null;
+  description: string | null,
   specialty: string | null,
-  estimated_duration_minutes: number | null;
-  required_staff: unknown | null; // Parsed JSON;
-  required_equipment: unknown | null; // Parsed JSON;
+  estimated_duration_minutes: number | null,
+  required_staff: unknown | null; // Parsed JSON
+  required_equipment: unknown | null; // Parsed JSON
 }
 
-// Props for the modal - use defined types;
+// Props for the modal - use defined types
 interface OTSurgeryTypeModalProperties {
   trigger: React.ReactNode;
-  surgeryType?: SurgeryType; // Use SurgeryType type;
-  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise<void>; // Use SurgeryTypeSaveData type;
-}
-
+  surgeryType?: SurgeryType; // Use SurgeryType type
+  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise<void>; // Use SurgeryTypeSaveData type
 export default const OTSurgeryTypeModal = ({
   trigger,
   surgeryType,
@@ -67,7 +57,7 @@ export default const OTSurgeryTypeModal = ({
     description: surgeryType?.description || "",
     specialty: surgeryType?.specialty || "",
     estimated_duration_minutes:
-      surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input;
+      surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
     required_staff: surgeryType?.required_staff;
       ? JSON.stringify(surgeryType.required_staff, undefined, 2);
       : "",
@@ -78,7 +68,7 @@ export default const OTSurgeryTypeModal = ({
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when surgeryType prop changes or modal opens;
+  // Reset form when surgeryType prop changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -86,7 +76,7 @@ export default const OTSurgeryTypeModal = ({
         description: surgeryType?.description || "",
         specialty: surgeryType?.specialty || "",
         estimated_duration_minutes:
-          surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input;
+          surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
         required_staff: surgeryType?.required_staff;
           ? JSON.stringify(surgeryType.required_staff, undefined, 2);
           : "",
@@ -95,8 +85,8 @@ export default const OTSurgeryTypeModal = ({
           : "",
       });
     } else {
-      // Optionally clear form when closed;
-      // setFormData({ name: "", ... });
+      // Optionally clear form when closed
+      // setFormData({ name: "", ... })
     }
   }, [surgeryType, isOpen]);
 
@@ -111,7 +101,7 @@ export default const OTSurgeryTypeModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
-      // Parse JSON fields before sending;
+      // Parse JSON fields before sending
       let parsedStaff: unknown | null;
       let parsedEquipment: unknown | null;
       try {
@@ -164,24 +154,24 @@ export default const OTSurgeryTypeModal = ({
         required_equipment: parsedEquipment,
       };
 
-      // Replace with actual API call;
-      // const url = surgeryType?.id ? `/api/ot/surgery-types/${surgeryType.id}` : `/api/ot/surgery-types`;
-      // const method = surgeryType?.id ? "PUT" : "POST";
+      // Replace with actual API call
+      // const url = surgeryType?.id ? `/api/ot/surgery-types/${surgeryType.id}` : `/api/ot/surgery-types`
+      // const method = surgeryType?.id ? "PUT" : "POST"
       // const response = await fetch(url, {
       //   method: method,
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to save surgery type");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to save surgery type")
       // }
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list;
+      await onSave(apiData); // Call parent callback to refresh list
 
       toast({
         title: "Success",
@@ -189,7 +179,7 @@ export default const OTSurgeryTypeModal = ({
       }),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type;
+      // Use unknown for error type
 
       let errorMessage = "Failed to save surgery type.";
       if (error instanceof Error) {
@@ -317,4 +307,3 @@ export default const OTSurgeryTypeModal = ({
       </DialogContent>
     </Dialog>
   );
-}

@@ -1,21 +1,11 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { MarketingCampaignService } from '../marketing.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
 import { NotificationService } from '@/lib/notifications';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 
-// Mock dependencies;
+// Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   marketingCampaign: {
     create: jest.fn(),
@@ -79,13 +69,13 @@ describe('MarketingCampaignService', () => {
     };
     
     it('should create a campaign successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.create as jest.Mock).mockResolvedValue(mockCreatedCampaign);
       
-      // Act;
+      // Act
       const result = await service.createCampaign(mockCampaignData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           name: mockCampaignData.name,
@@ -103,36 +93,36 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should throw ValidationError if campaign data is invalid', async () => {
-      // Arrange;
+      // Arrange
       const invalidData = {
         ...mockCampaignData,
         name: '', // Invalid: empty name
-      };
+      }
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createCampaign(invalidData, mockUserId));
         .rejects;
         .toThrow(ValidationError);
     });
     
     it('should throw DatabaseError if database operation fails', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.create as jest.Mock).mockRejectedValue(new Error('Database error'));
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createCampaign(mockCampaignData, mockUserId));
         .rejects;
         .toThrow(DatabaseError);
     });
     
     it('should log audit event after creating campaign', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.create as jest.Mock).mockResolvedValue(mockCreatedCampaign);
       
-      // Act;
+      // Act
       await service.createCampaign(mockCampaignData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'campaign.create',
         resourceId: mockCreatedCampaign.id,
@@ -142,13 +132,13 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should send notification after creating campaign', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.create as jest.Mock).mockResolvedValue(mockCreatedCampaign);
       
-      // Act;
+      // Act
       await service.createCampaign(mockCampaignData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(NotificationService.prototype.sendNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'CAMPAIGN_CREATED',
@@ -175,13 +165,13 @@ describe('MarketingCampaignService', () => {
     };
     
     it('should retrieve a campaign by ID', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       
-      // Act;
+      // Act
       const result = await service.getCampaignById('campaign-123');
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
         include: expect.any(Object),
@@ -191,23 +181,23 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should throw NotFoundError if campaign does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.getCampaignById('non-existent-id'));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should include FHIR representation when requested', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       
-      // Act;
+      // Act
       const result = await service.getCampaignById('campaign-123', true);
       
-      // Assert;
+      // Assert
       expect(result).toHaveProperty('fhir');
     });
   });
@@ -235,14 +225,14 @@ describe('MarketingCampaignService', () => {
     ];
     
     it('should retrieve campaigns with pagination', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.count as jest.Mock).mockResolvedValue(2);
       (prisma.marketingCampaign.findMany as jest.Mock).mockResolvedValue(mockCampaigns);
       
-      // Act;
+      // Act
       const result = await service.getCampaigns({ page: 1, limit: 10 });
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.count).toHaveBeenCalled(),
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -264,7 +254,7 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should apply filters correctly', async () => {
-      // Arrange;
+      // Arrange
       const filters = {
         type: 'EMAIL',
         status: 'ACTIVE',
@@ -277,10 +267,10 @@ describe('MarketingCampaignService', () => {
       (prisma.marketingCampaign.count as jest.Mock).mockResolvedValue(10);
       (prisma.marketingCampaign.findMany as jest.Mock).mockResolvedValue(mockCampaigns);
       
-      // Act;
+      // Act
       const result = await service.getCampaigns(filters);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
           type: filters.type,
@@ -298,7 +288,7 @@ describe('MarketingCampaignService', () => {
             type: filters.type,
             status: filters.status,
           }),
-          skip: 5, // (page-1) * limit;
+          skip: 5, // (page-1) * limit
           take: 5,
         });
       );
@@ -330,17 +320,17 @@ describe('MarketingCampaignService', () => {
     };
     
     it('should update a campaign successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.marketingCampaign.update as jest.Mock).mockResolvedValue({
         ...mockCampaign,
         ...updateData,
       });
       
-      // Act;
+      // Act
       const result = await service.updateCampaign('campaign-123', updateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
       }),
@@ -358,27 +348,27 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should throw NotFoundError if campaign does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.updateCampaign('non-existent-id', updateData, mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after updating campaign', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.marketingCampaign.update as jest.Mock).mockResolvedValue({
         ...mockCampaign,
         ...updateData,
       });
       
-      // Act;
+      // Act
       await service.updateCampaign('campaign-123', updateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'campaign.update',
         resourceId: 'campaign-123',
@@ -398,14 +388,14 @@ describe('MarketingCampaignService', () => {
     };
     
     it('should delete a campaign successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.marketingCampaign.delete as jest.Mock).mockResolvedValue(undefined);
       
-      // Act;
+      // Act
       await service.deleteCampaign('campaign-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
       }),
@@ -415,24 +405,24 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should throw NotFoundError if campaign does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.deleteCampaign('non-existent-id', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after deleting campaign', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.marketingCampaign.delete as jest.Mock).mockResolvedValue(undefined);
       
-      // Act;
+      // Act
       await service.deleteCampaign('campaign-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'campaign.delete',
         resourceId: 'campaign-123',
@@ -468,14 +458,14 @@ describe('MarketingCampaignService', () => {
     };
     
     it('should add a channel to a campaign successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignChannel.create as jest.Mock).mockResolvedValue(mockCreatedChannel);
       
-      // Act;
+      // Act
       const result = await service.addCampaignChannel('campaign-123', mockChannelData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
       }),
@@ -489,24 +479,24 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should throw NotFoundError if campaign does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.addCampaignChannel('non-existent-id', mockChannelData, mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after adding channel', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignChannel.create as jest.Mock).mockResolvedValue(mockCreatedChannel);
       
-      // Act;
+      // Act
       await service.addCampaignChannel('campaign-123', mockChannelData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'campaign.channel.add',
         resourceId: 'campaign-123',
@@ -539,16 +529,16 @@ describe('MarketingCampaignService', () => {
     };
     
     it('should add a segment to a campaign successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.campaignSegment.findFirst as jest.Mock).mockResolvedValue(null);
       (prisma.campaignSegment.create as jest.Mock).mockResolvedValue(mockCampaignSegment);
       
-      // Act;
+      // Act
       const result = await service.addCampaignSegment('campaign-123', 'segment-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
         where: { id: 'campaign-123' },
       }),
@@ -565,51 +555,51 @@ describe('MarketingCampaignService', () => {
     });
     
     it('should return existing relation if segment is already added', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.campaignSegment.findFirst as jest.Mock).mockResolvedValue(mockCampaignSegment);
       
-      // Act;
+      // Act
       const result = await service.addCampaignSegment('campaign-123', 'segment-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.campaignSegment.create).not.toHaveBeenCalled(),
       expect(result).toEqual(mockCampaignSegment);
     });
     
     it('should throw NotFoundError if campaign does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.addCampaignSegment('non-existent-id', 'segment-123', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should throw NotFoundError if segment does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.addCampaignSegment('campaign-123', 'non-existent-id', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after adding segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.campaignSegment.findFirst as jest.Mock).mockResolvedValue(null);
       (prisma.campaignSegment.create as jest.Mock).mockResolvedValue(mockCampaignSegment);
       
-      // Act;
+      // Act
       await service.addCampaignSegment('campaign-123', 'segment-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'campaign.segment.add',
         resourceId: 'campaign-123',

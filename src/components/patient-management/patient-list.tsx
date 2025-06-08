@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
@@ -50,7 +40,7 @@ import { Search, RefreshCw, UserPlus, Filter } from 'lucide-react';
 import { format } from 'date-fns';
 import { useToast } from '../../hooks/use-toast';
 
-// Define patient status colors;
+// Define patient status colors
 const statusColors: Record<string, string> = {
   Active: 'success',
   Inactive: 'secondary',
@@ -58,14 +48,14 @@ const statusColors: Record<string, string> = {
   'On Hold': 'warning';
 };
 
-// Patient interface;
+// Patient interface
 interface Patient {
   id: string,
-  mrn: string;
+  mrn: string,
   firstName: string,
-  lastName: string;
+  lastName: string,
   dateOfBirth: string,
-  gender: string;
+  gender: string,
   status: string,
   createdAt: string;
   contact?: {
@@ -78,22 +68,20 @@ interface Patient {
   }[];
 }
 
-// Props interface;
+// Props interface
 interface PatientListProps {
   initialData?: {
     patients: Patient[],
-    total: number;
+    total: number,
     page: number,
-    limit: number;
+    limit: number,
     totalPages: number
   };
-}
-
 export default const PatientList = ({ initialData }: PatientListProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // States;
+  // States
   const [patients, setPatients] = useState<Patient[]>(initialData?.patients || []);
   const [total, setTotal] = useState<number>(initialData?.total || 0);
   const [page, setPage] = useState<number>(initialData?.page || 1);
@@ -101,7 +89,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
   const [totalPages, setTotalPages] = useState<number>(initialData?.totalPages || 1);
   const [loading, setLoading] = useState<boolean>(!initialData);
   
-  // Search filters;
+  // Search filters
   const [searchFilters, setSearchFilters] = useState({
     mrn: '',
     firstName: '',
@@ -111,27 +99,27 @@ export default const PatientList = ({ initialData }: PatientListProps) {
     status: ''
   });
   
-  // Advanced filter visibility;
+  // Advanced filter visibility
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
   
-  // Effect to load patients if no initial data;
+  // Effect to load patients if no initial data
   useEffect(() => {
     if (!initialData) {
       searchPatients();
     }
   }, [initialData]);
   
-  // Function to search patients;
+  // Function to search patients
   const searchPatients = async () => {
     setLoading(true);
     
     try {
-      // Build query parameters;
+      // Build query parameters
       const params = new URLSearchParams();
       params.append('page', page.toString());
       params.append('limit', limit.toString());
       
-      // Add filters if they have values;
+      // Add filters if they have values
       if (searchFilters.mrn) params.append('mrn', searchFilters.mrn);
       if (searchFilters.firstName) params.append('firstName', searchFilters.firstName);
       if (searchFilters.lastName) params.append('lastName', searchFilters.lastName);
@@ -139,7 +127,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       if (searchFilters.phone) params.append('phone', searchFilters.phone);
       if (searchFilters.status) params.append('status', searchFilters.status);
       
-      // Fetch patients;
+      // Fetch patients
       const response = await fetch(`/api/patients?${params.toString()}`);
       
       if (!response.ok) {
@@ -148,7 +136,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       
       const data = await response.json();
       
-      // Update state;
+      // Update state
       setPatients(data.patients),
       setTotal(data.total);
       setPage(data.page),
@@ -166,7 +154,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
     }
   };
   
-  // Handle filter change;
+  // Handle filter change
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSearchFilters((prev) => ({
@@ -175,7 +163,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
     }));
   };
   
-  // Handle status filter change;
+  // Handle status filter change
   const handleStatusChange = (value: string) => {
     setSearchFilters((prev) => ({
       ...prev,
@@ -183,42 +171,42 @@ export default const PatientList = ({ initialData }: PatientListProps) {
     }));
   };
   
-  // Handle search form submission;
+  // Handle search form submission
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault(),
-    setPage(1); // Reset to first page;
+    setPage(1); // Reset to first page
     searchPatients();
   };
   
-  // Handle page change;
+  // Handle page change
   const handlePageChange = (newPage: number) => {
     setPage(newPage),
     searchPatients();
   };
   
-  // Handle limit change;
+  // Handle limit change
   const handleLimitChange = (value: string) => {
     setLimit(parseInt(value));
-    setPage(1); // Reset to first page;
+    setPage(1); // Reset to first page
     searchPatients();
   };
   
-  // Handle refresh;
+  // Handle refresh
   const handleRefresh = () => {
     searchPatients();
   };
   
   // Handle patient selection (navigation to detail)
   const handlePatientSelect = (patientId: string) => {
-    router.push(`/patients/${patientId}`);
+    router.push(`/patients/${patientId}`)
   };
   
-  // Handle create new patient;
+  // Handle create new patient
   const handleCreatePatient = () => {
     router.push('/patients/new');
   };
   
-  // Format date function;
+  // Format date function
   const formatDate = (date: string) => {
     try {
       return format(new Date(date), 'MMM d, yyyy');
@@ -227,7 +215,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
     }
   };
   
-  // Calculate age from date of birth;
+  // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string) => {
     try {
       const birthDate = new Date(dateOfBirth);
@@ -554,4 +542,3 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       </CardFooter>
     </Card>
   );
-}

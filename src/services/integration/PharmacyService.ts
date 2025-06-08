@@ -1,23 +1,13 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { logAudit, AuditAction } from '@/lib/audit';
 
-// Initialize Prisma client;
+// Initialize Prisma client
 const prisma = new PrismaClient();
 
-// Validation schemas;
+// Validation schemas
 export const MedicationOrderSchema = z.object({
   encounterId: z.string().uuid(),
   medications: z.array(z.object({
@@ -79,7 +69,7 @@ export class PharmacyService {
   async createMedicationOrder(data: z.infer<typeof MedicationOrderSchema>, userId: string) {
     logger.info({ method: 'createMedicationOrder', encounterId: data.encounterId }, 'Creating medication order');
     
-    // Get encounter details;
+    // Get encounter details
     const encounter = await prisma.encounter.findUnique({
       where: { id: data.encounterId },
       include: {
@@ -100,12 +90,12 @@ export class PharmacyService {
       throw new Error('Encounter not found');
     }
 
-    // Check for medication allergies;
+    // Check for medication allergies
     const patientAllergies = encounter.patient.allergies || [];
     const allergicMedications = [];
 
     for (const medication of data.medications) {
-      // Check if patient is allergic to this medication;
+      // Check if patient is allergic to this medication
       const isAllergic = patientAllergies.some(
         (allergy: unknown) => 
           allergy.allergen.toLowerCase() === medication.name.toLowerCase() ||;
@@ -118,7 +108,7 @@ export class PharmacyService {
       }
     }
 
-    // If allergies found, return warning;
+    // If allergies found, return warning
     if (allergicMedications.length > 0) {
       return {
         warning: 'Potential allergic reaction detected',
@@ -127,7 +117,7 @@ export class PharmacyService {
       };
     }
 
-    // Create medication orders;
+    // Create medication orders
     const createdOrders = [];
 
     for (const medication of data.medications) {
@@ -154,7 +144,7 @@ export class PharmacyService {
 
       createdOrders.push(order);
 
-      // Log the medication order;
+      // Log the medication order
       await logAudit(
         AuditAction.CREATE,
         'MEDICATION_ORDER',
@@ -185,7 +175,7 @@ export class PharmacyService {
   async performMedicationReconciliation(data: z.infer<typeof MedicationReconciliationSchema>, userId: string) {
     logger.info({ method: 'performMedicationReconciliation', dischargeId: data.dischargeId }, 'Performing medication reconciliation');
     
-    // Get discharge details;
+    // Get discharge details
     const discharge = await prisma.discharge.findUnique({
       where: { id: data.dischargeId },
       include: {
@@ -204,7 +194,7 @@ export class PharmacyService {
       throw new Error('Discharge record not found');
     }
 
-    // Update discharge with medication reconciliation;
+    // Update discharge with medication reconciliation
     const updatedDischarge = await prisma.discharge.update({
       where: { id: data.dischargeId },
       data: {
@@ -214,7 +204,7 @@ export class PharmacyService {
       },
     });
 
-    // Create medication reconciliation record;
+    // Create medication reconciliation record
     const reconciliation = await prisma.medicationReconciliation.create({
       data: {
         patientId: discharge.patientId,
@@ -229,7 +219,7 @@ export class PharmacyService {
       },
     });
 
-    // Log the medication reconciliation;
+    // Log the medication reconciliation
     await logAudit(
       AuditAction.CREATE,
       'MEDICATION_RECONCILIATION',
@@ -259,7 +249,7 @@ export class PharmacyService {
   async recordMedicationAdministration(data: z.infer<typeof MedicationAdministrationSchema>, userId: string) {
     logger.info({ method: 'recordMedicationAdministration', orderId: data.orderId }, 'Recording medication administration');
     
-    // Get medication order details;
+    // Get medication order details
     const order = await prisma.medicationOrder.findUnique({
       where: { id: data.orderId },
       include: {
@@ -277,7 +267,7 @@ export class PharmacyService {
       throw new Error('Medication order not found');
     }
 
-    // Create medication administration record;
+    // Create medication administration record
     const administration = await prisma.medicationAdministration.create({
       data: {
         orderId: order.id,
@@ -296,7 +286,7 @@ export class PharmacyService {
       },
     });
 
-    // Update medication order status if needed;
+    // Update medication order status if needed
     if (data.updateOrderStatus) {
       await prisma.medicationOrder.update({
         where: { id: order.id },
@@ -307,7 +297,7 @@ export class PharmacyService {
       });
     }
 
-    // Log the medication administration;
+    // Log the medication administration
     await logAudit(
       AuditAction.CREATE,
       'MEDICATION_ADMINISTRATION',
@@ -339,7 +329,7 @@ export class PharmacyService {
   async discontinueMedication(data: z.infer<typeof MedicationDiscontinueSchema>, userId: string) {
     logger.info({ method: 'discontinueMedication', orderId: data.orderId }, 'Discontinuing medication');
     
-    // Get medication order details;
+    // Get medication order details
     const order = await prisma.medicationOrder.findUnique({
       where: { id: data.orderId },
     });
@@ -348,12 +338,12 @@ export class PharmacyService {
       throw new Error('Medication order not found');
     }
 
-    // Check if order can be discontinued;
+    // Check if order can be discontinued
     if (order.status === 'DISCONTINUED' || order.status === 'COMPLETED') {
       throw new Error(`Cannot discontinue order with status: ${order.status}`);
     }
 
-    // Update medication order;
+    // Update medication order
     const updatedOrder = await prisma.medicationOrder.update({
       where: { id: data.orderId },
       data: {
@@ -365,7 +355,7 @@ export class PharmacyService {
       },
     });
 
-    // Log the medication discontinuation;
+    // Log the medication discontinuation
     await logAudit(
       AuditAction.UPDATE,
       'MEDICATION_ORDER',
@@ -396,7 +386,7 @@ export class PharmacyService {
   async getActiveMedications(patientId: string) {
     logger.info({ method: 'getActiveMedications', patientId }, 'Getting active medications');
     
-    // Get active medication orders for the patient;
+    // Get active medication orders for the patient
     const activeMedications = await prisma.medicationOrder.findMany({
       where: {
         patientId,
@@ -425,7 +415,7 @@ export class PharmacyService {
   async getMedicationHistory(patientId: string, limit: number = 50) {
     logger.info({ method: 'getMedicationHistory', patientId, limit }, 'Getting medication history');
     
-    // Get medication history for the patient;
+    // Get medication history for the patient
     const medicationHistory = await prisma.medicationOrder.findMany({
       where: { patientId },
       orderBy: { createdAt: 'desc' },
@@ -438,7 +428,7 @@ export class PharmacyService {
       },
     });
 
-    // Group by encounter;
+    // Group by encounter
     const groupedByEncounter = medicationHistory.reduce((groups, medication) => {
       const group = groups[medication.encounterId] || [];
       group.push(medication);
@@ -453,4 +443,3 @@ export class PharmacyService {
       count: medicationHistory.length,
     };
   }
-}

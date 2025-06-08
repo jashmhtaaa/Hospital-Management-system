@@ -1,59 +1,49 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
+// import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
-// Define interface for triage input data;
+// Define interface for triage input data
 interface TriageInput {
   triage_nurse_id: string | number,
-  esi_level: number; // Emergency Severity Index (1-5);
+  esi_level: number; // Emergency Severity Index (1-5)
   vital_signs: Record<string, unknown>; // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
-  assessment_notes?: string | null; // FIX: Allow null;
-  triage_timestamp?: string; // Optional, defaults to now;
+  assessment_notes?: string | null; // FIX: Allow null
+  triage_timestamp?: string; // Optional, defaults to now
 }
 
 // Define interface for triage data (including generated fields)
 interface Triage {
   id: string,
-  visit_id: string;
+  visit_id: string
   triage_nurse_id: string | number,
-  esi_level: number;
-  vital_signs: Record<string, unknown>; // Should be an object;
+  esi_level: number,
+  vital_signs: Record<string, unknown>; // Should be an object
   assessment_notes?: string | null; // FIX: Allow null,
-  triage_timestamp: string; // ISO 8601 date string;
+  triage_timestamp: string; // ISO 8601 date string
 }
 
 // Mock data store for triage assessments (replace with actual DB interaction)
-const mockTriageAssessments: Triage[] = [];
+const mockTriageAssessments: Triage[] = []
 
-// GET /api/er/visits/[id]/triage - Get triage assessment(s) for a specific ER visit;
+// GET /api/er/visits/[id]/triage - Get triage assessment(s) for a specific ER visit
 export async const GET = (
-  _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest;
+  _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    // const { env } = getRequestContext(); // Cloudflare specific;
-    // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    // const { env } = getRequestContext(); // Cloudflare specific
+    // const db = env.DB; // Cloudflare specific
+    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
 
-    // Placeholder for database query;
+    // Placeholder for database query
     /*
     const { results } = await db;
       .prepare("SELECT * FROM er_triage_assessments WHERE visit_id = ? ORDER BY triage_timestamp DESC");
       .bind(visitId);
-      .all<Triage>(); // Specify type if possible;
+      .all<Triage>(); // Specify type if possible
     */
 
-    // Mock implementation;
+    // Mock implementation
     const assessments = mockTriageAssessments;
       .filter((t) => t.visit_id === visitId);
       .sort(
@@ -73,20 +63,20 @@ export async const GET = (
   }
 }
 
-// POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit;
+// POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit
 export async const POST = (
   request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    // const { env } = getRequestContext(); // Cloudflare specific;
-    // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    // const { env } = getRequestContext(); // Cloudflare specific
+    // const db = env.DB; // Cloudflare specific
+    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     const body = await request.json();
-    // Apply type assertion;
+    // Apply type assertion
     const triageData = body as TriageInput;
     const triageId = uuidv4();
 
-    // Basic validation;
+    // Basic validation
     if (
       !triageData.triage_nurse_id ||
       !triageData.esi_level ||
@@ -101,7 +91,7 @@ export async const POST = (
       );
     }
 
-    // Validate ESI level;
+    // Validate ESI level
     if (triageData.esi_level < 1 || triageData.esi_level > 5) {
       return NextResponse.json(
         { error: "Invalid ESI level (must be 1-5)" },
@@ -109,7 +99,7 @@ export async const POST = (
       );
     }
 
-    // Placeholder for database insert;
+    // Placeholder for database insert
     /*
     await db;
       .prepare(
@@ -120,14 +110,14 @@ export async const POST = (
         visitId,
         triageData.triage_nurse_id,
         triageData.esi_level,
-        JSON.stringify(triageData.vital_signs), // Ensure vital_signs is stored as JSON string in DB;
+        JSON.stringify(triageData.vital_signs), // Ensure vital_signs is stored as JSON string in DB
         triageData.assessment_notes || null,
-        triageData.triage_timestamp || new Date().toISOString() // Use provided or default to now;
+        triageData.triage_timestamp || new Date().toISOString() // Use provided or default to now
       );
       .run();
     */
 
-    // Optionally update the visit status if it was just triaged;
+    // Optionally update the visit status if it was just triaged
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // FIX: Ensure newTriage matches the Triage interface (vital_signs should be object)
@@ -136,13 +126,13 @@ export async const POST = (
       visit_id: visitId,
       triage_nurse_id: triageData.triage_nurse_id,
       esi_level: triageData.esi_level,
-      vital_signs: triageData.vital_signs, // Assign the object directly;
-      assessment_notes: triageData.assessment_notes ?? undefined, // Use nullish coalescing;
+      vital_signs: triageData.vital_signs, // Assign the object directly
+      assessment_notes: triageData.assessment_notes ?? undefined, // Use nullish coalescing
       triage_timestamp: triageData.triage_timestamp || new Date().toISOString(),
     };
 
-    // Mock implementation;
-    mockTriageAssessments.push(newTriage); // Should now be type-compatible;
+    // Mock implementation
+    mockTriageAssessments.push(newTriage); // Should now be type-compatible
 
     return NextResponse.json(newTriage, { status: 201 });
   } catch (error: unknown) {
@@ -153,5 +143,3 @@ export async const POST = (
       { status: 500 }
     );
   }
-}
-

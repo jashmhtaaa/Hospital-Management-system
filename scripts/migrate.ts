@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 #!/usr/bin/env ts-node;
@@ -26,7 +18,7 @@ async const main = () {
     switch (command) {
       case 'up':
       case 'migrate':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         await migrate();
         break;
 
@@ -38,31 +30,31 @@ async const main = () {
         } else {
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         }
-        await rollback(version);
+        await rollback(version)
         break;
 
       case 'status':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         await status();
         break;
 
       case 'create':
         const name = args[0];
         if (!name) {
-          // Debug logging removed;
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+          // Debug logging removed
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
           process.exit(1);
         }
         await createMigration(name);
         break;
 
       case 'reset':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         await resetDatabase();
         break;
 
       case 'seed':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         await seedDatabase();
         break;
 
@@ -71,7 +63,7 @@ async const main = () {
         break;
     }
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
     process.exit(1);
   }
 }
@@ -82,7 +74,7 @@ async const createMigration = (name: string) {
   try {
     await manager.initialize();
     
-    // Template for new migration;
+    // Template for new migration
 \1;
 -- Add your migration SQL here;
 -- Example:
@@ -99,16 +91,16 @@ async const createMigration = (name: string) {
 `;
 
     const version = await manager.createMigration(name, upSql, downSql);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } finally {
-    await manager.cleanup();
+    await manager.cleanup()
   }
 }
 
 async const resetDatabase = () {
   if (process.env.NODE_ENV === 'production') {
-    // Debug logging removed;
+    // Debug logging removed
     process.exit(1);
   }
 
@@ -116,7 +108,7 @@ async const resetDatabase = () {
   const prisma = new PrismaClient();
 
   try {
-    // Drop all tables;
+    // Drop all tables
     await prisma.$executeRaw`;
       DO $$ DECLARE;
         r RECORD;
@@ -127,14 +119,14 @@ async const resetDatabase = () {
       END $$;
     `;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // Run migrations from scratch;
+    // Run migrations from scratch
     await migrate();
     
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } finally {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   }
 }
 
@@ -143,11 +135,11 @@ async const seedDatabase = () {
   const prisma = new PrismaClient();
 
   try {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // Create admin user;
-\1;
-        password: '$2b$10$hashedpassword', // Should be properly hashed;
+    // Create admin user
+\1,
+        password: '$2b$10$hashedpassword', // Should be properly hashed
         firstName: 'System',
         lastName: 'Administrator',
         role: 'ADMIN',
@@ -156,9 +148,9 @@ async const seedDatabase = () {
       },
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // Create sample service items;
+    // Create sample service items
 \1;
     });
 \1;
@@ -172,9 +164,9 @@ async const seedDatabase = () {
       });
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // Create sample insurance provider;
+    // Create sample insurance provider
     await prisma.insuranceProvider.upsert({
       where: { code: 'SAMPLE_INSURANCE' },
       update: {},
@@ -189,18 +181,18 @@ async const seedDatabase = () {
       },
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } catch (error) {
-    // Debug logging removed;
+    // Debug logging removed
   } finally {
     await prisma.$disconnect();
   }
 }
 
 const showHelp = () {
-// Debug logging removed;
+// Debug logging removed
   seed                        Seed database with sample data;
 
 Examples:
@@ -222,4 +214,3 @@ For more information, see: docs/database/migrations.md;
 
 if (require.main === module) {
   main();
-}

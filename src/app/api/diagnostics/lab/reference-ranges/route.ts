@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 
-// Interface for the request body when creating a reference range;
+// Interface for the request body when creating a reference range
 interface ReferenceRangeCreateBody {
   test_id: number;
   gender?: "male" | "female" | "other" | "unknown";
@@ -29,22 +19,22 @@ interface ReferenceRangeCreateBody {
   critical_high?: number;
 }
 
-// GET /api/diagnostics/lab/reference-ranges - Get reference ranges;
+// GET /api/diagnostics/lab/reference-ranges - Get reference ranges
 export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get("testId");
     const gender = searchParams.get("gender");
     
-    // Validate required parameters;
+    // Validate required parameters
     if (!testId) {
       return NextResponse.json(
         { error: "Test ID is required" },
@@ -52,7 +42,7 @@ export async const GET = (request: NextRequest) => {
       );
     }
     
-    // Build query;
+    // Build query
     let query = `;
       SELECT;
         r.*,
@@ -73,7 +63,7 @@ export async const GET = (request: NextRequest) => {
       parameters.push(gender);
     }
     
-    // Execute query;
+    // Execute query
     const rangesResult = await DB.query(query, parameters);
     const ranges = rangesResult.results || [];
     
@@ -88,25 +78,25 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/reference-ranges - Create a new reference range;
+// POST /api/diagnostics/lab/reference-ranges - Create a new reference range
 export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can create reference ranges;
+    // Only lab managers and admins can create reference ranges
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as ReferenceRangeCreateBody;
     
-    // Validate required fields;
+    // Validate required fields
     if (!body.test_id) {
       return NextResponse.json(
         { error: "Test ID is required" },
@@ -114,7 +104,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Validate that either numeric values or text value is provided;
+    // Validate that either numeric values or text value is provided
     if (
       (body.value_low === undefined && body.value_high === undefined && !body.text_value) ||;
       (body.text_value && (body.value_low !== undefined || body.value_high !== undefined));
@@ -125,7 +115,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Check if test exists;
+    // Check if test exists
     const testCheckResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ?",
       [body.test_id]
@@ -138,7 +128,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Check for overlapping ranges;
+    // Check for overlapping ranges
     if (body.age_low !== undefined || body.age_high !== undefined || body.gender) {
       const overlapCheckQuery = `;
         SELECT id FROM lab_test_reference_ranges;
@@ -178,7 +168,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Insert reference range;
+    // Insert reference range
     const insertQuery = `;
       INSERT INTO lab_test_reference_ranges (
         test_id, gender, age_low, age_high, value_low, value_high,
@@ -204,7 +194,7 @@ export async const POST = (request: NextRequest) => {
     const result = await DB.query(insertQuery, insertParameters);
     const rangeId = result.insertId;
     
-    // Fetch the created reference range;
+    // Fetch the created reference range
     const fetchQuery = `;
       SELECT;
         r.*,
@@ -225,7 +215,7 @@ export async const POST = (request: NextRequest) => {
       throw new Error("Failed to retrieve created reference range");
     }
     
-    // Return the created reference range;
+    // Return the created reference range
     return NextResponse.json(range, { status: 201 });
   } catch (error: unknown) {
 
@@ -237,7 +227,7 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range;
+// PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -245,19 +235,19 @@ export async const PUT = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can update reference ranges;
+    // Only lab managers and admins can update reference ranges
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const rangeId = params.id;
     
-    // Check if reference range exists;
+    // Check if reference range exists
     const checkResult = await DB.query(
       "SELECT id, test_id FROM lab_test_reference_ranges WHERE id = ?",
       [rangeId]
@@ -272,16 +262,16 @@ export async const PUT = (
     
     const existingRange = checkResult.results[0];
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as Partial<ReferenceRangeCreateBody>;
     
-    // Validate that either numeric values or text value is provided if both are included in the update;
+    // Validate that either numeric values or text value is provided if both are included in the update
     if (
       body.value_low !== undefined ||;
       body.value_high !== undefined ||;
       body.text_value !== undefined;
     ) {
-      // Get current values for fields not included in the update;
+      // Get current values for fields not included in the update
       const currentResult = await DB.query(
         "SELECT value_low, value_high, text_value FROM lab_test_reference_ranges WHERE id = ?",
         [rangeId]
@@ -304,9 +294,9 @@ export async const PUT = (
       }
     }
     
-    // Check for overlapping ranges if age or gender criteria are being updated;
+    // Check for overlapping ranges if age or gender criteria are being updated
     if (body.age_low !== undefined || body.age_high !== undefined || body.gender !== undefined) {
-      // Get current values for fields not included in the update;
+      // Get current values for fields not included in the update
       const currentResult = await DB.query(
         "SELECT test_id, gender, age_low, age_high FROM lab_test_reference_ranges WHERE id = ?",
         [rangeId]
@@ -358,13 +348,13 @@ export async const PUT = (
       }
     }
     
-    // Build update query;
+    // Build update query
     let updateQuery = "UPDATE lab_test_reference_ranges SET ";
     const updateFields: string[] = [];
     const updateParameters: unknown[] = [];
     
     if (body.test_id !== undefined) {
-      // Check if test exists;
+      // Check if test exists
       const testCheckResult = await DB.query(
         "SELECT id FROM lab_tests WHERE id = ?",
         [body.test_id]
@@ -436,7 +426,7 @@ export async const PUT = (
       updateParameters.push(body.critical_high || null);
     }
     
-    // Only proceed if there are fields to update;
+    // Only proceed if there are fields to update
     if (updateFields.length === 0) {
       return NextResponse.json(
         { error: "No fields to update" },
@@ -447,10 +437,10 @@ export async const PUT = (
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
     updateParameters.push(rangeId);
     
-    // Execute update;
+    // Execute update
     await DB.query(updateQuery, updateParameters);
     
-    // Fetch the updated reference range;
+    // Fetch the updated reference range
     const fetchQuery = `;
       SELECT;
         r.*,
@@ -471,7 +461,7 @@ export async const PUT = (
       throw new Error("Failed to retrieve updated reference range");
     }
     
-    // Return the updated reference range;
+    // Return the updated reference range
     return NextResponse.json(range);
   } catch (error: unknown) {
 
@@ -483,7 +473,7 @@ export async const PUT = (
   }
 }
 
-// DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range;
+// DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -491,19 +481,19 @@ export async const DELETE = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can delete reference ranges;
+    // Only lab managers and admins can delete reference ranges
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const rangeId = params.id;
     
-    // Check if reference range exists;
+    // Check if reference range exists
     const checkResult = await DB.query(
       "SELECT id FROM lab_test_reference_ranges WHERE id = ?",
       [rangeId]
@@ -516,7 +506,7 @@ export async const DELETE = (
       );
     }
     
-    // Delete the reference range;
+    // Delete the reference range
     await DB.query(
       "DELETE FROM lab_test_reference_ranges WHERE id = ?",
       [rangeId]
@@ -533,4 +523,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}

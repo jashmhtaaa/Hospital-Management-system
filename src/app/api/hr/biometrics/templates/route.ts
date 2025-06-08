@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { biometricService } from '@/lib/hr/biometric-service';
 import { z } from 'zod';
 
-// Schema for biometric template registration;
+// Schema for biometric template registration
 const biometricTemplateSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
@@ -24,13 +14,13 @@ const biometricTemplateSchema = z.object({
   notes: z.string().optional(),
 });
 
-// POST handler for registering biometric template;
+// POST handler for registering biometric template
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = biometricTemplateSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -39,7 +29,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Register biometric template;
+    // Register biometric template
     const template = await biometricService.registerBiometricTemplate(validationResult.data);
     
     return NextResponse.json(template);
@@ -52,7 +42,7 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET handler for employee biometric templates;
+// GET handler for employee biometric templates
 export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -75,4 +65,3 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

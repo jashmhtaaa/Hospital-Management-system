@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -40,13 +32,13 @@ export async const GET = (request: NextRequest, { params }: RouteParams) => {
     const url = new URL(request.url);
     const searchParams = Object.fromEntries(url.searchParams);
 
-    // Add FHIR headers;
+    // Add FHIR headers
     const headers = {
       'Content-Type': 'application/fhir+json',
       'Cache-Control': 'no-cache',
     };
 
-    // Read specific resource by ID;
+    // Read specific resource by ID
     if (resourceId) {
       const result = await fhirService.readResource(resourceType, resourceId);
       
@@ -63,7 +55,7 @@ export async const GET = (request: NextRequest, { params }: RouteParams) => {
       return NextResponse.json(result.data, { headers });
     }
 
-    // Search resources;
+    // Search resources
     let searchResult;
     
     switch (resourceType) {
@@ -118,7 +110,7 @@ export async const POST = (request: NextRequest, { params }: RouteParams) => {
     
     const body = await request.json();
     
-    // Validate resource type matches URL;
+    // Validate resource type matches URL
     if (body.resourceType !== resourceType) {
       return NextResponse.json(
         {
@@ -164,7 +156,7 @@ export async const POST = (request: NextRequest, { params }: RouteParams) => {
       );
     }
 
-    // Return 201 Created with Location header;
+    // Return 201 Created with Location header
     const headers = {
       'Content-Type': 'application/fhir+json',
       'Location': `/fhir/r4/${resourceType}/${result.data!.id}`,
@@ -223,7 +215,7 @@ export async const PUT = (request: NextRequest, { params }: RouteParams) => {
 
     const body = await request.json();
     
-    // Validate resource type matches URL;
+    // Validate resource type matches URL
     if (body.resourceType !== resourceType) {
       return NextResponse.json(
         {
@@ -333,7 +325,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteParams) => {
       );
     }
 
-    // Return 204 No Content for successful deletion;
+    // Return 204 No Content for successful deletion
     return new NextResponse(null, { status: 204 });
 
   } catch (error) {
@@ -381,7 +373,7 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) => {
       );
     }
 
-    // Get current resource;
+    // Get current resource
     const currentResult = await fhirService.readResource(resourceType, resourceId);
     
     if (!currentResult.success) {
@@ -397,10 +389,10 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) => {
     const contentType = request.headers.get('content-type');
     
     if (contentType?.includes('application/json-patch+json')) {
-      // Handle JSON Patch;
+      // Handle JSON Patch
       const patches = await request.json();
-      // Apply JSON patches to the resource;
-      // This would require a JSON Patch library;
+      // Apply JSON patches to the resource
+      // This would require a JSON Patch library
       
       return NextResponse.json(
         {
@@ -417,7 +409,7 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) => {
         }
       );
     } else {
-      // Handle FHIR Patch;
+      // Handle FHIR Patch
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
@@ -451,4 +443,3 @@ export async const PATCH = (request: NextRequest, { params }: RouteParams) => {
       }
     );
   }
-}

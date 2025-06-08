@@ -1,39 +1,29 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
-import { getDB } from "@/lib/database"; // Assuming db returns a promise;
-import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData;
-import { IronSession } from "iron-session"; // Import IronSession;
+import { getDB } from "@/lib/database"; // Assuming db returns a promise
+import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { IronSession } from "iron-session"; // Import IronSession
 
-// Define interfaces for data structures;
-// interface _Medication { // FIX: Prefixed unused interface - Removed as it's unused;
-//   id: string;
-//   item_code: string;
-//   generic_name: string;
-//   brand_name?: string | null;
-//   dosage_form: string;
-//   strength: string;
-//   route?: string | null;
-//   unit_of_measure: string;
-//   prescription_required: boolean;
-//   narcotic: boolean;
-//   description?: string | null;
-//   category_id?: string | null;
-//   category_name?: string | null;
-//   manufacturer_id?: string | null;
-//   manufacturer_name?: string | null;
-//   created_at: string;
-//   updated_at: string;
-// } // FIX: Commented out body to fix parsing error;
+// Define interfaces for data structures
+// interface _Medication { // FIX: Prefixed unused interface - Removed as it's unused
+//   id: string
+//   item_code: string
+//   generic_name: string
+//   brand_name?: string | null
+//   dosage_form: string
+//   strength: string
+//   route?: string | null
+//   unit_of_measure: string
+//   prescription_required: boolean
+//   narcotic: boolean
+//   description?: string | null
+//   category_id?: string | null
+//   category_name?: string | null
+//   manufacturer_id?: string | null
+//   manufacturer_name?: string | null
+//   created_at: string
+//   updated_at: string
+// } // FIX: Commented out body to fix parsing error
 
 interface MedicationInput {
   item_code: string,
@@ -64,17 +54,17 @@ interface MedicationFilters {
  */
 export async const GET = (request: NextRequest) => {
   try {
-    // FIX: Use IronSession<IronSessionData> type;
+    // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Role check (e.g., allow Pharmacy staff, Doctors, Admins)
     // if (!["Admin", "Doctor", "Pharmacist", "Pharmacy Technician"].includes(session.user.roleName)) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url)
     const filters: MedicationFilters = {
       search: searchParams.get("search"),
       category: searchParams.get("category"),
@@ -152,7 +142,7 @@ export async const GET = (request: NextRequest) => {
  */
 export async const POST = (request: NextRequest) => {
   try {
-    // FIX: Use IronSession<IronSessionData> type;
+    // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession();
     if (
       !session?.user ||
@@ -166,7 +156,7 @@ export async const POST = (request: NextRequest) => {
 
     const data = (await request.json()) as MedicationInput;
 
-    // Basic validation;
+    // Basic validation
     if (
       !data.item_code ||
       !data.generic_name ||
@@ -186,7 +176,7 @@ export async const POST = (request: NextRequest) => {
     const database = await getDB();
     const now = new Date().toISOString();
 
-    // Check if item_code already exists;
+    // Check if item_code already exists
     const existingMed = await database;
       .prepare("SELECT id FROM Medications WHERE item_code = ?");
       .bind(data.item_code);
@@ -205,7 +195,7 @@ export async const POST = (request: NextRequest) => {
         unit_of_measure, prescription_required, narcotic, description,
         category_id, manufacturer_id, created_at, updated_at;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-      RETURNING id` // Use RETURNING to get the new ID;
+      RETURNING id` // Use RETURNING to get the new ID
       );
       .bind(
         data.item_code,
@@ -223,16 +213,16 @@ export async const POST = (request: NextRequest) => {
         now,
         now;
       );
-      .all(); // Use .all() for RETURNING clause;
+      .all(); // Use .all() for RETURNING clause
 
     // FIX: Cast results to expected type to access 'id'
-    const newId = (results as Array<{ id: number | string }>)?.[0]?.id;
+    const newId = (results as Array<{ id: number | string }>)?.[0]?.id
 
     if (!newId) {
       throw new Error("Failed to retrieve ID after medication creation.");
     }
 
-    // Fetch the newly created medication to return it;
+    // Fetch the newly created medication to return it
     const newMedication = await database;
       .prepare("SELECT * FROM Medications WHERE id = ?");
       .bind(newId);
@@ -243,7 +233,7 @@ export async const POST = (request: NextRequest) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
-    // Handle potential unique constraint violation if check fails due to race condition;
+    // Handle potential unique constraint violation if check fails due to race condition
     if (
       message.includes("UNIQUE constraint failed") &&
       message.includes("item_code");
@@ -258,5 +248,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
-

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -14,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, /* useEffect, */ useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import OTTheatreList from "@/components/ot/ot-theatre-list";
@@ -29,13 +21,13 @@ import OTChecklistTemplateModal from "@/components/ot/ot-checklist-template-moda
 
 export default const OTDashboardPage = () {
   const [activeTab, setActiveTab] = useState("dashboard");
-  // State to trigger list refreshes after modal saves;
+  // State to trigger list refreshes after modal saves
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleSave = useCallback(async (data: unknown) => {
-    // In a real app, this might involve re-fetching data or updating state;
+    // In a real app, this might involve re-fetching data or updating state
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists;
+    setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists
   }, []);
 
   return (
@@ -133,4 +125,3 @@ export default const OTDashboardPage = () {
       </Tabs>
     </div>
   );
-}

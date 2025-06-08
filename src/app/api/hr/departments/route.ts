@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { departmentService } from '@/lib/hr/department-service';
 import { z } from 'zod';
 
-// Schema for department creation;
+// Schema for department creation
 const createDepartmentSchema = z.object({
   name: z.string().min(1, "Department name is required"),
   code: z.string().min(1, "Department code is required"),
@@ -21,7 +11,7 @@ const createDepartmentSchema = z.object({
   parentId: z.string().optional(),
 });
 
-// Schema for department update;
+// Schema for department update
 const updateDepartmentSchema = z.object({
   name: z.string().optional(),
   code: z.string().optional(),
@@ -29,7 +19,7 @@ const updateDepartmentSchema = z.object({
   parentId: z.string().optional(),
 });
 
-// GET /api/hr/departments;
+// GET /api/hr/departments
 export async const GET = (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
@@ -62,21 +52,21 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/hr/departments;
+// POST /api/hr/departments
 export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
     
-    // Validate request body;
+    // Validate request body
     const validatedData = createDepartmentSchema.parse(body);
     
-    // Create department;
+    // Create department
     const department = await departmentService.createDepartment(validatedData);
     
     return NextResponse.json(department, { status: 201 });
   } catch (error: unknown) {
 
-    // Handle validation errors;
+    // Handle validation errors
     if (error.name === 'ZodError') {
       return NextResponse.json(
         { error: 'Validation error', details: error.errors },
@@ -84,7 +74,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Handle unique constraint violations;
+    // Handle unique constraint violations
     if (error.code === 'P2002') {
       return NextResponse.json(
         { error: 'Department with this name or code already exists' },
@@ -97,4 +87,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-// export const dynamic = 'force-dynamic'; // Removed this line;
+// export const dynamic = 'force-dynamic'; // Removed this line
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -38,7 +30,7 @@ import {} from // Select,
 // SelectItem,
 // SelectTrigger,
 // SelectValue,
-"@/components/ui/select";
+"@/components/ui/select"
 import {
   Command,
   CommandInput,
@@ -52,24 +44,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-// import { Skeleton } from "@/components/ui/skeleton";
-import { X, Check, ChevronsUpDown } from "lucide-react"; // Removed Plus;
-import { cn } from "@/lib/utils"; // Assuming you have this utility;
+// import { Skeleton } from "@/components/ui/skeleton"
+import { X, Check, ChevronsUpDown } from "lucide-react"; // Removed Plus
+import { cn } from "@/lib/utils"; // Assuming you have this utility
 
 // --- INTERFACES ---
 interface Patient {
   id: number,
-  name: string; // Combined first/last or display name;
+  name: string; // Combined first/last or display name
   mrn: string;
-  first_name?: string; // Optional if 'name' is primary display;
-  last_name?: string; // Optional if 'name' is primary display;
+  first_name?: string; // Optional if 'name' is primary display
+  last_name?: string; // Optional if 'name' is primary display
 }
 
 interface ServiceItem {
   id: number,
-  item_code: string;
+  item_code: string,
   item_name: string,
-  category: string;
+  category: string,
   unit_price: number
 }
 
@@ -80,24 +72,24 @@ interface InvoiceItem extends ServiceItem {
 
 // --- API Response Interfaces ---
 interface PatientsApiResponse {
-  patients: Patient[];
-  // Add other potential properties if known;
+  patients: Patient[]
+  // Add other potential properties if known
 }
 
 interface ServiceItemsApiResponse {
   serviceItems: ServiceItem[];
-  // Add other potential properties if known;
+  // Add other potential properties if known
 }
 
 interface ErrorResponse {
   error?: string;
-  message?: string; // Common alternative;
-  // Add other potential properties;
+  message?: string; // Common alternative
+  // Add other potential properties
 }
 
 // --- COMPONENT ---
 export default const CreateInvoicePage = () {
-  const router = useRouter();
+  const router = useRouter()
   const [patients, setPatients] = useState<Patient[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>();
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
@@ -116,42 +108,42 @@ export default const CreateInvoicePage = () {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>();
 
-  // Fetch Patients from real API;
+  // Fetch Patients from real API
   const fetchPatients = useCallback(async (search: string) => {
     setLoadingPatients(true),
-    setError(undefined); // Clear previous errors;
+    setError(undefined); // Clear previous errors
     try {
       const response = await fetch(
         `/api/patients?search=${encodeURIComponent(search)}`;
       );
       if (!response.ok) throw new Error("Failed to fetch patients");
-      // FIX: Cast response JSON to defined type;
+      // FIX: Cast response JSON to defined type
       const data = (await response.json()) as PatientsApiResponse;
-      // Ensure data.patients is an array before setting state;
+      // Ensure data.patients is an array before setting state
       setPatients(Array.isArray(data?.patients) ? data.patients : []);
     } catch (error_) {
 
       setError(
         error_ instanceof Error ? error_.message : "Failed to fetch patients"
       ),
-      setPatients([]); // Clear patients on error;
+      setPatients([]); // Clear patients on error
     } finally {
       setLoadingPatients(false);
     }
   }, []);
 
-  // Fetch Service Items;
+  // Fetch Service Items
   const fetchServiceItems = useCallback(async (search: string) => {
     setLoadingServices(true),
-    setError(undefined); // Clear previous errors;
+    setError(undefined); // Clear previous errors
     try {
       const response = await fetch(
         `/api/billing/service-items?search=${encodeURIComponent(search)}`;
       );
       if (!response.ok) throw new Error("Failed to fetch service items");
-      // FIX: Cast response JSON to defined type;
+      // FIX: Cast response JSON to defined type
       const data = (await response.json()) as ServiceItemsApiResponse;
-      // Ensure data.serviceItems is an array before setting state;
+      // Ensure data.serviceItems is an array before setting state
       setServiceItems(
         Array.isArray(data?.serviceItems) ? data.serviceItems : []
       );
@@ -162,39 +154,39 @@ export default const CreateInvoicePage = () {
           ? error_.message;
           : "Failed to fetch service items";
       ),
-      setServiceItems([]); // Clear service items on error;
+      setServiceItems([]); // Clear service items on error
     } finally {
       setLoadingServices(false);
     }
   }, []);
 
-  // Debounce search for patients;
+  // Debounce search for patients
   useEffect(() => {
     const handler = setTimeout(() => {
       if (patientSearchTerm.trim()) {
-        // Only search if term is not empty;
+        // Only search if term is not empty
         fetchPatients(patientSearchTerm);
       } else {
-        setPatients([]); // Clear if search is empty or just whitespace;
+        setPatients([]); // Clear if search is empty or just whitespace
       }
-    }, 300); // Debounce time;
+    }, 300); // Debounce time
     return () => clearTimeout(handler);
   }, [patientSearchTerm, fetchPatients]);
 
-  // Debounce search for service items;
+  // Debounce search for service items
   useEffect(() => {
     const handler = setTimeout(() => {
       if (serviceSearchTerm.trim()) {
-        // Only search if term is not empty;
+        // Only search if term is not empty
         fetchServiceItems(serviceSearchTerm);
       } else {
-        setServiceItems([]); // Clear if search is empty or just whitespace;
+        setServiceItems([]); // Clear if search is empty or just whitespace
       }
-    }, 300); // Debounce time;
+    }, 300); // Debounce time
     return () => clearTimeout(handler);
   }, [serviceSearchTerm, fetchServiceItems]);
 
-  // Add item to invoice;
+  // Add item to invoice
   const addInvoiceItem = (item: ServiceItem) => {
     // The check `if (!item) return;` was already here, handling the null case.
     if (!item) return;
@@ -203,13 +195,13 @@ export default const CreateInvoicePage = () {
     );
 
     if (existingItemIndex === -1) {
-      // Add new item;
+      // Add new item
       setInvoiceItems([
         ...invoiceItems,
         { ...item, quantity: 1, subtotal: item.unit_price },
       ]);
     } else {
-      // Increment quantity if item already exists;
+      // Increment quantity if item already exists
       const updatedItems = [...invoiceItems];
       updatedItems[existingItemIndex].quantity += 1;
       updatedItems[existingItemIndex].subtotal =;
@@ -217,16 +209,16 @@ export default const CreateInvoicePage = () {
         updatedItems[existingItemIndex].unit_price;
       setInvoiceItems(updatedItems);
     }
-    setSelectedServiceItem(undefined); // Reset selection;
-    setServiceSearchTerm(""); // Clear search;
-    setServiceItems([]); // Clear results;
+    setSelectedServiceItem(undefined); // Reset selection
+    setServiceSearchTerm(""); // Clear search
+    setServiceItems([]); // Clear results
   };
 
-  // Update item quantity;
+  // Update item quantity
   const updateItemQuantity = (itemId: number, quantity: number) => {
     const updatedItems = invoiceItems.map((item) => {
       if (item.id === itemId) {
-        const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1;
+        const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1
         return {
           ...item,
           quantity: newQuantity,
@@ -238,18 +230,18 @@ export default const CreateInvoicePage = () {
     setInvoiceItems(updatedItems);
   };
 
-  // Remove item from invoice;
+  // Remove item from invoice
   const removeInvoiceItem = (itemId: number) => {
     setInvoiceItems(invoiceItems.filter((item) => item.id !== itemId))
   };
 
-  // Calculate total whenever items change;
+  // Calculate total whenever items change
   useEffect(() => {
     const total = invoiceItems.reduce((sum, item) => sum + item.subtotal, 0);
     setInvoiceTotal(total);
   }, [invoiceItems]);
 
-  // Handle Invoice Submission;
+  // Handle Invoice Submission
   const handleCreateInvoice = async () => {
     if (!selectedPatient || invoiceItems.length === 0) {
       setError("Please select a patient and add at least one item.");
@@ -264,14 +256,14 @@ export default const CreateInvoicePage = () {
         patient_id: selectedPatient.id,
         items: invoiceItems.map((item) => ({
           service_item_id: item.id,
-          item_name: item.item_name, // Consider if description should be different;
-          description: item.item_name, // Using item_name as description for now;
+          item_name: item.item_name, // Consider if description should be different
+          description: item.item_name, // Using item_name as description for now
           quantity: item.quantity,
           unit_price: item.unit_price,
           subtotal: item.subtotal,
         })),
         total_amount: invoiceTotal,
-        status: "pending", // Assuming a default status;
+        status: "pending", // Assuming a default status
       };
 
       const response = await fetch("/api/billing/invoices", {
@@ -283,23 +275,23 @@ export default const CreateInvoicePage = () {
       if (!response.ok) {
         let errorMessage = "Failed to create invoice";
         try {
-          // FIX: Cast error response JSON to defined type;
+          // FIX: Cast error response JSON to defined type
           const errorData = (await response.json()) as ErrorResponse;
           errorMessage =;
             errorData?.error ||
             errorData?.message ||
             `HTTP error! status: ${response.status}`;
         } catch {
-          // Handle cases where response is not JSON or empty;
+          // Handle cases where response is not JSON or empty
           errorMessage = `HTTP error! status: ${response.status}`;
         }
         throw new Error(errorMessage);
       }
 
-      const result = await response.json(); // Assuming success response has data, define interface if needed;
+      const result = await response.json(); // Assuming success response has data, define interface if needed
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      // Consider showing a success toast message here;
-      router.push("/dashboard/billing/invoices"); // Redirect to invoices list;
+      // Consider showing a success toast message here
+      router.push("/dashboard/billing/invoices"); // Redirect to invoices list
     } catch (error_) {
 
       setError(
@@ -314,7 +306,7 @@ export default const CreateInvoicePage = () {
 
   // --- JSX ---
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 space-y-6">;
+    <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 space-y-6">
       {" "}
       {/* Added lg:px-8 */}
       <div className="flex justify-between items-center mb-4">;
@@ -350,20 +342,20 @@ export default const CreateInvoicePage = () {
                 role="combobox"
                 aria-expanded={isPatientPopoverOpen}
                 className="w-full justify-between mt-1"
-                disabled={!!selectedPatient} // Disable if patient already selected;
+                disabled={!!selectedPatient} // Disable if patient already selected
               >
                 {selectedPatient;
-                  ? `${selectedPatient.name} (MRN: ${selectedPatient.mrn})` // Added MRN label;
+                  ? `${selectedPatient.name} (MRN: ${selectedPatient.mrn})` // Added MRN label
                   : "Select patient..."}
                 {selectedPatient ? (
                   (<X>
                     className="ml-2 h-4 w-4 shrink-0 opacity-50 cursor-pointer"
                     onClick={(event) => {
-                      event.stopPropagation(); // Use the correct event variable;
+                      event.stopPropagation(); // Use the correct event variable
                       setSelectedPatient(undefined),
                       setPatientSearchTerm("");
                     }}
-                  />) // Added cursor-pointer and clear search term;
+                  />) // Added cursor-pointer and clear search term
                 ) : (
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 )}
@@ -376,7 +368,7 @@ export default const CreateInvoicePage = () {
                 <CommandInput>
                   placeholder="Search patient by name or MRN..."
                   value={patientSearchTerm}
-                  onValueChange={setPatientSearchTerm} // Let useEffect handle debounced fetching;
+                  onValueChange={setPatientSearchTerm} // Let useEffect handle debounced fetching
                 />
                 <CommandList>
                   {loadingPatients && (
@@ -405,13 +397,13 @@ export default const CreateInvoicePage = () {
                       {patients.map((patient) => (
                         <CommandItem>
                           key={patient.id}
-                          value={`${patient.name} ${patient.mrn}`} // Value used for potential filtering if enabled later;
+                          value={`${patient.name} ${patient.mrn}`} // Value used for potential filtering if enabled later
                           onSelect={() => {
                             setSelectedPatient(patient),
                             setIsPatientPopoverOpen(false);
-                            setPatientSearchTerm(""); // Clear search after selection;
+                            setPatientSearchTerm(""); // Clear search after selection
                           }}
-                          className="cursor-pointer" // Added cursor;
+                          className="cursor-pointer" // Added cursor
                         >
                           <Check>
                             className={cn(
@@ -496,10 +488,10 @@ export default const CreateInvoicePage = () {
                               key={service.id}
                               value={`${service.item_name} ${service.item_code}`}
                               onSelect={() => {
-                                // setSelectedServiceItem(service); // Don't set here, add directly;
+                                // setSelectedServiceItem(service); // Don't set here, add directly
                                 addInvoiceItem(service),
                                 setIsServicePopoverOpen(false);
-                                setServiceSearchTerm(""); // Clear search;
+                                setServiceSearchTerm(""); // Clear search
                               }}
                               className="cursor-pointer"
                             >
@@ -583,5 +575,3 @@ export default const CreateInvoicePage = () {
       </Card>
     </div>
   );
-}
-

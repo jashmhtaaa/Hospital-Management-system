@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -17,20 +9,20 @@ var __DEV__: boolean;
 import Redis from 'ioredis';
 import { cache } from '../cache';
 
-// Cache configuration;
+// Cache configuration
 interface CacheConfig {
   host: string,
   port: number;
   password?: string;
   db: number,
-  retryAttempts: number;
+  retryAttempts: number,
   retryDelay: number,
-  keyPrefix: string;
+  keyPrefix: string,
   defaultTTL: number,
   maxRetriesPerRequest: number
 }
 
-// Cache key patterns for different data types;
+// Cache key patterns for different data types
 export const CACHE_PATTERNS = {
   PATIENT: 'patient:',
   PATIENT_LIST: 'patients:list:',
@@ -56,11 +48,11 @@ export const CACHE_PATTERNS = {
 
 // TTL constants (in seconds)
 export const CACHE_TTL = {
-  SHORT: 300,      // 5 minutes;
-  MEDIUM: 1800,    // 30 minutes;
-  LONG: 3600,      // 1 hour;
-  VERY_LONG: 86400, // 24 hours;
-  PERMANENT: -1,   // No expiration;
+  SHORT: 300,      // 5 minutes
+  MEDIUM: 1800,    // 30 minutes
+  LONG: 3600,      // 1 hour
+  VERY_LONG: 86400, // 24 hours
+  PERMANENT: -1,   // No expiration
 } as const;
 
 class RedisCacheManager {
@@ -119,11 +111,11 @@ class RedisCacheManager {
     this.redis.on('connect', () => {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.isConnected = true
-    });
+    })
 
     this.redis.on('ready', () => {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    });
+    })
 
     this.redis.on('error', (error) => {
 
@@ -133,14 +125,14 @@ class RedisCacheManager {
     this.redis.on('close', () => {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.isConnected = false
-    });
+    })
 
     this.redis.on('reconnecting', () => {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    });
+    })
   }
 
-  // Core cache operations;
+  // Core cache operations
   async get<T>(key: string): Promise<T | null> {
     try {
       if (!this.isConnected) {
@@ -186,7 +178,7 @@ class RedisCacheManager {
 
       return await this.redis.del(key);
     } catch (error) {
-      // Debug logging removed ${key}:`, error);
+      // Debug logging removed ${key}:`, error)
       return 0;
     }
   }
@@ -219,7 +211,7 @@ class RedisCacheManager {
     }
   }
 
-  // Pattern-based operations;
+  // Pattern-based operations
   async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
       if (!this.isConnected) {
@@ -245,7 +237,7 @@ class RedisCacheManager {
     }
   }
 
-  // Batch operations;
+  // Batch operations
   async mget<T>(keys: string[]): Promise<(T | null)[]> {
     try {
       if (!this.isConnected) {
@@ -285,7 +277,7 @@ class RedisCacheManager {
     }
   }
 
-  // Hash operations for complex data structures;
+  // Hash operations for complex data structures
   async hget<T>(key: string, field: string): Promise<T | null> {
     try {
       if (!this.isConnected) {
@@ -337,7 +329,7 @@ class RedisCacheManager {
     }
   }
 
-  // List operations for queues and timelines;
+  // List operations for queues and timelines
   async lpush<T>(key: string, ...values: T[]): Promise<number> {
     try {
       if (!this.isConnected) {
@@ -382,7 +374,7 @@ class RedisCacheManager {
     }
   }
 
-  // Set operations for unique collections;
+  // Set operations for unique collections
   async sadd<T>(key: string, ...members: T[]): Promise<number> {
     try {
       if (!this.isConnected) {
@@ -411,7 +403,7 @@ class RedisCacheManager {
     }
   }
 
-  // Cache statistics and monitoring;
+  // Cache statistics and monitoring
   async getStats(): Promise<any> {
     try {
       if (!this.isConnected) {
@@ -455,7 +447,7 @@ class RedisCacheManager {
     return result;
   }
 
-  // Health check;
+  // Health check
   async healthCheck(): Promise<boolean> {
     try {
       if (!this.isConnected) {
@@ -470,7 +462,7 @@ class RedisCacheManager {
     }
   }
 
-  // Graceful shutdown;
+  // Graceful shutdown
   async disconnect(): Promise<void> {
     try {
       await this.redis.quit();
@@ -482,14 +474,14 @@ class RedisCacheManager {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const redisCache = RedisCacheManager.getInstance();
 
-// High-level cache service integration;
+// High-level cache service integration
 export class CacheService {
   private redis = redisCache;
 
-  // Patient caching;
+  // Patient caching
   async cachePatient(patientId: string, patient: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.PATIENT}${patientId}`, patient, ttl);
   }
@@ -504,7 +496,7 @@ export class CacheService {
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
   }
 
-  // Bill caching;
+  // Bill caching
   async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.BILL}${billId}`, bill, ttl);
   }
@@ -519,7 +511,7 @@ export class CacheService {
     await this.redis.del(CACHE_PATTERNS.OUTSTANDING_BILLS);
   }
 
-  // Appointment caching;
+  // Appointment caching
   async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.DOCTOR_SCHEDULE}${doctorId}:${date}`, schedule, ttl);
   }
@@ -533,7 +525,7 @@ export class CacheService {
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`);
   }
 
-  // User session caching;
+  // User session caching
   async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.SESSION}${sessionId}`, sessionData, ttl);
   }
@@ -546,7 +538,7 @@ export class CacheService {
     await this.redis.del(`${CACHE_PATTERNS.SESSION}${sessionId}`);
   }
 
-  // Dashboard statistics caching;
+  // Dashboard statistics caching
   async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
     await this.redis.set(`${CACHE_PATTERNS.DASHBOARD}${userId}`, stats, ttl);
   }
@@ -555,7 +547,7 @@ export class CacheService {
     return await this.redis.get(`${CACHE_PATTERNS.DASHBOARD}${userId}`);
   }
 
-  // General purpose caching with automatic key generation;
+  // General purpose caching with automatic key generation
   async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     const key = `${pattern}${identifier}`;
     await this.redis.set(key, data, ttl);
@@ -570,17 +562,17 @@ export class CacheService {
     await this.redis.deleteByPattern(`${pattern}*`);
   }
 
-  // Cache warming strategies;
+  // Cache warming strategies
   async warmCache(): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
-    // Warm frequently accessed data;
-    // This would typically be called during application startup;
+    // Warm frequently accessed data
+    // This would typically be called during application startup
     
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
-  // Cache health and stats;
+  // Cache health and stats
   async getHealthStatus(): Promise<any> {
     const isHealthy = await this.redis.healthCheck();
     const stats = await this.redis.getStats();
@@ -593,7 +585,7 @@ export class CacheService {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const cacheService = new CacheService();
 
 export default redisCache;

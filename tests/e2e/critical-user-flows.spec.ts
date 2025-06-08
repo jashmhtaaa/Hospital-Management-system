@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,10 +8,10 @@ var __DEV__: boolean;
 
 import { test, expect, Page } from '@playwright/test';
 
-// Test configuration;
+// Test configuration
 test.describe.configure({ mode: 'parallel' });
 
-// Test data;
+// Test data
 const TEST_USERS = {
   doctor: {
     email: 'doctor@test.hospital.com',
@@ -55,7 +47,7 @@ const TEST_PATIENT = {
   emergencyPhone: '+1234567891'
 };
 
-// Helper functions;
+// Helper functions
 async const loginUser = (page: Page, user: typeof TEST_USERS.doctor) {
   await page.goto('/login');
   await page.fill('[data-testid="email-input"]', user.email);
@@ -68,7 +60,7 @@ async const createTestPatient = (page: Page) {
   await page.goto('/dashboard/patients');
   await page.click('[data-testid="add-patient-button"]');
   
-  // Fill patient form;
+  // Fill patient form
   await page.fill('[data-testid="first-name"]', TEST_PATIENT.firstName);
   await page.fill('[data-testid="last-name"]', TEST_PATIENT.lastName);
   await page.fill('[data-testid="date-of-birth"]', TEST_PATIENT.dateOfBirth);
@@ -82,29 +74,29 @@ async const createTestPatient = (page: Page) {
   await page.click('[data-testid="save-patient-button"]');
   await page.waitForSelector('[data-testid="success-message"]');
   
-  // Get the created patient ID from the URL or success message;
+  // Get the created patient ID from the URL or success message
   const patientId = await page.getAttribute('[data-testid="patient-id"]', 'data-patient-id');
   return patientId;
 }
 
-// Critical Flow #1: Patient Registration and OPD Consultation;
+// Critical Flow #1: Patient Registration and OPD Consultation
 test.describe('Critical Flow: Patient Registration to OPD Consultation', () => {
   test('Complete patient journey from registration to consultation', async ({ page }) => {
-    // Step 1: Login as Admin to register patient;
+    // Step 1: Login as Admin to register patient
     await loginUser(page, TEST_USERS.admin);
     
-    // Step 2: Register new patient;
+    // Step 2: Register new patient
     const patientId = await createTestPatient(page),
     expect(patientId).toBeTruthy();
     
-    // Step 3: Verify patient appears in patient list;
+    // Step 3: Verify patient appears in patient list
     await page.goto('/dashboard/patients');
     await page.fill('[data-testid="patient-search"]', TEST_PATIENT.firstName);
     await page.press('[data-testid="patient-search"]', 'Enter');
     
     await expect(page.locator(`[data-testid="patient-${patientId}"]`)).toBeVisible();
     
-    // Step 4: Book appointment for patient;
+    // Step 4: Book appointment for patient
     await page.click(`[data-testid="book-appointment-${patientId}"]`);
     
     const tomorrow = new Date();
@@ -119,54 +111,54 @@ test.describe('Critical Flow: Patient Registration to OPD Consultation', () => {
     await page.click('[data-testid="book-appointment-button"]');
     await page.waitForSelector('[data-testid="appointment-success"]');
     
-    // Step 5: Login as Doctor and conduct consultation;
+    // Step 5: Login as Doctor and conduct consultation
     await loginUser(page, TEST_USERS.doctor);
     
-    // Navigate to appointments;
+    // Navigate to appointments
     await page.goto('/dashboard/appointments');
     await page.fill('[data-testid="appointment-search"]', TEST_PATIENT.firstName);
     
-    // Find and start consultation;
+    // Find and start consultation
     await page.click('[data-testid="start-consultation"]');
     
-    // Fill consultation form;
+    // Fill consultation form
     await page.fill('[data-testid="chief-complaint"]', 'Routine health checkup');
     await page.fill('[data-testid="history-present-illness"]', 'Patient feels generally well');
     await page.fill('[data-testid="examination-findings"]', 'Normal vital signs, no abnormalities detected');
     await page.fill('[data-testid="diagnosis"]', 'Healthy adult - routine checkup');
     await page.fill('[data-testid="treatment-plan"]', 'Continue healthy lifestyle, return in 6 months');
     
-    // Prescribe medication;
+    // Prescribe medication
     await page.click('[data-testid="add-prescription"]');
     await page.fill('[data-testid="medication-name"]', 'Multivitamin');
     await page.fill('[data-testid="dosage"]', '1 tablet');
     await page.fill('[data-testid="frequency"]', 'Once daily');
     await page.fill('[data-testid="duration"]', '30 days');
     
-    // Complete consultation;
+    // Complete consultation
     await page.click('[data-testid="complete-consultation"]');
     await page.waitForSelector('[data-testid="consultation-completed"]');
     
-    // Verify consultation was saved;
+    // Verify consultation was saved
     await expect(page.locator('[data-testid="consultation-completed"]')).toContainText('Consultation completed successfully');
   });
 });
 
-// Critical Flow #2: Lab Order to Result Workflow;
+// Critical Flow #2: Lab Order to Result Workflow
 test.describe('Critical Flow: Lab Order to Results', () => {
   test('Complete lab workflow from order to result verification', async ({ page }) => {
-    // Setup: Login as doctor and create lab order;
+    // Setup: Login as doctor and create lab order
     await loginUser(page, TEST_USERS.doctor);
     
     // Create a patient first (or use existing)
-    await page.goto('/dashboard/patients');
+    await page.goto('/dashboard/patients')
     await page.click('[data-testid="patient-row"]:first-child');
     const patientId = await page.getAttribute('[data-testid="patient-details"]', 'data-patient-id');
     
-    // Step 1: Create lab order;
+    // Step 1: Create lab order
     await page.click('[data-testid="order-lab-tests"]');
     
-    // Select tests;
+    // Select tests
     await page.check('[data-testid="test-CBC"]');
     await page.check('[data-testid="test-BMP"]');
     await page.check('[data-testid="test-HbA1c"]');
@@ -180,40 +172,40 @@ test.describe('Critical Flow: Lab Order to Results', () => {
     const orderNumber = await page.textContent('[data-testid="order-number"]');
     
     // Step 2: Process samples (as lab technician)
-    await page.goto('/dashboard/laboratory');
+    await page.goto('/dashboard/laboratory')
     await page.fill('[data-testid="order-search"]', orderNumber!);
     
     await page.click(`[data-testid="process-order-${orderNumber}"]`);
     await page.click('[data-testid="collect-samples"]');
     await page.waitForSelector('[data-testid="samples-collected"]');
     
-    // Step 3: Enter results;
+    // Step 3: Enter results
     await page.click('[data-testid="enter-results"]');
     
-    // CBC Results;
+    // CBC Results
     await page.fill('[data-testid="result-WBC"]', '7.2');
     await page.fill('[data-testid="result-RBC"]', '4.5');
     await page.fill('[data-testid="result-HGB"]', '14.2');
     await page.fill('[data-testid="result-HCT"]', '42.1');
     
-    // BMP Results;
+    // BMP Results
     await page.fill('[data-testid="result-glucose"]', '95');
     await page.fill('[data-testid="result-sodium"]', '140');
     await page.fill('[data-testid="result-potassium"]', '4.1');
     
-    // HbA1c Result;
+    // HbA1c Result
     await page.fill('[data-testid="result-hba1c"]', '5.4');
     
     await page.click('[data-testid="save-results"]');
     await page.waitForSelector('[data-testid="results-saved"]');
     
     // Step 4: Verify and finalize results (as lab supervisor)
-    await page.click('[data-testid="verify-results"]');
+    await page.click('[data-testid="verify-results"]')
     await page.fill('[data-testid="verification-notes"]', 'All results within normal limits');
     await page.click('[data-testid="approve-results"]');
     await page.waitForSelector('[data-testid="results-verified"]');
     
-    // Step 5: Verify doctor can view results;
+    // Step 5: Verify doctor can view results
     await loginUser(page, TEST_USERS.doctor);
     await page.goto(`/dashboard/patients/${patientId}/lab-results`);
     
@@ -222,21 +214,21 @@ test.describe('Critical Flow: Lab Order to Results', () => {
   });
 });
 
-// Critical Flow #3: IPD Admission to Discharge;
+// Critical Flow #3: IPD Admission to Discharge
 test.describe('Critical Flow: IPD Admission to Discharge', () => {
   test('Complete IPD workflow from admission to discharge', async ({ page }) => {
-    // Step 1: Emergency admission;
+    // Step 1: Emergency admission
     await loginUser(page, TEST_USERS.doctor);
     
-    // Admit patient;
+    // Admit patient
     await page.goto('/dashboard/ipd');
     await page.click('[data-testid="admit-patient"]');
     
     // Select patient (assume first patient in list)
-    await page.click('[data-testid="select-patient"]');
+    await page.click('[data-testid="select-patient"]')
     await page.click('[data-testid="patient-option"]:first-child');
     
-    // Fill admission details;
+    // Fill admission details
     await page.selectOption('[data-testid="admission-type"]', 'EMERGENCY');
     await page.selectOption('[data-testid="ward"]', { index: 1 });
     await page.selectOption('[data-testid="bed"]', { index: 1 });
@@ -250,7 +242,7 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
     const admissionId = await page.textContent('[data-testid="admission-id"]');
     
     // Step 2: Record vital signs (as nurse)
-    await loginUser(page, TEST_USERS.nurse);
+    await loginUser(page, TEST_USERS.nurse)
     await page.goto(`/dashboard/ipd/admissions/${admissionId}`);
     
     await page.click('[data-testid="record-vitals"]');
@@ -264,7 +256,7 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
     await page.click('[data-testid="save-vitals"]');
     await page.waitForSelector('[data-testid="vitals-saved"]');
     
-    // Step 3: Administer medications;
+    // Step 3: Administer medications
     await page.click('[data-testid="administer-medication"]');
     await page.selectOption('[data-testid="medication"]', 'Aspirin 81mg');
     await page.fill('[data-testid="dosage-given"]', '1 tablet');
@@ -273,7 +265,7 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
     await page.click('[data-testid="record-administration"]');
     await page.waitForSelector('[data-testid="medication-recorded"]');
     
-    // Step 4: Nursing notes;
+    // Step 4: Nursing notes
     await page.click('[data-testid="add-nursing-note"]');
     await page.fill('[data-testid="nursing-note"]', 'Patient resting comfortably, no acute distress. Pain level 2/10.');
     await page.selectOption('[data-testid="shift"]', 'DAY');
@@ -281,7 +273,7 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
     await page.click('[data-testid="save-nursing-note"]');
     await page.waitForSelector('[data-testid="note-saved"]');
     
-    // Step 5: Doctor's progress notes;
+    // Step 5: Doctor's progress notes
     await loginUser(page, TEST_USERS.doctor);
     await page.goto(`/dashboard/ipd/admissions/${admissionId}`);
     
@@ -291,7 +283,7 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
     await page.click('[data-testid="save-progress-note"]');
     await page.waitForSelector('[data-testid="progress-saved"]');
     
-    // Step 6: Discharge patient;
+    // Step 6: Discharge patient
     await page.click('[data-testid="discharge-patient"]');
     await page.fill('[data-testid="discharge-diagnosis"]', 'Non-cardiac chest pain');
     await page.fill('[data-testid="discharge-summary"]', 'Patient admitted with chest pain, ruled out MI, stable for discharge');
@@ -301,27 +293,27 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
     await page.click('[data-testid="complete-discharge"]');
     await page.waitForSelector('[data-testid="discharge-completed"]');
     
-    // Verify discharge;
+    // Verify discharge
     await expect(page.locator('[data-testid="admission-status"]')).toContainText('DISCHARGED');
   });
 });
 
-// Critical Flow #4: Billing and Payment Processing;
+// Critical Flow #4: Billing and Payment Processing
 test.describe('Critical Flow: Billing and Payment', () => {
   test('Complete billing workflow from service to payment', async ({ page }) => {
-    // Step 1: Login as billing staff;
+    // Step 1: Login as billing staff
     await loginUser(page, TEST_USERS.billing);
     
-    // Step 2: Create new bill;
+    // Step 2: Create new bill
     await page.goto('/dashboard/billing');
     await page.click('[data-testid="create-bill"]');
     
-    // Select patient;
+    // Select patient
     await page.click('[data-testid="select-patient"]');
     await page.fill('[data-testid="patient-search"]', 'John');
     await page.click('[data-testid="patient-result"]:first-child');
     
-    // Add services;
+    // Add services
     await page.selectOption('[data-testid="visit-type"]', 'OPD');
     await page.click('[data-testid="add-service"]');
     await page.selectOption('[data-testid="service-category"]', 'CONSULTATION');
@@ -330,7 +322,7 @@ test.describe('Critical Flow: Billing and Payment', () => {
     
     await page.click('[data-testid="add-item"]');
     
-    // Add lab tests;
+    // Add lab tests
     await page.click('[data-testid="add-service"]');
     await page.selectOption('[data-testid="service-category"]', 'LABORATORY');
     await page.selectOption('[data-testid="service-item"]', 'CBC');
@@ -338,20 +330,20 @@ test.describe('Critical Flow: Billing and Payment', () => {
     
     await page.click('[data-testid="add-item"]');
     
-    // Calculate totals;
+    // Calculate totals
     await page.click('[data-testid="calculate-total"]');
     
-    // Verify total amount;
+    // Verify total amount
     const totalAmount = await page.textContent('[data-testid="total-amount"]'),
     expect(totalAmount).toBeTruthy();
     
-    // Save bill;
+    // Save bill
     await page.click('[data-testid="save-bill"]');
     await page.waitForSelector('[data-testid="bill-saved"]');
     
     const billNumber = await page.textContent('[data-testid="bill-number"]');
     
-    // Step 3: Process payment;
+    // Step 3: Process payment
     await page.click('[data-testid="process-payment"]');
     await page.selectOption('[data-testid="payment-method"]', 'CASH');
     await page.fill('[data-testid="payment-amount"]', totalAmount!.replace('$', ''));
@@ -360,32 +352,32 @@ test.describe('Critical Flow: Billing and Payment', () => {
     await page.click('[data-testid="process-payment-button"]');
     await page.waitForSelector('[data-testid="payment-success"]');
     
-    // Step 4: Verify bill status;
+    // Step 4: Verify bill status
     await page.goto('/dashboard/billing');
     await page.fill('[data-testid="bill-search"]', billNumber!);
     
     await expect(page.locator(`[data-testid="bill-${billNumber}"] [data-testid="status"]`)).toContainText('PAID');
     
-    // Step 5: Print receipt;
+    // Step 5: Print receipt
     await page.click(`[data-testid="print-receipt-${billNumber}"]`);
     
-    // Verify receipt content;
+    // Verify receipt content
     await expect(page.locator('[data-testid="receipt-patient-name"]')).toContainText('John');
     await expect(page.locator('[data-testid="receipt-total"]')).toContainText(totalAmount!);
     await expect(page.locator('[data-testid="receipt-status"]')).toContainText('PAID');
   });
 });
 
-// Critical Flow #5: Emergency Department Workflow;
+// Critical Flow #5: Emergency Department Workflow
 test.describe('Critical Flow: Emergency Department', () => {
   test('Complete emergency patient workflow', async ({ page }) => {
-    // Step 1: Emergency patient registration;
+    // Step 1: Emergency patient registration
     await loginUser(page, TEST_USERS.nurse);
     await page.goto('/dashboard/er');
     
     await page.click('[data-testid="register-emergency-patient"]');
     
-    // Quick registration;
+    // Quick registration
     await page.fill('[data-testid="first-name"]', 'Emergency');
     await page.fill('[data-testid="last-name"]', 'Patient');
     await page.fill('[data-testid="phone"]', '+1555000000');
@@ -397,7 +389,7 @@ test.describe('Critical Flow: Emergency Department', () => {
     
     const patientId = await page.textContent('[data-testid="emergency-patient-id"]');
     
-    // Step 2: Triage assessment;
+    // Step 2: Triage assessment
     await page.click('[data-testid="triage-patient"]');
     await page.fill('[data-testid="chief-complaint"]', 'Severe chest pain');
     await page.selectOption('[data-testid="triage-level"]', 'ESI-2');
@@ -413,18 +405,18 @@ test.describe('Critical Flow: Emergency Department', () => {
     await page.click('[data-testid="complete-triage"]');
     await page.waitForSelector('[data-testid="triage-completed"]');
     
-    // Step 3: Doctor assessment;
+    // Step 3: Doctor assessment
     await loginUser(page, TEST_USERS.doctor);
     await page.goto('/dashboard/er');
     
     await page.click(`[data-testid="assess-patient-${patientId}"]`);
     
-    // Clinical assessment;
+    // Clinical assessment
     await page.fill('[data-testid="history-present-illness"]', '45M with acute onset chest pain, crushing quality, radiating to left arm');
     await page.fill('[data-testid="physical-exam"]', 'Diaphoretic, mild distress, heart rate irregular');
     await page.fill('[data-testid="assessment"]', 'Acute chest pain, rule out MI');
     
-    // Order tests;
+    // Order tests
     await page.click('[data-testid="order-stat-labs"]');
     await page.check('[data-testid="troponin"]');
     await page.check('[data-testid="ckmb"]');
@@ -436,7 +428,7 @@ test.describe('Critical Flow: Emergency Department', () => {
     await page.click('[data-testid="submit-orders"]');
     await page.waitForSelector('[data-testid="orders-submitted"]');
     
-    // Step 4: Treatment orders;
+    // Step 4: Treatment orders
     await page.click('[data-testid="treatment-orders"]');
     await page.fill('[data-testid="medication-order"]', 'Aspirin 325mg PO STAT');
     await page.fill('[data-testid="iv-order"]', 'Normal saline 1L at 125ml/hr');
@@ -445,7 +437,7 @@ test.describe('Critical Flow: Emergency Department', () => {
     await page.click('[data-testid="submit-treatment-orders"]');
     await page.waitForSelector('[data-testid="treatment-orders-submitted"]');
     
-    // Step 5: Disposition;
+    // Step 5: Disposition
     await page.selectOption('[data-testid="disposition"]', 'ADMIT');
     await page.selectOption('[data-testid="admit-to"]', 'Cardiology');
     await page.fill('[data-testid="disposition-notes"]', 'Admit to cardiology for rule out MI, serial enzymes');
@@ -453,55 +445,55 @@ test.describe('Critical Flow: Emergency Department', () => {
     await page.click('[data-testid="complete-disposition"]');
     await page.waitForSelector('[data-testid="disposition-completed"]');
     
-    // Verify patient moved to IPD;
+    // Verify patient moved to IPD
     await page.goto('/dashboard/ipd');
     await expect(page.locator(`[data-testid="patient-${patientId}"]`)).toBeVisible();
   });
 });
 
-// Performance and Accessibility Tests;
+// Performance and Accessibility Tests
 test.describe('Performance and Accessibility', () => {
   test('Critical pages load within performance thresholds', async ({ page }) => {
     const startTime = Date.now();
     
-    // Test dashboard load time;
+    // Test dashboard load time
     await loginUser(page, TEST_USERS.admin);
     const dashboardLoadTime = Date.now() - startTime;
     
-    expect(dashboardLoadTime).toBeLessThan(3000); // 3 seconds;
+    expect(dashboardLoadTime).toBeLessThan(3000); // 3 seconds
     
-    // Test patient list load time;
+    // Test patient list load time
     const patientsStartTime = Date.now();
     await page.goto('/dashboard/patients');
     await page.waitForSelector('[data-testid="patient-list"]');
     const patientsLoadTime = Date.now() - patientsStartTime;
     
-    expect(patientsLoadTime).toBeLessThan(2000); // 2 seconds;
+    expect(patientsLoadTime).toBeLessThan(2000); // 2 seconds
     
-    // Test billing page load time;
+    // Test billing page load time
     const billingStartTime = Date.now();
     await page.goto('/dashboard/billing');
     await page.waitForSelector('[data-testid="billing-dashboard"]');
     const billingLoadTime = Date.now() - billingStartTime;
     
-    expect(billingLoadTime).toBeLessThan(2000); // 2 seconds;
+    expect(billingLoadTime).toBeLessThan(2000); // 2 seconds
   });
   
   test('Basic accessibility compliance', async ({ page }) => {
     await loginUser(page, TEST_USERS.admin);
     
-    // Check for proper heading structure;
+    // Check for proper heading structure
     const headings = await page.locator('h1, h2, h3, h4, h5, h6').count(),
     expect(headings).toBeGreaterThan(0);
     
-    // Check for alt attributes on images;
+    // Check for alt attributes on images
     const images = await page.locator('img').count();
     if (images > 0) {
       const imagesWithAlt = await page.locator('img[alt]').count(),
       expect(imagesWithAlt).toBe(images);
     }
     
-    // Check for form labels;
+    // Check for form labels
     const inputs = await page.locator('input[type="text"], input[type="email"], input[type="password"]').count();
     if (inputs > 0) {
       const inputsWithLabels = await page.locator('input[aria-label], input[aria-labelledby], label input').count(),

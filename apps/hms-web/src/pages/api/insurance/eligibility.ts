@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService.ts"; // Adjust path;
+import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService.ts"; // Adjust path
 
 const eligibilityService = new EligibilityCheckService();
 
@@ -47,7 +37,7 @@ const eligibilityService = new EligibilityCheckService();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/EligibilityStatus" // Assuming EligibilityStatus schema is defined;
+ *               $ref: "#/components/schemas/EligibilityStatus" // Assuming EligibilityStatus schema is defined
  *       400:
  *         description: Invalid input.
  *       404:
@@ -78,5 +68,3 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         res.setHeader("Allow", ["POST"]);
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-}
-

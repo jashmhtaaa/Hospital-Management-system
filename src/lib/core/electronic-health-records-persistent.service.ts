@@ -54,7 +54,7 @@ export const ClinicalNoteSchema = z.object({
   audio_recording_id: z.string().optional(),
   created_by: z.string(),
   status: z.enum(['draft', 'final', 'amended', 'corrected']).default('draft'),
-});
+})
 
 export const CarePlanSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
@@ -99,7 +99,7 @@ export const CarePlanSchema = z.object({
   created_by: z.string(),
   period_start: z.date(),
   period_end: z.date().optional(),
-});
+})
 
 export const ProblemListSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
@@ -138,17 +138,17 @@ export const ClinicalGuidelineSchema = z.object({
   created_by: z.string(),
   published_date: z.date().optional(),
   review_date: z.date().optional(),
-});
+})
 
 // Type definitions
-export type ClinicalNote = z.infer<typeof ClinicalNoteSchema>;
+export type ClinicalNote = z.infer<typeof ClinicalNoteSchema>
 export type CarePlan = z.infer<typeof CarePlanSchema>;
 export type ProblemListItem = z.infer<typeof ProblemListSchema>;
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema>;
 
 export interface ClinicalDecisionSupport {
   id: string,
-  title: string;
+  title: string,
   description: string,
   trigger_conditions: {
     icd10_codes?: string[];
@@ -162,7 +162,7 @@ export interface ClinicalDecisionSupport {
     actions?: string[];
   }[];
   status: 'active' | 'inactive',
-  created_by: string;
+  created_by: string,
   created_at: Date,
   updated_at: Date
 }
@@ -182,7 +182,7 @@ export class PersistentElectronicHealthRecordsService {
     'past_medical_history', 'medications', 'allergies', 'social_history',
     'family_history', 'physical_examination', 'free_text_content',
     'problem_description', 'notes', 'description', 'additionalNotes'
-  ];
+  ]
 
   constructor(prismaClient?: PrismaClient) {
     this.prisma = prismaClient || new PrismaClient();
@@ -191,11 +191,11 @@ export class PersistentElectronicHealthRecordsService {
   // Clinical Notes Operations
   async createClinicalNote(data: ClinicalNote): Promise<ClinicalNote & { id: string }> {
     try {
-      const validated = ClinicalNoteSchema.parse(data);
+      const validated = ClinicalNoteSchema.parse(data)
       
       // Determine note type and create appropriate record
       if (validated.note_type === 'soap_note') {
-        return this.createSoapNote(validated);
+        return this.createSoapNote(validated)
       } else {
         return this.createProgressNote(validated);
       }
@@ -258,7 +258,7 @@ export class PersistentElectronicHealthRecordsService {
       // Try SOAP note first
       const soapNote = await this.prisma.soapNote.findUnique({
         where: { id }
-      });
+      })
 
       if (soapNote) {
         return this.deserializeSoapNote(soapNote);
@@ -267,7 +267,7 @@ export class PersistentElectronicHealthRecordsService {
       // Try progress note
       const progressNote = await this.prisma.progressNote.findUnique({
         where: { id }
-      });
+      })
 
       if (progressNote) {
         return this.deserializeProgressNote(progressNote);
@@ -308,7 +308,7 @@ export class PersistentElectronicHealthRecordsService {
   // Care Plans Operations
   async createCarePlan(data: CarePlan): Promise<CarePlan & { id: string }> {
     try {
-      const validated = CarePlanSchema.parse(data);
+      const validated = CarePlanSchema.parse(data)
       
       const carePlan = await this.prisma.carePlan.create({
         data: {
@@ -334,7 +334,7 @@ export class PersistentElectronicHealthRecordsService {
             status: goal.status,
             priority: goal.priority,
           }
-        });
+        })
       }
 
       // Create interventions (activities)
@@ -348,7 +348,7 @@ export class PersistentElectronicHealthRecordsService {
             scheduledDate: activity.scheduled_date,
             category: activity.category,
           }
-        });
+        })
       }
 
       return {
@@ -400,7 +400,7 @@ export class PersistentElectronicHealthRecordsService {
         created_by: carePlan.createdBy,
         period_start: carePlan.periodStart,
         period_end: carePlan.periodEnd || undefined,
-      };
+      }
     } catch (error) {
       throw new Error(`Failed to get care plan: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -454,7 +454,7 @@ export class PersistentElectronicHealthRecordsService {
   // Problem List Operations
   async createProblemListItem(data: ProblemListItem): Promise<ProblemListItem & { id: string }> {
     try {
-      const validated = ProblemListSchema.parse(data);
+      const validated = ProblemListSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const problem = await this.prisma.problemEntry.create({
@@ -513,7 +513,7 @@ export class PersistentElectronicHealthRecordsService {
   // Clinical Guidelines Operations
   async createClinicalGuideline(data: ClinicalGuideline): Promise<ClinicalGuideline & { id: string }> {
     try {
-      const validated = ClinicalGuidelineSchema.parse(data);
+      const validated = ClinicalGuidelineSchema.parse(data)
       
       const guideline = await this.prisma.clinicalDecisionSupport.create({
         data: {
@@ -570,7 +570,7 @@ export class PersistentElectronicHealthRecordsService {
           created_by: guideline.createdBy,
           published_date: guideline.createdAt,
           review_date: undefined, // Would need to add to schema
-        };
+        }
       });
     } catch (error) {
       throw new Error(`Failed to get clinical guidelines: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -579,7 +579,7 @@ export class PersistentElectronicHealthRecordsService {
 
   // Helper methods for deserialization
   private async deserializeSoapNote(note: any): Promise<ClinicalNote> {
-    const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields);
+    const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields)
     
     return {
       patient_id: note.patientId,
@@ -617,7 +617,7 @@ export class PersistentElectronicHealthRecordsService {
 
   // Search and Query Operations
   async searchClinicalNotes(query: {
-    patientId?: string;
+    patientId?: string
     providerId?: string;
     dateFrom?: Date;
     dateTo?: Date;
@@ -667,7 +667,7 @@ export class PersistentElectronicHealthRecordsService {
   async evaluateClinicalDecisionSupport(
     patientId: string,
     context: {
-      icd10_codes?: string[];
+      icd10_codes?: string[]
       snomed_codes?: string[];
       lab_values?: { name: string; value: number }[];
       medications?: string[];
@@ -711,7 +711,7 @@ export class PersistentElectronicHealthRecordsService {
             created_by: rule.createdBy,
             created_at: rule.createdAt,
             updated_at: rule.updatedAt,
-          });
+          })
         }
       }
 
@@ -723,12 +723,12 @@ export class PersistentElectronicHealthRecordsService {
 
   // Cleanup
   async disconnect(): Promise<void> {
-    await this.prisma.$disconnect();
+    await this.prisma.$disconnect()
   }
 }
 
 // Export singleton instance
-let ehrServiceInstance: PersistentElectronicHealthRecordsService | null = null;
+let ehrServiceInstance: PersistentElectronicHealthRecordsService | null = null
 
 export const getEHRService = (prismaClient?: PrismaClient): PersistentElectronicHealthRecordsService => {
   if (!ehrServiceInstance) {
@@ -738,4 +738,4 @@ export const getEHRService = (prismaClient?: PrismaClient): PersistentElectronic
 };
 
 // For backward compatibility
-export { PersistentElectronicHealthRecordsService as ElectronicHealthRecordsService };
+export { PersistentElectronicHealthRecordsService as ElectronicHealthRecordsService 

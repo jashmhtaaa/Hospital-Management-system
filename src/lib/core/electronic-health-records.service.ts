@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -16,7 +8,7 @@ var __DEV__: boolean;
 
 import { z } from 'zod';
 
-// Clinical Note Schemas;
+// Clinical Note Schemas
 export const ClinicalNoteSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
   encounter_id: z.string().min(1, 'Encounter ID is required'),
@@ -24,13 +16,13 @@ export const ClinicalNoteSchema = z.object({
   note_type: z.enum(['progress_note', 'soap_note', 'admission_note', 'discharge_summary', 'consultation_note', 'procedure_note', 'nursing_note']),
   template_id: z.string().optional(),
   
-  // SOAP components;
+  // SOAP components
   subjective: z.string().optional(),
   objective: z.string().optional(),
   assessment: z.string().optional(),
   plan: z.string().optional(),
   
-  // Structured data;
+  // Structured data
   chief_complaint: z.string().optional(),
   history_of_present_illness: z.string().optional(),
   review_of_systems: z.string().optional(),
@@ -53,12 +45,12 @@ export const ClinicalNoteSchema = z.object({
     pain_scale: z.number().min(0).max(10).optional(),
   }).optional(),
   
-  // Diagnoses;
+  // Diagnoses
   primary_diagnosis: z.string().optional(),
   secondary_diagnoses: z.array(z.string()).default([]),
   icd10_codes: z.array(z.string()).default([]),
   
-  // Treatment plan;
+  // Treatment plan
   orders: z.array(z.object({
     type: z.enum(['medication', 'lab', 'imaging', 'procedure', 'consultation', 'therapy']),
     description: z.string(),
@@ -66,25 +58,25 @@ export const ClinicalNoteSchema = z.object({
     priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
   })).default([]),
   
-  // Follow-up;
+  // Follow-up
   follow_up_instructions: z.string().optional(),
   return_visit_interval: z.string().optional(),
   discharge_disposition: z.string().optional(),
   
-  // Clinical decision support;
+  // Clinical decision support
   alerts_triggered: z.array(z.string()).default([]),
   guidelines_referenced: z.array(z.string()).default([]),
   
-  // Note metadata;
+  // Note metadata
   note_status: z.enum(['draft', 'preliminary', 'final', 'amended', 'corrected']).default('draft'),
   priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
   confidentiality_level: z.enum(['normal', 'restricted', 'very_restricted']).default('normal'),
   
-  // Voice-to-text;
+  // Voice-to-text
   audio_recording_id: z.string().optional(),
   transcription_confidence: z.number().min(0).max(1).optional(),
   
-  // Template and formatting;
+  // Template and formatting
   free_text_content: z.string().optional(),
   structured_data: z.record(z.any()).optional(),
 });
@@ -197,7 +189,7 @@ export const ClinicalGuidelineSchema = z.object({
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
   id: string,
-  note_number: string;
+  note_number: string,
   created_at: Date,
   updated_at: Date;
   signed_at?: Date;
@@ -210,9 +202,9 @@ export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
 
 export type CarePlan = z.infer<typeof CarePlanSchema> & {
   id: string,
-  care_plan_number: string;
+  care_plan_number: string,
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
   version: number;
   last_reviewed_date?: Date;
   next_review_date?: Date;
@@ -220,29 +212,29 @@ export type CarePlan = z.infer<typeof CarePlanSchema> & {
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
   id: string,
-  created_at: Date;
+  created_at: Date,
   updated_at: Date,
   last_updated_by: string
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   id: string,
-  created_at: Date;
+  created_at: Date,
   updated_at: Date,
-  usage_count: number;
+  usage_count: number,
   last_used: Date
 };
 
 export interface ClinicalDecisionSupport {
   patient_id: string,
-  encounter_id: string;
+  encounter_id: string,
   alerts: {
     id: string,
-    type: 'drug_interaction' | 'allergy' | 'guideline_reminder' | 'preventive_care' | 'lab_result' | 'vital_sign';
+    type: 'drug_interaction' | 'allergy' | 'guideline_reminder' | 'preventive_care' | 'lab_result' | 'vital_sign',
     severity: 'info' | 'warning' | 'critical',
-    message: string;
+    message: string,
     recommendation: string,
-    source: string;
+    source: string,
     dismissed: boolean;
     dismissed_by?: string;
     dismissed_at?: Date;
@@ -250,52 +242,44 @@ export interface ClinicalDecisionSupport {
   }[];
   guidelines: {
     guideline_id: string,
-    name: string;
+    name: string,
     applicable_recommendations: string[],
     triggered_rules: string[]
   }[];
-}
-
 export interface QualityMeasure {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  numerator_criteria: string;
+  numerator_criteria: string,
   denominator_criteria: string,
-  patient_applicable: boolean;
+  patient_applicable: boolean,
   current_status: 'met' | 'not_met' | 'excluded',
-  performance_rate: number;
+  performance_rate: number,
   reporting_period: string,
   next_opportunity: string
-}
-
 export interface ClinicalSummary {
   patient_id: string,
-  generated_date: Date;
+  generated_date: Date,
   summary_type: 'encounter' | 'episodic' | 'comprehensive',
   demographics: {
     name: string,
-    age: number;
+    age: number,
     gender: string,
     mrn: string
   };
   
   active_problems: ProblemListItem[],
-  current_medications: string[];
+  current_medications: string[],
   allergies: string[],
-  recent_vitals: unknown;
+  recent_vitals: unknown,
   recent_lab_results: unknown[],
-  care_plans: CarePlan[];
+  care_plans: CarePlan[],
   upcoming_appointments: unknown[],
-  pending_orders: unknown[];
-  
+  pending_orders: unknown[],
   quality_measures: QualityMeasure[],
-  risk_factors: string[];
-  
+  risk_factors: string[],
   provider_notes: string,
   last_encounter_date: Date
-}
-
 export class ElectronicHealthRecordsService {
   private clinicalNotes: Map<string, ClinicalNote> = new Map();
   private carePlans: Map<string, CarePlan> = new Map();
@@ -466,7 +450,7 @@ export class ElectronicHealthRecordsService {
     const noteId = uuidv4();
     const noteNumber = this.generateNoteNumber();
 
-    // Apply template if specified;
+    // Apply template if specified
     let templateData = {};
     if (validatedData.template_id) {
       const template = this.templates.get(validatedData.template_id);
@@ -488,7 +472,7 @@ export class ElectronicHealthRecordsService {
 
     this.clinicalNotes.set(noteId, clinicalNote);
 
-    // Trigger clinical decision support;
+    // Trigger clinical decision support
     await this.triggerClinicalDecisionSupport(validatedData.patient_id, validatedData.encounter_id, clinicalNote);
 
     return clinicalNote;
@@ -578,7 +562,7 @@ export class ElectronicHealthRecordsService {
       amendments: [],
     };
 
-    // Update original note to reference amendment;
+    // Update original note to reference amendment
     originalNote.amendments.push(amendmentId);
     originalNote.updated_at = new Date();
 
@@ -598,7 +582,7 @@ export class ElectronicHealthRecordsService {
     const carePlanNumber = this.generateCarePlanNumber();
 
     // Calculate next review date (default 30 days)
-    const nextReviewDate = new Date();
+    const nextReviewDate = new Date()
     nextReviewDate.setDate(nextReviewDate.getDate() + 30);
 
     const carePlan: CarePlan = {
@@ -695,7 +679,7 @@ export class ElectronicHealthRecordsService {
     const alerts: ClinicalDecisionSupport['alerts'] = [];
     const guidelines: ClinicalDecisionSupport['guidelines'] = [];
 
-    // Check vital signs for alerts;
+    // Check vital signs for alerts
     if (note.vital_signs) {
       if (note.vital_signs.blood_pressure_systolic && note.vital_signs.blood_pressure_systolic >= 180) {
         alerts.push({
@@ -722,7 +706,7 @@ export class ElectronicHealthRecordsService {
       }
     }
 
-    // Check for applicable guidelines;
+    // Check for applicable guidelines
     const applicableGuidelines = Array.from(this.clinicalGuidelines.values());
       .filter(guideline => {
         return note.icd10_codes.some(code => 
@@ -749,7 +733,7 @@ export class ElectronicHealthRecordsService {
           triggered_rules: triggeredRules,
         });
 
-        // Create alerts for triggered rules;
+        // Create alerts for triggered rules
         for (const rule of guideline.decision_support_rules) {
           if (triggeredRules.includes(rule.rule_id)) {
             alerts.push({
@@ -780,7 +764,7 @@ export class ElectronicHealthRecordsService {
    * Evaluate decision support rule;
    */
   private evaluateRule(rule: unknown, note: ClinicalNote): boolean {
-    // Simplified rule evaluation - in real implementation, this would be more sophisticated;
+    // Simplified rule evaluation - in real implementation, this would be more sophisticated
     const condition = rule.condition.toLowerCase();
     
     if (condition.includes('bp') && note.vital_signs?.blood_pressure_systolic) {
@@ -793,8 +777,8 @@ export class ElectronicHealthRecordsService {
     if (condition.includes('hba1c') && note.assessment?.toLowerCase().includes('hba1c')) {
       const match = condition.match(/hba1c > (\d+)%/);
       if (match) {
-        // In real implementation, this would check actual lab values;
-        return Math.random() > 0.8; // Simulate 20% chance of high HbA1c;
+        // In real implementation, this would check actual lab values
+        return Math.random() > 0.8; // Simulate 20% chance of high HbA1c
       }
     }
     
@@ -842,7 +826,7 @@ export class ElectronicHealthRecordsService {
     patientId: string,
     summaryType: 'encounter' | 'episodic' | 'comprehensive' = 'comprehensive';
   ): Promise<ClinicalSummary> {
-    // Get patient data;
+    // Get patient data
     const activeProblems = await this.getActiveProblems(patientId);
     const patientCarePlans = Array.from(this.carePlans.values());
       .filter(cp => cp.patient_id === patientId && cp.status === 'active');
@@ -861,20 +845,20 @@ export class ElectronicHealthRecordsService {
         reporting_period: '2024',
         next_opportunity: 'Next visit',
       },
-    ];
+    ]
 
     const summary: ClinicalSummary = {
       patient_id: patientId,
       generated_date: new Date(),
       summary_type: summaryType,
       demographics: {
-        name: 'Patient Name', // In real implementation, fetch from patient service;
+        name: 'Patient Name', // In real implementation, fetch from patient service
         age: 45,
         gender: 'Male',
         mrn: `MRN${patientId.slice(-6)}`,
       },
       active_problems: activeProblems,
-      current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified;
+      current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified
       allergies: ['NKDA'],
       recent_vitals: { bp: '130/80', hr: '72', temp: '98.6' },
       recent_lab_results: [],
@@ -908,7 +892,7 @@ export class ElectronicHealthRecordsService {
     
     let filteredNotes = Array.from(this.clinicalNotes.values());
 
-    // Apply filters;
+    // Apply filters
     Object.entries(filters).forEach(([key, value]) => {
       if (value) {
         filteredNotes = filteredNotes.filter(note => {
@@ -921,7 +905,7 @@ export class ElectronicHealthRecordsService {
       }
     });
 
-    // Text search;
+    // Text search
     if (search_text) {
       const searchLower = search_text.toLowerCase();
       filteredNotes = filteredNotes.filter(note =>
@@ -934,9 +918,9 @@ export class ElectronicHealthRecordsService {
     }
 
     // Sort by creation date (newest first)
-    filteredNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    filteredNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())
 
-    // Pagination;
+    // Pagination
     const total = filteredNotes.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -998,5 +982,5 @@ export class ElectronicHealthRecordsService {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const electronicHealthRecordsService = new ElectronicHealthRecordsService();

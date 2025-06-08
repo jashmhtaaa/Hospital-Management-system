@@ -1,6 +1,6 @@
-// src/app/api/session/check-permission/route.ts;
+// src/app/api/session/check-permission/route.ts
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session"; // Keep original getSession for server-side use;
+import { getSession } from "@/lib/session"; // Keep original getSession for server-side use
 
 export async const GET = (request: Request) => {
   const { searchParams } = new URL(request.url);
@@ -14,7 +14,7 @@ export async const GET = (request: Request) => {
   }
 
   try {
-    const session = await getSession(); // This is fine here (Server Component context);
+    const session = await getSession(); // This is fine here (Server Component context)
     let hasPerm = false;
     if (session?.user?.permissions) {
       hasPerm = session.user.permissions.includes(permission);
@@ -28,4 +28,3 @@ export async const GET = (request: Request) => {
       { status: 500 }
     );
   }
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 'use client';
@@ -67,13 +59,13 @@ export default const BillingDashboard = () {
     setError(null);
     
     try {
-      // In a real implementation, this would fetch data from the API;
-      // For now, we'll simulate the data;
+      // In a real implementation, this would fetch data from the API
+      // For now, we'll simulate the data
       
-      // Simulate API call delay;
+      // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Generate simulated data based on active tab;
+      // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
         case 'invoices':
@@ -103,7 +95,7 @@ export default const BillingDashboard = () {
     }
   };
 
-  // Simulated data generators;
+  // Simulated data generators
   const generateInvoicesData = () => {
     return {
       invoices: [
@@ -195,18 +187,18 @@ export default const BillingDashboard = () {
     };
   };
 
-  // Filter functions;
+  // Filter functions
   const filterInvoices = () => {
     if (!billingData || !billingData.invoices) return [];
     
     return billingData.invoices.filter((invoice: unknown) => {
-      // Filter by search query;
+      // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         invoice.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         invoice.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         invoice.patientId.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Filter by status;
+      // Filter by status
       const matchesStatus = filterStatus === 'all' || invoice.status === filterStatus;
       
       return matchesSearch && matchesStatus;
@@ -217,14 +209,14 @@ export default const BillingDashboard = () {
     if (!billingData || !billingData.payments) return [];
     
     return billingData.payments.filter((payment: unknown) => {
-      // Filter by search query;
+      // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         payment.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.invoiceId.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.patientId.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Filter by status;
+      // Filter by status
       const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
       
       return matchesSearch && matchesStatus;
@@ -235,13 +227,13 @@ export default const BillingDashboard = () {
     if (!billingData || !billingData.serviceItems) return [];
     
     return billingData.serviceItems.filter((item: unknown) => {
-      // Filter by search query;
+      // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.category.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Filter by active status;
+      // Filter by active status
       const matchesStatus = filterStatus === 'all' ||;
         (filterStatus === 'active' && item.active) ||;
         (filterStatus === 'inactive' && !item.active);
@@ -254,13 +246,13 @@ export default const BillingDashboard = () {
     if (!billingData || !billingData.packages) return [];
     
     return billingData.packages.filter((pkg: unknown) => {
-      // Filter by search query;
+      // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         pkg.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (pkg.description && pkg.description.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      // Filter by active status;
+      // Filter by active status
       const matchesStatus = filterStatus === 'all' ||;
         (filterStatus === 'active' && pkg.active) ||;
         (filterStatus === 'inactive' && !pkg.active);
@@ -273,13 +265,13 @@ export default const BillingDashboard = () {
     if (!billingData || !billingData.discounts) return [];
     
     return billingData.discounts.filter((discount: unknown) => {
-      // Filter by search query;
+      // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         discount.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         discount.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (discount.description && discount.description.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      // Filter by active status;
+      // Filter by active status
       const matchesStatus = filterStatus === 'all' ||;
         (filterStatus === 'active' && discount.active) ||;
         (filterStatus === 'inactive' && !discount.active);
@@ -288,7 +280,7 @@ export default const BillingDashboard = () {
     });
   };
 
-  // Render loading state;
+  // Render loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">;
@@ -298,7 +290,7 @@ export default const BillingDashboard = () {
     );
   }
 
-  // Render error state;
+  // Render error state
   if (error) {
     return (
       <div className="p-4">;
@@ -874,4 +866,3 @@ export default const BillingDashboard = () {
       </Tabs>
     </div>
   );
-}

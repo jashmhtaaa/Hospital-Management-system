@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -40,55 +32,53 @@ interface VitalReadings {
 
 interface MedicationAdministered {
   medication_name: string,
-  dosage: string;
+  dosage: string,
   time: string
 }
 
 interface ChecklistResponse {
   id: string,
-  text: string;
+  text: string,
   checked: boolean
 }
 
-// Define the OTRecord type;
+// Define the OTRecord type
 interface OTRecord {
-  id?: string; // Optional ID for existing records;
+  id?: string; // Optional ID for existing records
   procedure_notes: string,
-  procedure_start_time: string | Date | null;
+  procedure_start_time: string | Date | null,
   procedure_end_time: string | Date | null,
-  anesthesia_type: string;
+  anesthesia_type: string,
   anesthesia_notes: string,
-  vitals: VitalReadings;
+  vitals: VitalReadings,
   medications_administered: MedicationAdministered[],
-  complications: string;
-  blood_loss_ml: number | string | null; // Allow string for input;
+  complications: string,
+  blood_loss_ml: number | string | null; // Allow string for input
   post_op_instructions: string,
   recovery_notes: string;
-  checklist_responses?: ChecklistResponse[]; // Optional checklist responses;
+  checklist_responses?: ChecklistResponse[]; // Optional checklist responses
 }
 
-// Define the type for data passed to onSave;
+// Define the type for data passed to onSave
 interface OTRecordSaveData;
   extends Omit<
     OTRecord,
     "id" | "vitals" | "medications_administered" | "checklist_responses";
   > {
   booking_id: string,
-  procedure_start_time: string | null;
+  procedure_start_time: string | null,
   procedure_end_time: string | null,
-  blood_loss_ml: number | null;
+  blood_loss_ml: number | null,
   checklist_responses: ChecklistResponse[];
-  // Include vitals and meds if they are saved separately or structured differently for API;
+  // Include vitals and meds if they are saved separately or structured differently for API
 }
 
-// Props for the modal - use defined types;
+// Props for the modal - use defined types
 interface OTRecordModalProperties {
   trigger: React.ReactNode,
   bookingId: string;
-  existingRecord?: OTRecord; // Use OTRecord type;
-  onSave: (recordData: OTRecordSaveData) => Promise<void>; // Use OTRecordSaveData type;
-}
-
+  existingRecord?: OTRecord; // Use OTRecord type
+  onSave: (recordData: OTRecordSaveData) => Promise<void>; // Use OTRecordSaveData type
 export default const OTRecordModal = ({
   trigger,
   bookingId,
@@ -120,7 +110,7 @@ export default const OTRecordModal = ({
     recovery_notes: existingRecord?.recovery_notes || "",
   }));
 
-  // Mock data for checklist items - replace with fetched template if applicable;
+  // Mock data for checklist items - replace with fetched template if applicable
   const [checklistItems, setChecklistItems] = useState<ChecklistResponse[]>(
     () =>
       existingRecord?.checklist_responses || [
@@ -136,7 +126,7 @@ export default const OTRecordModal = ({
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when existingRecord prop changes or modal opens;
+  // Reset form when existingRecord prop changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -231,24 +221,24 @@ export default const OTRecordModal = ({
         checklist_responses: checklistItems,
       };
 
-      // Replace with actual API call;
-      // const url = existingRecord?.id ? `/api/ot/bookings/${bookingId}/record/${existingRecord.id}` : `/api/ot/bookings/${bookingId}/record`;
-      // const method = existingRecord?.id ? "PUT" : "POST";
+      // Replace with actual API call
+      // const url = existingRecord?.id ? `/api/ot/bookings/${bookingId}/record/${existingRecord.id}` : `/api/ot/bookings/${bookingId}/record`
+      // const method = existingRecord?.id ? "PUT" : "POST"
       // const response = await fetch(url, {
       //   method: method,
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to save operation record");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to save operation record")
       // }
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh data;
+      await onSave(apiData); // Call parent callback to refresh data
 
       toast({
         title: "Success",
@@ -256,7 +246,7 @@ export default const OTRecordModal = ({
       }),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type;
+      // Use unknown for error type
 
       let errorMessage = "Failed to save operation record.";
       if (error instanceof Error) {
@@ -359,7 +349,7 @@ export default const OTRecordModal = ({
                     value={formData.blood_loss_ml}
                     onChange={handleChange}
                     className="mt-1"
-                    min="0" // Add min attribute for validation;
+                    min="0" // Add min attribute for validation
                   />
                 </div>
               </div>
@@ -517,4 +507,3 @@ export default const OTRecordModal = ({
       </DialogContent>
     </Dialog>
   );
-}

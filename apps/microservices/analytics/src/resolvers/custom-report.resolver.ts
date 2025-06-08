@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -20,15 +12,15 @@ import { GqlRolesGuard } from '@/lib/security/guards/gql-roles.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
 import { CustomReportService } from '../services/custom-report.service';
 
-// GraphQL models would be defined here;
-// import { ReportTemplate, ReportData, RegulatoryReport, NaturalLanguageQuery } from '../models';
+// GraphQL models would be defined here
+// import { ReportTemplate, ReportData, RegulatoryReport, NaturalLanguageQuery } from '../models'
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
 export class CustomReportResolver {
   constructor(private readonly customReportService: CustomReportService) {}
 
-  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types;
+  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
   
   @Query();
   async reportTemplates(
@@ -152,4 +144,3 @@ export class CustomReportResolver {
   ) {
     return this.customReportService.provideQueryFeedback(id, feedback, context.req.user.id);
   }
-}

@@ -1,18 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react"; // Added useState, useEffect;
-import { useRouter } from 'next/navigation'; // Added useRouter;
+import React, { useState, useEffect } from "react"; // Added useState, useEffect
+import { useRouter } from 'next/navigation'; // Added useRouter
 import {
   Form,
   FormControl,
@@ -33,13 +25,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { zodResolver } from "@hookform/resolvers/zod"; // Uncommented;
-import { useForm } from "react-hook-form"; // Uncommented;
-import * as z from "zod"; // Uncommented;
-import { useToast } from "@/hooks/use-toast"; // Added useToast for notifications;
+import { zodResolver } from "@hookform/resolvers/zod"; // Uncommented
+import { useForm } from "react-hook-form"; // Uncommented
+import * as z from "zod"; // Uncommented
+import { useToast } from "@/hooks/use-toast"; // Added useToast for notifications
 
-// Define the form schema;
-const consultationFormSchema = z.object({ // Uncommented;
+// Define the form schema
+const consultationFormSchema = z.object({ // Uncommented
   patientId: z.string().min(1, { message: "Please select a patient" }),
   chiefComplaint: z.string().min(3, { message: "Chief complaint is required" }),
   presentIllness: z.string().optional(),
@@ -51,7 +43,7 @@ const consultationFormSchema = z.object({ // Uncommented;
     oxygenSaturation: z.string().optional(),
     weight: z.string().optional(),
     height: z.string().optional(),
-  }).optional(), // Made optional to avoid issues if not filled initially;
+  }).optional(), // Made optional to avoid issues if not filled initially
   diagnosis: z.string().min(3, { message: "Diagnosis is required" }),
   treatmentPlan: z.string().min(3, { message: "Treatment plan is required" }),
   medications: z;
@@ -65,33 +57,33 @@ const consultationFormSchema = z.object({ // Uncommented;
       });
     );
     .optional(),
-  labTests: z.array(z.string()).optional(), // Assuming lab tests are selected by ID;
+  labTests: z.array(z.string()).optional(), // Assuming lab tests are selected by ID
   followUpDate: z.string().optional(),
   notes: z.string().optional(),
 });
 
-type ConsultationFormValues = z.infer<typeof consultationFormSchema>; // Uncommented;
+type ConsultationFormValues = z.infer<typeof consultationFormSchema>; // Uncommented
 
-// Define necessary interfaces based on usage;
+// Define necessary interfaces based on usage
 interface Patient {
   id: string,
-  name: string;
+  name: string,
   age: number,
-  gender: string;
+  gender: string,
   tokenNumber: number;
-  // Add other relevant patient fields if needed;
+  // Add other relevant patient fields if needed
 }
 
 // interface PermissionApiResponse {
-//   hasPermission?: boolean;
-//   error?: string;
+//   hasPermission?: boolean
+//   error?: string
 // }
 
 // Assuming the API returns an array directly, adjust if it returns { results: Patient[] }
-// type PatientsQueueApiResponse = Patient[];
+// type PatientsQueueApiResponse = Patient[]
 
 interface ConsultationApiResponse {
-  consultationId: string; // Assuming the API returns the ID of the created consultation;
+  consultationId: string; // Assuming the API returns the ID of the created consultation
   error?: string;
 }
 
@@ -102,24 +94,24 @@ interface ApiErrorResponse {
 // Mock permission check function (replace with actual API call)
 const checkPermission = async (permission: string): Promise<boolean> => {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual API call to /api/session/check-permission;
-  // Example: const response = await fetch(`/api/session/check-permission?permission=${permission}`);
-  // const data: PermissionApiResponse = await response.json();
-  // return data.hasPermission ?? false;
-  await new Promise(resolve => setTimeout(resolve, 100)); // Simulate network delay;
-  // For now, grant all permissions for testing;
+  // Replace with actual API call to /api/session/check-permission
+  // Example: const response = await fetch(`/api/session/check-permission?permission=${permission}`)
+  // const data: PermissionApiResponse = await response.json()
+  // return data.hasPermission ?? false
+  await new Promise(resolve => setTimeout(resolve, 100)); // Simulate network delay
+  // For now, grant all permissions for testing
   return true;
 };
 
 // Mock fetch patients function (replace with actual API call)
 const fetchPatientsQueue = async (): Promise<Patient[]> => {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual API call to /api/opd/queue or similar;
-  // Example: const response = await fetch('/api/opd/queue');
-  // const data: PatientsQueueApiResponse = await response.json();
-  // return data;
-  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay;
-  // Return mock data for testing;
+  // Replace with actual API call to /api/opd/queue or similar
+  // Example: const response = await fetch('/api/opd/queue')
+  // const data: PatientsQueueApiResponse = await response.json()
+  // return data
+  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+  // Return mock data for testing
   return [
     { id: "pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
     { id: "pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 },
@@ -127,10 +119,10 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
 };
 
 export default const OPDConsultationForm = () {
-  const router = useRouter(); // Initialize router;
-  const { toast } = useToast(); // Initialize toast;
+  const router = useRouter(); // Initialize router
+  const { toast } = useToast(); // Initialize toast
 
-  // State variables;
+  // State variables
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingPermissions, setLoadingPermissions] = useState<boolean>(true);
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -138,7 +130,7 @@ export default const OPDConsultationForm = () {
   const [canPrescribe, setCanPrescribe] = useState<boolean>(false);
   const [canOrderTests, setCanOrderTests] = useState<boolean>(false);
 
-  // Initialize the form;
+  // Initialize the form
   const form = useForm<ConsultationFormValues>({
     resolver: zodResolver(consultationFormSchema),
     defaultValues: {
@@ -155,7 +147,7 @@ export default const OPDConsultationForm = () {
     },
   });
 
-  // Fetch permissions and patient queue on component mount;
+  // Fetch permissions and patient queue on component mount
   useEffect(() => {
     const fetchData = async () => {
       setLoadingPermissions(true);
@@ -176,26 +168,26 @@ export default const OPDConsultationForm = () {
       }
     };
     fetchData();
-  }, [toast]); // Added toast dependency;
+  }, [toast]); // Added toast dependency
 
-  // Handle patient selection change;
+  // Handle patient selection change
   const handlePatientChange = (patientId: string) => {
     const patient = patients.find((p) => p.id === patientId) || null;
     setSelectedPatient(patient);
-    form.setValue("patientId", patientId); // Update form value;
-    // Reset other fields when patient changes, or fetch history;
+    form.setValue("patientId", patientId); // Update form value
+    // Reset other fields when patient changes, or fetch history
     form.reset({
-        ...form.getValues(), // Keep existing values if needed, or reset specific fields;
-        patientId: patientId, // Ensure patientId is set;
-        chiefComplaint: "", // Example reset;
-        // ... reset other fields;
+        ...form.getValues(), // Keep existing values if needed, or reset specific fields
+        patientId: patientId, // Ensure patientId is set
+        chiefComplaint: "", // Example reset
+        // ... reset other fields
     });
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // Optionally fetch patient history here;
-    // if (patient) fetchPatientHistory(patient.id);
+    // Optionally fetch patient history here
+    // if (patient) fetchPatientHistory(patient.id)
   };
 
-  // Add medication field;
+  // Add medication field
   const addMedication = () => {
     const currentMedications = form.getValues().medications || [];
     form.setValue("medications", [
@@ -204,7 +196,7 @@ export default const OPDConsultationForm = () {
     ]);
   };
 
-  // Remove medication field;
+  // Remove medication field
   const removeMedication = (index: number) => {
     const currentMedications = form.getValues().medications || [];
     form.setValue(
@@ -213,13 +205,13 @@ export default const OPDConsultationForm = () {
     );
   };
 
-  // Form submission handler;
+  // Form submission handler
   const onSubmit = async (data: ConsultationFormValues) => {
     setLoading(true);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     try {
-      const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure;
+      const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -240,15 +232,15 @@ export default const OPDConsultationForm = () {
 
       const result: ConsultationApiResponse = await response.json(); // Assuming API returns { consultationId: string }
 
-      toast({ title: "Success", description: "Consultation saved successfully." });
+      toast({ title: "Success", description: "Consultation saved successfully." })
 
-      // Redirect to consultation details or reset form;
+      // Redirect to consultation details or reset form
       if (result.consultationId) {
-        // Assuming the API returns the visit ID as consultationId;
-        router.push(`/dashboard/opd-visits/${result.consultationId}`); // Adjusted route;
+        // Assuming the API returns the visit ID as consultationId
+        router.push(`/dashboard/opd-visits/${result.consultationId}`); // Adjusted route
       } else {
         form.reset(),
-        setSelectedPatient(null); // Clear selected patient;
+        setSelectedPatient(null); // Clear selected patient
       }
     } catch (error: unknown) {
       const messageText =;
@@ -269,7 +261,7 @@ export default const OPDConsultationForm = () {
       <div className="mb-6">;
         <Select>
           onValueChange={handlePatientChange}
-          value={form.watch("patientId")} // Use watch to reactively update Select value;
+          value={form.watch("patientId")} // Use watch to reactively update Select value
         >
           <SelectTrigger className="w-full">;
             <SelectValue placeholder="Select a patient from the queue" />
@@ -412,7 +404,7 @@ export default const OPDConsultationForm = () {
                   <CardContent className="pt-6 space-y-4">;
                     {(form.watch("medications") || []).map((_, index) => (
 <div
-                        key={index} // Consider using a more stable key if available;
+                        key={index} // Consider using a more stable key if available
                         className="grid gap-4 p-4 border rounded-md relative"
                       >
                         <Button>
@@ -570,5 +562,3 @@ export default const OPDConsultationForm = () {
       )}
     </div>
   );
-}
-

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -19,28 +11,22 @@ import { logAuditEvent } from '@/lib/audit';
 
 export interface EncryptionConfig {
   algorithm: string,
-  keyLength: number;
+  keyLength: number,
   ivLength: number,
-  tagLength: number;
+  tagLength: number,
   keyDerivationIterations: number
-}
-
 export interface EncryptedData {
   data: string,
-  iv: string;
+  iv: string,
   tag: string,
-  algorithm: string;
+  algorithm: string,
   keyId: string,
   version: string
-}
-
 export interface EncryptionContext {
   userId?: string;
   resource?: string;
   purpose?: string;
   ipAddress?: string;
-}
-
 export class EncryptionService {
   private static instance: EncryptionService;
   private readonly config: EncryptionConfig;
@@ -51,13 +37,13 @@ export class EncryptionService {
   private constructor() {
     this.config = {
       algorithm: 'aes-256-gcm',
-      keyLength: 32, // 256 bits;
-      ivLength: 12,  // 96 bits for GCM;
-      tagLength: 16, // 128 bits;
+      keyLength: 32, // 256 bits
+      ivLength: 12,  // 96 bits for GCM
+      tagLength: 16, // 128 bits
       keyDerivationIterations: 100000
     };
 
-    // In production, these should come from secure key management service;
+    // In production, these should come from secure key management service
     this.masterKey = this.deriveMasterKey();
     this.keyId = process.env.ENCRYPTION_KEY_ID || 'default';
   }
@@ -81,21 +67,21 @@ export class EncryptionService {
         return plaintext;
       }
 
-      // Generate random IV for each encryption;
+      // Generate random IV for each encryption
       const iv = crypto.randomBytes(this.config.ivLength);
       
-      // Create cipher;
+      // Create cipher
       const cipher = crypto.createCipher(this.config.algorithm, this.masterKey);
-      cipher.setAAD(Buffer.from(this.keyId)); // Additional authenticated data;
+      cipher.setAAD(Buffer.from(this.keyId)); // Additional authenticated data
       
-      // Encrypt data;
+      // Encrypt data
       let encrypted = cipher.update(plaintext, 'utf8', 'hex');
       encrypted += cipher.final('hex');
       
-      // Get authentication tag;
+      // Get authentication tag
       const tag = cipher.getAuthTag();
 
-      // Create encrypted data object;
+      // Create encrypted data object
       const encryptedData: EncryptedData = {
         data: encrypted,
         iv: iv.toString('hex'),
@@ -105,10 +91,10 @@ export class EncryptionService {
         version: this.version
       };
 
-      // Log encryption event for audit;
+      // Log encryption event for audit
       this.logEncryptionEvent('ENCRYPT', true, context);
 
-      // Return base64 encoded JSON;
+      // Return base64 encoded JSON
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
 
     } catch (error) {
@@ -130,12 +116,12 @@ export class EncryptionService {
         return encryptedText;
       }
 
-      // Parse encrypted data;
+      // Parse encrypted data
       const encryptedData: EncryptedData = JSON.parse(
         Buffer.from(encryptedText, 'base64').toString('utf8');
       );
 
-      // Validate version and algorithm;
+      // Validate version and algorithm
       if (encryptedData.version !== this.version) {
         throw new Error('Unsupported encryption version');
       }
@@ -144,7 +130,7 @@ export class EncryptionService {
         throw new Error('Unsupported encryption algorithm');
       }
 
-      // Create decipher;
+      // Create decipher
       const decipher = crypto.createDecipher(
         encryptedData.algorithm, 
         this.masterKey;
@@ -153,11 +139,11 @@ export class EncryptionService {
       decipher.setAAD(Buffer.from(encryptedData.keyId));
       decipher.setAuthTag(Buffer.from(encryptedData.tag, 'hex'));
 
-      // Decrypt data;
+      // Decrypt data
       let decrypted = decipher.update(encryptedData.data, 'hex', 'utf8');
       decrypted += decipher.final('utf8');
 
-      // Log decryption event for audit;
+      // Log decryption event for audit
       this.logEncryptionEvent('DECRYPT', true, context);
 
       return decrypted;
@@ -286,8 +272,8 @@ export class EncryptionService {
             resource: `${context?.resource || 'object'}.${String(field)}`
           }) as T[keyof T];
         } catch (error) {
-          // Debug logging removed}:`, error);
-          // Keep encrypted value if decryption fails;
+          // Debug logging removed}:`, error)
+          // Keep encrypted value if decryption fails
         }
       }
     }
@@ -303,11 +289,11 @@ export class EncryptionService {
     context?: EncryptionContext;
   ): Promise<string> {
     try {
-      // Decrypt with old key;
+      // Decrypt with old key
       const plaintext = this.decrypt(encryptedData, context);
       
       // Re-encrypt with new key (same instance for now, but could use new key)
-      const newEncrypted = this.encrypt(plaintext, context);
+      const newEncrypted = this.encrypt(plaintext, context)
       
       await logAuditEvent({
         eventType: 'ENCRYPTION_KEY_ROTATION',
@@ -352,7 +338,7 @@ export class EncryptionService {
         Buffer.from(encryptedData, 'base64').toString('utf8');
       );
       
-      // Validate required fields;
+      // Validate required fields
       return !!(
         parsed.data &&
         parsed.iv &&
@@ -388,7 +374,7 @@ export class EncryptionService {
     context?: EncryptionContext,
     error?: string;
   ): Promise<void> {
-    // Only log significant events to avoid excessive logging;
+    // Only log significant events to avoid excessive logging
     if (!success || context?.resource?.includes('sensitive')) {
       await logAuditEvent({
         eventType: `ENCRYPTION_${operation}`,
@@ -409,7 +395,7 @@ export class EncryptionService {
   }
 }
 
-// Export singleton instance and utilities;
+// Export singleton instance and utilities
 export const encrypt = (data: string, context?: EncryptionContext): string => {
   return EncryptionService.getInstance().encrypt(data, context);
 };

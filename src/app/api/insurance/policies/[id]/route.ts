@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -22,7 +12,7 @@ import { ValidationError, NotFoundError } from '@/lib/core/errors';
 import { logger } from '@/lib/core/logging';
 import { convertToFHIRCoverage } from '@/lib/core/fhir';
 
-// Schema for insurance policy update;
+// Schema for insurance policy update
 const updatePolicySchema = z.object({
   insuranceProviderId: z.string().uuid().optional(),
   policyNumber: z.string().optional(),
@@ -44,7 +34,7 @@ const updatePolicySchema = z.object({
   notes: z.string().optional(),
 });
 
-// Schema for policy verification;
+// Schema for policy verification
 const verifyPolicySchema = z.object({
   verificationMethod: z.enum(['phone', 'portal', 'api', 'fax', 'email']),
   verificationReference: z.string().optional(),
@@ -54,16 +44,16 @@ const verifyPolicySchema = z.object({
   notes: z.string().optional(),
 });
 
-// GET handler for retrieving a specific insurance policy;
+// GET handler for retrieving a specific insurance policy
 export const GET = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Check permissions;
+  // Check permissions
   await checkPermission(permissionService, 'read', 'insurancePolicy')(req);
   
-  // Get format from query parameters;
+  // Get format from query parameters
   const url = new URL(req.url);
   const format = url.searchParams.get('format') || 'json';
   
-  // Retrieve policy from database;
+  // Retrieve policy from database
   const policy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
     include: {
@@ -105,25 +95,25 @@ export const GET = withErrorHandling(async (req: NextRequest, { params }: { para
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
   
-  // Convert to FHIR format if requested;
+  // Convert to FHIR format if requested
   if (format === 'fhir') {
     const fhirCoverage = convertToFHIRCoverage(policy);
     return createSuccessResponse(fhirCoverage);
   }
   
-  // Return standard JSON response;
+  // Return standard JSON response
   return createSuccessResponse(policy);
 });
 
-// PUT handler for updating an insurance policy;
+// PUT handler for updating an insurance policy
 export const PUT = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Validate request body;
+  // Validate request body
   const data = await validateBody(updatePolicySchema)(req);
   
-  // Check permissions;
+  // Check permissions
   await checkPermission(permissionService, 'update', 'insurancePolicy')(req);
   
-  // Retrieve existing policy;
+  // Retrieve existing policy
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
   });
@@ -132,7 +122,7 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
   
-  // Check if insurance provider exists if provided;
+  // Check if insurance provider exists if provided
   if (data.insuranceProviderId) {
     const provider = await prisma.insuranceProvider.findUnique({
       where: { id: data.insuranceProviderId },
@@ -143,7 +133,7 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
     }
   }
   
-  // Check if subscriber exists if provided;
+  // Check if subscriber exists if provided
   if (data.subscriberId) {
     const subscriber = await prisma.patient.findUnique({
       where: { id: data.subscriberId },
@@ -154,7 +144,7 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
     }
   }
   
-  // Determine policy status if dates are updated;
+  // Determine policy status if dates are updated
   let status = data.status || existingPolicy.status;
   
   if (data.startDate || data.endDate) {
@@ -169,7 +159,7 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
     }
   }
   
-  // Update policy in database;
+  // Update policy in database
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: params.id },
     data: {
@@ -217,12 +207,12 @@ export const PUT = withErrorHandling(async (req: NextRequest, { params }: { para
   return createSuccessResponse(updatedPolicy);
 });
 
-// DELETE handler for deleting an insurance policy;
+// DELETE handler for deleting an insurance policy
 export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Check permissions;
+  // Check permissions
   await checkPermission(permissionService, 'delete', 'insurancePolicy')(req);
   
-  // Retrieve existing policy;
+  // Retrieve existing policy
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
     include: {
@@ -234,7 +224,7 @@ export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { p
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
   
-  // Check if policy is used in any claims;
+  // Check if policy is used in any claims
   const claimsCount = await prisma.insuranceClaim.count({
     where: { insurancePolicyId: params.id },
   });
@@ -247,14 +237,14 @@ export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { p
     );
   }
   
-  // Delete policy in a transaction;
+  // Delete policy in a transaction
   await prisma.$transaction(async (prisma) => {
-    // Delete policy verifications;
+    // Delete policy verifications
     await prisma.policyVerification.deleteMany({
       where: { policyId: params.id },
     });
     
-    // Delete policy;
+    // Delete policy
     await prisma.insurancePolicy.delete({
       where: { id: params.id },
     });
@@ -267,7 +257,7 @@ export const DELETE = withErrorHandling(async (req: NextRequest, { params }: { p
 
 // PATCH handler for policy operations (verify)
 export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
-  // Get operation from query parameters;
+  // Get operation from query parameters
   const url = new URL(req.url);
   const operation = url.searchParams.get('operation');
   
@@ -275,7 +265,7 @@ export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { pa
     throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
   }
   
-  // Retrieve existing policy;
+  // Retrieve existing policy
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
   });
@@ -284,7 +274,7 @@ export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { pa
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
   
-  // Handle different operations;
+  // Handle different operations
   switch (operation) {
     case 'verify':
       return verifyPolicy(req, params.id, existingPolicy);
@@ -293,15 +283,15 @@ export const PATCH = withErrorHandling(async (req: NextRequest, { params }: { pa
   }
 });
 
-// Helper function to verify a policy;
+// Helper function to verify a policy
 async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: unknown) {
-  // Check permissions;
+  // Check permissions
   await checkPermission(permissionService, 'verify', 'insurancePolicy')(req);
   
-  // Validate request body;
+  // Validate request body
   const data = await validateBody(verifyPolicySchema)(req);
   
-  // Create verification record;
+  // Create verification record
   const verification = await prisma.policyVerification.create({
     data: {
       policyId,
@@ -315,7 +305,7 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
     },
   });
   
-  // Update policy with latest verification;
+  // Update policy with latest verification
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: policyId },
     data: {
@@ -357,4 +347,3 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
   });
   
   return createSuccessResponse(updatedPolicy);
-}

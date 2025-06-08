@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
@@ -58,7 +48,7 @@ import PatientAppointments from './patient-appointments.ts';
 import PatientVisits from './patient-visits.ts';
 import PatientDocuments from './patient-documents.ts';
 
-// Define patient status colors;
+// Define patient status colors
 const statusColors: Record<string, string> = {
   Active: 'success',
   Inactive: 'secondary',
@@ -66,10 +56,10 @@ const statusColors: Record<string, string> = {
   'On Hold': 'warning';
 };
 
-// Patient interface;
+// Patient interface
 interface Patient {
   id: string,
-  mrn: string;
+  mrn: string,
   firstName: string,
   lastName: string;
   middleName?: string;
@@ -84,9 +74,9 @@ interface Patient {
   religion?: string;
   occupation?: string;
   status: string,
-  vip: boolean;
+  vip: boolean,
   confidential: boolean,
-  registrationDate: string;
+  registrationDate: string,
   updatedAt: string;
   contact?: {
     phoneHome?: string;
@@ -99,7 +89,7 @@ interface Patient {
   };
   addresses?: {
     id: string,
-    addressType: string;
+    addressType: string,
     isPrimary: boolean,
     addressLine1: string;
     addressLine2?: string;
@@ -110,7 +100,7 @@ interface Patient {
   }[];
   identifications?: {
     id: string,
-    idType: string;
+    idType: string,
     idNumber: string,
     isPrimary: boolean;
     issuingCountry?: string;
@@ -120,9 +110,9 @@ interface Patient {
   }[];
   contacts?: {
     id: string,
-    firstName: string;
+    firstName: string,
     lastName: string,
-    relationship: string;
+    relationship: string,
     isPrimary: boolean;
     phoneHome?: string;
     phoneMobile?: string;
@@ -134,7 +124,7 @@ interface Patient {
   }[];
   insurances?: {
     id: string,
-    insuranceType: string;
+    insuranceType: string,
     payerName: string;
     planName?: string;
     policyNumber: string;
@@ -152,29 +142,27 @@ interface Patient {
   documents?: unknown[];
 }
 
-// Props interface;
+// Props interface
 interface PatientDetailProps {
   patientId: string;
   initialData?: Patient;
-}
-
 export default const PatientDetail = ({ patientId, initialData }: PatientDetailProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // States;
+  // States
   const [patient, setPatient] = useState<Patient | null>(initialData || null);
   const [loading, setLoading] = useState<boolean>(!initialData);
   const [activeTab, setActiveTab] = useState<string>('demographics');
   
-  // Effect to load patient if no initial data;
+  // Effect to load patient if no initial data
   useEffect(() => {
     if (!initialData && patientId) {
       fetchPatient();
     }
   }, [initialData, patientId]);
   
-  // Function to fetch patient data;
+  // Function to fetch patient data
   const fetchPatient = async () => {
     setLoading(true);
     
@@ -199,27 +187,27 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
     }
   };
   
-  // Handle back button;
+  // Handle back button
   const handleBack = () => {
     router.push('/patients');
   };
   
-  // Handle edit patient;
+  // Handle edit patient
   const handleEditPatient = () => {
     router.push(`/patients/${patientId}/edit`);
   };
   
-  // Handle print;
+  // Handle print
   const handlePrint = () => {
     window.print();
   };
   
-  // Handle refresh;
+  // Handle refresh
   const handleRefresh = () => {
     fetchPatient();
   };
   
-  // Format date function;
+  // Format date function
   const formatDate = (date: string) => {
     try {
       return format(new Date(date), 'MMM d, yyyy');
@@ -228,7 +216,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
     }
   };
   
-  // Calculate age from date of birth;
+  // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string) => {
     try {
       const birthDate = new Date(dateOfBirth);
@@ -246,7 +234,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
     }
   };
   
-  // If loading;
+  // If loading
   if (loading) {
     return (
       <Card className="w-full">;
@@ -264,7 +252,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
     );
   }
   
-  // If patient not found;
+  // If patient not found
   if (!patient) {
     return (
       <Card className="w-full">;
@@ -521,4 +509,3 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       </div>
     </div>
   );
-}

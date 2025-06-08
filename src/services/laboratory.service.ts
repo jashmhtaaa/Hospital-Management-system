@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { PrismaClient } from '@prisma/client';
 import { AuditService } from './audit_log_service.ts';
 import { NotificationService } from '../lib/notifications';
@@ -17,7 +7,7 @@ import * as z from 'zod';
 
 const prisma = new PrismaClient();
 
-// Define schema for lab test;
+// Define schema for lab test
 const LabTestSchema = z.object({
   testCode: z.string().min(1, "Test code is required"),
   testName: z.string().min(1, "Test name is required"),
@@ -46,7 +36,7 @@ const LabTestSchema = z.object({
   referralLabId: z.string().optional(),
 });
 
-// Define schema for lab order;
+// Define schema for lab order
 const LabOrderSchema = z.object({
   patientId: z.string().min(1, "Patient ID is required"),
   encounterId: z.string().optional(),
@@ -83,7 +73,7 @@ const LabOrderSchema = z.object({
   })).min(1, "At least one test must be ordered"),
 });
 
-// Define schema for lab sample;
+// Define schema for lab sample
 const LabSampleSchema = z.object({
   orderId: z.string().min(1, "Order ID is required"),
   patientId: z.string().min(1, "Patient ID is required"),
@@ -105,7 +95,7 @@ const LabSampleSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Define schema for lab result;
+// Define schema for lab result
 const LabResultSchema = z.object({
   orderId: z.string().min(1, "Order ID is required"),
   sampleId: z.string().optional(),
@@ -157,13 +147,13 @@ export class LaboratoryService {
    * Generate a unique order number;
    */
   private async generateOrderNumber(): Promise<string> {
-    // Get current date for prefix;
+    // Get current date for prefix
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().slice(-2);
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');
     
-    // Get count of orders for the day to generate a sequential number;
+    // Get count of orders for the day to generate a sequential number
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -175,10 +165,10 @@ export class LaboratoryService {
       }
     });
     
-    // Generate sequential number with padding;
+    // Generate sequential number with padding
     const sequentialNumber = (orderCount + 1).toString().padStart(4, '0');
     
-    // Combine to create Order Number: LAB-YYMMDD-XXXX;
+    // Combine to create Order Number: LAB-YYMMDD-XXXX
     const orderNumber = `LAB-${year}${month}${day}-${sequentialNumber}`;
     
     return orderNumber;
@@ -188,13 +178,13 @@ export class LaboratoryService {
    * Generate a unique sample ID;
    */
   private async generateSampleId(sampleTypeCode: string): Promise<string> {
-    // Get current date for prefix;
+    // Get current date for prefix
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().slice(-2);
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');
     
-    // Get count of samples for the day to generate a sequential number;
+    // Get count of samples for the day to generate a sequential number
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -206,10 +196,10 @@ export class LaboratoryService {
       }
     });
     
-    // Generate sequential number with padding;
+    // Generate sequential number with padding
     const sequentialNumber = (sampleCount + 1).toString().padStart(4, '0');
     
-    // Combine to create Sample ID: TYPE-YYMMDD-XXXX;
+    // Combine to create Sample ID: TYPE-YYMMDD-XXXX
     const sampleId = `${sampleTypeCode}-${year}${month}${day}-${sequentialNumber}`;
     
     return sampleId;
@@ -220,10 +210,10 @@ export class LaboratoryService {
    */
   async createLabTest(testData: unknown, userId: string): Promise<any> {
     try {
-      // Validate test data;
+      // Validate test data
       const validatedTest = LabTestSchema.parse(testData);
       
-      // Check if test code already exists;
+      // Check if test code already exists
       const existingTest = await prisma.labTest.findUnique({
         where: { testCode: validatedTest.testCode }
       });
@@ -232,7 +222,7 @@ export class LaboratoryService {
         throw new Error(`Test with code ${validatedTest.testCode} already exists`);
       }
       
-      // Create test;
+      // Create test
       const test = await prisma.labTest.create({
         data: {
           ...validatedTest,
@@ -240,7 +230,7 @@ export class LaboratoryService {
         }
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'LabTest',
@@ -261,7 +251,7 @@ export class LaboratoryService {
    */
   async getLabTestById(testId: string, userId: string): Promise<any> {
     try {
-      // Get test with parameters;
+      // Get test with parameters
       const test = await prisma.labTest.findUnique({
         where: { id: testId },
         include: {
@@ -283,7 +273,7 @@ export class LaboratoryService {
         throw new Error('Lab test not found');
       }
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'LabTest',
@@ -304,10 +294,10 @@ export class LaboratoryService {
    */
   async updateLabTest(testId: string, testData: unknown, userId: string): Promise<any> {
     try {
-      // Validate test data;
+      // Validate test data
       const validatedTest = LabTestSchema.parse(testData);
       
-      // Check if test exists;
+      // Check if test exists
       const existingTest = await prisma.labTest.findUnique({
         where: { id: testId }
       });
@@ -316,7 +306,7 @@ export class LaboratoryService {
         throw new Error('Lab test not found');
       }
       
-      // If changing test code, check if new code already exists;
+      // If changing test code, check if new code already exists
       if (validatedTest.testCode !== existingTest.testCode) {
         const duplicateTest = await prisma.labTest.findUnique({
           where: { testCode: validatedTest.testCode }
@@ -327,7 +317,7 @@ export class LaboratoryService {
         }
       }
       
-      // Update test;
+      // Update test
       const test = await prisma.labTest.update({
         where: { id: testId },
         data: {
@@ -336,7 +326,7 @@ export class LaboratoryService {
         }
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'LabTest',
@@ -357,22 +347,22 @@ export class LaboratoryService {
    */
   async createLabOrder(orderData: unknown, userId: string): Promise<any> {
     try {
-      // Validate order data;
+      // Validate order data
       const validatedOrder = LabOrderSchema.parse(orderData);
       
-      // Check if at least one of testId or profileId is provided for each item;
+      // Check if at least one of testId or profileId is provided for each item
       validatedOrder.orderItems.forEach(item => {
         if (!item.testId && !item.profileId) {
           throw new Error('Each order item must have either a test or profile specified');
         }
       });
       
-      // Generate order number;
+      // Generate order number
       const orderNumber = await this.generateOrderNumber();
       
-      // Create order with transaction;
+      // Create order with transaction
       const order = await prisma.$transaction(async (tx) => {
-        // Create order;
+        // Create order
         const newOrder = await tx.labOrder.create({
           data: {
             orderNumber,
@@ -401,7 +391,7 @@ export class LaboratoryService {
           }
         });
         
-        // Create order items;
+        // Create order items
         for (const item of validatedOrder.orderItems) {
           await tx.labOrderItem.create({
             data: {
@@ -422,7 +412,7 @@ export class LaboratoryService {
         return newOrder;
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'LabOrder',
@@ -431,7 +421,7 @@ export class LaboratoryService {
         performedBy: userId
       });
       
-      // Send notification to lab department;
+      // Send notification to lab department
       await this.notificationService.sendNotification({
         type: 'LabOrderCreated',
         title: 'New Lab Order',
@@ -455,7 +445,7 @@ export class LaboratoryService {
    */
   async getLabOrderById(orderId: string, userId: string): Promise<any> {
     try {
-      // Get order with items, samples, and results;
+      // Get order with items, samples, and results
       const order = await prisma.labOrder.findUnique({
         where: { id: orderId },
         include: {
@@ -482,7 +472,7 @@ export class LaboratoryService {
         throw new Error('Lab order not found');
       }
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'LabOrder',
@@ -503,7 +493,7 @@ export class LaboratoryService {
    */
   async updateLabOrderStatus(orderId: string, statusData: { status: string, notes?: string }, userId: string): Promise<any> {
     try {
-      // Check if order exists;
+      // Check if order exists
       const existingOrder = await prisma.labOrder.findUnique({
         where: { id: orderId }
       });
@@ -512,13 +502,13 @@ export class LaboratoryService {
         throw new Error('Lab order not found');
       }
       
-      // Validate status;
+      // Validate status
       const validStatuses = ['Ordered', 'Collected', 'In Process', 'Completed', 'Cancelled'];
       if (!validStatuses.includes(statusData.status)) {
         throw new Error(`Invalid status: ${statusData.status}. Must be one of: ${validStatuses.join(', ')}`);
       }
       
-      // Update order status;
+      // Update order status
       const order = await prisma.labOrder.update({
         where: { id: orderId },
         data: {
@@ -527,7 +517,7 @@ export class LaboratoryService {
         }
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'LabOrder',
@@ -536,7 +526,7 @@ export class LaboratoryService {
         performedBy: userId
       });
       
-      // Send notification for status change;
+      // Send notification for status change
       if (statusData.status === 'Completed') {
         await this.notificationService.sendNotification({
           type: 'LabOrderCompleted',
@@ -573,10 +563,10 @@ export class LaboratoryService {
    */
   async registerLabSample(sampleData: unknown, userId: string): Promise<any> {
     try {
-      // Validate sample data;
+      // Validate sample data
       const validatedSample = LabSampleSchema.parse(sampleData);
       
-      // Check if order exists;
+      // Check if order exists
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
         include: {
@@ -588,7 +578,7 @@ export class LaboratoryService {
         throw new Error('Lab order not found');
       }
       
-      // Get sample type;
+      // Get sample type
       const sampleType = await prisma.labSampleType.findUnique({
         where: { id: validatedSample.sampleTypeId }
       });
@@ -597,10 +587,10 @@ export class LaboratoryService {
         throw new Error('Sample type not found');
       }
       
-      // Generate sample ID;
+      // Generate sample ID
       const sampleId = await this.generateSampleId(sampleType.sampleTypeCode);
       
-      // Create sample;
+      // Create sample
       const sample = await prisma.labSample.create({
         data: {
           sampleId,
@@ -625,7 +615,7 @@ export class LaboratoryService {
         }
       });
       
-      // If sample is collected, update order status if it's still in 'Ordered' status;
+      // If sample is collected, update order status if it's still in 'Ordered' status
       if (validatedSample.collectionDateTime && order.status === 'Ordered') {
         await prisma.labOrder.update({
           where: { id: order.id },
@@ -638,7 +628,7 @@ export class LaboratoryService {
         });
       }
       
-      // If sample is received, update order status if it's in 'Collected' status;
+      // If sample is received, update order status if it's in 'Collected' status
       if (validatedSample.receivedDateTime && order.status === 'Collected') {
         await prisma.labOrder.update({
           where: { id: order.id },
@@ -650,7 +640,7 @@ export class LaboratoryService {
         });
       }
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'LabSample',
@@ -671,10 +661,10 @@ export class LaboratoryService {
    */
   async enterLabResult(resultData: unknown, userId: string): Promise<any> {
     try {
-      // Validate result data;
+      // Validate result data
       const validatedResult = LabResultSchema.parse(resultData);
       
-      // Check if order exists;
+      // Check if order exists
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedResult.orderId }
       });
@@ -683,7 +673,7 @@ export class LaboratoryService {
         throw new Error('Lab order not found');
       }
       
-      // Check if parameter exists;
+      // Check if parameter exists
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: validatedResult.parameterId },
         include: {
@@ -697,7 +687,7 @@ export class LaboratoryService {
         throw new Error('Test parameter not found');
       }
       
-      // Check if sample exists if provided;
+      // Check if sample exists if provided
       if (validatedResult.sampleId) {
         const sample = await prisma.labSample.findUnique({
           where: { id: validatedResult.sampleId }
@@ -708,48 +698,48 @@ export class LaboratoryService {
         }
       }
       
-      // If numeric result provided, check critical ranges;
+      // If numeric result provided, check critical ranges
       let isCritical = validatedResult.isCritical;
       let flags = validatedResult.flags;
       let referenceRange = validatedResult.referenceRange;
       
       if (validatedResult.resultValueNumeric !== undefined && parameter.criticalRanges.length > 0) {
         // Simplistic approach - in a real system would check age, gender, etc.
-        const criticalRange = parameter.criticalRanges[0];
+        const criticalRange = parameter.criticalRanges[0]
         
         if (criticalRange.lowerCritical &&
           validatedResult.resultValueNumeric < parseFloat(criticalRange.lowerCritical)) {
           isCritical = true;
-          flags = flags || 'CL'; // Critical Low;
+          flags = flags || 'CL'; // Critical Low
         } else if (criticalRange.upperCritical &&
           validatedResult.resultValueNumeric > parseFloat(criticalRange.upperCritical)) {
           isCritical = true;
-          flags = flags || 'CH'; // Critical High;
+          flags = flags || 'CH'; // Critical High
         }
       }
       
-      // If numeric result provided, check reference ranges;
+      // If numeric result provided, check reference ranges
       if (validatedResult.resultValueNumeric !== undefined && parameter.referenceRanges.length > 0) {
         // Simplistic approach - in a real system would check age, gender, etc.
-        const refRange = parameter.referenceRanges[0];
+        const refRange = parameter.referenceRanges[0]
         
         if (refRange.lowerLimit && refRange.upperLimit) {
           referenceRange = referenceRange || `${refRange.lowerLimit}-${refRange.upperLimit}`;
           
           if (refRange.lowerLimit && validatedResult.resultValueNumeric < parseFloat(refRange.lowerLimit)) {
-            flags = flags || 'L'; // Low;
+            flags = flags || 'L'; // Low
           } else if (refRange.upperLimit && validatedResult.resultValueNumeric > parseFloat(refRange.upperLimit)) {
-            flags = flags || 'H'; // High;
+            flags = flags || 'H'; // High
           }
         } else if (refRange.textualRange) {
           referenceRange = referenceRange || refRange.textualRange;
         }
       }
       
-      // Generate result ID;
+      // Generate result ID
       const resultId = `RES-${order.orderNumber}-${parameter.parameterCode}`;
       
-      // Create result;
+      // Create result
       const result = await prisma.labResult.create({
         data: {
           resultId,
@@ -786,7 +776,7 @@ export class LaboratoryService {
         }
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'LabResult',
@@ -795,7 +785,7 @@ export class LaboratoryService {
         performedBy: userId
       });
       
-      // Send notification for critical result;
+      // Send notification for critical result
       if (isCritical) {
         await this.notificationService.sendNotification({
           type: 'CriticalLabResult',
@@ -809,7 +799,7 @@ export class LaboratoryService {
         });
       }
       
-      // Check if all required results are entered and update order status if needed;
+      // Check if all required results are entered and update order status if needed
       const allOrderItems = await prisma.labOrderItem.findMany({
         where: { orderId: order.id },
         include: {
@@ -834,19 +824,19 @@ export class LaboratoryService {
         }
       });
       
-      // Collect all parameters that need results;
+      // Collect all parameters that need results
       const requiredParameters: string[] = [];
       
       for (const item of allOrderItems) {
         if (item.test) {
-          // Add test parameters;
+          // Add test parameters
           item.test.testParameters.forEach(param => {
             if (param.reportable) {
               requiredParameters.push(param.id);
             }
           });
         } else if (item.profile) {
-          // Add parameters from all tests in the profile;
+          // Add parameters from all tests in the profile
           item.profile.testItems.forEach(profileItem => {
             profileItem.test.testParameters.forEach(param => {
               if (param.reportable) {
@@ -857,14 +847,14 @@ export class LaboratoryService {
         }
       }
       
-      // Get all entered results for this order;
+      // Get all entered results for this order
       const results = await prisma.labResult.findMany({
         where: { orderId: order.id, status: { not: 'Cancelled' } }
       });
       
       const enteredParameters = results.map(r => r.parameterId);
       
-      // Check if all required parameters have results;
+      // Check if all required parameters have results
       const allResultsEntered = requiredParameters.every(param => enteredParameters.includes(param));
       
       // Update order status if all results are entered and status is 'In Process'
@@ -872,9 +862,9 @@ export class LaboratoryService {
         await prisma.labOrder.update({
           where: { id: order.id },
           data: { status: 'Completed' }
-        });
+        })
         
-        // Send notification for completed order;
+        // Send notification for completed order
         await this.notificationService.sendNotification({
           type: 'LabOrderCompleted',
           title: 'Lab Order Completed',
@@ -899,7 +889,7 @@ export class LaboratoryService {
    */
   async verifyLabResult(resultId: string, verificationData: { verifiedBy: string, notes?: string }, userId: string): Promise<any> {
     try {
-      // Check if result exists;
+      // Check if result exists
       const existingResult = await prisma.labResult.findUnique({
         where: { id: resultId },
         include: {
@@ -916,7 +906,7 @@ export class LaboratoryService {
         throw new Error('Lab result not found');
       }
       
-      // Update result status to Final and set verification info;
+      // Update result status to Final and set verification info
       const result = await prisma.labResult.update({
         where: { id: resultId },
         data: {
@@ -927,7 +917,7 @@ export class LaboratoryService {
         }
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'LabResult',
@@ -948,7 +938,7 @@ export class LaboratoryService {
    */
   async searchLabOrders(searchParams: unknown, userId: string): Promise<any> {
     try {
-      // Build where clause based on search parameters;
+      // Build where clause based on search parameters
       const where: unknown = {};
       
       if (searchParams.orderNumber) {
@@ -988,11 +978,11 @@ export class LaboratoryService {
         };
       }
       
-      // Add pagination parameters;
+      // Add pagination parameters
       const skip = searchParams.page ? (searchParams.page - 1) * (searchParams.limit || 10) : 0;
       const take = searchParams.limit || 10;
       
-      // Perform search;
+      // Perform search
       const [orders, total] = await Promise.all([
         prisma.labOrder.findMany({
           where,
@@ -1017,7 +1007,7 @@ export class LaboratoryService {
         prisma.labOrder.count({ where })
       ]);
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'Search',
         resourceType: 'LabOrder',
@@ -1043,7 +1033,7 @@ export class LaboratoryService {
    */
   async getPatientLabResults(patientId: string, options: { limit?: number, groupByTest?: boolean }, userId: string): Promise<any> {
     try {
-      // Get all results for the patient;
+      // Get all results for the patient
       const results = await prisma.labResult.findMany({
         where: {
           order: {
@@ -1071,7 +1061,7 @@ export class LaboratoryService {
         take: options.limit
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'LabResult',
@@ -1079,12 +1069,12 @@ export class LaboratoryService {
         performedBy: userId
       });
       
-      // If not grouping by test, return the flat list;
+      // If not grouping by test, return the flat list
       if (!options.groupByTest) {
         return results;
       }
       
-      // Group results by test;
+      // Group results by test
       const groupedResults = results.reduce((acc, result) => {
         const testId = result.parameter.testId;
         const testName = result.parameter.test.testName;
@@ -1099,12 +1089,12 @@ export class LaboratoryService {
           };
         }
         
-        // Update latest date if this result is newer;
+        // Update latest date if this result is newer
         if (new Date(result.performedDateTime) > new Date(acc[testId].latestDate)) {
           acc[testId].latestDate = result.performedDateTime;
         }
         
-        // Add parameter to test;
+        // Add parameter to test
         acc[testId].parameters.push({
           id: result.id,
           parameterId: result.parameterId,
@@ -1123,7 +1113,7 @@ export class LaboratoryService {
         return acc;
       }, {} as Record<string, any>);
       
-      // Convert to array and sort by latest date;
+      // Convert to array and sort by latest date
       return Object.values(groupedResults).sort((a, b) => 
         new Date(b.latestDate).getTime() - new Date(a.latestDate).getTime();
       );
@@ -1138,14 +1128,14 @@ export class LaboratoryService {
    */
   async getResultTrend(patientId: string, parameterId: string, options: { months?: number }, userId: string): Promise<any> {
     try {
-      // Calculate start date based on months option;
+      // Calculate start date based on months option
       let startDate;
       if (options.months) {
         startDate = new Date();
         startDate.setMonth(startDate.getMonth() - options.months);
       }
       
-      // Get parameter details;
+      // Get parameter details
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: parameterId },
         include: {
@@ -1158,7 +1148,7 @@ export class LaboratoryService {
         throw new Error('Test parameter not found');
       }
       
-      // Get results for the specific parameter;
+      // Get results for the specific parameter
       const results = await prisma.labResult.findMany({
         where: {
           parameterId,
@@ -1181,7 +1171,7 @@ export class LaboratoryService {
         orderBy: { performedDateTime: 'asc' }
       });
       
-      // Log audit;
+      // Log audit
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'LabResult',
@@ -1189,10 +1179,10 @@ export class LaboratoryService {
         performedBy: userId
       });
       
-      // Extract reference ranges;
+      // Extract reference ranges
       let referenceRanges = null;
       if (parameter.referenceRanges.length > 0) {
-        // In a real system, would select the appropriate range based on patient demographics;
+        // In a real system, would select the appropriate range based on patient demographics
         const refRange = parameter.referenceRanges[0];
         if (refRange.lowerLimit && refRange.upperLimit) {
           referenceRanges = {
@@ -1202,7 +1192,7 @@ export class LaboratoryService {
         }
       }
       
-      // Format the response;
+      // Format the response
       return {
         parameter: {
           id: parameter.id,
@@ -1229,4 +1219,3 @@ export class LaboratoryService {
       throw error;
     }
   }
-}

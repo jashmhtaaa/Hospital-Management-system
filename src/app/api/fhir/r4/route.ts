@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -26,7 +18,7 @@ export async const POST = (request: NextRequest) => {
   try {
     const bundle: FHIRBundle = await request.json();
 
-    // Validate bundle;
+    // Validate bundle
     if (!bundle || bundle.resourceType !== 'Bundle') {
       return NextResponse.json(
         {
@@ -44,7 +36,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Check bundle type;
+    // Check bundle type
     if (!['batch', 'transaction'].includes(bundle.type)) {
       return NextResponse.json(
         {
@@ -62,7 +54,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Process the bundle;
+    // Process the bundle
     const result = await fhirService.processBatch(bundle);
 
     if (!result.success) {
@@ -252,7 +244,7 @@ export async const GET = () => {
           { code: 'search-system' }
         ]
       }]
-    };
+    }
 
     return NextResponse.json(capabilityStatement, {
       headers: { 'Content-Type': 'application/fhir+json' }
@@ -290,4 +282,3 @@ export async const OPTIONS = () => {
       'Access-Control-Max-Age': '86400';
     }
   });
-}

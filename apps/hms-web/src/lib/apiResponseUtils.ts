@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// /home/ubuntu/Hms/apps/hms-web/src/lib/apiResponseUtils.ts;
+// /home/ubuntu/Hms/apps/hms-web/src/lib/apiResponseUtils.ts
 import { NextResponse } from "next/server";
 
 /**

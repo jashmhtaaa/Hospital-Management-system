@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 import { BiomedicalService } from '../biomedical-service';
 import { PrismaClient } from '@prisma/client';
 import { cache } from '@/lib/cache';
 
-// Mock PrismaClient;
+// Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
     biomedicalEquipment: {
@@ -40,7 +30,7 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-// Mock cache service;
+// Mock cache service
 jest.mock('@/lib/cache', () => ({
   cache: {
     get: jest.fn(),
@@ -147,7 +137,7 @@ describe('BiomedicalService', () => {
     it('should create equipment and invalidate cache', async () => {
       const mockEquipment = { id: '123', serialNumber: 'SN123', manufacturer: 'TestMfg' };
       (prisma.biomedicalEquipment.create as jest.Mock).mockResolvedValue(mockEquipment);
-      // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
+      // Mock the invalidateBiomedicalCache method to avoid the findFirst call
       jest.spyOn(BiomedicalService.prototype, 'invalidateBiomedicalCache' as any).mockResolvedValue(undefined);
 
       await biomedicalService.createBiomedicalEquipment({
@@ -168,7 +158,7 @@ describe('BiomedicalService', () => {
       const mockEquipment = { id: '123', serialNumber: 'SN123', manufacturer: 'TestMfg' };
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue({ serialNumber: 'SN123' });
       (prisma.biomedicalEquipment.update as jest.Mock).mockResolvedValue(mockEquipment);
-      // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
+      // Mock the invalidateBiomedicalCache method to avoid the findFirst call
       jest.spyOn(BiomedicalService.prototype, 'invalidateBiomedicalCache' as any).mockResolvedValue(undefined);
 
       await biomedicalService.updateBiomedicalEquipment('123', { manufacturer: 'UpdatedMfg' }),
@@ -187,7 +177,7 @@ describe('BiomedicalService', () => {
       const mockCalibration = { id: '456', equipmentId: '123', date: new Date(), result: 'PASS' };
       (prisma.calibrationRecord.create as jest.Mock).mockResolvedValue(mockCalibration);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
-      // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
+      // Mock the invalidateBiomedicalCache method to avoid the findFirst call
       jest.spyOn(BiomedicalService.prototype, 'invalidateBiomedicalCache' as any).mockResolvedValue(undefined);
 
       await biomedicalService.recordCalibration('123', {
@@ -229,7 +219,7 @@ describe('BiomedicalService', () => {
       expect(result.location.display).toEqual('Ward 1'),
       expect(result.owner.display).toEqual('Cardiology'),
       expect(result.property.length).toEqual(2),
-      expect(result.safety.length).toBeGreaterThan(0);
+      expect(result.safety.length).toBeGreaterThan(0)
     });
 
     it('should create FHIR DeviceDefinition with R5 compliance', () => {
@@ -245,7 +235,7 @@ describe('BiomedicalService', () => {
       expect(result.manufacturer.display).toEqual('TestMfg'),
       expect(result.modelNumber).toEqual('MDL123'),
       expect(result.description).toEqual('Patient Monitor'),
-      expect(result.type.coding[0].code).toEqual('Monitor');
+      expect(result.type.coding[0].code).toEqual('Monitor')
     });
   });
 

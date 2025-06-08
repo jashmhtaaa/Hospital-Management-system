@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
 
-// GET handler for retrieving a specific biomedical equipment;
+// GET handler for retrieving a specific biomedical equipment
 export async const GET = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -38,7 +28,7 @@ export async const GET = (
   }
 }
 
-// Schema for biomedical equipment update;
+// Schema for biomedical equipment update
 const biomedicalUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   equipmentType: z.enum(['DIAGNOSTIC', 'THERAPEUTIC', 'MONITORING', 'LABORATORY', 'SURGICAL', 'LIFE_SUPPORT', 'OTHER'], {
@@ -62,7 +52,7 @@ const biomedicalUpdateSchema = z.object({
   }).optional(),
   notes: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  // Biomedical specific fields;
+  // Biomedical specific fields
   deviceIdentifier: z.string().optional(),
   regulatoryClass: z.enum(['CLASS_I', 'CLASS_II', 'CLASS_III'], {
     errorMap: () => ({ message: "Invalid regulatory class" });
@@ -85,16 +75,16 @@ const biomedicalUpdateSchema = z.object({
   }),
 });
 
-// PUT handler for updating biomedical equipment;
+// PUT handler for updating biomedical equipment
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = biomedicalUpdateSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -105,7 +95,7 @@ export async const PUT = (
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects;
+    // Convert date strings to Date objects
     const biomedicalData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
@@ -115,7 +105,7 @@ export async const PUT = (
       lastSterilizationDate: data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined,
     };
     
-    // Update biomedical equipment;
+    // Update biomedical equipment
     const equipment = await biomedicalService.updateBiomedicalEquipment(params.id, biomedicalData);
     
     return NextResponse.json(equipment);
@@ -128,7 +118,7 @@ export async const PUT = (
   }
 }
 
-// DELETE handler for deleting biomedical equipment;
+// DELETE handler for deleting biomedical equipment
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -144,4 +134,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}

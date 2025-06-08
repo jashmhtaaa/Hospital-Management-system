@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -17,7 +9,7 @@ var __DEV__: boolean;
 import { Repository, QueryOptions } from './repository.ts';
 import { NotFoundError, AuthorizationError } from './errors.ts';
 
-// Base service interface;
+// Base service interface
 export interface Service<T, ID, CreateDTO, UpdateDTO> {
   findById(id: ID): Promise<T>;
   findAll(options?: QueryOptions): Promise<T[]>;
@@ -26,7 +18,7 @@ export interface Service<T, ID, CreateDTO, UpdateDTO> {
   delete(id: ID): Promise<boolean>
 }
 
-// Base service implementation;
+// Base service implementation
 export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Service<T, ID, CreateDTO, UpdateDTO> {
   constructor(protected repository: Repository<T, ID>) {}
 
@@ -48,64 +40,64 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
   }
 
   async update(id: ID, data: UpdateDTO): Promise<T> {
-    // Ensure entity exists;
+    // Ensure entity exists
     await this.findById(id);
     
-    // Validate update data;
+    // Validate update data
     await this.validateUpdate(id, data);
     
-    // Perform update;
+    // Perform update
     return this.repository.update(id, data as unknown as Partial<T>);
   }
 
   async delete(id: ID): Promise<boolean> {
-    // Ensure entity exists;
+    // Ensure entity exists
     await this.findById(id);
     
-    // Validate deletion;
+    // Validate deletion
     await this.validateDelete(id);
     
-    // Perform deletion;
+    // Perform deletion
     return this.repository.delete(id);
   }
 
-  // Validation methods to be overridden by subclasses;
+  // Validation methods to be overridden by subclasses
   protected async validateCreate(data: CreateDTO): Promise<void> {
-    // Default implementation does nothing;
-    // Subclasses should override this method to implement specific validation logic;
+    // Default implementation does nothing
+    // Subclasses should override this method to implement specific validation logic
   }
 
   protected async validateUpdate(id: ID, data: UpdateDTO): Promise<void> {
-    // Default implementation does nothing;
-    // Subclasses should override this method to implement specific validation logic;
+    // Default implementation does nothing
+    // Subclasses should override this method to implement specific validation logic
   }
 
   protected async validateDelete(id: ID): Promise<void> {
-    // Default implementation does nothing;
-    // Subclasses should override this method to implement specific validation logic;
+    // Default implementation does nothing
+    // Subclasses should override this method to implement specific validation logic
   }
 }
 
-// Audit service interface;
+// Audit service interface
 export interface AuditService {
   logAuditEvent(event: AuditEvent): Promise<void>
 }
 
-// Audit event interface;
+// Audit event interface
 export interface AuditEvent {
   action: string,
-  entityType: string;
+  entityType: string,
   entityId: string,
   userId: string;
   details?: Record<string, any>;
 }
 
-// Permission service for authorization;
+// Permission service for authorization
 export class PermissionService {
-  // This is a simplified implementation;
-  // In a real application, this would connect to a database or authorization service;
+  // This is a simplified implementation
+  // In a real application, this would connect to a database or authorization service
   
-  // Sample permission map for demonstration;
+  // Sample permission map for demonstration
   private permissions: Record<string, Record<string, string[]>> = {
     'user1': {
       'billing': ['read', 'create', 'update'],
@@ -125,22 +117,22 @@ export class PermissionService {
   };
   
   async hasPermission(userId: string, action: string, resource: string): Promise<boolean> {
-    // Check if user exists in permissions map;
+    // Check if user exists in permissions map
     if (!this.permissions[userId]) {
       return false;
     }
     
-    // Check if resource exists for user;
+    // Check if resource exists for user
     if (!this.permissions[userId][resource]) {
       return false;
     }
     
-    // Check if action is allowed for resource;
+    // Check if action is allowed for resource
     return this.permissions[userId][resource].includes(action);
   }
 }
 
-// Service with permission checking;
+// Service with permission checking
 export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends BaseService<T, ID, CreateDTO, UpdateDTO> {
   constructor(
     repository: Repository<T, ID>,
@@ -183,4 +175,3 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
       throw new AuthorizationError(`User does not have permission to ${action} ${this.resourceType}`);
     }
   }
-}

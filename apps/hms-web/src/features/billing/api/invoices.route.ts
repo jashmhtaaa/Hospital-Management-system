@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextApiRequest, NextApiResponse } from "next";
-import { InvoiceService } from "../../../../features/billing/services/InvoiceService.ts"; // Adjust path as per actual structure;
-import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path;
+import { InvoiceService } from "../../../../features/billing/services/InvoiceService.ts"; // Adjust path as per actual structure
+import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path
 
 const invoiceService = new InvoiceService();
 
@@ -110,11 +100,9 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         }
         // Potentially add a GET /api/billing/invoices to list all invoices or invoices for a patient (with query params)
         else {
-            return res.status(400).json({ message: "Invoice ID is required for GET requests to this endpoint, or use a different endpoint for listing invoices." });
+            return res.status(400).json({ message: "Invoice ID is required for GET requests to this endpoint, or use a different endpoint for listing invoices." })
         }
     } else {
         res.setHeader("Allow", ["POST", "GET"]);
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-}
-

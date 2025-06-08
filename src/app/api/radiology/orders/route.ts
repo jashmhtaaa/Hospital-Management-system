@@ -1,8 +1,8 @@
-// src/app/api/radiology/orders/route.ts;
+// src/app/api/radiology/orders/route.ts
 import { NextRequest, NextResponse } from "next/server";
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
+// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1
 
-// Define interfaces;
+// Define interfaces
 interface RadiologyOrderFilters {
   status?: string | null;
   modality?: string | null;
@@ -16,7 +16,7 @@ interface RadiologyOrderFilters {
 
 interface RadiologyOrderInput {
   patient_id: number,
-  ordering_doctor_id: number;
+  ordering_doctor_id: number,
   modality: string,
   body_part: string;
   order_date?: string;
@@ -42,14 +42,14 @@ interface RadiologyOrderUpdateInput {
   };
 }
 
-// Placeholder function to simulate database interaction;
+// Placeholder function to simulate database interaction
 async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
-  // Use interface;
+  // Use interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual D1 query when DB is configured;
+  // Replace with actual D1 query when DB is configured
   // ... (D1 query logic)
 
-  // Return mock data for now;
+  // Return mock data for now
   const mockRadiologyOrders = [
     {
       id: 1,
@@ -59,10 +59,10 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
       ordering_doctor_id: 5,
       ordering_doctor_name: "Dr. Robert Johnson",
       order_date: "2025-04-28T09:15:00Z",
-      modality: "X-Ray", // X-Ray, CT, MRI, Ultrasound, etc.;
+      modality: "X-Ray", // X-Ray, CT, MRI, Ultrasound, etc.
       body_part: "Chest",
-      priority: "routine", // routine, urgent, stat;
-      status: "scheduled", // ordered, scheduled, completed, reported, cancelled;
+      priority: "routine", // routine, urgent, stat
+      status: "scheduled", // ordered, scheduled, completed, reported, cancelled
       scheduled_date: "2025-04-29T10:30:00Z",
       performed_date: undefined,
       performed_by: undefined,
@@ -120,16 +120,16 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
   ];
 
   return mockRadiologyOrders.filter((order) => {
-    // Apply status filter;
+    // Apply status filter
     if (filters.status && order.status !== filters.status) return false;
 
-    // Apply modality filter;
+    // Apply modality filter
     if (filters.modality && order.modality !== filters.modality) return false;
 
-    // Apply priority filter;
+    // Apply priority filter
     if (filters.priority && order.priority !== filters.priority) return false;
 
-    // Apply date range filter;
+    // Apply date range filter
     if (filters.startDate) {
       const startDate = new Date(filters.startDate);
       const orderDate = new Date(order.order_date);
@@ -142,22 +142,22 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
       if (orderDate > endDate) return false;
     }
 
-    // Apply doctor filter;
+    // Apply doctor filter
     if (
       filters.doctorId &&
       order.ordering_doctor_id.toString() !== filters.doctorId;
     );
       return false;
 
-    // Apply patient filter;
+    // Apply patient filter
     if (filters.patientId && order.patient_id.toString() !== filters.patientId)
       return false;
 
-    // Apply search filter;
+    // Apply search filter
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase();
       return (
-        // Add null check;
+        // Add null check
         (order.patient_name.toLowerCase().includes(searchTerm) ||
         order.ordering_doctor_name.toLowerCase().includes(searchTerm) ||
         order.order_number.toLowerCase().includes(searchTerm) ||
@@ -171,14 +171,14 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
   });
 }
 
-// Placeholder function to simulate creating a radiology order;
+// Placeholder function to simulate creating a radiology order
 async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
-  // Use interface;
+  // Use interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual D1 insert query when DB is configured;
+  // Replace with actual D1 insert query when DB is configured
   // ... (D1 query logic)
 
-  // Return mock success response;
+  // Return mock success response
   const newId = Math.floor(Math.random() * 1000) + 10;
   const orderNumber = `RAD-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
   return {
@@ -198,15 +198,15 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
   };
 }
 
-// Placeholder function to simulate getting a single radiology order;
-// FIX: Commented out unused function;
+// Placeholder function to simulate getting a single radiology order
+// FIX: Commented out unused function
 /*
 async const getRadiologyOrderByIdFromDB = (id: number) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual D1 query when DB is configured;
+  // Replace with actual D1 query when DB is configured
   // ... (D1 query logic)
   
-  // Return mock data for now;
+  // Return mock data for now
   const mockRadiologyOrders = [
     {
       id: 1,
@@ -275,17 +275,17 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
 }
 */
 
-// Placeholder function to simulate updating a radiology order;
+// Placeholder function to simulate updating a radiology order
 async const updateRadiologyOrderInDB = (
   id: number,
   updateData: RadiologyOrderUpdateInput;
 ) {
-  // Use interface;
+  // Use interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual D1 update query when DB is configured;
+  // Replace with actual D1 update query when DB is configured
   // ... (D1 query logic)
 
-  // Return mock success response;
+  // Return mock success response
   return {
     id,
     ...updateData,
@@ -308,7 +308,7 @@ export async const GET = (request: NextRequest) => {
     const doctorId = searchParams.get("doctorId");
     const patientId = searchParams.get("patientId");
     const search = searchParams.get("search");
-    // Add other filters as needed;
+    // Add other filters as needed
 
     const filters: RadiologyOrderFilters = {
       status,
@@ -319,14 +319,14 @@ export async const GET = (request: NextRequest) => {
       doctorId,
       patientId,
       search,
-    }; // Use interface;
+    }; // Use interface
 
-    // Check if this is a request for a specific radiology order;
+    // Check if this is a request for a specific radiology order
     // This logic seems misplaced in the general /orders route.
-    // Specific order fetching should be handled by /orders/[id]/route.ts;
+    // Specific order fetching should be handled by /orders/[id]/route.ts
     // Commenting out for now.
     /*
-    const path = request.nextUrl.pathname;
+    const path = request.nextUrl.pathname
     if (path.match(/\/api\/radiology\/orders\/\d+$/)) {
       const id = parseInt(path.split("/").pop() || "0");
       if (id > 0) {
@@ -339,12 +339,12 @@ export async const GET = (request: NextRequest) => {
     }
     */
 
-    // Return filtered list;
+    // Return filtered list
     const orders = await getRadiologyOrdersFromDB(filters);
 
     return NextResponse.json({ orders });
   } catch (error: unknown) {
-    // Add type annotation;
+    // Add type annotation
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -361,14 +361,14 @@ export async const GET = (request: NextRequest) => {
  */
 export async const POST = (request: NextRequest) => {
   try {
-    const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface;
+    const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface
 
     // Basic validation (add more comprehensive validation)
     if (
       !orderData.patient_id ||
       !orderData.ordering_doctor_id ||
       !orderData.modality ||
-      !orderData.body_part;
+      !orderData.body_part
     ) {
       return NextResponse.json(
         {
@@ -379,12 +379,12 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Simulate creating the radiology order in the database;
+    // Simulate creating the radiology order in the database
     const newOrder = await createRadiologyOrderInDB(orderData);
 
     return NextResponse.json({ order: newOrder }, { status: 201 });
   } catch (error: unknown) {
-    // Add type annotation;
+    // Add type annotation
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -407,25 +407,25 @@ export async const PUT = (request: NextRequest) => {
     const path = request.nextUrl.pathname;
     // This parsing logic is fragile and assumes the ID is the last segment.
     // It's better handled by the [id] route parameter.
-    const idString = path.split("/").pop();
+    const idString = path.split("/").pop()
     const id = idString ? Number.parseInt(idString) : 0;
 
     if (id <= 0 || Number.isNaN(id)) {
-      // Check for NaN;
+      // Check for NaN
       return NextResponse.json(
         { error: "Invalid or missing radiology order ID in URL path" },
         { status: 400 }
       );
     }
 
-    const updateData = (await request.json()) as RadiologyOrderUpdateInput; // Cast to interface;
+    const updateData = (await request.json()) as RadiologyOrderUpdateInput; // Cast to interface
 
-    // Simulate updating the radiology order in the database;
+    // Simulate updating the radiology order in the database
     const updatedOrder = await updateRadiologyOrderInDB(id, updateData);
 
     return NextResponse.json({ order: updatedOrder });
   } catch (error: unknown) {
-    // Add type annotation;
+    // Add type annotation
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -434,4 +434,3 @@ export async const PUT = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

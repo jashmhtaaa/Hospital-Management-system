@@ -1,32 +1,24 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface DispensingRecord {
   id: string,
-  prescription_id: string;
+  prescription_id: string,
   prescription_item_id: string,
-  medication_id: string;
+  medication_id: string,
   generic_name: string;
   brand_name?: string;
   strength: string,
-  dosage_form: string;
+  dosage_form: string,
   batch_id: string,
-  batch_number: string;
+  batch_number: string,
   quantity: number,
-  selling_price: number;
+  selling_price: number,
   dispensed_at: string,
   billed: boolean
 }
@@ -36,13 +28,13 @@ interface UnbilledItem extends DispensingRecord {
 }
 
 interface BillingPharmacyIntegrationProperties {
-  patientId: string | null; // Allow null if patientId might not be available initially;
+  patientId: string | null; // Allow null if patientId might not be available initially
 }
 
 const BillingPharmacyIntegration: React.FC<;
   BillingPharmacyIntegrationProperties;
 > = ({ patientId }) => {
-  // const _router = useRouter(); // Commented out as unused;
+  // const _router = useRouter(); // Commented out as unused
   const [loading, setLoading] = useState<boolean>(true);
   const [dispensingRecords, setDispensingRecords] = useState<;
     DispensingRecord[]
@@ -52,7 +44,7 @@ const BillingPharmacyIntegration: React.FC<;
   const [billTotal, setBillTotal] = useState<number>(0);
 
   useEffect(() => {
-    // Fetch dispensing records for the patient that haven't been billed;
+    // Fetch dispensing records for the patient that haven't been billed
     const fetchUnbilledDispensing = async (): Promise<void> => {
       if (!patientId) {
         setLoading(false);
@@ -60,15 +52,15 @@ const BillingPharmacyIntegration: React.FC<;
       }
       setLoading(true);
       try {
-        // Simulate API call;
-        // const response = await fetch(`/api/pharmacy/dispensing?patient_id=${patientId}&billed=false`);
+        // Simulate API call
+        // const response = await fetch(`/api/pharmacy/dispensing?patient_id=${patientId}&billed=false`)
         // if (!response.ok) {
-        //   throw new Error('Failed to fetch unbilled items');
+        //   throw new Error('Failed to fetch unbilled items')
         // }
-        // const data = await response.json();
-        // const records: DispensingRecord[] = data.dispensing_records || [];
+        // const data = await response.json()
+        // const records: DispensingRecord[] = data.dispensing_records || []
 
-        // Mock data;
+        // Mock data
         const mockRecords: DispensingRecord[] = [
           {
             id: "disp_001",
@@ -103,9 +95,9 @@ const BillingPharmacyIntegration: React.FC<;
             billed: false,
           },
         ];
-        const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially;
+        const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially
 
-        setDispensingRecords(mockRecords); // Store all records for display later;
+        setDispensingRecords(mockRecords); // Store all records for display later
         setUnbilledItems(
           records.map((record) => ({
             ...record,
@@ -114,7 +106,7 @@ const BillingPharmacyIntegration: React.FC<;
         );
       } catch (error) {
 
-        // Handle error appropriately, e.g., show an error message;
+        // Handle error appropriately, e.g., show an error message
       } finally {
         setLoading(false);
       }
@@ -123,7 +115,7 @@ const BillingPharmacyIntegration: React.FC<;
     fetchUnbilledDispensing();
   }, [patientId]);
 
-  // Handle item selection for billing;
+  // Handle item selection for billing
   const handleItemSelection = (
     item: UnbilledItem,
     isSelected: boolean;
@@ -137,13 +129,13 @@ const BillingPharmacyIntegration: React.FC<;
     }
   };
 
-  // Calculate bill total whenever selected items change;
+  // Calculate bill total whenever selected items change
   useEffect(() => {
     const total = selectedItems.reduce((sum, item) => sum + item.subtotal, 0);
     setBillTotal(total);
   }, [selectedItems]);
 
-  // Generate pharmacy bill;
+  // Generate pharmacy bill
   const handleGenerateBill = async (): Promise<void> => {
     if (selectedItems.length === 0) {
       alert("Please select at least one item to bill");
@@ -153,7 +145,7 @@ const BillingPharmacyIntegration: React.FC<;
     setLoading(true);
 
     try {
-      // Simulate API call to create a bill;
+      // Simulate API call to create a bill
       // const response = await fetch('/api/billing/pharmacy-bill', {
       //   method: 'POST',
       //   headers: {
@@ -166,20 +158,20 @@ const BillingPharmacyIntegration: React.FC<;
       //       medication_id: item.medication_id,
       //       quantity: item.quantity,
       //       unit_price: item.selling_price,
-      //       subtotal: item.subtotal;
+      //       subtotal: item.subtotal
       //     })),
-      //     total_amount: billTotal;
+      //     total_amount: billTotal
       //   }),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || 'Failed to generate bill');
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || 'Failed to generate bill')
       // }
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
-      // Update UI to reflect billed items;
+      // Update UI to reflect billed items
       const billedItemIds = new Set(selectedItems.map((item) => item.id));
       setDispensingRecords((previousRecords) =>
         previousRecords.map((record) =>
@@ -192,7 +184,7 @@ const BillingPharmacyIntegration: React.FC<;
       );
 
       setSelectedItems([]);
-      // Bill total is recalculated by useEffect, no need to set here;
+      // Bill total is recalculated by useEffect, no need to set here
 
       alert("Pharmacy bill generated successfully!");
     } catch (error) {

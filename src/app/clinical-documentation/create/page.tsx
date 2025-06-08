@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -23,19 +13,19 @@ export default async const DocumentCreatePage = ({
 }: {
   searchParams: { patientId?: string, encounterId?: string }
 }) {
-  // Get session;
+  // Get session
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated;
+  // Redirect to login if not authenticated
   if (!session) {
     redirect('/login');
   }
   
-  // Get patientId and encounterId from search params;
+  // Get patientId and encounterId from search params
   const patientId = searchParams.patientId;
   const encounterId = searchParams.encounterId;
   
-  // Redirect if no patientId;
+  // Redirect if no patientId
   if (!patientId) {
     redirect('/clinical-documentation');
   }
@@ -43,14 +33,14 @@ export default async const DocumentCreatePage = ({
   // Check if patient exists (would use real check in production)
   // const patient = await prisma.patient.findUnique({
   //   where: { id: patientId }
-  // });
+  // })
   
   // if (!patient) {
-  //   redirect('/patients');
+  //   redirect('/patients')
   // }
   
   return (
-    <div className="container mx-auto py-6">;
+    <div className="container mx-auto py-6">
       <Suspense fallback={<div>Loading document editor...</div>}>;
         <DocumentEditor>
           patientId={patientId}
@@ -59,4 +49,3 @@ export default async const DocumentCreatePage = ({
       </Suspense>
     </div>
   );
-}

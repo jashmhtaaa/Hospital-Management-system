@@ -1,8 +1,8 @@
-// src/app/api/portal/patient/auth/route.ts;
+// src/app/api/portal/patient/auth/route.ts
 import { NextRequest, NextResponse } from "next/server";
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
+// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1
 
-// Define interfaces for request bodies;
+// Define interfaces for request bodies
 interface LoginData {
   email?: string;
   password?: string;
@@ -20,27 +20,27 @@ interface RegisterData {
   emergency_contact?: string;
 }
 
-// Placeholder function to simulate patient login;
+// Placeholder function to simulate patient login
 async const authenticatePatient = (email: string, password: string) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual D1 query and password verification when DB is configured;
-  // const { env } = getRequestContext();
+  // Replace with actual D1 query and password verification when DB is configured
+  // const { env } = getRequestContext()
   // const { results } = await env.DB.prepare(
   //   `SELECT id, name, email, password_hash FROM patients WHERE email = ? LIMIT 1`
-  // ).bind(email).all();
+  // ).bind(email).all()
   //
-  // if (results.length === 0) return null;
+  // if (results.length === 0) return null
   //
-  // const patient = results[0];
-  // const passwordMatch = await bcrypt.compare(password, patient.password_hash);
+  // const patient = results[0]
+  // const passwordMatch = await bcrypt.compare(password, patient.password_hash)
   //
-  // if (!passwordMatch) return null;
+  // if (!passwordMatch) return null
   //
-  // // Don't return password hash in response;
-  // delete patient.password_hash;
-  // return patient;
+  // // Don't return password hash in response
+  // delete patient.password_hash
+  // return patient
 
-  // For now, return mock data for specific test accounts;
+  // For now, return mock data for specific test accounts
   if (email === "patient@example.com" && password === "password123") {
     return {
       id: 1,
@@ -60,36 +60,36 @@ async const authenticatePatient = (email: string, password: string) {
   return;
 }
 
-// Placeholder function to simulate patient registration;
+// Placeholder function to simulate patient registration
 async const registerPatient = (patientData: RegisterData) {
-  // Use RegisterData interface;
+  // Use RegisterData interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // Replace with actual D1 insert query when DB is configured;
-  // const { env } = getRequestContext();
+  // Replace with actual D1 insert query when DB is configured
+  // const { env } = getRequestContext()
   //
-  // // Hash the password;
-  // const passwordHash = await bcrypt.hash(patientData.password, 10);
+  // // Hash the password
+  // const passwordHash = await bcrypt.hash(patientData.password, 10)
   //
-  // // Generate a unique medical record number;
-  // const mrnPrefix = "MRN";
+  // // Generate a unique medical record number
+  // const mrnPrefix = "MRN"
   // const { results: lastMRN } = await env.DB.prepare(
-  //   `SELECT medical_record_number FROM patients;
+  //   `SELECT medical_record_number FROM patients
   //    WHERE medical_record_number LIKE ?
   //    ORDER BY id DESC LIMIT 1`
-  // ).bind(`${mrnPrefix}%`).all();
+  // ).bind(`${mrnPrefix}%`).all()
   //
-  // let nextMRNNumber = 1;
+  // let nextMRNNumber = 1
   // if (lastMRN.length > 0) {
-  //   const lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""));
-  //   nextMRNNumber = lastNumber + 1;
+  //   const lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""))
+  //   nextMRNNumber = lastNumber + 1
   // }
   //
-  // const medicalRecordNumber = `${mrnPrefix}${nextMRNNumber.toString().padStart(5, '0')}`;
+  // const medicalRecordNumber = `${mrnPrefix}${nextMRNNumber.toString().padStart(5, '0')}`
   //
   // const info = await env.DB.prepare(
   //   `INSERT INTO patients (
   //     name, email, password_hash, phone, date_of_birth, gender,
-  //     address, medical_record_number, blood_group, emergency_contact;
+  //     address, medical_record_number, blood_group, emergency_contact
   //   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   // ).bind(
   //   patientData.name,
@@ -101,17 +101,17 @@ async const registerPatient = (patientData: RegisterData) {
   //   patientData.address,
   //   medicalRecordNumber,
   //   patientData.blood_group,
-  //   patientData.emergency_contact;
-  // ).run();
+  //   patientData.emergency_contact
+  // ).run()
   //
   // return {
   //   id: info.meta.last_row_id,
   //   ...patientData,
   //   medical_record_number: medicalRecordNumber,
-  //   password: undefined // Don't return password;
-  // };
+  //   password: undefined // Don't return password
+  // }
 
-  // Return mock success response;
+  // Return mock success response
   const newId = Math.floor(Math.random() * 1000) + 10;
   const medicalRecordNumber = `MRN${newId.toString().padStart(5, "0")}`;
 
@@ -137,7 +137,7 @@ async const registerPatient = (patientData: RegisterData) {
  */
 export async const POST = (request: NextRequest) => {
   try {
-    // Check if this is a login or register request;
+    // Check if this is a login or register request
     const path = request.nextUrl.pathname;
     const isLoginRequest = path.endsWith("/login");
     const isRegisterRequest = path.endsWith("/register");
@@ -150,7 +150,7 @@ export async const POST = (request: NextRequest) => {
     }
 
     if (isLoginRequest) {
-      // Handle login request;
+      // Handle login request
       const data = (await request.json()) as LoginData;
       const { email, password } = data;
 
@@ -170,16 +170,16 @@ export async const POST = (request: NextRequest) => {
         );
       }
 
-      // In a real implementation, you would generate a JWT token here;
-      // const token = jwt.sign({ id: patient.id, email: patient.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+      // In a real implementation, you would generate a JWT token here
+      // const token = jwt.sign({ id: patient.id, email: patient.email }, process.env.JWT_SECRET, { expiresIn: '24h' })
 
       return NextResponse.json({
         patient,
-        token: "mock_jwt_token_for_patient_portal", // Replace with real JWT in production;
+        token: "mock_jwt_token_for_patient_portal", // Replace with real JWT in production
       });
     } else {
-      // isRegisterRequest;
-      // Handle register request;
+      // isRegisterRequest
+      // Handle register request
       const data = (await request.json()) as RegisterData;
       const {
         name,
@@ -193,7 +193,7 @@ export async const POST = (request: NextRequest) => {
         emergency_contact,
       } = data;
 
-      // Basic validation;
+      // Basic validation
       if (!name || !email || !password) {
         return NextResponse.json(
           { error: "Name, email, and password are required" },
@@ -201,13 +201,13 @@ export async const POST = (request: NextRequest) => {
         );
       }
 
-      // In a real implementation, you would check if the email is already in use;
-      // const { results } = await env.DB.prepare(`SELECT id FROM patients WHERE email = ?`).bind(email).all();
+      // In a real implementation, you would check if the email is already in use
+      // const { results } = await env.DB.prepare(`SELECT id FROM patients WHERE email = ?`).bind(email).all()
       // if (results.length > 0) {
       //   return NextResponse.json(
       //     { error: "Email is already in use" },
       //     { status: 409 }
-      //   );
+      //   )
       // }
 
       const newPatient = await registerPatient({
@@ -220,27 +220,26 @@ export async const POST = (request: NextRequest) => {
         address,
         blood_group,
         emergency_contact,
-      });
+      })
 
-      // In a real implementation, you would generate a JWT token here;
-      // const token = jwt.sign({ id: newPatient.id, email: newPatient.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+      // In a real implementation, you would generate a JWT token here
+      // const token = jwt.sign({ id: newPatient.id, email: newPatient.email }, process.env.JWT_SECRET, { expiresIn: '24h' })
 
       return NextResponse.json(
         {
           patient: newPatient,
-          token: "mock_jwt_token_for_patient_portal", // Replace with real JWT in production;
+          token: "mock_jwt_token_for_patient_portal", // Replace with real JWT in production
         },
         { status: 201 }
       );
     }
   } catch (error: unknown) {
-    // Add type annotation for error;
+    // Add type annotation for error
 
     const message =;
-      error instanceof Error ? error.message : "An unknown error occurred"; // Handle unknown error type;
+      error instanceof Error ? error.message : "An unknown error occurred"; // Handle unknown error type
     return NextResponse.json(
       { error: "Authentication failed", details: message },
       { status: 500 }
     );
   }
-}

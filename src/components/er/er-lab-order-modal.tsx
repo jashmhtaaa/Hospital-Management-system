@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERLabOrderModal.tsx;
+// src/components/er/ERLabOrderModal.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -28,7 +20,7 @@ import {
 import {
   Form,
   FormControl,
-  // FIX: Import FormDescription;
+  // FIX: Import FormDescription
   FormDescription,
   FormField,
   FormItem,
@@ -37,13 +29,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-// FIX: Remove direct import of toast, use useToast hook instead;
-// import { toast } from "@/components/ui/use-toast";
-import { useToast } from "@/components/ui/use-toast"; // Keep this;
+// FIX: Remove direct import of toast, use useToast hook instead
+// import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast"; // Keep this
 
 // --- INTERFACES ---
 
-// Define the schema for the lab order form using Zod;
+// Define the schema for the lab order form using Zod
 const labOrderFormSchema = z.object({
   visitId: z.string().min(1, { message: "Visit ID is required." }),
   patientName: z.string().min(1, { message: "Patient name is required." }),
@@ -53,7 +45,7 @@ const labOrderFormSchema = z.object({
   selectedTests: z;
     .array(z.string());
     .min(1, { message: "Select at least one test." }),
-  priority: z.literal("STAT"), // Default to STAT for ER;
+  priority: z.literal("STAT"), // Default to STAT for ER
   clinicalNotes: z.string().optional(),
 });
 
@@ -65,23 +57,23 @@ interface ERLabOrderModalProperties {
   visitData?: {
     id: string,
     patientName: string;
-    assignedDoctorId?: string; // Pass assigned doctor if available;
+    assignedDoctorId?: string; // Pass assigned doctor if available
   };
   onSuccess?: () => void;
 }
 
-// FIX: Define interface for expected API error response;
+// FIX: Define interface for expected API error response
 interface ApiErrorResponse {
   error: string
 }
 
-// FIX: Define interface for expected API success response;
+// FIX: Define interface for expected API success response
 interface LabOrderSuccessResponse {
-  id: string; // Assuming the API returns the new order ID;
-  // Add other properties returned by the API on success;
+  id: string; // Assuming the API returns the new order ID
+  // Add other properties returned by the API on success
 }
 
-// Mock data for available lab tests - replace with API fetch;
+// Mock data for available lab tests - replace with API fetch
 const availableTests = [
   { id: "cbc", name: "Complete Blood Count (CBC)" },
   { id: "bmp", name: "Basic Metabolic Panel (BMP)" },
@@ -101,28 +93,28 @@ export default const ERLabOrderModal = ({
   onSuccess,
 }: ERLabOrderModalProperties) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // Use the hook to get the toast function;
+  const { toast } = useToast(); // Use the hook to get the toast function
 
   const form = useForm<LabOrderFormValues>({
     resolver: zodResolver(labOrderFormSchema),
     defaultValues: {
       visitId: visitData?.id || "",
       patientName: visitData?.patientName || "",
-      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available;
+      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
       selectedTests: [],
       priority: "STAT",
       clinicalNotes: "",
     },
   });
 
-  // Update form when visitData changes;
+  // Update form when visitData changes
   useEffect(() => {
     if (visitData) {
       form.reset({
         visitId: visitData.id,
         patientName: visitData.patientName,
         orderingDoctorId: visitData.assignedDoctorId || "",
-        selectedTests: [], // Reset tests when visit changes;
+        selectedTests: [], // Reset tests when visit changes
         priority: "STAT",
         clinicalNotes: "",
       });
@@ -140,33 +132,33 @@ export default const ERLabOrderModal = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           // Ensure payload matches backend expectations,
-          patient_id: visitData?.id, // Assuming visit ID links to patient;
+          patient_id: visitData?.id, // Assuming visit ID links to patient
           visit_id: data.visitId,
           ordering_doctor_id: data.orderingDoctorId,
           test_ids: data.selectedTests,
           priority: data.priority,
           clinical_notes: data.clinicalNotes || undefined,
-          source: "ER", // Indicate order source;
+          source: "ER", // Indicate order source
         }),
       });
 
-      // Try parsing JSON regardless of status for error messages;
+      // Try parsing JSON regardless of status for error messages
       let responseData: unknown;
       try {
         responseData = await response.json();
       } catch {
-        // Handle non-JSON responses or empty responses;
+        // Handle non-JSON responses or empty responses
         if (!response.ok) {
           throw new Error(
             `HTTP error ${response.status}: Failed to create lab order. Invalid response from server.`;
           );
         }
-        // If response is OK but not JSON (e.g., 204 No Content), treat as success;
+        // If response is OK but not JSON (e.g., 204 No Content), treat as success
         responseData = {};
       }
 
       if (!response.ok) {
-        // FIX: Cast errorData and access error message safely;
+        // FIX: Cast errorData and access error message safely
         const errorData = responseData as ApiErrorResponse;
         throw new Error(
           errorData?.error ||
@@ -174,7 +166,7 @@ export default const ERLabOrderModal = ({
         );
       }
 
-      // FIX: Cast newOrder to the success response type;
+      // FIX: Cast newOrder to the success response type
       const newOrder = responseData as LabOrderSuccessResponse;
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -183,19 +175,19 @@ export default const ERLabOrderModal = ({
         title: "Lab Order Submitted",
         // FIX: Safely access newOrder.id,
         description: `STAT order ${newOrder?.id || "(ID not returned)"} placed successfully.`,
-      });
+      })
 
       if (onSuccess) {
-        onSuccess(); // Trigger potential refresh of tracking board;
+        onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
-        ...form.getValues(), // Keep visit/patient info;
-        selectedTests: [], // Clear selected tests;
+        ...form.getValues(), // Keep visit/patient info
+        selectedTests: [], // Clear selected tests
         clinicalNotes: "",
       });
       onClose();
     } catch (error: unknown) {
-      // Use unknown for catch block error;
+      // Use unknown for catch block error
 
       toast({
         title: "Order Failed",
@@ -356,4 +348,3 @@ export default const ERLabOrderModal = ({
       </DialogContent>
     </Dialog>
   );
-}

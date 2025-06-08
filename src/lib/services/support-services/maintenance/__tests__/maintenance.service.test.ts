@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { MaintenanceService } from '../maintenance.service';
 import { prisma } from '@/lib/prisma';
 import { SecurityService } from '@/lib/security.service';
 
-// Mock Prisma;
+// Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     maintenanceRequest: {
@@ -47,7 +37,7 @@ vi.mock('@/lib/prisma', () => ({
   }
 }));
 
-// Mock Security Service;
+// Mock Security Service
 vi.mock('@/lib/security.service', () => ({
   SecurityService: {
     sanitizeInput: vi.fn(input => input),
@@ -72,7 +62,7 @@ describe('MaintenanceService', () => {
   
   describe('getMaintenanceRequests', () => {
     it('should return maintenance requests with pagination', async () => {
-      // Mock data;
+      // Mock data
       const mockRequests = [
         {
           id: '1',
@@ -98,17 +88,17 @@ describe('MaintenanceService', () => {
         }
       ];
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findMany as any).mockResolvedValue(mockRequests);
       (prisma.maintenanceRequest.count as any).mockResolvedValue(2);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.getMaintenanceRequests({
         page: 1,
         limit: 10
       });
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
@@ -117,7 +107,7 @@ describe('MaintenanceService', () => {
         });
       );
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual({
         data: mockRequests,
         pagination: {
@@ -130,7 +120,7 @@ describe('MaintenanceService', () => {
     });
     
     it('should apply filters correctly', async () => {
-      // Mock data;
+      // Mock data
       const mockRequests = [
         {
           id: '1',
@@ -145,11 +135,11 @@ describe('MaintenanceService', () => {
         }
       ];
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findMany as any).mockResolvedValue(mockRequests);
       (prisma.maintenanceRequest.count as any).mockResolvedValue(1);
       
-      // Call the service method with filters;
+      // Call the service method with filters
       const result = await maintenanceService.getMaintenanceRequests({
         status: 'PENDING',
         priority: 'HIGH',
@@ -159,7 +149,7 @@ describe('MaintenanceService', () => {
         limit: 10
       });
       
-      // Verify Prisma was called with correct filters;
+      // Verify Prisma was called with correct filters
       expect(prisma.maintenanceRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: {
@@ -171,7 +161,7 @@ describe('MaintenanceService', () => {
         });
       );
       
-      // Verify result;
+      // Verify result
       expect(result.data).toEqual(mockRequests),
       expect(result.pagination.totalItems).toBe(1);
     });
@@ -179,7 +169,7 @@ describe('MaintenanceService', () => {
   
   describe('createMaintenanceRequest', () => {
     it('should create a new maintenance request', async () => {
-      // Mock data;
+      // Mock data
       const mockRequest = {
         assetId: 'asset1',
         requestType: 'CORRECTIVE',
@@ -190,7 +180,7 @@ describe('MaintenanceService', () => {
         requestedById: 'user1',
         departmentId: 'dept1',
         estimatedDuration: 120 // minutes
-      };
+      }
       
       const mockCreatedRequest = {
         id: '1',
@@ -200,16 +190,16 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({ id: 'asset1', name: 'AC Unit 101' });
       (prisma.user.findUnique as any).mockResolvedValue({ id: 'user1', name: 'John Doe' });
       (prisma.department.findUnique as any).mockResolvedValue({ id: 'dept1', name: 'Cardiology' });
       (prisma.maintenanceRequest.create as any).mockResolvedValue(mockCreatedRequest);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.createMaintenanceRequest(mockRequest);
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           assetId: 'asset1',
@@ -225,12 +215,12 @@ describe('MaintenanceService', () => {
         });
       });
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual(mockCreatedRequest);
     });
     
     it('should throw an error if asset does not exist', async () => {
-      // Mock data;
+      // Mock data
       const mockRequest = {
         assetId: 'invalid-asset',
         requestType: 'CORRECTIVE',
@@ -240,17 +230,17 @@ describe('MaintenanceService', () => {
         requestedById: 'user1'
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceAsset.findUnique as any).mockResolvedValue(null);
       
-      // Expect the creation to throw an error;
+      // Expect the creation to throw an error
       await expect(maintenanceService.createMaintenanceRequest(mockRequest)).rejects.toThrow();
     });
   });
   
   describe('getMaintenanceRequestById', () => {
     it('should return a maintenance request by ID', async () => {
-      // Mock data;
+      // Mock data
       const mockRequest = {
         id: '1',
         assetId: 'asset1',
@@ -263,32 +253,32 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockRequest);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.getMaintenanceRequestById('1');
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
         include: expect.any(Object)
       });
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual(mockRequest);
     });
     
     it('should throw an error if request does not exist', async () => {
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(null);
       
-      // Expect the retrieval to throw an error;
+      // Expect the retrieval to throw an error
       await expect(maintenanceService.getMaintenanceRequestById('invalid-id')).rejects.toThrow();
     });
     
     it('should return FHIR format when requested', async () => {
-      // Mock data;
+      // Mock data
       const mockRequest = {
         id: '1',
         assetId: 'asset1',
@@ -306,13 +296,13 @@ describe('MaintenanceService', () => {
         updatedAt: new Date('2025-05-25T10:00:00Z')
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockRequest);
       
-      // Call the service method with FHIR flag;
+      // Call the service method with FHIR flag
       const result = await maintenanceService.getMaintenanceRequestById('1', true);
       
-      // Verify result is in FHIR format;
+      // Verify result is in FHIR format
       expect(result).toHaveProperty('resourceType', 'Task'),
       expect(result).toHaveProperty('id', '1'),
       expect(result).toHaveProperty('status', 'requested'),
@@ -329,7 +319,7 @@ describe('MaintenanceService', () => {
   
   describe('updateMaintenanceRequest', () => {
     it('should update a maintenance request', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -354,36 +344,36 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.updateMaintenanceRequest('1', mockUpdateData);
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
         where: { id: '1' },
         data: mockUpdateData,
         include: expect.any(Object)
       });
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual(mockUpdatedRequest);
     });
     
     it('should throw an error if request does not exist', async () => {
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(null);
       
-      // Expect the update to throw an error;
+      // Expect the update to throw an error
       await expect(maintenanceService.updateMaintenanceRequest('invalid-id', { priority: 'LOW' })).rejects.toThrow();
     });
   });
   
   describe('assignMaintenanceRequest', () => {
     it('should assign a technician to a maintenance request', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -410,15 +400,15 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.assignMaintenanceRequest('1', 'tech1');
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
         where: { id: '1' },
         data: {
@@ -428,12 +418,12 @@ describe('MaintenanceService', () => {
         include: expect.any(Object)
       });
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual(mockUpdatedRequest);
     });
     
     it('should throw an error if technician does not exist', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -446,18 +436,18 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(null);
       
-      // Expect the assignment to throw an error;
+      // Expect the assignment to throw an error
       await expect(maintenanceService.assignMaintenanceRequest('1', 'invalid-tech')).rejects.toThrow();
     });
   });
   
   describe('startMaintenanceWork', () => {
     it('should mark a maintenance request as in progress', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -485,15 +475,15 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.startMaintenanceWork('1', 'tech1', 'Starting work on the AC unit');
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
         where: { id: '1' },
         data: {
@@ -504,12 +494,12 @@ describe('MaintenanceService', () => {
         include: expect.any(Object)
       });
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual(mockUpdatedRequest);
     });
     
     it('should throw an error if request is not in ASSIGNED status', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -517,22 +507,22 @@ describe('MaintenanceService', () => {
         priority: 'HIGH',
         description: 'Fix broken AC unit',
         scheduledTime: new Date(),
-        status: 'PENDING', // Not assigned yet;
+        status: 'PENDING', // Not assigned yet
         createdAt: new Date(),
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       
-      // Expect the start work to throw an error;
+      // Expect the start work to throw an error
       await expect(maintenanceService.startMaintenanceWork('1', 'tech1', 'Notes')).rejects.toThrow();
     });
   });
   
   describe('completeMaintenanceRequest', () => {
     it('should mark a maintenance request as completed', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -570,7 +560,7 @@ describe('MaintenanceService', () => {
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenancePart.findUnique as any);
@@ -579,7 +569,7 @@ describe('MaintenanceService', () => {
       (prisma.maintenancePart.update as any).mockResolvedValue({});
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.completeMaintenanceRequest(
         '1', 
         'tech1', 
@@ -588,7 +578,7 @@ describe('MaintenanceService', () => {
         2.5;
       );
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
         where: { id: '1' },
         data: expect.objectContaining({
@@ -601,23 +591,23 @@ describe('MaintenanceService', () => {
         include: expect.any(Object)
       });
       
-      // Verify parts stock was updated;
+      // Verify parts stock was updated
       expect(prisma.maintenancePart.update).toHaveBeenCalledTimes(2),
       expect(prisma.maintenancePart.update).toHaveBeenCalledWith({
         where: { id: 'part1' },
-        data: { currentStock: 8 } // 10 - 2;
+        data: { currentStock: 8 } // 10 - 2
       }),
       expect(prisma.maintenancePart.update).toHaveBeenCalledWith({
         where: { id: 'part2' },
-        data: { currentStock: 4 } // 5 - 1;
+        data: { currentStock: 4 } // 5 - 1
       });
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual(mockUpdatedRequest);
     });
     
     it('should throw an error if request is not in IN_PROGRESS status', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -625,20 +615,20 @@ describe('MaintenanceService', () => {
         priority: 'HIGH',
         description: 'Fix broken AC unit',
         scheduledTime: new Date(),
-        status: 'COMPLETED', // Already completed;
+        status: 'COMPLETED', // Already completed
         createdAt: new Date(),
         updatedAt: new Date()
       };
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       
-      // Expect the completion to throw an error;
+      // Expect the completion to throw an error
       await expect(maintenanceService.completeMaintenanceRequest('1', 'tech1', 'Notes', [], 1)).rejects.toThrow();
     });
     
     it('should throw an error if insufficient parts stock', async () => {
-      // Mock data;
+      // Mock data
       const mockExistingRequest = {
         id: '1',
         assetId: 'asset1',
@@ -660,19 +650,19 @@ describe('MaintenanceService', () => {
       };
       
       const mockPartsUsed = [
-        { partId: 'part1', quantity: 20 } // More than available;
+        { partId: 'part1', quantity: 20 } // More than available
       ];
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenancePart.findUnique as any).mockResolvedValue({ 
         id: 'part1', 
         name: 'Fan Motor', 
         currentStock: 10 // Less than requested
-      });
+      })
       
-      // Expect the completion to throw an error;
+      // Expect the completion to throw an error
       await expect(maintenanceService.completeMaintenanceRequest(
         '1', 
         'tech1', 
@@ -685,7 +675,7 @@ describe('MaintenanceService', () => {
   
   describe('getMaintenanceAssets', () => {
     it('should return maintenance assets with pagination', async () => {
-      // Mock data;
+      // Mock data
       const mockAssets = [
         {
           id: 'asset1',
@@ -711,17 +701,17 @@ describe('MaintenanceService', () => {
         }
       ];
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceAsset.findMany as any).mockResolvedValue(mockAssets);
       (prisma.maintenanceAsset.count as any).mockResolvedValue(2);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.getMaintenanceAssets({
         page: 1,
         limit: 10
       });
       
-      // Verify Prisma was called with correct arguments;
+      // Verify Prisma was called with correct arguments
       expect(prisma.maintenanceAsset.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
@@ -730,7 +720,7 @@ describe('MaintenanceService', () => {
         });
       );
       
-      // Verify result;
+      // Verify result
       expect(result).toEqual({
         data: mockAssets,
         pagination: {
@@ -743,7 +733,7 @@ describe('MaintenanceService', () => {
     });
     
     it('should apply filters correctly', async () => {
-      // Mock data;
+      // Mock data
       const mockAssets = [
         {
           id: 'asset1',
@@ -758,11 +748,11 @@ describe('MaintenanceService', () => {
         }
       ];
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceAsset.findMany as any).mockResolvedValue(mockAssets);
       (prisma.maintenanceAsset.count as any).mockResolvedValue(1);
       
-      // Call the service method with filters;
+      // Call the service method with filters
       const result = await maintenanceService.getMaintenanceAssets({
         type: 'HVAC',
         status: 'OPERATIONAL',
@@ -771,7 +761,7 @@ describe('MaintenanceService', () => {
         limit: 10
       });
       
-      // Verify Prisma was called with correct filters;
+      // Verify Prisma was called with correct filters
       expect(prisma.maintenanceAsset.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: {
@@ -782,7 +772,7 @@ describe('MaintenanceService', () => {
         });
       );
       
-      // Verify result;
+      // Verify result
       expect(result.data).toEqual(mockAssets),
       expect(result.pagination.totalItems).toBe(1);
     });
@@ -790,7 +780,7 @@ describe('MaintenanceService', () => {
   
   describe('getMaintenanceAnalytics', () => {
     it('should return analytics data', async () => {
-      // Mock data for status counts;
+      // Mock data for status counts
       const mockStatusCounts = [
         { status: 'PENDING', count: 5 },
         { status: 'ASSIGNED', count: 3 },
@@ -799,14 +789,14 @@ describe('MaintenanceService', () => {
         { status: 'CANCELLED', count: 1 }
       ];
       
-      // Mock data for request types;
+      // Mock data for request types
       const mockRequestTypes = [
         { requestType: 'PREVENTIVE', count: 8 },
         { requestType: 'CORRECTIVE', count: 10 },
         { requestType: 'EMERGENCY', count: 3 }
       ];
       
-      // Mock data for priority distribution;
+      // Mock data for priority distribution
       const mockPriorities = [
         { priority: 'LOW', count: 2 },
         { priority: 'MEDIUM', count: 8 },
@@ -814,7 +804,7 @@ describe('MaintenanceService', () => {
         { priority: 'URGENT', count: 5 }
       ];
       
-      // Mock Prisma response for each query;
+      // Mock Prisma response for each query
       (prisma.maintenanceRequest.groupBy as any) = vi.fn();
       (prisma.maintenanceRequest.groupBy as any);
         .mockResolvedValueOnce(mockStatusCounts);
@@ -823,16 +813,16 @@ describe('MaintenanceService', () => {
       
       (prisma.maintenanceRequest.count as any).mockResolvedValue(21);
       
-      // Call the service method;
+      // Call the service method
       const result = await maintenanceService.getMaintenanceAnalytics();
       
-      // Verify result structure;
+      // Verify result structure
       expect(result).toHaveProperty('totalRequests', 21),
       expect(result).toHaveProperty('statusDistribution'),
       expect(result).toHaveProperty('requestTypeDistribution'),
       expect(result).toHaveProperty('priorityDistribution');
       
-      // Verify specific data;
+      // Verify specific data
       expect(result.statusDistribution).toEqual(expect.arrayContaining([
         { status: 'PENDING', count: 5 },
         { status: 'COMPLETED', count: 10 }
@@ -850,18 +840,18 @@ describe('MaintenanceService', () => {
     });
     
     it('should apply date filters when provided', async () => {
-      // Mock dates;
+      // Mock dates
       const fromDate = new Date('2025-05-01');
       const toDate = new Date('2025-05-25');
       
-      // Mock Prisma response;
+      // Mock Prisma response
       (prisma.maintenanceRequest.groupBy as any) = vi.fn().mockResolvedValue([]);
       (prisma.maintenanceRequest.count as any).mockResolvedValue(0);
       
-      // Call the service method with date filters;
+      // Call the service method with date filters
       await maintenanceService.getMaintenanceAnalytics(fromDate, toDate);
       
-      // Verify Prisma was called with date filters;
+      // Verify Prisma was called with date filters
       expect(prisma.maintenanceRequest.count).toHaveBeenCalledWith({
         where: {
           createdAt: {

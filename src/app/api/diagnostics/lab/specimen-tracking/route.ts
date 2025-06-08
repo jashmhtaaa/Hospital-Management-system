@@ -1,23 +1,13 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9;
+import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9
 
-// Interface for the request body when creating a specimen tracking entry;
+// Interface for the request body when creating a specimen tracking entry
 interface SpecimenTrackingCreateBody {
   specimen_id: number,
-  status: string;
+  status: string,
   location: string;
   notes?: string;
   temperature?: number;
@@ -25,17 +15,17 @@ interface SpecimenTrackingCreateBody {
   scan_type?: "manual" | "barcode" | "rfid";
 }
 
-// GET /api/diagnostics/lab/specimen-tracking - Get tracking history for specimens;
+// GET /api/diagnostics/lab/specimen-tracking - Get tracking history for specimens
 export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const specimenId = searchParams.get("specimenId");
     const barcode = searchParams.get("barcode");
@@ -46,7 +36,7 @@ export async const GET = (request: NextRequest) => {
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     
-    // Validate that either specimenId or barcode is provided;
+    // Validate that either specimenId or barcode is provided
     if (!specimenId && !barcode) {
       return NextResponse.json(
         { error: "Either specimenId or barcode must be provided" },
@@ -54,10 +44,10 @@ export async const GET = (request: NextRequest) => {
       );
     }
     
-    // Calculate offset for pagination;
+    // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
     
-    // Build query;
+    // Build query
     let query = `;
       SELECT;
         t.*,
@@ -71,7 +61,7 @@ export async const GET = (request: NextRequest) => {
         users u ON t.performed_by = u.id;
     `;
     
-    // Add filters;
+    // Add filters
     const parameters: unknown[] = [];
     const conditions: string[] = [];
     
@@ -109,18 +99,18 @@ export async const GET = (request: NextRequest) => {
       query += " WHERE " + conditions.join(" AND ");
     }
     
-    // Add ordering;
+    // Add ordering
     query += " ORDER BY t.performed_at DESC";
     
-    // Add pagination;
+    // Add pagination
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query;
+    // Execute query
     const trackingResult = await DB.query(query, parameters);
     const tracking = trackingResult.results || [];
     
-    // Get total count for pagination;
+    // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_specimen_tracking t JOIN lab_specimens s ON t.specimen_id = s.id";
     
     if (conditions.length > 0) {
@@ -130,7 +120,7 @@ export async const GET = (request: NextRequest) => {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Return tracking history with pagination metadata;
+    // Return tracking history with pagination metadata
     return NextResponse.json({
       data: tracking,
       pagination: {
@@ -150,20 +140,20 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/specimen-tracking - Create a new tracking entry;
+// POST /api/diagnostics/lab/specimen-tracking - Create a new tracking entry
 export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as SpecimenTrackingCreateBody;
     
-    // Validate required fields;
+    // Validate required fields
     const requiredFields: (keyof SpecimenTrackingCreateBody)[] = [
       "specimen_id",
       "status",
@@ -179,7 +169,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Check if specimen exists;
+    // Check if specimen exists
     const specimenCheckResult = await DB.query(
       "SELECT * FROM lab_specimens WHERE id = ?",
       [body.specimen_id]
@@ -194,16 +184,16 @@ export async const POST = (request: NextRequest) => {
     
     const specimen = specimenCheckResult.results[0];
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Encrypt sensitive data if needed;
+      // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
         notes: body.notes
       });
       
-      // Insert tracking entry;
+      // Insert tracking entry
       const insertQuery = `;
         INSERT INTO lab_specimen_tracking (
           specimen_id, status, location, notes, temperature, temperature_unit,
@@ -225,13 +215,13 @@ export async const POST = (request: NextRequest) => {
       const result = await DB.query(insertQuery, insertParameters);
       const trackingId = result.insertId;
       
-      // Update specimen status and location;
+      // Update specimen status and location
       await DB.query(
         "UPDATE lab_specimens SET status = ?, storage_location = ?, updated_at = NOW() WHERE id = ?",
         [body.status, body.location, body.specimen_id]
       );
       
-      // Update specimen collection/reception information if applicable;
+      // Update specimen collection/reception information if applicable
       if (body.status === "collected" && specimen.status !== "collected") {
         await DB.query(
           "UPDATE lab_specimens SET collected_by = ?, collected_at = NOW() WHERE id = ?",
@@ -246,10 +236,10 @@ export async const POST = (request: NextRequest) => {
         );
       }
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Fetch the created tracking entry;
+      // Fetch the created tracking entry
       const fetchQuery = `;
         SELECT;
           t.*,
@@ -272,10 +262,10 @@ export async const POST = (request: NextRequest) => {
         throw new Error("Failed to retrieve created tracking entry");
       }
       
-      // Return the created tracking entry;
+      // Return the created tracking entry
       return NextResponse.json(tracking, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -289,17 +279,17 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET /api/diagnostics/lab/specimen-tracking/locations - Get all specimen storage locations;
+// GET /api/diagnostics/lab/specimen-tracking/locations - Get all specimen storage locations
 export async const GET_LOCATIONS = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Execute query to get distinct locations;
+    // Execute query to get distinct locations
     const query = `;
       SELECT DISTINCT storage_location as location;
       FROM lab_specimens;
@@ -310,7 +300,7 @@ export async const GET_LOCATIONS = (request: NextRequest) => {
     const locationsResult = await DB.query(query, []);
     const locations = locationsResult.results || [];
     
-    // Return the locations;
+    // Return the locations
     return NextResponse.json(locations.map(item => item.location));
   } catch (error: unknown) {
 
@@ -322,26 +312,26 @@ export async const GET_LOCATIONS = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/specimen-tracking/scan - Process a barcode/RFID scan;
+// POST /api/diagnostics/lab/specimen-tracking/scan - Process a barcode/RFID scan
 export async const POST_SCAN = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as {
       barcode: string,
-      scan_type: "barcode" | "rfid";
+      scan_type: "barcode" | "rfid",
       location: string;
       status?: string;
       notes?: string;
     };
     
-    // Validate required fields;
+    // Validate required fields
     if (!body.barcode || !body.scan_type || !body.location) {
       return NextResponse.json(
         { error: "Barcode, scan type, and location are required" },
@@ -349,7 +339,7 @@ export async const POST_SCAN = (request: NextRequest) => {
       );
     }
     
-    // Check if specimen exists;
+    // Check if specimen exists
     const specimenCheckResult = await DB.query(
       "SELECT * FROM lab_specimens WHERE barcode = ?",
       [body.barcode]
@@ -364,10 +354,10 @@ export async const POST_SCAN = (request: NextRequest) => {
     
     const specimen = specimenCheckResult.results[0];
     
-    // Determine status if not provided;
+    // Determine status if not provided
     let status = body.status;
     if (!status) {
-      // Auto-determine status based on location;
+      // Auto-determine status based on location
       if (body.location.toLowerCase().includes("collection")) {
         status = "collected";
       } else if (body.location.toLowerCase().includes("reception")) {
@@ -381,16 +371,16 @@ export async const POST_SCAN = (request: NextRequest) => {
       }
     }
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Encrypt sensitive data if needed;
+      // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
         notes: body.notes
       });
       
-      // Insert tracking entry;
+      // Insert tracking entry
       const insertQuery = `;
         INSERT INTO lab_specimen_tracking (
           specimen_id, status, location, notes, scan_type, performed_by, performed_at;
@@ -409,13 +399,13 @@ export async const POST_SCAN = (request: NextRequest) => {
       const result = await DB.query(insertQuery, insertParameters);
       const trackingId = result.insertId;
       
-      // Update specimen status and location;
+      // Update specimen status and location
       await DB.query(
         "UPDATE lab_specimens SET status = ?, storage_location = ?, updated_at = NOW() WHERE id = ?",
         [status, body.location, specimen.id]
       );
       
-      // Update specimen collection/reception information if applicable;
+      // Update specimen collection/reception information if applicable
       if (status === "collected" && specimen.status !== "collected") {
         await DB.query(
           "UPDATE lab_specimens SET collected_by = ?, collected_at = NOW() WHERE id = ?",
@@ -430,10 +420,10 @@ export async const POST_SCAN = (request: NextRequest) => {
         );
       }
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Fetch the created tracking entry;
+      // Fetch the created tracking entry
       const fetchQuery = `;
         SELECT;
           t.*,
@@ -466,7 +456,7 @@ export async const POST_SCAN = (request: NextRequest) => {
         throw new Error("Failed to retrieve created tracking entry");
       }
       
-      // Return the created tracking entry with specimen and patient details;
+      // Return the created tracking entry with specimen and patient details
       return NextResponse.json({
         tracking,
         specimen: {
@@ -482,7 +472,7 @@ export async const POST_SCAN = (request: NextRequest) => {
         }
       }, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -496,25 +486,25 @@ export async const POST_SCAN = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/specimen-tracking/batch - Process a batch of specimens;
+// POST /api/diagnostics/lab/specimen-tracking/batch - Process a batch of specimens
 export async const POST_BATCH = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as {
       barcodes: string[],
-      status: string;
+      status: string,
       location: string;
       notes?: string;
     };
     
-    // Validate required fields;
+    // Validate required fields
     if (!body.barcodes || !body.barcodes.length || !body.status || !body.location) {
       return NextResponse.json(
         { error: "Barcodes, status, and location are required" },
@@ -522,16 +512,16 @@ export async const POST_BATCH = (request: NextRequest) => {
       );
     }
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
       const results = [];
       const errors = [];
       
-      // Process each specimen;
+      // Process each specimen
       for (const barcode of body.barcodes) {
-        // Check if specimen exists;
+        // Check if specimen exists
         const specimenCheckResult = await DB.query(
           "SELECT * FROM lab_specimens WHERE barcode = ?",
           [barcode]
@@ -547,12 +537,12 @@ export async const POST_BATCH = (request: NextRequest) => {
         
         const specimen = specimenCheckResult.results[0];
         
-        // Encrypt sensitive data if needed;
+        // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
           notes: body.notes
         });
         
-        // Insert tracking entry;
+        // Insert tracking entry
         const insertQuery = `;
           INSERT INTO lab_specimen_tracking (
             specimen_id, status, location, notes, scan_type, performed_by, performed_at;
@@ -571,13 +561,13 @@ export async const POST_BATCH = (request: NextRequest) => {
         const result = await DB.query(insertQuery, insertParameters);
         const trackingId = result.insertId;
         
-        // Update specimen status and location;
+        // Update specimen status and location
         await DB.query(
           "UPDATE lab_specimens SET status = ?, storage_location = ?, updated_at = NOW() WHERE id = ?",
           [body.status, body.location, specimen.id]
         );
         
-        // Update specimen collection/reception information if applicable;
+        // Update specimen collection/reception information if applicable
         if (body.status === "collected" && specimen.status !== "collected") {
           await DB.query(
             "UPDATE lab_specimens SET collected_by = ?, collected_at = NOW() WHERE id = ?",
@@ -601,10 +591,10 @@ export async const POST_BATCH = (request: NextRequest) => {
         });
       }
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Return the results;
+      // Return the results
       return NextResponse.json({
         success: results.length,
         failed: errors.length,
@@ -612,7 +602,7 @@ export async const POST_BATCH = (request: NextRequest) => {
         errors;
       }, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -624,4 +614,3 @@ export async const POST_BATCH = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

@@ -36,7 +36,7 @@ const config = {
   accessControlRequired: true,
   encryptionRequired: true,
   auditLoggingRequired: true,
-};
+}
 
 // Results collection
 const results = {
@@ -44,11 +44,11 @@ const results = {
   passedChecks: 0,
   failedChecks: [],
   warnings: [],
-};
+}
 
 // Utility functions
 function logCheck(name, passed, details) {
-  results.totalChecks++;
+  results.totalChecks++
   
   if (passed) {
     results.passedChecks++;\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -66,7 +66,7 @@ function logWarning(name, details) {
 
 function fileExists(filePath) {
   try {
-    return fs.existsSync(filePath);
+    return fs.existsSync(filePath)
   } catch (err) {
     return false;
   }
@@ -109,7 +109,7 @@ function findFilesWithPattern(startPath, pattern) {
 
 // 1.1 Check for data minimization
 const dataMinimizationImplemented = findFilesWithPattern('./src', /data.*minimization/i).length > 0 ||
-                                    findFilesWithPattern('./docs', /data.*minimization/i).length > 0;
+                                    findFilesWithPattern('./docs', /data.*minimization/i).length > 0
 logCheck(
   'Data Minimization', 
   dataMinimizationImplemented,
@@ -118,7 +118,7 @@ logCheck(
 
 // 1.2 Check for purpose limitation
 const purposeLimitationImplemented = findFilesWithPattern('./src', /purpose.*limitation/i).length > 0 ||
-                                     findFilesWithPattern('./docs', /purpose.*limitation/i).length > 0;
+                                     findFilesWithPattern('./docs', /purpose.*limitation/i).length > 0
 logCheck(
   'Purpose Limitation', 
   purposeLimitationImplemented,
@@ -132,13 +132,13 @@ logCheck(
   'Encryption Implementation', 
   encryptionServiceImplemented,
   'Encryption service implemented for personal data'
-);
+)
 
 // 2. User Consent\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // 2.1 Check for consent mechanism
 const consentImplemented = findFilesWithPattern('./src', /consent/i).length > 0 ||
-                          findFilesWithPattern('./src/components', /consent/i).length > 0;
+                          findFilesWithPattern('./src/components', /consent/i).length > 0
 logCheck(
   'Consent Mechanism', 
   consentImplemented,
@@ -152,11 +152,11 @@ logCheck(
   'Privacy Policy', 
   privacyPolicyImplemented,
   'Privacy policy is implemented and accessible'
-);
+)
 
 // 2.3 Check for cookie consent
 const cookieConsentImplemented = findFilesWithPattern('./src', /cookie.*consent/i).length > 0 ||
-                                findFilesWithPattern('./src/components', /cookie/i).length > 0;
+                                findFilesWithPattern('./src/components', /cookie/i).length > 0
 logCheck(
   'Cookie Consent', 
   cookieConsentImplemented,
@@ -167,7 +167,7 @@ logCheck(
 
 // 3.1 Check for right to access
 const rightToAccessImplemented = findFilesWithPattern('./src', /right.*access/i).length > 0 ||
-                                findFilesWithPattern('./src/controllers', /export.*data/i).length > 0;
+                                findFilesWithPattern('./src/controllers', /export.*data/i).length > 0
 logCheck(
   'Right to Access', 
   rightToAccessImplemented,
@@ -177,7 +177,7 @@ logCheck(
 // 3.2 Check for right to be forgotten
 const rightToBeForgottenImplemented = findFilesWithPattern('./src', /right.*forgotten/i).length > 0 ||
                                      findFilesWithPattern('./src', /right.*erasure/i).length > 0 ||
-                                     findFilesWithPattern('./src/controllers', /delete.*account/i).length > 0;
+                                     findFilesWithPattern('./src/controllers', /delete.*account/i).length > 0
 logCheck(
   'Right to be Forgotten', 
   rightToBeForgottenImplemented,
@@ -186,7 +186,7 @@ logCheck(
 
 // 3.3 Check for data portability
 const dataPortabilityImplemented = findFilesWithPattern('./src', /data.*portability/i).length > 0 ||
-                                  findFilesWithPattern('./src/controllers', /export.*data/i).length > 0;
+                                  findFilesWithPattern('./src/controllers', /export.*data/i).length > 0
 logCheck(
   'Data Portability', 
   dataPortabilityImplemented,
@@ -204,11 +204,11 @@ logCheck(
   'Data Processing Records', 
   dataProcessingRecordsImplemented,
   'Data processing records are implemented'
-);
+)
 
 // 4.2 Check for data retention policy
 const dataRetentionPolicyImplemented = findFilesWithPattern('./src', /data.*retention/i).length > 0 ||
-                                      findFilesWithPattern('./docs', /data.*retention/i).length > 0;
+                                      findFilesWithPattern('./docs', /data.*retention/i).length > 0
 logCheck(
   'Data Retention Policy', 
   dataRetentionPolicyImplemented,
@@ -219,7 +219,7 @@ logCheck(
 
 // 5.1 Check for DPIA
 const dpiaImplemented = findFilesWithPattern('./docs', /data.*protection.*impact.*assessment/i).length > 0 ||
-                        findFilesWithPattern('./docs', /DPIA/i).length > 0;
+                        findFilesWithPattern('./docs', /DPIA/i).length > 0
 logCheck(
   'Data Protection Impact Assessment', 
   dpiaImplemented,
@@ -230,7 +230,7 @@ logCheck(
 
 // 6.1 Check for breach notification procedure
 const breachNotificationImplemented = findFilesWithPattern('./src', /breach.*notification/i).length > 0 || 
-                                     findFilesWithPattern('./docs', /breach.*notification/i).length > 0;
+                                     findFilesWithPattern('./docs', /breach.*notification/i).length > 0
 logCheck(
   'Breach Notification Procedure', 
   breachNotificationImplemented,
@@ -247,11 +247,11 @@ logCheck(
   'Data Transfer Controls', 
   dataTransferControlsImplemented,
   'Data transfer controls are documented and implemented'
-);
+)
 
 // 7.2 Check for cross-border data transfer
 const crossBorderTransferImplemented = findFilesWithPattern('./docs', /cross.*border/i).length > 0 || 
-                                      findFilesWithPattern('./docs', /international.*transfer/i).length > 0;
+                                      findFilesWithPattern('./docs', /international.*transfer/i).length > 0
 logCheck(
   'Cross-Border Data Transfer', 
   crossBorderTransferImplemented,
@@ -267,11 +267,11 @@ logCheck(
   'Access Control', 
   accessControlImplemented,
   'Access control mechanisms are implemented'
-);
+)
 
 // 8.2 Check for pseudonymization
 const pseudonymizationImplemented = findFilesWithPattern('./src', /pseudonymization/i).length > 0 || 
-                                   findFilesWithPattern('./src', /anonymization/i).length > 0;
+                                   findFilesWithPattern('./src', /anonymization/i).length > 0
 logCheck(
   'Pseudonymization', 
   pseudonymizationImplemented,
@@ -285,7 +285,7 @@ logCheck(
   'Audit Logging', 
   auditLoggingImplemented,
   'Audit logging is implemented'
-);
+)
 
 // Final Results\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
@@ -303,8 +303,8 @@ if (results.warnings.length > 0) {\1// RESOLVED: (Priority: Medium, Target: Next
 
 // Compliance determination
 const complianceThreshold = 1.0; // 100% compliance required for GDPR
-const complianceRate = results.passedChecks / results.totalChecks;
+const complianceRate = results.passedChecks / results.totalChecks
 const isCompliant = complianceRate >= complianceThreshold;\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
 // Exit with appropriate code
-process.exit(isCompliant ? 0 : 1);
+process.exit(isCompliant ? 0 : 1)

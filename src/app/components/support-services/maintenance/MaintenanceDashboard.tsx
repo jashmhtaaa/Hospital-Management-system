@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -63,7 +53,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Status badge color mapping;
+// Status badge color mapping
 const statusColors: Record<string, string> = {
   'PENDING': 'bg-yellow-500',
   'ASSIGNED': 'bg-blue-500',
@@ -73,7 +63,7 @@ const statusColors: Record<string, string> = {
   'CANCELLED': 'bg-gray-500';
 };
 
-// Priority badge color mapping;
+// Priority badge color mapping
 const priorityColors: Record<string, string> = {
   'LOW': 'bg-blue-500',
   'MEDIUM': 'bg-yellow-500',
@@ -81,7 +71,7 @@ const priorityColors: Record<string, string> = {
   'EMERGENCY': 'bg-red-500';
 };
 
-// Request type icon mapping;
+// Request type icon mapping
 const requestTypeIcons: Record<string, any> = {
   'REPAIR': <Wrench className="h-4 w-4 mr-1" />,
   'PREVENTIVE': <Tool className="h-4 w-4 mr-1" />,
@@ -107,7 +97,7 @@ export const MaintenanceDashboard = () => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
-  // Load initial data from URL params;
+  // Load initial data from URL params
   useEffect(() => {
     const tab = searchParams.get('tab') || 'all';
     const status = searchParams.get('status') || '';
@@ -126,7 +116,7 @@ export const MaintenanceDashboard = () => {
     setCurrentPage(page);
   }, [searchParams]);
   
-  // Fetch locations for filtering;
+  // Fetch locations for filtering
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -142,7 +132,7 @@ export const MaintenanceDashboard = () => {
     fetchLocations();
   }, []);
   
-  // Fetch assets for filtering;
+  // Fetch assets for filtering
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -158,12 +148,12 @@ export const MaintenanceDashboard = () => {
     fetchAssets();
   }, []);
   
-  // Fetch maintenance requests;
+  // Fetch maintenance requests
   useEffect(() => {
     const fetchRequests = async () => {
       setIsLoading(true);
       try {
-        // Build query parameters;
+        // Build query parameters
         const params = new URLSearchParams();
         
         if (filterStatus) params.append('status', filterStatus);
@@ -172,7 +162,7 @@ export const MaintenanceDashboard = () => {
         if (filterPriority) params.append('priority', filterPriority);
         if (filterType) params.append('requestType', filterType);
         
-        // Handle tab-specific filters;
+        // Handle tab-specific filters
         if (activeTab === 'pending') {
           params.set('status', 'PENDING');
         } else if (activeTab === 'inProgress') {
@@ -210,7 +200,7 @@ export const MaintenanceDashboard = () => {
     fetchRequests();
   }, [activeTab, filterStatus, filterLocation, filterAsset, filterPriority, filterType, currentPage, toast]);
   
-  // Update URL with current filters;
+  // Update URL with current filters
   const updateUrlParams = () => {
     const params = new URLSearchParams();
     
@@ -225,12 +215,12 @@ export const MaintenanceDashboard = () => {
     router.push(`/support-services/maintenance?${params.toString()}`);
   };
   
-  // Handle tab change;
+  // Handle tab change
   const handleTabChange = (value: string) => {
     setActiveTab(value),
     setCurrentPage(1);
     
-    // Reset filters when changing tabs to avoid conflicts;
+    // Reset filters when changing tabs to avoid conflicts
     if (value === 'pending') {
       setFilterStatus('PENDING'),
       setFilterPriority('');
@@ -258,13 +248,13 @@ export const MaintenanceDashboard = () => {
     }
   };
   
-  // Handle filter changes;
+  // Handle filter changes
   const applyFilters = () => {
     setCurrentPage(1),
     updateUrlParams();
   };
   
-  // Reset all filters;
+  // Reset all filters
   const resetFilters = () => {
     setFilterStatus(''),
     setFilterLocation('');
@@ -280,22 +270,22 @@ export const MaintenanceDashboard = () => {
     }
   };
   
-  // Handle page change;
+  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   };
   
-  // Navigate to create new request;
+  // Navigate to create new request
   const handleCreateRequest = () => {
     router.push('/support-services/maintenance/new');
   };
   
-  // Navigate to request details;
+  // Navigate to request details
   const handleViewRequest = (id: string) => {
     router.push(`/support-services/maintenance/${id}`);
   };
   
-  // Render status badge;
+  // Render status badge
   const renderStatusBadge = (status: string) => {
     const color = statusColors[status] || 'bg-gray-500';
     let icon;
@@ -330,7 +320,7 @@ export const MaintenanceDashboard = () => {
     );
   };
   
-  // Render priority badge;
+  // Render priority badge
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || 'bg-gray-500';
     let icon = priority === 'EMERGENCY' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
@@ -343,7 +333,7 @@ export const MaintenanceDashboard = () => {
     );
   };
   
-  // Render request type with icon;
+  // Render request type with icon
   const renderRequestType = (requestType: string) => {
     const icon = requestTypeIcons[requestType] || null;
     
@@ -355,7 +345,7 @@ export const MaintenanceDashboard = () => {
     );
   };
   
-  // Render loading skeleton;
+  // Render loading skeleton
   const renderSkeleton = () => (
     <div className="space-y-4">;
       {[...Array(5)].map((_, i) => (
@@ -579,4 +569,3 @@ export const MaintenanceDashboard = () => {
       </Tabs>
     </div>
   );
-}

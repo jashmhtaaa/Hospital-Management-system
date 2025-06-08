@@ -1,18 +1,8 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { checkDoctorAvailability } from '@/lib/services/availability.service';
 
 // Add this before the TODO comment replacement:
-      // 2. Check Doctor Availability using availability service;
+      // 2. Check Doctor Availability using availability service
       const availabilityCheck = await checkDoctorAvailability(;
         doctorId,
         {
@@ -30,4 +20,4 @@ import { checkDoctorAvailability } from '@/lib/services/availability.service';
           },
           { status: 409 }
         );
-      }
+      

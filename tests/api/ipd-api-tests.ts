@@ -28,7 +28,7 @@ import { performance } from 'perf_hooks';
 
 // Type definitions for IPD domain objects
 interface Bed {
-  readonly id: string;
+  readonly id: string
   readonly bed_number: string;
   readonly room_number: string;
   readonly ward: string;
@@ -45,7 +45,7 @@ interface Bed {
 interface Patient {
   readonly id: string;
   readonly mrn: string; // Medical Record Number
-  readonly first_name: string;
+  readonly first_name: string
   readonly last_name: string;
   readonly date_of_birth: string;
   readonly gender: 'M' | 'F' | 'O' | 'U';
@@ -213,11 +213,11 @@ const TEST_CONFIG: TestConfig = {
       equipment: ['cardiac_monitor', 'oxygen_outlet']
     }
   }
-} as const;
+} as const
 
 // Test utilities and helpers
 class IPDTestHelper {
-  private static authToken: string | null = null;
+  private static authToken: string | null = null
   private static createdResources: Set<string> = new Set();
 
   static async authenticate(): Promise<string> {
@@ -341,7 +341,7 @@ class IPDTestHelper {
 
 // Test suite setup and teardown
 beforeAll(async () => {
-  console.log('🏥 Starting IPD API Test Suite...');
+  console.log('🏥 Starting IPD API Test Suite...')
   await IPDTestHelper.authenticate();
 });
 
@@ -353,12 +353,12 @@ afterAll(async () => {
 
 beforeEach(() => {
   // Setup for each test
-  console.log(`Running test: ${expect.getState().currentTestName}`);
+  console.log(`Running test: ${expect.getState().currentTestName}`)
 });
 
 afterEach(() => {
   // Cleanup after each test if needed
-});
+})
 
 // Main test suites
 describe('IPD Bed Management API', () => {
@@ -368,7 +368,7 @@ describe('IPD Bed Management API', () => {
         () => IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>('/api/ipd/beds'),
         TEST_CONFIG.performanceThresholds.listBedsMaxTime,
         'List beds'
-      );
+      )
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined(),
@@ -465,7 +465,7 @@ describe('IPD Bed Management API', () => {
         expect(response.data.ward).toBe(newBed.ward),
         expect(response.data.status).toBe('available'); // Default status
         
-        IPDTestHelper.createdResources.add(`bed:${response.data.id}`);
+        IPDTestHelper.createdResources.add(`bed:${response.data.id}`)
       }
     });
 
@@ -474,7 +474,7 @@ describe('IPD Bed Management API', () => {
         bed_number: '', // Invalid empty bed number
         room_number: 'ROOM-001',
         ward: 'Test Ward'
-      };
+      }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds', {
@@ -488,7 +488,7 @@ describe('IPD Bed Management API', () => {
   describe('PUT /api/ipd/beds/:id', () => {
     test('should update bed status', async () => {
       // First create a test bed
-      const testBed = await IPDTestHelper.createTestBed();
+      const testBed = await IPDTestHelper.createTestBed()
 
       const updateResponse = await IPDTestHelper.makeAuthenticatedRequest<Bed>(
         `/api/ipd/beds/${testBed.id}`,
@@ -618,7 +618,7 @@ describe('IPD Admissions API', () => {
         admission_date: new Date().toISOString(),
         primary_doctor_id: 'DOC-001',
         ...TEST_CONFIG.testData.mockAdmission
-      };
+      }
 
       await IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
         method: 'POST',
@@ -626,14 +626,14 @@ describe('IPD Admissions API', () => {
       });
 
       // Try to admit another patient to the same bed
-      const secondPatient = await IPDTestHelper.createTestPatient();
+      const secondPatient = await IPDTestHelper.createTestPatient()
       const secondAdmission = {
         patient_id: secondPatient.id,
         bed_id: testBed.id, // Same bed
         admission_date: new Date().toISOString(),
         primary_doctor_id: 'DOC-002',
         ...TEST_CONFIG.testData.mockAdmission
-      };
+      }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
@@ -653,7 +653,7 @@ describe('IPD Admissions API', () => {
         admission_date: new Date().toISOString(),
         primary_doctor_id: 'DOC-001',
         ...TEST_CONFIG.testData.mockAdmission
-      };
+      }
 
       const createResponse = await IPDTestHelper.makeAuthenticatedRequest<Admission>(
         '/api/ipd/admissions',
@@ -823,7 +823,7 @@ describe('IPD Vital Signs API', () => {
         respiratory_rate: 16,
         oxygen_saturation: 150, // Invalid oxygen saturation
         pain_scale: 15 // Invalid pain scale (should be 0-10)
-      };
+      }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest(
@@ -859,11 +859,11 @@ describe('IPD Dashboard Statistics API', () => {
 
         // Validate occupancy rate is percentage
         expect(response.data.occupancyRate).toBeGreaterThanOrEqual(0),
-        expect(response.data.occupancyRate).toBeLessThanOrEqual(100);
+        expect(response.data.occupancyRate).toBeLessThanOrEqual(100)
 
         // Validate recent admissions if present
         if (response.data.recentAdmissions) {
-          expect(Array.isArray(response.data.recentAdmissions)).toBe(true);
+          expect(Array.isArray(response.data.recentAdmissions)).toBe(true)
           
           if (response.data.recentAdmissions.length > 0) {
             const sampleAdmission = response.data.recentAdmissions[0];
@@ -889,7 +889,7 @@ describe('IPD Dashboard Statistics API', () => {
         Object.values(response.data.wardOccupancy).forEach(occupancy => {
           expect(typeof occupancy).toBe('number'),
           expect(occupancy).toBeGreaterThanOrEqual(0),
-          expect(occupancy).toBeLessThanOrEqual(100);
+          expect(occupancy).toBeLessThanOrEqual(100)
         });
       }
     });
@@ -925,7 +925,7 @@ describe('IPD Security and Authorization', () => {
         'Authorization': 'Bearer invalid-token'
       }
     }),
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(401)
   });
 });
 
@@ -957,7 +957,7 @@ describe('IPD FHIR Compliance', () => {
       const fhirResponse = await IPDTestHelper.makeAuthenticatedRequest(
         `/api/fhir/Encounter/${admissionResponse.data.id}`
       ),
-      expect(fhirResponse.success).toBe(true);
+      expect(fhirResponse.success).toBe(true)
       
       if (fhirResponse.data) {
         // Validate FHIR Encounter structure
@@ -967,7 +967,7 @@ describe('IPD FHIR Compliance', () => {
         expect(fhirResponse.data).toHaveProperty('status'),
         expect(fhirResponse.data).toHaveProperty('class'),
         expect(fhirResponse.data).toHaveProperty('subject'),
-        expect(fhirResponse.data).toHaveProperty('period');
+        expect(fhirResponse.data).toHaveProperty('period')
       }
     }
   });
@@ -992,7 +992,7 @@ describe('IPD API Performance Benchmarks', () => {
         operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/dashboard/ipd-stats'),
         threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime
       }
-    ];
+    ]
 
     for (const { name, operation, threshold } of operations) {
       await IPDTestHelper.measurePerformance(operation, threshold, name);
@@ -1011,15 +1011,15 @@ describe('IPD API Performance Benchmarks', () => {
 
     // All requests should succeed
     responses.forEach(response => {
-      expect(response.success).toBe(true);
+      expect(response.success).toBe(true)
     });
 
     // Concurrent requests should not take significantly longer than single request
-    expect(duration).toBeLessThan(TEST_CONFIG.performanceThresholds.listBedsMaxTime * 2);
+    expect(duration).toBeLessThan(TEST_CONFIG.performanceThresholds.listBedsMaxTime * 2)
     
     console.log(`${concurrentRequests} concurrent requests completed in ${duration.toFixed(2)}ms`);
   });
 });
 
 // Export test helper for use in other test files
-export { IPDTestHelper, TEST_CONFIG };
+export { IPDTestHelper, TEST_CONFIG 

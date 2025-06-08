@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -27,9 +19,7 @@ import {
 
 export interface FHIRDiagnosticReportMedia {
   comment?: string;
-  link: FHIRReference; // Media;
-}
-
+  link: FHIRReference; // Media
 export interface FHIRDiagnosticReport extends FHIRBase {
   resourceType: 'DiagnosticReport';
   identifier?: FHIRIdentifier[];
@@ -37,14 +27,14 @@ export interface FHIRDiagnosticReport extends FHIRBase {
   status: 'registered' | 'partial' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'appended' | 'cancelled' | 'entered-in-error' | 'unknown';
   category?: FHIRCodeableConcept[];
   code: FHIRCodeableConcept;
-  subject?: FHIRReference; // Patient | Group | Device | Location;
+  subject?: FHIRReference; // Patient | Group | Device | Location
   encounter?: FHIRReference;
-  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod;
-  issued?: string; // instant;
+  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod
+  issued?: string; // instant
   performer?: FHIRReference[];
   resultsInterpreter?: FHIRReference[];
   specimen?: FHIRReference[];
-  result?: FHIRReference[]; // Observation;
+  result?: FHIRReference[]; // Observation
   imagingStudy?: FHIRReference[];
   media?: FHIRDiagnosticReportMedia[];
   conclusion?: string;
@@ -52,7 +42,7 @@ export interface FHIRDiagnosticReport extends FHIRBase {
   presentedForm?: FHIRAttachment[];
 }
 
-// DiagnosticReport Search Parameters;
+// DiagnosticReport Search Parameters
 export interface FHIRDiagnosticReportSearchParams {
   _id?: string;
   identifier?: string;
@@ -70,7 +60,7 @@ export interface FHIRDiagnosticReportSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR DiagnosticReport operations;
+// Helper functions for FHIR DiagnosticReport operations
 export class FHIRDiagnosticReportUtils {
   /**
    * Create a basic lab report;
@@ -80,8 +70,8 @@ export class FHIRDiagnosticReportUtils {
     practitionerId: string;
     encounterId?: string;
     reportCode: string,
-    reportName: string;
-    observations: string[]; // Observation IDs;
+    reportName: string,
+    observations: string[]; // Observation IDs
     conclusion?: string;
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
@@ -128,7 +118,7 @@ export class FHIRDiagnosticReportUtils {
         specimen: data.specimens.map(specId => ({
           reference: `Specimen/${specId}`,
           type: 'Specimen'
-        }));
+        }))
       }),
       ...(data.conclusion && { conclusion: data.conclusion });
     };
@@ -145,7 +135,7 @@ export class FHIRDiagnosticReportUtils {
     studyName: string;
     imagingStudyId?: string;
     findings: string,
-    impression: string;
+    impression: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
     images?: string[];
@@ -196,7 +186,7 @@ export class FHIRDiagnosticReportUtils {
             reference: `Media/${imageId}`,
             type: 'Media'
           }
-        }));
+        }))
       });
     };
   }
@@ -209,9 +199,9 @@ export class FHIRDiagnosticReportUtils {
     pathologistId: string;
     encounterId?: string;
     specimenId: string,
-    diagnosis: string;
+    diagnosis: string,
     grossDescription: string,
-    microscopicDescription: string;
+    microscopicDescription: string,
     conclusion: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
@@ -251,7 +241,7 @@ export class FHIRDiagnosticReportUtils {
         `Diagnosis: ${data.diagnosis}`,
         `Gross Description: ${data.grossDescription}`,
         `Microscopic Description: ${data.microscopicDescription}`,
-        `Conclusion: ${data.conclusion}`;
+        `Conclusion: ${data.conclusion}`
       ].join('\n\n'),
       ...(data.encounterId && {
         encounter: {
@@ -270,7 +260,7 @@ export class FHIRDiagnosticReportUtils {
     cardiologistId: string;
     encounterId?: string;
     studyType: 'ECG' | 'ECHO' | 'STRESS_TEST' | 'HOLTER',
-    findings: string;
+    findings: string,
     interpretation: string;
     recommendations?: string;
     effectiveDateTime: string;
@@ -340,7 +330,7 @@ export class FHIRDiagnosticReportUtils {
           reference: `Encounter/${data.encounterId}`,
           type: 'Encounter'
         }
-      });
+      })
     };
   }
 
@@ -371,14 +361,14 @@ export class FHIRDiagnosticReportUtils {
    */
   static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {
     const performer = report.performer?.[0] || report.resultsInterpreter?.[0];
-    return performer?.reference?.replace(/^[^/]+\//, '');
+    return performer?.reference?.replace(/^[^/]+\//, '')
   }
 
   /**
    * Check if report is critical or urgent;
    */
   static isCritical(report: FHIRDiagnosticReport): boolean {
-    // Check for critical keywords in conclusion;
+    // Check for critical keywords in conclusion
     const criticalKeywords = [
       'critical', 'urgent', 'stat', 'emergency', 'acute',
       'severe', 'abnormal', 'suspicious', 'malignant';
@@ -406,11 +396,11 @@ export class FHIRDiagnosticReportUtils {
    */
   static formatForDisplay(report: FHIRDiagnosticReport): {
     reportName: string,
-    category: string;
+    category: string,
     status: string,
-    effectiveDate: string;
+    effectiveDate: string,
     performer: string,
-    isCritical: boolean;
+    isCritical: boolean,
     hasResults: boolean,
     hasImages: boolean;
     conclusion?: string;
@@ -452,7 +442,7 @@ export class FHIRDiagnosticReportUtils {
       errors.push('subject is required');
     }
 
-    // Validate status values;
+    // Validate status values
     const validStatuses = [
       'registered', 'partial', 'preliminary', 'final', 'amended', 
       'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown';
@@ -461,7 +451,7 @@ export class FHIRDiagnosticReportUtils {
       errors.push(`status must be one of: ${validStatuses.join(', ')}`);
     }
 
-    // Validate that final reports have results or conclusion;
+    // Validate that final reports have results or conclusion
     if (report.status === 'final' && !report.result && !report.conclusion && !report.presentedForm) {
       errors.push('Final reports must have results, conclusion, or presented form');
     }
@@ -554,7 +544,7 @@ export class FHIRDiagnosticReportUtils {
   }
 }
 
-// Common diagnostic codes and categories;
+// Common diagnostic codes and categories
 export class FHIRDiagnosticCodes {
   /**
    * Laboratory panel codes;
@@ -608,4 +598,3 @@ export class FHIRDiagnosticCodes {
     const codeKey = Object.entries(allCodes).find(([_, value]) => value === code)?.[0];
     return codeKey ? codeKey.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase()) : 'Unknown';
   }
-}

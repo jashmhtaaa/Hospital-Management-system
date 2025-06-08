@@ -1,43 +1,33 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
-import { getDB } from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session"; // Using mock session;
+import { getDB } from "@/lib/database"; // Using mock DB
+import { getSession } from "@/lib/session"; // Using mock session
 
-// Define interfaces for clarity;
+// Define interfaces for clarity
 interface LabResultInput {
-  id?: number; // For updates;
+  id?: number; // For updates
   order_item_id: number;
   parameter_id?: number | null;
   result_value: string | number;
   is_abnormal?: boolean;
   notes?: string;
-  verify?: boolean; // Flag to trigger verification;
+  verify?: boolean; // Flag to trigger verification
 }
 
 interface LabResult {
   id: number,
-  order_item_id: number;
+  order_item_id: number,
   parameter_id: number | null,
-  result_value: string | number;
+  result_value: string | number,
   is_abnormal: boolean,
-  notes: string | null;
+  notes: string | null,
   performed_by: number,
-  performed_at: string;
+  performed_at: string,
   verified_by: number | null,
-  verified_at: string | null;
+  verified_at: string | null,
   created_at: string,
   updated_at: string;
-  // Joined fields;
+  // Joined fields
   test_id?: number;
   panel_id?: number | null;
   test_name?: string;
@@ -52,16 +42,16 @@ interface LabResult {
 
 interface OrderItem {
   id: number,
-  order_id: number;
+  order_id: number,
   test_id: number | null,
-  panel_id: number | null;
+  panel_id: number | null,
   status: string;
-  // ... other fields;
+  // ... other fields
 }
 
-// Removed unused interfaces: TestParameter, LabTest;
+// Removed unused interfaces: TestParameter, LabTest
 
-// GET /api/laboratory/results - Get laboratory results;
+// GET /api/laboratory/results - Get laboratory results
 export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
@@ -92,7 +82,7 @@ export async const GET = (request: NextRequest) => {
       LEFT JOIN users u2 ON r.verified_by = u2.id;
     `;
 
-    // FIX: Use specific type for params;
+    // FIX: Use specific type for params
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
@@ -109,21 +99,21 @@ export async const GET = (request: NextRequest) => {
       parameters.push(patientId);
     }
 
-    // Role-based access control - Fixed: Use roleName;
+    // Role-based access control - Fixed: Use roleName
     if (session.user.roleName === "Patient") {
-      // Assuming 'Patient' role name;
+      // Assuming 'Patient' role name
       conditions.push("o.patient_id = ?");
-      parameters.push(session.user.userId); // Assuming userId is the correct ID;
+      parameters.push(session.user.userId); // Assuming userId is the correct ID
     } else if (session.user.roleName === "Doctor") {
-      // Assuming 'Doctor' role name;
-      // Doctors might see results for orders they placed or patients they manage;
-      // This might need refinement based on exact requirements;
+      // Assuming 'Doctor' role name
+      // Doctors might see results for orders they placed or patients they manage
+      // This might need refinement based on exact requirements
       conditions.push(
         "(o.ordering_doctor_id = ? OR o.patient_id IN (SELECT patient_id FROM doctor_patient_assignments WHERE doctor_id = ?))";
       );
       parameters.push(session.user.userId, session.user.userId);
     }
-    // Admins, Lab Staff see all by default if no other filters applied;
+    // Admins, Lab Staff see all by default if no other filters applied
 
     if (conditions.length > 0) {
       query += " WHERE " + conditions.join(" AND ");
@@ -131,7 +121,7 @@ export async const GET = (request: NextRequest) => {
     query += " ORDER BY r.created_at DESC";
 
     const results = await database.query(query, parameters);
-    return NextResponse.json(results.results || []); // Changed .rows to .results;
+    return NextResponse.json(results.results || []); // Changed .rows to .results
   } catch (error: unknown) {
 
     const errorMessage =;
@@ -143,7 +133,7 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/laboratory/results - Create or update laboratory results;
+// POST /api/laboratory/results - Create or update laboratory results
 export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
@@ -151,13 +141,13 @@ export async const POST = (request: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fixed: Use roleName and check against expected role names;
+    // Fixed: Use roleName and check against expected role names
     const allowedRoles = [
       "Lab Technician",
       "Lab Manager",
       "Pathologist",
       "Admin",
-    ]; // Adjust role names as needed;
+    ]; // Adjust role names as needed
     if (!allowedRoles.includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -170,10 +160,10 @@ export async const POST = (request: NextRequest) => {
       const resultResult = await database.query(
         "SELECT * FROM lab_results WHERE id = ?",
         [body.id]
-      );
+      )
       const existingResult = (
-        resultResult.results && resultResult.results.length > 0 // Changed .rows to .results;
-          ? resultResult.results[0] // Changed .rows to .results;
+        resultResult.results && resultResult.results.length > 0 // Changed .rows to .results
+          ? resultResult.results[0] // Changed .rows to .results
           : undefined;
       ) as LabResult | null;
 
@@ -185,7 +175,7 @@ export async const POST = (request: NextRequest) => {
       }
 
       const updates: string[] = [];
-      // FIX: Use specific type for params;
+      // FIX: Use specific type for params
       const parameters: (string | number | boolean)[] = [];
 
       if (body.result_value !== undefined) {
@@ -201,15 +191,15 @@ export async const POST = (request: NextRequest) => {
         parameters.push(body.notes);
       }
 
-      // Handle verification;
+      // Handle verification
       if (body.verify === true && !existingResult.verified_by) {
-        // Fixed: Use roleName;
+        // Fixed: Use roleName
         if (
           !["Pathologist", "Lab Manager", "Admin"].includes(
             session.user.roleName;
           );
         ) {
-          // Adjust roles as needed;
+          // Adjust roles as needed
           return NextResponse.json(
             {
               error:
@@ -229,7 +219,7 @@ export async const POST = (request: NextRequest) => {
         );
       }
 
-      parameters.push(body.id); // Add ID for WHERE clause;
+      parameters.push(body.id); // Add ID for WHERE clause
       await database.query(
         `UPDATE lab_results SET ${updates.join(", ")}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
         parameters;
@@ -240,8 +230,8 @@ export async const POST = (request: NextRequest) => {
         [body.id]
       );
       const updatedResult =;
-        updatedResultResult.results && updatedResultResult.results.length > 0 // Changed .rows to .results;
-          ? updatedResultResult.results[0] // Changed .rows to .results;
+        updatedResultResult.results && updatedResultResult.results.length > 0 // Changed .rows to .results
+          ? updatedResultResult.results[0] // Changed .rows to .results
           : undefined;
       return NextResponse.json(updatedResult);
     } else {
@@ -249,7 +239,7 @@ export async const POST = (request: NextRequest) => {
       const requiredFields: (keyof LabResultInput)[] = [
         "order_item_id",
         "result_value",
-      ];
+      ]
       for (const field of requiredFields) {
         if (body[field] === undefined) {
           return NextResponse.json(
@@ -259,15 +249,15 @@ export async const POST = (request: NextRequest) => {
         }
       }
 
-      // Mock transaction - replace with real transaction logic if using a capable DB driver;
+      // Mock transaction - replace with real transaction logic if using a capable DB driver
       try {
         const orderItemResult = await database.query(
           "SELECT * FROM lab_order_items WHERE id = ?",
           [body.order_item_id]
         );
         const orderItem = (
-          orderItemResult.results && orderItemResult.results.length > 0 // Changed .rows to .results;
-            ? orderItemResult.results[0] // Changed .rows to .results;
+          orderItemResult.results && orderItemResult.results.length > 0 // Changed .rows to .results
+            ? orderItemResult.results[0] // Changed .rows to .results
             : undefined;
         ) as OrderItem | null;
 
@@ -287,13 +277,13 @@ export async const POST = (request: NextRequest) => {
             return NextResponse.json(
               { error: "Parameter does not belong to the test" },
               { status: 400 }
-            );
+            )
           }
         }
 
         // Insert result (mock DB doesn-	 return last_row_id reliably)
         await database.query(
-          `;
+          `
           INSERT INTO lab_results (order_item_id, parameter_id, result_value, is_abnormal, notes, performed_by, performed_at);
           VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);
         `,
@@ -306,19 +296,19 @@ export async const POST = (request: NextRequest) => {
             session.user.userId,
           ]
         );
-        const mockNewResultId = Math.floor(Math.random() * 10_000); // Mock ID;
+        const mockNewResultId = Math.floor(Math.random() * 10_000); // Mock ID
 
         // --- Update Order/Item Status Logic (Needs refinement for mock DB) ---
-        let allItemParametersCompleted = false;
+        let allItemParametersCompleted = false
         if (orderItem.test_id) {
           const parametersResult = await database.query(
             "SELECT id FROM lab_test_parameters WHERE test_id = ?",
             [orderItem.test_id]
           );
-          const parameters = parametersResult.results || []; // Changed .rows to .results;
+          const parameters = parametersResult.results || []; // Changed .rows to .results
 
           if (parameters.length > 0) {
-            // FIX: Cast parameters to the expected type before mapping;
+            // FIX: Cast parameters to the expected type before mapping
             const parameterIds = (parameters as Array<{ id: number }>).map(
               (p) => p.id;
             );
@@ -326,17 +316,17 @@ export async const POST = (request: NextRequest) => {
               `SELECT COUNT(*) as count FROM lab_results WHERE order_item_id = ? AND parameter_id IN (${parameterIds.map(() => "?").join(",")})`,
               [body.order_item_id, ...parameterIds]
             );
-            // FIX: Define type for count result;
+            // FIX: Define type for count result
             const resultCount =;
-              resultsCountResult.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice);
-                ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results;
+              resultsCountResult.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice)
+                ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results
                 : 0;
             if (resultCount >= parameters.length) {
-              // Use >= in case of re-entry;
+              // Use >= in case of re-entry
               allItemParametersCompleted = true;
             }
           } else {
-            // Test has no defined parameters, so one result completes it;
+            // Test has no defined parameters, so one result completes it
             allItemParametersCompleted = true;
           }
         }
@@ -346,17 +336,17 @@ export async const POST = (request: NextRequest) => {
             "UPDATE lab_order_items SET status = ? WHERE id = ?",
             ["completed", body.order_item_id]
           );
-          orderItem.status = "completed"; // Update local status for next check;
+          orderItem.status = "completed"; // Update local status for next check
         }
 
-        // Check if all items in the order are completed;
+        // Check if all items in the order are completed
         const orderItemsResult = await database.query(
           "SELECT status FROM lab_order_items WHERE order_id = ?",
           [orderItem.order_id]
         );
         // FIX: Cast results to expected type before using .every()
         const allOrderItemsCompleted = (
-          (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results;
+          (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results
         ).every((item) => item.status === "completed");
 
         if (allOrderItemsCompleted) {
@@ -369,9 +359,9 @@ export async const POST = (request: NextRequest) => {
           const reportResult = await database.query(
             "SELECT id FROM lab_reports WHERE order_id = ?",
             [orderItem.order_id]
-          );
+          )
           if (!reportResult.results || reportResult.results.length === 0) { // Changed .rows to .results (twice)
-            const reportNumber = `REP${Date.now()}${Math.floor(Math.random() * 100)}`;
+            const reportNumber = `REP${Date.now()}${Math.floor(Math.random() * 100)}`
             await database.query(
               "INSERT INTO lab_reports (order_id, report_number, generated_by, status) VALUES (?, ?, ?, ?)",
               [
@@ -385,21 +375,21 @@ export async const POST = (request: NextRequest) => {
         }
         // --- End Status Update Logic ---
 
-        // Fetch the (mock) created result;
+        // Fetch the (mock) created result
         const newResultResult = await database.query(
           "SELECT * FROM lab_results WHERE order_item_id = ? ORDER BY created_at DESC LIMIT 1",
           [body.order_item_id]
-        ); // Mock fetch;
+        ); // Mock fetch
         const newResult =;
-          newResultResult.results && newResultResult.results.length > 0 // Changed .rows to .results (twice);
-            ? newResultResult.results[0] // Changed .rows to .results;
+          newResultResult.results && newResultResult.results.length > 0 // Changed .rows to .results (twice)
+            ? newResultResult.results[0] // Changed .rows to .results
             : { id: mockNewResultId, ...body };
 
         return NextResponse.json(newResult, { status: 201 });
       } catch (txError) {
-        // No real rollback for mock DB;
+        // No real rollback for mock DB
 
-        throw txError; // Re-throw to be caught by outer handler;
+        throw txError; // Re-throw to be caught by outer handler
       }
     }
   } catch (error: unknown) {
@@ -411,5 +401,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
-

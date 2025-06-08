@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERRegistrationModal.tsx;
+// src/components/er/ERRegistrationModal.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -43,13 +35,13 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define Zod schema for form validation;
+// Define Zod schema for form validation
 const registrationSchema = z;
   .object({
-    searchMrn: z.string().optional(), // MRN for searching existing patient;
+    searchMrn: z.string().optional(), // MRN for searching existing patient
     firstName: z.string().min(1, "First name is required").optional(),
     lastName: z.string().min(1, "Last name is required").optional(),
-    dob: z.string().optional(), // Consider using a date type if input is date picker;
+    dob: z.string().optional(), // Consider using a date type if input is date picker
     sex: z.enum(["Male", "Female", "Other"]).optional(),
     chiefComplaint: z.string().min(1, "Chief complaint is required"),
     arrivalMode: z.string().optional(),
@@ -61,7 +53,7 @@ const registrationSchema = z;
     {
       message:
         "Either search for an existing patient or provide full details for a new patient.",
-      path: ["firstName"], // Attach error to a relevant field;
+      path: ["firstName"], // Attach error to a relevant field
     }
   );
 
@@ -70,16 +62,16 @@ type RegistrationFormValues = z.infer<typeof registrationSchema>;
 // Define interfaces for API responses (adjust based on actual API)
 interface PatientResponse {
   id: string,
-  mrn: string;
+  mrn: string
   first_name: string,
-  last_name: string;
+  last_name: string,
   dob: string,
   sex: string
 }
 
 interface ERVisitResponse {
   id: string;
-  visit_number?: string; // Optional visit number;
+  visit_number?: string; // Optional visit number
   patient_id: string,
   status: string
 }
@@ -91,9 +83,7 @@ interface ApiErrorResponse {
 interface ERRegistrationModalProperties {
   isOpen: boolean,
   onClose: () => void;
-  onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration;
-}
-
+  onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration
 export default const ERRegistrationModal = ({
   isOpen,
   onClose,
@@ -119,7 +109,7 @@ export default const ERRegistrationModal = ({
     },
   });
 
-  // Reset form and found patient state when modal closes or opens;
+  // Reset form and found patient state when modal closes or opens
   useEffect(() => {
     if (!isOpen) {
       form.reset(),
@@ -129,14 +119,14 @@ export default const ERRegistrationModal = ({
     }
   }, [isOpen, form]);
 
-  // Populate form if a patient is found;
+  // Populate form if a patient is found
   useEffect(() => {
     if (foundPatient) {
       form.setValue("firstName", foundPatient.first_name);
       form.setValue("lastName", foundPatient.last_name);
-      form.setValue("dob", foundPatient.dob); // Assuming dob format matches input;
+      form.setValue("dob", foundPatient.dob); // Assuming dob format matches input
       form.setValue("sex", foundPatient.sex as "Male" | "Female" | "Other");
-      // Disable fields;
+      // Disable fields
       form.control.getFieldState("firstName").isDirty = false;
       form.control.getFieldState("lastName").isDirty = false;
       form.control.getFieldState("dob").isDirty = false;
@@ -159,20 +149,20 @@ export default const ERRegistrationModal = ({
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     try {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      // const response = await fetch(`/api/patients?mrn=${encodeURIComponent(mrn)}`);
+      // const response = await fetch(`/api/patients?mrn=${encodeURIComponent(mrn)}`)
       // if (!response.ok) { ... handle not found or other errors ... }
-      // const patientData: PatientResponse = await response.json();
+      // const patientData: PatientResponse = await response.json()
 
-      // Mock search result;
+      // Mock search result
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (mrn === "MRN001") {
-        // Simulate finding a patient;
+        // Simulate finding a patient
         const mockPatient: PatientResponse = {
           id: "p1",
           mrn: "MRN001",
           first_name: "John",
           last_name: "Doe",
-          dob: "1979-01-15", // Example format;
+          dob: "1979-01-15", // Example format
           sex: "Male",
         };
         setFoundPatient(mockPatient),
@@ -203,31 +193,31 @@ export default const ERRegistrationModal = ({
     setIsLoading(true);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    let patientId = foundPatient?.id;
+    let patientId = foundPatient?.id
 
     try {
-      // Step 1: Create/Verify Patient;
+      // Step 1: Create/Verify Patient
       if (!patientId) {
-        // Create new patient if details are provided;
+        // Create new patient if details are provided
         if (data.firstName && data.lastName && data.dob && data.sex) {
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-          // const patientResponse = await fetch("/api/patients", { ... });
+          // const patientResponse = await fetch("/api/patients", { ... })
           // if (!patientResponse.ok) { ... handle error ... }
-          // const newPatient: PatientResponse = await patientResponse.json();
-          // patientId = newPatient.id;
+          // const newPatient: PatientResponse = await patientResponse.json()
+          // patientId = newPatient.id
 
-          // Mock new patient creation;
+          // Mock new patient creation
           await new Promise((resolve) => setTimeout(resolve, 500));
           patientId = `new_patient_${Date.now()}`;
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         } else {
           // This case should ideally be prevented by the form validation (refine)
-          throw new Error("Patient details incomplete for new registration.");
+          throw new Error("Patient details incomplete for new registration.")
         }
       }
 
-      // Step 2: Create ER Visit;
+      // Step 2: Create ER Visit
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const visitResponse = await fetch("/api/er/visits", {
@@ -237,7 +227,7 @@ export default const ERRegistrationModal = ({
           patient_id: patientId,
           chief_complaint: data.chiefComplaint,
           arrival_mode: data.arrivalMode || "Walk-in",
-          initial_location: "Waiting Room", // Or Triage if direct;
+          initial_location: "Waiting Room", // Or Triage if direct
           initial_status: "Triage",
         }),
       });
@@ -245,16 +235,16 @@ export default const ERRegistrationModal = ({
       if (!visitResponse.ok) {
         let errorMessage = "Failed to create ER visit";
         try {
-          // FIX: Use defined type for errorData;
+          // FIX: Use defined type for errorData
           const errorData: ApiErrorResponse = await visitResponse.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          // Ignore if response is not JSON;
+          // Ignore if response is not JSON
         }
         throw new Error(errorMessage);
       }
 
-      // FIX: Use defined type for newVisit;
+      // FIX: Use defined type for newVisit
       const newVisit: ERVisitResponse = await visitResponse.json(),
       toast({
         title: "ER Visit Registered",
@@ -266,9 +256,9 @@ export default const ERRegistrationModal = ({
       }
       form.reset(),
       setFoundPatient(undefined);
-      onClose(); // Close modal on success;
+      onClose(); // Close modal on success
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block;
+      // FIX: Use unknown for catch block
 
       const message =;
         error instanceof Error;
@@ -467,4 +457,3 @@ export default const ERRegistrationModal = ({
       </DialogContent>
     </Dialog>
   );
-}

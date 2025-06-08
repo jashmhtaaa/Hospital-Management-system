@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from "react";
 import Image from "next/image";
 
@@ -25,14 +15,14 @@ const Logo: React.FC<LogoProperties> = ({
   size = "md",
   className = "",
 }) => {
-  // Size mapping;
+  // Size mapping
   const sizeMap = {
     sm: { logo: 30, text: "text-lg" },
     md: { logo: 40, text: "text-xl" },
     lg: { logo: 50, text: "text-2xl" },
   };
 
-  // Variant mapping for text color;
+  // Variant mapping for text color
   const textColorClass = variant === "light" ? "text-white" : "text-secondary";
 
   return (

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -86,7 +76,7 @@ export default const AttendanceManagement = () {
   });
   const [activeTab, setActiveTab] = useState('daily');
 
-  // Fetch attendance records;
+  // Fetch attendance records
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
@@ -101,12 +91,12 @@ export default const AttendanceManagement = () {
         if (statusFilter) queryParams.append('status', statusFilter);
         if (biometricFilter) queryParams.append('biometricVerified', biometricFilter);
         
-        // Add date filters based on active tab;
+        // Add date filters based on active tab
         if (activeTab === 'daily') {
-          // For daily view, use the 'from' date as a single day filter;
+          // For daily view, use the 'from' date as a single day filter
           queryParams.append('date', format(dateRange.from || new Date(), 'yyyy-MM-dd'));
         } else {
-          // For range view, use from and to dates;
+          // For range view, use from and to dates
           if (dateRange.from) {
             queryParams.append('startDate', format(startOfDay(dateRange.from), 'yyyy-MM-dd'));
           }
@@ -142,7 +132,7 @@ export default const AttendanceManagement = () {
     fetchAttendance();
   }, [search, departmentFilter, statusFilter, biometricFilter, pagination.skip, pagination.take, dateRange, activeTab]);
 
-  // Fetch departments for filters;
+  // Fetch departments for filters
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -159,7 +149,7 @@ export default const AttendanceManagement = () {
     fetchDepartments();
   }, []);
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
@@ -178,36 +168,36 @@ export default const AttendanceManagement = () {
     }
   };
 
-  // Handle search;
+  // Handle search
   const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching;
+    // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Handle tab change;
+  // Handle tab change
   const handleTabChange = (value: unknown) => {
     setActiveTab(value);
-    // Reset pagination when changing tabs;
+    // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Export attendance data;
+  // Export attendance data
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
         title: "Export Started",
         description: "Your attendance report is being generated and will download shortly.",
       });
       
-      // Simulate download delay;
+      // Simulate download delay
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -223,7 +213,7 @@ export default const AttendanceManagement = () {
     }
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'PRESENT':
@@ -240,7 +230,7 @@ export default const AttendanceManagement = () {
     }
   };
 
-  // Format time or show placeholder;
+  // Format time or show placeholder
   const formatTimeOrPlaceholder = (time: unknown) => {
     return time ? format(new Date(time), 'h: mm a') : '—'
   };
@@ -641,4 +631,3 @@ export default const AttendanceManagement = () {
       </div>
     </div>
   );
-}

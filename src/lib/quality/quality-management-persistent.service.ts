@@ -24,7 +24,7 @@ export const QualityIndicatorSchema = z.object({
   status: z.enum(['active', 'inactive', 'retired']).default('active'),
   stratificationCriteria: z.record(z.any()).optional(),
   createdBy: z.string(),
-});
+})
 
 // Quality Event Schema
 export const QualityEventSchema = z.object({
@@ -47,7 +47,7 @@ export const QualityEventSchema = z.object({
   preventiveActions: z.array(z.string()).optional(),
   lessonsLearned: z.string().optional(),
   qualityIndicatorId: z.string().optional(),
-});
+})
 
 // Quality Assessment Schema
 export const QualityAssessmentSchema = z.object({
@@ -70,7 +70,7 @@ export const QualityAssessmentSchema = z.object({
   certificationDate: z.date().optional(),
   expiryDate: z.date().optional(),
   createdBy: z.string(),
-});
+})
 
 // Compliance Report Schema
 export const ComplianceReportSchema = z.object({
@@ -90,7 +90,7 @@ export const ComplianceReportSchema = z.object({
   submittedBy: z.string().optional(),
   approvalStatus: z.enum(['draft', 'submitted', 'approved', 'rejected']).default('draft'),
   createdBy: z.string(),
-});
+})
 
 // Action Plan Schema
 export const ActionPlanSchema = z.object({
@@ -109,7 +109,7 @@ export const ActionPlanSchema = z.object({
   actualCost: z.number().optional(),
   budgetApproved: z.boolean().default(false),
   createdBy: z.string(),
-});
+})
 
 // Action Item Schema
 export const ActionItemSchema = z.object({
@@ -125,11 +125,10 @@ export const ActionItemSchema = z.object({
   blockers: z.array(z.string()).optional(),
   progressPercentage: z.number().min(0).max(100).default(0),
   notes: z.string().optional(),
-});
+})
 
 // Type definitions
-export type QualityIndicator = z.infer<typeof QualityIndicatorSchema> & { id?: string };
-export type QualityEvent = z.infer<typeof QualityEventSchema> & { id?: string };
+export type QualityIndicator = z.infer<typeof QualityIndicatorSchema> & { id?: string export type QualityEvent = z.infer<typeof QualityEventSchema> & { id?: string };
 export type QualityAssessment = z.infer<typeof QualityAssessmentSchema> & { id?: string };
 export type ComplianceReport = z.infer<typeof ComplianceReportSchema> & { id?: string };
 export type ActionPlan = z.infer<typeof ActionPlanSchema> & { id?: string };
@@ -138,9 +137,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 export interface QualityMetrics {
   id?: string;
   indicatorId: string,
-  measurementPeriod: Date;
+  measurementPeriod: Date,
   periodType: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annually',
-  numeratorValue: number;
+  numeratorValue: number,
   denominatorValue: number;
   rate?: number;
   targetValue?: number;
@@ -149,7 +148,7 @@ export interface QualityMetrics {
   dataQualityScore?: number;
   dataCompletenessRate?: number;
   dataSource: 'manual' | 'automated' | 'integrated',
-  verificationStatus: 'pending' | 'verified' | 'rejected';
+  verificationStatus: 'pending' | 'verified' | 'rejected',
   enteredBy: string;
   verifiedBy?: string;
 }
@@ -166,7 +165,7 @@ export class PersistentQualityManagementService {
   private readonly encryptedFields = [
     'description', 'investigationNotes', 'rootCause', 'lessonsLearned',
     'notes', 'findings', 'recommendations', 'observations', 'nonCompliances'
-  ];
+  ]
 
   constructor(prismaClient?: PrismaClient) {
     this.prisma = prismaClient || new PrismaClient();
@@ -175,7 +174,7 @@ export class PersistentQualityManagementService {
   // Quality Indicators Operations
   async createQualityIndicator(data: QualityIndicator): Promise<QualityIndicator & { id: string }> {
     try {
-      const validated = QualityIndicatorSchema.parse(data);
+      const validated = QualityIndicatorSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const indicator = await this.prisma.qualityIndicator.create({
@@ -242,7 +241,7 @@ export class PersistentQualityManagementService {
             JSON.stringify(updates.stratificationCriteria) : undefined,
           updatedBy: updates.createdBy, // Use createdBy as updatedBy for now
         }
-      });
+      })
 
       return this.deserializeQualityIndicator(updated);
     } catch (error) {
@@ -253,7 +252,7 @@ export class PersistentQualityManagementService {
   // Quality Events Operations
   async createQualityEvent(data: QualityEvent): Promise<QualityEvent & { id: string }> {
     try {
-      const validated = QualityEventSchema.parse(data);
+      const validated = QualityEventSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const event = await this.prisma.qualityEvent.create({
@@ -324,7 +323,7 @@ export class PersistentQualityManagementService {
   // Quality Assessment Operations
   async createQualityAssessment(data: QualityAssessment): Promise<QualityAssessment & { id: string }> {
     try {
-      const validated = QualityAssessmentSchema.parse(data);
+      const validated = QualityAssessmentSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const assessment = await this.prisma.qualityAssessment.create({
@@ -396,10 +395,10 @@ export class PersistentQualityManagementService {
     try {
       // Calculate rate if not provided
       const rate = data.rate || (data.denominatorValue > 0 ? 
-        (data.numeratorValue / data.denominatorValue) * 100 : 0);
+        (data.numeratorValue / data.denominatorValue) * 100 : 0)
       
       // Calculate variance from target if target is provided
-      let varianceFromTarget: number | undefined;
+      let varianceFromTarget: number | undefined
       if (data.targetValue !== undefined) {
         varianceFromTarget = rate - data.targetValue;
       }
@@ -482,7 +481,7 @@ export class PersistentQualityManagementService {
   // Compliance Report Operations
   async createComplianceReport(data: ComplianceReport): Promise<ComplianceReport & { id: string }> {
     try {
-      const validated = ComplianceReportSchema.parse(data);
+      const validated = ComplianceReportSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const report = await this.prisma.complianceReport.create({
@@ -519,7 +518,7 @@ export class PersistentQualityManagementService {
   // Action Plan Operations
   async createActionPlan(data: ActionPlan): Promise<ActionPlan & { id: string }> {
     try {
-      const validated = ActionPlanSchema.parse(data);
+      const validated = ActionPlanSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const actionPlan = await this.prisma.actionPlan.create({
@@ -560,7 +559,7 @@ export class PersistentQualityManagementService {
   // Action Item Operations
   async createActionItem(data: ActionItem): Promise<ActionItem & { id: string }> {
     try {
-      const validated = ActionItemSchema.parse(data);
+      const validated = ActionItemSchema.parse(data)
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
       
       const actionItem = await this.prisma.actionItem.create({
@@ -640,7 +639,7 @@ export class PersistentQualityManagementService {
 
   // Helper methods for deserialization
   private async deserializeQualityIndicator(indicator: any): Promise<QualityIndicator> {
-    const decrypted = await this.encryptionService.decryptObject(indicator, this.encryptedFields);
+    const decrypted = await this.encryptionService.decryptObject(indicator, this.encryptedFields)
     
     return {
       ...decrypted,
@@ -711,12 +710,12 @@ export class PersistentQualityManagementService {
 
   // Cleanup
   async disconnect(): Promise<void> {
-    await this.prisma.$disconnect();
+    await this.prisma.$disconnect()
   }
 }
 
 // Export singleton instance
-let qualityServiceInstance: PersistentQualityManagementService | null = null;
+let qualityServiceInstance: PersistentQualityManagementService | null = null
 
 export const getQualityManagementService = (prismaClient?: PrismaClient): PersistentQualityManagementService => {
   if (!qualityServiceInstance) {
@@ -726,4 +725,4 @@ export const getQualityManagementService = (prismaClient?: PrismaClient): Persis
 };
 
 // For backward compatibility
-export { PersistentQualityManagementService as QualityManagementService };
+export { PersistentQualityManagementService as QualityManagementService 

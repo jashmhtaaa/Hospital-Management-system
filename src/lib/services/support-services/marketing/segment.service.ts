@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { ContactSegment, SegmentMember } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
@@ -27,10 +17,10 @@ export class SegmentService {
    */
   async createSegment(data: Omit<ContactSegment, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ContactSegment> {
     try {
-      // Validate segment data;
+      // Validate segment data
       this.validateSegmentData(data);
       
-      // Create segment in database;
+      // Create segment in database
       const segment = await prisma.contactSegment.create({
         data: {
           name: data.name,
@@ -41,7 +31,7 @@ export class SegmentService {
         }
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'segment.create',
         resourceId: segment.id,
@@ -52,7 +42,7 @@ export class SegmentService {
         }
       });
       
-      // Notify relevant users;
+      // Notify relevant users
       await this.notificationService.sendNotification({
         type: 'SEGMENT_CREATED',
         title: 'New Contact Segment Created',
@@ -135,7 +125,7 @@ export class SegmentService {
         limit = 10;
       } = filters;
       
-      // Build where clause based on filters;
+      // Build where clause based on filters
       const where: unknown = {};
       
       if (isActive !== undefined) {
@@ -149,10 +139,10 @@ export class SegmentService {
         ];
       }
       
-      // Get total count for pagination;
+      // Get total count for pagination
       const total = await prisma.contactSegment.count({ where });
       
-      // Get segments with pagination;
+      // Get segments with pagination
       const segments = await prisma.contactSegment.findMany({
         where,
         include: {
@@ -199,7 +189,7 @@ export class SegmentService {
    */
   async updateSegment(id: string, data: Partial<ContactSegment>, userId: string): Promise<ContactSegment> {
     try {
-      // Check if segment exists;
+      // Check if segment exists
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id }
       });
@@ -208,13 +198,13 @@ export class SegmentService {
         throw new NotFoundError(`Contact segment with ID ${id} not found`);
       }
       
-      // Update segment;
+      // Update segment
       const updatedSegment = await prisma.contactSegment.update({
         where: { id },
         data;
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'segment.update',
         resourceId: id,
@@ -239,7 +229,7 @@ export class SegmentService {
    */
   async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {
     try {
-      // Check if segment exists;
+      // Check if segment exists
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
@@ -248,7 +238,7 @@ export class SegmentService {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
       
-      // Check if contact exists;
+      // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -257,7 +247,7 @@ export class SegmentService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Check if contact is already in segment;
+      // Check if contact is already in segment
       const existingMember = await prisma.segmentMember.findFirst({
         where: {
           segmentId,
@@ -266,7 +256,7 @@ export class SegmentService {
       });
       
       if (existingMember) {
-        // If member exists but is inactive, reactivate;
+        // If member exists but is inactive, reactivate
         if (!existingMember.isActive) {
           const updatedMember = await prisma.segmentMember.update({
             where: { id: existingMember.id },
@@ -276,7 +266,7 @@ export class SegmentService {
             }
           });
           
-          // Log audit event;
+          // Log audit event
           await this.auditLogger.log({
             action: 'segment.member.reactivate',
             resourceId: segmentId,
@@ -293,7 +283,7 @@ export class SegmentService {
         return existingMember;
       }
       
-      // Add contact to segment;
+      // Add contact to segment
       const member = await prisma.segmentMember.create({
         data: {
           segmentId,
@@ -302,7 +292,7 @@ export class SegmentService {
         }
       });
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'segment.member.add',
         resourceId: segmentId,
@@ -327,7 +317,7 @@ export class SegmentService {
    */
   async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {
     try {
-      // Check if segment exists;
+      // Check if segment exists
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
@@ -336,7 +326,7 @@ export class SegmentService {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
       
-      // Check if contact exists;
+      // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -345,7 +335,7 @@ export class SegmentService {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
       
-      // Check if contact is in segment;
+      // Check if contact is in segment
       const existingMember = await prisma.segmentMember.findFirst({
         where: {
           segmentId,
@@ -365,9 +355,9 @@ export class SegmentService {
           isActive: false,
           removedAt: new Date()
         }
-      });
+      })
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'segment.member.remove',
         resourceId: segmentId,
@@ -392,7 +382,7 @@ export class SegmentService {
    */
   async applySegmentCriteria(segmentId: string, userId: string): Promise<{ added: number; total: number }> {
     try {
-      // Get segment with criteria;
+      // Get segment with criteria
       const segment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
@@ -405,10 +395,10 @@ export class SegmentService {
         throw new ValidationError('Segment has no criteria defined', ['No criteria']);
       }
       
-      // Convert criteria to Prisma query;
+      // Convert criteria to Prisma query
       const where = this.buildPrismaQueryFromCriteria(segment.criteria);
       
-      // Find matching contacts;
+      // Find matching contacts
       const matchingContacts = await prisma.contact.findMany({
         where,
         select: {
@@ -416,12 +406,12 @@ export class SegmentService {
         }
       });
       
-      // Add contacts to segment;
+      // Add contacts to segment
       let addedCount = 0;
       
       for (const contact of matchingContacts) {
         try {
-          // Check if already a member;
+          // Check if already a member
           const existingMember = await prisma.segmentMember.findFirst({
             where: {
               segmentId,
@@ -430,7 +420,7 @@ export class SegmentService {
           });
           
           if (existingMember) {
-            // If inactive, reactivate;
+            // If inactive, reactivate
             if (!existingMember.isActive) {
               await prisma.segmentMember.update({
                 where: { id: existingMember.id },
@@ -442,7 +432,7 @@ export class SegmentService {
               addedCount++;
             }
           } else {
-            // Add new member;
+            // Add new member
             await prisma.segmentMember.create({
               data: {
                 segmentId,
@@ -454,11 +444,11 @@ export class SegmentService {
           }
         } catch (error) {
 
-          // Continue with next contact;
+          // Continue with next contact
         }
       }
       
-      // Log audit event;
+      // Log audit event
       await this.auditLogger.log({
         action: 'segment.criteria.apply',
         resourceId: segmentId,
@@ -485,10 +475,10 @@ export class SegmentService {
    * Build Prisma query from segment criteria;
    */
   private buildPrismaQueryFromCriteria(criteria: unknown): unknown {
-    // Example implementation - would need to be expanded based on actual criteria structure;
+    // Example implementation - would need to be expanded based on actual criteria structure
     const query: unknown = { AND: [] };
     
-    // Process demographic criteria;
+    // Process demographic criteria
     if (criteria.demographics) {
       if (criteria.demographics.gender) {
         query.AND.push({ gender: criteria.demographics.gender });
@@ -512,7 +502,7 @@ export class SegmentService {
       }
     }
     
-    // Process source criteria;
+    // Process source criteria
     if (criteria.source) {
       if (Array.isArray(criteria.source)) {
         query.AND.push({ source: { in: criteria.source } });
@@ -521,22 +511,22 @@ export class SegmentService {
       }
     }
     
-    // Process status criteria;
+    // Process status criteria
     if (criteria.status) {
       query.AND.push({ status: criteria.status });
     }
     
-    // Process tag criteria;
+    // Process tag criteria
     if (criteria.tags && criteria.tags.length > 0) {
       query.AND.push({ tags: { hasSome: criteria.tags } });
     }
     
-    // Process patient criteria;
+    // Process patient criteria
     if (criteria.isPatient !== undefined) {
       query.AND.push({ patientId: criteria.isPatient ? { not: null } : null });
     }
     
-    // Process creation date criteria;
+    // Process creation date criteria
     if (criteria.createdAt) {
       const createdAtQuery: unknown = {};
       
@@ -562,20 +552,20 @@ export class SegmentService {
   private validateSegmentData(data: Partial<ContactSegment>): void {
     const errors: string[] = [];
     
-    // Name is required;
+    // Name is required
     if (!data.name) {
       errors.push('Segment name is required');
     }
     
-    // Name length validation;
+    // Name length validation
     if (data.name && (data.name.length < 3 || data.name.length > 100)) {
       errors.push('Segment name must be between 3 and 100 characters');
     }
     
-    // Validate criteria if provided;
+    // Validate criteria if provided
     if (data.criteria && typeof data.criteria === 'object') {
       try {
-        // Validate criteria structure;
+        // Validate criteria structure
         this.validateCriteriaStructure(data.criteria);
       } catch (error) {
         errors.push(`Invalid criteria: ${error.message}`);
@@ -591,10 +581,9 @@ export class SegmentService {
    * Validate criteria structure;
    */
   private validateCriteriaStructure(criteria: unknown): void {
-    // This would be expanded based on the actual criteria structure;
-    // Just a basic check for now;
+    // This would be expanded based on the actual criteria structure
+    // Just a basic check for now
     if (!criteria || typeof criteria !== 'object') {
       throw new Error('Criteria must be a valid object');
     }
   }
-}

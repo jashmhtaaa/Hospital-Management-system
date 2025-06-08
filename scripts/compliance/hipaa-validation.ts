@@ -21,7 +21,7 @@ import { execSync } from 'child_process';
 interface HIPAAConfig {
   readonly requiredEncryptionStrength: 128 | 256; // AES encryption strength
   readonly auditLogRetentionDays: number; // Minimum 6 years for HIPAA
-  readonly passwordMinLength: number;
+  readonly passwordMinLength: number
   readonly passwordComplexity: boolean;
   readonly mfaRequired: boolean;
   readonly sessionTimeoutMinutes: number;
@@ -48,27 +48,27 @@ interface HIPAAConfig {
 
 interface ValidationResult {
   name: string,
-  passed: boolean;
+  passed: boolean,
   details: string,
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  severity: 'critical' | 'high' | 'medium' | 'low',
   regulation: string; // HIPAA regulation reference
   remediation?: string; // Suggested fix
 }
 
 interface ValidationWarning {
   name: string,
-  details: string;
+  details: string
   recommendation: string
 }
 
 interface ComplianceResults {
   totalChecks: number,
-  passedChecks: number;
+  passedChecks: number,
   failedChecks: ValidationResult[],
-  warnings: ValidationWarning[];
+  warnings: ValidationWarning[],
   complianceScore: number; // 0-100
   criticalIssues: number,
-  highPriorityIssues: number;
+  highPriorityIssues: number
   lastValidated: Date,
   validatedBy: string
 }
@@ -111,7 +111,7 @@ const HIPAA_CONFIG: HIPAAConfig = {
   workforceTrainingRequired: true,
   securityOfficerDesignated: true,
   incidentResponsePlanRequired: true
-} as const;
+} as const
 
 // Results collection with enhanced tracking
 const results: ComplianceResults = {
@@ -124,7 +124,7 @@ const results: ComplianceResults = {
   highPriorityIssues: 0,
   lastValidated: new Date(),
   validatedBy: 'HIPAA Validation System'
-};
+}
 
 // Enhanced logging functions with severity tracking
 function logCheck(
@@ -135,7 +135,7 @@ function logCheck(
   regulation: string = 'HIPAA Security Rule',
   remediation?: string
 ): void {
-  results.totalChecks++;
+  results.totalChecks++
   
   if (passed) {
     results.passedChecks++;
@@ -178,7 +178,7 @@ function fileExists(filePath: string): boolean {
   try {
     return fs.existsSync(filePath)
   } catch (error) {
-    console.warn(`Error checking file existence: ${filePath}`, error);
+    console.warn(`Error checking file existence: ${filePath}`, error)
     return false;
   }
 }
@@ -237,14 +237,14 @@ function getFileContent(filePath: string): string | null {
 
 // Main validation functions
 function validateAccessControls(): void {
-  console.log('\n🔐 Validating Access Controls (§164.312(a)(1))...');
+  console.log('\n🔐 Validating Access Controls (§164.312(a)(1))...')
   
   // 1.1 Check RBAC Implementation
   const rbacFiles = [
     './src/lib/rbac/rbac.service.ts',
     './src/lib/security/auth.service.ts',
     './src/lib/rbac/roles.ts'
-  ];
+  ]
   
   let rbacImplemented = false;
   for (const file of rbacFiles) {
@@ -265,7 +265,7 @@ function validateAccessControls(): void {
 
   // 1.2 Check for minimum required roles
   if (rbacImplemented) {
-    const rolesFile = './src/lib/rbac/roles.ts';
+    const rolesFile = './src/lib/rbac/roles.ts'
     if (fileExists(rolesFile)) {
       const rolesContent = getFileContent(rolesFile);
       const missingRoles: string[] = [];
@@ -292,7 +292,7 @@ function validateAccessControls(): void {
   }
 
   // 1.3 Check unique user identification
-  const authServiceExists = fileExists('./src/lib/security/auth.service.ts');
+  const authServiceExists = fileExists('./src/lib/security/auth.service.ts')
   if (authServiceExists) {
     const hasUniqueUserIds = fileContains('./src/lib/security/auth.service.ts', /userId|username|email/),
     logCheck(
@@ -314,7 +314,7 @@ function validateAccessControls(): void {
     'critical',
     'HIPAA §164.312(a)(2)(i)',
     'Implement multi-factor authentication for all users accessing PHI'
-  );
+  )
 }
 
 function validateAuditControls(): void {
@@ -329,14 +329,14 @@ function validateAuditControls(): void {
     'critical',
     'HIPAA §164.312(b)',
     'Implement comprehensive audit logging service'
-  );
+  )
 
   if (auditServiceExists) {
     const auditContent = getFileContent('./src/lib/audit/audit.service.ts');
     
     if (auditContent) {
       // Check for required audit events
-      const missingEvents: string[] = [];
+      const missingEvents: string[] = []
       for (const event of HIPAA_CONFIG.requiredAuditEvents) {
         if (!auditContent.includes(event)) {
           missingEvents.push(event);
@@ -365,7 +365,7 @@ function validateAuditControls(): void {
     'high',
     'HIPAA §164.316(b)(2)(i)',
     'Implement audit log retention for minimum 6 years as required by HIPAA'
-  );
+  )
 }
 
 function validateEncryption(): void {
@@ -375,7 +375,7 @@ function validateEncryption(): void {
   const encryptionFiles = [
     './src/services/encryption_service.ts',
     './src/services/encryption_service_secure.ts'
-  ];
+  ]
   
   let encryptionImplemented = false;
   let strongEncryption = false;
@@ -409,7 +409,7 @@ function validateEncryption(): void {
   );
 
   // 3.2 Check for encryption at rest
-  const prismaSchemaExists = fileExists('./prisma/schema.prisma');
+  const prismaSchemaExists = fileExists('./prisma/schema.prisma')
   if (prismaSchemaExists) {
     const hasEncryptedFields = fileContains('./prisma/schema.prisma', /@encrypted|encrypt/i),
     logCheck(
@@ -432,7 +432,7 @@ function validateEncryption(): void {
     'critical',
     'HIPAA §164.312(e)(1)',
     'Configure HTTPS/TLS for all data transmission'
-  );
+  )
 }
 
 function validateIntegrityControls(): void {
@@ -440,7 +440,7 @@ function validateIntegrityControls(): void {
   
   // 4.1 Check for data integrity measures
   const hasDataValidation = fileExists('./src/lib/validation/') || 
-                           findFilesWithPattern('./src', /validation|validator/i).length > 0;
+                           findFilesWithPattern('./src', /validation|validator/i).length > 0
   
   logCheck(
     'Data Validation Implementation',
@@ -460,7 +460,7 @@ function validateIntegrityControls(): void {
     'high',
     'HIPAA §164.312(c)(2)',
     'Implement cryptographic hashing for data integrity verification'
-  );
+  )
 }
 
 function validateBusinessAssociateCompliance(): void {
@@ -476,11 +476,11 @@ function validateBusinessAssociateCompliance(): void {
     'high',
     'HIPAA §164.308(b)(1)',
     'Maintain signed business associate agreements for all third-party services'
-  );
+  )
 
   // 5.2 Check for third-party service integrations
   const hasThirdPartyServices = fileContains('./package.json', /twilio|sendgrid|stripe|aws|google/) ||
-                               fileExists('./src/lib/integrations/');
+                               fileExists('./src/lib/integrations/')
   
   if (hasThirdPartyServices) {
     logWarning(
@@ -504,7 +504,7 @@ function validateBreachNotification(): void {
     'high',
     'HIPAA §164.404(a)(1)',
     'Develop and maintain incident response plan for breach notification'
-  );
+  )
 
   // 6.2 Check for breach notification service
   const hasBreachNotification = fileExists('./src/lib/security/breach-notification.service.ts') ||
@@ -516,7 +516,7 @@ function validateBreachNotification(): void {
     'critical',
     'HIPAA §164.404(b)',
     'Implement automated breach notification system'
-  );
+  )
 }
 
 function validateWorkforceTraining(): void {
@@ -532,7 +532,7 @@ function validateWorkforceTraining(): void {
     'medium',
     'HIPAA §164.308(a)(5)(i)',
     'Develop comprehensive HIPAA training materials for all workforce members'
-  );
+  )
 
   // 7.2 Check for security awareness
   const hasSecurityAwareness = fileExists('./docs/security/security-awareness.md') ||
@@ -544,12 +544,12 @@ function validateWorkforceTraining(): void {
     'medium',
     'HIPAA §164.308(a)(5)(ii)(B)',
     'Establish ongoing security awareness and training program'
-  );
+  )
 }
 
 function generateComplianceReport(): void {
   // Calculate compliance score
-  results.complianceScore = Math.round((results.passedChecks / results.totalChecks) * 100);
+  results.complianceScore = Math.round((results.passedChecks / results.totalChecks) * 100)
   
   console.log('\n' + '='.repeat(80));
   console.log('🏥 HIPAA COMPLIANCE VALIDATION REPORT');
@@ -564,7 +564,7 @@ function generateComplianceReport(): void {
   console.log(`📅 Validated: ${results.lastValidated.toISOString()}`);
   
   // Compliance status
-  let status = '🔴 NON-COMPLIANT';
+  let status = '🔴 NON-COMPLIANT'
   if (results.complianceScore >= 95 && results.criticalIssues === 0) {
     status = '🟢 COMPLIANT';
   } else if (results.complianceScore >= 80 && results.criticalIssues === 0) {
@@ -575,7 +575,7 @@ function generateComplianceReport(): void {
   
   // Failed checks details
   if (results.failedChecks.length > 0) {
-    console.log('\n❌ FAILED CHECKS:');
+    console.log('\n❌ FAILED CHECKS:')
     console.log('-'.repeat(40));
     
     results.failedChecks.forEach((check, index) => {
@@ -593,7 +593,7 @@ function generateComplianceReport(): void {
   
   // Warnings
   if (results.warnings.length > 0) {
-    console.log('\n⚠️  WARNINGS:');
+    console.log('\n⚠️  WARNINGS:')
     console.log('-'.repeat(40));
     
     results.warnings.forEach((warning, index) => {
@@ -605,10 +605,10 @@ function generateComplianceReport(): void {
   }
   
   // Save results to file
-  const reportPath = './docs/compliance/hipaa-validation-report.json';
+  const reportPath = './docs/compliance/hipaa-validation-report.json'
   try {
     // Ensure directory exists
-    const dir = path.dirname(reportPath);
+    const dir = path.dirname(reportPath)
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -622,12 +622,12 @@ function generateComplianceReport(): void {
   console.log('='.repeat(80));
   
   // Exit with appropriate code
-  process.exit(results.criticalIssues > 0 ? 1 : 0);
+  process.exit(results.criticalIssues > 0 ? 1 : 0)
 }
 
 // Main execution
 function main(): void {
-  console.log('🏥 Starting HIPAA Compliance Validation...');
+  console.log('🏥 Starting HIPAA Compliance Validation...')
   console.log(`📋 Using HIPAA Security Rule Requirements`);
   console.log(`🎯 Target: Zero Critical Issues for Production Readiness\n`);
   
@@ -648,9 +648,7 @@ function main(): void {
 
 // Execute if run directly
 if (require.main === module) {
-  main();
-}
-
+  main()
 export {
   main as validateHIPAACompliance,
   HIPAA_CONFIG,

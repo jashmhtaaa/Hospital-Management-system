@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
 
-// Schema for biomedical equipment creation;
+// Schema for biomedical equipment creation
 const biomedicalSchema = z.object({
   name: z.string().min(1, "Name is required"),
   equipmentType: z.enum(['DIAGNOSTIC', 'THERAPEUTIC', 'MONITORING', 'LABORATORY', 'SURGICAL', 'LIFE_SUPPORT', 'OTHER'], {
@@ -37,7 +27,7 @@ const biomedicalSchema = z.object({
   }),
   notes: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  // Biomedical specific fields;
+  // Biomedical specific fields
   deviceIdentifier: z.string().optional(),
   regulatoryClass: z.enum(['CLASS_I', 'CLASS_II', 'CLASS_III'], {
     errorMap: () => ({ message: "Invalid regulatory class" });
@@ -60,13 +50,13 @@ const biomedicalSchema = z.object({
   }),
 });
 
-// POST handler for creating biomedical equipment;
+// POST handler for creating biomedical equipment
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = biomedicalSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -77,7 +67,7 @@ export async const POST = (request: NextRequest) => {
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects;
+    // Convert date strings to Date objects
     const biomedicalData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
@@ -87,7 +77,7 @@ export async const POST = (request: NextRequest) => {
       lastSterilizationDate: data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined,
     };
     
-    // Create biomedical equipment;
+    // Create biomedical equipment
     const equipment = await biomedicalService.createBiomedicalEquipment(biomedicalData);
     
     return NextResponse.json(equipment);
@@ -100,16 +90,16 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET handler for listing biomedical equipment;
+// GET handler for listing biomedical equipment
 export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     
-    // Parse pagination parameters;
+    // Parse pagination parameters
     const skip = parseInt(searchParams.get('skip') || '0');
     const take = parseInt(searchParams.get('take') || '10');
     
-    // Parse filter parameters;
+    // Parse filter parameters
     const search = searchParams.get('search') || undefined;
     const equipmentType = searchParams.get('equipmentType') as any || undefined;
     const status = searchParams.get('status') as any || undefined;
@@ -118,7 +108,7 @@ export async const GET = (request: NextRequest) => {
     const riskLevel = searchParams.get('riskLevel') as any || undefined;
     const calibrationDue = searchParams.get('calibrationDue') === 'true';
     
-    // Get biomedical equipment;
+    // Get biomedical equipment
     const result = await biomedicalService.listBiomedicalEquipment({
       skip,
       take,
@@ -139,4 +129,3 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

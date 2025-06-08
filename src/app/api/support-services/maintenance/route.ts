@@ -1,24 +1,14 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
 import { MaintenanceService } from '@/lib/services/support-services/maintenance/maintenance.service';
 import { z } from 'zod';
 
-// Initialize service;
+// Initialize service
 const maintenanceService = new MaintenanceService();
 
-// Request validation schemas;
+// Request validation schemas
 const createRequestSchema = z.object({
   assetId: z.string().uuid(),
   requestType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'EMERGENCY', 'INSPECTION', 'INSTALLATION', 'OTHER']),
@@ -28,7 +18,7 @@ const createRequestSchema = z.object({
   notes: z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
   departmentId: z.string().uuid().optional(),
-  estimatedDuration: z.number().min(1).optional(), // in minutes;
+  estimatedDuration: z.number().min(1).optional(), // in minutes
 });
 
 const updateRequestSchema = z.object({
@@ -46,12 +36,12 @@ const updateRequestSchema = z.object({
   })).optional(),
 });
 
-// GET /api/support-services/maintenance/requests;
+// GET /api/support-services/maintenance/requests
 export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
@@ -66,7 +56,7 @@ export async const GET = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get maintenance requests with filters;
+      // Get maintenance requests with filters
       const result = await maintenanceService.getMaintenanceRequests(filters);
       
       return NextResponse.json(result);
@@ -78,19 +68,19 @@ export async const GET = (request: NextRequest) => {
   );
 }
 
-// POST /api/support-services/maintenance/requests;
+// POST /api/support-services/maintenance/requests
 export async const POST = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = createRequestSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Create maintenance request;
+      // Create maintenance request
       const result = await maintenanceService.createMaintenanceRequest(sanitizedData);
       
       return NextResponse.json(result, { status: 201 });
@@ -102,12 +92,12 @@ export async const POST = (request: NextRequest) => {
   );
 }
 
-// GET /api/support-services/maintenance/requests/:id;
+// GET /api/support-services/maintenance/requests/:id
 export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Get maintenance request by ID;
+      // Get maintenance request by ID
       const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
       const result = await maintenanceService.getMaintenanceRequestById(params.id, includeFHIR);
       
@@ -120,19 +110,19 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
   );
 }
 
-// PATCH /api/support-services/maintenance/requests/:id;
+// PATCH /api/support-services/maintenance/requests/:id
 export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = updateRequestSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Update maintenance request;
+      // Update maintenance request
       const result = await maintenanceService.updateMaintenanceRequest(params.id, sanitizedData);
       
       return NextResponse.json(result);
@@ -144,12 +134,12 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
   );
 }
 
-// DELETE /api/support-services/maintenance/requests/:id;
+// DELETE /api/support-services/maintenance/requests/:id
 export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Delete maintenance request;
+      // Delete maintenance request
       await maintenanceService.deleteMaintenanceRequest(params.id);
       
       return NextResponse.json({ success: true });
@@ -161,12 +151,12 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
   );
 }
 
-// POST /api/support-services/maintenance/requests/:id/assign;
+// POST /api/support-services/maintenance/requests/:id/assign
 export async const ASSIGN = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { technicianId } = body;
       
@@ -174,7 +164,7 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
         return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
       }
       
-      // Assign maintenance request;
+      // Assign maintenance request
       const result = await maintenanceService.assignMaintenanceRequest(params.id, technicianId);
       
       return NextResponse.json(result);
@@ -186,12 +176,12 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
   );
 }
 
-// POST /api/support-services/maintenance/requests/:id/start;
+// POST /api/support-services/maintenance/requests/:id/start
 export async const START = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { technicianId, notes } = body;
       
@@ -199,7 +189,7 @@ export async const START = (request: NextRequest, { params }: { params: { id: st
         return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
       }
       
-      // Start maintenance work;
+      // Start maintenance work
       const result = await maintenanceService.startMaintenanceWork(
         params.id,
         technicianId,
@@ -215,12 +205,12 @@ export async const START = (request: NextRequest, { params }: { params: { id: st
   );
 }
 
-// POST /api/support-services/maintenance/requests/:id/complete;
+// POST /api/support-services/maintenance/requests/:id/complete
 export async const COMPLETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { technicianId, notes, partsUsed, laborHours } = body;
       
@@ -228,7 +218,7 @@ export async const COMPLETE = (request: NextRequest, { params }: { params: { id:
         return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
       }
       
-      // Complete maintenance request;
+      // Complete maintenance request
       const result = await maintenanceService.completeMaintenanceRequest(
         params.id,
         technicianId,
@@ -246,12 +236,12 @@ export async const COMPLETE = (request: NextRequest, { params }: { params: { id:
   );
 }
 
-// GET /api/support-services/maintenance/assets;
+// GET /api/support-services/maintenance/assets
 export async const GET_ASSETS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         type: searchParams.get('type') || undefined,
@@ -262,7 +252,7 @@ export async const GET_ASSETS = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get maintenance assets with filters;
+      // Get maintenance assets with filters
       const result = await maintenanceService.getMaintenanceAssets(filters);
       
       return NextResponse.json(result);
@@ -274,17 +264,17 @@ export async const GET_ASSETS = (request: NextRequest) => {
   );
 }
 
-// GET /api/support-services/maintenance/analytics;
+// GET /api/support-services/maintenance/analytics
 export async const GET_ANALYTICS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const fromDate = searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
       const toDate = searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
       
-      // Get maintenance analytics;
+      // Get maintenance analytics
       const result = await maintenanceService.getMaintenanceAnalytics(fromDate, toDate);
       
       return NextResponse.json(result);
@@ -294,4 +284,3 @@ export async const GET_ANALYTICS = (request: NextRequest) => {
       auditAction: 'MAINTENANCE_ANALYTICS_VIEW',
     }
   );
-}

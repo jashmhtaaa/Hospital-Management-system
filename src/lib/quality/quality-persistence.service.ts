@@ -31,18 +31,16 @@ import {
   type AssessmentStatus,
   type ComplianceStatus,
   type ActionStatus
-} from './quality-management.service';
+} from './quality-management.service'
 
 export interface QualityPersistenceConfig {
   enableEncryption: boolean,
-  auditAllAccess: boolean;
+  auditAllAccess: boolean,
   retentionPeriod: number; // in years
   automaticArchiving: boolean,
   encryptSensitiveData: boolean
-}
-
 export class QualityPersistenceService {
-  private prisma: PrismaClient;
+  private prisma: PrismaClient
   private auditService: AuditService;
   private encryptionService: any;
   private config: QualityPersistenceConfig;
@@ -65,11 +63,11 @@ export class QualityPersistenceService {
   // Quality Indicators Persistence
   async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...indicator };
+      let dataToStore = { ...indicator }
       
       // Encrypt sensitive data if enabled
       if (this.config.encryptSensitiveData && indicator.metadata) {
-        dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata));
+        dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata))
       }
 
       await this.prisma.qualityIndicator.upsert({
@@ -120,7 +118,7 @@ export class QualityPersistenceService {
       // Decrypt sensitive data if encrypted
       if (this.config.encryptSensitiveData && indicator.metadata && typeof indicator.metadata === 'string') {
         try {
-          indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
+          indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
         } catch (error) {
           console.warn('[Quality Persistence] Failed to decrypt metadata:', error);
           indicator.metadata = {};
@@ -174,7 +172,7 @@ export class QualityPersistenceService {
         // Decrypt metadata if encrypted
         if (this.config.encryptSensitiveData && indicator.metadata && typeof indicator.metadata === 'string') {
           try {
-            indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
+            indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
           } catch (error) {
             indicator.metadata = {};
           }
@@ -206,12 +204,12 @@ export class QualityPersistenceService {
   // Quality Events Persistence
   async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...event };
+      let dataToStore = { ...event }
       
       // Encrypt sensitive fields
       if (this.config.encryptSensitiveData) {
         if (event.details) {
-          dataToStore.details = await this.encryptData(JSON.stringify(event.details));
+          dataToStore.details = await this.encryptData(JSON.stringify(event.details))
         }
         if (event.patientInfo) {
           dataToStore.patientInfo = await this.encryptData(JSON.stringify(event.patientInfo));
@@ -286,7 +284,7 @@ export class QualityPersistenceService {
         if (this.config.encryptSensitiveData) {
           if (event.details && typeof event.details === 'string') {
             try {
-              event.details = JSON.parse(await this.decryptData(event.details));
+              event.details = JSON.parse(await this.decryptData(event.details))
             } catch (error) {
               event.details = {};
             }
@@ -326,12 +324,12 @@ export class QualityPersistenceService {
   // Quality Assessments Persistence
   async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...assessment };
+      let dataToStore = { ...assessment }
       
       // Encrypt sensitive assessment data
       if (this.config.encryptSensitiveData) {
         if (assessment.findings) {
-          dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings));
+          dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings))
         }
         if (assessment.recommendations) {
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
@@ -376,12 +374,12 @@ export class QualityPersistenceService {
   // Compliance Reports Persistence
   async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...report };
+      let dataToStore = { ...report }
       
       // Encrypt sensitive compliance data
       if (this.config.encryptSensitiveData) {
         if (report.findings) {
-          dataToStore.findings = await this.encryptData(JSON.stringify(report.findings));
+          dataToStore.findings = await this.encryptData(JSON.stringify(report.findings))
         }
         if (report.gaps) {
           dataToStore.gaps = await this.encryptData(JSON.stringify(report.gaps));
@@ -458,7 +456,7 @@ export class QualityPersistenceService {
         if (this.config.encryptSensitiveData) {
           if (report.findings && typeof report.findings === 'string') {
             try {
-              report.findings = JSON.parse(await this.decryptData(report.findings));
+              report.findings = JSON.parse(await this.decryptData(report.findings))
             } catch (error) {
               report.findings = [];
             }
@@ -519,7 +517,7 @@ export class QualityPersistenceService {
           updatedAt: new Date(),
           updatedBy: userId
         }
-      });
+      })
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
@@ -557,7 +555,7 @@ export class QualityPersistenceService {
           updatedAt: new Date(),
           updatedBy: userId
         }
-      });
+      })
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
@@ -580,7 +578,7 @@ export class QualityPersistenceService {
 
   // Utility Methods
   private async encryptData(data: string): Promise<string> {
-    if (!this.config.enableEncryption) return data;
+    if (!this.config.enableEncryption) return data
     return await this.encryptionService.encrypt(data);
   }
 
@@ -592,7 +590,7 @@ export class QualityPersistenceService {
   // Data Retention and Archiving
   async archiveOldRecords(): Promise<{
     archivedIndicators: number,
-    archivedEvents: number;
+    archivedEvents: number
     archivedAssessments: number,
     archivedReports: number
   }> {
@@ -644,7 +642,7 @@ export class QualityPersistenceService {
 }
 
 // Singleton instance for application use
-let qualityPersistenceInstance: QualityPersistenceService | null = null;
+let qualityPersistenceInstance: QualityPersistenceService | null = null
 
 export const getQualityPersistenceService = (
   config?: Partial<QualityPersistenceConfig>

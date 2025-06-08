@@ -1,23 +1,13 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { z } from 'zod';
 import { PrismaClient } from '@prisma/client';
 import { logger } from '@/lib/logger';
 import { logAudit, AuditAction } from '@/lib/audit';
 
-// Initialize Prisma client;
+// Initialize Prisma client
 const prisma = new PrismaClient();
 
-// Validation schemas;
+// Validation schemas
 export const LabOrderSchema = z.object({
   encounterId: z.string().uuid(),
   tests: z.array(z.object({
@@ -54,7 +44,7 @@ export class LaboratoryService {
   async createLabOrder(data: z.infer<typeof LabOrderSchema>, userId: string) {
     logger.info({ method: 'createLabOrder', encounterId: data.encounterId }, 'Creating laboratory order');
     
-    // Get encounter details;
+    // Get encounter details
     const encounter = await prisma.encounter.findUnique({
       where: { id: data.encounterId },
       include: {
@@ -74,7 +64,7 @@ export class LaboratoryService {
       throw new Error('Encounter not found');
     }
 
-    // Create lab orders;
+    // Create lab orders
     const createdOrders = [];
 
     for (const test of data.tests) {
@@ -98,7 +88,7 @@ export class LaboratoryService {
 
       createdOrders.push(order);
 
-      // Log the lab order;
+      // Log the lab order
       await logAudit(
         AuditAction.CREATE,
         'LAB_ORDER',
@@ -129,7 +119,7 @@ export class LaboratoryService {
   async cancelLabOrder(data: z.infer<typeof LabCancelSchema>, userId: string) {
     logger.info({ method: 'cancelLabOrder', orderId: data.orderId }, 'Cancelling laboratory order');
     
-    // Get lab order details;
+    // Get lab order details
     const order = await prisma.labOrder.findUnique({
       where: { id: data.orderId },
     });
@@ -138,12 +128,12 @@ export class LaboratoryService {
       throw new Error('Laboratory order not found');
     }
 
-    // Check if order can be cancelled;
+    // Check if order can be cancelled
     if (order.status === 'CANCELLED' || order.status === 'COMPLETED' || order.status === 'RESULTED') {
       throw new Error(`Cannot cancel order with status: ${order.status}`);
     }
 
-    // Update lab order;
+    // Update lab order
     const updatedOrder = await prisma.labOrder.update({
       where: { id: data.orderId },
       data: {
@@ -155,7 +145,7 @@ export class LaboratoryService {
       },
     });
 
-    // Log the lab cancellation;
+    // Log the lab cancellation
     await logAudit(
       AuditAction.UPDATE,
       'LAB_ORDER',
@@ -187,7 +177,7 @@ export class LaboratoryService {
   async sendLabResultNotification(data: z.infer<typeof LabResultNotificationSchema>, userId: string) {
     logger.info({ method: 'sendLabResultNotification', orderId: data.orderId }, 'Sending laboratory result notification');
     
-    // Get lab order details;
+    // Get lab order details
     const order = await prisma.labOrder.findUnique({
       where: { id: data.orderId },
       include: {
@@ -205,10 +195,10 @@ export class LaboratoryService {
       throw new Error('Laboratory order not found');
     }
 
-    // Create notification for clinical staff;
+    // Create notification for clinical staff
     const notification = await prisma.notification.create({
       data: {
-        userId: data.notifyUserId || null, // If null, will be sent to all relevant staff;
+        userId: data.notifyUserId || null, // If null, will be sent to all relevant staff
         patientId: order.patientId,
         encounterId: order.encounterId,
         type: 'LAB_RESULT',
@@ -218,11 +208,11 @@ export class LaboratoryService {
         status: 'UNREAD',
         actionUrl: `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now;
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
       },
     });
 
-    // Update lab order status if not already resulted;
+    // Update lab order status if not already resulted
     if (order.status !== 'RESULTED') {
       await prisma.labOrder.update({
         where: { id: data.orderId },
@@ -234,7 +224,7 @@ export class LaboratoryService {
       });
     }
 
-    // Log the notification;
+    // Log the notification
     await logAudit(
       AuditAction.CREATE,
       'NOTIFICATION',
@@ -265,7 +255,7 @@ export class LaboratoryService {
   async getPendingLabOrders(patientId: string) {
     logger.info({ method: 'getPendingLabOrders', patientId }, 'Getting pending laboratory orders');
     
-    // Get pending lab orders for the patient;
+    // Get pending lab orders for the patient
     const pendingOrders = await prisma.labOrder.findMany({
       where: {
         patientId,
@@ -292,7 +282,7 @@ export class LaboratoryService {
   async getLabResults(patientId: string, encounterId?: string, limit: number = 50, includeDetails: boolean = false) {
     logger.info({ method: 'getLabResults', patientId, encounterId, limit, includeDetails }, 'Getting laboratory results');
     
-    // Build query;
+    // Build query
     const query: unknown = {
       where: {
         patientId,
@@ -302,12 +292,12 @@ export class LaboratoryService {
       take: limit,
     };
 
-    // Add encounter filter if provided;
+    // Add encounter filter if provided
     if (encounterId) {
       query.where.encounterId = encounterId;
     }
 
-    // Add result details if requested;
+    // Add result details if requested
     if (includeDetails) {
       query.include = {
         results: {
@@ -316,10 +306,10 @@ export class LaboratoryService {
       };
     }
 
-    // Get lab results for the patient;
+    // Get lab results for the patient
     const labResults = await prisma.labOrder.findMany(query);
 
-    // Group by test category if results are available;
+    // Group by test category if results are available
     let groupedResults = {};
     if (labResults.length > 0 && includeDetails) {
       groupedResults = labResults.reduce((groups, result) => {
@@ -349,7 +339,7 @@ export class LaboratoryService {
   async getLabResultDetails(orderId: string, userId: string) {
     logger.info({ method: 'getLabResultDetails', orderId }, 'Getting laboratory result details');
     
-    // Get lab order with results;
+    // Get lab order with results
     const labOrder = await prisma.labOrder.findUnique({
       where: { id: orderId },
       include: {
@@ -372,12 +362,12 @@ export class LaboratoryService {
       throw new Error('Laboratory order not found');
     }
 
-    // Check if results are available;
+    // Check if results are available
     if (labOrder.status !== 'RESULTED' || !labOrder.results || labOrder.results.length === 0) {
       throw new Error('Laboratory results not available yet');
     }
 
-    // Log the result view;
+    // Log the result view
     await logAudit(
       AuditAction.VIEW,
       'LAB_ORDER',
@@ -393,4 +383,3 @@ export class LaboratoryService {
 
     return labOrder;
   }
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -26,12 +18,10 @@ import {
 
 export interface FHIRAppointmentParticipant {
   type?: FHIRCodeableConcept[];
-  actor?: FHIRReference; // Patient | Practitioner | PractitionerRole | RelatedPerson | Device | HealthcareService | Location;
+  actor?: FHIRReference; // Patient | Practitioner | PractitionerRole | RelatedPerson | Device | HealthcareService | Location
   required?: 'required' | 'optional' | 'information-only';
   status: 'accepted' | 'declined' | 'tentative' | 'needs-action';
   period?: FHIRPeriod;
-}
-
 export interface FHIRAppointment extends FHIRBase {
   resourceType: 'Appointment';
   identifier?: FHIRIdentifier[];
@@ -43,14 +33,14 @@ export interface FHIRAppointment extends FHIRBase {
   appointmentType?: FHIRCodeableConcept;
   reasonCode?: FHIRCodeableConcept[];
   reasonReference?: FHIRReference[];
-  priority?: number; // 0 = routine, 1 = urgent, 2 = asap, 3 = stat;
+  priority?: number; // 0 = routine, 1 = urgent, 2 = asap, 3 = stat
   description?: string;
   supportingInformation?: FHIRReference[];
-  start?: string; // dateTime;
-  end?: string; // dateTime;
+  start?: string; // dateTime
+  end?: string; // dateTime
   minutesDuration?: number;
   slot?: FHIRReference[];
-  created?: string; // dateTime;
+  created?: string; // dateTime
   comment?: string;
   patientInstruction?: string;
   basedOn?: FHIRReference[];
@@ -58,7 +48,7 @@ export interface FHIRAppointment extends FHIRBase {
   requestedPeriod?: FHIRPeriod[];
 }
 
-// Appointment Search Parameters;
+// Appointment Search Parameters
 export interface FHIRAppointmentSearchParams {
   _id?: string;
   identifier?: string;
@@ -77,7 +67,7 @@ export interface FHIRAppointmentSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR Appointment operations;
+// Helper functions for FHIR Appointment operations
 export class FHIRAppointmentUtils {
   /**
    * Create a basic FHIR Appointment resource;
@@ -117,7 +107,7 @@ export class FHIRAppointmentUtils {
       ]
     };
 
-    // Add location if provided;
+    // Add location if provided
     if (data.locationId) {
       appointment.participant.push({
         actor: {
@@ -129,7 +119,7 @@ export class FHIRAppointmentUtils {
       });
     }
 
-    // Add appointment type if provided;
+    // Add appointment type if provided
     if (data.appointmentType) {
       appointment.appointmentType = {
         coding: [{
@@ -137,15 +127,15 @@ export class FHIRAppointmentUtils {
           code: data.appointmentType,
           display: data.appointmentType
         }]
-      };
+      }
     }
 
-    // Add description if provided;
+    // Add description if provided
     if (data.description) {
       appointment.description = data.description;
     }
 
-    // Calculate duration;
+    // Calculate duration
     const startTime = new Date(data.start);
     const endTime = new Date(data.end);
     appointment.minutesDuration = Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
@@ -324,7 +314,7 @@ export class FHIRAppointmentUtils {
       participant: []
     };
 
-    // Add patient participant;
+    // Add patient participant
     if (hmsAppointment.patientId) {
       fhirAppointment.participant.push({
         actor: {
@@ -336,7 +326,7 @@ export class FHIRAppointmentUtils {
       });
     }
 
-    // Add practitioner participant;
+    // Add practitioner participant
     if (hmsAppointment.doctorId || hmsAppointment.practitionerId) {
       fhirAppointment.participant.push({
         actor: {
@@ -348,7 +338,7 @@ export class FHIRAppointmentUtils {
       });
     }
 
-    // Add location if available;
+    // Add location if available
     if (hmsAppointment.locationId) {
       fhirAppointment.participant.push({
         actor: {
@@ -360,7 +350,7 @@ export class FHIRAppointmentUtils {
       });
     }
 
-    // Add appointment type if available;
+    // Add appointment type if available
     if (hmsAppointment.appointmentType || hmsAppointment.visitType) {
       fhirAppointment.appointmentType = {
         coding: [{
@@ -368,10 +358,10 @@ export class FHIRAppointmentUtils {
           code: hmsAppointment.appointmentType || hmsAppointment.visitType,
           display: hmsAppointment.appointmentType || hmsAppointment.visitType
         }]
-      };
+      }
     }
 
-    // Calculate duration if start and end times are available;
+    // Calculate duration if start and end times are available
     if (fhirAppointment.start && fhirAppointment.end) {
       const startTime = new Date(fhirAppointment.start);
       const endTime = new Date(fhirAppointment.end);
@@ -382,7 +372,7 @@ export class FHIRAppointmentUtils {
   }
 }
 
-// Appointment status workflow helpers;
+// Appointment status workflow helpers
 export class FHIRAppointmentWorkflow {
   /**
    * Get allowed status transitions from current status;
@@ -435,4 +425,3 @@ export class FHIRAppointmentWorkflow {
       default: return null
     }
   }
-}

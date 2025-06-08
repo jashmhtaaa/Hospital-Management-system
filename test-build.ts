@@ -30,7 +30,7 @@ import { promisify } from 'util';
 
 // Type definitions
 interface BuildTestConfig {
-  readonly timeout: number;
+  readonly timeout: number
   readonly enableSecurityScan: boolean;
   readonly enableComplianceCheck: boolean;
   readonly enablePerformanceValidation: boolean;
@@ -74,10 +74,10 @@ const BUILD_CONFIG: BuildTestConfig = {
   failOnWarnings: process.env.FAIL_ON_WARNINGS === 'true',
   skipTests: process.env.SKIP_TESTS === 'true',
   environment: (process.env.NODE_ENV as any) || 'development',
-};
+}
 
 // Utility functions
-const sleep = promisify(setTimeout);
+const sleep = promisify(setTimeout)
 
 function formatDuration(ms: number): string {
   const seconds = Math.floor(ms / 1000);
@@ -112,7 +112,7 @@ async function executeCommand(
   args: string[], 
   options: SpawnOptions & { timeout?: number } = {}
 ): Promise<ValidationResult> {
-  const startTime = Date.now();
+  const startTime = Date.now()
   const result: ValidationResult = {
     success: false,
     errors: [],
@@ -160,7 +160,7 @@ async function executeCommand(
     });
 
     // Timeout handler
-    const timeout = options.timeout || BUILD_CONFIG.timeout;
+    const timeout = options.timeout || BUILD_CONFIG.timeout
     setTimeout(() => {
       if (!process.killed) {
         process.kill('SIGTERM');
@@ -177,11 +177,11 @@ class EnterpriseBuildValidator {
   private metrics: Partial<BuildMetrics> = {
     startTime: Date.now(),
     stages: {},
-  };
+  }
 
   // Stage 1: Configuration and dependency validation
   async validateConfiguration(): Promise<ValidationResult> {
-    logStep('Validating project configuration...', '🔍');
+    logStep('Validating project configuration...', '🔍')
     const result: ValidationResult = {
       success: true,
       errors: [],
@@ -193,7 +193,7 @@ class EnterpriseBuildValidator {
 
     try {
       // Validate package.json
-      const packageJsonPath = path.join(process.cwd(), 'package.json');
+      const packageJsonPath = path.join(process.cwd(), 'package.json')
       const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
       result.info.push('package.json is valid JSON');
 
@@ -204,7 +204,7 @@ class EnterpriseBuildValidator {
         'react',
         'typescript',
         '@types/node',
-      ];
+      ]
 
       const missingDeps = requiredDeps.filter(dep => 
         !packageJson.dependencies?.[dep] && !packageJson.devDependencies?.[dep]
@@ -216,21 +216,21 @@ class EnterpriseBuildValidator {
 
       // Validate TypeScript configuration
       try {
-        const tsconfigPath = path.join(process.cwd(), 'tsconfig.json');
+        const tsconfigPath = path.join(process.cwd(), 'tsconfig.json')
         await fs.access(tsconfigPath);
         const tsconfig = JSON.parse(await fs.readFile(tsconfigPath, 'utf8'));
         result.info.push('tsconfig.json is valid');
 
         // Check for strict mode (important for healthcare applications)
         if (!tsconfig.compilerOptions?.strict) {
-          result.warnings.push('TypeScript strict mode is not enabled - recommended for healthcare applications');
+          result.warnings.push('TypeScript strict mode is not enabled - recommended for healthcare applications')
         }
       } catch (error) {
         result.warnings.push('tsconfig.json not found or invalid');
       }
 
       // Validate environment configuration
-      const envFiles = ['.env.local', '.env.development', '.env.production'];
+      const envFiles = ['.env.local', '.env.development', '.env.production']
       const existingEnvFiles: string[] = [];
       
       for (const envFile of envFiles) {
@@ -243,7 +243,7 @@ class EnterpriseBuildValidator {
       }
 
       if (existingEnvFiles.length > 0) {
-        result.info.push(`Environment files found: ${existingEnvFiles.join(', ')}`);
+        result.info.push(`Environment files found: ${existingEnvFiles.join(', ')}`)
       } else {
         result.warnings.push('No environment configuration files found');
       }
@@ -259,12 +259,12 @@ class EnterpriseBuildValidator {
 
   // Stage 2: TypeScript compilation and linting
   async validateCodeQuality(): Promise<ValidationResult> {
-    logStep('Validating code quality and TypeScript compilation...', '🔍');
+    logStep('Validating code quality and TypeScript compilation...', '🔍')
     const startTime = Date.now();
     let result: ValidationResult;
 
     // Run TypeScript compilation check
-    result = await executeCommand('npx', ['tsc', '--noEmit'], { timeout: 120000 });
+    result = await executeCommand('npx', ['tsc', '--noEmit'], { timeout: 120000 })
     
     if (result.success) {
       logSuccess('TypeScript compilation check passed');
@@ -274,7 +274,7 @@ class EnterpriseBuildValidator {
 
     // Run ESLint if available
     try {
-      await fs.access(path.join(process.cwd(), '.eslintrc.js'));
+      await fs.access(path.join(process.cwd(), '.eslintrc.js'))
       const eslintResult = await executeCommand('npx', ['eslint', 'src/', '--ext', '.ts,.tsx'], { timeout: 60000 });
       
       if (eslintResult.success) {
@@ -298,14 +298,14 @@ class EnterpriseBuildValidator {
   // Stage 3: Security vulnerability scanning
   async validateSecurity(): Promise<ValidationResult> {
     if (!BUILD_CONFIG.enableSecurityScan) {
-      return { success: true, errors: [], warnings: [], info: ['Security scan skipped'], duration: 0 };
+      return { success: true, errors: [], warnings: [], info: ['Security scan skipped'], duration: 0 }
     }
 
     logStep('Running security vulnerability scan...', '🔒');
     const startTime = Date.now();
 
     // Run npm audit
-    const auditResult = await executeCommand('npm', ['audit', '--audit-level', 'moderate'], { timeout: 60000 });
+    const auditResult = await executeCommand('npm', ['audit', '--audit-level', 'moderate'], { timeout: 60000 })
     
     if (auditResult.success) {
       logSuccess('Security audit passed');
@@ -320,7 +320,7 @@ class EnterpriseBuildValidator {
   // Stage 4: Database schema validation
   async validateDatabase(): Promise<ValidationResult> {
     if (!BUILD_CONFIG.enableDatabaseValidation) {
-      return { success: true, errors: [], warnings: [], info: ['Database validation skipped'], duration: 0 };
+      return { success: true, errors: [], warnings: [], info: ['Database validation skipped'], duration: 0 }
     }
 
     logStep('Validating database schema...', '🔍');
@@ -328,11 +328,11 @@ class EnterpriseBuildValidator {
 
     try {
       // Check if Prisma schema exists
-      const prismaSchemaPath = path.join(process.cwd(), 'prisma', 'schema.prisma');
+      const prismaSchemaPath = path.join(process.cwd(), 'prisma', 'schema.prisma')
       await fs.access(prismaSchemaPath);
 
       // Validate Prisma schema
-      const prismaResult = await executeCommand('npx', ['prisma', 'validate'], { timeout: 30000 });
+      const prismaResult = await executeCommand('npx', ['prisma', 'validate'], { timeout: 30000 })
       
       if (prismaResult.success) {
         logSuccess('Database schema validation passed');
@@ -354,7 +354,7 @@ class EnterpriseBuildValidator {
   // Stage 5: Unit tests execution
   async runTests(): Promise<ValidationResult> {
     if (BUILD_CONFIG.skipTests) {
-      return { success: true, errors: [], warnings: [], info: ['Tests skipped'], duration: 0 };
+      return { success: true, errors: [], warnings: [], info: ['Tests skipped'], duration: 0 }
     }
 
     logStep('Running unit tests...', '🔍');
@@ -363,7 +363,7 @@ class EnterpriseBuildValidator {
     const testResult = await executeCommand('npm', ['test', '--', '--passWithNoTests', '--coverage'], { 
       timeout: 180000, // 3 minutes for tests
       env: { ...process.env, CI: 'true' }
-    });
+    })
 
     if (testResult.success) {
       logSuccess('Unit tests passed');
@@ -378,7 +378,7 @@ class EnterpriseBuildValidator {
   // Stage 6: FHIR standard validation
   async validateFHIR(): Promise<ValidationResult> {
     if (!BUILD_CONFIG.enableFHIRValidation) {
-      return { success: true, errors: [], warnings: [], info: ['FHIR validation skipped'], duration: 0 };
+      return { success: true, errors: [], warnings: [], info: ['FHIR validation skipped'], duration: 0 }
     }
 
     logStep('Validating FHIR standard compliance...', '🔍');
@@ -386,13 +386,13 @@ class EnterpriseBuildValidator {
 
     try {
       // Check if FHIR modules exist
-      const fhirPath = path.join(process.cwd(), 'src', 'lib', 'fhir');
+      const fhirPath = path.join(process.cwd(), 'src', 'lib', 'fhir')
       await fs.access(fhirPath);
 
       // Run FHIR-specific tests if they exist
       const fhirTestResult = await executeCommand('npm', ['test', '--', 'src/lib/fhir', '--passWithNoTests'], { 
         timeout: 60000 
-      });
+      })
 
       if (fhirTestResult.success) {
         logSuccess('FHIR validation passed');
@@ -413,7 +413,7 @@ class EnterpriseBuildValidator {
 
   // Stage 7: Next.js build
   async validateBuild(): Promise<ValidationResult> {
-    logStep('Running Next.js production build...', '🏗️');
+    logStep('Running Next.js production build...', '🏗️')
     const startTime = Date.now();
 
     const buildResult = await executeCommand('npx', ['next', 'build'], { 
@@ -434,7 +434,7 @@ class EnterpriseBuildValidator {
   // Stage 8: Performance validation
   async validatePerformance(): Promise<ValidationResult> {
     if (!BUILD_CONFIG.enablePerformanceValidation) {
-      return { success: true, errors: [], warnings: [], info: ['Performance validation skipped'], duration: 0 };
+      return { success: true, errors: [], warnings: [], info: ['Performance validation skipped'], duration: 0 }
     }
 
     logStep('Validating build performance metrics...', '📊');
@@ -442,11 +442,11 @@ class EnterpriseBuildValidator {
 
     try {
       // Check build output for performance metrics
-      const buildPath = path.join(process.cwd(), '.next');
+      const buildPath = path.join(process.cwd(), '.next')
       await fs.access(buildPath);
 
       // Analyze bundle sizes (simplified check)
-      const staticPath = path.join(buildPath, 'static');
+      const staticPath = path.join(buildPath, 'static')
       const stats = await fs.stat(staticPath);
       
       const result: ValidationResult = {
@@ -459,7 +459,7 @@ class EnterpriseBuildValidator {
 
       // Add basic performance checks
       if (stats.isDirectory()) {
-        result.info.push('Static assets generated successfully');
+        result.info.push('Static assets generated successfully')
       }
 
       logSuccess('Performance validation completed');
@@ -478,7 +478,7 @@ class EnterpriseBuildValidator {
   // Stage 9: Compliance validation
   async validateCompliance(): Promise<ValidationResult> {
     if (!BUILD_CONFIG.enableComplianceCheck) {
-      return { success: true, errors: [], warnings: [], info: ['Compliance validation skipped'], duration: 0 };
+      return { success: true, errors: [], warnings: [], info: ['Compliance validation skipped'], duration: 0 }
     }
 
     logStep('Validating healthcare compliance requirements...', '🔍');
@@ -494,7 +494,7 @@ class EnterpriseBuildValidator {
 
     try {
       // Check for audit logging implementation
-      const auditPath = path.join(process.cwd(), 'src', 'lib', 'audit');
+      const auditPath = path.join(process.cwd(), 'src', 'lib', 'audit')
       await fs.access(auditPath);
       result.info.push('Audit logging modules found');
     } catch {
@@ -503,7 +503,7 @@ class EnterpriseBuildValidator {
 
     try {
       // Check for security implementation
-      const securityPath = path.join(process.cwd(), 'src', 'lib', 'security');
+      const securityPath = path.join(process.cwd(), 'src', 'lib', 'security')
       await fs.access(securityPath);
       result.info.push('Security modules found');
     } catch {
@@ -512,7 +512,7 @@ class EnterpriseBuildValidator {
 
     try {
       // Check for compliance implementation
-      const compliancePath = path.join(process.cwd(), 'src', 'lib', 'compliance');
+      const compliancePath = path.join(process.cwd(), 'src', 'lib', 'compliance')
       await fs.access(compliancePath);
       result.info.push('Compliance modules found');
     } catch {
@@ -527,7 +527,7 @@ class EnterpriseBuildValidator {
   // Main validation orchestrator
   async runValidation(): Promise<BuildMetrics> {
     logStep('🏥 Starting HMS Enterprise Build Validation', '🏗️'),
-    logInfo(`Environment: ${BUILD_CONFIG.environment}`);
+    logInfo(`Environment: ${BUILD_CONFIG.environment}`)
     logInfo(`Timeout: ${formatDuration(BUILD_CONFIG.timeout)}`);
 
     const stages = [
@@ -559,19 +559,19 @@ class EnterpriseBuildValidator {
           logError(`${stage.name} validation failed`);
           
           // Print errors
-          result.errors.forEach(error => logError(error));
+          result.errors.forEach(error => logError(error))
         } else {
           logSuccess(`${stage.name} validation completed`);
         }
 
         // Print warnings and info
-        result.warnings.forEach(warning => logWarning(warning));
+        result.warnings.forEach(warning => logWarning(warning))
         result.info.forEach(info => logInfo(info));
 
         // Update compliance and scores
         if (['security', 'compliance', 'fhir'].includes(stage.name)) {
           if (!result.success || result.errors.length > 0) {
-            healthcareCompliance = false;
+            healthcareCompliance = false
           }
           if (result.warnings.length > 0) {
             securityScore -= 10;
@@ -593,7 +593,7 @@ class EnterpriseBuildValidator {
     this.metrics.performanceScore = Math.max(0, performanceScore);
 
     // Generate final report
-    this.generateFinalReport();
+    this.generateFinalReport()
 
     return this.metrics as BuildMetrics;
   }
@@ -638,11 +638,11 @@ class EnterpriseBuildValidator {
 // Main execution
 async function main(): Promise<void> {
   try {
-    const validator = new EnterpriseBuildValidator();
+    const validator = new EnterpriseBuildValidator()
     const metrics = await validator.runValidation();
     
     // Exit with appropriate code
-    const exitCode = metrics.overallSuccess && metrics.healthcareCompliance ? 0 : 1;
+    const exitCode = metrics.overallSuccess && metrics.healthcareCompliance ? 0 : 1
     process.exit(exitCode);
   } catch (error) {
     logError(`Fatal error during build validation: ${error instanceof Error ? error.message : String(error)}`);
@@ -652,7 +652,7 @@ async function main(): Promise<void> {
 
 // Handle process signals
 process.on('SIGINT', () => {
-  logWarning('Build validation interrupted by user');
+  logWarning('Build validation interrupted by user')
   process.exit(130);
 });
 
@@ -664,9 +664,7 @@ process.on('SIGTERM', () => {
 // Execute if run directly
 if (require.main === module) {
   main().catch((error) => {
-    logError(`Unhandled error: ${error instanceof Error ? error.message : String(error)}`);
+    logError(`Unhandled error: ${error instanceof Error ? error.message : String(error)}`)
     process.exit(1);
   });
-}
-
 export { EnterpriseBuildValidator, type BuildTestConfig, type ValidationResult, type BuildMetrics };

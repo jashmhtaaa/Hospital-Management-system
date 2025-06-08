@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -21,19 +13,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
 import { Edit, Trash2 } from "lucide-react";
 
-// Mock data structure - replace with actual API response type;
+// Mock data structure - replace with actual API response type
 interface SurgeryType {
   id: string,
-  name: string;
+  name: string,
   description: string | null,
-  specialty: string | null;
+  specialty: string | null,
   estimated_duration_minutes: number | null,
   updated_at: string
-}
-
 export default const OTSurgeryTypeList = () {
   const [surgeryTypes, setSurgeryTypes] = useState<SurgeryType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,16 +35,16 @@ export default const OTSurgeryTypeList = () {
         setLoading(true),
         setError(undefined);
 
-        // Replace with actual API call;
-        // const response = await fetch("/api/ot/surgery-types");
+        // Replace with actual API call
+        // const response = await fetch("/api/ot/surgery-types")
         // if (!response.ok) {
-        //   throw new Error("Failed to fetch surgery types");
+        //   throw new Error("Failed to fetch surgery types")
         // }
-        // const data = await response.json();
-        // setSurgeryTypes(data);
+        // const data = await response.json()
+        // setSurgeryTypes(data)
 
-        // Mock data for demonstration;
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
+        // Mock data for demonstration
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: SurgeryType[] = [
           {
             id: "st-1",
@@ -166,4 +156,3 @@ export default const OTSurgeryTypeList = () {
       </CardContent>
     </Card>
   );
-}

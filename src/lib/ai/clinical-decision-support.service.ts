@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -20,18 +12,18 @@ import { PrismaClient } from '@prisma/client';
 
 export interface CDSSRecommendation {
   id: string,
-  type: CDSSRecommendationType;
+  type: CDSSRecommendationType,
   priority: 'low' | 'medium' | 'high' | 'critical',
-  title: string;
+  title: string,
   description: string,
-  recommendation: string;
+  recommendation: string,
   evidence: EvidenceBase,
-  clinicalContext: ClinicalContext;
+  clinicalContext: ClinicalContext,
   patientSpecific: boolean,
-  confidence: number; // 0-100;
+  confidence: number; // 0-100
   riskScore?: number;
   timeframe: 'immediate' | 'within_hours' | 'within_days' | 'routine',
-  alerts: CDSSAlert[];
+  alerts: CDSSAlert[],
   references: ClinicalReference[],
   createdAt: Date;
   expiresAt?: Date;
@@ -39,8 +31,6 @@ export interface CDSSRecommendation {
   acknowledgedAt?: Date;
   dismissed?: boolean;
   actionTaken?: string;
-}
-
 export type CDSSRecommendationType = 
   | 'drug_interaction';
   | 'dosage_adjustment';
@@ -58,21 +48,19 @@ export type CDSSRecommendationType =
   | 'discharge_planning';
 
 export interface EvidenceBase {
-  level: 'A' | 'B' | 'C' | 'D'; // Evidence levels;
+  level: 'A' | 'B' | 'C' | 'D'; // Evidence levels
   source: 'randomized_trial' | 'observational' | 'expert_opinion' | 'guideline';
   guideline?: string;
   studies?: StudyReference[];
   lastUpdated: Date,
   strength: 'strong' | 'moderate' | 'weak'
-}
-
 export interface ClinicalContext {
   patientId: string;
   encounterId?: string;
   department: string,
-  provider: string;
+  provider: string,
   conditions: string[],
-  medications: MedicationContext[];
+  medications: MedicationContext[],
   allergies: AllergyContext[];
   vitals?: VitalSigns;
   labResults?: LabResult[];
@@ -80,28 +68,22 @@ export interface ClinicalContext {
   gender: 'male' | 'female' | 'other';
   weight?: number;
   height?: number;
-  kidneyFunction?: number; // eGFR;
+  kidneyFunction?: number; // eGFR
   liverFunction?: 'normal' | 'mild' | 'moderate' | 'severe';
-}
-
 export interface MedicationContext {
   name: string,
-  dose: string;
+  dose: string,
   frequency: string,
-  route: string;
+  route: string,
   startDate: Date;
   endDate?: Date;
   prescriber: string;
   indication?: string;
-}
-
 export interface AllergyContext {
   allergen: string,
-  reaction: string;
+  reaction: string,
   severity: 'mild' | 'moderate' | 'severe' | 'life_threatening',
   verified: boolean
-}
-
 export interface VitalSigns {
   temperature?: number;
   heartRate?: number;
@@ -111,27 +93,21 @@ export interface VitalSigns {
   };
   respiratoryRate?: number;
   oxygenSaturation?: number;
-  pain?: number; // 0-10 scale;
+  pain?: number; // 0-10 scale
   timestamp: Date
-}
-
 export interface LabResult {
   test: string,
-  value: number;
+  value: number,
   unit: string,
-  referenceRange: string;
+  referenceRange: string,
   abnormal: boolean,
-  critical: boolean;
+  critical: boolean,
   timestamp: Date
-}
-
 export interface CDSSAlert {
   severity: 'info' | 'warning' | 'critical',
-  message: string;
+  message: string,
   actionRequired: boolean,
   category: 'safety' | 'efficacy' | 'cost' | 'quality'
-}
-
 export interface ClinicalReference {
   title: string,
   authors: string[];
@@ -141,85 +117,67 @@ export interface ClinicalReference {
   doi?: string;
   url?: string;
   type: 'study' | 'guideline' | 'review' | 'meta_analysis'
-}
-
 export interface StudyReference {
   title: string,
-  sampleSize: number;
+  sampleSize: number,
   outcome: string,
-  significance: number; // p-value;
+  significance: number; // p-value
   effectSize?: number;
-}
-
 export interface DrugInteractionCheck {
   drug1: string,
-  drug2: string;
+  drug2: string,
   severity: 'minor' | 'moderate' | 'major' | 'contraindicated',
-  mechanism: string;
+  mechanism: string,
   effect: string,
-  management: string;
+  management: string,
   references: ClinicalReference[]
-}
-
 export interface DosageAdjustment {
   medication: string,
-  currentDose: string;
+  currentDose: string,
   recommendedDose: string,
-  reason: string;
+  reason: string,
   factor: 'age' | 'weight' | 'kidney' | 'liver' | 'drug_interaction';
   calculation?: string;
-}
-
 export interface DiagnosticSuggestion {
   condition: string,
-  probability: number;
+  probability: number,
   supportingFactors: string[],
-  recommendedTests: string[];
+  recommendedTests: string[],
   differentialDiagnoses: string[],
   urgency: 'routine' | 'urgent' | 'emergent'
-}
-
 export interface TreatmentProtocol {
   condition: string,
-  protocol: string;
+  protocol: string,
   steps: ProtocolStep[],
-  duration: string;
+  duration: string,
   monitoring: string[],
   alternatives: string[]
-}
-
 export interface ProtocolStep {
   order: number,
-  action: string;
+  action: string,
   timing: string;
   criteria?: string;
   alternatives?: string[];
-}
-
 export interface RiskAssessment {
   riskFactor: string,
-  score: number;
+  score: number,
   category: 'low' | 'moderate' | 'high' | 'very_high',
-  interventions: string[];
+  interventions: string[],
   timeline: string,
   reevaluate: string
-}
-
 export interface QualityMeasure {
   measure: string,
-  category: 'process' | 'outcome' | 'structure';
+  category: 'process' | 'outcome' | 'structure',
   compliance: boolean;
   gap?: string;
   action: string;
   deadline?: Date;
-}
-
 export interface PreventiveCare {
   service: string,
   indication: string;
   lastPerformed?: Date;
   nextDue: Date,
-  overdue: boolean;
+  overdue: boolean,
   priority: 'high' | 'medium' | 'low'
 }
 
@@ -242,13 +200,13 @@ class ClinicalDecisionSupportService extends EventEmitter {
    */
   private async initializeKnowledgeBase(): Promise<void> {
     try {
-      // Initialize drug database;
+      // Initialize drug database
       await this.loadDrugDatabase();
       
-      // Initialize clinical guidelines;
+      // Initialize clinical guidelines
       await this.loadClinicalGuidelines();
       
-      // Initialize interaction database;
+      // Initialize interaction database
       await this.loadInteractionDatabase();
       
       this.isInitialized = true;
@@ -257,7 +215,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
-      throw error;
+      throw error
     }
   }
 
@@ -272,48 +230,48 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const recommendations: CDSSRecommendation[] = [];
 
     try {
-      // Drug interaction checks;
+      // Drug interaction checks
       const drugInteractions = await this.checkDrugInteractions(context);
       recommendations.push(...drugInteractions);
 
-      // Allergy alerts;
+      // Allergy alerts
       const allergyAlerts = await this.checkAllergies(context);
       recommendations.push(...allergyAlerts);
 
-      // Dosage adjustments;
+      // Dosage adjustments
       const dosageAdjustments = await this.checkDosageAdjustments(context);
       recommendations.push(...dosageAdjustments);
 
-      // Lab monitoring recommendations;
+      // Lab monitoring recommendations
       const labMonitoring = await this.checkLabMonitoring(context);
       recommendations.push(...labMonitoring);
 
-      // Diagnostic suggestions;
+      // Diagnostic suggestions
       const diagnosticSuggestions = await this.generateDiagnosticSuggestions(context);
       recommendations.push(...diagnosticSuggestions);
 
-      // Treatment protocols;
+      // Treatment protocols
       const treatmentProtocols = await this.recommendTreatmentProtocols(context);
       recommendations.push(...treatmentProtocols);
 
-      // Preventive care reminders;
+      // Preventive care reminders
       const preventiveCare = await this.checkPreventiveCare(context);
       recommendations.push(...preventiveCare);
 
-      // Quality measures;
+      // Quality measures
       const qualityMeasures = await this.checkQualityMeasures(context);
       recommendations.push(...qualityMeasures);
 
-      // Risk assessments;
+      // Risk assessments
       const riskAssessments = await this.performRiskAssessments(context);
       recommendations.push(...riskAssessments);
 
-      // Store recommendations;
+      // Store recommendations
       recommendations.forEach(rec => {
         this.recommendations.set(rec.id, rec);
       });
 
-      // Emit events for critical recommendations;
+      // Emit events for critical recommendations
       const criticalRecs = recommendations.filter(r => r.priority === 'critical');
       if (criticalRecs.length > 0) {
         this.emit('critical_recommendations', {
@@ -529,8 +487,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private async generateDiagnosticSuggestions(context: ClinicalContext): Promise<CDSSRecommendation[]> {
     const recommendations: CDSSRecommendation[] = [];
     
-    // AI-powered diagnostic suggestions would go here;
-    // This is a simplified example;
+    // AI-powered diagnostic suggestions would go here
+    // This is a simplified example
     
     return recommendations;
   }
@@ -631,7 +589,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private async checkQualityMeasures(context: ClinicalContext): Promise<CDSSRecommendation[]> {
     const recommendations: CDSSRecommendation[] = [];
     
-    // Quality measures logic would go here;
+    // Quality measures logic would go here
     
     return recommendations;
   }
@@ -642,7 +600,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private async performRiskAssessments(context: ClinicalContext): Promise<CDSSRecommendation[]> {
     const recommendations: CDSSRecommendation[] = [];
     
-    // Risk assessment logic would go here;
+    // Risk assessment logic would go here
     
     return recommendations;
   }
@@ -677,15 +635,15 @@ class ClinicalDecisionSupportService extends EventEmitter {
     recommendation.acknowledgedAt = new Date();
     recommendation.actionTaken = action;
 
-    // Store in database;
+    // Store in database
     try {
-      // In production, update database;
+      // In production, update database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       
       this.emit('recommendation_acknowledged', {
         recommendationId: id,
         providerId,
-        action;
+        action
       });
 
       return true;
@@ -711,13 +669,13 @@ class ClinicalDecisionSupportService extends EventEmitter {
     recommendation.actionTaken = `Dismissed: ${reason || 'No reason provided'}`;
 
     try {
-      // In production, update database;
+      // In production, update database
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       
       this.emit('recommendation_dismissed', {
         recommendationId: id,
         providerId,
-        reason;
+        reason
       });
 
       return true;
@@ -732,9 +690,9 @@ class ClinicalDecisionSupportService extends EventEmitter {
    */
   getStatistics(): {
     totalRecommendations: number,
-    activeRecommendations: number;
+    activeRecommendations: number,
     criticalRecommendations: number,
-    acknowledgedRecommendations: number;
+    acknowledgedRecommendations: number,
     dismissedRecommendations: number,
     byType: Record<CDSSRecommendationType, number>;
   } {
@@ -759,21 +717,21 @@ class ClinicalDecisionSupportService extends EventEmitter {
     };
   }
 
-  // Private helper methods;
+  // Private helper methods
 
   private async loadDrugDatabase(): Promise<void> {
-    // Load drug database from external source or file;
-    // This would typically integrate with a drug database like First DataBank or Lexicomp;
+    // Load drug database from external source or file
+    // This would typically integrate with a drug database like First DataBank or Lexicomp
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async loadClinicalGuidelines(): Promise<void> {
-    // Load clinical guidelines from medical societies;
+    // Load clinical guidelines from medical societies
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async loadInteractionDatabase(): Promise<void> {
-    // Sample drug interactions;
+    // Sample drug interactions
     this.interactionDatabase = [
       {
         drug1: 'warfarin',
@@ -806,13 +764,13 @@ class ClinicalDecisionSupportService extends EventEmitter {
   }
 
   private checkAllergyMatch(medication: string, allergen: string): boolean {
-    // Simplified allergy matching - in production, this would use drug class mappings;
+    // Simplified allergy matching - in production, this would use drug class mappings
     return medication.toLowerCase().includes(allergen.toLowerCase()) ||;
            allergen.toLowerCase().includes(medication.toLowerCase());
   }
 
   private calculateDosageAdjustment(medication: MedicationContext, context: ClinicalContext): DosageAdjustment | null {
-    // Simplified dosage calculation - in production, this would use comprehensive dosing algorithms;
+    // Simplified dosage calculation - in production, this would use comprehensive dosing algorithms
     if (context.kidneyFunction && context.kidneyFunction < 60) {
       return {
         medication: medication.name,
@@ -828,7 +786,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   }
 
   private getLabMonitoringRequirements(medication: string): Array<{test: string; frequency: string}> {
-    // Sample monitoring requirements;
+    // Sample monitoring requirements
     const monitoringMap: Record<string, Array<{test: string; frequency: string}>> = {
       'warfarin': [{ test: 'INR', frequency: 'weekly' }],
       'lithium': [{ test: 'lithium level', frequency: 'monthly' }],
@@ -851,7 +809,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   }
 
   private getTreatmentProtocol(condition: string): TreatmentProtocol | null {
-    // Sample treatment protocols;
+    // Sample treatment protocols
     const protocols: Record<string, TreatmentProtocol> = {
       'pneumonia': {
         condition: 'Community-Acquired Pneumonia',
@@ -873,12 +831,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private getPreventiveServices(age: number, gender: string): PreventiveCare[] {
     const services: PreventiveCare[] = [];
     
-    // Sample preventive care recommendations;
+    // Sample preventive care recommendations
     if (age >= 50) {
       services.push({
         service: 'Colonoscopy',
         indication: 'Colorectal cancer screening',
-        nextDue: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now;
+        nextDue: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         overdue: true,
         priority: 'high'
       });
@@ -888,7 +846,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       services.push({
         service: 'Mammography',
         indication: 'Breast cancer screening',
-        nextDue: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago;
+        nextDue: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
         overdue: true,
         priority: 'high'
       });
@@ -932,5 +890,5 @@ class ClinicalDecisionSupportService extends EventEmitter {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const clinicalDecisionSupport = new ClinicalDecisionSupportService();

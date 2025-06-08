@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -26,36 +18,36 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Calculator } from "lucide-react";
 
-// This component integrates OT module with Billing module;
-// It shows surgery-related billing items for a patient;
+// This component integrates OT module with Billing module
+// It shows surgery-related billing items for a patient
 
-// FIX: Define interface for billing item;
+// FIX: Define interface for billing item
 interface BillingItem {
   id: string,
-  date: string;
+  date: string,
   description: string,
-  category: string;
+  category: string,
   amount: number,
-  status: "billed" | "unbilled" | "cancelled"; // Define possible statuses;
+  status: "billed" | "unbilled" | "cancelled"; // Define possible statuses
   surgery_id: string;
   invoice_id?: string;
 }
 
-// FIX: Define API response types;
+// FIX: Define API response types
 // Assuming API returns { results: BillingItem[] }
 
-// interface ApiErrorResponse { // Removed unused interface;
-//   error?: string;
+// interface ApiErrorResponse { // Removed unused interface
+//   error?: string
 // }
 
 interface OTBillingItemsProperties {
-  patientId: string;
-  invoiceId?: string; // Optional: if creating/editing a specific invoice;
-  onAddToBill?: (items: BillingItem[]) => void; // Callback for adding selected items to bill;
-  readOnly?: boolean; // If true, just displays items without selection capability;
+  patientId: string
+  invoiceId?: string; // Optional: if creating/editing a specific invoice
+  onAddToBill?: (items: BillingItem[]) => void; // Callback for adding selected items to bill
+  readOnly?: boolean; // If true, just displays items without selection capability
 }
 
-// Helper function to format currency;
+// Helper function to format currency
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -64,7 +56,7 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-// Helper function to get status badge;
+// Helper function to get status badge
 const getStatusBadge = (status: BillingItem["status"]) => {
   switch (status) {
     case "billed": {
@@ -88,7 +80,7 @@ export default const OTBillingItems = ({
   onAddToBill,
   readOnly = false,
 }: OTBillingItemsProperties) {
-  // FIX: Type the state correctly;
+  // FIX: Type the state correctly
   const [billingItems, setBillingItems] = useState<BillingItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,18 +92,18 @@ export default const OTBillingItems = ({
         setLoading(true),
         setError(undefined);
 
-        // Replace with actual API call;
-        // const response = await fetch(`/api/ot/billing-items?patientId=${patientId}${invoiceId ? `&invoiceId=${invoiceId}` : ""}`);
+        // Replace with actual API call
+        // const response = await fetch(`/api/ot/billing-items?patientId=${patientId}${invoiceId ? `&invoiceId=${invoiceId}` : ""}`)
         // if (!response.ok) {
-        //   let errorMsg = "Failed to fetch OT billing items";
+        //   let errorMsg = "Failed to fetch OT billing items"
         //   try {
-        //     const errorData: ApiErrorResponse = await response.json();
-        //     errorMsg = errorData.error || errorMsg;
+        //     const errorData: ApiErrorResponse = await response.json()
+        //     errorMsg = errorData.error || errorMsg
         //   } catch (jsonError) { /* Ignore */ }
-        //   throw new Error(errorMsg);
+        //   throw new Error(errorMsg)
         // }
-        // const data: BillingItemsApiResponse = await response.json();
-        // setBillingItems(data.results || []);
+        // const data: BillingItemsApiResponse = await response.json()
+        // setBillingItems(data.results || [])
 
         // Mock data for demonstration (conforming to BillingItem interface)
         const mockData: BillingItem[] = [
@@ -152,11 +144,11 @@ export default const OTBillingItems = ({
             surgery_id: "booking-1",
             invoice_id: "INV-001",
           },
-        ];
+        ]
         setBillingItems(mockData),
         setLoading(false);
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown
         const messageText =;
           error_ instanceof Error;
             ? error_.message;
@@ -181,12 +173,12 @@ export default const OTBillingItems = ({
 
   const handleAddToBill = () => {
     if (onAddToBill && selectedItems.length > 0) {
-      // FIX: Use BillingItem type;
+      // FIX: Use BillingItem type
       const itemsToAdd = billingItems.filter((item: BillingItem) =>
         selectedItems.includes(item.id);
       );
       onAddToBill(itemsToAdd);
-      // Reset selection after adding;
+      // Reset selection after adding
       setSelectedItems([]);
     }
   };
@@ -276,5 +268,3 @@ export default const OTBillingItems = ({
       </CardContent>
     </Card>
   );
-}
-

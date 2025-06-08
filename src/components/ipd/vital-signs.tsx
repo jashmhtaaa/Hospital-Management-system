@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -28,12 +20,12 @@ import {
   Label,
 } from "@/components/ui";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
+import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface VitalSignRecord {
   id: string,
-  admission_id: string;
+  admission_id: string,
   record_time: string;
   temperature?: number | string | null;
   pulse?: number | string | null;
@@ -43,14 +35,14 @@ interface VitalSignRecord {
   pain_level?: number | string | null;
   notes?: string | null;
   recorded_by_user_id: string;
-  // Assuming these come from a join or separate fetch;
+  // Assuming these come from a join or separate fetch
   recorded_by_first_name?: string;
   recorded_by_last_name?: string;
 }
 
 interface AdmissionInfo {
   admission_number: string,
-  admission_date: string;
+  admission_date: string,
   patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
@@ -58,28 +50,28 @@ interface AdmissionInfo {
 
 interface FormData {
   temperature: string,
-  pulse: string;
+  pulse: string,
   respiratory_rate: string,
-  blood_pressure: string;
+  blood_pressure: string,
   oxygen_saturation: string,
-  pain_level: string;
+  pain_level: string,
   notes: string
 }
 
 // FIX: Define type for API success response (new record)
-type NewVitalSignResponse = VitalSignRecord;
+type NewVitalSignResponse = VitalSignRecord
 
-// FIX: Define type for submission data;
+// FIX: Define type for submission data
 interface VitalSignSubmissionData {
   record_time: string,
-  temperature: number | null;
+  temperature: number | null,
   pulse: number | null,
-  respiratory_rate: number | null;
+  respiratory_rate: number | null,
   blood_pressure: string | null,
-  oxygen_saturation: number | null;
+  oxygen_saturation: number | null,
   pain_level: number | null,
   notes: string | null;
-  // recorded_by_user_id will be added on the server or from session;
+  // recorded_by_user_id will be added on the server or from session
 }
 
 interface VitalSignsProperties {
@@ -101,9 +93,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
-  const { toast } = useToast(); // FIX: Initialize toast;
+  const { toast } = useToast(); // FIX: Initialize toast
 
-  // Fetch vital signs and admission info;
+  // Fetch vital signs and admission info
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (!admissionId) {
@@ -115,25 +107,25 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       setLoading(true),
       setError(undefined);
       try {
-        // Simulate API call;
-        // const response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`);
+        // Simulate API call
+        // const response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`)
         // if (!response.ok) {
-        //   let errorMsg = "Failed to fetch vital signs";
+        //   let errorMsg = "Failed to fetch vital signs"
         //   try {
-        //       const errorData: ApiErrorResponse = await response.json();
-        //       errorMsg = errorData.error || errorMsg;
+        //       const errorData: ApiErrorResponse = await response.json()
+        //       errorMsg = errorData.error || errorMsg
         //   } catch (jsonError) { /* Ignore */ }
-        //   throw new Error(errorMsg);
+        //   throw new Error(errorMsg)
         // }
         // const data = await response.json(); // Assuming { admission: AdmissionInfo, vital_signs: VitalSignRecord[] }
-        // setVitalSigns(data.vital_signs?.sort((a, b) => new Date(b.record_time).getTime() - new Date(a.record_time).getTime()) || []);
-        // setPatientInfo(data.admission || null);
+        // setVitalSigns(data.vital_signs?.sort((a, b) => new Date(b.record_time).getTime() - new Date(a.record_time).getTime()) || [])
+        // setPatientInfo(data.admission || null)
 
-        // Mock data simulation;
+        // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 600));
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000 * 3).toISOString(), // 3 days ago;
+          admission_date: new Date(Date.now() - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -142,7 +134,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           {
             id: "vs_001",
             admission_id: admissionId,
-            record_time: new Date(Date.now() - 3_600_000 * 4).toISOString(), // 4 hours ago;
+            record_time: new Date(Date.now() - 3_600_000 * 4).toISOString(), // 4 hours ago
             temperature: 37.8,
             pulse: 88,
             respiratory_rate: 18,
@@ -157,7 +149,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           {
             id: "vs_002",
             admission_id: admissionId,
-            record_time: new Date(Date.now() - 3_600_000 * 8).toISOString(), // 8 hours ago;
+            record_time: new Date(Date.now() - 3_600_000 * 8).toISOString(), // 8 hours ago
             temperature: 38.1,
             pulse: 92,
             respiratory_rate: 20,
@@ -179,7 +171,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           );
         );
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -212,8 +204,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
     setSubmitting(true);
 
     try {
-      // Prepare data, converting empty strings to null and numbers where appropriate;
-      // FIX: Use the defined submission data type;
+      // Prepare data, converting empty strings to null and numbers where appropriate
+      // FIX: Use the defined submission data type
       const submissionData: VitalSignSubmissionData = {
         record_time: new Date().toISOString(),
         temperature: formData.temperature;
@@ -233,8 +225,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         notes: formData.notes || null,
       };
 
-      // Basic validation;
-      // FIX: Check for null and range for pain_level;
+      // Basic validation
+      // FIX: Check for null and range for pain_level
       if (
         submissionData.pain_level !== null &&;
         (submissionData.pain_level < 0 || submissionData.pain_level > 10);
@@ -243,37 +235,37 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       }
       // Add other validations as needed (e.g., for temperature, pulse ranges)
 
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(submissionData),
-      // });
+      // })
       // if (!response.ok) {
-      //   let errorMsg = "Failed to record vital signs";
+      //   let errorMsg = "Failed to record vital signs"
       //   try {
-      //       const errorData: ApiErrorResponse = await response.json();
-      //       errorMsg = errorData.error || errorMsg;
+      //       const errorData: ApiErrorResponse = await response.json()
+      //       errorMsg = errorData.error || errorMsg
       //   } catch (jsonError) { /* Ignore */ }
-      //   throw new Error(errorMsg);
+      //   throw new Error(errorMsg)
       // }
-      // const newRecord: NewVitalSignResponse = await response.json();
+      // const newRecord: NewVitalSignResponse = await response.json()
 
-      // Mock response;
+      // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
       const newRecord: NewVitalSignResponse = {
         id: `vs_${Date.now()}`,
         admission_id: admissionId,
-        recorded_by_user_id: "nurse_current", // Replace with actual user ID;
-        recorded_by_first_name: "Current", // Replace with actual user data;
+        recorded_by_user_id: "nurse_current", // Replace with actual user ID
+        recorded_by_first_name: "Current", // Replace with actual user data
         recorded_by_last_name: "Nurse",
         ...submissionData,
-      } as NewVitalSignResponse; // Assert type after merging;
+      } as NewVitalSignResponse; // Assert type after merging
 
       // Update the vital signs list (prepend new record)
-      setVitalSigns((previous) => [newRecord, ...previous]);
+      setVitalSigns((previous) => [newRecord, ...previous])
 
-      // Reset form;
+      // Reset form
       setFormData({
         temperature: "",
         pulse: "",
@@ -288,7 +280,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         description: "Vital signs recorded successfully!",
       });
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
@@ -298,7 +290,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
     }
   };
 
-  // Format date for display;
+  // Format date for display
   const formatDateTime = (dateString: string | undefined): string => {
     if (!dateString) return "N/A";
     try {
@@ -309,7 +301,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-      };
+      }
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
       );

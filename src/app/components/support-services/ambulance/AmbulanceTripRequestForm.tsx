@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -210,7 +200,7 @@ export default const AmbulanceTripRequestForm = () {
     setSubmitting(true);
     
     try {
-      // Combine date and time;
+      // Combine date and time
       const [hours, minutes] = selectedTime.split(':');
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
@@ -269,7 +259,7 @@ export default const AmbulanceTripRequestForm = () {
     setLoading(true);
     
     try {
-      // Combine date and time;
+      // Combine date and time
       const [hours, minutes] = selectedTime.split(':');
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
@@ -646,4 +636,3 @@ export default const AmbulanceTripRequestForm = () {
       </form>
     </div>
   );
-}

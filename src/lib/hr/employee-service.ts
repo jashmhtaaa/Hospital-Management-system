@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { PrismaClient } from '@prisma/client';
 import { Practitioner, PractitionerRole } from '@/lib/hr/types';
 import { cache } from '@/lib/cache';
@@ -20,8 +10,8 @@ const prisma = new PrismaClient();
  * Enhanced with caching and query optimization for improved performance;
  */
 export class EmployeeService {
-  // Cache TTL in seconds;
-  private CACHE_TTL = 3600; // 1 hour;
+  // Cache TTL in seconds
+  private CACHE_TTL = 3600; // 1 hour
   private CACHE_PREFIX = 'employee:';
 
   /**
@@ -29,7 +19,7 @@ export class EmployeeService {
    */
   async createEmployee(data: {
     employeeId: string,
-    firstName: string;
+    firstName: string,
     lastName: string;
     middleName?: string;
     gender?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
@@ -53,13 +43,13 @@ export class EmployeeService {
     }[];
     positions?: {
       positionId: string,
-      isPrimary: boolean;
+      isPrimary: boolean,
       startDate: Date;
       endDate?: Date;
     }[];
   }) {
     const result = await prisma.$transaction(async (tx) => {
-      // Create the employee record;
+      // Create the employee record
       const employee = await tx.employee.create({
         data: {
           employeeId: data.employeeId,
@@ -79,7 +69,7 @@ export class EmployeeService {
         },
       });
 
-      // Add qualifications if provided;
+      // Add qualifications if provided
       if (data.qualifications && data.qualifications.length > 0) {
         await Promise.all(
           data.qualifications.map((qual) =>
@@ -99,7 +89,7 @@ export class EmployeeService {
         );
       }
 
-      // Add positions if provided;
+      // Add positions if provided
       if (data.positions && data.positions.length > 0) {
         await Promise.all(
           data.positions.map((pos) =>
@@ -119,7 +109,7 @@ export class EmployeeService {
       return this.getEmployeeById(employee.id);
     });
 
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     await this.invalidateEmployeeCache();
     
     return result;
@@ -132,13 +122,13 @@ export class EmployeeService {
   async getEmployeeById(id: string) {
     const cacheKey = `${this.CACHE_PREFIX}id:${id}`;
     
-    // Try to get from cache first;
+    // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
     if (cachedEmployee) {
       return JSON.parse(cachedEmployee);
     }
     
-    // If not in cache, fetch from database;
+    // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
       where: { id },
       include: {
@@ -161,7 +151,7 @@ export class EmployeeService {
       },
     });
     
-    // Store in cache if found;
+    // Store in cache if found
     if (employee) {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
     }
@@ -176,13 +166,13 @@ export class EmployeeService {
   async getEmployeeByEmployeeId(employeeId: string) {
     const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId}`;
     
-    // Try to get from cache first;
+    // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
     if (cachedEmployee) {
       return JSON.parse(cachedEmployee);
     }
     
-    // If not in cache, fetch from database;
+    // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
       where: { employeeId },
       include: {
@@ -205,7 +195,7 @@ export class EmployeeService {
       },
     });
     
-    // Store in cache if found;
+    // Store in cache if found
     if (employee) {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
     }
@@ -248,7 +238,7 @@ export class EmployeeService {
       },
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     await this.invalidateEmployeeCache(id);
     
     return result;
@@ -287,7 +277,7 @@ export class EmployeeService {
       where.positions = {
         some: {
           positionId,
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
       };
     }
@@ -301,18 +291,18 @@ export class EmployeeService {
       ];
     }
 
-    // Generate cache key based on query parameters;
+    // Generate cache key based on query parameters
     const cacheKey = `${this.CACHE_PREFIX}list:${JSON.stringify({
       skip, take, cursor, departmentId, positionId, search, active, includeDetails;
     })}`;
     
-    // Try to get from cache first;
+    // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
     if (cachedResult) {
       return JSON.parse(cachedResult);
     }
 
-    // Determine what to include based on the detail level requested;
+    // Determine what to include based on the detail level requested
     const include: unknown = {
       department: true,
     };
@@ -323,33 +313,33 @@ export class EmployeeService {
           position: true,
         },
         where: {
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
       };
       
       include.qualifications = {
         where: {
           OR: [
-            { endDate: null }, // No end date;
-            { endDate: { gt: new Date() } }, // End date in future;
+            { endDate: null }, // No end date
+            { endDate: { gt: new Date() } }, // End date in future
           ],
         },
       };
     } else {
-      // For list views, just include primary position;
+      // For list views, just include primary position
       include.positions = {
         include: {
           position: true,
         },
         where: {
           isPrimary: true,
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
         take: 1,
       };
     }
 
-    // Use cursor-based pagination if cursor is provided;
+    // Use cursor-based pagination if cursor is provided
     const cursorObj = cursor ? { id: cursor } : undefined;
 
     const [employees, total] = await Promise.all([
@@ -372,8 +362,8 @@ export class EmployeeService {
       nextCursor: employees.length === take ? employees[employees.length - 1].id : null,
     };
     
-    // Store in cache;
-    await cache.set(cacheKey, JSON.stringify(result), 300); // 5 minutes TTL for lists;
+    // Store in cache
+    await cache.set(cacheKey, JSON.stringify(result), 300); // 5 minutes TTL for lists
     
     return result;
   }
@@ -400,7 +390,7 @@ export class EmployeeService {
       },
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     await this.invalidateEmployeeCache(employeeId);
     
     return result;
@@ -421,7 +411,7 @@ export class EmployeeService {
       attachment?: string;
     }
   ) {
-    // First get the qualification to find the employee ID;
+    // First get the qualification to find the employee ID
     const qualification = await prisma.qualification.findUnique({
       where: { id },
       select: { employeeId: true },
@@ -432,7 +422,7 @@ export class EmployeeService {
       data,
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     if (qualification) {
       await this.invalidateEmployeeCache(qualification.employeeId);
     }
@@ -444,7 +434,7 @@ export class EmployeeService {
    * Delete a qualification;
    */
   async deleteQualification(id: string) {
-    // First get the qualification to find the employee ID;
+    // First get the qualification to find the employee ID
     const qualification = await prisma.qualification.findUnique({
       where: { id },
       select: { employeeId: true },
@@ -454,7 +444,7 @@ export class EmployeeService {
       where: { id },
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     if (qualification) {
       await this.invalidateEmployeeCache(qualification.employeeId);
     }
@@ -469,18 +459,18 @@ export class EmployeeService {
     employeeId: string,
     data: {
       positionId: string,
-      isPrimary: boolean;
+      isPrimary: boolean,
       startDate: Date;
       endDate?: Date;
     }
   ) {
-    // If this is a primary position, update any existing primary positions to non-primary;
+    // If this is a primary position, update any existing primary positions to non-primary
     if (data.isPrimary) {
       await prisma.employeePosition.updateMany({
         where: {
           employeeId,
           isPrimary: true,
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
         data: {
           isPrimary: false,
@@ -498,7 +488,7 @@ export class EmployeeService {
       },
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     await this.invalidateEmployeeCache(employeeId);
     
     return result;
@@ -519,14 +509,14 @@ export class EmployeeService {
       select: { employeeId: true },
     });
 
-    // If making this primary, update any existing primary positions to non-primary;
+    // If making this primary, update any existing primary positions to non-primary
     if (data.isPrimary) {
       await prisma.employeePosition.updateMany({
         where: {
           employeeId: positionAssignment?.employeeId,
           isPrimary: true,
           id: { not: id },
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
         data: {
           isPrimary: false,
@@ -542,7 +532,7 @@ export class EmployeeService {
       },
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     if (positionAssignment) {
       await this.invalidateEmployeeCache(positionAssignment.employeeId);
     }
@@ -563,11 +553,11 @@ export class EmployeeService {
       where: { id },
       data: {
         endDate,
-        isPrimary: false, // No longer primary if ended;
+        isPrimary: false, // No longer primary if ended
       },
     });
     
-    // Invalidate relevant caches;
+    // Invalidate relevant caches
     if (positionAssignment) {
       await this.invalidateEmployeeCache(positionAssignment.employeeId);
     }
@@ -580,9 +570,9 @@ export class EmployeeService {
    * Updated to support FHIR R5 enhancements;
    */
   toFhirPractitioner(employee: unknown): Practitioner {
-    // Create the FHIR Practitioner resource;
+    // Create the FHIR Practitioner resource
     const practitioner: Practitioner = {
-      resourceType: "Practitioner", // Added for FHIR R5 compliance;
+      resourceType: "Practitioner", // Added for FHIR R5 compliance
       id: employee.id,
       meta: {
         profile: ["http://hl7.org/fhir/r5/StructureDefinition/Practitioner"]
@@ -608,9 +598,9 @@ export class EmployeeService {
       gender: employee.gender?.toLowerCase() as any,
       birthDate: employee.birthDate?.toISOString().split('T')[0],
       qualification: [],
-    };
+    }
 
-    // Add contact information;
+    // Add contact information
     if (employee.email) {
       practitioner.telecom.push({
         system: 'email',
@@ -627,7 +617,7 @@ export class EmployeeService {
       });
     }
 
-    // Add address if available;
+    // Add address if available
     if (employee.address) {
       practitioner.address.push({
         use: 'work',
@@ -641,7 +631,7 @@ export class EmployeeService {
       });
     }
 
-    // Add photo if available;
+    // Add photo if available
     if (employee.photo) {
       practitioner.photo = [
         {
@@ -651,7 +641,7 @@ export class EmployeeService {
       ];
     }
 
-    // Add qualifications;
+    // Add qualifications
     if (employee.qualifications && employee.qualifications.length > 0) {
       practitioner.qualification = employee.qualifications.map((qual: unknown) => ({
         identifier: qual.identifier;
@@ -676,7 +666,7 @@ export class EmployeeService {
           start: qual.startDate.toISOString(),
           end: qual.endDate?.toISOString(),
         },
-        issuer: qual.issuer;
+        issuer: qual.issuer
           ? {
               display: qual.issuer,
             }
@@ -692,9 +682,9 @@ export class EmployeeService {
    * Updated to support FHIR R5 enhancements;
    */
   toFhirPractitionerRole(employee: unknown, position: unknown): PractitionerRole {
-    // Create the FHIR PractitionerRole resource;
+    // Create the FHIR PractitionerRole resource
     const practitionerRole: PractitionerRole = {
-      resourceType: "PractitionerRole", // Added for FHIR R5 compliance;
+      resourceType: "PractitionerRole", // Added for FHIR R5 compliance
       id: position.id,
       meta: {
         profile: ["http://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"]
@@ -734,11 +724,11 @@ export class EmployeeService {
       location: [],
       healthcareService: [],
       telecom: [],
-      availableTime: [], // Added for FHIR R5 scheduling support;
-      notAvailable: [], // Added for FHIR R5 scheduling support;
+      availableTime: [], // Added for FHIR R5 scheduling support
+      notAvailable: [], // Added for FHIR R5 scheduling support
     };
 
-    // Add department as specialty if available;
+    // Add department as specialty if available
     if (employee.department) {
       practitionerRole.specialty = [
         {
@@ -751,10 +741,10 @@ export class EmployeeService {
           ],
           text: employee.department.name,
         },
-      ];
+      ]
     }
 
-    // Add contact information;
+    // Add contact information
     if (employee.email) {
       practitionerRole.telecom.push({
         system: 'email',
@@ -800,14 +790,14 @@ export class EmployeeService {
    */
   private async invalidateEmployeeCache(employeeId?: string) {
     if (employeeId) {
-      // Get the employee to find all IDs;
+      // Get the employee to find all IDs
       const employee = await prisma.employee.findFirst({
         where: { id: employeeId },
         select: { id: true, employeeId: true }
       });
       
       if (employee) {
-        // Invalidate specific employee caches;
+        // Invalidate specific employee caches
         await Promise.all([
           cache.del(`${this.CACHE_PREFIX}id:${employee.id}`),
           cache.del(`${this.CACHE_PREFIX}employeeId:${employee.employeeId}`)
@@ -815,7 +805,7 @@ export class EmployeeService {
       }
     }
     
-    // Invalidate list caches with pattern matching;
+    // Invalidate list caches with pattern matching
     await cache.delPattern(`${this.CACHE_PREFIX}list: *`)
   }
   
@@ -852,20 +842,20 @@ export class EmployeeService {
    * New method to support AI-driven workforce planning;
    */
   async predictStaffingNeeds(departmentId: string, date: Date) {
-    // This would integrate with an ML model in production;
-    // For now, we'll implement a simple algorithm based on historical patterns;
+    // This would integrate with an ML model in production
+    // For now, we'll implement a simple algorithm based on historical patterns
     
     const dayOfWeek = date.getDay();
     const month = date.getMonth();
     
-    // Get historical attendance data for this department on similar days;
+    // Get historical attendance data for this department on similar days
     const historicalData = await prisma.attendance.findMany({
       where: {
         employee: {
           departmentId
         },
         checkInTime: {
-          gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data;
+          gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data
         }
       },
       include: {
@@ -884,7 +874,7 @@ export class EmployeeService {
       }
     });
     
-    // Group by position and day of week;
+    // Group by position and day of week
     const positionDayStats: Record<string, Record<number, number>> = {};
     
     historicalData.forEach(record => {
@@ -903,7 +893,7 @@ export class EmployeeService {
       positionDayStats[position][recordDayOfWeek]++;
     });
     
-    // Calculate average staffing needs by position;
+    // Calculate average staffing needs by position
     const staffingPrediction: Record<string, number> = {};
     
     Object.entries(positionDayStats).forEach(([position, dayStats]) => {
@@ -917,7 +907,7 @@ export class EmployeeService {
       }
     });
     
-    // Get current staffing levels;
+    // Get current staffing levels
     const currentStaffing = await prisma.employee.findMany({
       where: {
         departmentId,
@@ -940,7 +930,7 @@ export class EmployeeService {
       }
     });
     
-    // Calculate current staffing by position;
+    // Calculate current staffing by position
     const currentStaffingByPosition: Record<string, number> = {};
     
     currentStaffing.forEach(employee => {
@@ -953,7 +943,7 @@ export class EmployeeService {
       currentStaffingByPosition[position]++;
     });
     
-    // Calculate staffing gaps;
+    // Calculate staffing gaps
     const staffingGaps: Record<string, number> = {};
     
     Object.keys({...staffingPrediction, ...currentStaffingByPosition}).forEach(position => {
@@ -970,6 +960,4 @@ export class EmployeeService {
       gaps: staffingGaps
     };
   }
-}
-
 export const employeeService = new EmployeeService();

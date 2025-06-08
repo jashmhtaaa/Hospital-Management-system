@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -22,13 +12,13 @@ import { auditLog } from '@/lib/audit';
  */
 export async const GET = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get('patientId');
     const studyInstanceUid = searchParams.get('studyInstanceUid');
@@ -40,7 +30,7 @@ export async const GET = (request: NextRequest) => {
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '20');
 
-    // Cache key;
+    // Cache key
     const cacheKey = `diagnostic:pacs:images:${patientId ||;
       ''}:${studyInstanceUid ||
       ''}:${seriesInstanceUid ||
@@ -50,11 +40,11 @@ export async const GET = (request: NextRequest) => {
       ''}:${toDate ||
       ''}:${page}:${pageSize}`;
 
-    // Try to get from cache or fetch from database;
+    // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Build query;
+        // Build query
         let query = `;
           SELECT i.*, 
                  p.patient_id as patient_identifier, p.first_name, p.last_name, 
@@ -66,7 +56,7 @@ export async const GET = (request: NextRequest) => {
         `;
         const params: unknown[] = [];
 
-        // Add filters;
+        // Add filters
         if (patientId) {
           query += ' AND i.patient_id = ?';
           params.push(patientId);
@@ -102,15 +92,15 @@ export async const GET = (request: NextRequest) => {
           params.push(toDate);
         }
 
-        // Add pagination;
+        // Add pagination
         const offset = (page - 1) * pageSize;
         query += ' ORDER BY i.study_date DESC, i.study_time DESC LIMIT ? OFFSET ?';
         params.push(pageSize, offset);
 
-        // Execute query;
+        // Execute query
         const result = await DB.query(query, params);
 
-        // Get total count for pagination;
+        // Get total count for pagination
         const countQuery = `;
           SELECT COUNT(*) as total;
           FROM pacs_images i;
@@ -132,7 +122,7 @@ export async const GET = (request: NextRequest) => {
         const totalCount = countResult.results[0].total;
         const totalPages = Math.ceil(totalCount / pageSize);
 
-        // Log access;
+        // Log access
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -150,7 +140,7 @@ export async const GET = (request: NextRequest) => {
           }
         };
       },
-      1800 // 30 minutes cache;
+      1800 // 30 minutes cache
     );
 
     return NextResponse.json(data);
@@ -169,7 +159,7 @@ export async const GET = (request: NextRequest) => {
  */
 export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -180,14 +170,14 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Cache key;
+    // Cache key
     const cacheKey = `diagnostic:pacs:image:${id}`;
 
-    // Try to get from cache or fetch from database;
+    // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Get image;
+        // Get image
         const query = `;
           SELECT i.*, 
                  p.patient_id as patient_identifier, p.first_name, p.last_name, 
@@ -204,7 +194,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
           throw new Error('Image not found');
         }
 
-        // Log access;
+        // Log access
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -215,7 +205,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 
         return result.results[0];
       },
-      3600 // 1 hour cache;
+      3600 // 1 hour cache
     );
 
     return NextResponse.json(data);
@@ -234,18 +224,18 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
  */
 export async const POST_RETRIEVE = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       patientId, 
@@ -255,14 +245,14 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
       modality;
     } = body;
 
-    // Validate required fields;
+    // Validate required fields
     if (!patientId && !accessionNumber && !studyInstanceUid) {
       return NextResponse.json({ 
         error: 'At least one of patientId, accessionNumber, or studyInstanceUid is required';
       }, { status: 400 });
     }
 
-    // Check if PACS is configured;
+    // Check if PACS is configured
     const pacsConfigQuery = `;
       SELECT * FROM pacs_configuration;
       WHERE active = true;
@@ -277,23 +267,23 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
       }, { status: 400 });
     }
 
-    // In a real implementation, this would use a DICOM library to query the PACS server;
-    // For this example, we'll simulate a successful retrieval;
+    // In a real implementation, this would use a DICOM library to query the PACS server
+    // For this example, we'll simulate a successful retrieval
     
-    // Simulate retrieval delay;
+    // Simulate retrieval delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Simulate retrieved images;
+    // Simulate retrieved images
     const retrievedImages = [];
     
-    // If we have a study instance UID, simulate retrieving that specific study;
+    // If we have a study instance UID, simulate retrieving that specific study
     if (studyInstanceUid) {
       // Generate a random number of series (1-5)
-      const seriesCount = Math.floor(Math.random() * 5) + 1;
+      const seriesCount = Math.floor(Math.random() * 5) + 1
       
       for (let i = 0; i < seriesCount; i++) {
         // Generate a random number of instances (5-20)
-        const instanceCount = Math.floor(Math.random() * 16) + 5;
+        const instanceCount = Math.floor(Math.random() * 16) + 5
         
         const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}`;
         
@@ -314,7 +304,7 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
         }
       }
     } else {
-      // Simulate retrieving multiple studies;
+      // Simulate retrieving multiple studies
       const studyCount = Math.floor(Math.random() * 3) + 1;
       
       for (let s = 0; s < studyCount; s++) {
@@ -346,10 +336,10 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
       }
     }
     
-    // In a real implementation, we would store these images in the database;
-    // For this example, we'll just return the simulated results;
+    // In a real implementation, we would store these images in the database
+    // For this example, we'll just return the simulated results
     
-    // Log retrieval;
+    // Log retrieval
     await auditLog({
       userId: session.user.id,
       action: 'retrieve',
@@ -365,7 +355,7 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
     return NextResponse.json({
       success: true,
       message: `Successfully retrieved ${retrievedImages.length} images`,
-      retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity;
+      retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity
       totalImages: retrievedImages.length,
       uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size,
       uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
@@ -385,18 +375,18 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
  */
 export async const POST_STORE = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       patientId, 
@@ -409,14 +399,14 @@ export async const POST_STORE = (request: NextRequest) => {
       imageData;
     } = body;
 
-    // Validate required fields;
+    // Validate required fields
     if (!patientId || !modality || !studyInstanceUid || !seriesInstanceUid || !sopInstanceUid || !imageData) {
       return NextResponse.json({ 
         error: 'Patient ID, modality, study instance UID, series instance UID, SOP instance UID, and image data are required';
       }, { status: 400 });
     }
 
-    // Check if PACS is configured;
+    // Check if PACS is configured
     const pacsConfigQuery = `;
       SELECT * FROM pacs_configuration;
       WHERE active = true;
@@ -431,13 +421,13 @@ export async const POST_STORE = (request: NextRequest) => {
       }, { status: 400 });
     }
 
-    // Check if patient exists;
+    // Check if patient exists
     const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
     if (patientCheck.results.length === 0) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Check if order exists if provided;
+    // Check if order exists if provided
     if (orderId) {
       const orderCheck = await DB.query('SELECT id FROM radiology_orders WHERE id = ?', [orderId]);
       if (orderCheck.results.length === 0) {
@@ -445,13 +435,13 @@ export async const POST_STORE = (request: NextRequest) => {
       }
     }
 
-    // In a real implementation, this would use a DICOM library to store the image to the PACS server;
-    // For this example, we'll simulate a successful storage;
+    // In a real implementation, this would use a DICOM library to store the image to the PACS server
+    // For this example, we'll simulate a successful storage
     
-    // Simulate storage delay;
+    // Simulate storage delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Insert image record;
+    // Insert image record
     const query = `;
       INSERT INTO pacs_images (
         patient_id, order_id, accession_number, modality,
@@ -474,12 +464,12 @@ export async const POST_STORE = (request: NextRequest) => {
       `https://pacs.example.com/wado?studyUID=${studyInstanceUid}&seriesUID=${seriesInstanceUid}&objectUID=${sopInstanceUid}`,
       `https://pacs.example.com/wado?studyUID=${studyInstanceUid}&seriesUID=${seriesInstanceUid}&objectUID=${sopInstanceUid}&contentType=image/jpeg`,
       session.user.id,
-      session.user.id;
+      session.user.id
     ];
 
     const result = await DB.query(query, params);
 
-    // Log storage;
+    // Log storage
     await auditLog({
       userId: session.user.id,
       action: 'store',
@@ -494,7 +484,7 @@ export async const POST_STORE = (request: NextRequest) => {
       }
     });
 
-    // Invalidate cache;
+    // Invalidate cache
     await CacheInvalidation.invalidatePattern('diagnostic:pacs:images:*');
 
     return NextResponse.json({
@@ -520,13 +510,13 @@ export async const POST_STORE = (request: NextRequest) => {
  */
 export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'radiologist', 'radiology_technician'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -536,7 +526,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       annotationType, 
@@ -547,20 +537,20 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
       visibility;
     } = body;
 
-    // Validate required fields;
+    // Validate required fields
     if (!annotationType || !coordinates) {
       return NextResponse.json({ 
         error: 'Annotation type and coordinates are required'
       }, { status: 400 });
     }
 
-    // Check if image exists;
+    // Check if image exists
     const imageCheck = await DB.query('SELECT * FROM pacs_images WHERE id = ?', [id]);
     if (imageCheck.results.length === 0) {
       return NextResponse.json({ error: 'Image not found' }, { status: 404 });
     }
 
-    // Insert annotation;
+    // Insert annotation
     const query = `;
       INSERT INTO pacs_image_annotations (
         image_id, annotation_type, coordinates, measurements, text,
@@ -582,7 +572,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
 
     const result = await DB.query(query, params);
 
-    // Log annotation;
+    // Log annotation
     await auditLog({
       userId: session.user.id,
       action: 'create',
@@ -596,13 +586,13 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
       }
     });
 
-    // Get the created annotation;
+    // Get the created annotation
     const createdAnnotation = await DB.query(
       `SELECT * FROM pacs_image_annotations WHERE id = ?`,
       [result.insertId]
     );
 
-    // Parse JSON fields;
+    // Parse JSON fields
     const annotation = {
       ...createdAnnotation.results[0],
       coordinates: JSON.parse(createdAnnotation.results[0].coordinates),
@@ -626,7 +616,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
  */
 export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -637,20 +627,20 @@ export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Cache key;
+    // Cache key
     const cacheKey = `diagnostic:pacs:image:${id}:annotations`;
 
-    // Try to get from cache or fetch from database;
+    // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Check if image exists;
+        // Check if image exists
         const imageCheck = await DB.query('SELECT id FROM pacs_images WHERE id = ?', [id]);
         if (imageCheck.results.length === 0) {
           throw new Error('Image not found');
         }
 
-        // Get annotations;
+        // Get annotations
         const query = `;
           SELECT a.*, u.username as created_by_name;
           FROM pacs_image_annotations a;
@@ -661,14 +651,14 @@ export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params
 
         const result = await DB.query(query, [id]);
 
-        // Parse JSON fields;
+        // Parse JSON fields
         const annotations = result.results.map(annotation => ({
           ...annotation,
           coordinates: JSON.parse(annotation.coordinates),
           measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null
         }));
 
-        // Log access;
+        // Log access
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -678,7 +668,7 @@ export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params
 
         return annotations;
       },
-      1800 // 30 minutes cache;
+      1800 // 30 minutes cache
     );
 
     return NextResponse.json(data);
@@ -689,4 +679,3 @@ export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
-}

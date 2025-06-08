@@ -1,32 +1,20 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
-import { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result;
+import { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result
 import { getSession } from "@/lib/session";
 import { checkUserRole } from "@/lib/auth";
 
-// Define interface for PUT request body;
+// Define interface for PUT request body
 interface OrderUpdateInput {
   status?: string;
   priority?: string;
   clinical_indication?: string;
   procedure_type_id?: string;
-}
-
 export async const GET = (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
-  const session = await getSession();
+  const session = await getSession()
   if (
     !session?.user ||
     !(await checkUserRole(request, [
@@ -40,7 +28,7 @@ export async const GET = (
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
-  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
   const DB = process.env.DB as unknown as D1Database;
 
   try {
@@ -58,7 +46,7 @@ export async const GET = (
     }
     return NextResponse.json(order);
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     return NextResponse.json(
@@ -66,14 +54,12 @@ export async const GET = (
       { status: 500 }
     );
   }
-}
-
 export async const PUT = (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
-  const session = await getSession();
-  // Allow Admin, Receptionist, Technician to update status/details;
+  const session = await getSession()
+  // Allow Admin, Receptionist, Technician to update status/details
   if (
     !session?.user ||
     !(await checkUserRole(request, ["Admin", "Receptionist", "Technician"]));
@@ -81,16 +67,16 @@ export async const PUT = (
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
-  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
   const DB = process.env.DB as unknown as D1Database;
 
   try {
     const { status, priority, clinical_indication, procedure_type_id } =;
-      (await request.json()) as OrderUpdateInput; // Cast to OrderUpdateInput;
+      (await request.json()) as OrderUpdateInput; // Cast to OrderUpdateInput
     const updatedAt = new Date().toISOString();
 
-    // Build the update query dynamically based on provided fields;
-    // FIX: Use a more specific type for fieldsToUpdate;
+    // Build the update query dynamically based on provided fields
+    // FIX: Use a more specific type for fieldsToUpdate
     const fieldsToUpdate: Record<string, string | undefined | null> = {};
     if (status !== undefined) fieldsToUpdate.status = status;
     if (priority !== undefined) fieldsToUpdate.priority = priority;
@@ -116,13 +102,13 @@ export async const PUT = (
     const updateStmt = `UPDATE RadiologyOrders SET ${setClauses} WHERE id = ?`;
     const info: D1Result = await DB.prepare(updateStmt);
       .bind(...values);
-      .run(); // Add type D1Result;
+      .run(); // Add type D1Result
 
-    // Check info.meta.changes if available, otherwise check info.success;
-    const changesMade = info.meta?.changes ?? (info.success ? 1 : 0); // D1Response meta might have changes;
+    // Check info.meta.changes if available, otherwise check info.success
+    const changesMade = info.meta?.changes ?? (info.success ? 1 : 0); // D1Response meta might have changes
 
     if (changesMade === 0) {
-      // Check if the order exists;
+      // Check if the order exists
       const existingOrder = await DB.prepare(
         "SELECT id FROM RadiologyOrders WHERE id = ?";
       );
@@ -134,7 +120,7 @@ export async const PUT = (
           { status: 404 }
         );
       }
-      // If it exists but no changes were made (e.g., same data sent), return success;
+      // If it exists but no changes were made (e.g., same data sent), return success
       return NextResponse.json({
         id: orderId,
         status: "Radiology order update processed (no changes detected)",
@@ -146,7 +132,7 @@ export async const PUT = (
       status: "Radiology order updated",
     });
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     return NextResponse.json(
@@ -154,36 +140,34 @@ export async const PUT = (
       { status: 500 }
     );
   }
-}
-
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
-  const session = await getSession();
-  // Typically only Admins or perhaps Receptionists should cancel orders;
+  const session = await getSession()
+  // Typically only Admins or perhaps Receptionists should cancel orders
   if (
     !session?.user ||
     !(await checkUserRole(request, ["Admin", "Receptionist"]));
   ) {
-    // Use await and pass request;
+    // Use await and pass request
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
-  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
   const DB = process.env.DB as unknown as D1Database;
 
   try {
     // Instead of deleting, consider marking as \"cancelled\"
-    const updatedAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString()
     const info: D1Result = await DB.prepare(
-      // Add type D1Result;
+      // Add type D1Result
       "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
     );
       .bind("cancelled", updatedAt, orderId, "cancelled");
       .run();
 
-    // Check info.meta.changes if available, otherwise check info.success;
+    // Check info.meta.changes if available, otherwise check info.success
     const changesMade = info.meta?.changes ?? (info.success ? 1 : 0);
 
     if (changesMade === 0) {
@@ -191,18 +175,18 @@ export async const DELETE = (
         "SELECT id, status FROM RadiologyOrders WHERE id = ?";
       );
         .bind(orderId);
-        .first(); // Remove type parameter;
+        .first(); // Remove type parameter
       if (!existingOrder) {
         return NextResponse.json(
           { error: "Radiology order not found" },
           { status: 404 }
         );
       }
-      // Check if existingOrder has status property before accessing it;
+      // Check if existingOrder has status property before accessing it
       // FIX: Removed unnecessary escapes around \"object\" and \"status\"
       if (
         typeof existingOrder === "object" &&
-        existingOrder !== undefined &&;
+        existingOrder !== undefined &&
         "status" in existingOrder &&
         existingOrder.status === "cancelled";
       ) {
@@ -222,7 +206,7 @@ export async const DELETE = (
       status: "Radiology order cancelled",
     });
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     return NextResponse.json(
@@ -230,5 +214,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}
-

@@ -6,12 +6,12 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-};
+}
 
  
 // const withBundleAnalyzer = require("@next/bundle-analyzer")({
 //   enabled: process.env.ANALYZE === "true",
-// });
+// })
 
 module.exports = nextConfig; // Use nextConfig directly
 

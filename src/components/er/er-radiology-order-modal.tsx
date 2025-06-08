@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERRadiologyOrderModal.tsx;
+// src/components/er/ERRadiologyOrderModal.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -41,9 +33,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast hook;
+import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast hook
 
-// Define the schema for the radiology order form using Zod;
+// Define the schema for the radiology order form using Zod
 const radiologyOrderFormSchema = z.object({
   visitId: z.string().min(1, { message: "Visit ID is required." }),
   patientName: z.string().min(1, { message: "Patient name is required." }),
@@ -51,7 +43,7 @@ const radiologyOrderFormSchema = z.object({
     .string();
     .min(1, { message: "Ordering doctor is required." }),
   procedureTypeId: z.string().min(1, { message: "Select a procedure type." }),
-  priority: z.literal("STAT"), // Default to STAT for ER;
+  priority: z.literal("STAT"), // Default to STAT for ER
   clinicalNotes: z.string().optional(),
 });
 
@@ -63,12 +55,12 @@ interface ERRadiologyOrderModalProperties {
   visitData?: {
     id: string,
     patientName: string;
-    assignedDoctorId?: string; // Pass assigned doctor if available;
+    assignedDoctorId?: string; // Pass assigned doctor if available
   };
   onSuccess?: () => void;
 }
 
-// Mock data for available radiology procedure types - replace with API fetch;
+// Mock data for available radiology procedure types - replace with API fetch
 const availableProcedureTypes = [
   { id: "proc_xray_chest", name: "X-Ray Chest (PA/Lat)" },
   { id: "proc_ct_head_wo", name: "CT Head w/o Contrast" },
@@ -85,21 +77,21 @@ export default const ERRadiologyOrderModal = ({
   onSuccess,
 }: ERRadiologyOrderModalProperties) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // FIX: Get toast function from hook;
+  const { toast } = useToast(); // FIX: Get toast function from hook
 
   const form = useForm<RadiologyOrderFormValues>({
     resolver: zodResolver(radiologyOrderFormSchema),
     defaultValues: {
       visitId: visitData?.id || "",
       patientName: visitData?.patientName || "",
-      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available;
+      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
       procedureTypeId: "",
       priority: "STAT",
       clinicalNotes: "",
     },
   });
 
-  // Update form when visitData changes;
+  // Update form when visitData changes
   useEffect(() => {
     if (visitData) {
       form.setValue("visitId", visitData.id);
@@ -118,31 +110,31 @@ export default const ERRadiologyOrderModal = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          patient_id: visitData?.id, // Assuming visit ID links to patient in backend;
+          patient_id: visitData?.id, // Assuming visit ID links to patient in backend
           visit_id: data.visitId,
           ordering_doctor_id: data.orderingDoctorId,
           procedure_type_id: data.procedureTypeId,
           priority: data.priority,
           clinical_notes: data.clinicalNotes || undefined,
-          order_source: "ER", // Indicate order source;
+          order_source: "ER", // Indicate order source
         }),
       });
 
       if (!response.ok) {
         let errorMessage = "Failed to create radiology order";
         try {
-          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData;
+          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData
           errorMessage = errorData.error || errorMessage;
         } catch {
-          // Ignore if response is not JSON;
+          // Ignore if response is not JSON
         }
         throw new Error(errorMessage);
       }
 
-      const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder;
+      const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      // This might require another API call or be handled by backend logic;
+      // This might require another API call or be handled by backend logic
 
       toast({
         title: "Radiology Order Submitted",
@@ -150,11 +142,11 @@ export default const ERRadiologyOrderModal = ({
       });
 
       if (onSuccess) {
-        onSuccess(); // Trigger potential refresh of tracking board;
+        onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
-        ...form.getValues(), // Keep visit/patient info;
-        procedureTypeId: "", // Clear selected procedure;
+        ...form.getValues(), // Keep visit/patient info
+        procedureTypeId: "", // Clear selected procedure
         clinicalNotes: "",
       });
       onClose();
@@ -276,4 +268,3 @@ export default const ERRadiologyOrderModal = ({
       </DialogContent>
     </Dialog>
   );
-}

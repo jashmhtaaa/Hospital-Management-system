@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -74,7 +64,7 @@ export default const StaffManagement = () {
     total: 0
   });
 
-  // Fetch employees;
+  // Fetch employees
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -110,18 +100,18 @@ export default const StaffManagement = () {
     fetchEmployees();
   }, [search, departmentFilter, positionFilter, pagination.skip, pagination.take]);
 
-  // Fetch departments and positions for filters;
+  // Fetch departments and positions for filters
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        // Fetch departments;
+        // Fetch departments
         const deptResponse = await fetch('/api/hr/departments');
         if (deptResponse.ok) {
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
         
-        // Fetch positions;
+        // Fetch positions
         const posResponse = await fetch('/api/hr/positions');
         if (posResponse.ok) {
           const posData = await posResponse.json(),
@@ -135,7 +125,7 @@ export default const StaffManagement = () {
     fetchFilters();
   }, []);
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
@@ -154,22 +144,22 @@ export default const StaffManagement = () {
     }
   };
 
-  // Handle search;
+  // Handle search
   const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching;
+    // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Navigate to employee details;
+  // Navigate to employee details
   const handleViewEmployee = (id: unknown) => {
     router.push(`/dashboard/hr/staff/${id}`);
   };
 
-  // Navigate to add employee form;
+  // Navigate to add employee form
   const handleAddEmployee = () => {
     router.push('/dashboard/hr/staff/new');
   };
@@ -344,4 +334,3 @@ export default const StaffManagement = () {
       </Card>
     </div>
   );
-}

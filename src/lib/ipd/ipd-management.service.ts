@@ -59,7 +59,7 @@ export const AdmissionSchema = z.object({
   // Metadata
   admitted_by: z.string().min(1, 'Admitted by is required'),
   admission_status: z.enum(['active', 'discharged', 'transferred', 'cancelled']).default('active'),
-});
+})
 
 // Discharge Schema
 export const DischargeSchema = z.object({
@@ -111,7 +111,7 @@ export const DischargeSchema = z.object({
   
   // Metadata
   discharged_by: z.string().min(1, 'Discharged by is required'),
-});
+})
 
 // Transfer Schema
 export const TransferSchema = z.object({
@@ -151,7 +151,7 @@ export const TransferSchema = z.object({
   initiated_by: z.string().min(1, 'Initiated by is required'),
   approved_by: z.string().optional(),
   transfer_status: z.enum(['pending', 'approved', 'completed', 'cancelled']).default('pending'),
-});
+})
 
 // Bed Management Schema
 export const BedManagementSchema = z.object({
@@ -180,32 +180,29 @@ export const BedManagementSchema = z.object({
   // Metadata
   created_by: z.string(),
   updated_by: z.string().optional(),
-});
+})
 
 // Type definitions
-export type Admission = z.infer<typeof AdmissionSchema> & { id?: string };
-export type Discharge = z.infer<typeof DischargeSchema> & { id?: string };
+export type Admission = z.infer<typeof AdmissionSchema> & { id?: string export type Discharge = z.infer<typeof DischargeSchema> & { id?: string };
 export type Transfer = z.infer<typeof TransferSchema> & { id?: string };
 export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string };
 
 export interface IPDStatistics {
   total_admissions: number,
-  active_admissions: number;
+  active_admissions: number,
   average_length_of_stay: number,
-  bed_occupancy_rate: number;
+  bed_occupancy_rate: number,
   available_beds: number,
-  total_beds: number;
+  total_beds: number,
   readmission_rate: number,
   mortality_rate: number
-}
-
 export interface BedAvailability {
   ward_id: string,
-  ward_name: string;
+  ward_name: string,
   total_beds: number,
-  available_beds: number;
+  available_beds: number,
   occupied_beds: number,
-  maintenance_beds: number;
+  maintenance_beds: number,
   occupancy_rate: number,
   available_bed_details: {
     bed_number: string;
@@ -231,7 +228,7 @@ export class IPDManagementService {
     'clinical_condition', 'emergency_contact', 'medications_on_discharge',
     'follow_up_appointments', 'functional_status_on_admission',
     'functional_status_on_discharge'
-  ];
+  ]
 
   constructor(prismaClient?: PrismaClient) {
     this.prisma = prismaClient || new PrismaClient();
@@ -240,16 +237,16 @@ export class IPDManagementService {
   // Admission Operations
   async createAdmission(data: Admission): Promise<Admission & { id: string }> {
     try {
-      const validated = AdmissionSchema.parse(data);
+      const validated = AdmissionSchema.parse(data)
       
       // Check bed availability
-      const bedAvailable = await this.checkBedAvailability(validated.ward_id, validated.bed_number);
+      const bedAvailable = await this.checkBedAvailability(validated.ward_id, validated.bed_number)
       if (!bedAvailable) {
         throw new Error(`Bed ${validated.bed_number} in ward ${validated.ward_id} is not available`);
       }
 
       // Encrypt sensitive fields
-      const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
+      const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields)
       
       // Create admission record
       const admission = await this.prisma.admission.create({
@@ -284,10 +281,10 @@ export class IPDManagementService {
           admittedBy: validated.admitted_by,
           admissionStatus: validated.admission_status,
         }
-      });
+      })
 
       // Update bed status
-      await this.updateBedStatus(validated.ward_id, validated.bed_number, 'occupied', admission.id);
+      await this.updateBedStatus(validated.ward_id, validated.bed_number, 'occupied', admission.id)
 
       return {
         ...validated,
@@ -382,12 +379,12 @@ export class IPDManagementService {
   // Discharge Operations
   async dischargePatient(data: Discharge): Promise<Discharge & { id: string }> {
     try {
-      const validated = DischargeSchema.parse(data);
+      const validated = DischargeSchema.parse(data)
       
       // Get admission details
       const admission = await this.prisma.admission.findUnique({
         where: { id: validated.admission_id }
-      });
+      })
 
       if (!admission) {
         throw new Error(`Admission ${validated.admission_id} not found`);
@@ -400,10 +397,10 @@ export class IPDManagementService {
       // Calculate length of stay
       const lengthOfStay = Math.ceil(
         (validated.discharge_date.getTime() - admission.admissionDate.getTime()) / (1000 * 60 * 60 * 24)
-      );
+      )
 
       // Encrypt sensitive fields
-      const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
+      const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields)
       
       // Create discharge record
       const discharge = await this.prisma.discharge.create({
@@ -433,16 +430,16 @@ export class IPDManagementService {
           totalCharges: validated.total_charges,
           dischargedBy: validated.discharged_by,
         }
-      });
+      })
 
       // Update admission status
       await this.prisma.admission.update({
         where: { id: validated.admission_id },
         data: { admissionStatus: 'discharged' }
-      });
+      })
 
       // Free up the bed
-      await this.updateBedStatus(admission.wardId, admission.bedNumber, 'available');
+      await this.updateBedStatus(admission.wardId, admission.bedNumber, 'available')
 
       return {
         ...validated,
@@ -457,16 +454,16 @@ export class IPDManagementService {
   // Transfer Operations
   async transferPatient(data: Transfer): Promise<Transfer & { id: string }> {
     try {
-      const validated = TransferSchema.parse(data);
+      const validated = TransferSchema.parse(data)
       
       // Check if destination bed is available
-      const bedAvailable = await this.checkBedAvailability(validated.to_ward_id, validated.to_bed);
+      const bedAvailable = await this.checkBedAvailability(validated.to_ward_id, validated.to_bed)
       if (!bedAvailable) {
         throw new Error(`Destination bed ${validated.to_bed} in ward ${validated.to_ward_id} is not available`);
       }
 
       // Encrypt sensitive fields
-      const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
+      const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields)
       
       // Create transfer record
       const transfer = await this.prisma.transfer.create({
@@ -497,11 +494,11 @@ export class IPDManagementService {
           approvedBy: validated.approved_by,
           transferStatus: validated.transfer_status,
         }
-      });
+      })
 
       // If transfer is completed, update bed statuses and admission record
       if (validated.transfer_status === 'completed') {
-        await this.completeBedTransfer(validated);
+        await this.completeBedTransfer(validated)
       }
 
       return {
@@ -515,10 +512,10 @@ export class IPDManagementService {
 
   private async completeBedTransfer(transfer: Transfer): Promise<void> {
     // Free up the old bed
-    await this.updateBedStatus(transfer.from_ward_id, transfer.from_bed, 'available');
+    await this.updateBedStatus(transfer.from_ward_id, transfer.from_bed, 'available')
     
     // Occupy the new bed
-    await this.updateBedStatus(transfer.to_ward_id, transfer.to_bed, 'occupied', transfer.admission_id);
+    await this.updateBedStatus(transfer.to_ward_id, transfer.to_bed, 'occupied', transfer.admission_id)
     
     // Update admission record with new location
     await this.prisma.admission.update({
@@ -528,13 +525,13 @@ export class IPDManagementService {
         roomNumber: transfer.to_room,
         bedNumber: transfer.to_bed,
       }
-    });
+    })
   }
 
   // Bed Management Operations
   async getBedAvailability(wardId?: string): Promise<BedAvailability[]> {
     try {
-      const where = wardId ? { id: wardId } : {};
+      const where = wardId ? { id: wardId } : {}
       
       const wards = await this.prisma.ward.findMany({
         where,
@@ -666,7 +663,7 @@ export class IPDManagementService {
         total_beds: totalBeds,
         readmission_rate: 0, // Would need complex query to calculate
         mortality_rate: 0, // Would need complex query to calculate
-      };
+      }
     } catch (error) {
       throw new Error(`Failed to get IPD statistics: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -674,7 +671,7 @@ export class IPDManagementService {
 
   // Helper method for deserialization
   private async deserializeAdmission(admission: any): Promise<Admission> {
-    const decrypted = await this.encryptionService.decryptObject(admission, this.encryptedFields);
+    const decrypted = await this.encryptionService.decryptObject(admission, this.encryptedFields)
     
     return {
       patient_id: admission.patientId,
@@ -711,12 +708,12 @@ export class IPDManagementService {
 
   // Cleanup
   async disconnect(): Promise<void> {
-    await this.prisma.$disconnect();
+    await this.prisma.$disconnect()
   }
 }
 
 // Export singleton instance
-let ipdServiceInstance: IPDManagementService | null = null;
+let ipdServiceInstance: IPDManagementService | null = null
 
 export const getIPDService = (prismaClient?: PrismaClient): IPDManagementService => {
   if (!ipdServiceInstance) {
@@ -727,7 +724,7 @@ export const getIPDService = (prismaClient?: PrismaClient): IPDManagementService
 
 // Legacy compatibility - replace placeholder functions
 export const getAdmissionsFromDB = async (filters?: any): Promise<Admission[]> => {
-  const service = getIPDService();
+  const service = getIPDService()
   return service.getAdmissions(filters);
 };
 

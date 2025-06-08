@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -26,7 +18,7 @@ import {
   FHIRRange;
 } from './types.ts';
 
-// Dosage instruction;
+// Dosage instruction
 export interface FHIRDosage {
   sequence?: number;
   text?: string;
@@ -41,25 +33,17 @@ export interface FHIRDosage {
   maxDosePerPeriod?: FHIRQuantity;
   maxDosePerAdministration?: FHIRQuantity;
   maxDosePerLifetime?: FHIRQuantity;
-}
-
 export interface FHIRDosageDoseAndRate {
   type?: FHIRCodeableConcept;
   dose?: FHIRRange | FHIRQuantity;
   rate?: FHIRRatio | FHIRRange | FHIRQuantity;
-}
-
 export interface FHIRRatio {
   numerator?: FHIRQuantity;
   denominator?: FHIRQuantity;
-}
-
 export interface FHIRTiming {
   event?: string[];
   repeat?: FHIRTimingRepeat;
   code?: FHIRCodeableConcept;
-}
-
 export interface FHIRTimingRepeat {
   bounds?: FHIRDuration | FHIRRange | FHIRPeriod;
   count?: number;
@@ -78,25 +62,21 @@ export interface FHIRTimingRepeat {
   offset?: number;
 }
 
-// Medication Resource;
+// Medication Resource
 export interface FHIRMedication extends FHIRBase {
   resourceType: 'Medication';
   identifier?: FHIRIdentifier[];
   code?: FHIRCodeableConcept;
   status?: 'active' | 'inactive' | 'entered-in-error';
-  manufacturer?: FHIRReference; // Organization;
+  manufacturer?: FHIRReference; // Organization
   form?: FHIRCodeableConcept;
   amount?: FHIRRatio;
   ingredient?: FHIRMedicationIngredient[];
   batch?: FHIRMedicationBatch;
-}
-
 export interface FHIRMedicationIngredient {
-  item: FHIRCodeableConcept | FHIRReference; // Substance | Medication;
+  item: FHIRCodeableConcept | FHIRReference; // Substance | Medication
   isActive?: boolean;
   strength?: FHIRRatio;
-}
-
 export interface FHIRMedicationBatch {
   lotNumber?: string;
   expirationDate?: string;
@@ -104,8 +84,8 @@ export interface FHIRMedicationBatch {
 
 // MedicationRequest Resource (Prescription)
 export interface FHIRMedicationRequest extends FHIRBase {
-  resourceType: 'MedicationRequest';
-  identifier?: FHIRIdentifier[];
+  resourceType: 'MedicationRequest'
+  identifier?: FHIRIdentifier[],
   status: 'active' | 'on-hold' | 'cancelled' | 'completed' | 'entered-in-error' | 'stopped' | 'draft' | 'unknown';
   statusReason?: FHIRCodeableConcept;
   intent: 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
@@ -113,12 +93,12 @@ export interface FHIRMedicationRequest extends FHIRBase {
   priority?: 'routine' | 'urgent' | 'asap' | 'stat';
   doNotPerform?: boolean;
   reported?: boolean | FHIRReference;
-  medication: FHIRCodeableConcept | FHIRReference; // Medication;
-  subject: FHIRReference; // Patient | Group;
-  encounter?: FHIRReference; // Encounter;
+  medication: FHIRCodeableConcept | FHIRReference; // Medication
+  subject: FHIRReference; // Patient | Group
+  encounter?: FHIRReference; // Encounter
   supportingInformation?: FHIRReference[];
   authoredOn?: string;
-  requester?: FHIRReference; // Practitioner | PractitionerRole | Organization | Patient | RelatedPerson | Device;
+  requester?: FHIRReference; // Practitioner | PractitionerRole | Organization | Patient | RelatedPerson | Device
   performer?: FHIRReference;
   performerType?: FHIRCodeableConcept;
   recorder?: FHIRReference;
@@ -137,8 +117,6 @@ export interface FHIRMedicationRequest extends FHIRBase {
   priorPrescription?: FHIRReference;
   detectedIssue?: FHIRReference[];
   eventHistory?: FHIRReference[];
-}
-
 export interface FHIRMedicationRequestDispenseRequest {
   initialFill?: {
     quantity?: FHIRQuantity;
@@ -149,9 +127,7 @@ export interface FHIRMedicationRequestDispenseRequest {
   numberOfRepeatsAllowed?: number;
   quantity?: FHIRQuantity;
   expectedSupplyDuration?: FHIRDuration;
-  performer?: FHIRReference; // Organization;
-}
-
+  performer?: FHIRReference; // Organization
 export interface FHIRMedicationRequestSubstitution {
   allowed: boolean | FHIRCodeableConcept;
   reason?: FHIRCodeableConcept;
@@ -159,7 +135,7 @@ export interface FHIRMedicationRequestSubstitution {
 
 // MedicationStatement Resource (Patient's medication history)
 export interface FHIRMedicationStatement extends FHIRBase {
-  resourceType: 'MedicationStatement';
+  resourceType: 'MedicationStatement'
   identifier?: FHIRIdentifier[];
   basedOn?: FHIRReference[];
   partOf?: FHIRReference[];
@@ -167,8 +143,8 @@ export interface FHIRMedicationStatement extends FHIRBase {
   statusReason?: FHIRCodeableConcept[];
   category?: FHIRCodeableConcept;
   medication: FHIRCodeableConcept | FHIRReference,
-  subject: FHIRReference; // Patient | Group;
-  context?: FHIRReference; // Encounter | EpisodeOfCare;
+  subject: FHIRReference; // Patient | Group
+  context?: FHIRReference; // Encounter | EpisodeOfCare
   effective?: string | FHIRPeriod;
   dateAsserted?: string;
   informationSource?: FHIRReference;
@@ -181,7 +157,7 @@ export interface FHIRMedicationStatement extends FHIRBase {
 
 // MedicationAdministration Resource (Record of medication given)
 export interface FHIRMedicationAdministration extends FHIRBase {
-  resourceType: 'MedicationAdministration';
+  resourceType: 'MedicationAdministration'
   identifier?: FHIRIdentifier[];
   instantiates?: string[];
   partOf?: FHIRReference[];
@@ -189,25 +165,21 @@ export interface FHIRMedicationAdministration extends FHIRBase {
   statusReason?: FHIRCodeableConcept[];
   category?: FHIRCodeableConcept;
   medication: FHIRCodeableConcept | FHIRReference,
-  subject: FHIRReference; // Patient | Group;
-  context?: FHIRReference; // Encounter | EpisodeOfCare;
+  subject: FHIRReference; // Patient | Group
+  context?: FHIRReference; // Encounter | EpisodeOfCare
   supportingInformation?: FHIRReference[];
   effective: string | FHIRPeriod;
   performer?: FHIRMedicationAdministrationPerformer[];
   reasonCode?: FHIRCodeableConcept[];
   reasonReference?: FHIRReference[];
-  request?: FHIRReference; // MedicationRequest;
+  request?: FHIRReference; // MedicationRequest
   device?: FHIRReference[];
   note?: FHIRAnnotation[];
   dosage?: FHIRMedicationAdministrationDosage;
   eventHistory?: FHIRReference[];
-}
-
 export interface FHIRMedicationAdministrationPerformer {
   function?: FHIRCodeableConcept;
-  actor: FHIRReference; // Practitioner | PractitionerRole | Patient | RelatedPerson | Device;
-}
-
+  actor: FHIRReference; // Practitioner | PractitionerRole | Patient | RelatedPerson | Device
 export interface FHIRMedicationAdministrationDosage {
   text?: string;
   site?: FHIRCodeableConcept;
@@ -217,16 +189,16 @@ export interface FHIRMedicationAdministrationDosage {
   rate?: FHIRRatio | FHIRQuantity;
 }
 
-// Helper functions for FHIR Medication operations;
+// Helper functions for FHIR Medication operations
 export class FHIRMedicationUtils {
   /**
    * Create a basic FHIR MedicationRequest (prescription)
    */
   static createBasicMedicationRequest(data: {
     patientId: string,
-    practitionerId: string;
+    practitionerId: string,
     medicationCode: string,
-    medicationDisplay: string;
+    medicationDisplay: string,
     dosageText: string;
     quantity?: number;
     refills?: number;
@@ -256,9 +228,9 @@ export class FHIRMedicationUtils {
       dosageInstruction: [{
         text: data.dosageText
       }]
-    };
+    }
 
-    // Add encounter if provided;
+    // Add encounter if provided
     if (data.encounterId) {
       medicationRequest.encounter = {
         reference: `Encounter/${data.encounterId}`,
@@ -266,12 +238,12 @@ export class FHIRMedicationUtils {
       };
     }
 
-    // Add priority if provided;
+    // Add priority if provided
     if (data.priority) {
       medicationRequest.priority = data.priority;
     }
 
-    // Add dispense request if quantity or refills provided;
+    // Add dispense request if quantity or refills provided
     if (data.quantity || data.refills) {
       medicationRequest.dispenseRequest = {};
       
@@ -280,7 +252,7 @@ export class FHIRMedicationUtils {
           value: data.quantity,
           unit: 'tablet',
           system: 'http://unitsofmeasure.org',
-          code: '{tbl}';
+          code: '{tbl}'
         };
       }
       
@@ -297,9 +269,9 @@ export class FHIRMedicationUtils {
    */
   static createMedicationAdministration(data: {
     patientId: string,
-    practitionerId: string;
+    practitionerId: string,
     medicationRequestId: string,
-    medicationCode: string;
+    medicationCode: string,
     medicationDisplay: string,
     administeredTime: string;
     dose?: string;
@@ -331,9 +303,9 @@ export class FHIRMedicationUtils {
         reference: `MedicationRequest/${data.medicationRequestId}`,
         type: 'MedicationRequest'
       }
-    };
+    }
 
-    // Add dosage information if provided;
+    // Add dosage information if provided
     if (data.dose || data.route) {
       administration.dosage = {};
       
@@ -348,11 +320,11 @@ export class FHIRMedicationUtils {
             code: data.route,
             display: data.route
           }]
-        };
+        }
       }
     }
 
-    // Add notes if provided;
+    // Add notes if provided
     if (data.notes) {
       administration.note = [{
         text: data.notes
@@ -476,16 +448,16 @@ export class FHIRMedicationUtils {
         type: 'Practitioner'
       },
       authoredOn: hmsPrescription.prescribedDate || hmsPrescription.createdAt
-    };
+    }
 
-    // Add dosage instructions;
+    // Add dosage instructions
     if (hmsPrescription.dosage || hmsPrescription.instructions) {
       fhirMedicationRequest.dosageInstruction = [{
         text: hmsPrescription.dosage || hmsPrescription.instructions
       }];
     }
 
-    // Add encounter if available;
+    // Add encounter if available
     if (hmsPrescription.encounterId || hmsPrescription.visitId) {
       fhirMedicationRequest.encounter = {
         reference: `Encounter/${hmsPrescription.encounterId || hmsPrescription.visitId}`,
@@ -493,7 +465,7 @@ export class FHIRMedicationUtils {
       };
     }
 
-    // Add dispense request if quantity available;
+    // Add dispense request if quantity available
     if (hmsPrescription.quantity || hmsPrescription.refills) {
       fhirMedicationRequest.dispenseRequest = {};
       
@@ -509,7 +481,7 @@ export class FHIRMedicationUtils {
       }
     }
 
-    // Add notes if available;
+    // Add notes if available
     if (hmsPrescription.notes) {
       fhirMedicationRequest.note = [{
         text: hmsPrescription.notes
@@ -520,7 +492,7 @@ export class FHIRMedicationUtils {
   }
 }
 
-// Drug interaction and allergy checking utilities;
+// Drug interaction and allergy checking utilities
 export class FHIRMedicationSafetyUtils {
   /**
    * Create allergy intolerance resource;
@@ -532,7 +504,7 @@ export class FHIRMedicationSafetyUtils {
     severity?: 'mild' | 'moderate' | 'severe';
     reaction?: string;
     recordedDate?: string;
-  }): unknown { // FHIRAllergyIntolerance would be defined in a separate file;
+  }): unknown { // FHIRAllergyIntolerance would be defined in a separate file
     return {
       resourceType: 'AllergyIntolerance',
       patient: {
@@ -571,7 +543,7 @@ export class FHIRMedicationSafetyUtils {
           }],
           ...(data.severity && {
             severity: data.severity
-          });
+          })
         }]
       });
     };
@@ -584,8 +556,8 @@ export class FHIRMedicationSafetyUtils {
     medications: FHIRMedicationRequest[],
     newMedication: FHIRMedicationRequest;
   ): Promise<{ hasInteractions: boolean; interactions: unknown[] }> {
-    // This would integrate with a drug interaction database;
-    // For now, return a placeholder implementation;
+    // This would integrate with a drug interaction database
+    // For now, return a placeholder implementation
     return {
       hasInteractions: false,
       interactions: []
@@ -597,12 +569,11 @@ export class FHIRMedicationSafetyUtils {
    */
   static checkMedicationAllergies(
     allergies: unknown[], // FHIRAllergyIntolerance[]
-    medication: FHIRMedicationRequest;
+    medication: FHIRMedicationRequest
   ): { hasAllergy: boolean; allergyDetails?: unknown } {
-    // This would check against patient's known allergies;
-    // For now, return a placeholder implementation;
+    // This would check against patient's known allergies
+    // For now, return a placeholder implementation
     return {
       hasAllergy: false
     };
   }
-}

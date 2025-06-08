@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -69,7 +59,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // Fetch employee data;
+  // Fetch employee data
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
@@ -98,7 +88,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
   // Handle employee deletion (soft delete)
   const handleDelete = async () => {
     try {
-      setDeleting(true);
+      setDeleting(true)
       const response = await fetch(`/api/hr/staff/${params.id}`, {
         method: 'DELETE',
       });
@@ -112,7 +102,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
         description: "The employee has been successfully deactivated.",
       });
       
-      // Navigate back to staff list;
+      // Navigate back to staff list
       router.push('/dashboard/hr/staff');
     } catch (error) {
       toast({
@@ -126,17 +116,17 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
     }
   };
 
-  // Handle edit navigation;
+  // Handle edit navigation
   const handleEdit = () => {
     router.push(`/dashboard/hr/staff/${params.id}/edit`);
   };
 
-  // Handle add position;
+  // Handle add position
   const handleAddPosition = () => {
     router.push(`/dashboard/hr/staff/${params.id}/positions/new`);
   };
 
-  // Handle add qualification;
+  // Handle add qualification
   const handleAddQualification = () => {
     router.push(`/dashboard/hr/staff/${params.id}/qualifications/new`);
   };
@@ -580,4 +570,3 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
       </div>
     </div>
   );
-}

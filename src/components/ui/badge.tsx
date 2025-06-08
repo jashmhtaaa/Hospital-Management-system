@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import * as React from "react";
 import { cva } from "class-variance-authority";
 
@@ -42,6 +32,4 @@ const Badge = ({ className, variant, ...props }: BadgeProps) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props} />
   );
-}
-
-export { Badge, badgeVariants }
+export { Badge, badgeVariants 

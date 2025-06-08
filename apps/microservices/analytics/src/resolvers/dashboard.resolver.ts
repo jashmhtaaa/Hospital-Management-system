@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -20,15 +12,15 @@ import { GqlRolesGuard } from '@/lib/security/guards/gql-roles.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
 import { DashboardService } from '../services/dashboard.service';
 
-// GraphQL models would be defined here;
-// import { Dashboard, DashboardWidget, DashboardData, KPI, etc. } from '../models';
+// GraphQL models would be defined here
+// import { Dashboard, DashboardWidget, DashboardData, KPI, etc. } from '../models'
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
 export class DashboardResolver {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types;
+  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
   
   @Query();
   async dashboards(
@@ -182,4 +174,3 @@ export class DashboardResolver {
   ) {
     return this.dashboardService.calculateKPIValue(id, options);
   }
-}

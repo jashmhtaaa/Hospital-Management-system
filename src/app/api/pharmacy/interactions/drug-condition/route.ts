@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -33,12 +25,12 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
-// Initialize services;
+// Initialize services
 const interactionService = new DrugInteractionService(
   medicationRepository,
-  null // No need for prescription repository in this endpoint;
+  null // No need for prescription repository in this endpoint
 );
 
 /**
@@ -47,7 +39,7 @@ const interactionService = new DrugInteractionService(
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateDrugConditionInteractionRequest(data);
     if (!validationResult.success) {
@@ -57,31 +49,31 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get patient conditions;
+    // Get patient conditions
     let conditions = data.conditions || [];
     
-    // If patientId is provided, fetch conditions from patient record;
+    // If patientId is provided, fetch conditions from patient record
     if (data.patientId && conditions.length === 0) {
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
     }
 
-    // Check for drug-condition contraindications;
+    // Check for drug-condition contraindications
     const contraindications = await interactionService.checkDrugConditionContraindications(
       data.medicationIds,
       conditions;
     );
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_CONDITION',
       resourceType: 'DrugInteraction',
@@ -94,7 +86,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       contraindications,
       metadata: {
@@ -109,4 +101,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error checking drug-condition contraindications');
   }
-}

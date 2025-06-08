@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { TemplateService } from '../template.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 
-// Mock dependencies;
+// Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   marketingTemplate: {
     create: jest.fn(),
@@ -64,13 +54,13 @@ describe('TemplateService', () => {
     };
     
     it('should create a template successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.create as jest.Mock).mockResolvedValue(mockCreatedTemplate);
       
-      // Act;
+      // Act
       const result = await service.createTemplate(mockTemplateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingTemplate.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           name: mockTemplateData.name,
@@ -91,53 +81,53 @@ describe('TemplateService', () => {
     });
     
     it('should throw ValidationError if template data is invalid', async () => {
-      // Arrange;
+      // Arrange
       const invalidData = {
         ...mockTemplateData,
-        name: '', // Invalid empty name;
+        name: '', // Invalid empty name
       };
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createTemplate(invalidData, mockUserId));
         .rejects;
         .toThrow(ValidationError);
     });
     
     it('should validate template variables against content', async () => {
-      // Arrange;
+      // Arrange
       const invalidData = {
         ...mockTemplateData,
-        content: '<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>', // 'age' not in variables;
+        content: '<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>', // 'age' not in variables
         variables: {
           firstName: 'Patient first name',
           lastName: 'Patient last name'
         }
       };
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createTemplate(invalidData, mockUserId));
         .rejects;
         .toThrow(ValidationError);
     });
     
     it('should throw DatabaseError if database operation fails', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.create as jest.Mock).mockRejectedValue(new Error('Database error'));
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createTemplate(mockTemplateData, mockUserId));
         .rejects;
         .toThrow(DatabaseError);
     });
     
     it('should log audit event after creating template', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.create as jest.Mock).mockResolvedValue(mockCreatedTemplate);
       
-      // Act;
+      // Act
       await service.createTemplate(mockTemplateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'template.create',
         resourceId: mockCreatedTemplate.id,
@@ -164,13 +154,13 @@ describe('TemplateService', () => {
     };
     
     it('should retrieve a template by ID', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       
-      // Act;
+      // Act
       const result = await service.getTemplateById('template-123');
       
-      // Assert;
+      // Assert
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({
         where: { id: 'template-123' },
       }),
@@ -182,10 +172,10 @@ describe('TemplateService', () => {
     });
     
     it('should throw NotFoundError if template does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.getTemplateById('non-existent-id'));
         .rejects;
         .toThrow(NotFoundError);
@@ -219,14 +209,14 @@ describe('TemplateService', () => {
     ];
     
     it('should retrieve templates with pagination', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.count as jest.Mock).mockResolvedValue(2);
       (prisma.marketingTemplate.findMany as jest.Mock).mockResolvedValue(mockTemplates);
       
-      // Act;
+      // Act
       const result = await service.getTemplates({ page: 1, limit: 10 });
       
-      // Assert;
+      // Assert
       expect(prisma.marketingTemplate.count).toHaveBeenCalled(),
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -257,7 +247,7 @@ describe('TemplateService', () => {
     });
     
     it('should apply filters correctly', async () => {
-      // Arrange;
+      // Arrange
       const filters = {
         type: 'EMAIL',
         isActive: true,
@@ -269,10 +259,10 @@ describe('TemplateService', () => {
       (prisma.marketingTemplate.count as jest.Mock).mockResolvedValue(10);
       (prisma.marketingTemplate.findMany as jest.Mock).mockResolvedValue([mockTemplates[0]]);
       
-      // Act;
+      // Act
       const result = await service.getTemplates(filters);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingTemplate.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
           type: filters.type,
@@ -290,7 +280,7 @@ describe('TemplateService', () => {
             type: filters.type,
             isActive: filters.isActive,
           }),
-          skip: 5, // (page-1) * limit;
+          skip: 5, // (page-1) * limit
           take: 5,
         });
       );
@@ -333,17 +323,17 @@ describe('TemplateService', () => {
     };
     
     it('should update a template successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       (prisma.marketingTemplate.update as jest.Mock).mockResolvedValue({
         ...mockTemplate,
         ...updateData,
       });
       
-      // Act;
+      // Act
       const result = await service.updateTemplate('template-123', updateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({
         where: { id: 'template-123' },
       }),
@@ -370,42 +360,42 @@ describe('TemplateService', () => {
     });
     
     it('should throw NotFoundError if template does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.updateTemplate('non-existent-id', updateData, mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should validate template variables against content when updating', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       
       const invalidUpdateData = {
         ...updateData,
-        content: '<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>', // 'age' not in variables;
+        content: '<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>', // 'age' not in variables
       };
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.updateTemplate('template-123', invalidUpdateData, mockUserId));
         .rejects;
         .toThrow(ValidationError);
     });
     
     it('should log audit event after updating template', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       (prisma.marketingTemplate.update as jest.Mock).mockResolvedValue({
         ...mockTemplate,
         ...updateData,
       });
       
-      // Act;
+      // Act
       await service.updateTemplate('template-123', updateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'template.update',
         resourceId: 'template-123',
@@ -439,13 +429,13 @@ describe('TemplateService', () => {
     };
     
     it('should render a template with provided variables', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       
-      // Act;
+      // Act
       const result = await service.renderTemplate('template-123', mockVariables);
       
-      // Assert;
+      // Assert
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({
         where: { id: 'template-123' },
       }),
@@ -458,34 +448,34 @@ describe('TemplateService', () => {
     });
     
     it('should handle missing variables gracefully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       
-      // Act;
+      // Act
       const result = await service.renderTemplate('template-123', { firstName: 'John' });
       
-      // Assert;
+      // Assert
       expect(result.renderedContent).toEqual('<p>Hello John , welcome to our hospital!</p>');
     });
     
     it('should throw NotFoundError if template does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.renderTemplate('non-existent-id', mockVariables));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after rendering template', async () => {
-      // Arrange;
+      // Arrange
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
       
-      // Act;
+      // Act
       await service.renderTemplate('template-123', mockVariables, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'template.render',
         resourceId: 'template-123',

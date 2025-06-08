@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -66,7 +56,7 @@ import {
   DialogTrigger;
 } from '@/components/ui/dialog';
 
-// Status badge colors;
+// Status badge colors
 const statusColors: Record<string, string> = {
   'PENDING': 'bg-yellow-100 text-yellow-800',
   'APPROVED': 'bg-blue-100 text-blue-800',
@@ -76,7 +66,7 @@ const statusColors: Record<string, string> = {
   'CANCELLED': 'bg-red-100 text-red-800',
 };
 
-// Request type colors;
+// Request type colors
 const requestTypeColors: Record<string, string> = {
   'REGULAR_MEAL': 'bg-gray-100 text-gray-800',
   'SPECIAL_DIET': 'bg-indigo-100 text-indigo-800',
@@ -108,23 +98,23 @@ export const DietaryDashboard = () => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  // Fetch dietary requests on component mount and when filters change;
+  // Fetch dietary requests on component mount and when filters change
   useEffect(() => {
     fetchDietaryRequests();
   }, [page, filters]);
 
-  // Fetch analytics data when analytics tab is selected;
+  // Fetch analytics data when analytics tab is selected
   useEffect(() => {
     if (activeTab === 'analytics') {
       fetchAnalytics();
     }
   }, [activeTab]);
 
-  // Fetch dietary requests with filters;
+  // Fetch dietary requests with filters
   const fetchDietaryRequests = async () => {
     setIsLoading(true);
     try {
-      // Build query params;
+      // Build query params
       const params = new URLSearchParams();
       params.append('page', page.toString());
       params.append('limit', '10');
@@ -153,7 +143,7 @@ export const DietaryDashboard = () => {
     }
   };
 
-  // Fetch analytics data;
+  // Fetch analytics data
   const fetchAnalytics = async () => {
     try {
       const response = await fetch('/api/support-services/dietary/analytics?period=MONTHLY');
@@ -171,13 +161,13 @@ export const DietaryDashboard = () => {
     }
   };
 
-  // Handle filter changes;
+  // Handle filter changes
   const handleFilterChange = (key: string, value: unknown) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-    setPage(1); // Reset to first page when filters change;
+    setPage(1); // Reset to first page when filters change
   };
 
-  // Reset filters;
+  // Reset filters
   const resetFilters = () => {
     setFilters({
       status: '',
@@ -189,7 +179,7 @@ export const DietaryDashboard = () => {
     setPage(1);
   };
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (page > 1) setPage(page - 1);
   };
@@ -198,7 +188,7 @@ export const DietaryDashboard = () => {
     if (page < totalPages) setPage(page + 1);
   };
 
-  // View request details;
+  // View request details
   const viewRequestDetails = async (requestId: string) => {
     try {
       const response = await fetch(`/api/support-services/dietary/${requestId}`);
@@ -217,7 +207,7 @@ export const DietaryDashboard = () => {
     }
   };
 
-  // View meal plan details;
+  // View meal plan details
   const viewMealPlanDetails = async (mealPlanId: string) => {
     try {
       const response = await fetch(`/api/support-services/dietary/meal-plans/${mealPlanId}`);
@@ -236,7 +226,7 @@ export const DietaryDashboard = () => {
     }
   };
 
-  // Update request status;
+  // Update request status
   const updateRequestStatus = async (requestId: string, status: string) => {
     try {
       const response = await fetch(`/api/support-services/dietary/${requestId}`, {
@@ -253,10 +243,10 @@ export const DietaryDashboard = () => {
         description: `Request status has been updated to ${status}.`,
       });
       
-      // Refresh the requests list;
+      // Refresh the requests list
       fetchDietaryRequests();
       
-      // If viewing request details, refresh those too;
+      // If viewing request details, refresh those too
       if (selectedRequest && selectedRequest.id === requestId) {
         viewRequestDetails(requestId);
       }
@@ -270,7 +260,7 @@ export const DietaryDashboard = () => {
     }
   };
 
-  // Render request status badge;
+  // Render request status badge
   const renderStatusBadge = (status: string) => {
     return (
       <Badge className={statusColors[status] || 'bg-gray-100 text-gray-800'}>;
@@ -279,7 +269,7 @@ export const DietaryDashboard = () => {
     );
   };
 
-  // Render request type badge;
+  // Render request type badge
   const renderRequestTypeBadge = (type: string) => {
     return (
       <Badge className={requestTypeColors[type] || 'bg-gray-100 text-gray-800'}>;
@@ -288,7 +278,7 @@ export const DietaryDashboard = () => {
     );
   };
 
-  // Render dietary requests table;
+  // Render dietary requests table
   const renderRequestsTable = () => {
     if (isLoading) {
       return (
@@ -394,7 +384,7 @@ export const DietaryDashboard = () => {
     );
   };
 
-  // Render meal plans tab;
+  // Render meal plans tab
   const renderMealPlansTab = () => {
     return (
       <div className="space-y-6">;
@@ -413,7 +403,7 @@ export const DietaryDashboard = () => {
     );
   };
 
-  // Render nutritional profiles tab;
+  // Render nutritional profiles tab
   const renderNutritionalProfilesTab = () => {
     return (
       <div className="space-y-6">;
@@ -438,7 +428,7 @@ export const DietaryDashboard = () => {
     );
   };
 
-  // Render analytics tab;
+  // Render analytics tab
   const renderAnalyticsTab = () => {
     if (!analytics) {
       return (
@@ -595,7 +585,7 @@ export const DietaryDashboard = () => {
     );
   };
 
-  // Render request details dialog;
+  // Render request details dialog
   const renderRequestDetailsDialog = () => {
     if (!selectedRequest) return null;
     
@@ -923,4 +913,3 @@ export const DietaryDashboard = () => {
       {/* Meal Plan Details Dialog would go here */}
     </div>
   );
-}

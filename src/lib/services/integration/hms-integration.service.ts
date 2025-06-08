@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -35,7 +27,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.USER,
@@ -46,7 +38,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.patient.info.request',
@@ -55,8 +47,8 @@ export class HMSIntegrationService {
         details: { patientId }
       });
       
-      // In a real implementation, this would call the HMS Patient Management API;
-      // For this example, we'll simulate the API call with a database query;
+      // In a real implementation, this would call the HMS Patient Management API
+      // For this example, we'll simulate the API call with a database query
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
         select: {
@@ -67,7 +59,7 @@ export class HMSIntegrationService {
           dateOfBirth: true,
           gender: true,
           contactInformation: true,
-          // Exclude sensitive medical information based on roles;
+          // Exclude sensitive medical information based on roles
           ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, { fullMedicalData: true });
             ? {
                 allergies: true,
@@ -82,7 +74,7 @@ export class HMSIntegrationService {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
       
-      // Audit the successful retrieval;
+      // Audit the successful retrieval
       await auditLogger.log({
         action: 'integration.patient.info.success',
         resourceId: patientId,
@@ -92,7 +84,7 @@ export class HMSIntegrationService {
       
       return patient;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof NotFoundError || error instanceof AuthorizationError) {
         throw error;
       }
@@ -113,7 +105,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.SYSTEM,
@@ -124,7 +116,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.location.info.request',
@@ -133,8 +125,8 @@ export class HMSIntegrationService {
         details: { locationId }
       });
       
-      // In a real implementation, this would call the HMS Location Management API;
-      // For this example, we'll simulate the API call with a database query;
+      // In a real implementation, this would call the HMS Location Management API
+      // For this example, we'll simulate the API call with a database query
       const location = await prisma.location.findUnique({
         where: { id: locationId },
         select: {
@@ -153,7 +145,7 @@ export class HMSIntegrationService {
         throw new NotFoundError(`Location with ID ${locationId} not found`);
       }
       
-      // Audit the successful retrieval;
+      // Audit the successful retrieval
       await auditLogger.log({
         action: 'integration.location.info.success',
         resourceId: locationId,
@@ -163,7 +155,7 @@ export class HMSIntegrationService {
       
       return location;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof NotFoundError || error instanceof AuthorizationError) {
         throw error;
       }
@@ -192,7 +184,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.SYSTEM,
@@ -203,7 +195,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.notification.send.request',
@@ -216,8 +208,8 @@ export class HMSIntegrationService {
         }
       });
       
-      // In a real implementation, this would call the HMS Notification System API;
-      // For this example, we'll simulate the API call with a database insert;
+      // In a real implementation, this would call the HMS Notification System API
+      // For this example, we'll simulate the API call with a database insert
       const notification = await prisma.notification.create({
         data: {
           recipientId,
@@ -230,7 +222,7 @@ export class HMSIntegrationService {
         }
       });
       
-      // Audit the successful notification creation;
+      // Audit the successful notification creation
       await auditLogger.log({
         action: 'integration.notification.send.success',
         resourceId: notification.id,
@@ -244,7 +236,7 @@ export class HMSIntegrationService {
       
       return notification;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof AuthorizationError) {
         throw error;
       }
@@ -265,7 +257,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.USER,
@@ -276,7 +268,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.user.info.request',
@@ -285,8 +277,8 @@ export class HMSIntegrationService {
         details: { targetUserId }
       });
       
-      // In a real implementation, this would call the HMS User Management API;
-      // For this example, we'll simulate the API call with a database query;
+      // In a real implementation, this would call the HMS User Management API
+      // For this example, we'll simulate the API call with a database query
       const user = await prisma.user.findUnique({
         where: { id: targetUserId },
         select: {
@@ -299,7 +291,7 @@ export class HMSIntegrationService {
           department: true,
           position: true,
           status: true,
-          // Only include sensitive fields for self or admin;
+          // Only include sensitive fields for self or admin
           ...(targetUserId === userId || userRoles.includes('admin');
             ? {
                 lastLogin: true,
@@ -314,7 +306,7 @@ export class HMSIntegrationService {
         throw new NotFoundError(`User with ID ${targetUserId} not found`);
       }
       
-      // Audit the successful retrieval;
+      // Audit the successful retrieval
       await auditLogger.log({
         action: 'integration.user.info.success',
         resourceId: targetUserId,
@@ -324,7 +316,7 @@ export class HMSIntegrationService {
       
       return user;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof NotFoundError || error instanceof AuthorizationError) {
         throw error;
       }
@@ -347,7 +339,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.SYSTEM,
@@ -357,7 +349,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.report.submit.request',
@@ -366,8 +358,8 @@ export class HMSIntegrationService {
         details: { reportType }
       });
       
-      // In a real implementation, this would call the HMS Reporting System API;
-      // For this example, we'll simulate the API call with a database insert;
+      // In a real implementation, this would call the HMS Reporting System API
+      // For this example, we'll simulate the API call with a database insert
       const report = await prisma.report.create({
         data: {
           type: reportType,
@@ -377,7 +369,7 @@ export class HMSIntegrationService {
         }
       });
       
-      // Audit the successful report submission;
+      // Audit the successful report submission
       await auditLogger.log({
         action: 'integration.report.submit.success',
         resourceId: report.id,
@@ -390,7 +382,7 @@ export class HMSIntegrationService {
       
       return report;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof AuthorizationError) {
         throw error;
       }
@@ -415,7 +407,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Map service type to resource;
+    // Map service type to resource
     const resourceMap = {
       'HOUSEKEEPING': Resource.HOUSEKEEPING,
       'MAINTENANCE': Resource.MAINTENANCE,
@@ -426,7 +418,7 @@ export class HMSIntegrationService {
     
     const resource = resourceMap[serviceType];
     
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       resource,
@@ -437,7 +429,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.request.patient.link.request',
@@ -450,14 +442,14 @@ export class HMSIntegrationService {
         }
       });
       
-      // Verify patient exists;
+      // Verify patient exists
       const patient = await this.getPatientInfo(patientId, userId, userRoles);
       
-      // In a real implementation, this would update the appropriate service request;
-      // For this example, we'll use a generic approach;
+      // In a real implementation, this would update the appropriate service request
+      // For this example, we'll use a generic approach
       const tableName = serviceType.toLowerCase() + 'Request';
       
-      // Dynamic update based on service type;
+      // Dynamic update based on service type
       const request = await prisma[tableName].update({
         where: { id: requestId },
         data: {
@@ -466,7 +458,7 @@ export class HMSIntegrationService {
         }
       });
       
-      // Audit the successful link;
+      // Audit the successful link
       await auditLogger.log({
         action: 'integration.request.patient.link.success',
         resourceId: requestId,
@@ -480,7 +472,7 @@ export class HMSIntegrationService {
       
       return request;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof NotFoundError || error instanceof AuthorizationError) {
         throw error;
       }
@@ -505,7 +497,7 @@ export class HMSIntegrationService {
     userId: string,
     userRoles: string[]
   ): Promise<any> {
-    // Map service type to resource;
+    // Map service type to resource
     const resourceMap = {
       'HOUSEKEEPING': Resource.HOUSEKEEPING,
       'MAINTENANCE': Resource.MAINTENANCE,
@@ -515,7 +507,7 @@ export class HMSIntegrationService {
     
     const resource = resourceMap[serviceType];
     
-    // Enforce RBAC;
+    // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       resource,
@@ -526,7 +518,7 @@ export class HMSIntegrationService {
     );
     
     try {
-      // Audit the request;
+      // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.request.location.link.request',
@@ -539,14 +531,14 @@ export class HMSIntegrationService {
         }
       });
       
-      // Verify location exists;
+      // Verify location exists
       const location = await this.getLocationInfo(locationId, userId, userRoles);
       
-      // In a real implementation, this would update the appropriate service request;
-      // For this example, we'll use a generic approach;
+      // In a real implementation, this would update the appropriate service request
+      // For this example, we'll use a generic approach
       const tableName = serviceType.toLowerCase() + 'Request';
       
-      // Dynamic update based on service type;
+      // Dynamic update based on service type
       const request = await prisma[tableName].update({
         where: { id: requestId },
         data: {
@@ -555,7 +547,7 @@ export class HMSIntegrationService {
         }
       });
       
-      // Audit the successful link;
+      // Audit the successful link
       await auditLogger.log({
         action: 'integration.request.location.link.success',
         resourceId: requestId,
@@ -569,7 +561,7 @@ export class HMSIntegrationService {
       
       return request;
     } catch (error) {
-      // Handle and rethrow appropriate errors;
+      // Handle and rethrow appropriate errors
       if (error instanceof NotFoundError || error instanceof AuthorizationError) {
         throw error;
       }
@@ -577,4 +569,3 @@ export class HMSIntegrationService {
       throw new ExternalServiceError('HMS Integration', 'Failed to link request to location');
     }
   }
-}

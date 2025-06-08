@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERTriageForm.tsx;
+// src/components/er/ERTriageForm.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -37,10 +29,10 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define the schema for the triage form using Zod;
+// Define the schema for the triage form using Zod
 const triageFormSchema = z.object({
-  visitId: z.string().min(1, { message: "Visit ID is required." }), // Need a way to select/link the visit;
-  triageNurseId: z.string().min(1, { message: "Triage Nurse ID is required." }), // Should ideally come from logged-in user context;
+  visitId: z.string().min(1, { message: "Visit ID is required." }), // Need a way to select/link the visit
+  triageNurseId: z.string().min(1, { message: "Triage Nurse ID is required." }), // Should ideally come from logged-in user context
   esiLevel: z.coerce;
     .number();
     .min(1);
@@ -56,19 +48,19 @@ const triageFormSchema = z.object({
 
 type TriageFormValues = z.infer<typeof triageFormSchema>;
 
-// FIX: Define type for API error response;
+// FIX: Define type for API error response
 interface ApiErrorResponse {
   error?: string;
 }
 
-// FIX: Define type for the Triage API success response;
+// FIX: Define type for the Triage API success response
 interface TriageResponse {
   visit_id: string,
   esi_level: number;
-  // Add other relevant fields returned by the API;
+  // Add other relevant fields returned by the API
 }
 
-// Mock user ID - replace with actual logged-in user context;
+// Mock user ID - replace with actual logged-in user context
 const MOCK_NURSE_ID = "nurse_456";
 
 export default const ERTriageForm = () {
@@ -78,7 +70,7 @@ export default const ERTriageForm = () {
   const form = useForm<TriageFormValues>({
     resolver: zodResolver(triageFormSchema),
     defaultValues: {
-      visitId: "", // Needs a mechanism to set this (e.g., from tracking board selection);
+      visitId: "", // Needs a mechanism to set this (e.g., from tracking board selection)
       triageNurseId: MOCK_NURSE_ID,
       esiLevel: undefined,
       hr: undefined,
@@ -98,7 +90,7 @@ export default const ERTriageForm = () {
     const vitalSigns = {
       HR: data.hr,
       BP:
-        data.bpSystolic && data.bpDiastolic;
+        data.bpSystolic && data.bpDiastolic
           ? `${data.bpSystolic}/${data.bpDiastolic}`
           : undefined,
       RR: data.rr,
@@ -106,7 +98,7 @@ export default const ERTriageForm = () {
       SpO2: data.spo2,
     };
 
-    // Filter out undefined vital signs;
+    // Filter out undefined vital signs
     const filteredVitalSigns = Object.fromEntries(
       Object.entries(vitalSigns);
         .filter(
@@ -116,7 +108,7 @@ export default const ERTriageForm = () {
     );
 
     try {
-      // Replace with actual API call: POST /api/er/visits/[id]/triage;
+      // Replace with actual API call: POST /api/er/visits/[id]/triage
       const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -131,25 +123,25 @@ export default const ERTriageForm = () {
       if (!response.ok) {
         let errorMessage = "Failed to submit triage assessment";
         try {
-          // FIX: Use defined type for errorData;
+          // FIX: Use defined type for errorData
           const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          // Ignore if response is not JSON;
+          // Ignore if response is not JSON
         }
         throw new Error(errorMessage);
       }
 
-      // FIX: Use defined type for result;
+      // FIX: Use defined type for result
       const result: TriageResponse = await response.json(),
       toast({
         title: "Triage Assessment Submitted",
         description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`,
       });
-      form.reset(); // Reset form after successful submission;
+      form.reset(); // Reset form after successful submission
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block;
+      // FIX: Use unknown for catch block
 
       const message =;
         error instanceof Error;
@@ -342,7 +334,7 @@ export default const ERTriageForm = () {
                   placeholder="Enter triage assessment notes..."
                   className="resize-none"
                   {...field}
-                  value={field.value ?? ""} // Ensure value is not undefined;
+                  value={field.value ?? ""} // Ensure value is not undefined
                 />
               </FormControl>
               <FormMessage />
@@ -356,4 +348,3 @@ export default const ERTriageForm = () {
       </form>
     </Form>
   );
-}

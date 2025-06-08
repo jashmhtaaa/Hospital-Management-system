@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -34,26 +26,26 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { PlusCircle, Trash2, Users } from "lucide-react";
 
-// Props for the component;
+// Props for the component
 interface OTStaffAssignmentProperties {
   bookingId: string
 }
 
-// Mock data structures;
+// Mock data structures
 interface AssignedStaff {
   assignment_id: string,
-  user_id: string;
+  user_id: string,
   user_name: string,
   role: string
 }
 
 interface User {
   id: string,
-  name: string;
-  role: string; // Assuming user object has a role;
+  name: string,
+  role: string; // Assuming user object has a role
 }
 
-// Mock users - replace with API call to user management;
+// Mock users - replace with API call to user management
 const mockUsers: User[] = [
   { id: "user-1", name: "Dr. Alice Brown", role: "Surgeon" },
   { id: "user-2", name: "Dr. Bob White", role: "Surgeon" },
@@ -68,7 +60,7 @@ export default const OTStaffAssignment = ({
   bookingId,
 }: OTStaffAssignmentProperties) {
   const [assignedStaff, setAssignedStaff] = useState<AssignedStaff[]>([]);
-  const [availableUsers] = useState<User[]>(mockUsers); // Removed unused setAvailableUsers;
+  const [availableUsers] = useState<User[]>(mockUsers); // Removed unused setAvailableUsers
   const [selectedUser, setSelectedUser] = useState<string>("");
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -81,15 +73,15 @@ export default const OTStaffAssignment = ({
       setLoading(true),
       setError(undefined);
 
-      // Replace with actual API call;
-      // const response = await fetch(`/api/ot/bookings/${bookingId}/staff`);
+      // Replace with actual API call
+      // const response = await fetch(`/api/ot/bookings/${bookingId}/staff`)
       // if (!response.ok) {
-      //   throw new Error("Failed to fetch assigned staff");
+      //   throw new Error("Failed to fetch assigned staff")
       // }
-      // const data = await response.json();
-      // setAssignedStaff(data);
+      // const data = await response.json()
+      // setAssignedStaff(data)
 
-      // Mock data for demonstration;
+      // Mock data for demonstration
       const mockAssigned: AssignedStaff[] = [
         {
           assignment_id: "assign-1",
@@ -120,7 +112,7 @@ export default const OTStaffAssignment = ({
       }
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookingId]);
 
   useEffect(() => {
@@ -147,21 +139,21 @@ export default const OTStaffAssignment = ({
       // const assignmentData = { // Removed unused variable (used only in commented-out API call)
       //   user_id: selectedUser,
       //   role: selectedRole,
-      // };
+      // }
 
-      // Replace with actual API call;
+      // Replace with actual API call
       // const response = await fetch(`/api/ot/bookings/${bookingId}/staff`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(assignmentData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to assign staff");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to assign staff")
       // }
-      // const newAssignment = await response.json(); // Assuming API returns the new assignment;
+      // const newAssignment = await response.json(); // Assuming API returns the new assignment
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newAssignment: AssignedStaff = {
         assignment_id: `assign-${Date.now()}`,
@@ -192,16 +184,16 @@ export default const OTStaffAssignment = ({
 
   const handleRemoveStaff = async (assignmentId: string) => {
     try {
-      // Replace with actual API call;
+      // Replace with actual API call
       // const response = await fetch(`/api/ot/bookings/${bookingId}/staff/${assignmentId}`, {
       //   method: "DELETE",
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to remove staff");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to remove staff")
       // }
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       setAssignedStaff((previous) =>
@@ -319,4 +311,3 @@ export default const OTStaffAssignment = ({
       </CardContent>
     </Card>
   );
-}

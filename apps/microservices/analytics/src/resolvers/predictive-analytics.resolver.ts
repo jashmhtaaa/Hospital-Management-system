@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -20,15 +12,15 @@ import { GqlRolesGuard } from '@/lib/security/guards/gql-roles.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
 import { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
 
-// GraphQL models would be defined here;
-// import { PredictiveModel, ReadmissionRisk, LengthOfStayPrediction, etc. } from '../models';
+// GraphQL models would be defined here
+// import { PredictiveModel, ReadmissionRisk, LengthOfStayPrediction, etc. } from '../models'
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
 export class PredictiveAnalyticsResolver {
   constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {}
 
-  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types;
+  // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
   
   @Query();
   async predictiveModels(
@@ -174,4 +166,3 @@ export class PredictiveAnalyticsResolver {
       segment,
     });
   }
-}

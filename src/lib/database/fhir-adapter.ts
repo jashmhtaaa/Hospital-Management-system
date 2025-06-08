@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -29,14 +21,10 @@ export interface FHIRSearchParams {
   _include?: string[];
   _revinclude?: string[];
   [key: string]: unknown
-}
-
 export interface FHIRSearchResult<T> {
   resources: T[],
-  total: number;
+  total: number,
   hasMore: boolean
-}
-
 export class FHIRDatabaseAdapter {
   private prisma: PrismaClient;
 
@@ -51,7 +39,7 @@ export class FHIRDatabaseAdapter {
     const resourceType = resource.resourceType;
     const resourceId = resource.id || uuidv4();
     
-    // Ensure resource has ID and meta;
+    // Ensure resource has ID and meta
     resource.id = resourceId;
     resource.meta = {
       ...resource.meta,
@@ -94,13 +82,13 @@ export class FHIRDatabaseAdapter {
    * Update a FHIR resource;
    */
   async updateResource<T extends FHIRBase>(resourceType: string, id: string, resource: T): Promise<T> {
-    // Get current version;
+    // Get current version
     const existing = await this.retrieveResource<T>(resourceType, id);
     if (!existing) {
       throw new Error(`${resourceType}/${id} not found`);
     }
 
-    // Update version;
+    // Update version
     const currentVersion = parseInt(existing.meta?.versionId || '1');
     resource.id = id;
     resource.meta = {
@@ -160,12 +148,12 @@ export class FHIRDatabaseAdapter {
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
 
-    // Extract name components;
+    // Extract name components
     const officialName = fhirPatient.name?.find(n => n.use === 'official') || fhirPatient.name?.[0];
     const firstName = officialName?.given?.[0] || '';
     const lastName = officialName?.family || '';
 
-    // Store in Prisma Patient table;
+    // Store in Prisma Patient table
     const patient = await this.prisma.patient.upsert({
       where: { id: fhirPatient.id! },
       update: {
@@ -190,7 +178,7 @@ export class FHIRDatabaseAdapter {
       }
     });
 
-    // Store FHIR resource in generic table;
+    // Store FHIR resource in generic table
     await this.storeGenericResource(fhirPatient);
 
     return fhirPatient;
@@ -205,7 +193,7 @@ export class FHIRDatabaseAdapter {
       return null;
     }
 
-    // Convert HMS patient to FHIR patient;
+    // Convert HMS patient to FHIR patient
     const fhirPatient = FHIRPatientUtils.fromHMSPatient({
       id: patient.id,
       mrn: patient.mrn,
@@ -217,10 +205,10 @@ export class FHIRDatabaseAdapter {
       email: patient.email
     });
 
-    // Get stored FHIR resource for additional data;
+    // Get stored FHIR resource for additional data
     const storedFhir = await this.retrieveGenericResource<FHIRPatient>('Patient', id);
     if (storedFhir) {
-      // Merge stored FHIR data with converted data;
+      // Merge stored FHIR data with converted data
       return {
         ...storedFhir,
         ...fhirPatient,
@@ -248,7 +236,7 @@ export class FHIRDatabaseAdapter {
     
     const where: unknown = {};
     
-    // Build where clause based on search parameters;
+    // Build where clause based on search parameters
     if (params.name) {
       where.OR = [
         { firstName: { contains: params.name, mode: 'insensitive' } },
@@ -316,7 +304,7 @@ export class FHIRDatabaseAdapter {
       throw new Error('Patient and Practitioner are required for appointments');
     }
 
-    // Store FHIR resource;
+    // Store FHIR resource
     await this.storeGenericResource(fhirAppointment);
 
     return fhirAppointment;
@@ -378,13 +366,13 @@ export class FHIRDatabaseAdapter {
    * Generic FHIR resource operations (for resources without specific tables)
    */
   private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {
-    // Create a generic FHIR resource table if it doesn't exist;
-    // For now, we'll store in a JSON format;
+    // Create a generic FHIR resource table if it doesn't exist
+    // For now, we'll store in a JSON format
     
     // You would need to create a FhirResource table in your Prisma schema:
     /*
     model FhirResource {
-      id           String   @id;
+      id           String   @id
       resourceType String;
       content      Json;
       version      String   @default("1");
@@ -412,7 +400,7 @@ export class FHIRDatabaseAdapter {
         new Date();
       );
     } catch (error) {
-      // If table doesn't exist, create it;
+      // If table doesn't exist, create it
 
     }
 
@@ -524,4 +512,3 @@ export class FHIRDatabaseAdapter {
 
     }
   }
-}

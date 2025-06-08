@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -25,13 +15,13 @@ import { generateFhirResource } from '@/lib/fhir';
  */
 export async const GET = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get('patientId');
     const reportType = searchParams.get('reportType');
@@ -40,11 +30,11 @@ export async const GET = (request: NextRequest) => {
     const toDate = searchParams.get('toDate');
     const authorId = searchParams.get('authorId');
     const search = searchParams.get('search');
-    const format = searchParams.get('format') || 'json'; // json or fhir;
+    const format = searchParams.get('format') || 'json'; // json or fhir
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '20');
 
-    // Cache key;
+    // Cache key
     const cacheKey = `diagnostic:reports:${patientId ||;
       ''}:${reportType ||
       ''}:${status ||
@@ -54,11 +44,11 @@ export async const GET = (request: NextRequest) => {
       ''}:${search ||
       ''}:${format}:${page}:${pageSize}`;
 
-    // Try to get from cache or fetch from database;
+    // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Build query;
+        // Build query
         let query = `;
           SELECT r.*, 
                  p.patient_id as patient_identifier, p.first_name, p.last_name, 
@@ -72,7 +62,7 @@ export async const GET = (request: NextRequest) => {
         `;
         const params: unknown[] = [];
 
-        // Add filters;
+        // Add filters
         if (patientId) {
           query += ' AND r.patient_id = ?';
           params.push(patientId);
@@ -109,15 +99,15 @@ export async const GET = (request: NextRequest) => {
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
         }
 
-        // Add pagination;
+        // Add pagination
         const offset = (page - 1) * pageSize;
         query += ' ORDER BY r.report_date DESC, r.created_at DESC LIMIT ? OFFSET ?';
         params.push(pageSize, offset);
 
-        // Execute query;
+        // Execute query
         const result = await DB.query(query, params);
 
-        // Get total count for pagination;
+        // Get total count for pagination
         const countQuery = `;
           SELECT COUNT(*) as total;
           FROM diagnostic_reports r;
@@ -138,9 +128,9 @@ export async const GET = (request: NextRequest) => {
         const totalCount = countResult.results[0].total;
         const totalPages = Math.ceil(totalCount / pageSize);
 
-        // Decrypt sensitive data;
+        // Decrypt sensitive data
         const reports = result.results.map(report => {
-          // Decrypt any encrypted fields;
+          // Decrypt any encrypted fields
           return {
             ...report,
             content: report.content ? decryptSensitiveData(report.content) : null,
@@ -149,13 +139,13 @@ export async const GET = (request: NextRequest) => {
           };
         });
 
-        // Convert to FHIR format if requested;
+        // Convert to FHIR format if requested
         let formattedReports = reports;
         if (format === 'fhir') {
           formattedReports = reports.map(report => generateFhirResource('DiagnosticReport', report));
         }
 
-        // Log access;
+        // Log access
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -173,7 +163,7 @@ export async const GET = (request: NextRequest) => {
           }
         };
       },
-      1800 // 30 minutes cache;
+      1800 // 30 minutes cache
     );
 
     return NextResponse.json(data);
@@ -192,18 +182,18 @@ export async const GET = (request: NextRequest) => {
  */
 export async const POST = (request: NextRequest) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'physician', 'radiologist', 'pathologist', 'lab_technician'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       patientId, 
@@ -223,20 +213,20 @@ export async const POST = (request: NextRequest) => {
       multimedia;
     } = body;
 
-    // Validate required fields;
+    // Validate required fields
     if (!patientId || !reportType || !title) {
       return NextResponse.json({ 
         error: 'Patient ID, report type, and title are required';
       }, { status: 400 });
     }
 
-    // Check if patient exists;
+    // Check if patient exists
     const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
     if (patientCheck.results.length === 0) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Check if order exists if provided;
+    // Check if order exists if provided
     if (orderId) {
       let orderTable;
       if (reportType === 'radiology') {
@@ -253,7 +243,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
 
-    // Check if template exists if provided;
+    // Check if template exists if provided
     if (templateId) {
       const templateCheck = await DB.query('SELECT id FROM report_templates WHERE id = ?', [templateId]);
       if (templateCheck.results.length === 0) {
@@ -261,12 +251,12 @@ export async const POST = (request: NextRequest) => {
       }
     }
 
-    // Encrypt sensitive data;
+    // Encrypt sensitive data
     const encryptedContent = content ? encryptSensitiveData(content) : null;
     const encryptedFindings = findings ? encryptSensitiveData(findings) : null;
     const encryptedConclusion = conclusion ? encryptSensitiveData(conclusion) : null;
 
-    // Insert report;
+    // Insert report
     const query = `;
       INSERT INTO diagnostic_reports (
         patient_id, report_type, title, content, findings, conclusion,
@@ -300,7 +290,7 @@ export async const POST = (request: NextRequest) => {
     const result = await DB.query(query, params);
     const reportId = result.insertId;
 
-    // Handle multimedia attachments if provided;
+    // Handle multimedia attachments if provided
     if (multimedia && Array.isArray(multimedia) && multimedia.length > 0) {
       for (const item of multimedia) {
         await DB.query(
@@ -321,7 +311,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
 
-    // Log creation;
+    // Log creation
     await auditLog({
       userId: session.user.id,
       action: 'create',
@@ -336,9 +326,9 @@ export async const POST = (request: NextRequest) => {
       }
     });
 
-    // If critical findings are present, notify relevant parties;
+    // If critical findings are present, notify relevant parties
     if (criticalFindings) {
-      // Determine who to notify based on report type;
+      // Determine who to notify based on report type
       let notifyRoles = [];
       if (reportType === 'radiology') {
         notifyRoles = ['radiologist', 'physician'];
@@ -348,7 +338,7 @@ export async const POST = (request: NextRequest) => {
         notifyRoles = ['physician'];
       }
       
-      // Get users with relevant roles;
+      // Get users with relevant roles
       const usersQuery = `;
         SELECT u.id FROM users u;
         JOIN roles r ON u.role_id = r.id;
@@ -371,10 +361,10 @@ export async const POST = (request: NextRequest) => {
       }
     }
 
-    // Invalidate cache;
+    // Invalidate cache
     await CacheInvalidation.invalidatePattern('diagnostic:reports:*');
 
-    // Get the created report;
+    // Get the created report
     const createdReport = await DB.query(
       `SELECT r.*, 
               p.patient_id as patient_identifier, p.first_name, p.last_name, 
@@ -388,7 +378,7 @@ export async const POST = (request: NextRequest) => {
       [reportId]
     );
 
-    // Decrypt sensitive data;
+    // Decrypt sensitive data
     const report = {
       ...createdReport.results[0],
       content: createdReport.results[0].content ? 
@@ -399,7 +389,7 @@ export async const POST = (request: NextRequest) => {
         decryptSensitiveData(createdReport.results[0].conclusion) : null
     };
 
-    // Get multimedia attachments;
+    // Get multimedia attachments
     const multimediaResult = await DB.query(
       `SELECT * FROM report_multimedia WHERE report_id = ? ORDER BY sequence_number ASC`,
       [reportId]
@@ -423,7 +413,7 @@ export async const POST = (request: NextRequest) => {
  */
 export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -434,18 +424,18 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
-    const format = searchParams.get('format') || 'json'; // json or fhir;
+    const format = searchParams.get('format') || 'json'; // json or fhir
 
-    // Cache key;
+    // Cache key
     const cacheKey = `diagnostic:report:${id}:${format}`;
 
-    // Try to get from cache or fetch from database;
+    // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
       cacheKey,
       async () => {
-        // Get report;
+        // Get report
         const query = `;
           SELECT r.*, 
                  p.patient_id as patient_identifier, p.first_name, p.last_name, 
@@ -464,7 +454,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
           throw new Error('Report not found');
         }
 
-        // Decrypt sensitive data;
+        // Decrypt sensitive data
         const report = {
           ...result.results[0],
           content: result.results[0].content ? 
@@ -475,7 +465,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
             decryptSensitiveData(result.results[0].conclusion) : null
         };
 
-        // Get multimedia attachments;
+        // Get multimedia attachments
         const multimediaResult = await DB.query(
           `SELECT * FROM report_multimedia WHERE report_id = ? ORDER BY sequence_number ASC`,
           [id]
@@ -483,13 +473,13 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 
         report.multimedia = multimediaResult.results;
 
-        // Convert to FHIR format if requested;
+        // Convert to FHIR format if requested
         let formattedReport = report;
         if (format === 'fhir') {
           formattedReport = generateFhirResource('DiagnosticReport', report);
         }
 
-        // Log access;
+        // Log access
         await auditLog({
           userId: session.user.id,
           action: 'read',
@@ -500,7 +490,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 
         return formattedReport;
       },
-      1800 // 30 minutes cache;
+      1800 // 30 minutes cache
     );
 
     return NextResponse.json(data);
@@ -519,7 +509,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
  */
 export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -530,7 +520,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { 
       title,
@@ -548,7 +538,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       multimedia;
     } = body;
 
-    // Check if report exists;
+    // Check if report exists
     const reportCheck = await DB.query('SELECT * FROM diagnostic_reports WHERE id = ?', [id]);
     if (reportCheck.results.length === 0) {
       return NextResponse.json({ error: 'Report not found' }, { status: 404 });
@@ -556,24 +546,24 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
 
     const existingReport = reportCheck.results[0];
 
-    // Authorization;
+    // Authorization
     const isAuthor = existingReport.author_id === session.user.id;
     const isVerifier = existingReport.verifier_id === session.user.id;
     const isAdmin = ['admin', 'radiology_manager', 'lab_manager'].includes(session.user.roleName);
     
-    // Only certain roles can update reports;
+    // Only certain roles can update reports
     if (!isAuthor && !isVerifier && !isAdmin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Prevent modification of verified reports unless by admin;
+    // Prevent modification of verified reports unless by admin
     if (existingReport.status === 'verified' && !isAdmin) {
       return NextResponse.json({ 
         error: 'Cannot modify a verified report'
       }, { status: 403 });
     }
 
-    // Build update query;
+    // Build update query
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
     let statusChanged = false;
@@ -601,7 +591,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
     }
 
     if (status !== undefined && status !== existingReport.status) {
-      // Validate status transitions;
+      // Validate status transitions
       const validTransitions: Record<string, string[]> = {
         'draft': ['preliminary', 'final', 'verified', 'cancelled'],
         'preliminary': ['final', 'verified', 'cancelled'],
@@ -620,7 +610,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       updateParams.push(status);
       statusChanged = true;
       
-      // If transitioning to verified status, set verifier and verification time;
+      // If transitioning to verified status, set verifier and verification time
       if (status === 'verified') {
         if (!verifierId && !existingReport.verifier_id) {
           updateFields.push('verifier_id = ?');
@@ -672,15 +662,15 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
 
     updateFields.push('updated_at = NOW()');
 
-    // Add ID to params;
+    // Add ID to params
     updateParams.push(id);
 
-    // Execute update;
+    // Execute update
     if (updateFields.length > 0) {
       const query = `UPDATE diagnostic_reports SET ${updateFields.join(', ')} WHERE id = ?`;
       await DB.query(query, updateParams);
 
-      // Log update;
+      // Log update
       await auditLog({
         userId: session.user.id,
         action: 'update',
@@ -695,12 +685,12 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         }
       });
 
-      // Handle multimedia attachments if provided;
+      // Handle multimedia attachments if provided
       if (multimedia && Array.isArray(multimedia)) {
-        // Delete existing multimedia;
+        // Delete existing multimedia
         await DB.query('DELETE FROM report_multimedia WHERE report_id = ?', [id]);
         
-        // Insert new multimedia;
+        // Insert new multimedia
         for (const item of multimedia) {
           await DB.query(
             `INSERT INTO report_multimedia (
@@ -720,9 +710,9 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         }
       }
 
-      // If critical findings status changed to true, notify relevant parties;
+      // If critical findings status changed to true, notify relevant parties
       if (criticalStatusChanged && criticalFindings) {
-        // Determine who to notify based on report type;
+        // Determine who to notify based on report type
         let notifyRoles = [];
         if (existingReport.report_type === 'radiology') {
           notifyRoles = ['radiologist', 'physician'];
@@ -732,7 +722,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
           notifyRoles = ['physician'];
         }
         
-        // Get users with relevant roles;
+        // Get users with relevant roles
         const usersQuery = `;
           SELECT u.id FROM users u;
           JOIN roles r ON u.role_id = r.id;
@@ -755,12 +745,12 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         }
       }
 
-      // Invalidate cache;
+      // Invalidate cache
       await CacheInvalidation.invalidatePattern('diagnostic:reports:*');
       await CacheInvalidation.invalidatePattern(`diagnostic:report:${id}:*`);
     }
 
-    // Get the updated report;
+    // Get the updated report
     const updatedReport = await DB.query(
       `SELECT r.*, 
               p.patient_id as patient_identifier, p.first_name, p.last_name, 
@@ -774,7 +764,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
       [id]
     );
 
-    // Decrypt sensitive data;
+    // Decrypt sensitive data
     const report = {
       ...updatedReport.results[0],
       content: updatedReport.results[0].content ? 
@@ -785,7 +775,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
         decryptSensitiveData(updatedReport.results[0].conclusion) : null
     };
 
-    // Get multimedia attachments;
+    // Get multimedia attachments
     const multimediaResult = await DB.query(
       `SELECT * FROM report_multimedia WHERE report_id = ? ORDER BY sequence_number ASC`,
       [id]
@@ -809,13 +799,13 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  */
 export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication;
+    // Authentication
     const session = await getSession();
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Authorization;
+    // Authorization
     if (!['admin', 'physician', 'radiologist', 'pathologist'].includes(session.user.roleName)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -825,11 +815,11 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { acknowledgementNotes } = body;
 
-    // Check if report exists and has critical findings;
+    // Check if report exists and has critical findings
     const reportCheck = await DB.query(
       'SELECT * FROM diagnostic_reports WHERE id = ? AND critical_findings = true',
       [id]
@@ -843,7 +833,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
 
     const report = reportCheck.results[0];
 
-    // Check if already acknowledged;
+    // Check if already acknowledged
     if (report.critical_findings_acknowledged) {
       return NextResponse.json({ 
         error: 'Critical findings already acknowledged',
@@ -852,7 +842,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       }, { status: 409 });
     }
 
-    // Update report to acknowledge critical findings;
+    // Update report to acknowledge critical findings
     await DB.query(
       `UPDATE diagnostic_reports;
        SET critical_findings_acknowledged = true,
@@ -864,7 +854,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       [session.user.id, session.user.id, id]
     );
 
-    // Log acknowledgement;
+    // Log acknowledgement
     await auditLog({
       userId: session.user.id,
       action: 'acknowledge',
@@ -876,7 +866,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       }
     });
 
-    // Create acknowledgement record with notes if provided;
+    // Create acknowledgement record with notes if provided
     if (acknowledgementNotes) {
       await DB.query(
         `INSERT INTO critical_findings_acknowledgements (
@@ -886,7 +876,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       );
     }
 
-    // Notify report author;
+    // Notify report author
     if (report.author_id !== session.user.id) {
       await notifyUsers({
         userIds: [report.author_id],
@@ -899,7 +889,7 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       });
     }
 
-    // Invalidate cache;
+    // Invalidate cache
     await CacheInvalidation.invalidatePattern('diagnostic:reports:*');
     await CacheInvalidation.invalidatePattern(`diagnostic:report:${id}:*`);
 
@@ -916,4 +906,3 @@ export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
-}

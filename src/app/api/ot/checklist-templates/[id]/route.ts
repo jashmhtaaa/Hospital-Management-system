@@ -1,42 +1,32 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
 export const runtime = "edge";
 
-// Interface for checklist item;
+// Interface for checklist item
 interface ChecklistItem {
-  id: string; // Unique ID for the item within the template;
+  id: string; // Unique ID for the item within the template
   text: string,
-  type: "checkbox" | "text" | "number" | "select"; // Example types;
-  options?: string[]; // For select type;
+  type: "checkbox" | "text" | "number" | "select"; // Example types
+  options?: string[]; // For select type
   required?: boolean;
 }
 
-// Interface for the PUT request body;
+// Interface for the PUT request body
 interface ChecklistTemplateUpdateBody {
   name?: string;
   phase?: "pre-op" | "intra-op" | "post-op";
   items?: ChecklistItem[];
 }
 
-// GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template;
+// GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template
 export async const GET = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!templateId) {
       return NextResponse.json(
         { message: "Template ID is required" },
@@ -59,14 +49,14 @@ export async const GET = (
     }
 
     const template = results[0];
-    // Parse items JSON before sending response;
+    // Parse items JSON before sending response
     try {
       if (template.items && typeof template.items === "string") {
         template.items = JSON.parse(template.items);
       }
     } catch (parseError) {
 
-      // Return raw string if parsing fails;
+      // Return raw string if parsing fails
     }
 
     return NextResponse.json(template);
@@ -83,13 +73,13 @@ export async const GET = (
   }
 }
 
-// PUT /api/ot/checklist-templates/[id] - Update an existing checklist template;
+// PUT /api/ot/checklist-templates/[id] - Update an existing checklist template
 export async const PUT = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!templateId) {
       return NextResponse.json(
         { message: "Template ID is required" },
@@ -100,7 +90,7 @@ export async const PUT = (
     const body = (await _request.json()) as ChecklistTemplateUpdateBody;
     const { name, phase, items } = body;
 
-    // Basic validation;
+    // Basic validation
     if (name === undefined && phase === undefined && items === undefined) {
       return NextResponse.json(
         { message: "No update fields provided" },
@@ -111,8 +101,8 @@ export async const PUT = (
     const DB = process.env.DB as unknown as D1Database;
     const now = new Date().toISOString();
 
-    // Construct the update query dynamically;
-    // FIX: Use specific type for fieldsToUpdate;
+    // Construct the update query dynamically
+    // FIX: Use specific type for fieldsToUpdate
     const fieldsToUpdate: { [key: string]: string } = {};
     if (name !== undefined) fieldsToUpdate.name = name;
     if (phase !== undefined) {
@@ -123,7 +113,7 @@ export async const PUT = (
       fieldsToUpdate.phase = phase;
     }
     if (items !== undefined) {
-      // Add more robust validation for items structure if needed;
+      // Add more robust validation for items structure if needed
       if (
         !Array.isArray(items) ||
         !items.every(
@@ -160,7 +150,7 @@ export async const PUT = (
       .run();
 
     if (info.meta.changes === 0) {
-      // Check if the template actually exists before returning 404;
+      // Check if the template actually exists before returning 404
       const { results: checkExists } = await DB.prepare(
         "SELECT id FROM OTChecklistTemplates WHERE id = ?";
       );
@@ -172,10 +162,10 @@ export async const PUT = (
           { status: 404 }
         );
       }
-      // If it exists but no changes were made (e.g., same data sent), return 200 OK with current data;
+      // If it exists but no changes were made (e.g., same data sent), return 200 OK with current data
     }
 
-    // Fetch the updated template details;
+    // Fetch the updated template details
     const { results } = await DB.prepare(
       "SELECT * FROM OTChecklistTemplates WHERE id = ?";
     );
@@ -183,7 +173,7 @@ export async const PUT = (
       .all();
 
     if (!results || results.length === 0) {
-      // This case should ideally not happen if the update was successful or the check above passed;
+      // This case should ideally not happen if the update was successful or the check above passed
       return NextResponse.json(
         { message: "Failed to fetch updated template details after update" },
         { status: 500 }
@@ -191,7 +181,7 @@ export async const PUT = (
     }
 
     const updatedTemplate = results[0];
-    // Parse items JSON before sending response;
+    // Parse items JSON before sending response
     try {
       if (updatedTemplate.items && typeof updatedTemplate.items === "string") {
         updatedTemplate.items = JSON.parse(updatedTemplate.items);
@@ -202,11 +192,11 @@ export async const PUT = (
 
     return NextResponse.json(updatedTemplate);
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     if (errorMessage?.includes("UNIQUE constraint failed")) {
-      // FIX: Check errorMessage instead of error.message;
+      // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
           message: "Checklist template name must be unique",
@@ -222,13 +212,13 @@ export async const PUT = (
   }
 }
 
-// DELETE /api/ot/checklist-templates/[id] - Delete a checklist template;
+// DELETE /api/ot/checklist-templates/[id] - Delete a checklist template
 export async const DELETE = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!templateId) {
       return NextResponse.json(
         { message: "Template ID is required" },
@@ -238,7 +228,7 @@ export async const DELETE = (
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const DB = process.env.DB as unknown as D1Database;
+    const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare(
       "DELETE FROM OTChecklistTemplates WHERE id = ?";
     );
@@ -257,12 +247,12 @@ export async const DELETE = (
       { status: 200 }
     );
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    // Handle potential foreign key constraint errors if responses exist;
+    // Handle potential foreign key constraint errors if responses exist
     if (errorMessage?.includes("FOREIGN KEY constraint failed")) {
-      // FIX: Check errorMessage instead of error.message;
+      // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
           message: "Cannot delete template with existing responses",
@@ -276,5 +266,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}
-

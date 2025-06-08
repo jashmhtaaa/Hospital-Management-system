@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -31,32 +23,26 @@ import {
 
 export interface RBACContext {
   userId: string,
-  sessionId: string;
+  sessionId: string,
   ipAddress: string,
   userAgent: string;
   department?: string;
   location?: string;
   emergencyAccess?: boolean;
-}
-
 export interface PermissionCheck {
   resource: string,
   action: string;
   context?: Record<string, unknown>;
-}
-
 export interface RoleAssignment {
   userId: string,
-  roleId: string;
+  roleId: string,
   assignedBy: string;
   context?: Record<string, unknown>;
   expiresAt?: Date;
-}
-
 export class RBACService {
   private static instance: RBACService;
   private readonly prisma: PrismaClient;
-  private readonly CACHE_TTL = 300; // 5 minutes;
+  private readonly CACHE_TTL = 300; // 5 minutes
 
   private constructor() {
     this.prisma = new PrismaClient();
@@ -90,16 +76,16 @@ export class RBACService {
       const userPermissions = await this.getUserPermissions(userId);
       const hasAccess = checkPermission(userPermissions, resource, action, context);
 
-      // Cache the result;
+      // Cache the result
       await cache.set(cacheKey, hasAccess, this.CACHE_TTL);
 
-      // Log the permission check;
+      // Log the permission check
       await this.logPermissionCheck(userId, resource, action, hasAccess, context);
 
       return hasAccess;
     } catch (error) {
 
-      // Log security event;
+      // Log security event
       await logAuditEvent({
         eventType: 'PERMISSION_CHECK_ERROR',
         userId,
@@ -158,12 +144,12 @@ export class RBACService {
         }
       }
 
-      // Remove duplicates;
+      // Remove duplicates
       const uniquePermissions = permissions.filter((permission, index, self) =>
         index === self.findIndex(p => p.id === permission.id);
       );
 
-      // Cache the result;
+      // Cache the result
       await cache.set(cacheKey, uniquePermissions, this.CACHE_TTL);
 
       return uniquePermissions;
@@ -185,7 +171,7 @@ export class RBACService {
         return cached;
       }
 
-      // Get roles from database;
+      // Get roles from database
       const userRoles = await this.prisma.userRole.findMany({
         where: {
           userId,
@@ -200,7 +186,7 @@ export class RBACService {
 
       const roleIds = userRoles.map(ur => ur.roleId);
       
-      // Cache the result;
+      // Cache the result
       await cache.set(cacheKey, roleIds, this.CACHE_TTL);
 
       return roleIds;
@@ -215,13 +201,13 @@ export class RBACService {
    */
   async assignRole(assignment: RoleAssignment, context?: RBACContext): Promise<void> {
     try {
-      // Validate role exists;
+      // Validate role exists
       const role = ROLES[assignment.roleId];
       if (!role) {
         throw new Error(`Role ${assignment.roleId} does not exist`);
       }
 
-      // Check if user already has this role;
+      // Check if user already has this role
       const existingRole = await this.prisma.userRole.findFirst({
         where: {
           userId: assignment.userId,
@@ -234,7 +220,7 @@ export class RBACService {
         throw new Error(`User already has role ${assignment.roleId}`);
       }
 
-      // Create role assignment;
+      // Create role assignment
       await this.prisma.userRole.create({
         data: {
           userId: assignment.userId,
@@ -247,10 +233,10 @@ export class RBACService {
         }
       });
 
-      // Clear cache;
+      // Clear cache
       await this.clearUserCache(assignment.userId);
 
-      // Log audit event;
+      // Log audit event
       await logAuditEvent({
         eventType: 'ROLE_ASSIGNED',
         userId: assignment.assignedBy,
@@ -300,7 +286,7 @@ export class RBACService {
         throw new Error(`Role ${roleId} does not exist`);
       }
 
-      // Deactivate role assignment;
+      // Deactivate role assignment
       const result = await this.prisma.userRole.updateMany({
         where: {
           userId,
@@ -317,10 +303,10 @@ export class RBACService {
         throw new Error(`User does not have role ${roleId}`);
       }
 
-      // Clear cache;
+      // Clear cache
       await this.clearUserCache(userId);
 
-      // Log audit event;
+      // Log audit event
       await logAuditEvent({
         eventType: 'ROLE_REMOVED',
         userId: removedBy,
@@ -386,7 +372,7 @@ export class RBACService {
     context?: RBACContext;
   ): Promise<boolean> {
     try {
-      // Log emergency access request;
+      // Log emergency access request
       await logAuditEvent({
         eventType: 'EMERGENCY_ACCESS_GRANTED',
         userId: approvedBy,
@@ -402,12 +388,12 @@ export class RBACService {
         severity: 'HIGH'
       });
 
-      // Grant temporary emergency role;
+      // Grant temporary emergency role
       await this.assignRole({
         userId,
         roleId: 'emergency_access',
         assignedBy: approvedBy,
-        expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes;
+        expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
         context: { emergency: true, reason }
       }, context);
 
@@ -443,7 +429,7 @@ export class RBACService {
     granted: boolean,
     context?: RBACContext;
   ): Promise<void> {
-    // Only log denied permissions or sensitive resource access;
+    // Only log denied permissions or sensitive resource access
     const shouldLog = !granted ||;
                      resource.includes('admin') || 
                      resource.includes('emergency') ||
@@ -471,7 +457,7 @@ export class RBACService {
    */
   async validateRoleAssignments(): Promise<void> {
     try {
-      // Deactivate expired roles;
+      // Deactivate expired roles
       await this.prisma.userRole.updateMany({
         where: {
           isActive: true,
@@ -491,10 +477,10 @@ export class RBACService {
   }
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const rbacService = RBACService.getInstance();
 
-// Export types and constants;
+// Export types and constants
 export {
   Role,
   Permission,

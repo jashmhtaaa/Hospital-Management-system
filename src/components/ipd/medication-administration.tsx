@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -27,31 +19,31 @@ import {
   Input,
   Label,
   // Textarea, // FIX: Removed unused import
-} from "@/components/ui"; // Assuming Select components are also here or adjust import;
+} from "@/components/ui"; // Assuming Select components are also here or adjust import
 import { Loader2 } from "lucide-react";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface MedicationRecord {
   id: string,
-  administered_time: string;
-  medication_name: string; // Assuming this comes from a join;
+  administered_time: string,
+  medication_name: string; // Assuming this comes from a join
   dosage: string,
-  route: string;
-  administered_by_first_name: string; // Assuming this comes from a join;
-  administered_by_last_name: string; // Assuming this comes from a join;
+  route: string,
+  administered_by_first_name: string; // Assuming this comes from a join
+  administered_by_last_name: string; // Assuming this comes from a join
   notes?: string;
 }
 
 interface Medication {
   id: string,
-  item_name: string; // Assuming this is the display name;
+  item_name: string; // Assuming this is the display name
   dosage_form: string,
   strength: string
 }
 
 interface AdmissionInfo {
   admission_number: string,
-  admission_date: string;
+  admission_date: string,
   patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
@@ -59,7 +51,7 @@ interface AdmissionInfo {
 
 interface FormData {
   medication_id: string,
-  dosage: string;
+  dosage: string,
   route: string,
   notes: string
 }
@@ -89,7 +81,7 @@ const MedicationAdministration: React.FC<;
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
 
-  // Fetch medication administration records for the admission;
+  // Fetch medication administration records for the admission
   useEffect(() => {
     const fetchMedicationRecords = async (): Promise<void> => {
       if (!admissionId) {
@@ -101,22 +93,22 @@ const MedicationAdministration: React.FC<;
       try {
         setLoading(true),
         setError(undefined);
-        // Simulate API call;
-        // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`);
+        // Simulate API call
+        // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`)
         // if (!response.ok) {
-        //   const errorData = await response.json().catch(() => ({}));
-        //   throw new Error(errorData.error || "Failed to fetch medication administration records");
+        //   const errorData = await response.json().catch(() => ({}))
+        //   throw new Error(errorData.error || "Failed to fetch medication administration records")
         // }
-        // const data = await response.json();
-        // setMedicationRecords(data.medication_administration || []);
-        // setPatientInfo(data.admission || null);
+        // const data = await response.json()
+        // setMedicationRecords(data.medication_administration || [])
+        // setPatientInfo(data.admission || null)
 
-        // Mock data;
+        // Mock data
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockRecords: MedicationRecord[] = [
           {
             id: "mar_001",
-            administered_time: new Date(Date.now() - 3_600_000).toISOString(), // 1 hour ago;
+            administered_time: new Date(Date.now() - 3_600_000).toISOString(), // 1 hour ago
             medication_name: "Paracetamol 500mg Tablet",
             dosage: "1 tablet",
             route: "oral",
@@ -126,7 +118,7 @@ const MedicationAdministration: React.FC<;
           },
           {
             id: "mar_002",
-            administered_time: new Date(Date.now() - 14_400_000).toISOString(), // 4 hours ago;
+            administered_time: new Date(Date.now() - 14_400_000).toISOString(), // 4 hours ago
             medication_name: "Amoxicillin 250mg Capsule",
             dosage: "1 capsule",
             route: "oral",
@@ -136,7 +128,7 @@ const MedicationAdministration: React.FC<;
         ];
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday;
+          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -158,20 +150,20 @@ const MedicationAdministration: React.FC<;
     fetchMedicationRecords();
   }, [admissionId]);
 
-  // Fetch available medications from pharmacy inventory;
+  // Fetch available medications from pharmacy inventory
   useEffect(() => {
     const fetchMedications = async (): Promise<void> => {
       try {
         setLoadingMedications(true);
-        // Simulate API call;
-        // const response = await fetch("/api/pharmacy/inventory?in_stock=true");
+        // Simulate API call
+        // const response = await fetch("/api/pharmacy/inventory?in_stock=true")
         // if (!response.ok) {
-        //   throw new Error("Failed to fetch medications");
+        //   throw new Error("Failed to fetch medications")
         // }
-        // const data = await response.json();
+        // const data = await response.json()
         // setMedications(data || []); // Assuming API returns Medication[]
 
-        // Mock data;
+        // Mock data
         await new Promise((resolve) => setTimeout(resolve, 300));
         const mockMeds: Medication[] = [
           {
@@ -196,7 +188,7 @@ const MedicationAdministration: React.FC<;
         setMedications(mockMeds);
       } catch (error_) {
 
-        // Optionally set an error state for medication loading;
+        // Optionally set an error state for medication loading
       } finally {
         setLoadingMedications(false);
       }
@@ -213,7 +205,7 @@ const MedicationAdministration: React.FC<;
   };
 
   // Note: If using shadcn/ui Select, the onChange is handled differently (onValueChange)
-  // This example assumes standard HTML select or a compatible custom component;
+  // This example assumes standard HTML select or a compatible custom component
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -226,7 +218,7 @@ const MedicationAdministration: React.FC<;
     setSubmitSuccess(false);
 
     try {
-      // Validate required fields;
+      // Validate required fields
       if (!formData.medication_id || !formData.dosage || !formData.route) {
         throw new Error("Please fill in Medication, Dosage, and Route");
       }
@@ -235,23 +227,23 @@ const MedicationAdministration: React.FC<;
         ...formData,
         administered_time: new Date().toISOString(),
         // administered_by_id: session?.user?.id // Get from session in real app
-      };
+      }
 
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
       //   method: "POST",
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       //   body: JSON.stringify(submissionData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || "Failed to record medication administration");
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || "Failed to record medication administration")
       // }
-      // const newRecord: MedicationRecord = await response.json();
+      // const newRecord: MedicationRecord = await response.json()
 
-      // Mock response;
+      // Mock response
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const selectedMed = medications.find(
         (m) => m.id === formData.medication_id;
@@ -264,15 +256,15 @@ const MedicationAdministration: React.FC<;
           : "Unknown Medication",
         dosage: formData.dosage,
         route: formData.route,
-        administered_by_first_name: "Current", // Replace with actual user data;
+        administered_by_first_name: "Current", // Replace with actual user data
         administered_by_last_name: "User",
         notes: formData.notes,
       };
 
-      // Update the medication records list with the new record;
+      // Update the medication records list with the new record
       setMedicationRecords((previous) => [newRecord, ...previous]);
 
-      // Reset form;
+      // Reset form
       setFormData({
         medication_id: "",
         dosage: "",
@@ -281,7 +273,7 @@ const MedicationAdministration: React.FC<;
       }),
       setSubmitSuccess(true);
 
-      // Clear success message after 3 seconds;
+      // Clear success message after 3 seconds
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
@@ -295,7 +287,7 @@ const MedicationAdministration: React.FC<;
     }
   };
 
-  // Format date for display;
+  // Format date for display
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
@@ -314,7 +306,7 @@ const MedicationAdministration: React.FC<;
     }
   };
 
-  // Route options for medication administration;
+  // Route options for medication administration
   const routeOptions: { value: string; label: string }[] = [
     { value: "oral", label: "Oral" },
     { value: "iv", label: "Intravenous (IV)" },
@@ -428,7 +420,7 @@ const MedicationAdministration: React.FC<;
 
               <div className="space-y-2">;
                 <Label htmlFor="notes">Notes</Label>;
-                <Input // Changed to Input, use Textarea if multi-line is needed;
+                <Input // Changed to Input, use Textarea if multi-line is needed
                   id="notes"
                   name="notes"
                   type="text"

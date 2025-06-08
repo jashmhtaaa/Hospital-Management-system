@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -17,7 +9,7 @@ import * as RechartsPrimitive from "recharts";
 import { cn } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+const THEMES = { light: "", dark: ".dark" } as const
 
 export type ChartConfig = {
   [k in string]: {
@@ -330,7 +322,7 @@ ChartLegendContent.displayName = "ChartLegend";
 const getPayloadConfigFromPayload = (
   config: ChartConfig,
   payload: unknown,
-  key: string;
+  key: string
 ) {
   if (typeof payload !== "object" || payload === null) {
     return undefined;
@@ -363,8 +355,6 @@ const getPayloadConfigFromPayload = (
   return configLabelKey in config;
     ? config[configLabelKey]
     : config[key as keyof typeof config]
-}
-
 export {
   ChartContainer,
   ChartTooltip,
@@ -372,4 +362,3 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
-}

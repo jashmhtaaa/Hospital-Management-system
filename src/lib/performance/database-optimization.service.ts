@@ -14,66 +14,58 @@ import { performance } from 'perf_hooks';
 
 export interface QueryPerformanceMetric {
   queryId: string,
-  sql: string;
+  sql: string,
   executionTime: number,
   timestamp: Date;
   rowsAffected?: number;
   database: string,
   operation: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE';
   table?: string;
-}
-
 export interface IndexRecommendation {
   table: string,
-  columns: string[];
+  columns: string[],
   reason: string,
   estimatedImprovement: number; // percentage
   priority: 'high' | 'medium' | 'low',
   queries: string[]; // affected queries
-}
-
 export interface PerformanceAlert {
   type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan',
-  severity: 'critical' | 'warning' | 'info';
+  severity: 'critical' | 'warning' | 'info'
   message: string,
-  details: any;
+  details: any,
   timestamp: Date,
   resolved: boolean
-}
-
 export interface DatabaseStats {
   connectionPool: {
     total: number,
-    active: number;
+    active: number,
     idle: number,
     utilization: number
   };
   queryMetrics: {
     totalQueries: number,
-    averageExecutionTime: number;
+    averageExecutionTime: number,
     slowQueries: number,
     queriesPerSecond: number
   };
   indexUsage: {
     totalIndexes: number,
-    unusedIndexes: number;
+    unusedIndexes: number,
     indexHitRatio: number
   };
   tableStats: Array<{
     table: string,
-    rowCount: number;
+    rowCount: number,
     sizeKB: number,
     indexSizeKB: number
   }>;
-}
-
 export class DatabaseOptimizationService {
   private prisma: PrismaClient;
   private performanceMetrics: Map<string, QueryPerformanceMetric[]> = new Map();
   private alerts: PerformanceAlert[] = [];
   private isMonitoring = false;
   private slowQueryThreshold = 1000; // milliseconds
-  private monitoringInterval?: NodeJS.Timeout;
+  private monitoringInterval?: NodeJS.Timeout
 
   constructor() {
     this.prisma = new PrismaClient();
@@ -91,13 +83,13 @@ export class DatabaseOptimizationService {
 
     // Monitor every 30 seconds
     this.monitoringInterval = setInterval(async () => {
-      await this.collectPerformanceMetrics();
+      await this.collectPerformanceMetrics()
       await this.analyzePerformance();
       await this.generateRecommendations();
     }, 30000);
 
     // Initial analysis
-    await this.analyzeExistingSchema();
+    await this.analyzeExistingSchema()
   }
 
   /**
@@ -119,7 +111,7 @@ export class DatabaseOptimizationService {
   private setupQueryLogging(): void {
     // Intercept Prisma queries for performance tracking
     this.prisma.$use(async (params, next) => {
-      const start = performance.now();
+      const start = performance.now()
       const queryId = `${params.model}_${params.action}_${Date.now()}`;
 
       try {
@@ -135,7 +127,7 @@ export class DatabaseOptimizationService {
           database: 'primary',
           operation: this.mapPrismaActionToSql(params.action),
           table: params.model
-        });
+        })
 
         // Check for slow queries
         if (executionTime > this.slowQueryThreshold) {
@@ -146,7 +138,7 @@ export class DatabaseOptimizationService {
             details: { queryId, executionTime, model: params.model, action: params.action },
             timestamp: new Date(),
             resolved: false
-          });
+          })
         }
 
         return result;
@@ -183,7 +175,7 @@ export class DatabaseOptimizationService {
 
     // Keep only last 1000 metrics per query type
     if (metrics.length > 1000) {
-      metrics.splice(0, metrics.length - 1000);
+      metrics.splice(0, metrics.length - 1000)
     }
 
     // Store in database for persistence (optional)
@@ -197,10 +189,10 @@ export class DatabaseOptimizationService {
           ${metric.timestamp}, ${metric.rowsAffected || 0}, 
           ${metric.database}, ${metric.operation}, ${metric.table}
         )
-      `;
+      `
     } catch (error) {
       // If table doesn't exist, that's okay - we'll use in-memory storage
-      console.debug('[DB Optimization] Query log table not available, using in-memory storage');
+      console.debug('[DB Optimization] Query log table not available, using in-memory storage')
     }
   }
 
@@ -210,13 +202,13 @@ export class DatabaseOptimizationService {
   private async collectPerformanceMetrics(): Promise<void> {
     try {
       // Get connection pool stats (if available)
-      const connectionStats = await this.getConnectionPoolStats();
+      const connectionStats = await this.getConnectionPoolStats()
       
       // Calculate query metrics
-      const queryMetrics = this.calculateQueryMetrics();
+      const queryMetrics = this.calculateQueryMetrics()
 
       // Get table statistics
-      const tableStats = await this.getTableStatistics();
+      const tableStats = await this.getTableStatistics()
 
       console.log('[DB Optimization] Performance metrics collected', {
         connections: connectionStats,
@@ -235,7 +227,7 @@ export class DatabaseOptimizationService {
   private async analyzePerformance(): Promise<void> {
     try {
       // Check for performance issues
-      await this.checkSlowQueries();
+      await this.checkSlowQueries()
       await this.checkConnectionPoolUtilization();
       await this.checkIndexUsage();
 
@@ -253,10 +245,10 @@ export class DatabaseOptimizationService {
     try {
       // Analyze slow queries for index opportunities
       for (const [key, metrics] of this.performanceMetrics) {
-        const slowQueries = metrics.filter(m => m.executionTime > this.slowQueryThreshold);
+        const slowQueries = metrics.filter(m => m.executionTime > this.slowQueryThreshold)
         
         if (slowQueries.length > 5) { // More than 5 slow queries
-          const avgTime = slowQueries.reduce((sum, m) => sum + m.executionTime, 0) / slowQueries.length;
+          const avgTime = slowQueries.reduce((sum, m) => sum + m.executionTime, 0) / slowQueries.length
           
           if (avgTime > 2000) { // Average > 2 seconds
             recommendations.push({
@@ -266,13 +258,13 @@ export class DatabaseOptimizationService {
               estimatedImprovement: 70,
               priority: 'high',
               queries: slowQueries.map(q => q.sql).slice(0, 3)
-            });
+            })
           }
         }
       }
 
       // Check for missing indexes on foreign keys
-      const missingFkIndexes = await this.checkMissingForeignKeyIndexes();
+      const missingFkIndexes = await this.checkMissingForeignKeyIndexes()
       recommendations.push(...missingFkIndexes);
 
       console.log(`[DB Optimization] Generated ${recommendations.length} recommendations`);
@@ -333,7 +325,7 @@ export class DatabaseOptimizationService {
     }
 
     // Return all metrics
-    const allMetrics: QueryPerformanceMetric[] = [];
+    const allMetrics: QueryPerformanceMetric[] = []
     for (const metrics of this.performanceMetrics.values()) {
       allMetrics.push(...metrics);
     }
@@ -359,7 +351,7 @@ export class DatabaseOptimizationService {
         if (rec.priority === 'high' && rec.estimatedImprovement > 50) {
           try {
             // Create index (simplified - would need actual SQL generation)
-            await this.createIndex(rec.table, rec.columns);
+            await this.createIndex(rec.table, rec.columns)
             result.indexesCreated++;
             result.optimizationsApplied.push(`Created index on ${rec.table}(${rec.columns.join(', ')})`);
           } catch (error) {
@@ -384,7 +376,7 @@ export class DatabaseOptimizationService {
       case 'findUnique':
       case 'findFirst':
       case 'count':
-        return 'SELECT';
+        return 'SELECT'
       case 'create':
       case 'createMany':
         return 'INSERT';
@@ -404,7 +396,7 @@ export class DatabaseOptimizationService {
     
     // Keep only last 100 alerts
     if (this.alerts.length > 100) {
-      this.alerts.splice(0, this.alerts.length - 100);
+      this.alerts.splice(0, this.alerts.length - 100)
     }
 
     console.warn(`[DB Optimization] ${alert.severity.toUpperCase()} Alert: ${alert.message}`);
@@ -417,7 +409,7 @@ export class DatabaseOptimizationService {
       active: 5,
       idle: 15,
       utilization: 25
-    };
+    }
   }
 
   private calculateQueryMetrics(): DatabaseStats['queryMetrics'] {
@@ -440,7 +432,7 @@ export class DatabaseOptimizationService {
     const slowQueries = allMetrics.filter(m => m.executionTime > this.slowQueryThreshold).length;
     
     // Calculate QPS over last minute
-    const oneMinuteAgo = new Date(Date.now() - 60000);
+    const oneMinuteAgo = new Date(Date.now() - 60000)
     const recentQueries = allMetrics.filter(m => m.timestamp > oneMinuteAgo).length;
     const queriesPerSecond = recentQueries / 60;
 
@@ -461,7 +453,7 @@ export class DatabaseOptimizationService {
         { table: 'Patient', rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 },
         { table: 'ClinicalNote', rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 },
         { table: 'QualityIndicator', rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
-      ];
+      ]
     } catch (error) {
       console.error('[DB Optimization] Error getting table statistics:', error);
       return [];
@@ -474,7 +466,7 @@ export class DatabaseOptimizationService {
       totalIndexes: 45,
       unusedIndexes: 3,
       indexHitRatio: 94.5
-    };
+    }
   }
 
   private async checkSlowQueries(): Promise<void> {
@@ -486,7 +478,7 @@ export class DatabaseOptimizationService {
     const recentSlowQueries = allMetrics.filter(m => 
       m.executionTime > this.slowQueryThreshold &&
       m.timestamp > new Date(Date.now() - 300000) // Last 5 minutes
-    );
+    )
 
     if (recentSlowQueries.length > 10) {
       await this.createAlert({
@@ -541,14 +533,14 @@ export class DatabaseOptimizationService {
         priority: 'medium',
         queries: ['SELECT * FROM ClinicalNote WHERE patientId = ?']
       }
-    ];
+    ]
   }
 
   private async analyzeExistingSchema(): Promise<void> {
     console.log('[DB Optimization] Analyzing existing database schema...');
     
     // This would analyze the current schema for optimization opportunities
-    const recommendations = await this.generateRecommendations();
+    const recommendations = await this.generateRecommendations()
     
     if (recommendations.length > 0) {
       console.log(`[DB Optimization] Found ${recommendations.length} optimization opportunities`);
@@ -558,7 +550,7 @@ export class DatabaseOptimizationService {
   private async createIndex(table: string, columns: string[]): Promise<void> {
     // This would create actual database indexes
     // For now, just log the action
-    console.log(`[DB Optimization] Creating index on ${table}(${columns.join(', ')})`);
+    console.log(`[DB Optimization] Creating index on ${table}(${columns.join(', ')})`)
   }
 
   /**
@@ -571,7 +563,7 @@ export class DatabaseOptimizationService {
 }
 
 // Singleton instance for application use
-let dbOptimizationServiceInstance: DatabaseOptimizationService | null = null;
+let dbOptimizationServiceInstance: DatabaseOptimizationService | null = null
 
 export const getDatabaseOptimizationService = (): DatabaseOptimizationService => {
   if (!dbOptimizationServiceInstance) {

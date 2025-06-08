@@ -1,71 +1,71 @@
-// app/api/invoices/[invoiceId]/route.ts;
+// app/api/invoices/[invoiceId]/route.ts
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData;
+import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { Invoice, InvoiceStatus, Payment, InvoiceItem, ItemType } from "@/types/billing";
 import { z } from "zod";
-// Removed unused D1Result import;
+// Removed unused D1Result import
 
 // Define roles allowed to view/manage invoices (adjust as needed)
-const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Billing Staff", "Patient"];
+const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Billing Staff", "Patient"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
 
-// Helper function to get invoice ID from URL;
+// Helper function to get invoice ID from URL
 const getInvoiceId = (pathname: string): number | null {
-    // Pathname might be /api/invoices/123;
+    // Pathname might be /api/invoices/123
     const parts = pathname.split("/");
-    const idStr = parts[parts.length - 1]; // Last part;
+    const idStr = parts[parts.length - 1]; // Last part
     const id = parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
-// Define interfaces for the complex query results;
+// Define interfaces for the complex query results
 interface InvoiceQueryResult {
     invoice_id: number,
-    invoice_number: string;
+    invoice_number: string,
     patient_id: number,
-    appointment_id: number | null;
+    appointment_id: number | null,
     admission_id: number | null,
-    invoice_date: string; // ISO String;
-    due_date: string | null; // ISO String;
+    invoice_date: string; // ISO String
+    due_date: string | null; // ISO String
     total_amount: number,
-    paid_amount: number;
+    paid_amount: number,
     discount_amount: number,
-    tax_amount: number;
+    tax_amount: number,
     status: InvoiceStatus,
-    notes: string | null;
+    notes: string | null,
     created_by_user_id: number,
-    created_at: string; // ISO String;
-    updated_at: string; // ISO String;
+    created_at: string; // ISO String
+    updated_at: string; // ISO String
     patient_first_name: string,
     patient_last_name: string
 }
 
 interface InvoiceItemQueryResult {
     invoice_item_id: number,
-    invoice_id: number;
+    invoice_id: number,
     billable_item_id: number,
-    batch_id: number | null;
+    batch_id: number | null,
     description: string,
-    quantity: number;
+    quantity: number,
     unit_price: number,
-    discount_amount: number;
+    discount_amount: number,
     tax_amount: number,
-    total_amount: number;
-    created_at: string; // ISO String;
+    total_amount: number,
+    created_at: string; // ISO String
     billable_item_name: string,
-    billable_item_type: string; // Assuming ItemType is string-based enum;
+    billable_item_type: string; // Assuming ItemType is string-based enum
 }
 
-// GET handler for retrieving a specific invoice with details;
+// GET handler for retrieving a specific invoice with details
 export async const GET = (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Add await;
+    const cookieStore = await cookies(); // FIX: Add await
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
 
-    // 1. Check Authentication & Authorization;
+    // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
@@ -81,11 +81,11 @@ export async const GET = (request: Request) => {
     }
 
     try {
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type;
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type
         const { env } = context;
         const { DB } = env;
 
-        // 2. Retrieve the main invoice record;
+        // 2. Retrieve the main invoice record
         const invoiceResult = await DB.prepare(
             `SELECT;
                 i.*, 
@@ -104,7 +104,7 @@ export async const GET = (request: Request) => {
 
         // 3. Authorization check for Patients (can only view their own invoices)
         if (session.user.roleName === "Patient") {
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>()
             if (!patientProfile || patientProfile.patient_id !== invoiceResult.patient_id) {
                  return new Response(JSON.stringify({ error: "Forbidden: You can only view your own invoices" }), {
                     status: 403,
@@ -113,7 +113,7 @@ export async const GET = (request: Request) => {
             }
         }
 
-        // 4. Retrieve associated invoice items;
+        // 4. Retrieve associated invoice items
         const itemsResult = await DB.prepare(
             `SELECT ii.*, bi.item_name as billable_item_name, bi.item_type as billable_item_type;
              FROM InvoiceItems ii;
@@ -121,12 +121,12 @@ export async const GET = (request: Request) => {
              WHERE ii.invoice_id = ? ORDER BY ii.invoice_item_id`;
         ).bind(invoiceId).all<InvoiceItemQueryResult>();
 
-        // 5. Retrieve associated payments;
+        // 5. Retrieve associated payments
         const paymentsResult = await DB.prepare(
             "SELECT * FROM Payments WHERE invoice_id = ? ORDER BY payment_date DESC";
         ).bind(invoiceId).all<Payment>();
 
-        // 6. Format the final response;
+        // 6. Format the final response
         const invoice: Invoice = {
             invoice_id: invoiceResult.invoice_id,
             invoice_number: invoiceResult.invoice_number,
@@ -164,13 +164,13 @@ export async const GET = (request: Request) => {
                 billable_item: {
                     item_id: item.billable_item_id,
                     item_name: item.billable_item_name,
-                    item_type: item.billable_item_type as ItemType, // Cast to ItemType enum;
+                    item_type: item.billable_item_type as ItemType, // Cast to ItemType enum
                 }
             })) as InvoiceItem[] || [],
             payments: paymentsResult.results || [],
         };
 
-        // 7. Return the detailed invoice;
+        // 7. Return the detailed invoice
         return new Response(JSON.stringify(invoice), {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -191,7 +191,7 @@ const UpdateInvoiceSchema = z.object({
     due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
     status: z.nativeEnum(InvoiceStatus).optional(),
     notes: z.string().optional().nullable(),
-    // Other fields like total_amount, paid_amount are usually updated via items/payments;
+    // Other fields like total_amount, paid_amount are usually updated via items/payments
 });
 
 export async const PUT = (request: Request) => {
@@ -200,7 +200,7 @@ export async const PUT = (request: Request) => {
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
 
-    // 1. Check Authentication & Authorization;
+    // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
@@ -228,10 +228,10 @@ export async const PUT = (request: Request) => {
 
         const updateData = validation.data;
 
-        // Check if there's anything to update;
+        // Check if there's anything to update
         if (Object.keys(updateData).length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), {
-                status: 200, // Or 304 Not Modified;
+                status: 200, // Or 304 Not Modified
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -240,7 +240,7 @@ export async const PUT = (request: Request) => {
         const { env } = context;
         const { DB } = env;
 
-        // 2. Check if invoice exists;
+        // 2. Check if invoice exists
         const invoiceCheck = await DB.prepare("SELECT invoice_id, status FROM Invoices WHERE invoice_id = ?");
                                    .bind(invoiceId);
                                    .first<{ invoice_id: number, status: string }>();
@@ -254,12 +254,12 @@ export async const PUT = (request: Request) => {
         // Optional: Add logic to prevent certain status transitions (e.g., cannot change from Paid)
         // if (invoiceCheck.status === "Paid" && updateData.status && updateData.status !== "Paid") { ... }
 
-        // 3. Build update query;
+        // 3. Build update query
         let query = "UPDATE Invoices SET updated_at = CURRENT_TIMESTAMP";
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            if (value !== undefined) { // Allow null values to be set;
+            if (value !== undefined) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -268,17 +268,17 @@ export async const PUT = (request: Request) => {
         query += " WHERE invoice_id = ?";
         queryParams.push(invoiceId);
 
-        // 4. Execute update;
-        // Use as any to bypass the type mismatch between D1Result implementations;
+        // 4. Execute update
+        // Use as any to bypass the type mismatch between D1Result implementations
         const updateResult = await DB.prepare(query).bind(...queryParams).run() as { success: boolean; meta?: unknown };
 
-        // Check success property directly;
+        // Check success property directly
         if (!updateResult.success) {
 
             throw new Error("Failed to update invoice");
         }
 
-        // 5. Return success response;
+        // 5. Return success response
         return new Response(JSON.stringify({ message: "Invoice updated successfully" }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -294,6 +294,6 @@ export async const PUT = (request: Request) => {
     }
 }
 
-// DELETE handler - Typically invoices are cancelled (status update) rather than deleted;
+// DELETE handler - Typically invoices are cancelled (status update) rather than deleted
 // Implement if hard deletion is truly required, but use with caution.
-// export async function DELETE(request: Request) { ... }
+// export async function DELETE(request: Request) { ... 

@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
 
-// Schema for check-out request;
+// Schema for check-out request
 const checkOutSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
@@ -26,13 +16,13 @@ const checkOutSchema = z.object({
   notes: z.string().optional(),
 });
 
-// POST handler for check-out;
+// POST handler for check-out
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = checkOutSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -43,7 +33,7 @@ export async const POST = (request: NextRequest) => {
     
     const { employeeId, date, checkOutTime, biometricData, notes } = validationResult.data;
     
-    // Verify biometric data if provided;
+    // Verify biometric data if provided
     let biometricVerified = false;
     if (biometricData) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
@@ -55,7 +45,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Record check-out;
+    // Record check-out
     const attendance = await attendanceService.recordCheckOut({
       employeeId,
       date: new Date(date),
@@ -72,4 +62,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { SegmentService } from '../segment.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 
-// Mock dependencies;
+// Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   contactSegment: {
     create: jest.fn(),
@@ -77,13 +67,13 @@ describe('SegmentService', () => {
     };
     
     it('should create a segment successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.create as jest.Mock).mockResolvedValue(mockCreatedSegment);
       
-      // Act;
+      // Act
       const result = await service.createSegment(mockSegmentData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.segment.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           name: mockSegmentData.name,
@@ -102,36 +92,36 @@ describe('SegmentService', () => {
     });
     
     it('should throw ValidationError if segment data is invalid', async () => {
-      // Arrange;
+      // Arrange
       const invalidData = {
         ...mockSegmentData,
-        name: '', // Invalid empty name;
+        name: '', // Invalid empty name
       };
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createSegment(invalidData, mockUserId));
         .rejects;
         .toThrow(ValidationError);
     });
     
     it('should throw DatabaseError if database operation fails', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.create as jest.Mock).mockRejectedValue(new Error('Database error'));
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.createSegment(mockSegmentData, mockUserId));
         .rejects;
         .toThrow(DatabaseError);
     });
     
     it('should log audit event after creating segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.create as jest.Mock).mockResolvedValue(mockCreatedSegment);
       
-      // Act;
+      // Act
       await service.createSegment(mockSegmentData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'segment.create',
         resourceId: mockCreatedSegment.id,
@@ -160,13 +150,13 @@ describe('SegmentService', () => {
     };
     
     it('should retrieve a segment by ID', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       
-      // Act;
+      // Act
       const result = await service.getSegmentById('segment-123');
       
-      // Assert;
+      // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
         include: expect.any(Object),
@@ -180,17 +170,17 @@ describe('SegmentService', () => {
     });
     
     it('should include members when requested', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([
         { contactId: 'contact-1', segmentId: 'segment-123', contact: { id: 'contact-1', name: 'John Doe' } },
         { contactId: 'contact-2', segmentId: 'segment-123', contact: { id: 'contact-2', name: 'Jane Smith' } },
       ]);
       
-      // Act;
+      // Act
       const result = await service.getSegmentById('segment-123', true);
       
-      // Assert;
+      // Assert
       expect(prisma.contactSegment.findMany).toHaveBeenCalledWith({
         where: { segmentId: 'segment-123' },
         include: { contact: true },
@@ -202,10 +192,10 @@ describe('SegmentService', () => {
     });
     
     it('should throw NotFoundError if segment does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.getSegmentById('non-existent-id'));
         .rejects;
         .toThrow(NotFoundError);
@@ -235,14 +225,14 @@ describe('SegmentService', () => {
     ];
     
     it('should retrieve segments with pagination', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.count as jest.Mock).mockResolvedValue(2);
       (prisma.segment.findMany as jest.Mock).mockResolvedValue(mockSegments);
       
-      // Act;
+      // Act
       const result = await service.getSegments({ page: 1, limit: 10 });
       
-      // Assert;
+      // Assert
       expect(prisma.segment.count).toHaveBeenCalled(),
       expect(prisma.segment.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -273,7 +263,7 @@ describe('SegmentService', () => {
     });
     
     it('should apply filters correctly', async () => {
-      // Arrange;
+      // Arrange
       const filters = {
         isActive: true,
         search: 'active',
@@ -284,10 +274,10 @@ describe('SegmentService', () => {
       (prisma.segment.count as jest.Mock).mockResolvedValue(10);
       (prisma.segment.findMany as jest.Mock).mockResolvedValue([mockSegments[0]]);
       
-      // Act;
+      // Act
       const result = await service.getSegments(filters);
       
-      // Assert;
+      // Assert
       expect(prisma.segment.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
           isActive: filters.isActive,
@@ -303,7 +293,7 @@ describe('SegmentService', () => {
           where: expect.objectContaining({
             isActive: filters.isActive,
           }),
-          skip: 5, // (page-1) * limit;
+          skip: 5, // (page-1) * limit
           take: 5,
         });
       );
@@ -347,17 +337,17 @@ describe('SegmentService', () => {
     };
     
     it('should update a segment successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.segment.update as jest.Mock).mockResolvedValue({
         ...mockSegment,
         ...updateData,
       });
       
-      // Act;
+      // Act
       const result = await service.updateSegment('segment-123', updateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
       }),
@@ -382,27 +372,27 @@ describe('SegmentService', () => {
     });
     
     it('should throw NotFoundError if segment does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.updateSegment('non-existent-id', updateData, mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after updating segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.segment.update as jest.Mock).mockResolvedValue({
         ...mockSegment,
         ...updateData,
       });
       
-      // Act;
+      // Act
       await service.updateSegment('segment-123', updateData, mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'segment.update',
         resourceId: 'segment-123',
@@ -432,20 +422,20 @@ describe('SegmentService', () => {
     };
     
     it('should add a contact to a segment successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
-      (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(null); // Contact not already in segment;
+      (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(null); // Contact not already in segment
       (prisma.contactSegment.create as jest.Mock).mockResolvedValue(mockContactSegment);
       
-      // Act;
+      // Act
       const result = await service.addContactToSegment(
         'segment-123',
         'contact-123',
         mockUserId;
       );
       
-      // Assert;
+      // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
       }),
@@ -470,55 +460,55 @@ describe('SegmentService', () => {
     });
     
     it('should throw NotFoundError if segment does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.addContactToSegment('non-existent-id', 'contact-123', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should throw NotFoundError if contact does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.addContactToSegment('segment-123', 'non-existent-id', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should return existing record if contact is already in segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
-      (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockContactSegment); // Contact already in segment;
+      (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockContactSegment); // Contact already in segment
       
-      // Act;
+      // Act
       const result = await service.addContactToSegment(
         'segment-123',
         'contact-123',
         mockUserId;
       );
       
-      // Assert;
+      // Assert
       expect(prisma.contactSegment.create).not.toHaveBeenCalled(),
       expect(result).toEqual(mockContactSegment);
     });
     
     it('should log audit event after adding contact to segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(null);
       (prisma.contactSegment.create as jest.Mock).mockResolvedValue(mockContactSegment);
       
-      // Act;
+      // Act
       await service.addContactToSegment('segment-123', 'contact-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'segment.contact.add',
         resourceId: 'segment-123',
@@ -548,20 +538,20 @@ describe('SegmentService', () => {
     };
     
     it('should remove a contact from a segment successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockContactSegment);
       (prisma.contactSegment.delete as jest.Mock).mockResolvedValue(mockContactSegment);
       
-      // Act;
+      // Act
       const result = await service.removeContactFromSegment(
         'segment-123',
         'contact-123',
         mockUserId;
       );
       
-      // Assert;
+      // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
       }),
@@ -588,49 +578,49 @@ describe('SegmentService', () => {
     });
     
     it('should throw NotFoundError if segment does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.removeContactFromSegment('non-existent-id', 'contact-123', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should throw NotFoundError if contact does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.removeContactFromSegment('segment-123', 'non-existent-id', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should throw NotFoundError if contact is not in segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.removeContactFromSegment('segment-123', 'contact-123', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should log audit event after removing contact from segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactSegment.findUnique as jest.Mock).mockResolvedValue(mockContactSegment);
       (prisma.contactSegment.delete as jest.Mock).mockResolvedValue(mockContactSegment);
       
-      // Act;
+      // Act
       await service.removeContactFromSegment('segment-123', 'contact-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'segment.contact.remove',
         resourceId: 'segment-123',
@@ -660,22 +650,22 @@ describe('SegmentService', () => {
     ];
     
     it('should apply criteria and add matching contacts to segment', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockMatchingContacts);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([
-        { contactId: 'contact-1', segmentId: 'segment-123' }, // contact-1 already in segment;
+        { contactId: 'contact-1', segmentId: 'segment-123' }, // contact-1 already in segment
       ]);
       
-      // Act;
+      // Act
       const result = await service.applyCriteria('segment-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
         where: { id: 'segment-123' },
       }),
       expect(prisma.contact.findMany).toHaveBeenCalledWith({
-        where: expect.any(Object), // Complex criteria object;
+        where: expect.any(Object), // Complex criteria object
       });
       
       expect(prisma.contactSegment.findMany).toHaveBeenCalledWith({
@@ -695,44 +685,44 @@ describe('SegmentService', () => {
         matchedCount: 2,
         addedCount: 1,
         existingCount: 1,
-      });
+      })
     });
     
     it('should throw NotFoundError if segment does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.applyCriteria('non-existent-id', mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
     
     it('should handle empty criteria gracefully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue({
         ...mockSegment,
         criteria: { type: 'AND', conditions: [] },
       });
       
-      // Act & Assert;
+      // Act & Assert
       await expect(service.applyCriteria('segment-123', mockUserId));
         .rejects;
         .toThrow(ValidationError);
     });
     
     it('should log audit event after applying criteria', async () => {
-      // Arrange;
+      // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockMatchingContacts);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([
         { contactId: 'contact-1', segmentId: 'segment-123' },
       ]);
       
-      // Act;
+      // Act
       await service.applyCriteria('segment-123', mockUserId);
       
-      // Assert;
+      // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'segment.criteria.apply',
         resourceId: 'segment-123',

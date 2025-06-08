@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -138,7 +128,7 @@ export class DepartmentService {
    * Get department hierarchy;
    */
   async getDepartmentHierarchy() {
-    // Get all departments;
+    // Get all departments
     const allDepartments = await prisma.department.findMany({
       include: {
         _count: {
@@ -149,11 +139,11 @@ export class DepartmentService {
       },
     });
 
-    // Build hierarchy;
+    // Build hierarchy
     const departmentMap = new Map();
     const rootDepartments = [];
 
-    // First pass: create map of all departments;
+    // First pass: create map of all departments
     allDepartments.forEach(dept => {
       departmentMap.set(dept.id, {
         ...dept,
@@ -161,7 +151,7 @@ export class DepartmentService {
       });
     });
 
-    // Second pass: build hierarchy;
+    // Second pass: build hierarchy
     allDepartments.forEach(dept => {
       const departmentWithChildren = departmentMap.get(dept.id);
       
@@ -216,7 +206,7 @@ export class DepartmentService {
             },
           },
           where: {
-            endDate: null, // Only current assignments;
+            endDate: null, // Only current assignments
           },
         },
       },
@@ -284,7 +274,7 @@ export class DepartmentService {
             select: {
               employeePositions: {
                 where: {
-                  endDate: null, // Only current assignments;
+                  endDate: null, // Only current assignments
                 },
               },
             },
@@ -301,6 +291,4 @@ export class DepartmentService {
       take,
     };
   }
-}
-
 export const departmentService = new DepartmentService();

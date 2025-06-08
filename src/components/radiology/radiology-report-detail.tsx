@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react"; // FIX: Add useCallback;
+import React, { useState, useEffect, useCallback } from "react"; // FIX: Add useCallback
 import { useParams, useRouter } from "next/navigation";
 import {
   Card,
@@ -25,20 +17,20 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ArrowLeft, Edit, Printer, CheckCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface RadiologyReport {
   id: string,
-  patient_id: string;
-  patient_name: string; // Assuming this comes from a join or is added;
+  patient_id: string,
+  patient_name: string; // Assuming this comes from a join or is added
   study_id: string,
-  procedure_name: string; // Assuming this comes from a join or is added;
+  procedure_name: string; // Assuming this comes from a join or is added
   accession_number?: string;
   report_datetime: string,
-  status: "preliminary" | "final" | "addendum";
+  status: "preliminary" | "final" | "addendum",
   radiologist_id: string,
-  radiologist_name: string; // Assuming this comes from a join or is added;
+  radiologist_name: string; // Assuming this comes from a join or is added
   verified_by_id?: string;
-  verified_by_name?: string; // Assuming this comes from a join or is added;
+  verified_by_name?: string; // Assuming this comes from a join or is added
   verified_datetime?: string;
   findings?: string;
   impression: string;
@@ -47,58 +39,58 @@ interface RadiologyReport {
 
 interface SessionUser {
   id: string,
-  role: string; // Define specific roles if possible, e.g., 'Admin' | 'Radiologist' | 'Technician';
-  // FIX: Assuming userId is available in the session user object for comparison;
+  role: string; // Define specific roles if possible, e.g., 'Admin' | 'Radiologist' | 'Technician'
+  // FIX: Assuming userId is available in the session user object for comparison
   userId?: string | number;
-  roleName?: string; // Assuming roleName is used for checks;
+  roleName?: string; // Assuming roleName is used for checks
 }
 
-// Placeholder for EditReportModal props if it were implemented;
+// Placeholder for EditReportModal props if it were implemented
 // interface EditRadiologyReportModalProps {
-//   report: RadiologyReport;
-//   onClose: () => void;
-//   onSubmit: (updatedData: Partial<RadiologyReport>) => Promise<void>;
+//   report: RadiologyReport
+//   onClose: () => void
+//   onSubmit: (updatedData: Partial<RadiologyReport>) => Promise<void>
 // }
 
-// Placeholder for EditReportModal component;
+// Placeholder for EditReportModal component
 // const EditRadiologyReportModal: React.FC<EditRadiologyReportModalProps> = ({ report, onClose, onSubmit }) => {
-//   // Modal implementation would go here;
-//   return <div>Edit Modal Placeholder</div>;
-// };
+//   // Modal implementation would go here
+//   return <div>Edit Modal Placeholder</div>
+// }
 
 const RadiologyReportDetail: React.FC = () => {
   const parameters = useParams();
   const router = useRouter();
-  const reportId = parameters.id as string; // Assuming id is always a string;
+  const reportId = parameters.id as string; // Assuming id is always a string
   const { data: session } = useSession();
   const user = session?.user as SessionUser | undefined;
 
   const [report, setReport] = useState<RadiologyReport | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
-  const [/*showEditModal*/, setShowEditModal] = useState<boolean>(false); // Added state for edit modal - RE-ADDED;
+  const [/*showEditModal*/, setShowEditModal] = useState<boolean>(false); // Added state for edit modal - RE-ADDED
 
-  // FIX: Wrap fetchReportDetails in useCallback;
+  // FIX: Wrap fetchReportDetails in useCallback
   const fetchReportDetails = useCallback(async (): Promise<void> => {
     setLoading(true),
     setError(undefined);
     try {
-      // Simulate API call;
-      // const response = await fetch(`/api/radiology/reports/${reportId}`);
+      // Simulate API call
+      // const response = await fetch(`/api/radiology/reports/${reportId}`)
       // if (!response.ok) {
       //   if (response.status === 404) {
-      //     setError("Radiology report not found.");
+      //     setError("Radiology report not found.")
       //   } else {
-      //     const errorData = await response.json().catch(() => ({}));
-      //     throw new Error(errorData.error || "Failed to fetch report details");
+      //     const errorData = await response.json().catch(() => ({}))
+      //     throw new Error(errorData.error || "Failed to fetch report details")
       //   }
       // } else {
-      //   const data: RadiologyReport = await response.json();
-      //   setReport(data);
+      //   const data: RadiologyReport = await response.json()
+      //   setReport(data)
       // }
 
-      // Mock data;
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
+      // Mock data
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
       const mockReport: RadiologyReport = {
         id: reportId,
         patient_id: "PAT12345",
@@ -124,23 +116,23 @@ const RadiologyReportDetail: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [reportId]); // Add reportId as dependency;
+  }, [reportId]); // Add reportId as dependency
 
   useEffect(() => {
     if (reportId) {
       fetchReportDetails();
     }
     // FIX: Add fetchReportDetails to dependency array
-  }, [reportId, fetchReportDetails]);
+  }, [reportId, fetchReportDetails])
 
   const handleVerifyReport = async (): Promise<void> => {
     if (!report || !user) return;
     if (!confirm("Are you sure you want to verify and finalize this report?")) {
       return;
     }
-    setLoading(true); // Indicate processing;
+    setLoading(true); // Indicate processing
     try {
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/radiology/reports/${reportId}`, {
       //   method: 'PUT',
       //   headers: {
@@ -148,28 +140,28 @@ const RadiologyReportDetail: React.FC = () => {
       //   },
       //   body: JSON.stringify({
       //     status: 'final',
-      //     verified_by_id: user.id, // Assuming user.id exists;
+      //     verified_by_id: user.id, // Assuming user.id exists
       //   }),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || 'Failed to verify report');
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || 'Failed to verify report')
       // }
 
-        `Simulating verification of report ${reportId} by user ${user.id}`;
+        `Simulating verification of report ${reportId} by user ${user.id}`
       );
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
       alert("Report verified successfully."),
-      fetchReportDetails(); // Refresh details;
+      fetchReportDetails(); // Refresh details
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
       alert(`Failed to verify report: ${message}`),
-      setLoading(false); // Stop loading indicator on error;
+      setLoading(false); // Stop loading indicator on error
     }
-    // No finally setLoading(false) here, as fetchReportDetails will handle it on success;
+    // No finally setLoading(false) here, as fetchReportDetails will handle it on success
   };
 
   const handlePrintReport = (): void => {
@@ -214,8 +206,8 @@ const RadiologyReportDetail: React.FC = () => {
     );
   }
 
-  // Determine permissions based on user role and report status/ownership;
-  // FIX: Use roleName and userId from SessionUser type;
+  // Determine permissions based on user role and report status/ownership
+  // FIX: Use roleName and userId from SessionUser type
   const canEdit =;
     user &&
     (user.roleName === "Admin" ||;
@@ -223,7 +215,7 @@ const RadiologyReportDetail: React.FC = () => {
         String(user.userId) === report.radiologist_id &&;
         report.status !== "final"));
   const canVerify =;
-    user && (user.roleName === "Admin" || user.roleName === "Radiologist"); // Adjust verification logic as needed;
+    user && (user.roleName === "Admin" || user.roleName === "Radiologist"); // Adjust verification logic as needed
 
   return (
     <div className="container mx-auto p-4 space-y-6">;

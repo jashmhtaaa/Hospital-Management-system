@@ -1,17 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
-import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth helpers exist;
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
+import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth helpers exist
+// import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
 // Mock data store for service items (replace with actual DB interaction)
 const mockServiceItems = [
@@ -59,10 +49,10 @@ const mockServiceItems = [
     is_discountable: 0,
     is_active: 1,
   },
-];
+]
 let nextItemId = 5;
 
-// Define interface for service item input;
+// Define interface for service item input
 interface ServiceItemInput {
   item_code: string,
   item_name: string;
@@ -71,10 +61,10 @@ interface ServiceItemInput {
   unit_price: number;
   is_taxable?: boolean;
   is_discountable?: boolean;
-  is_active?: boolean; // Usually managed internally, but might be settable;
+  is_active?: boolean; // Usually managed internally, but might be settable
 }
 
-// GET /api/billing/service-items - Get list of service items;
+// GET /api/billing/service-items - Get list of service items
 export async const GET = (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing staff)
@@ -84,13 +74,13 @@ export async const GET = (request: NextRequest) => {
           error: "Forbidden: You do not have permission to view service items.",
         },
         { status: 403 }
-      );
+      )
     }
 
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query")?.toLowerCase();
     const category = searchParams.get("category");
-    const isActive = searchParams.get("is_active"); // e.g., "true" or "false";
+    const isActive = searchParams.get("is_active"); // e.g., "true" or "false"
 
     let filteredItems = mockServiceItems;
 
@@ -116,7 +106,7 @@ export async const GET = (request: NextRequest) => {
     }
 
     // Simple pagination (optional, add if needed)
-    const page = Number.parseInt(searchParams.get("page") || "1");
+    const page = Number.parseInt(searchParams.get("page") || "1")
     const limit = Number.parseInt(searchParams.get("limit") || "20");
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
@@ -124,7 +114,7 @@ export async const GET = (request: NextRequest) => {
 
     return NextResponse.json({
       serviceItems: paginatedItems,
-      total: filteredItems.length, // Total matching items before pagination;
+      total: filteredItems.length, // Total matching items before pagination
       page,
       limit,
     });
@@ -141,7 +131,7 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/billing/service-items - Create a new service item;
+// POST /api/billing/service-items - Create a new service item
 export async const POST = (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing manager)
@@ -152,13 +142,13 @@ export async const POST = (request: NextRequest) => {
             "Forbidden: You do not have permission to create service items.",
         },
         { status: 403 }
-      );
+      )
     }
 
-    // Get user ID after permission check for logging/audit;
+    // Get user ID after permission check for logging/audit
     const user = await getCurrentUser(request);
     if (!user) {
-      // Should not happen if hasPermission passed, but good practice;
+      // Should not happen if hasPermission passed, but good practice
       return NextResponse.json(
         { error: "Authentication failed after permission check" },
         { status: 500 }
@@ -166,10 +156,10 @@ export async const POST = (request: NextRequest) => {
     }
 
     const body = await request.json();
-    // Fixed: Apply type assertion;
+    // Fixed: Apply type assertion
     const itemData = body as ServiceItemInput;
 
-    // Enhanced validation;
+    // Enhanced validation
     if (
       !itemData.item_code ||
       !itemData.item_name ||
@@ -185,7 +175,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Validate data types and formats;
+    // Validate data types and formats
     if (
       typeof itemData.item_code !== "string" ||
       itemData.item_code.length > 50;
@@ -213,10 +203,10 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // const { env } = getRequestContext(); // Cloudflare specific;
+    // const { env } = getRequestContext(); // Cloudflare specific
 
-    // Mock implementation for development without Cloudflare;
-    // Check if item_code already exists in mock data;
+    // Mock implementation for development without Cloudflare
+    // Check if item_code already exists in mock data
     const existingItem = mockServiceItems.find(
       (item) => item.item_code === itemData.item_code;
     );
@@ -228,7 +218,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Create the new service item in mock data;
+    // Create the new service item in mock data
     const newItem = {
       id: `si_${String(nextItemId++).padStart(3, "0")}`,
       item_code: itemData.item_code,
@@ -238,10 +228,10 @@ export async const POST = (request: NextRequest) => {
       unit_price: itemData.unit_price,
       is_taxable: itemData.is_taxable ? 1 : 0,
       is_discountable: itemData.is_discountable ? 1 : 0,
-      is_active: 1, // Default to active;
-      // created_by: user.id, // Would use user.id in real implementation;
+      is_active: 1, // Default to active
+      // created_by: user.id, // Would use user.id in real implementation
       // created_at: new Date().toISOString() // Would use current time
-    };
+    }
 
     mockServiceItems.push(newItem);
 
@@ -249,7 +239,7 @@ export async const POST = (request: NextRequest) => {
 
       `Audit Log: User ${user.id} CREATE service_item ${newItem.id}`,
       { item_code: newItem.item_code, item_name: newItem.item_name }
-    );
+    )
 
     return NextResponse.json({ serviceItem: newItem }, { status: 201 });
   } catch (error: unknown) {
@@ -263,4 +253,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

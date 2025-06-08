@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
-import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used;
-import { Claim, Patient, TPA, ClaimStatusResponse } from "../types.ts"; // Adjust path as per actual structure;
+import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
+import { Claim, Patient, TPA, ClaimStatusResponse } from "../types.ts"; // Adjust path as per actual structure
 
 const prisma = new PrismaClient();
 
@@ -34,11 +24,11 @@ export class ClaimProcessingService {
         // 3. Sending the claim data to the TPA/insurance provider's system (e.g., via API).
         // 4. Receiving a confirmation or claim ID from the external system.
 
-        // Mock implementation;
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } });
-        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } });
+        // Mock implementation
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
+        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } })
         // if (!patient || !policy) {
-        //     throw new Error("Patient or Policy not found for claim submission.");
+        //     throw new Error("Patient or Policy not found for claim submission.")
         // }
 
         const newClaim: Claim = {
@@ -50,13 +40,13 @@ export class ClaimProcessingService {
             diagnosisCodes: claimDetails.diagnosisCodes || [],
             totalAmount: claimDetails.totalAmount || 0,
             notes: claimDetails.notes,
-            status: "SUBMITTED", // Initial status;
+            status: "SUBMITTED", // Initial status
         };
 
-        // Simulate saving to a database;
-        // const savedClaim = await prisma.claim.create({ data: newClaim });
+        // Simulate saving to a database
+        // const savedClaim = await prisma.claim.create({ data: newClaim })
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return newClaim; // Return the mock claim;
+        return newClaim; // Return the mock claim
     }
 
     /**
@@ -69,19 +59,19 @@ export class ClaimProcessingService {
         // In a real-world scenario, this would involve querying the TPA/insurance provider's system.
         // For this mock, we'll simulate a few possible statuses.
 
-        // const claim = await prisma.claim.findUnique({ where: { id: claimId } });
+        // const claim = await prisma.claim.findUnique({ where: { id: claimId } })
         // if (!claim) {
-        //     throw new Error(`Claim with ID ${claimId} not found.`);
+        //     throw new Error(`Claim with ID ${claimId} not found.`)
         // }
 
-        // Mock statuses;
+        // Mock statuses
         const statuses = ["PENDING", "APPROVED", "PARTIALLY_APPROVED", "REJECTED", "PAID"];
         const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-        const mockAmountApproved = Math.random() * 1000; // Example amount;
+        const mockAmountApproved = Math.random() * 1000; // Example amount
 
         const statusResponse: ClaimStatusResponse = {
             claimId,
-            status: randomStatus as ClaimStatusResponse['status'], // Cast to the expected type;
+            status: randomStatus as ClaimStatusResponse['status'], // Cast to the expected type
             lastUpdated: new Date(),
             details: `Claim is currently ${randomStatus}.`,
             amountApproved: randomStatus === "APPROVED" ||;
@@ -104,9 +94,9 @@ export class ClaimProcessingService {
      * @throws {Error} If claim not found or update fails.
      */
     async updateClaimStatus(claimId: string, newStatus: string, statusDetails?: string): Promise<Claim> {
-        // const claim = await prisma.claim.findUnique({ where: { id: claimId } });
+        // const claim = await prisma.claim.findUnique({ where: { id: claimId } })
         // if (!claim) {
-        //     throw new Error(`Claim with ID ${claimId} not found.`);
+        //     throw new Error(`Claim with ID ${claimId} not found.`)
         // }
 
         // const updatedClaim = await prisma.claim.update({
@@ -115,10 +105,10 @@ export class ClaimProcessingService {
         //         status: newStatus,
         //         notes: statusDetails ? `${claim.notes}\nUpdate: ${statusDetails}` : claim.notes,
         //     },
-        // });
-        // return updatedClaim;
+        // })
+        // return updatedClaim
 
-        // Mock implementation;
+        // Mock implementation
         const mockClaim: Claim = {
             id: claimId,
             patientId: "mock_patient",
@@ -140,13 +130,13 @@ export class ClaimProcessingService {
 }
 
 // Example Usage (conceptual)
-// const claimService = new ClaimProcessingService();
-// const newClaimData = { serviceCodes: ['SVC101'], diagnosisCodes: ['ICD001'], totalAmount: 250.00, notes: 'Routine checkup' };
+// const claimService = new ClaimProcessingService()
+// const newClaimData = { serviceCodes: ['SVC101'], diagnosisCodes: ['ICD001'], totalAmount: 250.00, notes: 'Routine checkup' }
 // claimService.submitClaim('patient789', 'policyXYZ', newClaimData)
 //  .then(claim => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-//  .catch(error => // Debug logging removed);
+//  .catch(error => // Debug logging removed)
 
-// claimService.checkClaimStatus('claim_1687300000000') // Example ID;
+// claimService.checkClaimStatus('claim_1687300000000') // Example ID
 //  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-//  .catch(error => // Debug logging removed);
+//  .catch(error => // Debug logging removed)
 

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -19,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 interface OTChecklistTemplateModalProps {
   isOpen: boolean,
-  onClose: () => void;
+  onClose: () => void,
   onSubmit: (data: unknown) => void
 }
 
@@ -29,7 +19,7 @@ interface OTChecklistTemplateModalProps {
 export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTChecklistTemplateModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, we would collect form data here;
+    // In a real implementation, we would collect form data here
     onSubmit({});
   };
 
@@ -88,4 +78,3 @@ export const OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheckl
       </DialogContent>
     </Dialog>
   );
-}

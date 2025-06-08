@@ -1,30 +1,18 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons;
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons
 
-// UI components barrel file;
-// This file exports all UI components to make imports cleaner;
+// UI components barrel file
+// This file exports all UI components to make imports cleaner
 
-// Define more specific props types using React's utility types;
+// Define more specific props types using React's utility types
 
-// Button component Props;
+// Button component Props
 interface ButtonProperties;
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   variant?: "default" | "destructive" | "outline" | "ghost" | "success";
   size?: "sm" | "md" | "lg" | "icon";
-}
-
 export const Button = ({
   children,
   variant = "default",
@@ -66,11 +54,9 @@ export const Button = ({
 };
 Button.displayName = "Button";
 
-// Card components Props;
+// Card components Props
 interface CardProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-}
-
 export const Card = ({
   children,
   className = "",
@@ -89,8 +75,6 @@ Card.displayName = "Card";
 
 interface CardHeaderProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-}
-
 export const CardHeader = ({
   children,
   className = "",
@@ -106,8 +90,6 @@ CardHeader.displayName = "CardHeader";
 
 interface CardTitleProperties extends React.HTMLAttributes<HTMLHeadingElement> {
   children?: React.ReactNode;
-}
-
 export const CardTitle = ({
   children,
   className = "",
@@ -124,8 +106,6 @@ CardTitle.displayName = "CardTitle";
 interface CardDescriptionProperties;
   extends React.HTMLAttributes<HTMLParagraphElement> {
   children?: React.ReactNode;
-}
-
 export const CardDescription = ({
   children,
   className = "",
@@ -141,8 +121,6 @@ CardDescription.displayName = "CardDescription";
 
 interface CardContentProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-}
-
 export const CardContent = ({
   children,
   className = "",
@@ -158,8 +136,6 @@ CardContent.displayName = "CardContent";
 
 interface CardFooterProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-}
-
 export const CardFooter = ({
   children,
   className = "",
@@ -173,7 +149,7 @@ export const CardFooter = ({
 };
 CardFooter.displayName = "CardFooter";
 
-// Input component;
+// Input component
 export const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
@@ -188,7 +164,7 @@ export const Input = React.forwardRef<
 });
 Input.displayName = "Input";
 
-// Label component;
+// Label component
 export const Label = React.forwardRef<
   HTMLLabelElement,
   React.LabelHTMLAttributes<HTMLLabelElement>
@@ -205,7 +181,7 @@ export const Label = React.forwardRef<
 });
 Label.displayName = "Label";
 
-// Textarea component;
+// Textarea component
 export const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
@@ -220,12 +196,10 @@ export const Textarea = React.forwardRef<
 });
 Textarea.displayName = "Textarea";
 
-// Badge component Props;
+// Badge component Props
 interface BadgeProperties extends React.HTMLAttributes<HTMLSpanElement> {
   children?: React.ReactNode;
   variant?: "default" | "secondary" | "destructive" | "outline" | "success";
-}
-
 export const Badge = ({
   children,
   variant = "default",
@@ -252,12 +226,10 @@ export const Badge = ({
 };
 Badge.displayName = "Badge";
 
-// Alert components Props;
+// Alert components Props
 interface AlertProperties extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   variant?: "default" | "destructive" | "warning" | "success";
-}
-
 export const Alert = ({
   children,
   variant = "default",
@@ -286,8 +258,6 @@ Alert.displayName = "Alert";
 interface AlertDescriptionProperties;
   extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-}
-
 export const AlertDescription = ({
   children,
   className = "",
@@ -301,7 +271,7 @@ export const AlertDescription = ({
 };
 AlertDescription.displayName = "AlertDescription";
 
-// Table components;
+// Table components
 export const Table = React.forwardRef<
   HTMLTableElement,
   React.TableHTMLAttributes<HTMLTableElement>
@@ -392,15 +362,15 @@ export const TableCell = React.forwardRef<
 });
 TableCell.displayName = "TableCell";
 
-// Define specific props type for Tabs component;
+// Define specific props type for Tabs component
 interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode,
-  value: string;
+  value: string,
   onValueChange: (value: string) => void;
   className?: string;
 }
 
-// Tabs components;
+// Tabs components
 export const Tabs = ({
   children,
   value,
@@ -412,7 +382,7 @@ export const Tabs = ({
     <div className={`${className}`} {...properties}>;
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          // Pass value and onValueChange explicitly, add type assertion for child props;
+          // Pass value and onValueChange explicitly, add type assertion for child props
           return React.cloneElement(
             child as React.ReactElement<{
               value?: string;
@@ -420,10 +390,10 @@ export const Tabs = ({
               parentValue?: string;
             }>,
             {
-              value: child.type === TabsContent ? value : undefined, // Pass value only to TabsContent;
+              value: child.type === TabsContent ? value : undefined, // Pass value only to TabsContent
               onValueChange:
-                child.type === TabsTrigger ? onValueChange : undefined, // Pass onValueChange only to TabsTrigger;
-              parentValue: value, // Pass parent value to children for comparison;
+                child.type === TabsTrigger ? onValueChange : undefined, // Pass onValueChange only to TabsTrigger
+              parentValue: value, // Pass parent value to children for comparison
             }
           );
         }
@@ -434,12 +404,10 @@ export const Tabs = ({
 };
 Tabs.displayName = "Tabs";
 
-// Define specific props type for TabsList component;
+// Define specific props type for TabsList component
 interface TabsListProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
-}
-
 export const TabsList = ({
   children,
   className = "",
@@ -457,16 +425,14 @@ export const TabsList = ({
 };
 TabsList.displayName = "TabsList";
 
-// Define specific props type for TabsTrigger component;
+// Define specific props type for TabsTrigger component
 interface TabsTriggerProperties;
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode,
   value: string;
   className?: string;
-  onValueChange?: (value: string) => void; // Received from Tabs;
-  parentValue?: string; // Received from Tabs;
-}
-
+  onValueChange?: (value: string) => void; // Received from Tabs
+  parentValue?: string; // Received from Tabs
 export const TabsTrigger = ({
   children,
   value,
@@ -496,14 +462,12 @@ export const TabsTrigger = ({
 };
 TabsTrigger.displayName = "TabsTrigger";
 
-// Define specific props type for TabsContent component;
+// Define specific props type for TabsContent component
 interface TabsContentProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode,
   value: string;
   className?: string;
-  parentValue?: string; // Received from Tabs;
-}
-
+  parentValue?: string; // Received from Tabs
 export const TabsContent = ({
   children,
   value,
@@ -528,14 +492,14 @@ export const TabsContent = ({
 };
 TabsContent.displayName = "TabsContent";
 
-// Define specific props type for Dialog component;
+// Define specific props type for Dialog component
 interface DialogProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  open?: boolean; // Add open state if controlled externally;
-  onOpenChange?: (open: boolean) => void; // Add handler for external control;
+  open?: boolean; // Add open state if controlled externally
+  onOpenChange?: (open: boolean) => void; // Add handler for external control
 }
 
-// Dialog components;
+// Dialog components
 export const Dialog = ({
   children,
   open: controlledOpen,
@@ -550,7 +514,7 @@ export const Dialog = ({
     <div {...properties}>
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          // Pass open and setOpen explicitly, add type assertion for child props;
+          // Pass open and setOpen explicitly, add type assertion for child props
           return React.cloneElement(
             child as React.ReactElement<{
               open?: boolean;
@@ -558,7 +522,7 @@ export const Dialog = ({
             }>,
             {
               open,
-              setOpen: setOpen as React.Dispatch<React.SetStateAction<boolean>>, // Cast for internal state setter compatibility;
+              setOpen: setOpen as React.Dispatch<React.SetStateAction<boolean>>, // Cast for internal state setter compatibility
             }
           );
         }
@@ -569,15 +533,13 @@ export const Dialog = ({
 };
 Dialog.displayName = "Dialog";
 
-// Define specific props type for DialogTrigger component;
+// Define specific props type for DialogTrigger component
 interface DialogTriggerProperties;
   extends React.ComponentPropsWithoutRef<"button"> {
   children: React.ReactNode;
   asChild?: boolean;
-  open?: boolean; // Received from Dialog;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog;
-}
-
+  open?: boolean; // Received from Dialog
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog
 export const DialogTrigger = ({
   children,
   asChild,
@@ -589,7 +551,7 @@ export const DialogTrigger = ({
   };
 
   if (asChild && React.isValidElement(children)) {
-  // Use React.ReactElement<React.HTMLAttributes<HTMLElement>> for better type safety;
+  // Use React.ReactElement<React.HTMLAttributes<HTMLElement>> for better type safety
     const childOnClick =;
       React.isValidElement<{ onClick?: (event: React.MouseEvent<HTMLElement>) => void }>(children) &&
       typeof children.props.onClick === "function"
@@ -601,7 +563,7 @@ export const DialogTrigger = ({
         ...properties,
          
         onClick: (event: React.MouseEvent<HTMLElement>) => {
-          childOnClick?.(event); // FIX: Use the correct variable name;
+          childOnClick?.(event); // FIX: Use the correct variable name
           handleClick();
         },
       }
@@ -616,15 +578,13 @@ export const DialogTrigger = ({
 };
 DialogTrigger.displayName = "DialogTrigger";
 
-// Define specific props type for DialogContent component;
+// Define specific props type for DialogContent component
 interface DialogContentProperties;
   extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   className?: string;
-  open?: boolean; // Received from Dialog;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog;
-}
-
+  open?: boolean; // Received from Dialog
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Received from Dialog
 export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProperties>(
   ({ children, className = "", open, setOpen, ...properties }, reference) => {
     React.useEffect(() => {
@@ -646,12 +606,12 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
         {...properties}
          
         onClick={(_event_: React.MouseEvent<HTMLElement>) => {
-          // Close on overlay click;
+          // Close on overlay click
           setOpen?.(false);
         }}
       >
 <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative"
-          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content;
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content
         >
           {children}
           <button>
@@ -659,7 +619,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
             onClick={() => setOpen?.(false)}
           >
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-              <path d="M18 6 6 18"></path>;
+              <path d="M18 6 6 18"></path>
               <path d="m6 6 12 12"></path>
             </svg>
             <span className="sr-only">Close</span>
@@ -671,12 +631,10 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
 );
 DialogContent.displayName = "DialogContent";
 
-// Define specific props type for DialogHeader component;
+// Define specific props type for DialogHeader component
 interface DialogHeaderProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
-}
-
 export const DialogHeader = ({
   children,
   className = "",
@@ -693,13 +651,11 @@ export const DialogHeader = ({
 };
 DialogHeader.displayName = "DialogHeader";
 
-// Define specific props type for DialogTitle component;
+// Define specific props type for DialogTitle component
 interface DialogTitleProperties;
   extends React.ComponentPropsWithoutRef<"h2"> {
   children: React.ReactNode;
   className?: string;
-}
-
 export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProperties>(
   ({ children, className = "", ...properties }, reference) => {
     return (
@@ -715,13 +671,11 @@ export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitlePrope
 );
 DialogTitle.displayName = "DialogTitle";
 
-// Define specific props type for DialogDescription component;
+// Define specific props type for DialogDescription component
 interface DialogDescriptionProperties;
   extends React.ComponentPropsWithoutRef<"p"> {
   children: React.ReactNode;
   className?: string;
-}
-
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProperties>(
   ({ children, className = "", ...properties }, reference) => {
     return (
@@ -737,12 +691,10 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
 );
 DialogDescription.displayName = "DialogDescription";
 
-// Define specific props type for DialogFooter component;
+// Define specific props type for DialogFooter component
 interface DialogFooterProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
-}
-
 export const DialogFooter = ({
   children,
   className = "",
@@ -759,7 +711,7 @@ export const DialogFooter = ({
 };
 DialogFooter.displayName = "DialogFooter";
 
-// Define specific props type for DatePicker component;
+// Define specific props type for DatePicker component
 interface DatePickerProperties {
   date?: Date;
   setDate: (date: Date | undefined) => void;
@@ -772,7 +724,7 @@ export const DatePicker = ({
   setDate,
   className = "",
 }: DatePickerProperties) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const handleDayClick = (day: Date) => {
     setDate(day),
@@ -829,7 +781,7 @@ DatePicker.displayName = "DatePicker";
 
 // Define specific props type for Calendar component (placeholder)
 interface CalendarProperties {
-  mode?: "single" | "multiple" | "range";
+  mode?: "single" | "multiple" | "range"
   selected?: Date | Date[] | { from?: Date; to?: Date };
   onSelect?: (
     day: Date | Date[] | { from?: Date; to?: Date } | undefined;
@@ -843,7 +795,7 @@ interface CalendarProperties {
 // Calendar component (placeholder - use react-day-picker)
 export const Calendar = ({
    
-  mode: _mode = "single", // FIX: Prefix unused variable;
+  mode: _mode = "single", // FIX: Prefix unused variable
   selected,
   onSelect,
   className = "",
@@ -852,7 +804,7 @@ export const Calendar = ({
   numberOfMonths = 1,
   ...properties;
 }: CalendarProperties) => {
-  // State for the current displayed month if not controlled externally;
+  // State for the current displayed month if not controlled externally
   const [currentMonth, setCurrentMonth] = React.useState(month || new Date());
 
   React.useEffect(() => {
@@ -878,28 +830,28 @@ export const Calendar = ({
     handleMonthChange(nextMonth);
   };
 
-  // Simplified day rendering logic;
+  // Simplified day rendering logic
   const renderDays = (offsetMonth: number) => {
     const monthToRender = new Date(currentMonth);
     monthToRender.setMonth(monthToRender.getMonth() + offsetMonth);
     const year = monthToRender.getFullYear();
     const monthIndex = monthToRender.getMonth();
     const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-    const firstDayOfMonth = new Date(year, monthIndex, 1).getDay(); // 0 = Sunday;
+    const firstDayOfMonth = new Date(year, monthIndex, 1).getDay(); // 0 = Sunday
 
     const days = [];
-    // Add padding for days before the 1st;
+    // Add padding for days before the 1st
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`pad-start-${i}`} className="p-1.5"></div>);
     }
-    // Add actual days;
+    // Add actual days
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(year, monthIndex, day);
       const isSelected = (
         selected instanceof Date &&
         currentDate.toDateString() === selected.toDateString();
       );
-      // Add more complex selection logic for multiple/range modes;
+      // Add more complex selection logic for multiple/range modes
 
       days.push(
         <button>
@@ -908,7 +860,7 @@ export const Calendar = ({
             isSelected ? "bg-blue-600 text-white hover:bg-blue-700" : ""
           }`}
            
-          onClick={(_event: React.MouseEvent<HTMLElement>) => onSelect?.(currentDate)} // Pass the date object;
+          onClick={(_event: React.MouseEvent<HTMLElement>) => onSelect?.(currentDate)} // Pass the date object
         >
           {day}
         </button>

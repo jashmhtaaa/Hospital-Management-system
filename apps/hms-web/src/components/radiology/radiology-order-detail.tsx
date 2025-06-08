@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table } from '@/components/ui/table';
@@ -16,11 +6,11 @@ import { Badge } from '@/components/ui/badge';
 
 interface RadiologyOrder {
   id: string,
-  patientName: string;
+  patientName: string,
   patientId: string,
-  orderDate: string;
+  orderDate: string,
   studyType: string,
-  priority: 'routine' | 'urgent' | 'stat';
+  priority: 'routine' | 'urgent' | 'stat',
   status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
   requestedBy: string
 }
@@ -120,4 +110,3 @@ export const RadiologyOrderDetail = ({ order }: RadiologyOrderDetailProps) => {
       </CardContent>
     </Card>
   );
-}

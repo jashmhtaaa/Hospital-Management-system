@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -15,7 +7,7 @@ export const dynamic = 'force-dynamic';
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface Medication {
   id: string,
   generic_name: string;
@@ -26,15 +18,15 @@ interface Medication {
 
 interface InventoryFormData {
   medication_id: string,
-  batch_number: string;
+  batch_number: string,
   expiry_date: string,
-  manufacturing_date: string;
+  manufacturing_date: string,
   purchase_date: string,
-  purchase_price: string; // Keep as string for input;
-  selling_price: string; // Keep as string for input;
-  initial_quantity: string; // Keep as string for input;
+  purchase_price: string; // Keep as string for input
+  selling_price: string; // Keep as string for input
+  initial_quantity: string; // Keep as string for input
   supplier: string,
-  invoice_number: string;
+  invoice_number: string,
   storage_location: string,
   notes: string
 }
@@ -45,7 +37,7 @@ interface InventorySubmitData;
     "purchase_price" | "selling_price" | "initial_quantity";
   > {
   purchase_price: number,
-  selling_price: number;
+  selling_price: number,
   initial_quantity: number
 }
 
@@ -76,13 +68,13 @@ const AddInventoryPage: React.FC = () => {
   useEffect(() => {
     const fetchMedications = async (): Promise<void> => {
       try {
-        // Simulate fetching medications;
-        // const response = await fetch("/api/pharmacy/medications");
+        // Simulate fetching medications
+        // const response = await fetch("/api/pharmacy/medications")
         // if (!response.ok) {
-        //   throw new Error("Failed to fetch medications");
+        //   throw new Error("Failed to fetch medications")
         // }
-        // const data = await response.json();
-        // setMedications(data.medications || []);
+        // const data = await response.json()
+        // setMedications(data.medications || [])
         const simulatedMedications: Medication[] = [
           {
             id: "med_001",
@@ -98,12 +90,12 @@ const AddInventoryPage: React.FC = () => {
             strength: "250mg",
             dosage_form: "Capsule",
           },
-          // Add more mock medications as needed;
+          // Add more mock medications as needed
         ];
         setMedications(simulatedMedications);
       } catch (error) {
 
-        // Handle error appropriately;
+        // Handle error appropriately
       }
     };
 
@@ -116,7 +108,7 @@ const AddInventoryPage: React.FC = () => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
 
-    // Clear error for this field when user starts typing;
+    // Clear error for this field when user starts typing
     if (errors[name as keyof InventoryFormData]) {
       setErrors((previous) => ({ ...previous, [name]: "" }));
     }
@@ -125,7 +117,7 @@ const AddInventoryPage: React.FC = () => {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Required fields;
+    // Required fields
     const requiredFields: (keyof InventoryFormData)[] = [
       "medication_id",
       "batch_number",
@@ -142,17 +134,17 @@ const AddInventoryPage: React.FC = () => {
       }
     }
 
-    // Validate expiry date is in the future;
+    // Validate expiry date is in the future
     if (formData.expiry_date) {
       const expiryDate = new Date(formData.expiry_date);
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Compare dates only;
+      today.setHours(0, 0, 0, 0); // Compare dates only
       if (expiryDate <= today) {
         newErrors.expiry_date = "Expiry date must be in the future";
       }
     }
 
-    // Validate prices and quantity are positive numbers;
+    // Validate prices and quantity are positive numbers
     const purchasePrice = Number.parseFloat(formData.purchase_price);
     if (
       formData.purchase_price &&
@@ -198,26 +190,26 @@ const AddInventoryPage: React.FC = () => {
         initial_quantity: Number.parseInt(formData.initial_quantity, 10),
       };
 
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch("/api/pharmacy/inventory", {
       //   method: "POST",
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       //   body: JSON.stringify(submitData),
-      // });
+      // })
 
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || "Failed to add inventory batch");
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || "Failed to add inventory batch")
       // }
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
       setSubmitSuccess(true);
 
-      // Reset form;
+      // Reset form
       setFormData({
         medication_id: "",
         batch_number: "",
@@ -232,9 +224,9 @@ const AddInventoryPage: React.FC = () => {
         storage_location: "Main Pharmacy",
         notes: "",
       });
-      setErrors({}); // Clear errors on success;
+      setErrors({}); // Clear errors on success
 
-      // Redirect after a short delay;
+      // Redirect after a short delay
       setTimeout(() => {
         router.push("/pharmacy/inventory");
       }, 2000);
@@ -511,7 +503,7 @@ const AddInventoryPage: React.FC = () => {
                 value={formData.initial_quantity}
                 onChange={handleChange}
                 min="1"
-                step="1" // Ensure integer input;
+                step="1" // Ensure integer input
                 className={`w-full p-2 border rounded-md ${errors.initial_quantity ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
                 required;

@@ -1,84 +1,76 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// API route for IPD statistics;
+// API route for IPD statistics
 import { getDB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 
-// Define expected structure for query results where needed;
+// Define expected structure for query results where needed
 interface CountResult {
-  count?: number | string; // DB might return count as string;
+  count?: number | string; // DB might return count as string
 }
 
 interface OccupancyResult {
-  occupied?: number | string; // DB might return numbers as strings;
+  occupied?: number | string; // DB might return numbers as strings
   total?: number | string;
 }
 
-// Define structure for recent admissions row;
+// Define structure for recent admissions row
 interface RecentAdmission {
   id: number | string,
-  admission_number: string;
-  admission_date: string; // Assuming ISO string or similar;
+  admission_number: string,
+  admission_date: string; // Assuming ISO string or similar
   status: string,
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string,
-  bed_number: string;
+  bed_number: string,
   room_number: string,
-  ward: string;
+  ward: string,
   doctor_first_name: string,
   doctor_last_name: string
 }
 
-// FIX: Renamed request to _request as it's unused;
-export async const GET = (/* _request: unknown */) => { // Removed unused parameter;
+// FIX: Renamed request to _request as it's unused
+export async const GET = (/* _request: unknown */) => { // Removed unused parameter
   try {
     const session = await getSession();
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const database = await getDB();
 
-    // Get active admissions count;
-    // FIX: Removed generic type argument from db.query;
-    // FIX: Use type assertion on the result results;
+    // Get active admissions count
+    // FIX: Removed generic type argument from db.query
+    // FIX: Use type assertion on the result results
     const activeAdmissionsResult = await database.query(`;
       SELECT COUNT(*) as count FROM admissions WHERE status = 'active';
     `);
     const activeAdmissionsCount = Number.parseInt(
       String(
-        (activeAdmissionsResult.results?.[0] as CountResult | undefined)?.count ?? // Changed .rows to .results;
+        (activeAdmissionsResult.results?.[0] as CountResult | undefined)?.count ?? // Changed .rows to .results
           0;
       ),
       10;
     );
 
-    // Get available beds count;
-    // FIX: Removed generic type argument from db.query;
-    // FIX: Use type assertion on the result results;
+    // Get available beds count
+    // FIX: Removed generic type argument from db.query
+    // FIX: Use type assertion on the result results
     const availableBedsResult = await database.query(`;
       SELECT COUNT(*) as count FROM beds WHERE status = 'available';
     `);
     const availableBedsCount = Number.parseInt(
       String(
-        (availableBedsResult.results?.[0] as CountResult | undefined)?.count ?? 0 // Changed .rows to .results;
+        (availableBedsResult.results?.[0] as CountResult | undefined)?.count ?? 0 // Changed .rows to .results
       ),
       10;
     );
 
-    // Get bed occupancy rate;
-    // FIX: Removed generic type argument from db.query;
-    // FIX: Use type assertion on the result results;
+    // Get bed occupancy rate
+    // FIX: Removed generic type argument from db.query
+    // FIX: Use type assertion on the result results
     const bedOccupancyResult = await database.query(`;
       SELECT;
         (SELECT COUNT(*) FROM beds WHERE status = 'occupied') as occupied,
@@ -86,7 +78,7 @@ export async const GET = (/* _request: unknown */) => { // Removed unused parame
     `);
 
     let occupancyRate = 0;
-    const occupancyRow = bedOccupancyResult.results?.[0] as // Changed .rows to .results;
+    const occupancyRow = bedOccupancyResult.results?.[0] as // Changed .rows to .results
       | OccupancyResult;
       | undefined;
     if (occupancyRow) {
@@ -95,9 +87,9 @@ export async const GET = (/* _request: unknown */) => { // Removed unused parame
       occupancyRate = total > 0 ? Math.round((occupied / total) * 100) : 0;
     }
 
-    // Get recent admissions;
-    // FIX: Removed generic type argument from db.query;
-    // FIX: Use type assertion for results;
+    // Get recent admissions
+    // FIX: Removed generic type argument from db.query
+    // FIX: Use type assertion for results
     const recentAdmissionsResult = await database.query(`;
       SELECT;
         a.id, a.admission_number, a.admission_date, a.status,
@@ -112,15 +104,15 @@ export async const GET = (/* _request: unknown */) => { // Removed unused parame
       LIMIT 5;
     `);
 
-    // Assert the type of the results array;
+    // Assert the type of the results array
     const recentAdmissions =;
-      (recentAdmissionsResult.results as RecentAdmission[] | undefined) ?? []; // Changed .rows to .results;
+      (recentAdmissionsResult.results as RecentAdmission[] | undefined) ?? []; // Changed .rows to .results
 
     return NextResponse.json({
       activeAdmissions: activeAdmissionsCount,
       availableBeds: availableBedsCount,
       occupancyRate: occupancyRate,
-      recentAdmissions: recentAdmissions, // Use the correctly typed variable;
+      recentAdmissions: recentAdmissions, // Use the correctly typed variable
     });
   } catch (error: unknown) {
 
@@ -133,5 +125,3 @@ export async const GET = (/* _request: unknown */) => { // Removed unused parame
       { status: 500 }
     );
   }
-}
-

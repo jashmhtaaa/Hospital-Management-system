@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect, notFound } from 'next/navigation';
@@ -20,16 +10,16 @@ export default async const PatientDetailPage = ({
 }: {
   params: { id: string }
 }) {
-  // Get session;
+  // Get session
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated;
+  // Redirect to login if not authenticated
   if (!session) {
     redirect('/login');
   }
   
   // Fetch patient data (server-side)
-  let patient;
+  let patient
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients/${params.id}`, {
       cache: 'no-store',
@@ -48,7 +38,7 @@ export default async const PatientDetailPage = ({
     patient = await response.json();
   } catch (error) {
 
-    // Will let client-side handling take over;
+    // Will let client-side handling take over
   }
   
   return (
@@ -58,4 +48,3 @@ export default async const PatientDetailPage = ({
       </Suspense>
     </div>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -31,7 +23,7 @@ const inventoryRepository = {
   save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 /**
  * GET /api/pharmacy/inventory/expiring;
@@ -39,16 +31,16 @@ const inventoryRepository = {
  */
 export async const GET = (req: NextRequest) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get query parameters;
+    // Get query parameters
     const url = new URL(req.url);
     const daysThreshold = parseInt(url.searchParams.get('daysThreshold') || '90', 10);
     const locationId = url.searchParams.get('locationId');
@@ -56,15 +48,15 @@ export async const GET = (req: NextRequest) => {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Build filter criteria;
+    // Build filter criteria
     const filter: unknown = { daysThreshold };
     if (locationId) filter.locationId = locationId;
     if (medicationId) filter.medicationId = medicationId;
 
-    // Get expiring inventory items;
+    // Get expiring inventory items
     const expiringItems = await inventoryRepository.findExpiring(daysThreshold);
     
-    // Apply additional filters;
+    // Apply additional filters
     let filteredItems = expiringItems;
     if (locationId) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
@@ -75,13 +67,13 @@ export async const GET = (req: NextRequest) => {
     
     const total = filteredItems.length;
 
-    // Apply pagination;
+    // Apply pagination
     const paginatedItems = filteredItems.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources;
+    // Map to FHIR resources
     const fhirInventoryItems = paginatedItems.map(FHIRMapper.toFHIRInventoryItem);
 
-    // Group by expiry timeframe for reporting;
+    // Group by expiry timeframe for reporting
     const expiryGroups = {
       expired: filteredItems.filter(item => new Date(item.expiryDate) < new Date()).length,
       next30Days: filteredItems.filter(item => {
@@ -100,7 +92,7 @@ export async const GET = (req: NextRequest) => {
       }).length;
     };
 
-    // Audit logging;
+    // Audit logging
     await auditLog('INVENTORY', {
       action: 'LIST_EXPIRING',
       resourceType: 'Inventory',
@@ -115,7 +107,7 @@ export async const GET = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       items: fhirInventoryItems,
       expiryGroups,
@@ -129,4 +121,3 @@ export async const GET = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error retrieving expiring medications');
   }
-}

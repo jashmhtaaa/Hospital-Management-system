@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
-import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used;
-import { InsurancePolicy, Patient, TPA } from "../types.ts"; // Adjust path as per actual structure;
+import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
+import { InsurancePolicy, Patient, TPA } from "../types.ts"; // Adjust path as per actual structure
 
 const prisma = new PrismaClient();
 
@@ -26,30 +16,30 @@ export class InsurancePolicyService {
      * @throws {Error} If patient not found or policy details are invalid.
      */
     async addInsurancePolicy(patientId: string, policyDetails: Omit<InsurancePolicy, "id" | "patientId">): Promise<InsurancePolicy> {
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } });
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
         // if (!patient) {
-        //     throw new Error(`Patient with ID ${patientId} not found.`);
+        //     throw new Error(`Patient with ID ${patientId} not found.`)
         // }
 
         // // Validate policyDetails (placeholder for more complex validation)
         // if (!policyDetails.policyNumber || !policyDetails.tpaId) {
-        //     throw new Error("Invalid insurance policy data. Policy number and TPA ID are required.");
+        //     throw new Error("Invalid insurance policy data. Policy number and TPA ID are required.")
         // }
 
         // const newPolicyData = {
         //     ...policyDetails,
         //     patientId,
-        // };
+        // }
 
-        // const savedPolicy = await prisma.insurancePolicy.create({ data: newPolicyData });
-        // return savedPolicy;
+        // const savedPolicy = await prisma.insurancePolicy.create({ data: newPolicyData })
+        // return savedPolicy
 
-        // Mock implementation;
+        // Mock implementation
         const mockPolicy: InsurancePolicy = {
             id: `pol_${Date.now()}`,
             patientId,
             ...policyDetails,
-            // Ensure all required fields from Omit<InsurancePolicy, "id" | "patientId"> are present or defaulted;
+            // Ensure all required fields from Omit<InsurancePolicy, "id" | "patientId"> are present or defaulted
             policyNumber: policyDetails.policyNumber || "POL-MOCK-123",
             tpaId: policyDetails.tpaId || "TPA-MOCK-001",
             coverageDetails: policyDetails.coverageDetails || "Basic Coverage",
@@ -67,9 +57,9 @@ export class InsurancePolicyService {
      * @returns {Promise<InsurancePolicy[]>} A list of insurance policies.
      */
     async getInsurancePoliciesForPatient(patientId: string): Promise<InsurancePolicy[]> {
-        // return prisma.insurancePolicy.findMany({ where: { patientId } });
+        // return prisma.insurancePolicy.findMany({ where: { patientId } })
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        // Mock implementation;
+        // Mock implementation
         return [
             {
                 id: "pol_mock_1", patientId, policyNumber: "XYZ12345", tpaId: "TPA001",
@@ -90,21 +80,19 @@ export class InsurancePolicyService {
         // const updatedPolicy = await prisma.insurancePolicy.update({
         //     where: { id: policyId },
         //     data: updates,
-        // });
+        // })
         // if (!updatedPolicy) {
-        //     throw new Error(`Insurance policy with ID ${policyId} not found.`);
+        //     throw new Error(`Insurance policy with ID ${policyId} not found.`)
         // }
-        // return updatedPolicy;
+        // return updatedPolicy
 
-        // Mock implementation;
+        // Mock implementation
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         const mockExistingPolicy: InsurancePolicy = {
             id: policyId, patientId: "pat_mock_1", policyNumber: "XYZ12345", tpaId: "TPA001",
             coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
             endDate: new Date("2023-12-31"), isActive: true
-        };
+        }
         const updatedMockPolicy = { ...mockExistingPolicy, ...updates };
         return updatedMockPolicy;
     }
-}
-

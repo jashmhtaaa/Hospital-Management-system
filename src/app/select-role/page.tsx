@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/app/select-role/page.tsx;
+// src/app/select-role/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
@@ -20,28 +12,28 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
-// import { useSession } from "@/hooks/useSession"; // Hypothetical hook to get session data;
+// import { useSession } from "@/hooks/useSession"; // Hypothetical hook to get session data
 
-// Mock user roles for now - replace with actual data from session/API;
+// Mock user roles for now - replace with actual data from session/API
 const MOCK_USER_ROLES = ["Admin", "Doctor", "Receptionist"];
 
 export default const SelectRolePage = () {
   const router = useRouter();
   const { toast } = useToast();
-  // const { user, updateSessionRole } = useSession(); // Hypothetical session hook;
+  // const { user, updateSessionRole } = useSession(); // Hypothetical session hook
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [availableRoles, setAvailableRoles] = useState<string[]>([]);
 
   useEffect(() => {
-    // In a real app, fetch available roles for the logged-in user from the session or an API;
-    // For now, use mock data;
+    // In a real app, fetch available roles for the logged-in user from the session or an API
+    // For now, use mock data
     // if (user && user.roles) { setAvailableRoles(user.roles); }
     setAvailableRoles(MOCK_USER_ROLES);
     if (MOCK_USER_ROLES.length > 0) {
-        setSelectedRole(MOCK_USER_ROLES[0]); // Default to the first role;
+        setSelectedRole(MOCK_USER_ROLES[0]); // Default to the first role
     }
-  }, []); // Add dependencies like `user` when using real data;
+  }, []); // Add dependencies like `user` when using real data
 
   const handleContinue = async () => {
     if (!selectedRole) {
@@ -56,19 +48,19 @@ export default const SelectRolePage = () {
     setIsLoading(true);
     try {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      // This might involve an API call or just updating client-side state/session;
-      // await updateSessionRole(selectedRole);
+      // This might involve an API call or just updating client-side state/session
+      // await updateSessionRole(selectedRole)
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       toast({
         title: "Role Selected",
         description: `Proceeding as ${selectedRole}.`,
-      });
+      })
 
-      // Redirect to the main dashboard;
+      // Redirect to the main dashboard
       router.push("/dashboard");
 
-    } catch (error: unknown) { // Use unknown;
+    } catch (error: unknown) { // Use unknown
       const message = error instanceof Error ? error.message : "Failed to set role.";
       toast({
         title: "Error",
@@ -114,5 +106,3 @@ export default const SelectRolePage = () {
       </div>
     </div>
   );
-}
-

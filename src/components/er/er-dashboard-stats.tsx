@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERDashboardStats.tsx;
+// src/components/er/ERDashboardStats.tsx
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,7 +15,7 @@ import {
 } from "lucide-react";
 
 export default const ERDashboardStats = () {
-  // In a real implementation, this data would come from API calls;
+  // In a real implementation, this data would come from API calls
   const stats = {
     totalPatients: 24,
     waitingRoom: 8,
@@ -116,4 +108,3 @@ export default const ERDashboardStats = () {
       </Card>
     </div>
   );
-}

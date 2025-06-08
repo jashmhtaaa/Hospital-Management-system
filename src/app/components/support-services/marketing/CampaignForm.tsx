@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +14,7 @@ import { DatePicker } from '@/components/ui/date-picker';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-// Form schema for campaign creation/editing;
+// Form schema for campaign creation/editing
 const campaignFormSchema = z.object({
   name: z.string().min(3, {
     message: "Campaign name must be at least 3 characters.",
@@ -52,8 +42,6 @@ type CampaignFormValues = z.infer<typeof campaignFormSchema>;
 interface CampaignFormProps {
   campaignId?: string;
   onSuccess?: (campaign: unknown) => void
-}
-
 export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -63,7 +51,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
   const [selectedSegments, setSelectedSegments] = useState<any[]>([]);
   const [availableSegments, setAvailableSegments] = useState<any[]>([]);
 
-  // Initialize form with default values or existing campaign data;
+  // Initialize form with default values or existing campaign data
   const form = useForm<CampaignFormValues>({
     resolver: zodResolver(campaignFormSchema),
     defaultValues: {
@@ -76,7 +64,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
     },
   });
 
-  // Fetch campaign data if editing an existing campaign;
+  // Fetch campaign data if editing an existing campaign
   useEffect(() => {
     const fetchCampaign = async () => {
       if (!campaignId) return;
@@ -89,7 +77,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
         const data = await response.json(),
         setCampaign(data);
         
-        // Set form values from campaign data;
+        // Set form values from campaign data
         form.reset({
           name: data.name,
           description: data.description || "",
@@ -102,7 +90,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
           goals: data.goals || [],
         });
         
-        // Fetch campaign segments;
+        // Fetch campaign segments
         if (data.segments && data.segments.length > 0) {
           setSelectedSegments(data.segments.map((s: unknown) => s.segment))
         }
@@ -121,7 +109,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
     fetchCampaign();
   }, [campaignId, form]);
 
-  // Fetch available segments;
+  // Fetch available segments
   useEffect(() => {
     const fetchSegments = async () => {
       try {
@@ -138,7 +126,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
     fetchSegments();
   }, []);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (values: CampaignFormValues) => {
     setIsLoading(true);
     
@@ -182,7 +170,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
     }
   };
 
-  // Handle adding a goal;
+  // Handle adding a goal
   const handleAddGoal = () => {
     if (!goalInput.trim()) return;
     
@@ -191,13 +179,13 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
     setGoalInput("");
   };
 
-  // Handle removing a goal;
+  // Handle removing a goal
   const handleRemoveGoal = (index: number) => {
     const currentGoals = form.getValues("goals") || [];
     form.setValue("goals", currentGoals.filter((_, i) => i !== index));
   };
 
-  // Handle adding a segment to the campaign;
+  // Handle adding a segment to the campaign
   const handleAddSegment = async (segmentId: string) => {
     if (!campaignId) return;
     
@@ -212,7 +200,7 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
       
       if (!response.ok) throw new Error('Failed to add segment');
       
-      // Update selected segments;
+      // Update selected segments
       const segment = availableSegments.find(s => s.id === segmentId);
       if (segment) {
         setSelectedSegments(prev => [...prev, segment]);
@@ -639,4 +627,3 @@ export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProp
       </CardFooter>
     </Card>
   );
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
 import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middleware';
@@ -28,11 +18,11 @@ export async const GET = (
   { params }: { params: { patientId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context;
+    // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Get patient information;
+    // Get patient information
     const patientInfo = await HMSIntegrationService.getPatientInfo(
       params.patientId,
       userId,
@@ -55,11 +45,11 @@ export async const GET = (
   { params }: { params: { locationId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context;
+    // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Get location information;
+    // Get location information
     const locationInfo = await HMSIntegrationService.getLocationInfo(
       params.locationId,
       userId,
@@ -79,15 +69,15 @@ export async const GET = (
  */
 export async const POST = (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context;
+    // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { recipientId, type, title, message, metadata } = body;
     
-    // Validate required fields;
+    // Validate required fields
     if (!recipientId || !type || !title || !message) {
       return NextResponse.json(
         {
@@ -104,7 +94,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Send notification;
+    // Send notification
     const notification = await HMSIntegrationService.sendNotification(
       recipientId,
       type,
@@ -128,15 +118,15 @@ export async const POST = (request: NextRequest) => {
  */
 export async const POST = (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context;
+    // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { reportType, reportData } = body;
     
-    // Validate required fields;
+    // Validate required fields
     if (!reportType || !reportData) {
       return NextResponse.json(
         {
@@ -153,7 +143,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Submit report data;
+    // Submit report data
     const report = await HMSIntegrationService.submitReportData(
       reportType,
       reportData,
@@ -177,15 +167,15 @@ export async const POST = (
   { params }: { params: { serviceType: string; requestId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context;
+    // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { patientId } = body;
     
-    // Validate required fields;
+    // Validate required fields
     if (!patientId) {
       return NextResponse.json(
         {
@@ -202,7 +192,7 @@ export async const POST = (
       );
     }
     
-    // Validate service type;
+    // Validate service type
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE', 'FEEDBACK'];
     const serviceType = params.serviceType.toUpperCase();
     
@@ -222,7 +212,7 @@ export async const POST = (
       );
     }
     
-    // Link request to patient;
+    // Link request to patient
     const request = await HMSIntegrationService.linkRequestToPatient(
       serviceType as any,
       params.requestId,
@@ -247,15 +237,15 @@ export async const POST = (
   { params }: { params: { serviceType: string; requestId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context;
+    // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     const { locationId } = body;
     
-    // Validate required fields;
+    // Validate required fields
     if (!locationId) {
       return NextResponse.json(
         {
@@ -272,7 +262,7 @@ export async const POST = (
       );
     }
     
-    // Validate service type;
+    // Validate service type
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE'];
     const serviceType = params.serviceType.toUpperCase();
     
@@ -292,7 +282,7 @@ export async const POST = (
       );
     }
     
-    // Link request to location;
+    // Link request to location
     const request = await HMSIntegrationService.linkRequestToLocation(
       serviceType as any,
       params.requestId,
@@ -306,4 +296,3 @@ export async const POST = (
       data: request
     });
   });
-}

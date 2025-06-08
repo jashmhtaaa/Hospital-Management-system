@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 import { EmployeeService } from '../employee-service';
 import { PrismaClient } from '@prisma/client';
 import { cache } from '@/lib/cache';
 
-// Mock PrismaClient;
+// Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
     employee: {
@@ -48,7 +38,7 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-// Mock cache service;
+// Mock cache service
 jest.mock('@/lib/cache', () => ({
   cache: {
     get: jest.fn(),
@@ -156,7 +146,7 @@ describe('EmployeeService', () => {
       const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
       (prisma.employee.create as jest.Mock).mockResolvedValue(mockEmployee);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
-      // Mock the invalidateEmployeeCache method to avoid the findFirst call;
+      // Mock the invalidateEmployeeCache method to avoid the findFirst call
       jest.spyOn(EmployeeService.prototype, 'invalidateEmployeeCache' as any).mockResolvedValue(undefined);
 
       await employeeService.createEmployee({
@@ -175,7 +165,7 @@ describe('EmployeeService', () => {
     it('should update employee and invalidate cache', async () => {
       const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
       (prisma.employee.update as jest.Mock).mockResolvedValue(mockEmployee);
-      // Mock the invalidateEmployeeCache method to avoid the findFirst call;
+      // Mock the invalidateEmployeeCache method to avoid the findFirst call
       jest.spyOn(EmployeeService.prototype, 'invalidateEmployeeCache' as any).mockResolvedValue(undefined);
 
       await employeeService.updateEmployee('123', { firstName: 'John Updated' }),
@@ -254,7 +244,7 @@ describe('EmployeeService', () => {
       expect(result.identifier[0].value).toEqual('EMP123'),
       expect(result.name[0].family).toEqual('Doe'),
       expect(result.name[0].given[0]).toEqual('John'),
-      expect(result.telecom[0].value).toEqual('john@example.com');
+      expect(result.telecom[0].value).toEqual('john@example.com')
     });
 
     it('should convert position to FHIR PractitionerRole with R5 compliance', () => {
@@ -287,7 +277,7 @@ describe('EmployeeService', () => {
       expect(result.code[0].coding[0].code).toEqual('NURSE'),
       expect(result.specialty[0].coding[0].code).toEqual('CARDIO'),
       expect(result.availableTime).toBeDefined(),
-      expect(result.notAvailable).toBeDefined();
+      expect(result.notAvailable).toBeDefined()
     });
   });
 

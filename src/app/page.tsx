@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useEffect }, { useState } from "react";
 'use client';
 import { Button } from '@/components/ui/button';
@@ -60,4 +50,3 @@ export default const Home = () {
       </Card>
     </main>
   );
-}

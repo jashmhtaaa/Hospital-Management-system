@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
 
-// Schema for asset creation;
+// Schema for asset creation
 const assetSchema = z.object({
   name: z.string().min(1, "Name is required"),
   assetType: z.enum(['EQUIPMENT', 'FURNITURE', 'IT', 'VEHICLE', 'BUILDING', 'OTHER'], {
@@ -39,13 +29,13 @@ const assetSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-// POST handler for creating asset;
+// POST handler for creating asset
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = assetSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -56,14 +46,14 @@ export async const POST = (request: NextRequest) => {
     
     const data = validationResult.data;
     
-    // Convert date strings to Date objects;
+    // Convert date strings to Date objects
     const assetData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
       warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined,
     };
     
-    // Create asset;
+    // Create asset
     const asset = await assetService.createAsset(assetData);
     
     return NextResponse.json(asset);
@@ -76,16 +66,16 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET handler for listing assets;
+// GET handler for listing assets
 export async const GET = (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     
-    // Parse pagination parameters;
+    // Parse pagination parameters
     const skip = parseInt(searchParams.get('skip') || '0');
     const take = parseInt(searchParams.get('take') || '10');
     
-    // Parse filter parameters;
+    // Parse filter parameters
     const search = searchParams.get('search') || undefined;
     const assetType = searchParams.get('assetType') as any || undefined;
     const status = searchParams.get('status') as any || undefined;
@@ -99,7 +89,7 @@ export async const GET = (request: NextRequest) => {
       ? new Date(searchParams.get('purchaseDateEnd'));
       : undefined;
     
-    // Get assets;
+    // Get assets
     const result = await assetService.listAssets({
       skip,
       take,
@@ -121,4 +111,3 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

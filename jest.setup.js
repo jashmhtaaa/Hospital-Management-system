@@ -1,25 +1,25 @@
 // Jest setup file
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom'
 
 // Global test environment setup
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'test'
 process.env.JWT_SECRET = 'test-secret';
-process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/test';
-process.env.REDIS_URL = 'redis://localhost:6379';
+process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/test'
+process.env.REDIS_URL = 'redis://localhost:6379'
 
 // Mock console methods to avoid noise in tests
-const originalConsoleError = console.error;
+const originalConsoleError = console.error
 const originalConsoleWarn = console.warn;
 
 beforeAll(() => {
 // Debug logging removed
 // Debug logging removed
-});
+})
 
 afterAll(() => {
 // Debug logging removed
 // Debug logging removed
-});
+})
 
 // Mock Prisma Client
 jest.mock('@prisma/client', () => {
@@ -141,7 +141,7 @@ jest.mock('@prisma/client', () => {
     $transaction: jest.fn((callback) => callback(mockPrismaClient)),
     $connect: jest.fn(),
     $disconnect: jest.fn(),
-  };
+  }
   
   return {
     PrismaClient: jest.fn(() => mockPrismaClient),
@@ -159,7 +159,7 @@ jest.mock('@/lib/cache', () => ({
     ttl: jest.fn(),
     exists: jest.fn(),
   },
-}));
+}))
 
 // Mock authentication service
 jest.mock('@/lib/auth', () => ({
@@ -168,13 +168,13 @@ jest.mock('@/lib/auth', () => ({
   hashPassword: jest.fn(),
   comparePassword: jest.fn(),
   generateRefreshToken: jest.fn(),
-}));
+}))
 
 // Mock audit service
 jest.mock('@/lib/audit', () => ({
   logAuditEvent: jest.fn(),
   getAuditLogs: jest.fn(),
-}));
+}))
 
 // Mock security service
 jest.mock('@/lib/security.service', () => ({
@@ -182,7 +182,7 @@ jest.mock('@/lib/security.service', () => ({
   decrypt: jest.fn(),
   hash: jest.fn(),
   verify: jest.fn(),
-}));
+}))
 
 // Mock Next.js router
 jest.mock('next/router', () => ({
@@ -194,7 +194,7 @@ jest.mock('next/router', () => ({
     pathname: '/',
     asPath: '/',
   })),
-}));
+}))
 
 // Mock Next.js navigation
 jest.mock('next/navigation', () => ({
@@ -205,7 +205,7 @@ jest.mock('next/navigation', () => ({
   })),
   usePathname: jest.fn(() => '/'),
   useSearchParams: jest.fn(() => new URLSearchParams()),
-}));
+}))
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -220,21 +220,21 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-});
+})
 
 // Mock IntersectionObserver
 global.IntersectionObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-}));
+}))
 
 // Mock ResizeObserver
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-}));
+}))
 
 // Mock localStorage
 const localStorageMock = {
@@ -242,7 +242,7 @@ const localStorageMock = {
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
-};
+}
 global.localStorage = localStorageMock;
 
 // Mock sessionStorage
@@ -251,12 +251,12 @@ const sessionStorageMock = {
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
-};
+}
 global.sessionStorage = sessionStorageMock;
 
 // Clean up mocks after each test
 afterEach(() => {
-  jest.clearAllMocks();
+  jest.clearAllMocks()
 });
 
 // Global test utilities
@@ -282,4 +282,3 @@ global.testUtils = {
     department: 'IT',
     ...overrides,
   }),
-};

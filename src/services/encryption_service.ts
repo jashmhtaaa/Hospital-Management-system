@@ -6,10 +6,10 @@ export {
   IEncryptionService, 
   SecureEncryptionService as EncryptionService,
   getEncryptionService 
-} from './encryption_service_secure';
+} from './encryption_service_secure'
 
 // For backward compatibility, export a synchronous wrapper
-import { getEncryptionService } from './encryption_service_secure';
+import { getEncryptionService } from './encryption_service_secure'
 
 /**
  * @deprecated Use SecureEncryptionService directly for new implementations
@@ -28,7 +28,7 @@ export class LegacyEncryptionService {
     
     // For immediate backward compatibility, handle as placeholder
     // In production, this should be migrated to async version
-    console.warn('DEPRECATED: Using legacy synchronous encryption. Migrate to SecureEncryptionService.encrypt()');
+    console.warn('DEPRECATED: Using legacy synchronous encryption. Migrate to SecureEncryptionService.encrypt()')
     return `encrypted_placeholder_${text}`;
   }
 
@@ -45,8 +45,8 @@ export class LegacyEncryptionService {
     if (encryptedText.startsWith(prefix)) {
       return encryptedText.substring(prefix.length);
     }
-    // If it doesn't match the placeholder format, return as is, or handle error;
-    // Debug logging removed: Attempted to decrypt text that was not in placeholder format: '${encryptedText}'`;
+    // If it doesn't match the placeholder format, return as is, or handle error
+    // Debug logging removed: Attempted to decrypt text that was not in placeholder format: '${encryptedText}'`
     );
     return encryptedText;
   }
@@ -54,22 +54,22 @@ export class LegacyEncryptionService {
 
 // Example Usage (for testing - remove or comment out for production):
 /*
-const encryptionService = new EncryptionService();
+const encryptionService = new EncryptionService()
 const originalText = "MySensitiveData123";
 
 const encrypted = encryptionService.encrypt(originalText);
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-const decrypted = encryptionService.decrypt(encrypted);
+const decrypted = encryptionService.decrypt(encrypted)
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-const nonPlaceholderEncrypted = "some_other_encrypted_format_data";
+const nonPlaceholderEncrypted = "some_other_encrypted_format_data"
 const decryptedNonPlaceholder = encryptionService.decrypt(nonPlaceholderEncrypted);
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-const nullEncrypted = encryptionService.encrypt(null as any);
+const nullEncrypted = encryptionService.encrypt(null as any)
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-const nullDecrypted = encryptionService.decrypt(nullEncrypted as any);
+const nullDecrypted = encryptionService.decrypt(nullEncrypted as any)
 // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-*/;
+*/

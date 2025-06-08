@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -23,10 +15,10 @@ import {
   TableRow,
   TableBody,
   TableCell,
-} from "@/components/ui"; // Assuming Input, Label are also here;
+} from "@/components/ui"; // Assuming Input, Label are also here
 import { Loader2 } from "lucide-react";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface VitalSigns {
   temperature?: string;
   pulse?: string;
@@ -45,11 +37,11 @@ interface IntakeOutput {
 
 interface NursingNote {
   id: string,
-  note_date: string;
-  nurse_first_name: string; // Assuming this comes from a join;
-  nurse_last_name: string; // Assuming this comes from a join;
-  vital_signs?: string; // JSON string;
-  intake_output?: string; // JSON string;
+  note_date: string,
+  nurse_first_name: string; // Assuming this comes from a join
+  nurse_last_name: string; // Assuming this comes from a join
+  vital_signs?: string; // JSON string
+  intake_output?: string; // JSON string
   medication_given?: string;
   procedures?: string;
   notes: string
@@ -57,17 +49,17 @@ interface NursingNote {
 
 interface AdmissionInfo {
   admission_number: string,
-  admission_date: string;
+  admission_date: string,
   patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  vital_signs: string; // JSON string;
-  intake_output: string; // JSON string;
+  vital_signs: string; // JSON string
+  intake_output: string; // JSON string
   medication_given: string,
-  procedures: string;
+  procedures: string,
   notes: string
 }
 
@@ -107,7 +99,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
 
-  // Fetch nursing notes for the admission;
+  // Fetch nursing notes for the admission
   useEffect(() => {
     const fetchNursingNotes = async (): Promise<void> => {
       if (!admissionId) {
@@ -119,22 +111,22 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       try {
         setLoading(true),
         setError(undefined);
-        // Simulate API call;
-        // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`);
+        // Simulate API call
+        // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`)
         // if (!response.ok) {
-        //   const errorData = await response.json().catch(() => ({}));
-        //   throw new Error(errorData.error || "Failed to fetch nursing notes");
+        //   const errorData = await response.json().catch(() => ({}))
+        //   throw new Error(errorData.error || "Failed to fetch nursing notes")
         // }
-        // const data = await response.json();
-        // setNursingNotes(data.nursing_notes || []);
-        // setPatientInfo(data.admission || null);
+        // const data = await response.json()
+        // setNursingNotes(data.nursing_notes || [])
+        // setPatientInfo(data.admission || null)
 
-        // Mock data;
+        // Mock data
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockNotes: NursingNote[] = [
           {
             id: "nn_001",
-            note_date: new Date(Date.now() - 7_200_000).toISOString(), // 2 hours ago;
+            note_date: new Date(Date.now() - 7_200_000).toISOString(), // 2 hours ago
             nurse_first_name: "Bob",
             nurse_last_name: "Johnson",
             vital_signs: JSON.stringify({
@@ -155,7 +147,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         ];
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday;
+          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -193,16 +185,16 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
     setSubmitSuccess(false);
 
     try {
-      // Validate JSON fields before submitting;
+      // Validate JSON fields before submitting
       try {
-        JSON.parse(formData.vital_signs); // Just parse to validate, don't assign;
+        JSON.parse(formData.vital_signs); // Just parse to validate, don't assign
       } catch {
         throw new Error(
           "Invalid JSON format in Vital Signs field. Please check the structure.";
         );
       }
       try {
-        JSON.parse(formData.intake_output); // Just parse to validate, don't assign;
+        JSON.parse(formData.intake_output); // Just parse to validate, don't assign
       } catch {
         throw new Error(
           "Invalid JSON format in Intake/Output field. Please check the structure.";
@@ -217,28 +209,28 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         ...formData,
         note_date: new Date().toISOString(),
         // nurse_id: session?.user?.id // Get from session in real app
-      };
+      }
 
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`, {
       //   method: "POST",
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       //   body: JSON.stringify(submissionData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || "Failed to create nursing note");
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || "Failed to create nursing note")
       // }
-      // const newNote: NursingNote = await response.json();
+      // const newNote: NursingNote = await response.json()
 
-      // Mock response;
+      // Mock response
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const newNote: NursingNote = {
         id: `nn_${Date.now()}`,
         note_date: submissionData.note_date,
-        nurse_first_name: "Current", // Replace with actual user data;
+        nurse_first_name: "Current", // Replace with actual user data
         nurse_last_name: "Nurse",
         vital_signs: formData.vital_signs,
         intake_output: formData.intake_output,
@@ -247,10 +239,10 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         notes: formData.notes,
       };
 
-      // Update the nursing notes list with the new note;
+      // Update the nursing notes list with the new note
       setNursingNotes((previous) => [newNote, ...previous]);
 
-      // Reset form;
+      // Reset form
       setFormData({
         vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
         intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
@@ -261,7 +253,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
       setSubmitSuccess(true);
 
-      // Clear success message after 3 seconds;
+      // Clear success message after 3 seconds
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
@@ -275,7 +267,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
     }
   };
 
-  // Format date for display;
+  // Format date for display
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
@@ -294,7 +286,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
     }
   };
 
-  // Parse JSON safely and return a specific type or null;
+  // Parse JSON safely and return a specific type or null
   const safeParseJSON = <T,>(jsonString: string | undefined): T | null => {
     if (!jsonString) return null;
     try {
@@ -479,7 +471,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                           <Table className="text-xs">;
                             <TableBody>
                               {Object.entries(vitals);
-                                .filter(([, value]) => value) // Only show entries with a value;
+                                .filter(([, value]) => value) // Only show entries with a value
                                 .map(([key, value]) => (
                                   <TableRow key={key}>;
                                     <TableCell className="font-medium capitalize pr-2 py-1">;

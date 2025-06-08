@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -31,7 +23,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository = {
   findById: getPrescriptionById,
@@ -60,7 +52,7 @@ const dispensingRepository = {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateDispensingVerificationRequest(data);
     if (!validationResult.success) {
@@ -70,28 +62,28 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify prescription exists;
+    // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!prescription) {
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
-    // Verify medication exists;
+    // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!medication) {
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
-    // Verify medication barcode matches prescription;
+    // Verify medication barcode matches prescription
     if (data.medicationBarcode !== medication.barcode) {
       return NextResponse.json(
         { 
@@ -103,7 +95,7 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Verify patient barcode matches prescription;
+    // Verify patient barcode matches prescription
     if (data.patientBarcode && data.patientBarcode !== prescription.patientId) {
       return NextResponse.json(
         { 
@@ -115,7 +107,7 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Create verification record;
+    // Create verification record
     const verification = {
       id: crypto.randomUUID(),
       prescriptionId: data.prescriptionId,
@@ -127,10 +119,10 @@ export async const POST = (req: NextRequest) => {
       notes: data.notes || ''
     };
 
-    // In a real implementation, save verification record;
-    // const verificationId = await verificationRepository.save(verification);
+    // In a real implementation, save verification record
+    // const verificationId = await verificationRepository.save(verification)
 
-    // Update dispensing status if dispensingId is provided;
+    // Update dispensing status if dispensingId is provided
     if (data.dispensingId) {
       const dispensing = await dispensingRepository.findById(data.dispensingId);
       if (dispensing) {
@@ -141,7 +133,7 @@ export async const POST = (req: NextRequest) => {
       }
     }
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DISPENSING', {
       action: 'VERIFY',
       resourceType: 'MedicationDispense',
@@ -154,7 +146,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         success: true,
@@ -169,4 +161,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error verifying medication dispensing');
   }
-}

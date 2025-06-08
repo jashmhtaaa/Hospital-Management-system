@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -26,10 +16,10 @@ import { Loader2, Search, Filter, Download, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-// Define types for feedback and complaint data;
+// Define types for feedback and complaint data
 interface Feedback {
   id: string,
-  type: string;
+  type: string,
   source: string,
   rating: number;
   comments?: string;
@@ -48,9 +38,9 @@ interface Feedback {
 
 interface Complaint {
   id: string,
-  title: string;
+  title: string,
   category: string,
-  severity: string;
+  severity: string,
   status: string,
   createdAt: string;
   departmentId?: string;
@@ -79,7 +69,7 @@ interface AnalyticsData {
   period: string
 }
 
-// Define columns for feedback table;
+// Define columns for feedback table
 const feedbackColumns: ColumnDef<Feedback>[] = [
   {
     accessorKey: 'id',
@@ -172,7 +162,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
   },
 ];
 
-// Define columns for complaint table;
+// Define columns for complaint table
 const complaintColumns: ColumnDef<Complaint>[] = [
   {
     accessorKey: 'id',
@@ -285,7 +275,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
   },
 ];
 
-// Define color palette for charts;
+// Define color palette for charts
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FF6B6B', '#6C757D'];
 
 export default const FeedbackDashboard = () {
@@ -296,7 +286,7 @@ export default const FeedbackDashboard = () {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [analyticsPeriod, setAnalyticsPeriod] = useState('MONTHLY');
   
-  // Filters;
+  // Filters
   const [feedbackFilters, setFeedbackFilters] = useState({
     type: '',
     source: '',
@@ -317,7 +307,7 @@ export default const FeedbackDashboard = () {
     limit: 10,
   });
   
-  // Pagination;
+  // Pagination
   const [feedbackPagination, setFeedbackPagination] = useState({
     total: 0,
     totalPages: 0,
@@ -328,7 +318,7 @@ export default const FeedbackDashboard = () {
     totalPages: 0,
   });
 
-  // Load data on component mount and when filters change;
+  // Load data on component mount and when filters change
   useEffect(() => {
     loadFeedbackData();
   }, [feedbackFilters]);
@@ -341,7 +331,7 @@ export default const FeedbackDashboard = () {
     loadAnalyticsData();
   }, [analyticsPeriod]);
 
-  // Load feedback data;
+  // Load feedback data
   const loadFeedbackData = async () => {
     setIsLoading(true);
     try {
@@ -373,7 +363,7 @@ export default const FeedbackDashboard = () {
     }
   };
 
-  // Load complaint data;
+  // Load complaint data
   const loadComplaintData = async () => {
     setIsLoading(true);
     try {
@@ -405,7 +395,7 @@ export default const FeedbackDashboard = () {
     }
   };
 
-  // Load analytics data;
+  // Load analytics data
   const loadAnalyticsData = async () => {
     try {
       const response = await fetch(`/api/support-services/feedback/analytics?period=${analyticsPeriod}`);
@@ -425,25 +415,25 @@ export default const FeedbackDashboard = () {
     }
   };
 
-  // Handle feedback filter changes;
+  // Handle feedback filter changes
   const handleFeedbackFilterChange = (key: string, value: string | number) => {
     setFeedbackFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change;
+      page: key === 'page' ? value : 1, // Reset page when other filters change
     }));
   };
 
-  // Handle complaint filter changes;
+  // Handle complaint filter changes
   const handleComplaintFilterChange = (key: string, value: string | number) => {
     setComplaintFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change;
+      page: key === 'page' ? value : 1, // Reset page when other filters change
     }));
   };
 
-  // Export data to CSV;
+  // Export data to CSV
   const exportToCSV = (data: unknown[], filename: string) => {
     const headers = Object.keys(data[0]).filter(key => !key.startsWith('_'));
     const csvContent = [
@@ -470,7 +460,7 @@ export default const FeedbackDashboard = () {
     document.body.removeChild(link);
   };
 
-  // Prepare data for charts;
+  // Prepare data for charts
   const prepareChartData = (data: unknown[]) => {
     return data.map((item, index) => ({
       ...item,
@@ -927,4 +917,3 @@ export default const FeedbackDashboard = () {
       </Tabs>
     </div>
   );
-}

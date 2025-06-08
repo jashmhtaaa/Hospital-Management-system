@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -33,16 +25,16 @@ import {
   UseSortByColumnProps,
   ColumnInstance,
   UseSortByState,
-  TableState, // Import TableState;
+  TableState, // Import TableState
 } from "react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUpDown } from "lucide-react"; // Icon for sorting;
+import { ArrowUpDown } from "lucide-react"; // Icon for sorting
 
-// Define the interface for a single medication object;
+// Define the interface for a single medication object
 interface Medication {
-  id: string; // Assuming ID is a string (like nanoid);
+  id: string; // Assuming ID is a string (like nanoid)
   item_code: string,
   generic_name: string;
   brand_name?: string | null;
@@ -55,7 +47,7 @@ interface Medication {
   prescription_required: boolean
 }
 
-// Define API response types;
+// Define API response types
 interface MedicationsApiResponse {
   medications?: Medication[];
   error?: string;
@@ -65,27 +57,27 @@ interface ApiErrorResponse {
   error?: string;
 }
 
-// Extend the react-table types for pagination, sorting, and global filter;
+// Extend the react-table types for pagination, sorting, and global filter
 type MedicationTableInstance = TableInstance<Medication> &
   UsePaginationInstanceProps<Medication> &;
   UseSortByInstanceProps<Medication> &;
   UseGlobalFiltersInstanceProps<Medication> & {
-    // State includes parts from different hooks;
+    // State includes parts from different hooks
     state: UsePaginationState<Medication> &;
       UseGlobalFiltersState<Medication> &;
       UseSortByState<Medication>;
   };
 
-// Extend ColumnInstance type to include sorting props for type safety in headers;
+// Extend ColumnInstance type to include sorting props for type safety in headers
 type MedicationColumnInstance = ColumnInstance<Medication> &
   UseSortByColumnProps<Medication>;
 
-// Medications List Component;
+// Medications List Component
 export default const MedicationsListPage = () {
   const router = useRouter();
-  const [medicationsData, setMedicationsData] = useState<Medication[]>([]); // Type the state;
+  const [medicationsData, setMedicationsData] = useState<Medication[]>([]); // Type the state
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(); // Type the error state;
+  const [error, setError] = useState<string | null>(); // Type the error state
   const [globalFilter, setGlobalFilter] = useState(""),
   useEffect(() => {
     const fetchMedications = async () => {
@@ -117,7 +109,7 @@ export default const MedicationsListPage = () {
     fetchMedications();
   }, []);
 
-  const columns = useMemo<Column<Medication>[]>( // Type the columns;
+  const columns = useMemo<Column<Medication>[]>( // Type the columns
     () => [
       {
         Header: "Item Code",
@@ -127,7 +119,7 @@ export default const MedicationsListPage = () {
         Header: "Medication",
         accessor: "generic_name",
         Cell: (
-          { row }: CellProps<Medication> // Type the row;
+          { row }: CellProps<Medication> // Type the row
         ) => (
 <div
             <div className="font-medium text-gray-900 dark:text-gray-100">;
@@ -145,7 +137,7 @@ export default const MedicationsListPage = () {
         Header: "Form & Strength",
         accessor: "dosage_form",
         Cell: (
-          { row }: CellProps<Medication> // Type the row;
+          { row }: CellProps<Medication> // Type the row
         ) => (
 <div
             <div>{row.original.dosage_form}</div>
@@ -159,13 +151,13 @@ export default const MedicationsListPage = () {
         Header: "Category",
         accessor: "category_name",
         Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
-          value || "-", // Type the value;
+          value || "-", // Type the value
       },
       {
         Header: "Manufacturer",
         accessor: "manufacturer_name",
         Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
-          value || "-", // Type the value;
+          value || "-", // Type the value
       },
       {
         Header: "Stock",
@@ -174,9 +166,9 @@ export default const MedicationsListPage = () {
           value,
           row,
         }: CellProps<Medication, number | null | undefined>) => {
-          // Type value and row;
-          const stockValue = value ?? 0; // Use nullish coalescing;
-          const lowStockThreshold = 10; // Example threshold;
+          // Type value and row
+          const stockValue = value ?? 0; // Use nullish coalescing
+          const lowStockThreshold = 10; // Example threshold
           const isLowStock = stockValue <= lowStockThreshold;
           return (
 <span
@@ -191,7 +183,7 @@ export default const MedicationsListPage = () {
         Header: "Prescription",
         accessor: "prescription_required",
         Cell: (
-          { value }: CellProps<Medication, boolean> // Type the value;
+          { value }: CellProps<Medication, boolean> // Type the value
         ) => (
 <span
             className={`px-2 py-0.5 text-xs font-medium rounded-full ${value ? "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300" : "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300"}`}
@@ -203,16 +195,16 @@ export default const MedicationsListPage = () {
       {
         Header: "Actions",
         id: "actions",
-        disableSortBy: true, // Actions column usually not sortable;
+        disableSortBy: true, // Actions column usually not sortable
         Cell: (
-          { row }: CellProps<Medication> // Type the row;
+          { row }: CellProps<Medication> // Type the row
         ) => (
           <Button>
             variant="ghost"
             size="sm"
             onClick={() =>
               router.push(`/dashboard/pharmacy/medications/${row.original.id}`);
-            } // Ensure route is correct;
+            } // Ensure route is correct
             className="text-teal-600 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300"
           >
             View/Edit
@@ -223,25 +215,25 @@ export default const MedicationsListPage = () {
     [router]
   );
 
-  // FIX: Remove sortBy from initialState as it's not part of TableState;
+  // FIX: Remove sortBy from initialState as it's not part of TableState
   const initialState: Partial<TableState<Medication>> = {
-    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState;
+    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState
   };
 
-  const tableInstance = useTable<Medication>( // Specify the type argument;
+  const tableInstance = useTable<Medication>( // Specify the type argument
     {
       columns,
       data: medicationsData,
       initialState: initialState,
-      // FIX: Remove autoReset properties as they are not valid TableOptions in v7;
+      // FIX: Remove autoReset properties as they are not valid TableOptions in v7
       // autoResetPage: false,
       // autoResetFilters: false,
       // autoResetSortBy: false,
     },
     useGlobalFilter,
     useSortBy,
-    usePagination;
-  ) as MedicationTableInstance; // Cast to the extended type;
+    usePagination
+  ) as MedicationTableInstance; // Cast to the extended type
 
   const {
     getTableProps,
@@ -257,21 +249,21 @@ export default const MedicationsListPage = () {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize }, // pageSize is correctly accessed from state here;
+    state: { pageIndex, pageSize }, // pageSize is correctly accessed from state here
     setGlobalFilter: setTableGlobalFilter,
   } = tableInstance;
 
-  // Set initial page size after instance creation;
+  // Set initial page size after instance creation
   useEffect(() => {
     setPageSize(10);
      
-  }, [setPageSize]); // Dependency array includes setPageSize;
+  }, [setPageSize]); // Dependency array includes setPageSize
 
   const handleGlobalFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Type the event;
+    // Type the event
     const value = event.target.value || undefined;
-    setGlobalFilter(value || ""); // Update local state;
-    setTableGlobalFilter(value); // Update table state;
+    setGlobalFilter(value || ""); // Update local state
+    setTableGlobalFilter(value); // Update table state
   };
 
   if (loading) {
@@ -305,7 +297,7 @@ export default const MedicationsListPage = () {
         </h1>
         <Button>
           className="bg-teal-600 hover:bg-teal-700 text-white"
-          onClick={() => router.push("/dashboard/pharmacy/medications/add")} // Ensure route is correct;
+          onClick={() => router.push("/dashboard/pharmacy/medications/add")} // Ensure route is correct
         >
           Add New Medication
         </Button>
@@ -329,7 +321,7 @@ export default const MedicationsListPage = () {
             <thead className="bg-gray-50 dark:bg-gray-700">;
               {" "}
               {headerGroups.map((headerGroup: HeaderGroup<Medication>) => {
-                // Type headerGroup;
+                // Type headerGroup
                 return (
                   <tr key={headerGroup.id}>;
                     {/* Correctly type and cast column */}
@@ -364,7 +356,7 @@ export default const MedicationsListPage = () {
             >
               {page.length > 0 ? (
                 page.map((row: Row<Medication>) => {
-                  // Type row;
+                  // Type row
                   prepareRow(row);
                   return (
                     <tr>
@@ -372,10 +364,10 @@ export default const MedicationsListPage = () {
                       className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
                       {row.cells.map((cell: Cell<Medication>) => {
-                        // Type cell;
+                        // Type cell
                         return (
                           <td>
-                            key={cell.getCellProps().key} // Add key prop here;
+                            key={cell.getCellProps().key} // Add key prop here
                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"
                           >
                             {cell.render("Cell")}
@@ -462,4 +454,3 @@ export default const MedicationsListPage = () {
       </div>
     </div>
   );
-}

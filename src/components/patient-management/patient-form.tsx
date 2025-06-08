@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
@@ -64,9 +54,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-// Define form schema;
+// Define form schema
 const patientFormSchema = z.object({
-  // Personal Information;
+  // Personal Information
   firstName: z.string().min(1, "First name is required"),
   middleName: z.string().optional(),
   lastName: z.string().min(1, "Last name is required"),
@@ -78,7 +68,7 @@ const patientFormSchema = z.object({
   pronouns: z.string().optional(),
   maritalStatus: z.string().optional(),
   
-  // Contact Information;
+  // Contact Information
   phoneHome: z.string().optional(),
   phoneMobile: z.string().optional(),
   phoneWork: z.string().optional(),
@@ -88,7 +78,7 @@ const patientFormSchema = z.object({
   smsOptIn: z.boolean().default(false),
   mailOptIn: z.boolean().default(true),
   
-  // Address;
+  // Address
   addressLine1: z.string().optional(),
   addressLine2: z.string().optional(),
   city: z.string().optional(),
@@ -96,7 +86,7 @@ const patientFormSchema = z.object({
   postalCode: z.string().optional(),
   country: z.string().default("USA"),
   
-  // Demographics;
+  // Demographics
   language: z.string().default("English"),
   interpreter: z.boolean().default(false),
   ethnicity: z.string().optional(),
@@ -106,12 +96,12 @@ const patientFormSchema = z.object({
   educationLevel: z.string().optional(),
   occupation: z.string().optional(),
   
-  // Medical;
+  // Medical
   bloodType: z.string().optional(),
   rh: z.string().optional(),
   organDonor: z.boolean().default(false),
   
-  // Administrative;
+  // Administrative
   mrn: z.string().optional(),
   status: z.string().default("Active"),
   vip: z.boolean().default(false),
@@ -121,18 +111,16 @@ const patientFormSchema = z.object({
 
 type PatientFormValues = z.infer<typeof patientFormSchema>;
 
-// Props interface;
+// Props interface
 interface PatientFormProps {
   initialData?: unknown;
   isEditing?: boolean;
-}
-
 export default const PatientForm = ({ initialData, isEditing = false }: PatientFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Default values for the form;
+  // Default values for the form
   const defaultValues: Partial<PatientFormValues> = initialData ? {
     // Personal Information,
     firstName: initialData.firstName || '',
@@ -146,7 +134,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
     pronouns: initialData.pronouns || '',
     maritalStatus: initialData.maritalStatus || '',
     
-    // Contact Information;
+    // Contact Information
     phoneHome: initialData.contact?.phoneHome || '',
     phoneMobile: initialData.contact?.phoneMobile || '',
     phoneWork: initialData.contact?.phoneWork || '',
@@ -156,7 +144,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
     smsOptIn: initialData.contact?.smsOptIn || false,
     mailOptIn: initialData.contact?.mailOptIn || true,
     
-    // Address;
+    // Address
     addressLine1: initialData.addresses &&
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine1 : '',
     addressLine2: initialData.addresses &&
@@ -166,7 +154,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
     postalCode: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '',
     country: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].country : 'USA',
     
-    // Demographics;
+    // Demographics
     language: initialData.language || 'English',
     interpreter: initialData.interpreter || false,
     ethnicity: initialData.ethnicity || '',
@@ -176,12 +164,12 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
     educationLevel: initialData.educationLevel || '',
     occupation: initialData.occupation || '',
     
-    // Medical;
+    // Medical
     bloodType: initialData.bloodType || '',
     rh: initialData.rh || '',
     organDonor: initialData.organDonor || false,
     
-    // Administrative;
+    // Administrative
     mrn: initialData.mrn || '',
     status: initialData.status || 'Active',
     vip: initialData.vip || false,
@@ -195,18 +183,18 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
     mailOptIn: true,
   };
   
-  // Form definition;
+  // Form definition
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientFormSchema),
     defaultValues,
   });
   
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (data: PatientFormValues) => {
     setIsSubmitting(true);
     
     try {
-      // Format the request data;
+      // Format the request data
       const requestData = {
         firstName: data.firstName,
         middleName: data.middleName || undefined,
@@ -235,7 +223,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
         confidential: data.confidential,
         notes: data.notes || undefined,
         
-        // Contact information;
+        // Contact information
         contact: {
           phoneHome: data.phoneHome || undefined,
           phoneMobile: data.phoneMobile || undefined,
@@ -258,12 +246,12 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
           postalCode: data.postalCode || '',
           country: data.country,
         } : undefined,
-      };
+      }
       
-      // API call - create or update;
+      // API call - create or update
       let response;
       if (isEditing && initialData?.id) {
-        // Update existing patient;
+        // Update existing patient
         response = await fetch(`/api/patients/${initialData.id}`, {
           method: 'PUT',
           headers: {
@@ -272,7 +260,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
           body: JSON.stringify(requestData),
         });
       } else {
-        // Create new patient;
+        // Create new patient
         response = await fetch('/api/patients', {
           method: 'POST',
           headers: {
@@ -289,13 +277,13 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
       
       const patient = await response.json();
       
-      // Show success message;
+      // Show success message
       toast({
         title: isEditing ? 'Patient Updated' : 'Patient Created',
         description: `${patient.firstName} ${patient.lastName} has been ${isEditing ? 'updated' : 'created'} successfully.`,
       });
       
-      // Navigate to patient detail;
+      // Navigate to patient detail
       router.push(`/patients/${patient.id}`);
     } catch (error: unknown) {
 
@@ -309,7 +297,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
     }
   };
   
-  // Handle cancel;
+  // Handle cancel
   const handleCancel = () => {
     if (isEditing && initialData?.id) {
       router.push(`/patients/${initialData.id}`);
@@ -1217,4 +1205,3 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
       </Card>
     </div>
   );
-}

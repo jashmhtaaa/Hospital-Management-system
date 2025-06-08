@@ -14,19 +14,17 @@ import { getNotificationService } from '../notifications/external-notification.s
 
 export interface GapImplementationTestResults {
   testsRun: number,
-  testsPassed: number;
+  testsPassed: number,
   testsFailed: number,
   gaps: {
     icdCoding: boolean,
-    qualityPersistence: boolean;
+    qualityPersistence: boolean,
     ehrPersistence: boolean,
-    externalNotifications: boolean;
+    externalNotifications: boolean,
     performanceOptimization: boolean
   };
   errors: string[],
   recommendations: string[]
-}
-
 export class GapImplementationTester {
   private errors: string[] = [];
   private recommendations: string[] = [];
@@ -50,7 +48,7 @@ export class GapImplementationTester {
     };
 
     // Test 1: ICD Coding Service
-    console.log('📋 Testing ICD Coding Service...');
+    console.log('📋 Testing ICD Coding Service...')
     results.testsRun++;
     try {
       await this.testICDCodingService();
@@ -64,7 +62,7 @@ export class GapImplementationTester {
     }
 
     // Test 2: Quality Persistence Service
-    console.log('🏥 Testing Quality Persistence Service...');
+    console.log('🏥 Testing Quality Persistence Service...')
     results.testsRun++;
     try {
       await this.testQualityPersistenceService();
@@ -78,7 +76,7 @@ export class GapImplementationTester {
     }
 
     // Test 3: EHR Persistence Service
-    console.log('📄 Testing EHR Persistence Service...');
+    console.log('📄 Testing EHR Persistence Service...')
     results.testsRun++;
     try {
       await this.testEHRPersistenceService();
@@ -92,7 +90,7 @@ export class GapImplementationTester {
     }
 
     // Test 4: External Notifications Service
-    console.log('📱 Testing External Notifications Service...');
+    console.log('📱 Testing External Notifications Service...')
     results.testsRun++;
     try {
       await this.testExternalNotificationsService();
@@ -106,7 +104,7 @@ export class GapImplementationTester {
     }
 
     // Test 5: Performance Optimization Service
-    console.log('⚡ Testing Performance Optimization Service...');
+    console.log('⚡ Testing Performance Optimization Service...')
     results.testsRun++;
     try {
       await this.testPerformanceOptimizationService();
@@ -120,7 +118,7 @@ export class GapImplementationTester {
     }
 
     // Test 6: Integrated Quality Service
-    console.log('🔗 Testing Integrated Quality Service...');
+    console.log('🔗 Testing Integrated Quality Service...')
     results.testsRun++;
     try {
       await this.testIntegratedQualityService();
@@ -149,14 +147,14 @@ export class GapImplementationTester {
       query: 'diabetes',
       version: 'ICD-10',
       limit: 5
-    });
+    })
 
     if (searchResults.length === 0) {
       throw new Error('ICD search returned no results');
     }
 
     // Test 2: Validate ICD code
-    const validation = await icdService.validateCode('E11.9', 'ICD-10');
+    const validation = await icdService.validateCode('E11.9', 'ICD-10')
     if (!validation) {
       throw new Error('ICD code validation failed');
     }
@@ -165,7 +163,7 @@ export class GapImplementationTester {
     const suggestions = await icdService.getCodingSuggestions(
       'Patient presents with chest pain and shortness of breath',
       'diagnosis'
-    );
+    )
 
     if (suggestions.suggestions.length === 0) {
       throw new Error('ICD coding suggestions failed');
@@ -179,7 +177,7 @@ export class GapImplementationTester {
       codeType: 'diagnosis',
       coderId: 'test_coder_789',
       priority: 'routine'
-    });
+    })
 
     if (!requestId) {
       throw new Error('ICD coding request submission failed');
@@ -212,7 +210,7 @@ export class GapImplementationTester {
       lastCalculated: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
-    };
+    }
 
     await qualityPersistence.saveQualityIndicator(testIndicator, 'test_user');
 
@@ -220,7 +218,7 @@ export class GapImplementationTester {
     const retrievedIndicator = await qualityPersistence.getQualityIndicator(
       testIndicator.id, 
       'test_user'
-    );
+    )
 
     if (!retrievedIndicator) {
       throw new Error('Failed to retrieve saved quality indicator');
@@ -241,14 +239,14 @@ export class GapImplementationTester {
       notifications: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    };
+    }
 
     await qualityPersistence.saveQualityEvent(testEvent, 'test_user');
 
     // Test 4: Retrieve quality events
     const events = await qualityPersistence.getQualityEvents({
       type: 'medication_error'
-    }, 'test_user');
+    }, 'test_user')
 
     if (events.length === 0) {
       throw new Error('Failed to retrieve quality events');
@@ -278,7 +276,7 @@ export class GapImplementationTester {
       icd10Codes: ['I25.10'],
       createdAt: new Date(),
       updatedAt: new Date()
-    };
+    }
 
     await ehrPersistence.saveClinicalNote(testNote, 'test_user');
 
@@ -286,7 +284,7 @@ export class GapImplementationTester {
     const retrievedNote = await ehrPersistence.getClinicalNote(
       testNote.id, 
       'test_user'
-    );
+    )
 
     if (!retrievedNote) {
       throw new Error('Failed to retrieve saved clinical note');
@@ -296,7 +294,7 @@ export class GapImplementationTester {
     const searchResults = await ehrPersistence.searchClinicalNotes({
       patientId: testNote.patientId,
       authorId: testNote.authorId
-    }, 'test_user');
+    }, 'test_user')
 
     if (searchResults.length === 0) {
       throw new Error('Failed to search clinical notes');
@@ -324,7 +322,7 @@ export class GapImplementationTester {
       },
       priority: 'medium',
       sender: 'test_system'
-    });
+    })
 
     if (smsResult.status !== 'sent') {
       throw new Error('SMS notification failed');
@@ -343,7 +341,7 @@ export class GapImplementationTester {
       },
       priority: 'high',
       sender: 'test_system'
-    });
+    })
 
     if (emailResult.status !== 'sent') {
       throw new Error('Email notification failed');
@@ -362,7 +360,7 @@ export class GapImplementationTester {
       },
       priority: 'urgent',
       sender: 'test_system'
-    });
+    })
 
     if (whatsappResult.status !== 'sent') {
       throw new Error('WhatsApp notification failed');
@@ -377,28 +375,28 @@ export class GapImplementationTester {
     const perfService = getDatabaseOptimizationService();
 
     // Test 1: Start monitoring
-    await perfService.startMonitoring();
+    await perfService.startMonitoring()
 
     // Test 2: Get database stats
-    const stats = await perfService.getDatabaseStats();
+    const stats = await perfService.getDatabaseStats()
     
     if (!stats.connectionPool || !stats.queryMetrics) {
       throw new Error('Failed to collect database statistics');
     }
 
     // Test 3: Get performance alerts
-    const alerts = perfService.getPerformanceAlerts();
+    const alerts = perfService.getPerformanceAlerts()
     // Alerts array should exist (may be empty)
 
     // Test 4: Apply automatic optimizations
-    const optimizations = await perfService.applyAutomaticOptimizations();
+    const optimizations = await perfService.applyAutomaticOptimizations()
     
     if (typeof optimizations.indexesCreated !== 'number') {
       throw new Error('Failed to apply automatic optimizations');
     }
 
     // Stop monitoring
-    perfService.stopMonitoring();
+    perfService.stopMonitoring()
 
     console.log('  ✓ Performance monitoring working');
     console.log('  ✓ Database statistics collection working');
@@ -410,7 +408,7 @@ export class GapImplementationTester {
     const integratedService = getIntegratedQualityService();
 
     // Test 1: Start integrated service
-    await integratedService.start();
+    await integratedService.start()
 
     // Test 2: Register quality indicator
     const indicatorId = await integratedService.registerQualityIndicator({
@@ -426,21 +424,21 @@ export class GapImplementationTester {
       isActive: true,
       isCore: true,
       trend: 'improving'
-    }, 'test_user');
+    }, 'test_user')
 
     if (!indicatorId) {
       throw new Error('Failed to register quality indicator');
     }
 
     // Test 3: Get quality statistics
-    const stats = await integratedService.getQualityStatistics();
+    const stats = await integratedService.getQualityStatistics()
     
     if (typeof stats.indicators.total !== 'number') {
       throw new Error('Failed to get quality statistics');
     }
 
     // Test 4: Health check
-    const healthCheck = await integratedService.healthCheck();
+    const healthCheck = await integratedService.healthCheck()
     
     if (healthCheck.status !== 'healthy' && healthCheck.status !== 'degraded') {
       throw new Error('Integrated service health check failed');
@@ -518,7 +516,7 @@ export class GapImplementationTester {
 
 // Export function for easy testing
 export async function runGapImplementationTests(): Promise<GapImplementationTestResults> {
-  const tester = new GapImplementationTester();
+  const tester = new GapImplementationTester()
   return await tester.runAllTests();
 }
 
@@ -526,10 +524,9 @@ export async function runGapImplementationTests(): Promise<GapImplementationTest
 if (require.main === module) {
   runGapImplementationTests()
     .then(results => {
-      process.exit(results.testsFailed > 0 ? 1 : 0);
+      process.exit(results.testsFailed > 0 ? 1 : 0)
     })
     .catch(error => {
       console.error('Test execution failed:', error);
       process.exit(1);
     });
-}

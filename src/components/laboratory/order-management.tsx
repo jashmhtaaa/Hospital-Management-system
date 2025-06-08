@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect, useCallback } from "react";
-// FIX: Removed unused Input, Form, DatePickerProps, PlusOutlined, SearchOutlined;
+// FIX: Removed unused Input, Form, DatePickerProps, PlusOutlined, SearchOutlined
 import {
   Card,
   Table,
@@ -22,46 +12,45 @@ import {
   DatePicker,
   Tag,
 } from "antd";
-// FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker;
+// FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker
 import type { RangePickerProps } from "antd/es/date-picker";
-// FIX: Removed unused PlusOutlined, SearchOutlined;
+// FIX: Removed unused PlusOutlined, SearchOutlined
 import { ReloadOutlined, EyeOutlined } from "@ant-design/icons";
-import dayjs from "dayjs"; // FIX: Import dayjs;
-import type { Dayjs } from "dayjs"; // FIX: Import Dayjs type;
+import dayjs from "dayjs"; // FIX: Import dayjs
+import type { Dayjs } from "dayjs"; // FIX: Import Dayjs type
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-// Define interfaces for data types;
+// Define interfaces for data types
 interface Patient {
   id: string,
-  first_name: string;
+  first_name: string,
   last_name: string
 }
 
-
 interface OrderItem {
   id: string,
-  name: string;
+  name: string,
   status: "pending" | "in_progress" | "completed" | "canceled",
   price: number
 }
 
 interface Order {
   id: string,
-  patient_name: string;
+  patient_name: string,
   doctor_name: string | null,
-  order_date: string;
+  order_date: string,
   source: string,
-  priority: "routine" | "urgent" | "stat";
+  priority: "routine" | "urgent" | "stat",
   status: "pending" | "collected" | "processing" | "completed" | "canceled";
   notes?: string;
 }
 
-// FIX: Define API response types;
+// FIX: Define API response types
 interface PatientsApiResponse {
   results?: Patient[];
-  // Add other potential fields like pagination info;
+  // Add other potential fields like pagination info
 }
 
 interface OrdersApiResponse {
@@ -76,10 +65,10 @@ interface ApiErrorResponse {
   error?: string;
 }
 
-// FIX: Update FilterState to use Dayjs;
+// FIX: Update FilterState to use Dayjs
 interface FilterState {
   patientId: string,
-  status: string | null;
+  status: string | null,
   source: string | null,
   dateRange: [Dayjs, Dayjs] | null;
 }
@@ -96,33 +85,33 @@ const OrderManagement: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [viewingOrder, setViewingOrder] = useState<Order | null>();
   const [patients, setPatients] = useState<Patient[]>([]);
-  // const [_tests, setTests] = useState<Test[]>([]); // FIX: Removed unused state variable;
+  // const [_tests, setTests] = useState<Test[]>([]); // FIX: Removed unused state variable
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [loadingOrderItems, setLoadingOrderItems] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
 
-  // Fetch patients;
+  // Fetch patients
   const fetchPatients = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
-      const response = await fetch("/api/patients"); // Assuming this endpoint exists;
+      const response = await fetch("/api/patients"); // Assuming this endpoint exists
       if (!response.ok) {
         let errorMessage = "Failed to fetch patients";
         try {
-          // FIX: Type errorData;
+          // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data
       const data: PatientsApiResponse = await response.json(),
-      setPatients(data.results || []); // Use results array or default to empty;
+      setPatients(data.results || []); // Use results array or default to empty
       setError(undefined);
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
@@ -133,7 +122,7 @@ const OrderManagement: React.FC = () => {
     }
   }, []);
 
-  // Fetch tests;
+  // Fetch tests
   const fetchTests = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
@@ -141,19 +130,19 @@ const OrderManagement: React.FC = () => {
       if (!response.ok) {
         let errorMessage = "Failed to fetch tests";
         try {
-          // FIX: Type errorData;
+          // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError
         throw new Error(errorMessage);
       }
-      await response.json(); // FIX: Removed unused _data variable;
-      // setTests(data.results || []); // FIX: Removed call to unused state setter;
+      await response.json(); // FIX: Removed unused _data variable
+      // setTests(data.results || []); // FIX: Removed call to unused state setter
       setError(undefined);
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
@@ -164,7 +153,7 @@ const OrderManagement: React.FC = () => {
     }
   }, []);
 
-  // Fetch orders with filters;
+  // Fetch orders with filters
   const fetchOrders = useCallback(async (): Promise<void> => {
     setLoading(true),
     setError(undefined);
@@ -181,7 +170,7 @@ const OrderManagement: React.FC = () => {
       if (filters.source) {
         parameters.append("source", filters.source);
       }
-      // FIX: Use Dayjs for date range and convert to ISO string;
+      // FIX: Use Dayjs for date range and convert to ISO string
       if (filters.dateRange && filters.dateRange[0] && filters.dateRange[1]) {
         parameters.append(
           "startDate",
@@ -201,33 +190,33 @@ const OrderManagement: React.FC = () => {
       if (!response.ok) {
         let errorMessage = "Failed to fetch orders";
         try {
-          // FIX: Type errorData;
+          // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data
       const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
     } catch (error_: unknown) {
-      // FIX: Use unknown;
-      // FIX: Prefix unused variable;
-      // const _messageText = err instanceof Error ? err.message : 'An unknown error occurred'; // FIX: Commented out unused variable;
+      // FIX: Use unknown
+      // FIX: Prefix unused variable
+      // const _messageText = err instanceof Error ? err.message : 'An unknown error occurred'; // FIX: Commented out unused variable
 
       message.error("Failed to load laboratory orders"),
       setError(
         `Failed to load laboratory orders: ${error_ instanceof Error ? error_.message : "An unknown error occurred"}`
       ); // FIX: Use error directly
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
     // FIX: Add filters to dependency array
-  }, [filters]);
+  }, [filters])
 
-  // Fetch order items for a specific order;
+  // Fetch order items for a specific order
   const fetchOrderItems = async (orderId: string): Promise<void> => {
     setLoadingOrderItems(true);
     try {
@@ -235,21 +224,21 @@ const OrderManagement: React.FC = () => {
       if (!response.ok) {
         let errorMessage = "Failed to fetch order items";
         try {
-          // FIX: Type errorData;
+          // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data
       const data: OrderItemsApiResponse = await response.json(),
       setOrderItems(data.results || []);
     } catch (error_: unknown) {
-      // FIX: Use unknown;
-      // const messageText = // FIX: Removed unused variable;
-      //   error_ instanceof Error ? error_.message : "An unknown error occurred";
+      // FIX: Use unknown
+      // const messageText = // FIX: Removed unused variable
+      //   error_ instanceof Error ? error_.message : "An unknown error occurred"
 
       message.error("Failed to load order items");
     } finally {
@@ -257,24 +246,24 @@ const OrderManagement: React.FC = () => {
     }
   };
 
-  // Load data on component mount;
+  // Load data on component mount
   useEffect(() => {
     fetchPatients(),
     fetchTests();
-    // fetchOrders(); // fetchOrders is called by the filter useEffect;
+    // fetchOrders(); // fetchOrders is called by the filter useEffect
     // FIX: Add fetchPatients and fetchTests to dependency array
-  }, [fetchPatients, fetchTests]);
+  }, [fetchPatients, fetchTests])
 
-  // Reload orders when filters change;
+  // Reload orders when filters change
   useEffect(() => {
     fetchOrders();
     // FIX: Add fetchOrders to dependency array
-  }, [filters, fetchOrders]);
+  }, [filters, fetchOrders])
 
-  // FIX: Update type for value in handleFilterChange for dateRange;
-  // FIX: Replace any with unknown;
+  // FIX: Update type for value in handleFilterChange for dateRange
+  // FIX: Replace any with unknown
   const handleFilterChange = (key: keyof FilterState, value: unknown): void => {
-    // Ensure dateRange is correctly typed when setting state;
+    // Ensure dateRange is correctly typed when setting state
     if (key === "dateRange") {
       setFilters((previous) => ({
         ...previous,
@@ -284,7 +273,7 @@ const OrderManagement: React.FC = () => {
       setFilters((previous) => ({
         ...previous,
         [key]: value as string | null,
-      })); // Cast other values to string | null;
+      })); // Cast other values to string | null
     }
   };
 
@@ -297,14 +286,14 @@ const OrderManagement: React.FC = () => {
     });
   };
 
-  // View order details;
+  // View order details
   const handleViewOrder = async (order: Order): Promise<void> => {
     setViewingOrder(order),
     setIsModalVisible(true);
     fetchOrderItems(order.id);
   };
 
-  // Table columns;
+  // Table columns
   const columns = [
     {
       title: "Order ID",
@@ -345,7 +334,7 @@ const OrderManagement: React.FC = () => {
       key: "priority",
       width: "10%",
       render: (priority: string) => {
-        let color = "blue";
+        let color = "blue"
         if (priority === "urgent") color = "orange";
         if (priority === "stat") color = "red";
         return <Tag color={color}>{priority.toUpperCase()}</Tag>;
@@ -380,9 +369,9 @@ const OrderManagement: React.FC = () => {
         </Button>
       ),
     },
-  ];
+  ]
 
-  // Order items columns for the modal;
+  // Order items columns for the modal
   const orderItemColumns = [
     {
       title: "Test/Panel",
@@ -428,7 +417,7 @@ const OrderManagement: React.FC = () => {
             value={filters.patientId || undefined}
             onChange={(value: string) => handleFilterChange("patientId", value)}
             style={{ width: 200 }}
-            // FIX: Type option for filterOption;
+            // FIX: Type option for filterOption
             filterOption={(
               input: string,
               option?: { children: React.ReactNode }
@@ -576,7 +565,7 @@ const OrderManagement: React.FC = () => {
               {orderItems.length > 0 ? (
                 <Table>
                   dataSource={orderItems}
-                  columns={orderItemColumns} // FIX: Use defined columns;
+                  columns={orderItemColumns} // FIX: Use defined columns
                   rowKey="id"
                   pagination={false}
                   size="small"

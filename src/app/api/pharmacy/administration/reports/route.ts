@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -34,7 +26,7 @@ const administrationRepository = {
   save: (administration: unknown) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 /**
  * GET /api/pharmacy/administration/reports;
@@ -42,16 +34,16 @@ const administrationRepository = {
  */
 export async const GET = (req: NextRequest) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get query parameters;
+    // Get query parameters
     const url = new URL(req.url);
     const reportType = url.searchParams.get('reportType') || 'administration';
     const startDate = url.searchParams.get('startDate');
@@ -66,7 +58,7 @@ export async const GET = (req: NextRequest) => {
     const groupBy = url.searchParams.get('groupBy') || 'none';
     const includeMetrics = url.searchParams.get('includeMetrics') === 'true';
 
-    // Validate date range;
+    // Validate date range
     if (!startDate || !endDate) {
       return NextResponse.json(
         { error: 'Start date and end date are required' },
@@ -74,7 +66,7 @@ export async const GET = (req: NextRequest) => {
       );
     }
 
-    // Build report criteria;
+    // Build report criteria
     const criteria: unknown = {
       reportType,
       startDate: new Date(startDate),
@@ -89,22 +81,22 @@ export async const GET = (req: NextRequest) => {
     if (administeredBy) criteria.administeredBy = administeredBy;
     if (status) criteria.status = status;
 
-    // Generate report;
+    // Generate report
     const report = await administrationRepository.generateReport(criteria);
 
-    // Add metrics if requested;
+    // Add metrics if requested
     if (includeMetrics) {
-      // Calculate metrics based on report data;
+      // Calculate metrics based on report data
       const metrics = calculateMetrics(report.data, criteria);
       report.metrics = metrics;
     }
 
-    // Format report based on requested format;
+    // Format report based on requested format
     let formattedReport;
     if (format === 'csv') {
       formattedReport = convertToCSV(report.data);
       
-      // Audit logging;
+      // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
         action: 'EXPORT_REPORT',
         resourceType: 'MedicationAdministration',
@@ -117,7 +109,7 @@ export async const GET = (req: NextRequest) => {
         }
       });
       
-      // Return CSV response;
+      // Return CSV response
       return new NextResponse(formattedReport, {
         status: 200,
         headers: {
@@ -128,7 +120,7 @@ export async const GET = (req: NextRequest) => {
     } else {
       formattedReport = report;
       
-      // Audit logging;
+      // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
         action: 'GENERATE_REPORT',
         resourceType: 'MedicationAdministration',
@@ -141,7 +133,7 @@ export async const GET = (req: NextRequest) => {
         }
       });
       
-      // Return JSON response;
+      // Return JSON response
       return NextResponse.json(formattedReport, { status: 200 });
     }
   } catch (error) {
@@ -153,7 +145,7 @@ export async const GET = (req: NextRequest) => {
  * Helper function to calculate metrics for administration report;
  */
 const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
-  // Calculate various metrics based on the report data;
+  // Calculate various metrics based on the report data
   const metrics = {
     totalAdministrations: data.length,
     onTimeAdministrations: 0,
@@ -170,9 +162,9 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     administrationsByRoute: {}
   };
 
-  // Calculate metrics;
+  // Calculate metrics
   data.forEach(item => {
-    // Count on-time, late, and missed administrations;
+    // Count on-time, late, and missed administrations
     if (item.status === 'completed') {
       metrics.documentedAdministrations++;
       
@@ -185,17 +177,17 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
       metrics.missedAdministrations++;
     }
     
-    // Count high-alert medications;
+    // Count high-alert medications
     if (item.isHighAlert) {
       metrics.highAlertMedications++;
     }
     
-    // Count controlled substances;
+    // Count controlled substances
     if (item.isControlled) {
       metrics.controlledSubstances++;
     }
     
-    // Count by shift;
+    // Count by shift
     const adminHour = new Date(item.administeredAt).getHours();
     if (adminHour >= 7 && adminHour < 15) {
       metrics.administrationsByShift.morning++;
@@ -205,12 +197,12 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
       metrics.administrationsByShift.night++;
     }
     
-    // Count by route;
+    // Count by route
     const route = item.route || 'unknown';
     metrics.administrationsByRoute[route] = (metrics.administrationsByRoute[route] || 0) + 1;
   });
   
-  // Calculate percentages;
+  // Calculate percentages
   if (metrics.totalAdministrations > 0) {
     metrics.onTimePercentage = (metrics.onTimeAdministrations / metrics.totalAdministrations) * 100;
     metrics.latePercentage = (metrics.lateAdministrations / metrics.totalAdministrations) * 100;
@@ -229,27 +221,27 @@ const convertToCSV = (data: unknown[]): string {
     return ''
   }
   
-  // Get headers from first item;
+  // Get headers from first item
   const headers = Object.keys(data[0]);
   
-  // Create CSV header row;
+  // Create CSV header row
   let csv = headers.join(',') + '\n';
   
-  // Add data rows;
+  // Add data rows
   data.forEach(item => {
     const row = headers.map(header => {
       const value = item[header];
       
-      // Handle different value types;
+      // Handle different value types
       if (value === null || value === undefined) {
         return '';
       } else if (typeof value === 'string') {
-        // Escape quotes and wrap in quotes;
+        // Escape quotes and wrap in quotes
         return `"${value.replace(/"/g, '""')}"`;
       } else if (value instanceof Date) {
         return `"${value.toISOString()}"`;
       } else if (typeof value === 'object') {
-        // Convert objects to JSON string;
+        // Convert objects to JSON string
         return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
       } else {
         return value;
@@ -260,4 +252,3 @@ const convertToCSV = (data: unknown[]): string {
   });
   
   return csv;
-}

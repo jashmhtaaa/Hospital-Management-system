@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -25,8 +15,6 @@ import { useRouter } from 'next/navigation';
 interface ContactManagementProps {
   contactId?: string;
   onSuccess?: (contact: unknown) => void
-}
-
 export default const ContactManagement = ({ contactId, onSuccess }: ContactManagementProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,7 +49,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
   const [patientId, setPatientId] = useState('');
   const [activities, setActivities] = useState<any[]>([]);
 
-  // Fetch contact data if editing an existing contact;
+  // Fetch contact data if editing an existing contact
   useEffect(() => {
     const fetchContact = async () => {
       if (!contactId) return;
@@ -74,7 +62,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
         const data = await response.json(),
         setContact(data);
         
-        // Set form values from contact data;
+        // Set form values from contact data
         setFormData({
           name: data.name || '',
           email: data.email || '',
@@ -97,23 +85,23 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
           customFields: data.customFields || {}
         });
         
-        // Fetch contact notes;
+        // Fetch contact notes
         if (data.notes && data.notes.length > 0) {
           setNotes(data.notes);
         }
         
-        // Fetch contact segments;
+        // Fetch contact segments
         if (data.segments && data.segments.length > 0) {
           setSegments(data.segments);
         }
         
-        // Fetch patient data if linked;
+        // Fetch patient data if linked
         if (data.patientId) {
           setPatientId(data.patientId),
           fetchPatientData(data.patientId);
         }
         
-        // Fetch contact activities;
+        // Fetch contact activities
         fetchContactActivities(contactId);
       } catch (error) {
 
@@ -130,7 +118,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     fetchContact();
   }, [contactId]);
 
-  // Fetch available segments;
+  // Fetch available segments
   useEffect(() => {
     const fetchSegments = async () => {
       try {
@@ -147,7 +135,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     fetchSegments();
   }, []);
 
-  // Fetch patient data;
+  // Fetch patient data
   const fetchPatientData = async (id: string) => {
     try {
       const response = await fetch(`/api/patients/${id}`);
@@ -160,7 +148,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Fetch contact activities;
+  // Fetch contact activities
   const fetchContactActivities = async (id: string) => {
     try {
       const response = await fetch(`/api/support-services/marketing/contacts/${id}/activities`);
@@ -173,7 +161,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle form input changes;
+  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
@@ -194,7 +182,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle select changes;
+  // Handle select changes
   const handleSelectChange = (name: string, value: string) => {
     if (name.includes('.')) {
       const [parent, child] = name.split('.'),
@@ -213,7 +201,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle checkbox changes;
+  // Handle checkbox changes
   const handleCheckboxChange = (name: string, checked: boolean) => {
     if (name.includes('.')) {
       const [parent, child] = name.split('.'),
@@ -232,7 +220,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle form submission;
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
     setIsLoading(true);
@@ -277,7 +265,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle adding a note;
+  // Handle adding a note
   const handleAddNote = async () => {
     if (!contactId || !newNote.trim()) return;
     
@@ -309,7 +297,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle linking patient;
+  // Handle linking patient
   const handleLinkPatient = async () => {
     if (!contactId || !patientId.trim()) return;
     
@@ -341,7 +329,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
     }
   };
 
-  // Handle adding to segment;
+  // Handle adding to segment
   const handleAddToSegment = async (segmentId: string) => {
     if (!contactId) return;
     
@@ -356,7 +344,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       
       if (!response.ok) throw new Error('Failed to add to segment');
       
-      // Update segments;
+      // Update segments
       const segment = availableSegments.find(s => s.id === segmentId);
       if (segment) {
         setSegments([...segments, segment]);
@@ -874,4 +862,3 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
       </CardContent>
     </Card>
   );
-}

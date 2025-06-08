@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +31,7 @@ const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(
         ref={ref}
         className={cn(
           "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50",
-          className;
+          className
         )}
         {...props}
       />

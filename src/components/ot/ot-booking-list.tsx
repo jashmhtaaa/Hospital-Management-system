@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -30,24 +22,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
 import { Eye, Edit, Trash2, Filter } from "lucide-react";
 import { format } from "date-fns";
 
-// Mock data structure - replace with actual API response type;
+// Mock data structure - replace with actual API response type
 interface Booking {
   id: string,
-  scheduled_start_time: string;
+  scheduled_start_time: string,
   scheduled_end_time: string,
-  status: string;
+  status: string,
   priority: string,
-  patient_name: string;
+  patient_name: string,
   patient_mrn: string,
-  surgery_name: string;
+  surgery_name: string,
   theatre_name: string,
   surgeon_name: string
-}
-
 export default const OTBookingList = () {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +55,7 @@ export default const OTBookingList = () {
         setLoading(true),
         setError(undefined);
 
-        // Construct query parameters based on filters;
+        // Construct query parameters based on filters
         const queryParameters = new URLSearchParams();
         if (filters.status) queryParameters.append("status", filters.status);
         if (filters.theatreId)
@@ -77,16 +67,16 @@ export default const OTBookingList = () {
           queryParameters.append("endDate", filters.date);
         }
 
-        // Replace with actual API call;
-        // const response = await fetch(`/api/ot/bookings?${queryParams.toString()}`);
+        // Replace with actual API call
+        // const response = await fetch(`/api/ot/bookings?${queryParams.toString()}`)
         // if (!response.ok) {
-        //   throw new Error("Failed to fetch bookings");
+        //   throw new Error("Failed to fetch bookings")
         // }
-        // const data = await response.json();
-        // setBookings(data);
+        // const data = await response.json()
+        // setBookings(data)
 
-        // Mock data for demonstration;
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
+        // Mock data for demonstration
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: Booking[] = [
           {
             id: "booking-1",
@@ -132,7 +122,7 @@ export default const OTBookingList = () {
               (!filters.date ||
                 format(new Date(b.scheduled_start_time), "yyyy-MM-dd") ===
                   filters.date);
-            // Add filtering for theatreId and surgeonId if needed;
+            // Add filtering for theatreId and surgeonId if needed
           );
         );
 
@@ -301,4 +291,3 @@ export default const OTBookingList = () {
       </CardContent>
     </Card>
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -30,7 +22,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findById: getPrescriptionById,
@@ -60,7 +52,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     if (!data.patientId || !data.prescriptionId || !data.medicationId || !data.reason) {
       return NextResponse.json(
@@ -69,22 +61,22 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify prescription exists;
+    // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!prescription) {
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
-    // Create missed dose record;
+    // Create missed dose record
     const administration = new PharmacyDomain.MedicationAdministration(
       crypto.randomUUID(),
       data.patientId,
@@ -100,19 +92,19 @@ export async const POST = (req: NextRequest) => {
       data.notes;
     );
 
-    // Save missed dose record;
+    // Save missed dose record
     const administrationId = await administrationRepository.save(administration);
 
-    // For certain reason codes, create alerts or notifications;
+    // For certain reason codes, create alerts or notifications
     if (data.reasonCode === 'medication-unavailable') {
-      // In a real implementation, notify pharmacy about stock issue;
+      // In a real implementation, notify pharmacy about stock issue
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } else if (data.reasonCode === 'adverse-reaction') {
-      // In a real implementation, create alert for clinical staff;
+      // In a real implementation, create alert for clinical staff
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
 
-    // Audit logging;
+    // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'MISSED_DOSE',
       resourceType: 'MedicationAdministration',
@@ -127,7 +119,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: administrationId,
@@ -138,4 +130,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error recording missed dose');
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -16,19 +6,19 @@ import { Button } from '@/components/ui/button';
 
 interface VitalSign {
   id: string,
-  date: string;
+  date: string,
   time: string,
-  temperature: string;
+  temperature: string,
   pulse: string,
-  respiration: string;
+  respiration: string,
   bloodPressure: string,
-  oxygenSaturation: string;
+  oxygenSaturation: string,
   recordedBy: string
 }
 
 interface VitalSignsProps {
   patientId: string,
-  patientName: string;
+  patientName: string,
   vitalSigns: VitalSign[]
 }
 
@@ -91,4 +81,3 @@ export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsPro
       </CardContent>
     </Card>
   );
-}

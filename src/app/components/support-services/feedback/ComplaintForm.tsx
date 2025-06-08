@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -29,7 +19,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { FileUploader } from '@/components/shared/FileUploader';
 
-// Form schema;
+// Form schema
 const complaintFormSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters",
@@ -58,8 +48,6 @@ interface ComplaintFormProps {
   departments?: { id: string; name: string }[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<ComplaintFormValues>;
-}
-
 export default const ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +56,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [formValues, setFormValues] = useState<ComplaintFormValues | null>(null);
 
-  // Initialize form;
+  // Initialize form
   const form = useForm<ComplaintFormValues>({
     resolver: zodResolver(complaintFormSchema),
     defaultValues: {
@@ -86,16 +74,16 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
     },
   });
 
-  // Watch for anonymous field changes;
+  // Watch for anonymous field changes
   const isAnonymous = form.watch('anonymous');
   const severity = form.watch('severity'),
   useEffect(() => {
     setShowContactInfo(isAnonymous);
   }, [isAnonymous]);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (values: ComplaintFormValues) => {
-    // For critical complaints, show confirmation dialog;
+    // For critical complaints, show confirmation dialog
     if (values.severity === 'CRITICAL') {
       setFormValues(values),
       setShowConfirmDialog(true);
@@ -108,7 +96,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
   const submitComplaint = async (values: ComplaintFormValues) => {
     setIsSubmitting(true);
     try {
-      // Submit complaint;
+      // Submit complaint
       const response = await fetch('/api/support-services/feedback/complaint', {
         method: 'POST',
         headers: {
@@ -124,7 +112,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
 
       const data = await response.json();
 
-      // If there are files, upload them;
+      // If there are files, upload them
       if (files.length > 0) {
         await uploadFiles(data.id);
       }
@@ -134,11 +122,11 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
         description: "Your complaint has been submitted successfully.",
       });
 
-      // Reset form;
+      // Reset form
       form.reset(),
       setFiles([]);
 
-      // Call onSuccess callback if provided;
+      // Call onSuccess callback if provided
       if (onSuccess) {
         onSuccess(data);
       }
@@ -310,7 +298,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                 <FileUploader>
                   onFilesChange={handleFileChange}
                   maxFiles={5}
-                  maxSize={5 * 1024 * 1024} // 5MB;
+                  maxSize={5 * 1024 * 1024} // 5MB
                   acceptedFileTypes={[
                     'image/jpeg',
                     'image/png',
@@ -440,4 +428,3 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
       </Dialog>
     </>
   );
-}

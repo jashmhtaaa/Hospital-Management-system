@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { prisma } from '@/lib/prisma';
 import { Ambulance, AmbulanceCrew, AmbulanceTrip, AmbulanceMaintenance, AmbulanceInventory } from '@prisma/client';
 import { createAuditLog } from '@/lib/audit-logging';
@@ -21,8 +11,6 @@ export interface AmbulanceFilter {
   vehicleType?: string;
   page: number,
   limit: number
-}
-
 export interface AmbulanceTripFilter {
   status?: string;
   tripType?: string;
@@ -33,21 +21,17 @@ export interface AmbulanceTripFilter {
   endDate?: Date;
   page: number,
   limit: number
-}
-
 export interface CreateAmbulanceData {
   registrationNumber: string,
-  vehicleType: string;
+  vehicleType: string,
   capacity: number,
   features: string[];
   currentLocationId?: string;
   lastMaintenanceDate?: Date;
   nextMaintenanceDate?: Date;
-}
-
 export interface CreateAmbulanceTripData {
   ambulanceId: string,
-  tripType: string;
+  tripType: string,
   priority: string;
   patientId?: string;
   pickupLocationId?: string;
@@ -56,8 +40,6 @@ export interface CreateAmbulanceTripData {
   notes?: string;
   medicalDetails?: unknown;
   crewIds?: string[];
-}
-
 export class AmbulanceService {
   private notificationService: NotificationService;
   
@@ -114,7 +96,7 @@ export class AmbulanceService {
       prisma.ambulance.count({ where })
     ]);
     
-    // Convert to FHIR format;
+    // Convert to FHIR format
     const fhirAmbulances = ambulances.map(ambulance => toFHIRAmbulance(ambulance));
     
     return {
@@ -190,7 +172,7 @@ export class AmbulanceService {
    * Create a new ambulance;
    */
   async createAmbulance(data: CreateAmbulanceData, userId: string): Promise<Ambulance> {
-    // Check if registration number is already in use;
+    // Check if registration number is already in use
     const existingAmbulance = await prisma.ambulance.findUnique({
       where: { registrationNumber: data.registrationNumber }
     });
@@ -199,7 +181,7 @@ export class AmbulanceService {
       throw new Error(`An ambulance with registration number ${data.registrationNumber} already exists`);
     }
     
-    // Create the ambulance;
+    // Create the ambulance
     const ambulance = await prisma.ambulance.create({
       data: {
         registrationNumber: data.registrationNumber,
@@ -216,7 +198,7 @@ export class AmbulanceService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'AMBULANCE',
@@ -240,7 +222,7 @@ export class AmbulanceService {
       throw new Error('Ambulance not found');
     }
     
-    // If registration number is being updated, check if it's already in use;
+    // If registration number is being updated, check if it's already in use
     if (data.registrationNumber && data.registrationNumber !== ambulance.registrationNumber) {
       const existingAmbulance = await prisma.ambulance.findUnique({
         where: { registrationNumber: data.registrationNumber }
@@ -251,7 +233,7 @@ export class AmbulanceService {
       }
     }
     
-    // Update the ambulance;
+    // Update the ambulance
     const updatedAmbulance = await prisma.ambulance.update({
       where: { id },
       data,
@@ -260,7 +242,7 @@ export class AmbulanceService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'AMBULANCE',
@@ -269,7 +251,7 @@ export class AmbulanceService {
       details: `Updated ambulance ${ambulance.registrationNumber}${data.status ? ` - Status changed to ${data.status}` : ''}`
     });
     
-    // Send notification if status changed to UNDER_MAINTENANCE;
+    // Send notification if status changed to UNDER_MAINTENANCE
     if (data.status === 'UNDER_MAINTENANCE' && ambulance.status !== 'UNDER_MAINTENANCE') {
       await this.notificationService.sendNotification({
         type: 'AMBULANCE_MAINTENANCE',
@@ -301,7 +283,7 @@ export class AmbulanceService {
     if (ambulanceId) where.ambulanceId = ambulanceId;
     if (patientId) where.patientId = patientId;
     
-    // Date range filter for scheduledTime;
+    // Date range filter for scheduledTime
     if (startDate || endDate) {
       where.scheduledTime = {};
       if (startDate) where.scheduledTime.gte = startDate;
@@ -349,7 +331,7 @@ export class AmbulanceService {
       prisma.ambulanceTrip.count({ where })
     ]);
     
-    // Convert to FHIR format;
+    // Convert to FHIR format
     const fhirTrips = trips.map(trip => toFHIRAmbulanceTrip(trip));
     
     return {
@@ -422,7 +404,7 @@ export class AmbulanceService {
    * Create a new ambulance trip;
    */
   async createAmbulanceTrip(data: CreateAmbulanceTripData, userId: string): Promise<AmbulanceTrip> {
-    // Validate ambulance exists and is available;
+    // Validate ambulance exists and is available
     const ambulance = await prisma.ambulance.findUnique({
       where: { id: data.ambulanceId }
     });
@@ -435,7 +417,7 @@ export class AmbulanceService {
       throw new Error(`Ambulance ${ambulance.registrationNumber} is not available (current status: ${ambulance.status})`);
     }
     
-    // Validate locations if provided;
+    // Validate locations if provided
     if (data.pickupLocationId) {
       const pickupLocation = await prisma.location.findUnique({
         where: { id: data.pickupLocationId }
@@ -456,7 +438,7 @@ export class AmbulanceService {
       }
     }
     
-    // Validate patient if provided;
+    // Validate patient if provided
     if (data.patientId) {
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
@@ -467,7 +449,7 @@ export class AmbulanceService {
       }
     }
     
-    // Create the trip;
+    // Create the trip
     const trip = await prisma.ambulanceTrip.create({
       data: {
         ambulanceId: data.ambulanceId,
@@ -490,7 +472,7 @@ export class AmbulanceService {
       }
     });
     
-    // If both pickup and drop locations are provided, calculate route;
+    // If both pickup and drop locations are provided, calculate route
     if (data.pickupLocationId && data.dropLocationId) {
       try {
         const routeData = await calculateRoute(data.pickupLocationId, data.dropLocationId);
@@ -505,11 +487,11 @@ export class AmbulanceService {
         });
       } catch (error) {
 
-        // Continue without route data;
+        // Continue without route data
       }
     }
     
-    // Assign crew if provided;
+    // Assign crew if provided
     if (data.crewIds && data.crewIds.length > 0) {
       for (const crewId of data.crewIds) {
         try {
@@ -525,18 +507,18 @@ export class AmbulanceService {
           });
         } catch (error) {
 
-          // Continue with other crew assignments;
+          // Continue with other crew assignments
         }
       }
     }
     
-    // Update ambulance status to ON_DUTY;
+    // Update ambulance status to ON_DUTY
     await prisma.ambulance.update({
       where: { id: data.ambulanceId },
       data: { status: 'ON_DUTY' }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'AMBULANCE_TRIP',
@@ -545,7 +527,7 @@ export class AmbulanceService {
       details: `Created ${data.tripType} ambulance trip with ${ambulance.registrationNumber}`;
     });
     
-    // Send notification to ambulance crew;
+    // Send notification to ambulance crew
     await this.notificationService.sendNotification({
       type: 'AMBULANCE_TRIP_ASSIGNED',
       title: `New Ambulance Trip Assigned`,
@@ -580,26 +562,26 @@ export class AmbulanceService {
     
     const updateData: unknown = { status };
     
-    // Handle status-specific updates;
+    // Handle status-specific updates
     switch (status) {
       case 'EN_ROUTE_TO_PICKUP':
         updateData.startTime = new Date();
         break;
       
       case 'ARRIVED_AT_DESTINATION':
-        // No specific updates needed;
+        // No specific updates needed
         break;
       
       case 'COMPLETED':
         updateData.endTime = new Date();
         if (trip.startTime) {
-          const duration = Math.round((new Date().getTime() - trip.startTime.getTime()) / (60 * 1000)); // in minutes;
+          const duration = Math.round((new Date().getTime() - trip.startTime.getTime()) / (60 * 1000)); // in minutes
           updateData.duration = duration;
         }
         break;
     }
     
-    // Update the trip;
+    // Update the trip
     const updatedTrip = await prisma.ambulanceTrip.update({
       where: { id },
       data: updateData,
@@ -618,9 +600,9 @@ export class AmbulanceService {
       }
     });
     
-    // If trip is completed or cancelled, update ambulance status to AVAILABLE;
+    // If trip is completed or cancelled, update ambulance status to AVAILABLE
     if (status === 'COMPLETED' || status === 'CANCELLED') {
-      // Check if ambulance has other active trips;
+      // Check if ambulance has other active trips
       const activeTrips = await prisma.ambulanceTrip.count({
         where: {
           ambulanceId: trip.ambulanceId,
@@ -639,10 +621,10 @@ export class AmbulanceService {
       }
     }
     
-    // If location data is provided, update the route;
+    // If location data is provided, update the route
     if (locationData && (status === 'EN_ROUTE_TO_PICKUP' || status === 'EN_ROUTE_TO_DESTINATION')) {
       try {
-        // Update route with actual data;
+        // Update route with actual data
         await prisma.ambulanceRoute.upsert({
           where: { tripId: id },
           update: {
@@ -663,11 +645,11 @@ export class AmbulanceService {
         });
       } catch (error) {
 
-        // Continue without route update;
+        // Continue without route update
       }
     }
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'AMBULANCE_TRIP',
@@ -676,7 +658,7 @@ export class AmbulanceService {
       details: `Updated ambulance trip status to ${status}`;
     });
     
-    // Send notifications based on status;
+    // Send notifications based on status
     switch (status) {
       case 'EN_ROUTE_TO_PICKUP':
         await this.notificationService.sendNotification({
@@ -717,7 +699,7 @@ export class AmbulanceService {
    * Get available ambulances for a trip;
    */
   async getAvailableAmbulances(tripType: string, scheduledTime: Date, pickupLocationId?: string): Promise<any[]> {
-    // Get all ambulances that are AVAILABLE or ON_DUTY;
+    // Get all ambulances that are AVAILABLE or ON_DUTY
     const ambulances = await prisma.ambulance.findMany({
       where: {
         status: {
@@ -745,8 +727,8 @@ export class AmbulanceService {
               in: ['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION']
             },
             scheduledTime: {
-              // Find trips that might conflict with the scheduled time;
-              // Assuming trips take at most 2 hours;
+              // Find trips that might conflict with the scheduled time
+              // Assuming trips take at most 2 hours
               gte: new Date(scheduledTime.getTime() - 2 * 60 * 60 * 1000),
               lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000)
             }
@@ -755,24 +737,24 @@ export class AmbulanceService {
       }
     });
     
-    // Filter ambulances based on trip type;
+    // Filter ambulances based on trip type
     const filteredAmbulances = ambulances.filter(ambulance => {
-      // For emergency trips, only use ADVANCED_LIFE_SUPPORT ambulances;
+      // For emergency trips, only use ADVANCED_LIFE_SUPPORT ambulances
       if (tripType === 'EMERGENCY' && ambulance.vehicleType !== 'ADVANCED_LIFE_SUPPORT') {
         return false;
       }
       
-      // For non-emergency trips, any ambulance type is fine;
+      // For non-emergency trips, any ambulance type is fine
       
-      // Check if ambulance has conflicting trips;
+      // Check if ambulance has conflicting trips
       if (ambulance.trips.length > 0) {
-        // If ambulance already has trips scheduled around this time, it's not available;
+        // If ambulance already has trips scheduled around this time, it's not available
         return false;
       }
       
-      // Check if ambulance has required crew;
+      // Check if ambulance has required crew
       if (tripType === 'EMERGENCY' || tripType === 'NON_EMERGENCY') {
-        // Need at least one paramedic and one driver;
+        // Need at least one paramedic and one driver
         const hasParamedic = ambulance.crew.some(crew => crew.role === 'PARAMEDIC' ||
           crew.role === 'EMERGENCY_MEDICAL_TECHNICIAN');
         const hasDriver = ambulance.crew.some(crew => crew.role === 'DRIVER');
@@ -781,7 +763,7 @@ export class AmbulanceService {
           return false;
         }
       } else {
-        // For transfers and returns, just need a driver;
+        // For transfers and returns, just need a driver
         const hasDriver = ambulance.crew.some(crew => crew.role === 'DRIVER');
         
         if (!hasDriver) {
@@ -792,7 +774,7 @@ export class AmbulanceService {
       return true;
     });
     
-    // If pickup location is provided, calculate estimated arrival times;
+    // If pickup location is provided, calculate estimated arrival times
     if (pickupLocationId) {
       const ambulancesWithETA = await Promise.all(
         filteredAmbulances.map(async ambulance => {
@@ -821,7 +803,7 @@ export class AmbulanceService {
         });
       );
       
-      // Sort by ETA;
+      // Sort by ETA
       return ambulancesWithETA.sort((a, b) => {
         if (!a.eta) return 1;
         if (!b.eta) return -1;
@@ -836,7 +818,7 @@ export class AmbulanceService {
    * Assign crew to ambulance;
    */
   async assignCrewToAmbulance(ambulanceId: string, userId: string, role: string, shiftStart: Date, shiftEnd: Date, assignedBy: string): Promise<AmbulanceCrew> {
-    // Validate ambulance exists;
+    // Validate ambulance exists
     const ambulance = await prisma.ambulance.findUnique({
       where: { id: ambulanceId }
     });
@@ -845,7 +827,7 @@ export class AmbulanceService {
       throw new Error('Ambulance not found');
     }
     
-    // Validate user exists;
+    // Validate user exists
     const user = await prisma.user.findUnique({
       where: { id: userId }
     });
@@ -854,7 +836,7 @@ export class AmbulanceService {
       throw new Error('User not found');
     }
     
-    // Check if user is already assigned to this ambulance;
+    // Check if user is already assigned to this ambulance
     const existingCrew = await prisma.ambulanceCrew.findFirst({
       where: {
         ambulanceId,
@@ -863,7 +845,7 @@ export class AmbulanceService {
     });
     
     if (existingCrew) {
-      // Update existing crew assignment;
+      // Update existing crew assignment
       const updatedCrew = await prisma.ambulanceCrew.update({
         where: { id: existingCrew.id },
         data: {
@@ -884,7 +866,7 @@ export class AmbulanceService {
         }
       });
       
-      // Create audit log;
+      // Create audit log
       await createAuditLog({
         action: 'UPDATE',
         entityType: 'AMBULANCE_CREW',
@@ -895,7 +877,7 @@ export class AmbulanceService {
       
       return updatedCrew;
     } else {
-      // Create new crew assignment;
+      // Create new crew assignment
       const crew = await prisma.ambulanceCrew.create({
         data: {
           ambulanceId,
@@ -917,7 +899,7 @@ export class AmbulanceService {
         }
       });
       
-      // Create audit log;
+      // Create audit log
       await createAuditLog({
         action: 'CREATE',
         entityType: 'AMBULANCE_CREW',
@@ -926,7 +908,7 @@ export class AmbulanceService {
         details: `Assigned ${user.name} as ${role} to ambulance ${ambulance.registrationNumber}`;
       });
       
-      // Send notification to assigned crew member;
+      // Send notification to assigned crew member
       await this.notificationService.sendNotification({
         type: 'CREW_ASSIGNMENT',
         title: `Crew Assignment`,
@@ -962,7 +944,7 @@ export class AmbulanceService {
       throw new Error('Crew assignment not found');
     }
     
-    // Update crew status to OFF_DUTY;
+    // Update crew status to OFF_DUTY
     const updatedCrew = await prisma.ambulanceCrew.update({
       where: { id: crewId },
       data: {
@@ -975,7 +957,7 @@ export class AmbulanceService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'AMBULANCE_CREW',
@@ -991,7 +973,7 @@ export class AmbulanceService {
    * Schedule ambulance maintenance;
    */
   async scheduleAmbulanceMaintenance(ambulanceId: string, data: unknown, userId: string): Promise<AmbulanceMaintenance> {
-    // Validate ambulance exists;
+    // Validate ambulance exists
     const ambulance = await prisma.ambulance.findUnique({
       where: { id: ambulanceId }
     });
@@ -1000,7 +982,7 @@ export class AmbulanceService {
       throw new Error('Ambulance not found');
     }
     
-    // Create maintenance record;
+    // Create maintenance record
     const maintenance = await prisma.ambulanceMaintenance.create({
       data: {
         ambulanceId,
@@ -1015,7 +997,7 @@ export class AmbulanceService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'CREATE',
       entityType: 'AMBULANCE_MAINTENANCE',
@@ -1024,7 +1006,7 @@ export class AmbulanceService {
       details: `Scheduled ${data.maintenanceType} maintenance for ambulance ${ambulance.registrationNumber}`;
     });
     
-    // Send notification to maintenance staff;
+    // Send notification to maintenance staff
     await this.notificationService.sendNotification({
       type: 'MAINTENANCE_SCHEDULED',
       title: `Ambulance Maintenance Scheduled`,
@@ -1059,7 +1041,7 @@ export class AmbulanceService {
     
     const updateData: unknown = { status };
     
-    // If status is COMPLETED, add completion data;
+    // If status is COMPLETED, add completion data
     if (status === 'COMPLETED') {
       updateData.completedDate = new Date();
       updateData.performedById = userId;
@@ -1073,18 +1055,18 @@ export class AmbulanceService {
         }
       }
       
-      // Update ambulance maintenance dates;
+      // Update ambulance maintenance dates
       await prisma.ambulance.update({
         where: { id: maintenance.ambulanceId },
         data: {
           lastMaintenanceDate: new Date(),
-          nextMaintenanceDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now;
+          nextMaintenanceDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
           status: 'AVAILABLE' // Set ambulance back to available
         }
-      });
+      })
     }
     
-    // Update the maintenance record;
+    // Update the maintenance record
     const updatedMaintenance = await prisma.ambulanceMaintenance.update({
       where: { id },
       data: updateData,
@@ -1100,7 +1082,7 @@ export class AmbulanceService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'AMBULANCE_MAINTENANCE',
@@ -1109,7 +1091,7 @@ export class AmbulanceService {
       details: `Updated maintenance status to ${status} for ambulance ${maintenance.ambulance.registrationNumber}`;
     });
     
-    // Send notification if maintenance is completed;
+    // Send notification if maintenance is completed
     if (status === 'COMPLETED') {
       await this.notificationService.sendNotification({
         type: 'MAINTENANCE_COMPLETED',
@@ -1127,7 +1109,7 @@ export class AmbulanceService {
    * Get ambulance inventory;
    */
   async getAmbulanceInventory(ambulanceId: string): Promise<AmbulanceInventory[]> {
-    // Validate ambulance exists;
+    // Validate ambulance exists
     const ambulance = await prisma.ambulance.findUnique({
       where: { id: ambulanceId }
     });
@@ -1136,7 +1118,7 @@ export class AmbulanceService {
       throw new Error('Ambulance not found');
     }
     
-    // Get inventory items;
+    // Get inventory items
     const inventory = await prisma.ambulanceInventory.findMany({
       where: { ambulanceId },
       orderBy: { itemType: 'asc' }
@@ -1160,12 +1142,12 @@ export class AmbulanceService {
       throw new Error('Inventory item not found');
     }
     
-    // If restocking, update lastRestockedDate;
+    // If restocking, update lastRestockedDate
     if (data.quantity !== undefined && data.quantity > item.quantity) {
       data.lastRestockedDate = new Date();
     }
     
-    // Update the inventory item;
+    // Update the inventory item
     const updatedItem = await prisma.ambulanceInventory.update({
       where: { id },
       data,
@@ -1174,7 +1156,7 @@ export class AmbulanceService {
       }
     });
     
-    // Create audit log;
+    // Create audit log
     await createAuditLog({
       action: 'UPDATE',
       entityType: 'AMBULANCE_INVENTORY',
@@ -1184,7 +1166,7 @@ export class AmbulanceService {
         item.quantity}`;
     });
     
-    // Send notification if quantity is below minimum;
+    // Send notification if quantity is below minimum
     if (updatedItem.quantity <= updatedItem.minimumQuantity) {
       await this.notificationService.sendNotification({
         type: 'INVENTORY_LOW',
@@ -1202,28 +1184,28 @@ export class AmbulanceService {
    * Get ambulance analytics;
    */
   async getAmbulanceAnalytics(period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY') {
-    // Get date range based on period;
+    // Get date range based on period
     const now = new Date();
     let startDate: Date;
     
     switch (period) {
       case 'DAILY':
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days;
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days
         break;
       case 'WEEKLY':
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days;
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days
         break;
       case 'MONTHLY':
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months;
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months
         break;
       case 'YEARLY':
-        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
+        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
         break;
       default:
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days
     }
     
-    // Get trip counts by status;
+    // Get trip counts by status
     const tripsByStatus = await prisma.ambulanceTrip.groupBy({
       by: ['status'],
       where: {
@@ -1234,7 +1216,7 @@ export class AmbulanceService {
       _count: true
     });
     
-    // Get trip counts by type;
+    // Get trip counts by type
     const tripsByType = await prisma.ambulanceTrip.groupBy({
       by: ['tripType'],
       where: {
@@ -1245,7 +1227,7 @@ export class AmbulanceService {
       _count: true
     });
     
-    // Get trip counts by priority;
+    // Get trip counts by priority
     const tripsByPriority = await prisma.ambulanceTrip.groupBy({
       by: ['priority'],
       where: {
@@ -1256,7 +1238,7 @@ export class AmbulanceService {
       _count: true
     });
     
-    // Get ambulance utilization;
+    // Get ambulance utilization
     const ambulances = await prisma.ambulance.findMany({
       select: {
         id: true,
@@ -1276,7 +1258,7 @@ export class AmbulanceService {
       }
     });
     
-    // Sort ambulances by trip count;
+    // Sort ambulances by trip count
     const ambulanceUtilization = ambulances;
       .map(ambulance => ({
         id: ambulance.id,
@@ -1286,7 +1268,7 @@ export class AmbulanceService {
       }));
       .sort((a, b) => b.tripCount - a.tripCount);
     
-    // Get average trip duration;
+    // Get average trip duration
     const completedTrips = await prisma.ambulanceTrip.findMany({
       where: {
         status: 'COMPLETED',
@@ -1302,7 +1284,7 @@ export class AmbulanceService {
       }
     });
     
-    // Calculate average duration by trip type;
+    // Calculate average duration by trip type
     const durationByType: Record<string, { count: number, totalDuration: number, avgDuration: number }> = {};
     
     completedTrips.forEach(trip => {
@@ -1316,13 +1298,13 @@ export class AmbulanceService {
       }
     });
     
-    // Calculate averages;
+    // Calculate averages
     Object.keys(durationByType).forEach(type => {
       const data = durationByType[type];
       data.avgDuration = Math.round(data.totalDuration / data.count);
     });
     
-    // Get maintenance statistics;
+    // Get maintenance statistics
     const maintenanceByType = await prisma.ambulanceMaintenance.groupBy({
       by: ['maintenanceType'],
       where: {
@@ -1346,4 +1328,3 @@ export class AmbulanceService {
       period;
     };
   }
-}

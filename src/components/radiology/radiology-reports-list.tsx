@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -26,22 +18,20 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Define interface for the report data;
+// Define interface for the report data
 interface RadiologyReport {
   id: string;
   patient_name?: string;
   procedure_name?: string;
   accession_number?: string | null;
   radiologist_name?: string;
-  report_datetime: string; // Or Date;
-  status: string; // Consider using a specific enum/literal type;
-  // Add other fields as needed;
-}
-
+  report_datetime: string; // Or Date
+  status: string; // Consider using a specific enum/literal type
+  // Add other fields as needed
 export default const RadiologyReportsList = () {
-  const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state;
+  const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(); // FIX: Type the state;
+  const [error, setError] = useState<string | null>(); // FIX: Type the state
   const router = useRouter(),
   useEffect(() => {
     fetchReports();
@@ -56,7 +46,7 @@ export default const RadiologyReportsList = () {
       }
       const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[]
       setReports(data),
-      setError(undefined);
+      setError(undefined)
     } catch (error_) {
 
       setError("Failed to load radiology reports. Please try again later.");
@@ -65,19 +55,19 @@ export default const RadiologyReportsList = () {
     }
   };
 
-  // FIX: Type the parameter;
+  // FIX: Type the parameter
   const handleViewReport = (reportId: string) => {
     router.push(`/dashboard/radiology/reports/${reportId}`);
   };
 
-  // FIX: Type the parameter;
+  // FIX: Type the parameter
   const getStatusBadge = (status: string) => {
     const statusStyles: { [key: string]: string } = {
       // FIX: Add index signature,
       preliminary: "bg-yellow-100 text-yellow-800",
       final: "bg-green-100 text-green-800",
       addendum: "bg-blue-100 text-blue-800",
-    };
+    }
 
     return (
       <Badge className={statusStyles[status] || "bg-gray-100"}>;
@@ -146,4 +136,3 @@ export default const RadiologyReportsList = () {
       </CardContent>
     </Card>
   );
-}

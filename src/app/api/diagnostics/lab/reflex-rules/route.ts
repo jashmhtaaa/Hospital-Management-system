@@ -1,22 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 
-// Interface for the request body when creating a reflex rule;
+// Interface for the request body when creating a reflex rule
 interface ReflexRuleCreateBody {
   condition_test_id: number,
-  condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
+  condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge",
   condition_value: string,
   action_test_id: number;
   priority?: "routine" | "urgent" | "stat";
@@ -24,27 +14,27 @@ interface ReflexRuleCreateBody {
   is_active?: boolean;
 }
 
-// GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules;
+// GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules
 export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get("testId");
     const isActive = searchParams.get("isActive");
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     
-    // Calculate offset for pagination;
+    // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
     
-    // Build query;
+    // Build query
     let query = `;
       SELECT;
         r.*,
@@ -60,7 +50,7 @@ export async const GET = (request: NextRequest) => {
         lab_tests at ON r.action_test_id = at.id;
     `;
     
-    // Add filters;
+    // Add filters
     const parameters: unknown[] = [];
     const conditions: string[] = [];
     
@@ -78,18 +68,18 @@ export async const GET = (request: NextRequest) => {
       query += " WHERE " + conditions.join(" AND ");
     }
     
-    // Add ordering;
+    // Add ordering
     query += " ORDER BY r.condition_test_id ASC, r.condition_value ASC";
     
-    // Add pagination;
+    // Add pagination
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query;
+    // Execute query
     const rulesResult = await DB.query(query, parameters);
     const rules = rulesResult.results || [];
     
-    // Get total count for pagination;
+    // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_test_reflex_rules r";
     if (conditions.length > 0) {
       countQuery += " WHERE " + conditions.join(" AND ");
@@ -98,7 +88,7 @@ export async const GET = (request: NextRequest) => {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Return rules with pagination metadata;
+    // Return rules with pagination metadata
     return NextResponse.json({
       data: rules,
       pagination: {
@@ -118,25 +108,25 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule;
+// POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule
 export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can create reflex rules;
+    // Only lab managers and admins can create reflex rules
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as ReflexRuleCreateBody;
     
-    // Validate required fields;
+    // Validate required fields
     const requiredFields: (keyof ReflexRuleCreateBody)[] = [
       "condition_test_id",
       "condition_operator",
@@ -153,7 +143,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     
-    // Validate condition operator;
+    // Validate condition operator
     const validOperators = ["eq", "ne", "lt", "gt", "le", "ge"];
     if (!validOperators.includes(body.condition_operator)) {
       return NextResponse.json(
@@ -162,7 +152,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Validate priority if provided;
+    // Validate priority if provided
     if (body.priority && !["routine", "urgent", "stat"].includes(body.priority)) {
       return NextResponse.json(
         { error: "Invalid priority" },
@@ -170,7 +160,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Check if condition test exists;
+    // Check if condition test exists
     const conditionTestCheckResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ?",
       [body.condition_test_id]
@@ -183,7 +173,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Check if action test exists;
+    // Check if action test exists
     const actionTestCheckResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ?",
       [body.action_test_id]
@@ -196,7 +186,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Check for duplicate rule;
+    // Check for duplicate rule
     const duplicateCheckResult = await DB.query(
       `SELECT id FROM lab_test_reflex_rules;
        WHERE condition_test_id = ?;
@@ -218,7 +208,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Insert reflex rule;
+    // Insert reflex rule
     const insertQuery = `;
       INSERT INTO lab_test_reflex_rules (
         condition_test_id, condition_operator, condition_value,
@@ -239,7 +229,7 @@ export async const POST = (request: NextRequest) => {
     const result = await DB.query(insertQuery, insertParameters);
     const ruleId = result.insertId;
     
-    // Fetch the created reflex rule;
+    // Fetch the created reflex rule
     const fetchQuery = `;
       SELECT;
         r.*,
@@ -264,7 +254,7 @@ export async const POST = (request: NextRequest) => {
       throw new Error("Failed to retrieve created reflex rule");
     }
     
-    // Return the created reflex rule;
+    // Return the created reflex rule
     return NextResponse.json(rule, { status: 201 });
   } catch (error: unknown) {
 
@@ -276,7 +266,7 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// PUT /api/diagnostics/lab/reflex-rules/:id - Update a reflex rule;
+// PUT /api/diagnostics/lab/reflex-rules/:id - Update a reflex rule
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -284,19 +274,19 @@ export async const PUT = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can update reflex rules;
+    // Only lab managers and admins can update reflex rules
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const ruleId = params.id;
     
-    // Check if reflex rule exists;
+    // Check if reflex rule exists
     const checkResult = await DB.query(
       "SELECT id FROM lab_test_reflex_rules WHERE id = ?",
       [ruleId]
@@ -309,10 +299,10 @@ export async const PUT = (
       );
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as Partial<ReflexRuleCreateBody>;
     
-    // Validate condition operator if provided;
+    // Validate condition operator if provided
     if (body.condition_operator) {
       const validOperators = ["eq", "ne", "lt", "gt", "le", "ge"];
       if (!validOperators.includes(body.condition_operator)) {
@@ -323,7 +313,7 @@ export async const PUT = (
       }
     }
     
-    // Validate priority if provided;
+    // Validate priority if provided
     if (body.priority && !["routine", "urgent", "stat"].includes(body.priority)) {
       return NextResponse.json(
         { error: "Invalid priority" },
@@ -331,7 +321,7 @@ export async const PUT = (
       );
     }
     
-    // Check if condition test exists if provided;
+    // Check if condition test exists if provided
     if (body.condition_test_id) {
       const conditionTestCheckResult = await DB.query(
         "SELECT id FROM lab_tests WHERE id = ?",
@@ -346,7 +336,7 @@ export async const PUT = (
       }
     }
     
-    // Check if action test exists if provided;
+    // Check if action test exists if provided
     if (body.action_test_id) {
       const actionTestCheckResult = await DB.query(
         "SELECT id FROM lab_tests WHERE id = ?",
@@ -361,14 +351,14 @@ export async const PUT = (
       }
     }
     
-    // Check for duplicate rule if key fields are being updated;
+    // Check for duplicate rule if key fields are being updated
     if (
       body.condition_test_id !== undefined ||;
       body.condition_operator !== undefined ||;
       body.condition_value !== undefined ||;
       body.action_test_id !== undefined;
     ) {
-      // Get current values for fields not included in the update;
+      // Get current values for fields not included in the update
       const currentResult = await DB.query(
         `SELECT;
           condition_test_id, condition_operator, condition_value, action_test_id;
@@ -408,7 +398,7 @@ export async const PUT = (
       }
     }
     
-    // Build update query;
+    // Build update query
     let updateQuery = "UPDATE lab_test_reflex_rules SET ";
     const updateFields: string[] = [];
     const updateParameters: unknown[] = [];
@@ -448,7 +438,7 @@ export async const PUT = (
       updateParameters.push(body.is_active ? 1 : 0);
     }
     
-    // Only proceed if there are fields to update;
+    // Only proceed if there are fields to update
     if (updateFields.length === 0) {
       return NextResponse.json(
         { error: "No fields to update" },
@@ -459,10 +449,10 @@ export async const PUT = (
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
     updateParameters.push(ruleId);
     
-    // Execute update;
+    // Execute update
     await DB.query(updateQuery, updateParameters);
     
-    // Fetch the updated reflex rule;
+    // Fetch the updated reflex rule
     const fetchQuery = `;
       SELECT;
         r.*,
@@ -487,7 +477,7 @@ export async const PUT = (
       throw new Error("Failed to retrieve updated reflex rule");
     }
     
-    // Return the updated reflex rule;
+    // Return the updated reflex rule
     return NextResponse.json(rule);
   } catch (error: unknown) {
 
@@ -499,7 +489,7 @@ export async const PUT = (
   }
 }
 
-// DELETE /api/diagnostics/lab/reflex-rules/:id - Delete a reflex rule;
+// DELETE /api/diagnostics/lab/reflex-rules/:id - Delete a reflex rule
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -507,19 +497,19 @@ export async const DELETE = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can delete reflex rules;
+    // Only lab managers and admins can delete reflex rules
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const ruleId = params.id;
     
-    // Check if reflex rule exists;
+    // Check if reflex rule exists
     const checkResult = await DB.query(
       "SELECT id FROM lab_test_reflex_rules WHERE id = ?",
       [ruleId]
@@ -532,7 +522,7 @@ export async const DELETE = (
       );
     }
     
-    // Delete the reflex rule;
+    // Delete the reflex rule
     await DB.query(
       "DELETE FROM lab_test_reflex_rules WHERE id = ?",
       [ruleId]
@@ -549,4 +539,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}

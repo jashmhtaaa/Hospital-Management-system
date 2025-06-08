@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -22,34 +14,32 @@ import { pubsub } from '@/lib/graphql/schema-base';
 import { EncryptionService } from '@/lib/security/encryption.service';
 import { AuditService } from '@/lib/security/audit.service';
 
-// Report models;
+// Report models
 export interface ReportTemplate {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  category: ReportCategory;
+  category: ReportCategory,
   type: ReportType,
-  dataSource: ReportDataSource;
+  dataSource: ReportDataSource,
   layout: LayoutConfig,
-  components: ReportComponent[];
+  components: ReportComponent[],
   filters: ReportFilter[],
-  parameters: ReportParameter[];
+  parameters: ReportParameter[],
   sorting: ReportSorting[],
-  grouping: ReportGrouping[];
+  grouping: ReportGrouping[],
   calculations: ReportCalculation[],
   formatSettings: FormatSettings;
   schedule?: ReportSchedule;
   permissions: ReportPermissions,
-  createdBy: string;
+  createdBy: string,
   updatedBy: string,
-  created: Date;
+  created: Date,
   updated: Date,
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
+  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED',
   version: string,
-  tags: string[];
+  tags: string[],
   metadata: ReportMetadata
-}
-
 export enum ReportCategory {
   CLINICAL = 'CLINICAL',
   FINANCIAL = 'FINANCIAL',
@@ -58,8 +48,6 @@ export enum ReportCategory {
   QUALITY = 'QUALITY',
   HR = 'HR',
   CUSTOM = 'CUSTOM',
-}
-
 export enum ReportType {
   TABULAR = 'TABULAR',
   SUMMARY = 'SUMMARY',
@@ -71,8 +59,6 @@ export enum ReportType {
   SCORECARD = 'SCORECARD',
   COMPARATIVE = 'COMPARATIVE',
   CUSTOM = 'CUSTOM',
-}
-
 export enum ReportDataSource {
   CLINICAL = 'CLINICAL',
   FINANCIAL = 'FINANCIAL',
@@ -84,21 +70,19 @@ export enum ReportDataSource {
   HR = 'HR',
   CUSTOM = 'CUSTOM',
   MULTI_SOURCE = 'MULTI_SOURCE',
-}
-
 export interface LayoutConfig {
   orientation: 'PORTRAIT' | 'LANDSCAPE',
   pageSize: 'LETTER' | 'LEGAL' | 'A4' | 'CUSTOM';
   customPageSize?: {
     width: number,
-    height: number;
+    height: number,
     unit: 'MM' | 'CM' | 'INCH'
   };
   margins: {
     top: number,
-    right: number;
+    right: number,
     bottom: number,
-    left: number;
+    left: number,
     unit: 'MM' | 'CM' | 'INCH'
   };
   header: {
@@ -114,19 +98,17 @@ export interface LayoutConfig {
     gutter: number
   };
   sections: LayoutSection[]
-}
-
 export interface LayoutSection {
   id: string,
   name: string;
   title?: string;
   showTitle: boolean,
-  columns: number;
+  columns: number,
   startRow: number,
-  startColumn: number;
+  startColumn: number,
   width: number,
-  height: number;
-  components: string[]; // Array of component IDs;
+  height: number,
+  components: string[]; // Array of component IDs
   background?: string;
   border?: boolean;
   borderStyle?: string;
@@ -134,22 +116,20 @@ export interface LayoutSection {
   collapsible?: boolean;
   defaultCollapsed?: boolean;
   conditionalDisplay?: string;
-}
-
 export interface ReportComponent {
   id: string,
-  name: string;
+  name: string,
   type: ComponentType,
   dataSource: string;
   query?: string;
   fields: ComponentField[];
   visualization?: VisualizationType;
   settings: ComponentSettings,
-  conditionalFormatting: ConditionalFormatting[];
+  conditionalFormatting: ConditionalFormatting[],
   interactivity: InteractivityOptions,
   position: {
     row: number,
-    column: number;
+    column: number,
     width: number,
     height: number
   };
@@ -158,8 +138,6 @@ export interface ReportComponent {
   exportable: boolean,
   printable: boolean;
   drillThrough?: DrillThroughTarget[];
-}
-
 export enum ComponentType {
   TABLE = 'TABLE',
   CHART = 'CHART',
@@ -174,8 +152,6 @@ export enum ComponentType {
   FORM = 'FORM',
   ALERT = 'ALERT',
   CUSTOM = 'CUSTOM',
-}
-
 export enum VisualizationType {
   BAR = 'BAR',
   LINE = 'LINE',
@@ -202,27 +178,23 @@ export enum VisualizationType {
   CARD = 'CARD',
   TEXT = 'TEXT',
   CUSTOM = 'CUSTOM',
-}
-
 export interface ComponentField {
   id: string,
-  name: string;
+  name: string,
   displayName: string,
-  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
+  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY',
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   formula?: string;
   description?: string;
   visible: boolean,
-  sortable: boolean;
+  sortable: boolean,
   filterable: boolean,
   groupable: boolean;
   width?: number;
   alignment?: 'LEFT' | 'CENTER' | 'RIGHT';
   aggregation?: 'SUM' | 'AVG' | 'MIN' | 'MAX' | 'COUNT' | 'COUNT_DISTINCT' | 'MEDIAN' | 'CUSTOM';
   customAggregation?: string;
-}
-
 export interface ComponentSettings {
   table?: TableSettings;
   chart?: ChartSettings;
@@ -233,11 +205,9 @@ export interface ComponentSettings {
   pivot?: PivotSettings;
   map?: MapSettings;
   custom?: Record<string, any>;
-}
-
 export interface TableSettings {
   showHeader: boolean,
-  showFooter: boolean;
+  showFooter: boolean,
   showRowNumbers: boolean,
   alternateRowColors: boolean;
   rowColor?: string;
@@ -259,8 +229,6 @@ export interface TableSettings {
   columnWidths?: Record<string, number>;
   rowHeight?: number;
   minColumnWidth?: number;
-}
-
 export interface ChartSettings {
   chartType: VisualizationType;
   title?: string;
@@ -283,13 +251,13 @@ export interface ChartSettings {
   };
   legend: {
     show: boolean,
-    position: 'top' | 'right' | 'bottom' | 'left';
+    position: 'top' | 'right' | 'bottom' | 'left',
     orientation: 'horizontal' | 'vertical'
   };
   axes: {
     xAxis: {
       title?: string,
-      showTitle: boolean;
+      showTitle: boolean,
       showLabels: boolean;
       labelRotation?: number;
       min?: number;
@@ -298,7 +266,7 @@ export interface ChartSettings {
     };
     yAxis: {
       title?: string,
-      showTitle: boolean;
+      showTitle: boolean,
       showLabels: boolean;
       labelRotation?: number;
       min?: number;
@@ -334,8 +302,6 @@ export interface ChartSettings {
     endAngle?: number;
     sortOrder?: 'none' | 'ascending' | 'descending';
   };
-}
-
 export interface MetricSettings {
   title?: string;
   showTitle: boolean;
@@ -374,8 +340,6 @@ export interface MetricSettings {
   borderRadius?: number;
   padding?: number;
   textAlignment?: 'left' | 'center' | 'right';
-}
-
 export interface TextSettings {
   content?: string;
   contentType: 'PLAIN' | 'HTML' | 'MARKDOWN';
@@ -393,8 +357,6 @@ export interface TextSettings {
   borderRadius?: number;
   dynamicContent?: boolean;
   contentTemplate?: string;
-}
-
 export interface ImageSettings {
   source: 'URL' | 'UPLOAD' | 'DYNAMIC';
   url?: string;
@@ -429,13 +391,11 @@ export interface ImageSettings {
     text?: string;
     textColor?: string;
   };
-}
-
 export interface MatrixSettings {
   rows: string[],
-  columns: string[];
+  columns: string[],
   values: string[],
-  showTotals: boolean;
+  showTotals: boolean,
   totalPosition: 'top' | 'bottom' | 'left' | 'right';
   totalLabel?: string;
   showSubtotals: boolean;
@@ -453,15 +413,13 @@ export interface MatrixSettings {
   headerBackground?: string;
   headerTextColor?: string;
   wrapText?: boolean;
-}
-
 export interface PivotSettings {
   rows: string[],
-  columns: string[];
+  columns: string[],
   values: string[],
-  filters: string[];
+  filters: string[],
   showTotals: boolean,
-  showRowTotals: boolean;
+  showRowTotals: boolean,
   showColumnTotals: boolean,
   totalPosition: 'top' | 'bottom' | 'left' | 'right';
   totalLabel?: string;
@@ -483,8 +441,6 @@ export interface PivotSettings {
   wrapText?: boolean;
   layout?: 'compact' | 'outline' | 'tabular';
   measurePosition?: 'columns' | 'rows';
-}
-
 export interface MapSettings {
   mapType: 'region' | 'marker' | 'heatmap' | 'flow';
   regionType?: 'world' | 'continent' | 'country' | 'state' | 'county' | 'postal_code' | 'custom';
@@ -530,11 +486,9 @@ export interface MapSettings {
     show: boolean;
     template?: string;
   };
-}
-
 export interface ConditionalFormatting {
   id: string,
-  name: string;
+  name: string,
   field: string,
   format: {
     backgroundColor?: string;
@@ -548,17 +502,15 @@ export interface ConditionalFormatting {
     operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in',
     value: unknown;
     value2?: unknown; // For 'between' and 'not_between'
-  };
+  }
   applyTo?: 'cell' | 'row' | 'column';
   priority: number,
   enabled: boolean
-}
-
 export interface InteractivityOptions {
   drillDown: boolean,
-  drillThrough: boolean;
+  drillThrough: boolean,
   filtering: boolean,
-  sorting: boolean;
+  sorting: boolean,
   selection: boolean,
   exporting: boolean;
   linkedFiltering?: boolean;
@@ -566,8 +518,6 @@ export interface InteractivityOptions {
   tooltips: boolean,
   contextMenu: boolean;
   actions?: ReportAction[];
-}
-
 export interface ReportAction {
   id: string,
   name: string;
@@ -577,11 +527,9 @@ export interface ReportAction {
   parameters?: Record<string, string>;
   condition?: string;
   confirmationMessage?: string;
-}
-
 export interface DrillThroughTarget {
   id: string,
-  name: string;
+  name: string,
   type: 'REPORT' | 'DASHBOARD' | 'URL' | 'DETAIL';
   targetId?: string;
   url?: string;
@@ -590,21 +538,19 @@ export interface DrillThroughTarget {
     target: string
   }[];
   openInNewWindow: boolean
-}
-
 export interface ReportFilter {
   id: string,
-  name: string;
+  name: string,
   displayName: string,
-  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'MULTI_SELECT';
+  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'MULTI_SELECT',
   field: string,
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
   value?: unknown;
   value2?: unknown; // For 'between' and 'not_between'
-  required: boolean;
-  defaultValue?: unknown;
+  required: boolean
+  defaultValue?: unknown,
   visible: boolean,
-  order: number;
+  order: number,
   controlType: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'DROPDOWN' | 'MULTI_SELECT' | 'CHECKBOX' | 'RADIO' | 'SLIDER' | 'ADVANCED';
   controlSettings?: {
     placeholder?: string;
@@ -635,18 +581,16 @@ export interface ReportFilter {
     dependencyField: string;
     valueMapping?: Record<string, any>;
   };
-}
-
 export interface ReportParameter {
   id: string,
-  name: string;
+  name: string,
   displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'ARRAY' | 'OBJECT';
   description?: string;
   required: boolean;
   defaultValue?: unknown;
   allowMultiple: boolean,
-  visible: boolean;
+  visible: boolean,
   order: number,
   controlType: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'DROPDOWN' | 'MULTI_SELECT' | 'CHECKBOX' | 'RADIO' | 'SLIDER' | 'ADVANCED';
   controlSettings?: {
@@ -673,43 +617,35 @@ export interface ReportParameter {
     pattern?: string;
     custom?: string;
   };
-}
-
 export interface ReportSorting {
   field: string,
-  direction: 'ASC' | 'DESC';
+  direction: 'ASC' | 'DESC',
   order: number
-}
-
 export interface ReportGrouping {
   field: string,
-  enabled: boolean;
+  enabled: boolean,
   order: number;
   groupingFunction?: string;
   showSubtotals: boolean,
   collapsed: boolean
-}
-
 export interface ReportCalculation {
   id: string,
-  name: string;
+  name: string,
   displayName: string,
-  formula: string;
+  formula: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN';
   format?: string;
   description?: string;
   visible: boolean,
   scope: 'ROW' | 'GROUP' | 'OVERALL'
-}
-
 export interface FormatSettings {
   numbers: {
     decimalSeparator: '.' | ',';
     thousandsSeparator: ',' | '.' | ' ' | 'none';
     currency: string,
-    currencyPosition: 'prefix' | 'suffix';
+    currencyPosition: 'prefix' | 'suffix',
     decimalPlaces: number,
-    showZeroValues: boolean;
+    showZeroValues: boolean,
     useGrouping: boolean,
     negativeFormat: 'minus' | 'parentheses' | 'color';
     negativeColor?: string;
@@ -719,7 +655,7 @@ export interface FormatSettings {
     format: string;
     timeFormat?: string;
     showTime: boolean,
-    calendarType: 'gregorian' | 'lunar';
+    calendarType: 'gregorian' | 'lunar',
     firstDayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6,
     locale: string
   };
@@ -737,20 +673,18 @@ export interface FormatSettings {
     nullColor?: string;
     alternateRowColor?: string;
   };
-}
-
 export interface ReportSchedule {
   enabled: boolean,
   frequency: 'ONCE' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY' | 'CUSTOM';
-  customExpression?: string; // Cron expression;
+  customExpression?: string; // Cron expression
   startDate: Date;
   endDate?: Date;
   timeZone: string;
-  runTime?: string; // HH:MM format;
-  daysOfWeek?: number[]; // 0-6, 0 = Sunday;
-  daysOfMonth?: number[]; // 1-31;
-  months?: number[]; // 1-12;
-  quarters?: number[]; // 1-4;
+  runTime?: string; // HH:MM format
+  daysOfWeek?: number[]; // 0-6, 0 = Sunday
+  daysOfMonth?: number[]; // 1-31
+  months?: number[]; // 1-12
+  quarters?: number[]; // 1-4
   recipients: {
     email?: string[];
     users?: string[];
@@ -767,35 +701,31 @@ export interface ReportSchedule {
   lastRun?: Date;
   nextRun?: Date;
   status: 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'ERROR'
-}
-
 export interface ReportPermissions {
   owner: string,
-  viewRoles: string[];
+  viewRoles: string[],
   editRoles: string[],
-  viewUsers: string[];
+  viewUsers: string[],
   editUsers: string[],
-  viewDepartments: string[];
+  viewDepartments: string[],
   editDepartments: string[],
   public: boolean;
   shareLink?: string;
   shareLinkExpiration?: Date;
   exportPermissions: {
     pdf: boolean,
-    excel: boolean;
+    excel: boolean,
     csv: boolean,
     image: boolean;
     allowedRoles?: string[];
   };
-}
-
 export interface ReportMetadata {
   templateSource: 'CUSTOM' | 'PREDEFINED' | 'DUPLICATE';
   sourceId?: string;
   version: string,
   versionHistory: {
     version: string,
-    date: Date;
+    date: Date,
     user: string,
     changes: string
   }[];
@@ -804,17 +734,17 @@ export interface ReportMetadata {
   lastViewedDate?: Date;
   lastModifiedDate?: Date;
   viewCount: number,
-  exportCount: number;
+  exportCount: number,
   scheduleCount: number,
-  categories: string[];
+  categories: string[],
   keywords: string[];
   customMetadata?: Record<string, any>;
 }
 
-// Report data models;
+// Report data models
 export interface ReportData {
   reportId: string,
-  timestamp: Date;
+  timestamp: Date,
   parameters: Record<string, any>;
   filterValues: Record<string, any>;
   components: Record<string, ComponentData>;
@@ -824,17 +754,15 @@ export interface ReportData {
     errorMessage?: string;
     warningMessages?: string[];
     cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED',
-    rowCount: number;
+    rowCount: number,
     dataTimestamp: Date
   };
   totalPages: number,
-  currentPage: number;
+  currentPage: number,
   hasMoreData: boolean
-}
-
 export interface ComponentData {
   componentId: string,
-  data: unknown[];
+  data: unknown[],
   columns: ColumnMetadata[];
   aggregations?: Record<string, any>;
   totalRowCount: number,
@@ -843,15 +771,13 @@ export interface ComponentData {
   executionTime: number;
   paging?: {
     page: number,
-    pageSize: number;
+    pageSize: number,
     totalPages: number,
     totalRows: number
   };
-}
-
 export interface ColumnMetadata {
   name: string,
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY',
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
@@ -868,14 +794,14 @@ export interface ColumnMetadata {
   };
 }
 
-// Regulatory reporting models;
+// Regulatory reporting models
 export interface RegulatoryReport {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  reportType: 'CMS' | 'JCAHO' | 'STATE' | 'FEDERAL' | 'CUSTOM';
+  reportType: 'CMS' | 'JCAHO' | 'STATE' | 'FEDERAL' | 'CUSTOM',
   reportCode: string,
-  regulatoryBody: string;
+  regulatoryBody: string,
   frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'ONE_TIME' | 'CUSTOM';
   dueDate?: Date;
   submissionPeriod: {
@@ -887,9 +813,9 @@ export interface RegulatoryReport {
     endDate: Date
   };
   status: 'NOT_STARTED' | 'IN_PROGRESS' | 'PENDING_APPROVAL' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMPLETED',
-  dataValidation: DataValidation[];
+  dataValidation: DataValidation[],
   metrics: RegulatoryMetric[],
-  attachments: Attachment[];
+  attachments: Attachment[],
   assignedTo: string[],
   approvers: string[];
   submittedBy?: string;
@@ -897,7 +823,7 @@ export interface RegulatoryReport {
   approvedBy?: string;
   approvedDate?: Date;
   certifications: Certification[],
-  validationStatus: 'NOT_VALIDATED' | 'VALIDATION_IN_PROGRESS' | 'VALIDATION_FAILED' | 'VALIDATION_PASSED';
+  validationStatus: 'NOT_VALIDATED' | 'VALIDATION_IN_PROGRESS' | 'VALIDATION_FAILED' | 'VALIDATION_PASSED',
   submissionMethod: 'ELECTRONIC' | 'MANUAL' | 'API' | 'FILE_UPLOAD';
   submissionUrl?: string;
   submissionCredentials?: {
@@ -905,33 +831,29 @@ export interface RegulatoryReport {
     encryptedPassword: string
   };
   lastUpdated: Date,
-  comments: Comment[];
+  comments: Comment[],
   history: HistoryEntry[],
-  template: boolean;
+  template: boolean,
   created: Date,
-  createdBy: string;
+  createdBy: string,
   version: string,
   metadata: Record<string, any>;
-}
-
 export interface DataValidation {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  type: 'COMPLETENESS' | 'CONSISTENCY' | 'ACCURACY' | 'TIMELINESS' | 'CUSTOM';
+  type: 'COMPLETENESS' | 'CONSISTENCY' | 'ACCURACY' | 'TIMELINESS' | 'CUSTOM',
   status: 'NOT_STARTED' | 'IN_PROGRESS' | 'FAILED' | 'PASSED',
-  rules: ValidationRule[];
+  rules: ValidationRule[],
   errorCount: number,
   warningCount: number;
   lastValidated?: Date;
   validatedBy?: string;
-}
-
 export interface ValidationRule {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  type: 'REQUIRED' | 'FORMAT' | 'RANGE' | 'COMPARISON' | 'DUPLICATE' | 'REFERENCE' | 'FORMULA' | 'CUSTOM';
+  type: 'REQUIRED' | 'FORMAT' | 'RANGE' | 'COMPARISON' | 'DUPLICATE' | 'REFERENCE' | 'FORMULA' | 'CUSTOM',
   severity: 'ERROR' | 'WARNING' | 'INFO',
   expression: string;
   field?: string;
@@ -939,13 +861,11 @@ export interface ValidationRule {
   errorCount: number;
   errorMessage?: string;
   errorRecords?: unknown[];
-}
-
 export interface RegulatoryMetric {
   id: string,
-  name: string;
+  name: string,
   description: string,
-  category: string;
+  category: string,
   value: unknown;
   format?: string;
   target?: unknown;
@@ -959,36 +879,30 @@ export interface RegulatoryMetric {
     endDate: Date
   };
   historyAvailable: boolean
-}
-
 export interface Attachment {
   id: string,
   name: string;
   description?: string;
   fileType: string,
-  fileSize: number;
+  fileSize: number,
   uploadDate: Date,
-  uploadedBy: string;
+  uploadedBy: string,
   url: string,
-  category: 'REPORT' | 'SUPPORTING' | 'CERTIFICATION' | 'SUBMISSION' | 'OTHER';
+  category: 'REPORT' | 'SUPPORTING' | 'CERTIFICATION' | 'SUBMISSION' | 'OTHER',
   status: 'TEMPORARY' | 'PERMANENT';
   expirationDate?: Date;
-}
-
 export interface Certification {
   id: string,
-  type: 'ELECTRONIC_SIGNATURE' | 'ATTESTATION' | 'LEGAL_DOCUMENT' | 'CUSTOM';
+  type: 'ELECTRONIC_SIGNATURE' | 'ATTESTATION' | 'LEGAL_DOCUMENT' | 'CUSTOM',
   text: string,
-  certifiedBy: string;
+  certifiedBy: string,
   certificationDate: Date;
   ipAddress?: string;
   attachmentId?: string;
   validUntil?: Date;
-}
-
 export interface Comment {
   id: string,
-  text: string;
+  text: string,
   createdBy: string,
   createdDate: Date;
   updatedDate?: Date;
@@ -996,25 +910,23 @@ export interface Comment {
   replyTo?: string;
   mentions?: string[];
   status: 'ACTIVE' | 'DELETED'
-}
-
 export interface HistoryEntry {
   id: string,
-  action: 'CREATED' | 'UPDATED' | 'STATUS_CHANGED' | 'ASSIGNED' | 'VALIDATED' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMMENTED' | 'ATTACHMENT_ADDED' | 'ATTACHMENT_REMOVED' | 'CERTIFIED' | 'CUSTOM';
+  action: 'CREATED' | 'UPDATED' | 'STATUS_CHANGED' | 'ASSIGNED' | 'VALIDATED' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMMENTED' | 'ATTACHMENT_ADDED' | 'ATTACHMENT_REMOVED' | 'CERTIFIED' | 'CUSTOM',
   actionBy: string,
-  actionDate: Date;
+  actionDate: Date,
   details: Record<string, any>;
 }
 
-// Natural language query models;
+// Natural language query models
 export interface NaturalLanguageQuery {
   id: string,
-  query: string;
+  query: string,
   interpretedQuery: {
     fields: string[],
     filters: {
       field: string,
-      operator: string;
+      operator: string,
       value: unknown
     }[];
     sortBy?: {
@@ -1035,7 +947,7 @@ export interface NaturalLanguageQuery {
     customFunctions?: Record<string, any>;
   };
   queryType: 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN',
-  confidence: number; // 0-100;
+  confidence: number; // 0-100
   alternativeInterpretations?: {
     interpretedQuery: unknown,
     confidence: number
@@ -1044,7 +956,7 @@ export interface NaturalLanguageQuery {
   executionTime: number;
   error?: string;
   resultCount: number,
-  timestamp: Date;
+  timestamp: Date,
   userId: string;
   feedback?: {
     rating: 'POSITIVE' | 'NEGATIVE';
@@ -1073,31 +985,31 @@ export class CustomReportService {
     createdBy?: string;
   }): Promise<ReportTemplate[]> {
     try {
-      // Try cache first;
+      // Try cache first
       const cacheKey = `reportTemplates:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached) return cached;
 
-      // Build filters;
+      // Build filters
       const where: unknown = {};
       if (filters?.category) where.category = filters.category;
       if (filters?.type) where.type = filters.type;
       if (filters?.status) where.status = filters.status;
       if (filters?.createdBy) where.createdBy = filters.createdBy;
       
-      // Only return active templates by default;
+      // Only return active templates by default
       if (!filters?.status) where.status = 'ACTIVE';
 
-      // Query database;
+      // Query database
       const templates = await this.prisma.reportTemplate.findMany({
         where,
         orderBy: { updated: 'desc' },
       });
 
-      // Cache results;
-      await cacheService.cacheResult('analytics:', cacheKey, templates, 3600); // 1 hour;
+      // Cache results
+      await cacheService.cacheResult('analytics:', cacheKey, templates, 3600); // 1 hour
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.report_template_queries', 1, {
         category: filters?.category || 'ALL',
         type: filters?.type || 'ALL',
@@ -1116,22 +1028,22 @@ export class CustomReportService {
    */
   async getReportTemplateById(id: string): Promise<ReportTemplate | null> {
     try {
-      // Try cache first;
+      // Try cache first
       const cacheKey = `reportTemplate:${id}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached) return cached;
 
-      // Query database;
+      // Query database
       const template = await this.prisma.reportTemplate.findUnique({
         where: { id },
       });
 
       if (!template) return null;
 
-      // Cache result;
-      await cacheService.cacheResult('analytics:', cacheKey, template, 3600); // 1 hour;
+      // Cache result
+      await cacheService.cacheResult('analytics:', cacheKey, template, 3600); // 1 hour
 
-      // Update view count;
+      // Update view count
       await this.prisma.reportTemplate.update({
         where: { id },
         data: {
@@ -1158,10 +1070,10 @@ export class CustomReportService {
     userId: string;
   ): Promise<ReportTemplate> {
     try {
-      // Validate template;
+      // Validate template
       this.validateReportTemplate(template);
 
-      // Initialize metadata;
+      // Initialize metadata
       const metadata = {
         ...template.metadata,
         viewCount: 0,
@@ -1170,7 +1082,7 @@ export class CustomReportService {
         lastModifiedDate: new Date(),
       };
 
-      // Create template;
+      // Create template
       const newTemplate = await this.prisma.reportTemplate.create({
         data: {
           ...template,
@@ -1183,7 +1095,7 @@ export class CustomReportService {
         },
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'REPORT_TEMPLATE',
@@ -1196,17 +1108,17 @@ export class CustomReportService {
         },
       });
 
-      // Invalidate cache;
+      // Invalidate cache
       await cacheService.invalidatePattern('analytics:reportTemplates:*');
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.report_templates_created', 1, {
         category: template.category,
         type: template.type,
         userId,
       });
 
-      // Publish event;
+      // Publish event
       await pubsub.publish('REPORT_TEMPLATE_CREATED', {
         reportTemplateCreated: newTemplate,
       });
@@ -1227,22 +1139,22 @@ export class CustomReportService {
     userId: string;
   ): Promise<ReportTemplate> {
     try {
-      // Get current template;
+      // Get current template
       const currentTemplate = await this.getReportTemplateById(id);
       if (!currentTemplate) {
         throw new Error(`Report template ${id} not found`);
       }
 
-      // Validate updates;
+      // Validate updates
       this.validateReportTemplateUpdates(updates);
 
-      // Update metadata;
+      // Update metadata
       const metadata = {
         ...currentTemplate.metadata,
         lastModifiedDate: new Date(),
       };
       
-      // Update version history if version changed;
+      // Update version history if version changed
       if (updates.version && updates.version !== currentTemplate.version) {
         const versionHistory = [...(currentTemplate.metadata.versionHistory || [])];
         versionHistory.unshift({
@@ -1255,7 +1167,7 @@ export class CustomReportService {
         metadata.versionHistory = versionHistory;
       }
 
-      // Update template;
+      // Update template
       const updatedTemplate = await this.prisma.reportTemplate.update({
         where: { id },
         data: {
@@ -1266,7 +1178,7 @@ export class CustomReportService {
         },
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
         resourceType: 'REPORT_TEMPLATE',
@@ -1279,11 +1191,11 @@ export class CustomReportService {
         },
       });
 
-      // Invalidate cache;
+      // Invalidate cache
       await cacheService.invalidatePattern(`analytics:reportTemplate:${id}`);
       await cacheService.invalidatePattern('analytics:reportTemplates:*');
 
-      // Publish event;
+      // Publish event
       await pubsub.publish('REPORT_TEMPLATE_UPDATED', {
         reportTemplateUpdated: updatedTemplate,
       });
@@ -1312,12 +1224,12 @@ export class CustomReportService {
     const startTime = performance.now();
     
     try {
-      // Set defaults;
+      // Set defaults
       const page = options.page || 1;
       const pageSize = options.pageSize || 100;
       const caching = options.caching !== false;
       
-      // Try cache first if caching is enabled;
+      // Try cache first if caching is enabled
       if (caching) {
         const cacheKey = `reportData:${templateId}:${JSON.stringify(options.parameters ||;
           {})}:${JSON.stringify(options.filters ||
@@ -1334,13 +1246,13 @@ export class CustomReportService {
         }
       }
 
-      // Get report template;
+      // Get report template
       const template = await this.getReportTemplateById(templateId);
       if (!template) {
         throw new Error(`Report template ${templateId} not found`);
       }
 
-      // Generate data for each component;
+      // Generate data for each component
       const components: Record<string, ComponentData> = {};
       let totalRowCount = 0;
       let reportStatus: 'SUCCESS' | 'PARTIAL' | 'ERROR' = 'SUCCESS';
@@ -1351,19 +1263,19 @@ export class CustomReportService {
           .filter(component => component.visible);
           .map(async (component) => {
             try {
-              // Apply filters to component query;
+              // Apply filters to component query
               const componentFilters = this.applyFiltersToComponent(
                 component,
                 options.filters || {}
               );
               
-              // Apply parameters to component query;
+              // Apply parameters to component query
               const componentParameters = this.applyParametersToComponent(
                 component,
                 options.parameters || {}
               );
               
-              // Generate component data;
+              // Generate component data
               const data = await this.generateComponentData(
                 component,
                 componentFilters,
@@ -1399,10 +1311,10 @@ export class CustomReportService {
           });
       );
       
-      // Calculate total pages;
+      // Calculate total pages
       const totalPages = Math.ceil(totalRowCount / pageSize);
       
-      // Create report data;
+      // Create report data
       const reportData: ReportData = {
         reportId: templateId,
         timestamp: new Date(),
@@ -1422,15 +1334,15 @@ export class CustomReportService {
         hasMoreData: page < totalPages,
       };
 
-      // Cache the result;
+      // Cache the result
       if (caching) {
         const cacheKey = `reportData:${templateId}:${JSON.stringify(options.parameters ||;
           {})}:${JSON.stringify(options.filters ||
           {})}:${page}:${pageSize}`;
-        await cacheService.cacheResult('analytics:', cacheKey, reportData, 300); // 5 minutes;
+        await cacheService.cacheResult('analytics:', cacheKey, reportData, 300); // 5 minutes
       }
 
-      // Update export count;
+      // Update export count
       await this.prisma.reportTemplate.update({
         where: { id: templateId },
         data: {
@@ -1441,7 +1353,7 @@ export class CustomReportService {
         },
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'GENERATE_REPORT',
         resourceType: 'REPORT',
@@ -1455,7 +1367,7 @@ export class CustomReportService {
         },
       });
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.recordTimer('analytics.report_generation_time', performance.now() - startTime);
       metricsCollector.incrementCounter('analytics.reports_generated', 1, {
         templateId,
@@ -1467,13 +1379,13 @@ export class CustomReportService {
       return reportData;
     } catch (error) {
 
-      // Record error metric;
+      // Record error metric
       metricsCollector.incrementCounter('analytics.report_generation_errors', 1, {
         templateId,
         errorType: error.name,
       });
       
-      // Return error report data;
+      // Return error report data
       return {
         reportId: templateId,
         timestamp: new Date(),
@@ -1511,38 +1423,38 @@ export class CustomReportService {
     userId: string;
   ): Promise<{ url: string; expiresAt: Date }> {
     try {
-      // Get report template;
+      // Get report template
       const template = await this.getReportTemplateById(templateId);
       if (!template) {
         throw new Error(`Report template ${templateId} not found`);
       }
 
-      // Check export permissions;
+      // Check export permissions
       if (!this.checkExportPermissions(template, options.format, userId)) {
         throw new Error(`User ${userId} does not have permission to export ${options.format}`);
       }
 
-      // Generate report data;
+      // Generate report data
       const reportData = await this.generateReportData(
         templateId,
         {
           parameters: options.parameters,
           filters: options.filters,
           page: 1,
-          pageSize: 10000, // Get all data for export;
+          pageSize: 10000, // Get all data for export
           caching: true,
         },
         userId;
       );
 
-      // Format report for export;
+      // Format report for export
       const exportData = this.formatReportForExport(
         template,
         reportData,
         options;
       );
 
-      // Generate export file;
+      // Generate export file
       const exportUrl = await this.generateExportFile(
         exportData,
         options.format,
@@ -1550,10 +1462,10 @@ export class CustomReportService {
       );
 
       // Set expiration date (24 hours)
-      const expiresAt = new Date();
+      const expiresAt = new Date()
       expiresAt.setHours(expiresAt.getHours() + 24);
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'EXPORT_REPORT',
         resourceType: 'REPORT',
@@ -1567,7 +1479,7 @@ export class CustomReportService {
         },
       });
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.reports_exported', 1, {
         templateId,
         templateName: template.name,
@@ -1580,7 +1492,7 @@ export class CustomReportService {
       };
     } catch (error) {
 
-      // Record error metric;
+      // Record error metric
       metricsCollector.incrementCounter('analytics.report_export_errors', 1, {
         templateId,
         format: options.format,
@@ -1600,19 +1512,19 @@ export class CustomReportService {
     userId: string;
   ): Promise<ReportSchedule> {
     try {
-      // Get report template;
+      // Get report template
       const template = await this.getReportTemplateById(templateId);
       if (!template) {
         throw new Error(`Report template ${templateId} not found`);
       }
 
-      // Validate schedule;
+      // Validate schedule
       this.validateReportSchedule(schedule);
 
-      // Calculate next run date;
+      // Calculate next run date
       const nextRun = this.calculateNextRunDate(schedule);
 
-      // Create schedule;
+      // Create schedule
       const newSchedule: ReportSchedule = {
         ...schedule,
         lastRun: undefined,
@@ -1620,7 +1532,7 @@ export class CustomReportService {
         status: 'ACTIVE',
       };
 
-      // Update template with schedule;
+      // Update template with schedule
       const updatedTemplate = await this.prisma.reportTemplate.update({
         where: { id: templateId },
         data: {
@@ -1632,7 +1544,7 @@ export class CustomReportService {
         },
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'SCHEDULE_REPORT',
         resourceType: 'REPORT',
@@ -1646,17 +1558,17 @@ export class CustomReportService {
         },
       });
 
-      // Invalidate cache;
+      // Invalidate cache
       await cacheService.invalidatePattern(`analytics:reportTemplate:${templateId}`);
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.reports_scheduled', 1, {
         templateId,
         templateName: template.name,
         frequency: schedule.frequency,
       });
 
-      // Publish event;
+      // Publish event
       await pubsub.publish('REPORT_SCHEDULED', {
         reportScheduled: {
           reportId: templateId,
@@ -1684,7 +1596,7 @@ export class CustomReportService {
     assignedTo?: string;
   }): Promise<RegulatoryReport[]> {
     try {
-      // Build filters;
+      // Build filters
       const where: unknown = {};
       if (filters?.reportType) where.reportType = filters.reportType;
       if (filters?.status) where.status = filters.status;
@@ -1700,7 +1612,7 @@ export class CustomReportService {
         };
       }
 
-      // Query database;
+      // Query database
       const reports = await this.prisma.regulatoryReport.findMany({
         where,
         orderBy: [
@@ -1709,7 +1621,7 @@ export class CustomReportService {
         ],
       });
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.regulatory_report_queries', 1, {
         reportType: filters?.reportType || 'ALL',
         status: filters?.status || 'ALL',
@@ -1730,10 +1642,10 @@ export class CustomReportService {
     userId: string;
   ): Promise<RegulatoryReport> {
     try {
-      // Validate report;
+      // Validate report
       this.validateRegulatoryReport(report);
 
-      // Create history entry;
+      // Create history entry
       const historyEntry: HistoryEntry = {
         id: `history-${Date.now()}`,
         action: 'CREATED',
@@ -1745,7 +1657,7 @@ export class CustomReportService {
         },
       };
 
-      // Create report;
+      // Create report
       const newReport = await this.prisma.regulatoryReport.create({
         data: {
           ...report,
@@ -1756,7 +1668,7 @@ export class CustomReportService {
         },
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
         resourceType: 'REGULATORY_REPORT',
@@ -1770,13 +1682,13 @@ export class CustomReportService {
         },
       });
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.regulatory_reports_created', 1, {
         reportType: report.reportType,
         status: report.status,
       });
 
-      // Publish event;
+      // Publish event
       await pubsub.publish('REGULATORY_REPORT_CREATED', {
         regulatoryReportCreated: newReport,
       });
@@ -1802,17 +1714,17 @@ export class CustomReportService {
     const startTime = performance.now();
     
     try {
-      // Process natural language query;
+      // Process natural language query
       const processedQuery = await this.processNaturalLanguageQuery(
         query,
         options.dataSource,
         options.context;
       );
 
-      // Execute processed query;
+      // Execute processed query
       const queryResults = await this.executeProcessedQuery(processedQuery);
 
-      // Save query for future reference;
+      // Save query for future reference
       const nlQuery: NaturalLanguageQuery = {
         id: `nl-query-${Date.now()}`,
         query,
@@ -1833,7 +1745,7 @@ export class CustomReportService {
         data: nlQuery as any,
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'NATURAL_LANGUAGE_QUERY',
         resourceType: 'QUERY',
@@ -1847,7 +1759,7 @@ export class CustomReportService {
         },
       });
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.recordTimer('analytics.nlq_execution_time', nlQuery.executionTime);
       metricsCollector.incrementCounter('analytics.natural_language_queries', 1, {
         queryType: nlQuery.queryType,
@@ -1861,12 +1773,12 @@ export class CustomReportService {
       };
     } catch (error) {
 
-      // Record error metric;
+      // Record error metric
       metricsCollector.incrementCounter('analytics.nlq_errors', 1, {
         errorType: error.name,
       });
       
-      // Create error query record;
+      // Create error query record
       const errorQuery: NaturalLanguageQuery = {
         id: `nl-query-error-${Date.now()}`,
         query,
@@ -1903,7 +1815,7 @@ export class CustomReportService {
     userId: string;
   ): Promise<void> {
     try {
-      // Update query with feedback;
+      // Update query with feedback
       await this.prisma.naturalLanguageQuery.update({
         where: { id: queryId },
         data: {
@@ -1911,7 +1823,7 @@ export class CustomReportService {
         },
       });
 
-      // Create audit log;
+      // Create audit log
       await this.auditService.createAuditLog({
         action: 'QUERY_FEEDBACK',
         resourceType: 'QUERY',
@@ -1924,13 +1836,13 @@ export class CustomReportService {
         },
       });
 
-      // Record metrics;
+      // Record metrics
       metricsCollector.incrementCounter('analytics.query_feedback', 1, {
         rating: feedback.rating,
         hasCorrectedQuery: feedback.correctedQuery ? 'true' : 'false',
       });
 
-      // If negative feedback with corrected query, use it for learning;
+      // If negative feedback with corrected query, use it for learning
       if (feedback.rating === 'NEGATIVE' && feedback.correctedQuery) {
         await this.learnFromCorrectedQuery(queryId, feedback.correctedQuery);
       }
@@ -1940,7 +1852,7 @@ export class CustomReportService {
     }
   }
 
-  // Private helper methods;
+  // Private helper methods
   private validateReportTemplate(template: unknown): void {
     // Implementation for template validation
   }
@@ -1951,10 +1863,10 @@ export class CustomReportService {
 
   private applyFiltersToComponent(
     component: ReportComponent,
-    filters: Record<string, any>;
+    filters: Record<string, any>
   ): Record<string, any> {
-    // Implementation to apply filters to component query;
-    // This would transform dashboard filters to component-specific filters;
+    // Implementation to apply filters to component query
+    // This would transform dashboard filters to component-specific filters
     return filters;
   }
 
@@ -1962,8 +1874,8 @@ export class CustomReportService {
     component: ReportComponent,
     parameters: Record<string, any>;
   ): Record<string, any> {
-    // Implementation to apply parameters to component query;
-    // This would substitute parameters in the component query;
+    // Implementation to apply parameters to component query
+    // This would substitute parameters in the component query
     return parameters;
   }
 
@@ -1973,10 +1885,10 @@ export class CustomReportService {
     parameters: Record<string, any>,
     pagination: { page: number; pageSize: number }
   ): Promise<ComponentData> {
-    // This would be implemented to fetch actual data from the data source;
-    // Here we just simulate component data;
+    // This would be implemented to fetch actual data from the data source
+    // Here we just simulate component data
     
-    // Simulate data based on component type;
+    // Simulate data based on component type
     let data: unknown[] = [];
     let columns: ColumnMetadata[] = [];
     let totalRowCount = 0;
@@ -2004,7 +1916,7 @@ export class CustomReportService {
             },
           }));
           
-          // Generate sample data;
+          // Generate sample data
           const rowCount = Math.min(pagination.pageSize, 100);
           for (let i = 0; i < rowCount; i++) {
             const row: Record<string, any> = {};
@@ -2024,9 +1936,9 @@ export class CustomReportService {
             data.push(row);
           }
           
-          totalRowCount = 500; // Simulated total rows;
+          totalRowCount = 500; // Simulated total rows
           
-          // Generate aggregations;
+          // Generate aggregations
           component.fields.forEach(field => {
             if (field.role === 'MEASURE' && field.aggregation) {
               aggregations[field.name] = {
@@ -2040,7 +1952,7 @@ export class CustomReportService {
           break;
           
         case ComponentType.CHART:
-          // For chart, generate categorical data;
+          // For chart, generate categorical data
           columns = [
             {
               name: 'category',
@@ -2057,7 +1969,7 @@ export class CustomReportService {
             },
           ];
           
-          // Sample categories;
+          // Sample categories
           const categories = ['Category A', 'Category B', 'Category C', 'Category D', 'Category E'];
           
           data = categories.map(category => ({
@@ -2067,7 +1979,7 @@ export class CustomReportService {
           
           totalRowCount = data.length;
           
-          // Generate aggregations;
+          // Generate aggregations
           aggregations = {
             value: {
               sum: data.reduce((sum, row) => sum + row.value, 0),
@@ -2079,7 +1991,7 @@ export class CustomReportService {
           break;
           
         case ComponentType.METRIC:
-          // For metric, generate a single value;
+          // For metric, generate a single value
           columns = [
             {
               name: 'metric',
@@ -2126,7 +2038,7 @@ export class CustomReportService {
           break;
           
         default:
-          // Default sample data;
+          // Default sample data
           columns = [
             {
               name: 'key',
@@ -2172,7 +2084,7 @@ export class CustomReportService {
       totalRowCount,
       aggregations,
       status: 'SUCCESS',
-      executionTime: 50, // simulated execution time in ms;
+      executionTime: 50, // simulated execution time in ms
       paging: {
         page: pagination.page,
         pageSize: pagination.pageSize,
@@ -2187,7 +2099,7 @@ export class CustomReportService {
     format: string,
     userId: string;
   ): boolean {
-    // Implementation to check export permissions;
+    // Implementation to check export permissions
     return true;
   }
 
@@ -2196,7 +2108,7 @@ export class CustomReportService {
     reportData: ReportData,
     options: unknown;
   ): unknown {
-    // Implementation to format report for export;
+    // Implementation to format report for export
     return {
       template,
       data: reportData,
@@ -2209,10 +2121,10 @@ export class CustomReportService {
     format: string,
     filename: string;
   ): Promise<string> {
-    // Implementation to generate export file;
-    // This would convert the data to the requested format and save it;
-    // Here we just return a dummy URL;
-    return `https://example.com/reports/${filename.replace(/\s+/g, '_')}.${format.toLowerCase()}`;
+    // Implementation to generate export file
+    // This would convert the data to the requested format and save it
+    // Here we just return a dummy URL
+    return `https://example.com/reports/${filename.replace(/\s+/g, '_')}.${format.toLowerCase()}`
   }
 
   private validateReportSchedule(schedule: unknown): void {
@@ -2220,7 +2132,7 @@ export class CustomReportService {
   }
 
   private calculateNextRunDate(schedule: ReportSchedule): Date {
-    // Implementation to calculate next run date based on schedule;
+    // Implementation to calculate next run date based on schedule
     const nextRun = new Date();
     
     switch (schedule.frequency) {
@@ -2240,8 +2152,8 @@ export class CustomReportService {
         nextRun.setFullYear(nextRun.getFullYear() + 1);
         break;
       case 'CUSTOM':
-        // Parse custom cron expression;
-        // This would be a complex implementation;
+        // Parse custom cron expression
+        // This would be a complex implementation
         nextRun.setDate(nextRun.getDate() + 1);
         break;
       default: nextRun.setDate(nextRun.getDate() + 1)
@@ -2259,8 +2171,8 @@ export class CustomReportService {
     dataSource?: string,
     context?: Record<string, any>
   ): Promise<any> {
-    // This would be implemented with NLP and AI to translate natural language to structured query;
-    // For now, return a simple interpretation;
+    // This would be implemented with NLP and AI to translate natural language to structured query
+    // For now, return a simple interpretation
     return {
       fields: ['category', 'value'],
       filters: [
@@ -2281,8 +2193,8 @@ export class CustomReportService {
   }
 
   private async executeProcessedQuery(processedQuery: unknown): Promise<any> {
-    // This would execute the structured query against the data source;
-    // For now, return sample data;
+    // This would execute the structured query against the data source
+    // For now, return sample data
     return {
       data: [
         { category: 'Category A', value: 1000 },
@@ -2311,7 +2223,7 @@ export class CustomReportService {
   }
 
   private determineQueryType(processedQuery: unknown): 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN' {
-    // Determine query type based on structure;
+    // Determine query type based on structure
     if (processedQuery.groupBy && processedQuery.groupBy.length > 0) {
       return 'ANALYTICAL';
     } else if (processedQuery.sortBy && processedQuery.sortBy.length > 0) {
@@ -2326,8 +2238,8 @@ export class CustomReportService {
   }
 
   private async findRelatedQueries(query: string): Promise<string[]> {
-    // Find related queries based on similarity;
-    // This would be implemented with vector similarity search;
+    // Find related queries based on similarity
+    // This would be implemented with vector similarity search
     return [
       'Show me the top 5 categories by value',
       'What are the values for each category last month?',
@@ -2336,8 +2248,7 @@ export class CustomReportService {
   }
 
   private async learnFromCorrectedQuery(queryId: string, correctedQuery: string): Promise<void> {
-    // Implementation to improve NLP model from corrected queries;
-    // This would typically be used to train or fine-tune the model;
+    // Implementation to improve NLP model from corrected queries
+    // This would typically be used to train or fine-tune the model
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
-}

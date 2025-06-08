@@ -1,18 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 // SEC-3: Implement Comprehensive Audit Logging (Initial Service & Integration)
-// Research notes: research_notes_audit_logging.md;
+// Research notes: research_notes_audit_logging.md
 
-import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or a dedicated logging sink;
+import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or a dedicated logging sink
 
 /**
  * @interface IAuditLogService;
@@ -46,11 +38,11 @@ export interface IAuditLogService {
  * It should NOT log sensitive data directly in plaintext unless the audit log itself is encrypted.
  */
 export class AuditLogService implements IAuditLogService {
-  // private db: IDatabaseAdapter; // Could use the main DB or a dedicated one;
+  // private db: IDatabaseAdapter; // Could use the main DB or a dedicated one
 
   constructor(/* dbAdapter?: IDatabaseAdapter */) {
     // If logging to the database, inject the adapter.
-    // this.db = dbAdapter;
+    // this.db = dbAdapter
 
   }
 
@@ -80,7 +72,7 @@ export class AuditLogService implements IAuditLogService {
     // Example of logging to a database (if dbAdapter was injected and a table exists):
     /*
     if (this.db) {
-      const queryText = `;
+      const queryText = `
         INSERT INTO audit_logs (timestamp, user_id, event_type, entity_type, entity_id, status, details);
         VALUES ($1, $2, $3, $4, $5, $6, $7);
       `;
@@ -96,7 +88,7 @@ export class AuditLogService implements IAuditLogService {
         ]);
       } catch (error) {
 
-        // Fallback logging or error handling critical here;
+        // Fallback logging or error handling critical here
       }
     }
     */
@@ -107,7 +99,7 @@ export class AuditLogService implements IAuditLogService {
 // Example Usage (for testing - remove or comment out for production):
 /*
 async const testAuditLogService = () {
-  const auditService = new AuditLogService();
+  const auditService = new AuditLogService()
 
   await auditService.logEvent(
     "user123",
@@ -124,7 +116,7 @@ async const testAuditLogService = () {
     "Patient",
     "patient-uuid-789",
     "SUCCESS",
-    { patientName: "encrypted_placeholder_John Doe" } // Note: sensitive details should be handled carefully;
+    { patientName: "encrypted_placeholder_John Doe" } // Note: sensitive details should be handled carefully
   );
 
   await auditService.logEvent(

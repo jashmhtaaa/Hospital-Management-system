@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { RedisCache } from './redis.ts';
 
 export class CacheMetrics {
@@ -47,7 +37,7 @@ export class CacheMetrics {
    */
   static getMetrics(): {
     hits: number,
-    misses: number;
+    misses: number,
     totalRequests: number,
     hitRate: number
   } {
@@ -69,7 +59,7 @@ export class CacheMetrics {
   }
 }
 
-// Enhance RedisCache to track metrics;
+// Enhance RedisCache to track metrics
 const originalGet = RedisCache.get;
 RedisCache.get = async function<T>(key: string): Promise<T | null> {
   const result = await originalGet<T>(key);

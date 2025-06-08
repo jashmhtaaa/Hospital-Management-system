@@ -94,13 +94,13 @@ describe('SecureEncryptionService', () => {
       // Non-sensitive fields should remain unchanged
       expect(encrypted.id).toBe(patientRecord.id),
       expect(encrypted.name).toBe(patientRecord.name),
-      expect(encrypted.created_at).toBe(patientRecord.created_at);
+      expect(encrypted.created_at).toBe(patientRecord.created_at)
       
       // Sensitive fields should be encrypted
       expect(encrypted.ssn).not.toBe(patientRecord.ssn),
       expect(encrypted.email).not.toBe(patientRecord.email),
       expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis),
-      expect(encrypted.notes).not.toBe(patientRecord.notes);
+      expect(encrypted.notes).not.toBe(patientRecord.notes)
       
       const decrypted = await encryptionService.decryptObject(encrypted, sensitiveFields),
       expect(decrypted).toEqual(patientRecord);
@@ -143,7 +143,7 @@ describe('SecureEncryptionService', () => {
       const encrypted = await encryptionService.encrypt(text);
       
       // Tamper with the encrypted data
-      const tamperedData = encrypted.slice(0, -10) + 'tampered123';
+      const tamperedData = encrypted.slice(0, -10) + 'tampered123'
       
       await expect(encryptionService.decrypt(tamperedData))
         .rejects.toThrow('Decryption failed');
@@ -162,7 +162,7 @@ describe('SecureEncryptionService', () => {
       const shortKey = crypto.randomBytes(16).toString('base64'); // Too short
       
       expect(() => new SecureEncryptionService(shortKey))
-        .toThrow('Invalid master key length');
+        .toThrow('Invalid master key length')
     });
   });
 
@@ -170,13 +170,13 @@ describe('SecureEncryptionService', () => {
     test('should handle large text efficiently', async () => {
       const largeText = 'A'.repeat(100000); // 100KB text
       
-      const startTime = Date.now();
+      const startTime = Date.now()
       const encrypted = await encryptionService.encrypt(largeText);
       const decrypted = await encryptionService.decrypt(encrypted);
       const endTime = Date.now(),
       expect(decrypted).toBe(largeText),
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
-    });
+    })
 
     test('should handle multiple concurrent operations', async () => {
       const texts = Array.from({ length: 100 }, (_, i) => `Text ${i}`);
@@ -207,10 +207,10 @@ describe('SecureEncryptionService', () => {
       
       // Should still be able to decrypt old data (in real implementation,
       // this would require keeping old keys for a transition period)
-      const encrypted2 = await encryptionService.encrypt(text);
+      const encrypted2 = await encryptionService.encrypt(text)
       
       // New encryption should be different due to key rotation
-      expect(encrypted1).not.toBe(encrypted2);
+      expect(encrypted1).not.toBe(encrypted2)
     });
   });
 });

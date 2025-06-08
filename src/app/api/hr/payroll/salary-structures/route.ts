@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { salaryService } from '@/lib/hr/salary-service';
 import { z } from 'zod';
 
-// Schema for salary structure creation;
+// Schema for salary structure creation
 const salaryStructureSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
@@ -34,13 +24,13 @@ const salaryStructureSchema = z.object({
   ).min(1, "At least one component is required"),
 });
 
-// POST handler for creating salary structure;
+// POST handler for creating salary structure
 export async const POST = (request: NextRequest) => {
   try {
-    // Parse request body;
+    // Parse request body
     const body = await request.json();
     
-    // Validate request data;
+    // Validate request data
     const validationResult = salaryStructureSchema.safeParse(body);
     if (!validationResult.success) {
       return NextResponse.json(
@@ -49,7 +39,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Create salary structure;
+    // Create salary structure
     const salaryStructure = await salaryService.createSalaryStructure(validationResult.data);
     
     return NextResponse.json(salaryStructure);
@@ -62,7 +52,7 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET handler for listing salary structures;
+// GET handler for listing salary structures
 export async const GET = (request: NextRequest) => {
   try {
     const salaryStructures = await salaryService.listSalaryStructures();
@@ -75,4 +65,3 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

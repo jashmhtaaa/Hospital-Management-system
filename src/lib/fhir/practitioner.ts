@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -32,8 +24,6 @@ export interface FHIRPractitionerQualification {
   code: FHIRCodeableConcept;
   period?: FHIRPeriod;
   issuer?: { reference?: string; display?: string };
-}
-
 export interface FHIRPractitioner extends FHIRBase {
   resourceType: 'Practitioner';
   identifier?: FHIRIdentifier[];
@@ -48,7 +38,7 @@ export interface FHIRPractitioner extends FHIRBase {
   communication?: FHIRCodeableConcept[];
 }
 
-// Practitioner Search Parameters;
+// Practitioner Search Parameters
 export interface FHIRPractitionerSearchParams {
   _id?: string;
   identifier?: string;
@@ -65,7 +55,7 @@ export interface FHIRPractitionerSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR Practitioner operations;
+// Helper functions for FHIR Practitioner operations
 export class FHIRPractitionerUtils {
   /**
    * Create a basic practitioner;
@@ -81,7 +71,7 @@ export class FHIRPractitionerUtils {
     email?: string;
     address?: {
       street: string,
-      city: string;
+      city: string,
       state: string,
       zipCode: string;
       country?: string;
@@ -102,7 +92,7 @@ export class FHIRPractitionerUtils {
       }]
     };
 
-    // Add identifiers;
+    // Add identifiers
     const identifiers: FHIRIdentifier[] = [];
     
     if (data.npiNumber) {
@@ -117,7 +107,7 @@ export class FHIRPractitionerUtils {
         },
         system: 'http://hl7.org/fhir/sid/us-npi',
         value: data.npiNumber
-      });
+      })
     }
 
     if (data.licenseNumber) {
@@ -131,14 +121,14 @@ export class FHIRPractitionerUtils {
           }]
         },
         value: data.licenseNumber
-      });
+      })
     }
 
     if (identifiers.length > 0) {
       practitioner.identifier = identifiers;
     }
 
-    // Add contact information;
+    // Add contact information
     const telecom: FHIRContactPoint[] = [];
     
     if (data.phone) {
@@ -161,7 +151,7 @@ export class FHIRPractitionerUtils {
       practitioner.telecom = telecom;
     }
 
-    // Add address;
+    // Add address
     if (data.address) {
       practitioner.address = [{
         use: 'work',
@@ -173,7 +163,7 @@ export class FHIRPractitionerUtils {
       }];
     }
 
-    // Add demographics;
+    // Add demographics
     if (data.gender) {
       practitioner.gender = data.gender;
     }
@@ -182,7 +172,7 @@ export class FHIRPractitionerUtils {
       practitioner.birthDate = data.birthDate;
     }
 
-    // Add qualifications/specialties;
+    // Add qualifications/specialties
     if (data.specialties && data.specialties.length > 0) {
       practitioner.qualification = data.specialties.map(specialty => ({
         code: {
@@ -192,7 +182,7 @@ export class FHIRPractitionerUtils {
             display: specialty
           }]
         }
-      }));
+      }))
     }
 
     return practitioner;
@@ -228,7 +218,7 @@ export class FHIRPractitionerUtils {
       active: true
     });
 
-    // Add medical degree qualification;
+    // Add medical degree qualification
     if (!practitioner.qualification) {
       practitioner.qualification = [];
     }
@@ -241,7 +231,7 @@ export class FHIRPractitionerUtils {
           display: 'Doctor of Medicine'
         }]
       }
-    });
+    })
 
     return practitioner;
   }
@@ -251,7 +241,7 @@ export class FHIRPractitionerUtils {
    */
   static createNurse(data: {
     firstName: string,
-    lastName: string;
+    lastName: string,
     nursingLicense: string;
     specialty?: string;
     phone: string,
@@ -269,7 +259,7 @@ export class FHIRPractitionerUtils {
       active: true
     });
 
-    // Add nursing degree qualification;
+    // Add nursing degree qualification
     if (!practitioner.qualification) {
       practitioner.qualification = [];
     }
@@ -282,7 +272,7 @@ export class FHIRPractitionerUtils {
           display: 'Registered Nurse'
         }]
       }
-    });
+    })
 
     return practitioner;
   }
@@ -426,7 +416,7 @@ export class FHIRPractitionerUtils {
    */
   static formatForDisplay(practitioner: FHIRPractitioner): {
     name: string,
-    title: string;
+    title: string,
     specialty: string;
     phone?: string;
     email?: string;
@@ -458,12 +448,12 @@ export class FHIRPractitionerUtils {
       errors.push('resourceType must be "Practitioner"');
     }
 
-    // At least one name is recommended;
+    // At least one name is recommended
     if (!practitioner.name || practitioner.name.length === 0) {
       errors.push('At least one name is recommended');
     }
 
-    // Validate name structure;
+    // Validate name structure
     if (practitioner.name) {
       practitioner.name.forEach((name, index) => {
         if (!name.family && !name.given) {
@@ -472,7 +462,7 @@ export class FHIRPractitionerUtils {
       });
     }
 
-    // Validate contact points;
+    // Validate contact points
     if (practitioner.telecom) {
       practitioner.telecom.forEach((contact, index) => {
         if (!contact.system || !contact.value) {
@@ -484,7 +474,7 @@ export class FHIRPractitionerUtils {
       });
     }
 
-    // Validate identifiers;
+    // Validate identifiers
     if (practitioner.identifier) {
       practitioner.identifier.forEach((id, index) => {
         if (!id.value) {
@@ -579,7 +569,7 @@ export class FHIRPractitionerUtils {
   }
 }
 
-// Common practitioner specialties and roles;
+// Common practitioner specialties and roles
 export class FHIRPractitionerSpecialties {
   /**
    * Medical specialties;
@@ -667,4 +657,3 @@ export class FHIRPractitionerSpecialties {
   static isNursingSpecialty(code: string): boolean {
     return Object.values(this.NURSING_SPECIALTIES).some(specialty => specialty.code === code)
   }
-}

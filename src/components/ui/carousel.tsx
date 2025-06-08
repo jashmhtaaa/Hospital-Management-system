@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -36,7 +28,7 @@ type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0]
   api: ReturnType<typeof useEmblaCarousel>[1]
   scrollPrev: () => void,
-  scrollNext: () => void;
+  scrollNext: () => void,
   canScrollPrev: boolean,
   canScrollNext: boolean
 } & CarouselProps;
@@ -270,4 +262,3 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-}

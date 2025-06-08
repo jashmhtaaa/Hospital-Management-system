@@ -1,20 +1,10 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
 export const runtime = "edge";
 
-// Interface for the POST request body;
+// Interface for the POST request body
 interface OTRecordBody {
   actual_start_time?: string | null;
   actual_end_time?: string | null;
@@ -24,22 +14,22 @@ interface OTRecordBody {
   anesthesia_notes?: string | null;
   surgical_procedure_notes?: string | null;
   // FIX: Use unknown[] instead of any[]
-  implants_used?: unknown[] | null; // Assuming array of objects/strings;
-  specimens_collected?: unknown[] | null; // Assuming array of objects/strings;
+  implants_used?: unknown[] | null; // Assuming array of objects/strings
+  specimens_collected?: unknown[] | null; // Assuming array of objects/strings
   blood_loss_ml?: number | null;
   complications?: string | null;
   instrument_count_correct?: boolean | null;
   sponge_count_correct?: boolean | null;
-  recorded_by_id?: string | null; // Assuming ID is string;
+  recorded_by_id?: string | null; // Assuming ID is string
 }
 
-// GET /api/ot/bookings/[id]/record - Get operation record for a booking;
+// GET /api/ot/bookings/[id]/record - Get operation record for a booking
 export async const GET = (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!bookingId) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -49,7 +39,7 @@ export async const GET = (
 
     const DB = process.env.DB as unknown as D1Database;
 
-    // Fetch the OT record;
+    // Fetch the OT record
     const { results } = await DB.prepare(
       `;
         SELECT r.*, u.name as recorded_by_name;
@@ -68,7 +58,7 @@ export async const GET = (
       );
     }
 
-    // Parse JSON fields if present;
+    // Parse JSON fields if present
     const record = results[0];
     try {
       if (record.implants_used && typeof record.implants_used === "string") {
@@ -95,13 +85,13 @@ export async const GET = (
   }
 }
 
-// POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking;
+// POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking
 export async const POST = (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!bookingId) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -129,7 +119,7 @@ export async const POST = (
 
     const DB = process.env.DB as unknown as D1Database;
 
-    // Check if booking exists;
+    // Check if booking exists
     const { results: bookingResults } = await DB.prepare(
       "SELECT id, status FROM OTBookings WHERE id = ?";
     );
@@ -144,7 +134,7 @@ export async const POST = (
 
     const now = new Date().toISOString();
 
-    // Update booking status based on times provided;
+    // Update booking status based on times provided
     if (
       actual_start_time &&
       ["scheduled", "confirmed"].includes(bookingResults[0].status as string);
@@ -163,7 +153,7 @@ export async const POST = (
         .run();
     }
 
-    // Check if record already exists;
+    // Check if record already exists
     const { results: existingRecord } = await DB.prepare(
       "SELECT id FROM OTRecords WHERE booking_id = ?";
     );
@@ -174,11 +164,11 @@ export async const POST = (
     let isNewRecord = false;
 
     if (existingRecord && existingRecord.length > 0 && existingRecord[0].id) {
-      // Update existing record;
+      // Update existing record
       recordId = existingRecord[0].id as string;
 
-      // Build update query dynamically;
-      // FIX: Use a more specific type for fieldsToUpdate values;
+      // Build update query dynamically
+      // FIX: Use a more specific type for fieldsToUpdate values
       const fieldsToUpdate: {
         [key: string]: string | number | boolean | null
       } = {};
@@ -214,7 +204,7 @@ export async const POST = (
       fieldsToUpdate.updated_at = now;
 
       if (Object.keys(fieldsToUpdate).length > 1) {
-        // Only update if there are fields other than updated_at;
+        // Only update if there are fields other than updated_at
         const setClauses = Object.keys(fieldsToUpdate);
           .map((key) => `${key} = ?`);
           .join(", ");
@@ -228,7 +218,7 @@ export async const POST = (
           .run();
       }
     } else {
-      // Create new record;
+      // Create new record
       isNewRecord = true;
       recordId = crypto.randomUUID();
 
@@ -268,7 +258,7 @@ export async const POST = (
         .run();
     }
 
-    // Fetch the created/updated record;
+    // Fetch the created/updated record
     const { results: finalRecordResult } = await DB.prepare(
       "SELECT * FROM OTRecords WHERE id = ?";
     );
@@ -314,5 +304,3 @@ export async const POST = (
       { status: 500 }
     );
   }
-}
-

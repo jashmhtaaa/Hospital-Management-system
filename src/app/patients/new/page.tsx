@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -17,15 +7,15 @@ import { hasPermission } from '../../../lib/rbac.service';
 import PatientForm from '../../../components/patient-management/patient-form';
 
 export default async const NewPatientPage = () {
-  // Get session;
+  // Get session
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated;
+  // Redirect to login if not authenticated
   if (!session) {
     redirect('/login');
   }
   
-  // Check permission;
+  // Check permission
   const canCreate = await hasPermission(session.user.id, 'create', 'patient');
   if (!canCreate) {
     redirect('/patients');
@@ -38,4 +28,3 @@ export default async const NewPatientPage = () {
       </Suspense>
     </div>
   );
-}

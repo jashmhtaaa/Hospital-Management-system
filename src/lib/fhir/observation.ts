@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -34,8 +26,6 @@ export interface FHIRObservationComponent {
   dataAbsentReason?: FHIRCodeableConcept;
   interpretation?: FHIRCodeableConcept[];
   referenceRange?: FHIRObservationReferenceRange[];
-}
-
 export interface FHIRObservationReferenceRange {
   low?: FHIRQuantity;
   high?: FHIRQuantity;
@@ -43,8 +33,6 @@ export interface FHIRObservationReferenceRange {
   appliesTo?: FHIRCodeableConcept[];
   age?: FHIRRange;
   text?: string;
-}
-
 export interface FHIRObservation extends FHIRBase {
   resourceType: 'Observation';
   identifier?: FHIRIdentifier[];
@@ -53,11 +41,11 @@ export interface FHIRObservation extends FHIRBase {
   status: 'registered' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'cancelled' | 'entered-in-error' | 'unknown';
   category?: FHIRCodeableConcept[];
   code: FHIRCodeableConcept;
-  subject?: FHIRReference; // Patient | Group | Device | Location;
+  subject?: FHIRReference; // Patient | Group | Device | Location
   focus?: FHIRReference[];
   encounter?: FHIRReference;
-  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod;
-  issued?: string; // instant;
+  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod
+  issued?: string; // instant
   performer?: FHIRReference[];
   value?: FHIRQuantity | FHIRCodeableConcept | string | boolean | number | FHIRRange;
   dataAbsentReason?: FHIRCodeableConcept;
@@ -73,7 +61,7 @@ export interface FHIRObservation extends FHIRBase {
   component?: FHIRObservationComponent[];
 }
 
-// Observation Search Parameters;
+// Observation Search Parameters
 export interface FHIRObservationSearchParams {
   _id?: string;
   identifier?: string;
@@ -93,7 +81,7 @@ export interface FHIRObservationSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR Observation operations;
+// Helper functions for FHIR Observation operations
 export class FHIRObservationUtils {
   /**
    * Create a basic vital signs observation;
@@ -125,9 +113,9 @@ export class FHIRObservationUtils {
       },
       effective: data.effectiveDateTime,
       issued: new Date().toISOString()
-    };
+    }
 
-    // Add encounter if provided;
+    // Add encounter if provided
     if (data.encounterId) {
       observation.encounter = {
         reference: `Encounter/${data.encounterId}`,
@@ -135,7 +123,7 @@ export class FHIRObservationUtils {
       };
     }
 
-    // Add performer if provided;
+    // Add performer if provided
     if (data.practitionerId) {
       observation.performer = [{
         reference: `Practitioner/${data.practitionerId}`,
@@ -176,15 +164,15 @@ export class FHIRObservationUtils {
             code: data.unit
           }
         }
-      ];
+      ]
     } else if (typeof data.value === 'number') {
-      // Single value observation;
+      // Single value observation
       observation.value = {
         value: data.value,
         unit: data.unit,
         system: 'http://unitsofmeasure.org',
         code: data.unit
-      };
+      }
     }
 
     return observation;
@@ -198,7 +186,7 @@ export class FHIRObservationUtils {
     practitionerId?: string;
     encounterId?: string;
     testCode: string,
-    testName: string;
+    testName: string,
     value: number | string;
     unit?: string;
     referenceRange?: { low?: number; high?: number };
@@ -230,9 +218,9 @@ export class FHIRObservationUtils {
       },
       effective: data.effectiveDateTime,
       issued: new Date().toISOString()
-    };
+    }
 
-    // Add encounter if provided;
+    // Add encounter if provided
     if (data.encounterId) {
       observation.encounter = {
         reference: `Encounter/${data.encounterId}`,
@@ -240,7 +228,7 @@ export class FHIRObservationUtils {
       };
     }
 
-    // Add performer if provided;
+    // Add performer if provided
     if (data.practitionerId) {
       observation.performer = [{
         reference: `Practitioner/${data.practitionerId}`,
@@ -248,7 +236,7 @@ export class FHIRObservationUtils {
       }];
     }
 
-    // Add specimen if provided;
+    // Add specimen if provided
     if (data.specimenId) {
       observation.specimen = {
         reference: `Specimen/${data.specimenId}`,
@@ -256,19 +244,19 @@ export class FHIRObservationUtils {
       };
     }
 
-    // Add value;
+    // Add value
     if (typeof data.value === 'number' && data.unit) {
       observation.value = {
         value: data.value,
         unit: data.unit,
         system: 'http://unitsofmeasure.org',
         code: data.unit
-      };
+      }
     } else {
       observation.value = data.value;
     }
 
-    // Add interpretation;
+    // Add interpretation
     if (data.interpretation) {
       observation.interpretation = [{
         coding: [{
@@ -276,10 +264,10 @@ export class FHIRObservationUtils {
           code: data.interpretation.toUpperCase(),
           display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1)
         }]
-      }];
+      }]
     }
 
-    // Add reference range;
+    // Add reference range
     if (data.referenceRange) {
       observation.referenceRange = [{
         ...(data.referenceRange.low && {
@@ -297,7 +285,7 @@ export class FHIRObservationUtils {
             system: 'http://unitsofmeasure.org',
             code: data.unit || ''
           }
-        });
+        })
       }];
     }
 
@@ -312,7 +300,7 @@ export class FHIRObservationUtils {
     practitionerId: string;
     encounterId?: string;
     assessmentCode: string,
-    assessmentName: string;
+    assessmentName: string,
     finding: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
@@ -350,7 +338,7 @@ export class FHIRObservationUtils {
           reference: `Encounter/${data.encounterId}`,
           type: 'Encounter'
         }
-      });
+      })
     };
   }
 
@@ -376,7 +364,7 @@ export class FHIRObservationUtils {
         code: codeInfo.code,
         display: codeInfo.display
       }]
-    };
+    }
   }
 
   /**
@@ -472,9 +460,9 @@ export class FHIRObservationUtils {
    */
   static formatForDisplay(observation: FHIRObservation): {
     test: string,
-    value: string;
+    value: string,
     unit: string,
-    status: string;
+    status: string,
     isAbnormal: boolean;
     interpretation?: string;
   } {
@@ -516,7 +504,7 @@ export class FHIRObservationUtils {
       errors.push('subject is required');
     }
 
-    // Validate status values;
+    // Validate status values
     const validStatuses = ['registered', 'preliminary', 'final', 'amended', 'corrected', 'cancelled', 'entered-in-error', 'unknown'];
     if (observation.status && !validStatuses.includes(observation.status)) {
       errors.push(`status must be one of: ${validStatuses.join(', ')}`);
@@ -527,7 +515,7 @@ export class FHIRObservationUtils {
       !observation.value &&
       !observation.component &&
       !observation.dataAbsentReason) {
-      errors.push('Either value, component, or dataAbsentReason must be present');
+      errors.push('Either value, component, or dataAbsentReason must be present')
     }
 
     return {
@@ -565,7 +553,7 @@ export class FHIRObservationUtils {
   static fromHMSVitalSigns(hmsVitalSigns: unknown): FHIRObservation[] {
     const observations: FHIRObservation[] = [];
 
-    // Handle different vital signs;
+    // Handle different vital signs
     if (hmsVitalSigns.bloodPressure) {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
@@ -638,13 +626,13 @@ export class FHIRObservationUtils {
   }
 }
 
-// Lab result categories and common test codes;
+// Lab result categories and common test codes
 export class FHIRLabUtils {
   /**
    * Common lab test codes;
    */
   static readonly COMMON_LAB_CODES = {
-    // Complete Blood Count;
+    // Complete Blood Count
     CBC: '58410-2',
     WBC: '6690-2',
     RBC: '789-8',
@@ -652,7 +640,7 @@ export class FHIRLabUtils {
     HEMATOCRIT: '4544-3',
     PLATELETS: '777-3',
 
-    // Basic Metabolic Panel;
+    // Basic Metabolic Panel
     GLUCOSE: '2345-7',
     SODIUM: '2947-0',
     POTASSIUM: '2823-3',
@@ -660,19 +648,19 @@ export class FHIRLabUtils {
     BUN: '3094-0',
     CREATININE: '2160-0',
 
-    // Liver Function;
+    // Liver Function
     ALT: '1742-6',
     AST: '1920-8',
     BILIRUBIN_TOTAL: '1975-2',
     ALBUMIN: '1751-7',
 
-    // Lipid Panel;
+    // Lipid Panel
     CHOLESTEROL_TOTAL: '2093-3',
     HDL: '2085-9',
     LDL: '18262-6',
     TRIGLYCERIDES: '2571-8',
 
-    // Cardiac Markers;
+    // Cardiac Markers
     TROPONIN: '6598-7',
     CK_MB: '13969-1',
     BNP: '30934-4'
@@ -692,4 +680,3 @@ export class FHIRLabUtils {
 
     return ranges[testCode] || null;
   }
-}

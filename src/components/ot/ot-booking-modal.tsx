@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -34,43 +26,43 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define the Booking type based on usage;
+// Define the Booking type based on usage
 interface Booking {
-  id?: string; // Optional ID for existing bookings;
+  id?: string; // Optional ID for existing bookings
   patient_id: string,
-  surgery_type_id: string;
+  surgery_type_id: string,
   theatre_id: string,
-  lead_surgeon_id: string;
+  lead_surgeon_id: string,
   anesthesiologist_id: string,
-  scheduled_start_time: string | Date; // Can be string or Date;
-  scheduled_end_time: string | Date; // Can be string or Date;
+  scheduled_start_time: string | Date; // Can be string or Date
+  scheduled_end_time: string | Date; // Can be string or Date
   booking_type: string,
-  priority: string;
-  booking_notes: string
-}
-
-// Define the type for data passed to onSave;
-interface BookingSaveData {
-  patient_id: string,
-  surgery_type_id: string;
-  theatre_id: string,
-  lead_surgeon_id: string;
-  anesthesiologist_id: string,
-  scheduled_start_time: string | null;
-  scheduled_end_time: string | null,
-  booking_type: string;
   priority: string,
   booking_notes: string
 }
 
-// Props for the modal - use defined types;
-interface OTBookingModalProperties {
-  trigger: React.ReactNode;
-  booking?: Booking; // Use Booking type;
-  onSave: (bookingData: BookingSaveData) => Promise<void>; // Use BookingSaveData type;
+// Define the type for data passed to onSave
+interface BookingSaveData {
+  patient_id: string,
+  surgery_type_id: string,
+  theatre_id: string,
+  lead_surgeon_id: string,
+  anesthesiologist_id: string,
+  scheduled_start_time: string | null,
+  scheduled_end_time: string | null,
+  booking_type: string,
+  priority: string,
+  booking_notes: string
 }
 
-// Mock data for dropdowns - replace with API calls;
+// Props for the modal - use defined types
+interface OTBookingModalProperties {
+  trigger: React.ReactNode;
+  booking?: Booking; // Use Booking type
+  onSave: (bookingData: BookingSaveData) => Promise<void>; // Use BookingSaveData type
+}
+
+// Mock data for dropdowns - replace with API calls
 const mockPatients = [
   { id: "patient-1", name: "John Smith (MRN001)" },
   { id: "patient-2", name: "Sarah Johnson (MRN002)" },
@@ -105,7 +97,7 @@ export default const OTBookingModal = ({
   onSave,
 }: OTBookingModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
-  // Initialize form data state, handling potential Date objects for time;
+  // Initialize form data state, handling potential Date objects for time
   const [formData, setFormData] = useState(() => ({
     patient_id: booking?.patient_id || "",
     surgery_type_id: booking?.surgery_type_id || "",
@@ -125,7 +117,7 @@ export default const OTBookingModal = ({
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when booking prop changes (for editing) or modal opens;
+  // Reset form when booking prop changes (for editing) or modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -145,8 +137,8 @@ export default const OTBookingModal = ({
         booking_notes: booking?.booking_notes || "",
       });
     } else {
-      // Optionally clear form when closed, or keep last state;
-      // setFormData({ patient_id: "", ... });
+      // Optionally clear form when closed, or keep last state
+      // setFormData({ patient_id: "", ... })
     }
   }, [booking, isOpen]);
 
@@ -165,7 +157,7 @@ export default const OTBookingModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
-      // Convert datetime-local strings back to ISO strings for API;
+      // Convert datetime-local strings back to ISO strings for API
       const apiData: BookingSaveData = {
         ...formData,
         scheduled_start_time: formData.scheduled_start_time;
@@ -176,24 +168,24 @@ export default const OTBookingModal = ({
           : null,
       };
 
-      // Replace with actual API call;
+      // Replace with actual API call
       // const url = booking ? `/api/ot/bookings/${booking.id}` :
-      // const method = booking ? "PUT" : "POST";
+      // const method = booking ? "PUT" : "POST"
       // const response = await fetch(url, {
       //   method: method,
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Failed to save booking");
+      //   const errorData = await response.json()
+      //   throw new Error(errorData.message || "Failed to save booking")
       // }
 
-      // Simulate API call;
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-      await onSave(apiData); // Call parent callback to refresh list;
+      await onSave(apiData); // Call parent callback to refresh list
 
       toast({
         title: "Success",
@@ -201,7 +193,7 @@ export default const OTBookingModal = ({
       }),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type;
+      // Use unknown for error type
 
       let errorMessage = "Failed to save booking.";
       if (error instanceof Error) {
@@ -460,4 +452,3 @@ export default const OTBookingModal = ({
       </DialogContent>
     </Dialog>
   );
-}

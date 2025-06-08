@@ -39,7 +39,7 @@ export const ICDCodeSchema = z.object({
     max: z.number().optional(),
     units: z.enum(['days', 'months', 'years']).default('years')
   }).optional()
-});
+})
 
 export const CodingRequestSchema = z.object({
   patientId: z.string().min(1, 'Patient ID is required'),
@@ -82,15 +82,11 @@ export interface ICDSearchOptions {
   limit?: number;
   offset?: number;
   includeHierarchy?: boolean;
-}
-
 export interface CodingAssistanceOptions {
   enableAI?: boolean;
   suggestionLimit?: number;
   confidenceThreshold?: number;
   includeReferences?: boolean;
-}
-
 export class ICDCodingService {
   private prisma: PrismaClient;
   private auditService: AuditService;
@@ -143,24 +139,24 @@ export class ICDCodingService {
           excludes: ['E11.0', 'E11.1'],
           includes: ['Adult-onset diabetes']
         }
-      ];
+      ]
 
       // Filter results based on search criteria
       let filteredResults = mockResults.filter(code => {
-        if (version && code.version !== version) return false;
+        if (version && code.version !== version) return false
         if (category && code.category !== category) return false;
         if (billableOnly && !code.billable) return false;
         if (validOnly && !code.isValid) return false;
         
         // Text search in code or description
-        const searchText = query.toLowerCase();
+        const searchText = query.toLowerCase()
         return code.code.toLowerCase().includes(searchText) ||
                code.description.toLowerCase().includes(searchText) ||
                code.synonyms.some(syn => syn.toLowerCase().includes(searchText));
       });
 
       // Apply pagination
-      filteredResults = filteredResults.slice(offset, offset + limit);
+      filteredResults = filteredResults.slice(offset, offset + limit)
 
       // Log search activity
       await this.auditService.logAuditEvent({
@@ -169,7 +165,7 @@ export class ICDCodingService {
         resourceId: query,
         userId: 'system',
         details: { query, version, resultsCount: filteredResults.length }
-      });
+      })
 
       return filteredResults;
     } catch (error) {
@@ -183,7 +179,7 @@ export class ICDCodingService {
    */
   async getCodeHierarchy(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
     parents: ICDCode[],
-    children: ICDCode[];
+    children: ICDCode[],
     siblings: ICDCode[]
   }> {
     try {
@@ -210,7 +206,7 @@ export class ICDCodingService {
           billable: true,
           sex: 'both' as const
         }]
-      };
+      }
 
       await this.auditService.logAuditEvent({
         action: 'icd_hierarchy_lookup',
@@ -232,7 +228,7 @@ export class ICDCodingService {
    */
   async validateCode(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
     isValid: boolean,
-    code: ICDCode | null;
+    code: ICDCode | null,
     validationErrors: string[],
     suggestions: string[]
   }> {
@@ -250,7 +246,7 @@ export class ICDCodingService {
       if (!foundCode) {
         result.validationErrors.push('Code not found in database');
         // Suggest similar codes
-        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 });
+        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 })
         result.suggestions = similarCodes.map(c => c.code);
       } else if (!foundCode.isValid) {
         result.validationErrors.push('Code is no longer valid');
@@ -283,7 +279,7 @@ export class ICDCodingService {
       const requestId = `cr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
       // In production, store in database
-      console.log(`[ICD Coding] Coding request submitted: ${requestId}`);
+      console.log(`[ICD Coding] Coding request submitted: ${requestId}`)
 
       await this.auditService.logAuditEvent({
         action: 'coding_request_submitted',
@@ -312,7 +308,7 @@ export class ICDCodingService {
       const validatedResult = CodingResultSchema.parse({ ...result, requestId });
 
       // In production, update database record
-      console.log(`[ICD Coding] Coding request completed: ${requestId}`);
+      console.log(`[ICD Coding] Coding request completed: ${requestId}`)
 
       await this.auditService.logAuditEvent({
         action: 'coding_request_completed',
@@ -342,7 +338,7 @@ export class ICDCodingService {
   ): Promise<{
     suggestions: Array<{
       code: string,
-      description: string;
+      description: string,
       confidence: number,
       reasoning: string
     }>;
@@ -365,7 +361,7 @@ export class ICDCodingService {
           confidence: 0.72,
           reasoning: 'Keywords: "coronary", "atherosclerosis" found, but confidence lower due to "unstable angina" not mentioned'
         }
-      ];
+      ]
 
       const filteredSuggestions = mockSuggestions
         .filter(s => s.confidence >= confidenceThreshold)
@@ -403,13 +399,13 @@ export class ICDCodingService {
    */
   async getCodingMetrics(dateRange: { from: Date; to: Date }): Promise<{
     totalRequests: number,
-    completedRequests: number;
+    completedRequests: number,
     averageCompletionTime: number,
     topCodes: Array<{ code: string; count: number; description: string }>;
     coderPerformance: Array<{ coderId: string; requestsCompleted: number; averageConfidence: number }>;
     qualityMetrics: {
       validationRate: number,
-      rejectionRate: number;
+      rejectionRate: number,
       averageConfidence: number
     };
   }> {
@@ -434,7 +430,7 @@ export class ICDCodingService {
           rejectionRate: 0.03,
           averageConfidence: 0.85
         }
-      };
+      }
 
       await this.auditService.logAuditEvent({
         action: 'coding_metrics_accessed',
@@ -460,7 +456,7 @@ export class ICDCodingService {
 }
 
 // Singleton instance for application use
-let icdCodingServiceInstance: ICDCodingService | null = null;
+let icdCodingServiceInstance: ICDCodingService | null = null
 
 export const getICDCodingService = (): ICDCodingService => {
   if (!icdCodingServiceInstance) {

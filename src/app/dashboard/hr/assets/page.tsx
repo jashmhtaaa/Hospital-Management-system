@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -90,7 +80,7 @@ export default const AssetManagement = () {
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
 
-  // Fetch assets;
+  // Fetch assets
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -143,7 +133,7 @@ export default const AssetManagement = () {
     }
   }, [search, assetTypeFilter, statusFilter, departmentFilter, locationFilter, dateRange, pagination.skip, pagination.take, activeTab]);
 
-  // Fetch departments for filters;
+  // Fetch departments for filters
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -160,7 +150,7 @@ export default const AssetManagement = () {
     fetchDepartments();
   }, []);
 
-  // Fetch asset statistics;
+  // Fetch asset statistics
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
@@ -177,7 +167,7 @@ export default const AssetManagement = () {
     fetchStatistics();
   }, []);
 
-  // Extract unique locations from assets;
+  // Extract unique locations from assets
   useEffect(() => {
     if (assets.length > 0) {
       const uniqueLocations = [...new Set(assets.map(asset => asset.location).filter(Boolean))];
@@ -185,7 +175,7 @@ export default const AssetManagement = () {
     }
   }, [assets]);
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
@@ -204,26 +194,26 @@ export default const AssetManagement = () {
     }
   };
 
-  // Handle search;
+  // Handle search
   const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching;
+    // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Handle tab change;
+  // Handle tab change
   const handleTabChange = (value: unknown) => {
     setActiveTab(value);
-    // Reset pagination when changing tabs;
+    // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
     
-    // Set appropriate filters based on tab;
+    // Set appropriate filters based on tab
     if (value === 'maintenance') {
       setStatusFilter('UNDER_MAINTENANCE');
     } else if (value === 'all') {
@@ -231,21 +221,21 @@ export default const AssetManagement = () {
     }
   };
 
-  // Create new asset;
+  // Create new asset
   const handleCreateAsset = () => {
     router.push('/dashboard/hr/assets/new');
   };
 
-  // Export asset data;
+  // Export asset data
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
         title: "Export Started",
         description: "Your asset report is being generated and will download shortly.",
       });
       
-      // Simulate download delay;
+      // Simulate download delay
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -261,7 +251,7 @@ export default const AssetManagement = () {
     }
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'AVAILABLE':
@@ -278,7 +268,7 @@ export default const AssetManagement = () {
     }
   };
 
-  // Get asset type icon;
+  // Get asset type icon
   const getAssetTypeIcon = (type: unknown) => {
     switch (type) {
       case 'EQUIPMENT':
@@ -295,7 +285,7 @@ export default const AssetManagement = () {
     }
   };
 
-  // Format currency;
+  // Format currency
   const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
@@ -595,4 +585,3 @@ export default const AssetManagement = () {
       </div>
     </div>
   );
-}

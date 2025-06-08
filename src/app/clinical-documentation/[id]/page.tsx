@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -20,10 +10,10 @@ export default async const DocumentViewPage = ({
 }: {
   params: { id: string }
 }) {
-  // Get session;
+  // Get session
   const session = await getServerSession(authOptions);
   
-  // Redirect to login if not authenticated;
+  // Redirect to login if not authenticated
   if (!session) {
     redirect('/login');
   }
@@ -35,4 +25,3 @@ export default async const DocumentViewPage = ({
       </Suspense>
     </div>
   );
-}

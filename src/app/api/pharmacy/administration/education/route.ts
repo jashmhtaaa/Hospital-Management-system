@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -32,7 +24,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository = {
   findById: getPrescriptionById,
@@ -60,7 +52,7 @@ const educationRepository = {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateEducationRequest(data);
     if (!validationResult.success) {
@@ -70,22 +62,22 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify patient exists;
+    // Verify patient exists
     const patient = await getPatientById(data.patientId);
     if (!patient) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Verify medication exists if provided;
+    // Verify medication exists if provided
     if (data.medicationId) {
       const medication = await medicationRepository.findById(data.medicationId);
       if (!medication) {
@@ -93,7 +85,7 @@ export async const POST = (req: NextRequest) => {
       }
     }
 
-    // Verify prescription exists if provided;
+    // Verify prescription exists if provided
     if (data.prescriptionId) {
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
       if (!prescription) {
@@ -101,7 +93,7 @@ export async const POST = (req: NextRequest) => {
       }
     }
 
-    // Create education record;
+    // Create education record
     const education = {
       id: data.id || crypto.randomUUID(),
       patientId: data.patientId,
@@ -121,10 +113,10 @@ export async const POST = (req: NextRequest) => {
       interpreterName: data.interpreterName
     };
 
-    // Save education record;
+    // Save education record
     const educationId = await educationRepository.save(education);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'CREATE',
       resourceType: 'MedicationEducation',
@@ -139,7 +131,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: educationId,
@@ -158,16 +150,16 @@ export async const POST = (req: NextRequest) => {
  */
 export async const GET = (req: NextRequest) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get query parameters;
+    // Get query parameters
     const url = new URL(req.url);
     const patientId = url.searchParams.get('patientId');
     const medicationId = url.searchParams.get('medicationId');
@@ -178,7 +170,7 @@ export async const GET = (req: NextRequest) => {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
-    // Require at least patientId filter;
+    // Require at least patientId filter
     if (!patientId) {
       return NextResponse.json(
         { error: 'Patient ID is required' },
@@ -186,13 +178,13 @@ export async const GET = (req: NextRequest) => {
       );
     }
 
-    // Build filter criteria;
+    // Build filter criteria
     const filter: unknown = { patientId };
     if (medicationId) filter.medicationId = medicationId;
     if (prescriptionId) filter.prescriptionId = prescriptionId;
     if (educationType) filter.educationType = educationType;
     
-    // Add date range if provided;
+    // Add date range if provided
     if (startDate || endDate) {
       filter.educatedAt = {};
       if (startDate) filter.educatedAt.gte = new Date(startDate);
@@ -200,9 +192,9 @@ export async const GET = (req: NextRequest) => {
     }
 
     // Get education records (mock implementation)
-    const educationRecords = await educationRepository.findByPatientId(patientId);
+    const educationRecords = await educationRepository.findByPatientId(patientId)
     
-    // Apply additional filters;
+    // Apply additional filters
     let filteredRecords = educationRecords;
     if (medicationId) {
       filteredRecords = filteredRecords.filter(e => e.medicationId === medicationId);
@@ -224,10 +216,10 @@ export async const GET = (req: NextRequest) => {
     
     const total = filteredRecords.length;
 
-    // Apply pagination;
+    // Apply pagination
     const paginatedRecords = filteredRecords.slice((page - 1) * limit, page * limit);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'LIST',
       resourceType: 'MedicationEducation',
@@ -241,7 +233,7 @@ export async const GET = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       educationRecords: paginatedRecords,
       pagination: {
@@ -254,4 +246,3 @@ export async const GET = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error retrieving patient education records');
   }
-}

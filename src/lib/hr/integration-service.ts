@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/hr/auth-integration';
@@ -33,7 +23,7 @@ export class IntegrationService {
         isActive: true,
         positions: {
           some: {
-            endDate: null, // Current positions;
+            endDate: null, // Current positions
             department: {
               type: 'CLINICAL'
             }
@@ -244,13 +234,13 @@ export class IntegrationService {
    * This allows clinical modules to update equipment status;
    */
   async updateAssetStatusFromClinical(assetId: string, status: 'AVAILABLE' | 'IN_USE' | 'UNDER_MAINTENANCE', notes?: string) {
-    // Get current session for audit;
+    // Get current session for audit
     const session = await getServerSession(authOptions);
     if (!session) {
       throw new Error('Unauthorized');
     }
 
-    // Check if user has permission;
+    // Check if user has permission
     const hasPermission = session.user.roles.some(role => 
       ['ADMIN', 'CLINICAL_STAFF', 'DOCTOR', 'NURSE'].includes(role);
     );
@@ -259,7 +249,7 @@ export class IntegrationService {
       throw new Error('Insufficient permissions');
     }
 
-    // Update asset status;
+    // Update asset status
     return this.prisma.asset.update({
       where: { id: assetId },
       data: {
@@ -270,7 +260,7 @@ export class IntegrationService {
             type: 'STATUS_CHANGE',
             date: new Date(),
             details: {
-              previousStatus: 'UNKNOWN', // Will be replaced in service layer;
+              previousStatus: 'UNKNOWN', // Will be replaced in service layer
               newStatus: status,
               notes,
               updatedBy: session.user.email,
@@ -295,13 +285,13 @@ export class IntegrationService {
     description: string;
     nextMaintenanceDate?: Date;
   }) {
-    // Get current session for audit;
+    // Get current session for audit
     const session = await getServerSession(authOptions);
     if (!session) {
       throw new Error('Unauthorized');
     }
 
-    // Check if user has permission;
+    // Check if user has permission
     const hasPermission = session.user.roles.some(role => 
       ['ADMIN', 'CLINICAL_STAFF', 'BIOMEDICAL_ENGINEER'].includes(role);
     );
@@ -310,7 +300,7 @@ export class IntegrationService {
       throw new Error('Insufficient permissions');
     }
 
-    // Create maintenance record;
+    // Create maintenance record
     const maintenanceRecord = await this.prisma.maintenanceRecord.create({
       data: {
         assetId,
@@ -323,7 +313,7 @@ export class IntegrationService {
       },
     });
 
-    // Create history record;
+    // Create history record
     await this.prisma.assetHistory.create({
       data: {
         assetId,
@@ -341,7 +331,7 @@ export class IntegrationService {
       },
     });
 
-    // Update asset status;
+    // Update asset status
     await this.prisma.asset.update({
       where: { id: assetId },
       data: {
@@ -375,6 +365,4 @@ export class IntegrationService {
       }
     });
   }
-}
-
 export const integrationService = new IntegrationService();

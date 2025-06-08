@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -30,4 +20,4 @@ const Textarea = React.forwardRef<;
 });
 Textarea.displayName = "Textarea";
 
-export { Textarea }
+export { Textarea 

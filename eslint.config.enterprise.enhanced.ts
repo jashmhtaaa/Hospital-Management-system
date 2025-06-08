@@ -748,7 +748,7 @@ const enterpriseConfig: Linter.FlatConfig[] = [
       'max-lines-per-function': ['error', { max: 50 }],
     },
   },
-];
+]
 
 export default enterpriseConfig;
 

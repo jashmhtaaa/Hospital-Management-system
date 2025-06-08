@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -28,7 +18,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Loader2, Star } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
-// Form schema;
+// Form schema
 const feedbackFormSchema = z.object({
   type: z.string({
     required_error: "Please select a feedback type",
@@ -58,14 +48,12 @@ interface FeedbackFormProps {
   serviceTypes?: string[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<FeedbackFormValues>;
-}
-
 export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
 
-  // Initialize form;
+  // Initialize form
   const form = useForm<FeedbackFormValues>({
     resolver: zodResolver(feedbackFormSchema),
     defaultValues: {
@@ -85,13 +73,13 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
     },
   });
 
-  // Watch for anonymous field changes;
+  // Watch for anonymous field changes
   const isAnonymous = form.watch('anonymous'),
   useEffect(() => {
     setShowContactInfo(isAnonymous);
   }, [isAnonymous]);
 
-  // Handle form submission;
+  // Handle form submission
   const onSubmit = async (values: FeedbackFormValues) => {
     setIsSubmitting(true);
     try {
@@ -114,10 +102,10 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
         description: "Thank you for your feedback!",
       });
 
-      // Reset form;
+      // Reset form
       form.reset();
 
-      // Call onSuccess callback if provided;
+      // Call onSuccess callback if provided
       if (onSuccess) {
         onSuccess(data);
       }
@@ -374,4 +362,3 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
       </CardFooter>
     </Card>
   );
-}

@@ -1,55 +1,47 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation"; // FIX: Removed unused import;
+// import { useRouter } from "next/navigation"; // FIX: Removed unused import
 import { Loader2 } from "lucide-react";
 
-// Define interfaces for data structures;
+// Define interfaces for data structures
 interface PrescriptionItem {
   id: string,
-  medication_id: string;
+  medication_id: string,
   medication_name: string,
-  dosage: string;
+  dosage: string,
   frequency: string,
-  duration: string;
+  duration: string,
   dispensed_quantity: number,
   quantity: number
 }
 
 interface Prescription {
   id: string,
-  date: string;
-  status: string; // e.g., 'active', 'partially_dispensed', 'completed';
+  date: string,
+  status: string; // e.g., 'active', 'partially_dispensed', 'completed'
   items: PrescriptionItem[]
 }
 
 interface MedicationScheduleItem {
   id: string,
-  prescription_item_id: string;
+  prescription_item_id: string,
   medication_name: string,
-  scheduled_time: string;
+  scheduled_time: string,
   status: "pending" | "administered" | "skipped" | "held";
   condition?: string;
 }
 
 interface AdministrationRecord {
   id: string;
-  schedule_id?: string; // Link to schedule if applicable;
-  prescription_item_id?: string; // Link to prescription item;
+  schedule_id?: string; // Link to schedule if applicable
+  prescription_item_id?: string; // Link to prescription item
   medication_name: string,
-  administered_at: string;
-  administered_by: string; // Name or ID of the nurse;
+  administered_at: string,
+  administered_by: string; // Name or ID of the nurse
   notes?: string;
 }
 
@@ -62,7 +54,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   admissionId,
   patientId,
 }) => {
-  // const router = useRouter(); // FIX: Removed unused router;
+  // const router = useRouter(); // FIX: Removed unused router
   const [loading, setLoading] = useState<boolean>(true);
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [medicationSchedule, setMedicationSchedule] = useState<;
@@ -84,28 +76,28 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       setLoading(true),
       setError(undefined);
       try {
-        // Simulate fetching all data concurrently;
-        // In a real app, you might have separate endpoints or a combined one;
+        // Simulate fetching all data concurrently
+        // In a real app, you might have separate endpoints or a combined one
         // const [prescriptionsRes, scheduleRes, recordsRes] = await Promise.all([
         //   fetch(`/api/pharmacy/prescriptions?patient_id=${patientId}&status=active`),
         //   fetch(`/api/ipd/admissions/${admissionId}/medication-schedule`),
         //   fetch(`/api/ipd/admissions/${admissionId}/medication-administration`)
-        // ]);
+        // ])
 
-        // // Check responses;
-        // if (!prescriptionsRes.ok) throw new Error("Failed to fetch prescriptions");
-        // if (!scheduleRes.ok) throw new Error("Failed to fetch medication schedule");
-        // if (!recordsRes.ok) throw new Error("Failed to fetch administration records");
+        // // Check responses
+        // if (!prescriptionsRes.ok) throw new Error("Failed to fetch prescriptions")
+        // if (!scheduleRes.ok) throw new Error("Failed to fetch medication schedule")
+        // if (!recordsRes.ok) throw new Error("Failed to fetch administration records")
 
-        // const prescriptionsData = await prescriptionsRes.json();
-        // const scheduleData = await scheduleRes.json();
-        // const recordsData = await recordsRes.json();
+        // const prescriptionsData = await prescriptionsRes.json()
+        // const scheduleData = await scheduleRes.json()
+        // const recordsData = await recordsRes.json()
 
-        // setPrescriptions(prescriptionsData.prescriptions || []);
-        // setMedicationSchedule(scheduleData.schedule || []);
-        // setAdministrationRecords(recordsData.records || []);
+        // setPrescriptions(prescriptionsData.prescriptions || [])
+        // setMedicationSchedule(scheduleData.schedule || [])
+        // setAdministrationRecords(recordsData.records || [])
 
-        // Mock data simulation;
+        // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPrescriptions: Prescription[] = [
           {
@@ -197,9 +189,9 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       alert("Admission ID is missing.");
       return;
     }
-    setLoading(true); // Use a specific loading state for this action if needed;
+    setLoading(true); // Use a specific loading state for this action if needed
     try {
-      // Simulate API call;
+      // Simulate API call
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
@@ -208,17 +200,17 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       //     prescription_item_id: scheduleItem.prescription_item_id,
       //     medication_name: scheduleItem.medication_name,
       //     administered_time: new Date().toISOString(),
-      //     // administered_by_id: Get current user ID from session;
+      //     // administered_by_id: Get current user ID from session
       //     notes: "Administered as scheduled.",
       //   }),
-      // });
+      // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}));
-      //   throw new Error(errorData.error || "Failed to record administration");
+      //   const errorData = await response.json().catch(() => ({}))
+      //   throw new Error(errorData.error || "Failed to record administration")
       // }
-      // const newRecord: AdministrationRecord = await response.json();
+      // const newRecord: AdministrationRecord = await response.json()
 
-      // Mock response;
+      // Mock response
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newRecord: AdministrationRecord = {
         id: `admin_${Date.now()}`,
@@ -226,7 +218,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         prescription_item_id: scheduleItem.prescription_item_id,
         medication_name: scheduleItem.medication_name,
         administered_at: new Date().toISOString(),
-        administered_by: "Current Nurse", // Replace with actual user data;
+        administered_by: "Current Nurse", // Replace with actual user data
         notes: "Administered as scheduled.",
       };
 
@@ -235,7 +227,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         ...previousRecords,
       ]);
 
-      // Update schedule item status;
+      // Update schedule item status
       setMedicationSchedule((previousSchedule) =>
         previousSchedule.map((item) =>
           item.id === scheduleItem.id;
@@ -267,7 +259,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     return "N/A";
   };
 
-  // Format date for display;
+  // Format date for display
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
@@ -277,7 +269,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-      };
+      }
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
       );
@@ -379,7 +371,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                         {item.status === "pending" && (
                           <button>
                             onClick={() => handleAdministerMedication(item)}
-                            disabled={loading} // Consider a more specific loading state;
+                            disabled={loading} // Consider a more specific loading state
                             className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {loading ? (

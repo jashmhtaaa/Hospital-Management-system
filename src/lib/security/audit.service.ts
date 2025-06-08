@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -37,8 +29,6 @@ export interface AuditEvent {
     gdpr?: boolean;
     sox?: boolean;
   };
-}
-
 export interface AuditQuery {
   startDate?: Date;
   endDate?: Date;
@@ -49,21 +39,17 @@ export interface AuditQuery {
   outcome?: string;
   limit?: number;
   offset?: number;
-}
-
 export interface AuditReport {
   events: AuditEvent[],
-  totalCount: number;
+  totalCount: number,
   summary: {
     totalEvents: number,
-    successfulEvents: number;
+    successfulEvents: number,
     failedEvents: number,
     severityBreakdown: Record<string, number>;
     topUsers: Array<{ userId: string; count: number }>;
     topResources: Array<{ resource: string; count: number }>;
   };
-}
-
 export class AuditService {
   private static instance: AuditService;
   private readonly prisma: PrismaClient;
@@ -99,26 +85,26 @@ export class AuditService {
         }
       };
 
-      // Store in database;
+      // Store in database
       await this.storeInDatabase(auditEvent);
 
-      // Log to structured logging system;
+      // Log to structured logging system
       await this.logToSystem(auditEvent);
 
-      // Send alerts for critical events;
+      // Send alerts for critical events
       if (auditEvent.severity === 'CRITICAL') {
         await this.sendCriticalAlert(auditEvent);
       }
 
     } catch (error) {
 
-      // Fallback to console logging;
+      // Fallback to console logging
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
   }
 
   /**
-   * Batch log multiple events;
+   * Batch log multiple events
    */
   async logEvents(events: AuditEvent[]): Promise<void> {
     for (const event of events) {
@@ -155,7 +141,7 @@ export class AuditService {
         this.prisma.auditLog.count({ where })
       ]);
 
-      // Generate summary;
+      // Generate summary
       const summary = await this.generateSummary(where);
 
       return {
@@ -183,8 +169,8 @@ export class AuditService {
     return this.queryLogs({
       startDate,
       endDate,
-      // Note: Prisma doesn't support direct JSON field queries like this;
-      // This would need to be implemented differently in production;
+      // Note: Prisma doesn't support direct JSON field queries like this
+      // This would need to be implemented differently in production
     });
   }
 
@@ -243,7 +229,7 @@ export class AuditService {
    */
   async archiveLogs(olderThan: Date): Promise<number> {
     try {
-      // In production, this would move logs to cold storage;
+      // In production, this would move logs to cold storage
       const result = await this.prisma.auditLog.deleteMany({
         where: {
           timestamp: { lt: olderThan }
@@ -274,8 +260,8 @@ export class AuditService {
     eventTypes: string[],
     callback: (event: AuditEvent) => void;
   ): () => void {
-    // This would integrate with a real-time messaging system like Redis Pub/Sub;
-    // For now, return a no-op unsubscribe function;
+    // This would integrate with a real-time messaging system like Redis Pub/Sub
+    // For now, return a no-op unsubscribe function
     return () => {};
   }
 
@@ -329,7 +315,7 @@ export class AuditService {
       });
     ];
 
-    // Add Elasticsearch transport if configured;
+    // Add Elasticsearch transport if configured
     if (process.env.ELASTICSEARCH_URL) {
       transports.push(
         new ElasticsearchTransport({
@@ -462,20 +448,20 @@ export class AuditService {
   }
 
   private async sendCriticalAlert(event: AuditEvent): Promise<void> {
-    // Implement critical alert logic;
+    // Implement critical alert logic
     // This could send emails, SMS, Slack notifications, etc.
 
-    // Example: Log to dedicated critical events log;
+    // Example: Log to dedicated critical events log
     this.logger.error('CRITICAL_AUDIT_EVENT', event);
   }
 }
 
-// Export convenience function;
+// Export convenience function
 export async const logAuditEvent = (event: AuditEvent): Promise<void> {
   return AuditService.getInstance().logEvent(event)
 }
 
-// Export singleton instance;
+// Export singleton instance
 export const auditService = AuditService.getInstance();
 
 export default auditService;

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -21,9 +13,9 @@ import path from 'path';
 
 interface Migration {
   id: string,
-  name: string;
+  name: string,
   version: string,
-  up: string;
+  up: string,
   down: string,
   checksum: string;
   appliedAt?: Date;
@@ -32,9 +24,9 @@ interface Migration {
 
 interface MigrationRecord {
   id: string,
-  name: string;
+  name: string,
   version: string,
-  checksum: string;
+  checksum: string,
   appliedAt: Date;
   rolledBackAt?: Date;
   executionTime: number,
@@ -56,17 +48,17 @@ class MigrationManager {
   async initialize(): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
-    // Create migrations table if it doesn't exist;
+    // Create migrations table if it doesn't exist
     await this.createMigrationsTable();
     
-    // Ensure directories exist;
+    // Ensure directories exist
     await this.ensureDirectories();
     
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async createMigrationsTable(): Promise<void> {
-    await this.prisma.$executeRaw`;
+    await this.prisma.$executeRaw`
       CREATE TABLE IF NOT EXISTS _migration_history (;
         id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(500) NOT NULL,
@@ -82,7 +74,7 @@ class MigrationManager {
       );
     `;
 
-    // Create indexes for performance;
+    // Create indexes for performance
     await this.prisma.$executeRaw`;
       CREATE INDEX IF NOT EXISTS idx_migration_history_version ON _migration_history(version);
     `;
@@ -122,7 +114,7 @@ class MigrationManager {
   async runMigrations(): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
-    const pendingMigrations = await this.getPendingMigrations();
+    const pendingMigrations = await this.getPendingMigrations()
     
     if (pendingMigrations.length === 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -139,22 +131,22 @@ class MigrationManager {
   }
 
   private async runSingleMigration(migration: Migration): Promise<void> {
-    const startTime = Date.now();
+    const startTime = Date.now()
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // Create backup before migration;
+    // Create backup before migration
     const backupFile = await this.createBackup(migration.version);
     
     try {
-      // Validate migration integrity;
+      // Validate migration integrity
       const currentChecksum = this.generateChecksum(migration.up + migration.down);
       if (currentChecksum !== migration.checksum) {
         throw new Error(`Migration checksum mismatch for ${migration.version}`);
       }
 
-      // Execute migration in transaction;
+      // Execute migration in transaction
       await this.prisma.$transaction(async (tx) => {
-        // Split SQL by statements and execute each one;
+        // Split SQL by statements and execute each one
         const statements = this.splitSqlStatements(migration.up);
         
         for (const statement of statements) {
@@ -166,7 +158,7 @@ class MigrationManager {
 
       const executionTime = Date.now() - startTime;
 
-      // Record successful migration;
+      // Record successful migration
       await this.recordMigration({
         id: migration.id,
         name: migration.name,
@@ -180,11 +172,10 @@ class MigrationManager {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     } catch (error) {
-      const executionTime = Date.now() - startTime;
+      const executionTime = Date.now() - startTime
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
-
-      // Record failed migration;
+      // Record failed migration
       await this.recordMigration({
         id: migration.id,
         name: migration.name,
@@ -196,9 +187,9 @@ class MigrationManager {
         errorMessage,
       });
 
-      // Restore from backup;
+      // Restore from backup
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      await this.restoreFromBackup(backupFile);
+      await this.restoreFromBackup(backupFile)
       
       throw error;
     }
@@ -207,7 +198,7 @@ class MigrationManager {
   async rollbackMigration(version: string): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const migrationRecord = await this.getMigrationRecord(version);
+    const migrationRecord = await this.getMigrationRecord(version)
     if (!migrationRecord) {
       throw new Error(`Migration record not found for version: ${version}`);
     }
@@ -217,16 +208,16 @@ class MigrationManager {
       return
     }
 
-    const migration = await this.loadMigration(version);
+    const migration = await this.loadMigration(version)
     if (!migration) {
       throw new Error(`Migration file not found for version: ${version}`);
     }
 
-    // Create backup before rollback;
+    // Create backup before rollback
     const backupFile = await this.createBackup(`rollback_${version}`);
 
     try {
-      // Execute rollback in transaction;
+      // Execute rollback in transaction
       await this.prisma.$transaction(async (tx) => {
         const statements = this.splitSqlStatements(migration.down);
         
@@ -237,7 +228,7 @@ class MigrationManager {
         }
       });
 
-      // Update migration record;
+      // Update migration record
       await this.prisma.$executeRaw`;
         UPDATE _migration_history;
         SET;
@@ -251,9 +242,9 @@ class MigrationManager {
 
     } catch (error) {
 
-      // Restore from backup;
+      // Restore from backup
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      await this.restoreFromBackup(backupFile);
+      await this.restoreFromBackup(backupFile)
       
       throw error;
     }
@@ -262,9 +253,9 @@ class MigrationManager {
   async rollbackToVersion(targetVersion: string): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const appliedMigrations = await this.getAppliedMigrations();
+    const appliedMigrations = await this.getAppliedMigrations()
 \1;
-    ).sort((a, b) => b.version.localeCompare(a.version)); // Reverse order;
+    ).sort((a, b) => b.version.localeCompare(a.version)); // Reverse order
 
     if (migrationsToRollback.length === 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -281,13 +272,13 @@ class MigrationManager {
   }
 
   private async getPendingMigrations(): Promise<Migration[]> {
-    // Get all migration files;
+    // Get all migration files
     const migrationFiles = await this.getMigrationFiles();
     
-    // Get applied migrations;
+    // Get applied migrations
     const appliedVersions = await this.getAppliedVersions();
     
-    // Filter pending migrations;
+    // Filter pending migrations
     const pendingMigrations: Migration[] = [];
     
     for (const file of migrationFiles) {
@@ -297,7 +288,7 @@ class MigrationManager {
       }
     }
 
-    // Sort by version;
+    // Sort by version
     return pendingMigrations.sort((a, b) => a.version.localeCompare(b.version));
   }
 
@@ -390,7 +381,7 @@ class MigrationManager {
     const backupFile = path.join(this.backupDir, `backup_${identifier}_${timestamp}.sql`);
     
     try {
-      // Use pg_dump to create backup;
+      // Use pg_dump to create backup
       const dbUrl = process.env.DATABASE_URL;
       if (dbUrl) {
         execSync(`pg_dump "${dbUrl}" > "${backupFile}"`, { stdio: 'pipe' });
@@ -402,7 +393,7 @@ class MigrationManager {
 
     }
     
-    return backupFile;
+    return backupFile
   }
 
   private async restoreFromBackup(backupFile: string): Promise<void> {
@@ -421,7 +412,7 @@ class MigrationManager {
 
   private async fileExists(filePath: string): Promise<boolean> {
     try {
-      await fs.access(filePath);
+      await fs.access(filePath)
       return true;
     } catch {
       return false;
@@ -429,7 +420,7 @@ class MigrationManager {
   }
 
   private splitSqlStatements(sql: string): string[] {
-    // Split SQL by semicolons, but be careful with quoted strings;
+    // Split SQL by semicolons, but be careful with quoted strings
     const statements: string[] = [];
     let current = '';
     let inQuotes = false;
@@ -467,19 +458,19 @@ class MigrationManager {
   }
 
   private generateChecksum(content: string): string {
-    // Simple checksum implementation - in production, use crypto;
+    // Simple checksum implementation - in production, use crypto
     let hash = 0;
     for (let i = 0; i < content.length; i++) {
       const char = content.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer;
+      hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(16);
   }
 
   async getMigrationStatus(): Promise<{
     applied: MigrationRecord[],
-    pending: Migration[];
+    pending: Migration[],
     total: number
   }> {
     const applied = await this.getAppliedMigrations();
@@ -497,7 +488,7 @@ class MigrationManager {
   }
 }
 
-// CLI Commands;
+// CLI Commands
 export async const migrate = (): Promise<void> {;
   const manager = new MigrationManager();
   try {
@@ -506,8 +497,6 @@ export async const migrate = (): Promise<void> {;
   } finally {
     await manager.cleanup();
   }
-}
-
 export async const rollback = (version?: string): Promise<void> {;
   const manager = new MigrationManager();
   try {
@@ -515,7 +504,7 @@ export async const rollback = (version?: string): Promise<void> {;
     if (version) {
       await manager.rollbackToVersion(version);
     } else {
-      // Rollback last migration;
+      // Rollback last migration
       const status = await manager.getMigrationStatus();
       const lastApplied = status.applied;
         .filter(m => m.status === 'SUCCESS');
@@ -528,10 +517,8 @@ export async const rollback = (version?: string): Promise<void> {;
       }
     }
   } finally {
-    await manager.cleanup();
+    await manager.cleanup()
   }
-}
-
 export async const status = (): Promise<void> {;
   const manager = new MigrationManager();
   try {
@@ -549,23 +536,21 @@ export async const status = (): Promise<void> {;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       migrationStatus.pending.forEach(migration => {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      });
+      })
     }
     
     if (migrationStatus.applied.length > 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      migrationStatus.applied;
+      migrationStatus.applied
         .filter(m => m.status === 'SUCCESS');
         .sort((a, b) => b.version.localeCompare(a.version));
-        .slice(0, 10) // Show last 10;
+        .slice(0, 10) // Show last 10
         .forEach(migration => {
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        });
+        })
     }
   } finally {
     await manager.cleanup();
   }
-}
-
 export { MigrationManager };
 export default MigrationManager;

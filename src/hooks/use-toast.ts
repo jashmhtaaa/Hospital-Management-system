@@ -1,17 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
 
-// Inspired by react-hot-toast library;
+// Inspired by react-hot-toast library
 import * as React from "react";
 
 import type {
@@ -34,7 +26,7 @@ type ToasterToast = ToastProps & {
 //   UPDATE_TOAST: "UPDATE_TOAST",
 //   DISMISS_TOAST: "DISMISS_TOAST",
 //   REMOVE_TOAST: "REMOVE_TOAST",
-// } as const // FIX: Removed unused variable, string literals used directly;
+// } as const // FIX: Removed unused variable, string literals used directly
 
 let count = 0;
 
@@ -53,11 +45,11 @@ type Action =
       toast: Partial<ToasterToast>
     }
   | {
-      type: "DISMISS_TOAST" // Use string literal;
+      type: "DISMISS_TOAST" // Use string literal
       toastId?: ToasterToast["id"]
     }
   | {
-      type: "REMOVE_TOAST" // Use string literal;
+      type: "REMOVE_TOAST" // Use string literal
       toastId?: ToasterToast["id"]
     }
 
@@ -81,8 +73,6 @@ const addToRemoveQueue = (toastId: string) => {
   }, TOAST_REMOVE_DELAY);
 
   toastTimeouts.set(toastId, timeout);
-}
-
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "ADD_TOAST":
@@ -103,7 +93,7 @@ export const reducer = (state: State, action: Action): State => {
       const { toastId } = action;
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity;
+      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
@@ -197,6 +187,4 @@ const useToast = () {
     toast,
     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   }
-}
-
-export { useToast, toast }
+export { useToast, toast 

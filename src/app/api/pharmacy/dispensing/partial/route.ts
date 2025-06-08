@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -31,7 +23,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository = {
   findById: getPrescriptionById,
@@ -67,7 +59,7 @@ const inventoryRepository = {
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validatePartialDispensingRequest(data);
     if (!validationResult.success) {
@@ -77,28 +69,28 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Verify prescription exists;
+    // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!prescription) {
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
-    // Verify medication exists;
+    // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!medication) {
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
-    // Check inventory availability;
+    // Check inventory availability
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
     const availableInventory = inventoryItems.find(item => 
       item.quantityOnHand >= data.quantityDispensed &&;
@@ -112,20 +104,20 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Get previous dispensing records for this prescription;
+    // Get previous dispensing records for this prescription
     const previousDispensings = await dispensingRepository.findByPrescriptionId(data.prescriptionId);
     
-    // Calculate total quantity already dispensed;
+    // Calculate total quantity already dispensed
     const totalDispensed = previousDispensings.reduce(
       (sum, record) => sum + record.quantityDispensed, 
       0;
     );
     
     // Calculate remaining quantity to be dispensed (based on prescription)
-    const totalPrescribed = prescription.dosage.getTotalQuantity();
+    const totalPrescribed = prescription.dosage.getTotalQuantity()
     const remainingAfterThisDispensing = totalPrescribed - (totalDispensed + data.quantityDispensed);
     
-    // Check if this would exceed the prescribed amount;
+    // Check if this would exceed the prescribed amount
     if (remainingAfterThisDispensing < 0) {
       return NextResponse.json(
         { 
@@ -139,7 +131,7 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Create partial dispensing record;
+    // Create partial dispensing record
     const dispensing = {
       id: data.id || crypto.randomUUID(),
       prescriptionId: data.prescriptionId,
@@ -160,16 +152,16 @@ export async const POST = (req: NextRequest) => {
       isLastDispensing: remainingAfterThisDispensing === 0
     };
 
-    // Save dispensing record;
+    // Save dispensing record
     const dispensingId = await dispensingRepository.save(dispensing);
 
-    // Update inventory;
+    // Update inventory
     await inventoryRepository.adjustStock(
       availableInventory.id,
       availableInventory.quantityOnHand - data.quantityDispensed;
     );
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DISPENSING', {
       action: 'PARTIAL_DISPENSE',
       resourceType: 'MedicationDispense',
@@ -186,7 +178,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json(
       { 
         id: dispensingId,
@@ -199,4 +191,3 @@ export async const POST = (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, 'Error recording partial medication dispensing');
   }
-}

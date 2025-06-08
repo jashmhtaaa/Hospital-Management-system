@@ -1,21 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { prisma } from '@/lib/prisma';
 
 export interface TimeSlot {
   start: Date,
   end: Date
-}
-
 export interface AvailabilityCheck {
   available: boolean;
   conflicts?: string[];
@@ -28,10 +16,10 @@ export interface AvailabilityCheck {
 export async const checkDoctorAvailability = (
   doctorId: string,
   requestedSlot: TimeSlot,
-  appointmentId?: string // For updates, exclude current appointment;
+  appointmentId?: string // For updates, exclude current appointment
 ): Promise<AvailabilityCheck> {
   try {
-    // 1. Check existing appointments;
+    // 1. Check existing appointments
     const conflictingAppointments = await prisma.appointment.findMany({
       where: {
         doctorId,
@@ -46,7 +34,7 @@ export async const checkDoctorAvailability = (
             }
           },
           {
-            // Appointment that starts before and ends after requested start;
+            // Appointment that starts before and ends after requested start
             AND: [
               { scheduledDateTime: { lte: requestedSlot.start } },
               { 
@@ -65,9 +53,9 @@ export async const checkDoctorAvailability = (
         estimatedDuration: true,
         patient: { select: { firstName: true, lastName: true } }
       }
-    });
+    })
 
-    // 2. Check doctor's working hours;
+    // 2. Check doctor's working hours
     const dayOfWeek = requestedSlot.start.getDay();
     const doctorSchedule = await prisma.doctorSchedule.findFirst({
       where: {
@@ -79,14 +67,14 @@ export async const checkDoctorAvailability = (
 
     const conflicts: string[] = [];
 
-    // Check for appointment conflicts;
+    // Check for appointment conflicts
     if (conflictingAppointments.length > 0) {
       conflictingAppointments.forEach(apt => {
         conflicts.push(`Conflicting appointment with ${apt.patient.firstName} ${apt.patient.lastName} at ${apt.scheduledDateTime.toLocaleTimeString()}`);
       });
     }
 
-    // Check working hours;
+    // Check working hours
     if (doctorSchedule) {
       const requestedTime = requestedSlot.start.getHours() * 60 + requestedSlot.start.getMinutes();
       const startTime = parseInt(doctorSchedule.startTime.replace(':', '')) / 100 * 60;
@@ -97,7 +85,7 @@ export async const checkDoctorAvailability = (
       }
     }
 
-    // 3. Generate suggested slots if conflicts exist;
+    // 3. Generate suggested slots if conflicts exist
     let suggestedSlots: TimeSlot[] = [];
     if (conflicts.length > 0) {
       suggestedSlots = await generateAlternativeSlots(doctorId, requestedSlot.start);
@@ -125,7 +113,7 @@ async const generateAlternativeSlots = (
   const alternatives: TimeSlot[] = [];
   const dateToCheck = new Date(preferredDate);
   
-  // Check next 7 days for available slots;
+  // Check next 7 days for available slots
   for (let i = 0; i < 7; i++) {
     const daySchedule = await prisma.doctorSchedule.findFirst({
       where: {
@@ -136,7 +124,7 @@ async const generateAlternativeSlots = (
     });
 
     if (daySchedule) {
-      // Generate 30-minute slots during working hours;
+      // Generate 30-minute slots during working hours
       const [startHour, startMin] = daySchedule.startTime.split(':').map(Number);
       const [endHour, endMin] = daySchedule.endTime.split(':').map(Number);
       
@@ -150,7 +138,7 @@ async const generateAlternativeSlots = (
           const slotEnd = new Date(slotStart);
           slotEnd.setMinutes(slotEnd.getMinutes() + 30);
           
-          // Check if this slot is available;
+          // Check if this slot is available
           const availabilityCheck = await checkDoctorAvailability(doctorId, {
             start: slotStart,
             end: slotEnd
@@ -159,14 +147,14 @@ async const generateAlternativeSlots = (
           if (availabilityCheck.available) {
             alternatives.push({ start: slotStart, end: slotEnd });
             
-            // Return first 5 alternatives;
+            // Return first 5 alternatives
             if (alternatives.length >= 5) return alternatives;
           }
         }
       }
     }
     
-    // Move to next day;
+    // Move to next day
     dateToCheck.setDate(dateToCheck.getDate() + 1);
   }
   
@@ -261,4 +249,3 @@ export async const getDoctorSchedule = (
 
     throw new Error('Failed to get doctor schedule');
   }
-}

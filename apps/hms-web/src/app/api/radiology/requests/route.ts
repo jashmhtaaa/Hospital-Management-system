@@ -1,4 +1,4 @@
-// app/api/radiology/requests/route.ts;
+// app/api/radiology/requests/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, RadiologyRequestStatus } from "@prisma/client";
 import { z } from "zod";
@@ -41,9 +41,9 @@ export async const POST = (request: NextRequest) => {
     const body: unknown = await request.json();
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const validation = createRadiologyRequestSchema.safeParse(body);
+    const validation = createRadiologyRequestSchema.safeParse(body)
     if (!validation.success) {
-      // Debug logging removed);
+      // Debug logging removed)
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -93,10 +93,10 @@ export async const POST = (request: NextRequest) => {
     });
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest });
+    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest })
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return sendSuccessResponse(newRadiologyRequest, 201);
+    return sendSuccessResponse(newRadiologyRequest, 201)
 
   } catch (error: unknown) {
 
@@ -122,8 +122,6 @@ export async const POST = (request: NextRequest) => {
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-}
-
 export async const GET = (request: NextRequest) => {
   const start = Date.now();
   let userId: string | undefined;
@@ -190,7 +188,7 @@ export async const GET = (request: NextRequest) => {
         take: limit,
       }),
       prisma.radiologyRequest.count({ where: whereClause })
-    ]);
+    ])
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: radiologyRequests.length, totalCount });
     const duration = Date.now() - start;
@@ -204,7 +202,7 @@ export async const GET = (request: NextRequest) => {
         totalCount,
         totalPages: Math.ceil(totalCount / limit),
       }
-    });
+    })
 
   } catch (error: unknown) {
 
@@ -214,4 +212,3 @@ export async const GET = (request: NextRequest) => {
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
 }
-

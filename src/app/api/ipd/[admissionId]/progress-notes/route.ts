@@ -1,30 +1,20 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 
-// Zod schema for creating a progress note;
+// Zod schema for creating a progress note
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
         message: "Invalid note datetime format",
     }),
     notes: z.string().min(1, "Progress note content cannot be empty"),
-    // Assuming doctor_id is derived from the session;
+    // Assuming doctor_id is derived from the session
 });
 
-// GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission;
+// GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission
 export async const GET = (
     request: NextRequest,
     { params }: { params: Promise<{ admissionId: string }> }
@@ -110,7 +100,7 @@ export async const GET = (
     }
 }
 
-// POST /api/ipd/[admissionId]/progress-notes - Create a new progress note;
+// POST /api/ipd/[admissionId]/progress-notes - Create a new progress note
 export async const POST = (
     request: NextRequest,
     { params }: { params: Promise<{ admissionId: string }> }
@@ -119,7 +109,7 @@ export async const POST = (
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in;
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -155,7 +145,7 @@ export async const POST = (
 
         const noteData = validationResult.data;
         const now = new Date().toISOString();
-        const doctorId = session.user.userId; // session.user is now guaranteed to be defined;
+        const doctorId = session.user.userId; // session.user is now guaranteed to be defined
 
         const insertStmt = (DB as D1Database).prepare(
             `INSERT INTO ProgressNotes (admission_id, doctor_id, note_datetime, notes, created_at, updated_at);
@@ -194,5 +184,3 @@ export async const POST = (
             { status: 500 }
         );
     }
-}
-

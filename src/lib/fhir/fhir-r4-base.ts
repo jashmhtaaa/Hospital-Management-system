@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -14,8 +6,7 @@ var __DEV__: boolean;
  * Comprehensive FHIR R4 compliance for healthcare interoperability;
  */
 
-
-// FHIR R4 Base Resource Interface;
+// FHIR R4 Base Resource Interface
 export interface FHIRResource {
   resourceType: string;
   id?: string;
@@ -28,7 +19,7 @@ export interface FHIRResource {
   modifierExtension?: FHIRExtension[];
 }
 
-// FHIR Meta Information;
+// FHIR Meta Information
 export interface FHIRMeta {
   versionId?: string;
   lastUpdated?: string;
@@ -38,13 +29,13 @@ export interface FHIRMeta {
   tag?: FHIRCoding[];
 }
 
-// FHIR Narrative;
+// FHIR Narrative
 export interface FHIRNarrative {
   status: 'generated' | 'extensions' | 'additional' | 'empty',
   div: string
 }
 
-// FHIR Extension;
+// FHIR Extension
 export interface FHIRExtension {
   url: string;
   valueString?: string;
@@ -59,7 +50,7 @@ export interface FHIRExtension {
   extension?: FHIRExtension[];
 }
 
-// FHIR Coding;
+// FHIR Coding
 export interface FHIRCoding {
   system?: string;
   version?: string;
@@ -68,13 +59,13 @@ export interface FHIRCoding {
   userSelected?: boolean;
 }
 
-// FHIR CodeableConcept;
+// FHIR CodeableConcept
 export interface FHIRCodeableConcept {
   coding?: FHIRCoding[];
   text?: string;
 }
 
-// FHIR Reference;
+// FHIR Reference
 export interface FHIRReference {
   reference?: string;
   type?: string;
@@ -82,7 +73,7 @@ export interface FHIRReference {
   display?: string;
 }
 
-// FHIR Identifier;
+// FHIR Identifier
 export interface FHIRIdentifier {
   use?: 'usual' | 'official' | 'temp' | 'secondary' | 'old';
   type?: FHIRCodeableConcept;
@@ -92,13 +83,13 @@ export interface FHIRIdentifier {
   assigner?: FHIRReference;
 }
 
-// FHIR Period;
+// FHIR Period
 export interface FHIRPeriod {
   start?: string;
   end?: string;
 }
 
-// FHIR Quantity;
+// FHIR Quantity
 export interface FHIRQuantity {
   value?: number;
   comparator?: '<' | '<=' | '>=' | '>';
@@ -107,13 +98,13 @@ export interface FHIRQuantity {
   code?: string;
 }
 
-// FHIR Range;
+// FHIR Range
 export interface FHIRRange {
   low?: FHIRQuantity;
   high?: FHIRQuantity;
 }
 
-// FHIR Address;
+// FHIR Address
 export interface FHIRAddress {
   use?: 'home' | 'work' | 'temp' | 'old' | 'billing';
   type?: 'postal' | 'physical' | 'both';
@@ -127,7 +118,7 @@ export interface FHIRAddress {
   period?: FHIRPeriod;
 }
 
-// FHIR ContactPoint;
+// FHIR ContactPoint
 export interface FHIRContactPoint {
   system?: 'phone' | 'fax' | 'email' | 'pager' | 'url' | 'sms' | 'other';
   value?: string;
@@ -136,7 +127,7 @@ export interface FHIRContactPoint {
   period?: FHIRPeriod;
 }
 
-// FHIR HumanName;
+// FHIR HumanName
 export interface FHIRHumanName {
   use?: 'usual' | 'official' | 'temp' | 'nickname' | 'anonymous' | 'old' | 'maiden';
   text?: string;
@@ -149,7 +140,7 @@ export interface FHIRHumanName {
 
 // Patient Resource (FHIR R4)
 export interface FHIRPatient extends FHIRResource {
-  resourceType: 'Patient';
+  resourceType: 'Patient'
   identifier?: FHIRIdentifier[];
   active?: boolean;
   name?: FHIRHumanName[];
@@ -168,8 +159,6 @@ export interface FHIRPatient extends FHIRResource {
   generalPractitioner?: FHIRReference[];
   managingOrganization?: FHIRReference;
   link?: FHIRPatientLink[];
-}
-
 export interface FHIRPatientContact {
   relationship?: FHIRCodeableConcept[];
   name?: FHIRHumanName;
@@ -178,18 +167,12 @@ export interface FHIRPatientContact {
   gender?: 'male' | 'female' | 'other' | 'unknown';
   organization?: FHIRReference;
   period?: FHIRPeriod;
-}
-
 export interface FHIRPatientCommunication {
   language: FHIRCodeableConcept;
   preferred?: boolean;
-}
-
 export interface FHIRPatientLink {
   other: FHIRReference,
   type: 'replaced-by' | 'replaces' | 'refer' | 'seealso'
-}
-
 export interface FHIRAttachment {
   contentType?: string;
   language?: string;
@@ -203,7 +186,7 @@ export interface FHIRAttachment {
 
 // Observation Resource (Lab Results)
 export interface FHIRObservation extends FHIRResource {
-  resourceType: 'Observation';
+  resourceType: 'Observation'
   identifier?: FHIRIdentifier[];
   basedOn?: FHIRReference[];
   partOf?: FHIRReference[];
@@ -234,8 +217,6 @@ export interface FHIRObservation extends FHIRResource {
   hasMember?: FHIRReference[];
   derivedFrom?: FHIRReference[];
   component?: FHIRObservationComponent[];
-}
-
 export interface FHIRObservationReferenceRange {
   low?: FHIRQuantity;
   high?: FHIRQuantity;
@@ -243,8 +224,6 @@ export interface FHIRObservationReferenceRange {
   appliesTo?: FHIRCodeableConcept[];
   age?: FHIRRange;
   text?: string;
-}
-
 export interface FHIRObservationComponent {
   code: FHIRCodeableConcept;
   valueQuantity?: FHIRQuantity;
@@ -256,8 +235,6 @@ export interface FHIRObservationComponent {
   dataAbsentReason?: FHIRCodeableConcept;
   interpretation?: FHIRCodeableConcept[];
   referenceRange?: FHIRObservationReferenceRange[];
-}
-
 export interface FHIRAnnotation {
   authorReference?: FHIRReference;
   authorString?: string;
@@ -267,7 +244,7 @@ export interface FHIRAnnotation {
 
 // ServiceRequest Resource (Lab Orders)
 export interface FHIRServiceRequest extends FHIRResource {
-  resourceType: 'ServiceRequest';
+  resourceType: 'ServiceRequest'
   identifier?: FHIRIdentifier[];
   instantiatesCanonical?: string[];
   instantiatesUri?: string[];
@@ -305,8 +282,6 @@ export interface FHIRServiceRequest extends FHIRResource {
   note?: FHIRAnnotation[];
   patientInstruction?: string;
   relevantHistory?: FHIRReference[];
-}
-
 export interface FHIRRatio {
   numerator?: FHIRQuantity;
   denominator?: FHIRQuantity;
@@ -314,8 +289,8 @@ export interface FHIRRatio {
 
 // MedicationRequest Resource (Prescriptions)
 export interface FHIRMedicationRequest extends FHIRResource {
-  resourceType: 'MedicationRequest';
-  identifier?: FHIRIdentifier[];
+  resourceType: 'MedicationRequest'
+  identifier?: FHIRIdentifier[],
   status: 'active' | 'on-hold' | 'cancelled' | 'completed' | 'entered-in-error' | 'stopped' | 'draft' | 'unknown';
   statusReason?: FHIRCodeableConcept;
   intent: 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
@@ -349,8 +324,6 @@ export interface FHIRMedicationRequest extends FHIRResource {
   priorPrescription?: FHIRReference;
   detectedIssue?: FHIRReference[];
   eventHistory?: FHIRReference[];
-}
-
 export interface FHIRDosage {
   sequence?: number;
   text?: string;
@@ -366,14 +339,10 @@ export interface FHIRDosage {
   maxDosePerPeriod?: FHIRRatio;
   maxDosePerAdministration?: FHIRQuantity;
   maxDosePerLifetime?: FHIRQuantity;
-}
-
 export interface FHIRTiming {
   event?: string[];
   repeat?: FHIRTimingRepeat;
   code?: FHIRCodeableConcept;
-}
-
 export interface FHIRTimingRepeat {
   boundsDuration?: FHIRDuration;
   boundsRange?: FHIRRange;
@@ -392,16 +361,12 @@ export interface FHIRTimingRepeat {
   timeOfDay?: string[];
   when?: ('MORN' | 'MORN.early' | 'MORN.late' | 'NOON' | 'AFT' | 'AFT.early' | 'AFT.late' | 'EVE' | 'EVE.early' | 'EVE.late' | 'NIGHT' | 'PHS' | 'HS' | 'WAKE' | 'C' | 'CM' | 'CD' | 'CV' | 'AC' | 'ACM' | 'ACD' | 'ACV' | 'PC' | 'PCM' | 'PCD' | 'PCV')[];
   offset?: number;
-}
-
 export interface FHIRDuration {
   value?: number;
   comparator?: '<' | '<=' | '>=' | '>';
   unit?: string;
   system?: string;
   code?: string;
-}
-
 export interface FHIRDosageDoseAndRate {
   type?: FHIRCodeableConcept;
   doseRange?: FHIRRange;
@@ -409,8 +374,6 @@ export interface FHIRDosageDoseAndRate {
   rateRatio?: FHIRRatio;
   rateRange?: FHIRRange;
   rateQuantity?: FHIRQuantity;
-}
-
 export interface FHIRMedicationRequestDispenseRequest {
   initialFill?: FHIRMedicationRequestDispenseRequestInitialFill;
   dispenseInterval?: FHIRDuration;
@@ -419,20 +382,16 @@ export interface FHIRMedicationRequestDispenseRequest {
   quantity?: FHIRQuantity;
   expectedSupplyDuration?: FHIRDuration;
   performer?: FHIRReference;
-}
-
 export interface FHIRMedicationRequestDispenseRequestInitialFill {
   quantity?: FHIRQuantity;
   duration?: FHIRDuration;
-}
-
 export interface FHIRMedicationRequestSubstitution {
   allowedBoolean?: boolean;
   allowedCodeableConcept?: FHIRCodeableConcept;
   reason?: FHIRCodeableConcept;
 }
 
-// Base FHIR Manager Class;
+// Base FHIR Manager Class
 export abstract class FHIRResourceManager<T extends FHIRResource> {
   protected resourceType: string;
 
@@ -440,12 +399,12 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     this.resourceType = resourceType
   }
 
-  // Generate FHIR-compliant ID;
+  // Generate FHIR-compliant ID
   generateId(): string {
     return uuidv4();
   }
 
-  // Create basic meta information;
+  // Create basic meta information
   createMeta(source?: string): FHIRMeta {
     return {
       versionId: '1',
@@ -454,15 +413,15 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create narrative;
+  // Create narrative
   createNarrative(content: string, status: FHIRNarrative['status'] = 'generated'): FHIRNarrative {
     return {
       status,
       div: `<div xmlns="http://www.w3.org/1999/xhtml">${content}</div>`,
-    };
+    }
   }
 
-  // Create coding;
+  // Create coding
   createCoding(system: string, code: string, display?: string): FHIRCoding {
     return {
       system,
@@ -471,7 +430,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create CodeableConcept;
+  // Create CodeableConcept
   createCodeableConcept(codings: FHIRCoding[], text?: string): FHIRCodeableConcept {
     return {
       coding: codings,
@@ -479,7 +438,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create identifier;
+  // Create identifier
   createIdentifier(system: string, value: string, use?: FHIRIdentifier['use']): FHIRIdentifier {
     return {
       use: use || 'usual',
@@ -488,7 +447,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Create reference;
+  // Create reference
   createReference(resourceType: string, id: string, display?: string): FHIRReference {
     return {
       reference: `${resourceType}/${id}`,
@@ -496,15 +455,15 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
   }
 
-  // Validate resource structure;
+  // Validate resource structure
   abstract validate(resource: T): boolean;
 
-  // Convert to/from internal format;
+  // Convert to/from internal format
   abstract toFHIR(internalData: unknown): T;
   abstract fromFHIR(fhirResource: T): unknown
 }
 
-// FHIR Bundle for transaction operations;
+// FHIR Bundle for transaction operations
 export interface FHIRBundle extends FHIRResource {
   resourceType: 'Bundle';
   identifier?: FHIRIdentifier;
@@ -514,13 +473,9 @@ export interface FHIRBundle extends FHIRResource {
   link?: FHIRBundleLink[];
   entry?: FHIRBundleEntry[];
   signature?: FHIRSignature;
-}
-
 export interface FHIRBundleLink {
   relation: string,
   url: string
-}
-
 export interface FHIRBundleEntry {
   link?: FHIRBundleLink[];
   fullUrl?: string;
@@ -528,13 +483,9 @@ export interface FHIRBundleEntry {
   search?: FHIRBundleEntrySearch;
   request?: FHIRBundleEntryRequest;
   response?: FHIRBundleEntryResponse;
-}
-
 export interface FHIRBundleEntrySearch {
   mode?: 'match' | 'include' | 'outcome';
   score?: number;
-}
-
 export interface FHIRBundleEntryRequest {
   method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
   url: string;
@@ -542,19 +493,15 @@ export interface FHIRBundleEntryRequest {
   ifModifiedSince?: string;
   ifMatch?: string;
   ifNoneExist?: string;
-}
-
 export interface FHIRBundleEntryResponse {
   status: string;
   location?: string;
   etag?: string;
   lastModified?: string;
   outcome?: FHIRResource;
-}
-
 export interface FHIRSignature {
   type: FHIRCoding[],
-  when: string;
+  when: string,
   who: FHIRReference;
   onBehalfOf?: FHIRReference;
   targetFormat?: string;
@@ -562,38 +509,38 @@ export interface FHIRSignature {
   data?: string;
 }
 
-// Common terminology systems;
+// Common terminology systems
 export const FHIR_SYSTEMS = {
-  // Patient identifiers;
+  // Patient identifiers
   MRN: 'http://hospital.local/patient-mrn',
   SSN: 'http://hl7.org/fhir/sid/us-ssn',
   
-  // Lab codes;
+  // Lab codes
   LOINC: 'http://loinc.org',
   SNOMED_CT: 'http://snomed.info/sct',
   
-  // Medication codes;
+  // Medication codes
   RXNORM: 'http://www.nlm.nih.gov/research/umls/rxnorm',
   NDC: 'http://hl7.org/fhir/sid/ndc',
   
-  // Units;
+  // Units
   UCUM: 'http://unitsofmeasure.org',
   
-  // Administrative;
+  // Administrative
   V2_0203: 'http://terminology.hl7.org/CodeSystem/v2-0203',
   V3_ROLE_CODE: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
   
-  // Observation categories;
+  // Observation categories
   OBSERVATION_CATEGORY: 'http://terminology.hl7.org/CodeSystem/observation-category',
   
-  // Request priorities;
+  // Request priorities
   REQUEST_PRIORITY: 'http://hl7.org/fhir/request-priority',
   
-  // Medication request categories;
+  // Medication request categories
   MEDICATIONREQUEST_CATEGORY: 'http://terminology.hl7.org/CodeSystem/medicationrequest-category',
-} as const;
+} as const
 
-// FHIR Validation utilities;
+// FHIR Validation utilities
 export class FHIRValidator {
   static isValidResourceType(resourceType: string): boolean {
     const validTypes = [
@@ -615,7 +562,7 @@ export class FHIRValidator {
   }
 
   static isValidCode(code: string): boolean {
-    // Basic code validation - should not be empty and follow FHIR code pattern;
+    // Basic code validation - should not be empty and follow FHIR code pattern
     const regex = /^[^\s]+(\s[^\s]+)*$/;
     return code && code.length > 0 && regex.test(code);
   }
@@ -625,6 +572,4 @@ export class FHIRValidator {
       throw new Error(`Required field '${fieldName}' is missing`);
     }
   }
-}
-
 export default FHIRResourceManager;

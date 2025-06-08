@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,8 +16,6 @@ import { Editor } from '@/components/ui/editor';
 interface TemplateEditorProps {
   templateId?: string;
   onSuccess?: (template: unknown) => void
-}
-
 export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditorProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,7 +35,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
   const [variableKey, setVariableKey] = useState<string>('');
   const [variableDescription, setVariableDescription] = useState<string>('');
 
-  // Fetch template data if editing an existing template;
+  // Fetch template data if editing an existing template
   useEffect(() => {
     const fetchTemplate = async () => {
       if (!templateId) return;
@@ -60,7 +48,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
         const data = await response.json(),
         setTemplate(data);
         
-        // Set form values from template data;
+        // Set form values from template data
         setFormData({
           name: data.name || '',
           description: data.description || '',
@@ -71,7 +59,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
           isActive: data.isActive !== undefined ? data.isActive : true
         });
         
-        // Initialize preview data from variables;
+        // Initialize preview data from variables
         if (data.variables) {
           const initialPreviewData: Record<string, string> = {};
           Object.keys(data.variables).forEach(key => {
@@ -94,7 +82,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     fetchTemplate();
   }, [templateId]);
 
-  // Handle form input changes;
+  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -103,7 +91,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     });
   };
 
-  // Handle select changes;
+  // Handle select changes
   const handleSelectChange = (name: string, value: string) => {
     setFormData({
       ...formData,
@@ -111,7 +99,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     });
   };
 
-  // Handle switch changes;
+  // Handle switch changes
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
@@ -119,7 +107,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     });
   };
 
-  // Handle content change;
+  // Handle content change
   const handleContentChange = (content: string) => {
     setFormData({
       ...formData,
@@ -127,7 +115,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     });
   };
 
-  // Handle preview data change;
+  // Handle preview data change
   const handlePreviewDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPreviewData({
@@ -136,7 +124,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     });
   };
 
-  // Add variable to template;
+  // Add variable to template
   const handleAddVariable = () => {
     if (!variableKey.trim()) {
       toast({
@@ -147,7 +135,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
       return;
     }
     
-    // Check if variable already exists;
+    // Check if variable already exists
     if (formData.variables[variableKey]) {
       toast({
         title: "Validation Error",
@@ -167,18 +155,18 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
       variables: newVariables
     });
     
-    // Add to preview data;
+    // Add to preview data
     setPreviewData({
       ...previewData,
       [variableKey]: `[${variableKey}]`;
     });
     
-    // Reset inputs;
+    // Reset inputs
     setVariableKey(''),
     setVariableDescription('');
   };
 
-  // Remove variable from template;
+  // Remove variable from template
   const handleRemoveVariable = (key: string) => {
     const newVariables = { ...formData.variables };
     delete newVariables[key];
@@ -188,16 +176,16 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
       variables: newVariables
     });
     
-    // Remove from preview data;
+    // Remove from preview data
     const newPreviewData = { ...previewData };
     delete newPreviewData[key];
     setPreviewData(newPreviewData);
   };
 
-  // Render template preview;
+  // Render template preview
   const handleRenderPreview = async () => {
     if (!templateId) {
-      // For new templates, do a simple variable replacement;
+      // For new templates, do a simple variable replacement
       let content = formData.content;
       Object.entries(previewData).forEach(([key, value]) => {
         const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
@@ -230,7 +218,7 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
     }
   };
 
-  // Handle form submission;
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
     setIsLoading(true);
@@ -537,4 +525,3 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
       </CardContent>
     </Card>
   );
-}

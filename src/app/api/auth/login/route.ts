@@ -1,4 +1,4 @@
-// app/api/auth/login/route.ts;
+// app/api/auth/login/route.ts
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { comparePassword } from "@/lib/authUtils";
 import { sessionOptions, IronSessionData } from "@/lib/session";
@@ -7,9 +7,9 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { User } from "@/types/user";
 
-// Input validation schema;
+// Input validation schema
 const LoginSchema = z.object({
-  identifier: z.string().min(1, "Username or email is required"), // Can be username or email;
+  identifier: z.string().min(1, "Username or email is required"), // Can be username or email
   password: z.string().min(1, "Password is required"),
 });
 export async const POST = (request: Request) => {
@@ -26,65 +26,65 @@ export async const POST = (request: Request) => {
 
     const { identifier, password } = validation.data;
 
-    const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic;
-    const DB = context.env.DB; // FIX: Access DB via context.env;
+    const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
+    const DB = context.env.DB; // FIX: Access DB via context.env
 
     if (!DB) {
         throw new Error("Database binding not found in Cloudflare environment.");
     }
 
-    // 1. Find user by username or email;
+    // 1. Find user by username or email
     // Assuming permissions are not directly stored/queried here yet.
     const userResult = await DB.prepare(
         "SELECT u.user_id, u.username, u.email, u.password_hash, u.full_name, u.role_id, u.is_active, r.role_name " +
-        "FROM Users u JOIN Roles r ON u.role_id = r.role_id " +;
+        "FROM Users u JOIN Roles r ON u.role_id = r.role_id " +
         "WHERE (u.username = ? OR u.email = ?) AND u.is_active = TRUE";
     );
       .bind(identifier, identifier);
-      // Define the expected result type more accurately;
+      // Define the expected result type more accurately
       .first<{
           userId: number,
-          username: string;
+          username: string,
           email: string,
-          password_hash: string;
+          password_hash: string,
           fullName: string | null,
-          roleId: number;
+          roleId: number,
           isActive: boolean,
           roleName: string
       }>();
 
     if (!userResult) {
       return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" }), {
-        status: 401, // Unauthorized;
+        status: 401, // Unauthorized
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    // 2. Compare password;
+    // 2. Compare password
     const isPasswordValid = await comparePassword(password, userResult.password_hash);
 
     if (!isPasswordValid) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
-        status: 401, // Unauthorized;
+        status: 401, // Unauthorized
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    // 3. Create session;
+    // 3. Create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // Prepare user data for session (exclude sensitive info)
-    // Initialize permissions as empty array for now;
+    // Initialize permissions as empty array for now
     const sessionUser: User = {
         userId: userResult.userId,
         username: userResult.username,
         email: userResult.email,
         fullName: userResult.fullName,
         roleId: userResult.roleId,
-        roleName: userResult.roleName, // Include roleName from query;
+        roleName: userResult.roleName, // Include roleName from query
         isActive: userResult.isActive,
-        permissions: [], // Initialize permissions as empty array;
+        permissions: [], // Initialize permissions as empty array
     };
 
     session.user = sessionUser;
@@ -94,7 +94,7 @@ export async const POST = (request: Request) => {
     return new Response(JSON.stringify({ message: "Login successful", user: sessionUser }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
-    });
+    })
 
   } catch (error) {
 
@@ -104,4 +104,3 @@ export async const POST = (request: Request) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-}

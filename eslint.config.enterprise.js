@@ -371,4 +371,4 @@ module.exports = [
       "security/detect-possible-timing-attacks": "error",
     }
   }
-];
+]

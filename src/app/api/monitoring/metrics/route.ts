@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -24,14 +16,14 @@ export async const GET = (request: NextRequest) => {
     const metric = searchParams.get('metric');
     const timeWindow = searchParams.get('window');
 
-    // Check authentication/authorization here if needed;
-    // const user = await getCurrentUser(request);
+    // Check authentication/authorization here if needed
+    // const user = await getCurrentUser(request)
     // if (!user || !hasMonitoringAccess(user)) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // }
 
     if (metric) {
-      // Return specific metric;
+      // Return specific metric
       const timeWindowSeconds = timeWindow ? parseInt(timeWindow) : undefined;
       const metrics = metricsCollector.getMetrics(metric, timeWindowSeconds);
       
@@ -44,7 +36,7 @@ export async const GET = (request: NextRequest) => {
     }
 
     if (format === 'prometheus') {
-      // Return Prometheus format;
+      // Return Prometheus format
       const prometheusData = metricsCollector.exportMetrics('prometheus');
       
       return new NextResponse(prometheusData, {
@@ -54,7 +46,7 @@ export async const GET = (request: NextRequest) => {
       });
     }
 
-    // Return dashboard metrics;
+    // Return dashboard metrics
     const dashboardMetrics = metricsCollector.getDashboardMetrics();
     
     return NextResponse.json({
@@ -73,8 +65,6 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
-
 export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
@@ -112,4 +102,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

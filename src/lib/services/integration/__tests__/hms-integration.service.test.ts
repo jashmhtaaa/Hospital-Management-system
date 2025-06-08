@@ -1,21 +1,11 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { HMSIntegrationService } from '../hms-integration.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';
 import { NotFoundError } from '@/lib/errors';
 import { RBACService } from '@/lib/rbac.service';
 
-// Mock dependencies;
+// Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   patient: {
     findUnique: jest.fn(),
@@ -98,17 +88,17 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should retrieve patient information successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.patient.findUnique as jest.Mock).mockResolvedValue(mockPatient);
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.getPatientInfo(
         mockPatientId,
         mockUserId,
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'user',
@@ -141,17 +131,17 @@ describe('HMSIntegrationService', () => {
     });
     
     it('should throw NotFoundError if patient does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.patient.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(
         HMSIntegrationService.getPatientInfo(mockPatientId, mockUserId, mockUserRoles);
       ).rejects.toThrow(NotFoundError);
     });
     
     it('should include additional medical data for users with proper permissions', async () => {
-      // Arrange;
+      // Arrange
       (prisma.patient.findUnique as jest.Mock).mockResolvedValue({
         ...mockPatient,
         allergies: ['Penicillin'],
@@ -161,14 +151,14 @@ describe('HMSIntegrationService', () => {
       
       (RBACService.hasPermission as jest.Mock).mockReturnValue(true);
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.getPatientInfo(
         mockPatientId,
         mockUserId,
         ['doctor', 'admin']
       );
       
-      // Assert;
+      // Assert
       expect(prisma.patient.findUnique).toHaveBeenCalledWith({
         where: { id: mockPatientId },
         select: expect.objectContaining({
@@ -198,17 +188,17 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should retrieve location information successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.location.findUnique as jest.Mock).mockResolvedValue(mockLocation);
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.getLocationInfo(
         mockLocationId,
         mockUserId,
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'system',
@@ -237,10 +227,10 @@ describe('HMSIntegrationService', () => {
     });
     
     it('should throw NotFoundError if location does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.location.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(
         HMSIntegrationService.getLocationInfo(mockLocationId, mockUserId, mockUserRoles);
       ).rejects.toThrow(NotFoundError);
@@ -261,10 +251,10 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should send a notification successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.notification.create as jest.Mock).mockResolvedValue(mockNotification);
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.sendNotification(
         mockRecipientId,
         'EMAIL',
@@ -275,7 +265,7 @@ describe('HMSIntegrationService', () => {
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'system',
@@ -324,17 +314,17 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should retrieve user information successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.getUserInfo(
         mockTargetUserId,
         mockUserId,
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'user',
@@ -364,7 +354,7 @@ describe('HMSIntegrationService', () => {
     });
     
     it('should include additional fields when user requests their own information', async () => {
-      // Arrange;
+      // Arrange
       const selfUserId = 'user-123';
       (prisma.user.findUnique as jest.Mock).mockResolvedValue({
         ...mockUser,
@@ -374,14 +364,14 @@ describe('HMSIntegrationService', () => {
         updatedAt: new Date(),
       });
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.getUserInfo(
         selfUserId,
         selfUserId,
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'user',
@@ -405,10 +395,10 @@ describe('HMSIntegrationService', () => {
     });
     
     it('should throw NotFoundError if user does not exist', async () => {
-      // Arrange;
+      // Arrange
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
       
-      // Act & Assert;
+      // Act & Assert
       await expect(
         HMSIntegrationService.getUserInfo(mockTargetUserId, mockUserId, mockUserRoles);
       ).rejects.toThrow(NotFoundError);
@@ -435,10 +425,10 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should submit report data successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.report.create as jest.Mock).mockResolvedValue(mockReport);
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.submitReportData(
         mockReportType,
         mockReportData,
@@ -446,7 +436,7 @@ describe('HMSIntegrationService', () => {
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'system',
@@ -484,17 +474,17 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should link a request to a patient successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.housekeepingRequest.update as jest.Mock).mockResolvedValue(mockRequest);
       
-      // Mock patient info retrieval;
+      // Mock patient info retrieval
       jest.spyOn(HMSIntegrationService, 'getPatientInfo').mockResolvedValue({
         id: mockPatientId,
         firstName: 'John',
         lastName: 'Doe',
       });
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.linkRequestToPatient(
         mockServiceType,
         mockRequestId,
@@ -503,7 +493,7 @@ describe('HMSIntegrationService', () => {
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'housekeeping',
@@ -538,21 +528,21 @@ describe('HMSIntegrationService', () => {
     });
     
     it('should handle different service types correctly', async () => {
-      // Arrange;
+      // Arrange
       const maintenanceServiceType = 'MAINTENANCE';
       (prisma.maintenanceRequest.update as jest.Mock).mockResolvedValue({
         ...mockRequest,
         serviceType: maintenanceServiceType,
       });
       
-      // Mock patient info retrieval;
+      // Mock patient info retrieval
       jest.spyOn(HMSIntegrationService, 'getPatientInfo').mockResolvedValue({
         id: mockPatientId,
         firstName: 'John',
         lastName: 'Doe',
       });
       
-      // Act;
+      // Act
       await HMSIntegrationService.linkRequestToPatient(
         maintenanceServiceType,
         mockRequestId,
@@ -561,7 +551,7 @@ describe('HMSIntegrationService', () => {
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'maintenance',
@@ -592,17 +582,17 @@ describe('HMSIntegrationService', () => {
     };
     
     it('should link a request to a location successfully', async () => {
-      // Arrange;
+      // Arrange
       (prisma.housekeepingRequest.update as jest.Mock).mockResolvedValue(mockRequest);
       
-      // Mock location info retrieval;
+      // Mock location info retrieval
       jest.spyOn(HMSIntegrationService, 'getLocationInfo').mockResolvedValue({
         id: mockLocationId,
         name: 'Room 101',
         type: 'PATIENT_ROOM',
       });
       
-      // Act;
+      // Act
       const result = await HMSIntegrationService.linkRequestToLocation(
         mockServiceType,
         mockRequestId,
@@ -611,7 +601,7 @@ describe('HMSIntegrationService', () => {
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'housekeeping',
@@ -646,21 +636,21 @@ describe('HMSIntegrationService', () => {
     });
     
     it('should handle different service types correctly', async () => {
-      // Arrange;
+      // Arrange
       const dietaryServiceType = 'DIETARY';
       (prisma.dietaryRequest.update as jest.Mock).mockResolvedValue({
         ...mockRequest,
         serviceType: dietaryServiceType,
       });
       
-      // Mock location info retrieval;
+      // Mock location info retrieval
       jest.spyOn(HMSIntegrationService, 'getLocationInfo').mockResolvedValue({
         id: mockLocationId,
         name: 'Room 101',
         type: 'PATIENT_ROOM',
       });
       
-      // Act;
+      // Act
       await HMSIntegrationService.linkRequestToLocation(
         dietaryServiceType,
         mockRequestId,
@@ -669,7 +659,7 @@ describe('HMSIntegrationService', () => {
         mockUserRoles;
       );
       
-      // Assert;
+      // Assert
       expect(RBACService.enforcePermission).toHaveBeenCalledWith(
         mockUserRoles,
         'dietary',

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -33,7 +25,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
-};
+}
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findById: getPrescriptionById,
@@ -46,7 +38,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   delete: () => Promise.resolve(true)
 };
 
-// Initialize services;
+// Initialize services
 const interactionService = new DrugInteractionService(
   medicationRepository,
   prescriptionRepository;
@@ -58,7 +50,7 @@ const interactionService = new DrugInteractionService(
  */
 export async const POST = (req: NextRequest) => {
   try {
-    // Validate request;
+    // Validate request
     const data = await req.json();
     const validationResult = validateInteractionCheckRequest(data);
     if (!validationResult.success) {
@@ -68,19 +60,19 @@ export async const POST = (req: NextRequest) => {
       );
     }
 
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Check for interactions;
+    // Check for interactions
     const interactions = await interactionService.checkInteractions(data.medicationIds);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK',
       resourceType: 'DrugInteraction',
@@ -91,7 +83,7 @@ export async const POST = (req: NextRequest) => {
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ interactions }, { status: 200 });
   } catch (error) {
     return errorHandler(error, 'Error checking drug interactions');
@@ -104,38 +96,38 @@ export async const POST = (req: NextRequest) => {
  */
 export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
-    // Check authorization;
+    // Check authorization
     const authHeader = req.headers.get('authorization');
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token;
+    const userId = 'current-user-id'; // In production, extract from token
 
-    // Get patient ID from params;
+    // Get patient ID from params
     const { patientId } = params;
     if (!patientId) {
       return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
     }
 
-    // Verify patient exists;
+    // Verify patient exists
     const patient = await getPatientById(patientId);
     if (!patient) {
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
-    // Get active prescriptions for patient;
+    // Get active prescriptions for patient
     const prescriptions = await prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
     
-    // Extract medication IDs;
+    // Extract medication IDs
     const medicationIds = activePrescriptions.map(p => p.medicationId);
     
-    // Check for interactions;
+    // Check for interactions
     const interactions = await interactionService.checkInteractions(medicationIds);
 
-    // Audit logging;
+    // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_PATIENT',
       resourceType: 'DrugInteraction',
@@ -147,7 +139,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
       }
     });
 
-    // Return response;
+    // Return response
     return NextResponse.json({ 
       patientId,
       medicationIds,
@@ -156,4 +148,3 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
   } catch (error) {
     return errorHandler(error, 'Error checking patient drug interactions');
   }
-}

@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
@@ -18,33 +8,33 @@ import { authService } from '@/lib/security/auth.service';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { logger } from '@/lib/core/logging';
 
-// Custom data source class that includes auth headers in requests to services;
+// Custom data source class that includes auth headers in requests to services
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest({ request, context }) {
-    // Add authorization headers to service requests;
+    // Add authorization headers to service requests
     if (context.authToken) {
       request.http.headers.set('Authorization', context.authToken);
     }
 
-    // Add user info for service-to-service tracing;
+    // Add user info for service-to-service tracing
     if (context.user) {
       request.http.headers.set('x-user-id', context.user.id);
       request.http.headers.set('x-user-roles', context.user.roles.join(','));
     }
 
-    // Add request ID for tracing;
+    // Add request ID for tracing
     if (context.requestId) {
       request.http.headers.set('x-request-id', context.requestId);
     }
 
-    // Add correlation ID for distributed tracing;
+    // Add correlation ID for distributed tracing
     if (context.correlationId) {
       request.http.headers.set('x-correlation-id', context.correlationId);
     }
   }
 
   async didReceiveResponse({ response, request, context }) {
-    // Track response metrics;
+    // Track response metrics
     const operationName = request.operationName || 'unknown';
     const serviceName = this.url.split('/').pop() || 'unknown';
     
@@ -61,7 +51,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   }
 
   async didEncounterError({ error, request, context }) {
-    // Log and track errors;
+    // Log and track errors
     const operationName = request.operationName || 'unknown';
     const serviceName = this.url.split('/').pop() || 'unknown';
     
@@ -81,13 +71,11 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       errorType: error.name || 'UnknownError'
     });
   }
-}
-
 export async const createGraphQLFederationServer = (app: express.Application) => {
-  // Get the HTTP server instance;
+  // Get the HTTP server instance
   const httpServer = http.createServer(app);
 
-  // Define the list of GraphQL microservices;
+  // Define the list of GraphQL microservices
   const serviceList = [
     { name: 'patients', url: process.env.PATIENT_SERVICE_URL ||
       'http://patient-service.hms.svc.cluster.local/graphql' },
@@ -98,13 +86,13 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
       'http://analytics-service.hms.svc.cluster.local/graphql' },
     { name: 'auth', url: process.env.AUTH_SERVICE_URL || 'http://auth-service.hms.svc.cluster.local/graphql' },
     { name: 'cdss', url: process.env.CDSS_SERVICE_URL || 'http://cdss-service.hms.svc.cluster.local/graphql' }
-  ];
+  ]
 
-  // Create the gateway;
+  // Create the gateway
   const gateway = new ApolloGateway({
     supergraphSdl: new IntrospectAndCompose({
       subgraphs: serviceList,
-      pollIntervalInMs: 60000, // Poll for schema changes every minute;
+      pollIntervalInMs: 60000, // Poll for schema changes every minute
       introspectionHeaders: {
         'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key'
       }
@@ -113,20 +101,20 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
       return new AuthenticatedDataSource({ url });
     },
     experimental_didUpdateComposition: ({ graphRef, supergraphSdl, isInitialComposition }) => {
-      // Log when schema composition is updated;
+      // Log when schema composition is updated
       logger.info(`GraphQL federation schema ${isInitialComposition ? 'initialized' : 'updated'}`, { 
         graphRef,
         schemaLength: supergraphSdl.length,
         timestamp: new Date().toISOString()
       });
 
-      // Track metrics;
+      // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_updates', 1, {
         isInitial: isInitialComposition.toString()
       });
     },
     experimental_didFailComposition: ({ graphRef, errors, isInitialComposition }) => {
-      // Log schema composition errors;
+      // Log schema composition errors
       logger.error(`GraphQL federation schema composition failed`, {
         graphRef,
         errors: errors.map(e => e.message),
@@ -134,14 +122,14 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
         timestamp: new Date().toISOString()
       });
 
-      // Track metrics;
+      // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_errors', 1, {
         isInitial: isInitialComposition.toString()
       });
     }
   });
 
-  // Create the Apollo Server;
+  // Create the Apollo Server
   const server = new ApolloServer({
     gateway,
     context: async ({ req }) => {
@@ -150,7 +138,7 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
         `req-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
       const correlationId = req.headers['x-correlation-id'] || requestId;
       
-      // Authenticate the request;
+      // Authenticate the request
       const authToken = req.headers.authorization;
       let user = null;
       
@@ -178,7 +166,7 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
         async requestDidStart({ request, context }) {
-          // Log request start;
+          // Log request start
           const operationName = request.operationName || 'unknown';
           
           logger.debug(`GraphQL federation request started: ${operationName}`, {
@@ -190,7 +178,7 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
           
           return {
             async willSendResponse({ response }) {
-              // Record request metrics on completion;
+              // Record request metrics on completion
               const duration = performance.now() - context.startTime;
               
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
@@ -198,7 +186,7 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
                 hasErrors: (response.errors?.length > 0).toString()
               });
               
-              // Log completion;
+              // Log completion
               logger.debug(`GraphQL federation request completed: ${operationName}`, {
                 operationName,
                 duration: `${duration.toFixed(2)}ms`,
@@ -212,15 +200,15 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
       }
     ],
     introspection: process.env.NODE_ENV !== 'production',
-    // Cache control directives;
+    // Cache control directives
     csrfPrevention: true,
     cache: 'bounded',
   });
 
-  // Start the server;
+  // Start the server
   await server.start();
   
-  // Apply the Apollo middleware to the Express app;
+  // Apply the Apollo middleware to the Express app
   server.applyMiddleware({ 
     app,
     path: '/graphql',
@@ -233,4 +221,3 @@ export async const createGraphQLFederationServer = (app: express.Application) =>
   });
   
   return { server, httpServer };
-}

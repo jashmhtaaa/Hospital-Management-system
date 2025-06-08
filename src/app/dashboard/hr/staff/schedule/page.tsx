@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -75,7 +65,7 @@ export default const StaffScheduling = () {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [schedules, setSchedules] = useState<any[]>([]);
 
-  // Fetch employees;
+  // Fetch employees
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -110,11 +100,11 @@ export default const StaffScheduling = () {
     fetchEmployees();
   }, [search, departmentFilter, pagination.skip, pagination.take]);
 
-  // Fetch departments for filters;
+  // Fetch departments for filters
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        // Fetch departments;
+        // Fetch departments
         const deptResponse = await fetch('/api/hr/departments');
         if (deptResponse.ok) {
           const deptData = await deptResponse.json(),
@@ -128,7 +118,7 @@ export default const StaffScheduling = () {
     fetchDepartments();
   }, []);
 
-  // Generate mock schedule data for demonstration;
+  // Generate mock schedule data for demonstration
   useEffect(() => {
     if (employees.length > 0) {
       const mockSchedules = [];
@@ -147,7 +137,7 @@ export default const StaffScheduling = () {
         };
         
         days.forEach(day => {
-          // Randomly assign shifts, with higher probability for "Off" on weekends;
+          // Randomly assign shifts, with higher probability for "Off" on weekends
           const isWeekend = day === 'Saturday' || day === 'Sunday';
           const shiftIndex = Math.floor(Math.random() * (isWeekend ? 10 : shifts.length));
           employeeSchedule.schedule[day] = shiftIndex >= shifts.length ? 'Off' : shifts[shiftIndex];
@@ -160,7 +150,7 @@ export default const StaffScheduling = () {
     }
   }, [employees]);
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
@@ -179,22 +169,22 @@ export default const StaffScheduling = () {
     }
   };
 
-  // Handle search;
+  // Handle search
   const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching;
+    // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Get days of the week for the current date;
+  // Get days of the week for the current date
   const getDaysOfWeek = () => {
     const days = [];
     const startOfWeek = new Date(currentDate);
     const day = startOfWeek.getDay();
-    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday;
+    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
     startOfWeek.setDate(diff);
     
     for (let i = 0; i < 7; i++) {
@@ -209,7 +199,7 @@ export default const StaffScheduling = () {
     return days;
   };
 
-  // Navigate to previous/next week;
+  // Navigate to previous/next week
   const navigatePreviousWeek = () => {
     const newDate = new Date(currentDate);
     newDate.setDate(newDate.getDate() - 7);
@@ -222,7 +212,7 @@ export default const StaffScheduling = () {
     setCurrentDate(newDate);
   };
 
-  // Get the week range string;
+  // Get the week range string
   const getWeekRangeString = () => {
     const days = getDaysOfWeek();
     return `${format(days[0].date, 'MMM d')} - ${format(days[6].date, 'MMM d, yyyy')}`;
@@ -411,4 +401,3 @@ export default const StaffScheduling = () {
       </Card>
     </div>
   );
-}

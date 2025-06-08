@@ -1,28 +1,18 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 import { nanoid } from "nanoid";
 import { getSession } from "@/lib/session";
 import { checkUserRole } from "@/lib/auth";
 
-// Define interface for POST request body;
+// Define interface for POST request body
 interface ModalityInput {
   name?: string;
   description?: string;
   location?: string;
 }
 
-// GET all Radiology Modalities;
+// GET all Radiology Modalities
 export async const GET = (request: NextRequest) => {
   const session = await getSession();
   if (
@@ -45,7 +35,7 @@ export async const GET = (request: NextRequest) => {
     ).all();
     return NextResponse.json(results);
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     return NextResponse.json(
@@ -57,7 +47,7 @@ export async const GET = (request: NextRequest) => {
 
 // POST a new Radiology Modality (Admin only)
 export async const POST = (request: NextRequest) => {
-  const session = await getSession();
+  const session = await getSession()
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
@@ -65,7 +55,7 @@ export async const POST = (request: NextRequest) => {
   const DB = process.env.DB as unknown as D1Database;
   try {
     const { name, description, location } =;
-      (await request.json()) as ModalityInput; // Cast to ModalityInput;
+      (await request.json()) as ModalityInput; // Cast to ModalityInput
 
     if (!name) {
       return NextResponse.json(
@@ -74,7 +64,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
 
-    // Check if name already exists;
+    // Check if name already exists
     const existingModality = await DB.prepare(
       "SELECT id FROM RadiologyModalities WHERE name = ?";
     );
@@ -101,7 +91,7 @@ export async const POST = (request: NextRequest) => {
       { status: 201 }
     );
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     if (errorMessage?.includes("UNIQUE constraint failed")) {
@@ -115,4 +105,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

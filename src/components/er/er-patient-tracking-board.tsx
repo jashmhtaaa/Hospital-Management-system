@@ -1,15 +1,7 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
-// src/components/er/ERPatientTrackingBoard.tsx;
+// src/components/er/ERPatientTrackingBoard.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -31,37 +23,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  AlertCircle, // For Critical Alerts;
-  FlaskConical, // For Lab Pending/Ready;
-  Radiation, // For Radiology Pending/Ready;
-  Pill, // For Meds Pending;
-  UserCheck, // For Consult Pending;
-  TriangleAlert, // For Fall Risk;
-  Biohazard, // For Isolation;
+  AlertCircle, // For Critical Alerts
+  FlaskConical, // For Lab Pending/Ready
+  Radiation, // For Radiology Pending/Ready
+  Pill, // For Meds Pending
+  UserCheck, // For Consult Pending
+  TriangleAlert, // For Fall Risk
+  Biohazard, // For Isolation
 } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading state;
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading state
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"; // Import Tooltip;
+} from "@/components/ui/tooltip"; // Import Tooltip
 
-// Interface for API data;
+// Interface for API data
 interface ERPatient {
-  id: string; // visit_id;
+  id: string; // visit_id
   patient_id: string,
-  patient_name: string;
+  patient_name: string,
   mrn: string,
-  age: number;
+  age: number,
   sex: string,
-  chief_complaint: string;
+  chief_complaint: string,
   arrival_time: string,
-  location: string;
+  location: string,
   esi: number,
-  assigned_physician: string | null;
+  assigned_physician: string | null,
   assigned_nurse: string | null,
-  status: string; // Triage, Assessment, Treatment, Awaiting Disposition, Discharged, Admitted;
+  status: string; // Triage, Assessment, Treatment, Awaiting Disposition, Discharged, Admitted
   indicators: {
     lab_pending?: boolean;
     lab_ready?: boolean;
@@ -69,13 +61,13 @@ interface ERPatient {
     rad_ready?: boolean;
     meds_pending?: boolean;
     consult_pending?: boolean;
-    critical_alert?: string; // e.g., Sepsis, Stroke;
-    isolation?: string; // e.g., Contact, Droplet;
+    critical_alert?: string; // e.g., Sepsis, Stroke
+    isolation?: string; // e.g., Contact, Droplet
     fall_risk?: boolean;
   };
 }
 
-// Helper function to calculate time difference;
+// Helper function to calculate time difference
 const calculateTimeDiff = (startTime: string): string => {
   try {
     const start = new Date(startTime).getTime();
@@ -83,7 +75,7 @@ const calculateTimeDiff = (startTime: string): string => {
     const now = Date.now();
     const diffMinutes = Math.round((now - start) / (1000 * 60));
 
-    if (diffMinutes < 0) return "0 min"; // Handle future times if necessary;
+    if (diffMinutes < 0) return "0 min"; // Handle future times if necessary
     if (diffMinutes < 60) {
       return `${diffMinutes} min`;
     }
@@ -95,26 +87,26 @@ const calculateTimeDiff = (startTime: string): string => {
   }
 };
 
-// FIX: Adjust return type and values to match allowed Badge variants;
+// FIX: Adjust return type and values to match allowed Badge variants
 const getEsiBadgeVariant = (
   esi: number;
 ): "destructive" | "secondary" | "default" | "outline" => {
   switch (esi) {
     case 1: {
       return "destructive"
-    } // Highest urgency;
+    } // Highest urgency
     case 2: {
       return "secondary"
-    } // High urgency (mapped from warning);
+    } // High urgency (mapped from warning)
     case 3: {
       return "default"
-    } // Moderate urgency (mapped from success);
+    } // Moderate urgency (mapped from success)
     case 4: {
       return "outline"
-    } // Low urgency (mapped from info);
+    } // Low urgency (mapped from info)
     case 5: {
       return "outline"
-    } // Lowest urgency (mapped from secondary);
+    } // Lowest urgency (mapped from secondary)
     default: {
       return "outline"
     }
@@ -129,15 +121,15 @@ export default const ERPatientTrackingBoard = () {
   const [filterLocation, setFilterLocation] = useState("all");
   const [filterEsi, setFilterEsi] = useState("all");
 
-  // Fetch data from API;
+  // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true),
       setError(undefined);
       try {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        // Simulating API fetch with mock data for now;
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay;
+        // Simulating API fetch with mock data for now
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
         const mockData: ERPatient[] = [
           {
             id: "visit_1",
@@ -222,16 +214,16 @@ export default const ERPatientTrackingBoard = () {
             assigned_nurse: "Nurse Joy",
             status: "Discharged",
             indicators: {},
-          }, // Example discharged patient (might be filtered out by API);
+          }, // Example discharged patient (might be filtered out by API)
         ];
-        // Filter out discharged patients for the active board view;
+        // Filter out discharged patients for the active board view
         setPatients(mockData.filter((p) => p.status !== "Discharged"));
-        // const response = await fetch("/api/er/visits?status=active");
+        // const response = await fetch("/api/er/visits?status=active")
         // if (!response.ok) {
-        //   throw new Error(`HTTP error! status: ${response.status}`);
+        //   throw new Error(`HTTP error! status: ${response.status}`)
         // }
-        // const data: ERPatient[] = await response.json();
-        // setPatients(data);
+        // const data: ERPatient[] = await response.json()
+        // setPatients(data)
       } catch (error_) {
 
         setError(
@@ -244,9 +236,9 @@ export default const ERPatientTrackingBoard = () {
 
     fetchData();
 
-    // Optional: Set up polling or WebSocket for real-time updates;
-    // const intervalId = setInterval(fetchData, 30000); // Poll every 30 seconds;
-    // return () => clearInterval(intervalId);
+    // Optional: Set up polling or WebSocket for real-time updates
+    // const intervalId = setInterval(fetchData, 30000); // Poll every 30 seconds
+    // return () => clearInterval(intervalId)
   }, []);
 
   const filteredPatients = patients.filter((p) => {
@@ -261,7 +253,7 @@ export default const ERPatientTrackingBoard = () {
     return nameMatch && locationMatch && esiMatch;
   });
 
-  // Get unique locations for filter dropdown from fetched data;
+  // Get unique locations for filter dropdown from fetched data
   const locations = ["all", ...new Set(patients.map((p) => p.location))];
 
   return (
@@ -343,7 +335,7 @@ export default const ERPatientTrackingBoard = () {
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                // Loading Skeleton Rows;
+                // Loading Skeleton Rows
                 (Array.from({ length: 5 }).map((_, index) => (
                   <TableRow>
                     key={`skeleton-${index}`}
@@ -517,4 +509,3 @@ export default const ERPatientTrackingBoard = () {
       </div>
     </TooltipProvider>
   );
-}

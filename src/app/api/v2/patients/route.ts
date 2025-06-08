@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -17,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { patientManagementService, PatientCreateSchema } from '@/lib/core/patient-management.service';
 import { z } from 'zod';
 
-// Search query schema;
+// Search query schema
 const SearchQuerySchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
@@ -39,10 +31,10 @@ export async const GET = (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
     
-    // Validate search parameters;
+    // Validate search parameters
     const validatedParams = SearchQuerySchema.parse(queryParams);
     
-    // Perform search using new service;
+    // Perform search using new service
     const result = await patientManagementService.searchPatients(validatedParams);
     
     return NextResponse.json({
@@ -88,10 +80,10 @@ export async const POST = (request: NextRequest) => {
   try {
     const body = await request.json();
     
-    // Validate patient data using enhanced schema;
+    // Validate patient data using enhanced schema
     const validatedData = PatientCreateSchema.parse(body);
     
-    // Create patient using new service;
+    // Create patient using new service
     const patient = await patientManagementService.createPatient(validatedData);
     
     return NextResponse.json(
@@ -141,4 +133,3 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-}

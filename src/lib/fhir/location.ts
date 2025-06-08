@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -30,15 +22,11 @@ export interface FHIRLocationPosition {
   longitude: number,
   latitude: number;
   altitude?: number;
-}
-
 export interface FHIRLocationHoursOfOperation {
   daysOfWeek?: ('mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun')[];
   allDay?: boolean;
-  openingTime?: string; // time format;
-  closingTime?: string; // time format;
-}
-
+  openingTime?: string; // time format
+  closingTime?: string; // time format
 export interface FHIRLocation extends FHIRBase {
   resourceType: 'Location';
   identifier?: FHIRIdentifier[];
@@ -53,14 +41,14 @@ export interface FHIRLocation extends FHIRBase {
   address?: FHIRAddress;
   physicalType?: FHIRCodeableConcept;
   position?: FHIRLocationPosition;
-  managingOrganization?: FHIRReference; // Organization;
-  partOf?: FHIRReference; // Location;
+  managingOrganization?: FHIRReference; // Organization
+  partOf?: FHIRReference; // Location
   hoursOfOperation?: FHIRLocationHoursOfOperation[];
   availabilityExceptions?: string;
-  endpoint?: FHIRReference[]; // Endpoint;
+  endpoint?: FHIRReference[]; // Endpoint
 }
 
-// Location Search Parameters;
+// Location Search Parameters
 export interface FHIRLocationSearchParams {
   _id?: string;
   identifier?: string;
@@ -78,7 +66,7 @@ export interface FHIRLocationSearchParams {
   _sort?: string;
 }
 
-// Helper functions for FHIR Location operations;
+// Helper functions for FHIR Location operations
 export class FHIRLocationUtils {
   /**
    * Create a basic location;
@@ -93,7 +81,7 @@ export class FHIRLocationUtils {
     parentLocationId?: string;
     address?: {
       street: string,
-      city: string;
+      city: string,
       state: string,
       zipCode: string;
       country?: string;
@@ -118,9 +106,9 @@ export class FHIRLocationUtils {
           display: this.getLocationTypeDisplay(data.type)
         }]
       }]
-    };
+    }
 
-    // Add identifier if provided;
+    // Add identifier if provided
     if (data.identifier) {
       location.identifier = [{
         use: 'official',
@@ -128,12 +116,12 @@ export class FHIRLocationUtils {
       }];
     }
 
-    // Add description;
+    // Add description
     if (data.description) {
       location.description = data.description;
     }
 
-    // Add physical type;
+    // Add physical type
     if (data.physicalType) {
       location.physicalType = {
         coding: [{
@@ -141,10 +129,10 @@ export class FHIRLocationUtils {
           code: data.physicalType,
           display: this.getPhysicalTypeDisplay(data.physicalType)
         }]
-      };
+      }
     }
 
-    // Add managing organization;
+    // Add managing organization
     if (data.organizationId) {
       location.managingOrganization = {
         reference: `Organization/${data.organizationId}`,
@@ -152,7 +140,7 @@ export class FHIRLocationUtils {
       };
     }
 
-    // Add parent location;
+    // Add parent location
     if (data.parentLocationId) {
       location.partOf = {
         reference: `Location/${data.parentLocationId}`,
@@ -160,7 +148,7 @@ export class FHIRLocationUtils {
       };
     }
 
-    // Add address;
+    // Add address
     if (data.address) {
       location.address = {
         use: 'work',
@@ -172,7 +160,7 @@ export class FHIRLocationUtils {
       };
     }
 
-    // Add contact information;
+    // Add contact information
     if (data.phone) {
       location.telecom = [{
         system: 'phone',
@@ -181,7 +169,7 @@ export class FHIRLocationUtils {
       }];
     }
 
-    // Add geographic position;
+    // Add geographic position
     if (data.position) {
       location.position = data.position;
     }
@@ -194,11 +182,11 @@ export class FHIRLocationUtils {
    */
   static createHospitalBuilding(data: {
     name: string,
-    identifier: string;
+    identifier: string,
     organizationId: string,
     address: {
       street: string,
-      city: string;
+      city: string,
       state: string,
       zipCode: string;
       country?: string;
@@ -241,14 +229,14 @@ export class FHIRLocationUtils {
       status: 'active'
     });
 
-    // Add ward-specific type;
+    // Add ward-specific type
     location.type!.push({
       coding: [{
         system: 'http://snomed.info/sct',
         code: this.getWardTypeCode(data.wardType),
         display: this.getWardTypeDisplay(data.wardType)
       }]
-    });
+    })
 
     return location;
   }
@@ -258,9 +246,9 @@ export class FHIRLocationUtils {
    */
   static createPatientRoom(data: {
     roomNumber: string,
-    wardId: string;
+    wardId: string,
     organizationId: string,
-    roomType: 'private' | 'semi-private' | 'ward' | 'icu' | 'emergency' | 'operating' | 'recovery';
+    roomType: 'private' | 'semi-private' | 'ward' | 'icu' | 'emergency' | 'operating' | 'recovery',
     capacity: number;
     amenities?: string[];
     description?: string;
@@ -276,16 +264,16 @@ export class FHIRLocationUtils {
       status: 'active'
     });
 
-    // Add room-specific type;
+    // Add room-specific type
     location.type!.push({
       coding: [{
         system: 'http://snomed.info/sct',
         code: this.getRoomTypeCode(data.roomType),
         display: this.getRoomTypeDisplay(data.roomType)
       }]
-    });
+    })
 
-    // Add amenities as additional types;
+    // Add amenities as additional types
     if (data.amenities) {
       data.amenities.forEach(amenity => {
         location.type!.push({
@@ -294,7 +282,7 @@ export class FHIRLocationUtils {
             code: 'amenity',
             display: amenity
           }]
-        });
+        })
       });
     }
 
@@ -306,7 +294,7 @@ export class FHIRLocationUtils {
    */
   static createPatientBed(data: {
     bedNumber: string,
-    roomId: string;
+    roomId: string,
     organizationId: string,
     bedType: 'standard' | 'icu' | 'pediatric' | 'bariatric' | 'isolation';
     isOccupied?: boolean;
@@ -322,21 +310,21 @@ export class FHIRLocationUtils {
       status: data.isOccupied ? 'suspended' : 'active'
     });
 
-    // Add bed-specific type;
+    // Add bed-specific type
     location.type!.push({
       coding: [{
         system: 'http://snomed.info/sct',
         code: this.getBedTypeCode(data.bedType),
         display: this.getBedTypeDisplay(data.bedType)
       }]
-    });
+    })
 
-    // Set operational status based on occupancy;
+    // Set operational status based on occupancy
     location.operationalStatus = {
       system: 'http://terminology.hl7.org/CodeSystem/v2-0116',
       code: data.isOccupied ? 'O' : 'U',
       display: data.isOccupied ? 'Occupied' : 'Unoccupied'
-    };
+    }
 
     return location;
   }
@@ -363,16 +351,16 @@ export class FHIRLocationUtils {
       status: 'active'
     });
 
-    // Add operating room type;
+    // Add operating room type
     location.type!.push({
       coding: [{
         system: 'http://snomed.info/sct',
         code: '225765009',
         display: 'Operating Room'
       }]
-    });
+    })
 
-    // Add specialties as additional types;
+    // Add specialties as additional types
     if (data.specialties) {
       data.specialties.forEach(specialty => {
         location.type!.push({
@@ -381,7 +369,7 @@ export class FHIRLocationUtils {
             code: 'specialty',
             display: specialty
           }]
-        });
+        })
       });
     }
 
@@ -623,7 +611,7 @@ export class FHIRLocationUtils {
    */
   static formatForDisplay(location: FHIRLocation): {
     name: string,
-    type: string;
+    type: string,
     physicalType: string;
     identifier?: string;
     status: string;
@@ -661,22 +649,22 @@ export class FHIRLocationUtils {
       errors.push('resourceType must be "Location"');
     }
 
-    // Either name or identifier should be provided;
+    // Either name or identifier should be provided
     if (!location.name && !location.identifier) {
       errors.push('Either name or identifier should be provided');
     }
 
-    // Validate status;
+    // Validate status
     if (location.status && !['active', 'suspended', 'inactive'].includes(location.status)) {
       errors.push('status must be one of: active, suspended, inactive');
     }
 
-    // Validate mode;
+    // Validate mode
     if (location.mode && !['instance', 'kind'].includes(location.mode)) {
       errors.push('mode must be either instance or kind');
     }
 
-    // Validate position coordinates;
+    // Validate position coordinates
     if (location.position) {
       if (typeof location.position.longitude !== 'number' || 
           typeof location.position.latitude !== 'number') {
@@ -829,7 +817,7 @@ export class FHIRLocationUtils {
    * Calculate distance between two coordinates (Haversine formula)
    */
   private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Earth's radius in kilometers;
+    const R = 6371; // Earth's radius in kilometers
     const dLat = this.toRadians(lat2 - lat1);
     const dLon = this.toRadians(lon2 - lon1);
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +;
@@ -847,7 +835,7 @@ export class FHIRLocationUtils {
   }
 }
 
-// Common location types and codes;
+// Common location types and codes
 export class FHIRLocationTypes {
   /**
    * Hospital areas;
@@ -973,4 +961,3 @@ export class FHIRLocationTypes {
       ]
     };
   }
-}

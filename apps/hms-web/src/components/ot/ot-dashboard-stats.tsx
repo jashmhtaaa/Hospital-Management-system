@@ -1,22 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface OTDashboardStatsProps {
   totalSurgeries: number,
-  completedSurgeries: number;
+  completedSurgeries: number,
   scheduledSurgeries: number,
-  theatresInUse: number;
+  theatresInUse: number,
   totalTheatres: number,
   averageDuration: string
 }
@@ -43,7 +33,7 @@ export const OTDashboardStats = ({ totalSurgeries,
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalSurgeries}</div>;
+          <div className="text-2xl font-bold">{totalSurgeries}</div>
           <p className="text-xs text-gray-500">;
             {completedSurgeries} completed, {scheduledSurgeries} scheduled
           </p>
@@ -59,7 +49,7 @@ export const OTDashboardStats = ({ totalSurgeries,
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{theatresInUse}/{totalTheatres}</div>;
+          <div className="text-2xl font-bold">{theatresInUse}/{totalTheatres}</div>
           <p className="text-xs text-gray-500">;
             {Math.round((theatresInUse / totalTheatres) * 100)}% utilization rate
           </p>
@@ -75,7 +65,7 @@ export const OTDashboardStats = ({ totalSurgeries,
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{averageDuration}</div>;
+          <div className="text-2xl font-bold">{averageDuration}</div>
           <p className="text-xs text-gray-500">;
             Per surgery
           </p>
@@ -83,4 +73,3 @@ export const OTDashboardStats = ({ totalSurgeries,
       </Card>
     </div>
   );
-}

@@ -26,8 +26,6 @@ import { MetricsCollector } from '../../lib/monitoring/metrics-collector';
 export interface ServiceDefinition {
   name: string,
   url: string
-}
-
 export interface FederationConfig {
   services: ServiceDefinition[],
   redisConfig: {
@@ -41,8 +39,6 @@ export interface FederationConfig {
   defaultQueryTimeout: number,
   logger: ILogger,
   metrics: MetricsCollector
-}
-
 export class GraphQLFederation {
   private gateway: ApolloGateway;
   private server: ApolloServer;
@@ -63,30 +59,30 @@ export class GraphQLFederation {
       port: config.redisConfig.port,
       password: config.redisConfig.password,
       db: config.redisConfig.db || 0,
-    });
+    })
     
     // Create authenticated data source class
     class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       willSendRequest({ request, context }: any) {
         // Pass user information to downstream services
         if (context.user) {
-          request.http.headers.set('x-user-id', context.user.id);
+          request.http.headers.set('x-user-id', context.user.id)
           request.http.headers.set('x-user-roles', JSON.stringify(context.user.roles));
         }
         
         // Pass trace context for distributed tracing
         if (context.trace) {
-          request.http.headers.set('x-trace-id', context.trace.traceId);
+          request.http.headers.set('x-trace-id', context.trace.traceId)
           request.http.headers.set('x-span-id', context.trace.spanId);
         }
         
         // Set request timeout
-        request.http.timeout = config.defaultQueryTimeout;
+        request.http.timeout = config.defaultQueryTimeout
       }
       
       async didReceiveResponse({ response, request, context }: any) {
         // Track timing metrics for downstream services
-        const serviceName = this.url.split('/').pop() || 'unknown';
+        const serviceName = this.url.split('/').pop() || 'unknown'
         const operationName = request.operationName || 'unknown';
         
         this.metrics.recordHistogram('graphql.service_response_time', response.extensions?.timing || 0, {
@@ -99,7 +95,7 @@ export class GraphQLFederation {
       
       async didEncounterError({ error, request, context }: any) {
         // Track error metrics
-        const serviceName = this.url.split('/').pop() || 'unknown';
+        const serviceName = this.url.split('/').pop() || 'unknown'
         const operationName = request.operationName || 'unknown';
         
         this.metrics.incrementCounter('graphql.service_errors', 1, {
@@ -115,7 +111,7 @@ export class GraphQLFederation {
         });
         
         // Pass through the error
-        return error;
+        return error
       }
     }
     
@@ -131,7 +127,7 @@ export class GraphQLFederation {
       buildService: ({ url }) => new AuthenticatedDataSource({ url }),
       experimental_didUpdateComposition: ({ typeDefs, errors }) => {
         if (errors) {
-          this.logger.error('Error composing GraphQL schema', { errors });
+          this.logger.error('Error composing GraphQL schema', { errors })
           return;
         }
         
@@ -158,7 +154,7 @@ export class GraphQLFederation {
           sessionId: (requestContext) => {
             // Create a cache key based on user and roles
             if (requestContext.context.user) {
-              return `${requestContext.context.user.id}:${requestContext.context.user.roles.join(',')}`;
+              return `${requestContext.context.user.id}:${requestContext.context.user.roles.join(',')}`
             }
             return null; // No caching for unauthenticated requests
           }
@@ -167,7 +163,7 @@ export class GraphQLFederation {
         {
           // Plugin for metrics collection
           async serverWillStart() {
-            config.logger.info('GraphQL Federation gateway starting...');
+            config.logger.info('GraphQL Federation gateway starting...')
             return {
               async serverWillStop() {
                 config.logger.info('GraphQL Federation gateway stopping...');
@@ -183,7 +179,7 @@ export class GraphQLFederation {
                 
                 config.metrics.recordHistogram('graphql.request_duration', duration, {
                   operation: requestContext.operationName || 'unknown'
-                });
+                })
                 
                 config.metrics.incrementCounter('graphql.requests', 1, {
                   operation: requestContext.operationName || 'unknown',
@@ -208,7 +204,7 @@ export class GraphQLFederation {
             traceId: req.headers['x-trace-id'] || '',
             spanId: req.headers['x-span-id'] || ''
           }
-        };
+        }
       },
       introspection: config.enableIntrospection,
       cache: new RedisCache({
@@ -239,7 +235,7 @@ export class GraphQLFederation {
    */
   public applyMiddleware(app: Express, path: string = '/graphql'): void {
     // Apply authentication middleware first
-    app.use(path, authMiddleware);
+    app.use(path, authMiddleware)
     
     // Apply Apollo Server
     this.server.applyMiddleware({
@@ -249,7 +245,7 @@ export class GraphQLFederation {
         origin: '*',
         credentials: true
       }
-    });
+    })
     
     this.logger.info(`GraphQL Federation endpoint available at ${path}`);
   }

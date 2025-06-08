@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -23,9 +15,9 @@ import { DB } from './database.ts';
  */
 export interface Notification {
   userId: number,
-  type: 'critical_value' | 'critical_finding' | 'result_available' | 'specimen_rejected' | 'order_status';
+  type: 'critical_value' | 'critical_finding' | 'result_available' | 'specimen_rejected' | 'order_status',
   title: string,
-  message: string;
+  message: string,
   resourceType: string;
   resourceId?: number;
   priority: 'low' | 'medium' | 'high' | 'urgent';
@@ -47,7 +39,7 @@ export async const notifyUsers = (
     const db = DB();
     const notificationIds: number[] = [];
     
-    // Sanitize metadata to prevent sensitive data leakage;
+    // Sanitize metadata to prevent sensitive data leakage
     const sanitizedMetadata = notification.metadata ? JSON.stringify(notification.metadata) : null;
     
     for (const userId of userIds) {
@@ -146,4 +138,3 @@ export async const getUserNotifications = (
 
     return [];
   }
-}

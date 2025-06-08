@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -89,7 +79,7 @@ export default const BiomedicalEquipment = () {
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
 
-  // Fetch biomedical equipment;
+  // Fetch biomedical equipment
   useEffect(() => {
     const fetchEquipment = async () => {
       try {
@@ -136,7 +126,7 @@ export default const BiomedicalEquipment = () {
     }
   }, [search, equipmentTypeFilter, statusFilter, departmentFilter, regulatoryClassFilter, riskLevelFilter, calibrationDueFilter, pagination.skip, pagination.take, activeTab]);
 
-  // Fetch departments for filters;
+  // Fetch departments for filters
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -153,7 +143,7 @@ export default const BiomedicalEquipment = () {
     fetchDepartments();
   }, []);
 
-  // Fetch biomedical statistics;
+  // Fetch biomedical statistics
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
@@ -170,7 +160,7 @@ export default const BiomedicalEquipment = () {
     fetchStatistics();
   }, []);
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
@@ -189,26 +179,26 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Handle search;
+  // Handle search
   const handleSearch = (e: unknown) => {
     e.preventDefault();
-    // Reset pagination when searching;
+    // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Handle tab change;
+  // Handle tab change
   const handleTabChange = (value: unknown) => {
     setActiveTab(value);
-    // Reset pagination when changing tabs;
+    // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
     
-    // Set appropriate filters based on tab;
+    // Set appropriate filters based on tab
     if (value === 'calibration') {
       setCalibrationDueFilter(true);
     } else if (value === 'all') {
@@ -216,21 +206,21 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Create new biomedical equipment;
+  // Create new biomedical equipment
   const handleCreateEquipment = () => {
     router.push('/dashboard/hr/biomedical/new');
   };
 
-  // Export equipment data;
+  // Export equipment data
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
         title: "Export Started",
         description: "Your biomedical equipment report is being generated and will download shortly.",
       });
       
-      // Simulate download delay;
+      // Simulate download delay
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -246,7 +236,7 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'AVAILABLE':
@@ -263,7 +253,7 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Get equipment type icon;
+  // Get equipment type icon
   const getEquipmentTypeIcon = (type: unknown) => {
     switch (type) {
       case 'DIAGNOSTIC':
@@ -282,7 +272,7 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Get regulatory class badge variant;
+  // Get regulatory class badge variant
   const getRegulatoryClassBadgeVariant = (regulatoryClass: unknown) => {
     switch (regulatoryClass) {
       case 'CLASS_I':
@@ -295,7 +285,7 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Get risk level badge variant;
+  // Get risk level badge variant
   const getRiskLevelBadgeVariant = (riskLevel: unknown) => {
     switch (riskLevel) {
       case 'LOW':
@@ -310,7 +300,7 @@ export default const BiomedicalEquipment = () {
     }
   };
 
-  // Format currency;
+  // Format currency
   const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
@@ -319,12 +309,12 @@ export default const BiomedicalEquipment = () {
     }).format(amount);
   };
 
-  // Format date or show placeholder;
+  // Format date or show placeholder
   const formatDateOrPlaceholder = (date: unknown) => {
     return date ? format(new Date(date), 'PPP') : '—';
   };
 
-  // Check if calibration is due;
+  // Check if calibration is due
   const isCalibrationDue = (nextCalibrationDate: unknown) => {
     if (!nextCalibrationDate) return false;
     return new Date(nextCalibrationDate) <= new Date();
@@ -695,4 +685,3 @@ export default const BiomedicalEquipment = () {
       </div>
     </div>
   );
-}

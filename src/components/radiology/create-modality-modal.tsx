@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 "use client";
@@ -26,21 +18,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-// FIX: Define and export interface for form data;
+// FIX: Define and export interface for form data
 export interface ModalityFormData {
   name: string;
   description?: string | null;
   location?: string | null;
 }
 
-// FIX: Define interface for props, including isOpen;
+// FIX: Define interface for props, including isOpen
 interface CreateModalityModalProperties {
-  isOpen: boolean; // Add isOpen prop;
+  isOpen: boolean; // Add isOpen prop
   onClose: () => void,
   onSubmit: (data: ModalityFormData) => Promise<void> | void
 }
 
-// FIX: Apply props interface;
+// FIX: Apply props interface
 export default const CreateModalityModal = ({
   isOpen,
   onClose,
@@ -51,7 +43,7 @@ export default const CreateModalityModal = ({
   const [location, setLocation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // FIX: Type event parameter;
+  // FIX: Type event parameter
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name) {
@@ -65,11 +57,11 @@ export default const CreateModalityModal = ({
         description,
         location,
       });
-      // Assuming onSubmit handles success/error reporting;
-      // onClose(); // Optionally close on successful submit;
-    } catch (error) { // FIX: Added error parameter;
+      // Assuming onSubmit handles success/error reporting
+      // onClose(); // Optionally close on successful submit
+    } catch (error) { // FIX: Added error parameter
 
-      // Optionally show an error message to the user;
+      // Optionally show an error message to the user
       alert(
         `Error: ${error instanceof Error ? error.message : "Unknown error"}`
       );
@@ -140,4 +132,3 @@ export default const CreateModalityModal = ({
       </DialogContent>
     </Dialog>
   );
-}

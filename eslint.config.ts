@@ -497,7 +497,7 @@ const eslintConfig: Linter.FlatConfig[] = [
       'max-params': ['error', { max: 3 }],
     },
   },
-];
+]
 
 export default eslintConfig;
 

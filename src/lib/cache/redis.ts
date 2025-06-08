@@ -1,34 +1,24 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { createClient } from 'redis';
 import { config } from '@/config';
 
-// Create Redis client;
+// Create Redis client
 const redisClient = createClient({
   url: config.redis.url,
   password: config.redis.password,
 });
 
-// Connect to Redis;
+// Connect to Redis
 redisClient.connect().catch((err) => {
 
 });
 
-// Handle Redis errors;
+// Handle Redis errors
 redisClient.on('error', (err) => {
 
 });
 
-// Cache wrapper class;
+// Cache wrapper class
 export class RedisCache {
   /**
    * Get data from cache;
@@ -88,25 +78,24 @@ export class RedisCache {
     ttlSeconds: number = 3600;
   ): Promise<T> {
     try {
-      // Try to get from cache;
+      // Try to get from cache
       const cachedData = await RedisCache.get<T>(key);
       
-      // If found in cache, return it;
+      // If found in cache, return it
       if (cachedData) {
         return cachedData;
       }
       
-      // Otherwise, fetch data;
+      // Otherwise, fetch data
       const data = await fetchFn();
       
-      // Store in cache for future requests;
+      // Store in cache for future requests
       await RedisCache.set(key, data, ttlSeconds);
       
       return data;
     } catch (error) {
 
-      // If cache operations fail, fall back to direct fetch;
+      // If cache operations fail, fall back to direct fetch
       return fetchFn();
     }
   }
-}

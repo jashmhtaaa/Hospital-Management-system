@@ -1,4 +1,4 @@
-// app/api/lis/reports/[reportId]/route.ts;
+// app/api/lis/reports/[reportId]/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabReportStatus, LabOrderStatus } from "@prisma/client";
 import { z } from "zod";
@@ -52,7 +52,7 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
         },
         reportedBy: { select: { id: true, name: true } },
       },
-    });
+    })
 
     if (!labReport) {
       await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_NOT_FOUND", { reportId });
@@ -65,7 +65,7 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
     return sendSuccessResponse(labReport)
   } catch (error: unknown) {
 
-    await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) });
+    await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) })
     const duration = Date.now() - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
@@ -114,9 +114,9 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
     const body: unknown = await request.json();
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const validation = updateLabReportSchema.safeParse(body);
+    const validation = updateLabReportSchema.safeParse(body)
     if (!validation.success) {
-      // Debug logging removed);
+      // Debug logging removed)
       await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_VALIDATION_FAILED", { reportId, path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -170,13 +170,13 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_SUCCESS", { reportId, changes: validation.data, updatedData: updatedLabReport });
+    await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_SUCCESS", { reportId, changes: validation.data, updatedData: updatedLabReport })
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(updatedLabReport)
   } catch (error: unknown) {
 
-    let errStatus = 500;
+    let errStatus = 500
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
 
@@ -193,8 +193,6 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-}
-
 export async const DELETE = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
@@ -222,7 +220,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteContext) => 
 
     const existingReport = await prisma.labReport.findUnique({
       where: { id: reportId },
-    });
+    })
 
     if (!existingReport) {
       await auditLogService.logEvent(userId, "LIS_DELETE_REPORT_METADATA_FAILED_NOT_FOUND", { reportId });
@@ -241,7 +239,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteContext) => 
     await auditLogService.logEvent(userId, "LIS_DELETE_REPORT_METADATA_SUCCESS", { reportId, deletedReportDetails: existingReport });
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    return sendSuccessResponse(null, 204);
+    return sendSuccessResponse(null, 204)
 
   } catch (error: unknown) {
 
@@ -263,4 +261,3 @@ export async const DELETE = (request: NextRequest, { params }: RouteContext) => 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
-

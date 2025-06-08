@@ -1,16 +1,6 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
-import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used;
-import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts;
+import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
+import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts
 
 const prisma = new PrismaClient();
 
@@ -30,7 +20,7 @@ export class ChargeCaptureService {
         // Validate patient existence (placeholder)
         const patient = await prisma.patient.findUnique({
             where: { id: patientId },
-        });
+        })
 
         if (!patient) {
             throw new Error(`Patient with ID ${patientId} not found.`);
@@ -41,18 +31,18 @@ export class ChargeCaptureService {
           typeof chargeInput.serviceId !== 'string' ||
           typeof chargeInput.quantity !== 'number' ||
           chargeInput.quantity <= 0) {
-            throw new Error('Invalid charge input data.');
+            throw new Error('Invalid charge input data.')
         }
 
         // Fetch service details and price from ChargeMaster (placeholder)
         // const serviceDetails = await prisma.chargeMaster.findUnique({
         //     where: { id: chargeInput.serviceId },
-        // });
+        // })
         // if (!serviceDetails) {
-        //     throw new Error(`Service with ID ${chargeInput.serviceId} not found in ChargeMaster.`);
+        //     throw new Error(`Service with ID ${chargeInput.serviceId} not found in ChargeMaster.`)
         // }
-        // const unitPrice = serviceDetails.standardPrice;
-        const unitPrice = chargeInput.unitPrice || 100; // Placeholder price;
+        // const unitPrice = serviceDetails.standardPrice
+        const unitPrice = chargeInput.unitPrice || 100; // Placeholder price
 
         const totalAmount = unitPrice * chargeInput.quantity;
 
@@ -61,22 +51,22 @@ export class ChargeCaptureService {
             id: `charge_${Date.now()}`,
             patientId,
             serviceId: chargeInput.serviceId,
-            serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder;
+            serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder
             quantity: chargeInput.quantity,
             unitPrice,
             totalAmount,
             chargeDate: new Date(),
             department: chargeInput.department || 'General',
             notes: chargeInput.notes,
-            status: 'PENDING_BILLING', // Initial status;
+            status: 'PENDING_BILLING', // Initial status
         } as PatientCharge;
 
         // In a real scenario, this would be saved to the database:
-        // const savedCharge = await prisma.patientCharge.create({ data: newCharge });
-        // return savedCharge;
+        // const savedCharge = await prisma.patientCharge.create({ data: newCharge })
+        // return savedCharge
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return newCharge; // Return the mock charge for now;
+        return newCharge; // Return the mock charge for now
     }
 
     /**
@@ -86,9 +76,7 @@ export class ChargeCaptureService {
      */
     async getChargesForPatient(patientId: string): Promise<PatientCharge[]> {
         // In a real scenario, this would fetch from the database:
-        // return prisma.patientCharge.findMany({ where: { patientId } });
+        // return prisma.patientCharge.findMany({ where: { patientId } })
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return []; // Return empty array for now;
+        return []; // Return empty array for now
     }
-}
-

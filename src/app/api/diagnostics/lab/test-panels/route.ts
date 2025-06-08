@@ -1,19 +1,9 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 
-// Interface for the request body when creating a test panel;
+// Interface for the request body when creating a test panel
 interface TestPanelCreateBody {
   name: string;
   description?: string;
@@ -35,17 +25,17 @@ interface TestPanelCreateBody {
   available_priorities?: Array<"routine" | "urgent" | "stat">;
 }
 
-// GET /api/diagnostics/lab/test-panels - Get all test panels;
+// GET /api/diagnostics/lab/test-panels - Get all test panels
 export async const GET = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Parse query parameters;
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get("categoryId");
     const isActive = searchParams.get("isActive");
@@ -53,10 +43,10 @@ export async const GET = (request: NextRequest) => {
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     
-    // Calculate offset for pagination;
+    // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
     
-    // Build query;
+    // Build query
     let query = `;
       SELECT;
         t.*,
@@ -70,7 +60,7 @@ export async const GET = (request: NextRequest) => {
         t.is_panel = 1;
     `;
     
-    // Add filters;
+    // Add filters
     const parameters: (string | number | boolean)[] = [];
     const conditions: string[] = [];
     
@@ -93,18 +83,18 @@ export async const GET = (request: NextRequest) => {
       query += " AND " + conditions.join(" AND ");
     }
     
-    // Add ordering;
+    // Add ordering
     query += " ORDER BY t.name ASC";
     
-    // Add pagination;
+    // Add pagination
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
     
-    // Execute query;
+    // Execute query
     const panelsResult = await DB.query(query, parameters);
     const panels = panelsResult.results || [];
     
-    // Get total count for pagination;
+    // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_tests t WHERE t.is_panel = 1";
     if (conditions.length > 0) {
       countQuery += " AND " + conditions.join(" AND ");
@@ -113,7 +103,7 @@ export async const GET = (request: NextRequest) => {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
     
-    // Fetch panel items for each panel;
+    // Fetch panel items for each panel
     const panelsWithItems = await Promise.all(
       panels.map(async (panel) => {
         const itemsQuery = `;
@@ -144,7 +134,7 @@ export async const GET = (request: NextRequest) => {
       });
     );
     
-    // Return panels with pagination metadata;
+    // Return panels with pagination metadata
     return NextResponse.json({
       data: panelsWithItems,
       pagination: {
@@ -164,25 +154,25 @@ export async const GET = (request: NextRequest) => {
   }
 }
 
-// POST /api/diagnostics/lab/test-panels - Create a new test panel;
+// POST /api/diagnostics/lab/test-panels - Create a new test panel
 export async const POST = (request: NextRequest) => {
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can create test panels;
+    // Only lab managers and admins can create test panels
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as TestPanelCreateBody;
     
-    // Validate required fields;
+    // Validate required fields
     const requiredFields: (keyof TestPanelCreateBody)[] = [
       "name",
       "category_id",
@@ -202,7 +192,7 @@ export async const POST = (request: NextRequest) => {
     }
     
     // Validate LOINC code format (typically #####-#)
-    const loincRegex = /^\d+-\d+$/;
+    const loincRegex = /^\d+-\d+$/
     if (!loincRegex.test(body.loinc_code)) {
       return NextResponse.json(
         { error: "Invalid LOINC code format. Expected format: #####-#" },
@@ -210,7 +200,7 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Validate panel items;
+    // Validate panel items
     if (!body.panel_items || body.panel_items.length === 0) {
       return NextResponse.json(
         { error: "Panel must include at least one test" },
@@ -218,11 +208,11 @@ export async const POST = (request: NextRequest) => {
       );
     }
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Insert new panel as a test with is_panel=true;
+      // Insert new panel as a test with is_panel=true
       const insertQuery = `;
         INSERT INTO lab_tests (
           name, description, category_id, loinc_code, loinc_display,
@@ -252,7 +242,7 @@ export async const POST = (request: NextRequest) => {
       const result = await DB.query(insertQuery, insertParameters);
       const panelId = result.insertId;
       
-      // Insert panel items;
+      // Insert panel items
       for (const item of body.panel_items) {
         await DB.query(
           "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
@@ -260,10 +250,10 @@ export async const POST = (request: NextRequest) => {
         );
       }
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Fetch the complete panel with all related data;
+      // Fetch the complete panel with all related data
       const fetchPanelQuery = `;
         SELECT;
           t.*,
@@ -283,7 +273,7 @@ export async const POST = (request: NextRequest) => {
         throw new Error("Failed to retrieve created panel");
       }
       
-      // Fetch panel items;
+      // Fetch panel items
       const itemsQuery = `;
         SELECT;
           i.test_id, 
@@ -304,17 +294,17 @@ export async const POST = (request: NextRequest) => {
       const itemsResult = await DB.query(itemsQuery, [panelId]);
       const items = itemsResult.results || [];
       
-      // Construct complete response;
+      // Construct complete response
       const completePanel = {
         ...panel,
         panel_items: items,
         available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
       };
       
-      // Return the created panel;
+      // Return the created panel
       return NextResponse.json(completePanel, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -328,7 +318,7 @@ export async const POST = (request: NextRequest) => {
   }
 }
 
-// GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel;
+// GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel
 export async const GET_BY_ID = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -336,14 +326,14 @@ export async const GET_BY_ID = (
   try {
     const session = await getSession();
     
-    // Check authentication;
+    // Check authentication
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     const panelId = params.id;
     
-    // Fetch panel;
+    // Fetch panel
     const fetchPanelQuery = `;
       SELECT;
         t.*,
@@ -366,7 +356,7 @@ export async const GET_BY_ID = (
       );
     }
     
-    // Fetch panel items;
+    // Fetch panel items
     const itemsQuery = `;
       SELECT;
         i.test_id, 
@@ -387,14 +377,14 @@ export async const GET_BY_ID = (
     const itemsResult = await DB.query(itemsQuery, [panelId]);
     const items = itemsResult.results || [];
     
-    // Construct complete response;
+    // Construct complete response
     const completePanel = {
       ...panel,
       panel_items: items,
       available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
     };
     
-    // Return the panel;
+    // Return the panel
     return NextResponse.json(completePanel);
   } catch (error: unknown) {
 
@@ -406,7 +396,7 @@ export async const GET_BY_ID = (
   }
 }
 
-// PUT /api/diagnostics/lab/test-panels/:id - Update a test panel;
+// PUT /api/diagnostics/lab/test-panels/:id - Update a test panel
 export async const PUT = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -414,19 +404,19 @@ export async const PUT = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can update test panels;
+    // Only lab managers and admins can update test panels
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const panelId = params.id;
     
-    // Check if panel exists;
+    // Check if panel exists
     const checkResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ? AND is_panel = 1",
       [panelId]
@@ -439,19 +429,19 @@ export async const PUT = (
       );
     }
     
-    // Parse request body;
+    // Parse request body
     const body = await request.json() as Partial<TestPanelCreateBody>;
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Update panel;
+      // Update panel
       let updateQuery = "UPDATE lab_tests SET ";
       const updateFields: string[] = [];
       const updateParameters: unknown[] = [];
       
-      // Build dynamic update query based on provided fields;
+      // Build dynamic update query based on provided fields
       if (body.name !== undefined) {
         updateFields.push("name = ?");
         updateParameters.push(body.name);
@@ -468,7 +458,7 @@ export async const PUT = (
       }
       
       if (body.loinc_code !== undefined) {
-        // Validate LOINC code format;
+        // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
         if (!loincRegex.test(body.loinc_code)) {
           throw new Error("Invalid LOINC code format. Expected format: #####-#")
@@ -527,7 +517,7 @@ export async const PUT = (
         updateParameters.push(JSON.stringify(body.available_priorities));
       }
       
-      // Only proceed if there are fields to update;
+      // Only proceed if there are fields to update
       if (updateFields.length > 0) {
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(panelId);
@@ -535,15 +525,15 @@ export async const PUT = (
         await DB.query(updateQuery, updateParameters);
       }
       
-      // Update panel items if provided;
+      // Update panel items if provided
       if (body.panel_items !== undefined) {
-        // Delete existing panel items;
+        // Delete existing panel items
         await DB.query(
           "DELETE FROM lab_test_panel_items WHERE panel_id = ?",
           [panelId]
         );
         
-        // Insert new panel items;
+        // Insert new panel items
         if (body.panel_items.length > 0) {
           for (const item of body.panel_items) {
             await DB.query(
@@ -556,10 +546,10 @@ export async const PUT = (
         }
       }
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
-      // Fetch the updated panel with all related data;
+      // Fetch the updated panel with all related data
       const fetchPanelQuery = `;
         SELECT;
           t.*,
@@ -579,7 +569,7 @@ export async const PUT = (
         throw new Error("Failed to retrieve updated panel");
       }
       
-      // Fetch panel items;
+      // Fetch panel items
       const itemsQuery = `;
         SELECT;
           i.test_id, 
@@ -600,17 +590,17 @@ export async const PUT = (
       const itemsResult = await DB.query(itemsQuery, [panelId]);
       const items = itemsResult.results || [];
       
-      // Construct complete response;
+      // Construct complete response
       const completePanel = {
         ...panel,
         panel_items: items,
         available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
       };
       
-      // Return the updated panel;
+      // Return the updated panel
       return NextResponse.json(completePanel);
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -624,7 +614,7 @@ export async const PUT = (
   }
 }
 
-// DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel;
+// DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel
 export async const DELETE = (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -632,19 +622,19 @@ export async const DELETE = (
   try {
     const session = await getSession();
     
-    // Check authentication and authorization;
+    // Check authentication and authorization
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Only lab managers and admins can delete test panels;
+    // Only lab managers and admins can delete test panels
     if (!["admin", "lab_manager"].includes(session.user.roleName)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     
     const panelId = params.id;
     
-    // Check if panel exists;
+    // Check if panel exists
     const checkResult = await DB.query(
       "SELECT id FROM lab_tests WHERE id = ? AND is_panel = 1",
       [panelId]
@@ -657,14 +647,14 @@ export async const DELETE = (
       );
     }
     
-    // Check if panel is used in any orders;
+    // Check if panel is used in any orders
     const orderCheckResult = await DB.query(
       "SELECT id FROM lab_order_items WHERE test_id = ? LIMIT 1",
       [panelId]
     );
     
     if (orderCheckResult.results && orderCheckResult.results.length > 0) {
-      // Instead of deleting, mark as inactive;
+      // Instead of deleting, mark as inactive
       await DB.query(
         "UPDATE lab_tests SET is_active = 0 WHERE id = ?",
         [panelId]
@@ -675,30 +665,30 @@ export async const DELETE = (
       });
     }
     
-    // Start transaction;
+    // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
     
     try {
-      // Delete panel items;
+      // Delete panel items
       await DB.query(
         "DELETE FROM lab_test_panel_items WHERE panel_id = ?",
         [panelId]
       );
       
-      // Delete the panel;
+      // Delete the panel
       await DB.query(
         "DELETE FROM lab_tests WHERE id = ?",
         [panelId]
       );
       
-      // Commit transaction;
+      // Commit transaction
       await DB.query("COMMIT", []);
       
       return NextResponse.json({
         message: "Test panel deleted successfully"
       });
     } catch (error) {
-      // Rollback transaction on error;
+      // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
@@ -710,4 +700,3 @@ export async const DELETE = (
       { status: 500 }
     );
   }
-}

@@ -16,4 +16,3 @@ module.exports = {
   coverageReporters: ["json", "lcov", "text", "clover"],
   // Automatically clear mock calls and instances between every test
   clearMocks: true,
-};

@@ -1,22 +1,12 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { z } from "zod";
 import { Consultation } from "@/types/opd";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database;
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 
-// Zod schema for creating an OPD visit;
+// Zod schema for creating an OPD visit
 const opdVisitCreateSchema = z.object({
     patient_id: z.number(),
     doctor_id: z.number(),
@@ -34,18 +24,18 @@ const opdVisitCreateSchema = z.object({
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
 export async const GET = (request: NextRequest) => {
-    const session = await getSession();
+    const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     try {
-        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined;
+        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined
         const page = Number.parseInt(searchParams.get("page") || "1");
         const limit = Number.parseInt(searchParams.get("limit") || "10");
         const offset = (page - 1) * limit;
         const patientIdFilter = searchParams.get("patient_id");
-        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams;
+        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams
         const dateFromFilter = searchParams.get("date_from");
         const dateToFilter = searchParams.get("date_to");
         const statusFilter = searchParams.get("status");
@@ -139,11 +129,11 @@ export async const GET = (request: NextRequest) => {
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record)
 export async const POST = (request: NextRequest) => {
-    const session = await getSession();
+    const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    if (!session.user) { // Ensure user exists if logged in;
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -179,7 +169,7 @@ export async const POST = (request: NextRequest) => {
             visitData.diagnosis,
             visitData.treatment_plan,
             visitData.follow_up_instructions,
-            session.user.userId, // session.user is now guaranteed to be defined;
+            session.user.userId, // session.user is now guaranteed to be defined
             now,
             now;
         );
@@ -209,5 +199,3 @@ export async const POST = (request: NextRequest) => {
             { status: 500 }
         );
     }
-}
-

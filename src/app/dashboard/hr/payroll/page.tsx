@@ -1,14 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import React, { useState } from "react";
 'use client';
 
@@ -82,7 +72,7 @@ export default const PayrollManagement = () {
   });
   const [activeTab, setActiveTab] = useState('periods');
 
-  // Fetch payroll periods;
+  // Fetch payroll periods
   useEffect(() => {
     const fetchPayrollPeriods = async () => {
       try {
@@ -131,7 +121,7 @@ export default const PayrollManagement = () {
     }
   }, [statusFilter, dateRange, pagination.skip, pagination.take, activeTab]);
 
-  // Handle pagination;
+  // Handle pagination
   const handlePreviousPage = () => {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
@@ -150,31 +140,31 @@ export default const PayrollManagement = () {
     }
   };
 
-  // Handle tab change;
+  // Handle tab change
   const handleTabChange = (value: unknown) => {
     setActiveTab(value);
-    // Reset pagination when changing tabs;
+    // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
       skip: 0
     }));
   };
 
-  // Create new payroll period;
+  // Create new payroll period
   const handleCreatePeriod = () => {
     router.push('/dashboard/hr/payroll/periods/new');
   };
 
-  // Export payroll data;
+  // Export payroll data
   const handleExport = async () => {
     try {
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
+      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
         title: "Export Started",
         description: "Your payroll report is being generated and will download shortly.",
       });
       
-      // Simulate download delay;
+      // Simulate download delay
       setTimeout(() => {
         toast({
           title: "Export Complete",
@@ -190,7 +180,7 @@ export default const PayrollManagement = () {
     }
   };
 
-  // Get status badge variant;
+  // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
       case 'DRAFT':
@@ -205,7 +195,7 @@ export default const PayrollManagement = () {
     }
   };
 
-  // Format currency;
+  // Format currency
   const formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -484,4 +474,3 @@ export default const PayrollManagement = () {
       </div>
     </div>
   );
-}

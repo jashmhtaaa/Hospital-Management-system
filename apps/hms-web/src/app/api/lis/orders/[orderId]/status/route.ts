@@ -1,10 +1,10 @@
-// app/api/lis/orders/[orderId]/status/route.ts;
+// app/api/lis/orders/[orderId]/status/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabOrderStatus } from "@prisma/client";
 import { z } from "zod";
-import { getCurrentUser, hasPermission } from "@/lib/authUtils"; // Updated import;
-import { auditLogService } from "@/lib/auditLogUtils"; // Updated import;
-import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils"; // Updated import;
+import { getCurrentUser, hasPermission } from "@/lib/authUtils"; // Updated import
+import { auditLogService } from "@/lib/auditLogUtils"; // Updated import
+import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils"; // Updated import
 
 const prisma = new PrismaClient();
 
@@ -26,8 +26,6 @@ interface RouteContext {
   params: {
     orderId: string
   };
-}
-
 export async const PUT = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;
@@ -54,9 +52,9 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
     const body: unknown = await request.json();
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const validation = updateLabOrderStatusSchema.safeParse(body);
+    const validation = updateLabOrderStatusSchema.safeParse(body)
     if (!validation.success) {
-      // Debug logging removed);
+      // Debug logging removed)
       await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_VALIDATION_FAILED", { orderId, path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
@@ -101,13 +99,13 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
       oldStatus: existingOrder.status, 
       newStatus: status, 
       updatedData: updatedLabOrder
-    });
+    })
     const duration = Date.now() - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(updatedLabOrder)
   } catch (error: unknown) {
 
-    let errStatus = 500;
+    let errStatus = 500
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
 
@@ -125,4 +123,3 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
-

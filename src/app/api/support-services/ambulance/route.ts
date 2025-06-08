@@ -1,24 +1,14 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
 }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
 import { AmbulanceService } from '@/lib/services/support-services/ambulance/ambulance.service';
 import { z } from 'zod';
 
-// Initialize service;
+// Initialize service
 const ambulanceService = new AmbulanceService();
 
-// Request validation schemas;
+// Request validation schemas
 const createTripRequestSchema = z.object({
   requestType: z.enum(['EMERGENCY', 'NON_EMERGENCY', 'TRANSFER', 'DISCHARGE', 'SCHEDULED']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
@@ -49,12 +39,12 @@ const updateTripRequestSchema = z.object({
   specialInstructions: z.string().max(500).optional(),
 });
 
-// GET /api/support-services/ambulance/trips;
+// GET /api/support-services/ambulance/trips
 export async const GET = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
@@ -67,7 +57,7 @@ export async const GET = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get ambulance trips with filters;
+      // Get ambulance trips with filters
       const result = await ambulanceService.getAmbulanceTrips(filters);
       
       return NextResponse.json(result);
@@ -79,19 +69,19 @@ export async const GET = (request: NextRequest) => {
   );
 }
 
-// POST /api/support-services/ambulance/trips;
+// POST /api/support-services/ambulance/trips
 export async const POST = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = createTripRequestSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Create ambulance trip request;
+      // Create ambulance trip request
       const result = await ambulanceService.createAmbulanceTrip(sanitizedData);
       
       return NextResponse.json(result, { status: 201 });
@@ -103,12 +93,12 @@ export async const POST = (request: NextRequest) => {
   );
 }
 
-// GET /api/support-services/ambulance/trips/:id;
+// GET /api/support-services/ambulance/trips/:id
 export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Get ambulance trip by ID;
+      // Get ambulance trip by ID
       const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
       const result = await ambulanceService.getAmbulanceTripById(params.id, includeFHIR);
       
@@ -121,19 +111,19 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
   );
 }
 
-// PATCH /api/support-services/ambulance/trips/:id;
+// PATCH /api/support-services/ambulance/trips/:id
 export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse and validate request body;
+      // Parse and validate request body
       const body = await req.json();
       const validatedData = updateTripRequestSchema.parse(body);
       
-      // Sanitize input data;
+      // Sanitize input data
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
       
-      // Update ambulance trip;
+      // Update ambulance trip
       const result = await ambulanceService.updateAmbulanceTrip(params.id, sanitizedData);
       
       return NextResponse.json(result);
@@ -145,12 +135,12 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
   );
 }
 
-// DELETE /api/support-services/ambulance/trips/:id;
+// DELETE /api/support-services/ambulance/trips/:id
 export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Delete ambulance trip;
+      // Delete ambulance trip
       await ambulanceService.deleteAmbulanceTrip(params.id);
       
       return NextResponse.json({ success: true });
@@ -162,12 +152,12 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
   );
 }
 
-// POST /api/support-services/ambulance/trips/:id/assign;
+// POST /api/support-services/ambulance/trips/:id/assign
 export async const ASSIGN = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { ambulanceId, crewIds } = body;
       
@@ -175,7 +165,7 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
         return NextResponse.json({ error: 'Ambulance ID is required' }, { status: 400 });
       }
       
-      // Assign ambulance and crew to trip;
+      // Assign ambulance and crew to trip
       const result = await ambulanceService.assignAmbulanceTrip(
         params.id,
         ambulanceId,
@@ -191,12 +181,12 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
   );
 }
 
-// POST /api/support-services/ambulance/trips/:id/status;
+// POST /api/support-services/ambulance/trips/:id/status
 export async const UPDATE_STATUS = (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse request body;
+      // Parse request body
       const body = await req.json();
       const { status, notes, latitude, longitude } = body;
       
@@ -204,7 +194,7 @@ export async const UPDATE_STATUS = (request: NextRequest, { params }: { params: 
         return NextResponse.json({ error: 'Status is required' }, { status: 400 });
       }
       
-      // Update ambulance trip status;
+      // Update ambulance trip status
       const result = await ambulanceService.updateAmbulanceTripStatus(
         params.id,
         status,
@@ -222,12 +212,12 @@ export async const UPDATE_STATUS = (request: NextRequest, { params }: { params: 
   );
 }
 
-// GET /api/support-services/ambulance/vehicles;
+// GET /api/support-services/ambulance/vehicles
 export async const GET_VEHICLES = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
@@ -237,7 +227,7 @@ export async const GET_VEHICLES = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get ambulance vehicles with filters;
+      // Get ambulance vehicles with filters
       const result = await ambulanceService.getAmbulanceVehicles(filters);
       
       return NextResponse.json(result);
@@ -249,12 +239,12 @@ export async const GET_VEHICLES = (request: NextRequest) => {
   );
 }
 
-// GET /api/support-services/ambulance/crews;
+// GET /api/support-services/ambulance/crews
 export async const GET_CREWS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
@@ -264,7 +254,7 @@ export async const GET_CREWS = (request: NextRequest) => {
         limit: parseInt(searchParams.get('limit') || '10'),
       };
 
-      // Get ambulance crews with filters;
+      // Get ambulance crews with filters
       const result = await ambulanceService.getAmbulanceCrews(filters);
       
       return NextResponse.json(result);
@@ -276,17 +266,17 @@ export async const GET_CREWS = (request: NextRequest) => {
   );
 }
 
-// GET /api/support-services/ambulance/analytics;
+// GET /api/support-services/ambulance/analytics
 export async const GET_ANALYTICS = (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
-      // Parse query parameters;
+      // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const fromDate = searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
       const toDate = searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
       
-      // Get ambulance analytics;
+      // Get ambulance analytics
       const result = await ambulanceService.getAmbulanceAnalytics(fromDate, toDate);
       
       return NextResponse.json(result);
@@ -296,4 +286,3 @@ export async const GET_ANALYTICS = (request: NextRequest) => {
       auditAction: 'AMBULANCE_ANALYTICS_VIEW',
     }
   );
-}

@@ -1,12 +1,4 @@
-var __DEV__: boolean;
-  interface Window {
-    [key: string]: any
-  }
-  namespace NodeJS {
-    interface Global {
-      [key: string]: any
-    }
-  }
+}
 }
 
 /**
@@ -92,7 +84,7 @@ export const withErrorHandling = (
         );
       }
       
-      // For unexpected errors, don't expose details in production;
+      // For unexpected errors, don't expose details in production
       const isProd = process.env.NODE_ENV === 'production';
       return NextResponse.json(
         { 
@@ -115,8 +107,8 @@ export const withAuth = (
   handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
-    // In a real implementation, this would check session/token;
-    // For now, we'll assume authentication is handled by Next.js middleware;
+    // In a real implementation, this would check session/token
+    // For now, we'll assume authentication is handled by Next.js middleware
     const session = req.headers.get('x-session');
     
     if (!session) {
@@ -141,8 +133,8 @@ export const withPermissions = (
   handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
-    // In a real implementation, this would check user permissions;
-    // For now, we'll assume a simple role-based check;
+    // In a real implementation, this would check user permissions
+    // For now, we'll assume a simple role-based check
     const userRole = req.headers.get('x-user-role');
     
     if (!userRole || (userRole !== 'admin' && !permissions.includes(userRole))) {
@@ -154,4 +146,3 @@ export const withPermissions = (
     
     return handler(req, ...args);
   };
-}

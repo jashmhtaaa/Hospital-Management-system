@@ -39,7 +39,7 @@ interface ERVisitUpdateInput {
 // ... (Assuming POST handler exists in the correct file: /api/er/visits/route.ts)
 
 // GET /api/er/visits/[id] - Get details of a specific ER visit
-export async const GET = (
+export const GET = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -85,7 +85,7 @@ export async const GET = (
 }
 
 // PUT /api/er/visits/[id] - Update a specific ER visit
-export async const PUT = (
+export const PUT = async (
   request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -187,7 +187,7 @@ export async const PUT = (
 }
 
 // DELETE /api/er/visits/[id] - Delete a specific ER visit (rarely used in production)
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

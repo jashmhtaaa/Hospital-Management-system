@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Redis Caching Implementation;

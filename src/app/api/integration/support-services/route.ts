@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
 import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middleware';
@@ -13,7 +12,7 @@ import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middlew
  * GET /api/integration/support-services/patient/:patientId;
  * Retrieves patient information for support services;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { patientId: string } }
 ) => {
@@ -40,7 +39,7 @@ export async const GET = (
  * GET /api/integration/support-services/location/:locationId;
  * Retrieves location information for support services;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { locationId: string } }
 ) => {
@@ -67,7 +66,7 @@ export async const GET = (
  * POST /api/integration/support-services/notification;
  * Sends a notification through the HMS Notification System;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
@@ -116,7 +115,7 @@ export async const POST = (request: NextRequest) => {
  * POST /api/integration/support-services/report;
  * Submits data to the HMS Reporting System;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
@@ -162,7 +161,7 @@ export async const POST = (request: NextRequest) => {
  * POST /api/integration/support-services/:serviceType/:requestId/link-patient;
  * Links a support service request to a patient record;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { serviceType: string; requestId: string } }
 ) => {
@@ -232,7 +231,7 @@ export async const POST = (
  * POST /api/integration/support-services/:serviceType/:requestId/link-location;
  * Links a support service request to a location;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { serviceType: string; requestId: string } }
 ) => {

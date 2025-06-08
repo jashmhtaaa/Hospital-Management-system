@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Metrics Collection System;

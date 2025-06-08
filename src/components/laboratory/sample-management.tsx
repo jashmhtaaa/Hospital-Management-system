@@ -1,4 +1,3 @@
-}
 import React, { useState, useEffect, ChangeEvent, useCallback } from "react";
 import {
   Card,

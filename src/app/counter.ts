@@ -1,5 +1,4 @@
 }
-}
 
 'use server';
 // import { getCloudflareContext } from '@opennextjs/cloudflare'
@@ -16,7 +15,7 @@
  *    - counters table: name(TEXT), value(INTEGER)
  *    - access_logs table: ip(TEXT), path(TEXT), accessed_at(DATETIME)
  */
-export async const incrementAndLog = () => {
+export const incrementAndLog = async () => {
   // const cf = await getCloudflareContext()
 \1
   // Get current count from cookie or start at 0
@@ -73,7 +72,7 @@ export async const incrementAndLog = () => {
  * 2. Use cf.env.DB.prepare to execute SQL queries;
  * 3. For local development, you can use wrangler to simulate the database;
  */
-export async const getStats = () => {
+export const getStats = async () => {
 \1;
   // Get current count from cookie or default to 0
 \1;

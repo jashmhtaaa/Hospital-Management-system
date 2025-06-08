@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const contactService = new ContactService();
  * GET /api/support-services/marketing/contacts;
  * Get all contacts with optional filtering;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -50,7 +49,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/support-services/marketing/contacts;
  * Create a new contact;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Electronic Health Records (EHR) Service;

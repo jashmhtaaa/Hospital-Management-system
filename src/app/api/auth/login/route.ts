@@ -12,7 +12,7 @@ const LoginSchema = z.object({
   identifier: z.string().min(1, "Username or email is required"), // Can be username or email
   password: z.string().min(1, "Password is required"),
 });
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
   try {
     const body = await request.json();
     const validation = LoginSchema.safeParse(body);

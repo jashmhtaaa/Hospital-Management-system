@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -32,7 +31,7 @@ const prescriptionCreateSchema = z.object({
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination)
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -142,7 +141,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/prescriptions - Create a new prescription
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn || !session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

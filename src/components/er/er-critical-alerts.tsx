@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERCriticalAlerts.tsx
 "use client";

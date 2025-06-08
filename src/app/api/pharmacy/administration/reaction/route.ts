@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Adverse Reaction API Routes;
@@ -50,7 +49,7 @@ const reactionRepository = {
  * POST /api/pharmacy/administration/reaction;
  * Record adverse medication reaction;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -159,7 +158,7 @@ export async const POST = (req: NextRequest) => {
  * GET /api/pharmacy/administration/reaction/patient/[patientId]
  * Get adverse reactions for a specific patient;
  */
-export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

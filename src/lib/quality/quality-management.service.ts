@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Quality Management and Patient Safety Service;

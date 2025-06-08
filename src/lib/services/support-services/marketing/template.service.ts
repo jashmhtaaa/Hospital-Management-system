@@ -1,4 +1,3 @@
-}
 import { MarketingTemplate } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

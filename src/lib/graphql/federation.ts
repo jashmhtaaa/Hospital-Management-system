@@ -1,4 +1,3 @@
-}
 import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
@@ -71,7 +70,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       errorType: error.name || 'UnknownError'
     });
   }
-export async const createGraphQLFederationServer = (app: express.Application) => {
+export const createGraphQLFederationServer = async (app: express.Application) => {
   // Get the HTTP server instance
   const httpServer = http.createServer(app);
 

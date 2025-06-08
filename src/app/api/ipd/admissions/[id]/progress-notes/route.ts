@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
@@ -13,7 +12,7 @@ interface ProgressNoteInput {
 }
 
 // GET /api/ipd/admissions/[id]/progress-notes - Get all progress notes for an admission
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -112,7 +111,7 @@ export async const GET = (
 }
 
 // POST /api/ipd/admissions/[id]/progress-notes - Create a new progress note
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

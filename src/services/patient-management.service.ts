@@ -1,4 +1,3 @@
-}
 import { PrismaClient, Patient, PatientAddress, PatientIdentification, EmergencyContact, PatientInsurance } from '@prisma/client';
 import { AuditService } from './audit_log_service.ts';
 import { FhirService } from '../lib/fhir/fhir-r4-base';

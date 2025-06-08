@@ -1,4 +1,3 @@
-}
 import React, { useState, useEffect, useCallback } from "react";
 // FIX: Removed unused Input, Form, DatePickerProps, PlusOutlined, SearchOutlined
 import {

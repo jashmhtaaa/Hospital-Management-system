@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const templateService = new TemplateService();
  * POST /api/support-services/marketing/templates/:id/render;
  * Render a template with variables;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

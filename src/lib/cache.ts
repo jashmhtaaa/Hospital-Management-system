@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Cache service for the HMS application;

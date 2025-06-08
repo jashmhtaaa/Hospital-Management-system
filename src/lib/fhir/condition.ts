@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR R4 Condition Resource Implementation;

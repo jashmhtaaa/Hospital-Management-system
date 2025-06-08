@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Inventory Transfer API Routes;
@@ -39,7 +38,7 @@ const transferRepository = {
  * POST /api/pharmacy/inventory/transfer;
  * Transfer inventory between locations;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

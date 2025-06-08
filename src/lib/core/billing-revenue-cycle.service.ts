@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Billing & Revenue Cycle Management Service;

@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERPatientTrackingBoard.tsx
 "use client";

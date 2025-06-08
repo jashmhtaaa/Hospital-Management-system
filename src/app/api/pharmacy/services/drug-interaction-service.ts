@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Drug Interaction Service;

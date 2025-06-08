@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Barcode Verification API for Medication Administration;
@@ -59,7 +58,7 @@ const barcodeService = new BarcodeAdministrationService(
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode scanning;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

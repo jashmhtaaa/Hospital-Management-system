@@ -1,4 +1,3 @@
-}
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect, notFound } from 'next/navigation';

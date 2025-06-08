@@ -1,5 +1,4 @@
 }
-}
 
 // import { NextRequest } from "next/server"
 import { D1Database } from "@cloudflare/workers-types"; // FIX: Import D1Database type
@@ -39,7 +38,7 @@ const getCloudflareBindings = (): Environment | undefined {
 }
 
 // FIX: Renamed 'request' to '_request' to satisfy @typescript-eslint/no-unused-vars
-export async const GET = () => {
+export const GET = async () => {
   try {
     // Attempt to get Cloudflare bindings (replace with actual method)
     // FIX: Removed argument from getCloudflareBindings call

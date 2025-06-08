@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -24,7 +23,7 @@ interface OTRecordBody {
 }
 
 // GET /api/ot/bookings/[id]/record - Get operation record for a booking
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -86,7 +85,7 @@ export async const GET = (
 }
 
 // POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

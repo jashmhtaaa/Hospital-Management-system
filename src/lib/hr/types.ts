@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Type definitions for the HR & Asset Management module;

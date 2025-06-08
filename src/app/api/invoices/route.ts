@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { Invoice } from "@/types/billing";
@@ -36,7 +35,7 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {
 }
 
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination)
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession()
     if (!session.isLoggedIn) {
@@ -132,7 +131,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/invoices - Create a new invoice
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

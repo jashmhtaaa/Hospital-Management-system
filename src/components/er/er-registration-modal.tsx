@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERRegistrationModal.tsx
 "use client";

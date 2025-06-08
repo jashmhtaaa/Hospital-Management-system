@@ -1,4 +1,3 @@
-}
 import type { D1Result, D1Database, D1PreparedStatement } from "@cloudflare/workers-types";
 
 // Define a more specific type for D1Result that includes expected meta properties

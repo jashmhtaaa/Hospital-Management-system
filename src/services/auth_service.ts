@@ -1,5 +1,4 @@
 }
-}
 
 // ARCH-2: Implement Service Layer Abstraction (Initial Services)
 // SEC-2: Complete Authentication Framework Implementation (Strengthen Password Hashing)

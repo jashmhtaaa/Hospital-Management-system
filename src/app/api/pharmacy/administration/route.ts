@@ -57,7 +57,7 @@ const barcodeService = new BarcodeAdministrationService(
  * POST /api/pharmacy/administration;
  * Record a medication administration;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -127,7 +127,7 @@ export async const POST = (req: NextRequest) => {
  * GET /api/pharmacy/administration/patient/[patientId]
  * Get medication administration history for a patient;
  */
-export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -169,7 +169,7 @@ export async const GET = (req: NextRequest, { params }: { params: { patientId: s
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode;
  */
-export async const verifyAdministration = (req: NextRequest) => {
+export const verifyAdministration = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -220,7 +220,7 @@ export async const verifyAdministration = (req: NextRequest) => {
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose;
  */
-export async const recordMissedDose = (req: NextRequest) => {
+export const recordMissedDose = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -290,7 +290,7 @@ export async const recordMissedDose = (req: NextRequest) => {
  * GET /api/pharmacy/administration/schedule/[patientId]
  * Get medication administration schedule for a patient;
  */
-export async const getAdministrationSchedule = (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const getAdministrationSchedule = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -462,7 +462,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
  * POST /api/pharmacy/administration/prn;
  * Record a PRN (as needed) medication administration;
  */
-export async const recordPRNAdministration = (req: NextRequest) => {
+export const recordPRNAdministration = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -545,7 +545,7 @@ export async const recordPRNAdministration = (req: NextRequest) => {
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */
-export async const recordPatientEducation = (req: NextRequest) => {
+export const recordPatientEducation = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -612,7 +612,7 @@ export async const recordPatientEducation = (req: NextRequest) => {
  * POST /api/pharmacy/administration/reaction;
  * Record adverse reaction to medication;
  */
-export async const recordAdverseReaction = (req: NextRequest) => {
+export const recordAdverseReaction = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -689,7 +689,7 @@ export async const recordAdverseReaction = (req: NextRequest) => {
  * GET /api/pharmacy/administration/due;
  * List medications due for administration;
  */
-export async const getDueMedications = (req: NextRequest) => {
+export const getDueMedications = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -762,7 +762,7 @@ export async const getDueMedications = (req: NextRequest) => {
  * GET /api/pharmacy/administration/overdue;
  * List overdue medications;
  */
-export async const getOverdueMedications = (req: NextRequest) => {
+export const getOverdueMedications = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -837,7 +837,7 @@ export async const getOverdueMedications = (req: NextRequest) => {
  * GET /api/pharmacy/administration/reports;
  * Generate administration reports;
  */
-export async const generateAdministrationReports = (req: NextRequest) => {
+export const generateAdministrationReports = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

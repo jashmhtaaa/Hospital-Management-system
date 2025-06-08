@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Radiology Information System (RIS) Service;

@@ -9,7 +9,7 @@ import { z } from "zod";
 // Define roles allowed to view/manage billable items (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Pharmacist", "Billing Staff"]; // Add Billing Staff role if needed
 const ALLOWED_ROLES_MANAGE = ["Admin", "Billing Staff"];
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { searchParams } = new URL(request.url);
@@ -81,7 +81,7 @@ const AddBillableItemSchema = z.object({
     is_active: z.boolean().optional().default(true),
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 

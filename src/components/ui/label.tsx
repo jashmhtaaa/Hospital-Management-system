@@ -1,4 +1,3 @@
-}
 import React, { LabelHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 

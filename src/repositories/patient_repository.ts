@@ -1,5 +1,4 @@
 }
-}
 
 // ARCH-3: Create Data Access Layer (DAL) with Repository Pattern (Initial Repositories)
 // Research notes: (General TypeScript/Node.js data access patterns)

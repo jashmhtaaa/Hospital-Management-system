@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server"; // Fixed: Use NextReque
 export const runtime = "edge";
 
 // GET /api/er/visits/[id]/statuses - Get status/location history for a visit
-export async const GET = (
+export const GET = async (
   _request: NextRequest, // Fixed: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

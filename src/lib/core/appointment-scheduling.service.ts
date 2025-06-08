@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Appointment Scheduling Service;

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Error Handler for HMS Support Services Management;

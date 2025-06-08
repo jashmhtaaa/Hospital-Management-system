@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Database Health Check Endpoint;
@@ -28,7 +27,7 @@ interface DatabaseHealth {
     applied: number,
     pending: number
   };
-export async const GET = (request: NextRequest): Promise<NextResponse> {
+export const GET = async (request: NextRequest): Promise<NextResponse> {
   const startTime = Date.now();
   
   try {

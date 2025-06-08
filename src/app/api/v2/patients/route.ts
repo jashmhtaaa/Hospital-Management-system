@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enhanced Patient Management API (v2) - Using new service layer;
@@ -26,7 +25,7 @@ const SearchQuerySchema = z.object({
 /**
  * GET /api/v2/patients - Search and list patients with enhanced features;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
@@ -76,7 +75,7 @@ export async const GET = (request: NextRequest) => {
 /**
  * POST /api/v2/patients - Create new patient with enhanced validation;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     

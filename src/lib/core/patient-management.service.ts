@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Patient Management Service;

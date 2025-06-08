@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERRadiologyOrderModal.tsx
 "use client";

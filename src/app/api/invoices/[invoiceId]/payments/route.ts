@@ -26,7 +26,7 @@ const AddPaymentSchema = z.object({
     notes: z.string().optional().nullable(),
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

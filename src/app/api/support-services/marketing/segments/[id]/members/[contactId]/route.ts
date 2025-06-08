@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const segmentService = new SegmentService();
  * POST /api/support-services/marketing/segments/:id/members;
  * Add a contact to a segment;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -47,7 +46,7 @@ export async const POST = (
  * DELETE /api/support-services/marketing/segments/:id/members/:contactId;
  * Remove a contact from a segment;
  */
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string; contactId: string } }
 ) => {

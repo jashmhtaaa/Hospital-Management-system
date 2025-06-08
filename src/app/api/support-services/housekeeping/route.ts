@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
@@ -30,7 +29,7 @@ const updateRequestSchema = z.object({
 });
 
 // GET /api/support-services/housekeeping/requests
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -60,7 +59,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/support-services/housekeeping/requests
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -84,7 +83,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/support-services/housekeeping/requests/:id
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -102,7 +101,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 }
 
 // PATCH /api/support-services/housekeeping/requests/:id
-export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -126,7 +125,7 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
 }
 
 // DELETE /api/support-services/housekeeping/requests/:id
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -143,7 +142,7 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
 }
 
 // POST /api/support-services/housekeeping/requests/:id/assign
-export async const ASSIGN = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -168,7 +167,7 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
 }
 
 // POST /api/support-services/housekeeping/requests/:id/complete
-export async const COMPLETE = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const COMPLETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -193,7 +192,7 @@ export async const COMPLETE = (request: NextRequest, { params }: { params: { id:
 }
 
 // GET /api/support-services/housekeeping/analytics
-export async const GET_ANALYTICS = (request: NextRequest) => {
+export const GET_ANALYTICS = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {

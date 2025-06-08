@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Audit Logging Service;
@@ -457,7 +456,7 @@ export class AuditService {
 }
 
 // Export convenience function
-export async const logAuditEvent = (event: AuditEvent): Promise<void> {
+export const logAuditEvent = async (event: AuditEvent): Promise<void> {
   return AuditService.getInstance().logEvent(event)
 }
 

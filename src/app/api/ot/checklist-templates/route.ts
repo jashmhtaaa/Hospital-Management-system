@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -21,7 +20,7 @@ interface ChecklistTemplateCreateBody {
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const phase = searchParams.get("phase");
@@ -53,7 +52,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/ot/checklist-templates - Create a new checklist template
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as ChecklistTemplateCreateBody;
     const { name, phase, items } = body;

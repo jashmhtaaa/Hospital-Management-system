@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core error handling module for the Financial Management system;

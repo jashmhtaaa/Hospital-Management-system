@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
@@ -20,7 +19,7 @@ const calibrationSchema = z.object({
 });
 
 // POST handler for recording calibration
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -64,7 +63,7 @@ export async const POST = (
 }
 
 // GET handler for listing calibration records
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

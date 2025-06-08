@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enhanced Error Handling Middleware for HMS Support Services;
@@ -22,7 +21,7 @@ import {
 import { AuditLogger } from '@/lib/audit';
 import { SecurityService } from '@/lib/security.service';
 
-export async const errorHandlingMiddleware = (
+export const errorHandlingMiddleware = async (
   request: NextRequest,
   handler: (request: NextRequest) => Promise<NextResponse>;
 ): Promise<NextResponse> {

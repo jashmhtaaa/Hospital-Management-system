@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Health Check API Endpoints;
@@ -32,7 +31,7 @@ interface HealthCheck {
   responseTime?: number;
   details?: Record<string, unknown>;
   error?: string;
-export async const GET = (request: NextRequest): Promise<NextResponse> {
+export const GET = async (request: NextRequest): Promise<NextResponse> {
   try {
     const startTime = Date.now();
     

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -11,7 +10,7 @@ import { notifyUsers } from '@/lib/notifications';
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -150,7 +149,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/lab/results/critical-alerts;
  * Create a new critical result alert;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -290,7 +289,7 @@ export async const POST = (request: NextRequest) => {
  * PUT /api/diagnostics/lab/results/critical-alerts/:id;
  * Update a critical result alert;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();

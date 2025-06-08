@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Marketing CRM Module Services Index;

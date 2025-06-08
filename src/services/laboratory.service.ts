@@ -1,4 +1,3 @@
-}
 import { PrismaClient } from '@prisma/client';
 import { AuditService } from './audit_log_service.ts';
 import { NotificationService } from '../lib/notifications';

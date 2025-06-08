@@ -1,4 +1,3 @@
-}
 import { SegmentService } from '../segment.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

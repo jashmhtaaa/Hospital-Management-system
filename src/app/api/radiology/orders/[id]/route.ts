@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result
 import { getSession } from "@/lib/session";
@@ -10,7 +9,7 @@ interface OrderUpdateInput {
   priority?: string;
   clinical_indication?: string;
   procedure_type_id?: string;
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -54,7 +53,7 @@ export async const GET = (
       { status: 500 }
     );
   }
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -140,7 +139,7 @@ export async const PUT = (
       { status: 500 }
     );
   }
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

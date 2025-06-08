@@ -1,5 +1,4 @@
 }
-}
 
 // types/doctor.ts
 import { User } from './user.ts';

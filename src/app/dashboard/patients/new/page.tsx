@@ -1,5 +1,4 @@
 }
-}
 
 // src/app/dashboard/patients/new/page.tsx
 "use client";

@@ -1,5 +1,4 @@
 }
-}
 
 // ARCH-1: Migrate to Enterprise Database Solution (Implement PostgreSQL Adapter)
 // Research notes: research_notes_postgresql_adapter_article1.md, research_notes_postgresql_adapter_github_scan.md, research_notes_postgresql_adapter_egomobile_repo.md

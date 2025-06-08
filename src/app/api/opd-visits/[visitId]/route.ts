@@ -40,7 +40,7 @@ const getVisitId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific OPD visit
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);
     const url = new URL(request.url);
     const visitId = getVisitId(url.pathname);
@@ -133,7 +133,7 @@ const UpdateVisitSchema = z.object({
     // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration)
 })
 
-export async const PUT = (request: Request) => {
+export const PUT = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);
     const url = new URL(request.url);
     const visitId = getVisitId(url.pathname);

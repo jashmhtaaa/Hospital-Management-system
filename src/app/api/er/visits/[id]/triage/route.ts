@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
@@ -26,7 +25,7 @@ interface Triage {
 const mockTriageAssessments: Triage[] = []
 
 // GET /api/er/visits/[id]/triage - Get triage assessment(s) for a specific ER visit
-export async const GET = (
+export const GET = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -64,7 +63,7 @@ export async const GET = (
 }
 
 // POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit
-export async const POST = (
+export const POST = async (
   request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {

@@ -1,4 +1,3 @@
-}
 import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 import { EmployeeService } from '../employee-service';
 import { PrismaClient } from '@prisma/client';

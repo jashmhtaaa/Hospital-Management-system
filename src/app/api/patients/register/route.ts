@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { z } from "zod";
@@ -59,7 +58,7 @@ async const generateMRN = (db: D1Database): Promise<string> {
 }
 
 // POST /api/patients/register - Register a new patient
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
     // No session check here, assuming public registration endpoint
     // Add authentication/authorization if this is an internal endpoint
 

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const analyticsService = new AnalyticsService();
  * GET /api/support-services/marketing/analytics/campaigns/:campaignId;
  * Get analytics for a specific campaign;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { campaignId: string } }
 ) => {
@@ -53,7 +52,7 @@ export async const GET = (
  * POST /api/support-services/marketing/analytics/campaigns/:campaignId;
  * Record analytics data for a campaign;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { campaignId: string } }
 ) => {

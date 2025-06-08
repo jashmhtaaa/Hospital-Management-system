@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -12,7 +11,7 @@ import { notifyUsers } from '@/lib/notifications';
  * GET /api/diagnostics/radiology/orders;
  * Get radiology orders with optional filtering;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -177,7 +176,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/radiology/orders;
  * Create a new radiology order;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -405,7 +404,7 @@ export async const POST = (request: NextRequest) => {
  * PUT /api/diagnostics/radiology/orders/:id;
  * Update a radiology order;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -883,7 +882,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * GET /api/diagnostics/radiology/orders/:id/tracking;
  * Get tracking history for a radiology order;
  */
-export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_TRACKING = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();

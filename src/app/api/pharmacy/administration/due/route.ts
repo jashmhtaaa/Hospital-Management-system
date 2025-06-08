@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Due Medications API Routes;
@@ -52,7 +51,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  * GET /api/pharmacy/administration/due;
  * List medications due for administration within a specified time window;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

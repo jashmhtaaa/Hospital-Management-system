@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
@@ -17,7 +16,7 @@ const checkInSchema = z.object({
 });
 
 // POST handler for check-in
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
@@ -65,7 +64,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET handler for attendance records
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     

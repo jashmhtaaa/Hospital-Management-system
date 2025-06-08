@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -10,7 +9,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/pacs/images;
  * Get PACS images with optional filtering;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -157,7 +156,7 @@ export async const GET = (request: NextRequest) => {
  * GET /api/diagnostics/pacs/images/:id;
  * Get a specific PACS image by ID;
  */
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -222,7 +221,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
  * POST /api/diagnostics/pacs/images/retrieve;
  * Retrieve images from PACS server;
  */
-export async const POST_RETRIEVE = (request: NextRequest) => {
+export const POST_RETRIEVE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -373,7 +372,7 @@ export async const POST_RETRIEVE = (request: NextRequest) => {
  * POST /api/diagnostics/pacs/images/store;
  * Store images to PACS server;
  */
-export async const POST_STORE = (request: NextRequest) => {
+export const POST_STORE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -508,7 +507,7 @@ export async const POST_STORE = (request: NextRequest) => {
  * POST /api/diagnostics/pacs/images/:id/annotations;
  * Add annotations to a PACS image;
  */
-export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -614,7 +613,7 @@ export async const POST_ANNOTATIONS = (request: NextRequest, { params }: { param
  * GET /api/diagnostics/pacs/images/:id/annotations;
  * Get annotations for a PACS image;
  */
-export async const GET_ANNOTATIONS = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();

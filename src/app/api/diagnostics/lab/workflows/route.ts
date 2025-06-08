@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -20,7 +19,7 @@ interface TestWorkflowCreateBody {
 }
 
 // GET /api/diagnostics/lab/workflows - Get all test workflows
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -175,7 +174,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/workflows - Create a new test workflow
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -355,7 +354,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/diagnostics/lab/workflows/:id - Get a specific test workflow
-export async const GET_BY_ID = (
+export const GET_BY_ID = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -431,7 +430,7 @@ export async const GET_BY_ID = (
 }
 
 // PUT /api/diagnostics/lab/workflows/:id - Update a test workflow
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -656,7 +655,7 @@ export async const PUT = (
 }
 
 // DELETE /api/diagnostics/lab/workflows/:id - Delete a test workflow
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -14,7 +13,7 @@ interface TheatreUpdateBody {
 }
 
 // GET /api/ot/theatres/[id] - Get details of a specific operation theatre
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -56,7 +55,7 @@ export async const GET = (
 }
 
 // PUT /api/ot/theatres/[id] - Update an existing operation theatre
-export async const PUT = (
+export const PUT = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -164,7 +163,7 @@ export async const PUT = (
 }
 
 // DELETE /api/ot/theatres/[id] - Delete an operation theatre
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

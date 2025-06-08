@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -11,7 +10,7 @@ import { generateBarcodeData } from '@/lib/barcode';
  * GET /api/diagnostics/lab/specimens;
  * Get laboratory specimens with optional filtering;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -162,7 +161,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/lab/specimens;
  * Create a new laboratory specimen;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -302,7 +301,7 @@ export async const POST = (request: NextRequest) => {
  * PUT /api/diagnostics/lab/specimens/:id;
  * Update a laboratory specimen;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -540,7 +539,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * GET /api/diagnostics/lab/specimens/:id/tracking;
  * Get tracking history for a specimen;
  */
-export async const GET_TRACKING = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_TRACKING = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -604,7 +603,7 @@ export async const GET_TRACKING = (request: NextRequest, { params }: { params: {
  * POST /api/diagnostics/lab/specimens/:id/aliquot;
  * Create an aliquot from a parent specimen;
  */
-export async const POST_ALIQUOT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -764,7 +763,7 @@ export async const POST_ALIQUOT = (request: NextRequest, { params }: { params: {
  * POST /api/diagnostics/lab/specimens/barcode;
  * Generate barcode for a specimen;
  */
-export async const POST_BARCODE = (request: NextRequest) => {
+export const POST_BARCODE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Prescription Renewal API Routes;
@@ -27,7 +26,7 @@ const _interactionService = new DrugInteractionService(prisma, auditLogger);
  * 
  * Retrieves prescriptions eligible for renewal;
  */
-export async const GET = (req: NextRequest): Promise<NextResponse> {
+export const GET = async (req: NextRequest): Promise<NextResponse> {
   try {
     // Extract query parameters
     const searchParams = req.nextUrl.searchParams;
@@ -108,7 +107,7 @@ export async const GET = (req: NextRequest): Promise<NextResponse> {
  * 
  * Requests renewal for a prescription;
  */
-export async const POST = (req: NextRequest): Promise<NextResponse> {
+export const POST = async (req: NextRequest): Promise<NextResponse> {
   try {
     // Extract request body
     const body = await req.json();
@@ -177,7 +176,7 @@ export async const POST = (req: NextRequest): Promise<NextResponse> {
  * 
  * Approves or denies a prescription renewal request;
  */
-export async const PUT = (req: NextRequest): Promise<NextResponse> {
+export const PUT = async (req: NextRequest): Promise<NextResponse> {
   try {
     // Extract request body
     const body = await req.json();

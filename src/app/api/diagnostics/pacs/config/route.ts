@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -11,7 +10,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/pacs/config;
  * Get PACS configuration settings;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -88,7 +87,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/pacs/config;
  * Create or update PACS configuration;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -229,7 +228,7 @@ export async const POST = (request: NextRequest) => {
  * POST /api/diagnostics/pacs/config/test;
  * Test PACS connection;
  */
-export async const POST_TEST = (request: NextRequest) => {
+export const POST_TEST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();

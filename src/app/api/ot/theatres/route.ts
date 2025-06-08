@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -13,7 +12,7 @@ interface TheatreCreateBody {
 }
 
 // GET /api/ot/theatres - List all operation theatres
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -48,7 +47,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/ot/theatres - Create a new operation theatre
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Real-time Notification Service;

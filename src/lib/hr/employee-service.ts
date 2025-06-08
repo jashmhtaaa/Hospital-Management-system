@@ -1,4 +1,3 @@
-}
 import { PrismaClient } from '@prisma/client';
 import { Practitioner, PractitionerRole } from '@/lib/hr/types';
 import { cache } from '@/lib/cache';

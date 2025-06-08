@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Caching Service;

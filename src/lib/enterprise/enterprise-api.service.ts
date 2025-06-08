@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise API Service;

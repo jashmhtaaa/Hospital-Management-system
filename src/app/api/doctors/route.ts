@@ -1,4 +1,3 @@
-}
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Added IronSessionData import
 import { getIronSession } from "iron-session";
@@ -13,7 +12,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Nurse", "Doctor", "Patient
 const ALLOWED_ROLES_ADD = ["Admin"];
 
 // GET handler for listing doctors
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
   const cookieStore = await cookies();
   const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
   const { searchParams } = new URL(request.url);
@@ -91,7 +90,7 @@ const AddDoctorSchema = z.object({
     license_number: z.string().optional(),
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 

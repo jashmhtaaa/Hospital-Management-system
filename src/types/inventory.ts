@@ -1,5 +1,4 @@
 }
-}
 
 // types/inventory.ts
 import { BillableItem } from './billing.ts';

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Role-Based Access Control (RBAC) Service for HMS Support Services;

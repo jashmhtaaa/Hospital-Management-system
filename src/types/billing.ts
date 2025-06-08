@@ -1,5 +1,4 @@
 }
-}
 
 // types/billing.ts
 

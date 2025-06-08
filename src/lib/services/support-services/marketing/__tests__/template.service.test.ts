@@ -1,4 +1,3 @@
-}
 import { TemplateService } from '../template.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

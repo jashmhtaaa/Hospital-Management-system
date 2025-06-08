@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERPatientAdmitModal.tsx
 "use client";

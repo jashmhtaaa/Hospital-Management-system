@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Inventory API Routes;
@@ -34,7 +33,7 @@ const inventoryRepository = {
  * GET /api/pharmacy/inventory;
  * List inventory with stock levels and filtering options;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -103,7 +102,7 @@ export async const GET = (req: NextRequest) => {
  * POST /api/pharmacy/inventory;
  * Add new inventory item;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

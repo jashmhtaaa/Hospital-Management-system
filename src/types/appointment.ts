@@ -1,5 +1,4 @@
 }
-}
 
 // types/appointment.ts
 import { Patient } from './patient.ts';

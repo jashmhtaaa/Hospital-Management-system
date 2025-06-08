@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -13,7 +12,7 @@ import { generateFhirResource } from '@/lib/fhir';
  * GET /api/diagnostics/reports;
  * Get diagnostic reports with optional filtering;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -180,7 +179,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/reports;
  * Create a new diagnostic report;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -411,7 +410,7 @@ export async const POST = (request: NextRequest) => {
  * GET /api/diagnostics/reports/:id;
  * Get a specific diagnostic report by ID;
  */
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -507,7 +506,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
  * PUT /api/diagnostics/reports/:id;
  * Update a diagnostic report;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -797,7 +796,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * POST /api/diagnostics/reports/:id/acknowledge-critical;
  * Acknowledge critical findings in a report;
  */
-export async const POST_ACKNOWLEDGE_CRITICAL = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();

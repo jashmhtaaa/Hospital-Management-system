@@ -18,7 +18,7 @@ import {
  * Retrieves a list of admissions, optionally filtered by query parameters.
  * Can also retrieve a single admission by ID if provided as a query parameter.
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const admissionId = searchParams.get("id");
@@ -99,7 +99,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/ipd/admissions;
  * Creates a new admission.
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // FIX: Use imported CreateAdmissionData type
     const admissionData = (await request.json()) as CreateAdmissionData;
@@ -138,7 +138,7 @@ export async const POST = (request: NextRequest) => {
  * but the current implementation reads it from the path manually.
  * A better approach is to use dynamic route segments like /api/ipd/admissions/[id]/route.ts;
  */
-export async const PUT = (request: NextRequest) => {
+export const PUT = async (request: NextRequest) => {
   try {
     // This manual path parsing is fragile. Consider using dynamic routes.
     const path = request.nextUrl.pathname

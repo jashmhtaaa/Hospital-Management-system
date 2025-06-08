@@ -1,5 +1,4 @@
 }
-}
 
 // src/types/pharmacy.ts
 

@@ -1,5 +1,4 @@
 }
-}
 
 // types/opd.ts
 import { Patient } from './patient.ts';

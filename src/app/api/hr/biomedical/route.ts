@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
@@ -51,7 +50,7 @@ const biomedicalSchema = z.object({
 });
 
 // POST handler for creating biomedical equipment
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
@@ -91,7 +90,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET handler for listing biomedical equipment
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     

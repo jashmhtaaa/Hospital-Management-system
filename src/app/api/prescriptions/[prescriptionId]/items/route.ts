@@ -30,7 +30,7 @@ const AddPrescriptionItemSchema = z.object({
 });
 type AddPrescriptionItemType = z.infer<typeof AddPrescriptionItemSchema>;
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
     const url = new URL(request.url)
     const prescriptionId = getPrescriptionId(url.pathname);

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -22,7 +21,7 @@ interface SurgeryTypeCreateBody {
 }
 
 // GET /api/ot/surgery-types - List all surgery types
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
@@ -57,7 +56,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/ot/surgery-types - Create a new surgery type
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as SurgeryTypeCreateBody;
     const {

@@ -1,4 +1,3 @@
-}
 import { HMSIntegrationService } from '../hms-integration.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

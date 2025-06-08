@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core validation module for the Financial Management system;

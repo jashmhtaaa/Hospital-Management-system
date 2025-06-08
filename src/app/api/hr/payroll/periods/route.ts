@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { payrollService } from '@/lib/hr/payroll-service';
 import { z } from 'zod';
@@ -19,7 +18,7 @@ const payrollPeriodSchema = z.object({
 });
 
 // POST handler for creating payroll period
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
@@ -56,7 +55,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET handler for listing payroll periods
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     

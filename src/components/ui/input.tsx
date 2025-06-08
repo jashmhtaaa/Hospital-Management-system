@@ -1,4 +1,3 @@
-}
 import React, { InputHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 

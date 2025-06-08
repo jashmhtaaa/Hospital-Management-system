@@ -1,10 +1,9 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
 
 // GET handler for retrieving a specific biomedical equipment
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -76,7 +75,7 @@ const biomedicalUpdateSchema = z.object({
 });
 
 // PUT handler for updating biomedical equipment
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -119,7 +118,7 @@ export async const PUT = (
 }
 
 // DELETE handler for deleting biomedical equipment
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

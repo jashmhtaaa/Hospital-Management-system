@@ -49,7 +49,7 @@ interface LabOrderItemQueryResult {
     billable_item_code: string,
     sample_collected_by_user_full_name: string | null,
     result_verified_by_user_full_name: string | null
-export async const GET = (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
+export const GET = async (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
     // Pass cookies() directly
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
@@ -185,7 +185,7 @@ const UpdateLabOrderSchema = z.object({
     // Other fields? Usually status is updated based on item statuses
 });
 
-export async const PUT = (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
+export const PUT = async (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
     // Pass cookies() directly
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);

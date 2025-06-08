@@ -1,4 +1,3 @@
-}
 import { MarketingCampaignService } from '../marketing.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

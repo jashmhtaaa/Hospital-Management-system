@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR Mappers for Pharmacy Module;

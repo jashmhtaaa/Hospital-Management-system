@@ -1,4 +1,3 @@
-}
 import { prisma } from '@/lib/prisma';
 import { Ambulance, AmbulanceCrew, AmbulanceTrip, AmbulanceMaintenance, AmbulanceInventory } from '@prisma/client';
 import { createAuditLog } from '@/lib/audit-logging';

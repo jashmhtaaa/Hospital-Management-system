@@ -1,4 +1,3 @@
-}
 import { prisma } from '@/lib/prisma';
 import { MaintenanceRequest, MaintenanceWorkOrder, Asset, MaintenanceSchedule, MaintenanceInventory, MaintenanceVendor } from '@prisma/client';
 import { createAuditLog } from '@/lib/audit-logging';

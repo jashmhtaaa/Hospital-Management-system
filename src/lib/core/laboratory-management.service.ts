@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Laboratory Information System (LIS) Service;

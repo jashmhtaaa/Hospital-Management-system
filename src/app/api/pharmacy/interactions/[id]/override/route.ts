@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Interaction Override API Routes;
@@ -26,7 +25,7 @@ const interactionOverrideRepository = {
  * POST /api/pharmacy/interactions/[id]/override;
  * Override an interaction alert with documented reason;
  */
-export async const POST = (
+export const POST = async (
   req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -102,7 +101,7 @@ export async const POST = (
  * GET /api/pharmacy/interactions/overrides;
  * List interaction overrides with filtering options;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

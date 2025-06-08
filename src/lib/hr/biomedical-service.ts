@@ -1,4 +1,3 @@
-}
 import { PrismaClient } from '@prisma/client';
 import { Device, DeviceDefinition } from '@/lib/hr/types';
 import { cache } from '@/lib/cache';

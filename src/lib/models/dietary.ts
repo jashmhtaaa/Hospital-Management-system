@@ -1,4 +1,3 @@
-}
 import { DietaryRequest, MealPlan, Meal, NutritionalProfile } from '@prisma/client';
 
 // FHIR-compliant interfaces for Dietary Management

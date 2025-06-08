@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Batch Interaction Check API Routes;
@@ -38,7 +37,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/batch-check;
  * Perform comprehensive batch interaction checking;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Executive Dashboard;

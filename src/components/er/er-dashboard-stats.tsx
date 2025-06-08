@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERDashboardStats.tsx
 "use client";

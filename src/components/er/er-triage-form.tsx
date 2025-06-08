@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/er/ERTriageForm.tsx
 "use client";

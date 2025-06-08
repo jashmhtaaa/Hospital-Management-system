@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { PharmacyService, MedicationOrderSchema, MedicationReconciliationSchema, MedicationAdministrationSchema, MedicationDiscontinueSchema } from '@/services/integration/PharmacyService';
 import { handleApiError } from '@/lib/api/errorHandler';
@@ -10,7 +9,7 @@ import { ipdMiddleware } from '../../middleware/auth';
  * This endpoint handles medication orders and reconciliation;
  * POST /api/ipd/integration/pharmacy;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'ORDER_MEDICATIONS');
   if (authResult instanceof NextResponse) {
@@ -91,7 +90,7 @@ export async const POST = (req: NextRequest) => {
  * Get active medications for a patient;
  * GET /api/ipd/integration/pharmacy/active-medications/:patientId;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
@@ -127,7 +126,7 @@ export async const GET = (req: NextRequest) => {
  * Get medication history for a patient;
  * GET /api/ipd/integration/pharmacy/medication-history;
  */
-export async const getMedicationHistory = (req: NextRequest) => {
+export const getMedicationHistory = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core FHIR utilities for the Financial Management system;

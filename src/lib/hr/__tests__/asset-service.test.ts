@@ -1,4 +1,3 @@
-}
 import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 import { AssetService } from '../asset-service';
 import { PrismaClient } from '@prisma/client';

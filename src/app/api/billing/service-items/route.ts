@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth helpers exist
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
@@ -65,7 +64,7 @@ interface ServiceItemInput {
 }
 
 // GET /api/billing/service-items - Get list of service items
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing staff)
     if (!(await hasPermission(request, ["billing:read", "admin"]))) {
@@ -132,7 +131,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/billing/service-items - Create a new service item
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing manager)
     if (!(await hasPermission(request, ["billing:manage", "admin"]))) {

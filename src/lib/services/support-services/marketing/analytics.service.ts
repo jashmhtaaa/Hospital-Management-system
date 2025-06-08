@@ -1,4 +1,3 @@
-}
 import { CampaignAnalytics } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

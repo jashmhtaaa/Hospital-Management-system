@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Security Service for HMS Support Services;

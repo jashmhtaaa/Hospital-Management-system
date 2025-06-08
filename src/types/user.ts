@@ -1,5 +1,4 @@
 }
-}
 
 // types/user.ts
 

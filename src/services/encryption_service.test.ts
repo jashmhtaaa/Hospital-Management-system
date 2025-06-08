@@ -1,5 +1,4 @@
 }
-}
 
 // SEC-1: Unit Tests for EncryptionService (Placeholder)
 

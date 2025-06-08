@@ -1,4 +1,3 @@
-}
 import { RedisCache } from './redis.ts';
 import { config } from '@/config';
 

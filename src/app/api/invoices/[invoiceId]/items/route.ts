@@ -29,7 +29,7 @@ const AddInvoiceItemSchema = z.object({
     description: z.string().optional(), // Optional override
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

@@ -1,5 +1,4 @@
 }
-}
 
 // Placeholder for IPD related database functions
 import { getDB } from "@/lib/database";

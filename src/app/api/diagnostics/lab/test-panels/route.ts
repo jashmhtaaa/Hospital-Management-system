@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -26,7 +25,7 @@ interface TestPanelCreateBody {
 }
 
 // GET /api/diagnostics/lab/test-panels - Get all test panels
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -155,7 +154,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/test-panels - Create a new test panel
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -319,7 +318,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel
-export async const GET_BY_ID = (
+export const GET_BY_ID = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -397,7 +396,7 @@ export async const GET_BY_ID = (
 }
 
 // PUT /api/diagnostics/lab/test-panels/:id - Update a test panel
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -615,7 +614,7 @@ export async const PUT = (
 }
 
 // DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

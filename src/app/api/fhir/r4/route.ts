@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR R4 Batch/Transaction Processing Endpoint;
@@ -14,7 +13,7 @@ import { FHIRBundle } from '@/lib/fhir/types';
 /**
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction)
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const bundle: FHIRBundle = await request.json();
 
@@ -93,7 +92,7 @@ export async const POST = (request: NextRequest) => {
 /**
  * GET /fhir/r4 - FHIR Capability Statement;
  */
-export async const GET = () => {
+export const GET = async () => {
   try {
     const capabilityStatement = {
       resourceType: 'CapabilityStatement',
@@ -272,7 +271,7 @@ export async const GET = () => {
 /**
  * OPTIONS /fhir/r4 - CORS preflight;
  */
-export async const OPTIONS = () => {
+export const OPTIONS = async () => {
   return new NextResponse(null, {
     status: 200,
     headers: {

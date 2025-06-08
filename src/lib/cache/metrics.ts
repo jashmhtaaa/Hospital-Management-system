@@ -1,4 +1,3 @@
-}
 import { RedisCache } from './redis.ts';
 
 export class CacheMetrics {

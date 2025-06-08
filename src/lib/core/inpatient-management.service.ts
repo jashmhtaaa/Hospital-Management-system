@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Inpatient Management (IPD) Service;

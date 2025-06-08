@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Business Intelligence Service;

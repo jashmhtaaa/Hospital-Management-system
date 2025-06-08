@@ -1,4 +1,3 @@
-}
 import { ContactSegment, SegmentMember } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

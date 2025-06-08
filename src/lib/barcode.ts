@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Barcode generation and processing utilities for HMS Diagnostics Module;
@@ -12,7 +11,7 @@ import { createHash } from 'crypto';
  * @param specimenId The specimen identifier;
  * @returns A unique barcode data string;
  */
-export async const generateBarcodeData = (specimenId: string): Promise<string> {
+export const generateBarcodeData = async (specimenId: string): Promise<string> {
   // Create a unique barcode ID based on specimen ID and timestamp
   const timestamp = Date.now().toString();
   const uniqueString = `${specimenId}-${timestamp}`;
@@ -31,7 +30,7 @@ export async const generateBarcodeData = (specimenId: string): Promise<string> {
  * @param format The barcode format (default: CODE128)
  * @returns A base64 encoded image string;
  */
-export async const generateBarcodeImage = (barcodeData: string, format: 'CODE128' | 'QR' | 'DATA_MATRIX' = 'CODE128'): Promise<string> {
+export const generateBarcodeImage = async (barcodeData: string, format: 'CODE128' | 'QR' | 'DATA_MATRIX' = 'CODE128'): Promise<string> {
   // In a real implementation, this would use a barcode generation library
   // For this example, we'll return a placeholder
   return `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`;
@@ -42,7 +41,7 @@ export async const generateBarcodeImage = (barcodeData: string, format: 'CODE128
  * @param barcodeData The scanned barcode data;
  * @returns Parsed information from the barcode;
  */
-export async const parseBarcodeData = (barcodeData: string): Promise<{
+export const parseBarcodeData = async (barcodeData: string): Promise<{
   type: 'specimen' | 'unknown',
   id?: string,
   timestamp?: number;
@@ -66,7 +65,7 @@ export async const parseBarcodeData = (barcodeData: string): Promise<{
  * @param barcodeData The barcode data to validate;
  * @returns True if the barcode exists, false otherwise;
  */
-export async const validateBarcode = (barcodeData: string): Promise<boolean> {
+export const validateBarcode = async (barcodeData: string): Promise<boolean> {
   // In a real implementation, this would check the database
   // For this example, we'll return true for any well-formed specimen barcode
   return barcodeData.startsWith('SP') && barcodeData.length === 18;

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Database module for HMS Diagnostics;
@@ -53,7 +52,7 @@ export const DB = (): DBConnection {
  * @param queries Array of query objects with SQL and parameters;
  * @returns Promise resolving to array of query results;
  */
-export async const executeTransaction = (
+export const executeTransaction = async (
   queries: { sql: string; params?: unknown[] }[]
 ): Promise<any[]> {
   const db = DB();

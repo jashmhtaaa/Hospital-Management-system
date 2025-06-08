@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
@@ -26,7 +25,7 @@ interface Alert {
 const mockAlerts: Alert[] = []
 
 // GET /api/er/visits/[id]/alerts - Get alerts for a specific ER visit
-export async const GET = (
+export const GET = async (
   _request: NextRequest, // Prefixed as unused
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -67,7 +66,7 @@ export async const GET = (
 }
 
 // POST /api/er/visits/[id]/alerts - Create a new critical alert for an ER visit
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

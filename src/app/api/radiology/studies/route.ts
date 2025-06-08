@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 // Remove D1Database import if using getDB
 // import { D1Database } from "@cloudflare/workers-types"
@@ -71,7 +70,7 @@ interface RadiologyStudyListItem {
 }
 
 // GET all Radiology Studies (filtered by orderId, patientId, status)
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
     // Check session and user existence first
@@ -140,7 +139,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST a new Radiology Study (Technician or Admin)
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
     // Check session and user existence first

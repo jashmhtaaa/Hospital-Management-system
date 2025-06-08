@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using the mock DB from lib/db.ts
 import { getSession } from "@/lib/session";
@@ -7,7 +6,7 @@ import { getSession } from "@/lib/session";
 // interface DischargeInput {
 
 // GET /api/ipd/admissions/[id]/discharge - Get discharge summary for an admission
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

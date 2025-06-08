@@ -1,4 +1,3 @@
-}
 import { PrismaService } from '@/lib/prisma';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';

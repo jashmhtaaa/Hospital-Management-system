@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Emergency Department Management Service;

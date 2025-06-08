@@ -1,4 +1,3 @@
-}
 import { HousekeepingRequest, HousekeepingTask, HousekeepingInspection } from '@prisma/client';
 
 // FHIR-compliant interfaces for Housekeeping Management

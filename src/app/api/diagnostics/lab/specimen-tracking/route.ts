@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -16,7 +15,7 @@ interface SpecimenTrackingCreateBody {
 }
 
 // GET /api/diagnostics/lab/specimen-tracking - Get tracking history for specimens
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -141,7 +140,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/specimen-tracking - Create a new tracking entry
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -280,7 +279,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/diagnostics/lab/specimen-tracking/locations - Get all specimen storage locations
-export async const GET_LOCATIONS = (request: NextRequest) => {
+export const GET_LOCATIONS = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -313,7 +312,7 @@ export async const GET_LOCATIONS = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/specimen-tracking/scan - Process a barcode/RFID scan
-export async const POST_SCAN = (request: NextRequest) => {
+export const POST_SCAN = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -487,7 +486,7 @@ export async const POST_SCAN = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/specimen-tracking/batch - Process a batch of specimens
-export async const POST_BATCH = (request: NextRequest) => {
+export const POST_BATCH = async (request: NextRequest) => {
   try {
     const session = await getSession();
     

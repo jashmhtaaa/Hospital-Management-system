@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const analyticsService = new AnalyticsService();
  * GET /api/support-services/marketing/analytics/comparative;
  * Get comparative analytics for multiple campaigns;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise API Rate Limiting and Monitoring Service;

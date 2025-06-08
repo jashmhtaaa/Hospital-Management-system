@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Patient Medication Schedule API;
@@ -50,7 +49,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  * GET /api/pharmacy/administration/schedule/[patientId]
  * Get medication administration schedule for a patient;
  */
-export async const GET = (
+export const GET = async (
   req: NextRequest,
   { params }: { params: { patientId: string } }
 ) => {

@@ -1,4 +1,3 @@
-}
 import { PoolClient, Pool } from 'pg';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';

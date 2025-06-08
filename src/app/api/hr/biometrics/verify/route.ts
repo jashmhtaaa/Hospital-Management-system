@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { biometricService } from '@/lib/hr/biometric-service';
 import { z } from 'zod';
@@ -13,7 +12,7 @@ const biometricVerificationSchema = z.object({
 });
 
 // POST handler for verifying biometric data
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();

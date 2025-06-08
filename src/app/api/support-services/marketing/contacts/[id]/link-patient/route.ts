@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const contactService = new ContactService();
  * POST /api/support-services/marketing/contacts/:id/link-patient;
  * Link a contact to a patient;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

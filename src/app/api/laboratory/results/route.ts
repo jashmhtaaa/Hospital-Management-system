@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session"; // Using mock session
@@ -52,7 +51,7 @@ interface OrderItem {
 // Removed unused interfaces: TestParameter, LabTest
 
 // GET /api/laboratory/results - Get laboratory results
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -134,7 +133,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/laboratory/results - Create or update laboratory results
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {

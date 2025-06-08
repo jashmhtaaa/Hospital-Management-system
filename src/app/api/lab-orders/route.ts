@@ -36,7 +36,7 @@ interface LabOrderQueryResultRow {
     patient_first_name: string,
     patient_last_name: string,
     doctor_full_name: string | null
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     // Get cookies and create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
@@ -178,7 +178,7 @@ const CreateLabOrderSchema = z.object({
     // Items are added via POST /api/lab-orders/{id}/items
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     // Get cookies and create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);

@@ -1,5 +1,4 @@
 }
-}
 
 // ARCH-2: Implement Service Layer Abstraction (Initial Services)
 // SEC-1: Implement Field-Level Encryption for PHI (Placeholder Service)

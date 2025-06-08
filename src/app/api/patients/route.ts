@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -46,7 +45,7 @@ async const generateMRN = (db: D1Database): Promise<string> {
 }
 
 // GET /api/patients - Fetch list of patients (with filtering/pagination/search)
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -122,7 +121,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/patients - Create a new patient (internal use, registration is separate)
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn || !session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

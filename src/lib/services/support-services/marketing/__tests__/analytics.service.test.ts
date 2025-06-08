@@ -1,4 +1,3 @@
-}
 import { AnalyticsService } from '../analytics.service';
 import { prisma } from '@/lib/prisma';
 import { AuditLogger } from '@/lib/audit';

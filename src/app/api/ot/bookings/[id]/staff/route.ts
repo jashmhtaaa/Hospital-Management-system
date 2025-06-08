@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -11,7 +10,7 @@ interface StaffAssignmentBody {
 }
 
 // GET /api/ot/bookings/[id]/staff - Get staff assigned to a specific OT booking
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -51,7 +50,7 @@ export async const GET = (
 }
 
 // POST /api/ot/bookings/[id]/staff - Assign staff to an OT booking
-export async const POST = (
+export const POST = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -173,7 +172,7 @@ export async const POST = (
 }
 
 // DELETE /api/ot/bookings/[id]/staff - Remove all staff from an OT booking
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

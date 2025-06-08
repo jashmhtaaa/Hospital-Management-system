@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -20,7 +19,7 @@ interface ReferenceRangeCreateBody {
 }
 
 // GET /api/diagnostics/lab/reference-ranges - Get reference ranges
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -79,7 +78,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/reference-ranges - Create a new reference range
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -228,7 +227,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -474,7 +473,7 @@ export async const PUT = (
 }
 
 // DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

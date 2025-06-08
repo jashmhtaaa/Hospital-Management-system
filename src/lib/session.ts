@@ -1,4 +1,3 @@
-}
 import { SessionOptions, getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { User } from "@/types/user";
@@ -38,7 +37,7 @@ export const sessionOptions: SessionOptions = {
 };
 
 // Function to get the session in App Router Route Handlers or Server Components
-export async const getSession = () => {
+export const getSession = async () => {
   const session = await getIronSession<IronSessionData>(
     await cookies(),
     sessionOptions;

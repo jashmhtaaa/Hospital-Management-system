@@ -1,5 +1,4 @@
 }
-}
 
 // API route for IPD statistics
 import { getDB } from "@/lib/database";
@@ -31,7 +30,7 @@ interface RecentAdmission {
 }
 
 // FIX: Renamed request to _request as it's unused
-export async const GET = (/* _request: unknown */) => { // Removed unused parameter
+export const GET = async (/* _request: unknown */) => { // Removed unused parameter
   try {
     const session = await getSession();
     // Check authentication

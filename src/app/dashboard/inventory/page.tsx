@@ -1,5 +1,4 @@
 }
-}
 
 // src/app/dashboard/inventory/page.tsx
 "use client";

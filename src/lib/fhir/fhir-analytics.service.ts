@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR Analytics Service;

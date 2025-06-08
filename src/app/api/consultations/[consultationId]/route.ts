@@ -19,7 +19,7 @@ const getConsultationId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific consultation with full details
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -137,7 +137,7 @@ const UpdateConsultationSchema = z.object({
     notes: z.string().optional().nullable(),
 });
 
-export async const PUT = (request: Request) => {
+export const PUT = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

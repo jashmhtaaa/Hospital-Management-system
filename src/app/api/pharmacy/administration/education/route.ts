@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Patient Education API Routes;
@@ -50,7 +49,7 @@ const educationRepository = {
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -148,7 +147,7 @@ export async const POST = (req: NextRequest) => {
  * GET /api/pharmacy/administration/education;
  * Get patient education records with filtering options;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

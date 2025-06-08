@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../services/clinical-documentation.service';
@@ -10,7 +9,7 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../l
  * 
  * Get a clinical document by ID;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -51,7 +50,7 @@ export async const GET = (
  * 
  * Update a clinical document;
  */
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

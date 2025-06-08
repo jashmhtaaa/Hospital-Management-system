@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session"; // Using mock session
@@ -39,7 +38,7 @@ interface LabSample {
 // --- API Route Handlers ---
 
 // GET /api/laboratory/samples - Get laboratory samples
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -102,7 +101,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/laboratory/samples - Create or update a laboratory sample
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {

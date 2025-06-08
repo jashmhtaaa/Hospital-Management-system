@@ -1,5 +1,4 @@
 }
-}
 
 // ARCH-3: Unit Tests for PatientRepository
 

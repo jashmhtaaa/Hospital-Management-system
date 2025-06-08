@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Administration Reports API Routes;
@@ -32,7 +31,7 @@ const administrationRepository = {
  * GET /api/pharmacy/administration/reports;
  * Generate medication administration reports with various filtering options;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

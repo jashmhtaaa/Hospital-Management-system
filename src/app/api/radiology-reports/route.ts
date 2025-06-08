@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
@@ -32,7 +31,7 @@ interface RadiologyReportListItem {
 // Removed custom Session and SessionUser interfaces
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status)
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
@@ -113,7 +112,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST a new Radiology Report (Radiologist or Admin)
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()

@@ -1,4 +1,3 @@
-}
 import { PrismaClient } from '@prisma/client';
 import { salaryService } from './salary-service.ts';
 

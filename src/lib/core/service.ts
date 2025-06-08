@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core service layer implementation for the Financial Management system;

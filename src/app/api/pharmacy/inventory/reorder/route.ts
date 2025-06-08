@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Automated Reordering API Routes;
@@ -60,7 +59,7 @@ const supplierRepository = {
  * GET /api/pharmacy/inventory/reorder;
  * List items that need reordering based on threshold levels;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -188,7 +187,7 @@ export async const GET = (req: NextRequest) => {
  * POST /api/pharmacy/inventory/reorder;
  * Create a new reorder request;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

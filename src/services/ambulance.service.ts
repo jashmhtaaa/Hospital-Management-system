@@ -1,4 +1,3 @@
-}
 import { z } from 'zod';
 
 // Create enums to match Prisma schema

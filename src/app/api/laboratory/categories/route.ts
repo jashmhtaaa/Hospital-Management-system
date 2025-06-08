@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
@@ -10,7 +9,7 @@ interface CategoryInput {
 }
 
 // GET /api/laboratory/categories - Get all laboratory test categories
-export async const GET = () => {
+export const GET = async () => {
   try {
     const session = await getSession();
 
@@ -43,7 +42,7 @@ export async const GET = () => {
 }
 
 // POST /api/laboratory/categories - Create a new laboratory test category
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
 

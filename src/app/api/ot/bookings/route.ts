@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -20,7 +19,7 @@ interface OTBookingBody {
 }
 
 // GET /api/ot/bookings - List OT bookings
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const theatreId = searchParams.get("theatreId");
@@ -96,7 +95,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/ot/bookings - Create a new OT booking
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as OTBookingBody;
     const {

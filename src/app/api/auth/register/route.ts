@@ -1,7 +1,11 @@
-}
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { hashPassword } from "@/lib/authUtils";
 import { z } from "zod";
+
+// Cloudflare Environment Types
+interface CloudflareEnv {
+  DB: D1Database;
+}
 
 // Input validation schema
 const RegisterSchema = z.object({
@@ -13,7 +17,7 @@ const RegisterSchema = z.object({
   role_name: z.enum(["Admin", "Doctor", "Nurse", "Receptionist", "Lab Technician", "Pharmacist", "Patient"]).default("Patient"),
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
   try {
     const body = await request.json();
     const validation = RegisterSchema.safeParse(body);
@@ -46,7 +50,7 @@ export async const POST = (request: Request) => {
 
     // 2. Check if user already exists (username or email)
     const existingUser = await DB.prepare("SELECT user_id FROM Users WHERE username = ? OR email = ?")
-                               .bind(username, email);
+                               .bind(username, email)
                                .first();
 
     if (existingUser) {
@@ -62,8 +66,8 @@ export async const POST = (request: Request) => {
     // 4. Insert new user
     const insertResult = await DB.prepare(
       "INSERT INTO Users (username, email, password_hash, full_name, phone_number, role_id) VALUES (?, ?, ?, ?, ?, ?)"
-    );
-      .bind(username, email, password_hash, full_name ?? null, phone_number ?? null, role_id);
+    )
+      .bind(username, email, password_hash, full_name ?? null, phone_number ?? null, role_id)
       .run();
 
     if (!insertResult.success) {
@@ -75,8 +79,8 @@ export async const POST = (request: Request) => {
     const meta = insertResult.meta as { last_row_id?: number | string };
     const newUserId = meta.last_row_id;
     if (newUserId === undefined || newUserId === null) {
-
         // Optionally handle this case, maybe return success without ID or throw
+        console.warn("User created but no ID returned");
     }
     return new Response(JSON.stringify({ message: "User registered successfully", userId: newUserId }), {
       status: 201, // Created
@@ -84,10 +88,10 @@ export async const POST = (request: Request) => {
     });
 
   } catch (error) {
-
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
+};

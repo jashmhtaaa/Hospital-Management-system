@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -120,7 +119,7 @@ interface LabTestCreateBody {
 }
 
 // GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -295,7 +294,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -553,7 +552,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // PUT /api/diagnostics/lab/tests/:id - Update an existing laboratory test
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -904,7 +903,7 @@ export async const PUT = (
 }
 
 // DELETE /api/diagnostics/lab/tests/:id - Delete a laboratory test
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

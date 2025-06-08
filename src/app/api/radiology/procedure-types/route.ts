@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 import { nanoid } from "nanoid";
@@ -13,7 +12,7 @@ interface ProcedureTypeInput {
 }
 
 // GET all Radiology Procedure Types
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   const session = await getSession();
   // Allow broader access for viewing procedure types
   if (
@@ -50,7 +49,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST a new Radiology Procedure Type (Admin only)
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   const session = await getSession()
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
     // Use await, pass request, add optional chaining

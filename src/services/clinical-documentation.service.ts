@@ -1,4 +1,3 @@
-}
 import { PrismaClient, ClinicalDocument, DocumentSection, DocumentSignature, DocumentAmendment } from '@prisma/client';
 import { BadRequestError, NotFoundError } from '../lib/core/errors';
 import { auditLog } from '../lib/audit';

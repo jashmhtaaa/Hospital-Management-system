@@ -1,4 +1,3 @@
-}
 import DataLoader from 'dataloader';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';

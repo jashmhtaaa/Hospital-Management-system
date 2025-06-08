@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Notifications module for HMS Diagnostics;
@@ -31,7 +30,7 @@ export interface Notification {
  * @param notification The notification to send;
  * @returns Promise resolving to array of created notification IDs;
  */
-export async const notifyUsers = (
+export const notifyUsers = async (
   userIds: number[],
   notification: Omit<Notification, 'userId'>;
 ): Promise<number[]> {
@@ -76,7 +75,7 @@ export async const notifyUsers = (
  * @param userId The ID of the user who owns the notification;
  * @returns Promise resolving to boolean indicating success;
  */
-export async const markNotificationRead = (
+export const markNotificationRead = async (
   notificationId: number,
   userId: number;
 ): Promise<boolean> {
@@ -105,7 +104,7 @@ export async const markNotificationRead = (
  * @param limit Maximum number of notifications to return;
  * @returns Promise resolving to array of notifications;
  */
-export async const getUserNotifications = (
+export const getUserNotifications = async (
   userId: number,
   unreadOnly: boolean = false,
   limit: number = 50;

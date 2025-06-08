@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Health Monitoring and Alerting Service;

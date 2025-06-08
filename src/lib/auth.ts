@@ -1,4 +1,3 @@
-}
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { NextRequest } from 'next/server';
@@ -89,7 +88,7 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
 /**
  * Hash password using bcrypt;
  */
-export async const hashPassword = (password: string): Promise<string> {
+export const hashPassword = async (password: string): Promise<string> {
   try {
     const saltRounds = 12;
     return await bcrypt.hash(password, saltRounds);
@@ -101,7 +100,7 @@ export async const hashPassword = (password: string): Promise<string> {
 /**
  * Verify password against hash;
  */
-export async const verifyPassword = (password: string, hash: string): Promise<boolean> {
+export const verifyPassword = async (password: string, hash: string): Promise<boolean> {
   try {
     return await bcrypt.compare(password, hash);
   } catch (error) {
@@ -158,7 +157,7 @@ export const verifyToken = (token: string): User | null {
 /**
  * Check if user has required role;
  */
-export async const checkUserRole = (requiredRole: string, request?: NextRequest): Promise<AuthResult> {
+export const checkUserRole = async (requiredRole: string, request?: NextRequest): Promise<AuthResult> {
   try {
     const user = await getCurrentUser(request);
     
@@ -185,7 +184,7 @@ export async const checkUserRole = (requiredRole: string, request?: NextRequest)
 /**
  * Get current authenticated user from request;
  */
-export async const getCurrentUser = (request?: NextRequest): Promise<AuthResult> {
+export const getCurrentUser = async (request?: NextRequest): Promise<AuthResult> {
   try {
     if (!request) {
       return { success: false, error: 'Request object required' };
@@ -227,7 +226,7 @@ export async const getCurrentUser = (request?: NextRequest): Promise<AuthResult>
 /**
  * Check if user has specific permission;
  */
-export async const hasPermission = (
+export const hasPermission = async (
   permission: string, 
   request?: NextRequest;
 ): Promise<AuthResult> {

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Field-Level Encryption Service;

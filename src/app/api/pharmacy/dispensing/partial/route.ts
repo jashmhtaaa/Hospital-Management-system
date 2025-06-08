@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Partial Dispensing API Routes;
@@ -57,7 +56,7 @@ const inventoryRepository = {
  * POST /api/pharmacy/dispensing/partial;
  * Record a partial medication dispensing;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

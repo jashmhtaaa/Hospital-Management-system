@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -13,7 +12,7 @@ interface ChecklistResponseBody {
 }
 
 // GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -80,7 +79,7 @@ export async const GET = (
 }
 
 // POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

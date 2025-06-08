@@ -1,5 +1,4 @@
 }
-}
 
 // SEC-3: Implement Comprehensive Audit Logging (Initial Service & Integration)
 // Research notes: research_notes_audit_logging.md

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Dispensing API Routes;
@@ -61,7 +60,7 @@ const inventoryRepository = {
  * GET /api/pharmacy/dispensing;
  * List medication dispensing records with filtering and pagination;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -150,7 +149,7 @@ export async const GET = (req: NextRequest) => {
  * POST /api/pharmacy/dispensing;
  * Create a new medication dispensing record;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

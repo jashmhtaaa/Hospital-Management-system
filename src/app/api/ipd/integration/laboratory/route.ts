@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { LaboratoryService, LabOrderSchema, LabCancelSchema, LabResultNotificationSchema } from '@/services/integration/LaboratoryService';
 import { handleApiError } from '@/lib/api/errorHandler';
@@ -10,7 +9,7 @@ import { ipdMiddleware } from '../../middleware/auth';
  * This endpoint handles lab test orders and results;
  * POST /api/ipd/integration/laboratory;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'ORDER_LABS');
   if (authResult instanceof NextResponse) {
@@ -76,7 +75,7 @@ export async const POST = (req: NextRequest) => {
  * Get pending lab orders for a patient;
  * GET /api/ipd/integration/laboratory/pending-orders;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
@@ -112,7 +111,7 @@ export async const GET = (req: NextRequest) => {
  * Get lab results for a patient;
  * GET /api/ipd/integration/laboratory/results;
  */
-export async const getLabResults = (req: NextRequest) => {
+export const getLabResults = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {
@@ -157,7 +156,7 @@ export async const getLabResults = (req: NextRequest) => {
  * Get detailed lab result;
  * GET /api/ipd/integration/laboratory/results/details;
  */
-export async const getLabResultDetails = (req: NextRequest) => {
+export const getLabResultDetails = async (req: NextRequest) => {
   // Check authentication and authorization
   const authResult = await ipdMiddleware(req, 'VIEW');
   if (authResult instanceof NextResponse) {

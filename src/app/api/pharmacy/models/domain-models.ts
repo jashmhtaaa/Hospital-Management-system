@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Domain Models for Pharmacy Module;

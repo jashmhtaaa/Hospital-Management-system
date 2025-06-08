@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const contactService = new ContactService();
  * GET /api/support-services/marketing/contacts/:id;
  * Get a specific contact by ID;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -38,7 +37,7 @@ export async const GET = (
  * PUT /api/support-services/marketing/contacts/:id;
  * Update a specific contact;
  */
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -67,7 +66,7 @@ export async const PUT = (
  * POST /api/support-services/marketing/contacts/:id/notes;
  * Add a note to a specific contact;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

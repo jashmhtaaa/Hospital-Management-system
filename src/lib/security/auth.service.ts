@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Authentication Service;

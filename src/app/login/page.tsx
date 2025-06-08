@@ -1,5 +1,4 @@
 }
-}
 
 // src/app/login/page.tsx
 "use client"; // Add this directive for client-side interactivity

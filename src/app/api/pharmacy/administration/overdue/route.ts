@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Overdue Medications API Routes;
@@ -51,7 +50,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  * GET /api/pharmacy/administration/overdue;
  * List medications that are overdue for administration;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

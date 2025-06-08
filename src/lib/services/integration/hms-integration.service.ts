@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * HMS Integration Service for Support Services;

@@ -148,7 +148,7 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
  * GET /api/er/visits;
  * Retrieves a list of ER visits, potentially filtered.
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
@@ -175,7 +175,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/er/visits;
  * Creates a new ER visit record (patient arrival).
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     // Apply type assertion

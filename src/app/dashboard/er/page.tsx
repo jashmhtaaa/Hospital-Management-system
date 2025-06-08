@@ -1,5 +1,4 @@
 }
-}
 
 // src/app/dashboard/er/page.tsx
 "use client";

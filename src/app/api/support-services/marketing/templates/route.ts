@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const templateService = new TemplateService();
  * GET /api/support-services/marketing/templates;
  * Get all templates with optional filtering;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
@@ -48,7 +47,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/support-services/marketing/templates;
  * Create a new template;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {

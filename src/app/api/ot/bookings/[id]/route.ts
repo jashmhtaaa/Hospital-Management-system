@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server"; // FIX: Import NextRequ
 export const runtime = "edge";
 
 // GET /api/ot/bookings/[id] - Get a specific OT booking by ID
-export async const GET = (
+export const GET = async (
   _request: NextRequest, // FIX: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -57,7 +57,7 @@ export async const GET = (
 }
 
 // PUT /api/ot/bookings/[id] - Update a specific OT booking
-export async const PUT = (
+export const PUT = async (
   _request: NextRequest, // FIX: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -124,7 +124,7 @@ export async const PUT = (
 }
 
 // DELETE /api/ot/bookings/[id] - Cancel a specific OT booking
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest, // FIX: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

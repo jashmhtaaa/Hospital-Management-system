@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -10,7 +9,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/lab/results/delta-checks;
  * Get delta check configurations;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -102,7 +101,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/lab/results/delta-checks;
  * Create a new delta check configuration;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -219,7 +218,7 @@ export async const POST = (request: NextRequest) => {
  * PUT /api/diagnostics/lab/results/delta-checks/:id;
  * Update a delta check configuration;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -349,7 +348,7 @@ export async const PUT = (request: NextRequest, { params }: { params: { id: stri
  * DELETE /api/diagnostics/lab/results/delta-checks/:id;
  * Delete a delta check configuration;
  */
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -402,7 +401,7 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
  * POST /api/diagnostics/lab/results/delta-checks/evaluate;
  * Evaluate a result against delta check rules;
  */
-export async const POST_EVALUATE = (request: NextRequest) => {
+export const POST_EVALUATE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();

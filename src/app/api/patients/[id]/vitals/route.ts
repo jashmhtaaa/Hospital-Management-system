@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -25,7 +24,7 @@ const vitalCreateSchema = z.object({
 });
 
 // GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
-export async const GET = (
+export const GET = async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {
@@ -135,7 +134,7 @@ export async const GET = (
 }
 
 // POST /api/patients/[id]/vitals - Record new vitals for a patient
-export async const POST = (
+export const POST = async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {

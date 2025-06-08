@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Drug Interaction API Routes;
@@ -48,7 +47,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/check;
  * Check for drug interactions between medications;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -94,7 +93,7 @@ export async const POST = (req: NextRequest) => {
  * GET /api/pharmacy/interactions/patient/[patientId]
  * Check for drug interactions among a patient's active medications;
  */
-export async const GET = (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

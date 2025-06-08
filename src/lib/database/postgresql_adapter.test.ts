@@ -1,5 +1,4 @@
 }
-}
 
 // ARCH-1: Unit Tests for PostgresqlAdapter
 // Research notes: (General Jest/TypeScript testing practices)

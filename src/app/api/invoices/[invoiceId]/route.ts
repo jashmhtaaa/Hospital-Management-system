@@ -59,7 +59,7 @@ interface InvoiceItemQueryResult {
 }
 
 // GET handler for retrieving a specific invoice with details
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -194,7 +194,7 @@ const UpdateInvoiceSchema = z.object({
     // Other fields like total_amount, paid_amount are usually updated via items/payments
 });
 
-export async const PUT = (request: Request) => {
+export const PUT = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

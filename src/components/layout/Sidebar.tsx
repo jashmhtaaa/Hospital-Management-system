@@ -1,5 +1,4 @@
 }
-}
 
 // src/components/layout/Sidebar.tsx
 "use client";

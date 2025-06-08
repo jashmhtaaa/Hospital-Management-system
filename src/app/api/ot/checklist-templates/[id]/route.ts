@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -21,7 +20,7 @@ interface ChecklistTemplateUpdateBody {
 }
 
 // GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -74,7 +73,7 @@ export async const GET = (
 }
 
 // PUT /api/ot/checklist-templates/[id] - Update an existing checklist template
-export async const PUT = (
+export const PUT = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -213,7 +212,7 @@ export async const PUT = (
 }
 
 // DELETE /api/ot/checklist-templates/[id] - Delete a checklist template
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

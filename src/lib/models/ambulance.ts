@@ -1,4 +1,3 @@
-}
 import { Ambulance, AmbulanceCrew, AmbulanceTrip, AmbulanceMaintenance } from '@prisma/client';
 
 // FHIR-compliant interfaces for Ambulance Management

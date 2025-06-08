@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../services/clinical-documentation.service';
@@ -10,7 +9,7 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../l
  * 
  * Get document templates based on filters;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Get session
     const session = await getServerSession(authOptions);
@@ -59,7 +58,7 @@ export async const GET = (request: NextRequest) => {
  * 
  * Create a new document template;
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Get session
     const session = await getServerSession(authOptions);

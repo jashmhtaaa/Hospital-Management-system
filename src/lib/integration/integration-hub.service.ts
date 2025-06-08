@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Integration Hub Service;

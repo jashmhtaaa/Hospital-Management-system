@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const templateService = new TemplateService();
  * GET /api/support-services/marketing/templates/:id;
  * Get a specific template by ID;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -35,7 +34,7 @@ export async const GET = (
  * PUT /api/support-services/marketing/templates/:id;
  * Update a specific template;
  */
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -64,7 +63,7 @@ export async const PUT = (
  * DELETE /api/support-services/marketing/templates/:id;
  * Delete a specific template;
  */
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

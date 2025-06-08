@@ -1,5 +1,4 @@
 }
-}
 
 // src/app/select-role/page.tsx
 "use client";

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
 
@@ -22,7 +21,7 @@ interface SurgeryTypeUpdateBody {
 }
 
 // GET /api/ot/surgery-types/[id] - Get details of a specific surgery type
-export async const GET = (
+export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -82,7 +81,7 @@ export async const GET = (
 }
 
 // PUT /api/ot/surgery-types/[id] - Update an existing surgery type
-export async const PUT = (
+export const PUT = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -224,7 +223,7 @@ export async const PUT = (
 }
 
 // DELETE /api/ot/surgery-types/[id] - Delete a surgery type
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

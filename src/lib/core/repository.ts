@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core repository pattern implementation for the Financial Management system;

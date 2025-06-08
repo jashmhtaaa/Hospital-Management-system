@@ -1,4 +1,3 @@
-}
 import { Contact, ContactNote, ContactStatus } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 import { encryptData, decryptData } from '@/lib/encryption';

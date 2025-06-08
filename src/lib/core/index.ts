@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core index file for the Financial Management module;

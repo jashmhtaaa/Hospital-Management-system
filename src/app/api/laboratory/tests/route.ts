@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
@@ -17,7 +16,7 @@ interface LabTestCreateBody {
 }
 
 // GET /api/laboratory/tests - Get all laboratory tests
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
 
@@ -71,7 +70,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/laboratory/tests - Create a new laboratory test
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
 

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Monitoring Alerts API Endpoint;
@@ -9,7 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const ruleId = searchParams.get('ruleId');
@@ -91,7 +90,7 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     const { action } = body;
@@ -180,7 +179,7 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-export async const PUT = (request: NextRequest) => {
+export const PUT = async (request: NextRequest) => {
   try {
     const body = await request.json();
     const { ruleId, enabled } = body;

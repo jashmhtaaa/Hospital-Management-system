@@ -26,7 +26,7 @@ const AddLabOrderItemSchema = z.object({
     notes: z.string().optional().nullable(), // Specific notes for this test
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

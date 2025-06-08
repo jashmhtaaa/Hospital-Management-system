@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Next.js Middleware;
@@ -29,7 +28,7 @@ interface RequestContext {
 /**
  * Main middleware function that orchestrates all enterprise services;
  */;
-export async const middleware = (request: NextRequest) => {
+export const middleware = async (request: NextRequest) => {
   const startTime = Date.now();
   const requestId = generateRequestId();
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');

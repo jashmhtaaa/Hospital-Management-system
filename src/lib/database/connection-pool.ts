@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Database Connection Pool Configuration;
@@ -277,11 +276,11 @@ export async function withBatch<T>(
 }
 
 // Database health check endpoint helper
-export async const getDatabaseHealth = () => {
+export const getDatabaseHealth = async () => {
   return dbPool.healthCheck();
 }
 
 // Graceful shutdown helper
-export async const shutdownDatabase = () => {
+export const shutdownDatabase = async () => {
   return dbPool.shutdown();
 export default dbPool;

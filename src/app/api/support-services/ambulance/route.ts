@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
@@ -40,7 +39,7 @@ const updateTripRequestSchema = z.object({
 });
 
 // GET /api/support-services/ambulance/trips
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -70,7 +69,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/support-services/ambulance/trips
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -94,7 +93,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/support-services/ambulance/trips/:id
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -112,7 +111,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 }
 
 // PATCH /api/support-services/ambulance/trips/:id
-export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -136,7 +135,7 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
 }
 
 // DELETE /api/support-services/ambulance/trips/:id
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -153,7 +152,7 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
 }
 
 // POST /api/support-services/ambulance/trips/:id/assign
-export async const ASSIGN = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -182,7 +181,7 @@ export async const ASSIGN = (request: NextRequest, { params }: { params: { id: s
 }
 
 // POST /api/support-services/ambulance/trips/:id/status
-export async const UPDATE_STATUS = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const UPDATE_STATUS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -213,7 +212,7 @@ export async const UPDATE_STATUS = (request: NextRequest, { params }: { params: 
 }
 
 // GET /api/support-services/ambulance/vehicles
-export async const GET_VEHICLES = (request: NextRequest) => {
+export const GET_VEHICLES = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -240,7 +239,7 @@ export async const GET_VEHICLES = (request: NextRequest) => {
 }
 
 // GET /api/support-services/ambulance/crews
-export async const GET_CREWS = (request: NextRequest) => {
+export const GET_CREWS = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -267,7 +266,7 @@ export async const GET_CREWS = (request: NextRequest) => {
 }
 
 // GET /api/support-services/ambulance/analytics
-export async const GET_ANALYTICS = (request: NextRequest) => {
+export const GET_ANALYTICS = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {

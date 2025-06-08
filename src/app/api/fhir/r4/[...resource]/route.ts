@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR R4 API Routes Implementation;
@@ -24,7 +23,7 @@ interface RouteParams {
  * GET /fhir/r4/{resourceType} - Search resources;
  * GET /fhir/r4/{resourceType}/{id} - Read resource by ID;
  */
-export async const GET = (request: NextRequest, { params }: RouteParams) => {
+export const GET = async (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -103,7 +102,7 @@ export async const GET = (request: NextRequest, { params }: RouteParams) => {
 /**
  * POST /fhir/r4/{resourceType} - Create resource;
  */
-export async const POST = (request: NextRequest, { params }: RouteParams) => {
+export const POST = async (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -190,7 +189,7 @@ export async const POST = (request: NextRequest, { params }: RouteParams) => {
 /**
  * PUT /fhir/r4/{resourceType}/{id} - Update resource;
  */
-export async const PUT = (request: NextRequest, { params }: RouteParams) => {
+export const PUT = async (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -289,7 +288,7 @@ export async const PUT = (request: NextRequest, { params }: RouteParams) => {
 /**
  * DELETE /fhir/r4/{resourceType}/{id} - Delete resource;
  */
-export async const DELETE = (request: NextRequest, { params }: RouteParams) => {
+export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];
@@ -350,7 +349,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteParams) => {
 /**
  * PATCH /fhir/r4/{resourceType}/{id} - Partial update (JSON Patch)
  */
-export async const PATCH = (request: NextRequest, { params }: RouteParams) => {
+export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
   try {
     const { resource } = params;
     const resourceType = resource[0];

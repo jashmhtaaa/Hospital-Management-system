@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const segmentService = new SegmentService();
  * GET /api/support-services/marketing/segments/:id;
  * Get a specific segment by ID;
  */
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -38,7 +37,7 @@ export async const GET = (
  * PUT /api/support-services/marketing/segments/:id;
  * Update a specific segment;
  */
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

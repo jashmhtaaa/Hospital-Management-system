@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR R4 Practitioner Resource Implementation;

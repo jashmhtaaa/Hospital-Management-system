@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * GraphQL Schema Base Implementation;

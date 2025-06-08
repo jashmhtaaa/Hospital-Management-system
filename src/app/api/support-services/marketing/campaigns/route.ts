@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
 import { getServerSession } from 'next-auth';
@@ -49,7 +48,7 @@ const updateCampaignSchema = z.object({
 });
 
 // GET /api/support-services/marketing/campaigns
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -84,7 +83,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/support-services/marketing/campaigns
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -121,7 +120,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/support-services/marketing/campaigns/:id
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -150,7 +149,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id
-export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -188,7 +187,7 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -216,7 +215,7 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics
-export async const GET_ANALYTICS = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -244,7 +243,7 @@ export async const GET_ANALYTICS = (request: NextRequest, { params }: { params: 
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels
-export async const POST_CHANNEL = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -279,7 +278,7 @@ export async const POST_CHANNEL = (request: NextRequest, { params }: { params: {
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export async const POST_SEGMENT = (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
+export const POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);

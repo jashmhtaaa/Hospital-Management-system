@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Drug-Drug Interaction API Routes;
@@ -36,7 +35,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-drug;
  * Check for drug-drug interactions between specific medications;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

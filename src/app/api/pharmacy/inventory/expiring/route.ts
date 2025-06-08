@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Expiring Medications API Routes;
@@ -29,7 +28,7 @@ const inventoryRepository = {
  * GET /api/pharmacy/inventory/expiring;
  * List medications approaching expiry date;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

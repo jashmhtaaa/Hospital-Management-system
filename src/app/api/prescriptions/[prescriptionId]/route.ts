@@ -49,7 +49,7 @@ const getPrescriptionId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific prescription with items
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
     const url = new URL(request.url)
     const prescriptionId = getPrescriptionId(url.pathname);

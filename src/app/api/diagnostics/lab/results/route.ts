@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -161,7 +160,7 @@ interface LabResultCreateBody {
 }
 
 // GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -594,7 +593,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -1118,7 +1117,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // PUT /api/diagnostics/lab/results/:id - Update a laboratory result
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -1518,7 +1517,7 @@ export async const PUT = (
 }
 
 // POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result
-export async const POST_VERIFY = (
+export const POST_VERIFY = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -1663,7 +1662,7 @@ export async const POST_VERIFY = (
 }
 
 // GET /api/diagnostics/lab/results/critical - Get critical results
-export async const GET_CRITICAL = (request: NextRequest) => {
+export const GET_CRITICAL = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -1759,7 +1758,7 @@ export async const GET_CRITICAL = (request: NextRequest) => {
 }
 
 // PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status
-export async const PUT_CRITICAL = (
+export const PUT_CRITICAL = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

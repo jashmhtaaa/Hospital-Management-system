@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Dispensing Verification API Routes;
@@ -50,7 +49,7 @@ const dispensingRepository = {
  * POST /api/pharmacy/dispensing/verify;
  * Verify medication dispensing with barcode scanning;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

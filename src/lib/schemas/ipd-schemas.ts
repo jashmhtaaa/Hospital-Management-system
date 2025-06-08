@@ -1,4 +1,3 @@
-}
 import { z } from "zod";
 
 // Define sub-schemas if vital_signs and medication_given have specific structures

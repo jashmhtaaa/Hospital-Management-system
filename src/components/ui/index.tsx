@@ -1,4 +1,3 @@
-}
 import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons
 

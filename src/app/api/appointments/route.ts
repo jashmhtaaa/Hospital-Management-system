@@ -31,7 +31,7 @@ interface AppointmentQueryResult {
 }
 
 // GET handler for listing appointments
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store
     const { searchParams } = new URL(request.url);
@@ -184,7 +184,7 @@ const BookAppointmentSchema = z.object({
     status: z.nativeEnum(AppointmentStatus).optional().default(AppointmentStatus.Scheduled),
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store
 

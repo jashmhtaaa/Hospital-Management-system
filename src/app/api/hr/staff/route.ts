@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { employeeService } from '@/lib/hr/employee-service';
 import { z } from 'zod';
@@ -58,7 +57,7 @@ const updateEmployeeSchema = z.object({
 });
 
 // GET /api/hr/staff
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     
@@ -89,7 +88,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/hr/staff
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     

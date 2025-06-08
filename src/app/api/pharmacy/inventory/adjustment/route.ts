@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Inventory Adjustment API Routes;
@@ -38,7 +37,7 @@ const adjustmentRepository = {
  * POST /api/pharmacy/inventory/adjustment;
  * Adjust inventory quantity with reason documentation;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
@@ -141,7 +140,7 @@ export async const POST = (req: NextRequest) => {
  * GET /api/pharmacy/inventory/adjustments;
  * List inventory adjustments with filtering options;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Drug-Condition Interaction API Routes;
@@ -37,7 +36,7 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-condition;
  * Check for drug-condition contraindications;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

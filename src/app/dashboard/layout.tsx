@@ -1,4 +1,3 @@
-}
 import React from 'react';
 import DashboardClientLayout from './dashboard-client-layout.ts'; // Import the renamed client layout
 

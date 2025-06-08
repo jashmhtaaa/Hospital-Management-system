@@ -1,4 +1,3 @@
-}
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { PrismaService } from '@/lib/prisma';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';

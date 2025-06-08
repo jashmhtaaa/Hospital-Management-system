@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Operating Theatre Management Service;

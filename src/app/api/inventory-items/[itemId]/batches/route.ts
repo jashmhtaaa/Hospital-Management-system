@@ -20,7 +20,7 @@ const getItemId = (pathname: string): number | null {
 }
 
 // GET handler for listing batches for a specific inventory item
-export async const GET = (request: Request) => {
+export const GET = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Await cookies()
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -85,7 +85,7 @@ const AddStockBatchSchema = z.object({
     notes: z.string().optional(),
 });
 
-export async const POST = (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Await cookies()
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

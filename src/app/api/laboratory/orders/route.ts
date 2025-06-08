@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session"; // Using mock session
@@ -195,7 +194,7 @@ async const updateLabOrderInDB = (
 
 // --- API Route Handlers ---
 
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession()
     if (!session || !session.user) {
@@ -252,7 +251,7 @@ export async const GET = (request: NextRequest) => {
       { status: 500 }
     );
   }
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -288,7 +287,7 @@ export async const POST = (request: NextRequest) => {
       { status: 500 }
     );
   }
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {

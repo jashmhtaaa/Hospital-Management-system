@@ -1,5 +1,4 @@
 }
-}
 
 // SEC-2: Unit tests for password hashing and verification functions
 // Research notes: research_notes_password_hashing.md (covers bcrypt)

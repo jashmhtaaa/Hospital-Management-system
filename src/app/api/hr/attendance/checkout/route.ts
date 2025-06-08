@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
@@ -17,7 +16,7 @@ const checkOutSchema = z.object({
 });
 
 // POST handler for check-out
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();

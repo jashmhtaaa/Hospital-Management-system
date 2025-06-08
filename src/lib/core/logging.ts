@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core logging module for the Financial Management system;

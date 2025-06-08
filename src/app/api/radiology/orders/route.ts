@@ -297,7 +297,7 @@ async const updateRadiologyOrderInDB = (
  * GET /api/radiology/orders;
  * Retrieves a list of radiology orders, potentially filtered.
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -359,7 +359,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/radiology/orders;
  * Creates a new radiology order.
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface
 
@@ -402,7 +402,7 @@ export async const POST = (request: NextRequest) => {
  * It should likely be in /orders/[id]/route.ts.
  * Keeping it here for now to fix TS errors, but should be refactored.
  */
-export async const PUT = (request: NextRequest) => {
+export const PUT = async (request: NextRequest) => {
   try {
     const path = request.nextUrl.pathname;
     // This parsing logic is fragile and assumes the ID is the last segment.

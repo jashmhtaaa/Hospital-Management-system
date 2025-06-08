@@ -1,4 +1,3 @@
-}
 import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintActivity, ComplaintAttachment, FollowUpAction, FeedbackSurveyTemplate, FeedbackSurvey } from '@prisma/client';
 
 // FHIR-compliant interfaces for Feedback & Complaint Management

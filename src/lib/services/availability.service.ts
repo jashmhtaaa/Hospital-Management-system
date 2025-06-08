@@ -1,4 +1,3 @@
-}
 import { prisma } from '@/lib/prisma';
 
 export interface TimeSlot {
@@ -13,7 +12,7 @@ export interface AvailabilityCheck {
 /**
  * Check doctor availability for appointment booking;
  */
-export async const checkDoctorAvailability = (
+export const checkDoctorAvailability = async (
   doctorId: string,
   requestedSlot: TimeSlot,
   appointmentId?: string // For updates, exclude current appointment
@@ -164,7 +163,7 @@ async const generateAlternativeSlots = (
 /**
  * Block time slot for doctor (for breaks, meetings, etc.)
  */
-export async const blockTimeSlot = (
+export const blockTimeSlot = async (
   doctorId: string,
   timeSlot: TimeSlot,
   reason: string,
@@ -190,7 +189,7 @@ export async const blockTimeSlot = (
 /**
  * Get doctor's schedule for a specific date range;
  */
-export async const getDoctorSchedule = (
+export const getDoctorSchedule = async (
   doctorId: string,
   startDate: Date,
   endDate: Date;

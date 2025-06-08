@@ -1,5 +1,4 @@
 }
-}
 
 // SEC-3: Unit Tests for AuditLogService (Placeholder)
 

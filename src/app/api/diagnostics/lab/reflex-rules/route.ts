@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -15,7 +14,7 @@ interface ReflexRuleCreateBody {
 }
 
 // GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -109,7 +108,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     
@@ -267,7 +266,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // PUT /api/diagnostics/lab/reflex-rules/:id - Update a reflex rule
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -490,7 +489,7 @@ export async const PUT = (
 }
 
 // DELETE /api/diagnostics/lab/reflex-rules/:id - Delete a reflex rule
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

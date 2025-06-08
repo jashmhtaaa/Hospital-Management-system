@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { DB } from '@/lib/database';
@@ -10,7 +9,7 @@ import { auditLog } from '@/lib/audit';
  * GET /api/diagnostics/pacs/worklist;
  * Get modality worklist entries;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -159,7 +158,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/diagnostics/pacs/worklist/sync;
  * Synchronize modality worklist with radiology orders;
  */
-export async const POST_SYNC = (request: NextRequest) => {
+export const POST_SYNC = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -355,7 +354,7 @@ export async const POST_SYNC = (request: NextRequest) => {
  * PUT /api/diagnostics/pacs/worklist/:id;
  * Update a modality worklist entry;
  */
-export async const PUT = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();

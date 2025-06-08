@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -23,7 +22,7 @@ const opdVisitCreateSchema = z.object({
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -128,7 +127,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record)
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

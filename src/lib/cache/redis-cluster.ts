@@ -1,4 +1,3 @@
-}
 import { Redis, Cluster, ClusterNode, ClusterOptions } from 'ioredis';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';

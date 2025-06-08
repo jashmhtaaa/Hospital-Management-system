@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Prescription Management API Routes;
@@ -51,7 +50,7 @@ const interactionService = new DrugInteractionService(
  * GET /api/pharmacy/prescriptions;
  * List prescriptions with filtering and pagination;
  */
-export async const GET = (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
@@ -145,7 +144,7 @@ export async const GET = (req: NextRequest) => {
  * POST /api/pharmacy/prescriptions;
  * Create a new prescription with interaction checking;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

@@ -1,10 +1,9 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
 
 // GET handler for retrieving a specific asset
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -55,7 +54,7 @@ const assetUpdateSchema = z.object({
 });
 
 // PUT handler for updating an asset
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -95,7 +94,7 @@ export async const PUT = (
 }
 
 // DELETE handler for deleting an asset
-export async const DELETE = (
+export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

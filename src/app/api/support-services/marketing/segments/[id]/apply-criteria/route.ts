@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +10,7 @@ const segmentService = new SegmentService();
  * POST /api/support-services/marketing/segments/:id/apply-criteria;
  * Apply segment criteria to find matching contacts;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

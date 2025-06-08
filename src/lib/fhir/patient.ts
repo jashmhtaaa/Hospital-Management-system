@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * FHIR R4 Patient Resource Implementation;

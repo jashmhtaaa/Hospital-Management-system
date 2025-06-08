@@ -1,4 +1,3 @@
-}
 import { EventStore } from './event-store.ts';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';

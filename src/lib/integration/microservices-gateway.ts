@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Microservices Integration Gateway;

@@ -189,7 +189,7 @@ async const createPreAuthorizationInDB = (
  * GET /api/insurance/pre-authorizations
  * Retrieves a list of pre-authorization requests, potentially filtered.
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: PreAuthorizationFilters = {
@@ -221,7 +221,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/insurance/pre-authorizations;
  * Creates a new pre-authorization request.
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     // Apply type assertion

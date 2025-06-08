@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Missed Dose API for Medication Administration;
@@ -50,7 +49,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose with reason and documentation;
  */
-export async const POST = (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();

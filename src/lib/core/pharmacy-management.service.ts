@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Pharmacy Management Service;

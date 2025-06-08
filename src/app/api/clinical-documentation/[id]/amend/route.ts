@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { clinicalDocumentationService } from '../../../../../services/clinical-documentation.service';
@@ -10,7 +9,7 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../.
  * 
  * Create an amendment for a clinical document;
  */
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

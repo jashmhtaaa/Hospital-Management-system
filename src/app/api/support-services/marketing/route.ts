@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 import { SecurityService } from '@/lib/security.service';
@@ -49,7 +48,7 @@ const updateCampaignSchema = z.object({
 });
 
 // GET /api/support-services/marketing/campaigns
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -73,7 +72,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/support-services/marketing/campaigns
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -106,7 +105,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET /api/support-services/marketing/campaigns/:id
-export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -124,7 +123,7 @@ export async const GET_BY_ID = (request: NextRequest, { params }: { params: { id
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id
-export async const PATCH = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -158,7 +157,7 @@ export async const PATCH = (request: NextRequest, { params }: { params: { id: st
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id
-export async const DELETE = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -179,7 +178,7 @@ export async const DELETE = (request: NextRequest, { params }: { params: { id: s
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics
-export async const GET_ANALYTICS = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -196,7 +195,7 @@ export async const GET_ANALYTICS = (request: NextRequest, { params }: { params: 
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels
-export async const POST_CHANNEL = (request: NextRequest, { params }: { params: { id: string } }) => {
+export const POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -227,7 +226,7 @@ export async const POST_CHANNEL = (request: NextRequest, { params }: { params: {
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export async const POST_SEGMENT = (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
+export const POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -252,7 +251,7 @@ export async const POST_SEGMENT = (request: NextRequest, { params }: { params: {
 }
 
 // GET /api/support-services/marketing/contacts
-export async const GET_CONTACTS = (request: NextRequest) => {
+export const GET_CONTACTS = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -280,7 +279,7 @@ export async const GET_CONTACTS = (request: NextRequest) => {
 }
 
 // GET /api/support-services/marketing/analytics/overview
-export async const GET_OVERVIEW_ANALYTICS = (request: NextRequest) => {
+export const GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req) => {

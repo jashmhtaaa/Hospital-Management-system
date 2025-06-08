@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { integrationService } from '@/lib/hr/integration-service';
 
@@ -6,7 +5,7 @@ import { integrationService } from '@/lib/hr/integration-service';
  * API route for clinical module integration;
  * Provides staff data to clinical modules;
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const employees = await integrationService.getEmployeesForClinical();
     

@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Core middleware implementation for the Financial Management module;

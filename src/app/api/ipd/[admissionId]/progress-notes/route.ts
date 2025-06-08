@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -15,7 +14,7 @@ const progressNoteCreateSchema = z.object({
 });
 
 // GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission
-export async const GET = (
+export const GET = async (
     request: NextRequest,
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
@@ -101,7 +100,7 @@ export async const GET = (
 }
 
 // POST /api/ipd/[admissionId]/progress-notes - Create a new progress note
-export async const POST = (
+export const POST = async (
     request: NextRequest,
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {

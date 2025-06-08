@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { biometricService } from '@/lib/hr/biometric-service';
 import { z } from 'zod';
@@ -15,7 +14,7 @@ const biometricTemplateSchema = z.object({
 });
 
 // POST handler for registering biometric template
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
@@ -43,7 +42,7 @@ export async const POST = (request: NextRequest) => {
 }
 
 // GET handler for employee biometric templates
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
     const employeeId = searchParams.get('employeeId');

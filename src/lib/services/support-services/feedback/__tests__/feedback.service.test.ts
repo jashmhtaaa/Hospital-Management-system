@@ -1,4 +1,3 @@
-}
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { FeedbackService } from '../feedback.service';
 import { prisma } from '@/lib/prisma';

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
@@ -34,7 +33,7 @@ const patientUpdateSchema = z.object({
 }).partial();
 
 // GET /api/patients/[id] - Fetch a specific patient by ID
-export async const GET = (
+export const GET = async (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {
@@ -87,7 +86,7 @@ export async const GET = (
 }
 
 // PUT /api/patients/[id] - Update an existing patient
-export async const PUT = (
+export const PUT = async (
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {
@@ -180,7 +179,7 @@ export async const PUT = (
 }
 
 // DELETE /api/patients/[id] - Delete a patient (use with caution!)
-export async const DELETE = (
+export const DELETE = async (
     _request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {

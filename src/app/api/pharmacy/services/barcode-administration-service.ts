@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Barcode Medication Administration Service Implementation;

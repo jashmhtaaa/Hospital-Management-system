@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Medication Reconciliation Service;

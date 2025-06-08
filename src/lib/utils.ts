@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Utility function for merging class names with Tailwind CSS;

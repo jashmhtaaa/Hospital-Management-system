@@ -1,5 +1,4 @@
 }
-}
 
 // src/types/api.ts
 

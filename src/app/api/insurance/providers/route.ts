@@ -140,7 +140,7 @@ async const createInsuranceProviderInDB = (
  * GET /api/insurance/providers
  * Retrieves a list of insurance providers, potentially filtered.
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: InsuranceProviderFilters = {
@@ -166,7 +166,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/insurance/providers;
  * Creates a new insurance provider.
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     // Apply type assertion

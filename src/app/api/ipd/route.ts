@@ -1,5 +1,4 @@
 }
-}
 
 // Example API route for IPD (Inpatient Department) Management
 import { NextRequest } from "next/server";

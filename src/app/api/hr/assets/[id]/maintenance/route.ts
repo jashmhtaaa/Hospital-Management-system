@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { assetService } from '@/lib/hr/asset-service';
 import { z } from 'zod';
@@ -20,7 +19,7 @@ const maintenanceSchema = z.object({
 });
 
 // POST handler for recording maintenance
-export async const POST = (
+export const POST = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
@@ -64,7 +63,7 @@ export async const POST = (
 }
 
 // GET handler for listing maintenance records
-export async const GET = (
+export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {

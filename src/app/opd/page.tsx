@@ -1,5 +1,4 @@
 }
-}
 
 // OPD Dashboard Page
 "use client";

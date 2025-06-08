@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Database Query Optimizer;
@@ -679,9 +678,9 @@ export class QueryOptimizer {
 export const queryOptimizer = QueryOptimizer.getInstance();
 
 // Utility functions for common optimized patterns
-export async const getOptimizedPatientData = (patientId: string) => {
+export const getOptimizedPatientData = async (patientId: string) => {
   return queryOptimizer.getPatientOptimized(patientId)
-export async const getOptimizedBillsForPatient = (
+export const getOptimizedBillsForPatient = async (
   patientId: string,
   limit: number = 10;
 ) => {
@@ -689,7 +688,7 @@ export async const getOptimizedBillsForPatient = (
     patientId,
     limit,
   });
-export async const getOptimizedAppointmentsForDoctor = (
+export const getOptimizedAppointmentsForDoctor = async (
   doctorId: string,
   date: Date;
 ) => {

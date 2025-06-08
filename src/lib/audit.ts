@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Audit Logger Service for HMS Support Services;

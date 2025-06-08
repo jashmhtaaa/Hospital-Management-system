@@ -1,4 +1,3 @@
-}
 import { prisma } from '@/lib/prisma';
 import { DietaryRequest, MealPlan, Meal, NutritionalProfile } from '@prisma/client';
 import { createAuditLog } from '@/lib/audit-logging';

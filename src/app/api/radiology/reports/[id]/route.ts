@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Import getDB function
 import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
@@ -49,7 +48,7 @@ interface RadiologyReportPutData {
 // Removed custom Session and SessionUser interfaces
 
 // GET a specific Radiology Report by ID
-export async const GET = (
+export const GET = async (
   _request: NextRequest, // Renamed to _request as it's unused
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
@@ -120,7 +119,7 @@ export async const GET = (
 }
 
 // PUT (update/verify) a specific Radiology Report
-export async const PUT = (
+export const PUT = async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
@@ -324,7 +323,7 @@ export async const PUT = (
 }
 
 // DELETE a specific Radiology Report (Admin only - consider status update instead)
-export async const DELETE = (
+export const DELETE = async (
   _request: NextRequest, // Renamed to _request as it's unused
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {

@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
@@ -15,7 +14,7 @@ interface BedInput {
 }
 
 // GET /api/ipd/beds - Get all beds with optional filtering
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Removed request argument
 
@@ -67,7 +66,7 @@ export async const GET = (request: NextRequest) => {
 }
 
 // POST /api/ipd/beds - Create a new bed
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Removed request argument
 

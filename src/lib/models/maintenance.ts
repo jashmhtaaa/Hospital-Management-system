@@ -1,4 +1,3 @@
-}
 import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client';
 
 // FHIR-compliant interfaces for Maintenance Management

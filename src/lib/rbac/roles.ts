@@ -1,5 +1,4 @@
 }
-}
 
 /**
  * Enterprise Role-Based Access Control (RBAC) System;

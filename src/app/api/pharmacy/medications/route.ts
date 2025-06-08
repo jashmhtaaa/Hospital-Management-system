@@ -1,4 +1,3 @@
-}
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Assuming db returns a promise
 import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
@@ -52,7 +51,7 @@ interface MedicationFilters {
  * GET /api/pharmacy/medications;
  * Retrieves a list of medications, potentially filtered.
  */
-export async const GET = (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession();
@@ -140,7 +139,7 @@ export async const GET = (request: NextRequest) => {
  * POST /api/pharmacy/medications;
  * Creates a new medication (Admin or Pharmacist role required).
  */
-export async const POST = (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession();

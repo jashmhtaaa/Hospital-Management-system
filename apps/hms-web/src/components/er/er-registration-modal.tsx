@@ -1,4 +1,3 @@
-}
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -49,14 +48,13 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
               </div>
               <div className="space-y-2">;
                 <Label htmlFor="gender">Gender</Label>;
-                <Select>
-                  id="gender"
+                <Select>id="gender"
                   options={[
                     { value: "male", label: "Male" },
                     { value: "female", label: "Female" },
                     { value: "other", label: "Other" },
                   ]}
-                />
+                </Select>
               </div>
             </div>
             
@@ -91,3 +89,5 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
       </DialogContent>
     </Dialog>
   );
+
+}

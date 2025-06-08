@@ -1,4 +1,3 @@
-}
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -21,24 +20,22 @@ export const AdmissionForm = () => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="patientId">Patient</Label>;
-              <Select>
-                id="patientId"
+              <Select>id="patientId"
                 options={[
                   { value: "", label: "Select patient" },
                 ]}
-              />
+              </Select>
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="admissionType">Admission Type</Label>;
-              <Select>
-                id="admissionType"
+              <Select>id="admissionType"
                 options={[
                   { value: "emergency", label: "Emergency" },
                   { value: "planned", label: "Planned" },
                   { value: "transfer", label: "Transfer" },
                 ]}
-              />
+              </Select>
             </div>
           </div>
           
@@ -62,18 +59,16 @@ export const AdmissionForm = () => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="attendingDoctor">Attending Doctor</Label>;
-              <Select>
-                id="attendingDoctor"
+              <Select>id="attendingDoctor"
                 options={[
                   { value: "", label: "Select doctor" },
                 ]}
-              />
+              </Select>
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="department">Department</Label>;
-              <Select>
-                id="department"
+              <Select>id="department"
                 options={[
                   { value: "general", label: "General Medicine" },
                   { value: "surgery", label: "Surgery" },
@@ -82,29 +77,27 @@ export const AdmissionForm = () => {
                   { value: "cardiology", label: "Cardiology" },
                   { value: "neurology", label: "Neurology" },
                 ]}
-              />
+              </Select>
             </div>
           </div>
           
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="ward">Ward</Label>;
-              <Select>
-                id="ward"
+              <Select>id="ward"
                 options={[
                   { value: "", label: "Select ward" },
                 ]}
-              />
+              </Select>
             </div>
             
             <div className="space-y-2">;
               <Label htmlFor="bed">Bed</Label>;
-              <Select>
-                id="bed"
+              <Select>id="bed"
                 options={[
                   { value: "", label: "Select bed" },
                 ]}
-              />
+              </Select>
             </div>
           </div>
           
@@ -121,3 +114,5 @@ export const AdmissionForm = () => {
       </CardContent>
     </Card>
   );
+
+}

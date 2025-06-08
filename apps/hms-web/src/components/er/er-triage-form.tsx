@@ -1,4 +1,3 @@
-}
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -27,8 +26,7 @@ export const ERTriageForm = () => {
             
             <div className="space-y-2">;
               <Label htmlFor="triageLevel">Triage Level</Label>;
-              <Select>
-                id="triageLevel"
+              <Select>id="triageLevel"
                 options={[
                   { value: "1", label: "Level 1 - Resuscitation" },
                   { value: "2", label: "Level 2 - Emergency" },
@@ -36,7 +34,7 @@ export const ERTriageForm = () => {
                   { value: "4", label: "Level 4 - Semi-urgent" },
                   { value: "5", label: "Level 5 - Non-urgent" },
                 ]}
-              />
+              </Select>
             </div>
           </div>
           
@@ -113,3 +111,5 @@ export const ERTriageForm = () => {
       </CardContent>
     </Card>
   );
+
+}

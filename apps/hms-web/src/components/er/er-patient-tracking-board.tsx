@@ -1,4 +1,3 @@
-}
 import React from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -89,3 +88,5 @@ export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps
       </Table>
     </div>
   );
+
+}

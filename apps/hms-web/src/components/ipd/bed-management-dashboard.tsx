@@ -1,4 +1,3 @@
-}
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -143,3 +142,5 @@ export const BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboa
       </Card>
     </div>
   );
+
+}

@@ -61,16 +61,16 @@ export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCritica
                   !alert.acknowledged ? 'bg-red-50 border border-red-200' : 'bg-gray-50'
                 }`}
               >
-<div
-                  <div className="flex items-center">;
+                <div>
+                  <div className="flex items-center">
                     {getAlertBadge(alert.alertType)}
                     <span className="ml-2 font-medium">{alert.patientName}</span>
                   </div>
-                  <p className="mt-1 text-sm">{alert.message}</p>;
+                  <p className="mt-1 text-sm">{alert.message}</p>
                   <p className="text-xs text-gray-500 mt-1">{alert.timestamp}</p>
                 </div>
                 {!alert.acknowledged && (
-                  <button>
+                  <button
                     onClick={() => onAcknowledge(alert.id)}
                     className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
                   >
@@ -84,3 +84,5 @@ export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCritica
       </CardContent>
     </Card>
   );
+
+}

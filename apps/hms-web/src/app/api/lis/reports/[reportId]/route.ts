@@ -261,3 +261,5 @@ export async const DELETE = (request: NextRequest, { params }: RouteContext) => 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 }
+
+}

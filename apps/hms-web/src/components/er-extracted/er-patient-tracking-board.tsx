@@ -82,9 +82,16 @@ export const ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProps
                 <TableCell>{patient.location || 'Waiting Area'}</TableCell>
                 <TableCell>{patient.assignedTo || 'Unassigned'}</TableCell>
               </TableRow>
-            ));
+            ))
           )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
         </TableBody>
       </Table>
     </div>
   );
+
+}

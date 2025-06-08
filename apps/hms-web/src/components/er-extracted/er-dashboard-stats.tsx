@@ -77,3 +77,5 @@ export const ERDashboardStats = ({ totalPatients,
       </Card>
     </div>
   );
+
+}

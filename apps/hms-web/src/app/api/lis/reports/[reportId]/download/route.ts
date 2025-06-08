@@ -10,8 +10,10 @@ const prisma = new PrismaClient();
 
 interface RouteContext {
   params: {
-    reportId: string
+    reportId: string;
   };
+}
+
 export async const GET = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;

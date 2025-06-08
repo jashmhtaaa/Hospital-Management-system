@@ -24,8 +24,10 @@ const updateLabOrderStatusSchema = z.object({
 
 interface RouteContext {
   params: {
-    orderId: string
+    orderId: string;
   };
+}
+
 export async const PUT = (request: NextRequest, { params }: RouteContext) => {
   const start = Date.now();
   let userId: string | undefined;

@@ -19,23 +19,23 @@ import { validateInteractionCheckRequest } from '../../../../lib/validation/phar
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services
@@ -74,12 +74,12 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK';
+      action: 'CHECK',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       details: {
-        medicationIds: data.medicationIds;
-        interactionCount: interactions.length;
+        medicationIds: data.medicationIds,
+        interactionCount: interactions.length
       }
     });
 
@@ -129,13 +129,13 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_PATIENT';
+      action: 'CHECK_PATIENT',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       patientId: patientId;
       details: {
-        medicationCount: medicationIds.length;
-        interactionCount: interactions.length;
+        medicationCount: medicationIds.length,
+        interactionCount: interactions.length
       }
     });
 

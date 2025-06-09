@@ -6,18 +6,18 @@ import { prisma } from '@/lib/prisma';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   marketingTemplate: {
-    create: jest.fn();
-    findUnique: jest.fn();
-    findMany: jest.fn();
-    count: jest.fn();
-    update: jest.fn();
-    delete: jest.fn();
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    findMany: jest.fn(),
+    count: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn()
   },
 }));
 
 jest.mock('@/lib/audit', () => ({
   AuditLogger: jest.fn().mockImplementation(() => ({
-    log: jest.fn().mockResolvedValue(undefined);
+    log: jest.fn().mockResolvedValue(undefined)
   })),
 }));
 
@@ -32,24 +32,24 @@ describe('TemplateService', () => {
 
   describe('createTemplate', () => {
     const mockTemplateData = {
-      name: 'Welcome Email';
+      name: 'Welcome Email',
       description: 'Template for welcoming new patients';
-      type: 'EMAIL';
+      type: 'EMAIL',
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
       variables: {
-        firstName: 'Patient first name';
-        lastName: 'Patient last name';
+        firstName: 'Patient first name',
+        lastName: 'Patient last name'
       },
-      isActive: true;
+      isActive: true
     };
 
     const mockCreatedTemplate = {
       id: 'template-123';
       ...mockTemplateData,
-      createdAt: new Date();
-      updatedAt: new Date();
-      createdById: 'user-123';
-      updatedById: null;
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdById: 'user-123',
+      updatedById: null
     };
 
     it('should create a template successfully', async () => {
@@ -62,20 +62,20 @@ describe('TemplateService', () => {
       // Assert
       expect(prisma.marketingTemplate.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          name: mockTemplateData.name;
+          name: mockTemplateData.name,
           description: mockTemplateData.description;
-          type: mockTemplateData.type;
+          type: mockTemplateData.type,
           content: mockTemplateData.content;
-          variables: mockTemplateData.variables;
+          variables: mockTemplateData.variables,
           isActive: mockTemplateData.isActive;
-          createdById: mockUserId;
+          createdById: mockUserId
         }),
       });
 
       expect(result).toEqual(expect.objectContaining({
-        id: mockCreatedTemplate.id;
+        id: mockCreatedTemplate.id,
         name: mockCreatedTemplate.name;
-        content: mockCreatedTemplate.content;
+        content: mockCreatedTemplate.content
       }));
     });
 
@@ -83,7 +83,7 @@ describe('TemplateService', () => {
       // Arrange
       const invalidData = {
         ...mockTemplateData,
-        name: '', // Invalid empty name;
+        name: '', // Invalid empty name
       };
 
       // Act & Assert
@@ -98,8 +98,8 @@ describe('TemplateService', () => {
         ...mockTemplateData,
         content: '<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>', // 'age' not in variables
         variables: {
-          firstName: 'Patient first name';
-          lastName: 'Patient last name';
+          firstName: 'Patient first name',
+          lastName: 'Patient last name'
         }
       };
 
@@ -128,28 +128,28 @@ describe('TemplateService', () => {
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'template.create';
+        action: 'template.create',
         resourceId: mockCreatedTemplate.id;
-        userId: mockUserId;
-        details: expect.any(Object);
+        userId: mockUserId,
+        details: expect.any(Object)
       });
     });
   });
 
   describe('getTemplateById', () => {
     const mockTemplate = {
-      id: 'template-123';
+      id: 'template-123',
       name: 'Welcome Email';
-      description: 'Template for welcoming new patients';
+      description: 'Template for welcoming new patients',
       type: 'EMAIL';
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
       variables: {
-        firstName: 'Patient first name';
-        lastName: 'Patient last name';
+        firstName: 'Patient first name',
+        lastName: 'Patient last name'
       },
-      isActive: true;
-      createdAt: new Date();
-      updatedAt: new Date();
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     it('should retrieve a template by ID', async () => {
@@ -164,9 +164,9 @@ describe('TemplateService', () => {
         where: { id: 'template-123' },
       }),
       expect(result).toEqual(expect.objectContaining({
-        id: mockTemplate.id;
+        id: mockTemplate.id,
         name: mockTemplate.name;
-        content: mockTemplate.content;
+        content: mockTemplate.content
       }));
     });
 
@@ -184,26 +184,26 @@ describe('TemplateService', () => {
   describe('getTemplates', () => {
     const mockTemplates = [
       {
-        id: 'template-1';
+        id: 'template-1',
         name: 'Welcome Email';
-        description: 'Template for welcoming new patients';
+        description: 'Template for welcoming new patients',
         type: 'EMAIL';
         content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
         variables: { firstName: 'Patient first name' },
-        isActive: true;
-        createdAt: new Date();
-        updatedAt: new Date();
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        id: 'template-2';
+        id: 'template-2',
         name: 'Appointment Reminder';
-        description: 'Template for appointment reminders';
+        description: 'Template for appointment reminders',
         type: 'SMS';
         content: 'Hi {{firstName}}, reminder for your appointment on {{appointmentDate}}',
         variables: { firstName: 'Patient first name', appointmentDate: 'Appointment date' },
-        isActive: true;
-        createdAt: new Date();
-        updatedAt: new Date();
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
     ];
 
@@ -219,7 +219,7 @@ describe('TemplateService', () => {
       expect(prisma.marketingTemplate.count).toHaveBeenCalled(),
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          skip: 0;
+          skip: 0,
           take: 10;
           orderBy: { createdAt: 'desc' },
         });
@@ -228,19 +228,19 @@ describe('TemplateService', () => {
       expect(result).toEqual({
         data: expect.arrayContaining([
           expect.objectContaining({
-            id: mockTemplates[0].id;
-            name: mockTemplates[0].name;
+            id: mockTemplates[0].id,
+            name: mockTemplates[0].name
           }),
           expect.objectContaining({
-            id: mockTemplates[1].id;
-            name: mockTemplates[1].name;
+            id: mockTemplates[1].id,
+            name: mockTemplates[1].name
           }),
         ]),
         pagination: {
-          total: 2;
+          total: 2,
           page: 1;
-          limit: 10;
-          totalPages: 1;
+          limit: 10,
+          totalPages: 1
         },
       });
     });
@@ -248,11 +248,11 @@ describe('TemplateService', () => {
     it('should apply filters correctly', async () => {
       // Arrange
       const filters = {
-        type: 'EMAIL';
+        type: 'EMAIL',
         isActive: true;
-        search: 'welcome';
+        search: 'welcome',
         page: 2;
-        limit: 5;
+        limit: 5
       };
 
       (prisma.marketingTemplate.count as jest.Mock).mockResolvedValue(10);
@@ -264,7 +264,7 @@ describe('TemplateService', () => {
       // Assert
       expect(prisma.marketingTemplate.count).toHaveBeenCalledWith({
         where: expect.objectContaining({
-          type: filters.type;
+          type: filters.type,
           isActive: filters.isActive;
           OR: expect.arrayContaining([
             { name: { contains: filters.search, mode: 'insensitive' } },
@@ -276,49 +276,49 @@ describe('TemplateService', () => {
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            type: filters.type;
-            isActive: filters.isActive;
+            type: filters.type,
+            isActive: filters.isActive
           }),
           skip: 5, // (page-1) * limit
-          take: 5;
+          take: 5
         });
       );
 
       expect(result.pagination).toEqual({
-        total: 10;
+        total: 10,
         page: 2;
-        limit: 5;
-        totalPages: 2;
+        limit: 5,
+        totalPages: 2
       });
     });
   });
 
   describe('updateTemplate', () => {
     const mockTemplate = {
-      id: 'template-123';
+      id: 'template-123',
       name: 'Welcome Email';
-      description: 'Template for welcoming new patients';
+      description: 'Template for welcoming new patients',
       type: 'EMAIL';
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
       variables: {
-        firstName: 'Patient first name';
-        lastName: 'Patient last name';
+        firstName: 'Patient first name',
+        lastName: 'Patient last name'
       },
-      isActive: true;
-      createdAt: new Date();
-      updatedAt: new Date();
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     const updateData = {
-      name: 'Updated Welcome Email';
+      name: 'Updated Welcome Email',
       description: 'Updated description';
       content: '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
       variables: {
-        firstName: 'Patient first name';
+        firstName: 'Patient first name',
         lastName: 'Patient last name';
-        hospitalName: 'Hospital name';
+        hospitalName: 'Hospital name'
       },
-      isActive: false;
+      isActive: false
     };
 
     it('should update a template successfully', async () => {
@@ -339,22 +339,22 @@ describe('TemplateService', () => {
       expect(prisma.marketingTemplate.update).toHaveBeenCalledWith({
         where: { id: 'template-123' },
         data: expect.objectContaining({
-          name: updateData.name;
+          name: updateData.name,
           description: updateData.description;
-          content: updateData.content;
+          content: updateData.content,
           variables: updateData.variables;
-          isActive: updateData.isActive;
-          updatedById: mockUserId;
+          isActive: updateData.isActive,
+          updatedById: mockUserId
         }),
       });
 
       expect(result).toEqual(expect.objectContaining({
-        id: mockTemplate.id;
+        id: mockTemplate.id,
         name: updateData.name;
-        description: updateData.description;
+        description: updateData.description,
         content: updateData.content;
-        variables: updateData.variables;
-        isActive: updateData.isActive;
+        variables: updateData.variables,
+        isActive: updateData.isActive
       }));
     });
 
@@ -396,11 +396,11 @@ describe('TemplateService', () => {
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'template.update';
+        action: 'template.update',
         resourceId: 'template-123';
-        userId: mockUserId;
+        userId: mockUserId,
         details: expect.objectContaining({
-          updatedFields: Object.keys(updateData);
+          updatedFields: Object.keys(updateData)
         }),
       });
     });
@@ -408,23 +408,23 @@ describe('TemplateService', () => {
 
   describe('renderTemplate', () => {
     const mockTemplate = {
-      id: 'template-123';
+      id: 'template-123',
       name: 'Welcome Email';
-      description: 'Template for welcoming new patients';
+      description: 'Template for welcoming new patients',
       type: 'EMAIL';
       content: '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
       variables: {
-        firstName: 'Patient first name';
-        lastName: 'Patient last name';
+        firstName: 'Patient first name',
+        lastName: 'Patient last name'
       },
-      isActive: true;
-      createdAt: new Date();
-      updatedAt: new Date();
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     const mockVariables = {
-      firstName: 'John';
-      lastName: 'Doe';
+      firstName: 'John',
+      lastName: 'Doe'
     };
 
     it('should render a template with provided variables', async () => {
@@ -440,9 +440,9 @@ describe('TemplateService', () => {
       }),
       expect(result).toEqual({
         renderedContent: '<p>Hello John Doe, welcome to our hospital!</p>',
-        templateId: 'template-123';
+        templateId: 'template-123',
         templateName: 'Welcome Email';
-        templateType: 'EMAIL';
+        templateType: 'EMAIL'
       });
     });
 
@@ -476,10 +476,10 @@ describe('TemplateService', () => {
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'template.render';
+        action: 'template.render',
         resourceId: 'template-123';
-        userId: mockUserId;
-        details: expect.any(Object);
+        userId: mockUserId,
+        details: expect.any(Object)
       });
     });
   });

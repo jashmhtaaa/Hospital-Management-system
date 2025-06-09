@@ -127,9 +127,9 @@ export const GET = async (request: NextRequest) => {
           // Decrypt any encrypted fields
           return {
             ...report,
-            content: report.content ? decryptSensitiveData(report.content) : null;
+            content: report.content ? decryptSensitiveData(report.content) : null,
             findings: report.findings ? decryptSensitiveData(report.findings) : null;
-            conclusion: report.conclusion ? decryptSensitiveData(report.conclusion) : null;
+            conclusion: report.conclusion ? decryptSensitiveData(report.conclusion) : null
           };
         });
 
@@ -141,14 +141,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'diagnostic_reports';
+          resource: 'diagnostic_reports',
           details: { patientId, reportType, status, page, pageSize, format }
         });
 
         return {
-          reports: formattedReports;
+          reports: formattedReports,
           pagination: {
             page,
             pageSize,
@@ -164,8 +164,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch diagnostic reports';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch diagnostic reports',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -210,7 +210,7 @@ export const POST = async (request: NextRequest) => {
     // Validate required fields
     if (!patientId || !reportType || !title) {
       return NextResponse.json({
-        error: 'Patient ID, report type, and title are required';
+        error: 'Patient ID, report type, and title are required'
       }, { status: 400 });
     }
 
@@ -307,16 +307,16 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'diagnostic_reports';
+      resource: 'diagnostic_reports',
       resourceId: reportId;
       details: {
         patientId,
         reportType,
         title,
-        status: status || 'draft';
-        criticalFindings: criticalFindings || false;
+        status: status || 'draft',
+        criticalFindings: criticalFindings || false
       }
     });
 
@@ -345,12 +345,12 @@ export const POST = async (request: NextRequest) => {
       if (userIds.length > 0) {
         await notifyUsers({
           userIds,
-          title: 'Critical Finding in Diagnostic Report';
+          title: 'Critical Finding in Diagnostic Report',
           message: `Critical finding reported in ${reportType} report: ${title}`,
-          type: 'critical_finding';
+          type: 'critical_finding',
           resourceId: reportId;
-          resourceType: 'diagnostic_reports';
-          priority: 'high';
+          resourceType: 'diagnostic_reports',
+          priority: 'high'
         });
       }
     }
@@ -395,8 +395,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create diagnostic report';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to create diagnostic report',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -475,9 +475,9 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'diagnostic_reports';
+          resource: 'diagnostic_reports',
           resourceId: id;
           details: { id, format }
         });
@@ -491,8 +491,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch diagnostic report';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch diagnostic report',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -553,7 +553,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Prevent modification of verified reports unless by admin
     if (existingReport.status === 'verified' && !isAdmin) {
       return NextResponse.json({
-        error: 'Cannot modify a verified report';
+        error: 'Cannot modify a verified report'
       }, { status: 403 });
     }
 
@@ -666,14 +666,14 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id;
+        userId: session.user.id,
         action: 'update';
-        resource: 'diagnostic_reports';
+        resource: 'diagnostic_reports',
         resourceId: id;
         details: {
           ...body,
           statusChanged,
-          _oldStatus: statusChanged ? _oldStatus : undefined;
+          _oldStatus: statusChanged ? _oldStatus : undefined,
           newStatus: statusChanged ? status : undefined;
           criticalStatusChanged;
         }
@@ -729,12 +729,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         if (userIds.length > 0) {
           await notifyUsers({
             userIds,
-            title: 'Critical Finding in Diagnostic Report';
+            title: 'Critical Finding in Diagnostic Report',
             message: `Critical finding reported in ${existingReport.report_type} report: ${existingReport.title}`,
-            type: 'critical_finding';
+            type: 'critical_finding',
             resourceId: id;
-            resourceType: 'diagnostic_reports';
-            priority: 'high';
+            resourceType: 'diagnostic_reports',
+            priority: 'high'
           });
         }
       }
@@ -781,8 +781,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update diagnostic report';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to update diagnostic report',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -821,7 +821,7 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
 
     if (reportCheck.results.length === 0) {
       return NextResponse.json({
-        error: 'Report not found or does not have critical findings';
+        error: 'Report not found or does not have critical findings'
       }, { status: 404 });
     }
 
@@ -830,9 +830,9 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
     // Check if already acknowledged
     if (report.critical_findings_acknowledged) {
       return NextResponse.json({
-        error: 'Critical findings already acknowledged';
+        error: 'Critical findings already acknowledged',
         acknowledgedBy: report.critical_findings_acknowledged_by;
-        acknowledgedAt: report.critical_findings_acknowledged_at;
+        acknowledgedAt: report.critical_findings_acknowledged_at
       }, { status: 409 });
     }
 
@@ -850,13 +850,13 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
 
     // Log acknowledgement
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'acknowledge';
-      resource: 'diagnostic_reports_critical';
+      resource: 'diagnostic_reports_critical',
       resourceId: id;
       details: {
-        reportId: id;
-        acknowledgementNotes: acknowledgementNotes || null;
+        reportId: id,
+        acknowledgementNotes: acknowledgementNotes || null
       }
     });
 
@@ -873,13 +873,13 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
     // Notify report author
     if (report.author_id !== session.user.id) {
       await notifyUsers({
-        userIds: [report.author_id];
+        userIds: [report.author_id],
         title: 'Critical Finding Acknowledged';
         message: `Critical findings in report "${report.title}" have been acknowledged`,
-        type: 'critical_finding_acknowledged';
+        type: 'critical_finding_acknowledged',
         resourceId: id;
-        resourceType: 'diagnostic_reports';
-        priority: 'medium';
+        resourceType: 'diagnostic_reports',
+        priority: 'medium'
       });
     }
 
@@ -888,15 +888,15 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
     await CacheInvalidation.invalidatePattern(`diagnostic:report:${id}:*`);
 
     return NextResponse.json({
-      success: true;
+      success: true,
       message: 'Critical findings acknowledged successfully';
-      acknowledgedBy: session.user.id;
-      acknowledgedAt: new Date().toISOString();
+      acknowledgedBy: session.user.id,
+      acknowledgedAt: new Date().toISOString()
     });
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to acknowledge critical findings';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to acknowledge critical findings',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

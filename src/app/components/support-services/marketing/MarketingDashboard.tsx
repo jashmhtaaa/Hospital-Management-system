@@ -14,9 +14,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
 // Define column types for campaign table
 type Campaign = {
-  id: string;
+  id: string,
   name: string;
-  type: string;
+  type: string,
   status: string;
   startDate: string;
   endDate?: string;
@@ -24,20 +24,20 @@ type Campaign = {
   performance?: {
     opens?: number;
     clicks?: number;
-    conversions?: number;
+    conversions?: number
   };
 };
 
 // Define column types for contact table
 type Contact = {
-  id: string;
+  id: string,
   name: string;
   email: string;
   phone?: string;
-  source: string;
+  source: string,
   status: string;
   createdAt: string;
-  lastActivity?: string;
+  lastActivity?: string
 };
 
 export default const _MarketingDashboard = () {
@@ -56,7 +56,7 @@ export default const _MarketingDashboard = () {
   // Define columns for campaign table
   const campaignColumns: ColumnDef<Campaign>[] = [
     {
-      accessorKey: 'name';
+      accessorKey: 'name',
       header: 'Campaign Name';
       cell: ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
@@ -66,14 +66,14 @@ export default const _MarketingDashboard = () {
       ),
     },
     {
-      accessorKey: 'type';
+      accessorKey: 'type',
       header: 'Type';
       cell: ({ row }) => (
         <Badge variant="outline">{row.getValue('type')}</Badge>;
       ),
     },
     {
-      accessorKey: 'status';
+      accessorKey: 'status',
       header: 'Status';
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
@@ -101,17 +101,17 @@ export default const _MarketingDashboard = () {
       },
     },
     {
-      accessorKey: 'startDate';
+      accessorKey: 'startDate',
       header: 'Start Date';
       cell: ({ row }) => new Date(row.getValue('startDate')).toLocaleDateString(),
     },
     {
-      accessorKey: 'segmentCount';
+      accessorKey: 'segmentCount',
       header: 'Segments';
       cell: ({ row }) => row.getValue('segmentCount'),
     },
     {
-      id: 'performance';
+      id: 'performance',
       header: 'Performance';
       cell: ({ row }) => {
         const performance = row.original.performance;
@@ -134,7 +134,7 @@ export default const _MarketingDashboard = () {
       },
     },
     {
-      id: 'actions';
+      id: 'actions',
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">;
           <Button>
@@ -159,7 +159,7 @@ export default const _MarketingDashboard = () {
   // Define columns for contact table
   const contactColumns: ColumnDef<Contact>[] = [
     {
-      accessorKey: 'name';
+      accessorKey: 'name',
       header: 'Name';
       cell: ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
@@ -169,22 +169,22 @@ export default const _MarketingDashboard = () {
       ),
     },
     {
-      accessorKey: 'email';
-      header: 'Email';
+      accessorKey: 'email',
+      header: 'Email'
     },
     {
-      accessorKey: 'phone';
-      header: 'Phone';
+      accessorKey: 'phone',
+      header: 'Phone'
     },
     {
-      accessorKey: 'source';
+      accessorKey: 'source',
       header: 'Source';
       cell: ({ row }) => (
         <Badge variant="outline">{row.getValue('source')}</Badge>;
       ),
     },
     {
-      accessorKey: 'status';
+      accessorKey: 'status',
       header: 'Status';
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
@@ -206,7 +206,7 @@ export default const _MarketingDashboard = () {
       },
     },
     {
-      accessorKey: 'lastActivity';
+      accessorKey: 'lastActivity',
       header: 'Last Activity';
       cell: ({ row }) => {
         const lastActivity = row.getValue('lastActivity');
@@ -214,7 +214,7 @@ export default const _MarketingDashboard = () {
       },
     },
     {
-      id: 'actions';
+      id: 'actions',
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">;
           <Button>
@@ -267,9 +267,9 @@ export default const _MarketingDashboard = () {
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load marketing data. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -311,19 +311,19 @@ export default const _MarketingDashboard = () {
     labels: ['Campaign 1', 'Campaign 2', 'Campaign 3', 'Campaign 4', 'Campaign 5'],
     datasets: [
       {
-        label: 'Opens';
+        label: 'Opens',
         data: [65, 59, 80, 81, 56],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',;
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
       },
       {
-        label: 'Clicks';
+        label: 'Clicks',
         data: [28, 48, 40, 19, 36],
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',;
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
       {
-        label: 'Conversions';
+        label: 'Conversions',
         data: [12, 19, 3, 5, 2],
-        backgroundColor: 'rgba(153, 102, 255, 0.5)',;
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',
       },
     ],
   };
@@ -332,10 +332,10 @@ export default const _MarketingDashboard = () {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
       {
-        label: 'New Contacts';
+        label: 'New Contacts',
         data: [12, 19, 3, 5, 2, 3],
         borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',;
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
     ],
   };
@@ -344,7 +344,7 @@ export default const _MarketingDashboard = () {
     labels: ['Website', 'Referral', 'Social Media', 'Event', 'Other'],
     datasets: [
       {
-        label: 'Contact Sources';
+        label: 'Contact Sources',
         data: [12, 19, 3, 5, 2],
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
@@ -353,7 +353,7 @@ export default const _MarketingDashboard = () {
           'rgba(75, 192, 192, 0.5)',
           'rgba(153, 102, 255, 0.5)',
         ],
-        borderWidth: 1;
+        borderWidth: 1
       },
     ],
   };

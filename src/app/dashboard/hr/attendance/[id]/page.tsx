@@ -61,9 +61,9 @@ export default const _AttendanceDetail = ({ params }: { params: { id: string } }
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -75,7 +75,7 @@ export default const _AttendanceDetail = ({ params }: { params: { id: string } }
 
   // Handle edit navigation
   const handleEdit = () => {
-    router.push(`/dashboard/hr/attendance/${params.id}/edit`);
+    router.push(`/dashboard/hr/attendance/${params.id}/edit`)
   };
 
   // Get status badge variant
@@ -91,13 +91,13 @@ export default const _AttendanceDetail = ({ params }: { params: { id: string } }
         return 'secondary';
       case 'ON_LEAVE':
         return 'outline';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
   // Format time or show placeholder
   const formatTimeOrPlaceholder = (time: unknown) => {
-    return time ? format(new Date(time), 'h: mm: ss a') : '—';
+    return time ? format(new Date(time), 'h: mm: ss a') : '—'
   };
 
   // Calculate hours worked
@@ -109,7 +109,7 @@ export default const _AttendanceDetail = ({ params }: { params: { id: string } }
     const diffMs = checkOut.getTime() - checkIn.getTime();
     const diffHrs = diffMs / (1000 * 60 * 60);
 
-    return `${diffHrs.toFixed(2)} hours`;
+    return `${diffHrs.toFixed(2)} hours`
   };
 
   if (loading != null) {

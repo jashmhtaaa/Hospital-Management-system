@@ -29,14 +29,14 @@ export const _GET = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (doctorId === null) {
         return new Response(JSON.stringify({ error: "Invalid Doctor ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -59,7 +59,7 @@ export const _GET = async (request: Request) => {
 
         // 3. Return schedule list
         return new Response(JSON.stringify(schedules), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -67,7 +67,7 @@ export const _GET = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -76,13 +76,13 @@ export const _GET = async (request: Request) => {
 // POST handler for adding a new schedule slot for a doctor
 const AddScheduleSchema = z.object({
     day_of_week: z.number().int().min(0).max(6), // 0-6 for Sun-Sat
-    start_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH: MM format");
-    end_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH: MM format");
-    slot_duration_minutes: z.number().int().positive().optional().default(15);
-    is_available: z.boolean().optional().default(true);
+    start_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH: MM format"),
+    end_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH: MM format"),
+    slot_duration_minutes: z.number().int().positive().optional().default(15),
+    is_available: z.boolean().optional().default(true)
 }).refine(data => data.start_time < data.end_time, {
-    message: "End time must be after start time";
-    path: ["end_time"];
+    message: "End time must be after start time",
+    path: ["end_time"]
 });
 
 export const _POST = async (request: Request) => {
@@ -94,7 +94,7 @@ export const _POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -113,7 +113,7 @@ export const _POST = async (request: Request) => {
             const doctorProfile = await dbInstance.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
             if (!doctorProfile || doctorProfile.doctor_id !== doctorId) {
                  return new Response(JSON.stringify({ error: "Forbidden: Doctors can only manage their own schedule" }), {
-                    status: 403;
+                    status: 403,
                     headers: { "Content-Type": "application/json" },
                 });
             }
@@ -121,7 +121,7 @@ export const _POST = async (request: Request) => {
 
         if (doctorId === null) {
             return new Response(JSON.stringify({ error: "Invalid Doctor ID" }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -131,7 +131,7 @@ export const _POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -183,7 +183,7 @@ export const _POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

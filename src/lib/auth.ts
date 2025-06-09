@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
 export interface User {
-  id: string;
+  id: string,
   username: string;
-  email: string;
+  email: string,
   role: string;
   permissions: string[];
   department?: string;
@@ -23,29 +23,29 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 // User permissions mapping
 export const PERMISSIONS = {
   // Patient Management
-  PATIENT_READ: 'patient:read';
-  PATIENT_WRITE: 'patient:write';
+  PATIENT_READ: 'patient:read',
+  PATIENT_WRITE: 'patient:write',
   PATIENT_DELETE: 'patient:delete';
 
   // Clinical
-  CLINICAL_READ: 'clinical:read';
+  CLINICAL_READ: 'clinical:read',
   CLINICAL_WRITE: 'clinical:write';
 
   // Administrative
-  ADMIN_READ: 'admin:read';
+  ADMIN_READ: 'admin:read',
   ADMIN_WRITE: 'admin:write';
 
   // Billing
-  BILLING_READ: 'billing:read';
+  BILLING_READ: 'billing:read',
   BILLING_WRITE: 'billing:write';
 
   // Reports
-  REPORTS_READ: 'reports:read';
+  REPORTS_READ: 'reports:read',
   REPORTS_GENERATE: 'reports:generate';
 
   // System
-  SYSTEM_ADMIN: 'system:admin';
-  USER_MANAGEMENT: 'users:manage';
+  SYSTEM_ADMIN: 'system:admin',
+  USER_MANAGEMENT: 'users:manage'
 } as const;
 
 // Role-based permissions
@@ -114,17 +114,17 @@ export const _verifyPassword = async (password: string, hash: string): Promise<b
 export const _generateToken = (user: User): string {
   try {
     const payload = {
-      id: user.id;
+      id: user.id,
       username: user.username;
-      email: user.email;
+      email: user.email,
       role: user.role;
-      permissions: user.permissions;
+      permissions: user.permissions
     };
 
     return jwt.sign(payload, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN;
+      expiresIn: JWT_EXPIRES_IN,
       issuer: 'HMS-Enterprise';
-      audience: 'HMS-Users';
+      audience: 'HMS-Users'
     });
   } catch (error) {
     throw new Error('Token generation failed');
@@ -137,17 +137,17 @@ export const _generateToken = (user: User): string {
 export const verifyToken = (token: string): User | null {
   try {
     const decoded = jwt.verify(token, JWT_SECRET, {
-      issuer: 'HMS-Enterprise';
-      audience: 'HMS-Users';
+      issuer: 'HMS-Enterprise',
+      audience: 'HMS-Users'
     }) as any;
 
     return {
-      id: decoded.id;
+      id: decoded.id,
       username: decoded.username;
-      email: decoded.email;
+      email: decoded.email,
       role: decoded.role;
-      permissions: decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [];
-      isActive: true;
+      permissions: decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
+      isActive: true
     };
   } catch (error) {
     return null;
@@ -273,7 +273,7 @@ export const _setAuthCookie = (token: string): string {
 /**
  * Validate password strength;
  */
-export const _validatePassword = (password: string): { valid: boolean; errors: string[] } {
+export const _validatePassword = (password: string): { valid: boolean, errors: string[] } {
   const errors: string[] = [];
 
   if (password.length < 8) {
@@ -298,7 +298,7 @@ export const _validatePassword = (password: string): { valid: boolean; errors: s
 
   return {
     valid: errors.length === 0;
-    errors;
+    errors
   };
 }
 
@@ -327,7 +327,7 @@ export const _requireAuth = (handler: Function) {
       return new Response(
         JSON.stringify({ error: authResult.error }),
         {
-          status: 401;
+          status: 401,
           headers: { 'Content-Type': 'application/json' }
         }
       );
@@ -336,7 +336,7 @@ export const _requireAuth = (handler: Function) {
     // Add user to request context
     (request as any).user = authResult.user;
 
-    return handler(request, context);
+    return handler(request, context)
   };
 }
 
@@ -352,7 +352,7 @@ export const _requireRole = (requiredRole: string) {
         return new Response(
           JSON.stringify({ error: authResult.error }),
           {
-            status: 403;
+            status: 403,
             headers: { 'Content-Type': 'application/json' }
           }
         );
@@ -361,7 +361,7 @@ export const _requireRole = (requiredRole: string) {
       // Add user to request context
       (request as any).user = authResult.user;
 
-      return handler(request, context);
+      return handler(request, context)
     };
   };
 }
@@ -378,7 +378,7 @@ export const _requirePermission = (permission: string) {
         return new Response(
           JSON.stringify({ error: authResult.error }),
           {
-            status: 403;
+            status: 403,
             headers: { 'Content-Type': 'application/json' }
           }
         );
@@ -387,6 +387,6 @@ export const _requirePermission = (permission: string) {
       // Add user to request context
       (request as any).user = authResult.user;
 
-      return handler(request, context);
+      return handler(request, context)
     };
   };

@@ -27,7 +27,7 @@ import type { Config } from 'jest';
 // Next.js Jest configuration helper
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
-  dir: './';
+  dir: './'
 })
 
 // Enterprise Jest configuration for healthcare applications
@@ -47,7 +47,7 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Global Setup and Teardown for Enterprise Environment
-  globalSetup: '<rootDir>/tests/setup/enterprise-global-setup.ts';
+  globalSetup: '<rootDir>/tests/setup/enterprise-global-setup.ts',
   globalTeardown: '<rootDir>/tests/setup/enterprise-global-teardown.ts';
 
   // Module Resolution Configuration
@@ -175,7 +175,7 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Enhanced Coverage Configuration for Enterprise Requirements
-  collectCoverage: true;
+  collectCoverage: true,
   collectCoverageFrom: [
     // Core application code
     'src/**/*.{js,jsx,ts,tsx}',
@@ -218,84 +218,84 @@ const enterpriseJestConfig: Config = {
   // Enterprise-Grade Coverage Thresholds
   coverageThreshold: {
     global: {
-      branches: 85;
+      branches: 85,
       functions: 85;
-      lines: 85;
-      statements: 85;
+      lines: 85,
+      statements: 85
     },
 
     // Critical healthcare modules require higher coverage
     './src/lib/security/': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     './src/lib/compliance/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/audit/': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     './src/lib/encryption/': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     './src/lib/fhir/': {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
     './src/lib/patients/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/clinical/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/emergency/': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     './src/lib/pharmacy/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/billing/': {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
     './src/services/': {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
     './microservices/': {
-      branches: 80;
+      branches: 80,
       functions: 80;
-      lines: 80;
-      statements: 80;
+      lines: 80,
+      statements: 80
     },
   },
 
@@ -323,32 +323,32 @@ const enterpriseJestConfig: Config = {
     [
       'jest-html-reporters',
       {
-        publicPath: 'test-results';
+        publicPath: 'test-results',
         filename: 'enterprise-test-report.html';
-        pageTitle: 'HMS Enterprise Test Results';
+        pageTitle: 'HMS Enterprise Test Results',
         logoImgPath: './public/logo.png';
-        hideIcon: false;
+        hideIcon: false,
         expand: true;
-        openReport: false;
+        openReport: false,
         darkTheme: false;
-        includeFailureMsg: true;
+        includeFailureMsg: true,
         includeSuiteFailure: true;
         customInfos: [
           {
-            title: 'Environment';
-            value: process.env.NODE_ENV || 'test';
+            title: 'Environment',
+            value: process.env.NODE_ENV || 'test'
           },
           {
-            title: 'Test Suite';
-            value: 'Enterprise Healthcare Testing';
+            title: 'Test Suite',
+            value: 'Enterprise Healthcare Testing'
           },
           {
-            title: 'Compliance';
-            value: 'HIPAA/GDPR/FDA Compatible';
+            title: 'Compliance',
+            value: 'HIPAA/GDPR/FDA Compatible'
           },
           {
-            title: 'Security Level';
-            value: 'Enterprise Grade';
+            title: 'Security Level',
+            value: 'Enterprise Grade'
           },
         ],
       },
@@ -358,16 +358,16 @@ const enterpriseJestConfig: Config = {
     [
       'jest-junit',
       {
-        outputDirectory: 'test-results';
+        outputDirectory: 'test-results',
         outputName: 'junit-enterprise.xml';
-        suiteName: 'HMS Enterprise Test Suite';
+        suiteName: 'HMS Enterprise Test Suite',
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
-        ancestorSeparator: ' › ';
+        ancestorSeparator: ' › ',
         usePathForSuiteName: true;
-        addFileAttribute: true;
+        addFileAttribute: true,
         includeConsoleOutput: true;
-        includeShortConsoleOutput: false;
+        includeShortConsoleOutput: false
       },
     ],
 
@@ -375,16 +375,16 @@ const enterpriseJestConfig: Config = {
     [
       'jest-stare',
       {
-        resultDir: 'test-results/jest-stare';
+        resultDir: 'test-results/jest-stare',
         reportTitle: 'HMS Enterprise Test Dashboard';
-        additionalResultsProcessors: ['jest-html-reporters'];
+        additionalResultsProcessors: ['jest-html-reporters'],
         coverageLink: '../coverage/lcov-report/index.html';
         jestStareConfigJson: {
-          logo: './public/logo.png';
+          logo: './public/logo.png',
           resultDir: 'test-results/jest-stare';
-          reportTitle: 'HMS Enterprise Test Dashboard';
+          reportTitle: 'HMS Enterprise Test Dashboard',
           reportHeadline: 'Hospital Management System - Enterprise Test Results';
-          reportSummary: 'Comprehensive test coverage for healthcare applications';
+          reportSummary: 'Comprehensive test coverage for healthcare applications'
         },
       },
     ],
@@ -393,9 +393,9 @@ const enterpriseJestConfig: Config = {
     [
       'jest-sonar-reporter',
       {
-        outputDirectory: 'test-results/sonar';
+        outputDirectory: 'test-results/sonar',
         outputName: 'test-report.xml';
-        reportedFilePath: 'relative';
+        reportedFilePath: 'relative'
       },
     ],
 
@@ -404,11 +404,11 @@ const enterpriseJestConfig: Config = {
       [
         'jest-slack-reporter',
         {
-          channel: '#hms-enterprise-testing';
+          channel: '#hms-enterprise-testing',
           username: 'HMS Enterprise Test Bot';
-          iconEmoji: ':hospital:';
+          iconEmoji: ':hospital:',
           onlyOnFailure: true;
-          webhookUrl: process.env.SLACK_WEBHOOK_URL;
+          webhookUrl: process.env.SLACK_WEBHOOK_URL
         },
       ],
     ] : []),
@@ -418,9 +418,9 @@ const enterpriseJestConfig: Config = {
       [
         'jest-teams-reporter',
         {
-          webhookUrl: process.env.TEAMS_WEBHOOK_URL;
+          webhookUrl: process.env.TEAMS_WEBHOOK_URL,
           onlyOnFailure: true;
-          title: 'HMS Enterprise Test Results';
+          title: 'HMS Enterprise Test Results'
         },
       ],
     ] : []),
@@ -428,33 +428,33 @@ const enterpriseJestConfig: Config = {
 
   // Test Environment Options
   testEnvironmentOptions: {
-    url: process.env.TEST_BASE_URL || 'http://localhost:3000';
+    url: process.env.TEST_BASE_URL || 'http://localhost:3000',
     pretendToBeVisual: true;
-    resources: 'usable';
-    runScripts: 'dangerously';
+    resources: 'usable',
+    runScripts: 'dangerously'
   },
 
   // Test Execution Configuration
   testTimeout: 60000, // 60 seconds for integration tests
-  verbose: true;
+  verbose: true,
   silent: false;
 
   // Display Configuration
   displayName: {
-    name: 'HMS Enterprise';
-    color: 'blue';
+    name: 'HMS Enterprise',
+    color: 'blue'
   },
 
   // Error Handling
   errorOnDeprecated: true;
 
   // Mock Configuration
-  clearMocks: true;
+  clearMocks: true,
   restoreMocks: true;
   resetMocks: true;
 
   // Performance Configuration
-  maxWorkers: process.env.CI ? 2 : '75%';
+  maxWorkers: process.env.CI ? 2 : '75%',
   maxConcurrency: 10;
 
   // Watch Mode Configuration
@@ -469,111 +469,111 @@ const enterpriseJestConfig: Config = {
   projects: [
     {
       displayName: {
-        name: 'Frontend Unit Tests';
-        color: 'cyan';
+        name: 'Frontend Unit Tests',
+        color: 'cyan'
       },
       testMatch: ['<rootDir>/src/components/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-      testEnvironment: 'jsdom';
+      testEnvironment: 'jsdom',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/component-setup.ts'];
       coverageThreshold: {
         global: {
-          branches: 85;
+          branches: 85,
           functions: 85;
-          lines: 85;
-          statements: 85;
+          lines: 85,
+          statements: 85
         },
       },
     },
 
     {
       displayName: {
-        name: 'API Tests';
-        color: 'green';
+        name: 'API Tests',
+        color: 'green'
       },
       testMatch: ['<rootDir>/src/app/api/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/api-setup.ts'];
-      testTimeout: 30000;
+      testTimeout: 30000
     },
 
     {
       displayName: {
-        name: 'Service Layer Tests';
-        color: 'blue';
+        name: 'Service Layer Tests',
+        color: 'blue'
       },
       testMatch: ['<rootDir>/src/services/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/service-setup.ts'];
       coverageThreshold: {
         global: {
-          branches: 90;
+          branches: 90,
           functions: 90;
-          lines: 90;
-          statements: 90;
+          lines: 90,
+          statements: 90
         },
       },
     },
 
     {
       displayName: {
-        name: 'Security Tests';
-        color: 'red';
+        name: 'Security Tests',
+        color: 'red'
       },
       testMatch: [
         '<rootDir>/src/lib/security/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/security/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/security-setup.ts'];
       coverageThreshold: {
         global: {
-          branches: 98;
+          branches: 98,
           functions: 98;
-          lines: 98;
-          statements: 98;
+          lines: 98,
+          statements: 98
         },
       },
     },
 
     {
       displayName: {
-        name: 'HIPAA Compliance Tests';
-        color: 'magenta';
+        name: 'HIPAA Compliance Tests',
+        color: 'magenta'
       },
       testMatch: [
         '<rootDir>/src/lib/compliance/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/compliance/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/compliance-setup.ts'];
       coverageThreshold: {
         global: {
-          branches: 95;
+          branches: 95,
           functions: 95;
-          lines: 95;
-          statements: 95;
+          lines: 95,
+          statements: 95
         },
       },
     },
 
     {
       displayName: {
-        name: 'FHIR Standard Tests';
-        color: 'yellow';
+        name: 'FHIR Standard Tests',
+        color: 'yellow'
       },
       testMatch: [
         '<rootDir>/src/lib/fhir/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/fhir/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/fhir-setup.ts'];
-      testTimeout: 45000;
+      testTimeout: 45000
     },
 
     {
       displayName: {
-        name: 'Healthcare Domain Tests';
-        color: 'blueBright';
+        name: 'Healthcare Domain Tests',
+        color: 'blueBright'
       },
       testMatch: [
         '<rootDir>/src/lib/patients/**/*.{test,spec}.{js,jsx,ts,tsx}',
@@ -583,51 +583,51 @@ const enterpriseJestConfig: Config = {
         '<rootDir>/src/lib/emergency/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/healthcare/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/healthcare-setup.ts'];
       coverageThreshold: {
         global: {
-          branches: 95;
+          branches: 95,
           functions: 95;
-          lines: 95;
-          statements: 95;
+          lines: 95,
+          statements: 95
         },
       },
     },
 
     {
       displayName: {
-        name: 'Integration Tests';
-        color: 'greenBright';
+        name: 'Integration Tests',
+        color: 'greenBright'
       },
       testMatch: ['<rootDir>/tests/integration/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       testTimeout: 120000, // 2 minutes for integration tests
-      setupFilesAfterEnv: ['<rootDir>/tests/setup/integration-setup.ts'];
-      maxWorkers: 1, // Run integration tests sequentially;
+      setupFilesAfterEnv: ['<rootDir>/tests/setup/integration-setup.ts'],
+      maxWorkers: 1, // Run integration tests sequentially
     },
 
     {
       displayName: {
-        name: 'Performance Tests';
-        color: 'gray';
+        name: 'Performance Tests',
+        color: 'gray'
       },
       testMatch: ['<rootDir>/tests/performance/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       testTimeout: 300000, // 5 minutes for performance tests
-      setupFilesAfterEnv: ['<rootDir>/tests/setup/performance-setup.ts'];
-      maxWorkers: 1;
+      setupFilesAfterEnv: ['<rootDir>/tests/setup/performance-setup.ts'],
+      maxWorkers: 1
     },
 
     {
       displayName: {
-        name: 'Microservices Tests';
-        color: 'cyanBright';
+        name: 'Microservices Tests',
+        color: 'cyanBright'
       },
       testMatch: ['<rootDir>/microservices/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-      testEnvironment: 'node';
+      testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/microservices-setup.ts'];
-      testTimeout: 45000;
+      testTimeout: 45000
     },
   ],
 
@@ -649,33 +649,33 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Notification Configuration
-  notify: !process.env.CI;
+  notify: !process.env.CI,
   notifyMode: 'failure-change';
 
   // CI/CD Configuration
-  bail: process.env.CI ? 1 : 0;
+  bail: process.env.CI ? 1 : 0,
   forceExit: process.env.CI;
 
   // Handle Detection
-  detectOpenHandles: true;
+  detectOpenHandles: true,
   detectLeaks: true;
 
   // Parallel Execution
   runInBand: process.env.CI ? true : false;
 
   // Cache Configuration
-  cache: true;
+  cache: true,
   cacheDirectory: '<rootDir>/.jest-cache';
 
   // Other Configuration
-  passWithNoTests: true;
+  passWithNoTests: true,
   logHeapUsage: process.env.CI;
 
   // Custom Test Sequencer for Healthcare Priority
   testSequencer: '<rootDir>/tests/utils/healthcare-test-sequencer.ts';
 
   // Test Result Processor (Deprecated but kept for compatibility)
-  testResultsProcessor: undefined;
+  testResultsProcessor: undefined
 }
 
 // Export the Jest configuration

@@ -47,20 +47,20 @@ import PatientDocuments from './patient-documents.ts';
 
 // Define patient status colors
 const statusColors: Record<string, string> = {
-  Active: 'success';
+  Active: 'success',
   Inactive: 'secondary';
   Deceased: 'destructive';
-  'On Hold': 'warning';
+  'On Hold': 'warning'
 };
 
 // Patient interface
 interface Patient {
-  id: string;
+  id: string,
   mrn: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
   middleName?: string;
-  dateOfBirth: string;
+  dateOfBirth: string,
   gender: string;
   biologicalSex?: string;
   maritalStatus?: string;
@@ -70,9 +70,9 @@ interface Patient {
   nationality?: string;
   religion?: string;
   occupation?: string;
-  status: string;
+  status: string,
   vip: boolean;
-  confidential: boolean;
+  confidential: boolean,
   registrationDate: string;
   updatedAt: string;
   contact?: {
@@ -81,24 +81,24 @@ interface Patient {
     phoneWork?: string;
     phonePreferred: string;
     email?: string;
-    emailOptIn: boolean;
-    smsOptIn: boolean;
+    emailOptIn: boolean,
+    smsOptIn: boolean
   };
   addresses?: {
-    id: string;
+    id: string,
     addressType: string;
-    isPrimary: boolean;
+    isPrimary: boolean,
     addressLine1: string;
     addressLine2?: string;
     city: string;
     state?: string;
-    postalCode: string;
-    country: string;
+    postalCode: string,
+    country: string
   }[];
   identifications?: {
-    id: string;
+    id: string,
     idType: string;
-    idNumber: string;
+    idNumber: string,
     isPrimary: boolean;
     issuingCountry?: string;
     issuingState?: string;
@@ -106,9 +106,9 @@ interface Patient {
     expirationDate?: string;
   }[];
   contacts?: {
-    id: string;
+    id: string,
     firstName: string;
-    lastName: string;
+    lastName: string,
     relationship: string;
     isPrimary: boolean;
     phoneHome?: string;
@@ -116,11 +116,11 @@ interface Patient {
     phoneWork?: string;
     phonePreferred: string;
     email?: string;
-    isLegalGuardian: boolean;
-    hasDecisionMaking: boolean;
+    isLegalGuardian: boolean,
+    hasDecisionMaking: boolean
   }[];
   insurances?: {
-    id: string;
+    id: string,
     insuranceType: string;
     payerName: string;
     planName?: string;
@@ -175,9 +175,9 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to fetch patient details. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -186,22 +186,22 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 
   // Handle back button
   const handleBack = () => {
-    router.push('/patients');
+    router.push('/patients')
   };
 
   // Handle edit patient
   const handleEditPatient = () => {
-    router.push(`/patients/${patientId}/edit`);
+    router.push(`/patients/${patientId}/edit`)
   };
 
   // Handle print
   const handlePrint = () => {
-    window.print();
+    window.print()
   };
 
   // Handle refresh
   const handleRefresh = () => {
-    fetchPatient();
+    fetchPatient()
   };
 
   // Format date function

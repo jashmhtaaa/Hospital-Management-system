@@ -32,16 +32,16 @@ export async function POST(request: NextRequest): unknown {
         subtotal,
         discountAmount,
         totalAmount,
-        status: 'PENDING';
+        status: 'PENDING',
         items,
         notes
       },
       include: {
         patient: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            mrn: true;
+            mrn: true
           }
         }
       }
@@ -49,8 +49,8 @@ export async function POST(request: NextRequest): unknown {
 
     await AuditService.logUserAction(
       {
-        userId: request.headers.get('x-user-id') || undefined;
-        ipAddress: request.ip;
+        userId: request.headers.get('x-user-id') || undefined,
+        ipAddress: request.ip
       },
       'CREATE',
       'BILL',
@@ -88,9 +88,9 @@ export async function GET(request: NextRequest): unknown {
         include: {
           patient: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              mrn: true;
+              mrn: true
             }
           }
         }

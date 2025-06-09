@@ -6,21 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface IPDPatient {
-  id: string;
+  id: string,
   name: string;
-  age: number;
+  age: number,
   gender: string;
-  admissionDate: string;
+  admissionDate: string,
   diagnosis: string;
-  ward: string;
+  ward: string,
   bedNumber: string;
-  attendingDoctor: string;
-  status: 'stable' | 'critical' | 'improving' | 'deteriorating';
+  attendingDoctor: string,
+  status: 'stable' | 'critical' | 'improving' | 'deteriorating'
 }
 
 interface IPDPatientListProps {
-  patients: IPDPatient[];
-  onViewPatient: (patientId: string) => void;
+  patients: IPDPatient[],
+  onViewPatient: (patientId: string) => void
 }
 
 /**
@@ -33,7 +33,7 @@ export const _IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps
       case 'critical': return <Badge variant="danger">Critical</Badge>;
       case 'improving': return <Badge variant="info">Improving</Badge>;
       case 'deteriorating': return <Badge variant="warning">Deteriorating</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

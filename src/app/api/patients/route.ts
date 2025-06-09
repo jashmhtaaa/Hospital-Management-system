@@ -12,28 +12,28 @@ const patientCreateSchema = z.object({
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
     date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date of birth format";
+        message: "Invalid date of birth format"
     }),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]), // Enforce specific values
-    contact_number: z.string().optional().nullable();
-    email: z.string().email("Invalid email address").optional().nullable();
-    address_line1: z.string().optional().nullable();
-    address_line2: z.string().optional().nullable();
-    city: z.string().optional().nullable();
-    state: z.string().optional().nullable();
-    postal_code: z.string().optional().nullable();
+    contact_number: z.string().optional().nullable(),
+    email: z.string().email("Invalid email address").optional().nullable(),
+    address_line1: z.string().optional().nullable(),
+    address_line2: z.string().optional().nullable(),
+    city: z.string().optional().nullable(),
+    state: z.string().optional().nullable(),
+    postal_code: z.string().optional().nullable(),
     country: z.string().optional().nullable();
     // Emergency contact details
-    emergency_contact_name: z.string().optional().nullable();
-    emergency_contact_relation: z.string().optional().nullable();
+    emergency_contact_name: z.string().optional().nullable(),
+    emergency_contact_relation: z.string().optional().nullable(),
     emergency_contact_number: z.string().optional().nullable();
     // Basic medical info
-    blood_group: z.string().optional().nullable();
-    allergies: z.string().optional().nullable();
+    blood_group: z.string().optional().nullable(),
+    allergies: z.string().optional().nullable(),
     medical_history_summary: z.string().optional().nullable();
     // Insurance details
-    insurance_provider: z.string().optional().nullable();
-    insurance_policy_number: z.string().optional().nullable();
+    insurance_provider: z.string().optional().nullable(),
+    insurance_policy_number: z.string().optional().nullable()
 });
 
 // type PatientCreateBody = z.infer<typeof patientCreateSchema>
@@ -99,12 +99,12 @@ export const _GET = async (request: NextRequest) => {
         const total = countResult?.total || 0;
 
         return NextResponse.json({
-            data: results;
+            data: results,
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit)
             },
         });
 

@@ -9,13 +9,13 @@ import { PostgresqlAdapter, IDatabaseAdapter } from './postgresql_adapter.ts'
 
 // Mock the pg module
 const mockPoolClient = {
-  query: jest.fn();
-  release: jest.fn();
+  query: jest.fn(),
+  release: jest.fn()
 };
 const mockPool = {
-  connect: jest.fn(() => Promise.resolve(mockPoolClient));
+  connect: jest.fn(() => Promise.resolve(mockPoolClient)),
   end: jest.fn(() => Promise.resolve());
-  on: jest.fn();
+  on: jest.fn()
 };
 jest.mock("pg", () => {
   return { Pool: jest.fn(() => mockPool) };

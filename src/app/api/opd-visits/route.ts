@@ -8,18 +8,18 @@ import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 // Zod schema for creating an OPD visit
 const opdVisitCreateSchema = z.object({
-    patient_id: z.number();
-    doctor_id: z.number();
+    patient_id: z.number(),
+    doctor_id: z.number(),
     consultation_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid consultation datetime format";
+        message: "Invalid consultation datetime format"
     }),
     chief_complaint: z.string().min(1, "Chief complaint is required"),
-    history_of_present_illness: z.string().optional().nullable();
-    past_medical_history: z.string().optional().nullable();
-    physical_examination: z.string().optional().nullable();
-    diagnosis: z.string().optional().nullable();
-    treatment_plan: z.string().optional().nullable();
-    follow_up_instructions: z.string().optional().nullable();
+    history_of_present_illness: z.string().optional().nullable(),
+    past_medical_history: z.string().optional().nullable(),
+    physical_examination: z.string().optional().nullable(),
+    diagnosis: z.string().optional().nullable(),
+    treatment_plan: z.string().optional().nullable(),
+    follow_up_instructions: z.string().optional().nullable()
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
@@ -36,7 +36,7 @@ export const _GET = async (request: NextRequest) => {
         const offset = (page - 1) * limit;
         const patientIdFilter = searchParams.get("patient_id");
         const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams
-        const dateFromFilter = searchParams.get("date_from");
+        const dateFromFilter = searchParams.get("date_from"),
         const dateToFilter = searchParams.get("date_to");
         const statusFilter = searchParams.get("status");
         const sortBy = searchParams.get("sort_by") || "consultation_datetime";
@@ -94,7 +94,7 @@ export const _GET = async (request: NextRequest) => {
         }
 
         query += ` ORDER BY c./* SECURITY: Template literal eliminated */
-        queryParameters.push(limit, offset);
+        queryParameters.push(limit, offset),
 
         const [visitsResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(...queryParameters).all<Consultation>(),
@@ -105,12 +105,12 @@ export const _GET = async (request: NextRequest) => {
         const total = countResult?.total || 0;
 
         return NextResponse.json({
-            data: results;
+            data: results,
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit)
             },
         });
 

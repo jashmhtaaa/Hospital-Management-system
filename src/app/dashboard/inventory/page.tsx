@@ -45,15 +45,15 @@ export default const _InventoryPage = () {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
         }
-        const data: InventoryItem[] = await response.json();
+        const data: InventoryItem[] = await response.json(),
         setInventoryItems(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Inventory";
+          title: "Error Fetching Inventory",
           description: message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -69,7 +69,7 @@ export default const _InventoryPage = () {
 
   }, [toast, searchTerm]);
 
-  const getStockStatus = (item: InventoryItem): { text: string; variant: "default" | "secondary" | "destructive" | "outline" } => {
+  const getStockStatus = (item: InventoryItem): { text: string, variant: "default" | "secondary" | "destructive" | "outline" } => {
     const stock = item.current_stock ?? 0;
     const reorderLevel = item.reorder_level ?? 0;
     if (stock <= 0) {

@@ -14,9 +14,9 @@ export async function POST(request: NextRequest): unknown {
     // Check for scheduling conflicts
     const conflictingAppointment = await prisma.appointment.findFirst({
       where: {
-        doctorId: validatedData.doctorId;
-        appointmentDate: validatedData.appointmentDate;
-        appointmentTime: validatedData.appointmentTime;
+        doctorId: validatedData.doctorId,
+        appointmentDate: validatedData.appointmentDate,
+        appointmentTime: validatedData.appointmentTime,
         status: { not: 'CANCELLED' }
       }
     });
@@ -26,24 +26,24 @@ export async function POST(request: NextRequest): unknown {
     }
 
     const appointment = await prisma.appointment.create({
-      data: validatedData;
+      data: validatedData,
       include: {
-        patient: true;
+        patient: true,
         doctor: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            specialization: true;
+            specialization: true
           }
         },
-        department: true;
+        department: true
       }
     });
 
     await AuditService.logUserAction(
       {
-        userId: request.headers.get('x-user-id') || undefined;
-        ipAddress: request.ip;
+        userId: request.headers.get('x-user-id') || undefined,
+        ipAddress: request.ip
       },
       'CREATE',
       'APPOINTMENT',
@@ -83,22 +83,22 @@ export async function GET(request: NextRequest): unknown {
         include: {
           patient: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              mrn: true;
-              phone: true;
+              mrn: true,
+              phone: true
             }
           },
           doctor: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              specialization: true;
+              specialization: true
             }
           },
           department: {
             select: {
-              name: true;
+              name: true
             }
           }
         }

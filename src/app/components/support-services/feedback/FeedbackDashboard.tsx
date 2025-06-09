@@ -17,66 +17,66 @@ import { toast } from '@/components/ui/use-toast';
 
 // Define types for feedback and complaint data
 interface Feedback {
-  id: string;
+  id: string,
   type: string;
-  source: string;
+  source: string,
   rating: number;
   comments?: string;
-  status: string;
+  status: string,
   createdAt: string;
   departmentId?: string;
   department?: { name: string };
   serviceType?: string;
   submittedById?: string;
-  submittedByUser?: { name: string; email: string };
+  submittedByUser?: { name: string, email: string };
   reviewedById?: string;
   reviewedByUser?: { name: string };
   reviewedAt?: string;
-  _count?: { responses: number; attachments: number; followUpActions: number };
+  _count?: { responses: number, attachments: number; followUpActions: number };
 }
 
 interface Complaint {
-  id: string;
+  id: string,
   title: string;
-  category: string;
+  category: string,
   severity: string;
-  status: string;
+  status: string,
   createdAt: string;
   departmentId?: string;
   department?: { name: string };
   submittedById?: string;
-  submittedByUser?: { name: string; email: string };
+  submittedByUser?: { name: string, email: string };
   assignedToId?: string;
   assignedToUser?: { name: string };
   dueDate?: string;
-  _count?: { activities: number; attachments: number; followUpActions: number };
+  _count?: { activities: number, attachments: number; followUpActions: number };
 }
 
 interface AnalyticsData {
-  feedbackByType: { type: string; _count: number }[];
-  feedbackBySource: { source: string; _count: number }[];
-  feedbackByStatus: { status: string; _count: number }[];
-  feedbackByServiceType: { serviceType: string; _count: number }[];
-  feedbackByDepartment: { department: string; count: number }[];
-  overallRating: number;
-  ratingsByServiceType: Record<string, { count: number; sum: number; avg: number }>;
-  ratingsByDepartment: Record<string, { count: number; sum: number; avg: number }>;
-  complaintsByCategory: { category: string; _count: number }[];
-  complaintsBySeverity: { severity: string; _count: number }[];
-  complaintsByStatus: { status: string; _count: number }[];
-  resolutionTimes: Record<string, { count: number; totalDays: number; avgDays: number }>;
-  period: string;
+  feedbackByType: { type: string, _count: number }[];
+  feedbackBySource: { source: string, _count: number }[];
+  feedbackByStatus: { status: string, _count: number }[];
+  feedbackByServiceType: { serviceType: string, _count: number }[];
+  feedbackByDepartment: { department: string, count: number }[];
+  overallRating: number,
+  ratingsByServiceType: Record<string, { count: number, sum: number; avg: number }>;
+  ratingsByDepartment: Record<string, { count: number, sum: number; avg: number }>;
+  complaintsByCategory: { category: string, _count: number }[];
+  complaintsBySeverity: { severity: string, _count: number }[];
+  complaintsByStatus: { status: string, _count: number }[];
+  resolutionTimes: Record<string, { count: number, totalDays: number; avgDays: number }>;
+  period: string
 }
 
 // Define columns for feedback table
 const feedbackColumns: ColumnDef<Feedback>[] = [
   {
-    accessorKey: 'id';
+    accessorKey: 'id',
     header: 'ID';
     cell: ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
   },
   {
-    accessorKey: 'type';
+    accessorKey: 'type',
     header: 'Type';
     cell: ({ row }) => (
       <Badge variant="outline" className="capitalize">;
@@ -85,7 +85,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     ),
   },
   {
-    accessorKey: 'rating';
+    accessorKey: 'rating',
     header: 'Rating';
     cell: ({ row }) => {
       const rating = row.getValue('rating') as number;
@@ -101,7 +101,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     },
   },
   {
-    accessorKey: 'source';
+    accessorKey: 'source',
     header: 'Source';
     cell: ({ row }) => (
       <Badge variant="secondary" className="capitalize">;
@@ -110,7 +110,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     ),
   },
   {
-    accessorKey: 'department';
+    accessorKey: 'department',
     header: 'Department';
     cell: ({ row }) => {
       const department = row.original.department;
@@ -118,7 +118,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     },
   },
   {
-    accessorKey: 'status';
+    accessorKey: 'status',
     header: 'Status';
     cell: ({ row }) => {
       const status = row.getValue('status') as string;
@@ -147,12 +147,12 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     },
   },
   {
-    accessorKey: 'createdAt';
+    accessorKey: 'createdAt',
     header: 'Date';
     cell: ({ row }) => format(new Date(row.getValue('createdAt')), 'MMM d, yyyy'),
   },
   {
-    id: 'actions';
+    id: 'actions',
     cell: ({ row }) => (
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/feedback/${row.original.id}`}>
         View
@@ -164,17 +164,17 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
 // Define columns for complaint table
 const complaintColumns: ColumnDef<Complaint>[] = [
   {
-    accessorKey: 'id';
+    accessorKey: 'id',
     header: 'ID';
     cell: ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
   },
   {
-    accessorKey: 'title';
+    accessorKey: 'title',
     header: 'Title';
     cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('title')}</div>,
   },
   {
-    accessorKey: 'category';
+    accessorKey: 'category',
     header: 'Category';
     cell: ({ row }) => (
       <Badge variant="outline" className="capitalize">;
@@ -183,7 +183,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     ),
   },
   {
-    accessorKey: 'severity';
+    accessorKey: 'severity',
     header: 'Severity';
     cell: ({ row }) => {
       const severity = row.getValue('severity') as string;
@@ -212,7 +212,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     },
   },
   {
-    accessorKey: 'status';
+    accessorKey: 'status',
     header: 'Status';
     cell: ({ row }) => {
       const status = row.getValue('status') as string;
@@ -244,7 +244,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     },
   },
   {
-    accessorKey: 'department';
+    accessorKey: 'department',
     header: 'Department';
     cell: ({ row }) => {
       const department = row.original.department;
@@ -252,7 +252,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     },
   },
   {
-    accessorKey: 'assignedToUser';
+    accessorKey: 'assignedToUser',
     header: 'Assigned To';
     cell: ({ row }) => {
       const assignedTo = row.original.assignedToUser;
@@ -260,12 +260,12 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     },
   },
   {
-    accessorKey: 'createdAt';
+    accessorKey: 'createdAt',
     header: 'Date';
     cell: ({ row }) => format(new Date(row.getValue('createdAt')), 'MMM d, yyyy'),
   },
   {
-    id: 'actions';
+    id: 'actions',
     cell: ({ row }) => (
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/complaints/${row.original.id}`}>
         View
@@ -287,34 +287,34 @@ export default const _FeedbackDashboard = () {
 
   // Filters
   const [feedbackFilters, setFeedbackFilters] = useState({
-    type: '';
+    type: '',
     source: '';
-    status: '';
+    status: '',
     departmentId: '';
-    serviceType: '';
+    serviceType: '',
     page: 1;
-    limit: 10;
+    limit: 10
   });
 
   const [complaintFilters, setComplaintFilters] = useState({
-    category: '';
+    category: '',
     severity: '';
-    status: '';
+    status: '',
     departmentId: '';
-    assignedToId: '';
+    assignedToId: '',
     page: 1;
-    limit: 10;
+    limit: 10
   });
 
   // Pagination
   const [feedbackPagination, setFeedbackPagination] = useState({
-    total: 0;
-    totalPages: 0;
+    total: 0,
+    totalPages: 0
   });
 
   const [complaintPagination, setComplaintPagination] = useState({
-    total: 0;
-    totalPages: 0;
+    total: 0,
+    totalPages: 0
   });
 
   // Load data on component mount and when filters change
@@ -347,15 +347,15 @@ export default const _FeedbackDashboard = () {
       const data = await response.json(),
       setFeedbackData(data.data);
       setFeedbackPagination({
-        total: data.pagination.total;
-        totalPages: data.pagination.totalPages;
+        total: data.pagination.total,
+        totalPages: data.pagination.totalPages
       });
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to load feedback data';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -379,15 +379,15 @@ export default const _FeedbackDashboard = () {
       const data = await response.json(),
       setComplaintData(data.data);
       setComplaintPagination({
-        total: data.pagination.total;
-        totalPages: data.pagination.totalPages;
+        total: data.pagination.total,
+        totalPages: data.pagination.totalPages
       });
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to load complaint data';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -407,9 +407,9 @@ export default const _FeedbackDashboard = () {
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to load analytics data';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     }
   };
@@ -419,8 +419,8 @@ export default const _FeedbackDashboard = () {
     setFeedbackFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change;
-    }));
+      page: key === 'page' ? value : 1, // Reset page when other filters change
+    }))
   };
 
   // Handle complaint filter changes
@@ -428,8 +428,8 @@ export default const _FeedbackDashboard = () {
     setComplaintFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change;
-    }));
+      page: key === 'page' ? value : 1, // Reset page when other filters change
+    }))
   };
 
   // Export data to CSV
@@ -456,15 +456,15 @@ export default const _FeedbackDashboard = () {
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document.body.removeChild(link)
   };
 
   // Prepare data for charts
   const prepareChartData = (data: unknown[]) => {
     return data.map((item, index) => ({
       ...item,
-      color: COLORS[index % COLORS.length];
-    }));
+      color: COLORS[index % COLORS.length]
+    }))
   };
 
   return (
@@ -580,10 +580,10 @@ export default const _FeedbackDashboard = () {
                 data={feedbackData}
                 isLoading={isLoading}
                 pagination={{
-                  pageIndex: feedbackFilters.page - 1;
+                  pageIndex: feedbackFilters.page - 1,
                   pageSize: feedbackFilters.limit;
-                  pageCount: feedbackPagination.totalPages;
-                  onPageChange: (pageIndex) => handleFeedbackFilterChange('page', pageIndex + 1),;
+                  pageCount: feedbackPagination.totalPages,
+                  onPageChange: (pageIndex) => handleFeedbackFilterChange('page', pageIndex + 1),
                 }}
               />
             </CardContent>
@@ -684,10 +684,10 @@ export default const _FeedbackDashboard = () {
                 data={complaintData}
                 isLoading={isLoading}
                 pagination={{
-                  pageIndex: complaintFilters.page - 1;
+                  pageIndex: complaintFilters.page - 1,
                   pageSize: complaintFilters.limit;
-                  pageCount: complaintPagination.totalPages;
-                  onPageChange: (pageIndex) => handleComplaintFilterChange('page', pageIndex + 1),;
+                  pageCount: complaintPagination.totalPages,
+                  onPageChange: (pageIndex) => handleComplaintFilterChange('page', pageIndex + 1),
                 }}
               />
             </CardContent>
@@ -778,7 +778,7 @@ export default const _FeedbackDashboard = () {
                                   { name: 'Overall', rating: analyticsData.overallRating },
                                   ...Object.entries(analyticsData.ratingsByServiceType).map(([type, data]) => ({
                                     name: type.replace(/_/g, ' '),
-                                    rating: data.avg;
+                                    rating: data.avg
                                   })),
                                 ]}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 40 }}

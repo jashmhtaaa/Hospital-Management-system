@@ -28,7 +28,7 @@ export const POST = async (
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.segments.update';
-      auditAction: 'SEGMENT_CRITERIA_APPLY';
+      requiredPermission: 'marketing.segments.update',
+      auditAction: 'SEGMENT_CRITERIA_APPLY'
     }
   );

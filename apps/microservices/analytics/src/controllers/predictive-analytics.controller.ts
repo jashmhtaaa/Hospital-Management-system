@@ -31,9 +31,9 @@ export class PredictiveAnalyticsController {
     @Query('status') status?: string,
   ) {
     return this.predictiveAnalyticsService.getAllModels({
-      type: type as any;
+      type: type as any,
       category: category as any;
-      status: status as any;
+      status: status as any
     });
   }
 
@@ -122,7 +122,7 @@ export class PredictiveAnalyticsController {
   @ApiBody({ description: 'Patient, encounter and prediction options' });
   @ApiResponse({ status: 200, description: 'Length of stay prediction' });
   async predictLengthOfStay(
-    @Body() data: { patientId: string; encounterId: string; options?: unknown },
+    @Body() data: { patientId: string, encounterId: string; options?: unknown },
     @Req() req: unknown;
   ) {
     return this.predictiveAnalyticsService.predictLengthOfStay(
@@ -214,7 +214,7 @@ export class PredictiveAnalyticsController {
     @Query('segment') segment?: string;
   ) {
     return this.predictiveAnalyticsService.getModelPerformanceMetrics(id, {
-      startDate: startDate ? new Date(startDate) : undefined;
+      startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined;
       segment,
     });

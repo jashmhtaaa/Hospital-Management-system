@@ -7,18 +7,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 }
 interface RadiologyReport {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   reportDate: string;
-  studyType: string;
+  studyType: string,
   status: 'draft' | 'preliminary' | 'final' | 'amended';
-  radiologist: string;
+  radiologist: string
 }
 
 interface RadiologyReportsListProps {
-  reports: RadiologyReport[];
-  onViewReport: (reportId: string) => void;
+  reports: RadiologyReport[],
+  onViewReport: (reportId: string) => void
 }
 
 /**
@@ -31,7 +31,7 @@ export const _RadiologyReportsList = ({ reports, onViewReport }: RadiologyReport
       case 'preliminary': return <Badge variant="warning">Preliminary</Badge>;
       case 'final': return <Badge variant="success">Final</Badge>;
       case 'amended': return <Badge variant="info">Amended</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

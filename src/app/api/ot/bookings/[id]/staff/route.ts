@@ -6,7 +6,7 @@ export const _runtime = "edge";
 // Interface for the POST request body
 interface StaffAssignmentBody {
   user_id: string; // Assuming ID is string
-  role: string;
+  role: string
 }
 
 // GET /api/ot/bookings/[id]/staff - Get staff assigned to a specific OT booking
@@ -41,7 +41,7 @@ export const _GET = async (
     return NextResponse.json(results || []);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching OT staff assignments", details: errorMessage },
       { status: 500 }
@@ -160,10 +160,10 @@ export const _POST = async (
         NextResponse.json(
           { id, booking_id: bookingId, user_id, role, assigned_at: now },
           { status: 201 }
-        );
+        ),
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error assigning staff to OT booking", details: errorMessage },
       { status: 500 }
@@ -194,13 +194,13 @@ export const DELETE = async (
       {
         message: "Staff assignments removed successfully";
         // D1 delete doesn\"t reliably return changes, so we might not have an accurate count
-        // count: info.meta.changes;
+        // count: info.meta.changes
       },
       { status: 200 }
     )
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error removing staff assignments", details: errorMessage },
       { status: 500 }

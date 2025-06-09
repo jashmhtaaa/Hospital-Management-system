@@ -37,7 +37,7 @@ export const POST = async (
       return NextResponse.json(contact);
     },
     {
-      requiredPermission: 'marketing.contacts.update';
-      auditAction: 'CONTACT_LINK_PATIENT';
+      requiredPermission: 'marketing.contacts.update',
+      auditAction: 'CONTACT_LINK_PATIENT'
     }
   );

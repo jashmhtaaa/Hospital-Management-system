@@ -42,7 +42,7 @@ interface PerformanceConfig {
   readonly endpoints: readonly EndpointConfig[];
   readonly alerting: AlertConfig;
   readonly reporting: ReportingConfig;
-  readonly healthcareSpecific: HealthcareConfig;
+  readonly healthcareSpecific: HealthcareConfig
 }
 
 interface PerformanceThresholds {
@@ -86,7 +86,7 @@ interface EscalationLevel {
   readonly severity: AlertSeverity
   readonly thresholdCount: number; // Number of failures before escalation
   readonly timeWindow: number; // Time window in minutes
-  readonly recipients: readonly string[];
+  readonly recipients: readonly string[]
 }
 
 interface ReportingConfig {
@@ -94,7 +94,7 @@ interface ReportingConfig {
   readonly outputDir: string;
   readonly formats: readonly ('json' | 'html' | 'csv' | 'prometheus')[];
   readonly retention: number; // Days to keep reports
-  readonly realTimeMetrics: boolean;
+  readonly realTimeMetrics: boolean
 }
 
 interface HealthcareConfig {
@@ -103,7 +103,7 @@ interface HealthcareConfig {
   readonly emergencyAlertingEnabled: boolean;
   readonly hipaaComplianceChecks: boolean;
   readonly fhirValidationEnabled: boolean;
-  readonly medicalDeviceIntegration: boolean;
+  readonly medicalDeviceIntegration: boolean
 }
 
 type AlertSeverity = 'info' | 'warning' | 'error' | 'critical' | 'emergency';
@@ -138,7 +138,7 @@ interface PerformanceMetrics {
   readonly tlsHandshakeTime: number;
   readonly timeToFirstByte: number;
   readonly contentDownloadTime: number;
-  readonly totalTime: number;
+  readonly totalTime: number
 }
 
 interface SystemMetrics {
@@ -152,24 +152,24 @@ interface SystemMetrics {
     readonly loadAvg: readonly number[];
     readonly freeMem: number;
     readonly totalMem: number;
-    readonly uptime: number;
+    readonly uptime: number
   };
   readonly process: {
     readonly pid: number;
     readonly ppid: number;
     readonly uid?: number;
-    readonly gid?: number;
+    readonly gid?: number
   };
   readonly performance: {
     readonly eventLoopUtilization: number;
-    readonly gcMetrics?: GCMetrics;
+    readonly gcMetrics?: GCMetrics
   };
 }
 
 interface GCMetrics {
   readonly totalTime: number;
   readonly totalCount: number;
-  readonly averageTime: number;
+  readonly averageTime: number
 }
 
 interface Alert {
@@ -203,7 +203,7 @@ interface PerformanceResults {
     readonly totalRequests: number;
     readonly throughput: number; // Requests per second
     readonly p95ResponseTime: number
-    readonly p99ResponseTime: number;
+    readonly p99ResponseTime: number
   };
   readonly systemMetrics: SystemMetrics;
   readonly alerts: readonly Alert[];
@@ -211,17 +211,17 @@ interface PerformanceResults {
     readonly patientCareEndpointsHealth: number;
     readonly emergencySystemsAvailability: number;
     readonly fhirComplianceScore: number;
-    readonly clinicalWorkflowPerformance: number;
+    readonly clinicalWorkflowPerformance: number
   };
-  readonly recommendations: readonly string[];
+  readonly recommendations: readonly string[]
 }
 
 // Healthcare-optimized configuration with patient safety priorities
 const DEFAULT_CONFIG: PerformanceConfig = {
-  baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000';
-  timeout: parseInt(process.env.PERFORMANCE_TIMEOUT || '30000');
-  retries: parseInt(process.env.PERFORMANCE_RETRIES || '3');
-  concurrency: parseInt(process.env.PERFORMANCE_CONCURRENCY || '10');
+  baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000',
+  timeout: parseInt(process.env.PERFORMANCE_TIMEOUT || '30000'),
+  retries: parseInt(process.env.PERFORMANCE_RETRIES || '3'),
+  concurrency: parseInt(process.env.PERFORMANCE_CONCURRENCY || '10'),
   thresholds: {
     responseTime: 2000, // 2 seconds for general endpoints
     criticalResponseTime: 1000, // 1 second for critical healthcare functions
@@ -233,7 +233,7 @@ const DEFAULT_CONFIG: PerformanceConfig = {
     fhirComplianceScore: 95, // 95% FHIR compliance required
     databaseResponseTime: 500, // 500ms for database queries
     apiLatency: 200, // 200ms for API responses
-    throughput: 100 // 100 requests per second minimum;
+    throughput: 100 // 100 requests per second minimum
   },
   endpoints: [
     // Patient Care Critical Endpoints
@@ -269,7 +269,7 @@ const DEFAULT_CONFIG: PerformanceConfig = {
     { path: '/api/security/health', name: 'Security Health Check', critical: true, category: 'patient_care', method: 'GET' }
   ],
   alerting: {
-    enabled: true;
+    enabled: true,
     webhookUrl: process.env.ALERT_WEBHOOK_URL;
     escalationLevels: [
       { severity: 'warning', thresholdCount: 3, timeWindow: 5, recipients: ['team@hospital.com'] },
@@ -277,22 +277,22 @@ const DEFAULT_CONFIG: PerformanceConfig = {
       { severity: 'critical', thresholdCount: 1, timeWindow: 1, recipients: ['emergency@hospital.com'] },
       { severity: 'emergency', thresholdCount: 1, timeWindow: 1, recipients: ['cto@hospital.com', 'emergency@hospital.com'] }
     ],
-    suppressionTime: 15 // 15 minutes;
+    suppressionTime: 15 // 15 minutes
   },
   reporting: {
-    enabled: true;
+    enabled: true,
     outputDir: './docs/monitoring/performance';
     formats: ['json', 'html', 'prometheus'],
     retention: 30, // 30 days
-    realTimeMetrics: true;
+    realTimeMetrics: true
   },
   healthcareSpecific: {
-    patientSafetyMode: true;
+    patientSafetyMode: true,
     clinicalWorkflowTracking: true;
-    emergencyAlertingEnabled: true;
+    emergencyAlertingEnabled: true,
     hipaaComplianceChecks: true;
-    fhirValidationEnabled: true;
-    medicalDeviceIntegration: false;
+    fhirValidationEnabled: true,
+    medicalDeviceIntegration: false
   }
 } as const
 
@@ -324,21 +324,21 @@ class PerformanceMonitor {
                       responseTime < threshold;
 
         const result: EndpointResult = {
-          name: endpoint.name;
+          name: endpoint.name,
           path: endpoint.path;
           url,
-          category: endpoint.category;
+          category: endpoint.category,
           critical: endpoint.critical;
           status: this.determineEndpointStatus(response.statusCode, responseTime, threshold),
           statusCode: response.statusCode;
           responseTime,
-          contentLength: response.contentLength || 0;
+          contentLength: response.contentLength || 0,
           headers: response.headers;
           passed,
-          timestamp: new Date().toISOString();
+          timestamp: new Date().toISOString(),
           retryCount,
-          healthcareWorkflow: endpoint.healthcareWorkflow;
-          performanceMetrics: this.calculatePerformanceMetrics(startTime, endTime);
+          healthcareWorkflow: endpoint.healthcareWorkflow,
+          performanceMetrics: this.calculatePerformanceMetrics(startTime, endTime)
         };
 
         // Healthcare-specific validations
@@ -361,21 +361,21 @@ class PerformanceMonitor {
           const responseTime = Math.round(endTime - startTime);
 
           return {
-            name: endpoint.name;
+            name: endpoint.name,
             path: endpoint.path;
             url,
-            category: endpoint.category;
+            category: endpoint.category,
             critical: endpoint.critical;
-            status: 'error';
+            status: 'error',
             statusCode: 0;
             responseTime,
-            contentLength: 0;
+            contentLength: 0,
             headers: {},
-            passed: false;
-            timestamp: new Date().toISOString();
-            retryCount: retryCount - 1;
-            error: error instanceof Error ? error.message : String(error);
-            healthcareWorkflow: endpoint.healthcareWorkflow;
+            passed: false,
+            timestamp: new Date().toISOString(),
+            retryCount: retryCount - 1,
+            error: error instanceof Error ? error.message : String(error),
+            healthcareWorkflow: endpoint.healthcareWorkflow
           };
         }
 
@@ -388,19 +388,19 @@ class PerformanceMonitor {
   }
 
   private async makeRequest(url: string, endpoint: EndpointConfig): Promise<{
-    statusCode: number;
+    statusCode: number,
     headers: Record<string, string | string[]>;
-    body: string;
-    contentLength: number;
+    body: string,
+    contentLength: number
   }> {
     return new Promise((resolve, reject) => {
       const urlObj = new URL(url);
       const options = {
-        hostname: urlObj.hostname;
+        hostname: urlObj.hostname,
         port: urlObj.port;
-        path: urlObj.pathname + urlObj.search;
+        path: urlObj.pathname + urlObj.search,
         method: endpoint.method;
-        timeout: this.config.timeout;
+        timeout: this.config.timeout,
         headers: {
           'User-Agent': 'HMS-Performance-Monitor/2.0',
           'Accept': 'application/json, text/html',
@@ -423,7 +423,7 @@ class PerformanceMonitor {
 
         res.on('end', () => {
           resolve({
-            statusCode: res.statusCode || 0;
+            statusCode: res.statusCode || 0,
             headers: res.headers;
             body,
             contentLength
@@ -479,7 +479,7 @@ class PerformanceMonitor {
     // Simplified metrics - in production, use detailed timing
     return {
       dnsLookupTime: 0, // Would be measured with real network timing
-      tcpConnectionTime: 0;
+      tcpConnectionTime: 0,
       tlsHandshakeTime: 0;
       timeToFirstByte: totalTime * 0.7, // Estimated
       contentDownloadTime: totalTime * 0.3, // Estimated
@@ -527,27 +527,27 @@ class PerformanceMonitor {
     const memoryUsage = process.memoryUsage();
 
     return {
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       memory: memoryUsage;
-      uptime: process.uptime();
+      uptime: process.uptime(),
       version: process.version;
-      platform: process.platform;
+      platform: process.platform,
       system: {
-        cpus: os.cpus().length;
-        loadAvg: os.loadavg();
-        freeMem: os.freemem();
-        totalMem: os.totalmem();
-        uptime: os.uptime();
+        cpus: os.cpus().length,
+        loadAvg: os.loadavg(),
+        freeMem: os.freemem(),
+        totalMem: os.totalmem(),
+        uptime: os.uptime()
       },
       process: {
-        pid: process.pid;
+        pid: process.pid,
         ppid: process.ppid;
-        uid: process.getuid?.();
-        gid: process.getgid?.();
+        uid: process.getuid?.(),
+        gid: process.getgid?.()
       },
       performance: {
-        eventLoopUtilization: this.getEventLoopUtilization();
-        gcMetrics: this.getGCMetrics();
+        eventLoopUtilization: this.getEventLoopUtilization(),
+        gcMetrics: this.getGCMetrics()
       }
     };
   }
@@ -560,9 +560,9 @@ class PerformanceMonitor {
   private getGCMetrics(): GCMetrics {
     // Simplified - use v8.getHeapStatistics() in production
     return {
-      totalTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100;
+      totalTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100,
       totalCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50);
-      averageTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5;
+      averageTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5
     }
   }
 
@@ -594,9 +594,9 @@ class PerformanceMonitor {
       const recommendations = this.generateRecommendations(endpointResults, alerts)
 
       const results: PerformanceResults = {
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString(),
         overall: {
-          passed: overallScore >= 80 && alerts.filter(a => a.severity === 'critical').length === 0;
+          passed: overallScore >= 80 && alerts.filter(a => a.severity === 'critical').length === 0,
           score: overallScore;
           duration: Math.round(crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
           slaCompliance
@@ -653,8 +653,8 @@ class PerformanceMonitor {
       errorCount,
       totalRequests,
       throughput: totalRequests / (this.results.overall?.duration || 1000) * 1000, // Requests per second
-      p95ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.95)];
-      p99ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.99)];
+      p95ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.95)],
+      p99ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.99)]
     }
   }
 
@@ -665,10 +665,10 @@ class PerformanceMonitor {
     const workflowEndpoints = endpoints.filter(e => e.healthcareWorkflow);
 
     return {
-      patientCareEndpointsHealth: this.calculateCategoryHealth(patientCareEndpoints);
-      emergencySystemsAvailability: this.calculateCategoryHealth(emergencyEndpoints);
-      fhirComplianceScore: this.calculateFHIRCompliance(fhirEndpoints);
-      clinicalWorkflowPerformance: this.calculateCategoryHealth(workflowEndpoints);
+      patientCareEndpointsHealth: this.calculateCategoryHealth(patientCareEndpoints),
+      emergencySystemsAvailability: this.calculateCategoryHealth(emergencyEndpoints),
+      fhirComplianceScore: this.calculateFHIRCompliance(fhirEndpoints),
+      clinicalWorkflowPerformance: this.calculateCategoryHealth(workflowEndpoints)
     };
   }
 
@@ -687,7 +687,7 @@ class PerformanceMonitor {
   }
 
   private generateAlerts(
-    endpoints: readonly EndpointResult[];
+    endpoints: readonly EndpointResult[],
     metrics: PerformanceResults['metrics'];
     systemMetrics: SystemMetrics
   ): Alert[] {
@@ -698,16 +698,16 @@ class PerformanceMonitor {
     const criticalFailures = endpoints.filter(e => e?.critical && !e.passed)
     criticalFailures.forEach(endpoint => {
       alerts.push({
-        type: 'availability';
+        type: 'availability',
         severity: endpoint.category === 'emergency' ? 'emergency' : 'critical';
         message: `Critical healthcare endpoint ${endpoint.name} is failing`,
-        endpoint: endpoint.name;
+        endpoint: endpoint.name,
         statusCode: endpoint.statusCode;
         error: endpoint.error;
         timestamp,
-        category: endpoint.category;
-        healthcareImpact: this.determineHealthcareImpact(endpoint);
-        recommendations: this.getEndpointRecommendations(endpoint);
+        category: endpoint.category,
+        healthcareImpact: this.determineHealthcareImpact(endpoint),
+        recommendations: this.getEndpointRecommendations(endpoint)
       });
     });
 
@@ -715,12 +715,12 @@ class PerformanceMonitor {
     const emergencyFailures = endpoints.filter(e => e.category === 'emergency' && !e.passed)
     emergencyFailures.forEach(endpoint => {
       alerts.push({
-        type: 'healthcare';
+        type: 'healthcare',
         severity: 'emergency';
         message: `Emergency system ${endpoint.name} is unavailable - Patient safety at risk`,
         endpoint: endpoint.name;
         timestamp,
-        healthcareImpact: 'patient_safety';
+        healthcareImpact: 'patient_safety',
         recommendations: [
           'Activate emergency backup systems immediately',
           'Notify clinical staff of system outage',
@@ -733,8 +733,8 @@ class PerformanceMonitor {
     const slowEndpoints = endpoints.filter(e => {
       const threshold = this.getResponseTimeThreshold({
         ...e,
-        method: 'GET' as const;
-        maxResponseTime: undefined ;
+        method: 'GET' as const,
+        maxResponseTime: undefined 
       } as EndpointConfig)
       return e.responseTime > threshold;
     });
@@ -747,16 +747,16 @@ class PerformanceMonitor {
         type: 'performance';
         severity,
         message: `${endpoint.name} response time (${endpoint.responseTime}ms) exceeds threshold`,
-        endpoint: endpoint.name;
+        endpoint: endpoint.name,
         value: endpoint.responseTime;
         threshold: this.getResponseTimeThreshold({
           ...endpoint,
-          method: 'GET' as const;
-          maxResponseTime: undefined;
+          method: 'GET' as const,
+          maxResponseTime: undefined
         } as EndpointConfig),
         timestamp,
-        healthcareImpact: this.determineHealthcareImpact(endpoint);
-        recommendations: this.getPerformanceRecommendations(endpoint);
+        healthcareImpact: this.determineHealthcareImpact(endpoint),
+        recommendations: this.getPerformanceRecommendations(endpoint)
       });
     });
 
@@ -764,10 +764,10 @@ class PerformanceMonitor {
     const memoryUsagePercent = (systemMetrics.memory.heapUsed / systemMetrics.memory.heapTotal) * 100
     if (memoryUsagePercent > this.config.thresholds.memoryUsage) {
       alerts.push({
-        type: 'performance';
+        type: 'performance',
         severity: memoryUsagePercent > 95 ? 'critical' : 'warning';
         message: `High memory usage detected: ${memoryUsagePercent.toFixed(1)}%`,
-        value: memoryUsagePercent;
+        value: memoryUsagePercent,
         threshold: this.config.thresholds.memoryUsage;
         timestamp,
         recommendations: [
@@ -783,11 +783,11 @@ class PerformanceMonitor {
     const fhirNonCompliant = fhirEndpoints.filter(e => e.fhirCompliant === false);
     if (fhirNonCompliant.length > 0) {
       alerts.push({
-        type: 'compliance';
+        type: 'compliance',
         severity: 'error';
         message: `FHIR compliance violations detected in ${fhirNonCompliant.length} endpoints`,
         timestamp,
-        healthcareImpact: 'compliance';
+        healthcareImpact: 'compliance',
         recommendations: [
           'Review FHIR specification compliance',
           'Validate response schemas',
@@ -879,8 +879,8 @@ class PerformanceMonitor {
     const meetingSLA = criticalEndpoints.filter(e => {
       const threshold = this.getResponseTimeThreshold({
         ...e,
-        method: 'GET' as const;
-        maxResponseTime: undefined;
+        method: 'GET' as const,
+        maxResponseTime: undefined
       } as EndpointConfig);
       return e?.passed && e.responseTime <= threshold;
     }).length;
@@ -947,9 +947,9 @@ class PerformanceMonitor {
 
     const payload = {
       alert,
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       system: 'Hospital Management System';
-      environment: process.env.NODE_ENV || 'development';
+      environment: process.env.NODE_ENV || 'development'
     };
 
     // In a real implementation, send to webhook, email, Slack, etc.
@@ -999,20 +999,20 @@ class PerformanceMonitor {
 <head>
     <title>HMS Performance Report</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .header { background: #2563eb; color: white; padding: 20px; border-radius: 8px; }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
-        .metric { background: #f3f4f6; padding: 15px; border-radius: 8px; }
-        .metric h3 { margin: 0 0 10px 0; color: #1f2937; }
-        .metric .value { font-size: 24px; font-weight: bold; color: #059669; }
-        .alerts { margin: 20px 0; }
-        .alert { padding: 10px; margin: 5px 0; border-radius: 4px; }
-        .alert.critical { background: #fef2f2; border-left: 4px solid #dc2626; }
-        .alert.warning { background: #fffbeb; border-left: 4px solid #d97706; }
-        .endpoints { margin: 20px 0; }
-        .endpoint { background: white; border: 1px solid #e5e7eb; padding: 15px; margin: 10px 0; border-radius: 8px; }
-        .endpoint.failed { border-left: 4px solid #dc2626; }
-        .endpoint.passed { border-left: 4px solid #059669; }
+        body { font-family: Arial, sans-serif, margin: 20px }
+        .header { background: #2563eb, color: white; padding: 20px; border-radius: 8px }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)), gap: 20px; margin: 20px 0 }
+        .metric { background: #f3f4f6, padding: 15px; border-radius: 8px }
+        .metric h3 { margin: 0 0 10px 0, color: #1f2937 }
+        .metric .value { font-size: 24px; font-weight: bold, color: #059669 }
+        .alerts { margin: 20px 0 }
+        .alert { padding: 10px, margin: 5px 0; border-radius: 4px }
+        .alert.critical { background: #fef2f2; border-left: 4px solid #dc2626 }
+        .alert.warning { background: #fffbeb; border-left: 4px solid #d97706 }
+        .endpoints { margin: 20px 0 }
+        .endpoint { background: white, border: 1px solid #e5e7eb; padding: 15px, margin: 10px 0; border-radius: 8px }
+        .endpoint.failed { border-left: 4px solid #dc2626 }
+        .endpoint.passed { border-left: 4px solid #059669 }
     </style>
 </head>
 <body>
@@ -1073,8 +1073,8 @@ class PerformanceMonitor {
       const _labels = `{name="${endpoint.name}",category="${endpoint.category}",critical="${endpoint.critical}"}`
       metrics.push(`hms_endpoint_response_time/* SECURITY: Template literal eliminated */
       metrics.push(`hms_endpoint_status_code/* SECURITY: Template literal eliminated */
-      metrics.push(`hms_endpoint_passed/* SECURITY: Template literal eliminated */;
-    });
+      metrics.push(`hms_endpoint_passed/* SECURITY: Template literal eliminated */
+    }),
 
     return metrics.join('\n') + '\n';
   }
@@ -1104,15 +1104,15 @@ class PerformanceMonitor {
     if (criticalAlerts.length > 0) {
       /* SECURITY: Console statement removed */
       criticalAlerts.forEach(alert => {
-        /* SECURITY: Console statement removed */;
-      });
+        /* SECURITY: Console statement removed */
+      }),
     }
 
     // Show recommendations
     if (results.recommendations.length > 0) {
       /* SECURITY: Console statement removed */results.recommendations.forEach(rec => {
-        /* SECURITY: Console statement removed */;
-      });
+        /* SECURITY: Console statement removed */
+      }),
     }
   }
 
@@ -1123,7 +1123,7 @@ class PerformanceMonitor {
   private log(message: string, level: 'info' | 'warning' | 'error' = 'info'): void {
     const timestamp = new Date().toISOString();
     const _icon = level === 'error' ? '🚨' : level === 'warning' ? '⚠️' : 'ℹ️';
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   }
 }
 
@@ -1147,7 +1147,7 @@ async function main(): Promise<void> {
 
   } catch (error) {
     /* SECURITY: Console statement removed */
-    process.exit(1);
+    process.exit(1)
   }
 }
 

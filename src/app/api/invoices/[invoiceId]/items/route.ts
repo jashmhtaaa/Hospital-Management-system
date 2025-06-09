@@ -21,32 +21,32 @@ const getInvoiceId = (pathname: string): number | null {
 
 // POST handler for adding an item to an invoice
 const AddInvoiceItemSchema = z.object({
-    billable_item_id: z.number().int().positive();
+    billable_item_id: z.number().int().positive(),
     batch_id: z.number().int().positive().optional().nullable(), // Optional, e.g., for pharmacy items
-    quantity: z.number().int().positive("Quantity must be positive");
+    quantity: z.number().int().positive("Quantity must be positive"),
     unit_price: z.number().nonnegative().optional(), // Optional: If not provided, fetch from BillableItems
-    discount_amount: z.number().nonnegative().optional().default(0);
+    discount_amount: z.number().nonnegative().optional().default(0),
     tax_amount: z.number().nonnegative().optional().default(0), // Could be calculated based on item/rules
-    description: z.string().optional(), // Optional override;
+    description: z.string().optional(), // Optional override
 });
 
 export const _POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
-    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (invoiceId === null) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -57,7 +57,7 @@ export const _POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -91,7 +91,7 @@ export const _POST = async (request: Request) => {
         if (!itemCheck?.results?.length) {
             return new Response(JSON.stringify({ error: "Billable item not found or inactive" }), { status: 404 });
         }
-        const billableItem = itemCheck.results[0] as { item_id: number; unit_price: number; is_taxable: boolean };
+        const billableItem = itemCheck.results[0] as { item_id: number, unit_price: number; is_taxable: boolean };
 
         // Use provided unit_price or fetch from billable item
         const unitPrice = itemData.unit_price !== undefined ? itemData.unit_price : billableItem.unit_price;
@@ -169,7 +169,7 @@ export const _POST = async (request: Request) => {
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         })
     }

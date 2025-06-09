@@ -12,12 +12,12 @@ const prisma = new PrismaClient();
 const radiologyRequestStatusValues = Object.values(RadiologyRequestStatus);
 
 const createRadiologyRequestSchema = z.object({
-  patientId: z.string().cuid("Invalid patient ID");
-  orderedById: z.string().cuid("Invalid orderedBy ID");
+  patientId: z.string().cuid("Invalid patient ID"),
+  orderedById: z.string().cuid("Invalid orderedBy ID"),
   procedureIds: z.array(z.string().cuid("Invalid procedure ID")).min(1, "At least one procedure is required"),
-  status: z.nativeEnum(RadiologyRequestStatus).default(RadiologyRequestStatus.PENDING_SCHEDULE).optional();
-  reason: z.string().max(2000).optional().nullable();
-  notes: z.string().max(2000).optional().nullable();
+  status: z.nativeEnum(RadiologyRequestStatus).default(RadiologyRequestStatus.PENDING_SCHEDULE).optional(),
+  reason: z.string().max(2000).optional().nullable(),
+  notes: z.string().max(2000).optional().nullable(),
   scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." }).optional().nullable(),
 });
 
@@ -30,13 +30,13 @@ export async const _POST = (request: NextRequest) => {
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canCreateRequest = await hasPermission(userId, "RADIOLOGY_CREATE_REQUEST");
     if (!canCreateRequest) {
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to create radiology requests.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to create radiology requests.", 403)
     }
 
     const body: unknown = await request.json();
@@ -75,17 +75,17 @@ export async const _POST = (request: NextRequest) => {
     const dataToCreate: Prisma.RadiologyRequestCreateInput = {
         patient: { connect: { id: patientId } },
         orderedBy: { connect: { id: orderedById } },
-        status: status || RadiologyRequestStatus.PENDING_SCHEDULE;
-        reason: reason;
-        notes: notes;
-        scheduledDate: scheduledDate ? new Date(scheduledDate) : null;
+        status: status || RadiologyRequestStatus.PENDING_SCHEDULE,
+        reason: reason,
+        notes: notes,
+        scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
         procedures: {
           connect: procedureIds.map((id: string) => ({ id })),
         },
       };
 
     const newRadiologyRequest = await prisma.radiologyRequest.create({
-      data: dataToCreate;
+      data: dataToCreate,
       include: {
         patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
         orderedBy: { select: { id: true, name: true } },
@@ -110,7 +110,7 @@ export async const _POST = (request: NextRequest) => {
       if (error.code === "P2002") {
         errStatus = 409;
         errMessage = "Conflict: This radiology request cannot be created due to a conflict.";
-        const target = Array.isArray(meta?.target) ? meta.target.join(", ") : String(meta?.target);
+        const target = Array.isArray(meta?.target) ? meta.target.join(", ") : String(meta?.target),
         errDetails = `A unique constraint was violated. Fields: ${target}`;
       } else if (error.code === "P2025") {
         errStatus = 400;
@@ -132,7 +132,7 @@ export async const _GET = (request: NextRequest) => {
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canViewAll = await hasPermission(userId, "RADIOLOGY_VIEW_ALL_REQUESTS");
@@ -140,7 +140,7 @@ export async const _GET = (request: NextRequest) => {
 
     if (!canViewAll && !canViewPatient) {
       await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to view radiology requests.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to view radiology requests.", 403)
     }
 
     const { searchParams } = new URL(request.url);
@@ -177,7 +177,7 @@ export async const _GET = (request: NextRequest) => {
 
     const [radiologyRequests, totalCount] = await prisma.$transaction([
       prisma.radiologyRequest.findMany({
-        where: whereClause;
+        where: whereClause,
         include: {
           patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
           orderedBy: { select: { id: true, name: true } },
@@ -186,7 +186,7 @@ export async const _GET = (request: NextRequest) => {
         },
         orderBy: { requestDate: "desc" },
         skip,
-        take: limit;
+        take: limit
       }),
       prisma.radiologyRequest.count({ where: whereClause })
     ])
@@ -196,12 +196,12 @@ export async const _GET = (request: NextRequest) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     return sendSuccessResponse({
-      data: radiologyRequests;
+      data: radiologyRequests,
       pagination: {
         page,
         limit,
         totalCount,
-        totalPages: Math.ceil(totalCount / limit);
+        totalPages: Math.ceil(totalCount / limit)
       }
     })
 

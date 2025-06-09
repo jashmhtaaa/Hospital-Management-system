@@ -19,12 +19,12 @@ import { validateDrugLabInteractionRequest } from '../../../../../lib/validation
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 // Initialize services
@@ -65,11 +65,11 @@ export const POST = async (req: NextRequest) => {
     if (data?.patientId && labResults.length === 0) {
       const patientLabResults = await getPatientLabResults(data.patientId);
       labResults = patientLabResults.map(lr => ({
-        code: lr.code;
+        code: lr.code,
         value: lr.value;
-        unit: lr.unit;
+        unit: lr.unit,
         referenceRange: lr.referenceRange;
-        abnormalFlag: lr.abnormalFlag;
+        abnormalFlag: lr.abnormalFlag
       }));
     }
 
@@ -81,14 +81,14 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_DRUG_LAB';
+      action: 'CHECK_DRUG_LAB',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       patientId: data.patientId;
       details: {
-        medicationIds: data.medicationIds;
+        medicationIds: data.medicationIds,
         labResultCount: labResults.length;
-        interactionCount: interactions.length;
+        interactionCount: interactions.length
       }
     });
 
@@ -96,12 +96,12 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
       interactions,
       metadata: {
-        totalCount: interactions.length;
+        totalCount: interactions.length,
         severityCounts: {
-          critical: interactions.filter(i => i.severity === 'critical').length;
+          critical: interactions.filter(i => i.severity === 'critical').length,
           significant: interactions.filter(i => i.severity === 'significant').length;
-          moderate: interactions.filter(i => i.severity === 'moderate').length;
-          minor: interactions.filter(i => i.severity === 'minor').length;
+          moderate: interactions.filter(i => i.severity === 'moderate').length,
+          minor: interactions.filter(i => i.severity === 'minor').length
         }
       }
     }, { status: 200 });

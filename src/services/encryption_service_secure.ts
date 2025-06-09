@@ -16,11 +16,11 @@ export interface IEncryptionService {
 }
 
 interface EncryptedData {
-  encrypted: string;
+  encrypted: string,
   iv: string;
-  tag: string;
+  tag: string,
   version: string;
-  algorithm: string;
+  algorithm: string,
   timestamp: number
 export class SecureEncryptionService implements IEncryptionService {
   private readonly algorithm = 'aes-256-gcm';
@@ -30,7 +30,7 @@ export class SecureEncryptionService implements IEncryptionService {
   private readonly currentVersion = '1.0'
 
   private masterKey: Buffer;
-  private keyCache: Map<string, Buffer> = new Map();
+  private keyCache: Map<string, Buffer> = new Map(),
   private keyRotationInterval: NodeJS.Timeout | null = null;
 
   constructor(masterKeyBase64?: string) {
@@ -74,7 +74,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async encrypt(text: string, context: string = 'default'): Promise<string> {
     if (!text || typeof text !== 'string') {
-      throw new Error('Invalid input: text must be a non-empty string');
+      throw new Error('Invalid input: text must be a non-empty string')
     }
 
     try {
@@ -90,11 +90,11 @@ export class SecureEncryptionService implements IEncryptionService {
 
       const encryptedData: EncryptedData = {
         encrypted,
-        iv: iv.toString('hex');
-        tag: tag.toString('hex');
-        version: this.currentVersion;
+        iv: iv.toString('hex'),
+        tag: tag.toString('hex'),
+        version: this.currentVersion,
         algorithm: this.algorithm;
-        timestamp: crypto.getRandomValues(new Uint32Array(1))[0];
+        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
       };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
@@ -108,13 +108,13 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async decrypt(encryptedText: string, context: string = 'default'): Promise<string> {
     if (!encryptedText || typeof encryptedText !== 'string') {
-      throw new Error('Invalid input: encryptedText must be a non-empty string');
+      throw new Error('Invalid input: encryptedText must be a non-empty string')
     }
 
     try {
       // Handle legacy placeholder format
       if (encryptedText.startsWith('encrypted_placeholder_')) {
-        /* SECURITY: Console statement removed */return encryptedText.substring('encrypted_placeholder_'.length);
+        /* SECURITY: Console statement removed */return encryptedText.substring('encrypted_placeholder_'.length)
       }
 
       const encryptedData: EncryptedData = JSON.parse(
@@ -151,7 +151,7 @@ export class SecureEncryptionService implements IEncryptionService {
       if (result[field] !== undefined && result[field] !== null) {
         const fieldValue = typeof result[field] === 'string'
           ? result[field]
-          : JSON.stringify(result[field]);
+          : JSON.stringify(result[field]),
         result[field] = await this.encrypt(fieldValue, field);
       }
     }
@@ -176,7 +176,7 @@ export class SecureEncryptionService implements IEncryptionService {
             // Keep as string if not valid JSON
           }
         } catch (error) {
-          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails;
+          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails
         }
       }
     }
@@ -239,7 +239,7 @@ export class SecureEncryptionService implements IEncryptionService {
       try {
         await this.rotateKeys()
       } catch (error) {
-        /* SECURITY: Console statement removed */;
+        /* SECURITY: Console statement removed */
       }
     }, rotationInterval);
   }
@@ -264,7 +264,7 @@ export const _getEncryptionService = (): SecureEncryptionService => {
   if (!encryptionServiceInstance) {
     encryptionServiceInstance = new SecureEncryptionService();
   }
-  return encryptionServiceInstance;
+  return encryptionServiceInstance
 };
 
 // Export both the class and interface for different use cases

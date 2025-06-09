@@ -29,22 +29,22 @@ import { format } from 'date-fns';
 import { useToast } from '../../hooks/use-toast';
 
 interface Document {
-  id: string;
+  id: string,
   documentNumber: string;
-  documentType: string;
+  documentType: string,
   documentTitle: string;
-  authoredDate: string;
+  authoredDate: string,
   authorId: string;
-  status: string;
+  status: string,
   patientId: string;
-  isConfidential: boolean;
+  isConfidential: boolean
 }
 
 interface PaginationInfo {
-  total: number;
+  total: number,
   page: number;
-  pageSize: number;
-  totalPages: number;
+  pageSize: number,
+  totalPages: number
 }
 
 interface DocumentListProps {
@@ -56,17 +56,17 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
   // State
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({
-    total: 0;
+    total: 0,
     page: 1;
-    pageSize: 10;
-    totalPages: 0;
+    pageSize: 10,
+    totalPages: 0
   });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
-    documentType: '';
+    documentType: '',
     status: '';
-    dateFrom: null as Date | null;
-    dateTo: null as Date | null;
+    dateFrom: null as Date | null,
+    dateTo: null as Date | null
   });
 
   // Fetch documents
@@ -111,9 +111,9 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to fetch documents. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -133,17 +133,17 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
   // Handle page change
   const handlePageChange = (page: number) => {
-    setPagination(prev => ({ ...prev, page }));
+    setPagination(prev => ({ ...prev, page }))
   };
 
   // Handle document click
   const handleDocumentClick = (documentId: string) => {
-    router.push(`/clinical-documentation/${documentId}`);
+    router.push(`/clinical-documentation/${documentId}`)
   };
 
   // Handle create document
   const handleCreateDocument = () => {
-    router.push(`/clinical-documentation/create?patientId=${patientId}`);
+    router.push(`/clinical-documentation/create?patientId=${patientId}`)
   };
 
   // Get status badge variant
@@ -159,7 +159,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
         return 'info';
       case 'Canceled':
         return 'destructive';
-      default: return 'default';
+      default: return 'default'
     }
   };
 

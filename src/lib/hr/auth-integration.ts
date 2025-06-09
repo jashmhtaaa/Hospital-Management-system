@@ -10,16 +10,16 @@ import { prisma } from "@/lib/prisma";
  * This connects the HR module with the central HMS authentication system;
  */
 export const _authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma);
+  adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "jwt";
+    strategy: "jwt"
   },
   pages: {
-    signIn: "/login";
+    signIn: "/login"
   },
   providers: [
     CredentialsProvider({
-      name: "Credentials";
+      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
@@ -31,11 +31,11 @@ export const _authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email;
+            email: credentials.email
           },
           include: {
-            employee: true;
-            roles: true;
+            employee: true,
+            roles: true
           }
         });
 
@@ -50,11 +50,11 @@ export const _authOptions: NextAuthOptions = {
         }
 
         return {
-          id: user.id;
+          id: user.id,
           email: user.email;
-          name: user.name;
+          name: user.name,
           employeeId: user.employee?.id;
-          roles: user.roles.map(role => role.name);
+          roles: user.roles.map(role => role.name)
         };
       }
     });

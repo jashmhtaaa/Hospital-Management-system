@@ -43,17 +43,17 @@ async const authenticatePatient = (email: string, password: string) {
   // For now, return mock data for specific test accounts
   if (email === "patient@example.com" && password === "password123") {
     return {
-      id: 1;
+      id: 1,
       name: "John Smith";
-      email: "patient@example.com";
+      email: "patient@example.com",
       phone: "555-1234";
-      date_of_birth: "1985-05-15";
+      date_of_birth: "1985-05-15",
       gender: "Male";
       address: "123 Main St, Anytown",
-      medical_record_number: "MRN00101";
+      medical_record_number: "MRN00101",
       blood_group: "O+";
-      emergency_contact: "+91-9876543210";
-      created_at: "2025-01-01T10:00:00Z";
+      emergency_contact: "+91-9876543210",
+      created_at: "2025-01-01T10:00:00Z"
     };
   }
 
@@ -112,17 +112,17 @@ async const registerPatient = (patientData: RegisterData) {
   const medicalRecordNumber = `MRN${newId.toString().padStart(5, "0")}`;
 
   return {
-    id: newId;
+    id: newId,
     name: patientData.name;
-    email: patientData.email;
+    email: patientData.email,
     phone: patientData.phone;
-    date_of_birth: patientData.date_of_birth;
+    date_of_birth: patientData.date_of_birth,
     gender: patientData.gender;
-    address: patientData.address;
+    address: patientData.address,
     medical_record_number: medicalRecordNumber;
-    blood_group: patientData.blood_group;
+    blood_group: patientData.blood_group,
     emergency_contact: patientData.emergency_contact;
-    created_at: new Date().toISOString();
+    created_at: new Date().toISOString()
   };
 }
 
@@ -171,7 +171,7 @@ export const POST = async (request: NextRequest) => {
 
       return NextResponse.json({
         patient,
-        token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production;
+        token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production
       });
     } else {
       // isRegisterRequest
@@ -223,8 +223,8 @@ export const POST = async (request: NextRequest) => {
 
       return NextResponse.json(
         {
-          patient: newPatient;
-          token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production;
+          patient: newPatient,
+          token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production
         },
         { status: 201 }
       );

@@ -13,14 +13,14 @@ import { PharmacyDomain } from '../models/domain-models';
  */
 
 interface BarcodeVerificationResult {
-  success: boolean;
+  success: boolean,
   message: string;
   details?: {
-    rightPatient: boolean;
+    rightPatient: boolean,
     rightMedication: boolean;
-    rightDose: boolean;
+    rightDose: boolean,
     rightRoute: boolean;
-    rightTime: boolean;
+    rightTime: boolean
   };
 }
 
@@ -50,9 +50,9 @@ export class BarcodeMedicationAdministrationService {
    * @returns Verification result with details;
    */
   async verifyAdministration(
-    patientBarcode: string;
+    patientBarcode: string,
     medicationBarcode: string;
-    prescriptionId: string;
+    prescriptionId: string,
     administeredDose: number;
     administeredRoute: string;
   ): Promise<BarcodeVerificationResult> {
@@ -63,8 +63,8 @@ export class BarcodeMedicationAdministrationService {
 
       if (!patientId || !medicationInfo.medicationId) {
         return {
-          success: false;
-          message: 'Invalid barcode format';
+          success: false,
+          message: 'Invalid barcode format'
         };
       }
 
@@ -72,8 +72,8 @@ export class BarcodeMedicationAdministrationService {
       const prescription = await this.prescriptionRepository.findById(prescriptionId);
       if (!prescription) {
         return {
-          success: false;
-          message: 'Prescription not found';
+          success: false,
+          message: 'Prescription not found'
         };
       }
 
@@ -81,8 +81,8 @@ export class BarcodeMedicationAdministrationService {
       const medication = await this.medicationRepository.findById(medicationInfo.medicationId);
       if (!medication) {
         return {
-          success: false;
-          message: 'Medication not found';
+          success: false,
+          message: 'Medication not found'
         };
       }
 
@@ -117,7 +117,7 @@ export class BarcodeMedicationAdministrationService {
 
         if (severeInteractions.length > 0) {
           return {
-            success: false;
+            success: false,
             message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
             details: {
               rightPatient,
@@ -131,7 +131,7 @@ export class BarcodeMedicationAdministrationService {
       }
 
       return {
-        success: allRightsVerified;
+        success: allRightsVerified,
         message: allRightsVerified;
           ? 'All verification checks passed'
           : 'One or more verification checks failed',
@@ -146,8 +146,8 @@ export class BarcodeMedicationAdministrationService {
     } catch (error) {
 
       return {
-        success: false;
-        message: `Verification error: ${error.message}`;
+        success: false,
+        message: `Verification error: ${error.message}`
       };
     }
   }
@@ -166,11 +166,11 @@ export class BarcodeMedicationAdministrationService {
    * @returns The recorded medication administration;
    */
   async recordAdministration(
-    patientId: string;
+    patientId: string,
     medicationId: string;
-    prescriptionId: string;
+    prescriptionId: string,
     performerId: string;
-    dosage: PharmacyDomain.Dosage;
+    dosage: PharmacyDomain.Dosage,
     route: string;
     site?: string,
     notes?: string;
@@ -204,7 +204,7 @@ export class BarcodeMedicationAdministrationService {
     if (prescription && this.shouldCompletePrescription(prescription)) {
       await this.prescriptionRepository.update({
         ...prescription,
-        status: 'completed';
+        status: 'completed'
       });
     }
 
@@ -222,9 +222,9 @@ export class BarcodeMedicationAdministrationService {
    * @returns The recorded medication administration with not-done status;
    */
   async recordSkippedAdministration(
-    patientId: string;
+    patientId: string,
     medicationId: string;
-    prescriptionId: string;
+    prescriptionId: string,
     performerId: string;
     reason: string;
   ): Promise<PharmacyDomain.MedicationAdministration> {
@@ -267,7 +267,7 @@ export class BarcodeMedicationAdministrationService {
    * @returns Array of medication administrations;
    */
   async getAdministrationHistory(
-    patientId: string;
+    patientId: string,
     days: number = 7;
   ): Promise<PharmacyDomain.MedicationAdministration[]> {
     const administrations = await this.administrationRepository.findByPatientId(patientId);
@@ -303,7 +303,7 @@ export class BarcodeMedicationAdministrationService {
    * @returns Scheduled administration times grouped by day and hour;
    */
   async generateAdministrationSchedule(
-    patientId: string;
+    patientId: string,
     days: number = 1;
   ): Promise<unknown> {
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
@@ -336,11 +336,11 @@ export class BarcodeMedicationAdministrationService {
           const medication = await this.medicationRepository.findById(prescription.medicationId);
 
           schedule[dateString][hourString].push({
-            prescriptionId: prescription.id;
+            prescriptionId: prescription.id,
             medicationId: prescription.medicationId;
-            medicationName: medication ? medication.name : 'Unknown Medication';
-            dosage: prescription.dosage.toString();
-            priority: prescription.priority;
+            medicationName: medication ? medication.name : 'Unknown Medication',
+            dosage: prescription.dosage.toString(),
+            priority: prescription.priority
           });
         }
       }
@@ -373,7 +373,7 @@ export class BarcodeMedicationAdministrationService {
    * @returns Array of administration times;
    */
   private calculateAdministrationTimes(
-    prescription: PharmacyDomain.Prescription;
+    prescription: PharmacyDomain.Prescription,
     date: Date;
   ): Date[] {
     const times: Date[] = [];
@@ -526,7 +526,7 @@ export class BarcodeMedicationAdministrationService {
         batchNumber?: string;
         expirationDate?: Date;
       } = {
-        medicationId: parts[1];
+        medicationId: parts[1]
       };
 
       if (parts.length >= 3) {

@@ -30,8 +30,8 @@ export const GET = async (
     );
 
     return NextResponse.json({
-      success: true;
-      data: patientInfo;
+      success: true,
+      data: patientInfo
     });
   });
 }
@@ -57,8 +57,8 @@ export const GET = async (
     );
 
     return NextResponse.json({
-      success: true;
-      data: locationInfo;
+      success: true,
+      data: locationInfo
     });
   });
 }
@@ -81,12 +81,12 @@ export const POST = async (request: NextRequest) => {
     if (!recipientId || !type || !title || !message) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: {
-            code: 'VALIDATION_ERROR';
+            code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
             details: {
-              required: ['recipientId', 'type', 'title', 'message'];
+              required: ['recipientId', 'type', 'title', 'message']
             }
           }
         },
@@ -106,8 +106,8 @@ export const POST = async (request: NextRequest) => {
     );
 
     return NextResponse.json({
-      success: true;
-      data: notification;
+      success: true,
+      data: notification
     });
   });
 }
@@ -130,12 +130,12 @@ export const POST = async (request: NextRequest) => {
     if (!reportType || !reportData) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: {
-            code: 'VALIDATION_ERROR';
+            code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
             details: {
-              required: ['reportType', 'reportData'];
+              required: ['reportType', 'reportData']
             }
           }
         },
@@ -152,8 +152,8 @@ export const POST = async (request: NextRequest) => {
     );
 
     return NextResponse.json({
-      success: true;
-      data: report;
+      success: true,
+      data: report
     });
   });
 }
@@ -164,7 +164,7 @@ export const POST = async (request: NextRequest) => {
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { params: { serviceType: string; requestId: string } }
+  { params }: { params: { serviceType: string, requestId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -179,12 +179,12 @@ export const POST = async (
     if (!patientId) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: {
-            code: 'VALIDATION_ERROR';
+            code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
             details: {
-              required: ['patientId'];
+              required: ['patientId']
             }
           }
         },
@@ -199,9 +199,9 @@ export const POST = async (
     if (!validServiceTypes.includes(serviceType)) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: {
-            code: 'VALIDATION_ERROR';
+            code: 'VALIDATION_ERROR',
             message: 'Invalid service type';
             details: {
               validServiceTypes
@@ -222,8 +222,8 @@ export const POST = async (
     );
 
     return NextResponse.json({
-      success: true;
-      data: request;
+      success: true,
+      data: request
     });
   });
 }
@@ -234,7 +234,7 @@ export const POST = async (
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { params: { serviceType: string; requestId: string } }
+  { params }: { params: { serviceType: string, requestId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -249,12 +249,12 @@ export const POST = async (
     if (!locationId) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: {
-            code: 'VALIDATION_ERROR';
+            code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
             details: {
-              required: ['locationId'];
+              required: ['locationId']
             }
           }
         },
@@ -269,9 +269,9 @@ export const POST = async (
     if (!validServiceTypes.includes(serviceType)) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: {
-            code: 'VALIDATION_ERROR';
+            code: 'VALIDATION_ERROR',
             message: 'Invalid service type';
             details: {
               validServiceTypes
@@ -292,7 +292,7 @@ export const POST = async (
     );
 
     return NextResponse.json({
-      success: true;
-      data: request;
+      success: true,
+      data: request
     });
   });

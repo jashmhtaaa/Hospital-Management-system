@@ -22,7 +22,7 @@ export const _GET = async (request: Request) => {
   // 1. Check Authentication & Authorization
   if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401;
+      status: 401,
       headers: { "Content-Type": "application/json" },
     });
   }
@@ -53,14 +53,14 @@ export const _GET = async (request: Request) => {
     }
 
     // Map results to include user details within a nested 'user' object if desired
-    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for 'doc';
+    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for 'doc',
         doctor_id: doc.doctor_id;
-        user_id: doc.user_id;
+        user_id: doc.user_id,
         specialty: doc.specialty;
         qualifications: doc.qualifications;
         // license_number: doc.license_number, // Add if needed
         user: {
-            fullName: doc.full_name;
+            fullName: doc.full_name,
             email: doc.email;
             // Add other user fields if necessary
         }
@@ -69,7 +69,7 @@ export const _GET = async (request: Request) => {
 
     // 4. Return doctor list
     return new Response(JSON.stringify(formattedResults), {
-      status: 200;
+      status: 200,
       headers: { "Content-Type": "application/json" },
     });
 
@@ -77,7 +77,7 @@ export const _GET = async (request: Request) => {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-      status: 500;
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
@@ -85,10 +85,10 @@ export const _GET = async (request: Request) => {
 
 // POST handler for adding a new doctor
 const AddDoctorSchema = z.object({
-    user_id: z.number().int().positive("Valid User ID is required");
+    user_id: z.number().int().positive("Valid User ID is required"),
     specialty: z.string().min(1, "Specialty is required"),
-    qualifications: z.string().optional();
-    license_number: z.string().optional();
+    qualifications: z.string().optional(),
+    license_number: z.string().optional()
 });
 
 export const _POST = async (request: Request) => {
@@ -98,7 +98,7 @@ export const _POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_ADD.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -109,7 +109,7 @@ export const _POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -127,7 +127,7 @@ export const _POST = async (request: Request) => {
 
         if (!userCheck || !doctorRole || userCheck.role_id !== doctorRole.role_id) {
              return new Response(JSON.stringify({ error: "User not found, inactive, or does not have the 'Doctor' role" }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -176,7 +176,7 @@ export const _POST = async (request: Request) => {
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred"
         const statusCode = errorMessage.includes("UNIQUE constraint failed") ? 409 : 500;
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., license number)" : "Internal Server Error", details: errorMessage }), {
-            status: statusCode;
+            status: statusCode,
             headers: { "Content-Type": "application/json" },
         });
     }

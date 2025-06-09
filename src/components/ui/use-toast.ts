@@ -29,10 +29,10 @@ type ToasterToast = ToastProps & {
 
 // FIX: Use action types directly if the constant object is removed
 type ActionType = {
-  ADD_TOAST: "ADD_TOAST";
+  ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST";
-  DISMISS_TOAST: "DISMISS_TOAST";
-  REMOVE_TOAST: "REMOVE_TOAST";
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST"
 };
 
 let count = 0;
@@ -43,13 +43,13 @@ const genId = () {
 }
 
 type Action =
-  | { type: ActionType["ADD_TOAST"]; toast: ToasterToast }
-  | { type: ActionType["UPDATE_TOAST"]; toast: Partial<ToasterToast> }
+  | { type: ActionType["ADD_TOAST"], toast: ToasterToast }
+  | { type: ActionType["UPDATE_TOAST"], toast: Partial<ToasterToast> }
   | { type: ActionType["DISMISS_TOAST"]; toastId?: ToasterToast["id"] }
   | { type: ActionType["REMOVE_TOAST"]; toastId?: ToasterToast["id"] };
 
 interface State {
-  toasts: ToasterToast[];
+  toasts: ToasterToast[]
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
@@ -64,7 +64,7 @@ const addToRemoveQueue = (toastId: string) => {
     dispatch({ type: "REMOVE_TOAST", toastId: toastId });
   }, TOAST_REMOVE_DELAY);
 
-  toastTimeouts.set(toastId, timeout);
+  toastTimeouts.set(toastId, timeout)
 };
 
 export const _reducer = (state: State, action: Action): State => {
@@ -72,7 +72,7 @@ export const _reducer = (state: State, action: Action): State => {
     case "ADD_TOAST": {
       return {
         ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),;
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
       };
     }
 
@@ -104,7 +104,7 @@ export const _reducer = (state: State, action: Action): State => {
           t.id === toastId || toastId === undefined;
             ? {
                 ...t,
-                open: false;
+                open: false
               }
             : t;
         ),
@@ -114,12 +114,12 @@ export const _reducer = (state: State, action: Action): State => {
       if (action.toastId === undefined) {
         return {
           ...state,
-          toasts: [];
+          toasts: []
         };
       }
       return {
         ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId);
+        toasts: state.toasts.filter((t) => t.id !== action.toastId)
       };
     }
   }
@@ -136,10 +136,10 @@ const toast = (properties: Toast) {
   const id = genId();
 
   const update = (properties_: ToasterToast) =>
-    dispatch({ type: "UPDATE_TOAST", toast: { ...properties_, id } });
+    dispatch({ type: "UPDATE_TOAST", toast: { ...properties_, id } }),
   const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
   dispatch({
-    type: "ADD_TOAST";
+    type: "ADD_TOAST",
     toast: {
       ...properties,
       id,
@@ -159,7 +159,7 @@ const toast = (properties: Toast) {
 
 // Keep the context and hook definition, but remove the incomplete parts
 interface ToastContextProperties {
-  toast: typeof toast;
+  toast: typeof toast,
   dismiss: (toastId?: string) => void;
   toasts: ToasterToast[]; // Add toasts array to the context props
 }

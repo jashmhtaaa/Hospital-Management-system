@@ -7,7 +7,7 @@
 
 // Marketing Campaign Model
 export interface MarketingCampaign {
-  id: string;
+  id: string,
   name: string;
   description?: string;
   type: string; // EMAIL, SMS, SOCIAL_MEDIA, EVENT, PRINT, DIGITAL_AD, OTHER
@@ -22,7 +22,7 @@ export interface MarketingCampaign {
   createdByUser?: User;
   updatedById?: string;
   updatedByUser?: User;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   channels?: CampaignChannel[];
   segments?: CampaignSegment[];
@@ -33,7 +33,7 @@ export interface MarketingCampaign {
 
 // Campaign Channel Model
 export interface CampaignChannel {
-  id: string;
+  id: string,
   campaignId: string;
   campaign?: MarketingCampaign;
   channelType: string; // EMAIL, SMS, SOCIAL_MEDIA, EVENT, PRINT, DIGITAL_AD, OTHER
@@ -42,14 +42,14 @@ export interface CampaignChannel {
   schedule?: unknown; // Delivery schedule
   status: string; // DRAFT, SCHEDULED, ACTIVE, COMPLETED, CANCELLED
   metrics?: unknown; // Channel-specific metrics
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   messages?: MarketingMessage[];
 }
 
 // Marketing Message Model
 export interface MarketingMessage {
-  id: string;
+  id: string,
   channelId: string;
   channel?: CampaignChannel;
   subject?: string; // For email, SMS
@@ -60,14 +60,14 @@ export interface MarketingMessage {
   sentDate?: Date;
   status: string; // DRAFT, SCHEDULED, SENT, FAILED
   metadata?: unknown; // Additional message data
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   interactions?: MessageInteraction[];
 }
 
 // Message Interaction Model
 export interface MessageInteraction {
-  id: string;
+  id: string,
   messageId: string;
   message?: MarketingMessage;
   contactId?: string;
@@ -98,7 +98,7 @@ export interface Contact {
   preferences?: unknown; // Communication preferences
   patientId?: string; // Link to patient if applicable
   patient?: unknown; // Patient reference
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   notes?: ContactNote[];
   interactions?: MessageInteraction[];
@@ -109,14 +109,14 @@ export interface Contact {
 
 // Contact Note Model
 export interface ContactNote {
-  id: string;
+  id: string,
   contactId: string;
   contact?: Contact;
-  content: string;
+  content: string,
   createdById: string;
   createdByUser?: User;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 // Marketing Activity Model
@@ -137,14 +137,14 @@ export interface MarketingActivity {
 
 // Contact Segment Model
 export interface ContactSegment {
-  id: string;
+  id: string,
   name: string;
   description?: string;
   criteria?: unknown; // Segmentation criteria
-  isActive: boolean;
+  isActive: boolean,
   createdById: string;
   createdByUser?: User;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   members?: SegmentMember[];
   campaigns?: CampaignSegment[];
@@ -152,29 +152,29 @@ export interface ContactSegment {
 
 // Segment Member Model
 export interface SegmentMember {
-  id: string;
+  id: string,
   segmentId: string;
   segment?: ContactSegment;
   contactId: string;
   contact?: Contact;
   addedAt: Date;
   removedAt?: Date;
-  isActive: boolean;
+  isActive: boolean
 }
 
 // Campaign Segment Model (Many-to-Many)
 export interface CampaignSegment {
-  id: string;
+  id: string,
   campaignId: string
   campaign?: MarketingCampaign,
   segmentId: string;
   segment?: ContactSegment;
-  createdAt: Date;
+  createdAt: Date
 }
 
 // Lead Model
 export interface Lead {
-  id: string;
+  id: string,
   contactId: string;
   contact?: Contact;
   campaignId?: string;
@@ -188,18 +188,18 @@ export interface Lead {
   convertedToPatientId?: string;
   convertedToPatient?: unknown; // Patient reference
   conversionDate?: Date;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   activities?: LeadActivity[];
 }
 
 // Lead Activity Model
 export interface LeadActivity {
-  id: string;
+  id: string,
   leadId: string;
   lead?: Lead;
   activityType: string; // NOTE, CALL, EMAIL, MEETING, STATUS_CHANGE, etc.
-  description: string;
+  description: string,
   performedById: string;
   performedByUser?: User;
   timestamp: Date;
@@ -208,38 +208,38 @@ export interface LeadActivity {
 
 // Campaign Analytics Model
 export interface CampaignAnalytics {
-  id: string;
+  id: string,
   campaignId: string;
   campaign?: MarketingCampaign;
-  date: Date;
+  date: Date,
   metrics: unknown; // Various metrics (impressions, clicks, conversions, etc.)
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 // Marketing Template Model
 export interface MarketingTemplate {
-  id: string;
+  id: string,
   name: string;
   description?: string;
   type: string; // EMAIL, SMS, SOCIAL_POST, LANDING_PAGE, etc.
   content: string; // HTML, text, or JSON content
   variables?: unknown; // Template variables
   previewImage?: string; // URL to template preview image
-  isActive: boolean;
+  isActive: boolean,
   createdById: string;
   createdByUser?: User;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date,
+  updatedAt: Date
 }
 
 // Marketing Event Model
 export interface MarketingEvent {
-  id: string;
+  id: string,
   name: string;
   description?: string;
   eventType: string; // WEBINAR, CONFERENCE, WORKSHOP, HEALTH_CAMP, etc.
-  startDate: Date;
+  startDate: Date,
   endDate: Date;
   location?: string;
   virtualLink?: string;
@@ -248,20 +248,20 @@ export interface MarketingEvent {
   status: string; // PLANNED, OPEN, FULL, ONGOING, COMPLETED, CANCELLED
   createdById: string;
   createdByUser?: User;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   registrations?: EventRegistration[];
 }
 
 // Event Registration Model
 export interface EventRegistration {
-  id: string;
+  id: string,
   eventId: string;
   event?: MarketingEvent;
   contactId?: string;
   patientId?: string;
   patient?: unknown; // Patient reference
-  name: string;
+  name: string,
   email: string;
   phone?: string;
   status: string; // REGISTERED, CONFIRMED, ATTENDED, NO_SHOW, CANCELLED

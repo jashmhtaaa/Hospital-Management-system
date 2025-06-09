@@ -36,7 +36,7 @@ export const POST = async (
       return NextResponse.json({ renderedContent });
     },
     {
-      requiredPermission: 'marketing.templates.read';
-      auditAction: 'TEMPLATE_RENDER';
+      requiredPermission: 'marketing.templates.read',
+      auditAction: 'TEMPLATE_RENDER'
     }
   );

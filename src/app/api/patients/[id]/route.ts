@@ -8,29 +8,29 @@ import { Patient } from "@/types/patient";
 import { getSession } from "@/lib/session";
 // Zod schema for patient update
 const patientUpdateSchema = z.object({
-    mrn: z.string().optional();
+    mrn: z.string().optional(),
     first_name: z.string().min(1, "First name is required").optional(),
     last_name: z.string().min(1, "Last name is required").optional(),
     date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date of birth format";
+        message: "Invalid date of birth format"
     }).optional(),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]).optional(),
-    contact_number: z.string().optional().nullable();
-    email: z.string().email("Invalid email address").optional().nullable();
-    address_line1: z.string().optional().nullable();
-    address_line2: z.string().optional().nullable();
-    city: z.string().optional().nullable();
-    state: z.string().optional().nullable();
-    postal_code: z.string().optional().nullable();
-    country: z.string().optional().nullable();
-    emergency_contact_name: z.string().optional().nullable();
-    emergency_contact_relation: z.string().optional().nullable();
-    emergency_contact_number: z.string().optional().nullable();
-    blood_group: z.string().optional().nullable();
-    allergies: z.string().optional().nullable();
-    medical_history_summary: z.string().optional().nullable();
-    insurance_provider: z.string().optional().nullable();
-    insurance_policy_number: z.string().optional().nullable();
+    contact_number: z.string().optional().nullable(),
+    email: z.string().email("Invalid email address").optional().nullable(),
+    address_line1: z.string().optional().nullable(),
+    address_line2: z.string().optional().nullable(),
+    city: z.string().optional().nullable(),
+    state: z.string().optional().nullable(),
+    postal_code: z.string().optional().nullable(),
+    country: z.string().optional().nullable(),
+    emergency_contact_name: z.string().optional().nullable(),
+    emergency_contact_relation: z.string().optional().nullable(),
+    emergency_contact_number: z.string().optional().nullable(),
+    blood_group: z.string().optional().nullable(),
+    allergies: z.string().optional().nullable(),
+    medical_history_summary: z.string().optional().nullable(),
+    insurance_provider: z.string().optional().nullable(),
+    insurance_policy_number: z.string().optional().nullable()
 }).partial();
 
 // GET /api/patients/[id] - Fetch a specific patient by ID

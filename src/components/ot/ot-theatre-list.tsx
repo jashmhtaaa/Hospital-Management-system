@@ -18,11 +18,11 @@ import { Edit, Trash2, Activity, WifiOff } from "lucide-react";
 
 // Mock data structure - replace with actual API response type
 interface Theatre {
-  id: string;
+  id: string,
   name: string;
-  location: string | null;
+  location: string | null,
   specialty: string | null;
-  status: string;
+  status: string,
   updated_at: string
 export default const _OTTheatreList = () {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
@@ -47,36 +47,36 @@ export default const _OTTheatreList = () {
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: Theatre[] = [
           {
-            id: "theatre-1";
+            id: "theatre-1",
             name: "OT-1";
             location: "Floor 2, Wing A",
-            specialty: "General Surgery";
+            specialty: "General Surgery",
             status: "available";
-            updated_at: "2025-04-28T10:00:00Z";
+            updated_at: "2025-04-28T10:00:00Z"
           },
           {
-            id: "theatre-2";
+            id: "theatre-2",
             name: "OT-2";
             location: "Floor 2, Wing A",
-            specialty: "Orthopedics";
+            specialty: "Orthopedics",
             status: "in_use";
-            updated_at: "2025-04-28T09:30:00Z";
+            updated_at: "2025-04-28T09:30:00Z"
           },
           {
-            id: "theatre-3";
+            id: "theatre-3",
             name: "OT-3";
             location: "Floor 2, Wing B",
-            specialty: "Cardiology";
+            specialty: "Cardiology",
             status: "maintenance";
-            updated_at: "2025-04-27T15:00:00Z";
+            updated_at: "2025-04-27T15:00:00Z"
           },
           {
-            id: "theatre-4";
+            id: "theatre-4",
             name: "OT-4 (Hybrid)";
             location: "Floor 3, Wing C",
-            specialty: "Neurosurgery";
+            specialty: "Neurosurgery",
             status: "available";
-            updated_at: "2025-04-28T11:00:00Z";
+            updated_at: "2025-04-28T11:00:00Z"
           },
         ];
         setTheatres(mockData),

@@ -5,17 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface ProgressNote {
-  id: string;
+  id: string,
   date: string;
-  time: string;
+  time: string,
   doctor: string;
-  note: string;
+  note: string
 }
 
 interface PatientProgressNotesProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  notes: ProgressNote[];
+  notes: ProgressNote[]
 }
 
 /**

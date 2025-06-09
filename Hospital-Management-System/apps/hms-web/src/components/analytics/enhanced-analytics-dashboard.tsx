@@ -32,17 +32,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface AnalyticsData {
   summary: {
-    totalPatients: number;
+    totalPatients: number,
     totalRevenue: number;
-    averageStayDuration: number;
+    averageStayDuration: number,
     bedOccupancyRate: number;
-    patientSatisfactionScore: number;
+    patientSatisfactionScore: number
   };
-  patientMetrics: unknown;
+  patientMetrics: unknown,
   financialMetrics: unknown;
-  clinicalMetrics: unknown;
+  clinicalMetrics: unknown,
   operationalMetrics: unknown;
-  predictions: unknown;
+  predictions: unknown
 }
 
 const EnhancedAnalyticsDashboard: React.FC = () => {
@@ -68,7 +68,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const data = await response.json();
       setAnalyticsData(data.analytics);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -80,7 +80,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const data = await response.json();
       setRealTimeData(data.realTimeData);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -88,13 +88,13 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
-      style: 'currency';
-      currency: 'USD';
-    }).format(amount);
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount)
   };
 
   const MetricCard: React.FC<{
-    title: string;
+    title: string,
     value: string | number;
     icon: React.ReactNode;
     trend?: number;
@@ -365,7 +365,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 };
 
 export default EnhancedAnalyticsDashboard;

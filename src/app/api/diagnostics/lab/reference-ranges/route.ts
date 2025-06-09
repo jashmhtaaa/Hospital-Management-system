@@ -70,7 +70,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(ranges);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch reference ranges", details: errorMessage },
       { status: 500 }
@@ -219,7 +219,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json(range, { status: 201 });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create reference range", details: errorMessage },
       { status: 500 }
@@ -465,7 +465,7 @@ export const _PUT = async (
     return NextResponse.json(range);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update reference range", details: errorMessage },
       { status: 500 }
@@ -513,11 +513,11 @@ export const DELETE = async (
     );
 
     return NextResponse.json({
-      message: "Reference range deleted successfully";
+      message: "Reference range deleted successfully"
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to delete reference range", details: errorMessage },
       { status: 500 }

@@ -123,14 +123,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'laboratory_specimens';
+          resource: 'laboratory_specimens',
           details: { patientId, orderId, status, specimenType, page, pageSize }
         });
 
         return {
-          specimens: result.results;
+          specimens: result.results,
           pagination: {
             page,
             pageSize,
@@ -146,8 +146,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch specimens';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch specimens',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -242,11 +242,11 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'laboratory_specimens';
+      resource: 'laboratory_specimens',
       resourceId: result.insertId;
-      details: body;
+      details: body
     });
 
     // Create specimen tracking entry
@@ -286,8 +286,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create specimen';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to create specimen',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -477,11 +477,11 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id;
+        userId: session.user.id,
         action: 'update';
-        resource: 'laboratory_specimens';
+        resource: 'laboratory_specimens',
         resourceId: id;
-        details: body;
+        details: body
       });
 
       // Create tracking entry if status changed or tracking note exists
@@ -501,7 +501,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab: specimens:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: specimens:*')
     }
 
     // Get the updated specimen
@@ -524,8 +524,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update specimen';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to update specimen',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -573,9 +573,9 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'laboratory_specimen_tracking';
+          resource: 'laboratory_specimen_tracking',
           details: { specimenId: id }
         });
 
@@ -588,8 +588,8 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch specimen tracking';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch specimen tracking',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -642,7 +642,7 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
     // Check if parent specimen is in a valid state for aliquoting
     if (!['received', 'processing', 'stored'].includes(parentSpecimen.status)) {
       return NextResponse.json({
-        error: 'Cannot create aliquot: Parent specimen must be received, processing, or stored';
+        error: 'Cannot create aliquot: Parent specimen must be received, processing, or stored'
       }, { status: 400 });
     }
 
@@ -687,9 +687,9 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
 
     // Log creation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'laboratory_specimens';
+      resource: 'laboratory_specimens',
       resourceId: result.insertId;
       details: { ...body, parentSpecimenId: id, type: 'aliquot' }
     });
@@ -748,8 +748,8 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create aliquot';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to create aliquot',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -804,9 +804,9 @@ export const _POST_BARCODE = async (request: NextRequest) => {
 
     // Log access
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'generate';
-      resource: 'laboratory_specimen_barcode';
+      resource: 'laboratory_specimen_barcode',
       resourceId: specimenId;
       details: { specimenId, barcodeId }
     });
@@ -815,13 +815,13 @@ export const _POST_BARCODE = async (request: NextRequest) => {
       barcodeId,
       specimenId: specimen.specimen_id;
       barcodeImage,
-      format: 'CODE128';
+      format: 'CODE128'
     });
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to generate barcode';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to generate barcode',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

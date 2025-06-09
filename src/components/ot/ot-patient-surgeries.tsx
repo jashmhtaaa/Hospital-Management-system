@@ -21,13 +21,13 @@ import { toast } from "@/components/ui/use-toast"; // Import toast
 
 // Define the structure for a surgery booking
 interface Surgery {
-  id: string;
+  id: string,
   scheduled_start_time: string; // ISO string or Date object
   scheduled_end_time: string; // ISO string or Date object
-  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled";
+  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
   surgery_name: string;
-  theatre_name: string;
-  surgeon_name: string;
+  theatre_name: string,
+  surgeon_name: string
 }
 
 interface OTPatientSurgeriesProperties {
@@ -36,7 +36,7 @@ export default const _OTPatientSurgeries = ({
   patientId,
 }: OTPatientSurgeriesProperties) {
   // FIX: Use the Surgery interface for state typing
-  const [surgeries, setSurgeries] = useState<Surgery[]>([]);
+  const [surgeries, setSurgeries] = useState<Surgery[]>([]),
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
 
@@ -58,22 +58,22 @@ export default const _OTPatientSurgeries = ({
         // Mock data for demonstration - Ensure it matches the Surgery interface
         const mockData: Surgery[] = [
           {
-            id: "booking-1";
-            scheduled_start_time: "2025-05-02T09:00:00Z";
-            scheduled_end_time: "2025-05-02T11:30:00Z";
+            id: "booking-1",
+            scheduled_start_time: "2025-05-02T09:00:00Z",
+            scheduled_end_time: "2025-05-02T11:30:00Z",
             status: "scheduled";
-            surgery_name: "Appendectomy";
+            surgery_name: "Appendectomy",
             theatre_name: "OT-1";
-            surgeon_name: "Dr. Alice Brown";
+            surgeon_name: "Dr. Alice Brown"
           },
           {
-            id: "booking-2";
-            scheduled_start_time: "2025-04-28T14:00:00Z";
-            scheduled_end_time: "2025-04-28T16:00:00Z";
+            id: "booking-2",
+            scheduled_start_time: "2025-04-28T14:00:00Z",
+            scheduled_end_time: "2025-04-28T16:00:00Z",
             status: "completed", // Example of a past surgery
-            surgery_name: "Wound Debridement";
+            surgery_name: "Wound Debridement",
             theatre_name: "OT-3";
-            surgeon_name: "Dr. Bob White";
+            surgeon_name: "Dr. Bob White"
           },
         ];
         // Example: Filter mock data to show only upcoming/scheduled
@@ -91,9 +91,9 @@ export default const _OTPatientSurgeries = ({
 
         setError(message),
         toast({
-          title: "Error";
+          title: "Error",
           description: `Failed to load surgeries: ${message}`,
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -145,9 +145,9 @@ export default const _OTPatientSurgeries = ({
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString("en-US", {
-        year: "numeric";
+        year: "numeric",
         month: "short";
-        day: "numeric";
+        day: "numeric"
       });
     } catch {
       return "Invalid Date";
@@ -158,9 +158,9 @@ export default const _OTPatientSurgeries = ({
     try {
       const date = new Date(dateString);
       return date.toLocaleTimeString("en-US", {
-        hour: "2-digit";
+        hour: "2-digit",
         minute: "2-digit";
-        hour12: true;
+        hour12: true
       });
     } catch {
       return "Invalid Time";

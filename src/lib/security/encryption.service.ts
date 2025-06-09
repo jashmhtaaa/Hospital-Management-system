@@ -10,17 +10,17 @@ import { logAuditEvent } from '@/lib/audit';
  */
 
 export interface EncryptionConfig {
-  algorithm: string;
+  algorithm: string,
   keyLength: number;
-  ivLength: number;
+  ivLength: number,
   tagLength: number;
   keyDerivationIterations: number
 export interface EncryptedData {
-  data: string;
+  data: string,
   iv: string;
-  tag: string;
+  tag: string,
   algorithm: string;
-  keyId: string;
+  keyId: string,
   version: string
 export interface EncryptionContext {
   userId?: string;
@@ -36,11 +36,11 @@ export class EncryptionService {
 
   private constructor() {
     this.config = {
-      algorithm: 'aes-256-gcm';
+      algorithm: 'aes-256-gcm',
       keyLength: 32, // 256 bits
       ivLength: 12,  // 96 bits for GCM
       tagLength: 16, // 128 bits
-      keyDerivationIterations: 100000;
+      keyDerivationIterations: 100000
     };
 
     // In production, these should come from secure key management service
@@ -83,12 +83,12 @@ export class EncryptionService {
 
       // Create encrypted data object
       const encryptedData: EncryptedData = {
-        data: encrypted;
-        iv: iv.toString('hex');
-        tag: tag.toString('hex');
+        data: encrypted,
+        iv: iv.toString('hex'),
+        tag: tag.toString('hex'),
         algorithm: this.config.algorithm;
-        keyId: this.keyId;
-        version: this.version;
+        keyId: this.keyId,
+        version: this.version
       };
 
       // Log encryption event for audit
@@ -164,7 +164,7 @@ export class EncryptionService {
         return data;
       }
 
-      const saltBuffer = salt ? Buffer.from(salt, 'hex') : crypto.randomBytes(16);
+      const saltBuffer = salt ? Buffer.from(salt, 'hex') : crypto.randomBytes(16),
       const hash = crypto.pbkdf2Sync(
         data,
         saltBuffer,
@@ -173,7 +173,7 @@ export class EncryptionService {
         'sha512';
       );
 
-      return saltBuffer.toString('hex') + ':' + hash.toString('hex');
+      return saltBuffer.toString('hex') + ':' + hash.toString('hex'),
     } catch (error) {
 
       throw new Error('Hashing failed');
@@ -234,7 +234,7 @@ export class EncryptionService {
    * Encrypt multiple fields at once;
    */
   encryptObject<T extends Record<string, unknown>>(
-    obj: T;
+    obj: T,
     fieldsToEncrypt: (keyof T)[];
     context?: EncryptionContext;
   ): T {
@@ -257,7 +257,7 @@ export class EncryptionService {
    * Decrypt multiple fields at once;
    */
   decryptObject<T extends Record<string, unknown>>(
-    obj: T;
+    obj: T,
     fieldsToDecrypt: (keyof T)[];
     context?: EncryptionContext;
   ): T {
@@ -296,16 +296,16 @@ export class EncryptionService {
       const newEncrypted = this.encrypt(plaintext, context)
 
       await logAuditEvent({
-        eventType: 'ENCRYPTION_KEY_ROTATION';
+        eventType: 'ENCRYPTION_KEY_ROTATION',
         userId: context?.userId;
-        resource: context?.resource || 'encrypted_data';
+        resource: context?.resource || 'encrypted_data',
         details: {
-          oldKeyId: this.keyId;
+          oldKeyId: this.keyId,
           newKeyId: this.keyId;
-          purpose: context?.purpose ;
+          purpose: context?.purpose 
         },
-        ipAddress: context?.ipAddress;
-        severity: 'MEDIUM';
+        ipAddress: context?.ipAddress,
+        severity: 'MEDIUM'
       });
 
       return newEncrypted;
@@ -369,7 +369,7 @@ export class EncryptionService {
   }
 
   private async logEncryptionEvent(
-    operation: string;
+    operation: string,
     success: boolean;
     context?: EncryptionContext,
     error?: string;
@@ -378,18 +378,18 @@ export class EncryptionService {
     if (!success || context?.resource?.includes('sensitive')) {
       await logAuditEvent({
         eventType: `ENCRYPTION_${operation}`,
-        userId: context?.userId;
+        userId: context?.userId,
         resource: context?.resource || 'encrypted_data';
         details: {
           operation,
           success,
-          algorithm: this.config.algorithm;
+          algorithm: this.config.algorithm,
           keyId: this.keyId;
           purpose: context?.purpose;
           error;
         },
-        ipAddress: context?.ipAddress;
-        severity: success ? 'LOW' : 'HIGH';
+        ipAddress: context?.ipAddress,
+        severity: success ? 'LOW' : 'HIGH'
       });
     }
   }
@@ -397,19 +397,19 @@ export class EncryptionService {
 
 // Export singleton instance and utilities
 export const encrypt = (data: string, context?: EncryptionContext): string => {
-  return EncryptionService.getInstance().encrypt(data, context);
+  return EncryptionService.getInstance().encrypt(data, context)
 };
 
 export const decrypt = (encryptedData: string, context?: EncryptionContext): string => {
-  return EncryptionService.getInstance().decrypt(encryptedData, context);
+  return EncryptionService.getInstance().decrypt(encryptedData, context)
 };
 
 export const hash = (data: string, salt?: string): string => {
-  return EncryptionService.getInstance().hash(data, salt);
+  return EncryptionService.getInstance().hash(data, salt)
 };
 
 export const verifyHash = (data: string, hashedData: string): boolean => {
-  return EncryptionService.getInstance().verifyHash(data, hashedData);
+  return EncryptionService.getInstance().verifyHash(data, hashedData)
 };
 
 export const encryptionService = EncryptionService.getInstance();

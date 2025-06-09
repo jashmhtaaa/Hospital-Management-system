@@ -22,13 +22,13 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   const [template, setTemplate] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
-    name: '';
+    name: '',
     description: '';
-    type: 'EMAIL';
+    type: 'EMAIL',
     content: '';
     variables: {},
-    previewImage: '';
-    isActive: true;
+    previewImage: '',
+    isActive: true
   });
   const [previewData, setPreviewData] = useState<Record<string, string>>({});
   const [renderedContent, setRenderedContent] = useState<string>('');
@@ -50,13 +50,13 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
         // Set form values from template data
         setFormData({
-          name: data.name || '';
+          name: data.name || '',
           description: data.description || '';
-          type: data.type || 'EMAIL';
+          type: data.type || 'EMAIL',
           content: data.content || '';
           variables: data.variables || {},
-          previewImage: data.previewImage || '';
-          isActive: data.isActive !== undefined ? data.isActive : true;
+          previewImage: data.previewImage || '',
+          isActive: data.isActive !== undefined ? data.isActive : true
         });
 
         // Initialize preview data from variables
@@ -70,9 +70,9 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load template data. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -88,7 +88,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setFormData({
       ...formData,
       [name]: value;
-    });
+    })
   };
 
   // Handle select changes
@@ -96,15 +96,15 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setFormData({
       ...formData,
       [name]: value;
-    });
+    })
   };
 
   // Handle switch changes
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked;
-    });
+      isActive: checked
+    })
   };
 
   // Handle content change
@@ -112,7 +112,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setFormData({
       ...formData,
       content;
-    });
+    })
   };
 
   // Handle preview data change
@@ -121,16 +121,16 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setPreviewData({
       ...previewData,
       [name]: value;
-    });
+    })
   };
 
   // Add variable to template
   const handleAddVariable = () => {
     if (!variableKey.trim()) {
       toast({
-        title: "Validation Error";
+        title: "Validation Error",
         description: "Variable key is required.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -138,21 +138,21 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     // Check if variable already exists
     if (formData.variables[variableKey]) {
       toast({
-        title: "Validation Error";
+        title: "Validation Error",
         description: "Variable key already exists.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
 
     const newVariables = {
       ...formData.variables,
-      [variableKey]: variableDescription || variableKey;
+      [variableKey]: variableDescription || variableKey
     };
 
     setFormData({
       ...formData,
-      variables: newVariables;
+      variables: newVariables
     });
 
     // Add to preview data
@@ -163,7 +163,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     // Reset inputs
     setVariableKey(''),
-    setVariableDescription('');
+    setVariableDescription('')
   };
 
   // Remove variable from template
@@ -173,13 +173,13 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     setFormData({
       ...formData,
-      variables: newVariables;
+      variables: newVariables
     });
 
     // Remove from preview data
     const newPreviewData = { ...previewData };
     delete newPreviewData[key];
-    setPreviewData(newPreviewData);
+    setPreviewData(newPreviewData)
   };
 
   // Render template preview
@@ -197,7 +197,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     try {
       const response = await fetch(`/api/support-services/marketing/templates/${templateId}/render`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -211,9 +211,9 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to render template preview. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -235,14 +235,14 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) throw new Error('Failed to save template');
 
       const savedTemplate = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Template ${templateId ? 'updated' : 'created'} successfully.`,
       });
 
@@ -254,9 +254,9 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to save template. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

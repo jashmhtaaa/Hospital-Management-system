@@ -12,31 +12,31 @@ const ambulanceService = new AmbulanceService();
 const createTripRequestSchema = z.object({
   requestType: z.enum(['EMERGENCY', 'NON_EMERGENCY', 'TRANSFER', 'DISCHARGE', 'SCHEDULED']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
-  pickupLocation: z.string().min(3).max(200);
-  dropoffLocation: z.string().min(3).max(200);
-  patientId: z.string().uuid().optional();
+  pickupLocation: z.string().min(3).max(200),
+  dropoffLocation: z.string().min(3).max(200),
+  patientId: z.string().uuid().optional(),
   scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional();
-  requestedById: z.string().uuid();
-  contactName: z.string().min(2).max(100).optional();
-  contactPhone: z.string().min(5).max(20).optional();
-  medicalEquipmentNeeded: z.array(z.string()).optional();
-  specialInstructions: z.string().max(500).optional();
+  notes: z.string().max(1000).optional(),
+  requestedById: z.string().uuid(),
+  contactName: z.string().min(2).max(100).optional(),
+  contactPhone: z.string().min(5).max(20).optional(),
+  medicalEquipmentNeeded: z.array(z.string()).optional(),
+  specialInstructions: z.string().max(500).optional()
 });
 
 const updateTripRequestSchema = z.object({
   requestType: z.enum(['EMERGENCY', 'NON_EMERGENCY', 'TRANSFER', 'DISCHARGE', 'SCHEDULED']).optional(),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
-  pickupLocation: z.string().min(3).max(200).optional();
-  dropoffLocation: z.string().min(3).max(200).optional();
-  patientId: z.string().uuid().optional();
-  scheduledTime: z.string().transform(val => new Date(val)).optional();
-  notes: z.string().max(1000).optional();
+  pickupLocation: z.string().min(3).max(200).optional(),
+  dropoffLocation: z.string().min(3).max(200).optional(),
+  patientId: z.string().uuid().optional(),
+  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'EN_ROUTE_TO_PICKUP', 'AT_PICKUP', 'EN_ROUTE_TO_DROPOFF', 'COMPLETED', 'CANCELLED']).optional(),
-  contactName: z.string().min(2).max(100).optional();
-  contactPhone: z.string().min(5).max(20).optional();
-  medicalEquipmentNeeded: z.array(z.string()).optional();
-  specialInstructions: z.string().max(500).optional();
+  contactName: z.string().min(2).max(100).optional(),
+  contactPhone: z.string().min(5).max(20).optional(),
+  medicalEquipmentNeeded: z.array(z.string()).optional(),
+  specialInstructions: z.string().max(500).optional()
 });
 
 // GET /api/support-services/ambulance/trips
@@ -47,14 +47,14 @@ export const _GET = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         priority: searchParams.get('priority') || undefined;
-        requestType: searchParams.get('requestType') || undefined;
+        requestType: searchParams.get('requestType') || undefined,
         ambulanceId: searchParams.get('ambulanceId') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
+        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        page: parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance trips with filters
@@ -63,8 +63,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:read';
-      auditAction: 'AMBULANCE_TRIPS_VIEW';
+      requiredPermission: 'ambulance:read',
+      auditAction: 'AMBULANCE_TRIPS_VIEW'
     }
   );
 }
@@ -87,8 +87,8 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(result, { status: 201 });
     },
     {
-      requiredPermission: 'ambulance:create';
-      auditAction: 'AMBULANCE_TRIP_CREATE';
+      requiredPermission: 'ambulance:create',
+      auditAction: 'AMBULANCE_TRIP_CREATE'
     }
   );
 }
@@ -105,8 +105,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:read';
-      auditAction: 'AMBULANCE_TRIP_VIEW';
+      requiredPermission: 'ambulance:read',
+      auditAction: 'AMBULANCE_TRIP_VIEW'
     }
   );
 }
@@ -129,8 +129,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:update';
-      auditAction: 'AMBULANCE_TRIP_UPDATE';
+      requiredPermission: 'ambulance:update',
+      auditAction: 'AMBULANCE_TRIP_UPDATE'
     }
   );
 }
@@ -146,8 +146,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json({ success: true });
     },
     {
-      requiredPermission: 'ambulance:delete';
-      auditAction: 'AMBULANCE_TRIP_DELETE';
+      requiredPermission: 'ambulance:delete',
+      auditAction: 'AMBULANCE_TRIP_DELETE'
     }
   );
 }
@@ -175,8 +175,8 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:assign';
-      auditAction: 'AMBULANCE_TRIP_ASSIGN';
+      requiredPermission: 'ambulance:assign',
+      auditAction: 'AMBULANCE_TRIP_ASSIGN'
     }
   );
 }
@@ -206,8 +206,8 @@ export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params:
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:update';
-      auditAction: 'AMBULANCE_TRIP_STATUS_UPDATE';
+      requiredPermission: 'ambulance:update',
+      auditAction: 'AMBULANCE_TRIP_STATUS_UPDATE'
     }
   );
 }
@@ -220,11 +220,11 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         type: searchParams.get('type') || undefined;
-        available: searchParams.get('available') === 'true';
+        available: searchParams.get('available') === 'true',
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance vehicles with filters
@@ -233,8 +233,8 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:read';
-      auditAction: 'AMBULANCE_VEHICLES_VIEW';
+      requiredPermission: 'ambulance:read',
+      auditAction: 'AMBULANCE_VEHICLES_VIEW'
     }
   );
 }
@@ -247,11 +247,11 @@ export const _GET_CREWS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         role: searchParams.get('role') || undefined;
-        available: searchParams.get('available') === 'true';
+        available: searchParams.get('available') === 'true',
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance crews with filters
@@ -260,8 +260,8 @@ export const _GET_CREWS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:read';
-      auditAction: 'AMBULANCE_CREWS_VIEW';
+      requiredPermission: 'ambulance:read',
+      auditAction: 'AMBULANCE_CREWS_VIEW'
     }
   );
 }
@@ -282,7 +282,7 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'ambulance:analytics';
-      auditAction: 'AMBULANCE_ANALYTICS_VIEW';
+      requiredPermission: 'ambulance:analytics',
+      auditAction: 'AMBULANCE_ANALYTICS_VIEW'
     }
   );

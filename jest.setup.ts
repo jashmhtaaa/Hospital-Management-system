@@ -40,9 +40,9 @@ if (!global.fetch) {
 
 // Type definitions for test utilities
 interface MockUser {
-  id: string;
+  id: string,
   email: string
-  role: string;
+  role: string,
   permissions: string[];
   department?: string;
   isActive: boolean;
@@ -51,9 +51,9 @@ interface MockUser {
 }
 
 interface MockPatient {
-  id: string;
+  id: string,
   mrn: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
   dateOfBirth: Date;
   ssn?: string;
@@ -67,13 +67,13 @@ interface MockPatient {
 }
 
 interface MockEmployee {
-  id: string;
+  id: string,
   employeeId: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
-  email: string;
+  email: string,
   department: string;
-  position: string;
+  position: string,
   isActive: boolean;
   hireDate: Date;
   licenseNumber?: string;
@@ -81,49 +81,49 @@ interface MockEmployee {
 }
 
 interface MockBill {
-  id: string;
+  id: string,
   billNumber: string;
-  patientId: string;
+  patientId: string,
   totalAmount: number;
-  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED',
   items: MockBillItem[];
-  createdAt: Date;
-  dueDate: Date;
+  createdAt: Date,
+  dueDate: Date
 }
 
 interface MockBillItem {
-  id: string;
+  id: string,
   serviceCode: string;
-  description: string;
+  description: string,
   quantity: number;
-  unitPrice: number;
-  totalPrice: number;
+  unitPrice: number,
+  totalPrice: number
 }
 
 interface MockAppointment {
-  id: string;
+  id: string,
   patientId: string;
-  doctorId: string;
+  doctorId: string,
   date: Date;
-  duration: number;
+  duration: number,
   status: 'SCHEDULED' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
   type: string;
   notes?: string;
 }
 
 interface TestUtilities {
-  createMockUser: (overrides?: Partial<MockUser>) => MockUser;
+  createMockUser: (overrides?: Partial<MockUser>) => MockUser,
   createMockPatient: (overrides?: Partial<MockPatient>) => MockPatient;
-  createMockEmployee: (overrides?: Partial<MockEmployee>) => MockEmployee;
+  createMockEmployee: (overrides?: Partial<MockEmployee>) => MockEmployee,
   createMockBill: (overrides?: Partial<MockBill>) => MockBill;
-  createMockAppointment: (overrides?: Partial<MockAppointment>) => MockAppointment;
-  generateMockAuditEvent: (event: string, userId: string, details?: any) => any;
+  createMockAppointment: (overrides?: Partial<MockAppointment>) => MockAppointment,
+  generateMockAuditEvent: (event: string, userId: string, details?: any) => any,
   createMockLabOrder: (overrides?: any) => any;
-  createMockPharmacyOrder: (overrides?: any) => any;
+  createMockPharmacyOrder: (overrides?: any) => any,
   createMockAdmission: (overrides?: any) => any;
-  simulateHIPAAEvent: (action: string, patientId: string, userId: string) => any;
-  mockSecurityContext: (user: MockUser) => void;
-  resetAllMocks: () => void;
+  simulateHIPAAEvent: (action: string, patientId: string, userId: string) => any,
+  mockSecurityContext: (user: MockUser) => void,
+  resetAllMocks: () => void
 }
 
 // Enhanced test environment setup
@@ -171,82 +171,82 @@ jest.mock('@prisma/client', () => {
     findUnique: jest.fn().mockImplementation(({ where }) =>
       where.id ? { id: where.id, [`${modelName}Field`]: 'mock-value' } : null
     ),
-    findMany: jest.fn().mockReturnValue([]);
-    findFirst: jest.fn().mockReturnValue(null);
+    findMany: jest.fn().mockReturnValue([]),
+    findFirst: jest.fn().mockReturnValue(null),
     update: jest.fn().mockImplementation(({ where, data }) => ({ id: where.id, ...data })),
     updateMany: jest.fn().mockReturnValue({ count: 1 }),
     delete: jest.fn().mockImplementation(({ where }) => ({ id: where.id })),
     deleteMany: jest.fn().mockReturnValue({ count: 1 }),
-    count: jest.fn().mockReturnValue(0);
+    count: jest.fn().mockReturnValue(0),
     aggregate: jest.fn().mockReturnValue({}),
-    groupBy: jest.fn().mockReturnValue([]);
+    groupBy: jest.fn().mockReturnValue([]),
     upsert: jest.fn().mockImplementation(({ create }) => ({ id: 'mock-upsert-id', ...create })),
   })
 
   const mockPrismaClient = {
     // Core healthcare models
-    user: createMockModel('user');
-    patient: createMockModel('patient');
-    employee: createMockModel('employee');
-    doctor: createMockModel('doctor');
+    user: createMockModel('user'),
+    patient: createMockModel('patient'),
+    employee: createMockModel('employee'),
+    doctor: createMockModel('doctor'),
     nurse: createMockModel('nurse');
 
     // Clinical models
-    appointment: createMockModel('appointment');
-    medicalRecord: createMockModel('medicalRecord');
-    prescription: createMockModel('prescription');
-    labOrder: createMockModel('labOrder');
-    labResult: createMockModel('labResult');
+    appointment: createMockModel('appointment'),
+    medicalRecord: createMockModel('medicalRecord'),
+    prescription: createMockModel('prescription'),
+    labOrder: createMockModel('labOrder'),
+    labResult: createMockModel('labResult'),
     radiology: createMockModel('radiology');
 
     // Billing and financial models
-    bill: createMockModel('bill');
-    billItem: createMockModel('billItem');
-    payment: createMockModel('payment');
-    insurance: createMockModel('insurance');
+    bill: createMockModel('bill'),
+    billItem: createMockModel('billItem'),
+    payment: createMockModel('payment'),
+    insurance: createMockModel('insurance'),
     claim: createMockModel('claim');
 
     // Inpatient models
-    admission: createMockModel('admission');
-    discharge: createMockModel('discharge');
-    bed: createMockModel('bed');
+    admission: createMockModel('admission'),
+    discharge: createMockModel('discharge'),
+    bed: createMockModel('bed'),
     ward: createMockModel('ward');
 
     // Pharmacy models
-    medication: createMockModel('medication');
-    pharmacyOrder: createMockModel('pharmacyOrder');
+    medication: createMockModel('medication'),
+    pharmacyOrder: createMockModel('pharmacyOrder'),
     inventory: createMockModel('inventory');
 
     // Emergency models
-    triage: createMockModel('triage');
+    triage: createMockModel('triage'),
     emergencyCase: createMockModel('emergencyCase');
 
     // HR and asset models
-    qualification: createMockModel('qualification');
-    employeePosition: createMockModel('employeePosition');
-    attendance: createMockModel('attendance');
-    biomedicalEquipment: createMockModel('biomedicalEquipment');
-    asset: createMockModel('asset');
-    assetMaintenance: createMockModel('assetMaintenance');
-    assetAssignment: createMockModel('assetAssignment');
-    calibrationRecord: createMockModel('calibrationRecord');
+    qualification: createMockModel('qualification'),
+    employeePosition: createMockModel('employeePosition'),
+    attendance: createMockModel('attendance'),
+    biomedicalEquipment: createMockModel('biomedicalEquipment'),
+    asset: createMockModel('asset'),
+    assetMaintenance: createMockModel('assetMaintenance'),
+    assetAssignment: createMockModel('assetAssignment'),
+    calibrationRecord: createMockModel('calibrationRecord'),
     maintenanceRecord: createMockModel('maintenanceRecord');
 
     // Audit and compliance models
-    auditLog: createMockModel('auditLog');
-    accessLog: createMockModel('accessLog');
-    securityEvent: createMockModel('securityEvent');
+    auditLog: createMockModel('auditLog'),
+    accessLog: createMockModel('accessLog'),
+    securityEvent: createMockModel('securityEvent'),
     complianceCheck: createMockModel('complianceCheck');
 
     // Quality management models
-    qualityIndicator: createMockModel('qualityIndicator');
-    qualityAssessment: createMockModel('qualityAssessment');
+    qualityIndicator: createMockModel('qualityIndicator'),
+    qualityAssessment: createMockModel('qualityAssessment'),
     incident: createMockModel('incident');
 
     // Support service models
-    maintenanceRequest: createMockModel('maintenanceRequest');
-    housekeepingTask: createMockModel('housekeepingTask');
-    dietaryOrder: createMockModel('dietaryOrder');
+    maintenanceRequest: createMockModel('maintenanceRequest'),
+    housekeepingTask: createMockModel('housekeepingTask'),
+    dietaryOrder: createMockModel('dietaryOrder'),
     feedback: createMockModel('feedback');
 
     // Transaction support
@@ -262,25 +262,25 @@ jest.mock('@prisma/client', () => {
   }
 
   return {
-    PrismaClient: jest.fn(() => mockPrismaClient);
+    PrismaClient: jest.fn(() => mockPrismaClient),
     Prisma: {
       UserRole: {
-        ADMIN: 'ADMIN';
+        ADMIN: 'ADMIN',
         DOCTOR: 'DOCTOR';
-        NURSE: 'NURSE';
+        NURSE: 'NURSE',
         PATIENT: 'PATIENT';
-        STAFF: 'STAFF';
+        STAFF: 'STAFF'
       },
       PatientStatus: {
-        ACTIVE: 'ACTIVE';
+        ACTIVE: 'ACTIVE',
         INACTIVE: 'INACTIVE';
-        DECEASED: 'DECEASED';
+        DECEASED: 'DECEASED'
       },
       BillStatus: {
-        PENDING: 'PENDING';
+        PENDING: 'PENDING',
         PAID: 'PAID';
-        OVERDUE: 'OVERDUE';
-        CANCELLED: 'CANCELLED';
+        OVERDUE: 'OVERDUE',
+        CANCELLED: 'CANCELLED'
       },
     },
   };
@@ -292,19 +292,19 @@ jest.mock('@/lib/cache', () => ({
     get: jest.fn().mockImplementation((key: string) =>
       Promise.resolve(key.includes('patient') ? { id: 'cached-patient' } : null)
     ),
-    set: jest.fn().mockResolvedValue('OK');
-    del: jest.fn().mockResolvedValue(1);
-    delPattern: jest.fn().mockResolvedValue(1);
-    clear: jest.fn().mockResolvedValue('OK');
-    ttl: jest.fn().mockResolvedValue(3600);
-    exists: jest.fn().mockResolvedValue(1);
-    expire: jest.fn().mockResolvedValue(1);
-    incr: jest.fn().mockResolvedValue(1);
-    decr: jest.fn().mockResolvedValue(1);
-    lpush: jest.fn().mockResolvedValue(1);
-    rpop: jest.fn().mockResolvedValue('item');
-    sadd: jest.fn().mockResolvedValue(1);
-    smembers: jest.fn().mockResolvedValue([]);
+    set: jest.fn().mockResolvedValue('OK'),
+    del: jest.fn().mockResolvedValue(1),
+    delPattern: jest.fn().mockResolvedValue(1),
+    clear: jest.fn().mockResolvedValue('OK'),
+    ttl: jest.fn().mockResolvedValue(3600),
+    exists: jest.fn().mockResolvedValue(1),
+    expire: jest.fn().mockResolvedValue(1),
+    incr: jest.fn().mockResolvedValue(1),
+    decr: jest.fn().mockResolvedValue(1),
+    lpush: jest.fn().mockResolvedValue(1),
+    rpop: jest.fn().mockResolvedValue('item'),
+    sadd: jest.fn().mockResolvedValue(1),
+    smembers: jest.fn().mockResolvedValue([])
   },
 }))
 
@@ -312,19 +312,19 @@ jest.mock('@/lib/cache', () => ({
 jest.mock('@/lib/auth', () => ({
   verifyToken: jest.fn().mockImplementation((token: string) =>
     Promise.resolve({
-      userId: 'test-user-id';
+      userId: 'test-user-id',
       role: 'ADMIN';
       permissions: ['read:patients', 'write:patients'],
-      exp: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 1000) + 3600;
+      exp: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 1000) + 3600
     })
   ),
-  generateToken: jest.fn().mockImplementation((payload: unknown) => 'mock-jwt-token');
-  generateRefreshToken: jest.fn().mockImplementation((userId: string) => 'mock-refresh-token');
-  hashPassword: jest.fn().mockImplementation((password: string) => Promise.resolve('hashed-password'));
-  comparePassword: jest.fn().mockImplementation((password: string, hash: string) => Promise.resolve(true));
-  validateMFA: jest.fn().mockResolvedValue(true);
-  generateMFASecret: jest.fn().mockReturnValue('mock-mfa-secret');
-  verifyMFAToken: jest.fn().mockResolvedValue(true);
+  generateToken: jest.fn().mockImplementation((payload: unknown) => 'mock-jwt-token'),
+  generateRefreshToken: jest.fn().mockImplementation((userId: string) => 'mock-refresh-token'),
+  hashPassword: jest.fn().mockImplementation((password: string) => Promise.resolve('hashed-password')),
+  comparePassword: jest.fn().mockImplementation((password: string, hash: string) => Promise.resolve(true)),
+  validateMFA: jest.fn().mockResolvedValue(true),
+  generateMFASecret: jest.fn().mockReturnValue('mock-mfa-secret'),
+  verifyMFAToken: jest.fn().mockResolvedValue(true)
 }))
 
 // Enhanced Audit Service Mock
@@ -332,10 +332,10 @@ jest.mock('@/lib/audit', () => ({
   logAuditEvent: jest.fn().mockImplementation((event: unknown) =>
     Promise.resolve({ id: 'audit-log-id', ...event, timestamp: new Date() })
   ),
-  getAuditLogs: jest.fn().mockResolvedValue([]);
-  logPatientAccess: jest.fn().mockResolvedValue(undefined);
-  logSecurityEvent: jest.fn().mockResolvedValue(undefined);
-  logHIPAAEvent: jest.fn().mockResolvedValue(undefined);
+  getAuditLogs: jest.fn().mockResolvedValue([]),
+  logPatientAccess: jest.fn().mockResolvedValue(undefined),
+  logSecurityEvent: jest.fn().mockResolvedValue(undefined),
+  logHIPAAEvent: jest.fn().mockResolvedValue(undefined),
   generateAuditReport: jest.fn().mockResolvedValue({ events: [], summary: {} }),
 }))
 
@@ -347,9 +347,9 @@ jest.mock('@/lib/security', () => ({
   verify: jest.fn().mockImplementation((data: string, hash: string) =>
     hash === `hashed_${data}`
   ),
-  sanitizeInput: jest.fn().mockImplementation((input: string) => input.trim());
-  validateCSRF: jest.fn().mockResolvedValue(true);
-  generateSecureToken: jest.fn().mockReturnValue('secure-token');
+  sanitizeInput: jest.fn().mockImplementation((input: string) => input.trim()),
+  validateCSRF: jest.fn().mockResolvedValue(true),
+  generateSecureToken: jest.fn().mockReturnValue('secure-token'),
   hashSensitiveData: jest.fn().mockImplementation((data: string) => `sha256_${data}`),
 }))
 
@@ -369,23 +369,23 @@ jest.mock('@/lib/notifications', () => ({
   sendSMS: jest.fn().mockResolvedValue({ id: 'sms-id', sent: true }),
   sendEmail: jest.fn().mockResolvedValue({ id: 'email-id', sent: true }),
   sendPush: jest.fn().mockResolvedValue({ id: 'push-id', sent: true }),
-  logNotification: jest.fn().mockResolvedValue(undefined);
+  logNotification: jest.fn().mockResolvedValue(undefined)
 }))
 
 // Payment Service Mock
 jest.mock('@/lib/payment', () => ({
   processPayment: jest.fn().mockResolvedValue({
-    id: 'payment-id';
+    id: 'payment-id',
     status: 'SUCCESS';
-    transactionId: 'txn-123';
-    amount: 100.00;
+    transactionId: 'txn-123',
+    amount: 100.00
   }),
   refundPayment: jest.fn().mockResolvedValue({
-    id: 'refund-id';
+    id: 'refund-id',
     status: 'SUCCESS';
-    amount: 100.00;
+    amount: 100.00
   }),
-  validatePaymentMethod: jest.fn().mockResolvedValue(true);
+  validatePaymentMethod: jest.fn().mockResolvedValue(true)
 }))
 
 // FHIR Service Mock
@@ -393,104 +393,104 @@ jest.mock('@/lib/fhir', () => ({
   createFHIRResource: jest.fn().mockResolvedValue({ id: 'fhir-resource-id' }),
   getFHIRResource: jest.fn().mockResolvedValue({ id: 'fhir-resource-id' }),
   updateFHIRResource: jest.fn().mockResolvedValue({ id: 'fhir-resource-id' }),
-  deleteFHIRResource: jest.fn().mockResolvedValue(true);
-  validateFHIRResource: jest.fn().mockResolvedValue(true);
+  deleteFHIRResource: jest.fn().mockResolvedValue(true),
+  validateFHIRResource: jest.fn().mockResolvedValue(true),
   convertToFHIR: jest.fn().mockImplementation((data: unknown) => ({ resourceType: 'Patient', ...data })),
 }))
 
 // Next.js Router Mock
 jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
-    push: jest.fn().mockResolvedValue(true);
-    replace: jest.fn().mockResolvedValue(true);
-    back: jest.fn();
-    forward: jest.fn();
-    refresh: jest.fn();
+    push: jest.fn().mockResolvedValue(true),
+    replace: jest.fn().mockResolvedValue(true),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
     query: {},
-    pathname: '/';
+    pathname: '/',
     asPath: '/';
-    basePath: '';
+    basePath: '',
     route: '/';
-    isReady: true;
+    isReady: true,
     isPreview: false;
-    locale: 'en';
+    locale: 'en',
     locales: ['en'];
-    defaultLocale: 'en';
+    defaultLocale: 'en',
     isFallback: false;
     events: {
-      on: jest.fn();
-      off: jest.fn();
-      emit: jest.fn();
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn()
     },
   })),
-  withRouter: jest.fn((Component) => Component);
+  withRouter: jest.fn((Component) => Component)
 }))
 
 // Next.js App Router Navigation Mock
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(() => ({
-    push: jest.fn().mockImplementation((url: string) => Promise.resolve());
-    replace: jest.fn().mockImplementation((url: string) => Promise.resolve());
-    back: jest.fn();
-    forward: jest.fn();
-    refresh: jest.fn();
-    prefetch: jest.fn().mockResolvedValue(undefined);
+    push: jest.fn().mockImplementation((url: string) => Promise.resolve()),
+    replace: jest.fn().mockImplementation((url: string) => Promise.resolve()),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+    prefetch: jest.fn().mockResolvedValue(undefined)
   })),
-  usePathname: jest.fn(() => '/');
+  usePathname: jest.fn(() => '/'),
   useSearchParams: jest.fn(() => new URLSearchParams());
   useParams: jest.fn(() => ({})),
-  redirect: jest.fn();
-  notFound: jest.fn();
+  redirect: jest.fn(),
+  notFound: jest.fn()
 }))
 
 // Web APIs Mock
 Object.defineProperty(window, 'matchMedia', {
-  writable: true;
+  writable: true,
   value: jest.fn().mockImplementation((query: string) => ({
-    matches: false;
+    matches: false,
     media: query;
-    onchange: null;
+    onchange: null,
     addListener: jest.fn(), // deprecated
     removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn();
-    removeEventListener: jest.fn();
-    dispatchEvent: jest.fn();
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn()
   })),
 })
 
 // Observer APIs Mock
 global.IntersectionObserver = jest.fn().mockImplementation((callback, options) => ({
-  observe: jest.fn();
-  unobserve: jest.fn();
-  disconnect: jest.fn();
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
   root: null;
-  rootMargin: '';
-  thresholds: [];
+  rootMargin: '',
+  thresholds: []
 }))
 
 global.ResizeObserver = jest.fn().mockImplementation((callback) => ({
-  observe: jest.fn();
-  unobserve: jest.fn();
-  disconnect: jest.fn();
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn()
 }));
 
 global.MutationObserver = jest.fn().mockImplementation((callback) => ({
-  observe: jest.fn();
-  disconnect: jest.fn();
-  takeRecords: jest.fn(() => []);
+  observe: jest.fn(),
+  disconnect: jest.fn(),
+  takeRecords: jest.fn(() => [])
 }));
 
 // Storage APIs Mock
 const createStorageMock = (name: string) => {
   const storage: { [key: string]: string } = {}
   return {
-    getItem: jest.fn((key: string) => storage[key] || null);
+    getItem: jest.fn((key: string) => storage[key] || null),
     setItem: jest.fn((key: string, value: string) => { storage[key] = value; }),
     removeItem: jest.fn((key: string) => { delete storage[key]; }),
     clear: jest.fn(() => { Object.keys(storage).forEach(key => delete storage[key]); }),
     key: jest.fn((index: number) => Object.keys(storage)[index] || null);
     get length() { return Object.keys(storage).length; },
-  };
+  }
 };
 
 global.localStorage = createStorageMock('localStorage') as any;
@@ -507,7 +507,7 @@ if (!global.crypto) {
     }),
     randomUUID: jest.fn(() => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
       const r = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16 | 0;
-      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      const v = c === 'x' ? r : (r & 0x3 | 0x8),
       return v.toString(16);
     })),
     subtle: {} as any,
@@ -538,41 +538,41 @@ afterEach(() => {
 // Global test utilities with healthcare-specific helpers
 const testUtils: TestUtilities = {
   createMockUser: (overrides = {}) => ({
-    id: 'test-user-id';
+    id: 'test-user-id',
     email: 'test@hospital.com';
-    role: 'ADMIN';
+    role: 'ADMIN',
     permissions: ['read:patients', 'write:patients', 'read:bills', 'write:bills'],
-    department: 'Administration';
+    department: 'Administration',
     isActive: true;
-    lastLogin: new Date();
+    lastLogin: new Date(),
     mfaEnabled: true;
     ...overrides,
   }),
 
   createMockPatient: (overrides = {}) => ({
-    id: 'test-patient-id';
+    id: 'test-patient-id',
     mrn: 'MRN001';
-    firstName: 'John';
+    firstName: 'John',
     lastName: 'Doe';
-    dateOfBirth: new Date('1990-01-01');
+    dateOfBirth: new Date('1990-01-01'),
     ssn: '***-**-1234';
-    phone: '555-123-4567';
+    phone: '555-123-4567',
     email: 'john.doe@email.com';
     address: {
-      street: '123 Main St';
+      street: '123 Main St',
       city: 'Anytown';
-      state: 'ST';
-      zipCode: '12345';
+      state: 'ST',
+      zipCode: '12345'
     },
     emergencyContact: {
-      name: 'Jane Doe';
+      name: 'Jane Doe',
       relationship: 'Spouse';
-      phone: '555-987-6543';
+      phone: '555-987-6543'
     },
     insuranceInfo: {
-      provider: 'Health Insurance Co';
+      provider: 'Health Insurance Co',
       policyNumber: 'POL123456';
-      groupNumber: 'GRP789';
+      groupNumber: 'GRP789'
     },
     allergies: ['Penicillin', 'Latex'],
     medicalHistory: [];
@@ -580,49 +580,49 @@ const testUtils: TestUtilities = {
   }),
 
   createMockEmployee: (overrides = {}) => ({
-    id: 'test-employee-id';
+    id: 'test-employee-id',
     employeeId: 'EMP001';
-    firstName: 'Jane';
+    firstName: 'Jane',
     lastName: 'Smith';
-    email: 'jane.smith@hospital.com';
+    email: 'jane.smith@hospital.com',
     department: 'Nursing';
-    position: 'Registered Nurse';
+    position: 'Registered Nurse',
     isActive: true;
-    hireDate: new Date('2020-01-01');
+    hireDate: new Date('2020-01-01'),
     licenseNumber: 'RN123456';
     certifications: ['BLS', 'ACLS'],
     ...overrides,
   }),
 
   createMockBill: (overrides = {}) => ({
-    id: 'test-bill-id';
+    id: 'test-bill-id',
     billNumber: 'BILL001';
-    patientId: 'test-patient-id';
+    patientId: 'test-patient-id',
     totalAmount: 150.00;
-    status: 'PENDING' as const;
+    status: 'PENDING' as const,
     items: [
       {
-        id: 'item-1';
+        id: 'item-1',
         serviceCode: 'CONSULT';
-        description: 'General Consultation';
+        description: 'General Consultation',
         quantity: 1;
-        unitPrice: 150.00;
-        totalPrice: 150.00;
+        unitPrice: 150.00,
+        totalPrice: 150.00
       },
     ],
-    createdAt: new Date();
+    createdAt: new Date(),
     dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000);
     ...overrides,
   }),
 
   createMockAppointment: (overrides = {}) => ({
-    id: 'test-appointment-id';
+    id: 'test-appointment-id',
     patientId: 'test-patient-id';
-    doctorId: 'test-doctor-id';
+    doctorId: 'test-doctor-id',
     date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000);
-    duration: 30;
+    duration: 30,
     status: 'SCHEDULED' as const;
-    type: 'Consultation';
+    type: 'Consultation',
     notes: 'Regular checkup';
     ...overrides,
   }),
@@ -631,52 +631,52 @@ const testUtils: TestUtilities = {
     id: 'audit-event-id';
     event,
     userId,
-    timestamp: new Date();
+    timestamp: new Date(),
     ipAddress: '127.0.0.1';
     userAgent: 'test-user-agent';
     details,
-    resourceType: 'Patient';
+    resourceType: 'Patient',
     resourceId: 'test-resource-id';
-    action: 'READ';
-    outcome: 'SUCCESS';
+    action: 'READ',
+    outcome: 'SUCCESS'
   }),
 
   createMockLabOrder: (overrides = {}) => ({
-    id: 'test-lab-order-id';
+    id: 'test-lab-order-id',
     patientId: 'test-patient-id';
-    doctorId: 'test-doctor-id';
+    doctorId: 'test-doctor-id',
     tests: ['CBC', 'BMP'],
-    status: 'PENDING';
+    status: 'PENDING',
     priority: 'ROUTINE';
     orderDate: new Date();
     ...overrides,
   }),
 
   createMockPharmacyOrder: (overrides = {}) => ({
-    id: 'test-pharmacy-order-id';
+    id: 'test-pharmacy-order-id',
     patientId: 'test-patient-id';
     prescriptions: [
       {
-        medicationId: 'med-1';
+        medicationId: 'med-1',
         medicationName: 'Aspirin';
-        dosage: '81mg';
+        dosage: '81mg',
         quantity: 30;
-        instructions: 'Take once daily';
+        instructions: 'Take once daily'
       },
     ],
-    status: 'PENDING';
+    status: 'PENDING',
     orderDate: new Date();
     ...overrides,
   }),
 
   createMockAdmission: (overrides = {}) => ({
-    id: 'test-admission-id';
+    id: 'test-admission-id',
     patientId: 'test-patient-id';
-    doctorId: 'test-doctor-id';
-    admissionDate: new Date();
-    ward: 'General Ward';
+    doctorId: 'test-doctor-id',
+    admissionDate: new Date(),
+    ward: 'General Ward',
     bedNumber: 'A101';
-    diagnosis: 'Test diagnosis';
+    diagnosis: 'Test diagnosis',
     status: 'ACTIVE';
     ...overrides,
   }),
@@ -686,10 +686,10 @@ const testUtils: TestUtilities = {
     action,
     patientId,
     userId,
-    timestamp: new Date();
+    timestamp: new Date(),
     phi_accessed: ['name', 'dob', 'medical_records'],
-    legal_basis: 'TREATMENT';
-    consent_verified: true;
+    legal_basis: 'TREATMENT',
+    consent_verified: true
   }),
 
   mockSecurityContext: (user: MockUser) => {
@@ -731,12 +731,12 @@ expect.extend({
     if (hasAllFields != null) {
       return {
         message: () => `Expected ${received} not to be a valid HIPAA log`,
-        pass: true;
+        pass: true
       };
     } else {
       return {
         message: () => `Expected ${received} to have all required HIPAA fields: ${required.join(', ')}`,
-        pass: false;
+        pass: false
       };
     }
   },
@@ -750,12 +750,12 @@ expect.extend({
     if (hasAuditFields != null) {
       return {
         message: () => `Expected ${received} not to have valid audit trail`,
-        pass: true;
+        pass: true
       };
     } else {
       return {
         message: () => `Expected ${received} to have audit trail fields (createdAt, updatedAt, createdBy)`,
-        pass: false;
+        pass: false
       };
     }
   },
@@ -768,12 +768,12 @@ expect.extend({
     if (isEncrypted != null) {
       return {
         message: () => `Expected ${received} not to be encrypted`,
-        pass: true;
+        pass: true
       };
     } else {
       return {
         message: () => `Expected ${received} to be encrypted`,
-        pass: false;
+        pass: false
       };
     }
   },
@@ -788,12 +788,12 @@ expect.extend({
     if (meetsStandards != null) {
       return {
         message: () => `Expected ${received} not to meet healthcare standards`,
-        pass: true;
+        pass: true
       }
     } else {
       return {
         message: () => `Expected ${received} to meet healthcare standards (proper ID, timestamps, masked PII)`,
-        pass: false;
+        pass: false
       };
     }
   },
@@ -801,7 +801,7 @@ expect.extend({
 
 // Mock timers setup
 jest.useFakeTimers({
-  doNotFake: ['nextTick', 'setImmediate'],;
+  doNotFake: ['nextTick', 'setImmediate'],
 })
 
 // Set up global error handlers for tests
@@ -809,7 +809,7 @@ process.on('unhandledRejection', (reason, promise) => {
   /* SECURITY: Console statement removed */});
 
 process.on('uncaughtException', (error) => {
-  /* SECURITY: Console statement removed */;
+  /* SECURITY: Console statement removed */
 });
 
 // Export test utilities for external use

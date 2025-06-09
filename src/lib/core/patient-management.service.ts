@@ -17,78 +17,78 @@ export const PatientCreateSchema = z.object({
   // Demographics
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  middleName: z.string().optional();
+  middleName: z.string().optional(),
   dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid date'),
   gender: z.enum(['male', 'female', 'other', 'unknown']),
-  ssn: z.string().optional();
+  ssn: z.string().optional(),
   mrn: z.string().optional();
 
   // Contact Information
   phone: z.string().min(10, 'Valid phone number required'),
-  email: z.string().email('Valid email required').optional();
+  email: z.string().email('Valid email required').optional(),
   address: z.object({
     street: z.string().min(1, 'Street address required'),
     city: z.string().min(1, 'City required'),
     state: z.string().min(2, 'State required'),
     zipCode: z.string().min(5, 'ZIP code required'),
-    country: z.string().default('US');
+    country: z.string().default('US')
   }),
 
   // Emergency Contact
   emergencyContact: z.object({
     name: z.string().min(1, 'Emergency contact name required'),
     relationship: z.string().min(1, 'Relationship required'),
-    phone: z.string().min(10, 'Emergency contact phone required'),;
+    phone: z.string().min(10, 'Emergency contact phone required'),
   }),
 
   // Insurance Information
   insurance: z.object({
     primary: z.object({
-      planName: z.string();
-      policyNumber: z.string();
-      groupNumber: z.string().optional();
-      subscriberId: z.string();
-      subscriberName: z.string();
-      relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),;
+      planName: z.string(),
+      policyNumber: z.string(),
+      groupNumber: z.string().optional(),
+      subscriberId: z.string(),
+      subscriberName: z.string(),
+      relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),
     }),
     secondary: z.object({
-      planName: z.string();
-      policyNumber: z.string();
-      groupNumber: z.string().optional();
-      subscriberId: z.string();
-      subscriberName: z.string();
-      relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),;
+      planName: z.string(),
+      policyNumber: z.string(),
+      groupNumber: z.string().optional(),
+      subscriberId: z.string(),
+      subscriberName: z.string(),
+      relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),
     }).optional(),
   }),
 
   // Medical Information
   allergies: z.array(z.object({
-    allergen: z.string();
-    reaction: z.string();
-    severity: z.enum(['mild', 'moderate', 'severe']),;
+    allergen: z.string(),
+    reaction: z.string(),
+    severity: z.enum(['mild', 'moderate', 'severe']),
   })).default([]),
 
   medications: z.array(z.object({
-    name: z.string();
-    dosage: z.string();
-    frequency: z.string();
-    prescribedBy: z.string();
+    name: z.string(),
+    dosage: z.string(),
+    frequency: z.string(),
+    prescribedBy: z.string()
   })).default([]),
 
   medicalHistory: z.array(z.object({
-    condition: z.string();
-    diagnosedDate: z.string();
-    status: z.enum(['active', 'resolved', 'chronic']),;
+    condition: z.string(),
+    diagnosedDate: z.string(),
+    status: z.enum(['active', 'resolved', 'chronic']),
   })).default([]),
 
   // Preferences
-  preferredLanguage: z.string().default('en');
-  preferredProvider: z.string().optional();
+  preferredLanguage: z.string().default('en'),
+  preferredProvider: z.string().optional(),
   communicationPreferences: z.object({
-    phone: z.boolean().default(true);
-    email: z.boolean().default(true);
-    sms: z.boolean().default(false);
-    portal: z.boolean().default(true);
+    phone: z.boolean().default(true),
+    email: z.boolean().default(true),
+    sms: z.boolean().default(false),
+    portal: z.boolean().default(true)
   }).default({}),
 });
 
@@ -98,9 +98,9 @@ export type PatientCreate = z.infer<typeof PatientCreateSchema>;
 export type PatientUpdate = z.infer<typeof PatientUpdateSchema>;
 
 export interface Patient extends PatientCreate {
-  id: string;
+  id: string,
   mrn: string;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date;
   status: 'active' | 'inactive' | 'deceased';
   lastVisit?: Date;
@@ -117,18 +117,18 @@ export interface PatientSearchCriteria {
   page?: number;
   limit?: number;
 export interface PatientSearchResult {
-  patients: Patient[];
+  patients: Patient[],
   total: number;
-  page: number;
+  page: number,
   totalPages: number
 export interface MedicalRecord {
-  id: string;
+  id: string,
   patientId: string;
-  type: 'visit' | 'lab' | 'imaging' | 'procedure' | 'note';
+  type: 'visit' | 'lab' | 'imaging' | 'procedure' | 'note',
   title: string;
-  description: string;
+  description: string,
   providerId: string;
-  providerName: string;
+  providerName: string,
   date: Date;
   status: 'draft' | 'signed' | 'amended';
   attachments?: string[];
@@ -147,7 +147,7 @@ export class PatientManagementService {
   private generateMRN(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `MRN/* SECURITY: Template literal eliminated */;
+    return `MRN/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -176,10 +176,10 @@ export class PatientManagementService {
         ...validatedData,
         id,
         mrn,
-        createdAt: new Date();
-        updatedAt: new Date();
-        status: 'active' as const;
-        totalVisits: 0;
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        status: 'active' as const,
+        totalVisits: 0
       };
 
       if (this.fhirEnabled) {
@@ -190,7 +190,7 @@ export class PatientManagementService {
         await this.logAuditEvent('patient_created', id, {
           mrn,
           name: `/* SECURITY: Template literal eliminated */
-          fhirCompliant: true;
+          fhirCompliant: true
         });
 
         return result.hmsPatient;
@@ -198,14 +198,14 @@ export class PatientManagementService {
         // Legacy HMS-only creation
         const patient = await this.prisma.patient.create({
           data: {
-            id: hmsPatientData.id;
+            id: hmsPatientData.id,
             mrn: hmsPatientData.mrn;
-            firstName: hmsPatientData.firstName;
+            firstName: hmsPatientData.firstName,
             lastName: hmsPatientData.lastName;
-            dateOfBirth: new Date(hmsPatientData.dateOfBirth);
+            dateOfBirth: new Date(hmsPatientData.dateOfBirth),
             gender: hmsPatientData.gender;
-            phone: hmsPatientData.phone;
-            email: hmsPatientData.email || '';
+            phone: hmsPatientData.phone,
+            email: hmsPatientData.email || ''
           }
         });
 
@@ -213,7 +213,7 @@ export class PatientManagementService {
         await this.logAuditEvent('patient_created', id, {
           mrn,
           name: `/* SECURITY: Template literal eliminated */
-          fhirCompliant: false;
+          fhirCompliant: false
         });
 
         return this.convertPrismaPatientToHMS(patient, hmsPatientData);
@@ -254,7 +254,7 @@ export class PatientManagementService {
       const updatedPatientData = {
         ...existingPatient,
         ...validatedData,
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
 
       if (this.fhirEnabled) {
@@ -264,7 +264,7 @@ export class PatientManagementService {
         // Log audit trail
         await this.logAuditEvent('patient_updated', patientId, {
           ...updateData,
-          fhirCompliant: true;
+          fhirCompliant: true
         });
 
         return result.hmsPatient;
@@ -279,14 +279,14 @@ export class PatientManagementService {
             ...(validatedData?.gender && { gender: validatedData.gender }),
             ...(validatedData?.phone && { phone: validatedData.phone }),
             ...(validatedData?.email && { email: validatedData.email }),
-            updatedAt: new Date();
+            updatedAt: new Date()
           }
         });
 
         // Log audit trail
         await this.logAuditEvent('patient_updated', patientId, {
           ...updateData,
-          fhirCompliant: false;
+          fhirCompliant: false
         });
 
         return this.convertPrismaPatientToHMS(patient, updatedPatientData);
@@ -310,7 +310,7 @@ export class PatientManagementService {
         const fhirSearchParams = FHIRIntegrationUtils.convertHMSSearchToFHIR({
           ...searchCriteria,
           limit,
-          offset: (page - 1) * limit;
+          offset: (page - 1) * limit
         }, 'Patient');
 
         const result = await FHIRPatientIntegration.searchPatients(fhirSearchParams);
@@ -318,7 +318,7 @@ export class PatientManagementService {
         const totalPages = Math.ceil(result.total / limit);
 
         return {
-          patients: result.hmsPatients;
+          patients: result.hmsPatients,
           total: result.total;
           page,
           totalPages,
@@ -354,7 +354,7 @@ export class PatientManagementService {
         const [patients, total] = await Promise.all([
           this.prisma.patient.findMany({
             where,
-            skip: (page - 1) * limit;
+            skip: (page - 1) * limit,
             take: limit;
             orderBy: { lastName: 'asc' }
           }),
@@ -421,50 +421,50 @@ export class PatientManagementService {
    */
   private convertPrismaPatientToHMS(prismaPatient: unknown, additionalData?: unknown): Patient {
     return {
-      id: prismaPatient.id;
+      id: prismaPatient.id,
       mrn: prismaPatient.mrn;
-      firstName: prismaPatient.firstName;
+      firstName: prismaPatient.firstName,
       lastName: prismaPatient.lastName;
-      middleName: additionalData?.middleName || '';
+      middleName: additionalData?.middleName || '',
       dateOfBirth: prismaPatient.dateOfBirth.toISOString().split('T')[0];
-      gender: prismaPatient.gender;
+      gender: prismaPatient.gender,
       phone: prismaPatient.phone;
-      email: prismaPatient.email || '';
-      createdAt: prismaPatient.createdAt || new Date();
-      updatedAt: prismaPatient.updatedAt || new Date();
+      email: prismaPatient.email || '',
+      createdAt: prismaPatient.createdAt || new Date(),
+      updatedAt: prismaPatient.updatedAt || new Date(),
       status: 'active';
       totalVisits: 0;
 
       // Default values for complex fields
       address: additionalData?.address || {
-        street: '';
+        street: '',
         city: '';
-        state: '';
+        state: '',
         zipCode: '';
-        country: 'US';
+        country: 'US'
       },
       emergencyContact: additionalData?.emergencyContact || {
-        name: '';
+        name: '',
         relationship: '';
-        phone: '';
+        phone: ''
       },
       insurance: additionalData?.insurance || {
         primary: {
-          planName: '';
+          planName: '',
           policyNumber: '';
-          subscriberId: '';
+          subscriberId: '',
           subscriberName: '';
-          relationshipToSubscriber: 'self' as const;
+          relationshipToSubscriber: 'self' as const
         }
       },
-      allergies: additionalData?.allergies || [];
+      allergies: additionalData?.allergies || [],
       medicalHistory: additionalData?.medicalHistory || [];
-      preferredLanguage: additionalData?.preferredLanguage || 'en';
+      preferredLanguage: additionalData?.preferredLanguage || 'en',
       communicationPreferences: additionalData?.communicationPreferences || {
-        phone: true;
+        phone: true,
         email: true;
-        sms: false;
-        portal: true;
+        sms: false,
+        portal: true
       }
     };
   }
@@ -514,7 +514,7 @@ export class PatientManagementService {
 
     const medicalRecord: MedicalRecord = {
       ...record,
-      id: uuidv4();
+      id: uuidv4(),
       patientId,
     };
 
@@ -526,9 +526,9 @@ export class PatientManagementService {
     if (record.type === 'visit') {
       const updatedPatient = {
         ...patient,
-        lastVisit: record.date;
+        lastVisit: record.date,
         totalVisits: patient.totalVisits + 1;
-        updatedAt: new Date();
+        updatedAt: new Date()
       };
       this.patients.set(patientId, updatedPatient);
     }
@@ -549,8 +549,8 @@ export class PatientManagementService {
    * Verify insurance eligibility;
    */
   async verifyInsurance(patientId: string): Promise<{
-    primary: { status: 'active' | 'inactive' | 'pending'; coverage: string[] };
-    secondary?: { status: 'active' | 'inactive' | 'pending'; coverage: string[] };
+    primary: { status: 'active' | 'inactive' | 'pending', coverage: string[] };
+    secondary?: { status: 'active' | 'inactive' | 'pending', coverage: string[] };
   }> {
     const patient = this.patients.get(patientId);
     if (!patient) {
@@ -564,13 +564,13 @@ export class PatientManagementService {
 
     const result = {
       primary: {
-        status: primaryStatus as 'active' | 'inactive';
-        coverage: ['medical', 'prescription', 'emergency'],;
+        status: primaryStatus as 'active' | 'inactive',
+        coverage: ['medical', 'prescription', 'emergency'],
       },
       ...(secondaryStatus && {
         secondary: {
-          status: secondaryStatus as 'active' | 'inactive';
-          coverage: ['medical', 'prescription'],;
+          status: secondaryStatus as 'active' | 'inactive',
+          coverage: ['medical', 'prescription'],
         },
       }),
     };
@@ -584,9 +584,9 @@ export class PatientManagementService {
    * Check patient eligibility for services;
    */
   async checkEligibility(patientId: string, serviceType: string): Promise<{
-    eligible: boolean;
+    eligible: boolean,
     coverage: number;
-    copay: number;
+    copay: number,
     deductible: number;
     reasons?: string[];
   }> {
@@ -608,7 +608,7 @@ export class PatientManagementService {
       coverage,
       copay,
       deductible,
-      reasons: eligible ? undefined : ['Insurance not active', 'Service not covered'],;
+      reasons: eligible ? undefined : ['Insurance not active', 'Service not covered'],
     };
   }
 
@@ -616,20 +616,20 @@ export class PatientManagementService {
    * Get patient statistics;
    */
   async getPatientStats(): Promise<{
-    total: number;
+    total: number,
     active: number;
-    inactive: number;
+    inactive: number,
     newThisMonth: number;
-    averageAge: number;
+    averageAge: number
   }> {
     const patients = Array.from(this.patients.values());
     const now = new Date();
     const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
 
     const stats = {
-      total: patients.length;
+      total: patients.length,
       active: patients.filter(p => p.status === 'active').length;
-      inactive: patients.filter(p => p.status === 'inactive').length;
+      inactive: patients.filter(p => p.status === 'inactive').length,
       newThisMonth: patients.filter(p => p.createdAt > oneMonthAgo).length;
       averageAge: patients.reduce((sum, p) => {
         const age = new Date().getFullYear() - new Date(p.dateOfBirth).getFullYear();
@@ -645,25 +645,25 @@ export class PatientManagementService {
    */
   private async logAuditEvent(action: string, patientId: string, details: unknown): Promise<void> {
     const _auditLog = {
-      _timestamp: new Date().toISOString();
+      _timestamp: new Date().toISOString(),
       action,
       patientId,
       details,
       userId: 'system', // In real implementation, get from current user context
-      ipAddress: '127.0.0.1', // In real implementation, get from request;
+      ipAddress: '127.0.0.1', // In real implementation, get from request
     };
 
     // In real implementation, store in audit log database
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   /**
    * Export patient data (for patient portal or data requests)
    */
   async exportPatientData(patientId: string): Promise<{
-    demographics: Patient;
+    demographics: Patient,
     medicalRecords: MedicalRecord[]
-    exportDate: Date;
+    exportDate: Date
   }> {
     const patient = this.patients.get(patientId);
     if (!patient) {
@@ -677,7 +677,7 @@ export class PatientManagementService {
     return {
       demographics: patient;
       medicalRecords,
-      exportDate: new Date();
+      exportDate: new Date()
     };
   }
 
@@ -699,7 +699,7 @@ export class PatientManagementService {
     // Update secondary records to reference primary patient
     const updatedSecondaryRecords = secondaryRecords.map(record => ({
       ...record,
-      patientId: primaryPatientId;
+      patientId: primaryPatientId
     }));
 
     this.medicalRecords.set(primaryPatientId, [...primaryRecords, ...updatedSecondaryRecords]);
@@ -707,11 +707,11 @@ export class PatientManagementService {
     // Update primary patient with any missing information from secondary
     const mergedPatient: Patient = {
       ...primaryPatient,
-      totalVisits: primaryPatient.totalVisits + secondaryPatient.totalVisits;
+      totalVisits: primaryPatient.totalVisits + secondaryPatient.totalVisits,
       lastVisit: primaryPatient?.lastVisit && secondaryPatient.lastVisit ?
         (primaryPatient.lastVisit > secondaryPatient.lastVisit ? primaryPatient.lastVisit : secondaryPatient.lastVisit) :
         primaryPatient.lastVisit || secondaryPatient.lastVisit,
-      updatedAt: new Date();
+      updatedAt: new Date()
     };
 
     this.patients.set(primaryPatientId, mergedPatient);
@@ -719,14 +719,14 @@ export class PatientManagementService {
     // Mark secondary patient as inactive
     const inactiveSecondaryPatient = {
       ...secondaryPatient,
-      status: 'inactive' as const;
-      updatedAt: new Date();
+      status: 'inactive' as const,
+      updatedAt: new Date()
     };
     this.patients.set(secondaryPatientId, inactiveSecondaryPatient);
 
     await this.logAuditEvent('patients_merged', primaryPatientId, {
       secondaryPatientId,
-      secondaryMRN: secondaryPatient.mrn;
+      secondaryMRN: secondaryPatient.mrn
     });
 
     return mergedPatient;

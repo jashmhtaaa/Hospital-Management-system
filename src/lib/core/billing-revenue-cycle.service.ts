@@ -10,23 +10,23 @@ import { z } from 'zod';
 // Billing Schemas
 export const ServiceCatalogSchema = z.object({
   service_code: z.string().min(1, 'Service code is required'),
-  cpt_code: z.string().optional();
-  hcpcs_code: z.string().optional();
+  cpt_code: z.string().optional(),
+  hcpcs_code: z.string().optional(),
   service_name: z.string().min(1, 'Service name is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   department: z.string().min(1, 'Department is required'),
   category: z.enum(['consultation', 'procedure', 'diagnostic', 'therapy', 'surgery', 'lab', 'imaging', 'emergency']),
   base_price: z.number().min(0, 'Price must be non-negative'),
-  medicare_rate: z.number().min(0).optional();
-  medicaid_rate: z.number().min(0).optional();
-  commercial_rate: z.number().min(0).optional();
-  cash_rate: z.number().min(0).optional();
-  relative_value_units: z.number().min(0).optional();
-  billable: z.boolean().default(true);
-  requires_authorization: z.boolean().default(false);
-  bundled_services: z.array(z.string()).default([]);
-  modifiers: z.array(z.string()).default([]);
-  is_active: z.boolean().default(true);
+  medicare_rate: z.number().min(0).optional(),
+  medicaid_rate: z.number().min(0).optional(),
+  commercial_rate: z.number().min(0).optional(),
+  cash_rate: z.number().min(0).optional(),
+  relative_value_units: z.number().min(0).optional(),
+  billable: z.boolean().default(true),
+  requires_authorization: z.boolean().default(false),
+  bundled_services: z.array(z.string()).default([]),
+  modifiers: z.array(z.string()).default([]),
+  is_active: z.boolean().default(true)
 });
 
 export const ChargeSchema = z.object({
@@ -39,12 +39,12 @@ export const ChargeSchema = z.object({
   unit_price: z.number().min(0, 'Unit price must be non-negative'),
   total_charge: z.number().min(0, 'Total charge must be non-negative'),
   diagnosis_codes: z.array(z.string()).min(1, 'At least one diagnosis code is required'),
-  modifiers: z.array(z.string()).default([]);
-  place_of_service: z.string().optional();
-  referring_provider_id: z.string().optional();
-  authorization_number: z.string().optional();
+  modifiers: z.array(z.string()).default([]),
+  place_of_service: z.string().optional(),
+  referring_provider_id: z.string().optional(),
+  authorization_number: z.string().optional(),
   charge_status: z.enum(['pending', 'submitted', 'paid', 'denied', 'appealed', 'written_off']).default('pending'),
-  notes: z.string().optional();
+  notes: z.string().optional()
 });
 
 export const InsuranceClaimSchema = z.object({
@@ -56,129 +56,129 @@ export const InsuranceClaimSchema = z.object({
   total_amount: z.number().min(0, 'Total amount must be non-negative'),
   diagnosis_codes: z.array(z.string()).min(1, 'At least one diagnosis code is required'),
   procedure_codes: z.array(z.string()).min(1, 'At least one procedure code is required'),
-  place_of_service: z.string();
-  accident_related: z.boolean().default(false);
-  emergency_related: z.boolean().default(false);
-  referring_provider_npi: z.string().optional();
-  facility_npi: z.string().optional();
+  place_of_service: z.string(),
+  accident_related: z.boolean().default(false),
+  emergency_related: z.boolean().default(false),
+  referring_provider_npi: z.string().optional(),
+  facility_npi: z.string().optional(),
   submission_method: z.enum(['electronic', 'paper']).default('electronic'),
-  priority: z.enum(['normal', 'urgent']).default('normal'),;
+  priority: z.enum(['normal', 'urgent']).default('normal'),
 });
 
 export const PaymentSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
-  encounter_id: z.string().optional();
-  claim_id: z.string().optional();
+  encounter_id: z.string().optional(),
+  claim_id: z.string().optional(),
   payer_type: z.enum(['insurance', 'patient', 'government', 'charity']),
   payer_name: z.string().min(1, 'Payer name is required'),
   payment_method: z.enum(['cash', 'check', 'credit_card', 'electronic', 'wire_transfer']),
   payment_amount: z.number().min(0, 'Payment amount must be non-negative'),
   payment_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid payment date'),
-  reference_number: z.string().optional();
+  reference_number: z.string().optional(),
   applied_charges: z.array(z.object({
-    charge_id: z.string();
-    applied_amount: z.number().min(0);
+    charge_id: z.string(),
+    applied_amount: z.number().min(0)
   })),
-  adjustment_amount: z.number().default(0);
-  adjustment_reason: z.string().optional();
-  notes: z.string().optional();
+  adjustment_amount: z.number().default(0),
+  adjustment_reason: z.string().optional(),
+  notes: z.string().optional()
 });
 
 export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type Charge = z.infer<typeof ChargeSchema> & {
-  id: string;
+  id: string,
   charge_number: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   submitted_date?: Date;
   paid_date?: Date;
-  payments_received: number;
+  payments_received: number,
   adjustments: number;
-  balance: number;
+  balance: number,
   aging_days: number;
   service_name?: string;
   patient_name?: string;
-  provider_name?: string;
+  provider_name?: string
 };
 
 export type InsuranceClaim = z.infer<typeof InsuranceClaimSchema> & {
-  id: string;
+  id: string,
   claim_number: string;
   status: 'draft' | 'submitted' | 'pending' | 'paid' | 'denied' | 'appealed' | 'closed';
   submission_date?: Date;
   response_date?: Date;
-  paid_amount: number;
+  paid_amount: number,
   denied_amount: number;
   adjustment_amount: number;
   denial_reason?: string;
   remittance_advice?: string;
-  resubmission_count: number;
+  resubmission_count: number,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type Payment = z.infer<typeof PaymentSchema> & {
-  id: string;
+  id: string,
   payment_number: string;
   payment_status: 'pending' | 'processed' | 'posted' | 'rejected';
   processed_date?: Date;
   posted_date?: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export interface FinancialSummary {
-  patient_id: string;
+  patient_id: string,
   total_charges: number;
-  total_payments: number;
+  total_payments: number,
   total_adjustments: number;
-  current_balance: number;
+  current_balance: number,
   insurance_balance: number;
   patient_balance: number;
   last_payment_date?: Date;
   last_statement_date?: Date;
   aging: {
-    current: number;
+    current: number,
     days_30: number;
-    days_60: number;
+    days_60: number,
     days_90: number;
-    days_120_plus: number;
+    days_120_plus: number
   };
 export interface RevenueReport {
-  period: string;
+  period: string,
   gross_charges: number;
-  contractual_adjustments: number;
+  contractual_adjustments: number,
   bad_debt_adjustments: number;
-  net_revenue: number;
+  net_revenue: number,
   cash_collections: number;
-  accounts_receivable: number;
+  accounts_receivable: number,
   days_in_ar: number;
-  denial_rate: number;
+  denial_rate: number,
   clean_claim_rate: number;
-  cost_to_collect: number;
+  cost_to_collect: number,
   by_payer: {
-    payer_name: string;
+    payer_name: string,
     charges: number;
-    payments: number;
+    payments: number,
     adjustments: number;
-    net_revenue: number;
+    net_revenue: number
   }[];
   by_service: {
-    service_category: string;
+    service_category: string,
     volume: number;
-    charges: number;
+    charges: number,
     payments: number;
-    net_revenue: number;
+    net_revenue: number
   }[];
 export class BillingRevenueCycleService {
-  private serviceCatalog: Map<string, ServiceCatalogItem> = new Map();
-  private charges: Map<string, Charge> = new Map();
-  private claims: Map<string, InsuranceClaim> = new Map();
+  private serviceCatalog: Map<string, ServiceCatalogItem> = new Map(),
+  private charges: Map<string, Charge> = new Map(),
+  private claims: Map<string, InsuranceClaim> = new Map(),
   private payments: Map<string, Payment> = new Map(),
   constructor() {
     this.initializeServiceCatalog();
@@ -190,108 +190,108 @@ export class BillingRevenueCycleService {
   private initializeServiceCatalog(): void {
     const services: Omit<ServiceCatalogItem, 'id' | 'created_at' | 'updated_at'>[] = [
       {
-        service_code: 'E&M-99213';
+        service_code: 'E&M-99213',
         cpt_code: '99213';
-        service_name: 'Office Visit - Established Patient Level 3';
+        service_name: 'Office Visit - Established Patient Level 3',
         description: 'Established patient office visit, moderate complexity',
-        department: 'Primary Care';
+        department: 'Primary Care',
         category: 'consultation';
-        base_price: 150.00;
+        base_price: 150.00,
         medicare_rate: 120.00;
-        medicaid_rate: 100.00;
+        medicaid_rate: 100.00,
         commercial_rate: 180.00;
-        cash_rate: 120.00;
+        cash_rate: 120.00,
         relative_value_units: 1.3;
-        billable: true;
+        billable: true,
         requires_authorization: false;
-        bundled_services: [];
+        bundled_services: [],
         modifiers: [];
-        is_active: true;
+        is_active: true
       },
       {
-        service_code: 'LAB-CBC';
+        service_code: 'LAB-CBC',
         cpt_code: '85025';
-        service_name: 'Complete Blood Count with Differential';
+        service_name: 'Complete Blood Count with Differential',
         description: 'Automated CBC with automated differential';
-        department: 'Laboratory';
+        department: 'Laboratory',
         category: 'lab';
-        base_price: 45.00;
+        base_price: 45.00,
         medicare_rate: 35.00;
-        medicaid_rate: 30.00;
+        medicaid_rate: 30.00,
         commercial_rate: 55.00;
-        cash_rate: 35.00;
+        cash_rate: 35.00,
         relative_value_units: 0.5;
-        billable: true;
+        billable: true,
         requires_authorization: false;
-        bundled_services: [];
+        bundled_services: [],
         modifiers: [];
-        is_active: true;
+        is_active: true
       },
       {
-        service_code: 'IMG-XRAY-CHEST';
+        service_code: 'IMG-XRAY-CHEST',
         cpt_code: '71020';
         service_name: 'Chest X-Ray, 2 Views',
         description: 'Radiologic examination, chest; 2 views',
-        department: 'Radiology';
+        department: 'Radiology',
         category: 'imaging';
-        base_price: 120.00;
+        base_price: 120.00,
         medicare_rate: 95.00;
-        medicaid_rate: 80.00;
+        medicaid_rate: 80.00,
         commercial_rate: 140.00;
-        cash_rate: 95.00;
+        cash_rate: 95.00,
         relative_value_units: 0.7;
-        billable: true;
+        billable: true,
         requires_authorization: false;
-        bundled_services: [];
+        bundled_services: [],
         modifiers: [];
-        is_active: true;
+        is_active: true
       },
       {
-        service_code: 'SURG-APPEND';
+        service_code: 'SURG-APPEND',
         cpt_code: '44970';
-        service_name: 'Laparoscopic Appendectomy';
+        service_name: 'Laparoscopic Appendectomy',
         description: 'Laparoscopic appendectomy';
-        department: 'Surgery';
+        department: 'Surgery',
         category: 'surgery';
-        base_price: 8500.00;
+        base_price: 8500.00,
         medicare_rate: 6800.00;
-        medicaid_rate: 6000.00;
+        medicaid_rate: 6000.00,
         commercial_rate: 10200.00;
-        cash_rate: 6800.00;
+        cash_rate: 6800.00,
         relative_value_units: 15.8;
-        billable: true;
+        billable: true,
         requires_authorization: true;
         bundled_services: ['ANES-GEN', 'OR-TIME'],
-        modifiers: [];
-        is_active: true;
+        modifiers: [],
+        is_active: true
       },
       {
-        service_code: 'ER-LEVEL4';
+        service_code: 'ER-LEVEL4',
         cpt_code: '99284';
-        service_name: 'Emergency Department Visit - Level 4';
+        service_name: 'Emergency Department Visit - Level 4',
         description: 'ED visit for evaluation of patient with high complexity';
-        department: 'Emergency';
+        department: 'Emergency',
         category: 'emergency';
-        base_price: 750.00;
+        base_price: 750.00,
         medicare_rate: 600.00;
-        medicaid_rate: 525.00;
+        medicaid_rate: 525.00,
         commercial_rate: 900.00;
-        cash_rate: 600.00;
+        cash_rate: 600.00,
         relative_value_units: 4.5;
-        billable: true;
+        billable: true,
         requires_authorization: false;
-        bundled_services: [];
+        bundled_services: [],
         modifiers: [];
-        is_active: true;
+        is_active: true
       },
     ];
 
     services.forEach(serviceData => {
       const service: ServiceCatalogItem = {
         ...serviceData,
-        id: uuidv4();
-        created_at: new Date();
-        updated_at: new Date();
+        id: uuidv4(),
+        created_at: new Date(),
+        updated_at: new Date()
       };
       this.serviceCatalog.set(service.service_code, service);
     });
@@ -314,15 +314,15 @@ export class BillingRevenueCycleService {
 
     const charge: Charge = {
       ...validatedData,
-      id: chargeId;
+      id: chargeId,
       charge_number: chargeNumber;
-      created_at: new Date();
-      updated_at: new Date();
-      payments_received: 0;
+      created_at: new Date(),
+      updated_at: new Date(),
+      payments_received: 0,
       adjustments: 0;
-      balance: validatedData.total_charge;
+      balance: validatedData.total_charge,
       aging_days: 0;
-      service_name: service.service_name;
+      service_name: service.service_name
     };
 
     this.charges.set(chargeId, charge);
@@ -335,7 +335,7 @@ export class BillingRevenueCycleService {
   private generateChargeNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `CHG/* SECURITY: Template literal eliminated */;
+    return `CHG/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -357,15 +357,15 @@ export class BillingRevenueCycleService {
 
     const claim: InsuranceClaim = {
       ...validatedData,
-      id: claimId;
+      id: claimId,
       claim_number: claimNumber;
-      status: 'draft';
+      status: 'draft',
       paid_amount: 0;
-      denied_amount: 0;
+      denied_amount: 0,
       adjustment_amount: 0;
-      resubmission_count: 0;
-      created_at: new Date();
-      updated_at: new Date();
+      resubmission_count: 0,
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.claims.set(claimId, claim);
@@ -378,7 +378,7 @@ export class BillingRevenueCycleService {
   private generateClaimNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
-    return `CLM/* SECURITY: Template literal eliminated */;
+    return `CLM/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -417,7 +417,7 @@ export class BillingRevenueCycleService {
    * Process claim response;
    */
   async processClaimResponse(
-    claimId: string;
+    claimId: string,
     responseData: {
       status: 'paid' | 'denied' | 'pending';
       paid_amount?: number;
@@ -481,11 +481,11 @@ export class BillingRevenueCycleService {
 
     const payment: Payment = {
       ...validatedData,
-      id: paymentId;
+      id: paymentId,
       payment_number: paymentNumber;
-      payment_status: 'pending';
-      created_at: new Date();
-      updated_at: new Date();
+      payment_status: 'pending',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.payments.set(paymentId, payment);
@@ -498,7 +498,7 @@ export class BillingRevenueCycleService {
   private generatePaymentNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `PAY/* SECURITY: Template literal eliminated */;
+    return `PAY/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -600,11 +600,11 @@ export class BillingRevenueCycleService {
     const patientBalance = currentBalance * 0.2; // Assume 20% patient responsibility
 
     return {
-      patient_id: patientId;
+      patient_id: patientId,
       total_charges: Math.round(totalCharges * 100) / 100;
-      total_payments: Math.round(totalPayments * 100) / 100;
+      total_payments: Math.round(totalPayments * 100) / 100,
       total_adjustments: Math.round(totalAdjustments * 100) / 100;
-      current_balance: Math.round(currentBalance * 100) / 100;
+      current_balance: Math.round(currentBalance * 100) / 100,
       insurance_balance: Math.round(insuranceBalance * 100) / 100;
       patient_balance: Math.round(patientBalance * 100) / 100;
       aging,
@@ -615,7 +615,7 @@ export class BillingRevenueCycleService {
    * Generate revenue report;
    */
   async generateRevenueReport(
-    startDate: string;
+    startDate: string,
     endDate: string;
   ): Promise<RevenueReport> {
     const start = new Date(startDate);
@@ -652,37 +652,37 @@ export class BillingRevenueCycleService {
     // By payer analysis (simplified)
     const byPayer = [
       {
-        payer_name: 'Medicare';
+        payer_name: 'Medicare',
         charges: grossCharges * 0.4;
-        payments: cashCollections * 0.35;
+        payments: cashCollections * 0.35,
         adjustments: contractualAdjustments * 0.5;
-        net_revenue: netRevenue * 0.3;
+        net_revenue: netRevenue * 0.3
       },
       {
-        payer_name: 'Medicaid';
+        payer_name: 'Medicaid',
         charges: grossCharges * 0.2;
-        payments: cashCollections * 0.15;
+        payments: cashCollections * 0.15,
         adjustments: contractualAdjustments * 0.3;
-        net_revenue: netRevenue * 0.15;
+        net_revenue: netRevenue * 0.15
       },
       {
-        payer_name: 'Commercial';
+        payer_name: 'Commercial',
         charges: grossCharges * 0.3;
-        payments: cashCollections * 0.4;
+        payments: cashCollections * 0.4,
         adjustments: contractualAdjustments * 0.15;
-        net_revenue: netRevenue * 0.45;
+        net_revenue: netRevenue * 0.45
       },
       {
-        payer_name: 'Self-Pay';
+        payer_name: 'Self-Pay',
         charges: grossCharges * 0.1;
-        payments: cashCollections * 0.1;
+        payments: cashCollections * 0.1,
         adjustments: contractualAdjustments * 0.05;
-        net_revenue: netRevenue * 0.1;
+        net_revenue: netRevenue * 0.1
       },
     ]
 
     // By service analysis
-    const serviceStats = new Map<string, { volume: number; charges: number; payments: number }>();
+    const serviceStats = new Map<string, { volume: number, charges: number; payments: number }>();
 
     periodCharges.forEach(charge => {
       const service = this.serviceCatalog.get(charge.service_code);
@@ -697,37 +697,37 @@ export class BillingRevenueCycleService {
     });
 
     const byService = Array.from(serviceStats.entries()).map(([category, stats]) => ({
-      service_category: category;
+      service_category: category,
       volume: stats.volume;
-      charges: stats.charges;
+      charges: stats.charges,
       payments: stats.payments;
-      net_revenue: stats.payments, // Simplified;
+      net_revenue: stats.payments, // Simplified
     }));
 
     return {
       period: `${startDate} to ${endDate}`,
-      gross_charges: Math.round(grossCharges * 100) / 100;
+      gross_charges: Math.round(grossCharges * 100) / 100,
       contractual_adjustments: Math.round(contractualAdjustments * 100) / 100;
-      bad_debt_adjustments: Math.round(badDebtAdjustments * 100) / 100;
+      bad_debt_adjustments: Math.round(badDebtAdjustments * 100) / 100,
       net_revenue: Math.round(netRevenue * 100) / 100;
-      cash_collections: Math.round(cashCollections * 100) / 100;
+      cash_collections: Math.round(cashCollections * 100) / 100,
       accounts_receivable: Math.round(accountsReceivable * 100) / 100;
-      days_in_ar: Math.round(daysInAR * 100) / 100;
+      days_in_ar: Math.round(daysInAR * 100) / 100,
       denial_rate: denialRate;
-      clean_claim_rate: cleanClaimRate;
+      clean_claim_rate: cleanClaimRate,
       cost_to_collect: costToCollect;
       by_payer: byPayer.map(p => ({
         ...p,
-        charges: Math.round(p.charges * 100) / 100;
+        charges: Math.round(p.charges * 100) / 100,
         payments: Math.round(p.payments * 100) / 100;
-        adjustments: Math.round(p.adjustments * 100) / 100;
-        net_revenue: Math.round(p.net_revenue * 100) / 100;
+        adjustments: Math.round(p.adjustments * 100) / 100,
+        net_revenue: Math.round(p.net_revenue * 100) / 100
       })),
       by_service: byService.map(s => ({
         ...s,
-        charges: Math.round(s.charges * 100) / 100;
+        charges: Math.round(s.charges * 100) / 100,
         payments: Math.round(s.payments * 100) / 100;
-        net_revenue: Math.round(s.net_revenue * 100) / 100;
+        net_revenue: Math.round(s.net_revenue * 100) / 100
       })),
     };
   }
@@ -745,7 +745,7 @@ export class BillingRevenueCycleService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ charges: Charge[]; total: number; totalPages: number }> {
+  }): Promise<{ charges: Charge[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredCharges = Array.from(this.charges.values());
@@ -803,7 +803,7 @@ export class BillingRevenueCycleService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ claims: InsuranceClaim[]; total: number; totalPages: number }> {
+  }): Promise<{ claims: InsuranceClaim[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredClaims = Array.from(this.claims.values());
@@ -841,14 +841,14 @@ export class BillingRevenueCycleService {
    * Get billing statistics;
    */
   async getBillingStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    total_charges: number;
+    total_charges: number,
     total_payments: number;
-    total_adjustments: number;
+    total_adjustments: number,
     net_collections: number;
-    pending_charges: number;
+    pending_charges: number,
     claim_submission_rate: number;
-    average_payment_time: number;
-    top_services: { service_name: string; volume: number; revenue: number }[];
+    average_payment_time: number,
+    top_services: { service_name: string, volume: number; revenue: number }[];
   }> {
     const charges = Array.from(this.charges.values());
     const payments = Array.from(this.payments.values()).filter(p => p.payment_status === 'posted');
@@ -888,7 +888,7 @@ export class BillingRevenueCycleService {
     const averagePaymentTime = paidCharges.length > 0 ? totalPaymentDays / paidCharges.length : 0;
 
     // Top services by volume and revenue
-    const serviceStats = new Map<string, { volume: number; revenue: number }>();
+    const serviceStats = new Map<string, { volume: number, revenue: number }>();
     filteredCharges.forEach(charge => {
       const serviceName = charge.service_name || charge.service_code;
       const current = serviceStats.get(serviceName) || { volume: 0, revenue: 0 };
@@ -903,11 +903,11 @@ export class BillingRevenueCycleService {
       .slice(0, 10);
 
     return {
-      total_charges: Math.round(totalCharges * 100) / 100;
+      total_charges: Math.round(totalCharges * 100) / 100,
       total_payments: Math.round(totalPayments * 100) / 100;
-      total_adjustments: Math.round(totalAdjustments * 100) / 100;
+      total_adjustments: Math.round(totalAdjustments * 100) / 100,
       net_collections: Math.round(netCollections * 100) / 100;
-      pending_charges: pendingCharges;
+      pending_charges: pendingCharges,
       claim_submission_rate: Math.round(claimSubmissionRate * 100) / 100;
       average_payment_time: Math.round(averagePaymentTime * 100) / 100;
       top_services,

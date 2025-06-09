@@ -18,7 +18,7 @@ import {
 } from './types.ts';
 
 export interface FHIRLocationPosition {
-  longitude: number;
+  longitude: number,
   latitude: number;
   altitude?: number;
 export interface FHIRLocationHoursOfOperation {
@@ -71,7 +71,7 @@ export class FHIRLocationUtils {
    * Create a basic location;
    */
   static createBasicLocation(data: {
-    name: string;
+    name: string,
     type: 'building' | 'wing' | 'ward' | 'room' | 'bed' | 'vehicle' | 'house' | 'cabinet' | 'road';
     physicalType?: 'building' | 'room' | 'bed' | 'area' | 'vehicle';
     identifier?: string;
@@ -79,30 +79,30 @@ export class FHIRLocationUtils {
     organizationId?: string;
     parentLocationId?: string;
     address?: {
-      street: string;
+      street: string,
       city: string;
-      state: string;
+      state: string,
       zipCode: string;
-      country?: string;
+      country?: string
     };
     phone?: string;
     position?: {
-      longitude: number;
+      longitude: number,
       latitude: number;
-      altitude?: number;
+      altitude?: number
     };
     status?: 'active' | 'suspended' | 'inactive';
   }): FHIRLocation {
     const location: FHIRLocation = {
-      resourceType: 'Location';
+      resourceType: 'Location',
       status: data.status || 'active';
-      name: data.name;
+      name: data.name,
       mode: 'instance';
       type: [{
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode';
-          code: this.getLocationTypeCode(data.type);
-          display: this.getLocationTypeDisplay(data.type);
+          system: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode',
+          code: this.getLocationTypeCode(data.type),
+          display: this.getLocationTypeDisplay(data.type)
         }]
       }]
     }
@@ -110,8 +110,8 @@ export class FHIRLocationUtils {
     // Add identifier if provided
     if (data.identifier) {
       location.identifier = [{
-        use: 'official';
-        value: data.identifier;
+        use: 'official',
+        value: data.identifier
       }];
     }
 
@@ -124,9 +124,9 @@ export class FHIRLocationUtils {
     if (data.physicalType) {
       location.physicalType = {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/location-physical-type';
+          system: 'https://terminology.hl7.org/CodeSystem/location-physical-type',
           code: data.physicalType;
-          display: this.getPhysicalTypeDisplay(data.physicalType);
+          display: this.getPhysicalTypeDisplay(data.physicalType)
         }]
       }
     }
@@ -135,7 +135,7 @@ export class FHIRLocationUtils {
     if (data.organizationId) {
       location.managingOrganization = {
         reference: `Organization/${data.organizationId}`,
-        type: 'Organization';
+        type: 'Organization'
       };
     }
 
@@ -143,28 +143,28 @@ export class FHIRLocationUtils {
     if (data.parentLocationId) {
       location.partOf = {
         reference: `Location/${data.parentLocationId}`,
-        type: 'Location';
+        type: 'Location'
       };
     }
 
     // Add address
     if (data.address) {
       location.address = {
-        use: 'work';
+        use: 'work',
         line: [data.address.street];
-        city: data.address.city;
+        city: data.address.city,
         state: data.address.state;
-        postalCode: data.address.zipCode;
-        country: data.address.country || 'US';
+        postalCode: data.address.zipCode,
+        country: data.address.country || 'US'
       };
     }
 
     // Add contact information
     if (data.phone) {
       location.telecom = [{
-        system: 'phone';
+        system: 'phone',
         value: data.phone;
-        use: 'work';
+        use: 'work'
       }];
     }
 
@@ -180,28 +180,28 @@ export class FHIRLocationUtils {
    * Create a hospital building;
    */
   static createHospitalBuilding(data: {
-    name: string;
+    name: string,
     identifier: string;
-    organizationId: string;
+    organizationId: string,
     address: {
-      street: string;
+      street: string,
       city: string;
-      state: string;
+      state: string,
       zipCode: string;
-      country?: string;
+      country?: string
     };
     phone?: string;
     position?: {
-      longitude: number;
-      latitude: number;
+      longitude: number,
+      latitude: number
     };
     description?: string;
   }): FHIRLocation {
     return this.createBasicLocation({
       ...data,
-      type: 'building';
+      type: 'building',
       physicalType: 'building';
-      status: 'active';
+      status: 'active'
     });
   }
 
@@ -218,22 +218,22 @@ export class FHIRLocationUtils {
     description?: string;
   }): FHIRLocation {
     const location = this.createBasicLocation({
-      name: data.name;
+      name: data.name,
       type: 'ward';
-      physicalType: 'area';
+      physicalType: 'area',
       identifier: data.identifier;
-      description: data.description;
+      description: data.description,
       organizationId: data.organizationId;
-      parentLocationId: data.buildingId;
-      status: 'active';
+      parentLocationId: data.buildingId,
+      status: 'active'
     });
 
     // Add ward-specific type
     location.type!.push({
       coding: [{
-        system: 'https://snomed.info/sct';
-        code: this.getWardTypeCode(data.wardType);
-        display: this.getWardTypeDisplay(data.wardType);
+        system: 'https://snomed.info/sct',
+        code: this.getWardTypeCode(data.wardType),
+        display: this.getWardTypeDisplay(data.wardType)
       }]
     })
 
@@ -244,9 +244,9 @@ export class FHIRLocationUtils {
    * Create a patient room;
    */
   static createPatientRoom(data: {
-    roomNumber: string;
+    roomNumber: string,
     wardId: string;
-    organizationId: string;
+    organizationId: string,
     roomType: 'private' | 'semi-private' | 'ward' | 'icu' | 'emergency' | 'operating' | 'recovery';
     capacity: number;
     amenities?: string[];
@@ -254,21 +254,21 @@ export class FHIRLocationUtils {
   }): FHIRLocation {
     const location = this.createBasicLocation({
       name: `Room ${data.roomNumber}`,
-      type: 'room';
+      type: 'room',
       physicalType: 'room';
-      identifier: data.roomNumber;
+      identifier: data.roomNumber,
       description: data.description;
-      organizationId: data.organizationId;
+      organizationId: data.organizationId,
       parentLocationId: data.wardId;
-      status: 'active';
+      status: 'active'
     });
 
     // Add room-specific type
     location.type!.push({
       coding: [{
-        system: 'https://snomed.info/sct';
-        code: this.getRoomTypeCode(data.roomType);
-        display: this.getRoomTypeDisplay(data.roomType);
+        system: 'https://snomed.info/sct',
+        code: this.getRoomTypeCode(data.roomType),
+        display: this.getRoomTypeDisplay(data.roomType)
       }]
     })
 
@@ -277,9 +277,9 @@ export class FHIRLocationUtils {
       data.amenities.forEach(amenity => {
         location.type!.push({
           coding: [{
-            system: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode';
+            system: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode',
             code: 'amenity';
-            display: amenity;
+            display: amenity
           }]
         })
       });
@@ -292,37 +292,37 @@ export class FHIRLocationUtils {
    * Create a patient bed;
    */
   static createPatientBed(data: {
-    bedNumber: string;
+    bedNumber: string,
     roomId: string;
-    organizationId: string;
+    organizationId: string,
     bedType: 'standard' | 'icu' | 'pediatric' | 'bariatric' | 'isolation';
     isOccupied?: boolean;
     patientId?: string;
   }): FHIRLocation {
     const location = this.createBasicLocation({
       name: `Bed ${data.bedNumber}`,
-      type: 'bed';
+      type: 'bed',
       physicalType: 'bed';
-      identifier: data.bedNumber;
+      identifier: data.bedNumber,
       organizationId: data.organizationId;
-      parentLocationId: data.roomId;
-      status: data.isOccupied ? 'suspended' : 'active';
+      parentLocationId: data.roomId,
+      status: data.isOccupied ? 'suspended' : 'active'
     });
 
     // Add bed-specific type
     location.type!.push({
       coding: [{
-        system: 'https://snomed.info/sct';
-        code: this.getBedTypeCode(data.bedType);
-        display: this.getBedTypeDisplay(data.bedType);
+        system: 'https://snomed.info/sct',
+        code: this.getBedTypeCode(data.bedType),
+        display: this.getBedTypeDisplay(data.bedType)
       }]
     })
 
     // Set operational status based on occupancy
     location.operationalStatus = {
-      system: 'https://terminology.hl7.org/CodeSystem/v2-0116';
+      system: 'https://terminology.hl7.org/CodeSystem/v2-0116',
       code: data.isOccupied ? 'O' : 'U';
-      display: data.isOccupied ? 'Occupied' : 'Unoccupied';
+      display: data.isOccupied ? 'Occupied' : 'Unoccupied'
     }
 
     return location;
@@ -332,7 +332,7 @@ export class FHIRLocationUtils {
    * Create an operating room;
    */
   static createOperatingRoom(data: {
-    roomNumber: string;
+    roomNumber: string,
     organizationId: string;
     parentLocationId?: string;
     specialties?: string[];
@@ -341,21 +341,21 @@ export class FHIRLocationUtils {
   }): FHIRLocation {
     const location = this.createBasicLocation({
       name: `Operating Room ${data.roomNumber}`,
-      type: 'room';
+      type: 'room',
       physicalType: 'room';
-      identifier: data.roomNumber;
+      identifier: data.roomNumber,
       description: data.description;
-      organizationId: data.organizationId;
+      organizationId: data.organizationId,
       parentLocationId: data.parentLocationId;
-      status: 'active';
+      status: 'active'
     });
 
     // Add operating room type
     location.type!.push({
       coding: [{
-        system: 'https://snomed.info/sct';
+        system: 'https://snomed.info/sct',
         code: '225765009';
-        display: 'Operating Room';
+        display: 'Operating Room'
       }]
     })
 
@@ -364,9 +364,9 @@ export class FHIRLocationUtils {
       data.specialties.forEach(specialty => {
         location.type!.push({
           coding: [{
-            system: 'https://snomed.info/sct';
+            system: 'https://snomed.info/sct',
             code: 'specialty';
-            display: specialty;
+            display: specialty
           }]
         })
       });
@@ -388,7 +388,7 @@ export class FHIRLocationUtils {
       'vehicle': 'VE',
       'house': 'HO',
       'cabinet': 'CA',
-      'road': 'RD';
+      'road': 'RD'
     };
     return typeCodes[type] || 'BLDG';
   }
@@ -406,7 +406,7 @@ export class FHIRLocationUtils {
       'vehicle': 'Vehicle',
       'house': 'House',
       'cabinet': 'Cabinet',
-      'road': 'Road';
+      'road': 'Road'
     };
     return typeDisplays[type] || 'Building';
   }
@@ -420,7 +420,7 @@ export class FHIRLocationUtils {
       'room': 'Room',
       'bed': 'Bed',
       'area': 'Area',
-      'vehicle': 'Vehicle';
+      'vehicle': 'Vehicle'
     };
     return typeDisplays[type] || 'Area';
   }
@@ -436,7 +436,7 @@ export class FHIRLocationUtils {
       'pediatric': '225729004',
       'maternity': '225730009',
       'surgical': '225731008',
-      'psychiatric': '225732001';
+      'psychiatric': '225732001'
     };
     return wardCodes[wardType] || '225746001';
   }
@@ -452,7 +452,7 @@ export class FHIRLocationUtils {
       'pediatric': 'Pediatric Ward',
       'maternity': 'Maternity Ward',
       'surgical': 'Surgical Ward',
-      'psychiatric': 'Psychiatric Ward';
+      'psychiatric': 'Psychiatric Ward'
     };
     return wardDisplays[wardType] || 'General Ward';
   }
@@ -468,7 +468,7 @@ export class FHIRLocationUtils {
       'icu': '309904001',
       'emergency': '225728007',
       'operating': '225765009',
-      'recovery': '225766005';
+      'recovery': '225766005'
     };
     return roomCodes[roomType] || '225745002';
   }
@@ -484,7 +484,7 @@ export class FHIRLocationUtils {
       'icu': 'ICU Room',
       'emergency': 'Emergency Room',
       'operating': 'Operating Room',
-      'recovery': 'Recovery Room';
+      'recovery': 'Recovery Room'
     };
     return roomDisplays[roomType] || 'Private Room';
   }
@@ -498,7 +498,7 @@ export class FHIRLocationUtils {
       'icu': '309904001',
       'pediatric': '225729004',
       'bariatric': '229773008',
-      'isolation': '225744003';
+      'isolation': '225744003'
     };
     return bedCodes[bedType] || '229772003';
   }
@@ -512,7 +512,7 @@ export class FHIRLocationUtils {
       'icu': 'ICU Bed',
       'pediatric': 'Pediatric Bed',
       'bariatric': 'Bariatric Bed',
-      'isolation': 'Isolation Bed';
+      'isolation': 'Isolation Bed'
     };
     return bedDisplays[bedType] || 'Standard Bed';
   }
@@ -609,7 +609,7 @@ export class FHIRLocationUtils {
    * Format location for display;
    */
   static formatForDisplay(location: FHIRLocation): {
-    name: string;
+    name: string,
     type: string;
     physicalType: string;
     identifier?: string;
@@ -617,31 +617,31 @@ export class FHIRLocationUtils {
     operationalStatus?: string;
     address?: string;
     phone?: string;
-    isActive: boolean;
+    isActive: boolean,
     isAvailable: boolean;
     parentLocation?: string;
     organization?: string;
   } {
     return {
-      name: this.getDisplayName(location);
-      type: this.getTypeDisplay(location);
-      physicalType: this.getPhysicalTypeDisplay(location);
-      identifier: this.getIdentifier(location);
-      status: location.status || 'unknown';
+      name: this.getDisplayName(location),
+      type: this.getTypeDisplay(location),
+      physicalType: this.getPhysicalTypeDisplay(location),
+      identifier: this.getIdentifier(location),
+      status: location.status || 'unknown',
       operationalStatus: location.operationalStatus?.display;
-      address: this.getFullAddress(location);
-      phone: this.getPhoneNumber(location);
-      isActive: this.isActive(location);
-      isAvailable: this.isAvailable(location);
-      parentLocation: this.getParentLocationId(location);
-      organization: this.getManagingOrganizationId(location);
+      address: this.getFullAddress(location),
+      phone: this.getPhoneNumber(location),
+      isActive: this.isActive(location),
+      isAvailable: this.isAvailable(location),
+      parentLocation: this.getParentLocationId(location),
+      organization: this.getManagingOrganizationId(location)
     };
   }
 
   /**
    * Validate FHIR Location resource;
    */
-  static validateLocation(location: FHIRLocation): { valid: boolean; errors: string[] } {
+  static validateLocation(location: FHIRLocation): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (location.resourceType !== 'Location') {
@@ -655,7 +655,7 @@ export class FHIRLocationUtils {
 
     // Validate status
     if (location?.status && !['active', 'suspended', 'inactive'].includes(location.status)) {
-      errors.push('status must be one of: active, suspended, inactive');
+      errors.push('status must be one of: active, suspended, inactive')
     }
 
     // Validate mode
@@ -679,7 +679,7 @@ export class FHIRLocationUtils {
 
     return {
       valid: errors.length === 0;
-      errors;
+      errors
     };
   }
 
@@ -688,27 +688,27 @@ export class FHIRLocationUtils {
    */
   static fromHMSLocation(hmsLocation: unknown): FHIRLocation {
     return this.createBasicLocation({
-      name: hmsLocation.name;
+      name: hmsLocation.name,
       type: hmsLocation.type || 'room';
-      physicalType: hmsLocation.physicalType;
+      physicalType: hmsLocation.physicalType,
       identifier: hmsLocation.identifier || hmsLocation.id;
-      description: hmsLocation.description;
+      description: hmsLocation.description,
       organizationId: hmsLocation.organizationId;
-      parentLocationId: hmsLocation.parentLocationId;
+      parentLocationId: hmsLocation.parentLocationId,
       address: hmsLocation.address ? {
-        street: hmsLocation.address.street || '';
+        street: hmsLocation.address.street || '',
         city: hmsLocation.address.city || '';
-        state: hmsLocation.address.state || '';
+        state: hmsLocation.address.state || '',
         zipCode: hmsLocation.address.zipCode || '';
-        country: hmsLocation.address.country;
+        country: hmsLocation.address.country
       } : undefined,
-      phone: hmsLocation.phone;
+      phone: hmsLocation.phone,
       position: hmsLocation.coordinates ? {
-        longitude: hmsLocation.coordinates.longitude;
+        longitude: hmsLocation.coordinates.longitude,
         latitude: hmsLocation.coordinates.latitude;
-        altitude: hmsLocation.coordinates.altitude;
+        altitude: hmsLocation.coordinates.altitude
       } : undefined,
-      status: hmsLocation.isActive ? 'active' : 'inactive';
+      status: hmsLocation.isActive ? 'active' : 'inactive'
     });
   }
 
@@ -748,14 +748,14 @@ export class FHIRLocationUtils {
   static getLocationHierarchy(locations: FHIRLocation[], rootId?: string): FHIRLocation[] {
     const rootLocations = rootId;
       ? locations.filter(location => location.id === rootId);
-      : locations.filter(location => !location.partOf);
+      : locations.filter(location => !location.partOf),
 
     const buildHierarchy = (location: FHIRLocation): unknown => {
       const children = this.getChildLocations(locations, location.id!);
       return {
         ...location,
-        children: children.map(child => buildHierarchy(child));
-      };
+        children: children.map(child => buildHierarchy(child))
+      }
     };
 
     return rootLocations.map(location => buildHierarchy(location));
@@ -792,7 +792,7 @@ export class FHIRLocationUtils {
    * Find nearest locations by coordinates;
    */
   static findNearestLocations(
-    locations: FHIRLocation[];
+    locations: FHIRLocation[],
     targetLongitude: number;
     targetLatitude: number;
     maxDistance?: number;
@@ -900,21 +900,21 @@ export class FHIRLocationTypes {
   /**
    * Get all room types;
    */
-  static getAllRoomTypes(): Array<{ code: string; display: string }> {
+  static getAllRoomTypes(): Array<{ code: string, display: string }> {
     return Object.values(this.ROOM_TYPES);
   }
 
   /**
    * Get all bed types;
    */
-  static getAllBedTypes(): Array<{ code: string; display: string }> {
+  static getAllBedTypes(): Array<{ code: string, display: string }> {
     return Object.values(this.BED_TYPES);
   }
 
   /**
    * Get room type by code;
    */
-  static getRoomTypeByCode(code: string): { code: string; display: string } | undefined {
+  static getRoomTypeByCode(code: string): { code: string, display: string } | undefined {
     return Object.values(this.ROOM_TYPES).find(type => type.code === code);
   }
 
@@ -936,7 +936,7 @@ export class FHIRLocationTypes {
   /**
    * Get locations by category;
    */
-  static getLocationsByCategory(): Record<string, Array<{ code: string; display: string }>> {
+  static getLocationsByCategory(): Record<string, Array<{ code: string, display: string }>> {
     return {
       'Critical Care': [
         this.HOSPITAL_AREAS.EMERGENCY_WARD,

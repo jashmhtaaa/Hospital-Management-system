@@ -37,13 +37,13 @@ export const POST = async (
     const signature = await clinicalDocumentationService.signDocument(
       params.id,
       {
-        signerRole: body.signerRole;
+        signerRole: body.signerRole,
         signatureType: body.signatureType;
-        attestation: body.attestation;
+        attestation: body.attestation,
         ipAddress: request.headers.get('x-forwarded-for') || request.ip;
-        deviceInfo: request.headers.get('user-agent');
+        deviceInfo: request.headers.get('user-agent'),
         notes: body.notes;
-        finalize: body.finalize;
+        finalize: body.finalize
       },
       session.user.id;
     );

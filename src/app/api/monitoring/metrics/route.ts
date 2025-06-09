@@ -29,9 +29,9 @@ export const _GET = async (request: NextRequest) => {
 
       return NextResponse.json({
         metric,
-        timeWindow: timeWindowSeconds;
+        timeWindow: timeWindowSeconds,
         data: metrics;
-        count: metrics.length;
+        count: metrics.length
       });
     }
 
@@ -50,17 +50,17 @@ export const _GET = async (request: NextRequest) => {
     const dashboardMetrics = metricsCollector.getDashboardMetrics();
 
     return NextResponse.json({
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       status: 'success';
-      data: dashboardMetrics;
+      data: dashboardMetrics
     });
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error';
-        message: error instanceof Error ? error.message : 'Unknown error';
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
@@ -77,7 +77,7 @@ export const _POST = async (request: NextRequest) => {
         return NextResponse.json({ message: 'Metrics collection started' });
 
       case 'stop_collection':
-        metricsCollector.stopCollection();
+        metricsCollector.stopCollection(),
         return NextResponse.json({ message: 'Metrics collection stopped' });
 
       case 'record_metric':
@@ -89,15 +89,15 @@ export const _POST = async (request: NextRequest) => {
         return NextResponse.json(
           { error: 'Invalid action' },
           { status: 400 }
-        );
+        ),
     }
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error';
-        message: error instanceof Error ? error.message : 'Unknown error';
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );

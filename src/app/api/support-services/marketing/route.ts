@@ -10,42 +10,42 @@ const marketingService = new MarketingCampaignService();
 
 // Campaign filter schema
 const campaignFilterSchema = z.object({
-  type: z.string().optional();
-  status: z.string().optional();
-  startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  type: z.string().optional(),
+  status: z.string().optional(),
+  startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   startDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  page: z.string().default('1').transform(Number);
-  limit: z.string().default('10').transform(Number);
+  page: z.string().default('1').transform(Number),
+  limit: z.string().default('10').transform(Number)
 });
 
 // Create campaign schema
 const createCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters"),
-  description: z.string().optional();
-  type: z.string();
-  status: z.string().default('DRAFT');
+  description: z.string().optional(),
+  type: z.string(),
+  status: z.string().default('DRAFT'),
   startDate: z.string().transform(val => new Date(val));
-  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  budget: z.number().optional();
-  targetAudience: z.any().optional();
-  goals: z.array(z.string()).optional();
-  kpis: z.any().optional();
+  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  budget: z.number().optional(),
+  targetAudience: z.any().optional(),
+  goals: z.array(z.string()).optional(),
+  kpis: z.any().optional()
 });
 
 // Update campaign schema
 const updateCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters").optional(),
-  description: z.string().optional();
-  type: z.string().optional();
-  status: z.string().optional();
-  startDate: z.string().transform(val => new Date(val)).optional();
-  endDate: z.string().transform(val => val ? new Date(val) : undefined).optional();
-  budget: z.number().optional();
-  targetAudience: z.any().optional();
-  goals: z.array(z.string()).optional();
-  kpis: z.any().optional();
+  description: z.string().optional(),
+  type: z.string().optional(),
+  status: z.string().optional(),
+  startDate: z.string().transform(val => new Date(val)).optional(),
+  endDate: z.string().transform(val => val ? new Date(val) : undefined).optional(),
+  budget: z.number().optional(),
+  targetAudience: z.any().optional(),
+  goals: z.array(z.string()).optional(),
+  kpis: z.any().optional()
 });
 
 // GET /api/support-services/marketing/campaigns
@@ -66,8 +66,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing:read';
-      auditAction: 'MARKETING_CAMPAIGNS_VIEW';
+      requiredPermission: 'marketing:read',
+      auditAction: 'MARKETING_CAMPAIGNS_VIEW'
     }
   );
 }
@@ -99,8 +99,8 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(campaign, { status: 201 });
     },
     {
-      requiredPermission: 'marketing:create';
-      auditAction: 'MARKETING_CAMPAIGN_CREATE';
+      requiredPermission: 'marketing:create',
+      auditAction: 'MARKETING_CAMPAIGN_CREATE'
     }
   );
 }
@@ -117,8 +117,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json(campaign);
     },
     {
-      requiredPermission: 'marketing:read';
-      auditAction: 'MARKETING_CAMPAIGN_VIEW';
+      requiredPermission: 'marketing:read',
+      auditAction: 'MARKETING_CAMPAIGN_VIEW'
     }
   );
 }
@@ -151,8 +151,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(campaign);
     },
     {
-      requiredPermission: 'marketing:update';
-      auditAction: 'MARKETING_CAMPAIGN_UPDATE';
+      requiredPermission: 'marketing:update',
+      auditAction: 'MARKETING_CAMPAIGN_UPDATE'
     }
   );
 }
@@ -172,8 +172,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json({ success: true });
     },
     {
-      requiredPermission: 'marketing:delete';
-      auditAction: 'MARKETING_CAMPAIGN_DELETE';
+      requiredPermission: 'marketing:delete',
+      auditAction: 'MARKETING_CAMPAIGN_DELETE'
     }
   );
 }
@@ -189,8 +189,8 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
       return NextResponse.json(analytics);
     },
     {
-      requiredPermission: 'marketing:analytics';
-      auditAction: 'MARKETING_CAMPAIGN_ANALYTICS_VIEW';
+      requiredPermission: 'marketing:analytics',
+      auditAction: 'MARKETING_CAMPAIGN_ANALYTICS_VIEW'
     }
   );
 }
@@ -220,14 +220,14 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
       return NextResponse.json(channel, { status: 201 });
     },
     {
-      requiredPermission: 'marketing:update';
-      auditAction: 'MARKETING_CAMPAIGN_CHANNEL_ADD';
+      requiredPermission: 'marketing:update',
+      auditAction: 'MARKETING_CAMPAIGN_CHANNEL_ADD'
     }
   );
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string, segmentId: string } }) => {
   return withErrorHandling(
     request,
     async (req) => {
@@ -245,8 +245,8 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
       return NextResponse.json(result, { status: 201 });
     },
     {
-      requiredPermission: 'marketing:update';
-      auditAction: 'MARKETING_CAMPAIGN_SEGMENT_ADD';
+      requiredPermission: 'marketing:update',
+      auditAction: 'MARKETING_CAMPAIGN_SEGMENT_ADD'
     }
   );
 }
@@ -259,12 +259,12 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         source: searchParams.get('source') || undefined;
-        segmentId: searchParams.get('segmentId') || undefined;
+        segmentId: searchParams.get('segmentId') || undefined,
         search: searchParams.get('search') || undefined;
-        page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        page: parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get marketing contacts with filters
@@ -273,8 +273,8 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing:read';
-      auditAction: 'MARKETING_CONTACTS_VIEW';
+      requiredPermission: 'marketing:read',
+      auditAction: 'MARKETING_CONTACTS_VIEW'
     }
   );
 }
@@ -295,7 +295,7 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing:analytics';
-      auditAction: 'MARKETING_OVERVIEW_ANALYTICS_VIEW';
+      requiredPermission: 'marketing:analytics',
+      auditAction: 'MARKETING_OVERVIEW_ANALYTICS_VIEW'
     }
   );

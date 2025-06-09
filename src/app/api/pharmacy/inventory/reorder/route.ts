@@ -17,43 +17,43 @@ import { validateReorderRequest } from '../../../../../lib/validation/pharmacy-v
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findBelowReorderLevel: () => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findBelowReorderLevel: () => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const reorderRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByStatus: (status: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByStatus: (status: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const supplierRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -119,20 +119,20 @@ export const GET = async (req: NextRequest) => {
       );
 
       return {
-        inventoryId: item.id;
+        inventoryId: item.id,
         medicationId: item.medicationId;
-        medicationName: medication ? medication.name : 'Unknown';
+        medicationName: medication ? medication.name : 'Unknown',
         locationId: item.locationId;
-        currentStock: item.quantityOnHand;
+        currentStock: item.quantityOnHand,
         reorderLevel: item.reorderLevel;
         suggestedQuantity,
-        estimatedCost: suggestedQuantity * (item.unitCost || 0);
+        estimatedCost: suggestedQuantity * (item.unitCost || 0),
         isControlled: medication ? medication.isControlled : false;
-        isHighAlert: medication ? medication.isHighAlert : false;
+        isHighAlert: medication ? medication.isHighAlert : false,
         preferredSupplierId: preferredSupplier ? preferredSupplier.id : null;
-        preferredSupplierName: preferredSupplier ? preferredSupplier.name : null;
-        isOnOrder: medicationsOnOrder.includes(item.medicationId);
-        stockStatus: getStockStatus(item.quantityOnHand, item.reorderLevel);
+        preferredSupplierName: preferredSupplier ? preferredSupplier.name : null,
+        isOnOrder: medicationsOnOrder.includes(item.medicationId),
+        stockStatus: getStockStatus(item.quantityOnHand, item.reorderLevel)
       };
     }));
 
@@ -149,16 +149,16 @@ export const GET = async (req: NextRequest) => {
 
     // Group by status for reporting
     const statusCounts = {
-      critical: reorderItems.filter(item => item.stockStatus === 'critical').length;
+      critical: reorderItems.filter(item => item.stockStatus === 'critical').length,
       low: reorderItems.filter(item => item.stockStatus === 'low').length;
-      normal: reorderItems.filter(item => item.stockStatus === 'normal').length;
+      normal: reorderItems.filter(item => item.stockStatus === 'normal').length
     };
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'LIST_REORDER';
+      action: 'LIST_REORDER',
       resourceType: 'Inventory';
-      userId: userId;
+      userId: userId,
       details: {
         locationId,
         includeOnOrder,
@@ -176,7 +176,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -222,8 +222,8 @@ export const POST = async (req: NextRequest) => {
     if (pendingReorder && !data.force) {
       return NextResponse.json(
         {
-          error: 'Pending reorder already exists for this medication';
-          existingReorderId: pendingReorder.id;
+          error: 'Pending reorder already exists for this medication',
+          existingReorderId: pendingReorder.id
         },
         { status: 409 }
       );
@@ -231,20 +231,20 @@ export const POST = async (req: NextRequest) => {
 
     // Create reorder record
     const reorder = {
-      id: data.id || crypto.randomUUID();
+      id: data.id || crypto.randomUUID(),
       medicationId: data.medicationId;
-      locationId: data.locationId;
+      locationId: data.locationId,
       quantity: data.quantity;
-      supplierId: data.supplierId;
+      supplierId: data.supplierId,
       unitCost: data.unitCost;
-      totalCost: data.quantity * (data.unitCost || 0);
+      totalCost: data.quantity * (data.unitCost || 0),
       requestedBy: userId;
-      requestedAt: new Date();
+      requestedAt: new Date(),
       status: 'pending';
-      notes: data.notes || '';
+      notes: data.notes || '',
       priority: data.priority || 'normal';
-      expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null;
-      purchaseOrderNumber: generatePurchaseOrderNumber();
+      expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
+      purchaseOrderNumber: generatePurchaseOrderNumber()
     };
 
     // Special handling for controlled substances
@@ -254,14 +254,14 @@ export const POST = async (req: NextRequest) => {
 
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'REORDER_REQUEST';
+        action: 'REORDER_REQUEST',
         resourceType: 'Inventory';
-        userId: userId;
+        userId: userId,
         details: {
-          medicationId: data.medicationId;
+          medicationId: data.medicationId,
           quantity: data.quantity;
-          supplierId: data.supplierId;
-          purchaseOrderNumber: reorder.purchaseOrderNumber;
+          supplierId: data.supplierId,
+          purchaseOrderNumber: reorder.purchaseOrderNumber
         }
       });
     }
@@ -271,25 +271,25 @@ export const POST = async (req: NextRequest) => {
 
     // Regular audit logging
     await auditLog('INVENTORY', {
-      action: 'CREATE_REORDER';
+      action: 'CREATE_REORDER',
       resourceType: 'Inventory';
-      resourceId: reorderId;
+      resourceId: reorderId,
       userId: userId;
       details: {
-        medicationId: data.medicationId;
+        medicationId: data.medicationId,
         quantity: data.quantity;
-        supplierId: data.supplierId;
-        purchaseOrderNumber: reorder.purchaseOrderNumber;
+        supplierId: data.supplierId,
+        purchaseOrderNumber: reorder.purchaseOrderNumber
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: reorderId;
+        id: reorderId,
         purchaseOrderNumber: reorder.purchaseOrderNumber;
-        requiresApproval: reorder.requiresApproval;
-        message: 'Reorder request created successfully';
+        requiresApproval: reorder.requiresApproval,
+        message: 'Reorder request created successfully'
       },
       { status: 201 }
     );

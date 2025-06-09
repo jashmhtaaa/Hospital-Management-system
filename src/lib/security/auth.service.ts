@@ -17,39 +17,39 @@ import { logAuditEvent } from '@/lib/audit';
  */
 
 export interface UserCredentials {
-  email: string;
+  email: string,
   password: string
 export interface AuthTokens {
-  accessToken: string;
+  accessToken: string,
   refreshToken: string;
-  expiresAt: number;
+  expiresAt: number,
   tokenType: 'Bearer'
 export interface TokenPayload extends JwtPayload {
-  userId: string;
+  userId: string,
   email: string;
-  roles: string[];
+  roles: string[],
   sessionId: string;
   mfaVerified?: boolean;
   emergencyAccess?: boolean;
 export interface MFASetup {
-  secret: string;
+  secret: string,
   qrCode: string;
   backupCodes: string[]
 export interface LoginAttempt {
-  email: string;
+  email: string,
   ipAddress: string;
-  userAgent: string;
+  userAgent: string,
   success: boolean;
   mfaRequired?: boolean;
   failureReason?: string;
 export interface SessionInfo {
-  userId: string;
+  userId: string,
   sessionId: string;
-  ipAddress: string;
+  ipAddress: string,
   userAgent: string;
-  createdAt: Date;
+  createdAt: Date,
   expiresAt: Date;
-  isActive: boolean;
+  isActive: boolean,
   mfaVerified: boolean
 export class AuthService {
   private static instance: AuthService;
@@ -78,19 +78,19 @@ export class AuthService {
    * Authenticate user with email and password;
    */
   async login(
-    credentials: UserCredentials;
-    context: { ipAddress: string; userAgent: string }
+    credentials: UserCredentials,
+    context: { ipAddress: string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; mfaRequired?: boolean; user?: unknown; error?: string }> {
     try {
       // Check for account lockout
       const isLocked = await this.isAccountLocked(credentials.email);
       if (isLocked != null) {
         await this.logLoginAttempt({
-          email: credentials.email;
+          email: credentials.email,
           ipAddress: context.ipAddress;
-          userAgent: context.userAgent;
+          userAgent: context.userAgent,
           success: false;
-          failureReason: 'Account locked';
+          failureReason: 'Account locked'
         });
         return { error: 'Account is temporarily locked due to multiple failed attempts' };
       }
@@ -125,17 +125,17 @@ export class AuthService {
         const tempSessionId = await this.createTemporarySession(user.id, context);
 
         await this.logLoginAttempt({
-          email: credentials.email;
+          email: credentials.email,
           ipAddress: context.ipAddress;
-          userAgent: context.userAgent;
+          userAgent: context.userAgent,
           success: true;
-          mfaRequired: true;
+          mfaRequired: true
         });
 
         return {
-          mfaRequired: true;
+          mfaRequired: true,
           user: {
-            id: user.id;
+            id: user.id,
             email: user.email;
             tempSessionId;
           }
@@ -149,18 +149,18 @@ export class AuthService {
       await this.resetLoginAttempts(credentials.email);
 
       await this.logLoginAttempt({
-        email: credentials.email;
+        email: credentials.email,
         ipAddress: context.ipAddress;
-        userAgent: context.userAgent;
-        success: true;
+        userAgent: context.userAgent,
+        success: true
       });
 
       return {
         tokens,
         user: {
-          id: user.id;
+          id: user.id,
           email: user.email;
-          roles: user.userRoles.map(ur => ur.roleId);
+          roles: user.userRoles.map(ur => ur.roleId)
         }
       };
 
@@ -174,10 +174,10 @@ export class AuthService {
    * Verify MFA token and complete authentication;
    */
   async verifyMFA(
-    userId: string;
+    userId: string,
     tempSessionId: string;
-    mfaToken: string;
-    context: { ipAddress: string; userAgent: string }
+    mfaToken: string,
+    context: { ipAddress: string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; error?: string }> {
     try {
       // Verify temporary session
@@ -185,7 +185,7 @@ export class AuthService {
         where: {
           id: tempSessionId;
           userId,
-          isActive: true;
+          isActive: true,
           expiresAt: { gt: new Date() }
         }
       });
@@ -200,11 +200,11 @@ export class AuthService {
         await logAuditEvent({
           eventType: 'MFA_VERIFICATION_FAILED';
           userId,
-          resource: 'authentication';
+          resource: 'authentication',
           details: { mfaToken: mfaToken.substring(0, 2) + '****' },
-          ipAddress: context.ipAddress;
+          ipAddress: context.ipAddress,
           userAgent: context.userAgent;
-          severity: 'MEDIUM';
+          severity: 'MEDIUM'
         });
         return { error: 'Invalid MFA token' };
       }
@@ -236,10 +236,10 @@ export class AuthService {
       await logAuditEvent({
         eventType: 'MFA_VERIFICATION_SUCCESS';
         userId,
-        resource: 'authentication';
+        resource: 'authentication',
         details: { sessionId: tokens.accessToken.substring(0, 10) + '...' },
-        ipAddress: context.ipAddress;
-        userAgent: context.userAgent;
+        ipAddress: context.ipAddress,
+        userAgent: context.userAgent
       });
 
       return { tokens };
@@ -254,8 +254,8 @@ export class AuthService {
    * Refresh access token using refresh token;
    */
   async refreshToken(
-    refreshToken: string;
-    context: { ipAddress: string; userAgent: string }
+    refreshToken: string,
+    context: { ipAddress: string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; error?: string }> {
     try {
       // Verify refresh token
@@ -264,9 +264,9 @@ export class AuthService {
       // Check if session is still active
       const session = await this.prisma.userSession.findFirst({
         where: {
-          id: payload.sessionId;
+          id: payload.sessionId,
           userId: payload.userId;
-          isActive: true;
+          isActive: true,
           expiresAt: { gt: new Date() }
         },
         include: {
@@ -305,8 +305,8 @@ export class AuthService {
    * Logout user and invalidate session;
    */
   async logout(
-    sessionId: string;
-    context: { ipAddress: string; userAgent: string }
+    sessionId: string,
+    context: { ipAddress: string, userAgent: string }
   ): Promise<void> {
     try {
       // Deactivate session
@@ -319,12 +319,12 @@ export class AuthService {
       await cache.del(`session:${sessionId}`);
 
       await logAuditEvent({
-        eventType: 'USER_LOGOUT';
+        eventType: 'USER_LOGOUT',
         userId: session.userId;
-        resource: 'authentication';
+        resource: 'authentication',
         details: { sessionId },
-        ipAddress: context.ipAddress;
-        userAgent: context.userAgent;
+        ipAddress: context.ipAddress,
+        userAgent: context.userAgent
       });
 
     } catch (error) {
@@ -348,8 +348,8 @@ export class AuthService {
       // Generate MFA secret
       const secret = speakeasy.generateSecret({
         name: `HMS - ${user.email}`,
-        issuer: 'Hospital Management System';
-        length: 32;
+        issuer: 'Hospital Management System',
+        length: 32
       });
 
       // Generate QR code
@@ -369,20 +369,20 @@ export class AuthService {
         where: { userId },
         create: {
           userId,
-          secret: encryptedSecret;
+          secret: encryptedSecret,
           backupCodes: encryptedBackupCodes;
-          isEnabled: false;
+          isEnabled: false
         },
         update: {
-          secret: encryptedSecret;
-          backupCodes: encryptedBackupCodes;
+          secret: encryptedSecret,
+          backupCodes: encryptedBackupCodes
         }
       })
 
       return {
         secret: secret.base32;
         qrCode,
-        backupCodes;
+        backupCodes
       };
 
     } catch (error) {
@@ -404,15 +404,15 @@ export class AuthService {
       await this.prisma.userMFA.update({
         where: { userId },
         data: {
-          isEnabled: true;
-          enabledAt: new Date();
+          isEnabled: true,
+          enabledAt: new Date()
         }
       });
 
       await logAuditEvent({
         eventType: 'MFA_ENABLED';
         userId,
-        resource: 'user_security';
+        resource: 'user_security',
         details: { mfaEnabled: true },
       });
 
@@ -436,17 +436,17 @@ export class AuthService {
       await this.prisma.userMFA.update({
         where: { userId },
         data: {
-          isEnabled: false;
-          disabledAt: new Date();
+          isEnabled: false,
+          disabledAt: new Date()
         }
       });
 
       await logAuditEvent({
         eventType: 'MFA_DISABLED';
         userId,
-        resource: 'user_security';
+        resource: 'user_security',
         details: { mfaEnabled: false },
-        severity: 'HIGH';
+        severity: 'HIGH'
       });
 
       return true;
@@ -471,7 +471,7 @@ export class AuthService {
         // Check database
         const session = await this.prisma.userSession.findFirst({
           where: {
-            id: payload.sessionId;
+            id: payload.sessionId,
             isActive: true;
             expiresAt: { gt: new Date() }
           }
@@ -499,21 +499,21 @@ export class AuthService {
       const sessions = await this.prisma.userSession.findMany({
         where: {
           userId,
-          isActive: true;
+          isActive: true,
           expiresAt: { gt: new Date() }
         },
         orderBy: { createdAt: 'desc' }
       });
 
       return sessions.map(session => ({
-        userId: session.userId;
+        userId: session.userId,
         sessionId: session.id;
-        ipAddress: session.ipAddress;
+        ipAddress: session.ipAddress,
         userAgent: session.userAgent;
-        createdAt: session.createdAt;
+        createdAt: session.createdAt,
         expiresAt: session.expiresAt;
-        isActive: session.isActive;
-        mfaVerified: session.mfaVerified;
+        isActive: session.isActive,
+        mfaVerified: session.mfaVerified
       }));
     } catch (error) {
 
@@ -532,8 +532,8 @@ export class AuthService {
           userId;
         },
         data: {
-          isActive: false;
-          loggedOutAt: new Date();
+          isActive: false,
+          loggedOutAt: new Date()
         }
       });
 
@@ -551,8 +551,8 @@ export class AuthService {
    * Generate access and refresh tokens;
    */
   private async generateTokens(
-    user: unknown;
-    context: { ipAddress: string; userAgent: string },
+    user: unknown,
+    context: { ipAddress: string, userAgent: string },
     mfaVerified: boolean = false;
     existingSessionId?: string;
   ): Promise<AuthTokens> {
@@ -560,24 +560,24 @@ export class AuthService {
     const roles = user.userRoles.map((ur: unknown) => ur.roleId);
 
     const payload: TokenPayload = {
-      userId: user.id;
+      userId: user.id,
       email: user.email;
       roles,
       sessionId,
-      mfaVerified;
+      mfaVerified
     };
 
     const accessToken = sign(payload, this.JWT_SECRET, {
-      expiresIn: this.ACCESS_TOKEN_EXPIRES;
-      issuer: 'hms-auth';
+      expiresIn: this.ACCESS_TOKEN_EXPIRES,
+      issuer: 'hms-auth'
     });
 
     const refreshToken = sign(
       { ...payload, type: 'refresh' },
       this.REFRESH_SECRET,
       {
-        expiresIn: this.REFRESH_TOKEN_EXPIRES;
-        issuer: 'hms-auth';
+        expiresIn: this.REFRESH_TOKEN_EXPIRES,
+        issuer: 'hms-auth'
       }
     );
 
@@ -585,11 +585,11 @@ export class AuthService {
     if (!existingSessionId) {
       await this.prisma.userSession.create({
         data: {
-          id: sessionId;
+          id: sessionId,
           userId: user.id;
-          ipAddress: context.ipAddress;
+          ipAddress: context.ipAddress,
           userAgent: context.userAgent;
-          refreshToken: encrypt(refreshToken);
+          refreshToken: encrypt(refreshToken),
           expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days
           isActive: true;
           mfaVerified;
@@ -601,7 +601,7 @@ export class AuthService {
       accessToken,
       refreshToken,
       expiresAt: crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 60 * 1000, // 15 minutes
-      tokenType: 'Bearer';
+      tokenType: 'Bearer'
     };
   }
 
@@ -630,7 +630,7 @@ export class AuthService {
         secret,
         encoding: 'base32';
         token,
-        window: 2 // Allow 2 time steps of variance;
+        window: 2 // Allow 2 time steps of variance
       })
 
       if (verified != null) return true;
@@ -657,16 +657,16 @@ export class AuthService {
   }
 
   private async createTemporarySession(
-    userId: string;
-    context: { ipAddress: string; userAgent: string }
+    userId: string,
+    context: { ipAddress: string, userAgent: string }
   ): Promise<string> {
     const tempSession = await this.prisma.temporarySession.create({
       data: {
         userId,
-        ipAddress: context.ipAddress;
+        ipAddress: context.ipAddress,
         userAgent: context.userAgent;
         expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 5 * 60 * 1000), // 5 minutes
-        isActive: true;
+        isActive: true
       }
     });
     return tempSession.id;
@@ -679,8 +679,8 @@ export class AuthService {
   }
 
   private async recordLoginFailure(
-    email: string;
-    context: { ipAddress: string; userAgent: string }
+    email: string,
+    context: { ipAddress: string, userAgent: string }
   ): Promise<void> {
     const attemptsKey = `attempts:${email}`;
     const attempts = (await cache.get<number>(attemptsKey)) || 0;
@@ -693,22 +693,22 @@ export class AuthService {
       await cache.set(lockKey, true, this.LOCKOUT_DURATION / 1000);
 
       await logAuditEvent({
-        eventType: 'ACCOUNT_LOCKED';
+        eventType: 'ACCOUNT_LOCKED',
         userId: email;
-        resource: 'authentication';
+        resource: 'authentication',
         details: { attempts: newAttempts, lockoutDuration: this.LOCKOUT_DURATION },
-        ipAddress: context.ipAddress;
+        ipAddress: context.ipAddress,
         userAgent: context.userAgent;
-        severity: 'HIGH';
+        severity: 'HIGH'
       });
     }
 
     await this.logLoginAttempt({
       email,
-      ipAddress: context.ipAddress;
+      ipAddress: context.ipAddress,
       userAgent: context.userAgent;
-      success: false;
-      failureReason: 'Invalid credentials';
+      success: false,
+      failureReason: 'Invalid credentials'
     });
   }
 
@@ -721,16 +721,16 @@ export class AuthService {
 
   private async logLoginAttempt(attempt: LoginAttempt): Promise<void> {
     await logAuditEvent({
-      eventType: attempt.success ? 'LOGIN_SUCCESS' : 'LOGIN_FAILURE';
+      eventType: attempt.success ? 'LOGIN_SUCCESS' : 'LOGIN_FAILURE',
       userId: attempt.email;
-      resource: 'authentication';
+      resource: 'authentication',
       details: {
-        mfaRequired: attempt.mfaRequired;
-        failureReason: attempt.failureReason;
+        mfaRequired: attempt.mfaRequired,
+        failureReason: attempt.failureReason
       },
-      ipAddress: attempt.ipAddress;
+      ipAddress: attempt.ipAddress,
       userAgent: attempt.userAgent;
-      severity: attempt.success ? 'LOW' : 'MEDIUM';
+      severity: attempt.success ? 'LOW' : 'MEDIUM'
     });
   }
 }

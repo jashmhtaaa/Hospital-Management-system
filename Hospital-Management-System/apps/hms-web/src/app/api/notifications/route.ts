@@ -12,19 +12,19 @@ class PushNotificationService {
   private static whatsappApiToken = process.env.WHATSAPP_API_TOKEN;
 
   static async sendNotification(notification: {
-    userId: string;
+    userId: string,
     title: string;
-    message: string;
+    message: string,
     type: 'APPOINTMENT' | 'EMERGENCY' | 'MEDICATION' | 'GENERAL';
     channels: ('PUSH' | 'SMS' | 'EMAIL' | 'WHATSAPP')[];
     data?: any;
-    urgency: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+    urgency: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
   }) {
     const results = {
-      push: null;
+      push: null,
       sms: null;
-      email: null;
-      whatsapp: null;
+      email: null,
+      whatsapp: null
     };
 
     // Get user notification preferences
@@ -40,14 +40,14 @@ class PushNotificationService {
     // Store notification in database
     const storedNotification = await prisma.notification.create({
       data: {
-        userId: notification.userId;
+        userId: notification.userId,
         title: notification.title;
-        message: notification.message;
+        message: notification.message,
         type: notification.type;
-        urgency: notification.urgency;
+        urgency: notification.urgency,
         channels: notification.channels;
         data: notification.data || {},
-        status: 'PENDING';
+        status: 'PENDING'
       }
     });
 
@@ -77,7 +77,7 @@ class PushNotificationService {
             break;
         }
       } catch (error) {
-        /* SECURITY: Console statement removed */;
+        /* SECURITY: Console statement removed */
       }
     }
 
@@ -85,9 +85,9 @@ class PushNotificationService {
     await prisma.notification.update({
       where: { id: storedNotification.id },
       data: {
-        status: 'SENT';
+        status: 'SENT',
         deliveryResults: results;
-        sentAt: new Date();
+        sentAt: new Date()
       }
     });
 
@@ -100,27 +100,27 @@ class PushNotificationService {
     }
 
     const payload = {
-      to: fcmToken;
+      to: fcmToken,
       notification: {
-        title: notification.title;
+        title: notification.title,
         body: notification.message;
-        icon: '/icons/hospital-icon.png';
-        badge: '/icons/badge.png';
+        icon: '/icons/hospital-icon.png',
+        badge: '/icons/badge.png'
       },
       data: {
-        type: notification.type;
+        type: notification.type,
         urgency: notification.urgency;
         ...notification.data
       }
     };
 
     const response = await fetch('https://fcm.googleapis.com/fcm/send', {
-      method: 'POST';
+      method: 'POST',
       headers: {
         'Authorization': `key=${this.fcmServerKey}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload);
+      body: JSON.stringify(payload)
     });
 
     return await response.json();
@@ -137,8 +137,8 @@ class PushNotificationService {
 
     const message = await client.messages.create({
       body: `${notification.title}: ${notification.message}`,
-      from: process.env.TWILIO_PHONE_NUMBER;
-      to: phoneNumber;
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: phoneNumber
     });
 
     return { messageId: message.sid, status: message.status };
@@ -147,10 +147,10 @@ class PushNotificationService {
   static async sendEmail(email: string, notification: unknown) {
     // Email service implementation (using SendGrid, AWS SES, etc.)
     const _emailPayload = {
-      to: email;
+      to: email,
       subject: notification.title;
-      html: this.generateEmailTemplate(notification);
-      urgency: notification.urgency;
+      html: this.generateEmailTemplate(notification),
+      urgency: notification.urgency
     };
 
     // Mock email sending - replace with actual service
@@ -163,15 +163,15 @@ class PushNotificationService {
     }
 
     const payload = {
-      messaging_product: 'whatsapp';
+      messaging_product: 'whatsapp',
       to: phoneNumber.replace('+', ''),
-      type: 'template';
+      type: 'template',
       template: {
-        name: 'hospital_notification';
+        name: 'hospital_notification',
         language: { code: 'en' },
         components: [
           {
-            type: 'body';
+            type: 'body',
             parameters: [
               { type: 'text', text: notification.title },
               { type: 'text', text: notification.message }
@@ -182,12 +182,12 @@ class PushNotificationService {
     };
 
     const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
-      method: 'POST';
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${this.whatsappApiToken}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload);
+      body: JSON.stringify(payload)
     });
 
     return await response.json();
@@ -199,13 +199,13 @@ class PushNotificationService {
       <html>
       <head>
         <style>
-          .container { max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; }
-          .header { background-color: #007AFF; color: white; padding: 20px; text-align: center; }
-          .content { padding: 20px; }
-          .urgency-critical { border-left: 4px solid #dc3545; }
-          .urgency-high { border-left: 4px solid #fd7e14; }
-          .urgency-medium { border-left: 4px solid #ffc107; }
-          .urgency-low { border-left: 4px solid #28a745; }
+          .container { max-width: 600px, margin: 0 auto; font-family: Arial, sans-serif }
+          .header { background-color: #007AFF, color: white; padding: 20px; text-align: center }
+          .content { padding: 20px }
+          .urgency-critical { border-left: 4px solid #dc3545 }
+          .urgency-high { border-left: 4px solid #fd7e14 }
+          .urgency-medium { border-left: 4px solid #ffc107 }
+          .urgency-low { border-left: 4px solid #28a745 }
         </style>
       </head>
       <body>
@@ -247,7 +247,7 @@ class PushNotificationService {
       data: {
         ...notification,
         scheduledTime,
-        status: 'SCHEDULED';
+        status: 'SCHEDULED'
       }
     });
 
@@ -270,7 +270,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ success: true, result });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Failed to send notification' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to send notification' }, { status: 500 }),
   }
 };
 
@@ -289,7 +289,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ success: true, results });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Failed to send bulk notifications' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to send bulk notifications' }, { status: 500 }),
   }
 };
 

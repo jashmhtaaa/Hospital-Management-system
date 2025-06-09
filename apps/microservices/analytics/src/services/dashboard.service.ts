@@ -17,27 +17,27 @@ import { pubsub } from '@/lib/graphql/schema-base';
 
 // Dashboard models
 export interface Dashboard {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: DashboardCategory;
-  layout: DashboardLayout;
+  layout: DashboardLayout,
   widgets: DashboardWidget[];
-  filters: DashboardFilter[];
+  filters: DashboardFilter[],
   theme: DashboardTheme;
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  isPublic: boolean;
+  isPublic: boolean,
   isTemplate: boolean;
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
+  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED',
   permissions: DashboardPermissions;
   refreshRate?: number; // in seconds, undefined for manual refresh only
   lastRefreshed?: Date;
-  version: string;
+  version: string,
   settings: DashboardSettings;
-  autoRefresh: boolean;
+  autoRefresh: boolean,
   tags: string[];
   metadata: DashboardMetadata
 export enum DashboardCategory {
@@ -64,38 +64,38 @@ export interface DashboardLayout {
   breakpoints?: {
     small?: BreakpointLayout;
     medium?: BreakpointLayout;
-    large?: BreakpointLayout;
+    large?: BreakpointLayout
   };
   options?: Record<string, any>;
 export interface BreakpointLayout {
-  columns: number;
+  columns: number,
   layouts: {
-    widgetId: string;
+    widgetId: string,
     x: number;
-    y: number;
+    y: number,
     w: number;
-    h: number;
+    h: number
   }[];
 export interface DashboardWidget {
-  id: string;
+  id: string,
   name: string;
   type: WidgetType;
   description?: string;
-  position: WidgetPosition;
+  position: WidgetPosition,
   dataSource: WidgetDataSource;
-  visualization: WidgetVisualization;
+  visualization: WidgetVisualization,
   interactions: WidgetInteractions;
-  settings: WidgetSettings;
+  settings: WidgetSettings,
   filters: WidgetFilter[];
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
   status: 'ACTIVE' | 'DRAFT' | 'ERROR';
   errorMessage?: string;
   refreshRate?: number; // Override dashboard refresh rate
   lastRefreshed?: Date;
-  version: string;
+  version: string,
   tags: string[];
   metadata: WidgetMetadata
 export enum WidgetType {
@@ -114,9 +114,9 @@ export enum WidgetType {
   FILTER = 'FILTER',
   ALERT = 'ALERT',
 export interface WidgetPosition {
-  x: number;
+  x: number,
   y: number;
-  w: number;
+  w: number,
   h: number;
   minW?: number;
   minH?: number;
@@ -128,7 +128,7 @@ export interface WidgetPosition {
   gridArea?: string;
   zIndex?: number;
 export interface WidgetDataSource {
-  type: 'API' | 'GRAPHQL' | 'SQL' | 'SERVICE' | 'STATIC' | 'REALTIME' | 'CUSTOM';
+  type: 'API' | 'GRAPHQL' | 'SQL' | 'SERVICE' | 'STATIC' | 'REALTIME' | 'CUSTOM',
   config: {
     url?: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -142,23 +142,23 @@ export interface WidgetDataSource {
     refreshInterval?: number;
     maxDataPoints?: number;
     transformations?: DataTransformation[];
-    dataMapping?: Record<string, string>;
+    dataMapping?: Record<string, string>
   };
   parameters?: Record<string, any>;
 export interface DataTransformation {
-  type: 'FILTER' | 'SORT' | 'AGGREGATE' | 'PIVOT' | 'CALCULATE' | 'FORMAT' | 'LIMIT' | 'JOIN' | 'CUSTOM';
+  type: 'FILTER' | 'SORT' | 'AGGREGATE' | 'PIVOT' | 'CALCULATE' | 'FORMAT' | 'LIMIT' | 'JOIN' | 'CUSTOM',
   config: Record<string, any>;
 export interface WidgetVisualization {
-  type: VisualizationType;
+  type: VisualizationType,
   config: Record<string, any>;
   defaultConfig?: Record<string, any>;
   options?: {
-    showTitle: boolean;
+    showTitle: boolean,
     showLegend: boolean;
-    showTooltips: boolean;
+    showTooltips: boolean,
     showDataLabels: boolean;
-    showAxes: boolean;
-    showGrid: boolean;
+    showAxes: boolean,
+    showGrid: boolean
   };
   theme?: {
     colors: string[];
@@ -170,7 +170,7 @@ export interface WidgetVisualization {
     legendPosition?: 'top' | 'right' | 'bottom' | 'left' | 'none';
     axisLabelFontSize?: number;
     axisTickFontSize?: number;
-    tooltipFontSize?: number;
+    tooltipFontSize?: number
   };
   formatters?: {
     x?: string;
@@ -178,13 +178,13 @@ export interface WidgetVisualization {
     value?: string;
     date?: string;
     number?: string;
-    percent?: string;
+    percent?: string
   };
   responsive?: boolean;
   animations?: {
     enabled: boolean;
     duration?: number;
-    easing?: string;
+    easing?: string
   };
 export enum VisualizationType {
   BAR = 'BAR',
@@ -219,48 +219,48 @@ export enum VisualizationType {
   CUSTOM = 'CUSTOM',
 export interface WidgetInteractions {
   drillDown?: {
-    enabled: boolean;
+    enabled: boolean,
     type: 'WIDGET' | 'DASHBOARD' | 'URL' | 'DETAIL';
     target?: string;
-    parameters?: Record<string, string>;
+    parameters?: Record<string, string>
   };
   filters?: {
     enabled: boolean;
     targetWidgets?: string[];
     targetFilters?: string[];
-    mappings?: Record<string, string>;
+    mappings?: Record<string, string>
   };
   actions?: WidgetAction[];
   tooltips?: {
     enabled: boolean;
     content?: string;
-    showDuration?: number;
+    showDuration?: number
   };
   highlights?: {
     enabled: boolean;
     targetWidgets?: string[];
     mode?: 'select' | 'hover' | 'both';
-    effect?: 'highlight' | 'filter' | 'both';
+    effect?: 'highlight' | 'filter' | 'both'
   };
   selections?: {
     enabled: boolean;
     mode?: 'single' | 'multiple';
-    targetWidgets?: string[];
+    targetWidgets?: string[]
   };
   contextMenu?: {
     enabled: boolean;
-    items?: ContextMenuItem[];
+    items?: ContextMenuItem[]
   };
 export interface WidgetAction {
-  id: string;
+  id: string,
   name: string;
   icon?: string;
-  type: 'NAVIGATE' | 'API_CALL' | 'EXPORT' | 'FILTER' | 'REFRESH' | 'CUSTOM';
+  type: 'NAVIGATE' | 'API_CALL' | 'EXPORT' | 'FILTER' | 'REFRESH' | 'CUSTOM',
   config: Record<string, any>;
   condition?: string;
   permission?: string[];
 export interface ContextMenuItem {
-  id: string;
+  id: string,
   label: string;
   icon?: string;
   action: WidgetAction;
@@ -296,37 +296,37 @@ export interface WidgetSettings {
   customCSS?: string;
   customOptions?: Record<string, any>;
 export interface WidgetFilter {
-  id: string;
+  id: string,
   field: string;
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
   value?: unknown;
   value2?: unknown; // For 'between' and 'not_between'
   isDynamic: boolean
   dynamicSource?: {
-    type: 'DASHBOARD_FILTER' | 'WIDGET_INTERACTION' | 'USER_PROPERTY' | 'GLOBAL_PARAMETER';
+    type: 'DASHBOARD_FILTER' | 'WIDGET_INTERACTION' | 'USER_PROPERTY' | 'GLOBAL_PARAMETER',
     source: string;
-    mapping?: Record<string, any>;
+    mapping?: Record<string, any>
   };
 export interface DashboardFilter {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   type: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'SELECT' | 'MULTI_SELECT' | 'BOOLEAN' | 'SLIDER' | 'CUSTOM';
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'ARRAY';
   defaultValue?: unknown;
   options?: {
-    value: unknown;
+    value: unknown,
     label: string;
     icon?: string;
   }[];
   optionsSource?: {
-    type: 'STATIC' | 'API' | 'SERVICE';
-    config: Record<string, any>;
+    type: 'STATIC' | 'API' | 'SERVICE',
+    config: Record<string, any>
   };
   position: {
     area: 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM' | 'WIDGET';
     widgetId?: string; // If area is 'WIDGET'
-    order: number;
+    order: number
   }
   settings: {
     width?: string | number;
@@ -344,136 +344,136 @@ export interface DashboardFilter {
     max?: number;
     step?: number;
     marks?: {
-      value: number;
-      label: string;
+      value: number,
+      label: string
     }[];
-    customComponent?: string;
+    customComponent?: string
   };
   dependencies?: {
-    filterId: string;
+    filterId: string,
     condition: string;
     effect: 'ENABLE' | 'DISABLE' | 'SHOW' | 'HIDE' | 'UPDATE_OPTIONS';
     effectConfig?: Record<string, any>;
   }[];
   permissions?: {
-    roles: string[];
-    access: 'VIEW' | 'EDIT';
+    roles: string[],
+    access: 'VIEW' | 'EDIT'
   }[];
   advanced?: boolean;
   hidden?: boolean;
   metadata?: Record<string, any>;
 export interface DashboardTheme {
-  id: string;
+  id: string,
   name: string;
   palette: {
-    primary: string;
+    primary: string,
     secondary: string;
-    success: string;
+    success: string,
     warning: string;
-    error: string;
+    error: string,
     info: string;
-    background: string;
+    background: string,
     surface: string;
-    text: string;
+    text: string,
     textSecondary: string;
-    border: string;
-    chartColors: string[];
+    border: string,
+    chartColors: string[]
   };
   typography: {
-    fontFamily: string;
+    fontFamily: string,
     fontSize: number;
-    fontWeightLight: number;
+    fontWeightLight: number,
     fontWeightRegular: number;
-    fontWeightMedium: number;
+    fontWeightMedium: number,
     fontWeightBold: number;
     h1: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
-      textTransform?: string;
+      textTransform?: string
     };
     h2: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
-      textTransform?: string;
+      textTransform?: string
     };
     h3: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
-      textTransform?: string;
+      textTransform?: string
     };
     h4: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
-      textTransform?: string;
+      textTransform?: string
     };
     h5: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
-      textTransform?: string;
+      textTransform?: string
     };
     h6: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
-      textTransform?: string;
+      textTransform?: string
     };
     body1: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
-      letterSpacing?: number;
+      letterSpacing?: number
     };
     body2: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
-      letterSpacing?: number;
+      letterSpacing?: number
     };
     caption: {
-      fontSize: number;
+      fontSize: number,
       fontWeight: number;
       lineHeight: number;
-      letterSpacing?: number;
+      letterSpacing?: number
     };
   };
   shape: {
-    borderRadius: number;
-    borderWidth: number;
+    borderRadius: number,
+    borderWidth: number
   };
-  spacing: number;
+  spacing: number,
   shadows: string[];
   transitions: {
     duration: {
-      shortest: number;
+      shortest: number,
       shorter: number;
-      short: number;
+      short: number,
       standard: number;
-      complex: number;
+      complex: number,
       enteringScreen: number;
-      leavingScreen: number;
+      leavingScreen: number
     };
     easing: {
-      easeInOut: string;
+      easeInOut: string,
       easeOut: string;
-      easeIn: string;
-      sharp: string;
-    };
+      easeIn: string,
+      sharp: string
+    }
   };
   components?: {
     [key: string]: {
       styleOverrides?: Record<string, any>;
-      variants?: Record<string, any>;
+      variants?: Record<string, any>
     };
   };
   charts?: {
@@ -481,53 +481,53 @@ export interface DashboardTheme {
     gridColor?: string;
     tooltipBackground?: string;
     tooltipTextColor?: string;
-    legendTextColor?: string;
+    legendTextColor?: string
   };
-  dark: boolean;
+  dark: boolean,
   mode: 'light' | 'dark' | 'system'
 export interface DashboardPermissions {
-  owner: string;
+  owner: string,
   viewRoles: string[];
-  editRoles: string[];
+  editRoles: string[],
   viewUsers: string[];
-  editUsers: string[];
+  editUsers: string[],
   viewDepartments: string[];
-  editDepartments: string[];
+  editDepartments: string[],
   public: boolean;
   shareLink?: string;
   shareLinkExpiration?: Date;
   shareLinkPassword?: string;
   exportPermissions: {
-    pdf: boolean;
+    pdf: boolean,
     excel: boolean;
-    png: boolean;
+    png: boolean,
     csv: boolean;
-    allowedRoles?: string[];
+    allowedRoles?: string[]
   };
 export interface DashboardSettings {
-  showTitle: boolean;
+  showTitle: boolean,
   showDescription: boolean;
-  showFilters: boolean;
+  showFilters: boolean,
   showTimeRange: boolean;
   timeRangeOptions?: {
-    position: 'TOP' | 'LEFT' | 'RIGHT';
+    position: 'TOP' | 'LEFT' | 'RIGHT',
     defaultRange: 'TODAY' | 'YESTERDAY' | 'LAST_7_DAYS' | 'LAST_30_DAYS' | 'THIS_MONTH' | 'LAST_MONTH' | 'THIS_QUARTER' | 'LAST_QUARTER' | 'THIS_YEAR' | 'LAST_YEAR' | 'CUSTOM';
     availableRanges: string[];
-    customRangeLabel?: string;
+    customRangeLabel?: string
   };
-  filterBarCollapsible: boolean;
+  filterBarCollapsible: boolean,
   defaultFilterBarCollapsed: boolean;
-  showRefreshButton: boolean;
+  showRefreshButton: boolean,
   showFullscreenButton: boolean;
   showExportButton: boolean;
   exportFormats?: ('PDF' | 'PNG' | 'CSV' | 'EXCEL')[];
-  showSettingsButton: boolean;
+  showSettingsButton: boolean,
   showWidgetTitles: boolean;
-  compactMode: boolean;
+  compactMode: boolean,
   enableWidgetInteractions: boolean;
   enableCrossFiltering: boolean;
   autoSaveInterval?: number;
-  confirmOnDelete: boolean;
+  confirmOnDelete: boolean,
   defaultDateFormat: string;
   defaultNumberFormat: string;
   loadingAnimation?: string;
@@ -537,17 +537,17 @@ export interface DashboardSettings {
   customOptions?: Record<string, any>;
 export interface DashboardMetadata {
   templateSource?: string;
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
   lastViewedDate?: Date;
-  viewCount: number;
+  viewCount: number,
   exportCount: number;
   favoriteCount: number;
   averageLoadTime?: number;
@@ -556,12 +556,12 @@ export interface DashboardMetadata {
   lastErrorMessage?: string;
   customMetadata?: Record<string, any>;
 export interface WidgetMetadata {
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   templateSource?: string;
   averageLoadTime?: number;
@@ -575,41 +575,41 @@ export interface WidgetMetadata {
 
 // Dashboard data models
 export interface DashboardData {
-  dashboardId: string;
+  dashboardId: string,
   timestamp: Date;
   filterValues: Record<string, any>;
   timeRange?: {
-    start: Date;
+    start: Date,
     end: Date;
-    preset?: string;
+    preset?: string
   };
-  widgets: Record<string, WidgetData>;
+  widgets: Record<string, WidgetData>,
   metadata: {
-    executionTime: number;
+    executionTime: number,
     status: 'SUCCESS' | 'PARTIAL' | 'ERROR';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED';
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED'
   };
 export interface WidgetData {
-  widgetId: string;
+  widgetId: string,
   data: unknown;
   columns?: ColumnMetadata[];
   metadata: {
-    executionTime: number;
+    executionTime: number,
     status: 'SUCCESS' | 'ERROR' | 'NO_DATA';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED';
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED',
     dataTimestamp: Date;
     rowCount?: number;
     dataPoints?: number;
-    aggregations?: Record<string, any>;
+    aggregations?: Record<string, any>
   };
 export interface ColumnMetadata {
-  name: string;
+  name: string,
   displayName: string;
-  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
+  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY',
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   description?: string;
@@ -621,15 +621,15 @@ export interface ColumnMetadata {
     count?: number;
     distinctCount?: number;
     nullCount?: number;
-    nullPercentage?: number;
+    nullPercentage?: number
   };
 }
 
 // Healthcare-specific KPI models
 export interface KPI {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   description: string;
   category: KPICategory;
   subcategory?: string;
@@ -639,28 +639,28 @@ export interface KPI {
   threshold?: {
     warning?: number;
     critical?: number;
-    direction: 'ABOVE' | 'BELOW' | 'BETWEEN';
+    direction: 'ABOVE' | 'BELOW' | 'BETWEEN'
   };
-  frequency: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
+  frequency: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY',
   dataSource: {
-    type: 'SQL' | 'API' | 'SERVICE' | 'CALCULATION';
-    config: Record<string, any>;
+    type: 'SQL' | 'API' | 'SERVICE' | 'CALCULATION',
+    config: Record<string, any>
   };
   visualization: {
-    defaultType: VisualizationType;
+    defaultType: VisualizationType,
     recommendedTypes: VisualizationType[];
-    defaultConfig?: Record<string, any>;
+    defaultConfig?: Record<string, any>
   };
   benchmarks?: {
     internal?: number;
     external?: number;
-    source?: string;
+    source?: string
   };
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
+  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED',
   tags: string[];
   metadata: KPIMetadata
 export enum KPICategory {
@@ -679,16 +679,16 @@ export interface KPIMetadata {
     isRegulatory: boolean;
     regulatoryBody?: string;
     regulatoryCode?: string;
-    reportingPeriod?: string;
+    reportingPeriod?: string
   };
   methodology?: string;
   limitations?: string;
   interpretationGuidelines?: string;
   changeHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   customMetadata?: Record<string, any>;
 }
@@ -739,8 +739,8 @@ export class DashboardService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_queries', 1, {
-        category: filters?.category || 'ALL';
-        status: filters?.status || 'ACTIVE';
+        category: filters?.category || 'ALL',
+        status: filters?.status || 'ACTIVE'
       });
 
       return dashboards as Dashboard[];
@@ -781,21 +781,21 @@ export class DashboardService {
         data: {
           metadata: {
             ...dashboard.metadata,
-            viewCount: dashboard.metadata.viewCount + 1;
-            lastViewedDate: new Date();
+            viewCount: dashboard.metadata.viewCount + 1,
+            lastViewedDate: new Date()
           },
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'VIEW';
+        action: 'VIEW',
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
         details: {
-          name: dashboard.name;
-          category: dashboard.category;
+          name: dashboard.name,
+          category: dashboard.category
         },
       });
 
@@ -820,16 +820,16 @@ export class DashboardService {
       // Initialize metadata
       const metadata = {
         ...dashboard.metadata,
-        viewCount: 0;
+        viewCount: 0,
         exportCount: 0;
-        favoriteCount: 0;
+        favoriteCount: 0,
         version: '1.0.0';
         versionHistory: [
           {
-            version: '1.0.0';
-            date: new Date();
-            user: userId;
-            changes: 'Initial creation';
+            version: '1.0.0',
+            date: new Date(),
+            user: userId,
+            changes: 'Initial creation'
           },
         ],
       };
@@ -839,9 +839,9 @@ export class DashboardService {
         data: {
           ...dashboard,
           id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-          created: new Date();
-          updated: new Date();
-          createdBy: userId;
+          created: new Date(),
+          updated: new Date(),
+          createdBy: userId,
           updatedBy: userId;
           metadata,
         },
@@ -849,14 +849,14 @@ export class DashboardService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         resourceType: 'DASHBOARD';
         resourceId: newDashboard.id;
         userId,
         details: {
-          name: dashboard.name;
+          name: dashboard.name,
           category: dashboard.category;
-          widgetCount: dashboard.widgets.length;
+          widgetCount: dashboard.widgets.length
         },
       });
 
@@ -865,14 +865,14 @@ export class DashboardService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboards_created', 1, {
-        category: dashboard.category;
+        category: dashboard.category,
         isTemplate: dashboard.isTemplate;
         userId,
       });
 
       // Publish event
       await pubsub.publish('DASHBOARD_CREATED', {
-        dashboardCreated: newDashboard;
+        dashboardCreated: newDashboard
       });
 
       return newDashboard as Dashboard;
@@ -886,7 +886,7 @@ export class DashboardService {
    * Update dashboard;
    */
   async updateDashboard(
-    id: string;
+    id: string,
     updates: Partial<Dashboard>;
     userId: string;
   ): Promise<Dashboard> {
@@ -908,17 +908,17 @@ export class DashboardService {
       // Update metadata
       const metadata = {
         ...currentDashboard.metadata,
-        lastViewedDate: new Date();
+        lastViewedDate: new Date()
       };
 
       // Update version history if version changed
       if (updates?.version && updates.version !== currentDashboard.version) {
         const versionHistory = [...(currentDashboard.metadata.versionHistory || [])];
         versionHistory.unshift({
-          version: updates.version;
-          date: new Date();
-          user: userId;
-          changes: 'Dashboard updated';
+          version: updates.version,
+          date: new Date(),
+          user: userId,
+          changes: 'Dashboard updated'
         });
 
         metadata.version = updates.version;
@@ -930,7 +930,7 @@ export class DashboardService {
         where: { id },
         data: {
           ...updates,
-          updated: new Date();
+          updated: new Date(),
           updatedBy: userId;
           metadata,
         },
@@ -938,15 +938,15 @@ export class DashboardService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'UPDATE';
+        action: 'UPDATE',
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
         details: {
-          name: currentDashboard.name;
+          name: currentDashboard.name,
           previousVersion: currentDashboard.version;
-          newVersion: updates.version || currentDashboard.version;
-          widgetCount: updates.widgets?.length || currentDashboard.widgets.length;
+          newVersion: updates.version || currentDashboard.version,
+          widgetCount: updates.widgets?.length || currentDashboard.widgets.length
         },
       });
 
@@ -956,7 +956,7 @@ export class DashboardService {
 
       // Publish event
       await pubsub.publish('DASHBOARD_UPDATED', {
-        dashboardUpdated: updatedDashboard;
+        dashboardUpdated: updatedDashboard
       });
 
       return updatedDashboard as Dashboard;
@@ -970,7 +970,7 @@ export class DashboardService {
    * Create dashboard widget;
    */
   async createWidget(
-    dashboardId: string;
+    dashboardId: string,
     widget: Omit<DashboardWidget, 'id' | 'created' | 'updated'>,
     userId: string;
   ): Promise<DashboardWidget> {
@@ -992,13 +992,13 @@ export class DashboardService {
       // Initialize widget metadata
       const metadata = {
         ...widget.metadata,
-        version: '1.0.0';
+        version: '1.0.0',
         versionHistory: [
           {
-            version: '1.0.0';
-            date: new Date();
-            user: userId;
-            changes: 'Initial creation';
+            version: '1.0.0',
+            date: new Date(),
+            user: userId,
+            changes: 'Initial creation'
           },
         ],
       };
@@ -1007,9 +1007,9 @@ export class DashboardService {
       const newWidget: DashboardWidget = {
         ...widget,
         id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        created: new Date();
-        updated: new Date();
-        createdBy: userId;
+        created: new Date(),
+        updated: new Date(),
+        createdBy: userId,
         updatedBy: userId;
         metadata,
       };
@@ -1019,22 +1019,22 @@ export class DashboardService {
         where: { id: dashboardId },
         data: {
           widgets: [...dashboard.widgets, newWidget],
-          updated: new Date();
-          updatedBy: userId;
+          updated: new Date(),
+          updatedBy: userId
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE_WIDGET';
+        action: 'CREATE_WIDGET',
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: newWidget.id;
         userId,
         details: {
           dashboardId,
-          dashboardName: dashboard.name;
+          dashboardName: dashboard.name,
           widgetName: widget.name;
-          widgetType: widget.type;
+          widgetType: widget.type
         },
       });
 
@@ -1043,15 +1043,15 @@ export class DashboardService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_widgets_created', 1, {
-        widgetType: widget.type;
-        dashboardCategory: dashboard.category;
+        widgetType: widget.type,
+        dashboardCategory: dashboard.category
       });
 
       // Publish event
       await pubsub.publish('DASHBOARD_WIDGET_CREATED', {
         dashboardWidgetCreated: {
           dashboardId,
-          widget: newWidget;
+          widget: newWidget
         },
       });
 
@@ -1066,9 +1066,9 @@ export class DashboardService {
    * Update dashboard widget;
    */
   async updateWidget(
-    dashboardId: string;
+    dashboardId: string,
     widgetId: string;
-    updates: Partial<DashboardWidget>;
+    updates: Partial<DashboardWidget>,
     userId: string;
   ): Promise<DashboardWidget> {
     try {
@@ -1104,10 +1104,10 @@ export class DashboardService {
       if (updates?.version && updates.version !== currentWidget.version) {
         const versionHistory = [...(currentWidget.metadata.versionHistory || [])];
         versionHistory.unshift({
-          version: updates.version;
-          date: new Date();
-          user: userId;
-          changes: 'Widget updated';
+          version: updates.version,
+          date: new Date(),
+          user: userId,
+          changes: 'Widget updated'
         });
 
         metadata.version = updates.version;
@@ -1118,7 +1118,7 @@ export class DashboardService {
       const updatedWidget: DashboardWidget = {
         ...currentWidget,
         ...updates,
-        updated: new Date();
+        updated: new Date(),
         updatedBy: userId;
         metadata,
       };
@@ -1131,23 +1131,23 @@ export class DashboardService {
       await this.prisma.dashboard.update({
         where: { id: dashboardId },
         data: {
-          widgets: updatedWidgets;
-          updated: new Date();
-          updatedBy: userId;
+          widgets: updatedWidgets,
+          updated: new Date(),
+          updatedBy: userId
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'UPDATE_WIDGET';
+        action: 'UPDATE_WIDGET',
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: widgetId;
         userId,
         details: {
           dashboardId,
-          dashboardName: dashboard.name;
+          dashboardName: dashboard.name,
           widgetName: updatedWidget.name;
-          widgetType: updatedWidget.type;
+          widgetType: updatedWidget.type
         },
       });
 
@@ -1158,7 +1158,7 @@ export class DashboardService {
       await pubsub.publish('DASHBOARD_WIDGET_UPDATED', {
         dashboardWidgetUpdated: {
           dashboardId,
-          widget: updatedWidget;
+          widget: updatedWidget
         },
       });
 
@@ -1173,7 +1173,7 @@ export class DashboardService {
    * Delete dashboard widget;
    */
   async deleteWidget(
-    dashboardId: string;
+    dashboardId: string,
     widgetId: string;
     userId: string;
   ): Promise<boolean> {
@@ -1205,23 +1205,23 @@ export class DashboardService {
       await this.prisma.dashboard.update({
         where: { id: dashboardId },
         data: {
-          widgets: updatedWidgets;
-          updated: new Date();
-          updatedBy: userId;
+          widgets: updatedWidgets,
+          updated: new Date(),
+          updatedBy: userId
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'DELETE_WIDGET';
+        action: 'DELETE_WIDGET',
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: widgetId;
         userId,
         details: {
           dashboardId,
-          dashboardName: dashboard.name;
+          dashboardName: dashboard.name,
           widgetName: widget.name;
-          widgetType: widget.type;
+          widgetType: widget.type
         },
       });
 
@@ -1230,8 +1230,8 @@ export class DashboardService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_widgets_deleted', 1, {
-        widgetType: widget.type;
-        dashboardCategory: dashboard.category;
+        widgetType: widget.type,
+        dashboardCategory: dashboard.category
       });
 
       // Publish event
@@ -1253,16 +1253,16 @@ export class DashboardService {
    * Get dashboard data;
    */
   async getDashboardData(
-    dashboardId: string;
+    dashboardId: string,
     options: {
       filters?: Record<string, any>;
       timeRange?: {
-        start: Date;
+        start: Date,
         end: Date;
-        preset?: string;
+        preset?: string
       };
       refreshCache?: boolean;
-      widgetIds?: string[]; // Optional: only fetch data for specific widgets;
+      widgetIds?: string[]; // Optional: only fetch data for specific widgets
     },
     userId: string
   ): Promise<DashboardData> {
@@ -1291,7 +1291,7 @@ export class DashboardService {
             ...cached,
             metadata: {
               ...cached.metadata,
-              cacheStatus: 'CACHED';
+              cacheStatus: 'CACHED'
             },
           };
         }
@@ -1336,15 +1336,15 @@ export class DashboardService {
           } catch (error) {
 
             widgets[widget.id] = {
-              widgetId: widget.id;
+              widgetId: widget.id,
               data: [];
               metadata: {
-                executionTime: 0;
+                executionTime: 0,
                 status: 'ERROR';
-                errorMessage: error.message;
+                errorMessage: error.message,
                 warningMessages: [];
-                cacheStatus: 'FRESH';
-                dataTimestamp: new Date();
+                cacheStatus: 'FRESH',
+                dataTimestamp: new Date()
               },
             };
 
@@ -1357,15 +1357,15 @@ export class DashboardService {
       // Create dashboard data
       const dashboardData: DashboardData = {
         dashboardId,
-        timestamp: new Date();
+        timestamp: new Date(),
         filterValues: options.filters || {},
         timeRange: options.timeRange;
         widgets,
         metadata: {
-          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: dashboardStatus;
-          warningMessages: warningMessages.length > 0 ? warningMessages : undefined;
-          cacheStatus: 'FRESH';
+          warningMessages: warningMessages.length > 0 ? warningMessages : undefined,
+          cacheStatus: 'FRESH'
         },
       };
 
@@ -1379,7 +1379,7 @@ export class DashboardService {
       await this.prisma.dashboard.update({
         where: { id: dashboardId },
         data: {
-          lastRefreshed: new Date();
+          lastRefreshed: new Date()
         },
       });
 
@@ -1387,8 +1387,8 @@ export class DashboardService {
       metricsCollector.recordTimer('analytics.dashboard_data_fetch_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.dashboard_data_requests', 1, {
         dashboardId,
-        dashboardCategory: dashboard.category;
-        status: dashboardStatus;
+        dashboardCategory: dashboard.category,
+        status: dashboardStatus
       });
 
       return dashboardData;
@@ -1397,21 +1397,21 @@ export class DashboardService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.dashboard_data_errors', 1, {
         dashboardId,
-        errorType: error.name;
+        errorType: error.name
       });
 
       // Return error dashboard data
       return {
         dashboardId,
-        timestamp: new Date();
+        timestamp: new Date(),
         filterValues: options.filters || {},
-        timeRange: options.timeRange;
+        timeRange: options.timeRange,
         widgets: {},
         metadata: {
-          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR';
-          errorMessage: error.message;
-          cacheStatus: 'FRESH';
+          errorMessage: error.message,
+          cacheStatus: 'FRESH'
         },
       };
     }
@@ -1421,14 +1421,14 @@ export class DashboardService {
    * Export dashboard;
    */
   async exportDashboard(
-    dashboardId: string;
+    dashboardId: string,
     options: {
       format: 'PDF' | 'PNG' | 'CSV' | 'EXCEL';
       filters?: Record<string, any>;
       timeRange?: {
-        start: Date;
+        start: Date,
         end: Date;
-        preset?: string;
+        preset?: string
       };
       title?: string;
       includeFilters?: boolean;
@@ -1436,7 +1436,7 @@ export class DashboardService {
       paperSize?: 'A4' | 'LETTER' | 'LEGAL' | 'TABLOID';
     },
     userId: string;
-  ): Promise<{ url: string; expiresAt: Date }> {
+  ): Promise<{ url: string, expiresAt: Date }> {
     try {
       // Get dashboard
       const dashboard = await this.getDashboardById(dashboardId, userId);
@@ -1453,9 +1453,9 @@ export class DashboardService {
       const dashboardData = await this.getDashboardData(
         dashboardId,
         {
-          filters: options.filters;
+          filters: options.filters,
           timeRange: options.timeRange;
-          refreshCache: false;
+          refreshCache: false
         },
         userId;
       );
@@ -1484,19 +1484,19 @@ export class DashboardService {
         data: {
           metadata: {
             ...dashboard.metadata,
-            exportCount: dashboard.metadata.exportCount + 1;
+            exportCount: dashboard.metadata.exportCount + 1
           },
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'EXPORT_DASHBOARD';
+        action: 'EXPORT_DASHBOARD',
         resourceType: 'DASHBOARD';
         resourceId: dashboardId;
         userId,
         details: {
-          dashboardName: dashboard.name;
+          dashboardName: dashboard.name,
           format: options.format;
           filters: JSON.stringify(options.filters || {}),
           timeRange: JSON.stringify(options.timeRange || {}),
@@ -1506,8 +1506,8 @@ export class DashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboards_exported', 1, {
         dashboardId,
-        dashboardCategory: dashboard.category;
-        format: options.format;
+        dashboardCategory: dashboard.category,
+        format: options.format
       });
 
       return {
@@ -1519,8 +1519,8 @@ export class DashboardService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.dashboard_export_errors', 1, {
         dashboardId,
-        format: options.format;
-        errorType: error.name;
+        format: options.format,
+        errorType: error.name
       });
 
       throw error;
@@ -1531,7 +1531,7 @@ export class DashboardService {
    * Create dashboard from template;
    */
   async createDashboardFromTemplate(
-    templateId: string;
+    templateId: string,
     options: {
       name: string;
       description?: string;
@@ -1541,7 +1541,7 @@ export class DashboardService {
       customizations?: {
         filters?: Record<string, any>;
         theme?: Partial<DashboardTheme>;
-        settings?: Partial<DashboardSettings>;
+        settings?: Partial<DashboardSettings>
       };
     },
     userId: string;
@@ -1559,50 +1559,50 @@ export class DashboardService {
 
       // Prepare new dashboard
       const newDashboard: Omit<Dashboard, 'id' | 'created' | 'updated'> = {
-        name: options.name;
+        name: options.name,
         description: options.description || template.description;
-        category: options.category || template.category;
+        category: options.category || template.category,
         layout: template.layout;
         widgets: template.widgets.map(widget => ({
           ...widget,
           id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 9)}`,
-          created: new Date();
-          updated: new Date();
-          createdBy: userId;
-          updatedBy: userId;
+          created: new Date(),
+          updated: new Date(),
+          createdBy: userId,
+          updatedBy: userId
         })),
-        filters: template.filters;
+        filters: template.filters,
         theme: options.customizations?.theme
           ? { ...template.theme, ...options.customizations.theme }
           : template.theme,
-        createdBy: userId;
+        createdBy: userId,
         updatedBy: userId;
-        isPublic: options.isPublic !== undefined ? options.isPublic : false;
+        isPublic: options.isPublic !== undefined ? options.isPublic : false,
         isTemplate: false;
-        status: 'DRAFT';
+        status: 'DRAFT',
         permissions: options.permissions;
           ? { ...template.permissions, ...options.permissions, owner: userId }
           : { ...template.permissions, owner: userId },
-        version: '1.0.0';
+        version: '1.0.0',
         settings: options.customizations?.settings
           ? { ...template.settings, ...options.customizations.settings }
           : template.settings,
-        autoRefresh: template.autoRefresh;
+        autoRefresh: template.autoRefresh,
         tags: template.tags;
         metadata: {
-          templateSource: templateId;
+          templateSource: templateId,
           version: '1.0.0';
           versionHistory: [
             {
-              version: '1.0.0';
-              date: new Date();
-              user: userId;
-              changes: 'Created from template';
+              version: '1.0.0',
+              date: new Date(),
+              user: userId,
+              changes: 'Created from template'
             },
           ],
-          viewCount: 0;
+          viewCount: 0,
           exportCount: 0;
-          favoriteCount: 0;
+          favoriteCount: 0
         },
       };
 
@@ -1611,22 +1611,22 @@ export class DashboardService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE_FROM_TEMPLATE';
+        action: 'CREATE_FROM_TEMPLATE',
         resourceType: 'DASHBOARD';
         resourceId: dashboard.id;
         userId,
         details: {
           name: dashboard.name;
           templateId,
-          templateName: template.name;
-          category: dashboard.category;
+          templateName: template.name,
+          category: dashboard.category
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboards_created_from_template', 1, {
         templateId,
-        category: dashboard.category;
+        category: dashboard.category
       });
 
       return dashboard;
@@ -1640,7 +1640,7 @@ export class DashboardService {
    * Share dashboard;
    */
   async shareDashboard(
-    dashboardId: string;
+    dashboardId: string,
     options: {
       expirationDays?: number;
       password?: string;
@@ -1686,32 +1686,32 @@ export class DashboardService {
           permissions: {
             ...dashboard.permissions,
             shareLink,
-            shareLinkExpiration: expiresAt;
-            shareLinkPassword: encryptedPassword;
+            shareLinkExpiration: expiresAt,
+            shareLinkPassword: encryptedPassword
           },
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'SHARE_DASHBOARD';
+        action: 'SHARE_DASHBOARD',
         resourceType: 'DASHBOARD';
         resourceId: dashboardId;
         userId,
         details: {
-          dashboardName: dashboard.name;
+          dashboardName: dashboard.name,
           expirationDays: options.expirationDays;
-          hasPassword: !!options.password;
-          permissions: options.permissions || 'VIEW';
+          hasPassword: !!options.password,
+          permissions: options.permissions || 'VIEW'
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboards_shared', 1, {
         dashboardId,
-        dashboardCategory: dashboard.category;
+        dashboardCategory: dashboard.category,
         hasPassword: options.password ? 'true' : 'false';
-        hasExpiration: options.expirationDays ? 'true' : 'false';
+        hasExpiration: options.expirationDays ? 'true' : 'false'
       });
 
       return {
@@ -1744,7 +1744,7 @@ export class DashboardService {
       if (filters?.status) where.status = filters.status;
       if (filters?.tags && filters.tags.length > 0) {
         where.tags = {
-          hasSome: filters.tags;
+          hasSome: filters.tags
         };
       }
 
@@ -1762,8 +1762,8 @@ export class DashboardService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_queries', 1, {
-        category: filters?.category || 'ALL';
-        status: filters?.status || 'ACTIVE';
+        category: filters?.category || 'ALL',
+        status: filters?.status || 'ACTIVE'
       });
 
       return kpis as KPI[];
@@ -1816,23 +1816,23 @@ export class DashboardService {
         data: {
           ...kpi,
           id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-          created: new Date();
-          updated: new Date();
-          createdBy: userId;
-          updatedBy: userId;
+          created: new Date(),
+          updated: new Date(),
+          createdBy: userId,
+          updatedBy: userId
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         resourceType: 'KPI';
         resourceId: newKPI.id;
         userId,
         details: {
-          name: kpi.name;
+          name: kpi.name,
           category: kpi.category;
-          formula: kpi.formula;
+          formula: kpi.formula
         },
       });
 
@@ -1847,7 +1847,7 @@ export class DashboardService {
 
       // Publish event
       await pubsub.publish('KPI_CREATED', {
-        kpiCreated: newKPI;
+        kpiCreated: newKPI
       });
 
       return newKPI as KPI;
@@ -1861,7 +1861,7 @@ export class DashboardService {
    * Update KPI;
    */
   async updateKPI(
-    id: string;
+    id: string,
     updates: Partial<KPI>;
     userId: string;
   ): Promise<KPI> {
@@ -1880,8 +1880,8 @@ export class DashboardService {
         where: { id },
         data: {
           ...updates,
-          updated: new Date();
-          updatedBy: userId;
+          updated: new Date(),
+          updatedBy: userId
         },
       });
 
@@ -1894,10 +1894,10 @@ export class DashboardService {
               ...updatedKPI.metadata,
               changeHistory: [
                 {
-                  version: updatedKPI.metadata.version;
-                  date: new Date();
-                  user: userId;
-                  changes: 'KPI updated';
+                  version: updatedKPI.metadata.version,
+                  date: new Date(),
+                  user: userId,
+                  changes: 'KPI updated'
                 },
                 ...currentKPI.metadata.changeHistory,
               ],
@@ -1908,13 +1908,13 @@ export class DashboardService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'UPDATE';
+        action: 'UPDATE',
         resourceType: 'KPI';
         resourceId: id;
         userId,
         details: {
-          name: currentKPI.name;
-          category: currentKPI.category;
+          name: currentKPI.name,
+          category: currentKPI.category
         },
       });
 
@@ -1924,7 +1924,7 @@ export class DashboardService {
 
       // Publish event
       await pubsub.publish('KPI_UPDATED', {
-        kpiUpdated: updatedKPI;
+        kpiUpdated: updatedKPI
       });
 
       return updatedKPI as KPI;
@@ -1938,11 +1938,11 @@ export class DashboardService {
    * Calculate KPI value;
    */
   async calculateKPIValue(
-    kpiId: string;
+    kpiId: string,
     options: {
       timeRange?: {
-        start: Date;
-        end: Date;
+        start: Date,
+        end: Date
       };
       filters?: Record<string, any>;
       compareWithPrevious?: boolean;
@@ -1953,18 +1953,18 @@ export class DashboardService {
     target?: number;
     status?: 'ABOVE_TARGET' | 'AT_TARGET' | 'BELOW_TARGET' | 'NO_TARGET';
     comparison?: {
-      previousValue: number;
+      previousValue: number,
       change: number;
-      changePercent: number;
-      trend: 'IMPROVING' | 'STABLE' | 'WORSENING';
+      changePercent: number,
+      trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
     };
     metadata: {
-      calculationTime: number;
+      calculationTime: number,
       calculatedAt: Date;
       period?: {
-        start: Date;
-        end: Date;
-      };
+        start: Date,
+        end: Date
+      }
     };
   }> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -2035,14 +2035,14 @@ export class DashboardService {
 
       // Prepare result
       const result = {
-        value: kpiValue;
+        value: kpiValue,
         target: kpi.target;
         status,
         comparison,
         metadata: {
-          calculationTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
-          calculatedAt: new Date();
-          period: options.timeRange;
+          calculationTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
+          calculatedAt: new Date(),
+          period: options.timeRange
         },
       };
 
@@ -2053,8 +2053,8 @@ export class DashboardService {
       metricsCollector.recordTimer('analytics.kpi_calculation_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.kpi_calculations', 1, {
         kpiId,
-        kpiCategory: kpi.category;
-        hasComparison: options.compareWithPrevious ? 'true' : 'false';
+        kpiCategory: kpi.category,
+        hasComparison: options.compareWithPrevious ? 'true' : 'false'
       });
 
       return result;
@@ -2063,7 +2063,7 @@ export class DashboardService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.kpi_calculation_errors', 1, {
         kpiId,
-        errorType: error.name;
+        errorType: error.name
       });
 
       throw error;
@@ -2219,7 +2219,7 @@ export class DashboardService {
   }
 
   private applyDashboardFiltersToWidget(
-    widget: DashboardWidget;
+    widget: DashboardWidget,
     filterValues: Record<string, any>,
     dashboardFilters: DashboardFilter[]
   ): Record<string, any> {
@@ -2251,10 +2251,10 @@ export class DashboardService {
   }
 
   private async generateWidgetData(
-    widget: DashboardWidget;
+    widget: DashboardWidget,
     filters: Record<string, any>,
     timeRange?: {
-      start: Date;
+      start: Date,
       end: Date;
       preset?: string;
     }
@@ -2271,7 +2271,7 @@ export class DashboardService {
             ...cached,
             metadata: {
               ...cached.metadata,
-              cacheStatus: 'CACHED';
+              cacheStatus: 'CACHED'
             },
           };
         }
@@ -2293,13 +2293,13 @@ export class DashboardService {
             case VisualizationType.BAR:
             case VisualizationType.LINE:
             case VisualizationType.AREA:
-              data = this.generateMockTimeSeriesData(timeRange);
+              data = this.generateMockTimeSeriesData(timeRange),
               rowCount = data.length;
               break;
 
             case VisualizationType.PIE:
             case VisualizationType.DONUT:
-              data = this.generateMockCategoricalData();
+              data = this.generateMockCategoricalData(),
               rowCount = data.length;
               break;
 
@@ -2310,27 +2310,27 @@ export class DashboardService {
           break;
 
         case WidgetType.TABLE:
-          data = this.generateMockTableData();
+          data = this.generateMockTableData(),
           columns = [
             {
-              name: 'name';
+              name: 'name',
               displayName: 'Name';
-              dataType: 'STRING';
-              role: 'DIMENSION';
+              dataType: 'STRING',
+              role: 'DIMENSION'
             },
             {
-              name: 'value';
+              name: 'value',
               displayName: 'Value';
-              dataType: 'NUMBER';
+              dataType: 'NUMBER',
               role: 'MEASURE';
-              format: '#,##0',;
+              format: '#,##0',
             },
             {
-              name: 'date';
+              name: 'date',
               displayName: 'Date';
-              dataType: 'DATE';
+              dataType: 'DATE',
               role: 'DIMENSION';
-              format: 'MM/dd/yyyy';
+              format: 'MM/dd/yyyy'
             },
           ];
           rowCount = data.length;
@@ -2338,11 +2338,11 @@ export class DashboardService {
 
         case WidgetType.METRIC:
           data = {
-            value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+            value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000),
             previousValue: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
-            change: 0;
+            change: 0,
             changePercent: 0;
-            trend: '';
+            trend: ''
           };
 
           data.change = data.value - data.previousValue;
@@ -2355,7 +2355,7 @@ export class DashboardService {
           break;
 
         case WidgetType.MAP:
-          data = this.generateMockGeoData();
+          data = this.generateMockGeoData(),
           rowCount = data.length;
           break;
 
@@ -2373,12 +2373,12 @@ export class DashboardService {
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
           status,
           errorMessage,
-          warningMessages: [];
+          warningMessages: [],
           cacheStatus: 'FRESH';
-          dataTimestamp: new Date();
+          dataTimestamp: new Date(),
           rowCount,
-          dataPoints: rowCount;
-          aggregations: this.calculateMockAggregations(data);
+          dataPoints: rowCount,
+          aggregations: this.calculateMockAggregations(data)
         },
       };
 
@@ -2392,14 +2392,14 @@ export class DashboardService {
       await this.prisma.dashboardWidget.update({
         where: { id: widget.id },
         data: {
-          lastRefreshed: new Date();
+          lastRefreshed: new Date()
         },
       });
 
       // Record metrics
       metricsCollector.recordTimer('analytics.widget_data_fetch_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.widget_data_requests', 1, {
-        widgetType: widget.type;
+        widgetType: widget.type,
         visualizationType: widget.visualization.type;
         status,
       });
@@ -2409,43 +2409,43 @@ export class DashboardService {
 
       // Record error metric
       metricsCollector.incrementCounter('analytics.widget_data_errors', 1, {
-        widgetId: widget.id;
+        widgetId: widget.id,
         widgetType: widget.type;
-        errorType: error.name;
+        errorType: error.name
       });
 
       // Update widget error stats
       await this.prisma.dashboardWidget.update({
         where: { id: widget.id },
         data: {
-          status: 'ERROR';
+          status: 'ERROR',
           errorMessage: error.message;
           metadata: {
             ...widget.metadata,
-            errorCount: (widget.metadata.errorCount || 0) + 1;
-            lastErrorDate: new Date();
-            lastErrorMessage: error.message;
+            errorCount: (widget.metadata.errorCount || 0) + 1,
+            lastErrorDate: new Date(),
+            lastErrorMessage: error.message
           },
         },
       });
 
       return {
-        widgetId: widget.id;
+        widgetId: widget.id,
         data: [];
         metadata: {
-          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR';
-          errorMessage: error.message;
+          errorMessage: error.message,
           warningMessages: [];
-          cacheStatus: 'FRESH';
-          dataTimestamp: new Date();
+          cacheStatus: 'FRESH',
+          dataTimestamp: new Date()
         },
       };
     }
   }
 
   private async formatDashboardForExport(
-    dashboard: Dashboard;
+    dashboard: Dashboard,
     dashboardData: DashboardData;
     options: unknown;
   ): Promise<any> {
@@ -2458,7 +2458,7 @@ export class DashboardService {
   }
 
   private async generateExportFile(
-    data: unknown;
+    data: unknown,
     format: string;
     filename: string;
   ): Promise<string> {
@@ -2469,7 +2469,7 @@ export class DashboardService {
   }
 
   private async generateShareToken(
-    dashboardId: string;
+    dashboardId: string,
     options: unknown;
     userId: string;
   ): Promise<string> {
@@ -2511,8 +2511,8 @@ export class DashboardService {
   private async executeKPICalculation(
     kpi: KPI;
     timeRange?: {
-      start: Date;
-      end: Date;
+      start: Date,
+      end: Date
     },
     filters?: Record<string, any>
   ): Promise<number> {
@@ -2527,8 +2527,8 @@ export class DashboardService {
     end?: Date,
     period: 'DAY' | 'WEEK' | 'MONTH' | 'QUARTER' | 'YEAR' = 'MONTH';
   ): {
-    start: Date;
-    end: Date;
+    start: Date,
+    end: Date
   } {
     // Implementation to calculate previous period
     const now = new Date();
@@ -2567,13 +2567,13 @@ export class DashboardService {
     }
 
     return {
-      start: previousStart;
-      end: previousEnd;
+      start: previousStart,
+      end: previousEnd
     };
   }
 
   // Mock data generators for demonstration
-  private generateMockTimeSeriesData(timeRange?: { start: Date; end: Date }): unknown[] {
+  private generateMockTimeSeriesData(timeRange?: { start: Date, end: Date }): unknown[] {
     const data = [];
     const now = new Date();
     const start = timeRange?.start || new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000); // 30 days ago
@@ -2582,8 +2582,8 @@ export class DashboardService {
     // Generate daily data points
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
       data.push({
-        date: new Date(date);
-        value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100);
+        date: new Date(date),
+        value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100)
       });
     }
 
@@ -2646,10 +2646,10 @@ export class DashboardService {
 
         return {
           sum,
-          avg: sum / values.length;
-          min: Math.min(...values);
-          max: Math.max(...values);
-          count: values.length;
+          avg: sum / values.length,
+          min: Math.min(...values),
+          max: Math.max(...values),
+          count: values.length
         };
       }
     }

@@ -9,26 +9,26 @@ const prisma = new PrismaClient();
 
 // Validation schemas
 export const LabOrderSchema = z.object({
-  encounterId: z.string().uuid();
+  encounterId: z.string().uuid(),
   tests: z.array(z.object({
-    testId: z.string().uuid();
-    testName: z.string().min(1);
-    testCode: z.string().min(1);
-    specimenType: z.string().min(1);
+    testId: z.string().uuid(),
+    testName: z.string().min(1),
+    testCode: z.string().min(1),
+    specimenType: z.string().min(1),
     priority: z.enum(['STAT', 'URGENT', 'ROUTINE']).optional(),
-    orderNotes: z.string().optional();
+    orderNotes: z.string().optional()
   })).min(1),
 });
 
 export const LabCancelSchema = z.object({
-  orderId: z.string().uuid();
-  reason: z.string().min(1);
+  orderId: z.string().uuid(),
+  reason: z.string().min(1)
 });
 
 export const LabResultNotificationSchema = z.object({
-  orderId: z.string().uuid();
-  notifyUserId: z.string().uuid().optional();
-  criticalResult: z.boolean().optional();
+  orderId: z.string().uuid(),
+  notifyUserId: z.string().uuid().optional(),
+  criticalResult: z.boolean().optional()
 });
 
 /**
@@ -50,11 +50,11 @@ export class LaboratoryService {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            mrn: true;
+            mrn: true,
             dateOfBirth: true;
-            gender: true;
+            gender: true
           },
         },
       },
@@ -70,19 +70,19 @@ export class LaboratoryService {
     for (const test of data.tests) {
       const order = await prisma.labOrder.create({
         data: {
-          patientId: encounter.patientId;
+          patientId: encounter.patientId,
           encounterId: encounter.id;
-          testId: test.testId;
+          testId: test.testId,
           testName: test.testName;
-          testCode: test.testCode;
+          testCode: test.testCode,
           specimenType: test.specimenType;
-          priority: test.priority || 'ROUTINE';
+          priority: test.priority || 'ROUTINE',
           status: 'ORDERED';
-          orderNotes: test.orderNotes;
+          orderNotes: test.orderNotes,
           orderedBy: userId;
-          orderedAt: new Date();
-          createdAt: new Date();
-          updatedAt: new Date();
+          orderedAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
       });
 
@@ -94,17 +94,17 @@ export class LaboratoryService {
         'LAB_ORDER',
         order.id,
         {
-          orderId: order.id;
+          orderId: order.id,
           patientId: encounter.patientId;
-          encounterId: encounter.id;
+          encounterId: encounter.id,
           testId: test.testId;
-          testName: test.testName;
+          testName: test.testName
         }
       );
     }
 
     return {
-      success: true;
+      success: true,
       orders: createdOrders;
       message: `${createdOrders.length} laboratory tests ordered successfully`,
     };
@@ -137,11 +137,11 @@ export class LaboratoryService {
     const updatedOrder = await prisma.labOrder.update({
       where: { id: data.orderId },
       data: {
-        status: 'CANCELLED';
+        status: 'CANCELLED',
         cancelReason: data.reason;
-        cancelledBy: userId;
-        cancelledAt: new Date();
-        updatedAt: new Date();
+        cancelledBy: userId,
+        cancelledAt: new Date(),
+        updatedAt: new Date()
       },
     });
 
@@ -151,20 +151,20 @@ export class LaboratoryService {
       'LAB_ORDER',
       order.id,
       {
-        orderId: order.id;
+        orderId: order.id,
         patientId: order.patientId;
-        encounterId: order.encounterId;
+        encounterId: order.encounterId,
         testId: order.testId;
-        testName: order.testName;
+        testName: order.testName,
         reason: data.reason;
-        action: 'CANCELLED';
+        action: 'CANCELLED'
       }
     );
 
     return {
-      success: true;
+      success: true,
       order: updatedOrder;
-      message: 'Laboratory order cancelled successfully';
+      message: 'Laboratory order cancelled successfully'
     };
   }
 
@@ -183,9 +183,9 @@ export class LaboratoryService {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            mrn: true;
+            mrn: true
           },
         },
       },
@@ -199,16 +199,16 @@ export class LaboratoryService {
     const notification = await prisma.notification.create({
       data: {
         userId: data.notifyUserId || null, // If null, will be sent to all relevant staff
-        patientId: order.patientId;
+        patientId: order.patientId,
         encounterId: order.encounterId;
-        type: 'LAB_RESULT';
+        type: 'LAB_RESULT',
         title: `Lab Result Available: ${order.testName}`,
         message: `Laboratory results for ${order.testName} are now available for patient ${order.patient.name} (${order.patient.mrn}).`,
-        priority: data.criticalResult ? 'HIGH' : 'NORMAL';
+        priority: data.criticalResult ? 'HIGH' : 'NORMAL',
         status: 'UNREAD';
         actionUrl: `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
-        createdAt: new Date();
-        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now;
+        createdAt: new Date(),
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now
       },
     });
 
@@ -217,9 +217,9 @@ export class LaboratoryService {
       await prisma.labOrder.update({
         where: { id: data.orderId },
         data: {
-          status: 'RESULTED';
-          resultedAt: new Date();
-          updatedAt: new Date();
+          status: 'RESULTED',
+          resultedAt: new Date(),
+          updatedAt: new Date()
         },
       });
     }
@@ -230,20 +230,20 @@ export class LaboratoryService {
       'NOTIFICATION',
       notification.id,
       {
-        notificationId: notification.id;
+        notificationId: notification.id,
         orderId: order.id;
-        patientId: order.patientId;
+        patientId: order.patientId,
         encounterId: order.encounterId;
-        testId: order.testId;
+        testId: order.testId,
         testName: order.testName;
-        criticalResult: data.criticalResult || false;
+        criticalResult: data.criticalResult || false
       }
     );
 
     return {
       success: true;
       notification,
-      message: 'Laboratory result notification sent successfully';
+      message: 'Laboratory result notification sent successfully'
     };
   }
 
@@ -267,7 +267,7 @@ export class LaboratoryService {
     return {
       patientId,
       pendingOrders,
-      count: pendingOrders.length;
+      count: pendingOrders.length
     };
   }
 
@@ -286,10 +286,10 @@ export class LaboratoryService {
     const query: unknown = {
       where: {
         patientId,
-        status: 'RESULTED';
+        status: 'RESULTED'
       },
       orderBy: { resultedAt: 'desc' },
-      take: limit;
+      take: limit
     };
 
     // Add encounter filter if provided
@@ -325,8 +325,8 @@ export class LaboratoryService {
       patientId,
       encounterId: encounterId || null;
       labResults,
-      _groupedResults: includeDetails ? _groupedResults : null;
-      count: labResults.length;
+      _groupedResults: includeDetails ? _groupedResults : null,
+      count: labResults.length
     };
   }
 
@@ -345,11 +345,11 @@ export class LaboratoryService {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            mrn: true;
+            mrn: true,
             dateOfBirth: true;
-            gender: true;
+            gender: true
           },
         },
         results: {
@@ -374,10 +374,10 @@ export class LaboratoryService {
       orderId,
       {
         orderId,
-        patientId: labOrder.patientId;
+        patientId: labOrder.patientId,
         encounterId: labOrder.encounterId;
-        testId: labOrder.testId;
-        testName: labOrder.testName;
+        testId: labOrder.testId,
+        testName: labOrder.testName
       }
     );
 

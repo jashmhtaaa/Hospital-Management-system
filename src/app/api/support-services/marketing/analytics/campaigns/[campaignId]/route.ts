@@ -32,7 +32,7 @@ export const GET = async (
         metrics: searchParams.has('metrics');
           ? (searchParams.get('metrics') as string).split(',');
           : undefined,
-        groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined;
+        groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined
       };
 
       const result = await analyticsService.getAggregatedAnalytics(
@@ -43,8 +43,8 @@ export const GET = async (
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.analytics.read';
-      auditAction: 'CAMPAIGN_ANALYTICS_VIEW';
+      requiredPermission: 'marketing.analytics.read',
+      auditAction: 'CAMPAIGN_ANALYTICS_VIEW'
     }
   );
 }
@@ -72,7 +72,7 @@ export const POST = async (
       return NextResponse.json(analytics, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.analytics.create';
-      auditAction: 'CAMPAIGN_ANALYTICS_RECORD';
+      requiredPermission: 'marketing.analytics.create',
+      auditAction: 'CAMPAIGN_ANALYTICS_RECORD'
     }
   );

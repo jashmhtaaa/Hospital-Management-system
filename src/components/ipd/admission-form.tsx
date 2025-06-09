@@ -20,13 +20,13 @@ import { toast } from "sonner"; // Changed from useToast to sonner
 import { Loader2 } from "lucide-react";
 
 interface AdmissionFormData {
-  patient_id: string;
+  patient_id: string,
   admission_date: string;
-  admission_type: "planned" | "emergency" | "transfer";
+  admission_type: "planned" | "emergency" | "transfer",
   primary_doctor_id: string;
-  bed_id: string;
+  bed_id: string,
   diagnosis: string;
-  estimated_stay: string;
+  estimated_stay: string
 }
 
 interface ApiErrorResponse {
@@ -35,33 +35,33 @@ interface ApiErrorResponse {
 }
 
 interface AdmissionResponse {
-  id: string;
+  id: string
 }
 
 interface MockPatient {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 interface MockDoctor {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 interface MockBed {
-  id: string;
+  id: string,
   number: string;
-  room: string;
-  ward: string;
+  room: string,
+  ward: string
 }
 
 const AdmissionForm = () => {
   const [formData, setFormData] = useState<AdmissionFormData>({
-    patient_id: "";
+    patient_id: "",
     admission_date: new Date().toISOString().split("T")[0];
-    admission_type: "planned";
+    admission_type: "planned",
     primary_doctor_id: "";
-    bed_id: "";
+    bed_id: "",
     diagnosis: "";
-    estimated_stay: "";
+    estimated_stay: ""
   });
   const [loading, setLoading] = useState(false);
   // Removed: const { toast } = useToast()
@@ -88,7 +88,7 @@ const AdmissionForm = () => {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSelectChange = (name: keyof AdmissionFormData, value: string) => {
@@ -113,7 +113,7 @@ const AdmissionForm = () => {
       !formData.diagnosis;
     ) {
       toast.error("Missing Information", { // Changed to sonner toast.error
-        description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",;
+        description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",
       });
       setLoading(false);
       return;
@@ -121,17 +121,17 @@ const AdmissionForm = () => {
 
     try {
       const response = await fetch("/api/ipd/admissions", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) {
         let errorMessage = "Failed to create admission";
         try {
-          const errorData: ApiErrorResponse = await response.json();
+          const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorData.message || errorMessage;
         } catch {
           errorMessage = `${errorMessage}: ${response.statusText}`;
@@ -139,19 +139,19 @@ const AdmissionForm = () => {
         throw new Error(errorMessage);
       }
 
-      const newAdmission: AdmissionResponse = await response.json();
+      const newAdmission: AdmissionResponse = await response.json(),
 
       toast.success("Admission Successful", { // Changed to sonner toast.success
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,
       }),
       setFormData({
-        patient_id: "";
+        patient_id: "",
         admission_date: new Date().toISOString().split("T")[0];
-        admission_type: "planned";
+        admission_type: "planned",
         primary_doctor_id: "";
-        bed_id: "";
+        bed_id: "",
         diagnosis: "";
-        estimated_stay: "";
+        estimated_stay: ""
       });
     } catch (error: unknown) {
 
@@ -160,7 +160,7 @@ const AdmissionForm = () => {
           ? error.message;
           : "An unexpected error occurred.";
       toast.error("Admission Failed", { // Changed to sonner toast.error
-        description: message;
+        description: message
       });
     } finally {
       setLoading(false);
@@ -331,7 +331,7 @@ const AdmissionForm = () => {
         </form>
       </CardContent>
     </Card>
-  );
+  )
 };
 
 export default AdmissionForm;

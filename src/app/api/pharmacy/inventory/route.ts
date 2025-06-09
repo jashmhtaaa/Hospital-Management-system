@@ -18,16 +18,16 @@ import { validateInventoryRequest } from '../../../../lib/validation/pharmacy-va
 
 // Initialize repositories (in production, use dependency injection)
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  findExpiring: (daysThreshold: number) => Promise.resolve([]);
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
-  adjustStock: () => Promise.resolve(true);
-  transferStock: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  findExpiring: (daysThreshold: number) => Promise.resolve([]),
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true),
+  adjustStock: () => Promise.resolve(true),
+  transferStock: () => Promise.resolve(true)
 }
 
 /**
@@ -73,25 +73,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'LIST';
+      action: 'LIST',
       resourceType: 'Inventory';
-      userId: userId;
+      userId: userId,
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedItems.length;
+        resultCount: paginatedItems.length
       }
     });
 
     // Return response
     return NextResponse.json({
-      items: fhirInventoryItems;
+      items: fhirInventoryItems,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -143,9 +143,9 @@ export const POST = async (req: NextRequest) => {
       // Encrypt controlled substance data
       inventoryItem.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
-          scheduleClass: data.scheduleClass;
+          scheduleClass: data.scheduleClass,
           lockboxNumber: data.lockboxNumber;
-          lastAuditDate: data.lastAuditDate;
+          lastAuditDate: data.lastAuditDate
         });
       );
     }
@@ -155,23 +155,23 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'CREATE';
+      action: 'CREATE',
       resourceType: 'Inventory';
-      resourceId: inventoryItemId;
+      resourceId: inventoryItemId,
       userId: userId;
       details: {
-        medicationId: data.medicationId;
+        medicationId: data.medicationId,
         locationId: data.locationId;
-        quantity: data.quantityOnHand;
-        isControlled: data.isControlled || false;
+        quantity: data.quantityOnHand,
+        isControlled: data.isControlled || false
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: inventoryItemId;
-        message: 'Inventory item created successfully';
+        id: inventoryItemId,
+        message: 'Inventory item created successfully'
       },
       { status: 201 }
     );

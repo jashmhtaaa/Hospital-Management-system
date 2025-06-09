@@ -10,9 +10,9 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 // Types for EHR entities
 export interface ClinicalNote {
   id?: string
-  patient_id: string;
+  patient_id: string,
   encounter_id: string;
-  provider_id: string;
+  provider_id: string,
   note_type: 'progress_note' | 'soap_note' | 'admission_note' | 'discharge_summary' | 'consultation_note' | 'procedure_note' | 'nursing_note';
   template_id?: string;
 
@@ -43,7 +43,7 @@ export interface ClinicalNote {
     oxygen_saturation?: number;
     weight?: number;
     height?: number;
-    bmi?: number;
+    bmi?: number
   };
 
   // Clinical coding
@@ -58,7 +58,7 @@ export interface ClinicalNote {
   updated_at?: Date;
   created_by: string;
   updated_by?: string;
-  status: 'draft' | 'final' | 'amended' | 'corrected';
+  status: 'draft' | 'final' | 'amended' | 'corrected',
   version: number
 export interface CarePlan {
   id?: string,
@@ -66,31 +66,31 @@ export interface CarePlan {
   encounter_id?: string;
   title: string;
   description?: string;
-  status: 'draft' | 'active' | 'on_hold' | 'completed' | 'cancelled';
+  status: 'draft' | 'active' | 'on_hold' | 'completed' | 'cancelled',
   intent: 'proposal' | 'plan' | 'order' | 'option';
 
   // Goals and objectives
   goals: {
-    id: string;
+    id: string,
     description: string
     target_date?: Date,
-    status: 'proposed' | 'accepted' | 'active' | 'on_hold' | 'completed' | 'cancelled';
-    priority: 'low' | 'medium' | 'high';
+    status: 'proposed' | 'accepted' | 'active' | 'on_hold' | 'completed' | 'cancelled',
+    priority: 'low' | 'medium' | 'high'
   }[];
 
   // Activities
   activities: {
-    id: string;
+    id: string,
     title: string
     description?: string,
     status: 'not_started' | 'scheduled' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled';
     scheduled_date?: Date;
-    category: 'medication' | 'procedure' | 'encounter' | 'observation' | 'other';
+    category: 'medication' | 'procedure' | 'encounter' | 'observation' | 'other'
   }[];
 
   // Care team
   care_team: {
-    provider_id: string;
+    provider_id: string,
     role: string
     period_start: Date;
     period_end?: Date;
@@ -114,7 +114,7 @@ export interface ProblemListItem {
   problem_description: string;
   icd10_code?: string;
   snomed_code?: string;
-  status: 'active' | 'inactive' | 'resolved';
+  status: 'active' | 'inactive' | 'resolved',
   severity: 'mild' | 'moderate' | 'severe';
   onset_date?: Date;
   resolution_date?: Date;
@@ -129,7 +129,7 @@ export interface ClinicalGuideline {
   id?: string;
   title: string;
   description?: string;
-  version: string;
+  version: string,
   status: 'draft' | 'active' | 'retired';
 
   // Applicable conditions
@@ -138,11 +138,11 @@ export interface ClinicalGuideline {
 
   // Decision support rules
   decision_support_rules: {
-    id: string;
+    id: string,
     condition: string
-    recommendation: string;
+    recommendation: string,
     evidence_level: string;
-    recommendation_strength: 'strong' | 'conditional';
+    recommendation_strength: 'strong' | 'conditional'
   }[];
 
   // Metadata
@@ -181,13 +181,13 @@ export class EHRRepository {
       const created = await this.prisma.clinicalNote.create({
         data: {
           ...encryptedNote,
-          vital_signs: note.vital_signs ? JSON.stringify(note.vital_signs) : null;
+          vital_signs: note.vital_signs ? JSON.stringify(note.vital_signs) : null,
           icd10_codes: note.icd10_codes ? JSON.stringify(note.icd10_codes) : null;
-          snomed_codes: note.snomed_codes ? JSON.stringify(note.snomed_codes) : null;
+          snomed_codes: note.snomed_codes ? JSON.stringify(note.snomed_codes) : null,
           cpt_codes: note.cpt_codes ? JSON.stringify(note.cpt_codes) : null;
-          created_at: new Date();
-          updated_at: new Date();
-          version: 1;
+          created_at: new Date(),
+          updated_at: new Date(),
+          version: 1
         }
       });
 
@@ -235,11 +235,11 @@ export class EHRRepository {
         where: { id },
         data: {
           ...encryptedUpdates,
-          vital_signs: updates.vital_signs ? JSON.stringify(updates.vital_signs) : undefined;
+          vital_signs: updates.vital_signs ? JSON.stringify(updates.vital_signs) : undefined,
           icd10_codes: updates.icd10_codes ? JSON.stringify(updates.icd10_codes) : undefined;
-          snomed_codes: updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined;
+          snomed_codes: updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
           cpt_codes: updates.cpt_codes ? JSON.stringify(updates.cpt_codes) : undefined;
-          updated_at: new Date();
+          updated_at: new Date(),
           version: { increment: 1 }
         }
       });
@@ -266,13 +266,13 @@ export class EHRRepository {
       const created = await this.prisma.carePlan.create({
         data: {
           ...carePlan,
-          goals: JSON.stringify(carePlan.goals);
-          activities: JSON.stringify(carePlan.activities);
-          care_team: JSON.stringify(carePlan.care_team);
+          goals: JSON.stringify(carePlan.goals),
+          activities: JSON.stringify(carePlan.activities),
+          care_team: JSON.stringify(carePlan.care_team),
           icd10_codes: carePlan.icd10_codes ? JSON.stringify(carePlan.icd10_codes) : null;
-          snomed_codes: carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null;
-          created_at: new Date();
-          updated_at: new Date();
+          snomed_codes: carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null,
+          created_at: new Date(),
+          updated_at: new Date()
         }
       })
 
@@ -320,8 +320,8 @@ export class EHRRepository {
       const created = await this.prisma.problemListItem.create({
         data: {
           ...encryptedItem,
-          created_at: new Date();
-          updated_at: new Date();
+          created_at: new Date(),
+          updated_at: new Date()
         }
       });
 
@@ -350,11 +350,11 @@ export class EHRRepository {
       const created = await this.prisma.clinicalGuideline.create({
         data: {
           ...guideline,
-          icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null;
+          icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null,
           snomed_codes: guideline.snomed_codes ? JSON.stringify(guideline.snomed_codes) : null;
-          decision_support_rules: JSON.stringify(guideline.decision_support_rules);
-          created_at: new Date();
-          updated_at: new Date();
+          decision_support_rules: JSON.stringify(guideline.decision_support_rules),
+          created_at: new Date(),
+          updated_at: new Date()
         }
       })
 
@@ -392,10 +392,10 @@ export class EHRRepository {
 
     return {
       ...decrypted,
-      vital_signs: note.vital_signs ? JSON.parse(note.vital_signs) : undefined;
+      vital_signs: note.vital_signs ? JSON.parse(note.vital_signs) : undefined,
       icd10_codes: note.icd10_codes ? JSON.parse(note.icd10_codes) : undefined;
-      snomed_codes: note.snomed_codes ? JSON.parse(note.snomed_codes) : undefined;
-      cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined;
+      snomed_codes: note.snomed_codes ? JSON.parse(note.snomed_codes) : undefined,
+      cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined
     };
   }
 
@@ -406,20 +406,20 @@ export class EHRRepository {
   private deserializeCarePlan(carePlan: unknown): CarePlan {
     return {
       ...carePlan,
-      goals: JSON.parse(carePlan.goals);
-      activities: JSON.parse(carePlan.activities);
-      care_team: JSON.parse(carePlan.care_team);
+      goals: JSON.parse(carePlan.goals),
+      activities: JSON.parse(carePlan.activities),
+      care_team: JSON.parse(carePlan.care_team),
       icd10_codes: carePlan.icd10_codes ? JSON.parse(carePlan.icd10_codes) : undefined;
-      snomed_codes: carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined;
+      snomed_codes: carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined
     };
   }
 
   private deserializeClinicalGuideline(guideline: unknown): ClinicalGuideline {
     return {
       ...guideline,
-      icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined;
+      icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined,
       snomed_codes: guideline.snomed_codes ? JSON.parse(guideline.snomed_codes) : undefined;
-      decision_support_rules: JSON.parse(guideline.decision_support_rules);
+      decision_support_rules: JSON.parse(guideline.decision_support_rules)
     };
   }
 

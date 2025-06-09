@@ -5,7 +5,7 @@ import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
 // Define interface for POST request body
 interface MedicationAdminInput {
-  medication_id: number | string;
+  medication_id: number | string,
   dosage: string;
   route: string;
   administered_time?: string; // Optional, defaults to now
@@ -85,15 +85,15 @@ export const _GET = async (
 
     return NextResponse.json({
       admission,
-      medication_administration: medicationRecordsResult.results || [], // Changed .rows to .results;
+      medication_administration: medicationRecordsResult.results || [], // Changed .rows to .results
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        error: "Failed to fetch medication administration records";
-        details: errorMessage;
+        error: "Failed to fetch medication administration records",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -154,7 +154,7 @@ export const _POST = async (
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
-        ? (admissionResult.results[0] as { id: string; status: string }) // Changed .rows to .results
+        ? (admissionResult.results[0] as { id: string, status: string }) // Changed .rows to .results
         : undefined;
 
     if (!admission) {
@@ -167,7 +167,7 @@ export const _POST = async (
     if (admission.status !== "active") {
       return NextResponse.json(
         {
-          error: "Cannot record medication administration for a non-active admission";
+          error: "Cannot record medication administration for a non-active admission"
         },
         { status: 409 }
       );
@@ -217,11 +217,11 @@ export const _POST = async (
     );
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        error: "Failed to create medication administration record";
-        details: errorMessage;
+        error: "Failed to create medication administration record",
+        details: errorMessage
       },
       { status: 500 }
     );

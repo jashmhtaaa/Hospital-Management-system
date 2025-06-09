@@ -20,9 +20,9 @@ export interface IAuditLogService {
    * @param details An optional object containing additional event-specific details.
    */
   logEvent(
-    userId: string;
+    userId: string,
     eventType: string;
-    entityType: string;
+    entityType: string,
     entityId: string | null;
     status: string;
     details?: object;
@@ -46,9 +46,9 @@ export class AuditLogService implements IAuditLogService {
   }
 
   async logEvent(
-    userId: string;
+    userId: string,
     eventType: string;
-    entityType: string;
+    entityType: string,
     entityId: string | null;
     status: string;
     details?: object;

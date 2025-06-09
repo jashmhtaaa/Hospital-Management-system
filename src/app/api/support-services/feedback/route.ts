@@ -11,47 +11,47 @@ const feedbackService = new FeedbackService();
 // Validation schemas
 const createFeedbackSchema = z.object({
   type: z.enum(['GENERAL', 'SERVICE', 'STAFF', 'FACILITY', 'CARE', 'OTHER']),
-  subject: z.string().min(3).max(100);
-  description: z.string().min(10).max(2000);
-  rating: z.number().min(1).max(5).optional();
-  submittedById: z.string().uuid().optional();
-  patientId: z.string().uuid().optional();
-  departmentId: z.string().uuid().optional();
-  staffId: z.string().uuid().optional();
-  contactEmail: z.string().email().optional();
-  contactPhone: z.string().max(20).optional();
-  isAnonymous: z.boolean().default(false);
+  subject: z.string().min(3).max(100),
+  description: z.string().min(10).max(2000),
+  rating: z.number().min(1).max(5).optional(),
+  submittedById: z.string().uuid().optional(),
+  patientId: z.string().uuid().optional(),
+  departmentId: z.string().uuid().optional(),
+  staffId: z.string().uuid().optional(),
+  contactEmail: z.string().email().optional(),
+  contactPhone: z.string().max(20).optional(),
+  isAnonymous: z.boolean().default(false)
 });
 
 const createComplaintSchema = z.object({
   category: z.enum(['CARE_QUALITY', 'STAFF_BEHAVIOR', 'BILLING', 'FACILITY', 'SAFETY', 'PRIVACY', 'OTHER']),
-  subject: z.string().min(3).max(100);
-  description: z.string().min(10).max(2000);
+  subject: z.string().min(3).max(100),
+  description: z.string().min(10).max(2000),
   severity: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
-  submittedById: z.string().uuid().optional();
-  patientId: z.string().uuid().optional();
-  departmentId: z.string().uuid().optional();
-  staffId: z.string().uuid().optional();
-  contactEmail: z.string().email().optional();
-  contactPhone: z.string().max(20).optional();
-  isAnonymous: z.boolean().default(false);
-  desiredResolution: z.string().max(1000).optional();
+  submittedById: z.string().uuid().optional(),
+  patientId: z.string().uuid().optional(),
+  departmentId: z.string().uuid().optional(),
+  staffId: z.string().uuid().optional(),
+  contactEmail: z.string().email().optional(),
+  contactPhone: z.string().max(20).optional(),
+  isAnonymous: z.boolean().default(false),
+  desiredResolution: z.string().max(1000).optional()
 });
 
 const updateFeedbackSchema = z.object({
   status: z.enum(['NEW', 'UNDER_REVIEW', 'ACKNOWLEDGED', 'RESOLVED', 'CLOSED']).optional(),
-  response: z.string().max(2000).optional();
-  assignedToId: z.string().uuid().optional();
-  internalNotes: z.string().max(1000).optional();
+  response: z.string().max(2000).optional(),
+  assignedToId: z.string().uuid().optional(),
+  internalNotes: z.string().max(1000).optional()
 });
 
 const updateComplaintSchema = z.object({
   status: z.enum(['NEW', 'UNDER_INVESTIGATION', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']).optional(),
-  response: z.string().max(2000).optional();
-  assignedToId: z.string().uuid().optional();
-  internalNotes: z.string().max(1000).optional();
-  resolutionDetails: z.string().max(2000).optional();
-  escalationLevel: z.enum(['DEPARTMENT', 'MANAGEMENT', 'EXECUTIVE', 'EXTERNAL']).optional(),;
+  response: z.string().max(2000).optional(),
+  assignedToId: z.string().uuid().optional(),
+  internalNotes: z.string().max(1000).optional(),
+  resolutionDetails: z.string().max(2000).optional(),
+  escalationLevel: z.enum(['DEPARTMENT', 'MANAGEMENT', 'EXECUTIVE', 'EXTERNAL']).optional(),
 });
 
 // GET /api/support-services/feedback
@@ -62,17 +62,17 @@ export const _GET = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        type: searchParams.get('type') || undefined;
+        type: searchParams.get('type') || undefined,
         status: searchParams.get('status') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
+        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        departmentId: searchParams.get('departmentId') || undefined;
+        departmentId: searchParams.get('departmentId') || undefined,
         staffId: searchParams.get('staffId') || undefined;
-        patientId: searchParams.get('patientId') || undefined;
+        patientId: searchParams.get('patientId') || undefined,
         minRating: searchParams.get('minRating') ? parseInt(searchParams.get('minRating')!) : undefined;
-        maxRating: searchParams.get('maxRating') ? parseInt(searchParams.get('maxRating')!) : undefined;
+        maxRating: searchParams.get('maxRating') ? parseInt(searchParams.get('maxRating')!) : undefined,
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get feedback with filters
@@ -81,8 +81,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:read';
-      auditAction: 'FEEDBACK_VIEW';
+      requiredPermission: 'feedback:read',
+      auditAction: 'FEEDBACK_VIEW'
     }
   );
 }
@@ -106,8 +106,8 @@ export const _POST = async (request: NextRequest) => {
     },
     {
       // Allow anonymous feedback submission
-      skipAuth: true;
-      auditAction: 'FEEDBACK_CREATE';
+      skipAuth: true,
+      auditAction: 'FEEDBACK_CREATE'
     }
   );
 }
@@ -124,8 +124,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:read';
-      auditAction: 'FEEDBACK_DETAIL_VIEW';
+      requiredPermission: 'feedback:read',
+      auditAction: 'FEEDBACK_DETAIL_VIEW'
     }
   );
 }
@@ -148,8 +148,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:update';
-      auditAction: 'FEEDBACK_UPDATE';
+      requiredPermission: 'feedback:update',
+      auditAction: 'FEEDBACK_UPDATE'
     }
   );
 }
@@ -162,17 +162,17 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        category: searchParams.get('category') || undefined;
+        category: searchParams.get('category') || undefined,
         status: searchParams.get('status') || undefined;
-        severity: searchParams.get('severity') || undefined;
+        severity: searchParams.get('severity') || undefined,
         fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
-        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
+        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
         departmentId: searchParams.get('departmentId') || undefined;
-        staffId: searchParams.get('staffId') || undefined;
+        staffId: searchParams.get('staffId') || undefined,
         patientId: searchParams.get('patientId') || undefined;
-        escalationLevel: searchParams.get('escalationLevel') || undefined;
+        escalationLevel: searchParams.get('escalationLevel') || undefined,
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get complaints with filters
@@ -181,8 +181,8 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:read';
-      auditAction: 'COMPLAINTS_VIEW';
+      requiredPermission: 'complaints:read',
+      auditAction: 'COMPLAINTS_VIEW'
     }
   );
 }
@@ -206,8 +206,8 @@ export const _POST_COMPLAINT = async (request: NextRequest) => {
     },
     {
       // Allow anonymous complaint submission
-      skipAuth: true;
-      auditAction: 'COMPLAINT_CREATE';
+      skipAuth: true,
+      auditAction: 'COMPLAINT_CREATE'
     }
   );
 }
@@ -224,8 +224,8 @@ export const _GET_COMPLAINT_BY_ID = async (request: NextRequest, { params }: { p
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:read';
-      auditAction: 'COMPLAINT_DETAIL_VIEW';
+      requiredPermission: 'complaints:read',
+      auditAction: 'COMPLAINT_DETAIL_VIEW'
     }
   );
 }
@@ -248,8 +248,8 @@ export const _PATCH_COMPLAINT = async (request: NextRequest, { params }: { param
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:update';
-      auditAction: 'COMPLAINT_UPDATE';
+      requiredPermission: 'complaints:update',
+      auditAction: 'COMPLAINT_UPDATE'
     }
   );
 }
@@ -278,8 +278,8 @@ export const _ESCALATE_COMPLAINT = async (request: NextRequest, { params }: { pa
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:escalate';
-      auditAction: 'COMPLAINT_ESCALATE';
+      requiredPermission: 'complaints:escalate',
+      auditAction: 'COMPLAINT_ESCALATE'
     }
   );
 }
@@ -301,7 +301,7 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:analytics';
-      auditAction: 'FEEDBACK_ANALYTICS_VIEW';
+      requiredPermission: 'feedback:analytics',
+      auditAction: 'FEEDBACK_ANALYTICS_VIEW'
     }
   );

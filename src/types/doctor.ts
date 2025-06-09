@@ -4,7 +4,7 @@ import { User } from './user.ts';
 
 // types/doctor.ts
 export interface Doctor {
-    doctor_id: number;
+    doctor_id: number,
     user_id: number;
     specialty: string;
     qualifications?: string | null;

@@ -270,7 +270,7 @@ export class SecurityService {
 
     switch (type) {
       case 'email':
-        const [username, domain] = data.split('@');
+        const [username, domain] = data.split('@'),
         return `/* SECURITY: Template literal eliminated */
 
       case 'phone':
@@ -282,6 +282,6 @@ export class SecurityService {
       case 'creditCard':
         return data.replace(/^(\d{4})\d+(\d{4})$/, '$1-****-****-$2');
 
-      default: return data;
+      default: return data
     }
   }

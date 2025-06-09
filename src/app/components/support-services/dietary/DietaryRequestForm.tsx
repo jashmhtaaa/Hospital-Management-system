@@ -36,26 +36,26 @@ import { Checkbox } from '@/components/ui/checkbox';
 // Define the form schema with Zod
 const formSchema = z.object({
   patientId: z.string({
-    required_error: "Please select a patient";
+    required_error: "Please select a patient"
   }),
   requestType: z.string({
-    required_error: "Please select a request type";
+    required_error: "Please select a request type"
   }),
   startDate: z.date({
-    required_error: "Start date is required";
+    required_error: "Start date is required"
   }),
-  endDate: z.date().optional();
-  mealPreferences: z.array(z.string()).default([]);
-  dietaryRestrictions: z.array(z.string()).default([]);
-  allergies: z.array(z.string()).default([]);
+  endDate: z.date().optional(),
+  mealPreferences: z.array(z.string()).default([]),
+  dietaryRestrictions: z.array(z.string()).default([]),
+  allergies: z.array(z.string()).default([]),
   specialInstructions: z.string().max(1000, { message: "Special instructions must not exceed 1000 characters" }).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface Patient {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface DietaryRequestFormProps {
@@ -117,12 +117,12 @@ export const _DietaryRequestForm = ({ onSuccess,
 
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema);
+    resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      mealPreferences: [];
+      mealPreferences: [],
       dietaryRestrictions: [];
-      allergies: [];
-      specialInstructions: "";
+      allergies: [],
+      specialInstructions: ""
     },
   });
 
@@ -137,9 +137,9 @@ export const _DietaryRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load patients. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     };
@@ -164,8 +164,8 @@ export const _DietaryRequestForm = ({ onSuccess,
         },
         body: JSON.stringify({
           ...values,
-          startDate: values.startDate.toISOString();
-          endDate: values.endDate ? values.endDate.toISOString() : undefined;
+          startDate: values.startDate.toISOString(),
+          endDate: values.endDate ? values.endDate.toISOString() : undefined
         }),
       });
 
@@ -174,7 +174,7 @@ export const _DietaryRequestForm = ({ onSuccess,
       }
 
       toast({
-        title: isEditing ? "Request Updated" : "Request Created";
+        title: isEditing ? "Request Updated" : "Request Created",
         description: isEditing;
           ? "The dietary request has been updated successfully."
           : "Your dietary request has been submitted successfully.",
@@ -189,9 +189,9 @@ export const _DietaryRequestForm = ({ onSuccess,
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "There was a problem submitting your request. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -206,7 +206,7 @@ export const _DietaryRequestForm = ({ onSuccess,
     if (!currentPreferences.includes(customPreference)) {
       form.setValue('mealPreferences', [...currentPreferences, customPreference]);
     }
-    setCustomPreference('');
+    setCustomPreference('')
   };
 
   // Handle adding custom restriction
@@ -217,7 +217,7 @@ export const _DietaryRequestForm = ({ onSuccess,
     if (!currentRestrictions.includes(customRestriction)) {
       form.setValue('dietaryRestrictions', [...currentRestrictions, customRestriction]);
     }
-    setCustomRestriction('');
+    setCustomRestriction('')
   };
 
   // Handle adding custom allergy
@@ -228,25 +228,25 @@ export const _DietaryRequestForm = ({ onSuccess,
     if (!currentAllergies.includes(customAllergy)) {
       form.setValue('allergies', [...currentAllergies, customAllergy]);
     }
-    setCustomAllergy('');
+    setCustomAllergy('')
   };
 
   // Handle removing preference
   const removePreference = (preference: string) => {
     const currentPreferences = form.getValues('mealPreferences');
-    form.setValue('mealPreferences', currentPreferences.filter(p => p !== preference));
+    form.setValue('mealPreferences', currentPreferences.filter(p => p !== preference))
   };
 
   // Handle removing restriction
   const removeRestriction = (restriction: string) => {
     const currentRestrictions = form.getValues('dietaryRestrictions');
-    form.setValue('dietaryRestrictions', currentRestrictions.filter(r => r !== restriction));
+    form.setValue('dietaryRestrictions', currentRestrictions.filter(r => r !== restriction))
   };
 
   // Handle removing allergy
   const removeAllergy = (allergy: string) => {
     const currentAllergies = form.getValues('allergies');
-    form.setValue('allergies', currentAllergies.filter(a => a !== allergy));
+    form.setValue('allergies', currentAllergies.filter(a => a !== allergy))
   };
 
   return (

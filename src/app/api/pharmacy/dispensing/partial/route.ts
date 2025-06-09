@@ -17,40 +17,40 @@ import { validatePartialDispensingRequest } from '../../../../../lib/validation/
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const dispensingRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByStatus: (status: string) => Promise.resolve([]);
-  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByStatus: (status: string) => Promise.resolve([]),
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
 };
 
 /**
@@ -123,9 +123,9 @@ export const POST = async (req: NextRequest) => {
         {
           error: 'Dispensing would exceed prescribed amount';
           totalPrescribed,
-          alreadyDispensed: totalDispensed;
+          alreadyDispensed: totalDispensed,
           requested: data.quantityDispensed;
-          maxAllowed: totalPrescribed - totalDispensed;
+          maxAllowed: totalPrescribed - totalDispensed
         },
         { status: 400 }
       );
@@ -133,23 +133,23 @@ export const POST = async (req: NextRequest) => {
 
     // Create partial dispensing record
     const dispensing = {
-      id: data.id || crypto.randomUUID();
+      id: data.id || crypto.randomUUID(),
       prescriptionId: data.prescriptionId;
-      patientId: prescription.patientId;
+      patientId: prescription.patientId,
       medicationId: prescription.medicationId;
-      inventoryId: availableInventory.id;
+      inventoryId: availableInventory.id,
       quantityDispensed: data.quantityDispensed;
-      daysSupply: data.daysSupply;
+      daysSupply: data.daysSupply,
       dispensedBy: userId;
-      dispensedAt: new Date();
+      dispensedAt: new Date(),
       status: 'completed';
-      notes: data.notes || '';
+      notes: data.notes || '',
       location: data.location || 'main-pharmacy';
-      dispensingType: 'partial';
+      dispensingType: 'partial',
       remainingQuantity: remainingAfterThisDispensing;
-      partialReason: data.partialReason || 'inventory-shortage';
+      partialReason: data.partialReason || 'inventory-shortage',
       isPartial: true;
-      isLastDispensing: remainingAfterThisDispensing === 0;
+      isLastDispensing: remainingAfterThisDispensing === 0
     };
 
     // Save dispensing record
@@ -163,28 +163,28 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DISPENSING', {
-      action: 'PARTIAL_DISPENSE';
+      action: 'PARTIAL_DISPENSE',
       resourceType: 'MedicationDispense';
-      resourceId: dispensingId;
+      resourceId: dispensingId,
       userId: userId;
-      patientId: prescription.patientId;
+      patientId: prescription.patientId,
       details: {
-        medicationId: prescription.medicationId;
+        medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId;
-        quantity: data.quantityDispensed;
+        quantity: data.quantityDispensed,
         remainingQuantity: remainingAfterThisDispensing;
-        partialReason: data.partialReason;
-        isLastDispensing: remainingAfterThisDispensing === 0;
+        partialReason: data.partialReason,
+        isLastDispensing: remainingAfterThisDispensing === 0
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: dispensingId;
+        id: dispensingId,
         message: 'Partial medication dispensing recorded successfully';
-        remainingQuantity: remainingAfterThisDispensing;
-        isLastDispensing: remainingAfterThisDispensing === 0;
+        remainingQuantity: remainingAfterThisDispensing,
+        isLastDispensing: remainingAfterThisDispensing === 0
       },
       { status: 201 }
     );

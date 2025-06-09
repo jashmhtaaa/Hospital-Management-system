@@ -84,9 +84,9 @@ export interface AuditService {
 
 // Audit event interface
 export interface AuditEvent {
-  action: string;
+  action: string,
   entityType: string;
-  entityId: string;
+  entityId: string,
   userId: string;
   details?: Record<string, unknown>;
 }
@@ -171,6 +171,6 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
   private async checkPermission(userId: string, action: string): Promise<void> {
     const hasPermission = await this.permissionService.hasPermission(userId, action, this.resourceType);
     if (!hasPermission) {
-      throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */;
+      throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */
     }
   }

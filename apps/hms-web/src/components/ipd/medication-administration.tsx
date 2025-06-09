@@ -6,22 +6,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface Medication {
-  id: string;
+  id: string,
   name: string;
-  dose: string;
+  dose: string,
   route: string;
-  frequency: string;
+  frequency: string,
   startDate: string;
   endDate?: string;
-  status: 'active' | 'discontinued' | 'completed';
+  status: 'active' | 'discontinued' | 'completed'
 }
 
 interface MedicationAdministration {
-  id: string;
+  id: string,
   medicationId: string;
-  medicationName: string;
+  medicationName: string,
   dose: string;
-  route: string;
+  route: string,
   scheduledTime: string;
   administeredTime?: string;
   administeredBy?: string;
@@ -30,10 +30,10 @@ interface MedicationAdministration {
 }
 
 interface MedicationAdministrationProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  medications: Medication[];
-  administrations: MedicationAdministration[];
+  medications: Medication[],
+  administrations: MedicationAdministration[]
 }
 
 /**
@@ -50,7 +50,7 @@ export const MedicationAdministration = ({ patientId,
       case 'administered': return <Badge variant="success">Administered</Badge>;
       case 'missed': return <Badge variant="danger">Missed</Badge>;
       case 'delayed': return <Badge variant="warning">Delayed</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

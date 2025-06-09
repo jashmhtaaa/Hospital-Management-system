@@ -11,20 +11,20 @@ import { z } from 'zod';
 export const DrugSchema = z.object({
   ndc: z.string().min(1, 'NDC number is required'),
   generic_name: z.string().min(1, 'Generic name is required'),
-  brand_name: z.string().optional();
-  drug_class: z.string();
-  therapeutic_class: z.string();
+  brand_name: z.string().optional(),
+  drug_class: z.string(),
+  therapeutic_class: z.string(),
   controlled_substance_schedule: z.enum(['I', 'II', 'III', 'IV', 'V', 'none']).default('none'),
-  dosage_forms: z.array(z.string());
+  dosage_forms: z.array(z.string()),
   strengths: z.array(z.string());
-  route_of_administration: z.array(z.string());
-  manufacturer: z.string();
-  dea_schedule: z.string().optional();
+  route_of_administration: z.array(z.string()),
+  manufacturer: z.string(),
+  dea_schedule: z.string().optional(),
   pregnancy_category: z.enum(['A', 'B', 'C', 'D', 'X', 'unknown']).default('unknown'),
-  black_box_warning: z.boolean().default(false);
+  black_box_warning: z.boolean().default(false),
   formulary_status: z.enum(['preferred', 'non-preferred', 'restricted', 'excluded']).default('preferred'),
-  cost_per_unit: z.number().min(0);
-  is_active: z.boolean().default(true);
+  cost_per_unit: z.number().min(0),
+  is_active: z.boolean().default(true)
 });
 
 export const PrescriptionSchema = z.object({
@@ -41,120 +41,120 @@ export const PrescriptionSchema = z.object({
   refills: z.number().min(0).max(11, 'Refills cannot exceed 11'),
   daw: z.boolean().default(false), // Dispense as written
   priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
-  indication: z.string().optional();
-  diagnosis_code: z.string().optional();
-  prescriber_dea: z.string().optional();
-  prescriber_npi: z.string().optional();
+  indication: z.string().optional(),
+  diagnosis_code: z.string().optional(),
+  prescriber_dea: z.string().optional(),
+  prescriber_npi: z.string().optional(),
   written_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid written date'),
-  effective_date: z.string().optional();
-  discontinue_date: z.string().optional();
-  special_instructions: z.string().optional();
+  effective_date: z.string().optional(),
+  discontinue_date: z.string().optional(),
+  special_instructions: z.string().optional()
 });
 
 export const InventorySchema = z.object({
   drug_ndc: z.string().min(1, 'Drug NDC is required'),
   lot_number: z.string().min(1, 'Lot number is required'),
   expiration_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid expiration date'),
-  quantity_on_hand: z.number().min(0);
-  unit_cost: z.number().min(0);
-  wholesale_cost: z.number().min(0);
-  reorder_level: z.number().min(0);
-  max_level: z.number().min(0);
-  vendor_id: z.string();
-  storage_location: z.string();
-  storage_requirements: z.string().optional();
+  quantity_on_hand: z.number().min(0),
+  unit_cost: z.number().min(0),
+  wholesale_cost: z.number().min(0),
+  reorder_level: z.number().min(0),
+  max_level: z.number().min(0),
+  vendor_id: z.string(),
+  storage_location: z.string(),
+  storage_requirements: z.string().optional(),
   received_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid received date'),
-  received_by: z.string();
+  received_by: z.string()
 });
 
 export const DispensingSchema = z.object({
   prescription_id: z.string().min(1, 'Prescription ID is required'),
-  patient_id: z.string();
-  drug_ndc: z.string();
+  patient_id: z.string(),
+  drug_ndc: z.string(),
   quantity_dispensed: z.number().min(1, 'Quantity dispensed must be greater than 0'),
-  lot_numbers: z.array(z.string());
+  lot_numbers: z.array(z.string()),
   pharmacist_id: z.string().min(1, 'Pharmacist ID is required'),
-  technician_id: z.string().optional();
+  technician_id: z.string().optional(),
   dispensing_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid dispensing date'),
-  pickup_date: z.string().optional();
-  counseling_provided: z.boolean().default(false);
-  counseling_notes: z.string().optional();
-  patient_questions: z.string().optional();
-  adherence_score: z.number().min(0).max(100).optional();
+  pickup_date: z.string().optional(),
+  counseling_provided: z.boolean().default(false),
+  counseling_notes: z.string().optional(),
+  patient_questions: z.string().optional(),
+  adherence_score: z.number().min(0).max(100).optional()
 });
 
 export const AllergySchema = z.object({
-  patient_id: z.string();
-  allergen: z.string();
+  patient_id: z.string(),
+  allergen: z.string(),
   allergen_type: z.enum(['drug', 'food', 'environmental']),
-  reaction: z.string();
+  reaction: z.string(),
   severity: z.enum(['mild', 'moderate', 'severe', 'life-threatening']),
-  onset_date: z.string().optional();
-  verified_date: z.string().optional();
-  verified_by: z.string().optional();
+  onset_date: z.string().optional(),
+  verified_date: z.string().optional(),
+  verified_by: z.string().optional(),
   status: z.enum(['active', 'inactive', 'resolved']).default('active'),
-  notes: z.string().optional();
+  notes: z.string().optional()
 });
 
 export type Drug = z.infer<typeof DrugSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type Prescription = z.infer<typeof PrescriptionSchema> & {
-  id: string;
+  id: string,
   prescription_number: string;
   status: 'pending' | 'verified' | 'dispensed' | 'picked_up' | 'cancelled' | 'expired';
   verification_date?: Date;
   dispensing_date?: Date;
   pickup_date?: Date;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
-  prescriber_name?: string;
+  prescriber_name?: string
 };
 
 export type InventoryItem = z.infer<typeof InventorySchema> & {
   id: string;
   drug_name?: string;
   drug_strength?: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type DispensingRecord = z.infer<typeof DispensingSchema> & {
-  id: string;
+  id: string,
   refill_number: number;
-  total_cost: number;
+  total_cost: number,
   copay_amount: number;
-  insurance_amount: number;
+  insurance_amount: number,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type PatientAllergy = z.infer<typeof AllergySchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export interface DrugInteraction {
-  drug1_ndc: string;
+  drug1_ndc: string,
   drug1_name: string;
-  drug2_ndc: string;
+  drug2_ndc: string,
   drug2_name: string;
-  severity: 'minor' | 'moderate' | 'major' | 'contraindicated';
+  severity: 'minor' | 'moderate' | 'major' | 'contraindicated',
   mechanism: string;
-  clinical_effect: string;
+  clinical_effect: string,
   management: string;
   documentation_level: 'poor' | 'fair' | 'good' | 'excellent'
 export interface ClinicalAlert {
-  id: string;
+  id: string,
   patient_id: string;
-  prescription_id: string;
+  prescription_id: string,
   alert_type: 'drug_allergy' | 'drug_interaction' | 'duplicate_therapy' | 'dosing_concern' | 'contraindication';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   message: string;
   recommendation: string;
   override_reason?: string;
@@ -165,11 +165,11 @@ export interface ClinicalAlert {
   acknowledged_date?: Date;
   created_at: Date
 export class PharmacyManagementService {
-  private drugs: Map<string, Drug> = new Map();
-  private prescriptions: Map<string, Prescription> = new Map();
-  private inventory: Map<string, InventoryItem> = new Map();
-  private dispensingRecords: Map<string, DispensingRecord[]> = new Map();
-  private allergies: Map<string, PatientAllergy[]> = new Map();
+  private drugs: Map<string, Drug> = new Map(),
+  private prescriptions: Map<string, Prescription> = new Map(),
+  private inventory: Map<string, InventoryItem> = new Map(),
+  private dispensingRecords: Map<string, DispensingRecord[]> = new Map(),
+  private allergies: Map<string, PatientAllergy[]> = new Map(),
   private drugInteractions: DrugInteraction[] = [];
   private clinicalAlerts: Map<string, ClinicalAlert[]> = new Map(),
   constructor() {
@@ -183,82 +183,82 @@ export class PharmacyManagementService {
   private initializeDrugDatabase(): void {
     const commonDrugs: Omit<Drug, 'id' | 'created_at' | 'updated_at'>[] = [
       {
-        ndc: '0781-1506-01';
+        ndc: '0781-1506-01',
         generic_name: 'Lisinopril';
-        brand_name: 'Prinivil';
+        brand_name: 'Prinivil',
         drug_class: 'ACE Inhibitor';
-        therapeutic_class: 'Cardiovascular';
+        therapeutic_class: 'Cardiovascular',
         controlled_substance_schedule: 'none';
-        dosage_forms: ['tablet'];
+        dosage_forms: ['tablet'],
         strengths: ['5mg', '10mg', '20mg'],
-        route_of_administration: ['oral'];
+        route_of_administration: ['oral'],
         manufacturer: 'Sandoz';
-        pregnancy_category: 'C';
+        pregnancy_category: 'C',
         black_box_warning: false;
-        formulary_status: 'preferred';
+        formulary_status: 'preferred',
         cost_per_unit: 0.15;
-        is_active: true;
+        is_active: true
       },
       {
-        ndc: '0071-0222-23';
+        ndc: '0071-0222-23',
         generic_name: 'Atorvastatin';
-        brand_name: 'Lipitor';
+        brand_name: 'Lipitor',
         drug_class: 'HMG-CoA Reductase Inhibitor';
-        therapeutic_class: 'Cardiovascular';
+        therapeutic_class: 'Cardiovascular',
         controlled_substance_schedule: 'none';
-        dosage_forms: ['tablet'];
+        dosage_forms: ['tablet'],
         strengths: ['10mg', '20mg', '40mg', '80mg'],
-        route_of_administration: ['oral'];
+        route_of_administration: ['oral'],
         manufacturer: 'Pfizer';
-        pregnancy_category: 'X';
+        pregnancy_category: 'X',
         black_box_warning: false;
-        formulary_status: 'preferred';
+        formulary_status: 'preferred',
         cost_per_unit: 0.25;
-        is_active: true;
+        is_active: true
       },
       {
-        ndc: '0093-7267-56';
+        ndc: '0093-7267-56',
         generic_name: 'Metformin';
-        brand_name: 'Glucophage';
+        brand_name: 'Glucophage',
         drug_class: 'Biguanide';
-        therapeutic_class: 'Antidiabetic';
+        therapeutic_class: 'Antidiabetic',
         controlled_substance_schedule: 'none';
         dosage_forms: ['tablet', 'extended-release tablet'],
         strengths: ['500mg', '850mg', '1000mg'],
-        route_of_administration: ['oral'];
+        route_of_administration: ['oral'],
         manufacturer: 'Teva';
-        pregnancy_category: 'B';
+        pregnancy_category: 'B',
         black_box_warning: true;
-        formulary_status: 'preferred';
+        formulary_status: 'preferred',
         cost_per_unit: 0.12;
-        is_active: true;
+        is_active: true
       },
       {
-        ndc: '0172-4368-70';
+        ndc: '0172-4368-70',
         generic_name: 'Oxycodone';
-        brand_name: 'OxyContin';
+        brand_name: 'OxyContin',
         drug_class: 'Opioid Analgesic';
-        therapeutic_class: 'Pain Management';
+        therapeutic_class: 'Pain Management',
         controlled_substance_schedule: 'II';
         dosage_forms: ['tablet', 'extended-release tablet'],
         strengths: ['5mg', '10mg', '15mg', '20mg', '30mg'],
-        route_of_administration: ['oral'];
+        route_of_administration: ['oral'],
         manufacturer: 'Purdue Pharma';
-        dea_schedule: 'II';
+        dea_schedule: 'II',
         pregnancy_category: 'C';
-        black_box_warning: true;
+        black_box_warning: true,
         formulary_status: 'restricted';
-        cost_per_unit: 2.50;
-        is_active: true;
+        cost_per_unit: 2.50,
+        is_active: true
       },
     ];
 
     commonDrugs.forEach(drugData => {
       const drug: Drug = {
         ...drugData,
-        id: uuidv4();
-        created_at: new Date();
-        updated_at: new Date();
+        id: uuidv4(),
+        created_at: new Date(),
+        updated_at: new Date()
       };
       this.drugs.set(drug.ndc, drug);
     });
@@ -271,25 +271,25 @@ export class PharmacyManagementService {
     this.drugInteractions = [
       {
         drug1_ndc: '0781-1506-01', // Lisinopril
-        drug1_name: 'Lisinopril';
+        drug1_name: 'Lisinopril',
         drug2_ndc: '0093-7267-56', // Metformin
-        drug2_name: 'Metformin';
+        drug2_name: 'Metformin',
         severity: 'moderate';
-        mechanism: 'Additive hypotensive effects';
+        mechanism: 'Additive hypotensive effects',
         clinical_effect: 'May cause excessive blood pressure lowering';
-        management: 'Monitor blood pressure closely when initiating therapy';
-        documentation_level: 'good';
+        management: 'Monitor blood pressure closely when initiating therapy',
+        documentation_level: 'good'
       },
       {
         drug1_ndc: '0071-0222-23', // Atorvastatin
         drug2_ndc: '0172-4368-70', // Oxycodone
-        drug1_name: 'Atorvastatin';
+        drug1_name: 'Atorvastatin',
         drug2_name: 'Oxycodone';
-        severity: 'minor';
+        severity: 'minor',
         mechanism: 'CYP3A4 competition';
-        clinical_effect: 'Possible increased statin levels';
+        clinical_effect: 'Possible increased statin levels',
         management: 'Monitor for muscle pain or weakness';
-        documentation_level: 'fair';
+        documentation_level: 'fair'
       },
     ];
   }
@@ -306,9 +306,9 @@ export class PharmacyManagementService {
 
     const drug: Drug = {
       ...validatedData,
-      id: uuidv4();
-      created_at: new Date();
-      updated_at: new Date();
+      id: uuidv4(),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.drugs.set(drug.ndc, drug);
@@ -351,11 +351,11 @@ export class PharmacyManagementService {
 
     const prescription: Prescription = {
       ...validatedData,
-      id: prescriptionId;
+      id: prescriptionId,
       prescription_number: prescriptionNumber;
-      status: 'pending';
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'pending',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.prescriptions.set(prescriptionId, prescription);
@@ -372,7 +372,7 @@ export class PharmacyManagementService {
   private generatePrescriptionNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
-    return `RX/* SECURITY: Template literal eliminated */;
+    return `RX/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -424,15 +424,15 @@ export class PharmacyManagementService {
 
     if (drugAllergy != null) {
       return {
-        id: uuidv4();
+        id: uuidv4(),
         patient_id: prescription.patient_id;
-        prescription_id: prescription.id;
+        prescription_id: prescription.id,
         alert_type: 'drug_allergy';
-        severity: drugAllergy.severity === 'life-threatening' ? 'critical' : 'high';
+        severity: drugAllergy.severity === 'life-threatening' ? 'critical' : 'high',
         message: `Patient has documented allergy to ${drugAllergy.allergen} - ${drugAllergy.reaction}`,
-        recommendation: 'Consider alternative medication. Review allergy history with patient.';
+        recommendation: 'Consider alternative medication. Review allergy history with patient.',
         acknowledged: false;
-        created_at: new Date();
+        created_at: new Date()
       };
     }
 
@@ -459,15 +459,15 @@ export class PharmacyManagementService {
                         interaction.severity === 'moderate' ? 'medium' : 'low';
 
         alerts.push({
-          id: uuidv4();
+          id: uuidv4(),
           patient_id: prescription.patient_id;
-          prescription_id: prescription.id;
+          prescription_id: prescription.id,
           alert_type: 'drug_interaction';
           severity,
           message: `Drug interaction: ${interaction.drug1_name} and ${interaction.drug2_name} - ${interaction.clinical_effect}`,
-          recommendation: interaction.management;
+          recommendation: interaction.management,
           acknowledged: false;
-          created_at: new Date();
+          created_at: new Date()
         });
       }
     }
@@ -492,15 +492,15 @@ export class PharmacyManagementService {
 
     if (duplicateTherapy != null) {
       return {
-        id: uuidv4();
+        id: uuidv4(),
         patient_id: prescription.patient_id;
-        prescription_id: prescription.id;
+        prescription_id: prescription.id,
         alert_type: 'duplicate_therapy';
-        severity: 'medium';
+        severity: 'medium',
         message: `Potential duplicate therapy: ${newDrug.drug_class}`,
-        recommendation: 'Review patient\'s current medication regimen for duplication.';
+        recommendation: 'Review patient\'s current medication regimen for duplication.',
         acknowledged: false;
-        created_at: new Date();
+        created_at: new Date()
       };
     }
 
@@ -518,7 +518,7 @@ export class PharmacyManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ prescriptions: Prescription[]; total: number; totalPages: number }> {
+  }): Promise<{ prescriptions: Prescription[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredPrescriptions = Array.from(this.prescriptions.values());
@@ -620,13 +620,13 @@ export class PharmacyManagementService {
 
     const dispensingRecord: DispensingRecord = {
       ...validatedData,
-      id: uuidv4();
+      id: uuidv4(),
       refill_number: refillNumber;
-      total_cost: totalCost;
+      total_cost: totalCost,
       copay_amount: copayAmount;
-      insurance_amount: insuranceAmount;
-      created_at: new Date();
-      updated_at: new Date();
+      insurance_amount: insuranceAmount,
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     // Update prescription status
@@ -685,9 +685,9 @@ export class PharmacyManagementService {
 
     const allergy: PatientAllergy = {
       ...validatedData,
-      id: uuidv4();
-      created_at: new Date();
-      updated_at: new Date();
+      id: uuidv4(),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     const patientAllergies = this.allergies.get(validatedData.patient_id) || [];
@@ -737,13 +737,13 @@ export class PharmacyManagementService {
    * Get pharmacy statistics;
    */
   async getPharmacyStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    totalPrescriptions: number;
+    totalPrescriptions: number,
     dispensedPrescriptions: number;
-    pendingPrescriptions: number;
+    pendingPrescriptions: number,
     totalClinicalAlerts: number;
-    criticalAlerts: number;
+    criticalAlerts: number,
     averageProcessingTime: number;
-    totalRevenue: number;
+    totalRevenue: number
   }> {
     const prescriptions = Array.from(this.prescriptions.values());
 
@@ -793,8 +793,8 @@ export class PharmacyManagementService {
       pendingPrescriptions,
       totalClinicalAlerts,
       criticalAlerts,
-      averageProcessingTime: Math.round(averageProcessingTime * 100) / 100;
-      totalRevenue: Math.round(totalRevenue * 100) / 100;
+      averageProcessingTime: Math.round(averageProcessingTime * 100) / 100,
+      totalRevenue: Math.round(totalRevenue * 100) / 100
     };
   }
 

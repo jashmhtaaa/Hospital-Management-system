@@ -10,23 +10,23 @@ const housekeepingService = new HousekeepingService();
 
 // Request validation schemas
 const createRequestSchema = z.object({
-  locationId: z.string().uuid();
+  locationId: z.string().uuid(),
   requestType: z.enum(['CLEANING', 'DISINFECTION', 'LINEN_CHANGE', 'WASTE_DISPOSAL', 'OTHER']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
-  description: z.string().min(5).max(500);
+  description: z.string().min(5).max(500),
   scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional();
-  requestedById: z.string().uuid();
+  notes: z.string().max(1000).optional(),
+  requestedById: z.string().uuid()
 });
 
 const updateRequestSchema = z.object({
   requestType: z.enum(['CLEANING', 'DISINFECTION', 'LINEN_CHANGE', 'WASTE_DISPOSAL', 'OTHER']).optional(),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
-  description: z.string().min(5).max(500).optional();
-  scheduledTime: z.string().transform(val => new Date(val)).optional();
-  notes: z.string().max(1000).optional();
+  description: z.string().min(5).max(500).optional(),
+  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
-  assignedToId: z.string().uuid().optional();
+  assignedToId: z.string().uuid().optional()
 });
 
 // GET /api/support-services/housekeeping/requests
@@ -37,14 +37,14 @@ export const _GET = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         priority: searchParams.get('priority') || undefined;
-        locationId: searchParams.get('locationId') || undefined;
+        locationId: searchParams.get('locationId') || undefined,
         requestType: searchParams.get('requestType') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
+        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        page: parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get housekeeping requests with filters
@@ -53,8 +53,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'housekeeping:read';
-      auditAction: 'HOUSEKEEPING_REQUESTS_VIEW';
+      requiredPermission: 'housekeeping:read',
+      auditAction: 'HOUSEKEEPING_REQUESTS_VIEW'
     }
   );
 }
@@ -77,8 +77,8 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(result, { status: 201 });
     },
     {
-      requiredPermission: 'housekeeping:create';
-      auditAction: 'HOUSEKEEPING_REQUEST_CREATE';
+      requiredPermission: 'housekeeping:create',
+      auditAction: 'HOUSEKEEPING_REQUEST_CREATE'
     }
   );
 }
@@ -95,8 +95,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'housekeeping:read';
-      auditAction: 'HOUSEKEEPING_REQUEST_VIEW';
+      requiredPermission: 'housekeeping:read',
+      auditAction: 'HOUSEKEEPING_REQUEST_VIEW'
     }
   );
 }
@@ -119,8 +119,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'housekeeping:update';
-      auditAction: 'HOUSEKEEPING_REQUEST_UPDATE';
+      requiredPermission: 'housekeeping:update',
+      auditAction: 'HOUSEKEEPING_REQUEST_UPDATE'
     }
   );
 }
@@ -136,8 +136,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json({ success: true });
     },
     {
-      requiredPermission: 'housekeeping:delete';
-      auditAction: 'HOUSEKEEPING_REQUEST_DELETE';
+      requiredPermission: 'housekeeping:delete',
+      auditAction: 'HOUSEKEEPING_REQUEST_DELETE'
     }
   );
 }
@@ -161,8 +161,8 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'housekeeping:assign';
-      auditAction: 'HOUSEKEEPING_REQUEST_ASSIGN';
+      requiredPermission: 'housekeeping:assign',
+      auditAction: 'HOUSEKEEPING_REQUEST_ASSIGN'
     }
   );
 }
@@ -186,8 +186,8 @@ export const _COMPLETE = async (request: NextRequest, { params }: { params: { id
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'housekeeping:update';
-      auditAction: 'HOUSEKEEPING_REQUEST_COMPLETE';
+      requiredPermission: 'housekeeping:update',
+      auditAction: 'HOUSEKEEPING_REQUEST_COMPLETE'
     }
   );
 }
@@ -208,7 +208,7 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'housekeeping:analytics';
-      auditAction: 'HOUSEKEEPING_ANALYTICS_VIEW';
+      requiredPermission: 'housekeeping:analytics',
+      auditAction: 'HOUSEKEEPING_ANALYTICS_VIEW'
     }
   );

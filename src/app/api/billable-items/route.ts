@@ -18,7 +18,7 @@ export const GET = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -56,7 +56,7 @@ export const GET = async (request: Request) => {
 
         // 4. Return item list
         return new Response(JSON.stringify(items), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -64,7 +64,7 @@ export const GET = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -72,14 +72,14 @@ export const GET = async (request: Request) => {
 
 // POST handler for adding a new billable item
 const AddBillableItemSchema = z.object({
-    item_code: z.string().optional();
+    item_code: z.string().optional(),
     item_name: z.string().min(1, "Item name is required"),
-    description: z.string().optional();
+    description: z.string().optional(),
     item_type: z.nativeEnum(ItemType), // Use ItemType enum defined in types/billing.ts
-    unit_price: z.number().nonnegative("Unit price must be non-negative");
-    department: z.string().optional();
-    is_taxable: z.boolean().optional().default(true);
-    is_active: z.boolean().optional().default(true);
+    unit_price: z.number().nonnegative("Unit price must be non-negative"),
+    department: z.string().optional(),
+    is_taxable: z.boolean().optional().default(true),
+    is_active: z.boolean().optional().default(true)
 });
 
 export const _POST = async (request: Request) => {
@@ -89,7 +89,7 @@ export const _POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -100,7 +100,7 @@ export const _POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -160,7 +160,7 @@ export const _POST = async (request: Request) => {
         // Avoid duplicate check for UNIQUE constraint if already handled
         const statusCode = error instanceof Error && error.message.includes("UNIQUE constraint failed") ? 409 : 500;
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Item code already exists" : "Internal Server Error", details: errorMessage }), {
-            status: statusCode;
+            status: statusCode,
             headers: { "Content-Type": "application/json" },
         });
     }

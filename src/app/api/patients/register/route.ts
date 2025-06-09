@@ -11,32 +11,32 @@ const patientRegisterSchema = z.object({
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
     date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date of birth format";
+        message: "Invalid date of birth format"
     }),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]), // Enforce specific values
-    contact_number: z.string().optional().nullable();
-    email: z.string().email("Invalid email address").optional().nullable();
-    address_line1: z.string().optional().nullable();
-    address_line2: z.string().optional().nullable();
-    city: z.string().optional().nullable();
-    state: z.string().optional().nullable();
-    postal_code: z.string().optional().nullable();
+    contact_number: z.string().optional().nullable(),
+    email: z.string().email("Invalid email address").optional().nullable(),
+    address_line1: z.string().optional().nullable(),
+    address_line2: z.string().optional().nullable(),
+    city: z.string().optional().nullable(),
+    state: z.string().optional().nullable(),
+    postal_code: z.string().optional().nullable(),
     country: z.string().optional().nullable();
     // Emergency contact details
-    emergency_contact_name: z.string().optional().nullable();
-    emergency_contact_relation: z.string().optional().nullable();
+    emergency_contact_name: z.string().optional().nullable(),
+    emergency_contact_relation: z.string().optional().nullable(),
     emergency_contact_number: z.string().optional().nullable();
     // Basic medical info
-    blood_group: z.string().optional().nullable();
-    allergies: z.string().optional().nullable();
+    blood_group: z.string().optional().nullable(),
+    allergies: z.string().optional().nullable(),
     medical_history_summary: z.string().optional().nullable();
     // Insurance details
-    insurance_provider: z.string().optional().nullable();
+    insurance_provider: z.string().optional().nullable(),
     insurance_policy_number: z.string().optional().nullable();
     // User account details (if creating a linked user account)
-    create_user_account: z.boolean().optional().default(false);
+    create_user_account: z.boolean().optional().default(false),
     username: z.string().optional(), // Required if create_user_account is true
-    password: z.string().optional(), // Required if create_user_account is true;
+    password: z.string().optional(), // Required if create_user_account is true
 }).refine(data => {
     // If creating a user account, username and password are required
     if (data.create_user_account) {
@@ -44,8 +44,8 @@ const patientRegisterSchema = z.object({
     }
     return true;
 }, {
-    message: "Username and password are required when creating a user account";
-    path: ["create_user_account"], // Attach error to this field or relevant ones;
+    message: "Username and password are required when creating a user account",
+    path: ["create_user_account"], // Attach error to this field or relevant ones
 });
 
 // type PatientRegisterBody = z.infer<typeof patientRegisterSchema>
@@ -167,16 +167,16 @@ export const _POST = async (request: NextRequest) => {
             newUserId = userInsertResult.meta.last_row_id;
 
             // Link patient to user (if needed, e.g., a patient_user_link table or user_id on Patients)
-            // Example: await DB.prepare("UPDATE Patients SET user_id = ? WHERE patient_id = ?").bind(newUserId, newPatientId).run();
+            // Example: await DB.prepare("UPDATE Patients SET user_id = ? WHERE patient_id = ?").bind(newUserId, newPatientId).run()
         }
 
         // Return success response
         return NextResponse.json(
             {
-                message: "Patient registered successfully";
+                message: "Patient registered successfully",
                 patientId: newPatientId;
                 userId: newUserId, // Include if user was created
-                mrn: mrn;
+                mrn: mrn
             },
             { status: 201 }
         );

@@ -6,7 +6,7 @@ export const _runtime = "edge";
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file)
 interface ChecklistItem {
   id: string; // Unique ID for the item within the template
-  text: string;
+  text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types
   options?: string[]; // For select type
   required?: boolean;
@@ -14,9 +14,9 @@ interface ChecklistItem {
 
 // Interface for the POST request body
 interface ChecklistTemplateCreateBody {
-  name: string;
+  name: string,
   phase: "pre-op" | "intra-op" | "post-op";
-  items: ChecklistItem[];
+  items: ChecklistItem[]
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates
@@ -43,7 +43,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(results || []);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching checklist templates", details: errorMessage },
       { status: 500 }
@@ -92,7 +92,7 @@ export const _POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          message: "Each item must be an object with id, text, and type properties",;
+          message: "Each item must be an object with id, text, and type properties",
         },
         { status: 400 }
       );
@@ -137,12 +137,12 @@ export const _POST = async (request: NextRequest) => {
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       return NextResponse.json(
         {
-          message: "Checklist template name must be unique";
-          details: errorMessage;
+          message: "Checklist template name must be unique",
+          details: errorMessage
         },
         { status: 409 }
       );

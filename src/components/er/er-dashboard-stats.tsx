@@ -17,12 +17,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default const _ERDashboardStats = () {
   // In a real implementation, this data would come from API calls
   const stats = {
-    totalPatients: 24;
+    totalPatients: 24,
     waitingRoom: 8;
-    avgWaitTime: "42 min";
+    avgWaitTime: "42 min",
     criticalAlerts: 3;
-    occupiedBeds: "18/25";
-    incomingAmbulances: 2;
+    occupiedBeds: "18/25",
+    incomingAmbulances: 2
   };
 
   return (

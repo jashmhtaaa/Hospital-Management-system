@@ -38,7 +38,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(results || []); // Ensure empty array if results is null/undefined
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching operation theatres", details: errorMessage },
       { status: 500 }
@@ -95,25 +95,25 @@ export const _POST = async (request: NextRequest) => {
             location,
             specialty,
             equipment,
-            status: "available";
+            status: "available",
             created_at: now;
-            updated_at: now;
+            updated_at: now
           },
           { status: 201 }
-        );
+        ),
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Operation theatre name must be unique";
-          details: errorMessage;
+          message: "Operation theatre name must be unique",
+          details: errorMessage
         },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error creating operation theatre", details: errorMessage },

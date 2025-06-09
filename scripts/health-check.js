@@ -6,18 +6,18 @@ const { execSync } = require('child_process');
 const checks = [
   {
     name: 'TypeScript Compilation',
-    command: 'npx tsc --noEmit'
+    command: 'npx tsc --noEmit',
   },
   {
     name: 'Dependencies Check',
-    command: 'npm audit --audit-level=high'
-  }
+    command: 'npm audit --audit-level=high',
+  },
 ];
 
 let passed = 0;
 let total = checks.length;
 
-checks.forEach(check => {
+checks.forEach((check) => {
   try {
     execSync(check.command, { stdio: 'pipe' });
     /* SECURITY: Console statement removed */

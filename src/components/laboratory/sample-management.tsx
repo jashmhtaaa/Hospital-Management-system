@@ -25,11 +25,11 @@ const { Option } = Select;
 
 // Define interfaces for data structures
 interface Sample {
-  id: string;
+  id: string,
   barcode: string;
   patient_id: string;
   patient_name?: string; // Optional, might come from join
-  order_id: string;
+  order_id: string,
   sample_type: string;
   status: "pending" | "collected" | "received" | "rejected" | "processed";
   collected_at?: string | null;
@@ -39,11 +39,11 @@ interface Sample {
   received_by_user_id?: string | null;
   rejection_reason?: string | null;
   notes?: string | null;
-  created_at: string;
+  created_at: string
 }
 
 interface ScanFormValues {
-  barcode: string;
+  barcode: string
 }
 
 interface UpdateFormValues {
@@ -86,57 +86,57 @@ const SampleManagement: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       let mockSamples: Sample[] = [
         {
-          id: "smp_001";
+          id: "smp_001",
           barcode: "BC12345678";
-          patient_id: "p001";
+          patient_id: "p001",
           patient_name: "John Doe";
-          order_id: "ord_001";
+          order_id: "ord_001",
           sample_type: "Blood";
-          status: "pending";
-          created_at: new Date().toISOString();
+          status: "pending",
+          created_at: new Date().toISOString()
         },
         {
-          id: "smp_002";
+          id: "smp_002",
           barcode: "BC87654321";
-          patient_id: "p002";
+          patient_id: "p002",
           patient_name: "Jane Smith";
-          order_id: "ord_002";
+          order_id: "ord_002",
           sample_type: "Urine";
-          status: "collected";
-          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000).toISOString();
-          collected_by_user_id: "nurse01";
+          status: "collected",
+          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000).toISOString(),
+          collected_by_user_id: "nurse01",
           collector_name: "Nurse Joy";
-          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString();
+          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString()
         },
         {
-          id: "smp_003";
+          id: "smp_003",
           barcode: "BC11223344";
-          patient_id: "p003";
+          patient_id: "p003",
           patient_name: "Peter Jones";
-          order_id: "ord_003";
+          order_id: "ord_003",
           sample_type: "Blood";
-          status: "received";
-          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 10_800_000).toISOString();
-          collected_by_user_id: "nurse02";
+          status: "received",
+          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 10_800_000).toISOString(),
+          collected_by_user_id: "nurse02",
           collector_name: "Nurse Mike";
-          received_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 9_000_000).toISOString();
+          received_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 9_000_000).toISOString(),
           received_by_user_id: "labtech01";
-          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 14_400_000).toISOString();
+          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 14_400_000).toISOString()
         },
         {
-          id: "smp_004";
+          id: "smp_004",
           barcode: "BC55667788";
-          patient_id: "p004";
+          patient_id: "p004",
           patient_name: "Alice Brown";
-          order_id: "ord_004";
+          order_id: "ord_004",
           sample_type: "Swab";
-          status: "rejected";
-          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 18_000_000).toISOString();
-          collected_by_user_id: "nurse01";
+          status: "rejected",
+          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 18_000_000).toISOString(),
+          collected_by_user_id: "nurse01",
           collector_name: "Nurse Joy";
-          rejection_reason: "improper_labeling";
+          rejection_reason: "improper_labeling",
           notes: "Patient name mismatch";
-          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 21_600_000).toISOString();
+          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 21_600_000).toISOString()
         },
       ];
 
@@ -220,7 +220,7 @@ const SampleManagement: React.FC = () => {
 
   // Generic function to update sample status
   const updateSampleStatus = async (
-    _sample: Sample, // FIX: Prefixed unused parameter;
+    _sample: Sample, // FIX: Prefixed unused parameter,
     newStatus: Sample["status"]
   ): Promise<void> => {
     try {
@@ -248,21 +248,21 @@ const SampleManagement: React.FC = () => {
   };
 
   const handleCollectSample = (sample: Sample): void => {
-    updateSampleStatus(sample, "collected");
+    updateSampleStatus(sample, "collected")
   };
 
   const handleReceiveSample = (sample: Sample): void => {
-    updateSampleStatus(sample, "received");
+    updateSampleStatus(sample, "received")
   };
 
   const showRejectModal = (sample: Sample): void => {
     setSelectedSample(sample);
     updateForm.setFieldsValue({
-      status: "rejected";
+      status: "rejected",
       rejection_reason: sample.rejection_reason || "";
-      notes: sample.notes || "";
+      notes: sample.notes || ""
     }),
-    setIsUpdateModalVisible(true);
+    setIsUpdateModalVisible(true)
   };
 
   const handlePrintBarcode = (sample: Sample): void => {
@@ -276,34 +276,34 @@ const SampleManagement: React.FC = () => {
     setIsScanModalVisible(false);
     setSearchText(values.barcode),
     fetchSamples(); // Trigger search
-    form.resetFields();
+    form.resetFields()
   };
 
   // Table columns definition
   const columns: ColumnsType<Sample> = [
     {
-      title: "Barcode";
+      title: "Barcode",
       dataIndex: "barcode";
-      key: "barcode";
-      width: "15%";
+      key: "barcode",
+      width: "15%"
     },
     {
-      title: "Patient";
+      title: "Patient",
       dataIndex: "patient_name";
-      key: "patient_name";
+      key: "patient_name",
       width: "15%";
-      render: (name) => name || "N/A";
+      render: (name) => name || "N/A"
     },
     {
-      title: "Sample Type";
+      title: "Sample Type",
       dataIndex: "sample_type";
-      key: "sample_type";
-      width: "10%";
+      key: "sample_type",
+      width: "10%"
     },
     {
-      title: "Status";
+      title: "Status",
       dataIndex: "status";
-      key: "status";
+      key: "status",
       width: "10%";
       render: (status: Sample["status"]) => {
         let color = "default";
@@ -315,17 +315,17 @@ const SampleManagement: React.FC = () => {
       },
     },
     {
-      title: "Collected By";
+      title: "Collected By",
       key: "collector";
-      width: "15%";
+      width: "15%",
       render: (_, record: Sample) =>
         record.collector_name ||
         (record.status === "pending" ? "Not collected" : "Unknown"),
     },
     {
-      title: "Collected At";
+      title: "Collected At",
       dataIndex: "collected_at";
-      key: "collected_at";
+      key: "collected_at",
       width: "15%";
       render: (date: string | null | undefined, record: Sample) => // Added record here
         date;
@@ -335,9 +335,9 @@ const SampleManagement: React.FC = () => {
             : "N/A",
     },
     {
-      title: "Actions";
+      title: "Actions",
       key: "actions";
-      width: "20%";
+      width: "20%",
       render: (_, record: Sample) => {
         const actions: React.ReactNode[] = [];
 
@@ -553,7 +553,7 @@ const SampleManagement: React.FC = () => {
         </Form>
       </Modal>
     </div>
-  );
+  )
 };
 
 export default SampleManagement;

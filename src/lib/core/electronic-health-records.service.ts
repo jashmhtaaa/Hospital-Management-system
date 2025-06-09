@@ -16,54 +16,54 @@ export const ClinicalNoteSchema = z.object({
   template_id: z.string().optional();
 
   // SOAP components
-  subjective: z.string().optional();
-  objective: z.string().optional();
-  assessment: z.string().optional();
+  subjective: z.string().optional(),
+  objective: z.string().optional(),
+  assessment: z.string().optional(),
   plan: z.string().optional();
 
   // Structured data
-  chief_complaint: z.string().optional();
-  history_of_present_illness: z.string().optional();
-  review_of_systems: z.string().optional();
-  past_medical_history: z.string().optional();
-  medications: z.string().optional();
-  allergies: z.string().optional();
-  social_history: z.string().optional();
-  family_history: z.string().optional();
-  physical_examination: z.string().optional();
+  chief_complaint: z.string().optional(),
+  history_of_present_illness: z.string().optional(),
+  review_of_systems: z.string().optional(),
+  past_medical_history: z.string().optional(),
+  medications: z.string().optional(),
+  allergies: z.string().optional(),
+  social_history: z.string().optional(),
+  family_history: z.string().optional(),
+  physical_examination: z.string().optional(),
   vital_signs: z.object({
-    temperature: z.number().optional();
-    blood_pressure_systolic: z.number().optional();
-    blood_pressure_diastolic: z.number().optional();
-    heart_rate: z.number().optional();
-    respiratory_rate: z.number().optional();
-    oxygen_saturation: z.number().optional();
-    weight: z.number().optional();
-    height: z.number().optional();
-    bmi: z.number().optional();
-    pain_scale: z.number().min(0).max(10).optional();
+    temperature: z.number().optional(),
+    blood_pressure_systolic: z.number().optional(),
+    blood_pressure_diastolic: z.number().optional(),
+    heart_rate: z.number().optional(),
+    respiratory_rate: z.number().optional(),
+    oxygen_saturation: z.number().optional(),
+    weight: z.number().optional(),
+    height: z.number().optional(),
+    bmi: z.number().optional(),
+    pain_scale: z.number().min(0).max(10).optional()
   }).optional(),
 
   // Diagnoses
-  primary_diagnosis: z.string().optional();
-  secondary_diagnoses: z.array(z.string()).default([]);
+  primary_diagnosis: z.string().optional(),
+  secondary_diagnoses: z.array(z.string()).default([]),
   icd10_codes: z.array(z.string()).default([]);
 
   // Treatment plan
   orders: z.array(z.object({
     type: z.enum(['medication', 'lab', 'imaging', 'procedure', 'consultation', 'therapy']),
-    description: z.string();
-    instructions: z.string().optional();
-    priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),;
+    description: z.string(),
+    instructions: z.string().optional(),
+    priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
   })).default([]),
 
   // Follow-up
-  follow_up_instructions: z.string().optional();
-  return_visit_interval: z.string().optional();
+  follow_up_instructions: z.string().optional(),
+  return_visit_interval: z.string().optional(),
   discharge_disposition: z.string().optional();
 
   // Clinical decision support
-  alerts_triggered: z.array(z.string()).default([]);
+  alerts_triggered: z.array(z.string()).default([]),
   guidelines_referenced: z.array(z.string()).default([]);
 
   // Note metadata
@@ -72,12 +72,12 @@ export const ClinicalNoteSchema = z.object({
   confidentiality_level: z.enum(['normal', 'restricted', 'very_restricted']).default('normal'),
 
   // Voice-to-text
-  audio_recording_id: z.string().optional();
+  audio_recording_id: z.string().optional(),
   transcription_confidence: z.number().min(0).max(1).optional();
 
   // Template and formatting
-  free_text_content: z.string().optional();
-  structured_data: z.record(z.any()).optional();
+  free_text_content: z.string().optional(),
+  structured_data: z.record(z.any()).optional()
 });
 
 export const CarePlanSchema = z.object({
@@ -85,47 +85,47 @@ export const CarePlanSchema = z.object({
   provider_id: z.string().min(1, 'Provider ID is required'),
   care_plan_name: z.string().min(1, 'Care plan name is required'),
   diagnosis: z.string().min(1, 'Primary diagnosis is required'),
-  icd10_code: z.string().optional();
+  icd10_code: z.string().optional(),
 
   goals: z.array(z.object({
-    id: z.string();
-    description: z.string();
-    target_date: z.string().optional();
+    id: z.string(),
+    description: z.string(),
+    target_date: z.string().optional(),
     priority: z.enum(['high', 'medium', 'low']).default('medium'),
     status: z.enum(['active', 'completed', 'cancelled', 'on_hold']).default('active'),
-    outcome_measure: z.string().optional();
-    target_value: z.string().optional();
-    current_value: z.string().optional();
+    outcome_measure: z.string().optional(),
+    target_value: z.string().optional(),
+    current_value: z.string().optional()
   })),
 
   interventions: z.array(z.object({
-    id: z.string();
+    id: z.string(),
     type: z.enum(['medication', 'therapy', 'lifestyle', 'monitoring', 'education', 'procedure']),
-    description: z.string();
-    instructions: z.string().optional();
-    frequency: z.string().optional();
-    duration: z.string().optional();
-    responsible_provider: z.string().optional();
-    status: z.enum(['active', 'completed', 'discontinued', 'pending']).default('active'),;
+    description: z.string(),
+    instructions: z.string().optional(),
+    frequency: z.string().optional(),
+    duration: z.string().optional(),
+    responsible_provider: z.string().optional(),
+    status: z.enum(['active', 'completed', 'discontinued', 'pending']).default('active'),
   })),
 
   care_team: z.array(z.object({
-    provider_id: z.string();
-    role: z.string();
-    responsibilities: z.string().optional();
-    contact_information: z.string().optional();
+    provider_id: z.string(),
+    role: z.string(),
+    responsibilities: z.string().optional(),
+    contact_information: z.string().optional()
   })),
 
-  patient_preferences: z.string().optional();
-  barriers_to_care: z.array(z.string()).default([]);
-  social_determinants: z.array(z.string()).default([]);
+  patient_preferences: z.string().optional(),
+  barriers_to_care: z.array(z.string()).default([]),
+  social_determinants: z.array(z.string()).default([]),
 
-  review_date: z.string().optional();
-  effective_date: z.string();
-  end_date: z.string().optional();
+  review_date: z.string().optional(),
+  effective_date: z.string(),
+  end_date: z.string().optional(),
 
   status: z.enum(['active', 'completed', 'cancelled', 'on_hold']).default('active'),
-  notes: z.string().optional();
+  notes: z.string().optional()
 });
 
 export const ProblemListSchema = z.object({
@@ -133,106 +133,106 @@ export const ProblemListSchema = z.object({
   provider_id: z.string().min(1, 'Provider ID is required'),
 
   problem_name: z.string().min(1, 'Problem name is required'),
-  icd10_code: z.string().optional();
-  snomed_code: z.string().optional();
+  icd10_code: z.string().optional(),
+  snomed_code: z.string().optional(),
 
   problem_type: z.enum(['diagnosis', 'symptom', 'finding', 'concern']),
   severity: z.enum(['mild', 'moderate', 'severe', 'critical']).optional(),
 
-  onset_date: z.string().optional();
-  resolution_date: z.string().optional();
+  onset_date: z.string().optional(),
+  resolution_date: z.string().optional(),
 
   status: z.enum(['active', 'resolved', 'inactive', 'chronic', 'recurrent']),
   verification_status: z.enum(['confirmed', 'provisional', 'differential', 'ruled_out']),
 
   priority: z.enum(['high', 'medium', 'low']).default('medium'),
 
-  clinical_context: z.string().optional();
-  treatment_status: z.string().optional();
+  clinical_context: z.string().optional(),
+  treatment_status: z.string().optional(),
 
-  related_encounters: z.array(z.string()).default([]);
-  related_problems: z.array(z.string()).default([]);
+  related_encounters: z.array(z.string()).default([]),
+  related_problems: z.array(z.string()).default([]),
 
-  notes: z.string().optional();
+  notes: z.string().optional()
 });
 
 export const ClinicalGuidelineSchema = z.object({
-  guideline_id: z.string();
-  name: z.string();
-  organization: z.string();
-  version: z.string();
-  effective_date: z.string();
+  guideline_id: z.string(),
+  name: z.string(),
+  organization: z.string(),
+  version: z.string(),
+  effective_date: z.string(),
 
   applicable_conditions: z.array(z.string());
-  icd10_codes: z.array(z.string());
+  icd10_codes: z.array(z.string()),
 
   recommendations: z.array(z.object({
-    id: z.string();
-    recommendation_text: z.string();
+    id: z.string(),
+    recommendation_text: z.string(),
     strength: z.enum(['strong', 'weak', 'conditional']),
     quality_of_evidence: z.enum(['high', 'moderate', 'low', 'very_low']),
-    patient_population: z.string().optional();
-    considerations: z.string().optional();
+    patient_population: z.string().optional(),
+    considerations: z.string().optional()
   })),
 
   decision_support_rules: z.array(z.object({
-    rule_id: z.string();
-    condition: z.string();
-    action: z.string();
-    alert_type: z.enum(['info', 'warning', 'critical']),;
+    rule_id: z.string(),
+    condition: z.string(),
+    action: z.string(),
+    alert_type: z.enum(['info', 'warning', 'critical']),
   })),
 
-  evidence_links: z.array(z.string()).default([]);
-  references: z.array(z.string()).default([]);
+  evidence_links: z.array(z.string()).default([]),
+  references: z.array(z.string()).default([])
 });
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
-  id: string;
+  id: string,
   note_number: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   signed_at?: Date;
   signed_by?: string;
-  amendments: string[];
+  amendments: string[],
   version: number;
   provider_name?: string;
-  patient_name?: string;
+  patient_name?: string
 };
 
 export type CarePlan = z.infer<typeof CarePlanSchema> & {
-  id: string;
+  id: string,
   care_plan_number: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   version: number;
   last_reviewed_date?: Date;
-  next_review_date?: Date;
+  next_review_date?: Date
 };
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
-  last_updated_by: string;
+  updated_at: Date,
+  last_updated_by: string
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date,
   usage_count: number;
-  last_used: Date;
+  last_used: Date
 };
 
 export interface ClinicalDecisionSupport {
-  patient_id: string;
+  patient_id: string,
   encounter_id: string;
   alerts: {
-    id: string;
+    id: string,
     type: 'drug_interaction' | 'allergy' | 'guideline_reminder' | 'preventive_care' | 'lab_result' | 'vital_sign';
-    severity: 'info' | 'warning' | 'critical';
+    severity: 'info' | 'warning' | 'critical',
     message: string;
-    recommendation: string;
+    recommendation: string,
     source: string;
     dismissed: boolean;
     dismissed_by?: string;
@@ -240,51 +240,51 @@ export interface ClinicalDecisionSupport {
     dismiss_reason?: string;
   }[];
   guidelines: {
-    guideline_id: string;
+    guideline_id: string,
     name: string;
-    applicable_recommendations: string[];
-    triggered_rules: string[];
+    applicable_recommendations: string[],
+    triggered_rules: string[]
   }[];
 export interface QualityMeasure {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   numerator_criteria: string;
-  denominator_criteria: string;
+  denominator_criteria: string,
   patient_applicable: boolean;
-  current_status: 'met' | 'not_met' | 'excluded';
+  current_status: 'met' | 'not_met' | 'excluded',
   performance_rate: number;
-  reporting_period: string;
+  reporting_period: string,
   next_opportunity: string
 export interface ClinicalSummary {
-  patient_id: string;
+  patient_id: string,
   generated_date: Date;
-  summary_type: 'encounter' | 'episodic' | 'comprehensive';
+  summary_type: 'encounter' | 'episodic' | 'comprehensive',
   demographics: {
-    name: string;
+    name: string,
     age: number;
-    gender: string;
-    mrn: string;
+    gender: string,
+    mrn: string
   };
 
-  active_problems: ProblemListItem[];
+  active_problems: ProblemListItem[],
   current_medications: string[];
-  allergies: string[];
+  allergies: string[],
   recent_vitals: unknown;
-  recent_lab_results: unknown[];
+  recent_lab_results: unknown[],
   care_plans: CarePlan[];
-  upcoming_appointments: unknown[];
+  upcoming_appointments: unknown[],
   pending_orders: unknown[];
-  quality_measures: QualityMeasure[];
+  quality_measures: QualityMeasure[],
   risk_factors: string[];
-  provider_notes: string;
+  provider_notes: string,
   last_encounter_date: Date
 export class ElectronicHealthRecordsService {
-  private clinicalNotes: Map<string, ClinicalNote> = new Map();
-  private carePlans: Map<string, CarePlan> = new Map();
-  private problemLists: Map<string, ProblemListItem[]> = new Map();
-  private clinicalGuidelines: Map<string, ClinicalGuideline> = new Map();
-  private templates: Map<string, any> = new Map();
+  private clinicalNotes: Map<string, ClinicalNote> = new Map(),
+  private carePlans: Map<string, CarePlan> = new Map(),
+  private problemLists: Map<string, ProblemListItem[]> = new Map(),
+  private clinicalGuidelines: Map<string, ClinicalGuideline> = new Map(),
+  private templates: Map<string, any> = new Map(),
   private decisionSupport: Map<string, ClinicalDecisionSupport> = new Map(),
   constructor() {
     this.initializeClinicalGuidelines();
@@ -297,86 +297,86 @@ export class ElectronicHealthRecordsService {
   private initializeClinicalGuidelines(): void {
     const guidelines: Omit<ClinicalGuideline, 'id' | 'created_at' | 'updated_at' | 'usage_count' | 'last_used'>[] = [
       {
-        guideline_id: 'AHA-HTN-2024';
+        guideline_id: 'AHA-HTN-2024',
         name: 'Hypertension Management Guidelines';
-        organization: 'American Heart Association';
+        organization: 'American Heart Association',
         version: '2024.1';
-        effective_date: '2024-01-01';
+        effective_date: '2024-01-01',
         applicable_conditions: ['Essential Hypertension', 'Secondary Hypertension'],
         icd10_codes: ['I10', 'I15.0', 'I15.1', 'I15.2'],
         recommendations: [
           {
-            id: 'HTN-1';
+            id: 'HTN-1',
             recommendation_text: 'Target blood pressure <130/80 mmHg for most adults';
-            strength: 'strong';
+            strength: 'strong',
             quality_of_evidence: 'high';
-            patient_population: 'Adults with hypertension';
-            considerations: 'Consider individual patient factors and comorbidities';
+            patient_population: 'Adults with hypertension',
+            considerations: 'Consider individual patient factors and comorbidities'
           },
           {
-            id: 'HTN-2';
+            id: 'HTN-2',
             recommendation_text: 'First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic',
-            strength: 'strong';
+            strength: 'strong',
             quality_of_evidence: 'high';
-            patient_population: 'Adults initiating antihypertensive therapy';
+            patient_population: 'Adults initiating antihypertensive therapy'
           },
         ],
         decision_support_rules: [
           {
-            rule_id: 'HTN-ALERT-1';
+            rule_id: 'HTN-ALERT-1',
             condition: 'BP >= 180/110';
-            action: 'Alert provider of hypertensive crisis';
-            alert_type: 'critical';
+            action: 'Alert provider of hypertensive crisis',
+            alert_type: 'critical'
           },
           {
-            rule_id: 'HTN-ALERT-2';
+            rule_id: 'HTN-ALERT-2',
             condition: 'BP >= 140/90 without medication';
-            action: 'Suggest antihypertensive therapy';
-            alert_type: 'warning';
+            action: 'Suggest antihypertensive therapy',
+            alert_type: 'warning'
           },
         ],
-        evidence_links: ['https://doi.org/10.1161/HYP.0000000000000065'];
-        references: ['2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults'],;
+        evidence_links: ['https://doi.org/10.1161/HYP.0000000000000065'],
+        references: ['2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults'],
       },
       {
-        guideline_id: 'ADA-DM-2024';
+        guideline_id: 'ADA-DM-2024',
         name: 'Standards of Medical Care in Diabetes';
-        organization: 'American Diabetes Association';
+        organization: 'American Diabetes Association',
         version: '2024.1';
-        effective_date: '2024-01-01';
+        effective_date: '2024-01-01',
         applicable_conditions: ['Type 1 Diabetes', 'Type 2 Diabetes', 'Gestational Diabetes'],
         icd10_codes: ['E10', 'E11', 'O24'],
         recommendations: [
           {
-            id: 'DM-1';
+            id: 'DM-1',
             recommendation_text: 'Target HbA1c <7% for most adults with diabetes';
-            strength: 'strong';
+            strength: 'strong',
             quality_of_evidence: 'high';
-            patient_population: 'Adults with Type 1 or Type 2 diabetes';
+            patient_population: 'Adults with Type 1 or Type 2 diabetes'
           },
           {
-            id: 'DM-2';
+            id: 'DM-2',
             recommendation_text: 'Metformin should be first-line therapy for Type 2 diabetes unless contraindicated';
-            strength: 'strong';
+            strength: 'strong',
             quality_of_evidence: 'high';
-            patient_population: 'Adults with Type 2 diabetes';
+            patient_population: 'Adults with Type 2 diabetes'
           },
         ],
         decision_support_rules: [
           {
-            rule_id: 'DM-ALERT-1';
+            rule_id: 'DM-ALERT-1',
             condition: 'HbA1c > 9%';
-            action: 'Alert provider of poor glycemic control';
-            alert_type: 'warning';
+            action: 'Alert provider of poor glycemic control',
+            alert_type: 'warning'
           },
           {
-            rule_id: 'DM-ALERT-2';
+            rule_id: 'DM-ALERT-2',
             condition: 'No HbA1c in past 6 months';
-            action: 'Recommend HbA1c testing';
-            alert_type: 'info';
+            action: 'Recommend HbA1c testing',
+            alert_type: 'info'
           },
         ],
-        evidence_links: ['https://doi.org/10.2337/dc24-S001'];
+        evidence_links: ['https://doi.org/10.2337/dc24-S001'],
         references: ['American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)'],
       },
     ];
@@ -384,11 +384,11 @@ export class ElectronicHealthRecordsService {
     guidelines.forEach(guidelineData => {
       const guideline: ClinicalGuideline = {
         ...guidelineData,
-        id: uuidv4();
-        created_at: new Date();
-        updated_at: new Date();
+        id: uuidv4(),
+        created_at: new Date(),
+        updated_at: new Date(),
         usage_count: 0;
-        last_used: new Date();
+        last_used: new Date()
       };
       this.clinicalGuidelines.set(guideline.guideline_id, guideline);
     });
@@ -400,37 +400,37 @@ export class ElectronicHealthRecordsService {
   private initializeNoteTemplates(): void {
     const templates = [
       {
-        id: 'soap-general';
+        id: 'soap-general',
         name: 'General SOAP Note';
-        type: 'soap_note';
+        type: 'soap_note',
         template: {
-          subjective: 'Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n';
-          objective: 'Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n';
-          assessment: 'Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n';
-          plan: 'Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n';
+          subjective: 'Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n',
+          objective: 'Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n',
+          assessment: 'Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n',
+          plan: 'Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n'
         },
       },
       {
-        id: 'progress-note';
+        id: 'progress-note',
         name: 'Progress Note';
-        type: 'progress_note';
+        type: 'progress_note',
         template: {
-          interval_history: 'Patient reports:\n';
-          objective: 'Vital Signs:\nPhysical Examination:\n';
-          assessment: 'Assessment and Plan:\n';
+          interval_history: 'Patient reports:\n',
+          objective: 'Vital Signs:\nPhysical Examination:\n',
+          assessment: 'Assessment and Plan:\n'
         },
       },
       {
-        id: 'discharge-summary';
+        id: 'discharge-summary',
         name: 'Discharge Summary';
-        type: 'discharge_summary';
+        type: 'discharge_summary',
         template: {
-          admission_diagnosis: '';
+          admission_diagnosis: '',
           discharge_diagnosis: '';
-          hospital_course: '';
+          hospital_course: '',
           discharge_medications: '';
-          follow_up_instructions: '';
-          discharge_disposition: '';
+          follow_up_instructions: '',
+          discharge_disposition: ''
         },
       },
     ];
@@ -461,12 +461,12 @@ export class ElectronicHealthRecordsService {
     const clinicalNote: ClinicalNote = {
       ...validatedData,
       ...templateData,
-      id: noteId;
+      id: noteId,
       note_number: noteNumber;
-      created_at: new Date();
-      updated_at: new Date();
-      amendments: [];
-      version: 1;
+      created_at: new Date(),
+      updated_at: new Date(),
+      amendments: [],
+      version: 1
     };
 
     this.clinicalNotes.set(noteId, clinicalNote);
@@ -483,7 +483,7 @@ export class ElectronicHealthRecordsService {
   private generateNoteNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `NOTE/* SECURITY: Template literal eliminated */;
+    return `NOTE/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -502,7 +502,7 @@ export class ElectronicHealthRecordsService {
     const updatedNote: ClinicalNote = {
       ...existingNote,
       ...updateData,
-      updated_at: new Date();
+      updated_at: new Date()
     };
 
     this.clinicalNotes.set(noteId, updatedNote);
@@ -549,16 +549,16 @@ export class ElectronicHealthRecordsService {
 
     const amendment: ClinicalNote = {
       ...originalNote,
-      id: amendmentId;
+      id: amendmentId,
       note_number: amendmentNumber;
-      note_status: 'amended';
+      note_status: 'amended',
       free_text_content: amendmentText;
-      created_at: new Date();
-      updated_at: new Date();
-      signed_at: new Date();
+      created_at: new Date(),
+      updated_at: new Date(),
+      signed_at: new Date(),
       signed_by: providerId;
-      version: originalNote.version + 1;
-      amendments: [];
+      version: originalNote.version + 1,
+      amendments: []
     };
 
     // Update original note to reference amendment
@@ -586,12 +586,12 @@ export class ElectronicHealthRecordsService {
 
     const carePlan: CarePlan = {
       ...validatedData,
-      id: carePlanId;
+      id: carePlanId,
       care_plan_number: carePlanNumber;
-      created_at: new Date();
-      updated_at: new Date();
-      version: 1;
-      next_review_date: nextReviewDate.toISOString().split('T')[0];
+      created_at: new Date(),
+      updated_at: new Date(),
+      version: 1,
+      next_review_date: nextReviewDate.toISOString().split('T')[0]
     };
 
     this.carePlans.set(carePlanId, carePlan);
@@ -604,7 +604,7 @@ export class ElectronicHealthRecordsService {
   private generateCarePlanNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `CP/* SECURITY: Template literal eliminated */;
+    return `CP/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -617,10 +617,10 @@ export class ElectronicHealthRecordsService {
 
     const problem: ProblemListItem = {
       ...validatedData,
-      id: problemId;
-      created_at: new Date();
-      updated_at: new Date();
-      last_updated_by: validatedData.provider_id;
+      id: problemId,
+      created_at: new Date(),
+      updated_at: new Date(),
+      last_updated_by: validatedData.provider_id
     };
 
     const patientProblems = this.problemLists.get(validatedData.patient_id) || [];
@@ -634,9 +634,9 @@ export class ElectronicHealthRecordsService {
    * Update problem status;
    */
   async updateProblemStatus(
-    patientId: string;
+    patientId: string,
     problemId: string;
-    status: ProblemListItem['status'];
+    status: ProblemListItem['status'],
     providerId: string;
     resolutionDate?: string;
   ): Promise<ProblemListItem> {
@@ -671,7 +671,7 @@ export class ElectronicHealthRecordsService {
    * Trigger clinical decision support;
    */
   private async triggerClinicalDecisionSupport(
-    patientId: string;
+    patientId: string,
     encounterId: string;
     note: ClinicalNote;
   ): Promise<void> {
@@ -682,25 +682,25 @@ export class ElectronicHealthRecordsService {
     if (note.vital_signs) {
       if (note.vital_signs?.blood_pressure_systolic && note.vital_signs.blood_pressure_systolic >= 180) {
         alerts.push({
-          id: uuidv4();
+          id: uuidv4(),
           type: 'vital_sign';
-          severity: 'critical';
+          severity: 'critical',
           message: 'Hypertensive crisis detected';
-          recommendation: 'Immediate evaluation and treatment required';
+          recommendation: 'Immediate evaluation and treatment required',
           source: 'Clinical Decision Support';
-          dismissed: false;
+          dismissed: false
         });
       }
 
       if (note.vital_signs?.temperature && note.vital_signs.temperature >= 102) {
         alerts.push({
-          id: uuidv4();
+          id: uuidv4(),
           type: 'vital_sign';
-          severity: 'warning';
+          severity: 'warning',
           message: 'High fever detected';
-          recommendation: 'Consider infectious workup and antipyretic therapy';
+          recommendation: 'Consider infectious workup and antipyretic therapy',
           source: 'Clinical Decision Support';
-          dismissed: false;
+          dismissed: false
         });
       }
     }
@@ -726,23 +726,23 @@ export class ElectronicHealthRecordsService {
 
       if (applicableRecommendations.length > 0 || triggeredRules.length > 0) {
         guidelines.push({
-          guideline_id: guideline.guideline_id;
+          guideline_id: guideline.guideline_id,
           name: guideline.name;
-          applicable_recommendations: applicableRecommendations;
-          triggered_rules: triggeredRules;
+          applicable_recommendations: applicableRecommendations,
+          triggered_rules: triggeredRules
         });
 
         // Create alerts for triggered rules
         for (const rule of guideline.decision_support_rules) {
           if (triggeredRules.includes(rule.rule_id)) {
             alerts.push({
-              id: uuidv4();
+              id: uuidv4(),
               type: 'guideline_reminder';
-              severity: rule.alert_type === 'critical' ? 'critical' : rule.alert_type === 'warning' ? 'warning' : 'info';
+              severity: rule.alert_type === 'critical' ? 'critical' : rule.alert_type === 'warning' ? 'warning' : 'info',
               message: rule.action;
               recommendation: `Based on ${guideline.name}`,
-              source: guideline.organization;
-              dismissed: false;
+              source: guideline.organization,
+              dismissed: false
             });
           }
         }
@@ -750,7 +750,7 @@ export class ElectronicHealthRecordsService {
     }
 
     const cds: ClinicalDecisionSupport = {
-      patient_id: patientId;
+      patient_id: patientId,
       encounter_id: encounterId;
       alerts,
       guidelines,
@@ -817,7 +817,7 @@ export class ElectronicHealthRecordsService {
    * Generate clinical summary;
    */
   async generateClinicalSummary(
-    patientId: string;
+    patientId: string,
     summaryType: 'encounter' | 'episodic' | 'comprehensive' = 'comprehensive';
   ): Promise<ClinicalSummary> {
     // Get patient data
@@ -828,41 +828,41 @@ export class ElectronicHealthRecordsService {
     // Generate quality measures (simplified)
     const qualityMeasures: QualityMeasure[] = [
       {
-        id: 'BP-Control';
+        id: 'BP-Control',
         name: 'Blood Pressure Control';
-        description: 'Percentage of patients with controlled blood pressure';
+        description: 'Percentage of patients with controlled blood pressure',
         numerator_criteria: 'BP < 140/90 mmHg';
-        denominator_criteria: 'Patients with hypertension';
+        denominator_criteria: 'Patients with hypertension',
         patient_applicable: activeProblems.some(p => p.problem_name.toLowerCase().includes('hypertension'));
-        current_status: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5 ? 'met' : 'not_met';
+        current_status: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5 ? 'met' : 'not_met',
         performance_rate: 75;
-        reporting_period: '2024';
-        next_opportunity: 'Next visit';
+        reporting_period: '2024',
+        next_opportunity: 'Next visit'
       },
     ]
 
     const summary: ClinicalSummary = {
-      patient_id: patientId;
-      generated_date: new Date();
-      summary_type: summaryType;
+      patient_id: patientId,
+      generated_date: new Date(),
+      summary_type: summaryType,
       demographics: {
         name: 'Patient Name', // In real implementation, fetch from patient service
-        age: 45;
+        age: 45,
         gender: 'Male';
         mrn: `MRN${patientId.slice(-6)}`,
       },
-      active_problems: activeProblems;
+      active_problems: activeProblems,
       current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified
-      allergies: ['NKDA'];
+      allergies: ['NKDA'],
       recent_vitals: { bp: '130/80', hr: '72', temp: '98.6' },
-      recent_lab_results: [];
+      recent_lab_results: [],
       care_plans: patientCarePlans;
-      upcoming_appointments: [];
+      upcoming_appointments: [],
       pending_orders: [];
-      quality_measures: qualityMeasures;
+      quality_measures: qualityMeasures,
       risk_factors: ['Hypertension', 'Diabetes'],
       provider_notes: 'Patient stable, continue current management',
-      last_encounter_date: new Date();
+      last_encounter_date: new Date()
     };
 
     return summary;
@@ -881,7 +881,7 @@ export class ElectronicHealthRecordsService {
     status?: ClinicalNote['note_status'];
     page?: number;
     limit?: number;
-  }): Promise<{ notes: ClinicalNote[]; total: number; totalPages: number }> {
+  }): Promise<{ notes: ClinicalNote[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, search_text, ...filters } = criteria;
 
     let filteredNotes = Array.from(this.clinicalNotes.values());
@@ -969,7 +969,7 @@ export class ElectronicHealthRecordsService {
     const updatedNote = {
       ...note,
       ...draftContent,
-      updated_at: new Date();
+      updated_at: new Date()
     };
 
     this.clinicalNotes.set(noteId, updatedNote);

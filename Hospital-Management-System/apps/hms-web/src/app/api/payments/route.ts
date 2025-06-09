@@ -15,10 +15,10 @@ class PaymentGateway {
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
-      currency: currency.toLowerCase();
+      currency: currency.toLowerCase(),
       metadata: {
         billId,
-        source: 'HMS';
+        source: 'HMS'
       }
     });
 
@@ -28,15 +28,15 @@ class PaymentGateway {
         billId,
         amount,
         currency,
-        paymentIntentId: paymentIntent.id;
+        paymentIntentId: paymentIntent.id,
         status: 'PENDING';
-        gateway: 'STRIPE';
+        gateway: 'STRIPE'
       }
     });
 
     return {
-      clientSecret: paymentIntent.client_secret;
-      paymentIntentId: paymentIntent.id;
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id
     };
   }
 
@@ -44,17 +44,17 @@ class PaymentGateway {
     const Razorpay = require('razorpay');
 
     const razorpay = new Razorpay({
-      key_id: this.razorpayKeyId;
-      key_secret: this.razorpayKeySecret;
+      key_id: this.razorpayKeyId,
+      key_secret: this.razorpayKeySecret
     });
 
     const order = await razorpay.orders.create({
       amount: Math.round(amount * 100), // Convert to paise
-      currency: currency.toUpperCase();
+      currency: currency.toUpperCase(),
       receipt: `bill_${billId}`,
       notes: {
         billId,
-        source: 'HMS';
+        source: 'HMS'
       }
     });
 
@@ -64,16 +64,16 @@ class PaymentGateway {
         billId,
         amount,
         currency,
-        razorpayOrderId: order.id;
+        razorpayOrderId: order.id,
         status: 'PENDING';
-        gateway: 'RAZORPAY';
+        gateway: 'RAZORPAY'
       }
     });
 
     return {
-      orderId: order.id;
+      orderId: order.id,
       amount: order.amount;
-      currency: order.currency;
+      currency: order.currency
     };
   }
 
@@ -86,8 +86,8 @@ class PaymentGateway {
     await prisma.payment.updateMany({
       where: { paymentIntentId },
       data: {
-        status: paymentIntent.status === 'succeeded' ? 'COMPLETED' : 'FAILED';
-        confirmedAt: new Date();
+        status: paymentIntent.status === 'succeeded' ? 'COMPLETED' : 'FAILED',
+        confirmedAt: new Date(),
         paymentMethodId
       }
     });
@@ -112,7 +112,7 @@ class PaymentGateway {
         data: {
           status: 'COMPLETED';
           razorpayPaymentId,
-          confirmedAt: new Date();
+          confirmedAt: new Date()
         }
       });
 
@@ -146,19 +146,19 @@ class PaymentGateway {
     if (payment.gateway === 'STRIPE' && payment.paymentIntentId) {
       const stripe = require('stripe')(this.stripeSecretKey);
       refund = await stripe.refunds.create({
-        payment_intent: payment.paymentIntentId;
+        payment_intent: payment.paymentIntentId,
         amount: amount ? Math.round(amount * 100) : undefined;
-        reason: reason || 'requested_by_customer';
+        reason: reason || 'requested_by_customer'
       });
     } else if (payment.gateway === 'RAZORPAY' && payment.razorpayPaymentId) {
       const Razorpay = require('razorpay');
       const razorpay = new Razorpay({
-        key_id: this.razorpayKeyId;
-        key_secret: this.razorpayKeySecret;
+        key_id: this.razorpayKeyId,
+        key_secret: this.razorpayKeySecret
       });
 
       refund = await razorpay.payments.refund(payment.razorpayPaymentId, {
-        amount: amount ? Math.round(amount * 100) : undefined;
+        amount: amount ? Math.round(amount * 100) : undefined,
         notes: { reason: reason || 'Hospital refund' }
       });
     }
@@ -167,12 +167,12 @@ class PaymentGateway {
     if (refund != null) {
       await prisma.refund.create({
         data: {
-          paymentId: payment.id;
+          paymentId: payment.id,
           amount: refund.amount / 100;
-          currency: payment.currency;
+          currency: payment.currency,
           refundId: refund.id;
-          status: refund.status;
-          reason: reason || 'Hospital refund';
+          status: refund.status,
+          reason: reason || 'Hospital refund'
         }
       });
     }
@@ -185,8 +185,8 @@ class PaymentGateway {
 
     if (customerId != null) {
       const paymentMethods = await stripe.paymentMethods.list({
-        customer: customerId;
-        type: 'card';
+        customer: customerId,
+        type: 'card'
       });
       return paymentMethods.data;
     }
@@ -198,7 +198,7 @@ class PaymentGateway {
     const stripe = require('stripe')(this.stripeSecretKey);
 
     const paymentMethod = await stripe.paymentMethods.attach(paymentMethodId, {
-      customer: customerId;
+      customer: customerId
     });
 
     return paymentMethod;
@@ -239,7 +239,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json({ success: true, ...result });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 }),
   }
 };
 
@@ -262,7 +262,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json({ success: true, result });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Payment confirmation failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Payment confirmation failed' }, { status: 500 }),
   }
 };
 
@@ -280,7 +280,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json({ success: true, result });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Payment verification failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Payment verification failed' }, { status: 500 }),
   }
 };
 

@@ -28,26 +28,26 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
-        
+
     - name: ☕ Setup Java
       uses: actions/setup-java@v4
       with:
         java-version: ${{ inputs.java-version }}
         distribution: 'temurin'
         cache: 'maven'
-        
+
     - name: 🐍 Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
-        
+
     - name: 🔧 Install System Dependencies
       shell: bash
       run: |
         # Update package lists
         sudo apt-get update
-        
+
         # Install essential tools
         sudo apt-get install -y \
           curl \
@@ -68,7 +68,7 @@ runs:
         echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
         sudo apt-get update
         sudo apt-get install -y k6
-        
+
     - name: 🛠️ Install Node.js Tools
       shell: bash
       run: |
@@ -82,7 +82,7 @@ runs:
           typescript \
           ts-node \
           tsx
-          
+
     - name: 🔧 Install Python Security Tools
       shell: bash
       run: |
@@ -93,29 +93,29 @@ runs:
           checkov \
           opa-python \
           dependency-check-py
-          
+
     - name: ⚡ Install Performance Tools
       shell: bash
       run: |
         # Install Artillery for additional load testing
         npm install -g artillery
-        
+
         # Install Lighthouse CI
         npm install -g @lhci/cli
-        
+
     - name: 🔒 Install Security Scanners
       shell: bash
       run: |
         # Install OWASP ZAP
         docker pull owasp/zap2docker-stable
-        
+
         # Install Snyk CLI
         npm install -g snyk
-        
+
         # Install GitHub's CodeQL CLI
         curl -L https://github.com/github/codeql-action/releases/latest/download/codeql-linux64.tar.gz | tar xz
         sudo mv codeql /usr/local/bin/
-        
+
     - name: 📦 Cache Dependencies
       if: inputs.enable-cache == 'true'
       uses: actions/cache@v3
@@ -129,33 +129,33 @@ runs:
         key: hms-enterprise-deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/pom.xml', '**/requirements*.txt') }}
         restore-keys: |
           hms-enterprise-deps-${{ runner.os }}-
-          
+
     - name: 🔄 Verify Installation
       shell: bash
       run: |
         echo "🔍 Verifying tool installations..."
-        
+
         # Verify Node.js ecosystem
         node --version
         npm --version
         npx --version
         tsc --version
-        
+
         # Verify Java ecosystem
         java --version
         mvn --version
-        
+
         # Verify Python ecosystem
         python --version
         pip --version
-        
+
         # Verify security tools
         trivy --version
         semgrep --version
         snyk --version
-        
+
         # Verify performance tools
         k6 version
         lighthouse --version
-        
+
         echo "✅ All tools installed successfully!"

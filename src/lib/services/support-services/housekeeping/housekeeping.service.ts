@@ -12,12 +12,12 @@ export interface HousekeepingRequestFilter {
   requestType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
+  page: number,
   limit: number
 export interface CreateHousekeepingRequestData {
-  locationId: string;
+  locationId: string,
   requestType: string;
-  description: string;
+  description: string,
   priority: string;
   requestedBy: string;
   scheduledDate?: Date;
@@ -53,28 +53,28 @@ export class HousekeepingService {
       prisma.housekeepingRequest.findMany({
         where,
         include: {
-          location: true;
+          location: true,
           requestedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           tasks: {
             include: {
               assignedToUser: {
                 select: {
-                  id: true;
+                  id: true,
                   name: true;
-                  email: true;
+                  email: true
                 }
               }
             }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { createdAt: 'desc' }
       }),
       prisma.housekeepingRequest.count({ where })
@@ -84,13 +84,13 @@ export class HousekeepingService {
     const fhirRequests = requests.map(request => toFHIRHousekeepingRequest(request));
 
     return {
-      data: requests;
+      data: requests,
       fhir: fhirRequests;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -117,18 +117,18 @@ export class HousekeepingService {
         requestType,
         description,
         priority,
-        status: 'PENDING';
+        status: 'PENDING',
         requestedById: requestedBy;
         scheduledDate,
         notes;
       },
       include: {
-        location: true;
+        location: true,
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -136,24 +136,24 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'HOUSEKEEPING_REQUEST';
-      entityId: request.id;
+      entityId: request.id,
       userId: requestedBy;
       details: `Created housekeeping request for ${location.name}`;
     });
 
     // Send notification to housekeeping staff
     await this.notificationService.sendNotification({
-      type: 'HOUSEKEEPING_REQUEST';
+      type: 'HOUSEKEEPING_REQUEST',
       title: `New ${priority} Housekeeping Request`,
       message: `A new ${requestType} request has been created for ${location.name}`,
       recipientRoles: ['HOUSEKEEPING_MANAGER', 'HOUSEKEEPING_STAFF'],
-      entityId: request.id;
+      entityId: request.id,
       metadata: {
-        requestId: request.id;
+        requestId: request.id,
         locationId: locationId;
-        priority: priority;
+        priority: priority
       }
     });
 
@@ -167,21 +167,21 @@ export class HousekeepingService {
     const request = await prisma.housekeepingRequest.findUnique({
       where: { id },
       include: {
-        location: true;
+        location: true,
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         tasks: {
           include: {
             assignedToUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           }
@@ -195,8 +195,8 @@ export class HousekeepingService {
 
     if (includeFHIR != null) {
       return {
-        data: request;
-        fhir: toFHIRHousekeepingRequest(request);
+        data: request,
+        fhir: toFHIRHousekeepingRequest(request)
       };
     }
 
@@ -223,7 +223,7 @@ export class HousekeepingService {
     if (isCompleting != null) {
       const incompleteTasks = await prisma.housekeepingTask.count({
         where: {
-          requestId: id;
+          requestId: id,
           status: { notIn: ['COMPLETED', 'CANCELLED'] }
         }
       });
@@ -240,21 +240,21 @@ export class HousekeepingService {
       where: { id },
       data,
       include: {
-        location: true;
+        location: true,
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         tasks: {
           include: {
             assignedToUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           }
@@ -264,7 +264,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'HOUSEKEEPING_REQUEST';
       entityId: id;
       userId,
@@ -273,16 +273,16 @@ export class HousekeepingService {
     // Send notification if status changed
     if (data?.status && data.status !== request.status) {
       await this.notificationService.sendNotification({
-        type: 'HOUSEKEEPING_STATUS_CHANGE';
+        type: 'HOUSEKEEPING_STATUS_CHANGE',
         title: `Housekeeping Request Status Updated`;
         message: `Request for ${request.location.name} is now ${data.status}`,
-        recipientRoles: ['HOUSEKEEPING_MANAGER'];
+        recipientRoles: ['HOUSEKEEPING_MANAGER'],
         recipientIds: [request.requestedById];
-        entityId: request.id;
+        entityId: request.id,
         metadata: {
-          requestId: request.id;
+          requestId: request.id,
           oldStatus: request.status;
-          newStatus: data.status;
+          newStatus: data.status
         }
       });
     }
@@ -314,18 +314,18 @@ export class HousekeepingService {
     const task = await prisma.housekeepingTask.create({
       data: {
         requestId,
-        description: data.description;
+        description: data.description,
         status: 'PENDING';
-        assignedToId: data.assignedToId;
+        assignedToId: data.assignedToId,
         createdById: userId;
-        notes: data.notes;
+        notes: data.notes
       },
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -333,7 +333,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'HOUSEKEEPING_TASK';
       entityId: task.id;
       userId,
@@ -343,15 +343,15 @@ export class HousekeepingService {
     // Send notification to assigned staff
     if (data.assignedToId) {
       await this.notificationService.sendNotification({
-        type: 'HOUSEKEEPING_TASK_ASSIGNED';
+        type: 'HOUSEKEEPING_TASK_ASSIGNED',
         title: `New Housekeeping Task Assigned`;
         message: `You have been assigned a new task: ${data.description}`,
-        recipientIds: [data.assignedToId];
+        recipientIds: [data.assignedToId],
         entityId: task.id;
         metadata: {
-          taskId: task.id;
+          taskId: task.id,
           requestId: requestId;
-          locationId: request.locationId;
+          locationId: request.locationId
         }
       });
     }
@@ -366,7 +366,7 @@ export class HousekeepingService {
     const task = await prisma.housekeepingTask.findUnique({
       where: { id },
       include: {
-        request: true;
+        request: true
       }
     });
 
@@ -408,14 +408,14 @@ export class HousekeepingService {
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         request: {
           include: {
-            location: true;
+            location: true
           }
         }
       }
@@ -423,7 +423,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'HOUSEKEEPING_TASK';
       entityId: id;
       userId,
@@ -442,21 +442,21 @@ export class HousekeepingService {
         await prisma.housekeepingRequest.update({
           where: { id: task.requestId },
           data: {
-            status: 'COMPLETED';
-            completedDate: new Date();
+            status: 'COMPLETED',
+            completedDate: new Date()
           }
         });
 
         // Send notification that request is complete
         await this.notificationService.sendNotification({
-          type: 'HOUSEKEEPING_REQUEST_COMPLETED';
+          type: 'HOUSEKEEPING_REQUEST_COMPLETED',
           title: `Housekeeping Request Completed`;
           message: `Request for ${updatedTask.request.location.name} has been completed`,
-          recipientIds: [updatedTask.request.requestedById];
+          recipientIds: [updatedTask.request.requestedById],
           entityId: task.requestId;
           metadata: {
-            requestId: task.requestId;
-            locationId: updatedTask.request.locationId;
+            requestId: task.requestId,
+            locationId: updatedTask.request.locationId
           }
         });
       }
@@ -475,12 +475,12 @@ export class HousekeepingService {
     return prisma.housekeepingSchedule.findMany({
       where,
       include: {
-        location: true;
+        location: true,
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       },
@@ -516,15 +516,15 @@ export class HousekeepingService {
         taskTemplate,
         isActive: true;
         nextRun,
-        createdById: userId;
+        createdById: userId
       },
       include: {
-        location: true;
+        location: true,
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -532,7 +532,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'HOUSEKEEPING_SCHEDULE';
       entityId: schedule.id;
       userId,
@@ -576,12 +576,12 @@ export class HousekeepingService {
       where: { id },
       data,
       include: {
-        location: true;
+        location: true,
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -589,7 +589,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'HOUSEKEEPING_SCHEDULE';
       entityId: id;
       userId,
@@ -608,13 +608,13 @@ export class HousekeepingService {
     // Find all active schedules that are due
     const dueSchedules = await prisma.housekeepingSchedule.findMany({
       where: {
-        isActive: true;
+        isActive: true,
         nextRun: {
-          lte: now;
+          lte: now
         }
       },
       include: {
-        location: true;
+        location: true
       }
     });
 
@@ -626,13 +626,13 @@ export class HousekeepingService {
         // Create a new request based on the schedule
         await prisma.housekeepingRequest.create({
           data: {
-            locationId: schedule.locationId;
+            locationId: schedule.locationId,
             requestType: schedule.scheduleType === 'DAILY' ? 'REGULAR_CLEANING' : 'DEEP_CLEANING';
             description: `Scheduled ${schedule.scheduleType.toLowerCase()} cleaning for ${schedule.location.name}`,
-            priority: 'MEDIUM';
+            priority: 'MEDIUM',
             status: 'PENDING';
-            requestedById: userId;
-            scheduledDate: new Date();
+            requestedById: userId,
+            scheduledDate: new Date(),
             notes: `Automatically generated from schedule ${schedule.id}`;
           }
         });
@@ -687,17 +687,17 @@ export class HousekeepingService {
       prisma.housekeepingInspection.findMany({
         where,
         include: {
-          location: true;
+          location: true,
           inspector: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { inspectionDate: 'desc' }
       }),
       prisma.housekeepingInspection.count({ where })
@@ -707,13 +707,13 @@ export class HousekeepingService {
     const fhirInspections = inspections.map(inspection => toFHIRHousekeepingInspection(inspection));
 
     return {
-      data: inspections;
+      data: inspections,
       fhir: fhirInspections;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -742,15 +742,15 @@ export class HousekeepingService {
         status,
         findings,
         recommendations,
-        inspectionDate: inspectionDate || new Date();
+        inspectionDate: inspectionDate || new Date()
       },
       include: {
-        location: true;
+        location: true,
         inspector: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -758,7 +758,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'HOUSEKEEPING_INSPECTION';
       entityId: inspection.id;
       userId,
@@ -769,9 +769,9 @@ export class HousekeepingService {
     if (status === 'FAILED' || (score !== null && score < 70)) {
       await this.createHousekeepingRequest({
         locationId,
-        requestType: 'DEEP_CLEANING';
+        requestType: 'DEEP_CLEANING',
         description: `Follow-up cleaning required based on failed inspection`;
-        priority: 'HIGH';
+        priority: 'HIGH',
         requestedBy: userId;
         scheduledDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000), // Schedule for next day
         notes: `Inspection ID: ${inspection.id}\nFindings: ${findings || 'None provided'}`;
@@ -779,15 +779,15 @@ export class HousekeepingService {
 
       // Send notification about failed inspection
       await this.notificationService.sendNotification({
-        type: 'HOUSEKEEPING_INSPECTION_FAILED';
+        type: 'HOUSEKEEPING_INSPECTION_FAILED',
         title: `Housekeeping Inspection Failed`;
         message: `Location ${location.name} failed inspection. Follow-up cleaning has been scheduled.`,
-        recipientRoles: ['HOUSEKEEPING_MANAGER'];
+        recipientRoles: ['HOUSEKEEPING_MANAGER'],
         entityId: inspection.id;
         metadata: {
-          inspectionId: inspection.id;
+          inspectionId: inspection.id,
           locationId: locationId;
-          score: score;
+          score: score
         }
       });
     }
@@ -806,7 +806,7 @@ export class HousekeepingService {
     if (itemType != null) where.itemType = itemType;
     if (lowStock === true) {
       where.currentStock = {
-        lte: prisma.housekeepingInventory.fields.minimumStock;
+        lte: prisma.housekeepingInventory.fields.minimumStock
       };
     }
 
@@ -814,19 +814,19 @@ export class HousekeepingService {
       prisma.housekeepingInventory.findMany({
         where,
         skip,
-        take: limit;
+        take: limit,
         orderBy: { itemName: 'asc' }
       }),
       prisma.housekeepingInventory.count({ where })
     ]);
 
     return {
-      data: items;
+      data: items,
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -855,7 +855,7 @@ export class HousekeepingService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'HOUSEKEEPING_INVENTORY';
       entityId: id;
       userId,
@@ -866,15 +866,15 @@ export class HousekeepingService {
     // Check if item is low on stock after update
     if (updatedItem.currentStock <= updatedItem.minimumStock) {
       await this.notificationService.sendNotification({
-        type: 'HOUSEKEEPING_INVENTORY_LOW';
+        type: 'HOUSEKEEPING_INVENTORY_LOW',
         title: `Low Inventory Alert`;
         message: `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
         recipientRoles: ['HOUSEKEEPING_MANAGER', 'INVENTORY_MANAGER'],
-        entityId: updatedItem.id;
+        entityId: updatedItem.id,
         metadata: {
-          itemId: updatedItem.id;
+          itemId: updatedItem.id,
           currentStock: updatedItem.currentStock;
-          minimumStock: updatedItem.minimumStock;
+          minimumStock: updatedItem.minimumStock
         }
       });
     }
@@ -909,24 +909,24 @@ export class HousekeepingService {
 
     // Get request counts by status
     const requestsByStatus = await prisma.housekeepingRequest.groupBy({
-      by: ['status'];
+      by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get request counts by type
     const requestsByType = await prisma.housekeepingRequest.groupBy({
-      by: ['requestType'];
+      by: ['requestType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get average completion time
@@ -942,62 +942,62 @@ export class HousekeepingService {
     const inspectionScores = await prisma.housekeepingInspection.findMany({
       where: {
         inspectionDate: {
-          gte: startDate;
+          gte: startDate
         },
         score: {
-          not: null;
+          not: null
         }
       },
       select: {
-        inspectionDate: true;
+        inspectionDate: true,
         score: true;
-        locationId: true;
+        locationId: true,
         location: {
           select: {
-            name: true;
+            name: true
           }
         }
       },
       orderBy: {
-        inspectionDate: 'asc';
+        inspectionDate: 'asc'
       }
     });
 
     // Get top 5 locations with most requests
     const topLocations = await prisma.housekeepingRequest.groupBy({
-      by: ['locationId'];
+      by: ['locationId'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true,
       orderBy: {
         _count: {
-          locationId: 'desc';
+          locationId: 'desc'
         }
       },
-      take: 5;
+      take: 5
     });
 
     // Get location details for top locations
     const locationDetails = await prisma.location.findMany({
       where: {
         id: {
-          in: topLocations.map(loc => loc.locationId);
+          in: topLocations.map(loc => loc.locationId)
         }
       },
       select: {
-        id: true;
-        name: true;
+        id: true,
+        name: true
       }
     });
 
     // Map location names to the top locations
     const topLocationsWithNames = topLocations.map(loc => ({
-      locationId: loc.locationId;
+      locationId: loc.locationId,
       count: loc._count;
-      name: locationDetails.find(l => l.id === loc.locationId)?.name || 'Unknown';
+      name: locationDetails.find(l => l.id === loc.locationId)?.name || 'Unknown'
     }));
 
     return {
@@ -1006,7 +1006,7 @@ export class HousekeepingService {
       completionTime,
       inspectionScores,
       topLocations: topLocationsWithNames;
-      period;
+      period
     };
   }
 
@@ -1014,9 +1014,9 @@ export class HousekeepingService {
    * Calculate next run date for a schedule;
    */
   private calculateNextRunDate(
-    scheduleType: string;
+    scheduleType: string,
     frequency: number;
-    dayOfWeek: number | null;
+    dayOfWeek: number | null,
     timeOfDay: Date | null;
     baseDate: Date = new Date();
   ): Date {
@@ -1030,7 +1030,7 @@ export class HousekeepingService {
       result.setMilliseconds(0);
     } else {
       // Default to 8:00 AM
-      result.setHours(8);
+      result.setHours(8),
       result.setMinutes(0);
       result.setSeconds(0);
       result.setMilliseconds(0);

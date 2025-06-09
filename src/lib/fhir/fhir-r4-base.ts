@@ -30,8 +30,8 @@ export interface FHIRMeta {
 
 // FHIR Narrative
 export interface FHIRNarrative {
-  status: 'generated' | 'extensions' | 'additional' | 'empty';
-  div: string;
+  status: 'generated' | 'extensions' | 'additional' | 'empty',
+  div: string
 }
 
 // FHIR Extension
@@ -170,7 +170,7 @@ export interface FHIRPatientCommunication {
   language: FHIRCodeableConcept;
   preferred?: boolean;
 export interface FHIRPatientLink {
-  other: FHIRReference;
+  other: FHIRReference,
   type: 'replaced-by' | 'replaces' | 'refer' | 'seealso'
 export interface FHIRAttachment {
   contentType?: string;
@@ -238,7 +238,7 @@ export interface FHIRAnnotation {
   authorReference?: FHIRReference;
   authorString?: string;
   time?: string;
-  text: string;
+  text: string
 }
 
 // ServiceRequest Resource (Lab Orders)
@@ -250,7 +250,7 @@ export interface FHIRServiceRequest extends FHIRResource {
   basedOn?: FHIRReference[];
   replaces?: FHIRReference[];
   requisition?: FHIRIdentifier;
-  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown';
+  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown',
   intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
   category?: FHIRCodeableConcept[];
   priority?: 'routine' | 'urgent' | 'asap' | 'stat';
@@ -406,9 +406,9 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   // Create basic meta information
   createMeta(source?: string): FHIRMeta {
     return {
-      versionId: '1';
-      lastUpdated: new Date().toISOString();
-      source: source || 'HMS';
+      versionId: '1',
+      lastUpdated: new Date().toISOString(),
+      source: source || 'HMS'
     };
   }
 
@@ -473,7 +473,7 @@ export interface FHIRBundle extends FHIRResource {
   entry?: FHIRBundleEntry[];
   signature?: FHIRSignature;
 export interface FHIRBundleLink {
-  relation: string;
+  relation: string,
   url: string
 export interface FHIRBundleEntry {
   link?: FHIRBundleLink[];
@@ -486,7 +486,7 @@ export interface FHIRBundleEntrySearch {
   mode?: 'match' | 'include' | 'outcome';
   score?: number;
 export interface FHIRBundleEntryRequest {
-  method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
   url: string;
   ifNoneMatch?: string;
   ifModifiedSince?: string;
@@ -499,7 +499,7 @@ export interface FHIRBundleEntryResponse {
   lastModified?: string;
   outcome?: FHIRResource;
 export interface FHIRSignature {
-  type: FHIRCoding[];
+  type: FHIRCoding[],
   when: string;
   who: FHIRReference;
   onBehalfOf?: FHIRReference;
@@ -511,22 +511,22 @@ export interface FHIRSignature {
 // Common terminology systems
 export const _FHIR_SYSTEMS = {
   // Patient identifiers
-  MRN: 'https://hospital.local/patient-mrn';
+  MRN: 'https://hospital.local/patient-mrn',
   SSN: 'https://hl7.org/fhir/sid/us-ssn';
 
   // Lab codes
-  LOINC: 'https://loinc.org';
+  LOINC: 'https://loinc.org',
   SNOMED_CT: 'https://snomed.info/sct';
 
   // Medication codes
-  RXNORM: 'https://www.nlm.nih.gov/research/umls/rxnorm';
+  RXNORM: 'https://www.nlm.nih.gov/research/umls/rxnorm',
   NDC: 'https://hl7.org/fhir/sid/ndc';
 
   // Units
   UCUM: 'https://unitsofmeasure.org';
 
   // Administrative
-  V2_0203: 'https://terminology.hl7.org/CodeSystem/v2-0203';
+  V2_0203: 'https://terminology.hl7.org/CodeSystem/v2-0203',
   V3_ROLE_CODE: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode';
 
   // Observation categories
@@ -536,7 +536,7 @@ export const _FHIR_SYSTEMS = {
   REQUEST_PRIORITY: 'https://hl7.org/fhir/request-priority';
 
   // Medication request categories
-  MEDICATIONREQUEST_CATEGORY: 'https://terminology.hl7.org/CodeSystem/medicationrequest-category';
+  MEDICATIONREQUEST_CATEGORY: 'https://terminology.hl7.org/CodeSystem/medicationrequest-category'
 } as const
 
 // FHIR Validation utilities

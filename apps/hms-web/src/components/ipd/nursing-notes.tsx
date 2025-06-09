@@ -5,18 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface NursingNote {
-  id: string;
+  id: string,
   date: string;
-  time: string;
+  time: string,
   nurse: string;
-  note: string;
-  category: 'assessment' | 'medication' | 'intervention' | 'observation';
+  note: string,
+  category: 'assessment' | 'medication' | 'intervention' | 'observation'
 }
 
 interface NursingNotesProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  notes: NursingNote[];
+  notes: NursingNote[]
 }
 
 /**
@@ -29,7 +29,7 @@ export const _NursingNotes = ({ patientId, patientName, notes }: NursingNotesPro
       case 'medication': return 'Medication';
       case 'intervention': return 'Intervention';
       case 'observation': return 'Observation';
-      default: return 'Other';
+      default: return 'Other'
     }
   };
 

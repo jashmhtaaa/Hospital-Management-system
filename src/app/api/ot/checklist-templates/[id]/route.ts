@@ -6,7 +6,7 @@ export const _runtime = "edge";
 // Interface for checklist item
 interface ChecklistItem {
   id: string; // Unique ID for the item within the template
-  text: string;
+  text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types
   options?: string[]; // For select type
   required?: boolean;
@@ -61,11 +61,11 @@ export const _GET = async (
     return NextResponse.json(template);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        message: "Error fetching checklist template details";
-        details: errorMessage;
+        message: "Error fetching checklist template details",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -126,7 +126,7 @@ export const _PUT = async (
       ) {
         return NextResponse.json(
           {
-            message: "Invalid items format. Each item must have id, text, and type.",;
+            message: "Invalid items format. Each item must have id, text, and type.",
           },
           { status: 400 }
         );
@@ -192,16 +192,16 @@ export const _PUT = async (
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
-          message: "Checklist template name must be unique";
-          details: errorMessage;
+          message: "Checklist template name must be unique",
+          details: errorMessage
         },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error updating checklist template", details: errorMessage },
@@ -253,11 +253,11 @@ export const DELETE = async (
       // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
-          message: "Cannot delete template with existing responses";
-          details: errorMessage;
+          message: "Cannot delete template with existing responses",
+          details: errorMessage
         },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error deleting checklist template", details: errorMessage },

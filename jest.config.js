@@ -19,15 +19,16 @@ module.exports = {
     '<rootDir>/build/',
   ],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
+    '^.+\\.(js|jsx|ts|tsx)$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          jsx: 'react-jsx',
+        },
       },
-    }],
+    ],
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!(.*\\.mjs$|react-dnd|dnd-core|@react-dnd))',
-  ],
+  transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$|react-dnd|dnd-core|@react-dnd))'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
@@ -58,14 +59,17 @@ module.exports = {
   testResultsProcessor: 'jest-sonar-reporter',
   reporters: [
     'default',
-    ['jest-junit', {
-      outputDirectory: 'reports',
-      outputName: 'test-report.xml',
-      classNameTemplate: '{classname}',
-      titleTemplate: '{title}',
-      ancestorSeparator: ' › ',
-      usePathForSuiteName: true,
-    }],
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'reports',
+        outputName: 'test-report.xml',
+        classNameTemplate: '{classname}',
+        titleTemplate: '{title}',
+        ancestorSeparator: ' › ',
+        usePathForSuiteName: true,
+      },
+    ],
   ],
   maxWorkers: '50%',
   testTimeout: 10000,
@@ -74,14 +78,8 @@ module.exports = {
   restoreMocks: true,
   verbose: true,
   errorOnDeprecated: true,
-  testMatch: [
-    '**/__tests__/**/*.(ts|tsx|js)',
-    '**/*.(test|spec).(ts|tsx|js)',
-  ],
-  watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
-  ],
+  testMatch: ['**/__tests__/**/*.(ts|tsx|js)', '**/*.(test|spec).(ts|tsx|js)'],
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
   globals: {
     'ts-jest': {
       isolatedModules: true,

@@ -6,24 +6,24 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 
 // Define interfaces for data structures
 interface DispensingRecord {
-  id: string;
+  id: string,
   prescription_id: string;
-  prescription_item_id: string;
+  prescription_item_id: string,
   medication_id: string;
   generic_name: string;
   brand_name?: string;
-  strength: string;
+  strength: string,
   dosage_form: string;
-  batch_id: string;
+  batch_id: string,
   batch_number: string;
-  quantity: number;
+  quantity: number,
   selling_price: number;
-  dispensed_at: string;
-  billed: boolean;
+  dispensed_at: string,
+  billed: boolean
 }
 
 interface UnbilledItem extends DispensingRecord {
-  subtotal: number;
+  subtotal: number
 }
 
 interface BillingPharmacyIntegrationProperties {
@@ -62,36 +62,36 @@ const BillingPharmacyIntegration: React.FC<;
         // Mock data
         const mockRecords: DispensingRecord[] = [
           {
-            id: "disp_001";
+            id: "disp_001",
             prescription_id: "presc_001";
-            prescription_item_id: "item_001";
+            prescription_item_id: "item_001",
             medication_id: "med_001";
-            generic_name: "Paracetamol";
+            generic_name: "Paracetamol",
             brand_name: "Calpol";
-            strength: "500mg";
+            strength: "500mg",
             dosage_form: "Tablet";
-            batch_id: "batch_001";
+            batch_id: "batch_001",
             batch_number: "PCM2023001";
-            quantity: 10;
+            quantity: 10,
             selling_price: 2.5;
-            dispensed_at: "2025-04-28T10:15:00Z";
-            billed: false;
+            dispensed_at: "2025-04-28T10:15:00Z",
+            billed: false
           },
           {
-            id: "disp_002";
+            id: "disp_002",
             prescription_id: "presc_001";
-            prescription_item_id: "item_002";
+            prescription_item_id: "item_002",
             medication_id: "med_003";
-            generic_name: "Cetirizine";
+            generic_name: "Cetirizine",
             brand_name: "Zyrtec";
-            strength: "10mg";
+            strength: "10mg",
             dosage_form: "Tablet";
-            batch_id: "batch_002";
+            batch_id: "batch_002",
             batch_number: "CET2023001";
-            quantity: 7;
+            quantity: 7,
             selling_price: 5;
-            dispensed_at: "2025-04-28T10:15:00Z";
-            billed: false;
+            dispensed_at: "2025-04-28T10:15:00Z",
+            billed: false
           },
         ];
         const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially
@@ -100,7 +100,7 @@ const BillingPharmacyIntegration: React.FC<;
         setUnbilledItems(
           records.map((record) => ({
             ...record,
-            subtotal: record.quantity * record.selling_price;
+            subtotal: record.quantity * record.selling_price
           }));
         );
       } catch (error) {
@@ -116,7 +116,7 @@ const BillingPharmacyIntegration: React.FC<;
 
   // Handle item selection for billing
   const handleItemSelection = (
-    item: UnbilledItem;
+    item: UnbilledItem,
     isSelected: boolean;
   ): void => {
     if (isSelected != null) {
@@ -138,7 +138,7 @@ const BillingPharmacyIntegration: React.FC<;
   const handleGenerateBill = async (): Promise<void> => {
     if (selectedItems.length === 0) {
       /* SECURITY: Console statement removed */
-      return;
+      return
     }
 
     setLoading(true);
@@ -185,12 +185,12 @@ const BillingPharmacyIntegration: React.FC<;
       setSelectedItems([]);
       // Bill total is recalculated by useEffect, no need to set here
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } catch (error) {
       const _message =;
         error instanceof Error ? error._message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -305,7 +305,7 @@ const BillingPharmacyIntegration: React.FC<;
                             (index) => index.id === item.id;
                           )}
                           onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                            handleItemSelection(item, event.target.checked);
+                            handleItemSelection(item, event.target.checked)
                           }
                           className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                           aria-label={`Select item ${item.generic_name}`}
@@ -400,7 +400,7 @@ const BillingPharmacyIntegration: React.FC<;
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default BillingPharmacyIntegration;

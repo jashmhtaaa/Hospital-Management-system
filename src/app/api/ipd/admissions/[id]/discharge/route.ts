@@ -75,11 +75,11 @@ export const _GET = async (
 
     return NextResponse.json({
       admission,
-      discharge_summary: dischargeSummary || undefined;
+      discharge_summary: dischargeSummary || undefined
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch discharge summary", details: errorMessage },
       { status: 500 }

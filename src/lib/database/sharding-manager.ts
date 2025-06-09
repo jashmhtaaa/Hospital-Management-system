@@ -26,9 +26,9 @@ interface ShardConfig {
 
   // For range-based sharding
   ranges?: Array<{
-    min: number;
+    min: number,
     max: number;
-    shardIndex: number;
+    shardIndex: number
   }>;
 
   // For lookup-based sharding
@@ -36,7 +36,7 @@ interface ShardConfig {
 
   // Connection details for each shard
   shardConnections: Array<{
-    shardIndex: number;
+    shardIndex: number,
     connectionString: string;
     isReadOnly?: boolean;
   }>;
@@ -320,12 +320,12 @@ class LookupShardResolver implements ShardResolver {
  * ShardingManager manages database sharding across multiple database instances;
  */
 export class ShardingManager {
-  private resolvers: Map<string, ShardResolver> = new Map();
-  private connectionPools: Map<string, PrismaClient> = new Map();
+  private resolvers: Map<string, ShardResolver> = new Map(),
+  private connectionPools: Map<string, PrismaClient> = new Map(),
   private redis: RedisService;
 
   constructor(
-    private readonly config: ConfigService;
+    private readonly config: ConfigService,
     redis: RedisService;
   ) {
     this.redis = redis;
@@ -344,16 +344,16 @@ export class ShardingManager {
 
         switch (config.algorithm) {
           case 'hash':
-            resolver = new HashShardResolver(config);
+            resolver = new HashShardResolver(config),
             break;
           case 'range':
-            resolver = new RangeShardResolver(config);
+            resolver = new RangeShardResolver(config),
             break;
           case 'lookup':
-            resolver = new LookupShardResolver(config);
+            resolver = new LookupShardResolver(config),
             break;
           default:
-            throw new Error(`Unsupported sharding algorithm: ${config.algorithm}`);
+            throw new Error(`Unsupported sharding algorithm: ${config.algorithm}`),
         }
 
         this.resolvers.set(config.entityName, resolver);
@@ -369,7 +369,7 @@ export class ShardingManager {
             const prisma = new PrismaClient({
               datasources: {
                 db: {
-                  url: connectionString;
+                  url: connectionString
                 }
               }
             });
@@ -386,16 +386,16 @@ export class ShardingManager {
 
       // Track metrics
       metricsCollector.incrementCounter('database.sharding.initialization', 1, {
-        entityCount: String(configs.length);
-        connectionCount: String(this.connectionPools.size);
+        entityCount: String(configs.length),
+        connectionCount: String(this.connectionPools.size)
       });
     } catch (error) {
       logger.error('Failed to initialize ShardingManager', { error });
 
       // Track error metrics
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
-        errorType: error.name || 'unknown';
-        operation: 'initialization';
+        errorType: error.name || 'unknown',
+        operation: 'initialization'
       });
 
       throw error;
@@ -410,7 +410,7 @@ export class ShardingManager {
    * @param readOnly Whether to use a read-only connection if available;
    */
   getClientForShard(
-    entityName: string;
+    entityName: string,
     shardKey: string | number;
     readOnly = false;
   ): PrismaClient {
@@ -431,7 +431,7 @@ export class ShardingManager {
       // Track metrics
       metricsCollector.incrementCounter('database.sharding.client_requests', 1, {
         entityName,
-        readOnly: String(readOnly);
+        readOnly: String(readOnly)
       });
 
       return client;
@@ -445,8 +445,8 @@ export class ShardingManager {
       // Track error metrics
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
-        errorType: error.name || 'unknown';
-        operation: 'getClient';
+        errorType: error.name || 'unknown',
+        operation: 'getClient'
       });
 
       throw error;
@@ -478,8 +478,8 @@ export class ShardingManager {
       // Track metrics
       metricsCollector.incrementCounter('database.sharding.all_clients_requests', 1, {
         entityName,
-        readOnly: String(readOnly);
-        clientCount: String(clients.length);
+        readOnly: String(readOnly),
+        clientCount: String(clients.length)
       });
 
       return clients;
@@ -492,8 +492,8 @@ export class ShardingManager {
       // Track error metrics
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
-        errorType: error.name || 'unknown';
-        operation: 'getAllClients';
+        errorType: error.name || 'unknown',
+        operation: 'getAllClients'
       });
 
       throw error;
@@ -508,7 +508,7 @@ export class ShardingManager {
    * @param readOnly Whether to use read-only connections if available;
    */
   async executeAcrossShards<T>(
-    entityName: string;
+    entityName: string,
     fn: (client: PrismaClient) => Promise<T[]>;
     readOnly = true;
   ): Promise<T[]> {
@@ -539,7 +539,7 @@ export class ShardingManager {
       // Track metrics
       metricsCollector.recordTimer('database.sharding.cross_shard_execution_time', duration, {
         entityName,
-        readOnly: String(readOnly);
+        readOnly: String(readOnly)
       });
 
       return flatResults;
@@ -552,8 +552,8 @@ export class ShardingManager {
       // Track error metrics
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
-        errorType: error.name || 'unknown';
-        operation: 'executeAcrossShards';
+        errorType: error.name || 'unknown',
+        operation: 'executeAcrossShards'
       });
 
       throw error;
@@ -568,7 +568,7 @@ export class ShardingManager {
    * @param ttlSeconds Time to live for the cache entry in seconds;
    */
   async cacheShardMapping(
-    entityName: string;
+    entityName: string,
     shardKey: string | number;
     ttlSeconds = 3600 // 1 hour default
   ): Promise<void> {
@@ -598,8 +598,8 @@ export class ShardingManager {
       // Track error metrics
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
-        errorType: error.name || 'unknown';
-        operation: 'cacheMapping';
+        errorType: error.name || 'unknown',
+        operation: 'cacheMapping'
       });
     }
   }
@@ -611,7 +611,7 @@ export class ShardingManager {
    * @param shardKey The shard key value;
    */
   async getCachedShardMapping(
-    entityName: string;
+    entityName: string,
     shardKey: string | number;
   ): Promise<number | null> {
     try {
@@ -643,8 +643,8 @@ export class ShardingManager {
       // Track error metrics
       metricsCollector.incrementCounter('database.sharding.errors', 1, {
         entityName,
-        errorType: error.name || 'unknown';
-        operation: 'getCachedMapping';
+        errorType: error.name || 'unknown',
+        operation: 'getCachedMapping'
       });
 
       return null;

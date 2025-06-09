@@ -30,8 +30,8 @@ export default const _OPDDashboard = () {
     new Date();
   ); // Allow undefined for calendar
   const [permissions, setPermissions] = useState({
-    canCreateAppointment: false;
-    canViewStatistics: false;
+    canCreateAppointment: false,
+    canViewStatistics: false
   });
   const [loadingPermissions, setLoadingPermissions] = useState(true);
   const [permissionError, setPermissionError] = useState<string | null>();
@@ -61,9 +61,9 @@ export default const _OPDDashboard = () {
 
         // FIX: Safely access hasPermission property
         setPermissions({
-          canCreateAppointment: createData?.hasPermission ?? false;
-          canViewStatistics: statsData?.hasPermission ?? false;
-        });
+          canCreateAppointment: createData?.hasPermission ?? false,
+          canViewStatistics: statsData?.hasPermission ?? false
+        }),
       } catch (error) {
 
         setPermissionError(
@@ -71,8 +71,8 @@ export default const _OPDDashboard = () {
         );
         // Set permissions to false on error
         setPermissions({
-          canCreateAppointment: false;
-          canViewStatistics: false;
+          canCreateAppointment: false,
+          canViewStatistics: false
         });
       } finally {
         setLoadingPermissions(false);

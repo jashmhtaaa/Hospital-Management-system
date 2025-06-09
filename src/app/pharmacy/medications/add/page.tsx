@@ -8,28 +8,28 @@ export const dynamic = 'force-dynamic';
 
 // Define interfaces for data structures
 interface Category {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Manufacturer {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface MedicationFormData {
-  item_code: string;
+  item_code: string,
   generic_name: string;
-  brand_name: string;
+  brand_name: string,
   category_id: string;
-  manufacturer_id: string;
+  manufacturer_id: string,
   dosage_form: string;
-  strength: string;
+  strength: string,
   route: string;
-  unit_of_measure: string;
+  unit_of_measure: string,
   prescription_required: boolean;
-  narcotic: boolean;
-  description: string;
+  narcotic: boolean,
+  description: string
 }
 
 type FormErrors = Partial<Record<keyof MedicationFormData, string>>;
@@ -40,18 +40,18 @@ const AddMedicationPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [formData, setFormData] = useState<MedicationFormData>({
-    item_code: "";
+    item_code: "",
     generic_name: "";
-    brand_name: "";
+    brand_name: "",
     category_id: "";
-    manufacturer_id: "";
+    manufacturer_id: "",
     dosage_form: "";
-    strength: "";
+    strength: "",
     route: "";
-    unit_of_measure: "";
+    unit_of_measure: "",
     prescription_required: false;
-    narcotic: false;
-    description: "";
+    narcotic: false,
+    description: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
@@ -125,7 +125,7 @@ const AddMedicationPage: React.FC = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newErrors).length === 0
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -161,18 +161,18 @@ const AddMedicationPage: React.FC = () => {
 
       // Reset form
       setFormData({
-        item_code: "";
+        item_code: "",
         generic_name: "";
-        brand_name: "";
+        brand_name: "",
         category_id: "";
-        manufacturer_id: "";
+        manufacturer_id: "",
         dosage_form: "";
-        strength: "";
+        strength: "",
         route: "";
-        unit_of_measure: "";
+        unit_of_measure: "",
         prescription_required: false;
-        narcotic: false;
-        description: "";
+        narcotic: false,
+        description: ""
       }),
       setErrors({}); // Clear errors on success
 
@@ -530,7 +530,7 @@ const AddMedicationPage: React.FC = () => {
         </form>
       </div>
     </div>
-  );
+  )
 };
 
 export default AddMedicationPage;

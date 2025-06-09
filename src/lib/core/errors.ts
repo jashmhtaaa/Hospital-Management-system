@@ -7,7 +7,7 @@
 
 // Base application error class
 export class AppError extends Error {
-  statusCode: number;
+  statusCode: number,
   errorCode: string;
   isOperational: boolean;
   context?: Record<string, unknown>;
@@ -229,9 +229,9 @@ export const _formatError = (error: Error) {
 
   if (error instanceof AppError) {
     return {
-      status: 'error';
+      status: 'error',
       statusCode: error.statusCode;
-      errorCode: error.errorCode;
+      errorCode: error.errorCode,
       message: error.message;
       details: error.context;
       ...(isDev && { stack: error.stack }),
@@ -240,9 +240,9 @@ export const _formatError = (error: Error) {
 
   // For non-AppError instances (unexpected errors)
   return {
-    status: 'error';
+    status: 'error',
     statusCode: 500;
-    errorCode: 'INTERNAL_ERROR';
+    errorCode: 'INTERNAL_ERROR',
     message: isDev ? error.message : 'An unexpected error occurred';
     ...(isDev && { stack: error.stack }),
   }

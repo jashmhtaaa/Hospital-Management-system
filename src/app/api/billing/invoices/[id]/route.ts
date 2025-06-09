@@ -15,37 +15,37 @@ import { logger } from '@/lib/core/logging';
 
 // Schema for invoice update
 const updateInvoiceSchema = z.object({
-  status: invoiceStatusSchema.optional();
-  discountAmount: moneySchema.optional();
-  discountReason: z.string().optional();
-  notes: z.string().optional();
+  status: invoiceStatusSchema.optional(),
+  discountAmount: moneySchema.optional(),
+  discountReason: z.string().optional(),
+  notes: z.string().optional(),
   items: z.array(z.object({
     id: z.string().uuid().optional(), // Existing item ID if updating
-    serviceItemId: z.string().uuid();
-    quantity: z.number().int().positive();
-    unitPrice: moneySchema;
-    discount: moneySchema.optional();
-    tax: moneySchema.optional();
-    description: z.string().optional();
+    serviceItemId: z.string().uuid(),
+    quantity: z.number().int().positive(),
+    unitPrice: moneySchema,
+    discount: moneySchema.optional(),
+    tax: moneySchema.optional(),
+    description: z.string().optional()
   })).optional(),
 });
 
 // Schema for invoice verification
 const verifyInvoiceSchema = z.object({
-  verifiedBy: z.string();
-  notes: z.string().optional();
+  verifiedBy: z.string(),
+  notes: z.string().optional()
 });
 
 // Schema for invoice approval
 const approveInvoiceSchema = z.object({
-  approvedBy: z.string();
-  notes: z.string().optional();
+  approvedBy: z.string(),
+  notes: z.string().optional()
 });
 
 // Schema for invoice cancellation
 const cancelInvoiceSchema = z.object({
-  cancelledBy: z.string();
-  cancellationReason: z.string();
+  cancelledBy: z.string(),
+  cancellationReason: z.string()
 });
 
 // GET handler for retrieving a specific invoice
@@ -63,14 +63,14 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
     include: {
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
-      billItems: true;
-      payments: true;
+      billItems: true,
+      payments: true
     },
   });
 
@@ -147,20 +147,20 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
       totalTax += itemTax;
 
       return {
-        billId: params.id;
+        billId: params.id,
         serviceItemId: item.serviceItemId;
-        quantity: item.quantity;
+        quantity: item.quantity,
         unitPrice: item.unitPrice;
-        totalPrice: itemTotal;
+        totalPrice: itemTotal,
         discount: itemDiscount;
-        tax: itemTax;
-        description: item.description;
+        tax: itemTax,
+        description: item.description
       };
     });
 
     // Create new items
     await prisma.billItem.createMany({
-      data: billItems;
+      data: billItems
     });
 
     // Apply discount
@@ -176,15 +176,15 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Update invoice
   const updatedInvoice = await prisma.bill.update({
     where: { id: params.id },
-    data: updateData;
+    data: updateData,
     include: {
-      billItems: true;
+      billItems: true,
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
     },
@@ -255,13 +255,13 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   // Handle different operations
   switch (operation) {
     case 'verify':
-      return verifyInvoice(req, params.id, existingInvoice);
+      return verifyInvoice(req, params.id, existingInvoice),
     case 'approve':
-      return approveInvoice(req, params.id, existingInvoice);
+      return approveInvoice(req, params.id, existingInvoice),
     case 'cancel':
-      return cancelInvoice(req, params.id, existingInvoice);
+      return cancelInvoice(req, params.id, existingInvoice),
     default:
-      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION');
+      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION'),
   }
 });
 
@@ -286,19 +286,19 @@ async const verifyInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   const updatedInvoice = await prisma.bill.update({
     where: { id: invoiceId },
     data: {
-      status: 'verified';
+      status: 'verified',
       verifiedBy: data.verifiedBy;
-      verifiedAt: new Date();
-      notes: data.notes;
+      verifiedAt: new Date(),
+      notes: data.notes
     },
     include: {
-      billItems: true;
+      billItems: true,
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
     },
@@ -330,19 +330,19 @@ async const approveInvoice = (req: NextRequest, invoiceId: string, existingInvoi
   const updatedInvoice = await prisma.bill.update({
     where: { id: invoiceId },
     data: {
-      status: 'approved';
+      status: 'approved',
       approvedBy: data.approvedBy;
-      approvedAt: new Date();
-      notes: data.notes;
+      approvedAt: new Date(),
+      notes: data.notes
     },
     include: {
-      billItems: true;
+      billItems: true,
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
     },
@@ -374,19 +374,19 @@ async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   const updatedInvoice = await prisma.bill.update({
     where: { id: invoiceId },
     data: {
-      status: 'cancelled';
+      status: 'cancelled',
       cancelledBy: data.cancelledBy;
-      cancelledAt: new Date();
-      cancellationReason: data.cancellationReason;
+      cancelledAt: new Date(),
+      cancellationReason: data.cancellationReason
     },
     include: {
-      billItems: true;
+      billItems: true,
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
     },
@@ -394,8 +394,8 @@ async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoic
 
   logger.info('Invoice cancelled', {
     invoiceId,
-    cancelledBy: data.cancelledBy;
-    reason: data.cancellationReason;
+    cancelledBy: data.cancelledBy,
+    reason: data.cancellationReason
   });
 
   return createSuccessResponse(updatedInvoice);

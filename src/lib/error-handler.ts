@@ -8,56 +8,56 @@
 export class ErrorHandler {
   // Standard error types with their corresponding status codes
   private static readonly ERROR_TYPES = {
-    NOT_FOUND: 404;
+    NOT_FOUND: 404,
     UNAUTHORIZED: 401;
-    FORBIDDEN: 403;
+    FORBIDDEN: 403,
     VALIDATION: 422;
-    CONFLICT: 409;
+    CONFLICT: 409,
     INTERNAL: 500;
-    BAD_REQUEST: 400;
-    SERVICE_UNAVAILABLE: 503;
+    BAD_REQUEST: 400,
+    SERVICE_UNAVAILABLE: 503
   };
 
   // Error codes for specific domain errors
   private static readonly ERROR_CODES = {
     // Housekeeping errors
-    HOUSEKEEPING_REQUEST_NOT_FOUND: 'HOUSEKEEPING_REQUEST_NOT_FOUND';
+    HOUSEKEEPING_REQUEST_NOT_FOUND: 'HOUSEKEEPING_REQUEST_NOT_FOUND',
     HOUSEKEEPING_STAFF_NOT_AVAILABLE: 'HOUSEKEEPING_STAFF_NOT_AVAILABLE';
     HOUSEKEEPING_SCHEDULE_CONFLICT: 'HOUSEKEEPING_SCHEDULE_CONFLICT';
 
     // Maintenance errors
-    MAINTENANCE_REQUEST_NOT_FOUND: 'MAINTENANCE_REQUEST_NOT_FOUND';
+    MAINTENANCE_REQUEST_NOT_FOUND: 'MAINTENANCE_REQUEST_NOT_FOUND',
     MAINTENANCE_ASSET_NOT_FOUND: 'MAINTENANCE_ASSET_NOT_FOUND';
-    MAINTENANCE_STAFF_NOT_AVAILABLE: 'MAINTENANCE_STAFF_NOT_AVAILABLE';
+    MAINTENANCE_STAFF_NOT_AVAILABLE: 'MAINTENANCE_STAFF_NOT_AVAILABLE',
     MAINTENANCE_PARTS_UNAVAILABLE: 'MAINTENANCE_PARTS_UNAVAILABLE';
 
     // Dietary errors
-    DIETARY_REQUEST_NOT_FOUND: 'DIETARY_REQUEST_NOT_FOUND';
+    DIETARY_REQUEST_NOT_FOUND: 'DIETARY_REQUEST_NOT_FOUND',
     DIETARY_MENU_NOT_FOUND: 'DIETARY_MENU_NOT_FOUND';
     DIETARY_RESTRICTION_CONFLICT: 'DIETARY_RESTRICTION_CONFLICT';
 
     // Ambulance errors
-    AMBULANCE_NOT_FOUND: 'AMBULANCE_NOT_FOUND';
+    AMBULANCE_NOT_FOUND: 'AMBULANCE_NOT_FOUND',
     AMBULANCE_UNAVAILABLE: 'AMBULANCE_UNAVAILABLE';
     AMBULANCE_CREW_UNAVAILABLE: 'AMBULANCE_CREW_UNAVAILABLE';
 
     // Feedback errors
-    FEEDBACK_NOT_FOUND: 'FEEDBACK_NOT_FOUND';
+    FEEDBACK_NOT_FOUND: 'FEEDBACK_NOT_FOUND',
     COMPLAINT_NOT_FOUND: 'COMPLAINT_NOT_FOUND';
 
     // Marketing errors
-    CAMPAIGN_NOT_FOUND: 'CAMPAIGN_NOT_FOUND';
+    CAMPAIGN_NOT_FOUND: 'CAMPAIGN_NOT_FOUND',
     SEGMENT_NOT_FOUND: 'SEGMENT_NOT_FOUND';
-    CONTACT_NOT_FOUND: 'CONTACT_NOT_FOUND';
+    CONTACT_NOT_FOUND: 'CONTACT_NOT_FOUND',
     LEAD_NOT_FOUND: 'LEAD_NOT_FOUND';
 
     // General errors
-    VALIDATION_ERROR: 'VALIDATION_ERROR';
+    VALIDATION_ERROR: 'VALIDATION_ERROR',
     UNAUTHORIZED_ACCESS: 'UNAUTHORIZED_ACCESS';
-    PERMISSION_DENIED: 'PERMISSION_DENIED';
+    PERMISSION_DENIED: 'PERMISSION_DENIED',
     DATABASE_ERROR: 'DATABASE_ERROR';
-    INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR';
-    INTEGRATION_ERROR: 'INTEGRATION_ERROR';
+    INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+    INTEGRATION_ERROR: 'INTEGRATION_ERROR'
   };
 
   /**
@@ -66,10 +66,10 @@ export class ErrorHandler {
    * @returns Standardized error response with status, message, code, and logging flag;
    */
   public static processError(error: unknown): {
-    status: number;
+    status: number,
     message: string;
-    errorCode: string;
-    shouldLog: boolean;
+    errorCode: string,
+    shouldLog: boolean
   } {
     // Default values
     let status = 500;
@@ -162,11 +162,11 @@ export class ErrorHandler {
    * @returns Typed error object;
    */
   public static createError(
-    message: string;
+    message: string,
     type: keyof typeof ErrorHandler.ERROR_TYPES;
     code: keyof typeof ErrorHandler.ERROR_CODES;
-  ): Error & { status: number; code: string } {
-    const error = new Error(message) as Error & { status: number; code: string };
+  ): Error & { status: number, code: string } {
+    const error = new Error(message) as Error & { status: number, code: string };
     error.name = `${type}Error`;
     error.status = this.ERROR_TYPES[type];
     error.code = this.ERROR_CODES[code];

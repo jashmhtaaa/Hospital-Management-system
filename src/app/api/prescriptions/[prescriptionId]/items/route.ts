@@ -25,9 +25,9 @@ const AddPrescriptionItemSchema = z.object({
     dosage: z.string().min(1, "Dosage is required"),
     frequency: z.string().min(1, "Frequency is required"),
     duration: z.string().min(1, "Duration is required"),
-    route: z.string().optional().nullable();
-    instructions: z.string().optional().nullable();
-    quantity_prescribed: z.number().int().positive().optional().nullable();
+    route: z.string().optional().nullable(),
+    instructions: z.string().optional().nullable(),
+    quantity_prescribed: z.number().int().positive().optional().nullable()
 });
 type AddPrescriptionItemType = z.infer<typeof AddPrescriptionItemSchema>;
 
@@ -133,7 +133,7 @@ export const _POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

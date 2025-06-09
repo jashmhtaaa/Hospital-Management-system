@@ -14,79 +14,79 @@ const PatientSchema = z.object({
   // Required fields
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  dateOfBirth: z.date();
+  dateOfBirth: z.date(),
   gender: z.string().min(1, "Gender is required"),
 
   // Optional fields
-  mrn: z.string().optional();
-  title: z.string().optional();
-  middleName: z.string().optional();
-  preferredName: z.string().optional();
-  biologicalSex: z.string().optional();
-  genderIdentity: z.string().optional();
-  pronouns: z.string().optional();
-  maritalStatus: z.string().optional();
-  occupation: z.string().optional();
-  language: z.string().default("English");
-  interpreter: z.boolean().default(false);
-  ethnicity: z.string().optional();
-  race: z.string().optional();
-  nationality: z.string().optional();
-  religion: z.string().optional();
-  educationLevel: z.string().optional();
-  bloodType: z.string().optional();
-  rh: z.string().optional();
-  organDonor: z.boolean().default(false);
-  deceasedDate: z.date().optional();
-  deceasedReason: z.string().optional();
-  vip: z.boolean().default(false);
-  confidential: z.boolean().default(false);
-  notes: z.string().optional();
+  mrn: z.string().optional(),
+  title: z.string().optional(),
+  middleName: z.string().optional(),
+  preferredName: z.string().optional(),
+  biologicalSex: z.string().optional(),
+  genderIdentity: z.string().optional(),
+  pronouns: z.string().optional(),
+  maritalStatus: z.string().optional(),
+  occupation: z.string().optional(),
+  language: z.string().default("English"),
+  interpreter: z.boolean().default(false),
+  ethnicity: z.string().optional(),
+  race: z.string().optional(),
+  nationality: z.string().optional(),
+  religion: z.string().optional(),
+  educationLevel: z.string().optional(),
+  bloodType: z.string().optional(),
+  rh: z.string().optional(),
+  organDonor: z.boolean().default(false),
+  deceasedDate: z.date().optional(),
+  deceasedReason: z.string().optional(),
+  vip: z.boolean().default(false),
+  confidential: z.boolean().default(false),
+  notes: z.string().optional()
 });
 
 // Define schema for contact information
 const ContactSchema = z.object({
-  phoneHome: z.string().optional();
-  phoneMobile: z.string().optional();
-  phoneWork: z.string().optional();
+  phoneHome: z.string().optional(),
+  phoneMobile: z.string().optional(),
+  phoneWork: z.string().optional(),
   phonePreferred: z.string().min(1, "Preferred phone type is required"),
-  email: z.string().email().optional();
-  emailOptIn: z.boolean().default(false);
-  smsOptIn: z.boolean().default(false);
-  mailOptIn: z.boolean().default(true);
-  doNotContact: z.boolean().default(false);
-  doNotContactReason: z.string().optional();
+  email: z.string().email().optional(),
+  emailOptIn: z.boolean().default(false),
+  smsOptIn: z.boolean().default(false),
+  mailOptIn: z.boolean().default(true),
+  doNotContact: z.boolean().default(false),
+  doNotContactReason: z.string().optional()
 });
 
 // Define schema for address
 const AddressSchema = z.object({
   addressType: z.string().min(1, "Address type is required"),
-  isPrimary: z.boolean().default(false);
+  isPrimary: z.boolean().default(false),
   addressLine1: z.string().min(1, "Address line 1 is required"),
-  addressLine2: z.string().optional();
+  addressLine2: z.string().optional(),
   city: z.string().min(1, "City is required"),
-  state: z.string().optional();
+  state: z.string().optional(),
   postalCode: z.string().min(1, "Postal code is required"),
-  country: z.string().default("USA");
-  county: z.string().optional();
-  validFrom: z.date().default(new Date());
-  validTo: z.date().optional();
-  isBilling: z.boolean().default(false);
-  isShipping: z.boolean().default(false);
-  notes: z.string().optional();
+  country: z.string().default("USA"),
+  county: z.string().optional(),
+  validFrom: z.date().default(new Date()),
+  validTo: z.date().optional(),
+  isBilling: z.boolean().default(false),
+  isShipping: z.boolean().default(false),
+  notes: z.string().optional()
 });
 
 // Define schema for identification
 const IdentificationSchema = z.object({
   idType: z.string().min(1, "ID type is required"),
   idNumber: z.string().min(1, "ID number is required"),
-  issuingCountry: z.string().optional();
-  issuingState: z.string().optional();
-  issueDate: z.date().optional();
-  expirationDate: z.date().optional();
-  isPrimary: z.boolean().default(false);
-  documentImageUrl: z.string().optional();
-  notes: z.string().optional();
+  issuingCountry: z.string().optional(),
+  issuingState: z.string().optional(),
+  issueDate: z.date().optional(),
+  expirationDate: z.date().optional(),
+  isPrimary: z.boolean().default(false),
+  documentImageUrl: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // Define schema for emergency contact
@@ -94,44 +94,44 @@ const EmergencyContactSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   relationship: z.string().min(1, "Relationship is required"),
-  isPrimary: z.boolean().default(false);
-  phoneHome: z.string().optional();
-  phoneMobile: z.string().optional();
-  phoneWork: z.string().optional();
+  isPrimary: z.boolean().default(false),
+  phoneHome: z.string().optional(),
+  phoneMobile: z.string().optional(),
+  phoneWork: z.string().optional(),
   phonePreferred: z.string().min(1, "Preferred phone type is required"),
-  email: z.string().email().optional();
-  addressLine1: z.string().optional();
-  addressLine2: z.string().optional();
-  city: z.string().optional();
-  state: z.string().optional();
-  postalCode: z.string().optional();
-  country: z.string().optional();
-  isLegalGuardian: z.boolean().default(false);
-  hasDecisionMaking: z.boolean().default(false);
-  notes: z.string().optional();
+  email: z.string().email().optional(),
+  addressLine1: z.string().optional(),
+  addressLine2: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  postalCode: z.string().optional(),
+  country: z.string().optional(),
+  isLegalGuardian: z.boolean().default(false),
+  hasDecisionMaking: z.boolean().default(false),
+  notes: z.string().optional()
 });
 
 // Define schema for insurance
 const InsuranceSchema = z.object({
   insuranceType: z.string().min(1, "Insurance type is required"),
   payerName: z.string().min(1, "Payer name is required"),
-  planName: z.string().optional();
+  planName: z.string().optional(),
   policyNumber: z.string().min(1, "Policy number is required"),
-  groupNumber: z.string().optional();
-  subscriberId: z.string().optional();
-  subscriberName: z.string().optional();
-  subscriberRelation: z.string().optional();
-  startDate: z.date();
-  endDate: z.date().optional();
-  copayAmount: z.number().optional();
-  coinsuranceRate: z.number().optional();
-  deductibleAmount: z.number().optional();
-  deductibleMet: z.number().optional();
-  outOfPocketMax: z.number().optional();
-  outOfPocketMet: z.number().optional();
-  cardFrontImageUrl: z.string().optional();
-  cardBackImageUrl: z.string().optional();
-  notes: z.string().optional();
+  groupNumber: z.string().optional(),
+  subscriberId: z.string().optional(),
+  subscriberName: z.string().optional(),
+  subscriberRelation: z.string().optional(),
+  startDate: z.date(),
+  endDate: z.date().optional(),
+  copayAmount: z.number().optional(),
+  coinsuranceRate: z.number().optional(),
+  deductibleAmount: z.number().optional(),
+  deductibleMet: z.number().optional(),
+  outOfPocketMax: z.number().optional(),
+  outOfPocketMet: z.number().optional(),
+  cardFrontImageUrl: z.string().optional(),
+  cardBackImageUrl: z.string().optional(),
+  notes: z.string().optional()
 });
 
 /**
@@ -168,7 +168,7 @@ export class PatientManagementService {
     const patientCount = await prisma.patient.count({
       where: {
         createdAt: {
-          gte: today;
+          gte: today
         }
       }
     });
@@ -207,7 +207,7 @@ export class PatientManagementService {
         await prisma.patientContact.create({
           data: {
             ...validatedContact,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -218,7 +218,7 @@ export class PatientManagementService {
         await prisma.patientAddress.create({
           data: {
             ...validatedAddress,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -229,7 +229,7 @@ export class PatientManagementService {
         await prisma.patientIdentification.create({
           data: {
             ...validatedIdentification,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -240,7 +240,7 @@ export class PatientManagementService {
         await prisma.emergencyContact.create({
           data: {
             ...validatedEmergencyContact,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -251,7 +251,7 @@ export class PatientManagementService {
         await prisma.patientInsurance.create({
           data: {
             ...validatedInsurance,
-            patientId: patient.id;
+            patientId: patient.id
           }
         });
       }
@@ -261,12 +261,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'Patient';
-        resourceId: patient.id;
+        resourceId: patient.id,
         description: `Created patient record for /* SECURITY: Template literal eliminated */
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return patient;
@@ -291,28 +291,28 @@ export class PatientManagementService {
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
         include: {
-          contact: true;
+          contact: true,
           addresses: true;
-          identifications: true;
+          identifications: true,
           contacts: true;
-          insurances: true;
+          insurances: true,
           allergies: true;
-          conditions: true;
+          conditions: true,
           documents: true;
           appointments: {
-            take: 5;
+            take: 5,
             orderBy: { startDateTime: 'desc' }
           },
           visits: {
-            take: 5;
+            take: 5,
             orderBy: { startDate: 'desc' }
           },
           vitalSigns: {
-            take: 10;
+            take: 10,
             orderBy: { recordedAt: 'desc' }
           },
           immunizations: {
-            take: 10;
+            take: 10,
             orderBy: { administeredDate: 'desc' }
           }
         }
@@ -324,12 +324,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View';
+        action: 'View',
         resourceType: 'Patient';
-        resourceId: patientId;
+        resourceId: patientId,
         description: `Viewed patient record for /* SECURITY: Template literal eliminated */
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return patient;
@@ -368,7 +368,7 @@ export class PatientManagementService {
       // Update patient record
       const patient = await prisma.patient.update({
         where: { id: patientId },
-        data: validatedPatient;
+        data: validatedPatient
       });
 
       // Update contact information if provided
@@ -376,7 +376,7 @@ export class PatientManagementService {
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.upsert({
           where: { patientId },
-          update: validatedContact;
+          update: validatedContact,
           create: {
             ...validatedContact,
             patientId;
@@ -389,12 +389,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update';
+        action: 'Update',
         resourceType: 'Patient';
-        resourceId: patientId;
+        resourceId: patientId,
         description: `Updated patient record for /* SECURITY: Template literal eliminated */
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return patient;
@@ -423,11 +423,11 @@ export class PatientManagementService {
         await prisma.patientAddress.updateMany({
           where: {
             patientId,
-            addressType: validatedAddress.addressType;
-            isPrimary: true;
+            addressType: validatedAddress.addressType,
+            isPrimary: true
           },
           data: {
-            isPrimary: false;
+            isPrimary: false
           }
         });
       }
@@ -442,12 +442,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'PatientAddress';
-        resourceId: address.id;
+        resourceId: address.id,
         description: `Added address for patient ${patientId}`,
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return address;
@@ -476,11 +476,11 @@ export class PatientManagementService {
         await prisma.patientIdentification.updateMany({
           where: {
             patientId,
-            idType: validatedIdentification.idType;
-            isPrimary: true;
+            idType: validatedIdentification.idType,
+            isPrimary: true
           },
           data: {
-            isPrimary: false;
+            isPrimary: false
           }
         });
       }
@@ -488,8 +488,8 @@ export class PatientManagementService {
       // Check for existing ID with same number
       const existingId = await prisma.patientIdentification.findFirst({
         where: {
-          idType: validatedIdentification.idType;
-          idNumber: validatedIdentification.idNumber;
+          idType: validatedIdentification.idType,
+          idNumber: validatedIdentification.idNumber
         }
       });
 
@@ -507,12 +507,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'PatientIdentification';
-        resourceId: identification.id;
+        resourceId: identification.id,
         description: `Added identification for patient ${patientId}`,
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return identification;
@@ -541,10 +541,10 @@ export class PatientManagementService {
         await prisma.emergencyContact.updateMany({
           where: {
             patientId,
-            isPrimary: true;
+            isPrimary: true
           },
           data: {
-            isPrimary: false;
+            isPrimary: false
           }
         });
       }
@@ -559,12 +559,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'EmergencyContact';
-        resourceId: contact.id;
+        resourceId: contact.id,
         description: `Added emergency contact for patient ${patientId}`,
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return contact;
@@ -594,7 +594,7 @@ export class PatientManagementService {
         const existingPrimary = await prisma.patientInsurance.findFirst({
           where: {
             patientId,
-            insuranceType: 'Primary';
+            insuranceType: 'Primary'
           }
         });
 
@@ -609,7 +609,7 @@ export class PatientManagementService {
           const existingSecondary = await prisma.patientInsurance.findFirst({
             where: {
               patientId,
-              insuranceType: 'Secondary';
+              insuranceType: 'Secondary'
             }
           });
 
@@ -632,12 +632,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'PatientInsurance';
-        resourceId: insurance.id;
+        resourceId: insurance.id,
         description: `Added insurance for patient ${patientId}`,
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return insurance;
@@ -663,22 +663,22 @@ export class PatientManagementService {
 
       if (searchParams.mrn) {
         where.mrn = {
-          contains: searchParams.mrn;
-          mode: 'insensitive';
+          contains: searchParams.mrn,
+          mode: 'insensitive'
         };
       }
 
       if (searchParams.firstName) {
         where.firstName = {
-          contains: searchParams.firstName;
-          mode: 'insensitive';
+          contains: searchParams.firstName,
+          mode: 'insensitive'
         };
       }
 
       if (searchParams.lastName) {
         where.lastName = {
-          contains: searchParams.lastName;
-          mode: 'insensitive';
+          contains: searchParams.lastName,
+          mode: 'insensitive'
         };
       }
 
@@ -700,8 +700,8 @@ export class PatientManagementService {
         where.contact = {
           ...where.contact,
           email: {
-            contains: searchParams.email;
-            mode: 'insensitive';
+            contains: searchParams.email,
+            mode: 'insensitive'
           }
         };
       }
@@ -719,7 +719,7 @@ export class PatientManagementService {
         prisma.patient.findMany({
           where,
           include: {
-            contact: true;
+            contact: true,
             addresses: {
               where: { isPrimary: true }
             }
@@ -733,19 +733,19 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Search';
+        action: 'Search',
         resourceType: 'Patient';
-        description: 'Performed patient search';
+        description: 'Performed patient search',
         performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return {
         patients,
         total,
-        page: searchParams.page || 1;
+        page: searchParams.page || 1,
         limit: take;
-        totalPages: Math.ceil(total / take);
+        totalPages: Math.ceil(total / take)
       };
     } catch (error) {
 
@@ -768,9 +768,9 @@ export class PatientManagementService {
       const patient = await prisma.patient.update({
         where: { id: patientId },
         data: {
-          status: 'Deceased';
+          status: 'Deceased',
           deceasedDate: data.deceasedDate;
-          deceasedReason: data.deceasedReason;
+          deceasedReason: data.deceasedReason
         }
       });
 
@@ -779,12 +779,12 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update';
+        action: 'Update',
         resourceType: 'Patient';
-        resourceId: patientId;
+        resourceId: patientId,
         description: `Marked patient ${patientId} as deceased`,
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return patient;
@@ -812,18 +812,18 @@ export class PatientManagementService {
           tx.patient.findUnique({
             where: { id: sourcePatientId },
             include: {
-              contact: true;
+              contact: true,
               addresses: true;
-              identifications: true;
+              identifications: true,
               contacts: true;
-              insurances: true;
+              insurances: true,
               allergies: true;
-              conditions: true;
+              conditions: true,
               documents: true;
-              appointments: true;
+              appointments: true,
               visits: true;
-              vitalSigns: true;
-              immunizations: true;
+              vitalSigns: true,
+              immunizations: true
             }
           }),
           tx.patient.findUnique({
@@ -839,21 +839,21 @@ export class PatientManagementService {
         for (const address of sourcePatient.addresses) {
           await tx.patientAddress.create({
             data: {
-              addressType: address.addressType;
+              addressType: address.addressType,
               isPrimary: false, // Don't override target's primary addresses
-              addressLine1: address.addressLine1;
+              addressLine1: address.addressLine1,
               addressLine2: address.addressLine2;
-              city: address.city;
+              city: address.city,
               state: address.state;
-              postalCode: address.postalCode;
+              postalCode: address.postalCode,
               country: address.country;
-              county: address.county;
+              county: address.county,
               validFrom: address.validFrom;
-              validTo: address.validTo;
+              validTo: address.validTo,
               isBilling: address.isBilling;
-              isShipping: address.isShipping;
+              isShipping: address.isShipping,
               notes: `Merged from patient ${sourcePatientId}: ${address.notes || ''}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -863,25 +863,25 @@ export class PatientManagementService {
           // Check if this ID already exists for target patient
           const existingId = await tx.patientIdentification.findFirst({
             where: {
-              patientId: targetPatientId;
+              patientId: targetPatientId,
               idType: id.idType;
-              idNumber: id.idNumber;
+              idNumber: id.idNumber
             }
           });
 
           if (!existingId) {
             await tx.patientIdentification.create({
               data: {
-                idType: id.idType;
+                idType: id.idType,
                 idNumber: id.idNumber;
-                issuingCountry: id.issuingCountry;
+                issuingCountry: id.issuingCountry,
                 issuingState: id.issuingState;
-                issueDate: id.issueDate;
+                issueDate: id.issueDate,
                 expirationDate: id.expirationDate;
                 isPrimary: false, // Don't override target's primary IDs
-                documentImageUrl: id.documentImageUrl;
+                documentImageUrl: id.documentImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${id.notes || ''}`,
-                patientId: targetPatientId;
+                patientId: targetPatientId
               }
             });
           }
@@ -891,25 +891,25 @@ export class PatientManagementService {
         for (const contact of sourcePatient.contacts) {
           await tx.emergencyContact.create({
             data: {
-              firstName: contact.firstName;
+              firstName: contact.firstName,
               lastName: contact.lastName;
-              relationship: contact.relationship;
+              relationship: contact.relationship,
               isPrimary: false, // Don't override target's primary contacts
-              phoneHome: contact.phoneHome;
+              phoneHome: contact.phoneHome,
               phoneMobile: contact.phoneMobile;
-              phoneWork: contact.phoneWork;
+              phoneWork: contact.phoneWork,
               phonePreferred: contact.phonePreferred;
-              email: contact.email;
+              email: contact.email,
               addressLine1: contact.addressLine1;
-              addressLine2: contact.addressLine2;
+              addressLine2: contact.addressLine2,
               city: contact.city;
-              state: contact.state;
+              state: contact.state,
               postalCode: contact.postalCode;
-              country: contact.country;
+              country: contact.country,
               isLegalGuardian: contact.isLegalGuardian;
-              hasDecisionMaking: contact.hasDecisionMaking;
+              hasDecisionMaking: contact.hasDecisionMaking,
               notes: `Merged from patient ${sourcePatientId}: ${contact.notes || ''}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -919,9 +919,9 @@ export class PatientManagementService {
           // Check if this insurance already exists for target patient
           const existingInsurance = await tx.patientInsurance.findFirst({
             where: {
-              patientId: targetPatientId;
+              patientId: targetPatientId,
               payerName: insurance.payerName;
-              policyNumber: insurance.policyNumber;
+              policyNumber: insurance.policyNumber
             }
           });
 
@@ -929,25 +929,25 @@ export class PatientManagementService {
             await tx.patientInsurance.create({
               data: {
                 insuranceType: 'Secondary', // Don't override primary insurance
-                payerName: insurance.payerName;
+                payerName: insurance.payerName,
                 planName: insurance.planName;
-                policyNumber: insurance.policyNumber;
+                policyNumber: insurance.policyNumber,
                 groupNumber: insurance.groupNumber;
-                subscriberId: insurance.subscriberId;
+                subscriberId: insurance.subscriberId,
                 subscriberName: insurance.subscriberName;
-                subscriberRelation: insurance.subscriberRelation;
+                subscriberRelation: insurance.subscriberRelation,
                 startDate: insurance.startDate;
-                endDate: insurance.endDate;
+                endDate: insurance.endDate,
                 copayAmount: insurance.copayAmount;
-                coinsuranceRate: insurance.coinsuranceRate;
+                coinsuranceRate: insurance.coinsuranceRate,
                 deductibleAmount: insurance.deductibleAmount;
-                deductibleMet: insurance.deductibleMet;
+                deductibleMet: insurance.deductibleMet,
                 outOfPocketMax: insurance.outOfPocketMax;
-                outOfPocketMet: insurance.outOfPocketMet;
+                outOfPocketMet: insurance.outOfPocketMet,
                 cardFrontImageUrl: insurance.cardFrontImageUrl;
-                cardBackImageUrl: insurance.cardBackImageUrl;
+                cardBackImageUrl: insurance.cardBackImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || ''}`,
-                patientId: targetPatientId;
+                patientId: targetPatientId
               }
             });
           }
@@ -958,16 +958,16 @@ export class PatientManagementService {
         for (const allergy of sourcePatient.allergies) {
           await tx.patientAllergy.create({
             data: {
-              allergyType: allergy.allergyType;
+              allergyType: allergy.allergyType,
               allergen: allergy.allergen;
-              reaction: allergy.reaction;
+              reaction: allergy.reaction,
               severity: allergy.severity;
-              status: allergy.status;
+              status: allergy.status,
               onsetDate: allergy.onsetDate;
-              endDate: allergy.endDate;
+              endDate: allergy.endDate,
               recordedBy: allergy.recordedBy;
               notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ''}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId
             }
           });
         }
@@ -976,19 +976,19 @@ export class PatientManagementService {
         for (const condition of sourcePatient.conditions) {
           await tx.patientCondition.create({
             data: {
-              conditionName: condition.conditionName;
+              conditionName: condition.conditionName,
               conditionCode: condition.conditionCode;
-              category: condition.category;
+              category: condition.category,
               status: condition.status;
-              onsetDate: condition.onsetDate;
+              onsetDate: condition.onsetDate,
               endDate: condition.endDate;
-              severity: condition.severity;
+              severity: condition.severity,
               bodySite: condition.bodySite;
-              stage: condition.stage;
+              stage: condition.stage,
               recordedBy: condition.recordedBy;
               notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ''}`,
-              isConfidential: condition.isConfidential;
-              patientId: targetPatientId;
+              isConfidential: condition.isConfidential,
+              patientId: targetPatientId
             }
           });
         }
@@ -1021,7 +1021,7 @@ export class PatientManagementService {
         await tx.patient.update({
           where: { id: sourcePatientId },
           data: {
-            status: 'Inactive';
+            status: 'Inactive',
             notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`;
           }
         });
@@ -1038,12 +1038,12 @@ export class PatientManagementService {
 
         // Log audit
         await this.auditService.logAction({
-          action: 'Merge';
+          action: 'Merge',
           resourceType: 'Patient';
-          resourceId: targetPatientId;
+          resourceId: targetPatientId,
           description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
-          performedBy: userId;
-          performerRole: await this.authService.getUserRole(userId);
+          performedBy: userId,
+          performerRole: await this.authService.getUserRole(userId)
         });
 
         return updatedTargetPatient;
@@ -1070,11 +1070,11 @@ export class PatientManagementService {
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
         include: {
-          contact: true;
+          contact: true,
           addresses: true;
-          identifications: true;
+          identifications: true,
           contacts: true;
-          insurances: true;
+          insurances: true
         }
       });
 
@@ -1087,17 +1087,17 @@ export class PatientManagementService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View';
+        action: 'View',
         resourceType: 'PatientMPI';
-        resourceId: patientId;
+        resourceId: patientId,
         description: `Viewed MPI for patient ${patientId}`,
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,
+        performerRole: await this.authService.getUserRole(userId)
       });
 
       return {
         patient,
-        fhirPatient;
+        fhirPatient
       };
     } catch (error) {
 

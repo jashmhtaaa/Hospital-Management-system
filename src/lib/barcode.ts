@@ -49,14 +49,14 @@ export const _parseBarcodeData = async (barcodeData: string): Promise<{
   // Check if this is a specimen barcode
   if (barcodeData.startsWith('SP') && barcodeData.length === 18) {
     return {
-      type: 'specimen';
-      id: barcodeData;
+      type: 'specimen',
+      id: barcodeData
     };
   }
 
   // Unknown barcode format
   return {
-    type: 'unknown';
+    type: 'unknown'
   };
 }
 

@@ -8,22 +8,22 @@ import { Invoice } from "@/types/billing";
 import { getSession } from "@/lib/session";
 // Zod schema for invoice creation
 const invoiceCreateSchema = z.object({
-  patient_id: z.number();
-  consultation_id: z.number().optional().nullable();
+  patient_id: z.number(),
+  consultation_id: z.number().optional().nullable(),
   issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid issue date format";
+    message: "Invalid issue date format"
   }),
   due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid due date format";
+    message: "Invalid due date format"
   }),
   status: z.enum(["Draft", "Sent", "Paid", "Overdue", "Cancelled"]),
-  notes: z.string().optional().nullable();
+  notes: z.string().optional().nullable(),
   items: z.array(
     z.object({
-      billable_item_id: z.number();
-      description: z.string();
-      quantity: z.number().positive();
-      unit_price: z.number().nonnegative();
+      billable_item_id: z.number(),
+      description: z.string(),
+      quantity: z.number().positive(),
+      unit_price: z.number().nonnegative()
     });
   ).min(1, "At least one invoice item is required"),
 });
@@ -98,7 +98,7 @@ export const _GET = async (request: NextRequest) => {
     }
 
     query += ` ORDER BY i./* SECURITY: Template literal eliminated */
-    queryParameters.push(limit, offset);
+    queryParameters.push(limit, offset),
 
     const [invoicesResult, countResult] = await Promise.all([
       (DB as D1Database).prepare(query).bind(...queryParameters).all<Invoice>(),
@@ -109,12 +109,12 @@ export const _GET = async (request: NextRequest) => {
     const total = countResult?.total || 0;
 
     return NextResponse.json({
-      data: results;
+      data: results,
       pagination: {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       },
     });
 
@@ -189,7 +189,7 @@ export const _POST = async (request: NextRequest) => {
 
         const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) =>
             (DB as D1Database).prepare(
-                `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at);
+                `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at),
                  VALUES (?, ?, ?, ?, ?, ?, ?)`
             ).bind(
                 newInvoiceId,

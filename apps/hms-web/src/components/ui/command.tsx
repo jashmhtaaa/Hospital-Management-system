@@ -71,7 +71,7 @@ const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>(
 CommandEmpty.displayName = "CommandEmpty";
 
 interface CommandGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading: React.ReactNode;
+  heading: React.ReactNode
 }
 
 const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(
@@ -124,7 +124,7 @@ const CommandShortcut = ({ className,
       )}
       {...props}
     />
-  );
+  )
 };
 CommandShortcut.displayName = "CommandShortcut";
 

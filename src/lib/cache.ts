@@ -12,7 +12,7 @@ const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379'
 const REDIS_ENABLED = process.env.REDIS_ENABLED === 'true';
 
 // In-memory cache fallback
-const memoryCache: Record<string, { value: string; expiry: number }> = {};
+const memoryCache: Record<string, { value: string, expiry: number }> = {};
 
 class CacheService {
   private redisClient: unknown;
@@ -95,7 +95,7 @@ class CacheService {
       // Fallback to memory cache
       memoryCache[key] = {
         value,
-        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000);
+        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
       };
     } catch (error) {
 

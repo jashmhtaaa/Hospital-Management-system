@@ -1,6 +1,6 @@
 # Hospital Management System (HMS) - Complete Master Documentation
 
-*This document consolidates ALL project documentation including README files, API docs, architecture guides, user manuals, research, and implementation reports into a single comprehensive reference.*
+_This document consolidates ALL project documentation including README files, API docs, architecture guides, user manuals, research, and implementation reports into a single comprehensive reference._
 
 ## Table of Contents
 
@@ -26,6 +26,7 @@
 The Hospital Management System (HMS) is a comprehensive, enterprise-grade healthcare management platform designed to streamline hospital operations, ensure HIPAA compliance, and provide robust patient care management capabilities.
 
 #### Key Features
+
 - **Complete Microservices Architecture**: 7 independently deployable services
 - **HIPAA/GDPR Compliance**: Full regulatory compliance with audit trails
 - **Electronic Health Records (EHR)**: Complete patient data management
@@ -36,6 +37,7 @@ The Hospital Management System (HMS) is a comprehensive, enterprise-grade health
 - **Advanced Analytics**: Business intelligence and reporting
 
 #### Technology Stack
+
 - **Backend**: Node.js, TypeScript, Express.js
 - **Frontend**: React, Next.js, Tailwind CSS
 - **Database**: PostgreSQL with Redis caching
@@ -56,6 +58,7 @@ The Hospital Management System (HMS) is a comprehensive, enterprise-grade health
 This Hospital Management System represents a complete enterprise-grade healthcare management platform with the following significant improvements:
 
 ##### Architecture Improvements
+
 - **Enterprise Database**: PostgreSQL with connection pooling and optimization
 - **Service Layer Abstraction**: Clear separation of concerns with repository pattern
 - **Field-Level Encryption**: AES-256 encryption for Protected Health Information (PHI)
@@ -65,18 +68,21 @@ This Hospital Management System represents a complete enterprise-grade healthcar
 ##### Core Components
 
 ###### Database Layer
+
 - **IDatabaseAdapter**: Abstracted database interface
 - **PostgresqlAdapter**: Production-ready PostgreSQL implementation
 - **Connection Pooling**: Optimized database performance
 - **Query Optimization**: Indexed and optimized queries
 
 ###### Repository Layer (`src/repositories`)
+
 - **PatientRepository**: Patient data CRUD operations
 - **UserRepository**: User management and authentication
 - **EHRRepository**: Electronic health records management
 - **AuditRepository**: Comprehensive audit trail logging
 
 ###### Service Layer (`src/services`)
+
 - **PatientService**: Core patient management business logic
 - **AuthService**: Authentication and authorization
 - **EncryptionService**: PHI encryption/decryption
@@ -84,6 +90,7 @@ This Hospital Management System represents a complete enterprise-grade healthcar
 - **NotificationService**: Multi-channel communication
 
 ##### Enterprise Features
+
 - **Multi-Factor Authentication**: TOTP and SMS-based MFA
 - **Role-Based Access Control**: Granular permissions system
 - **Audit Logging**: Complete activity tracking
@@ -96,6 +103,7 @@ This Hospital Management System represents a complete enterprise-grade healthcar
 #### Enterprise-Grade Features
 
 ##### Security & Compliance
+
 - **HIPAA Compliance**: Complete administrative, physical, and technical safeguards
 - **GDPR Compliance**: Data protection by design and default
 - **SOC 2 Type II**: Security, availability, and processing integrity
@@ -103,6 +111,7 @@ This Hospital Management System represents a complete enterprise-grade healthcar
 - **Audit Trails**: Immutable security event logging
 
 ##### Scalability & Performance
+
 - **Microservices Architecture**: Independent scaling and deployment
 - **Database Optimization**: Query optimization and indexing
 - **Caching Strategy**: Redis-based distributed caching
@@ -110,6 +119,7 @@ This Hospital Management System represents a complete enterprise-grade healthcar
 - **CDN Integration**: Global content delivery
 
 ##### Operations & Monitoring
+
 - **Health Checks**: Comprehensive service monitoring
 - **Logging**: Centralized structured logging
 - **Metrics**: Performance and business metrics
@@ -123,6 +133,7 @@ This Hospital Management System represents a complete enterprise-grade healthcar
 The Patient Management microservice handles all patient-related operations including registration, profile management, and medical history tracking.
 
 ##### Features
+
 - **Patient Registration**: Complete registration workflow
 - **Profile Management**: Comprehensive patient profiles
 - **Medical History**: Complete treatment history tracking
@@ -130,6 +141,7 @@ The Patient Management microservice handles all patient-related operations inclu
 - **Appointment Scheduling**: Integrated appointment system
 
 ##### API Endpoints
+
 - `POST /api/patients` - Register new patient
 - `GET /api/patients/{id}` - Get patient details
 - `PUT /api/patients/{id}` - Update patient information
@@ -137,6 +149,7 @@ The Patient Management microservice handles all patient-related operations inclu
 - `POST /api/patients/{id}/appointments` - Schedule appointment
 
 ##### Database Schema
+
 - **patients**: Core patient information
 - **patient_history**: Medical history records
 - **patient_insurance**: Insurance information
@@ -149,14 +162,17 @@ The Patient Management microservice handles all patient-related operations inclu
 ### Authentication
 
 #### JWT Token Authentication
+
 All API endpoints require JWT authentication unless specified otherwise.
 
 **Authentication Header:**
+
 ```
 Authorization: Bearer <jwt_token>
 ```
 
 **Login Endpoint:**
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -169,6 +185,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -186,6 +203,7 @@ Content-Type: application/json
 ```
 
 #### Multi-Factor Authentication
+
 ```http
 POST /api/auth/mfa/setup
 Authorization: Bearer <jwt_token>
@@ -203,6 +221,7 @@ Response:
 #### Patient Management
 
 **Create Patient:**
+
 ```http
 POST /api/patients
 Authorization: Bearer <jwt_token>
@@ -235,6 +254,7 @@ Content-Type: application/json
 ```
 
 **Get Patient:**
+
 ```http
 GET /api/patients/{patientId}
 Authorization: Bearer <jwt_token>
@@ -256,6 +276,7 @@ Response:
 #### Electronic Health Records
 
 **Create Clinical Note:**
+
 ```http
 POST /api/ehr/clinical-notes
 Authorization: Bearer <jwt_token>
@@ -274,6 +295,7 @@ Authorization: Bearer <jwt_token>
 ```
 
 **Get Patient EHR:**
+
 ```http
 GET /api/ehr/patients/{patientId}
 Authorization: Bearer <jwt_token>
@@ -296,6 +318,7 @@ Response:
 #### Quality Management
 
 **Create Quality Assessment:**
+
 ```http
 POST /api/quality/assessments
 Authorization: Bearer <jwt_token>
@@ -321,6 +344,7 @@ Authorization: Bearer <jwt_token>
 #### ICD Coding
 
 **Search ICD Codes:**
+
 ```http
 GET /api/icd/search?query=diabetes&version=10
 Authorization: Bearer <jwt_token>
@@ -339,6 +363,7 @@ Response:
 ```
 
 **Validate ICD Code:**
+
 ```http
 POST /api/icd/validate
 Authorization: Bearer <jwt_token>
@@ -370,6 +395,7 @@ All API responses follow a consistent error format:
 ```
 
 **Standard Error Codes:**
+
 - `VALIDATION_ERROR` - Input validation failed
 - `UNAUTHORIZED` - Authentication required
 - `FORBIDDEN` - Insufficient permissions
@@ -388,6 +414,7 @@ API endpoints are rate-limited to prevent abuse:
 - **General APIs**: 1000 requests per hour per user
 
 Rate limit headers are included in responses:
+
 ```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
@@ -403,42 +430,49 @@ X-RateLimit-Reset: 1640995200
 The HMS implements a microservices architecture with 7 core services:
 
 #### 1. Patient Management Service
+
 - **Responsibilities**: Patient registration, profile management, demographics
 - **Database**: Dedicated PostgreSQL instance
 - **APIs**: REST and GraphQL endpoints
 - **Integration**: EHR, Billing, Scheduling services
 
 #### 2. Electronic Health Records Service
+
 - **Responsibilities**: Clinical data management, medical history
 - **Database**: PostgreSQL with encryption at rest
 - **APIs**: FHIR-compliant REST APIs
 - **Integration**: Patient Management, Quality Management
 
 #### 3. Appointment Scheduling Service
+
 - **Responsibilities**: Appointment booking, calendar management
 - **Database**: PostgreSQL with Redis caching
 - **APIs**: REST with real-time WebSocket updates
 - **Integration**: Patient Management, Notification Service
 
 #### 4. Billing & Revenue Cycle Service
+
 - **Responsibilities**: Insurance verification, billing, payments
 - **Database**: PostgreSQL with audit logging
 - **APIs**: REST with external payment integration
 - **Integration**: Patient Management, EHR Service
 
 #### 5. Notification Service
+
 - **Responsibilities**: SMS, email, WhatsApp notifications
 - **Database**: Redis for queuing
 - **APIs**: REST with webhook support
 - **Integration**: All services for notifications
 
 #### 6. Quality Management Service
+
 - **Responsibilities**: NABH/JCI compliance, quality metrics
 - **Database**: PostgreSQL with reporting views
 - **APIs**: REST with dashboard endpoints
 - **Integration**: EHR, Patient Management
 
 #### 7. Analytics & Reporting Service
+
 - **Responsibilities**: Business intelligence, clinical analytics
 - **Database**: PostgreSQL with data warehouse
 - **APIs**: REST with visualization endpoints
@@ -447,6 +481,7 @@ The HMS implements a microservices architecture with 7 core services:
 ### Design Patterns
 
 #### Repository Pattern
+
 ```typescript
 interface IPatientRepository {
   create(patient: Patient): Promise<Patient>;
@@ -457,7 +492,7 @@ interface IPatientRepository {
 
 class PatientRepository implements IPatientRepository {
   constructor(private db: IDatabaseAdapter) {}
-  
+
   async create(patient: Patient): Promise<Patient> {
     const encryptedPatient = await this.encryption.encrypt(patient);
     return this.db.create('patients', encryptedPatient);
@@ -466,6 +501,7 @@ class PatientRepository implements IPatientRepository {
 ```
 
 #### Service Layer Pattern
+
 ```typescript
 class PatientService {
   constructor(
@@ -473,7 +509,7 @@ class PatientService {
     private encryption: IEncryptionService,
     private audit: IAuditService
   ) {}
-  
+
   async createPatient(data: CreatePatientDto): Promise<Patient> {
     await this.validatePatientData(data);
     const patient = await this.repository.create(data);
@@ -484,6 +520,7 @@ class PatientService {
 ```
 
 #### Event-Driven Architecture
+
 ```typescript
 class EventBus {
   async publish(event: DomainEvent): Promise<void> {
@@ -496,6 +533,7 @@ class EventBus {
 ### Database Design
 
 #### Patient Management Schema
+
 ```sql
 CREATE TABLE patients (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -513,6 +551,7 @@ CREATE INDEX idx_patients_active ON patients(is_active);
 ```
 
 #### EHR Schema
+
 ```sql
 CREATE TABLE clinical_notes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -532,6 +571,7 @@ CREATE INDEX idx_clinical_notes_date ON clinical_notes(created_at);
 ### Security Architecture
 
 #### Multi-Layer Security
+
 1. **Network Security**: TLS 1.3, VPN access, firewall rules
 2. **Application Security**: Input validation, SQL injection prevention
 3. **Data Security**: Field-level encryption, key rotation
@@ -539,6 +579,7 @@ CREATE INDEX idx_clinical_notes_date ON clinical_notes(created_at);
 5. **Audit Security**: Immutable audit logs, tamper detection
 
 #### Encryption Strategy
+
 ```typescript
 class EncryptionService {
   async encryptPHI(data: any): Promise<string> {
@@ -546,7 +587,7 @@ class EncryptionService {
     const cipher = crypto.createCipher('aes-256-gcm', key);
     return cipher.update(JSON.stringify(data), 'utf8', 'base64');
   }
-  
+
   async decryptPHI(encryptedData: string): Promise<any> {
     const key = await this.keyManagement.getCurrentKey();
     const decipher = crypto.createDecipher('aes-256-gcm', key);
@@ -563,7 +604,9 @@ class EncryptionService {
 ### Administrator Manual
 
 #### User Management
+
 1. **Creating Users**
+
    - Navigate to Admin Panel > Users
    - Click "Add New User"
    - Fill required information: name, email, role
@@ -571,6 +614,7 @@ class EncryptionService {
    - Assign appropriate permissions
 
 2. **Role Management**
+
    - Available roles: Admin, Doctor, Nurse, Technician, Receptionist
    - Each role has predefined permissions
    - Custom roles can be created with specific permissions
@@ -582,7 +626,9 @@ class EncryptionService {
    - Integration settings (SMS, email providers)
 
 #### Compliance Management
+
 1. **Audit Logs**
+
    - View all system activities
    - Filter by user, action type, date range
    - Export audit reports for compliance
@@ -595,13 +641,16 @@ class EncryptionService {
 ### Doctor Manual
 
 #### Patient Management
+
 1. **Patient Registration**
+
    - Navigate to Patients > Add New
    - Complete patient demographics
    - Verify insurance information
    - Upload required documents
 
 2. **Clinical Documentation**
+
    - Access patient EHR
    - Create clinical notes using templates
    - Document examination findings
@@ -614,7 +663,9 @@ class EncryptionService {
    - Send to pharmacy electronically
 
 #### EHR Access
+
 1. **Viewing Patient Records**
+
    - Search patients by name, ID, or phone
    - View complete medical history
    - Access lab results and imaging
@@ -629,7 +680,9 @@ class EncryptionService {
 ### Nurse Manual
 
 #### Daily Workflow
+
 1. **Patient Care**
+
    - View assigned patients
    - Document vital signs
    - Update nursing notes
@@ -642,6 +695,7 @@ class EncryptionService {
    - Emergency procedures
 
 #### Medication Administration
+
 1. **Medication Tracking**
    - Scan patient ID and medication
    - Verify dosage and timing
@@ -651,13 +705,16 @@ class EncryptionService {
 ### Patient Manual
 
 #### Patient Portal Access
+
 1. **Registration**
+
    - Create account with email verification
    - Complete health questionnaire
    - Upload insurance cards
    - Set communication preferences
 
 2. **Appointment Scheduling**
+
    - View available appointments
    - Book, reschedule, or cancel
    - Receive confirmation notifications
@@ -670,7 +727,9 @@ class EncryptionService {
    - Update contact information
 
 #### Mobile App Features
+
 1. **Appointment Management**
+
    - Push notifications for reminders
    - GPS directions to hospital
    - Check-in functionality
@@ -689,17 +748,20 @@ class EncryptionService {
 ### HIPAA Compliance Implementation
 
 #### Administrative Safeguards
+
 1. **Security Officer**: Designated security officer responsible for HIPAA compliance
 2. **Workforce Training**: Regular security awareness training for all users
 3. **Access Management**: Procedures for granting and revoking access
 4. **Contingency Plan**: Business continuity and disaster recovery procedures
 
 #### Physical Safeguards
+
 1. **Workstation Security**: Automatic screen locks, clean desk policy
 2. **Media Controls**: Secure disposal of electronic media
 3. **Facility Access**: Controlled access to data centers and workstations
 
 #### Technical Safeguards
+
 1. **Access Control**: Unique user identification and authentication
 2. **Audit Controls**: Comprehensive logging of all PHI access
 3. **Integrity**: Protection against unauthorized alteration
@@ -708,29 +770,31 @@ class EncryptionService {
 ### GDPR Compliance
 
 #### Data Protection by Design
+
 ```typescript
 class GDPRCompliantService {
   async processPersonalData(data: PersonalData, purpose: ProcessingPurpose) {
     // Validate legal basis for processing
     await this.validateLegalBasis(purpose);
-    
+
     // Implement data minimization
     const minimizedData = this.minimizeData(data, purpose);
-    
+
     // Apply retention policies
     await this.applyRetentionPolicy(minimizedData);
-    
+
     // Log processing activity
     await this.logProcessingActivity({
       dataSubject: data.subjectId,
       purpose,
-      legalBasis: purpose.legalBasis
+      legalBasis: purpose.legalBasis,
     });
   }
 }
 ```
 
 #### Data Subject Rights
+
 1. **Right of Access**: Patients can request copies of their data
 2. **Right to Rectification**: Correction of inaccurate personal data
 3. **Right to Erasure**: "Right to be forgotten" implementation
@@ -740,12 +804,14 @@ class GDPRCompliantService {
 ### SOC 2 Type II Compliance
 
 #### Security Controls
+
 1. **Access Controls**: Multi-factor authentication, role-based access
 2. **Change Management**: Controlled deployment processes
 3. **System Monitoring**: Real-time security monitoring and alerting
 4. **Incident Response**: Defined procedures for security incidents
 
 #### Availability Controls
+
 1. **System Monitoring**: 24/7 monitoring of critical systems
 2. **Capacity Planning**: Proactive resource management
 3. **Disaster Recovery**: Tested backup and recovery procedures
@@ -754,32 +820,31 @@ class GDPRCompliantService {
 ### Encryption Implementation
 
 #### Field-Level Encryption
+
 ```typescript
 class PHIEncryption {
   private static readonly ENCRYPTION_ALGORITHM = 'aes-256-gcm';
-  
+
   async encryptField(data: string, keyId: string): Promise<EncryptedField> {
     const key = await this.keyManager.getKey(keyId);
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipher(this.ENCRYPTION_ALGORITHM, key);
-    
+
     cipher.setAAD(Buffer.from(keyId));
-    const encrypted = Buffer.concat([
-      cipher.update(data, 'utf8'),
-      cipher.final()
-    ]);
-    
+    const encrypted = Buffer.concat([cipher.update(data, 'utf8'), cipher.final()]);
+
     return {
       data: encrypted.toString('base64'),
       keyId,
       iv: iv.toString('base64'),
-      tag: cipher.getAuthTag().toString('base64')
+      tag: cipher.getAuthTag().toString('base64'),
     };
   }
 }
 ```
 
 #### Key Management
+
 1. **Key Rotation**: Automatic rotation every 90 days
 2. **Key Escrow**: Secure storage of encryption keys
 3. **Key Recovery**: Procedures for key recovery in emergencies
@@ -792,7 +857,9 @@ class PHIEncryption {
 ### Quality Management System
 
 #### NABH Accreditation Support
+
 1. **Patient Safety Standards**
+
    - Patient identification protocols
    - Medication safety procedures
    - Infection control measures
@@ -805,7 +872,9 @@ class PHIEncryption {
    - Performance benchmarking
 
 #### JCI Compliance
+
 1. **International Patient Safety Goals**
+
    - Improve accuracy of patient identification
    - Improve effectiveness of communication
    - Improve safety of high-alert medications
@@ -819,24 +888,25 @@ class PHIEncryption {
 ### Testing Strategy
 
 #### Unit Testing
+
 ```typescript
 describe('PatientService', () => {
   let service: PatientService;
   let mockRepository: jest.Mocked<IPatientRepository>;
-  
+
   beforeEach(() => {
     mockRepository = createMockRepository();
     service = new PatientService(mockRepository);
   });
-  
+
   describe('createPatient', () => {
     it('should create patient with encrypted data', async () => {
       const patientData = createTestPatientData();
       const result = await service.createPatient(patientData);
-      
+
       expect(mockRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          encryptedPersonalInfo: expect.any(String)
+          encryptedPersonalInfo: expect.any(String),
         })
       );
     });
@@ -845,37 +915,33 @@ describe('PatientService', () => {
 ```
 
 #### Integration Testing
+
 ```typescript
 describe('Patient API Integration', () => {
   let app: Application;
   let testDb: TestDatabase;
-  
+
   beforeAll(async () => {
     testDb = await setupTestDatabase();
     app = createTestApp(testDb);
   });
-  
+
   it('should create and retrieve patient', async () => {
     const patientData = createTestPatientData();
-    
-    const createResponse = await request(app)
-      .post('/api/patients')
-      .send(patientData)
-      .expect(201);
-      
+
+    const createResponse = await request(app).post('/api/patients').send(patientData).expect(201);
+
     const patientId = createResponse.body.data.id;
-    
-    const getResponse = await request(app)
-      .get(`/api/patients/${patientId}`)
-      .expect(200);
-      
-    expect(getResponse.body.data.personalInfo.firstName)
-      .toBe(patientData.personalInfo.firstName);
+
+    const getResponse = await request(app).get(`/api/patients/${patientId}`).expect(200);
+
+    expect(getResponse.body.data.personalInfo.firstName).toBe(patientData.personalInfo.firstName);
   });
 });
 ```
 
 #### Load Testing
+
 ```javascript
 // Artillery.js configuration
 module.exports = {
@@ -884,24 +950,28 @@ module.exports = {
     phases: [
       { duration: 60, arrivalRate: 10 },
       { duration: 120, arrivalRate: 20 },
-      { duration: 60, arrivalRate: 50 }
-    ]
+      { duration: 60, arrivalRate: 50 },
+    ],
   },
   scenarios: [
     {
       name: 'Patient Creation Flow',
       weight: 70,
       flow: [
-        { post: { url: '/api/auth/login', json: { email: 'test@test.com', password: 'password' } } },
-        { post: { url: '/api/patients', json: '{{ patientData }}' } }
-      ]
-    }
-  ]
+        {
+          post: { url: '/api/auth/login', json: { email: 'test@test.com', password: 'password' } },
+        },
+        { post: { url: '/api/patients', json: '{{ patientData }}' } },
+      ],
+    },
+  ],
 };
 ```
 
 #### Security Testing
+
 1. **Penetration Testing**
+
    - Regular third-party security assessments
    - Vulnerability scanning with tools like OWASP ZAP
    - SQL injection and XSS testing
@@ -914,12 +984,14 @@ module.exports = {
 ### Quality Metrics
 
 #### Technical Metrics
+
 - **Code Coverage**: Minimum 80% for all services
 - **Performance**: API response time < 200ms for 95% of requests
 - **Availability**: 99.9% uptime SLA
 - **Security**: Zero critical vulnerabilities
 
 #### Business Metrics
+
 - **Patient Satisfaction**: Target > 4.5/5.0
 - **Clinical Quality**: Track outcome measures
 - **Operational Efficiency**: Reduce manual processes by 50%
@@ -932,35 +1004,37 @@ module.exports = {
 ### Service Communication
 
 #### Synchronous Communication
+
 ```typescript
 class PatientService {
   constructor(
     private billingClient: BillingServiceClient,
     private ehrClient: EHRServiceClient
   ) {}
-  
+
   async createPatient(data: CreatePatientDto): Promise<Patient> {
     const patient = await this.repository.create(data);
-    
+
     // Synchronous calls for immediate data needs
     await this.billingClient.createBillingProfile(patient.id);
     await this.ehrClient.initializeEHR(patient.id);
-    
+
     return patient;
   }
 }
 ```
 
 #### Asynchronous Communication
+
 ```typescript
 class EventHandler {
   async handlePatientCreated(event: PatientCreatedEvent) {
     // Send welcome email
     await this.notificationService.sendWelcomeEmail(event.patientId);
-    
+
     // Schedule follow-up tasks
     await this.schedulingService.scheduleInitialAppointment(event.patientId);
-    
+
     // Update analytics
     await this.analyticsService.recordPatientRegistration(event);
   }
@@ -970,6 +1044,7 @@ class EventHandler {
 ### Service Discovery and Load Balancing
 
 #### Kubernetes Service Configuration
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -1000,21 +1075,22 @@ spec:
         app: patient-management
     spec:
       containers:
-      - name: patient-management
-        image: hospital/patient-management:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: database-secrets
-              key: url
+        - name: patient-management
+          image: hospital/patient-management:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-secrets
+                  key: url
 ```
 
 ### API Gateway Configuration
 
 #### Kong Gateway Setup
+
 ```yaml
 services:
   - name: patient-service
@@ -1041,34 +1117,35 @@ services:
 ### Data Consistency
 
 #### Saga Pattern Implementation
+
 ```typescript
 class PatientRegistrationSaga {
   async execute(command: RegisterPatientCommand): Promise<void> {
     const sagaId = uuid();
-    
+
     try {
       // Step 1: Create patient record
       const patient = await this.patientService.createPatient(command.patientData);
       await this.sagaLog.record(sagaId, 'PATIENT_CREATED', patient.id);
-      
+
       // Step 2: Create billing profile
       await this.billingService.createProfile(patient.id);
       await this.sagaLog.record(sagaId, 'BILLING_CREATED', patient.id);
-      
+
       // Step 3: Initialize EHR
       await this.ehrService.initializeRecord(patient.id);
       await this.sagaLog.record(sagaId, 'EHR_CREATED', patient.id);
-      
+
       await this.sagaLog.complete(sagaId);
     } catch (error) {
       await this.compensate(sagaId);
       throw error;
     }
   }
-  
+
   private async compensate(sagaId: string): Promise<void> {
     const steps = await this.sagaLog.getSteps(sagaId);
-    
+
     for (const step of steps.reverse()) {
       switch (step.action) {
         case 'EHR_CREATED':
@@ -1089,20 +1166,21 @@ class PatientRegistrationSaga {
 ### Monitoring and Observability
 
 #### Distributed Tracing
+
 ```typescript
 class TracedPatientService {
   async createPatient(data: CreatePatientDto): Promise<Patient> {
     const span = tracer.startSpan('patient.create');
     span.setTag('patient.type', data.type);
-    
+
     try {
       const patient = await this.repository.create(data);
       span.setTag('patient.id', patient.id);
-      
+
       const childSpan = tracer.startSpan('billing.create', { childOf: span });
       await this.billingClient.createProfile(patient.id);
       childSpan.finish();
-      
+
       return patient;
     } catch (error) {
       span.setTag('error', true);
@@ -1116,6 +1194,7 @@ class TracedPatientService {
 ```
 
 #### Health Checks
+
 ```typescript
 class HealthCheckController {
   @Get('/health')
@@ -1123,17 +1202,17 @@ class HealthCheckController {
     const checks = await Promise.allSettled([
       this.checkDatabase(),
       this.checkRedis(),
-      this.checkExternalServices()
+      this.checkExternalServices(),
     ]);
-    
+
     return {
-      status: checks.every(check => check.status === 'fulfilled') ? 'healthy' : 'unhealthy',
+      status: checks.every((check) => check.status === 'fulfilled') ? 'healthy' : 'unhealthy',
       timestamp: new Date().toISOString(),
       checks: {
         database: checks[0].status === 'fulfilled',
         redis: checks[1].status === 'fulfilled',
-        external: checks[2].status === 'fulfilled'
-      }
+        external: checks[2].status === 'fulfilled',
+      },
     };
   }
 }
@@ -1146,6 +1225,7 @@ class HealthCheckController {
 ### Healthcare Data Security Research
 
 #### PHI Encryption Standards
+
 Research shows that healthcare organizations require field-level encryption for Protected Health Information (PHI) to maintain HIPAA compliance. Our implementation uses AES-256-GCM encryption with the following considerations:
 
 1. **Performance Impact**: Field-level encryption adds 15-20ms latency per request
@@ -1153,6 +1233,7 @@ Research shows that healthcare organizations require field-level encryption for 
 3. **Compliance Benefits**: Satisfies HIPAA technical safeguards requirements
 
 #### Error Handling in Healthcare Systems
+
 Healthcare systems require specialized error handling due to life-critical nature:
 
 1. **Graceful Degradation**: System continues operating with reduced functionality
@@ -1163,6 +1244,7 @@ Healthcare systems require specialized error handling due to life-critical natur
 ### FHIR Resource Implementation
 
 #### Patient Resource
+
 ```typescript
 interface FHIRPatient {
   resourceType: 'Patient';
@@ -1196,6 +1278,7 @@ interface FHIRPatient {
 ```
 
 #### ServiceRequest Resource
+
 ```typescript
 interface FHIRServiceRequest {
   resourceType: 'ServiceRequest';
@@ -1235,26 +1318,28 @@ interface FHIRServiceRequest {
 ### Healthcare Marketing & CRM Research
 
 #### Patient Engagement Strategies
+
 1. **Automated Reminders**: SMS/Email appointment reminders reduce no-shows by 23%
 2. **Health Education**: Targeted educational content improves treatment compliance
 3. **Feedback Collection**: Post-visit surveys identify improvement opportunities
 4. **Loyalty Programs**: Wellness programs increase patient retention
 
 #### CRM Integration
+
 ```typescript
 class HealthcareMarketingService {
   async createPatientCampaign(patientId: string, campaignType: CampaignType) {
     const patient = await this.patientService.getPatient(patientId);
     const preferences = await this.getPatientPreferences(patientId);
-    
+
     const campaign = {
       patientId,
       type: campaignType,
       channels: preferences.communicationChannels,
       content: await this.generatePersonalizedContent(patient, campaignType),
-      schedule: this.calculateOptimalTiming(preferences)
+      schedule: this.calculateOptimalTiming(preferences),
     };
-    
+
     return this.campaignManager.createCampaign(campaign);
   }
 }
@@ -1263,6 +1348,7 @@ class HealthcareMarketingService {
 ### Hospital Support Services Management
 
 #### Dietary Management
+
 ```typescript
 interface DietaryService {
   createMealPlan(patientId: string, restrictions: DietaryRestriction[]): Promise<MealPlan>;
@@ -1274,18 +1360,19 @@ class DietaryManagementService implements DietaryService {
   async createMealPlan(patientId: string, restrictions: DietaryRestriction[]): Promise<MealPlan> {
     const patient = await this.patientService.getPatient(patientId);
     const allergies = await this.ehrService.getAllergies(patientId);
-    
+
     return this.mealPlanGenerator.create({
       patientId,
       restrictions: [...restrictions, ...this.allergiesToRestrictions(allergies)],
       preferences: patient.dietaryPreferences,
-      medicalConditions: await this.ehrService.getConditions(patientId)
+      medicalConditions: await this.ehrService.getConditions(patientId),
     });
   }
 }
 ```
 
 #### Housekeeping Management
+
 ```typescript
 interface HousekeepingTask {
   id: string;
@@ -1303,7 +1390,7 @@ class HousekeepingService {
   async scheduleRoomCleaning(roomId: string, priority: Priority): Promise<HousekeepingTask> {
     const room = await this.facilityService.getRoom(roomId);
     const nextPatient = await this.schedulingService.getNextPatient(roomId);
-    
+
     const task: HousekeepingTask = {
       id: uuid(),
       roomId,
@@ -1312,15 +1399,16 @@ class HousekeepingService {
       assignedTo: await this.assignOptimalStaff(roomId),
       status: 'pending',
       scheduledTime: this.calculateScheduleTime(nextPatient?.arrivalTime),
-      notes: `Room ${room.number} - Post ${room.lastActivity} cleaning`
+      notes: `Room ${room.number} - Post ${room.lastActivity} cleaning`,
     };
-    
+
     return this.taskRepository.create(task);
   }
 }
 ```
 
 #### Ambulance Management
+
 ```typescript
 interface EmergencyResponse {
   id: string;
@@ -1337,7 +1425,7 @@ class AmbulanceService {
   async dispatchEmergency(call: EmergencyCall): Promise<EmergencyResponse> {
     const availableAmbulances = await this.getAvailableAmbulances();
     const optimalAmbulance = this.selectOptimalAmbulance(availableAmbulances, call.location);
-    
+
     const response: EmergencyResponse = {
       id: uuid(),
       callTime: new Date(),
@@ -1346,9 +1434,9 @@ class AmbulanceService {
       assignedAmbulance: optimalAmbulance.id,
       crew: optimalAmbulance.crew,
       estimatedArrival: this.calculateETA(optimalAmbulance.location, call.location),
-      status: 'dispatched'
+      status: 'dispatched',
     };
-    
+
     await this.notificationService.notifyDispatch(response);
     return this.responseRepository.create(response);
   }
@@ -1364,41 +1452,44 @@ class AmbulanceService {
 #### Critical Gaps Addressed
 
 ##### 1. External Notification System Implementation
+
 **Status**: ✅ COMPLETED
 
 **Implementation Details**:
+
 - **SMS Integration**: Twilio API integration for appointment reminders
 - **Email Service**: SendGrid integration with templated emails
 - **WhatsApp Business API**: Automated patient communication
 - **Multi-channel Strategy**: Patients can choose preferred communication methods
 
 **Code Implementation**:
+
 ```typescript
 class ExternalNotificationService {
   async sendAppointmentReminder(patientId: string, appointment: Appointment) {
     const patient = await this.patientService.getPatient(patientId);
     const preferences = patient.communicationPreferences;
-    
+
     if (preferences.sms) {
       await this.twilioClient.sendSMS({
         to: patient.phone,
-        message: this.templates.appointmentReminder(appointment)
+        message: this.templates.appointmentReminder(appointment),
       });
     }
-    
+
     if (preferences.email) {
       await this.sendGridClient.sendEmail({
         to: patient.email,
         template: 'appointment-reminder',
-        data: appointment
+        data: appointment,
       });
     }
-    
+
     if (preferences.whatsapp) {
       await this.whatsappClient.sendMessage({
         to: patient.whatsappNumber,
         template: 'appointment_reminder',
-        parameters: [appointment.date, appointment.time]
+        parameters: [appointment.date, appointment.time],
       });
     }
   }
@@ -1406,15 +1497,18 @@ class ExternalNotificationService {
 ```
 
 ##### 2. ICD Coding System Enhancement
+
 **Status**: ✅ COMPLETED
 
 **Implementation Details**:
+
 - **Advanced Code Lookup**: Fuzzy search with autocomplete
 - **Hierarchical Navigation**: Browse ICD-10 code hierarchy
 - **Validation Engine**: Real-time code validation
 - **Clinical Integration**: Seamless EHR integration
 
 **Code Implementation**:
+
 ```typescript
 class AdvancedICDCodingService {
   async searchCodes(query: string): Promise<ICDCodeSearchResult[]> {
@@ -1427,120 +1521,133 @@ class AdvancedICDCodingService {
             query,
             fields: ['code', 'description^2', 'synonyms'],
             fuzziness: 'AUTO',
-            type: 'best_fields'
-          }
+            type: 'best_fields',
+          },
         },
         highlight: {
           fields: {
-            description: {}
-          }
-        }
-      }
+            description: {},
+          },
+        },
+      },
     });
-    
-    return results.hits.hits.map(hit => ({
+
+    return results.hits.hits.map((hit) => ({
       code: hit._source.code,
       description: hit._source.description,
       category: hit._source.category,
       relevanceScore: hit._score,
-      highlight: hit.highlight?.description?.[0]
+      highlight: hit.highlight?.description?.[0],
     }));
   }
-  
+
   async validateCodes(codes: string[]): Promise<ValidationResult> {
     const validationResults = await Promise.all(
-      codes.map(async code => {
+      codes.map(async (code) => {
         const exists = await this.codeRepository.exists(code);
         const metadata = exists ? await this.codeRepository.getMetadata(code) : null;
-        
+
         return {
           code,
           isValid: exists,
           metadata,
-          warnings: this.generateWarnings(code, metadata)
+          warnings: this.generateWarnings(code, metadata),
         };
       })
     );
-    
+
     return {
-      allValid: validationResults.every(r => r.isValid),
-      results: validationResults
+      allValid: validationResults.every((r) => r.isValid),
+      results: validationResults,
     };
   }
 }
 ```
 
 ##### 3. EHR Data Persistence Implementation
+
 **Status**: ✅ COMPLETED
 
 **Implementation Details**:
+
 - **PostgreSQL Backend**: Enterprise-grade database with ACID compliance
 - **Document Versioning**: Complete audit trail of all changes
 - **Full-text Search**: Advanced search across clinical notes
 - **FHIR Compliance**: Standard-compliant data storage
 
 **Code Implementation**:
+
 ```typescript
 class EHRPersistenceService {
   async createClinicalNote(note: ClinicalNote): Promise<ClinicalNote> {
     return this.db.transaction(async (trx) => {
       // Create encrypted clinical note
       const encryptedNote = await this.encryption.encrypt(note);
-      const savedNote = await trx('clinical_notes').insert({
-        id: uuid(),
-        patient_id: note.patientId,
-        provider_id: note.providerId,
-        encrypted_content: encryptedNote,
-        icd10_codes: note.icd10Codes,
-        created_at: new Date()
-      }).returning('*');
-      
+      const savedNote = await trx('clinical_notes')
+        .insert({
+          id: uuid(),
+          patient_id: note.patientId,
+          provider_id: note.providerId,
+          encrypted_content: encryptedNote,
+          icd10_codes: note.icd10Codes,
+          created_at: new Date(),
+        })
+        .returning('*');
+
       // Create searchable index
       await trx('clinical_notes_search').insert({
         note_id: savedNote[0].id,
         searchable_content: this.createSearchableContent(note),
-        tokens: this.tokenizeContent(note.content)
+        tokens: this.tokenizeContent(note.content),
       });
-      
+
       // Audit logging
       await this.audit.log('CLINICAL_NOTE_CREATED', {
         noteId: savedNote[0].id,
         patientId: note.patientId,
-        providerId: note.providerId
+        providerId: note.providerId,
       });
-      
+
       return this.mapToEntity(savedNote[0]);
     });
   }
-  
+
   async searchClinicalNotes(patientId: string, query: string): Promise<ClinicalNote[]> {
     const results = await this.db('clinical_notes')
       .join('clinical_notes_search', 'clinical_notes.id', 'clinical_notes_search.note_id')
       .where('clinical_notes.patient_id', patientId)
       .whereRaw('clinical_notes_search.searchable_content @@ plainto_tsquery(?)', [query])
-      .orderByRaw('ts_rank(clinical_notes_search.searchable_content, plainto_tsquery(?)) DESC', [query]);
-    
-    return Promise.all(results.map(async row => {
-      const decrypted = await this.encryption.decrypt(row.encrypted_content);
-      return this.mapToEntity({ ...row, ...decrypted });
-    }));
+      .orderByRaw('ts_rank(clinical_notes_search.searchable_content, plainto_tsquery(?)) DESC', [
+        query,
+      ]);
+
+    return Promise.all(
+      results.map(async (row) => {
+        const decrypted = await this.encryption.decrypt(row.encrypted_content);
+        return this.mapToEntity({ ...row, ...decrypted });
+      })
+    );
   }
 }
 ```
 
 ##### 4. Quality Management Persistence
+
 **Status**: ✅ COMPLETED
 
 **Implementation Details**:
+
 - **Accreditation Tracking**: NABH/JCI compliance monitoring
 - **Quality Metrics**: Real-time quality indicator calculation
 - **Assessment Workflows**: Structured assessment processes
 - **Reporting Engine**: Automated compliance reporting
 
 ##### 5. Advanced Security Implementation
+
 **Status**: ✅ COMPLETED
 
 **Implementation Details**:
+
 - **Production Encryption**: AES-256-GCM with key rotation
 - **Advanced Authentication**: MFA with biometric support
 - **Session Security**: Redis-based session management
@@ -1549,6 +1656,7 @@ class EHRPersistenceService {
 ### Enterprise CI/CD Implementation
 
 #### Deployment Pipeline
+
 ```yaml
 name: HMS Production Deployment
 
@@ -1580,79 +1688,80 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run unit tests
-      run: npm run test:unit
-      
-    - name: Run integration tests
-      run: npm run test:integration
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/hms_test
-        REDIS_URL: redis://localhost:6379
-    
-    - name: Run security tests
-      run: npm run test:security
-    
-    - name: Code coverage
-      run: npm run coverage
-    
-    - name: Upload coverage
-      uses: codecov/codecov-action@v3
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/hms_test
+          REDIS_URL: redis://localhost:6379
+
+      - name: Run security tests
+        run: npm run test:security
+
+      - name: Code coverage
+        run: npm run coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
 
   security-scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        scan-type: 'fs'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-    
-    - name: Upload Trivy scan results
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: 'trivy-results.sarif'
+      - uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
 
   deploy:
     needs: [test, security-scan]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-    
-    - name: Deploy to EKS
-      run: |
-        aws eks update-kubeconfig --name hms-production
-        kubectl apply -f k8s/
-        kubectl rollout status deployment/patient-management
-        kubectl rollout status deployment/ehr-service
-        kubectl rollout status deployment/notification-service
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to EKS
+        run: |
+          aws eks update-kubeconfig --name hms-production
+          kubectl apply -f k8s/
+          kubectl rollout status deployment/patient-management
+          kubectl rollout status deployment/ehr-service
+          kubectl rollout status deployment/notification-service
 ```
 
 #### Production Readiness Checklist
 
 ✅ **Infrastructure**
+
 - [x] Kubernetes cluster configured
 - [x] Load balancers implemented
 - [x] SSL certificates installed
@@ -1663,6 +1772,7 @@ jobs:
 - [x] Logging aggregation (ELK stack)
 
 ✅ **Security**
+
 - [x] WAF configured
 - [x] DDoS protection enabled
 - [x] Security headers implemented
@@ -1671,6 +1781,7 @@ jobs:
 - [x] Compliance audits passed (HIPAA/GDPR)
 
 ✅ **Performance**
+
 - [x] Load testing completed (1000+ concurrent users)
 - [x] Database query optimization
 - [x] Caching strategies implemented
@@ -1678,6 +1789,7 @@ jobs:
 - [x] Code splitting and lazy loading
 
 ✅ **Monitoring & Alerting**
+
 - [x] Application metrics
 - [x] Infrastructure metrics
 - [x] Business metrics
@@ -1688,6 +1800,7 @@ jobs:
 ### Final Completion Verification
 
 #### System Metrics
+
 - **Code Coverage**: 94.7% (exceeds 80% requirement)
 - **Performance**: 99.9% of requests < 200ms
 - **Availability**: 99.95% uptime (exceeds 99.9% SLA)
@@ -1695,6 +1808,7 @@ jobs:
 - **Compliance**: 100% HIPAA/GDPR audit compliance
 
 #### Business Value Delivered
+
 - **Patient Registration**: 75% faster than manual process
 - **Clinical Documentation**: 60% reduction in documentation time
 - **Quality Compliance**: 100% accreditation readiness
@@ -1708,6 +1822,7 @@ jobs:
 ### Developer Onboarding Guide
 
 #### Prerequisites
+
 - Node.js 20+ with npm
 - Docker and Docker Compose
 - PostgreSQL 15+
@@ -1716,6 +1831,7 @@ jobs:
 - VS Code with recommended extensions
 
 #### Environment Setup
+
 ```bash
 # 1. Clone repository
 git clone https://github.com/hospital/hms.git
@@ -1742,6 +1858,7 @@ npm run dev
 ```
 
 #### Development Workflow
+
 1. **Create Feature Branch**: `git checkout -b feature/patient-search`
 2. **Write Tests First**: TDD approach with Jest
 3. **Implement Feature**: Follow existing patterns
@@ -1750,6 +1867,7 @@ npm run dev
 6. **Deploy**: Automatic deployment after merge
 
 #### Code Standards
+
 ```typescript
 // Follow TypeScript strict mode
 // Use dependency injection
@@ -1759,14 +1877,14 @@ class PatientService {
     private readonly logger: ILogger,
     private readonly encryption: IEncryptionService
   ) {}
-  
+
   async createPatient(data: CreatePatientDto): Promise<Patient> {
     this.logger.info('Creating patient', { data: data.id });
-    
+
     try {
       await this.validatePatientData(data);
       const patient = await this.repository.create(data);
-      
+
       this.logger.info('Patient created successfully', { patientId: patient.id });
       return patient;
     } catch (error) {
@@ -1780,6 +1898,7 @@ class PatientService {
 ### Production Deployment Guide
 
 #### Infrastructure Requirements
+
 - **Kubernetes Cluster**: EKS with 3+ worker nodes
 - **Database**: PostgreSQL 15 with read replicas
 - **Cache**: Redis Cluster with persistence
@@ -1788,6 +1907,7 @@ class PatientService {
 - **Logging**: ElasticSearch, Logstash, Kibana
 
 #### Deployment Process
+
 ```bash
 # 1. Build and push images
 docker build -t hospital/patient-service:latest .
@@ -1814,11 +1934,13 @@ npm run test:smoke:production
 #### Disaster Recovery Plan
 
 ##### RTO/RPO Targets
+
 - **Recovery Time Objective (RTO)**: 4 hours
 - **Recovery Point Objective (RPO)**: 15 minutes
 - **Availability Target**: 99.95% (4.38 hours downtime/year)
 
 ##### Backup Strategy
+
 ```yaml
 # Automated backup configuration
 apiVersion: v1
@@ -1826,24 +1948,26 @@ kind: CronJob
 metadata:
   name: database-backup
 spec:
-  schedule: "0 2 * * *"  # Daily at 2 AM
+  schedule: '0 2 * * *' # Daily at 2 AM
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: backup
-            image: postgres:15
-            command:
-            - /bin/bash
-            - -c
-            - |
-              pg_dump $DATABASE_URL | gzip > /backup/hms-$(date +%Y%m%d-%H%M%S).sql.gz
-              aws s3 cp /backup/hms-$(date +%Y%m%d-%H%M%S).sql.gz s3://hms-backups/
+            - name: backup
+              image: postgres:15
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  pg_dump $DATABASE_URL | gzip > /backup/hms-$(date +%Y%m%d-%H%M%S).sql.gz
+                  aws s3 cp /backup/hms-$(date +%Y%m%d-%H%M%S).sql.gz s3://hms-backups/
 ```
 
 ##### Recovery Procedures
+
 1. **Database Recovery**
+
    ```bash
    # Restore from backup
    aws s3 cp s3://hms-backups/latest.sql.gz ./
@@ -1852,6 +1976,7 @@ spec:
    ```
 
 2. **Application Recovery**
+
    ```bash
    # Deploy from known good image
    kubectl set image deployment/patient-service \
@@ -1870,37 +1995,39 @@ spec:
 ### Monitoring and Alerting
 
 #### Key Metrics
+
 ```yaml
 # Prometheus configuration
 groups:
-- name: hospital-system
-  rules:
-  - alert: HighErrorRate
-    expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: "High error rate detected"
-      
-  - alert: DatabaseConnections
-    expr: pg_stat_database_numbackends > 80
-    for: 2m
-    labels:
-      severity: warning
-    annotations:
-      summary: "High database connection usage"
-      
-  - alert: PatientDataAccess
-    expr: increase(patient_data_access_total[1h]) > 1000
-    for: 0m
-    labels:
-      severity: info
-    annotations:
-      summary: "High patient data access volume"
+  - name: hospital-system
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: 'High error rate detected'
+
+      - alert: DatabaseConnections
+        expr: pg_stat_database_numbackends > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: 'High database connection usage'
+
+      - alert: PatientDataAccess
+        expr: increase(patient_data_access_total[1h]) > 1000
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+          summary: 'High patient data access volume'
 ```
 
 #### Dashboard Configuration
+
 ```json
 {
   "dashboard": {
@@ -1947,6 +2074,7 @@ groups:
 This comprehensive documentation consolidates all 78+ documentation files from the Hospital Management System repository into a single, authoritative reference. The system represents a complete enterprise-grade healthcare management platform with:
 
 ### ✅ **Comprehensive Coverage**
+
 - **Complete Microservices Architecture**: 7 production-ready services
 - **Full HIPAA/GDPR Compliance**: Enterprise security and privacy
 - **Advanced EHR System**: Complete patient data management
@@ -1955,6 +2083,7 @@ This comprehensive documentation consolidates all 78+ documentation files from t
 - **Production Infrastructure**: Kubernetes-based deployment
 
 ### ✅ **Enterprise Features**
+
 - **Security**: Multi-factor authentication, field-level encryption
 - **Performance**: <200ms response times, 99.9% availability
 - **Scalability**: Horizontal scaling with load balancing
@@ -1962,6 +2091,7 @@ This comprehensive documentation consolidates all 78+ documentation files from t
 - **Compliance**: 100% regulatory audit compliance
 
 ### ✅ **Quality Assurance**
+
 - **Testing**: 94.7% code coverage with comprehensive test suites
 - **Documentation**: Single source of truth for all system knowledge
 - **CI/CD**: Automated testing, security scanning, and deployment
@@ -1969,4 +2099,4 @@ This comprehensive documentation consolidates all 78+ documentation files from t
 
 The Hospital Management System is now production-ready and fully documented, serving as both a functional healthcare platform and a comprehensive reference for development teams, operations staff, and compliance auditors.
 
-*This document serves as the complete and final documentation reference for the Hospital Management System, consolidating all previous documentation efforts into a single authoritative source.*
+_This document serves as the complete and final documentation reference for the Hospital Management System, consolidating all previous documentation efforts into a single authoritative source._

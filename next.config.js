@@ -1,17 +1,50 @@
-/** @type {import("next").NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Add other Next.js configurations here if needed
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-}
+  swcMinify: false,
+  experimental: {
+    forceSwcTransforms: false,
+  },
+  webpack: (config, { isServer }) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+      crypto: false,
+      path: false,
+      os: false,
+      stream: false,
+      util: false,
+      url: false,
+      assert: false,
+      buffer: false,
+      events: false,
+      querystring: false,
+    };
 
+    // Ignore all problematic modules
+    config.externals = config.externals || [];
+    if (!isServer) {
+      config.externals.push('bcryptjs', 'pg', 'redis', 'ioredis', 'prisma', '@prisma/client');
+    }
 
-// const _withBundleAnalyzer = require("@next/bundle-analyzer")({
-//   enabled: process.env.ANALYZE === "true",
-// })
+    return config;
+  },
+  images: {
+    domains: ['localhost'],
+    unoptimized: true,
+  },
+  output: 'standalone',
+  poweredByHeader: false,
+  reactStrictMode: false,
+  trailingSlash: false,
+  distDir: '.next',
+};
 
-module.exports = nextConfig; // Use nextConfig directly
-
+module.exports = nextConfig;

@@ -22,11 +22,11 @@ export const dynamic = 'force-dynamic';
 const AddInventoryItemSchema = z.object({
     billable_item_id: z.string().optional().nullable(), // Use string initially from select
     item_name: z.string().min(1, "Item name is required"),
-    category: z.string().optional();
-    manufacturer: z.string().optional();
-    unit_of_measure: z.string().optional();
-    reorder_level: z.coerce.number().int().nonnegative().optional().default(0);
-    is_active: z.boolean().optional().default(true);
+    category: z.string().optional(),
+    manufacturer: z.string().optional(),
+    unit_of_measure: z.string().optional(),
+    reorder_level: z.coerce.number().int().nonnegative().optional().default(0),
+    is_active: z.boolean().optional().default(true)
 });
 
 type FormData = z.infer<typeof AddInventoryItemSchema>;
@@ -35,8 +35,8 @@ export default const _AddInventoryItemPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<FormData>>({
-      is_active: true;
-      reorder_level: 0;
+      is_active: true,
+      reorder_level: 0
   });
   const [billableItems, setBillableItems] = useState<BillableItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,14 +51,14 @@ export default const _AddInventoryItemPage = () {
         // Fetch only items that might be linked (e.g., Pharmacy, Consumable)
         const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed
         if (!response.ok) throw new Error("Failed to fetch billable items");
-        const data: BillableItem[] = await response.json();
+        const data: BillableItem[] = await response.json(),
         setBillableItems(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "Could not load items for linking.";
         toast({
-          title: "Error Fetching Billable Items";
+          title: "Error Fetching Billable Items",
           description: message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsFetchingData(false);
@@ -72,7 +72,7 @@ export default const _AddInventoryItemPage = () {
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
-    }));
+    }))
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
@@ -90,25 +90,25 @@ export default const _AddInventoryItemPage = () {
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
-        title: "Validation Error";
+        title: "Validation Error",
         description: "Please check the form for errors.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
 
     const dataToSend = {
         ...validation.data,
-        billable_item_id: validation.data.billable_item_id ? parseInt(validation.data.billable_item_id, 10) : null,;
+        billable_item_id: validation.data.billable_item_id ? parseInt(validation.data.billable_item_id, 10) : null,
     };
 
     try {
       const response = await fetch("/api/inventory-items", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend);
+        body: JSON.stringify(dataToSend)
       });
 
       const result: { error?: string } = await response.json();
@@ -118,7 +118,7 @@ export default const _AddInventoryItemPage = () {
       }
 
       toast({
-        title: "Inventory Item Added";
+        title: "Inventory Item Added",
         description: `Item "${validation.data.item_name}" created successfully.`,
       });
 
@@ -128,9 +128,9 @@ export default const _AddInventoryItemPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
-        title: "Creation Failed";
+        title: "Creation Failed",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

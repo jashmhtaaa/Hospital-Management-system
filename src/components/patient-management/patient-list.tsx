@@ -38,25 +38,25 @@ import { useToast } from '../../hooks/use-toast';
 
 // Define patient status colors
 const statusColors: Record<string, string> = {
-  Active: 'success';
+  Active: 'success',
   Inactive: 'secondary';
   Deceased: 'destructive';
-  'On Hold': 'warning';
+  'On Hold': 'warning'
 };
 
 // Patient interface
 interface Patient {
-  id: string;
+  id: string,
   mrn: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
-  dateOfBirth: string;
+  dateOfBirth: string,
   gender: string;
-  status: string;
+  status: string,
   createdAt: string;
   contact?: {
     phoneMobile?: string;
-    email?: string;
+    email?: string
   };
   addresses?: {
     city?: string;
@@ -67,11 +67,11 @@ interface Patient {
 // Props interface
 interface PatientListProps {
   initialData?: {
-    patients: Patient[];
+    patients: Patient[],
     total: number;
-    page: number;
+    page: number,
     limit: number;
-    totalPages: number;
+    totalPages: number
   };
 export default const _PatientList = ({ initialData }: PatientListProps) {
   const router = useRouter();
@@ -87,12 +87,12 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Search filters
   const [searchFilters, setSearchFilters] = useState({
-    mrn: '';
+    mrn: '',
     firstName: '';
-    lastName: '';
+    lastName: '',
     dateOfBirth: '';
-    phone: '';
-    status: '';
+    phone: '',
+    status: ''
   });
 
   // Advanced filter visibility
@@ -141,9 +141,9 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to fetch patients. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -156,40 +156,40 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     setSearchFilters((prev) => ({
       ...prev,
       [name]: value;
-    }));
+    }))
   };
 
   // Handle status filter change
   const handleStatusChange = (value: string) => {
     setSearchFilters((prev) => ({
       ...prev,
-      status: value;
-    }));
+      status: value
+    }))
   };
 
   // Handle search form submission
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault(),
     setPage(1); // Reset to first page
-    searchPatients();
+    searchPatients()
   };
 
   // Handle page change
   const handlePageChange = (newPage: number) => {
     setPage(newPage),
-    searchPatients();
+    searchPatients()
   };
 
   // Handle limit change
   const handleLimitChange = (value: string) => {
     setLimit(parseInt(value));
     setPage(1); // Reset to first page
-    searchPatients();
+    searchPatients()
   };
 
   // Handle refresh
   const handleRefresh = () => {
-    searchPatients();
+    searchPatients()
   };
 
   // Handle patient selection (navigation to detail)
@@ -199,7 +199,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Handle create new patient
   const handleCreatePatient = () => {
-    router.push('/patients/new');
+    router.push('/patients/new')
   };
 
   // Format date function
@@ -345,12 +345,12 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                   variant="outline"
                   onClick={() => {
                     setSearchFilters({
-                      mrn: '';
+                      mrn: '',
                       firstName: '';
-                      lastName: '';
+                      lastName: '',
                       dateOfBirth: '';
-                      phone: '';
-                      status: '';
+                      phone: '',
+                      status: ''
                     });
                   }}
                 >

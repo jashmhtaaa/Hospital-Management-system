@@ -16,18 +16,18 @@ export enum HousekeepingTaskPriority {
 // Validation schemas
 export const createHousekeepingTaskSchema = z.object({
   taskName: z.string().min(1, 'Task name is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   location: z.string().min(1, 'Location is required'),
-  assignedToId: z.string().optional().nullable();
-  status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING);
-  priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM);
+  assignedToId: z.string().optional().nullable(),
+  status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
+  priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
   requestedAt: z.date().default(() => new Date());
-  completedAt: z.date().optional().nullable();
-  notes: z.string().optional();
+  completedAt: z.date().optional().nullable(),
+  notes: z.string().optional()
 });
 
 export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({
-  id: z.string();
+  id: z.string()
 });
 
 export type CreateHousekeepingTaskInput = z.infer<typeof createHousekeepingTaskSchema>;
@@ -52,7 +52,7 @@ export class HousekeepingService {
 
       // Create the task
       const task = await prisma.housekeepingTask.create({
-        data: validatedData;
+        data: validatedData
       });
 
       return task;
@@ -102,8 +102,8 @@ export class HousekeepingService {
         include: {
           assignedTo: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
@@ -127,8 +127,8 @@ export class HousekeepingService {
         include: {
           assignedTo: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
@@ -157,12 +157,12 @@ export class HousekeepingService {
       // Update the task
       const task = await prisma.housekeepingTask.update({
         where: { id },
-        data: updateData;
+        data: updateData,
         include: {
           assignedTo: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
@@ -205,14 +205,14 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         data: {
-          assignedToId: userId;
-          status: HousekeepingTaskStatus.IN_PROGRESS;
+          assignedToId: userId,
+          status: HousekeepingTaskStatus.IN_PROGRESS
         },
         include: {
           assignedTo: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
@@ -234,14 +234,14 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         data: {
-          status: HousekeepingTaskStatus.COMPLETED;
-          completedAt: new Date();
+          status: HousekeepingTaskStatus.COMPLETED,
+          completedAt: new Date()
         },
         include: {
           assignedTo: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
@@ -263,13 +263,13 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         data: {
-          status: HousekeepingTaskStatus.CANCELLED;
+          status: HousekeepingTaskStatus.CANCELLED
         },
         include: {
           assignedTo: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },

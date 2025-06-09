@@ -11,10 +11,10 @@ server:
 spring:
   application:
     name: appointment-scheduling-service
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  
+
   # Database Configuration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/appointment_db}
@@ -138,18 +138,18 @@ appointment:
     max-appointments-per-day: 50
     slot-interval-minutes: 15
     auto-confirmation: false
-    
+
   reminders:
     enabled: true
     advance-hours: 24
     email-enabled: true
     sms-enabled: true
-    
+
   validation:
     check-conflicts: true
     allow-past-appointments: false
     require-insurance-verification: true
-    
+
   notifications:
     email-templates-path: classpath:email-templates/
     sms-templates-path: classpath:sms-templates/
@@ -164,14 +164,14 @@ resilience4j:
         failure-rate-threshold: 50
         wait-duration-in-open-state: 30s
         permitted-number-of-calls-in-half-open-state: 5
-  
+
   retry:
     instances:
       appointment-service:
         max-attempts: 3
         wait-duration: 1s
         exponential-backoff-multiplier: 2
-  
+
   timelimiter:
     instances:
       appointment-service:

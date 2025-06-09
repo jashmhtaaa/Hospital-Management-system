@@ -68,7 +68,7 @@ export const _withErrorHandling = (
       return await handler(req, ...args);
     } catch (error) {
       logger.error('API error', {
-        path: req.nextUrl.pathname;
+        path: req.nextUrl.pathname,
         method: req.method;
         error;
       });
@@ -76,9 +76,9 @@ export const _withErrorHandling = (
       if (error instanceof AppError) {
         return NextResponse.json(
           {
-            error: error.message;
+            error: error.message,
             code: error.code;
-            details: error.details;
+            details: error.details
           },
           { status: error.statusCode }
         );
@@ -88,9 +88,9 @@ export const _withErrorHandling = (
       const isProd = process.env.NODE_ENV === 'production';
       return NextResponse.json(
         {
-          error: 'Internal server error';
+          error: 'Internal server error',
           code: 'INTERNAL_ERROR';
-          details: isProd ? undefined : String(error);
+          details: isProd ? undefined : String(error)
         },
         { status: 500 }
       );
@@ -118,7 +118,7 @@ export const _withAuth = (
       );
     }
 
-    return handler(req, ...args);
+    return handler(req, ...args)
   };
 }
 
@@ -129,7 +129,7 @@ export const _withAuth = (
  * @returns Wrapped handler with permission check;
  */
 export const _withPermissions = (
-  permissions: string[];
+  permissions: string[],
   handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
@@ -144,5 +144,5 @@ export const _withPermissions = (
       );
     }
 
-    return handler(req, ...args);
+    return handler(req, ...args)
   };

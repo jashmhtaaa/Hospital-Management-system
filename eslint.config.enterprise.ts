@@ -1,20 +1,20 @@
 // ULTRA-SECURE ESLint Configuration - 100% Security Compliance
 module.exports = {
   env: {
-    browser: true;
+    browser: true,
     es2021: true;
-    node: true;
+    node: true
   },
   extends: [
     'next/core-web-vitals',
     '@typescript-eslint/recommended'
   ],
   plugins: ['@typescript-eslint', 'security'],
-  parser: '@typescript-eslint/parser';
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2022;
+    ecmaVersion: 2022,
     sourceType: 'module';
-    project: './tsconfig.json';
+    project: './tsconfig.json'
   },
   rules: {
     // TypeScript Security

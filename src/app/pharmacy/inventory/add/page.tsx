@@ -8,26 +8,26 @@ export const dynamic = 'force-dynamic';
 
 // Define interfaces for data structures
 interface Medication {
-  id: string;
+  id: string,
   generic_name: string;
   brand_name?: string;
-  strength: string;
-  dosage_form: string;
+  strength: string,
+  dosage_form: string
 }
 
 interface InventoryFormData {
-  medication_id: string;
+  medication_id: string,
   batch_number: string;
-  expiry_date: string;
+  expiry_date: string,
   manufacturing_date: string;
-  purchase_date: string;
+  purchase_date: string,
   purchase_price: string; // Keep as string for input
   selling_price: string; // Keep as string for input
   initial_quantity: string; // Keep as string for input
-  supplier: string;
+  supplier: string,
   invoice_number: string;
-  storage_location: string;
-  notes: string;
+  storage_location: string,
+  notes: string
 }
 
 interface InventorySubmitData;
@@ -35,9 +35,9 @@ interface InventorySubmitData;
     InventoryFormData,
     "purchase_price" | "selling_price" | "initial_quantity";
   > {
-  purchase_price: number;
+  purchase_price: number,
   selling_price: number;
-  initial_quantity: number;
+  initial_quantity: number
 }
 
 type FormErrors = Partial<Record<keyof InventoryFormData, string>>;
@@ -47,18 +47,18 @@ const AddInventoryPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [formData, setFormData] = useState<InventoryFormData>({
-    medication_id: "";
+    medication_id: "",
     batch_number: "";
-    expiry_date: "";
+    expiry_date: "",
     manufacturing_date: "";
-    purchase_date: new Date().toISOString().split("T")[0];
+    purchase_date: new Date().toISOString().split("T")[0],
     purchase_price: "";
-    selling_price: "";
+    selling_price: "",
     initial_quantity: "";
-    supplier: "";
+    supplier: "",
     invoice_number: "";
-    storage_location: "Main Pharmacy";
-    notes: "";
+    storage_location: "Main Pharmacy",
+    notes: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
@@ -76,18 +76,18 @@ const AddInventoryPage: React.FC = () => {
         // setMedications(data.medications || [])
         const simulatedMedications: Medication[] = [
           {
-            id: "med_001";
+            id: "med_001",
             generic_name: "Paracetamol";
-            brand_name: "Calpol";
+            brand_name: "Calpol",
             strength: "500mg";
-            dosage_form: "Tablet";
+            dosage_form: "Tablet"
           },
           {
-            id: "med_002";
+            id: "med_002",
             generic_name: "Amoxicillin";
-            brand_name: "Amoxil";
+            brand_name: "Amoxil",
             strength: "250mg";
-            dosage_form: "Capsule";
+            dosage_form: "Capsule"
           },
           // Add more mock medications as needed
         ];
@@ -167,7 +167,7 @@ const AddInventoryPage: React.FC = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newErrors).length === 0
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -184,9 +184,9 @@ const AddInventoryPage: React.FC = () => {
     try {
       const _submitData: InventorySubmitData = {
         ...formData,
-        purchase_price: Number.parseFloat(formData.purchase_price);
-        selling_price: Number.parseFloat(formData.selling_price);
-        initial_quantity: Number.parseInt(formData.initial_quantity, 10),;
+        purchase_price: Number.parseFloat(formData.purchase_price),
+        selling_price: Number.parseFloat(formData.selling_price),
+        initial_quantity: Number.parseInt(formData.initial_quantity, 10),
       };
 
       // Simulate API call
@@ -210,18 +210,18 @@ const AddInventoryPage: React.FC = () => {
 
       // Reset form
       setFormData({
-        medication_id: "";
+        medication_id: "",
         batch_number: "";
-        expiry_date: "";
+        expiry_date: "",
         manufacturing_date: "";
-        purchase_date: new Date().toISOString().split("T")[0];
+        purchase_date: new Date().toISOString().split("T")[0],
         purchase_price: "";
-        selling_price: "";
+        selling_price: "",
         initial_quantity: "";
-        supplier: "";
+        supplier: "",
         invoice_number: "";
-        storage_location: "Main Pharmacy";
-        notes: "";
+        storage_location: "Main Pharmacy",
+        notes: ""
       });
       setErrors({}); // Clear errors on success
 
@@ -618,7 +618,7 @@ const AddInventoryPage: React.FC = () => {
         </form>
       </div>
     </div>
-  );
+  )
 };
 
 export default AddInventoryPage;

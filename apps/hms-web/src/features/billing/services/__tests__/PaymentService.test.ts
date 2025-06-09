@@ -15,11 +15,11 @@ describe("PaymentService", () => {
       // Arrange
       const _invoiceId = "invoice-xyz-123";
       const _paymentDetails = {
-        method: "credit_card";
+        method: "credit_card",
         cardNumber: "************1234", // Masked or use test card numbers
-        expiryDate: "12/27";
+        expiryDate: "12/27",
         cvv: "123";
-        amount: 250.00;
+        amount: 250.00
       };
       // Mock InvoiceService.getInvoiceById(invoiceId) to return an unpaid invoice
       // Mock payment gateway interaction to return a successful response

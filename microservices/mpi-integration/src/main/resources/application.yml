@@ -2,10 +2,10 @@
 spring:
   application:
     name: mpi-integration-service
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  
+
   # Database Configuration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/hms_mpi}
@@ -134,8 +134,8 @@ logging:
     org.hibernate.SQL: ${SQL_LOG_LEVEL:WARN}
     org.hibernate.type.descriptor.sql.BasicBinder: WARN
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
   file:
     name: ${LOG_FILE:logs/mpi-integration-service.log}
 
@@ -180,20 +180,20 @@ app:
     # MPI ID Generation Configuration
     id-prefix: ${MPI_ID_PREFIX:MPI}
     id-length: ${MPI_ID_LENGTH:20}
-    
+
     # Identity Matching Configuration
     matching:
       confidence-threshold: ${MATCHING_CONFIDENCE_THRESHOLD:85.0}
       auto-merge-threshold: ${AUTO_MERGE_THRESHOLD:95.0}
       fuzzy-match-enabled: ${FUZZY_MATCH_ENABLED:true}
       phonetic-match-enabled: ${PHONETIC_MATCH_ENABLED:true}
-    
+
     # Data Quality Configuration
     data-quality:
       minimum-score: ${DATA_QUALITY_MIN_SCORE:70.0}
       completeness-threshold: ${COMPLETENESS_THRESHOLD:60.0}
       accuracy-validation-enabled: ${ACCURACY_VALIDATION_ENABLED:true}
-    
+
     # FHIR Integration Configuration
     fhir:
       server-url: ${FHIR_SERVER_URL:http://localhost:8080/fhir}
@@ -201,18 +201,18 @@ app:
       sync-interval: ${FHIR_SYNC_INTERVAL:3600} # seconds
       client-id: ${FHIR_CLIENT_ID:mpi-integration}
       client-secret: ${FHIR_CLIENT_SECRET:}
-    
+
     # Security Configuration
     security:
       encryption:
         enabled: ${ENCRYPTION_ENABLED:true}
         algorithm: ${ENCRYPTION_ALGORITHM:AES}
         key: ${ENCRYPTION_KEY:}
-      
+
       audit:
         enabled: ${AUDIT_ENABLED:true}
         retention-days: ${AUDIT_RETENTION_DAYS:2555} # 7 years
-    
+
     # External System Integration
     external-systems:
       timeout: ${EXTERNAL_SYSTEM_TIMEOUT:30s}
@@ -238,12 +238,12 @@ spring:
   config:
     activate:
       on-profile: dev
-  
+
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-  
+
   h2:
     console:
       enabled: true
@@ -267,13 +267,13 @@ spring:
   config:
     activate:
       on-profile: test
-  
+
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
     password:
-  
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -289,7 +289,7 @@ spring:
   config:
     activate:
       on-profile: prod
-  
+
   jpa:
     hibernate:
       ddl-auto: validate

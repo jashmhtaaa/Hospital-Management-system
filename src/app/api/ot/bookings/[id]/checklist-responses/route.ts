@@ -70,7 +70,7 @@ export const _GET = async (
     return NextResponse.json(parsedResults);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching checklist responses", details: errorMessage },
       { status: 500 }
@@ -204,7 +204,7 @@ export const _POST = async (
         // Keep responses as original string if parsing fails
       }
       return NextResponse.json(finalResult[0], {
-        status: existing && existing.length > 0 ? 200 : 201;
+        status: existing && existing.length > 0 ? 200 : 201
       })
     } else {
       return NextResponse.json(
@@ -214,7 +214,7 @@ export const _POST = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error saving checklist response", details: errorMessage },
       { status: 500 }

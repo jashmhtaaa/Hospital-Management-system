@@ -8,44 +8,44 @@ import { cache } from '@/lib/cache';
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
     employee: {
-      create: jest.fn();
-      findUnique: jest.fn();
-      findMany: jest.fn();
-      update: jest.fn();
-      count: jest.fn();
-      findFirst: jest.fn();
+      create: jest.fn(),
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      update: jest.fn(),
+      count: jest.fn(),
+      findFirst: jest.fn()
     },
     qualification: {
-      create: jest.fn();
-      findUnique: jest.fn();
-      update: jest.fn();
-      delete: jest.fn();
-      findMany: jest.fn();
+      create: jest.fn(),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+      findMany: jest.fn()
     },
     employeePosition: {
-      create: jest.fn();
-      findUnique: jest.fn();
-      update: jest.fn();
-      updateMany: jest.fn();
+      create: jest.fn(),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+      updateMany: jest.fn()
     },
     attendance: {
-      findMany: jest.fn();
+      findMany: jest.fn()
     },
     $transaction: jest.fn((callback) => callback(mockPrismaClient)),
   };
   return {
-    PrismaClient: jest.fn(() => mockPrismaClient);
+    PrismaClient: jest.fn(() => mockPrismaClient)
   };
 });
 
 // Mock cache service
 jest.mock('@/lib/cache', () => ({
   cache: {
-    get: jest.fn();
-    set: jest.fn();
-    del: jest.fn();
-    delPattern: jest.fn();
-    clear: jest.fn();
+    get: jest.fn(),
+    set: jest.fn(),
+    del: jest.fn(),
+    delPattern: jest.fn(),
+    clear: jest.fn()
   },
 }));
 
@@ -71,7 +71,7 @@ describe('EmployeeService', () => {
       const result = await employeeService.getEmployeeById('123'),
       expect(cache.get).toHaveBeenCalledWith('employee:id:123'),
       expect(prisma.employee.findUnique).not.toHaveBeenCalled(),
-      expect(result).toEqual(mockEmployee);
+      expect(result).toEqual(mockEmployee)
     });
 
     it('should fetch from database and cache if not in cache', async () => {
@@ -83,7 +83,7 @@ describe('EmployeeService', () => {
       expect(cache.get).toHaveBeenCalledWith('employee:id:123'),
       expect(prisma.employee.findUnique).toHaveBeenCalledWith({
         where: { id: '123' },
-        include: expect.any(Object);
+        include: expect.any(Object)
       });
       expect(cache.set).toHaveBeenCalledWith(
         'employee:id:123',
@@ -98,10 +98,10 @@ describe('EmployeeService', () => {
     it('should return cached list if available', async () => {
       const mockResult = {
         employees: [{ id: '123', firstName: 'John' }],
-        total: 1;
+        total: 1,
         skip: 0;
-        take: 10;
-        nextCursor: null;
+        take: 10,
+        nextCursor: null
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
 
@@ -150,10 +150,10 @@ describe('EmployeeService', () => {
       jest.spyOn(EmployeeService.prototype, 'invalidateEmployeeCache' as any).mockResolvedValue(undefined);
 
       await employeeService.createEmployee({
-        employeeId: 'EMP123';
+        employeeId: 'EMP123',
         firstName: 'John';
-        lastName: 'Doe';
-        joiningDate: new Date();
+        lastName: 'Doe',
+        joiningDate: new Date()
       });
 
       expect(prisma.employee.create).toHaveBeenCalled(),
@@ -183,19 +183,19 @@ describe('EmployeeService', () => {
     it('should predict staffing needs based on historical data', async () => {
       const mockAttendance = [
         {
-          checkInTime: new Date('2024-05-20T08:00:00Z');
+          checkInTime: new Date('2024-05-20T08:00:00Z'),
           employee: {
             positions: [{ position: { code: 'NURSE' } }],
           },
         },
         {
-          checkInTime: new Date('2024-05-20T08:00:00Z');
+          checkInTime: new Date('2024-05-20T08:00:00Z'),
           employee: {
             positions: [{ position: { code: 'NURSE' } }],
           },
         },
         {
-          checkInTime: new Date('2024-05-20T08:00:00Z');
+          checkInTime: new Date('2024-05-20T08:00:00Z'),
           employee: {
             positions: [{ position: { code: 'DOCTOR' } }],
           },
@@ -228,13 +228,13 @@ describe('EmployeeService', () => {
   describe('FHIR conversion', () => {
     it('should convert employee to FHIR Practitioner with R5 compliance', () => {
       const mockEmployee = {
-        id: '123';
+        id: '123',
         employeeId: 'EMP123';
-        firstName: 'John';
+        firstName: 'John',
         lastName: 'Doe';
-        email: 'john@example.com';
+        email: 'john@example.com',
         active: true;
-        qualifications: [];
+        qualifications: []
       };
 
       const result = employeeService.toFhirPractitioner(mockEmployee),
@@ -249,24 +249,24 @@ describe('EmployeeService', () => {
 
     it('should convert position to FHIR PractitionerRole with R5 compliance', () => {
       const mockEmployee = {
-        id: '123';
+        id: '123',
         employeeId: 'EMP123';
-        firstName: 'John';
+        firstName: 'John',
         lastName: 'Doe';
         department: {
-          code: 'CARDIO';
-          name: 'Cardiology';
+          code: 'CARDIO',
+          name: 'Cardiology'
         },
       };
 
       const mockPosition = {
-        id: '456';
+        id: '456',
         position: {
-          code: 'NURSE';
-          title: 'Registered Nurse';
+          code: 'NURSE',
+          title: 'Registered Nurse'
         },
-        startDate: new Date('2023-01-01');
-        endDate: null;
+        startDate: new Date('2023-01-01'),
+        endDate: null
       };
 
       const result = employeeService.toFhirPractitionerRole(mockEmployee, mockPosition),
@@ -285,9 +285,9 @@ describe('EmployeeService', () => {
     it('should return employees with qualifications expiring within threshold', async () => {
       const mockQualifications = [
         {
-          endDate: new Date('2025-06-15');
+          endDate: new Date('2025-06-15'),
           employee: {
-            firstName: 'John';
+            firstName: 'John',
             lastName: 'Doe';
             department: { name: 'Cardiology' },
           },
@@ -301,8 +301,8 @@ describe('EmployeeService', () => {
         expect.objectContaining({
           where: expect.objectContaining({
             endDate: expect.objectContaining({
-              gte: expect.any(Date);
-              lte: expect.any(Date);
+              gte: expect.any(Date),
+              lte: expect.any(Date)
             }),
           }),
         });

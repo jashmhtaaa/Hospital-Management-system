@@ -47,9 +47,9 @@ export async function POST(request: NextRequest): unknown {
     // Audit log
     await AuditService.logUserAction(
       {
-        userId: request.headers.get('x-user-id') || undefined;
-        userEmail: request.headers.get('x-user-email') || undefined;
-        ipAddress: request.ip;
+        userId: request.headers.get('x-user-id') || undefined,
+        userEmail: request.headers.get('x-user-email') || undefined,
+        ipAddress: request.ip
       },
       'CREATE',
       'PATIENT',

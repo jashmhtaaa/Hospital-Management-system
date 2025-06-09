@@ -26,10 +26,10 @@ import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessi
 // } // FIX: Commented out body to fix parsing error
 
 interface MedicationInput {
-  item_code: string;
+  item_code: string,
   generic_name: string;
   brand_name?: string | null;
-  dosage_form: string;
+  dosage_form: string,
   strength: string;
   route?: string | null;
   unit_of_measure: string;
@@ -55,7 +55,7 @@ interface MedicationFilters {
 export const GET = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
-    const session: IronSession<IronSessionData> = await getSession();
+    const session: IronSession<IronSessionData> = await getSession(),
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -66,9 +66,9 @@ export const GET = async (request: NextRequest) => {
 
     const { searchParams } = new URL(request.url)
     const filters: MedicationFilters = {
-      search: searchParams.get("search");
-      category: searchParams.get("category");
-      manufacturer: searchParams.get("manufacturer");
+      search: searchParams.get("search"),
+      category: searchParams.get("category"),
+      manufacturer: searchParams.get("manufacturer"),
       prescription_required: searchParams.has("prescription_required");
         ? searchParams.get("prescription_required") === "true";
         : undefined,
@@ -143,7 +143,7 @@ export const GET = async (request: NextRequest) => {
 export const POST = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
-    const session: IronSession<IronSessionData> = await getSession();
+    const session: IronSession<IronSessionData> = await getSession(),
     if (
       !session?.user ||
       !["Admin", "Pharmacist"].includes(session.user.roleName);
@@ -166,7 +166,7 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",;
+          error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",
         },
         { status: 400 }
       );

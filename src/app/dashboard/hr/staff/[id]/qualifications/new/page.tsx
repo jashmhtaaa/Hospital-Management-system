@@ -34,11 +34,11 @@ import { toast } from '@/components/ui/use-toast';
 const qualificationSchema = z.object({
   code: z.string().min(1, "Qualification code is required"),
   name: z.string().min(1, "Qualification name is required"),
-  issuer: z.string().optional();
-  identifier: z.string().optional();
-  startDate: z.date();
-  endDate: z.date().optional();
-  attachment: z.string().optional();
+  issuer: z.string().optional(),
+  identifier: z.string().optional(),
+  startDate: z.date(),
+  endDate: z.date().optional(),
+  attachment: z.string().optional()
 });
 
 export default const _AddQualification = ({ params }: { params: { id: string } }) {
@@ -48,15 +48,15 @@ export default const _AddQualification = ({ params }: { params: { id: string } }
 
   // Initialize form
   const form = useForm({
-    resolver: zodResolver(qualificationSchema);
+    resolver: zodResolver(qualificationSchema),
     defaultValues: {
-      code: '';
+      code: '',
       name: '';
-      issuer: '';
+      issuer: '',
       identifier: '';
-      startDate: new Date();
+      startDate: new Date(),
       endDate: undefined;
-      attachment: '';
+      attachment: ''
     },
   });
 
@@ -72,9 +72,9 @@ export default const _AddQualification = ({ params }: { params: { id: string } }
       } catch (err) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load employee data";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     };
@@ -91,15 +91,15 @@ export default const _AddQualification = ({ params }: { params: { id: string } }
       const formattedData = {
         ...data,
         startDate: format(data.startDate, 'yyyy-MM-dd'),
-        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,;
+        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,
       };
 
       const response = await fetch(`/api/hr/staff/${params.id}/qualifications`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData);
+        body: JSON.stringify(formattedData)
       });
 
       if (!response.ok) {
@@ -108,17 +108,17 @@ export default const _AddQualification = ({ params }: { params: { id: string } }
       }
 
       toast({
-        title: "Qualification Added";
-        description: "Successfully added qualification to employee record";
+        title: "Qualification Added",
+        description: "Successfully added qualification to employee record"
       });
 
       // Navigate back to employee profile
       router.push(`/dashboard/hr/staff/${params.id}`);
     } catch (error) {
       toast({
-        title: "Error";
+        title: "Error",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);

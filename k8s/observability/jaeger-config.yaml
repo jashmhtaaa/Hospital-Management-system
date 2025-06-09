@@ -29,7 +29,7 @@ spec:
       pass-basic-auth: true
       pass-user-headers: true
   annotations:
-    scheduler.alpha.kubernetes.io/critical-pod: ""
+    scheduler.alpha.kubernetes.io/critical-pod: ''
   query:
     replicas: 2
     resources:

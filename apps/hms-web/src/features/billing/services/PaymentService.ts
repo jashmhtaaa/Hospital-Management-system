@@ -50,10 +50,10 @@ export class PaymentService {
 
         // Mocking gateway response
         const mockGatewayResponse: PaymentGatewayResponse = {
-            success: true;
+            success: true,
             transactionId: `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            message: 'Payment processed successfully by mock gateway.';
-            amountProcessed: paymentInput.amount;
+            message: 'Payment processed successfully by mock gateway.',
+            amountProcessed: paymentInput.amount
         };
 
         if (!mockGatewayResponse.success) {
@@ -63,14 +63,14 @@ export class PaymentService {
         // 4. Record the Payment in the Database
         const newPayment: Payment = {
             id: `pay_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            invoiceId: mockInvoice.id;
+            invoiceId: mockInvoice.id,
             patientId: mockInvoice.patientId;
-            paymentDate: new Date();
+            paymentDate: new Date(),
             amount: mockGatewayResponse.amountProcessed;
-            paymentMode: paymentInput.paymentMode;
+            paymentMode: paymentInput.paymentMode,
             transactionReference: mockGatewayResponse.transactionId;
-            status: 'COMPLETED';
-            notes: paymentInput.notes;
+            status: 'COMPLETED',
+            notes: paymentInput.notes
         };
 
         // const _savedPayment = await prisma.payment.create({ data: newPayment })
@@ -114,19 +114,19 @@ export class PaymentService {
         // This is a very simplified mock. You'd likely have a mock DB or service.
         if (invoiceId === 'inv_123_unpaid') {
             return {
-                id: 'inv_123_unpaid';
+                id: 'inv_123_unpaid',
                 patientId: 'pat_001';
-                patientName: 'Jane Doe';
-                invoiceDate: new Date();
-                dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000);
+                patientName: 'Jane Doe',
+                invoiceDate: new Date(),
+                dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000),
                 lineItems: [{ chargeId: 'chg_001', serviceName: 'MRI Scan', quantity: 1, unitPrice: 500, totalPrice: 500 }],
-                subtotal: 500;
+                subtotal: 500,
                 discountAmount: 0;
-                taxAmount: 50;
+                taxAmount: 50,
                 totalAmount: 550;
-                amountPaid: 0;
+                amountPaid: 0,
                 status: 'DRAFT';
-                invoiceType: 'FINAL';
+                invoiceType: 'FINAL'
             }
         }
         return null;

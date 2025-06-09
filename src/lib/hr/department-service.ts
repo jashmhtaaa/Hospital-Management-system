@@ -10,7 +10,7 @@ export class DepartmentService {
    * Create a new department;
    */
   async createDepartment(data: {
-    name: string;
+    name: string,
     code: string;
     description?: string;
     parentId?: string;
@@ -18,7 +18,7 @@ export class DepartmentService {
     return prisma.department.create({
       data,
       include: {
-        parent: true;
+        parent: true
       },
     });
   }
@@ -30,18 +30,18 @@ export class DepartmentService {
     return prisma.department.findUnique({
       where: { id },
       include: {
-        parent: true;
+        parent: true,
         children: true;
         employees: {
           select: {
-            id: true;
+            id: true,
             firstName: true;
-            lastName: true;
+            lastName: true,
             employeeId: true;
-            active: true;
+            active: true
           },
         },
-        positions: true;
+        positions: true
       },
     });
   }
@@ -50,7 +50,7 @@ export class DepartmentService {
    * Update a department;
    */
   async updateDepartment(
-    id: string;
+    id: string,
     data: {
       name?: string;
       code?: string;
@@ -62,7 +62,7 @@ export class DepartmentService {
       where: { id },
       data,
       include: {
-        parent: true;
+        parent: true
       },
     });
   }
@@ -102,12 +102,12 @@ export class DepartmentService {
         take,
         orderBy: { name: 'asc' },
         include: {
-          parent: true;
+          parent: true,
           _count: {
             select: {
-              children: true;
+              children: true,
               employees: true;
-              positions: true;
+              positions: true
             },
           },
         },
@@ -132,7 +132,7 @@ export class DepartmentService {
       include: {
         _count: {
           select: {
-            employees: true;
+            employees: true
           },
         },
       },
@@ -146,13 +146,13 @@ export class DepartmentService {
     allDepartments.forEach(dept => {
       departmentMap.set(dept.id, {
         ...dept,
-        children: [];
-      });
+        children: []
+      }),
     });
 
     // Second pass: build hierarchy
     allDepartments.forEach(dept => {
-      const departmentWithChildren = departmentMap.get(dept.id);
+      const departmentWithChildren = departmentMap.get(dept.id),
 
       if (dept.parentId) {
         const parent = departmentMap.get(dept.parentId);
@@ -171,7 +171,7 @@ export class DepartmentService {
    * Create a new position;
    */
   async createPosition(data: {
-    title: string;
+    title: string,
     code: string;
     description?: string;
     departmentId?: string;
@@ -179,7 +179,7 @@ export class DepartmentService {
     return prisma.position.create({
       data,
       include: {
-        department: true;
+        department: true
       },
     });
   }
@@ -191,21 +191,21 @@ export class DepartmentService {
     return prisma.position.findUnique({
       where: { id },
       include: {
-        department: true;
+        department: true,
         employeePositions: {
           include: {
             employee: {
               select: {
-                id: true;
+                id: true,
                 firstName: true;
-                lastName: true;
+                lastName: true,
                 employeeId: true;
-                active: true;
+                active: true
               },
             },
           },
           where: {
-            endDate: null, // Only current assignments;
+            endDate: null, // Only current assignments
           },
         },
       },
@@ -216,7 +216,7 @@ export class DepartmentService {
    * Update a position;
    */
   async updatePosition(
-    id: string;
+    id: string,
     data: {
       title?: string;
       code?: string;
@@ -228,7 +228,7 @@ export class DepartmentService {
       where: { id },
       data,
       include: {
-        department: true;
+        department: true
       },
     });
   }
@@ -268,12 +268,12 @@ export class DepartmentService {
         take,
         orderBy: { title: 'asc' },
         include: {
-          department: true;
+          department: true,
           _count: {
             select: {
               employeePositions: {
                 where: {
-                  endDate: null, // Only current assignments;
+                  endDate: null, // Only current assignments
                 },
               },
             },

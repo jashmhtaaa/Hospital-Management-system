@@ -16,17 +16,17 @@ export async function POST(request: NextRequest): unknown {
         patientId,
         triageLevel,
         complaint,
-        status: 'ACTIVE';
+        status: 'ACTIVE'
       },
       include: {
         patient: {
           select: {
-            firstName: true;
-            lastName: true;
-            mrn: true;
-            dateOfBirth: true;
-            emergencyContact: true;
-            emergencyPhone: true;
+            firstName: true,
+            lastName: true,
+            mrn: true,
+            dateOfBirth: true,
+            emergencyContact: true,
+            emergencyPhone: true
           }
         }
       }
@@ -34,8 +34,8 @@ export async function POST(request: NextRequest): unknown {
 
     await AuditService.logUserAction(
       {
-        userId: request.headers.get('x-user-id') || undefined;
-        ipAddress: request.ip;
+        userId: request.headers.get('x-user-id') || undefined,
+        ipAddress: request.ip
       },
       'CREATE',
       'EMERGENCY_VISIT',
@@ -64,11 +64,11 @@ export async function GET(request: NextRequest): unknown {
       include: {
         patient: {
           select: {
-            firstName: true;
-            lastName: true;
-            mrn: true;
-            dateOfBirth: true;
-            gender: true;
+            firstName: true,
+            lastName: true,
+            mrn: true,
+            dateOfBirth: true,
+            gender: true
           }
         }
       },

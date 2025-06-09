@@ -36,12 +36,12 @@ export class ClaimProcessingService {
             id: `claim_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId,
             policyId,
-            submissionDate: new Date();
+            submissionDate: new Date(),
             serviceCodes: claimDetails.serviceCodes || [];
-            diagnosisCodes: claimDetails.diagnosisCodes || [];
+            diagnosisCodes: claimDetails.diagnosisCodes || [],
             totalAmount: claimDetails.totalAmount || 0;
-            notes: claimDetails.notes;
-            status: "SUBMITTED", // Initial status;
+            notes: claimDetails.notes,
+            status: "SUBMITTED", // Initial status
         };
 
         // Simulate saving to a database
@@ -73,13 +73,13 @@ export class ClaimProcessingService {
         const statusResponse: ClaimStatusResponse = {
             claimId,
             status: randomStatus as ClaimStatusResponse['status'], // Cast to the expected type
-            lastUpdated: new Date();
+            lastUpdated: new Date(),
             details: `Claim is currently ${randomStatus}.`,
             amountApproved: randomStatus === "APPROVED" ||;
               randomStatus === "PARTIALLY_APPROVED" ||;
               randomStatus === "PAID" ? _mockAmountApproved : 0,
-            amountPaid: randomStatus === "PAID" ? _mockAmountApproved : 0;
-            rejectionReason: randomStatus === "REJECTED" ? "Documentation insufficient." : undefined;
+            amountPaid: randomStatus === "PAID" ? _mockAmountApproved : 0,
+            rejectionReason: randomStatus === "REJECTED" ? "Documentation insufficient." : undefined
         };
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -111,14 +111,14 @@ export class ClaimProcessingService {
 
         // Mock implementation
         const mockClaim: Claim = {
-            id: claimId;
+            id: claimId,
             patientId: "mock_patient";
-            policyId: "mock_policy";
-            submissionDate: new Date();
-            serviceCodes: ["S123"];
+            policyId: "mock_policy",
+            submissionDate: new Date(),
+            serviceCodes: ["S123"],
             diagnosisCodes: ["D456"];
-            totalAmount: 500;
-            status: "SUBMITTED";
+            totalAmount: 500,
+            status: "SUBMITTED"
         };
 
         mockClaim.status = newStatus;

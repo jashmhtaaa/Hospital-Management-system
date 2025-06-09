@@ -14,7 +14,7 @@
  * - Data Transfer Controls
  */
 
-const fs = require('fs');
+const fs = require('fs'),
 const path = require('path');
 const { execSync } = require('child_process');
 

@@ -25,21 +25,21 @@ const PatientRegistrationSchema = z.object({
   gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]),
   phone_number: z.string().min(1, "Phone number is required"),
   email: z.string().email("Invalid email address").optional().or(z.literal("")), // Optional but must be valid email if provided
-  address_line1: z.string().optional();
-  address_line2: z.string().optional();
-  city: z.string().optional();
-  state: z.string().optional();
-  postal_code: z.string().optional();
-  country: z.string().optional();
-  emergency_contact_name: z.string().optional();
-  emergency_contact_relation: z.string().optional();
-  emergency_contact_phone: z.string().optional();
-  blood_group: z.string().optional();
-  allergies: z.string().optional();
-  past_medical_history: z.string().optional();
-  current_medications: z.string().optional();
-  insurance_provider: z.string().optional();
-  insurance_policy_number: z.string().optional();
+  address_line1: z.string().optional(),
+  address_line2: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  postal_code: z.string().optional(),
+  country: z.string().optional(),
+  emergency_contact_name: z.string().optional(),
+  emergency_contact_relation: z.string().optional(),
+  emergency_contact_phone: z.string().optional(),
+  blood_group: z.string().optional(),
+  allergies: z.string().optional(),
+  past_medical_history: z.string().optional(),
+  current_medications: z.string().optional(),
+  insurance_provider: z.string().optional(),
+  insurance_policy_number: z.string().optional()
 });
 
 type FormData = z.infer<typeof PatientRegistrationSchema>;
@@ -53,11 +53,11 @@ export default const _AddPatientPage = () {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }))
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }))
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -71,20 +71,20 @@ export default const _AddPatientPage = () {
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
-        title: "Validation Error";
+        title: "Validation Error",
         description: "Please check the form for errors.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
 
     try {
       const response = await fetch("/api/patients/register", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(validation.data);
+        body: JSON.stringify(validation.data)
       });
 
       const result: { error?: string } = await response.json();
@@ -94,8 +94,8 @@ export default const _AddPatientPage = () {
       }
 
       toast({
-        title: "Patient Registered";
-        description: `/* SECURITY: Template literal eliminated */;
+        title: "Patient Registered",
+        description: `/* SECURITY: Template literal eliminated */
       });
 
       router.push("/dashboard/patients"); // Redirect to patient list
@@ -104,9 +104,9 @@ export default const _AddPatientPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
-        title: "Registration Failed";
+        title: "Registration Failed",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

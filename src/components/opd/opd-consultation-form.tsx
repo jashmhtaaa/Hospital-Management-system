@@ -32,15 +32,15 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast for notification
 const consultationFormSchema = z.object({ // Uncommented
   patientId: z.string().min(1, { message: "Please select a patient" }),
   chiefComplaint: z.string().min(3, { message: "Chief complaint is required" }),
-  presentIllness: z.string().optional();
+  presentIllness: z.string().optional(),
   vitalSigns: z.object({
-    temperature: z.string().optional();
-    pulse: z.string().optional();
-    respiratoryRate: z.string().optional();
-    bloodPressure: z.string().optional();
-    oxygenSaturation: z.string().optional();
-    weight: z.string().optional();
-    height: z.string().optional();
+    temperature: z.string().optional(),
+    pulse: z.string().optional(),
+    respiratoryRate: z.string().optional(),
+    bloodPressure: z.string().optional(),
+    oxygenSaturation: z.string().optional(),
+    weight: z.string().optional(),
+    height: z.string().optional()
   }).optional(), // Made optional to avoid issues if not filled initially
   diagnosis: z.string().min(3, { message: "Diagnosis is required" }),
   treatmentPlan: z.string().min(3, { message: "Treatment plan is required" }),
@@ -51,22 +51,22 @@ const consultationFormSchema = z.object({ // Uncommented
         dosage: z.string().min(1, { message: "Dosage is required" }),
         frequency: z.string().min(1, { message: "Frequency is required" }),
         duration: z.string().min(1, { message: "Duration is required" }),
-        instructions: z.string().optional();
+        instructions: z.string().optional()
       });
     );
     .optional(),
   labTests: z.array(z.string()).optional(), // Assuming lab tests are selected by ID
-  followUpDate: z.string().optional();
-  notes: z.string().optional();
+  followUpDate: z.string().optional(),
+  notes: z.string().optional()
 });
 
 type ConsultationFormValues = z.infer<typeof consultationFormSchema>; // Uncommented
 
 // Define necessary interfaces based on usage
 interface Patient {
-  id: string;
+  id: string,
   name: string;
-  age: number;
+  age: number,
   gender: string;
   tokenNumber: number;
   // Add other relevant patient fields if needed
@@ -98,7 +98,7 @@ const checkPermission = async (permission: string): Promise<boolean> => {
   // return data.hasPermission ?? false
   await new Promise(resolve => setTimeout(resolve, 100)); // Simulate network delay
   // For now, grant all permissions for testing
-  return true;
+  return true
 };
 
 // Mock fetch patients function (replace with actual API call)
@@ -113,7 +113,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   return [
     { id: "pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
     { id: "pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 },
-  ];
+  ]
 };
 
 export default const _OPDConsultationForm = () {
@@ -130,18 +130,18 @@ export default const _OPDConsultationForm = () {
 
   // Initialize the form
   const form = useForm<ConsultationFormValues>({
-    resolver: zodResolver(consultationFormSchema);
+    resolver: zodResolver(consultationFormSchema),
     defaultValues: {
-      patientId: "";
+      patientId: "",
       chiefComplaint: "";
-      presentIllness: "";
+      presentIllness: "",
       vitalSigns: {},
-      diagnosis: "";
+      diagnosis: "",
       treatmentPlan: "";
-      medications: [];
+      medications: [],
       labTests: [];
-      followUpDate: "";
-      notes: "";
+      followUpDate: "",
+      notes: ""
     },
   });
 
@@ -191,7 +191,7 @@ export default const _OPDConsultationForm = () {
     form.setValue("medications", [
       ...currentMedications,
       { name: "", dosage: "", frequency: "", duration: "", instructions: "" },
-    ]);
+    ])
   };
 
   // Remove medication field
@@ -200,7 +200,7 @@ export default const _OPDConsultationForm = () {
     form.setValue(
       "medications",
       currentMedications.filter((_, index_) => index_ !== index);
-    );
+    )
   };
 
   // Form submission handler
@@ -210,17 +210,17 @@ export default const _OPDConsultationForm = () {
 
     try {
       const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data);
+        body: JSON.stringify(data)
       });
 
       if (!response.ok) {
         let errorMessage = "Failed to save consultation";
         try {
-          const errorData: ApiErrorResponse = await response.json();
+          const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */

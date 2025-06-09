@@ -7,9 +7,9 @@ import { biometricService } from '@/lib/hr/biometric-service';
 const biometricVerificationSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
-    errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" });
+    errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" }),
   }),
-  sampleData: z.string().min(1, "Sample data is required"),;
+  sampleData: z.string().min(1, "Sample data is required"),
 });
 
 // POST handler for verifying biometric data

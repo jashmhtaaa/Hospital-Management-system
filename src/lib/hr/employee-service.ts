@@ -18,7 +18,7 @@ export class EmployeeService {
    * Create a new employee record;
    */
   async createEmployee(data: {
-    employeeId: string;
+    employeeId: string,
     firstName: string;
     lastName: string;
     middleName?: string;
@@ -33,7 +33,7 @@ export class EmployeeService {
     photo?: string;
     emergencyContact?: unknown;
     qualifications?: {
-      code: string;
+      code: string,
       name: string;
       issuer?: string;
       identifier?: string;
@@ -42,7 +42,7 @@ export class EmployeeService {
       attachment?: string;
     }[];
     positions?: {
-      positionId: string;
+      positionId: string,
       isPrimary: boolean;
       startDate: Date;
       endDate?: Date;
@@ -52,20 +52,20 @@ export class EmployeeService {
       // Create the employee record
       const employee = await tx.employee.create({
         data: {
-          employeeId: data.employeeId;
+          employeeId: data.employeeId,
           firstName: data.firstName;
-          lastName: data.lastName;
+          lastName: data.lastName,
           middleName: data.middleName;
-          gender: data.gender;
+          gender: data.gender,
           birthDate: data.birthDate;
-          email: data.email;
+          email: data.email,
           phone: data.phone;
-          address: data.address;
+          address: data.address,
           joiningDate: data.joiningDate;
-          departmentId: data.departmentId;
+          departmentId: data.departmentId,
           userId: data.userId;
-          photo: data.photo;
-          emergencyContact: data.emergencyContact;
+          photo: data.photo,
+          emergencyContact: data.emergencyContact
         },
       });
 
@@ -75,14 +75,14 @@ export class EmployeeService {
           data.qualifications.map((qual) =>
             tx.qualification.create({
               data: {
-                employeeId: employee.id;
+                employeeId: employee.id,
                 code: qual.code;
-                name: qual.name;
+                name: qual.name,
                 issuer: qual.issuer;
-                identifier: qual.identifier;
+                identifier: qual.identifier,
                 startDate: qual.startDate;
-                endDate: qual.endDate;
-                attachment: qual.attachment;
+                endDate: qual.endDate,
+                attachment: qual.attachment
               },
             });
           );
@@ -95,11 +95,11 @@ export class EmployeeService {
           data.positions.map((pos) =>
             tx.employeePosition.create({
               data: {
-                employeeId: employee.id;
+                employeeId: employee.id,
                 positionId: pos.positionId;
-                isPrimary: pos.isPrimary;
+                isPrimary: pos.isPrimary,
                 startDate: pos.startDate;
-                endDate: pos.endDate;
+                endDate: pos.endDate
               },
             });
           );
@@ -132,20 +132,20 @@ export class EmployeeService {
     const employee = await prisma.employee.findUnique({
       where: { id },
       include: {
-        department: true;
+        department: true,
         positions: {
           include: {
-            position: true;
+            position: true
           },
         },
-        qualifications: true;
+        qualifications: true,
         user: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true,
             image: true;
-            role: true;
+            role: true
           },
         },
       },
@@ -176,20 +176,20 @@ export class EmployeeService {
     const employee = await prisma.employee.findUnique({
       where: { employeeId },
       include: {
-        department: true;
+        department: true,
         positions: {
           include: {
-            position: true;
+            position: true
           },
         },
-        qualifications: true;
+        qualifications: true,
         user: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true,
             image: true;
-            role: true;
+            role: true
           },
         },
       },
@@ -207,7 +207,7 @@ export class EmployeeService {
    * Update an employee record;
    */
   async updateEmployee(
-    id: string;
+    id: string,
     data: {
       firstName?: string;
       lastName?: string;
@@ -228,13 +228,13 @@ export class EmployeeService {
       where: { id },
       data,
       include: {
-        department: true;
+        department: true,
         positions: {
           include: {
-            position: true;
+            position: true
           },
         },
-        qualifications: true;
+        qualifications: true
       },
     });
 
@@ -277,7 +277,7 @@ export class EmployeeService {
       where.positions = {
         some: {
           positionId,
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
       };
     }
@@ -304,16 +304,16 @@ export class EmployeeService {
 
     // Determine what to include based on the detail level requested
     const include: unknown = {
-      department: true;
+      department: true
     };
 
     if (includeDetails != null) {
       include.positions = {
         include: {
-          position: true;
+          position: true
         },
         where: {
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
       };
 
@@ -329,13 +329,13 @@ export class EmployeeService {
       // For list views, just include primary position
       include.positions = {
         include: {
-          position: true;
+          position: true
         },
         where: {
-          isPrimary: true;
-          endDate: null, // Only current positions;
+          isPrimary: true,
+          endDate: null, // Only current positions
         },
-        take: 1;
+        take: 1
       };
     }
 
@@ -347,7 +347,7 @@ export class EmployeeService {
         where,
         skip,
         take,
-        cursor: cursorObj;
+        cursor: cursorObj,
         orderBy: { lastName: 'asc' },
         include,
       }),
@@ -359,7 +359,7 @@ export class EmployeeService {
       total,
       skip,
       take,
-      nextCursor: employees.length === take ? employees[employees.length - 1].id : null;
+      nextCursor: employees.length === take ? employees[employees.length - 1].id : null
     };
 
     // Store in cache
@@ -372,9 +372,9 @@ export class EmployeeService {
    * Add a qualification to an employee;
    */
   async addQualification(
-    employeeId: string;
+    employeeId: string,
     data: {
-      code: string;
+      code: string,
       name: string;
       issuer?: string;
       identifier?: string;
@@ -400,7 +400,7 @@ export class EmployeeService {
    * Update a qualification;
    */
   async updateQualification(
-    id: string;
+    id: string,
     data: {
       code?: string;
       name?: string;
@@ -456,9 +456,9 @@ export class EmployeeService {
    * Assign a position to an employee;
    */
   async assignPosition(
-    employeeId: string;
+    employeeId: string,
     data: {
-      positionId: string;
+      positionId: string,
       isPrimary: boolean;
       startDate: Date;
       endDate?: Date;
@@ -469,11 +469,11 @@ export class EmployeeService {
       await prisma.employeePosition.updateMany({
         where: {
           employeeId,
-          isPrimary: true;
-          endDate: null, // Only current positions;
+          isPrimary: true,
+          endDate: null, // Only current positions
         },
         data: {
-          isPrimary: false;
+          isPrimary: false
         },
       });
     }
@@ -484,7 +484,7 @@ export class EmployeeService {
         ...data,
       },
       include: {
-        position: true;
+        position: true
       },
     });
 
@@ -498,7 +498,7 @@ export class EmployeeService {
    * Update a position assignment;
    */
   async updatePositionAssignment(
-    id: string;
+    id: string,
     data: {
       isPrimary?: boolean;
       endDate?: Date;
@@ -513,13 +513,13 @@ export class EmployeeService {
     if (data.isPrimary) {
       await prisma.employeePosition.updateMany({
         where: {
-          employeeId: positionAssignment?.employeeId;
+          employeeId: positionAssignment?.employeeId,
           isPrimary: true;
           id: { not: id },
-          endDate: null, // Only current positions;
+          endDate: null, // Only current positions
         },
         data: {
-          isPrimary: false;
+          isPrimary: false
         },
       });
     }
@@ -528,7 +528,7 @@ export class EmployeeService {
       where: { id },
       data,
       include: {
-        position: true;
+        position: true
       },
     });
 
@@ -553,7 +553,7 @@ export class EmployeeService {
       where: { id },
       data: {
         endDate,
-        isPrimary: false, // No longer primary if ended;
+        isPrimary: false, // No longer primary if ended
       },
     });
 
@@ -573,61 +573,61 @@ export class EmployeeService {
     // Create the FHIR Practitioner resource
     const practitioner: Practitioner = {
       resourceType: "Practitioner", // Added for FHIR R5 compliance
-      id: employee.id;
+      id: employee.id,
       meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Practitioner"];
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Practitioner"]
       },
       identifier: [
         {
-          use: 'official';
-          system: 'https://hospital.example.org/employees';
-          value: employee.employeeId;
+          use: 'official',
+          system: 'https://hospital.example.org/employees',
+          value: employee.employeeId
         },
       ],
-      active: employee.active;
+      active: employee.active,
       name: [
         {
-          use: 'official';
+          use: 'official',
           family: employee.lastName;
-          given: [employee.firstName];
-          prefix: employee.middleName ? [employee.middleName] : undefined;
+          given: [employee.firstName],
+          prefix: employee.middleName ? [employee.middleName] : undefined
         },
       ],
-      telecom: [];
+      telecom: [],
       address: [];
-      gender: employee.gender?.toLowerCase() as any;
+      gender: employee.gender?.toLowerCase() as any,
       birthDate: employee.birthDate?.toISOString().split('T')[0];
-      qualification: [];
+      qualification: []
     }
 
     // Add contact information
     if (employee.email) {
       practitioner.telecom.push({
-        system: 'email';
+        system: 'email',
         value: employee.email;
-        use: 'work';
+        use: 'work'
       });
     }
 
     if (employee.phone) {
       practitioner.telecom.push({
-        system: 'phone';
+        system: 'phone',
         value: employee.phone;
-        use: 'work';
+        use: 'work'
       });
     }
 
     // Add address if available
     if (employee.address) {
       practitioner.address.push({
-        use: 'work';
+        use: 'work',
         type: 'both';
-        text: employee.address.text;
+        text: employee.address.text,
         line: employee.address.line;
-        city: employee.address.city;
+        city: employee.address.city,
         state: employee.address.state;
-        postalCode: employee.address.postalCode;
-        country: employee.address.country;
+        postalCode: employee.address.postalCode,
+        country: employee.address.country
       });
     }
 
@@ -635,8 +635,8 @@ export class EmployeeService {
     if (employee.photo) {
       practitioner.photo = [
         {
-          url: employee.photo;
-          contentType: this.getContentType(employee.photo);
+          url: employee.photo,
+          contentType: this.getContentType(employee.photo)
         },
       ];
     }
@@ -647,28 +647,28 @@ export class EmployeeService {
         identifier: qual.identifier;
           ? [
               {
-                system: 'https://hospital.example.org/qualifications';
-                value: qual.identifier;
+                system: 'https://hospital.example.org/qualifications',
+                value: qual.identifier
               },
             ]
           : undefined,
         code: {
           coding: [
             {
-              system: 'https://hospital.example.org/qualification-codes';
+              system: 'https://hospital.example.org/qualification-codes',
               code: qual.code;
-              display: qual.name;
+              display: qual.name
             },
           ],
-          text: qual.name;
+          text: qual.name
         },
         period: {
-          start: qual.startDate.toISOString();
-          end: qual.endDate?.toISOString();
+          start: qual.startDate.toISOString(),
+          end: qual.endDate?.toISOString()
         },
         issuer: qual.issuer
           ? {
-              display: qual.issuer;
+              display: qual.issuer
             }
           : undefined,
       }));
@@ -685,47 +685,47 @@ export class EmployeeService {
     // Create the FHIR PractitionerRole resource
     const practitionerRole: PractitionerRole = {
       resourceType: "PractitionerRole", // Added for FHIR R5 compliance
-      id: position.id;
+      id: position.id,
       meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"];
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"]
       },
       identifier: [
         {
-          system: 'https://hospital.example.org/positions';
+          system: 'https://hospital.example.org/positions',
           value: `${employee.employeeId}-${position.position.code}`,
         },
       ],
-      active: position.endDate === null;
+      active: position.endDate === null,
       period: {
-        start: position.startDate.toISOString();
-        end: position.endDate?.toISOString();
+        start: position.startDate.toISOString(),
+        end: position.endDate?.toISOString()
       },
       practitioner: {
         reference: `Practitioner/${employee.id}`,
-        display: `/* SECURITY: Template literal eliminated */;
+        display: `/* SECURITY: Template literal eliminated */
       },
       organization: {
-        reference: 'Organization/hospital';
-        display: 'Example Hospital';
+        reference: 'Organization/hospital',
+        display: 'Example Hospital'
       },
       code: [
         {
           coding: [
             {
-              system: 'https://hospital.example.org/position-codes';
+              system: 'https://hospital.example.org/position-codes',
               code: position.position.code;
-              display: position.position.title;
+              display: position.position.title
             },
           ],
-          text: position.position.title;
+          text: position.position.title
         },
       ],
-      specialty: [];
+      specialty: [],
       location: [];
-      healthcareService: [];
+      healthcareService: [],
       telecom: [];
       availableTime: [], // Added for FHIR R5 scheduling support
-      notAvailable: [], // Added for FHIR R5 scheduling support;
+      notAvailable: [], // Added for FHIR R5 scheduling support
     };
 
     // Add department as specialty if available
@@ -734,12 +734,12 @@ export class EmployeeService {
         {
           coding: [
             {
-              system: 'https://hospital.example.org/department-codes';
+              system: 'https://hospital.example.org/department-codes',
               code: employee.department.code;
-              display: employee.department.name;
+              display: employee.department.name
             },
           ],
-          text: employee.department.name;
+          text: employee.department.name
         },
       ]
     }
@@ -747,17 +747,17 @@ export class EmployeeService {
     // Add contact information
     if (employee.email) {
       practitionerRole.telecom.push({
-        system: 'email';
+        system: 'email',
         value: employee.email;
-        use: 'work';
+        use: 'work'
       });
     }
 
     if (employee.phone) {
       practitionerRole.telecom.push({
-        system: 'phone';
+        system: 'phone',
         value: employee.phone;
-        use: 'work';
+        use: 'work'
       });
     }
 
@@ -780,7 +780,7 @@ export class EmployeeService {
         return 'image/gif';
       case 'pdf':
         return 'application/pdf';
-      default: return 'application/octet-stream';
+      default: return 'application/octet-stream'
     }
   }
 
@@ -820,19 +820,19 @@ export class EmployeeService {
     return prisma.qualification.findMany({
       where: {
         endDate: {
-          gte: new Date();
-          lte: thresholdDate;
+          gte: new Date(),
+          lte: thresholdDate
         }
       },
       include: {
         employee: {
           include: {
-            department: true;
+            department: true
           }
         }
       },
       orderBy: {
-        endDate: 'asc';
+        endDate: 'asc'
       }
     });
   }
@@ -855,7 +855,7 @@ export class EmployeeService {
           departmentId
         },
         checkInTime: {
-          gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data;
+          gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data
         }
       },
       include: {
@@ -863,10 +863,10 @@ export class EmployeeService {
           include: {
             positions: {
               include: {
-                position: true;
+                position: true
               },
               where: {
-                isPrimary: true;
+                isPrimary: true
               }
             }
           }
@@ -911,20 +911,20 @@ export class EmployeeService {
     const currentStaffing = await prisma.employee.findMany({
       where: {
         departmentId,
-        active: true;
+        active: true,
         positions: {
           some: {
-            endDate: null;
+            endDate: null
           }
         }
       },
       include: {
         positions: {
           include: {
-            position: true;
+            position: true
           },
           where: {
-            isPrimary: true;
+            isPrimary: true
           }
         }
       }
@@ -953,11 +953,11 @@ export class EmployeeService {
     });
 
     return {
-      date: date.toISOString();
+      date: date.toISOString(),
       departmentId,
-      predicted: staffingPrediction;
+      predicted: staffingPrediction,
       current: currentStaffingByPosition;
-      gaps: staffingGaps;
+      gaps: staffingGaps
     };
   }
 export const _employeeService = new EmployeeService();

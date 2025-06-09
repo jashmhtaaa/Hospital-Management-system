@@ -3,7 +3,7 @@ import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/emergency-department/services/emergency-service.ts
 export interface TriageData {
-  patientId: string;
+  patientId: string,
   triageLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   complaint: string;
   vitalSigns?: {
@@ -11,7 +11,7 @@ export interface TriageData {
     heartRate?: number;
     temperature?: number;
     respiratoryRate?: number;
-    oxygenSaturation?: number;
+    oxygenSaturation?: number
   };
 }
 
@@ -19,13 +19,13 @@ export class EmergencyService {
   static async performTriage(data: TriageData, performedBy?: string) {
     const emergencyVisit = await prisma.emergencyVisit.create({
       data: {
-        patientId: data.patientId;
+        patientId: data.patientId,
         triageLevel: data.triageLevel;
-        complaint: data.complaint;
-        status: 'ACTIVE';
+        complaint: data.complaint,
+        status: 'ACTIVE'
       },
       include: {
-        patient: true;
+        patient: true
       }
     });
 
@@ -41,7 +41,7 @@ export class EmergencyService {
 
     // Auto-alert for critical cases
     if (data.triageLevel === 'CRITICAL') {
-      await this.triggerCritical/* SECURITY: Alert removed */;
+      await this.triggerCritical/* SECURITY: Alert removed */
     }
 
     return emergencyVisit;
@@ -50,7 +50,7 @@ export class EmergencyService {
   static async triggerCritical/* SECURITY: Alert removed */{
     // Implementation for critical patient alerts
     // Could integrate with notification system
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   }
 
   static async getEmergencyQueue() {
@@ -59,11 +59,11 @@ export class EmergencyService {
       include: {
         patient: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            mrn: true;
+            mrn: true,
             dateOfBirth: true;
-            gender: true;
+            gender: true
           }
         }
       },
@@ -75,7 +75,7 @@ export class EmergencyService {
   }
 
   static async updateEmergencyStatus(
-    emergencyVisitId: string;
+    emergencyVisitId: string,
     status: 'ACTIVE' | 'IN_TREATMENT' | 'DISCHARGED' | 'ADMITTED';
     updatedBy?: string
   ) {
@@ -119,13 +119,13 @@ export class EmergencyService {
       prisma.emergencyVisit.count({
         where: {
           createdAt: { gte: startOfDay, lte: endOfDay },
-          triageLevel: 'CRITICAL';
+          triageLevel: 'CRITICAL'
         }
       }),
       prisma.emergencyVisit.count({
         where: {
           createdAt: { gte: startOfDay, lte: endOfDay },
-          triageLevel: 'HIGH';
+          triageLevel: 'HIGH'
         }
       }),
       prisma.emergencyVisit.count({

@@ -22,37 +22,37 @@ export interface FHIRAccount {
   resourceType: FHIRResourceType.ACCOUNT
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'active' | 'inactive' | 'entered-in-error' | 'on-hold' | 'unknown';
   type?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
-    }>;
+    }>
   };
   subject?: Array<{
-    reference: string;
+    reference: string
   }>;
   servicePeriod?: {
     start: string;
-    end?: string;
+    end?: string
   };
   coverage?: Array<{
     coverage: {
-      reference: string;
+      reference: string
     };
     priority?: number;
   }>;
   owner?: {
-    reference: string;
+    reference: string
   };
   description?: string;
   balance?: Array<{
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   }>;
 }
 
@@ -61,71 +61,71 @@ export interface FHIRClaim {
   resourceType: FHIRResourceType.CLAIM
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
-  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
+  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error',
   type: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
-    }>;
+    }>
   };
-  use: 'claim' | 'preauthorization' | 'predetermination';
+  use: 'claim' | 'preauthorization' | 'predetermination',
   patient: {
-    reference: string;
+    reference: string
   };
-  created: string;
+  created: string,
   provider: {
-    reference: string;
+    reference: string
   };
   priority: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
-    }>;
+    }>
   };
   insurance: Array<{
-    sequence: number;
+    sequence: number,
     focal: boolean;
     coverage: {
-      reference: string;
+      reference: string
     };
   }>;
   diagnosis?: Array<{
-    sequence: number;
+    sequence: number,
     diagnosis: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
-      }>;
+      }>
     };
   }>;
   item?: Array<{
-    sequence: number;
+    sequence: number,
     productOrService: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
-      }>;
+      }>
     };
     servicedDate?: string;
     unitPrice?: {
-      value: number;
-      currency: string;
+      value: number,
+      currency: string
     };
     net?: {
-      value: number;
-      currency: string;
+      value: number,
+      currency: string
     };
   }>;
   total?: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
 }
 
@@ -134,44 +134,44 @@ export interface FHIRCoverage {
   resourceType: FHIRResourceType.COVERAGE
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
   type?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
-    }>;
+    }>
   };
   subscriber?: {
-    reference: string;
+    reference: string
   };
   beneficiary: {
-    reference: string;
+    reference: string
   };
   relationship?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
       display?: string;
-    }>;
+    }>
   };
   period?: {
     start: string;
-    end?: string;
+    end?: string
   };
   payor: Array<{
-    reference: string;
+    reference: string
   }>;
   class?: Array<{
     type: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
-      }>;
+      }>
     };
     value: string;
     name?: string;
@@ -183,53 +183,53 @@ export interface FHIRInvoice {
   resourceType: FHIRResourceType.INVOICE
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error';
   subject?: {
-    reference: string;
+    reference: string
   };
   date: string;
   participant?: Array<{
     role?: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
-      }>;
+      }>
     };
     actor: {
-      reference: string;
+      reference: string
     };
   }>;
   issuer?: {
-    reference: string;
+    reference: string
   };
   account?: {
-    reference: string;
+    reference: string
   };
   lineItem?: Array<{
-    sequence: number;
+    sequence: number,
     chargeItem: {
-      reference: string;
+      reference: string
     };
     priceComponent?: Array<{
       type: 'base' | 'surcharge' | 'deduction' | 'discount' | 'tax' | 'informational';
       factor?: number;
       amount?: {
-        value: number;
-        currency: string;
+        value: number,
+        currency: string
       };
     }>;
   }>;
   totalNet?: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
   totalGross?: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
 }
 
@@ -238,60 +238,60 @@ export interface FHIRPaymentReconciliation {
   resourceType: FHIRResourceType.PAYMENT_RECONCILIATION
   id?: string;
   identifier?: Array<{
-    system: string;
-    value: string;
+    system: string,
+    value: string
   }>;
   status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
   period?: {
     start: string;
-    end?: string;
+    end?: string
   };
   created: string;
   paymentIssuer?: {
-    reference: string;
+    reference: string
   };
   request?: {
-    reference: string;
+    reference: string
   };
   outcome?: 'complete' | 'error' | 'partial';
   disposition?: string;
-  paymentDate: string;
+  paymentDate: string,
   paymentAmount: {
-    value: number;
-    currency: string;
+    value: number,
+    currency: string
   };
   paymentIdentifier?: {
-    system: string;
-    value: string;
+    system: string,
+    value: string
   };
   detail?: Array<{
     identifier?: {
-      system: string;
-      value: string;
+      system: string,
+      value: string
     };
     type?: {
       coding: Array<{
-        system: string;
+        system: string,
         code: string;
         display?: string;
-      }>;
+      }>
     };
     request?: {
-      reference: string;
+      reference: string
     };
     response?: {
-      reference: string;
+      reference: string
     };
     submitter?: {
-      reference: string;
+      reference: string
     };
     payee?: {
-      reference: string;
+      reference: string
     };
     date?: string;
     amount?: {
-      value: number;
-      currency: string;
+      value: number,
+      currency: string
     };
   }>;
 }
@@ -300,74 +300,74 @@ export interface FHIRPaymentReconciliation {
 export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
   // Map internal invoice status to FHIR Invoice status
   const statusMap: Record<string, 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error'> = {
-    draft: 'draft';
+    draft: 'draft',
     pending: 'draft';
-    verified: 'issued';
+    verified: 'issued',
     approved: 'issued';
-    sent: 'issued';
+    sent: 'issued',
     partial: 'balanced';
-    paid: 'balanced';
+    paid: 'balanced',
     overdue: 'issued';
-    cancelled: 'cancelled';
-    refunded: 'balanced';
+    cancelled: 'cancelled',
+    refunded: 'balanced'
   };
 
   return {
-    resourceType: FHIRResourceType.INVOICE;
+    resourceType: FHIRResourceType.INVOICE,
     id: invoice.id;
     identifier: [
       {
-        system: 'https://hospital.example.org/identifiers/invoice';
-        value: invoice.invoiceNumber;
+        system: 'https://hospital.example.org/identifiers/invoice',
+        value: invoice.invoiceNumber
       },
     ],
-    status: statusMap[invoice.status] || 'draft';
+    status: statusMap[invoice.status] || 'draft',
     subject: {
       reference: `Patient/${invoice.patientId}`,
     },
-    date: invoice.invoiceDate;
+    date: invoice.invoiceDate,
     issuer: {
-      reference: 'Organization/hospital';
+      reference: 'Organization/hospital'
     },
     account: invoice.accountId ? {
       reference: `Account/${invoice.accountId}`,
     } : undefined,
     lineItem: invoice.items.map((item: unknown, index: number) => ({
-      sequence: index + 1;
+      sequence: index + 1,
       chargeItem: {
         reference: `ChargeItem/${item.id}`,
       },
       priceComponent: [
         {
-          type: 'base';
+          type: 'base',
           amount: {
-            value: item.unitPrice;
-            currency: 'USD';
+            value: item.unitPrice,
+            currency: 'USD'
           },
         },
         ...(item.discount > 0 ? [{
-          type: 'discount';
+          type: 'discount',
           amount: {
-            value: -item.discount;
-            currency: 'USD';
+            value: -item.discount,
+            currency: 'USD'
           },
         }] : []),
         ...(item.tax > 0 ? [{
-          type: 'tax';
+          type: 'tax',
           amount: {
-            value: item.tax;
-            currency: 'USD';
+            value: item.tax,
+            currency: 'USD'
           },
         }] : []),
       ],
     })),
     totalNet: {
-      value: invoice.totalAmount - invoice.taxAmount;
-      currency: 'USD';
+      value: invoice.totalAmount - invoice.taxAmount,
+      currency: 'USD'
     },
     totalGross: {
-      value: invoice.totalAmount;
-      currency: 'USD';
+      value: invoice.totalAmount,
+      currency: 'USD'
     },
   }
 }
@@ -376,58 +376,58 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
 export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
   // Map internal claim status to FHIR Claim status
   const statusMap: Record<string, 'active' | 'cancelled' | 'draft' | 'entered-in-error'> = {
-    draft: 'draft';
+    draft: 'draft',
     pending: 'active';
-    submitted: 'active';
+    submitted: 'active',
     in_progress: 'active';
-    additional_info_needed: 'active';
+    additional_info_needed: 'active',
     approved: 'active';
-    partially_approved: 'active';
+    partially_approved: 'active',
     denied: 'active';
-    appealed: 'active';
+    appealed: 'active',
     closed: 'active';
-    cancelled: 'cancelled';
+    cancelled: 'cancelled'
   };
 
   return {
-    resourceType: FHIRResourceType.CLAIM;
+    resourceType: FHIRResourceType.CLAIM,
     id: claim.id;
     identifier: [
       {
-        system: 'https://hospital.example.org/identifiers/claim';
-        value: claim.claimNumber;
+        system: 'https://hospital.example.org/identifiers/claim',
+        value: claim.claimNumber
       },
     ],
-    status: statusMap[claim.status] || 'draft';
+    status: statusMap[claim.status] || 'draft',
     type: {
       coding: [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/claim-type';
+          system: 'https://terminology.hl7.org/CodeSystem/claim-type',
           code: 'institutional';
-          display: 'Institutional';
+          display: 'Institutional'
         },
       ],
     },
-    use: 'claim';
+    use: 'claim',
     patient: {
       reference: `Patient/${claim.patientId}`,
     },
-    created: claim.createdAt;
+    created: claim.createdAt,
     provider: {
-      reference: `Organization/hospital`;
+      reference: `Organization/hospital`
     },
     priority: {
       coding: [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/processpriority';
+          system: 'https://terminology.hl7.org/CodeSystem/processpriority',
           code: 'normal';
-          display: 'Normal';
+          display: 'Normal'
         },
       ],
     },
     insurance: [
       {
-        sequence: 1;
+        sequence: 1,
         focal: true;
         coverage: {
           reference: `Coverage/${claim.insurancePolicyId}`,
@@ -435,41 +435,41 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
       },
     ],
     diagnosis: claim.diagnoses.map((diagnosis: unknown, index: number) => ({
-      sequence: index + 1;
+      sequence: index + 1,
       diagnosis: {
         coding: [
           {
-            system: 'https://hl7.org/fhir/sid/icd-10';
+            system: 'https://hl7.org/fhir/sid/icd-10',
             code: diagnosis.code;
-            display: diagnosis.description;
+            display: diagnosis.description
           },
         ],
       },
     })),
     item: claim.items.map((item: unknown, index: number) => ({
-      sequence: index + 1;
+      sequence: index + 1,
       productOrService: {
         coding: [
           {
-            system: 'https://www.ama-assn.org/go/cpt';
+            system: 'https://www.ama-assn.org/go/cpt',
             code: item.serviceItem.cptCode;
-            display: item.serviceItem.name;
+            display: item.serviceItem.name
           },
         ],
       },
-      servicedDate: item.serviceDate;
+      servicedDate: item.serviceDate,
       unitPrice: {
-        value: item.unitPrice;
-        currency: 'USD';
+        value: item.unitPrice,
+        currency: 'USD'
       },
       net: {
-        value: item.totalPrice;
-        currency: 'USD';
+        value: item.totalPrice,
+        currency: 'USD'
       },
     })),
     total: {
-      value: claim.totalAmount;
-      currency: 'USD';
+      value: claim.totalAmount,
+      currency: 'USD'
     },
   }
 }
@@ -477,21 +477,21 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
 // Utility function to convert internal coverage to FHIR Coverage
 export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
   return {
-    resourceType: FHIRResourceType.COVERAGE;
+    resourceType: FHIRResourceType.COVERAGE,
     id: coverage.id;
     identifier: [
       {
-        system: 'https://hospital.example.org/identifiers/coverage';
-        value: coverage.policyNumber;
+        system: 'https://hospital.example.org/identifiers/coverage',
+        value: coverage.policyNumber
       },
     ],
-    status: coverage.status === 'active' ? 'active' : 'cancelled';
+    status: coverage.status === 'active' ? 'active' : 'cancelled',
     type: {
       coding: [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode';
+          system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
           code: coverage.type;
-          display: coverage.typeName;
+          display: coverage.typeName
         },
       ],
     },
@@ -504,15 +504,15 @@ export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
     relationship: {
       coding: [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/subscriber-relationship';
+          system: 'https://terminology.hl7.org/CodeSystem/subscriber-relationship',
           code: coverage.relationship;
-          display: coverage.relationshipName;
+          display: coverage.relationshipName
         },
       ],
     },
     period: {
-      start: coverage.startDate;
-      end: coverage.endDate;
+      start: coverage.startDate,
+      end: coverage.endDate
     },
     payor: [
       {
@@ -524,14 +524,14 @@ export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
         type: {
           coding: [
             {
-              system: 'https://terminology.hl7.org/CodeSystem/coverage-class';
+              system: 'https://terminology.hl7.org/CodeSystem/coverage-class',
               code: 'group';
-              display: 'Group';
+              display: 'Group'
             },
           ],
         },
-        value: coverage.groupNumber;
-        name: coverage.groupName;
+        value: coverage.groupNumber,
+        name: coverage.groupName
       },
     ],
   }
@@ -548,15 +548,15 @@ export const _validateFHIRResource = (resource: unknown): boolean {
 
   switch (resource.resourceType) {
     case FHIRResourceType.ACCOUNT:
-      return validateFHIRAccount(resource);
+      return validateFHIRAccount(resource),
     case FHIRResourceType.CLAIM:
-      return validateFHIRClaim(resource);
+      return validateFHIRClaim(resource),
     case FHIRResourceType.COVERAGE:
-      return validateFHIRCoverage(resource);
+      return validateFHIRCoverage(resource),
     case FHIRResourceType.INVOICE:
-      return validateFHIRInvoice(resource);
+      return validateFHIRInvoice(resource),
     case FHIRResourceType.PAYMENT_RECONCILIATION: return validateFHIRPaymentReconciliation(resource),
-    default: return false;
+    default: return false
   }
 }
 

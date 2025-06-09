@@ -6,36 +6,36 @@ import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption 
 import { getSession } from "@/lib/session";
 // FHIR-compliant DiagnosticReport resource structure
 interface FHIRDiagnosticReport {
-  resourceType: "DiagnosticReport";
+  resourceType: "DiagnosticReport",
   id: string;
   meta: {
-    versionId: string;
+    versionId: string,
     lastUpdated: string;
     security?: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
-    }>;
+      display: string
+    }>
   };
-  status: "registered" | "partial" | "preliminary" | "final" | "amended" | "corrected" | "appended" | "cancelled" | "entered-in-error" | "unknown";
+  status: "registered" | "partial" | "preliminary" | "final" | "amended" | "corrected" | "appended" | "cancelled" | "entered-in-error" | "unknown",
   category: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
-    }>;
+      display: string
+    }>
   };
   code: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   subject: {
     reference: string;
-    display?: string;
+    display?: string
   };
   effectiveDateTime?: string;
   issued?: string;
@@ -44,7 +44,7 @@ interface FHIRDiagnosticReport {
     display?: string;
   }>;
   result?: Array<{
-    reference: string;
+    reference: string
   }>;
   conclusion?: string;
 }
@@ -62,9 +62,9 @@ interface LabTestCreateBody {
 
   // Additional coding systems (optional)
   additional_codes?: Array<{
-    system: string;
+    system: string,
     code: string
-    display?: string;
+    display?: string
   }>;
 
   // Specimen requirements
@@ -98,10 +98,10 @@ interface LabTestCreateBody {
 
   // Reflex testing rules
   reflex_rules?: Array<{
-    condition_test_id: number;
+    condition_test_id: number,
     condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
-    condition_value: string;
-    action_test_id: number;
+    condition_value: string,
+    action_test_id: number
   }>;
 
   // Business information
@@ -219,39 +219,39 @@ export const _GET = async (request: NextRequest) => {
       // Transform to FHIR DiagnosticReport resources
       const fhirResources = tests.map(test => {
         const resource: FHIRDiagnosticReport = {
-          resourceType: "DiagnosticReport";
-          id: test.id.toString();
+          resourceType: "DiagnosticReport",
+          id: test.id.toString(),
           meta: {
-            versionId: "1";
-            lastUpdated: new Date().toISOString();
+            versionId: "1",
+            lastUpdated: new Date().toISOString()
           },
-          status: "registered";
+          status: "registered",
           category: {
             coding: [{
-              system: "https://terminology.hl7.org/CodeSystem/v2-0074";
+              system: "https://terminology.hl7.org/CodeSystem/v2-0074",
               code: "LAB";
-              display: "Laboratory";
+              display: "Laboratory"
             }]
           },
           code: {
             coding: [{
-              system: "https://loinc.org";
+              system: "https://loinc.org",
               code: test.loinc_code || "unknown";
-              display: test.loinc_display || test.name;
+              display: test.loinc_display || test.name
             }],
-            text: test.name;
+            text: test.name
           },
           subject: {
-            reference: "Patient/example";
+            reference: "Patient/example"
           }
         }
 
         // Add security tag for sensitive tests if needed
         if (test.is_sensitive) {
           resource.meta.security = [{
-            system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+            system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
             code: "R";
-            display: "Restricted";
+            display: "Restricted"
           }]
         }
 
@@ -259,13 +259,13 @@ export const _GET = async (request: NextRequest) => {
       });
 
       return NextResponse.json({
-        resourceType: "Bundle";
+        resourceType: "Bundle",
         type: "searchset";
-        total: totalCount;
+        total: totalCount,
         link: [
           {
-            relation: "self";
-            url: request.url;
+            relation: "self",
+            url: request.url
           }
         ],
         entry: fhirResources.map(resource => ({
@@ -275,18 +275,18 @@ export const _GET = async (request: NextRequest) => {
     } else {
       // Return default format with pagination metadata
       return NextResponse.json({
-        data: tests;
+        data: tests,
         pagination: {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize);
+          totalPages: Math.ceil(totalCount / pageSize)
         }
       });
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch laboratory tests", details: errorMessage },
       { status: 500 }
@@ -364,7 +364,7 @@ export const _POST = async (request: NextRequest) => {
 
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
-        patientPreparation: body.patient_preparation;
+        patientPreparation: body.patient_preparation
       });
 
       const insertParameters = [
@@ -528,11 +528,11 @@ export const _POST = async (request: NextRequest) => {
       // Construct complete response
       const completeTest = {
         ...test,
-        additional_codes: additionalCodes;
+        additional_codes: additionalCodes,
         panel_items: panelItems;
-        reference_ranges: referenceRanges;
+        reference_ranges: referenceRanges,
         reflex_rules: reflexRules;
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]');
+        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
       };
 
       // Return the created test
@@ -544,7 +544,7 @@ export const _POST = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create laboratory test", details: errorMessage },
       { status: 500 }
@@ -617,7 +617,7 @@ export const _PUT = async (
         // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
         if (!loincRegex.test(body.loinc_code)) {
-          throw new Error("Invalid LOINC code format. Expected format: #####-#");
+          throw new Error("Invalid LOINC code format. Expected format: #####-#")
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
@@ -681,7 +681,7 @@ export const _PUT = async (
       if (body.patient_preparation !== undefined) {
         // Encrypt sensitive data
         const encryptedData = await encryptSensitiveData({
-          patientPreparation: body.patient_preparation;
+          patientPreparation: body.patient_preparation
         });
         updateFields.push("patient_preparation = ?");
         updateParameters.push(encryptedData.patientPreparation);
@@ -879,11 +879,11 @@ export const _PUT = async (
       // Construct complete response
       const completeTest = {
         ...test,
-        additional_codes: additionalCodes;
+        additional_codes: additionalCodes,
         panel_items: panelItems;
-        reference_ranges: referenceRanges;
+        reference_ranges: referenceRanges,
         reflex_rules: reflexRules;
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]');
+        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
       };
 
       // Return the updated test
@@ -895,7 +895,7 @@ export const _PUT = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update laboratory test", details: errorMessage },
       { status: 500 }
@@ -950,7 +950,7 @@ export const DELETE = async (
       );
 
       return NextResponse.json({
-        message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead.";
+        message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead."
       });
     }
 
@@ -971,7 +971,7 @@ export const DELETE = async (
       await DB.query("COMMIT", []);
 
       return NextResponse.json({
-        message: "Laboratory test deleted successfully";
+        message: "Laboratory test deleted successfully"
       });
     } catch (error) {
       // Rollback transaction on error
@@ -980,7 +980,7 @@ export const DELETE = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to delete laboratory test", details: errorMessage },
       { status: 500 }

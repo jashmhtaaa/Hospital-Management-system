@@ -17,16 +17,16 @@ import {
   TableCell,
   Input,
   Label,
-  // Textarea, // FIX: Removed unused import;
+  // Textarea, // FIX: Removed unused import
 } from "@/components/ui"; // Assuming Select components are also here or adjust import
 import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures
 interface MedicationRecord {
-  id: string;
+  id: string,
   administered_time: string;
   medication_name: string; // Assuming this comes from a join
-  dosage: string;
+  dosage: string,
   route: string;
   administered_by_first_name: string; // Assuming this comes from a join
   administered_by_last_name: string; // Assuming this comes from a join
@@ -34,29 +34,29 @@ interface MedicationRecord {
 }
 
 interface Medication {
-  id: string;
+  id: string,
   item_name: string; // Assuming this is the display name
-  dosage_form: string;
-  strength: string;
+  dosage_form: string,
+  strength: string
 }
 
 interface AdmissionInfo {
-  admission_number: string;
+  admission_number: string,
   admission_date: string;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  medication_id: string;
+  medication_id: string,
   dosage: string;
-  route: string;
-  notes: string;
+  route: string,
+  notes: string
 }
 
 interface MedicationAdministrationProperties {
-  admissionId: string | null;
+  admissionId: string | null
 }
 
 const MedicationAdministration: React.FC<;
@@ -70,10 +70,10 @@ const MedicationAdministration: React.FC<;
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loadingMedications, setLoadingMedications] = useState<boolean>(true);
   const [formData, setFormData] = useState<FormData>({
-    medication_id: "";
+    medication_id: "",
     dosage: "";
-    route: "";
-    notes: "";
+    route: "",
+    notes: ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>();
@@ -106,31 +106,31 @@ const MedicationAdministration: React.FC<;
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockRecords: MedicationRecord[] = [
           {
-            id: "mar_001";
+            id: "mar_001",
             administered_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000).toISOString(), // 1 hour ago
-            medication_name: "Paracetamol 500mg Tablet";
+            medication_name: "Paracetamol 500mg Tablet",
             dosage: "1 tablet";
-            route: "oral";
+            route: "oral",
             administered_by_first_name: "Alice";
-            administered_by_last_name: "Smith";
-            notes: "Patient tolerated well.";
+            administered_by_last_name: "Smith",
+            notes: "Patient tolerated well."
           },
           {
-            id: "mar_002";
+            id: "mar_002",
             administered_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 14_400_000).toISOString(), // 4 hours ago
-            medication_name: "Amoxicillin 250mg Capsule";
+            medication_name: "Amoxicillin 250mg Capsule",
             dosage: "1 capsule";
-            route: "oral";
+            route: "oral",
             administered_by_first_name: "Alice";
-            administered_by_last_name: "Smith";
+            administered_by_last_name: "Smith"
           },
         ];
         const mockPatientInfo: AdmissionInfo = {
-          admission_number: "ADM123456";
+          admission_number: "ADM123456",
           admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
-          patient_first_name: "Jane";
+          patient_first_name: "Jane",
           patient_last_name: "Doe";
-          diagnosis: "Pneumonia";
+          diagnosis: "Pneumonia"
         };
         setMedicationRecords(mockRecords),
         setPatientInfo(mockPatientInfo);
@@ -166,22 +166,22 @@ const MedicationAdministration: React.FC<;
         await new Promise((resolve) => setTimeout(resolve, 300));
         const mockMeds: Medication[] = [
           {
-            id: "med_001";
+            id: "med_001",
             item_name: "Paracetamol";
-            dosage_form: "Tablet";
-            strength: "500mg";
+            dosage_form: "Tablet",
+            strength: "500mg"
           },
           {
-            id: "med_002";
+            id: "med_002",
             item_name: "Amoxicillin";
-            dosage_form: "Capsule";
-            strength: "250mg";
+            dosage_form: "Capsule",
+            strength: "250mg"
           },
           {
-            id: "med_003";
+            id: "med_003",
             item_name: "Ibuprofen";
-            dosage_form: "Tablet";
-            strength: "200mg";
+            dosage_form: "Tablet",
+            strength: "200mg"
           },
         ];
         setMedications(mockMeds);
@@ -200,7 +200,7 @@ const MedicationAdministration: React.FC<;
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
   ): void => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   // Note: If using shadcn/ui Select, the onChange is handled differently (onValueChange)
@@ -225,7 +225,7 @@ const MedicationAdministration: React.FC<;
       const submissionData = {
         ...formData,
         administered_time: new Date().toISOString();
-        // administered_by_id: session?.user?.id // Get from session in real app;
+        // administered_by_id: session?.user?.id // Get from session in real app
       }
 
       // Simulate API call
@@ -249,14 +249,14 @@ const MedicationAdministration: React.FC<;
       );
       const newRecord: MedicationRecord = {
         id: `mar_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        administered_time: submissionData.administered_time;
+        administered_time: submissionData.administered_time,
         medication_name: selectedMed;
           ? `/* SECURITY: Template literal eliminated */
-        dosage: formData.dosage;
+        dosage: formData.dosage,
         route: formData.route;
         administered_by_first_name: "Current", // Replace with actual user data
-        administered_by_last_name: "User";
-        notes: formData.notes;
+        administered_by_last_name: "User",
+        notes: formData.notes
       };
 
       // Update the medication records list with the new record
@@ -264,10 +264,10 @@ const MedicationAdministration: React.FC<;
 
       // Reset form
       setFormData({
-        medication_id: "";
+        medication_id: "",
         dosage: "";
-        route: "";
-        notes: "";
+        route: "",
+        notes: ""
       }),
       setSubmitSuccess(true);
 
@@ -289,12 +289,12 @@ const MedicationAdministration: React.FC<;
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
-        year: "numeric";
+        year: "numeric",
         month: "short";
-        day: "numeric";
+        day: "numeric",
         hour: "2-digit";
-        minute: "2-digit";
-        hour12: true;
+        minute: "2-digit",
+        hour12: true
       };
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
@@ -305,7 +305,7 @@ const MedicationAdministration: React.FC<;
   };
 
   // Route options for medication administration
-  const routeOptions: { value: string; label: string }[] = [
+  const routeOptions: { value: string, label: string }[] = [
     { value: "oral", label: "Oral" },
     { value: "iv", label: "Intravenous (IV)" },
     { value: "im", label: "Intramuscular (IM)" },
@@ -501,7 +501,7 @@ const MedicationAdministration: React.FC<;
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default MedicationAdministration;

@@ -113,9 +113,9 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'laboratory_critical_alerts';
+          resource: 'laboratory_critical_alerts',
           details: { status, assignedTo, page, pageSize }
         });
 
@@ -136,8 +136,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch critical alerts';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch critical alerts',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -211,23 +211,23 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'laboratory_critical_alerts';
+      resource: 'laboratory_critical_alerts',
       resourceId: result.insertId;
-      details: body;
+      details: body
     });
 
     // Send notifications
     if (assignedTo != null) {
       await notifyUsers({
-        userIds: [assignedTo];
+        userIds: [assignedTo],
         title: 'Critical Result Alert';
-        message: 'You have been assigned a critical result alert that requires your attention';
+        message: 'You have been assigned a critical result alert that requires your attention',
         type: 'critical_alert';
-        resourceId: result.insertId;
+        resourceId: result.insertId,
         resourceType: 'laboratory_critical_alerts';
-        priority: 'high';
+        priority: 'high'
       });
     } else {
       // Notify all lab supervisors and managers if unassigned
@@ -240,13 +240,13 @@ export const POST = async (request: NextRequest) => {
 
       if (supervisorIds.length > 0) {
         await notifyUsers({
-          userIds: supervisorIds;
+          userIds: supervisorIds,
           title: 'Unassigned Critical Result Alert';
-          message: 'A new critical result alert requires assignment';
+          message: 'A new critical result alert requires assignment',
           type: 'critical_alert';
-          resourceId: result.insertId;
+          resourceId: result.insertId,
           resourceType: 'laboratory_critical_alerts';
-          priority: 'high';
+          priority: 'high'
         });
       }
     }
@@ -276,8 +276,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create critical alert';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to create critical alert',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -335,7 +335,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       // If resolving, require acknowledgement
       if (status === 'resolved' && !acknowledgement) {
         return NextResponse.json({
-          error: 'Acknowledgement required to resolve critical alert';
+          error: 'Acknowledgement required to resolve critical alert'
         }, { status: 400 });
       }
     }
@@ -376,24 +376,24 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id;
+        userId: session.user.id,
         action: 'update';
-        resource: 'laboratory_critical_alerts';
+        resource: 'laboratory_critical_alerts',
         resourceId: id;
-        details: body;
+        details: body
       });
 
       // Send notifications for assignment changes
       if (assignedTo !== undefined && assignedTo !== existingAlert.assigned_to) {
         if (assignedTo != null) {
           await notifyUsers({
-            userIds: [assignedTo];
+            userIds: [assignedTo],
             title: 'Critical Result Alert Assignment';
-            message: 'You have been assigned a critical result alert that requires your attention';
+            message: 'You have been assigned a critical result alert that requires your attention',
             type: 'critical_alert';
-            resourceId: id;
+            resourceId: id,
             resourceType: 'laboratory_critical_alerts';
-            priority: 'high';
+            priority: 'high'
           });
         }
       }
@@ -415,19 +415,19 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
         if (notifyIds.length > 0) {
           await notifyUsers({
-            userIds: notifyIds;
+            userIds: notifyIds,
             title: 'Critical Alert Status Update';
             message: `Critical alert status changed to ${status}`,
-            type: 'critical_alert_update';
+            type: 'critical_alert_update',
             resourceId: id;
-            resourceType: 'laboratory_critical_alerts';
-            priority: 'medium';
+            resourceType: 'laboratory_critical_alerts',
+            priority: 'medium'
           });
         }
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-alerts:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-alerts:*')
     }
 
     // Get the updated alert
@@ -452,7 +452,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update critical alert';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to update critical alert',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

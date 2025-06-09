@@ -6,21 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 }
 interface RadiologyStudy {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   studyDate: string;
-  studyType: string;
+  studyType: string,
   modality: string;
-  bodyPart: string;
+  bodyPart: string,
   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
-  technician: string;
+  technician: string,
   images: string[];
-  notes: string;
+  notes: string
 }
 
 interface RadiologyStudyDetailProps {
-  study: RadiologyStudy;
+  study: RadiologyStudy
 }
 
 /**
@@ -33,7 +33,7 @@ export const _RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

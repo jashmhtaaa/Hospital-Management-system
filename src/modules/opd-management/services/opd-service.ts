@@ -3,11 +3,11 @@ import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/opd-management/services/opd-service.ts
 export interface CreateAppointmentData {
-  patientId: string;
+  patientId: string,
   doctorId: string;
-  departmentId: string;
+  departmentId: string,
   appointmentDate: Date;
-  appointmentTime: string;
+  appointmentTime: string,
   type: 'CONSULTATION' | 'FOLLOW_UP' | 'EMERGENCY' | 'PROCEDURE';
   chiefComplaint?: string;
   consultationFee?: number;
@@ -29,9 +29,9 @@ export class OPDService {
     const appointment = await prisma.appointment.create({
       data,
       include: {
-        patient: true;
+        patient: true,
         doctor: true;
-        department: true;
+        department: true
       }
     });
 
@@ -49,14 +49,14 @@ export class OPDService {
   }
 
   static async checkDoctorAvailability(
-    doctorId: string;
+    doctorId: string,
     date: Date;
     time: string
   ): Promise<boolean> {
     const conflictingAppointment = await prisma.appointment.findFirst({
       where: {
         doctorId,
-        appointmentDate: date;
+        appointmentDate: date,
         appointmentTime: time;
         status: { not: 'CANCELLED' }
       }
@@ -69,15 +69,15 @@ export class OPDService {
     return await prisma.appointment.findMany({
       where: {
         doctorId,
-        appointmentDate: date;
+        appointmentDate: date,
         status: { not: 'CANCELLED' }
       },
       include: {
         patient: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            mrn: true;
+            mrn: true
           }
         }
       },
@@ -86,7 +86,7 @@ export class OPDService {
   }
 
   static async updateAppointmentStatus(
-    appointmentId: string;
+    appointmentId: string,
     status: 'CONFIRMED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
     updatedBy?: string
   ) {
@@ -128,25 +128,25 @@ export class OPDService {
       prisma.appointment.count({
         where: {
           appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'SCHEDULED';
+          status: 'SCHEDULED'
         }
       }),
       prisma.appointment.count({
         where: {
           appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'COMPLETED';
+          status: 'COMPLETED'
         }
       }),
       prisma.appointment.count({
         where: {
           appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'CANCELLED';
+          status: 'CANCELLED'
         }
       }),
       prisma.appointment.count({
         where: {
           appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'IN_PROGRESS';
+          status: 'IN_PROGRESS'
         }
       })
     ]);

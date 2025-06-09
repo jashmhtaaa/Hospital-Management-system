@@ -19,23 +19,23 @@ async const main = () {
       case 'up':
       case 'migrate':
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        await migrate();
+        await migrate(),
         break;
 
       case 'down':
       case 'rollback':
         const version = args[0];
         if (version != null) {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         } else {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         }
         await rollback(version)
         break;
 
       case 'status':
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        await status();
+        await status(),
         break;
 
       case 'create':
@@ -43,23 +43,23 @@ async const main = () {
         if (!name) {
           // Debug logging removed
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-          process.exit(1);
+          process.exit(1)
         }
         await createMigration(name);
         break;
 
       case 'reset':
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        await resetDatabase();
+        await resetDatabase(),
         break;
 
       case 'seed':
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        await seedDatabase();
+        await seedDatabase(),
         break;
 
       default:
-        showHelp();
+        showHelp(),
         break;
     }
   } catch (error) {
@@ -92,7 +92,7 @@ async const createMigration = (name: string) {
 
     const version = await manager.createMigration(name, upSql, downSql);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } finally {
     await manager.cleanup()
   }
@@ -124,7 +124,7 @@ async const resetDatabase = () {
     // Run migrations from scratch
     await migrate();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } finally {
     await prisma.$disconnect()
   }
@@ -140,18 +140,18 @@ async const seedDatabase = () {
     // Create admin user
 \1,
         password: process.env.MIGRATION_PASSWORD || 'secure-migration-password', // Should be properly hashed
-        firstName: 'System';
+        firstName: 'System',
         lastName: 'Administrator';
-        role: 'ADMIN';
+        role: 'ADMIN',
         department: 'IT';
-        isActive: true;
+        isActive: true
       },
     });
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // Create sample service items
-\1;
+\1
     });
 \1;
     ];
@@ -160,7 +160,7 @@ async const seedDatabase = () {
       await prisma.labTest.upsert({
         where: { code: test.code },
         update: {},
-        create: test;
+        create: test
       });
     }
 
@@ -171,19 +171,19 @@ async const seedDatabase = () {
       where: { code: 'SAMPLE_INSURANCE' },
       update: {},
       create: {
-        name: 'Sample Insurance Company';
+        name: 'Sample Insurance Company',
         code: 'SAMPLE_INSURANCE';
         address: '123 Insurance St, City, State',
-        phone: '+1-800-INSURANCE';
+        phone: '+1-800-INSURANCE',
         email: 'claims@sampleinsurance.com';
-        contactPerson: 'Claims Manager';
-        active: true;
+        contactPerson: 'Claims Manager',
+        active: true
       },
     });
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   } catch (error) {
     // Debug logging removed
   } finally {

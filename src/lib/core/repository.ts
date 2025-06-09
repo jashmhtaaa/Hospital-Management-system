@@ -11,13 +11,13 @@ import { DatabaseError } from './errors.ts';
 export interface QueryOptions {
   filters?: Record<string, unknown>;
   sort?: {
-    field: string;
-    direction: 'asc' | 'desc';
+    field: string,
+    direction: 'asc' | 'desc'
   };
   pagination?: {
     page?: number;
     pageSize?: number;
-    cursor?: string;
+    cursor?: string
   };
   includes?: string[];
 }
@@ -203,7 +203,7 @@ export class CachedRepository<T, ID> implements Repository<T, ID> {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // For now, just pass through to the repository
-    return this.repository.findById(id);
+    return this.repository.findById(id)
   }
 
   async findAll(options?: QueryOptions): Promise<T[]> {

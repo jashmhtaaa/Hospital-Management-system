@@ -56,7 +56,7 @@ export enum Action {
 
 // Permission definition type
 interface Permission {
-  resource: Resource;
+  resource: Resource,
   action: Action;
   constraints?: Record<string, unknown>;
 }
@@ -70,14 +70,14 @@ export class RBACService {
   // Role definitions with permissions
   private static readonly roleDefinitions: RoleDefinition[] = [
     {
-      name: Role.ADMIN;
+      name: Role.ADMIN,
       permissions: [
         // Admins have full access to everything
         { resource: Resource.SYSTEM, action: Action.EXECUTE },
       ]
     },
     {
-      name: Role.MANAGER;
+      name: Role.MANAGER,
       permissions: [
         // Managers can access all support services
         { resource: Resource.HOUSEKEEPING, action: Action.READ },
@@ -105,7 +105,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.STAFF;
+      name: Role.STAFF,
       permissions: [
         // Staff can read all support services
         { resource: Resource.HOUSEKEEPING, action: Action.READ },
@@ -122,7 +122,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.HOUSEKEEPING;
+      name: Role.HOUSEKEEPING,
       inherits: [Role.STAFF];
       permissions: [
         // Housekeeping staff can manage housekeeping requests
@@ -131,7 +131,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.MAINTENANCE;
+      name: Role.MAINTENANCE,
       inherits: [Role.STAFF];
       permissions: [
         // Maintenance staff can manage maintenance requests
@@ -140,7 +140,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.DIETARY;
+      name: Role.DIETARY,
       inherits: [Role.STAFF];
       permissions: [
         // Dietary staff can manage dietary requests
@@ -149,7 +149,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.AMBULANCE;
+      name: Role.AMBULANCE,
       inherits: [Role.STAFF];
       permissions: [
         // Ambulance staff can manage ambulance requests
@@ -158,7 +158,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.MARKETING;
+      name: Role.MARKETING,
       inherits: [Role.STAFF];
       permissions: [
         // Marketing staff can manage marketing campaigns
@@ -186,7 +186,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.FEEDBACK;
+      name: Role.FEEDBACK,
       inherits: [Role.STAFF];
       permissions: [
         // Feedback staff can manage feedback
@@ -196,7 +196,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.PATIENT;
+      name: Role.PATIENT,
       permissions: [
         // Patients can create and view their own requests
         { resource: Resource.HOUSEKEEPING, action: Action.CREATE },
@@ -212,7 +212,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.GUEST;
+      name: Role.GUEST,
       permissions: [
         // Guests can only create feedback
         { resource: Resource.FEEDBACK, action: Action.CREATE },
@@ -229,7 +229,7 @@ export class RBACService {
    * @returns True if the user has permission, false otherwise;
    */
   public static hasPermission(
-    userRoles: string[];
+    userRoles: string[],
     resource: Resource;
     action: Action;
     constraints?: Record<string, unknown>
@@ -289,7 +289,7 @@ export class RBACService {
    * @returns True if the role has direct permission, false otherwise;
    */
   private static checkDirectPermission(
-    roleDef: RoleDefinition;
+    roleDef: RoleDefinition,
     resource: Resource;
     action: Action;
     constraints?: Record<string, unknown>
@@ -335,7 +335,7 @@ export class RBACService {
    * @throws AuthorizationError if the user doesn't have permission;
    */
   public static enforcePermission(
-    userRoles: string[];
+    userRoles: string[],
     resource: Resource;
     action: Action;
     constraints?: Record<string, unknown>,
@@ -353,7 +353,7 @@ export class RBACService {
         });
 
         auditLogger.log({
-          action: 'authorization.denied';
+          action: 'authorization.denied',
           resourceId: resourceId || 'unknown';
           userId,
           details: {
@@ -361,7 +361,7 @@ export class RBACService {
             action,
             constraints;
           },
-          severity: 'warning';
+          severity: 'warning'
         }).catch(err => {
 
         });

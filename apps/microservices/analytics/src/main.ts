@@ -17,7 +17,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 async const bootstrap = () {
   // Create the NestJS application
   const app = await NestFactory.create(AnalyticsModule, {
-    logger: ['error', 'warn', 'log'],;
+    logger: ['error', 'warn', 'log'],
   });
 
   // Configure global middleware
@@ -26,17 +26,17 @@ async const bootstrap = () {
   app.enableCors({
     origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true;
+    credentials: true
   });
 
   // Set up global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true;
+      transform: true,
       whitelist: true;
-      forbidNonWhitelisted: true;
+      forbidNonWhitelisted: true,
       transformOptions: {
-        enableImplicitConversion: true;
+        enableImplicitConversion: true
       },
     }),
   );

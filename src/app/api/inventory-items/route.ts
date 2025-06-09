@@ -13,13 +13,13 @@ const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
 // GET handler for listing inventory items
 export const _GET = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
-    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const { searchParams } = new URL(request.url);
 
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -64,7 +64,7 @@ export const _GET = async (request: Request) => {
 
         // 4. Return item list
         return new Response(JSON.stringify(itemsResult.results), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -72,7 +72,7 @@ export const _GET = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -80,13 +80,13 @@ export const _GET = async (request: Request) => {
 
 // POST handler for adding a new inventory item
 const AddInventoryItemSchema = z.object({
-    billable_item_id: z.number().int().positive().optional().nullable();
+    billable_item_id: z.number().int().positive().optional().nullable(),
     item_name: z.string().min(1, "Item name is required"),
-    category: z.string().optional();
-    manufacturer: z.string().optional();
-    unit_of_measure: z.string().optional();
-    reorder_level: z.number().int().nonnegative().optional().default(0);
-    is_active: z.boolean().optional().default(true);
+    category: z.string().optional(),
+    manufacturer: z.string().optional(),
+    unit_of_measure: z.string().optional(),
+    reorder_level: z.number().int().nonnegative().optional().default(0),
+    is_active: z.boolean().optional().default(true)
 });
 
 export const _POST = async (request: Request) => {
@@ -96,7 +96,7 @@ export const _POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -107,7 +107,7 @@ export const _POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -125,7 +125,7 @@ export const _POST = async (request: Request) => {
                                         .first();
             if (!billableItem) {
                 return new Response(JSON.stringify({ error: "Invalid or inactive Billable Item ID provided" }), {
-                    status: 400;
+                    status: 400,
                     headers: { "Content-Type": "application/json" },
                 });
             }
@@ -179,7 +179,7 @@ export const _POST = async (request: Request) => {
         // Handle potential unique constraint errors (e.g., if billable_item_id was made unique)
         const statusCode = errorMessage.includes("UNIQUE constraint failed") ? 409 : 500
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., Billable Item link)" : "Internal Server Error", details: errorMessage }), {
-            status: statusCode;
+            status: statusCode,
             headers: { "Content-Type": "application/json" },
         });
     }

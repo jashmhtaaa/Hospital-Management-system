@@ -23,13 +23,13 @@ import { format } from "date-fns"; // For date formatting
 
 // --- INTERFACES ---
 interface Invoice {
-  id: number;
+  id: number,
   invoice_number: string
-  patient_id: number;
+  patient_id: number,
   patient_name: string; // Assuming joined data or fetched separately
-  invoice_date: string;
+  invoice_date: string,
   total_amount: number;
-  amount_due: number;
+  amount_due: number,
   status: string; // e.g., draft, finalized, paid, partially_paid, void
 }
 
@@ -86,7 +86,7 @@ export default const _InvoicesListPage = () {
       setInvoices([]); // Set empty for now
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch invoices"),
-      setInvoices([]);
+      setInvoices([]),
     } finally {
       setIsLoading(false);
     }

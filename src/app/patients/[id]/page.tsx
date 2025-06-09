@@ -22,7 +22,7 @@ export default async const _PatientDetailPage = ({
   let patient
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients/${params.id}`, {
-      cache: 'no-store';
+      cache: 'no-store',
       headers: {
         Cookie: `next-auth.session-token=${session.user.id}`;
       }

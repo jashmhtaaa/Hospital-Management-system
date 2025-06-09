@@ -15,11 +15,11 @@ import { validateInteractionOverrideRequest } from '../../../../../lib/validatio
 
 // Initialize interaction override repository (in production, use dependency injection)
 const interactionOverrideRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByInteractionId: (interactionId: string) => Promise.resolve([]);
-  save: (override: unknown) => Promise.resolve(override.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByInteractionId: (interactionId: string) => Promise.resolve([]),
+  save: (override: unknown) => Promise.resolve(override.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 /**
@@ -58,14 +58,14 @@ export const POST = async (
 
     // Create override record
     const override = {
-      id: crypto.randomUUID();
+      id: crypto.randomUUID(),
       interactionId: id;
-      overrideReason: data.reason;
+      overrideReason: data.reason,
       overrideNotes: data.notes;
-      overriddenBy: userId;
-      overriddenAt: new Date();
-      patientId: data.patientId;
-      prescriptionId: data.prescriptionId;
+      overriddenBy: userId,
+      overriddenAt: new Date(),
+      patientId: data.patientId,
+      prescriptionId: data.prescriptionId
     };
 
     // Save override record
@@ -73,23 +73,23 @@ export const POST = async (
 
     // Audit logging (critical for controlled substances and high-risk medications)
     await auditLog('DRUG_INTERACTION', {
-      action: 'OVERRIDE';
+      action: 'OVERRIDE',
       resourceType: 'DrugInteraction';
-      resourceId: id;
+      resourceId: id,
       userId: userId;
-      patientId: data.patientId;
+      patientId: data.patientId,
       details: {
         overrideId,
-        reason: data.reason;
-        prescriptionId: data.prescriptionId;
+        reason: data.reason,
+        prescriptionId: data.prescriptionId
       }
     })
 
     // Return response
     return NextResponse.json(
       {
-        id: overrideId;
-        message: 'Interaction override recorded successfully';
+        id: overrideId,
+        message: 'Interaction override recorded successfully'
       },
       { status: 201 }
     );
@@ -142,14 +142,14 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'LIST_OVERRIDES';
+      action: 'LIST_OVERRIDES',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       details: {
         filter,
         page,
         limit,
-        resultCount: overrides.length;
+        resultCount: overrides.length
       }
     });
 
@@ -160,7 +160,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

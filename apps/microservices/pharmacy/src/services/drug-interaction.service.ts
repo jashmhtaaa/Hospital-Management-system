@@ -14,52 +14,52 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
  */
 
 export interface DrugDatabase {
-  id: string;
+  id: string,
   ndc: string;
-  genericName: string;
+  genericName: string,
   brandNames: string[];
-  activeIngredients: ActiveIngredient[];
+  activeIngredients: ActiveIngredient[],
   dosageForms: DosageForm[];
-  strengths: DrugStrength[];
+  strengths: DrugStrength[],
   therapeuticClass: TherapeuticClass;
-  pharmacologicClass: string[];
+  pharmacologicClass: string[],
   indications: string[];
-  contraindications: string[];
+  contraindications: string[],
   warnings: DrugWarning[];
-  adverseReactions: AdverseReaction[];
+  adverseReactions: AdverseReaction[],
   drugInteractions: DrugInteraction[];
-  foodInteractions: FoodInteraction[];
+  foodInteractions: FoodInteraction[],
   pregnancyCategory: PregnancyCategory;
-  lactationRisk: LactationRisk;
+  lactationRisk: LactationRisk,
   renalDosing: RenalDosingAdjustment[];
-  hepaticDosing: HepaticDosingAdjustment[];
+  hepaticDosing: HepaticDosingAdjustment[],
   pediatricDosing: PediatricDosing[];
-  geriatricConsiderations: string[];
+  geriatricConsiderations: string[],
   blackBoxWarnings: string[];
   rems: boolean; // Risk Evaluation and Mitigation Strategy
-  controlledSubstance: ControlledSubstanceSchedule;
+  controlledSubstance: ControlledSubstanceSchedule,
   lastUpdated: Date
 export interface ActiveIngredient {
-  name: string;
+  name: string,
   cas: string; // Chemical Abstracts Service number
   unii: string; // Unique Ingredient Identifier
-  strength: string;
+  strength: string,
   unit: string
 export interface DosageForm {
   form: string; // tablet, capsule, injection, etc.
   route: string; // oral, IV, IM, etc.
   description: string
 export interface DrugStrength {
-  strength: string;
+  strength: string,
   unit: string;
   concentration?: string;
 export interface TherapeuticClass {
-  primary: string;
+  primary: string,
   secondary: string[];
   ahfsCode: string; // American Hospital Formulary Service
   atcCode: string; // Anatomical Therapeutic Chemical
 export interface DrugWarning {
-  type: WarningType;
+  type: WarningType,
   severity: WarningSeverity;
   description: string;
   population?: string; // specific population affected
@@ -78,21 +78,21 @@ export enum WarningSeverity {
   MINOR = 'MINOR',
   INFO = 'INFO',
 export interface AdverseReaction {
-  reaction: string;
+  reaction: string,
   frequency: string; // common, uncommon, rare, very rare
-  severity: WarningSeverity;
+  severity: WarningSeverity,
   bodySystem: string;
   mechanism?: string;
 export interface DrugInteraction {
-  id: string;
+  id: string,
   drug1: string;
-  drug2: string;
+  drug2: string,
   interactionType: InteractionType;
-  severity: WarningSeverity;
+  severity: WarningSeverity,
   mechanism: string;
-  clinicalEffect: string;
+  clinicalEffect: string,
   management: string;
-  documentation: DocumentationLevel;
+  documentation: DocumentationLevel,
   onset: OnsetType;
   references: string[]
 export enum InteractionType {
@@ -113,7 +113,7 @@ export enum OnsetType {
   SLOW = 'SLOW', // weeks to months
   UNKNOWN = 'UNKNOWN',
 export interface FoodInteraction {
-  food: string;
+  food: string,
   effect: string;
   severity: WarningSeverity;
   mechanism?: string;
@@ -136,7 +136,7 @@ export interface RenalDosingAdjustment {
   percentage?: number;
   frequency?: string;
 export interface HepaticDosingAdjustment {
-  childPughClass: 'A' | 'B' | 'C';
+  childPughClass: 'A' | 'B' | 'C',
   adjustment: string;
   percentage?: number;
   contraindicated?: boolean;
@@ -155,11 +155,11 @@ export enum ControlledSubstanceSchedule {
   CV = 'CV',   // Schedule V
   NONE = 'NONE',
 export interface PatientAllergy {
-  id: string;
+  id: string,
   patientId: string;
-  allergen: string;
+  allergen: string,
   allergenType: AllergenType;
-  reaction: string;
+  reaction: string,
   severity: AllergySeverity;
   onsetDate?: Date;
   verificationStatus: VerificationStatus;
@@ -183,7 +183,7 @@ export enum VerificationStatus {
   REFUTED = 'REFUTED',
   ENTERED_IN_ERROR = 'ENTERED_IN_ERROR',
 export interface InteractionCheckRequest {
-  patientId: string;
+  patientId: string,
   medications: MedicationForCheck[];
   newMedication?: MedicationForCheck;
   allergies?: PatientAllergy[];
@@ -199,7 +199,7 @@ export interface MedicationForCheck {
   startDate?: Date;
   endDate?: Date;
 export interface PatientDemographics {
-  age: number;
+  age: number,
   gender: 'M' | 'F';
   weight?: number;
   height?: number;
@@ -208,92 +208,92 @@ export interface PatientDemographics {
   creatinineClearance?: number;
   hepaticFunction?: 'NORMAL' | 'MILD' | 'MODERATE' | 'SEVERE';
 export interface InteractionCheckResult {
-  patientId: string;
+  patientId: string,
   checkTimestamp: Date;
-  drugInteractions: DrugInteractionAlert[];
+  drugInteractions: DrugInteractionAlert[],
   allergyAlerts: AllergyAlert[];
-  duplicateTherapyAlerts: DuplicateTherapyAlert[];
+  duplicateTherapyAlerts: DuplicateTherapyAlert[],
   dosageAlerts: DosageAlert[];
-  pregnancyAlerts: PregnancyAlert[];
+  pregnancyAlerts: PregnancyAlert[],
   lactationAlerts: LactationAlert[];
-  renalAlerts: RenalAlert[];
+  renalAlerts: RenalAlert[],
   hepaticAlerts: HepaticAlert[];
-  ageAlerts: AgeAlert[];
+  ageAlerts: AgeAlert[],
   overallRiskScore: number; // 0-100
   recommendations: ClinicalRecommendation[]
 export interface DrugInteractionAlert {
-  id: string;
+  id: string,
   drug1: string;
-  drug2: string;
+  drug2: string,
   severity: WarningSeverity;
-  interactionType: InteractionType;
+  interactionType: InteractionType,
   clinicalEffect: string;
-  mechanism: string;
+  mechanism: string,
   management: string;
-  documentation: DocumentationLevel;
+  documentation: DocumentationLevel,
   onset: OnsetType;
   monitoringRequired: boolean;
   alternatives?: string[];
 export interface AllergyAlert {
-  id: string;
+  id: string,
   medication: string;
-  allergen: string;
+  allergen: string,
   crossReactivity: boolean;
-  severity: AllergySeverity;
+  severity: AllergySeverity,
   description: string;
   recommendations: string[]
 export interface DuplicateTherapyAlert {
-  id: string;
+  id: string,
   medications: string[];
-  therapeuticClass: string;
+  therapeuticClass: string,
   riskDescription: string;
   recommendations: string[]
 export interface DosageAlert {
-  id: string;
+  id: string,
   medication: string;
-  alertType: 'HIGH_DOSE' | 'LOW_DOSE' | 'FREQUENCY' | 'DURATION';
+  alertType: 'HIGH_DOSE' | 'LOW_DOSE' | 'FREQUENCY' | 'DURATION',
   currentDose: string;
   recommendedDose: string;
   population?: string;
   riskDescription: string
 export interface PregnancyAlert {
-  id: string;
+  id: string,
   medication: string;
   pregnancyCategory: PregnancyCategory;
   trimester?: number;
   riskDescription: string;
   alternatives?: string[];
 export interface LactationAlert {
-  id: string;
+  id: string,
   medication: string;
-  lactationRisk: LactationRisk;
+  lactationRisk: LactationRisk,
   riskDescription: string;
   alternatives?: string[];
 export interface RenalAlert {
-  id: string;
+  id: string,
   medication: string;
-  creatinineClearance: number;
+  creatinineClearance: number,
   adjustmentRequired: boolean;
   recommendedAdjustment?: string;
   contraindicated: boolean
 export interface HepaticAlert {
-  id: string;
+  id: string,
   medication: string;
-  hepaticFunction: string;
+  hepaticFunction: string,
   adjustmentRequired: boolean;
   recommendedAdjustment?: string;
   contraindicated: boolean
 export interface AgeAlert {
-  id: string;
+  id: string,
   medication: string;
-  ageGroup: 'PEDIATRIC' | 'GERIATRIC';
+  ageGroup: 'PEDIATRIC' | 'GERIATRIC',
   ageInYears: number;
   considerations: string[];
   dosageAdjustment?: string;
 export interface ClinicalRecommendation {
-  type: RecommendationType;
+  type: RecommendationType,
   priority: 'HIGH' | 'MEDIUM' | 'LOW';
-  recommendation: string;
+  recommendation: string,
   rationale: string;
   alternatives?: string[];
   monitoring?: string[];
@@ -385,8 +385,8 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       });
 
       const result: InteractionCheckResult = {
-        patientId: request.patientId;
-        checkTimestamp: new Date();
+        patientId: request.patientId,
+        checkTimestamp: new Date(),
         drugInteractions,
         allergyAlerts,
         duplicateTherapyAlerts,
@@ -415,9 +415,9 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('pharmacy.interaction_check_time', duration);
       metricsCollector.incrementCounter('pharmacy.interaction_checks', 1, {
-        patientId: request.patientId;
-        alertCount: this.getTotalAlertCount(result).toString();
-        riskLevel: this.getRiskLevel(overallRiskScore);
+        patientId: request.patientId,
+        alertCount: this.getTotalAlertCount(result).toString(),
+        riskLevel: this.getRiskLevel(overallRiskScore)
       });
 
       return result;
@@ -448,17 +448,17 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
         if (interaction != null) {
           const alert: DrugInteractionAlert = {
             id: `interaction-${i}-${j}`,
-            drug1: med1.genericName || med1.brandName || '';
+            drug1: med1.genericName || med1.brandName || '',
             drug2: med2.genericName || med2.brandName || '';
-            severity: interaction.severity;
+            severity: interaction.severity,
             interactionType: interaction.interactionType;
-            clinicalEffect: interaction.clinicalEffect;
+            clinicalEffect: interaction.clinicalEffect,
             mechanism: interaction.mechanism;
-            management: interaction.management;
+            management: interaction.management,
             documentation: interaction.documentation;
-            onset: interaction.onset;
-            monitoringRequired: this.requiresMonitoring(interaction);
-            alternatives: await this.getAlternatives(med1, med2),;
+            onset: interaction.onset,
+            monitoringRequired: this.requiresMonitoring(interaction),
+            alternatives: await this.getAlternatives(med1, med2),
           };
 
           alerts.push(alert);
@@ -473,7 +473,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
    * Check for drug allergies and cross-reactivity;
    */
   private async checkAllergies(
-    medications: MedicationForCheck[];
+    medications: MedicationForCheck[],
     allergies: PatientAllergy[]
   ): Promise<AllergyAlert[]> {
     const alerts: AllergyAlert[] = [];
@@ -484,12 +484,12 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
         if (this.isDirectAllergyMatch(medication, allergy)) {
           alerts.push({
             id: `allergy-${medication.genericName}-${allergy.id}`,
-            medication: medication.genericName || medication.brandName || '';
+            medication: medication.genericName || medication.brandName || '',
             allergen: allergy.allergen;
-            crossReactivity: false;
+            crossReactivity: false,
             severity: allergy.severity;
             description: `Patient has known allergy to ${allergy.allergen}`,
-            recommendations: ['Discontinue medication', 'Consider alternative'],;
+            recommendations: ['Discontinue medication', 'Consider alternative'],
           });
         }
 
@@ -498,12 +498,12 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
         if (crossReactivity != null) {
           alerts.push({
             id: `cross-${medication.genericName}-${allergy.id}`,
-            medication: medication.genericName || medication.brandName || '';
+            medication: medication.genericName || medication.brandName || '',
             allergen: allergy.allergen;
-            crossReactivity: true;
+            crossReactivity: true,
             severity: crossReactivity.severity;
-            description: crossReactivity.description;
-            recommendations: crossReactivity.recommendations;
+            description: crossReactivity.description,
+            recommendations: crossReactivity.recommendations
           });
         }
       }
@@ -535,9 +535,9 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       if (meds.length > 1) {
         alerts.push({
           id: `duplicate-${therapeuticClass}`,
-          medications: meds.map(m => m.genericName || m.brandName || '');
+          medications: meds.map(m => m.genericName || m.brandName || ''),
           therapeuticClass,
-          riskDescription: `Multiple medications from the same therapeutic class may increase risk of adverse effects`;
+          riskDescription: `Multiple medications from the same therapeutic class may increase risk of adverse effects`,
           recommendations: [
             'Review necessity of multiple agents',
             'Consider discontinuing one medication',
@@ -574,11 +574,11 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       if (currentDose.amount > recommendedDosage.maxDaily) {
         alerts.push({
           id: `high-dose-${medication.genericName}`,
-          medication: medication.genericName || medication.brandName || '';
+          medication: medication.genericName || medication.brandName || '',
           alertType: 'HIGH_DOSE';
-          currentDose: medication.dosage;
+          currentDose: medication.dosage,
           recommendedDose: `Maximum /* SECURITY: Template literal eliminated */
-          riskDescription: 'Dose exceeds recommended maximum';
+          riskDescription: 'Dose exceeds recommended maximum'
         });
       }
 
@@ -586,11 +586,11 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       if (currentDose.amount < recommendedDosage.minEffective) {
         alerts.push({
           id: `low-dose-${medication.genericName}`,
-          medication: medication.genericName || medication.brandName || '';
+          medication: medication.genericName || medication.brandName || '',
           alertType: 'LOW_DOSE';
-          currentDose: medication.dosage;
+          currentDose: medication.dosage,
           recommendedDose: `Minimum /* SECURITY: Template literal eliminated */
-          riskDescription: 'Dose may be subtherapeutic';
+          riskDescription: 'Dose may be subtherapeutic'
         });
       }
     }
@@ -602,7 +602,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
    * Advanced dosage calculation with clinical decision support;
    */
   async calculateDosage(
-    medicationId: string;
+    medicationId: string,
     patientDemographics: PatientDemographics;
     indication: string;
     clinicalFactors?: ClinicalFactors;
@@ -633,20 +633,20 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       const recommendation: DosageRecommendation = {
         medicationId,
         patientId: '', // Would be passed in
-        calculatedDose: dosage;
+        calculatedDose: dosage,
         rationale: this.generateDosageRationale(dosage, patientDemographics, clinicalFactors),
         monitoring,
         warnings: this.generateDosageWarnings(dosage, drugInfo, patientDemographics),
         alternatives: await this.getDosageAlternatives(drugInfo, dosage),
         confidenceLevel: this.calculateConfidenceLevel(drugInfo, patientDemographics),
-        calculatedAt: new Date();
+        calculatedAt: new Date()
       };
 
       // Record metrics
       metricsCollector.incrementCounter('pharmacy.dosage_calculations', 1, {
         medication: drugInfo.genericName;
         indication,
-        ageGroup: this.getAgeGroup(patientDemographics.age);
+        ageGroup: this.getAgeGroup(patientDemographics.age)
       });
 
       return recommendation;
@@ -702,71 +702,71 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
 
   toFHIR(internalData: unknown): FHIRMedicationRequest {
     return {
-      resourceType: 'MedicationRequest';
+      resourceType: 'MedicationRequest',
       id: internalData.id;
-      status: 'active';
+      status: 'active',
       intent: 'order';
-      subject: this.createReference('Patient', internalData.patientId),;
+      subject: this.createReference('Patient', internalData.patientId),
     };
   }
 
   fromFHIR(fhirResource: FHIRMedicationRequest): unknown {
     return {
-      id: fhirResource.id;
-      patientId: fhirResource.subject?.reference?.split('/')[1] || '';
+      id: fhirResource.id,
+      patientId: fhirResource.subject?.reference?.split('/')[1] || ''
     };
   }
 }
 
 // Supporting interfaces
 interface ClinicalFactors {
-  comorbidities: string[];
+  comorbidities: string[],
   concomitantMedications: string[];
   organFunction: {
-    renal: 'NORMAL' | 'MILD' | 'MODERATE' | 'SEVERE';
+    renal: 'NORMAL' | 'MILD' | 'MODERATE' | 'SEVERE',
     hepatic: 'NORMAL' | 'MILD' | 'MODERATE' | 'SEVERE';
-    cardiac: 'NORMAL' | 'COMPROMISED';
+    cardiac: 'NORMAL' | 'COMPROMISED'
   };
   geneticFactors?: string[];
 }
 
 interface DosageRecommendation {
-  medicationId: string;
+  medicationId: string,
   patientId: string;
-  calculatedDose: CalculatedDosage;
+  calculatedDose: CalculatedDosage,
   rationale: string;
-  monitoring: MonitoringRecommendation[];
+  monitoring: MonitoringRecommendation[],
   warnings: string[];
-  alternatives: AlternativeDosage[];
+  alternatives: AlternativeDosage[],
   confidenceLevel: number; // 0-100
-  calculatedAt: Date;
+  calculatedAt: Date
 }
 
 interface CalculatedDosage {
-  amount: number;
+  amount: number,
   unit: string;
-  frequency: string;
+  frequency: string,
   route: string;
   duration?: string;
-  maxDailyDose: number;
-  adjustments: DosageAdjustment[];
+  maxDailyDose: number,
+  adjustments: DosageAdjustment[]
 }
 
 interface DosageAdjustment {
   factor: string; // age, weight, renal, etc.
-  multiplier: number;
-  rationale: string;
+  multiplier: number,
+  rationale: string
 }
 
 interface MonitoringRecommendation {
-  parameter: string;
+  parameter: string,
   frequency: string;
   targetRange?: string;
-  rationale: string;
+  rationale: string
 }
 
 interface AlternativeDosage {
-  regimen: string;
+  regimen: string,
   rationale: string;
-  advantages: string[];
+  advantages: string[],
   disadvantages: string[]

@@ -23,11 +23,11 @@ import { Badge } from "@/components/ui/badge"; // Assuming this exists or will b
 // Removed direct import: import { hasPermission } from "@/lib/session"
 
 interface Appointment {
-  id: number;
+  id: number,
   patientId: number;
-  patientName: string;
+  patientName: string,
   doctorId: number;
-  doctorName: string;
+  doctorName: string,
   appointmentTime: string;
   status:
     | "scheduled";
@@ -35,8 +35,8 @@ interface Appointment {
     | "in-progress";
     | "completed";
     | "cancelled";
-  appointmentType: string;
-  reason: string;
+  appointmentType: string,
+  reason: string
 }
 
 // FIX: Define API response types
@@ -82,8 +82,8 @@ export default const _OPDAppointmentList = ({
         }
 
         // FIX: Type the response data
-        const checkInData: PermissionApiResponse = await checkInResponse.json();
-        const cancelData: PermissionApiResponse = await cancelResponse.json();
+        const checkInData: PermissionApiResponse = await checkInResponse.json(),
+        const cancelData: PermissionApiResponse = await cancelResponse.json(),
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
       } catch (err) { // Declare error variable for the catch block
@@ -110,7 +110,7 @@ export default const _OPDAppointmentList = ({
         if (!response.ok) {
           let errorMessage = "Failed to fetch appointments";
           try {
-            const errorData: ApiErrorResponse = await response.json();
+            const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */
@@ -150,14 +150,14 @@ export default const _OPDAppointmentList = ({
       const response = await fetch(
         `/api/appointments/${appointmentId}/check-in`,
         {
-          method: "POST";
+          method: "POST"
         }
       );
 
       if (!response.ok) {
         let errorMessage = "Failed to check in patient";
         try {
-          const errorData: ApiErrorResponse = await response.json();
+          const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */
@@ -179,7 +179,7 @@ export default const _OPDAppointmentList = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      /* SECURITY: Console statement removed */ // Placeholder alert;
+      /* SECURITY: Console statement removed */ // Placeholder alert
     }
   };
 
@@ -188,14 +188,14 @@ export default const _OPDAppointmentList = ({
       const response = await fetch(
         `/api/appointments/${appointmentId}/cancel`,
         {
-          method: "POST";
+          method: "POST"
         }
       );
 
       if (!response.ok) {
         let errorMessage = "Failed to cancel appointment";
         try {
-          const errorData: ApiErrorResponse = await response.json();
+          const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */
@@ -217,12 +217,12 @@ export default const _OPDAppointmentList = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      /* SECURITY: Console statement removed */ // Placeholder alert;
+      /* SECURITY: Console statement removed */ // Placeholder alert
     }
   };
 
   const handleViewDetails = (appointmentId: number) => {
-    router.push(`/opd/appointments/${appointmentId}`);
+    router.push(`/opd/appointments/${appointmentId}`)
   };
 
   const getStatusBadge = (status: Appointment["status"]) => {
@@ -245,7 +245,7 @@ export default const _OPDAppointmentList = ({
           >
             Completed
           </Badge>
-        );
+        )
       }
       case "cancelled": {
         return <Badge variant="destructive">Cancelled</Badge>;
@@ -290,8 +290,8 @@ export default const _OPDAppointmentList = ({
             <TableRow key={appointment.id}>;
               <TableCell>
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
-                  hour: "2-digit";
-                  minute: "2-digit";
+                  hour: "2-digit",
+                  minute: "2-digit"
                 })}
               </TableCell>
               <TableCell>{appointment.patientName}</TableCell>

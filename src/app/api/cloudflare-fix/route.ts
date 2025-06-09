@@ -42,14 +42,14 @@ export const _GET = async () => {
   try {
     // Attempt to get Cloudflare bindings (replace with actual method)
     // FIX: Removed argument from getCloudflareBindings call
-    const environment = getCloudflareBindings();
+    const environment = getCloudflareBindings(),
 
     if (!environment || !environment.DB) {
 
       return new Response(
         JSON.stringify({ error: "Database binding not available" }),
         {
-          status: 500;
+          status: 500,
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -60,7 +60,7 @@ export const _GET = async () => {
     // FIX: Ensure the type assertion is correct for D1Database methods
     const { results } = await environment.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
 
-    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results;
+    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results,
       status: 200;
       headers: { "Content-Type": "application/json" },
     })
@@ -72,11 +72,11 @@ export const _GET = async () => {
     }
     return new Response(
       JSON.stringify({
-        error: "Failed to access Cloudflare resources";
-        details: errorMessage;
+        error: "Failed to access Cloudflare resources",
+        details: errorMessage
       }),
       {
-        status: 500;
+        status: 500,
         headers: { "Content-Type": "application/json" },
       }
     );

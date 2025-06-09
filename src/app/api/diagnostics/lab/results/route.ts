@@ -6,39 +6,39 @@ import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption 
 import { getSession } from "@/lib/session";
 // FHIR-compliant Observation resource structure
 interface FHIRObservation {
-  resourceType: "Observation";
+  resourceType: "Observation",
   id: string;
   meta: {
-    versionId: string;
+    versionId: string,
     lastUpdated: string;
     security?: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
-    }>;
+      display: string
+    }>
   };
-  status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown";
+  status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown",
   category: Array<{
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
   }>;
   code: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   subject: {
     reference: string;
-    display?: string;
+    display?: string
   };
   encounter?: {
-    reference: string;
+    reference: string
   };
   effectiveDateTime: string;
   issued?: string;
@@ -47,70 +47,70 @@ interface FHIRObservation {
     display?: string;
   }>;
   valueQuantity?: {
-    value: number;
+    value: number,
     unit: string;
-    system: string;
-    code: string;
+    system: string,
+    code: string
   };
   valueString?: string;
   valueBoolean?: boolean;
   valueInteger?: number;
   valueCodeableConcept?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   dataAbsentReason?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   interpretation?: Array<{
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   }>;
   note?: Array<{
-    text: string;
+    text: string
   }>;
   referenceRange?: Array<{
     low?: {
-      value: number;
+      value: number,
       unit: string;
-      system: string;
-      code: string;
+      system: string,
+      code: string
     };
     high?: {
-      value: number;
+      value: number,
       unit: string;
-      system: string;
-      code: string;
+      system: string,
+      code: string
     };
     text?: string;
   }>;
   specimen?: {
-    reference: string;
+    reference: string
   };
   method?: {
     coding: Array<{
-      system: string;
+      system: string,
       code: string;
-      display: string;
+      display: string
     }>;
-    text: string;
+    text: string
   };
   device?: {
     reference: string;
-    display?: string;
+    display?: string
   };
 }
 
@@ -326,20 +326,20 @@ export const _GET = async (request: NextRequest) => {
         }
 
         const resource: FHIRObservation = {
-          resourceType: "Observation";
-          id: result.id.toString();
+          resourceType: "Observation",
+          id: result.id.toString(),
           meta: {
-            versionId: "1";
-            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString();
+            versionId: "1",
+            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString()
           },
-          status: mapStatusToFHIR(result.status || "preliminary");
+          status: mapStatusToFHIR(result.status || "preliminary"),
           category: [
             {
               coding: [
                 {
-                  system: "https://terminology.hl7.org/CodeSystem/observation-category";
+                  system: "https://terminology.hl7.org/CodeSystem/observation-category",
                   code: "laboratory";
-                  display: "Laboratory";
+                  display: "Laboratory"
                 }
               ]
             }
@@ -347,21 +347,21 @@ export const _GET = async (request: NextRequest) => {
           code: {
             coding: [
               {
-                system: "https://loinc.org";
+                system: "https://loinc.org",
                 code: result.parameter_loinc_code || result.loinc_code || "unknown";
-                display: result.parameter_name || result.test_name;
+                display: result.parameter_name || result.test_name
               }
             ],
-            text: result.parameter_name || result.test_name;
+            text: result.parameter_name || result.test_name
           },
           subject: {
             reference: `Patient/${result.patient_id}`,
             display: `/* SECURITY: Template literal eliminated */
-          effectiveDateTime: result.performed_at;
+          effectiveDateTime: result.performed_at,
           performer: [
             {
               reference: `Practitioner/${result.performed_by}`,
-              display: result.performed_by_username;
+              display: result.performed_by_username
             }
           ]
         };
@@ -372,14 +372,14 @@ export const _GET = async (request: NextRequest) => {
           if (!resource.performer) resource.performer = [];
           resource.performer.push({
             reference: `Practitioner/${result.verified_by}`,
-            display: result.verified_by_username;
+            display: result.verified_by_username
           });
         }
 
         // Add specimen reference if available
         if (result.specimen_barcode) {
           resource.specimen = {
-            reference: `Specimen/${result.specimen_id || 'unknown'}`;
+            reference: `Specimen/${result.specimen_id || 'unknown'}`
           };
         }
 
@@ -388,12 +388,12 @@ export const _GET = async (request: NextRequest) => {
           resource.method = {
             coding: [
               {
-                system: result.method_system || "https://terminology.hl7.org/CodeSystem/v2-0936";
+                system: result.method_system || "https://terminology.hl7.org/CodeSystem/v2-0936",
                 code: result.method_code || "unknown";
-                display: result.method;
+                display: result.method
               }
             ],
-            text: result.method;
+            text: result.method
           }
         }
 
@@ -401,17 +401,17 @@ export const _GET = async (request: NextRequest) => {
         if (result.device_id) {
           resource.device = {
             reference: `Device/${result.device_id}`,
-            display: result.device_name;
+            display: result.device_name
           };
         }
 
         // Add result value based on type
         if (result.result_value_numeric !== null && result.result_value_numeric !== undefined) {
           resource.valueQuantity = {
-            value: result.result_value_numeric;
+            value: result.result_value_numeric,
             unit: result.unit || "";
-            system: result.unit_system || "https://unitsofmeasure.org";
-            code: result.unit_code || result.unit || "";
+            system: result.unit_system || "https://unitsofmeasure.org",
+            code: result.unit_code || result.unit || ""
           }
         } else if (result.result_value_text) {
           resource.valueString = result.result_value_text;
@@ -419,12 +419,12 @@ export const _GET = async (request: NextRequest) => {
           resource.valueCodeableConcept = {
             coding: [
               {
-                system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation";
+                system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                 code: result.result_value_coded;
-                display: result.result_value_coded;
+                display: result.result_value_coded
               }
             ],
-            text: result.result_value_coded;
+            text: result.result_value_coded
           }
         } else if (result.result_value_boolean !== null && result.result_value_boolean !== undefined) {
           resource.valueBoolean = result.result_value_boolean;
@@ -432,10 +432,10 @@ export const _GET = async (request: NextRequest) => {
           // Legacy field - try to determine type
           if (!isNaN(Number(result.result_value))) {
             resource.valueQuantity = {
-              value: Number(result.result_value);
+              value: Number(result.result_value),
               unit: result.unit || "";
-              system: result.unit_system || "https://unitsofmeasure.org";
-              code: result.unit_code || result.unit || "";
+              system: result.unit_system || "https://unitsofmeasure.org",
+              code: result.unit_code || result.unit || ""
             }
           } else {
             resource.valueString = result.result_value;
@@ -445,12 +445,12 @@ export const _GET = async (request: NextRequest) => {
           resource.dataAbsentReason = {
             coding: [
               {
-                system: "https://terminology.hl7.org/CodeSystem/data-absent-reason";
+                system: "https://terminology.hl7.org/CodeSystem/data-absent-reason",
                 code: "unknown";
-                display: "Unknown";
+                display: "Unknown"
               }
             ],
-            text: "Result value not provided";
+            text: "Result value not provided"
           }
         }
 
@@ -460,12 +460,12 @@ export const _GET = async (request: NextRequest) => {
             {
               coding: [
                 {
-                  system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation";
-                  code: mapInterpretationToFHIR(result.interpretation);
-                  display: result.interpretation;
+                  system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                  code: mapInterpretationToFHIR(result.interpretation),
+                  display: result.interpretation
                 }
               ],
-              text: result.interpretation;
+              text: result.interpretation
             }
           ]
         }
@@ -476,7 +476,7 @@ export const _GET = async (request: NextRequest) => {
 
           if (result.notes) {
             resource.note.push({
-              text: result.notes;
+              text: result.notes
             });
           }
 
@@ -500,19 +500,19 @@ export const _GET = async (request: NextRequest) => {
 
             if (range.value_low !== null && range.value_low !== undefined) {
               refRange.low = {
-                value: range.value_low;
+                value: range.value_low,
                 unit: range.unit || "";
-                system: "https://unitsofmeasure.org";
-                code: range.unit || "";
+                system: "https://unitsofmeasure.org",
+                code: range.unit || ""
               }
             }
 
             if (range.value_high !== null && range.value_high !== undefined) {
               refRange.high = {
-                value: range.value_high;
+                value: range.value_high,
                 unit: range.unit || "";
-                system: "https://unitsofmeasure.org";
-                code: range.unit || "";
+                system: "https://unitsofmeasure.org",
+                code: range.unit || ""
               }
             }
 
@@ -546,9 +546,9 @@ export const _GET = async (request: NextRequest) => {
         if (result.is_sensitive) {
           resource.meta.security = [
             {
-              system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+              system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
               code: "R";
-              display: "Restricted";
+              display: "Restricted"
             }
           ]
         }
@@ -557,13 +557,13 @@ export const _GET = async (request: NextRequest) => {
       }));
 
       return NextResponse.json({
-        resourceType: "Bundle";
+        resourceType: "Bundle",
         type: "searchset";
-        total: totalCount;
+        total: totalCount,
         link: [
           {
-            relation: "self";
-            url: request.url;
+            relation: "self",
+            url: request.url
           }
         ],
         entry: fhirResources.map(resource => ({
@@ -573,18 +573,18 @@ export const _GET = async (request: NextRequest) => {
     } else {
       // Return default format with pagination metadata
       return NextResponse.json({
-        data: results;
+        data: results,
         pagination: {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize);
+          totalPages: Math.ceil(totalCount / pageSize)
         }
       });
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch laboratory results", details: errorMessage },
       { status: 500 }
@@ -787,17 +787,17 @@ export const _POST = async (request: NextRequest) => {
         }
 
         deltaCheckResult = {
-          previous_value: previousValue;
+          previous_value: previousValue,
           current_value: currentValue;
-          absolute_delta: absoluteDelta;
+          absolute_delta: absoluteDelta,
           percent_delta: percentDelta;
-          passed: deltaCheckPassed;
+          passed: deltaCheckPassed,
           notes: deltaCheckNotes || `Delta check ${deltaCheckPassed ? 'passed' : 'failed'}`
         };
       } else {
         deltaCheckResult = {
-          passed: true;
-          notes: "No comparable previous result found for delta check";
+          passed: true,
+          notes: "No comparable previous result found for delta check"
         };
       }
     }
@@ -881,9 +881,9 @@ export const _POST = async (request: NextRequest) => {
 
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes,
         correctionReason: body.correction_reason;
-        deltaCheckNotes: deltaCheckResult?.notes;
+        deltaCheckNotes: deltaCheckResult?.notes
       });
 
       // Insert result
@@ -1108,7 +1108,7 @@ export const _POST = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create laboratory result", details: errorMessage },
       { status: 500 }
@@ -1173,25 +1173,25 @@ export const _PUT = async (
       if (body?.is_corrected && !existingResult.is_corrected) {
         // Create a new result as a correction
         const correctionBody: LabResultCreateBody = {
-          order_item_id: existingResult.order_item_id;
+          order_item_id: existingResult.order_item_id,
           parameter_id: existingResult.parameter_id;
-          result_value_numeric: body.result_value_numeric !== undefined ? body.result_value_numeric : existingResult.result_value_numeric;
+          result_value_numeric: body.result_value_numeric !== undefined ? body.result_value_numeric : existingResult.result_value_numeric,
           result_value_text: body.result_value_text !== undefined ? body.result_value_text : existingResult.result_value_text;
-          result_value_coded: body.result_value_coded !== undefined ? body.result_value_coded : existingResult.result_value_coded;
+          result_value_coded: body.result_value_coded !== undefined ? body.result_value_coded : existingResult.result_value_coded,
           result_value_boolean: body.result_value_boolean !== undefined ? body.result_value_boolean : existingResult.result_value_boolean;
-          unit: body.unit !== undefined ? body.unit : existingResult.unit;
+          unit: body.unit !== undefined ? body.unit : existingResult.unit,
           unit_code: body.unit_code !== undefined ? body.unit_code : existingResult.unit_code;
-          unit_system: body.unit_system !== undefined ? body.unit_system : existingResult.unit_system;
+          unit_system: body.unit_system !== undefined ? body.unit_system : existingResult.unit_system,
           interpretation: body.interpretation !== undefined ? body.interpretation : existingResult.interpretation;
-          method: body.method !== undefined ? body.method : existingResult.method;
+          method: body.method !== undefined ? body.method : existingResult.method,
           method_code: body.method_code !== undefined ? body.method_code : existingResult.method_code;
-          method_system: body.method_system !== undefined ? body.method_system : existingResult.method_system;
+          method_system: body.method_system !== undefined ? body.method_system : existingResult.method_system,
           device_id: body.device_id !== undefined ? body.device_id : existingResult.device_id;
-          device_name: body.device_name !== undefined ? body.device_name : existingResult.device_name;
+          device_name: body.device_name !== undefined ? body.device_name : existingResult.device_name,
           notes: body.notes !== undefined ? body.notes : existingResult.notes;
-          is_corrected: true;
+          is_corrected: true,
           correction_reason: body.correction_reason;
-          previous_result_id: existingResult.id;
+          previous_result_id: existingResult.id
         };
 
         // Mark the existing result as corrected
@@ -1202,8 +1202,8 @@ export const _PUT = async (
 
         // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
-          notes: correctionBody.notes;
-          correctionReason: correctionBody.correction_reason;
+          notes: correctionBody.notes,
+          correctionReason: correctionBody.correction_reason
         });
 
         // Insert correction
@@ -1301,14 +1301,14 @@ export const _PUT = async (
 
         return NextResponse.json({
           ...createdCorrection,
-          message: "Created new result as a correction";
+          message: "Created new result as a correction"
         }, { status: 201 });
       } else {
         // Regular update of an unverified result
         // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
-          notes: body.notes;
-          correctionReason: body.correction_reason;
+          notes: body.notes,
+          correctionReason: body.correction_reason
         });
 
         // Build update query
@@ -1508,7 +1508,7 @@ export const _PUT = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update laboratory result", details: errorMessage },
       { status: 500 }
@@ -1562,7 +1562,7 @@ export const _POST_VERIFY = async (
     // Parse request body
     const body = await request.json() as {
       verification_signature?: string;
-      notes?: string;
+      notes?: string
     };
 
     // Start transaction
@@ -1571,7 +1571,7 @@ export const _POST_VERIFY = async (
     try {
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes
       });
 
       // Update result
@@ -1644,7 +1644,7 @@ export const _POST_VERIFY = async (
       // Return the verified result
       return NextResponse.json({
         ...verifiedResult,
-        message: "Result verified successfully";
+        message: "Result verified successfully"
       });
     } catch (error) {
       // Rollback transaction on error
@@ -1653,7 +1653,7 @@ export const _POST_VERIFY = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to verify laboratory result", details: errorMessage },
       { status: 500 }
@@ -1739,17 +1739,17 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
 
     // Return alerts with pagination metadata
     return NextResponse.json({
-      data: alerts;
+      data: alerts,
       pagination: {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch critical alerts", details: errorMessage },
       { status: 500 }
@@ -1791,7 +1791,7 @@ export const _PUT_CRITICAL = async (
       acknowledged_by?: number;
       notified_to?: string;
       notification_method?: string;
-      resolution_notes?: string;
+      resolution_notes?: string
     };
 
     // Validate status
@@ -1804,8 +1804,8 @@ export const _PUT_CRITICAL = async (
 
     // Encrypt sensitive data if needed
     const encryptedData = await encryptSensitiveData({
-      resolutionNotes: body.resolution_notes;
-      notifiedTo: body.notified_to;
+      resolutionNotes: body.resolution_notes,
+      notifiedTo: body.notified_to
     });
 
     // Update alert
@@ -1886,7 +1886,7 @@ export const _PUT_CRITICAL = async (
     return NextResponse.json(updatedAlert);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update critical alert", details: errorMessage },
       { status: 500 }
@@ -1911,7 +1911,7 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
       return "cancelled";
     case "error":
       return "entered-in-error";
-    default: return "unknown";
+    default: return "unknown"
   }
 }
 
@@ -1934,5 +1934,5 @@ const mapInterpretationToFHIR = (interpretation: string): string {
       return ">";
     case "off-scale-low":
       return "<";
-    default: return "N";
+    default: return "N"
   }

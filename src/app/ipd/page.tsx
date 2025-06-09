@@ -34,8 +34,8 @@ interface IPDPatientDetailsProperties {
 
 // FIX: Define type for selected admission state
 interface SelectedAdmission {
-  admissionId: number;
-  patientId: number;
+  admissionId: number,
+  patientId: number
 }
 
 // --- COMPONENTS ---
@@ -88,7 +88,7 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
         <DischargeSummary admissionId={admissionIdString} />
       </TabsContent>
     </Tabs>
-  );
+  )
 };
 
 const IPDPage = () => {
@@ -185,7 +185,7 @@ const IPDPage = () => {
         )}
       </Tabs>
     </div>
-  );
+  )
 };
 
 export default IPDPage;

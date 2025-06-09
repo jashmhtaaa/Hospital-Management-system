@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for Insurance Provider data
 interface InsuranceProvider {
-  _id: number | string;
+  _id: number | string,
   name: string;
   contact_person?: string | null;
   contact_email?: string | null;
@@ -16,22 +16,22 @@ interface InsuranceProvider {
 // FIX: Changed let to const for prefer-const rule
 const mockProviders: InsuranceProvider[] = [
   {
-    _id: 1;
+    _id: 1,
     name: "MediCare Insurance";
-    contact_person: "Alice Brown";
+    contact_person: "Alice Brown",
     contact_email: "alice@medicare.com";
-    contact_phone: "555-1111";
+    contact_phone: "555-1111",
     address: "123 Insurance St";
-    is_active: 1;
+    is_active: 1
   },
   {
-    _id: 2;
+    _id: 2,
     name: "HealthGuard Plus";
-    contact_person: "Bob White";
+    contact_person: "Bob White",
     contact_email: "bob@healthguard.com";
-    contact_phone: "555-2222";
+    contact_phone: "555-2222",
     address: "456 Provider Ave";
-    is_active: 1;
+    is_active: 1
   },
 ];
 let nextProviderId = 3;
@@ -99,15 +99,15 @@ async const createInsuranceProviderInDB = (
   // const _now = new Date().toISOString(); // Unused variable
   // FIX: Ensure created object matches InsuranceProvider interface
   const newProvider: InsuranceProvider = {
-    _id: nextProviderId++;
+    _id: nextProviderId++,
     name: data.name;
-    contact_person: data.contact_person || undefined;
+    contact_person: data.contact_person || undefined,
     contact_email: data.contact_email || undefined;
-    contact_phone: data.contact_phone || undefined;
+    contact_phone: data.contact_phone || undefined,
     address: data.address || undefined;
     is_active: data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
     // created_at: now, // Add if needed
-    // updated_at: now, // Add if needed;
+    // updated_at: now, // Add if needed
   };
   mockProviders.push(newProvider);
   return newProvider;
@@ -144,7 +144,7 @@ export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: InsuranceProviderFilters = {
-      is_active: searchParams.get("is_active"), // "true" or "false";
+      is_active: searchParams.get("is_active"), // "true" or "false"
     };
 
     const providers = await getInsuranceProvidersFromDB(filters);

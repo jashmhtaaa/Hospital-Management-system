@@ -105,7 +105,7 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
     // Example: /api/billing/accounts/patient123/statement?startDate=2023-01-01&endDate=2023-03-31
     // Example: /api/billing/invoices/inv456/reminders
 
-    const pathSegments = req.url?.split("?")[0].split("/").filter(Boolean);
+    const pathSegments = req.url?.split("?")[0].split("/").filter(Boolean),
 
     if (!pathSegments || pathSegments.length < 3) {
         return res.status(400).json({ message: "Invalid API path" });

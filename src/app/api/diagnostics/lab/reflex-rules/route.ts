@@ -5,9 +5,9 @@ import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 // Interface for the request body when creating a reflex rule
 interface ReflexRuleCreateBody {
-  condition_test_id: number;
+  condition_test_id: number,
   condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
-  condition_value: string;
+  condition_value: string,
   action_test_id: number;
   priority?: "routine" | "urgent" | "stat";
   description?: string;
@@ -90,17 +90,17 @@ export const _GET = async (request: NextRequest) => {
 
     // Return rules with pagination metadata
     return NextResponse.json({
-      data: rules;
+      data: rules,
       pagination: {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch reflex rules", details: errorMessage },
       { status: 500 }
@@ -258,7 +258,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json(rule, { status: 201 });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create reflex rule", details: errorMessage },
       { status: 500 }
@@ -481,7 +481,7 @@ export const _PUT = async (
     return NextResponse.json(rule);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update reflex rule", details: errorMessage },
       { status: 500 }
@@ -529,11 +529,11 @@ export const DELETE = async (
     );
 
     return NextResponse.json({
-      message: "Reflex rule deleted successfully";
+      message: "Reflex rule deleted successfully"
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to delete reflex rule", details: errorMessage },
       { status: 500 }

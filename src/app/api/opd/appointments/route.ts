@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Interface for the POST request body
 interface AppointmentCreateBody {
-  patient_id: number;
+  patient_id: number,
   doctor_id: number;
   department?: string; // Assuming department might be derived or optional
   appointment_date: string; // Assuming ISO string format
@@ -59,64 +59,64 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   // Return mock data for now
   const mockAppointments = [
     {
-      id: 1;
+      id: 1,
       appointment_number: "OPD-20250428-001";
-      patient_id: 101;
+      patient_id: 101,
       patient_name: "Alice Smith";
-      doctor_id: 5;
+      doctor_id: 5,
       doctor_name: "Dr. Robert Johnson";
-      department: "General Medicine";
-      appointment_date: "2025-04-28T10:30:00Z";
+      department: "General Medicine",
+      appointment_date: "2025-04-28T10:30:00Z",
       appointment_type: "New Visit";
-      status: "scheduled";
+      status: "scheduled",
       reason: "Fever and cough for 3 days";
-      notes: "Patient has history of asthma";
-      created_at: "2025-04-25T14:20:00Z";
+      notes: "Patient has history of asthma",
+      created_at: "2025-04-25T14:20:00Z"
     },
     {
-      id: 2;
+      id: 2,
       appointment_number: "OPD-20250428-002";
-      patient_id: 102;
+      patient_id: 102,
       patient_name: "Bob Johnson";
-      doctor_id: 8;
+      doctor_id: 8,
       doctor_name: "Dr. Sarah Williams";
-      department: "Orthopedics";
-      appointment_date: "2025-04-28T11:15:00Z";
+      department: "Orthopedics",
+      appointment_date: "2025-04-28T11:15:00Z",
       appointment_type: "Follow-up";
-      status: "checked_in";
+      status: "checked_in",
       reason: "Follow-up for fracture treatment";
-      notes: "Check X-ray results";
-      created_at: "2025-04-26T09:45:00Z";
+      notes: "Check X-ray results",
+      created_at: "2025-04-26T09:45:00Z"
     },
     {
-      id: 3;
+      id: 3,
       appointment_number: "OPD-20250429-003";
-      patient_id: 103;
+      patient_id: 103,
       patient_name: "Charlie Brown";
-      doctor_id: 3;
+      doctor_id: 3,
       doctor_name: "Dr. Emily Chen";
-      department: "Cardiology";
-      appointment_date: "2025-04-29T09:00:00Z";
+      department: "Cardiology",
+      appointment_date: "2025-04-29T09:00:00Z",
       appointment_type: "New Visit";
-      status: "scheduled";
+      status: "scheduled",
       reason: "Chest pain and shortness of breath";
-      notes: "Patient has family history of heart disease";
-      created_at: "2025-04-27T16:30:00Z";
+      notes: "Patient has family history of heart disease",
+      created_at: "2025-04-27T16:30:00Z"
     },
     {
-      id: 4;
+      id: 4,
       appointment_number: "OPD-20250427-004";
-      patient_id: 104;
+      patient_id: 104,
       patient_name: "Diana Prince";
-      doctor_id: 5;
+      doctor_id: 5,
       doctor_name: "Dr. Robert Johnson";
-      department: "General Medicine";
-      appointment_date: "2025-04-27T14:30:00Z";
+      department: "General Medicine",
+      appointment_date: "2025-04-27T14:30:00Z",
       appointment_type: "Follow-up";
-      status: "completed";
+      status: "completed",
       reason: "Follow-up for hypertension";
-      notes: "BP well controlled with current medication";
-      created_at: "2025-04-24T11:20:00Z";
+      notes: "BP well controlled with current medication",
+      created_at: "2025-04-24T11:20:00Z"
     },
   ];
 
@@ -192,11 +192,11 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
     .slice(0, 10);
     .replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
   return {
-    id: newId;
+    id: newId,
     appointment_number: appointmentNumber;
     ...appointmentData,
-    status: "scheduled";
-    created_at: new Date().toISOString();
+    status: "scheduled",
+    created_at: new Date().toISOString()
   };
 }
 
@@ -217,45 +217,45 @@ async const getAppointmentByIdFromDB = (id: number) {
   // Return mock data for now
   const mockAppointments = [
     {
-      id: 1;
+      id: 1,
       appointment_number: "OPD-20250428-001";
-      patient_id: 101;
+      patient_id: 101,
       patient_name: "Alice Smith";
-      doctor_id: 5;
+      doctor_id: 5,
       doctor_name: "Dr. Robert Johnson";
-      department: "General Medicine";
-      appointment_date: "2025-04-28T10:30:00Z";
+      department: "General Medicine",
+      appointment_date: "2025-04-28T10:30:00Z",
       appointment_type: "New Visit";
-      status: "scheduled";
+      status: "scheduled",
       reason: "Fever and cough for 3 days";
-      notes: "Patient has history of asthma";
-      created_at: "2025-04-25T14:20:00Z";
+      notes: "Patient has history of asthma",
+      created_at: "2025-04-25T14:20:00Z",
       patient_details: {
-        age: 35;
+        age: 35,
         gender: "Female";
-        contact: "+91-9876543210";
-        medical_record_number: "MRN00101";
+        contact: "+91-9876543210",
+        medical_record_number: "MRN00101"
       },
     },
     {
-      id: 2;
+      id: 2,
       appointment_number: "OPD-20250428-002";
-      patient_id: 102;
+      patient_id: 102,
       patient_name: "Bob Johnson";
-      doctor_id: 8;
+      doctor_id: 8,
       doctor_name: "Dr. Sarah Williams";
-      department: "Orthopedics";
-      appointment_date: "2025-04-28T11:15:00Z";
+      department: "Orthopedics",
+      appointment_date: "2025-04-28T11:15:00Z",
       appointment_type: "Follow-up";
-      status: "checked_in";
+      status: "checked_in",
       reason: "Follow-up for fracture treatment";
-      notes: "Check X-ray results";
-      created_at: "2025-04-26T09:45:00Z";
+      notes: "Check X-ray results",
+      created_at: "2025-04-26T09:45:00Z",
       patient_details: {
-        age: 42;
+        age: 42,
         gender: "Male";
-        contact: "+91-9876543211";
-        medical_record_number: "MRN00102";
+        contact: "+91-9876543211",
+        medical_record_number: "MRN00102"
       },
     },
   ];
@@ -265,7 +265,7 @@ async const getAppointmentByIdFromDB = (id: number) {
 
 // Placeholder function to simulate updating an appointment
 async const updateAppointmentInDB = (
-  id: number;
+  id: number,
   updateData: AppointmentUpdateBody;
 ) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -284,7 +284,7 @@ async const updateAppointmentInDB = (
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString();
+    updated_at: new Date().toISOString()
   };
 }
 
@@ -334,11 +334,11 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({ appointments });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        error: "Failed to fetch appointments";
-        details: errorMessage;
+        error: "Failed to fetch appointments",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -362,7 +362,7 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)",;
+          error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)",
         },
         { status: 400 }
       );
@@ -374,11 +374,11 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ appointment: newAppointment }, { status: 201 });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        error: "Failed to create appointment";
-        details: errorMessage;
+        error: "Failed to create appointment",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -409,11 +409,11 @@ export const PUT = async (request: NextRequest) => {
     return NextResponse.json({ appointment: updatedAppointment });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        error: "Failed to update appointment";
-        details: errorMessage;
+        error: "Failed to update appointment",
+        details: errorMessage
       },
       { status: 500 }
     );

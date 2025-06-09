@@ -36,73 +36,73 @@ import { useToast } from '../../hooks/use-toast';
 import { format } from 'date-fns';
 
 interface DocumentSection {
-  id: string;
+  id: string,
   documentId: string;
-  sectionTitle: string;
+  sectionTitle: string,
   sectionType: string;
-  sectionOrder: number;
+  sectionOrder: number,
   content: string;
-  authorId: string;
+  authorId: string,
   authoredDate: string;
   updatedById?: string;
   updatedDate?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string,
+  updatedAt: string
 }
 
 interface DocumentSignature {
-  id: string;
+  id: string,
   documentId: string;
-  signerId: string;
+  signerId: string,
   signerRole: string;
-  signatureDate: string;
+  signatureDate: string,
   signatureType: string;
   attestation?: string;
   ipAddress?: string;
   deviceInfo?: string;
   notes?: string;
-  createdAt: string;
+  createdAt: string
 }
 
 interface DocumentAmendment {
-  id: string;
+  id: string,
   documentId: string;
-  amendmentNumber: string;
+  amendmentNumber: string,
   amendmentType: string;
-  amendmentReason: string;
+  amendmentReason: string,
   content: string;
-  authorId: string;
+  authorId: string,
   authoredDate: string;
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string,
+  updatedAt: string
 }
 
 interface Document {
-  id: string;
+  id: string,
   documentNumber: string;
   patientId: string;
   encounterId?: string;
-  documentType: string;
+  documentType: string,
   documentTitle: string;
-  authorId: string;
+  authorId: string,
   authoredDate: string;
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
-  version: number;
+  version: number,
   content: string;
   templateId?: string;
-  isConfidential: boolean;
+  isConfidential: boolean,
   attachmentUrls: string[];
-  tags: string[];
+  tags: string[],
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string,
   sections: DocumentSection[];
-  signatures: DocumentSignature[];
-  amendments: DocumentAmendment[];
+  signatures: DocumentSignature[],
+  amendments: DocumentAmendment[]
 }
 
 interface DocumentViewerProps {
@@ -118,17 +118,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const [signatureDialogOpen, setSignatureDialogOpen] = useState(false);
   const [amendmentDialogOpen, setAmendmentDialogOpen] = useState(false);
   const [signatureData, setSignatureData] = useState({
-    signerRole: '';
+    signerRole: '',
     signatureType: 'Electronic';
-    attestation: '';
+    attestation: '',
     notes: '';
-    finalize: false;
+    finalize: false
   });
   const [amendmentData, setAmendmentData] = useState({
-    amendmentType: 'Addendum';
+    amendmentType: 'Addendum',
     amendmentReason: '';
-    content: '';
-    status: 'Draft';
+    content: '',
+    status: 'Draft'
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -148,9 +148,9 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to fetch document. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -168,11 +168,11 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(signatureData);
+        body: JSON.stringify(signatureData)
       });
 
       if (!response.ok) {
@@ -181,18 +181,18 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       }
 
       toast({
-        title: 'Success';
-        description: 'Document signed successfully';
+        title: 'Success',
+        description: 'Document signed successfully'
       });
 
       // Close dialog and reset form
       setSignatureDialogOpen(false),
       setSignatureData({
-        signerRole: '';
+        signerRole: '',
         signatureType: 'Electronic';
-        attestation: '';
+        attestation: '',
         notes: '';
-        finalize: false;
+        finalize: false
       });
 
       // Refresh document
@@ -200,9 +200,9 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to sign document. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setSubmitting(false);
@@ -215,11 +215,11 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(amendmentData);
+        body: JSON.stringify(amendmentData)
       });
 
       if (!response.ok) {
@@ -228,17 +228,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       }
 
       toast({
-        title: 'Success';
-        description: 'Amendment created successfully';
+        title: 'Success',
+        description: 'Amendment created successfully'
       });
 
       // Close dialog and reset form
       setAmendmentDialogOpen(false),
       setAmendmentData({
-        amendmentType: 'Addendum';
+        amendmentType: 'Addendum',
         amendmentReason: '';
-        content: '';
-        status: 'Draft';
+        content: '',
+        status: 'Draft'
       });
 
       // Refresh document
@@ -246,9 +246,9 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to create amendment. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setSubmitting(false);
@@ -268,18 +268,18 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         return 'info';
       case 'Canceled':
         return 'destructive';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
   // Handle edit document
   const handleEditDocument = () => {
-    router.push(`/clinical-documentation/${documentId}/edit`);
+    router.push(`/clinical-documentation/${documentId}/edit`)
   };
 
   // Helper function to format date
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM dd, yyyy h: mm a');
+    return format(new Date(dateString), 'MMM dd, yyyy h: mm a')
   };
 
   if (loading != null) {

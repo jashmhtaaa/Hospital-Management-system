@@ -73,220 +73,220 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 } from 'lucide-react';
 
 interface ExecutiveDashboardData {
-  strategicKPIs: StrategyMetric[];
+  strategicKPIs: StrategyMetric[],
   financialOverview: FinancialOverview;
-  operationalExcellence: OperationalMetrics;
+  operationalExcellence: OperationalMetrics,
   qualityAndSafety: QualityOverview;
-  marketPosition: MarketMetrics;
+  marketPosition: MarketMetrics,
   riskManagement: RiskAssessment;
-  boardMetrics: BoardMetric[];
+  boardMetrics: BoardMetric[],
   initiatives: StrategicInitiative[];
-  alerts: ExecutiveAlert[];
-  benchmarks: BenchmarkData[];
+  alerts: ExecutiveAlert[],
+  benchmarks: BenchmarkData[]
 }
 
 interface StrategyMetric {
-  kpi: string;
+  kpi: string,
   current: number;
-  target: number;
+  target: number,
   benchmark: number;
-  trend: 'positive' | 'negative' | 'neutral';
+  trend: 'positive' | 'negative' | 'neutral',
   changePercent: number;
-  status: 'excellent' | 'good' | 'attention' | 'critical';
+  status: 'excellent' | 'good' | 'attention' | 'critical',
   unit: string;
-  category: 'financial' | 'operational' | 'quality' | 'growth';
+  category: 'financial' | 'operational' | 'quality' | 'growth',
   timeframe: 'YTD' | 'QTD' | 'MTD' | 'annual';
-  priority: 'high' | 'medium' | 'low';
+  priority: 'high' | 'medium' | 'low'
 }
 
 interface FinancialOverview {
   revenue: {
-    current: number;
+    current: number,
     target: number;
-    growth: number;
-    trend: number[];
+    growth: number,
+    trend: number[]
   };
   ebitda: {
-    margin: number;
+    margin: number,
     amount: number;
-    growth: number;
+    growth: number
   };
   cashFlow: {
-    operating: number;
+    operating: number,
     free: number;
     runway: number; // months
   };
   profitability: {
-    grossMargin: number;
+    grossMargin: number,
     netMargin: number;
-    operatingMargin: number;
+    operatingMargin: number
   };
   costManagement: {
-    costPerPatient: number;
+    costPerPatient: number,
     costReduction: number;
-    efficiency: number;
+    efficiency: number
   };
   reimbursements: {
-    commercial: number;
+    commercial: number,
     medicare: number;
-    medicaid: number;
-    denialRate: number;
+    medicaid: number,
+    denialRate: number
   };
 }
 
 interface OperationalMetrics {
   capacity: {
-    bedUtilization: number;
+    bedUtilization: number,
     orUtilization: number;
-    staffProductivity: number;
-    equipmentEfficiency: number;
+    staffProductivity: number,
+    equipmentEfficiency: number
   };
   throughput: {
-    patientVolume: number;
+    patientVolume: number,
     avgLengthOfStay: number;
-    turnoverRate: number;
-    dischargeEfficiency: number;
+    turnoverRate: number,
+    dischargeEfficiency: number
   };
   technology: {
-    ehrAdoption: number;
+    ehrAdoption: number,
     digitalTransformation: number;
-    systemUptime: number;
-    cyberSecurityScore: number;
+    systemUptime: number,
+    cyberSecurityScore: number
   };
   staffing: {
-    retention: number;
+    retention: number,
     satisfaction: number;
-    productivity: number;
-    trainingCompliance: number;
+    productivity: number,
+    trainingCompliance: number
   };
 }
 
 interface QualityOverview {
   patientSafety: {
-    overallScore: number;
+    overallScore: number,
     incidents: number;
-    mortalityRate: number;
-    infectionRate: number;
+    mortalityRate: number,
+    infectionRate: number
   };
   patientExperience: {
-    satisfaction: number;
+    satisfaction: number,
     nps: number;
-    complaints: number;
-    compliments: number;
+    complaints: number,
+    compliments: number
   };
   clinicalExcellence: {
-    outcomeScores: number;
+    outcomeScores: number,
     readmissionRate: number;
-    complicationRate: number;
-    evidenceBasedCare: number;
+    complicationRate: number,
+    evidenceBasedCare: number
   };
   accreditation: {
-    jcahoScore: number;
+    jcahoScore: number,
     magnet: boolean;
-    leapfrog: string;
-    lastAuditScore: number;
+    leapfrog: string,
+    lastAuditScore: number
   };
 }
 
 interface MarketMetrics {
-  marketShare: number;
+  marketShare: number,
   brandReputation: number;
-  competitivePosition: number;
+  competitivePosition: number,
   patientAcquisition: {
-    newPatients: number;
+    newPatients: number,
     retentionRate: number;
-    acquisitionCost: number;
-    lifetimeValue: number;
+    acquisitionCost: number,
+    lifetimeValue: number
   };
   serviceLines: {
-    name: string;
+    name: string,
     revenue: number;
-    growth: number;
-    marketPosition: number;
+    growth: number,
+    marketPosition: number
   }[];
   partnerships: {
-    strategic: number;
+    strategic: number,
     clinical: number;
-    technology: number;
+    technology: number
   };
 }
 
 interface RiskAssessment {
-  overallRisk: 'low' | 'medium' | 'high' | 'critical';
+  overallRisk: 'low' | 'medium' | 'high' | 'critical',
   riskScore: number;
   categories: {
-    financial: number;
+    financial: number,
     operational: number;
-    regulatory: number;
+    regulatory: number,
     reputation: number;
-    technology: number;
+    technology: number
   };
   mitigation: {
-    active: number;
+    active: number,
     planned: number;
-    completed: number;
+    completed: number
   };
   compliance: {
-    hipaa: number;
+    hipaa: number,
     jacho: number;
-    cms: number;
-    overall: number;
+    cms: number,
+    overall: number
   };
 }
 
 interface BoardMetric {
-  metric: string;
+  metric: string,
   value: string;
-  change: number;
+  change: number,
   status: 'positive' | 'negative' | 'neutral';
-  benchmark: string;
-  priority: 'board' | 'executive' | 'operational';
+  benchmark: string,
+  priority: 'board' | 'executive' | 'operational'
 }
 
 interface StrategicInitiative {
-  id: string;
+  id: string,
   name: string;
-  category: 'growth' | 'efficiency' | 'quality' | 'innovation';
+  category: 'growth' | 'efficiency' | 'quality' | 'innovation',
   progress: number;
-  status: 'on-track' | 'at-risk' | 'delayed' | 'completed';
+  status: 'on-track' | 'at-risk' | 'delayed' | 'completed',
   budget: number;
-  spent: number;
+  spent: number,
   expectedROI: number;
-  timeline: string;
+  timeline: string,
   sponsor: string;
-  lastUpdate: string;
+  lastUpdate: string
 }
 
 interface ExecutiveAlert {
-  id: string;
+  id: string,
   type: 'strategic' | 'financial' | 'operational' | 'regulatory';
-  severity: 'info' | 'warning' | 'critical';
+  severity: 'info' | 'warning' | 'critical',
   title: string;
-  summary: string;
+  summary: string,
   impact: 'high' | 'medium' | 'low';
-  recommendation: string;
+  recommendation: string,
   owner: string;
-  dueDate: string;
+  dueDate: string
 }
 
 interface BenchmarkData {
-  metric: string;
+  metric: string,
   ourValue: number;
-  industryAvg: number;
+  industryAvg: number,
   topQuartile: number;
-  topDecile: number;
-  percentile: number;
+  topDecile: number,
+  percentile: number
 }
 
 const CHART_COLORS = {
-  primary: '#1e40af';
+  primary: '#1e40af',
   secondary: '#059669';
-  warning: '#d97706';
+  warning: '#d97706',
   danger: '#dc2626';
-  success: '#16a34a';
+  success: '#16a34a',
   info: '#0891b2';
-  purple: '#7c3aed';
-  pink: '#db2777';
+  purple: '#7c3aed',
+  pink: '#db2777'
 };
 
 export default const _ExecutiveDashboard = () {
@@ -318,7 +318,7 @@ export default const _ExecutiveDashboard = () {
       case 'good': return 'text-blue-600';
       case 'attention': return 'text-yellow-600';
       case 'critical': return 'text-red-600';
-      default: return 'text-gray-600';
+      default: return 'text-gray-600'
     }
   };
 
@@ -482,7 +482,7 @@ export default const _ExecutiveDashboard = () {
                   <ResponsiveContainer width="100%" height={200}>;
                     <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({
                       month: `Month ${index + 1}`,
-                      revenue: value;
+                      revenue: value
                     }))}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
@@ -1336,153 +1336,153 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
   return {
     strategicKPIs: [
       {
-        kpi: 'Annual Revenue';
+        kpi: 'Annual Revenue',
         current: 425000000;
-        target: 450000000;
+        target: 450000000,
         benchmark: 400000000;
-        trend: 'positive';
+        trend: 'positive',
         changePercent: 8.5;
-        status: 'good';
+        status: 'good',
         unit: '';
-        category: 'financial';
+        category: 'financial',
         timeframe: 'YTD';
-        priority: 'high';
+        priority: 'high'
       },
       {
-        kpi: 'EBITDA Margin';
+        kpi: 'EBITDA Margin',
         current: 18.2;
-        target: 20.0;
+        target: 20.0,
         benchmark: 16.5;
-        trend: 'positive';
+        trend: 'positive',
         changePercent: 2.1;
-        status: 'good';
+        status: 'good',
         unit: '%';
-        category: 'financial';
+        category: 'financial',
         timeframe: 'YTD';
-        priority: 'high';
+        priority: 'high'
       },
       {
-        kpi: 'Patient Satisfaction';
+        kpi: 'Patient Satisfaction',
         current: 94.3;
-        target: 95.0;
+        target: 95.0,
         benchmark: 89.2;
-        trend: 'positive';
+        trend: 'positive',
         changePercent: 1.8;
-        status: 'excellent';
+        status: 'excellent',
         unit: '%';
-        category: 'quality';
+        category: 'quality',
         timeframe: 'QTD';
-        priority: 'high';
+        priority: 'high'
       },
       {
-        kpi: 'Market Share';
+        kpi: 'Market Share',
         current: 32.8;
-        target: 35.0;
+        target: 35.0,
         benchmark: 28.5;
-        trend: 'positive';
+        trend: 'positive',
         changePercent: 3.2;
-        status: 'good';
+        status: 'good',
         unit: '%';
-        category: 'growth';
+        category: 'growth',
         timeframe: 'annual';
-        priority: 'medium';
+        priority: 'medium'
       }
     ],
     financialOverview: {
       revenue: {
-        current: 425000000;
+        current: 425000000,
         target: 450000000;
-        growth: 8.5;
-        trend: [35, 38, 42, 45, 48, 52, 55, 58, 62, 65, 68, 71];
+        growth: 8.5,
+        trend: [35, 38, 42, 45, 48, 52, 55, 58, 62, 65, 68, 71]
       },
       ebitda: {
-        margin: 18.2;
+        margin: 18.2,
         amount: 77350000;
-        growth: 12.3;
+        growth: 12.3
       },
       cashFlow: {
-        operating: 95000000;
+        operating: 95000000,
         free: 42000000;
-        runway: 18;
+        runway: 18
       },
       profitability: {
-        grossMargin: 65.4;
+        grossMargin: 65.4,
         netMargin: 12.8;
-        operatingMargin: 16.2;
+        operatingMargin: 16.2
       },
       costManagement: {
-        costPerPatient: 8250;
+        costPerPatient: 8250,
         costReduction: 3.2;
-        efficiency: 91.5;
+        efficiency: 91.5
       },
       reimbursements: {
-        commercial: 55;
+        commercial: 55,
         medicare: 32;
-        medicaid: 13;
-        denialRate: 4.2;
+        medicaid: 13,
+        denialRate: 4.2
       }
     },
     operationalMetrics: {
       capacity: {
-        bedUtilization: 87.3;
+        bedUtilization: 87.3,
         orUtilization: 92.1;
-        staffProductivity: 89.7;
-        equipmentEfficiency: 94.2;
+        staffProductivity: 89.7,
+        equipmentEfficiency: 94.2
       },
       throughput: {
-        patientVolume: 125000;
+        patientVolume: 125000,
         avgLengthOfStay: 4.2;
-        turnoverRate: 12.3;
-        dischargeEfficiency: 91.8;
+        turnoverRate: 12.3,
+        dischargeEfficiency: 91.8
       },
       technology: {
-        ehrAdoption: 98.5;
+        ehrAdoption: 98.5,
         digitalTransformation: 78.2;
-        systemUptime: 99.7;
-        cyberSecurityScore: 92.1;
+        systemUptime: 99.7,
+        cyberSecurityScore: 92.1
       },
       staffing: {
-        retention: 91.2;
+        retention: 91.2,
         satisfaction: 87.5;
-        productivity: 93.1;
-        trainingCompliance: 96.8;
+        productivity: 93.1,
+        trainingCompliance: 96.8
       }
     },
     qualityAndSafety: {
       patientSafety: {
-        overallScore: 96.2;
+        overallScore: 96.2,
         incidents: 23;
-        mortalityRate: 2.1;
-        infectionRate: 1.8;
+        mortalityRate: 2.1,
+        infectionRate: 1.8
       },
       patientExperience: {
-        satisfaction: 94.3;
+        satisfaction: 94.3,
         nps: 73;
-        complaints: 45;
-        compliments: 324;
+        complaints: 45,
+        compliments: 324
       },
       clinicalExcellence: {
-        outcomeScores: 91.7;
+        outcomeScores: 91.7,
         readmissionRate: 8.3;
-        complicationRate: 2.9;
-        evidenceBasedCare: 95.1;
+        complicationRate: 2.9,
+        evidenceBasedCare: 95.1
       },
       accreditation: {
-        jcahoScore: 94.8;
+        jcahoScore: 94.8,
         magnet: true;
-        leapfrog: 'A';
-        lastAuditScore: 96.2;
+        leapfrog: 'A',
+        lastAuditScore: 96.2
       }
     },
     marketPosition: {
-      marketShare: 32.8;
+      marketShare: 32.8,
       brandReputation: 87;
-      competitivePosition: 2;
+      competitivePosition: 2,
       patientAcquisition: {
-        newPatients: 15420;
+        newPatients: 15420,
         retentionRate: 89.3;
-        acquisitionCost: 285;
-        lifetimeValue: 12500;
+        acquisitionCost: 285,
+        lifetimeValue: 12500
       },
       serviceLines: [
         { name: 'Cardiology', revenue: 85, growth: 12.3, marketPosition: 1 },
@@ -1491,31 +1491,31 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         { name: 'Surgery', revenue: 120, growth: 15.8, marketPosition: 1 }
       ],
       partnerships: {
-        strategic: 8;
+        strategic: 8,
         clinical: 12;
-        technology: 5;
+        technology: 5
       }
     },
     riskManagement: {
-      overallRisk: 'medium';
+      overallRisk: 'medium',
       riskScore: 32;
       categories: {
-        financial: 25;
+        financial: 25,
         operational: 35;
-        regulatory: 20;
+        regulatory: 20,
         reputation: 15;
-        technology: 40;
+        technology: 40
       },
       mitigation: {
-        active: 15;
+        active: 15,
         planned: 8;
-        completed: 22;
+        completed: 22
       },
       compliance: {
-        hipaa: 98.2;
+        hipaa: 98.2,
         jacho: 94.8;
-        cms: 96.1;
-        overall: 96.4;
+        cms: 96.1,
+        overall: 96.4
       }
     },
     boardMetrics: [
@@ -1528,67 +1528,67 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
     ],
     initiatives: [
       {
-        id: '1';
+        id: '1',
         name: 'Digital Transformation Initiative';
-        category: 'innovation';
+        category: 'innovation',
         progress: 78;
-        status: 'on-track';
+        status: 'on-track',
         budget: 25;
-        spent: 19.5;
+        spent: 19.5,
         expectedROI: 24.5;
-        timeline: 'Q2 2024';
+        timeline: 'Q2 2024',
         sponsor: 'CTO';
-        lastUpdate: '2024-01-15';
+        lastUpdate: '2024-01-15'
       },
       {
-        id: '2';
+        id: '2',
         name: 'Patient Experience Enhancement';
-        category: 'quality';
+        category: 'quality',
         progress: 85;
-        status: 'on-track';
+        status: 'on-track',
         budget: 12;
-        spent: 10.2;
+        spent: 10.2,
         expectedROI: 18.2;
-        timeline: 'Q1 2024';
+        timeline: 'Q1 2024',
         sponsor: 'CNO';
-        lastUpdate: '2024-01-12';
+        lastUpdate: '2024-01-12'
       },
       {
-        id: '3';
+        id: '3',
         name: 'Revenue Cycle Optimization';
-        category: 'efficiency';
+        category: 'efficiency',
         progress: 65;
-        status: 'at-risk';
+        status: 'at-risk',
         budget: 8;
-        spent: 5.2;
+        spent: 5.2,
         expectedROI: 32.1;
-        timeline: 'Q3 2024';
+        timeline: 'Q3 2024',
         sponsor: 'CFO';
-        lastUpdate: '2024-01-10';
+        lastUpdate: '2024-01-10'
       }
     ],
     alerts: [
       {
-        id: '1';
+        id: '1',
         type: 'operational';
-        severity: 'warning';
+        severity: 'warning',
         title: 'ICU Capacity Approaching Limits';
-        summary: 'ICU occupancy has reached 95% for the past 48 hours with limited discharge prospects.';
+        summary: 'ICU occupancy has reached 95% for the past 48 hours with limited discharge prospects.',
         impact: 'high';
-        recommendation: 'Activate overflow protocols and expedite discharge planning for stable patients.';
+        recommendation: 'Activate overflow protocols and expedite discharge planning for stable patients.',
         owner: 'Chief Medical Officer';
-        dueDate: '2024-01-17';
+        dueDate: '2024-01-17'
       },
       {
-        id: '2';
+        id: '2',
         type: 'financial';
-        severity: 'critical';
+        severity: 'critical',
         title: 'Q4 Revenue Target at Risk';
-        summary: 'Current revenue trajectory suggests we may miss Q4 target by 3-4%.';
+        summary: 'Current revenue trajectory suggests we may miss Q4 target by 3-4%.',
         impact: 'high';
-        recommendation: 'Accelerate elective procedures and enhance collection efforts.';
+        recommendation: 'Accelerate elective procedures and enhance collection efforts.',
         owner: 'Chief Financial Officer';
-        dueDate: '2024-01-20';
+        dueDate: '2024-01-20'
       }
     ],
     benchmarks: [

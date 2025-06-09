@@ -11,8 +11,8 @@ export const _GET = async (request: NextRequest) => {
     const employees = await integrationService.getEmployeesForClinical();
 
     return NextResponse.json({
-      success: true;
-      data: employees;
+      success: true,
+      data: employees
     });
   } catch (error) {
 

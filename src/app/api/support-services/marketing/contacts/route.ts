@@ -20,9 +20,9 @@ export const GET = async (request: NextRequest) => {
 
       // Parse query parameters
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         source: searchParams.get('source') || undefined;
-        search: searchParams.get('search') || undefined;
+        search: searchParams.get('search') || undefined,
         segmentId: searchParams.get('segmentId') || undefined;
         hasPatient: searchParams.has('hasPatient');
           ? searchParams.get('hasPatient') === 'true';
@@ -40,8 +40,8 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.contacts.read';
-      auditAction: 'CONTACTS_LIST';
+      requiredPermission: 'marketing.contacts.read',
+      auditAction: 'CONTACTS_LIST'
     }
   );
 }
@@ -65,7 +65,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(contact, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.contacts.create';
-      auditAction: 'CONTACT_CREATE';
+      requiredPermission: 'marketing.contacts.create',
+      auditAction: 'CONTACT_CREATE'
     }
   );

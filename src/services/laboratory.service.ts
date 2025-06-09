@@ -11,65 +11,65 @@ const prisma = new PrismaClient();
 const LabTestSchema = z.object({
   testCode: z.string().min(1, "Test code is required"),
   testName: z.string().min(1, "Test name is required"),
-  shortName: z.string().optional();
-  description: z.string().optional();
+  shortName: z.string().optional(),
+  description: z.string().optional(),
   testCategory: z.string().min(1, "Test category is required"),
   testType: z.string().min(1, "Test type is required"),
-  sampleTypes: z.array(z.string());
+  sampleTypes: z.array(z.string()),
   containerTypes: z.array(z.string());
-  defaultPriority: z.string().default("Routine");
-  defaultDepartment: z.string().optional();
-  methodUsed: z.string().optional();
-  equipmentUsed: z.string().optional();
-  loinc: z.string().optional();
-  cptCode: z.string().optional();
-  price: z.number().optional();
-  requiresConsent: z.boolean().default(false);
-  processTime: z.number().optional();
-  turnaroundTime: z.number().optional();
-  specialInstructions: z.string().optional();
-  patientPreparation: z.string().optional();
-  samplePreservation: z.string().optional();
-  status: z.string().default("Active");
-  isVisible: z.boolean().default(true);
-  referralTest: z.boolean().default(false);
-  referralLabId: z.string().optional();
+  defaultPriority: z.string().default("Routine"),
+  defaultDepartment: z.string().optional(),
+  methodUsed: z.string().optional(),
+  equipmentUsed: z.string().optional(),
+  loinc: z.string().optional(),
+  cptCode: z.string().optional(),
+  price: z.number().optional(),
+  requiresConsent: z.boolean().default(false),
+  processTime: z.number().optional(),
+  turnaroundTime: z.number().optional(),
+  specialInstructions: z.string().optional(),
+  patientPreparation: z.string().optional(),
+  samplePreservation: z.string().optional(),
+  status: z.string().default("Active"),
+  isVisible: z.boolean().default(true),
+  referralTest: z.boolean().default(false),
+  referralLabId: z.string().optional()
 });
 
 // Define schema for lab order
 const LabOrderSchema = z.object({
   patientId: z.string().min(1, "Patient ID is required"),
-  encounterId: z.string().optional();
+  encounterId: z.string().optional(),
   orderingProviderId: z.string().min(1, "Ordering provider ID is required"),
   orderingProviderName: z.string().min(1, "Ordering provider name is required"),
-  orderDateTime: z.date().default(() => new Date());
-  priority: z.string().default("Routine");
-  collectionType: z.string().default("Lab Draw");
-  clinicalInfo: z.string().optional();
-  diagnosis: z.string().optional();
-  diagnosisCode: z.string().optional();
-  isFasting: z.boolean().default(false);
-  collectionDateTime: z.date().optional();
-  collectionSite: z.string().optional();
-  collectedBy: z.string().optional();
-  specimenReceivedDateTime: z.date().optional();
-  receivedBy: z.string().optional();
-  status: z.string().default("Ordered");
-  departmentId: z.string().optional();
-  locationId: z.string().optional();
-  notes: z.string().optional();
-  isRecurring: z.boolean().default(false);
-  recurringPattern: z.string().optional();
+  orderDateTime: z.date().default(() => new Date()),
+  priority: z.string().default("Routine"),
+  collectionType: z.string().default("Lab Draw"),
+  clinicalInfo: z.string().optional(),
+  diagnosis: z.string().optional(),
+  diagnosisCode: z.string().optional(),
+  isFasting: z.boolean().default(false),
+  collectionDateTime: z.date().optional(),
+  collectionSite: z.string().optional(),
+  collectedBy: z.string().optional(),
+  specimenReceivedDateTime: z.date().optional(),
+  receivedBy: z.string().optional(),
+  status: z.string().default("Ordered"),
+  departmentId: z.string().optional(),
+  locationId: z.string().optional(),
+  notes: z.string().optional(),
+  isRecurring: z.boolean().default(false),
+  recurringPattern: z.string().optional(),
   orderItems: z.array(z.object({
-    testId: z.string().optional();
-    profileId: z.string().optional();
-    status: z.string().default("Ordered");
-    priority: z.string().default("Routine");
-    scheduledDateTime: z.date().optional();
-    performingLabId: z.string().optional();
-    referralLabId: z.string().optional();
-    billable: z.boolean().default(true);
-    notes: z.string().optional();
+    testId: z.string().optional(),
+    profileId: z.string().optional(),
+    status: z.string().default("Ordered"),
+    priority: z.string().default("Routine"),
+    scheduledDateTime: z.date().optional(),
+    performingLabId: z.string().optional(),
+    referralLabId: z.string().optional(),
+    billable: z.boolean().default(true),
+    notes: z.string().optional()
   })).min(1, "At least one test must be ordered"),
 });
 
@@ -79,54 +79,54 @@ const LabSampleSchema = z.object({
   patientId: z.string().min(1, "Patient ID is required"),
   sampleTypeId: z.string().min(1, "Sample type ID is required"),
   containerType: z.string().min(1, "Container type is required"),
-  volume: z.string().optional();
-  collectionDateTime: z.date().optional();
-  collectedBy: z.string().optional();
-  collectionSite: z.string().optional();
-  collectionMethod: z.string().optional();
-  receivedDateTime: z.date().optional();
-  receivedBy: z.string().optional();
-  receivedCondition: z.string().optional();
-  status: z.string().default("Ordered");
-  storageLocation: z.string().optional();
-  parentSampleId: z.string().optional();
-  isAliquot: z.boolean().default(false);
-  processingNotes: z.string().optional();
-  notes: z.string().optional();
+  volume: z.string().optional(),
+  collectionDateTime: z.date().optional(),
+  collectedBy: z.string().optional(),
+  collectionSite: z.string().optional(),
+  collectionMethod: z.string().optional(),
+  receivedDateTime: z.date().optional(),
+  receivedBy: z.string().optional(),
+  receivedCondition: z.string().optional(),
+  status: z.string().default("Ordered"),
+  storageLocation: z.string().optional(),
+  parentSampleId: z.string().optional(),
+  isAliquot: z.boolean().default(false),
+  processingNotes: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // Define schema for lab result
 const LabResultSchema = z.object({
   orderId: z.string().min(1, "Order ID is required"),
-  sampleId: z.string().optional();
+  sampleId: z.string().optional(),
   parameterId: z.string().min(1, "Parameter ID is required"),
   resultValue: z.string().min(1, "Result value is required"),
-  resultValueNumeric: z.number().optional();
-  units: z.string().optional();
-  referenceRange: z.string().optional();
-  flags: z.string().optional();
-  interpretation: z.string().optional();
-  status: z.string().default("Preliminary");
+  resultValueNumeric: z.number().optional(),
+  units: z.string().optional(),
+  referenceRange: z.string().optional(),
+  flags: z.string().optional(),
+  interpretation: z.string().optional(),
+  status: z.string().default("Preliminary"),
   performedBy: z.string().min(1, "Performed by is required"),
-  performedDateTime: z.date().default(() => new Date());
-  verifiedBy: z.string().optional();
-  verifiedDateTime: z.date().optional();
-  reportedDateTime: z.date().optional();
-  correctedResultId: z.string().optional();
-  correctionReason: z.string().optional();
-  analyticalMethod: z.string().optional();
-  equipmentId: z.string().optional();
-  equipmentName: z.string().optional();
-  batchId: z.string().optional();
-  runId: z.string().optional();
-  dilutionFactor: z.string().optional();
-  notes: z.string().optional();
-  isCritical: z.boolean().default(false);
-  criticalNotifiedTo: z.string().optional();
-  criticalNotifiedDateTime: z.date().optional();
-  criticalNotifiedBy: z.string().optional();
-  criticalAcknowledgedBy: z.string().optional();
-  criticalAcknowledgedDateTime: z.date().optional();
+  performedDateTime: z.date().default(() => new Date()),
+  verifiedBy: z.string().optional(),
+  verifiedDateTime: z.date().optional(),
+  reportedDateTime: z.date().optional(),
+  correctedResultId: z.string().optional(),
+  correctionReason: z.string().optional(),
+  analyticalMethod: z.string().optional(),
+  equipmentId: z.string().optional(),
+  equipmentName: z.string().optional(),
+  batchId: z.string().optional(),
+  runId: z.string().optional(),
+  dilutionFactor: z.string().optional(),
+  notes: z.string().optional(),
+  isCritical: z.boolean().default(false),
+  criticalNotifiedTo: z.string().optional(),
+  criticalNotifiedDateTime: z.date().optional(),
+  criticalNotifiedBy: z.string().optional(),
+  criticalAcknowledgedBy: z.string().optional(),
+  criticalAcknowledgedDateTime: z.date().optional()
 });
 
 /**
@@ -160,7 +160,7 @@ export class LaboratoryService {
     const orderCount = await prisma.labOrder.count({
       where: {
         orderDateTime: {
-          gte: today;
+          gte: today
         }
       }
     });
@@ -171,7 +171,7 @@ export class LaboratoryService {
     // Combine to create Order Number: LAB-YYMMDD-XXXX
     const orderNumber = `LAB-/* SECURITY: Template literal eliminated */
 
-    return orderNumber;
+    return orderNumber
   }
 
   /**
@@ -191,7 +191,7 @@ export class LaboratoryService {
     const sampleCount = await prisma.labSample.count({
       where: {
         createdAt: {
-          gte: today;
+          gte: today
         }
       }
     });
@@ -202,7 +202,7 @@ export class LaboratoryService {
     // Combine to create Sample ID: TYPE-YYMMDD-XXXX
     const sampleId = `${sampleTypeCode}-/* SECURITY: Template literal eliminated */
 
-    return sampleId;
+    return sampleId
   }
 
   /**
@@ -226,17 +226,17 @@ export class LaboratoryService {
       const test = await prisma.labTest.create({
         data: {
           ...validatedTest,
-          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null;
+          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null
         }
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'LabTest';
-        resourceId: test.id;
+        resourceId: test.id,
         description: `Created lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       return test;
@@ -257,13 +257,13 @@ export class LaboratoryService {
         include: {
           testParameters: {
             include: {
-              referenceRanges: true;
-              criticalRanges: true;
+              referenceRanges: true,
+              criticalRanges: true
             }
           },
           sampleRequirements: {
             include: {
-              sampleType: true;
+              sampleType: true
             }
           }
         }
@@ -275,11 +275,11 @@ export class LaboratoryService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View';
+        action: 'View',
         resourceType: 'LabTest';
-        resourceId: testId;
+        resourceId: testId,
         description: `Viewed lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       return test;
@@ -322,17 +322,17 @@ export class LaboratoryService {
         where: { id: testId },
         data: {
           ...validatedTest,
-          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null;
+          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null
         }
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update';
+        action: 'Update',
         resourceType: 'LabTest';
-        resourceId: testId;
+        resourceId: testId,
         description: `Updated lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       return test;
@@ -366,28 +366,28 @@ export class LaboratoryService {
         const newOrder = await tx.labOrder.create({
           data: {
             orderNumber,
-            patientId: validatedOrder.patientId;
+            patientId: validatedOrder.patientId,
             encounterId: validatedOrder.encounterId;
-            orderingProviderId: validatedOrder.orderingProviderId;
+            orderingProviderId: validatedOrder.orderingProviderId,
             orderingProviderName: validatedOrder.orderingProviderName;
-            orderDateTime: validatedOrder.orderDateTime;
+            orderDateTime: validatedOrder.orderDateTime,
             priority: validatedOrder.priority;
-            collectionType: validatedOrder.collectionType;
+            collectionType: validatedOrder.collectionType,
             clinicalInfo: validatedOrder.clinicalInfo;
-            diagnosis: validatedOrder.diagnosis;
+            diagnosis: validatedOrder.diagnosis,
             diagnosisCode: validatedOrder.diagnosisCode;
-            isFasting: validatedOrder.isFasting;
+            isFasting: validatedOrder.isFasting,
             collectionDateTime: validatedOrder.collectionDateTime;
-            collectionSite: validatedOrder.collectionSite;
+            collectionSite: validatedOrder.collectionSite,
             collectedBy: validatedOrder.collectedBy;
-            specimenReceivedDateTime: validatedOrder.specimenReceivedDateTime;
+            specimenReceivedDateTime: validatedOrder.specimenReceivedDateTime,
             receivedBy: validatedOrder.receivedBy;
-            status: validatedOrder.status;
+            status: validatedOrder.status,
             departmentId: validatedOrder.departmentId;
-            locationId: validatedOrder.locationId;
+            locationId: validatedOrder.locationId,
             notes: validatedOrder.notes;
-            isRecurring: validatedOrder.isRecurring;
-            recurringPattern: validatedOrder.recurringPattern;
+            isRecurring: validatedOrder.isRecurring,
+            recurringPattern: validatedOrder.recurringPattern
           }
         });
 
@@ -395,16 +395,16 @@ export class LaboratoryService {
         for (const item of validatedOrder.orderItems) {
           await tx.labOrderItem.create({
             data: {
-              orderId: newOrder.id;
+              orderId: newOrder.id,
               testId: item.testId;
-              profileId: item.profileId;
+              profileId: item.profileId,
               status: item.status || 'Ordered';
-              priority: item.priority || validatedOrder.priority;
+              priority: item.priority || validatedOrder.priority,
               scheduledDateTime: item.scheduledDateTime;
-              performingLabId: item.performingLabId;
+              performingLabId: item.performingLabId,
               referralLabId: item.referralLabId;
-              billable: item.billable;
-              notes: item.notes;
+              billable: item.billable,
+              notes: item.notes
             }
           });
         }
@@ -414,23 +414,23 @@ export class LaboratoryService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'LabOrder';
-        resourceId: order.id;
+        resourceId: order.id,
         description: `Created lab order: ${order.orderNumber} for patient ${order.patientId}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       // Send notification to lab department
       await this.notificationService.sendNotification({
-        type: 'LabOrderCreated';
+        type: 'LabOrderCreated',
         title: 'New Lab Order';
         message: `New lab order ${order.orderNumber} created for patient ${order.patientId}`,
-        priority: order.priority === 'STAT' ? 'high' : 'medium';
+        priority: order.priority === 'STAT' ? 'high' : 'medium',
         recipientRoles: ['Lab Technician', 'Lab Manager'],
-        recipientIds: [];
+        recipientIds: [],
         relatedResourceType: 'LabOrder';
-        relatedResourceId: order.id;
+        relatedResourceId: order.id
       });
 
       return order;
@@ -451,18 +451,18 @@ export class LaboratoryService {
         include: {
           orderItems: {
             include: {
-              test: true;
-              profile: true;
+              test: true,
+              profile: true
             }
           },
           samples: {
             include: {
-              sampleType: true;
+              sampleType: true
             }
           },
           results: {
             include: {
-              parameter: true;
+              parameter: true
             }
           }
         }
@@ -474,11 +474,11 @@ export class LaboratoryService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View';
+        action: 'View',
         resourceType: 'LabOrder';
-        resourceId: orderId;
+        resourceId: orderId,
         description: `Viewed lab order: ${order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       return order;
@@ -512,42 +512,42 @@ export class LaboratoryService {
       const order = await prisma.labOrder.update({
         where: { id: orderId },
         data: {
-          status: statusData.status;
-          notes: statusData.notes ? `/* SECURITY: Template literal eliminated */;
+          status: statusData.status,
+          notes: statusData.notes ? `/* SECURITY: Template literal eliminated */
         }
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update';
+        action: 'Update',
         resourceType: 'LabOrder';
-        resourceId: orderId;
+        resourceId: orderId,
         description: `Updated lab order status: ${order.orderNumber} to ${statusData.status}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       // Send notification for status change
       if (statusData.status === 'Completed') {
         await this.notificationService.sendNotification({
-          type: 'LabOrderCompleted';
+          type: 'LabOrderCompleted',
           title: 'Lab Order Completed';
           message: `Lab order ${order.orderNumber} has been completed`,
-          priority: 'medium';
+          priority: 'medium',
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId];
+          recipientIds: [order.orderingProviderId],
           relatedResourceType: 'LabOrder';
-          relatedResourceId: order.id;
+          relatedResourceId: order.id
         });
       } else if (statusData.status === 'Cancelled') {
         await this.notificationService.sendNotification({
-          type: 'LabOrderCancelled';
+          type: 'LabOrderCancelled',
           title: 'Lab Order Cancelled';
           message: `Lab order ${order.orderNumber} has been cancelled`,
-          priority: 'medium';
+          priority: 'medium',
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId];
+          recipientIds: [order.orderingProviderId],
           relatedResourceType: 'LabOrder';
-          relatedResourceId: order.id;
+          relatedResourceId: order.id
         });
       }
 
@@ -570,7 +570,7 @@ export class LaboratoryService {
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
         include: {
-          orderItems: true;
+          orderItems: true
         }
       });
 
@@ -594,24 +594,24 @@ export class LaboratoryService {
       const sample = await prisma.labSample.create({
         data: {
           sampleId,
-          orderId: validatedSample.orderId;
+          orderId: validatedSample.orderId,
           patientId: validatedSample.patientId;
-          sampleTypeId: validatedSample.sampleTypeId;
+          sampleTypeId: validatedSample.sampleTypeId,
           containerType: validatedSample.containerType;
-          volume: validatedSample.volume;
+          volume: validatedSample.volume,
           collectionDateTime: validatedSample.collectionDateTime;
-          collectedBy: validatedSample.collectedBy;
+          collectedBy: validatedSample.collectedBy,
           collectionSite: validatedSample.collectionSite;
-          collectionMethod: validatedSample.collectionMethod;
+          collectionMethod: validatedSample.collectionMethod,
           receivedDateTime: validatedSample.receivedDateTime;
-          receivedBy: validatedSample.receivedBy;
+          receivedBy: validatedSample.receivedBy,
           receivedCondition: validatedSample.receivedCondition;
-          status: validatedSample.status;
+          status: validatedSample.status,
           storageLocation: validatedSample.storageLocation;
-          parentSampleId: validatedSample.parentSampleId;
+          parentSampleId: validatedSample.parentSampleId,
           isAliquot: validatedSample.isAliquot;
-          processingNotes: validatedSample.processingNotes;
-          notes: validatedSample.notes;
+          processingNotes: validatedSample.processingNotes,
+          notes: validatedSample.notes
         }
       });
 
@@ -620,10 +620,10 @@ export class LaboratoryService {
         await prisma.labOrder.update({
           where: { id: order.id },
           data: {
-            status: 'Collected';
+            status: 'Collected',
             collectionDateTime: validatedSample.collectionDateTime;
-            collectedBy: validatedSample.collectedBy;
-            collectionSite: validatedSample.collectionSite;
+            collectedBy: validatedSample.collectedBy,
+            collectionSite: validatedSample.collectionSite
           }
         });
       }
@@ -633,20 +633,20 @@ export class LaboratoryService {
         await prisma.labOrder.update({
           where: { id: order.id },
           data: {
-            status: 'In Process';
+            status: 'In Process',
             specimenReceivedDateTime: validatedSample.receivedDateTime;
-            receivedBy: validatedSample.receivedBy;
+            receivedBy: validatedSample.receivedBy
           }
         });
       }
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'LabSample';
-        resourceId: sample.id;
+        resourceId: sample.id,
         description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       return sample;
@@ -677,9 +677,9 @@ export class LaboratoryService {
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: validatedResult.parameterId },
         include: {
-          criticalRanges: true;
+          criticalRanges: true,
           referenceRanges: true;
-          test: true;
+          test: true
         }
       });
 
@@ -743,59 +743,59 @@ export class LaboratoryService {
       const result = await prisma.labResult.create({
         data: {
           resultId,
-          orderId: validatedResult.orderId;
+          orderId: validatedResult.orderId,
           sampleId: validatedResult.sampleId;
-          parameterId: validatedResult.parameterId;
+          parameterId: validatedResult.parameterId,
           resultValue: validatedResult.resultValue;
-          resultValueNumeric: validatedResult.resultValueNumeric;
+          resultValueNumeric: validatedResult.resultValueNumeric,
           units: validatedResult.units || parameter.units;
           referenceRange,
           flags,
-          interpretation: validatedResult.interpretation;
+          interpretation: validatedResult.interpretation,
           status: validatedResult.status;
-          performedBy: validatedResult.performedBy;
+          performedBy: validatedResult.performedBy,
           performedDateTime: validatedResult.performedDateTime;
-          verifiedBy: validatedResult.verifiedBy;
+          verifiedBy: validatedResult.verifiedBy,
           verifiedDateTime: validatedResult.verifiedDateTime;
-          reportedDateTime: validatedResult.reportedDateTime;
+          reportedDateTime: validatedResult.reportedDateTime,
           correctedResultId: validatedResult.correctedResultId;
-          correctionReason: validatedResult.correctionReason;
+          correctionReason: validatedResult.correctionReason,
           analyticalMethod: validatedResult.analyticalMethod;
-          equipmentId: validatedResult.equipmentId;
+          equipmentId: validatedResult.equipmentId,
           equipmentName: validatedResult.equipmentName;
-          batchId: validatedResult.batchId;
+          batchId: validatedResult.batchId,
           runId: validatedResult.runId;
-          dilutionFactor: validatedResult.dilutionFactor;
+          dilutionFactor: validatedResult.dilutionFactor,
           notes: validatedResult.notes;
           isCritical,
-          criticalNotifiedTo: validatedResult.criticalNotifiedTo;
+          criticalNotifiedTo: validatedResult.criticalNotifiedTo,
           criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime;
-          criticalNotifiedBy: validatedResult.criticalNotifiedBy;
+          criticalNotifiedBy: validatedResult.criticalNotifiedBy,
           criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy;
-          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime;
+          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime
         }
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create';
+        action: 'Create',
         resourceType: 'LabResult';
-        resourceId: result.id;
+        resourceId: result.id,
         description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       // Send notification for critical result
       if (isCritical != null) {
         await this.notificationService.sendNotification({
-          type: 'CriticalLabResult';
+          type: 'CriticalLabResult',
           title: 'Critical Lab Result';
           message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
-          priority: 'high';
+          priority: 'high',
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId];
+          recipientIds: [order.orderingProviderId],
           relatedResourceType: 'LabResult';
-          relatedResourceId: result.id;
+          relatedResourceId: result.id
         });
       }
 
@@ -805,7 +805,7 @@ export class LaboratoryService {
         include: {
           test: {
             include: {
-              testParameters: true;
+              testParameters: true
             }
           },
           profile: {
@@ -814,7 +814,7 @@ export class LaboratoryService {
                 include: {
                   test: {
                     include: {
-                      testParameters: true;
+                      testParameters: true
                     }
                   }
                 }
@@ -866,14 +866,14 @@ export class LaboratoryService {
 
         // Send notification for completed order
         await this.notificationService.sendNotification({
-          type: 'LabOrderCompleted';
+          type: 'LabOrderCompleted',
           title: 'Lab Order Completed';
           message: `All results for lab order ${order.orderNumber} have been entered`,
-          priority: 'medium';
+          priority: 'medium',
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId];
+          recipientIds: [order.orderingProviderId],
           relatedResourceType: 'LabOrder';
-          relatedResourceId: order.id;
+          relatedResourceId: order.id
         });
       }
 
@@ -895,10 +895,10 @@ export class LaboratoryService {
         include: {
           parameter: {
             include: {
-              test: true;
+              test: true
             }
           },
-          order: true;
+          order: true
         }
       });
 
@@ -910,20 +910,20 @@ export class LaboratoryService {
       const result = await prisma.labResult.update({
         where: { id: resultId },
         data: {
-          status: 'Final';
+          status: 'Final',
           verifiedBy: verificationData.verifiedBy;
-          verifiedDateTime: new Date();
-          notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */;
+          verifiedDateTime: new Date(),
+          notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */
         }
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update';
+        action: 'Update',
         resourceType: 'LabResult';
-        resourceId: resultId;
+        resourceId: resultId,
         description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       return result;
@@ -943,7 +943,7 @@ export class LaboratoryService {
 
       if (searchParams.orderNumber) {
         where.orderNumber = {
-          contains: searchParams.orderNumber;
+          contains: searchParams.orderNumber
         };
       }
 
@@ -965,16 +965,16 @@ export class LaboratoryService {
 
       if (searchParams?.startDate && searchParams.endDate) {
         where.orderDateTime = {
-          gte: new Date(searchParams.startDate);
-          lte: new Date(searchParams.endDate);
+          gte: new Date(searchParams.startDate),
+          lte: new Date(searchParams.endDate)
         };
       } else if (searchParams.startDate) {
         where.orderDateTime = {
-          gte: new Date(searchParams.startDate);
+          gte: new Date(searchParams.startDate)
         };
       } else if (searchParams.endDate) {
         where.orderDateTime = {
-          lte: new Date(searchParams.endDate);
+          lte: new Date(searchParams.endDate)
         };
       }
 
@@ -989,14 +989,14 @@ export class LaboratoryService {
           include: {
             orderItems: {
               include: {
-                test: true;
-                profile: true;
+                test: true,
+                profile: true
               }
             },
             _count: {
               select: {
-                samples: true;
-                results: true;
+                samples: true,
+                results: true
               }
             }
           },
@@ -1009,18 +1009,18 @@ export class LaboratoryService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Search';
+        action: 'Search',
         resourceType: 'LabOrder';
-        description: 'Performed lab order search';
-        performedBy: userId;
+        description: 'Performed lab order search',
+        performedBy: userId
       });
 
       return {
         orders,
         total,
-        page: searchParams.page || 1;
+        page: searchParams.page || 1,
         limit: take;
-        totalPages: Math.ceil(total / take);
+        totalPages: Math.ceil(total / take)
       };
     } catch (error) {
 
@@ -1037,36 +1037,36 @@ export class LaboratoryService {
       const results = await prisma.labResult.findMany({
         where: {
           order: {
-            patientId: patientId;
+            patientId: patientId
           },
           status: { in: ['Final', 'Preliminary'] }
         },
         include: {
           parameter: {
             include: {
-              test: true;
+              test: true
             }
           },
           order: {
             select: {
-              orderNumber: true;
+              orderNumber: true,
               orderDateTime: true;
-              orderingProviderName: true;
+              orderingProviderName: true
             }
           }
         },
         orderBy: [
           { performedDateTime: 'desc' }
         ],
-        take: options.limit;
+        take: options.limit
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View';
+        action: 'View',
         resourceType: 'LabResult';
         description: `Viewed lab results for patient ${patientId}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       // If not grouping by test, return the flat list
@@ -1083,9 +1083,9 @@ export class LaboratoryService {
           acc[testId] = {
             testId,
             testName,
-            testCode: result.parameter.test.testCode;
+            testCode: result.parameter.test.testCode,
             latestDate: result.performedDateTime;
-            parameters: [];
+            parameters: []
           };
         }
 
@@ -1096,18 +1096,18 @@ export class LaboratoryService {
 
         // Add parameter to test
         acc[testId].parameters.push({
-          id: result.id;
+          id: result.id,
           parameterId: result.parameterId;
-          parameterName: result.parameter.parameterName;
+          parameterName: result.parameter.parameterName,
           resultValue: result.resultValue;
-          units: result.units;
+          units: result.units,
           referenceRange: result.referenceRange;
-          flags: result.flags;
+          flags: result.flags,
           isCritical: result.isCritical;
-          performedDateTime: result.performedDateTime;
+          performedDateTime: result.performedDateTime,
           status: result.status;
-          orderNumber: result.order.orderNumber;
-          orderDateTime: result.order.orderDateTime;
+          orderNumber: result.order.orderNumber,
+          orderDateTime: result.order.orderDateTime
         });
 
         return acc;
@@ -1139,8 +1139,8 @@ export class LaboratoryService {
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: parameterId },
         include: {
-          test: true;
-          referenceRanges: true;
+          test: true,
+          referenceRanges: true
         }
       });
 
@@ -1157,14 +1157,14 @@ export class LaboratoryService {
           },
           status: { in: ['Final', 'Preliminary'] },
           performedDateTime: startDate ? {
-            gte: startDate;
+            gte: startDate
           } : undefined;
         },
         include: {
           order: {
             select: {
-              orderNumber: true;
-              orderDateTime: true;
+              orderNumber: true,
+              orderDateTime: true
             }
           }
         },
@@ -1173,10 +1173,10 @@ export class LaboratoryService {
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View';
+        action: 'View',
         resourceType: 'LabResult';
         description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
-        performedBy: userId;
+        performedBy: userId
       });
 
       // Extract reference ranges
@@ -1186,8 +1186,8 @@ export class LaboratoryService {
         const refRange = parameter.referenceRanges[0];
         if (refRange?.lowerLimit && refRange.upperLimit) {
           referenceRanges = {
-            lower: parseFloat(refRange.lowerLimit);
-            upper: parseFloat(refRange.upperLimit);
+            lower: parseFloat(refRange.lowerLimit),
+            upper: parseFloat(refRange.upperLimit)
           };
         }
       }
@@ -1195,24 +1195,24 @@ export class LaboratoryService {
       // Format the response
       return {
         parameter: {
-          id: parameter.id;
+          id: parameter.id,
           name: parameter.parameterName;
-          units: parameter.units;
+          units: parameter.units,
           testName: parameter.test.testName;
-          testCode: parameter.test.testCode;
+          testCode: parameter.test.testCode
         },
         referenceRanges,
         results: results.map(result => ({
-          id: result.id;
+          id: result.id,
           resultValue: result.resultValue;
-          resultValueNumeric: result.resultValueNumeric;
+          resultValueNumeric: result.resultValueNumeric,
           units: result.units;
-          flags: result.flags;
+          flags: result.flags,
           isCritical: result.isCritical;
-          performedDateTime: result.performedDateTime;
+          performedDateTime: result.performedDateTime,
           status: result.status;
-          orderNumber: result.order.orderNumber;
-        }));
+          orderNumber: result.order.orderNumber
+        }))
       };
     } catch (error) {
 

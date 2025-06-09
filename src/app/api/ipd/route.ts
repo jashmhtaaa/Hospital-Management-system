@@ -9,8 +9,8 @@ import { IPDProductionService } from "@/lib/ipd-service.production";
 // Example API route for IPD (Inpatient Department) Management
 // Schema for IPD Admission
 const AdmissionSchema = z.object({
-  patient_id: z.number();
-  doctor_id: z.number();
+  patient_id: z.number(),
+  doctor_id: z.number(),
   admission_date: z;
     .string();
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
@@ -18,17 +18,17 @@ const AdmissionSchema = z.object({
     .string();
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format");
     .optional(),
-  admission_reason: z.string();
-  admission_notes: z.string().optional();
-  ward_id: z.number();
-  bed_id: z.number();
+  admission_reason: z.string(),
+  admission_notes: z.string().optional(),
+  ward_id: z.number(),
+  bed_id: z.number(),
   admission_type: z.enum(["Emergency", "Planned", "Transfer"]),
-  package_id: z.number().optional();
-  insurance_id: z.number().optional();
+  package_id: z.number().optional(),
+  insurance_id: z.number().optional(),
   insurance_approval_status: z;
     .enum(["Pending", "Approved", "Rejected"]);
     .optional(),
-  insurance_approval_number: z.string().optional();
+  insurance_approval_number: z.string().optional()
 });
 
 export async function GET(request: NextRequest): unknown {
@@ -121,19 +121,19 @@ export async function GET(request: NextRequest): unknown {
     const admissionsResult = await database.prepare(query).bind(...parameters).all();
 
     return new Response(JSON.stringify(admissionsResult.results || []), {
-      status: 200;
+      status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response(
       JSON.stringify({
-        error: "Failed to fetch IPD admissions";
-        details: errorMessage;
+        error: "Failed to fetch IPD admissions",
+        details: errorMessage
       }),
       {
-        status: 500;
+        status: 500,
         headers: { "Content-Type": "application/json" },
       }
     );
@@ -154,11 +154,11 @@ export async function POST(request: NextRequest): unknown {
     if (!validationResult.success) {
       return new Response(
         JSON.stringify({
-          error: "Invalid input data";
-          details: validationResult.error.format();
+          error: "Invalid input data",
+          details: validationResult.error.format()
         }),
         {
-          status: 400;
+          status: 400,
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -201,7 +201,7 @@ export async function POST(request: NextRequest): unknown {
 
     if (!bedCheck) {
       return new Response(JSON.stringify({ error: "Bed not available" }), {
-        status: 409;
+        status: 409,
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -210,16 +210,16 @@ export async function POST(request: NextRequest): unknown {
     try {
       // Create admission using production service
       const admissionData = {
-        patientId: data.patient_id;
+        patientId: data.patient_id,
         attendingDoctorId: data.doctor_id;
-        admissionDate: new Date(data.admission_date);
+        admissionDate: new Date(data.admission_date),
         admittingDiagnosis: data.admission_reason;
-        ward: data.ward_id;
+        ward: data.ward_id,
         bedNumber: data.bed_id;
-        admissionType: data.admission_type || 'elective';
+        admissionType: data.admission_type || 'elective',
         insuranceProvider: data.insurance_id;
-        admissionNotes: data.admission_notes;
-        admittedBy: '1' // TODO: Get from authenticated user context;
+        admissionNotes: data.admission_notes,
+        admittedBy: '1' // TODO: Get from authenticated user context
       }
 
       const admissionId = await ipdService.createAdmission(admissionData);
@@ -227,19 +227,19 @@ export async function POST(request: NextRequest): unknown {
       // Assign bed using production service
       await ipdService.assignBed({
         admissionId,
-        ward: data.ward_id;
+        ward: data.ward_id,
         room: data.room_id || '';
-        bedNumber: data.bed_id;
-        assignedBy: '1' // TODO: Get from authenticated user context;
+        bedNumber: data.bed_id,
+        assignedBy: '1' // TODO: Get from authenticated user context
       })
 
       return new Response(
         JSON.stringify({
-          message: "IPD Admission created successfully";
-          admission_id: admissionId;
+          message: "IPD Admission created successfully",
+          admission_id: admissionId
         }),
         {
-          status: 201;
+          status: 201,
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -247,25 +247,25 @@ export async function POST(request: NextRequest): unknown {
 
       // No rollback needed for mock DB
       const errorMessage =;
-        txError instanceof Error ? txError.message : String(txError);
+        txError instanceof Error ? txError.message : String(txError),
       return new Response(
         JSON.stringify({
-          error: "Failed during admission creation database operations";
-          details: errorMessage;
+          error: "Failed during admission creation database operations",
+          details: errorMessage
         }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response(
       JSON.stringify({
-        error: "Failed to create IPD admission";
-        details: errorMessage;
+        error: "Failed to create IPD admission",
+        details: errorMessage
       }),
       {
-        status: 500;
+        status: 500,
         headers: { "Content-Type": "application/json" },
       }
     );

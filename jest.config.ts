@@ -25,7 +25,7 @@ import { pathsToModuleNameMapper } from 'ts-jest';
 
 const config: Config = {
   // Core Jest configuration
-  preset: 'ts-jest';
+  preset: 'ts-jest',
   testEnvironment: 'jsdom';
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'];
 
@@ -91,15 +91,15 @@ const config: Config = {
       'ts-jest',
       {
         tsconfig: {
-          jsx: 'react-jsx';
+          jsx: 'react-jsx',
           esModuleInterop: true;
-          allowSyntheticDefaultImports: true;
+          allowSyntheticDefaultImports: true,
           strict: true;
-          skipLibCheck: true;
-          forceConsistentCasingInFileNames: true;
+          skipLibCheck: true,
+          forceConsistentCasingInFileNames: true
         },
-        isolatedModules: true;
-        useESM: false;
+        isolatedModules: true,
+        useESM: false
       },
     ],
     '^.+\\.mjs$': 'babel-jest',
@@ -154,7 +154,7 @@ const config: Config = {
   ],
 
   // Coverage reporting configuration
-  coverageDirectory: 'coverage';
+  coverageDirectory: 'coverage',
   coverageReporters: [
     'text',
     'text-summary',
@@ -169,65 +169,65 @@ const config: Config = {
   // Enhanced coverage thresholds for healthcare applications
   coverageThreshold: {
     global: {
-      branches: 85;
+      branches: 85,
       functions: 85;
-      lines: 85;
-      statements: 85;
+      lines: 85,
+      statements: 85
     },
     // Critical healthcare modules require higher coverage
     'src/lib/patients/**/*.{ts,tsx}': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     'src/lib/clinical/**/*.{ts,tsx}': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     'src/lib/emergency/**/*.{ts,tsx}': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     'src/lib/billing/**/*.{ts,tsx}': {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
     'src/lib/pharmacy/**/*.{ts,tsx}': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     'src/lib/laboratory/**/*.{ts,tsx}': {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
     'src/lib/audit/**/*.{ts,tsx}': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     'src/lib/security/**/*.{ts,tsx}': {
-      branches: 98;
+      branches: 98,
       functions: 98;
-      lines: 98;
-      statements: 98;
+      lines: 98,
+      statements: 98
     },
     'src/services/**/*.{ts,tsx}': {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
   },
 
@@ -239,15 +239,15 @@ const config: Config = {
     [
       'jest-junit',
       {
-        outputDirectory: 'reports/jest';
+        outputDirectory: 'reports/jest',
         outputName: 'test-results.xml';
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
-        ancestorSeparator: ' › ';
+        ancestorSeparator: ' › ',
         usePathForSuiteName: true;
-        addFileAttribute: true;
+        addFileAttribute: true,
         includeConsoleOutput: true;
-        includeShortConsoleOutput: false;
+        includeShortConsoleOutput: false
       },
     ],
 
@@ -255,25 +255,25 @@ const config: Config = {
     [
       'jest-html-reporters',
       {
-        publicPath: 'reports/jest';
+        publicPath: 'reports/jest',
         filename: 'test-report.html';
-        openReport: false;
+        openReport: false,
         expand: true;
-        hideIcon: false;
+        hideIcon: false,
         pageTitle: 'HMS Test Results';
-        logoImgPath: './public/logo.png';
+        logoImgPath: './public/logo.png',
         customInfos: [
           {
-            title: 'Test Environment';
-            value: process.env.NODE_ENV || 'test';
+            title: 'Test Environment',
+            value: process.env.NODE_ENV || 'test'
           },
           {
-            title: 'Test Timestamp';
-            value: new Date().toISOString();
+            title: 'Test Timestamp',
+            value: new Date().toISOString()
           },
           {
-            title: 'Healthcare Compliance';
-            value: 'HIPAA/GDPR Compatible';
+            title: 'Healthcare Compliance',
+            value: 'HIPAA/GDPR Compatible'
           },
         ],
       },
@@ -283,9 +283,9 @@ const config: Config = {
     [
       'jest-sonar-reporter',
       {
-        outputDirectory: 'reports/sonar';
+        outputDirectory: 'reports/sonar',
         outputName: 'test-report.xml';
-        reportedFilePath: 'relative';
+        reportedFilePath: 'relative'
       },
     ],
 
@@ -294,25 +294,25 @@ const config: Config = {
       [
         'jest-slack-reporter',
         {
-          channel: '#hms-testing';
+          channel: '#hms-testing',
           username: 'HMS Test Bot';
-          iconEmoji: ':hospital:';
-          onlyOnFailure: true;
+          iconEmoji: ':hospital:',
+          onlyOnFailure: true
         },
       ],
     ] : []),
   ],
 
   // Performance and execution configuration
-  maxWorkers: process.env.CI ? 2 : '50%';
+  maxWorkers: process.env.CI ? 2 : '50%',
   testTimeout: 30000, // Increased for integration tests
-  clearMocks: true;
+  clearMocks: true,
   resetMocks: true;
-  restoreMocks: true;
+  restoreMocks: true,
   verbose: true;
-  errorOnDeprecated: true;
+  errorOnDeprecated: true,
   detectOpenHandles: true;
-  detectLeaks: true;
+  detectLeaks: true,
   forceExit: true;
 
   // Test matching patterns
@@ -328,42 +328,42 @@ const config: Config = {
   projects: [
     // Unit tests
     {
-      displayName: 'Unit Tests';
+      displayName: 'Unit Tests',
       testMatch: ['**/*.test.(ts|tsx)', '**/*.spec.(ts|tsx)'],
-      testEnvironment: 'jsdom';
-      setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'];
+      testEnvironment: 'jsdom',
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
     },
 
     // Integration tests
     {
-      displayName: 'Integration Tests';
+      displayName: 'Integration Tests',
       testMatch: ['**/*.integration.(ts|tsx)'];
-      testEnvironment: 'node';
-      setupFilesAfterEnv: ['<rootDir>/tests/integration/setup.ts'];
+      testEnvironment: 'node',
+      setupFilesAfterEnv: ['<rootDir>/tests/integration/setup.ts']
     },
 
     // API tests
     {
-      displayName: 'API Tests';
+      displayName: 'API Tests',
       testMatch: ['**/api/**/*.test.(ts|tsx)', '**/tests/api/**/*.(ts|tsx)'],
-      testEnvironment: 'node';
-      setupFilesAfterEnv: ['<rootDir>/tests/api/setup.ts'];
+      testEnvironment: 'node',
+      setupFilesAfterEnv: ['<rootDir>/tests/api/setup.ts']
     },
 
     // Security tests
     {
-      displayName: 'Security Tests';
+      displayName: 'Security Tests',
       testMatch: ['**/*.security.(ts|tsx)', '**/tests/security/**/*.(ts|tsx)'],
-      testEnvironment: 'node';
-      setupFilesAfterEnv: ['<rootDir>/tests/security/setup.ts'];
+      testEnvironment: 'node',
+      setupFilesAfterEnv: ['<rootDir>/tests/security/setup.ts']
     },
 
     // HIPAA compliance tests
     {
-      displayName: 'HIPAA Compliance Tests';
+      displayName: 'HIPAA Compliance Tests',
       testMatch: ['**/*.hipaa.(ts|tsx)', '**/tests/compliance/**/*.(ts|tsx)'],
-      testEnvironment: 'node';
-      setupFilesAfterEnv: ['<rootDir>/tests/compliance/setup.ts'];
+      testEnvironment: 'node',
+      setupFilesAfterEnv: ['<rootDir>/tests/compliance/setup.ts']
     },
   ],
 
@@ -376,20 +376,20 @@ const config: Config = {
   ],
 
   // Global test setup
-  globalSetup: '<rootDir>/tests/global-setup.ts';
+  globalSetup: '<rootDir>/tests/global-setup.ts',
   globalTeardown: '<rootDir>/tests/global-teardown.ts';
 
   // Environment variables for testing
   setupFiles: ['<rootDir>/tests/env-setup.ts'];
 
   // Mock configuration
-  clearMocks: true;
+  clearMocks: true,
   resetMocks: true;
   restoreMocks: true;
 
   // Error handling
   bail: process.env.CI ? 1 : 0, // Fail fast in CI
-  verbose: true;
+  verbose: true,
   errorOnDeprecated: true;
 
   // Test result processing
@@ -417,14 +417,14 @@ const config: Config = {
   ],
 
   // Notify configuration for local development
-  notify: !process.env.CI;
+  notify: !process.env.CI,
   notifyMode: 'failure-change';
 
   // Test sequencing
   testSequencer: '<rootDir>/tests/custom-sequencer.js';
 
   // Cache configuration
-  cacheDirectory: '<rootDir>/.jest-cache';
+  cacheDirectory: '<rootDir>/.jest-cache',
   clearCache: false;
 
   // Snapshot configuration

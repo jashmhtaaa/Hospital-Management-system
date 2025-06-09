@@ -8,25 +8,25 @@ import { Prescription } from "@/types/opd";
 import { getSession } from "@/lib/session";
 // Zod schema for creating a prescription
 const prescriptionItemSchema = z.object({
-    inventory_item_id: z.number();
-    drug_name: z.string().min(1);
-    dosage: z.string().min(1);
-    frequency: z.string().min(1);
-    duration: z.string().min(1);
-    route: z.string().optional().nullable();
-    instructions: z.string().optional().nullable();
-    quantity_prescribed: z.number().positive().optional().nullable();
+    inventory_item_id: z.number(),
+    drug_name: z.string().min(1),
+    dosage: z.string().min(1),
+    frequency: z.string().min(1),
+    duration: z.string().min(1),
+    route: z.string().optional().nullable(),
+    instructions: z.string().optional().nullable(),
+    quantity_prescribed: z.number().positive().optional().nullable()
 });
 
 const prescriptionCreateSchema = z.object({
-    patient_id: z.number();
+    patient_id: z.number(),
     doctor_id: z.number(), // Or derive from session
-    consultation_id: z.number().optional().nullable();
+    consultation_id: z.number().optional().nullable(),
     prescription_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid prescription date format";
+        message: "Invalid prescription date format"
     }),
-    notes: z.string().optional().nullable();
-    items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required"),;
+    notes: z.string().optional().nullable(),
+    items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required"),
 });
 
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>
@@ -119,12 +119,12 @@ export const _GET = async (request: NextRequest) => {
         // This might be better done in the GET /api/prescriptions/[id] endpoint
 
         return NextResponse.json({
-            data: results;
+            data: results,
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit)
             },
         });
 

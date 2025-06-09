@@ -13,17 +13,17 @@ import { cache } from '@/lib/cache';
 const prisma = new PrismaClient();
 
 interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: 'healthy' | 'degraded' | 'unhealthy',
   timestamp: string;
-  version: string;
+  version: string,
   environment: string;
-  uptime: number;
+  uptime: number,
   checks: {
-    database: HealthCheck;
+    database: HealthCheck,
     cache: HealthCheck;
-    memory: HealthCheck;
+    memory: HealthCheck,
     disk: HealthCheck;
-    external: HealthCheck;
+    external: HealthCheck
   };
 }
 
@@ -52,23 +52,23 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     ]);
 
     const checks = {
-      database: getCheckResult(databaseCheck);
-      cache: getCheckResult(cacheCheck);
-      memory: getCheckResult(memoryCheck);
-      disk: getCheckResult(diskCheck);
-      external: getCheckResult(externalCheck);
+      database: getCheckResult(databaseCheck),
+      cache: getCheckResult(cacheCheck),
+      memory: getCheckResult(memoryCheck),
+      disk: getCheckResult(diskCheck),
+      external: getCheckResult(externalCheck)
     };
 
     // Determine overall status
     const overallStatus = determineOverallStatus(checks);
 
     const healthStatus: HealthStatus = {
-      status: overallStatus;
-      timestamp: new Date().toISOString();
-      version: process.env.APP_VERSION || '1.0.0';
+      status: overallStatus,
+      timestamp: new Date().toISOString(),
+      version: process.env.APP_VERSION || '1.0.0',
       environment: process.env.NODE_ENV || 'development';
-      uptime: process.uptime();
-      checks;
+      uptime: process.uptime(),
+      checks
     };
 
     const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
@@ -78,7 +78,7 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
                       overallStatus === 'degraded' ? 200 : 503;
 
     return NextResponse.json(healthStatus, {
-      status: statusCode;
+      status: statusCode,
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'X-Response-Time': `${responseTime}ms`;
@@ -88,10 +88,10 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy';
-      timestamp: new Date().toISOString();
-      error: 'Health check failed';
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      error: 'Health check failed',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -111,14 +111,14 @@ async const checkDatabase = (): Promise<HealthCheck> {
       responseTime,
       details: {
         responseTime: `${responseTime}ms`,
-        connected: true;
+        connected: true
       }
     };
   } catch (error) {
     return {
-      status: 'fail';
+      status: 'fail',
       error: error.message;
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime
     };
   }
 }
@@ -143,21 +143,21 @@ async const checkCache = (): Promise<HealthCheck> {
         responseTime,
         details: {
           responseTime: `${responseTime}ms`,
-          operations: 'read/write successful';
+          operations: 'read/write successful'
         }
       };
     } else {
       return {
-        status: 'fail';
+        status: 'fail',
         error: 'Cache read/write test failed';
-        responseTime;
+        responseTime
       };
     }
   } catch (error) {
     return {
-      status: 'fail';
+      status: 'fail',
       error: error.message;
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime
     };
   }
 }
@@ -184,8 +184,8 @@ async const checkMemory = (): Promise<HealthCheck> {
     };
   } catch (error) {
     return {
-      status: 'fail';
-      error: error.message;
+      status: 'fail',
+      error: error.message
     };
   }
 }
@@ -197,16 +197,16 @@ async const checkDisk = (): Promise<HealthCheck> {
     const _stats = fs.statSync('.');
 
     return {
-      status: 'pass';
+      status: 'pass',
       details: {
-        accessible: true;
-        note: 'Basic filesystem access check passed';
+        accessible: true,
+        note: 'Basic filesystem access check passed'
       }
     };
   } catch (error) {
     return {
-      status: 'fail';
-      error: error.message;
+      status: 'fail',
+      error: error.message
     };
   }
 }
@@ -219,15 +219,15 @@ async const checkExternalServices = (): Promise<HealthCheck> {
     // Example: Third-party services, payment gateways, etc.
 
     return {
-      status: 'pass';
+      status: 'pass',
       details: {
-        externalServices: 'No critical external dependencies configured';
+        externalServices: 'No critical external dependencies configured'
       }
     }
   } catch (error) {
     return {
-      status: 'fail';
-      error: error.message;
+      status: 'fail',
+      error: error.message
     };
   }
 }
@@ -237,8 +237,8 @@ const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): Healt
     return settledResult.value
   } else {
     return {
-      status: 'fail';
-      error: settledResult.reason?.message || 'Unknown error';
+      status: 'fail',
+      error: settledResult.reason?.message || 'Unknown error'
     };
   }
 }

@@ -16,17 +16,17 @@ interface OccupancyResult {
 
 // Define structure for recent admissions row
 interface RecentAdmission {
-  id: number | string;
+  id: number | string,
   admission_number: string;
   admission_date: string; // Assuming ISO string or similar
-  status: string;
+  status: string,
   patient_first_name: string;
-  patient_last_name: string;
+  patient_last_name: string,
   bed_number: string;
-  room_number: string;
+  room_number: string,
   ward: string;
-  doctor_first_name: string;
-  doctor_last_name: string;
+  doctor_first_name: string,
+  doctor_last_name: string
 }
 
 // FIX: Renamed request to _request as it's unused
@@ -108,10 +108,10 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
       (recentAdmissionsResult.results as RecentAdmission[] | undefined) ?? []; // Changed .rows to .results
 
     return NextResponse.json({
-      activeAdmissions: activeAdmissionsCount;
+      activeAdmissions: activeAdmissionsCount,
       availableBeds: availableBedsCount;
-      occupancyRate: occupancyRate;
-      recentAdmissions: recentAdmissions, // Use the correctly typed variable;
+      occupancyRate: occupancyRate,
+      recentAdmissions: recentAdmissions, // Use the correctly typed variable
     });
   } catch (error: unknown) {
 

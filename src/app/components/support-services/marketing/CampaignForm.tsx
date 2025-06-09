@@ -17,23 +17,23 @@ import { toast } from '@/components/ui/use-toast';
 // Form schema for campaign creation/editing
 const campaignFormSchema = z.object({
   name: z.string().min(3, {
-    message: "Campaign name must be at least 3 characters.";
+    message: "Campaign name must be at least 3 characters."
   }),
-  description: z.string().optional();
+  description: z.string().optional(),
   type: z.string({
-    required_error: "Please select a campaign type.";
+    required_error: "Please select a campaign type."
   }),
   status: z.string({
-    required_error: "Please select a campaign status.";
+    required_error: "Please select a campaign status."
   }),
   startDate: z.date({
-    required_error: "Start date is required.";
+    required_error: "Start date is required."
   }),
-  endDate: z.date().optional();
-  budget: z.number().optional();
-  targetAudience: z.record(z.any()).optional();
+  endDate: z.date().optional(),
+  budget: z.number().optional(),
+  targetAudience: z.record(z.any()).optional(),
   goals: z.array(z.string()).min(1, {
-    message: "At least one goal is required.";
+    message: "At least one goal is required."
   }),
 });
 
@@ -53,13 +53,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
   // Initialize form with default values or existing campaign data
   const form = useForm<CampaignFormValues>({
-    resolver: zodResolver(campaignFormSchema);
+    resolver: zodResolver(campaignFormSchema),
     defaultValues: {
-      name: "";
+      name: "",
       description: "";
-      type: "EMAIL";
+      type: "EMAIL",
       status: "DRAFT";
-      goals: [];
+      goals: [],
       targetAudience: {},
     },
   });
@@ -79,15 +79,15 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
         // Set form values from campaign data
         form.reset({
-          name: data.name;
+          name: data.name,
           description: data.description || "";
-          type: data.type;
+          type: data.type,
           status: data.status;
-          startDate: new Date(data.startDate);
+          startDate: new Date(data.startDate),
           endDate: data.endDate ? new Date(data.endDate) : undefined;
-          budget: data.budget || undefined;
+          budget: data.budget || undefined,
           targetAudience: data.targetAudience || {},
-          goals: data.goals || [];
+          goals: data.goals || []
         });
 
         // Fetch campaign segments
@@ -97,9 +97,9 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load campaign data. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -142,14 +142,14 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values);
+        body: JSON.stringify(values)
       });
 
       if (!response.ok) throw new Error('Failed to save campaign');
 
       const savedCampaign = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Campaign ${campaignId ? 'updated' : 'created'} successfully.`,
       });
 
@@ -161,9 +161,9 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to save campaign. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -176,13 +176,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
     const currentGoals = form.getValues("goals") || [];
     form.setValue("goals", [...currentGoals, goalInput.trim()]);
-    setGoalInput("");
+    setGoalInput("")
   };
 
   // Handle removing a goal
   const handleRemoveGoal = (index: number) => {
     const currentGoals = form.getValues("goals") || [];
-    form.setValue("goals", currentGoals.filter((_, i) => i !== index));
+    form.setValue("goals", currentGoals.filter((_, i) => i !== index))
   };
 
   // Handle adding a segment to the campaign
@@ -191,7 +191,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
     try {
       const response = await fetch(`/api/support-services/marketing/campaigns/${campaignId}/segments`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -207,15 +207,15 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       }
 
       toast({
-        title: "Success";
-        description: "Segment added to campaign.";
+        title: "Success",
+        description: "Segment added to campaign."
       });
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to add segment. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };

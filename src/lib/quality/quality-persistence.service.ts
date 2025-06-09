@@ -35,10 +35,10 @@ import {
 } from './quality-management.service'
 
 export interface QualityPersistenceConfig {
-  enableEncryption: boolean;
+  enableEncryption: boolean,
   auditAllAccess: boolean;
   retentionPeriod: number; // in years
-  automaticArchiving: boolean;
+  automaticArchiving: boolean,
   encryptSensitiveData: boolean
 export class QualityPersistenceService {
   private prisma: PrismaClient
@@ -52,9 +52,9 @@ export class QualityPersistenceService {
     this.encryptionService = getEncryptionService();
 
     this.config = {
-      enableEncryption: true;
+      enableEncryption: true,
       auditAllAccess: true;
-      retentionPeriod: 7;
+      retentionPeriod: 7,
       automaticArchiving: true;
       encryptSensitiveData: true;
       ...config
@@ -75,34 +75,34 @@ export class QualityPersistenceService {
         where: { id: indicator.id },
         update: {
           ...dataToStore,
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         },
         create: {
           ...dataToStore,
-          createdAt: new Date();
+          createdAt: new Date(),
           createdBy: userId;
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         }
       });
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'quality_indicator_saved';
+          action: 'quality_indicator_saved',
           resourceType: 'quality_indicator';
           resourceId: indicator.id;
           userId,
           details: {
-            type: indicator.type;
+            type: indicator.type,
             target: indicator.target;
-            currentValue: indicator.currentValue;
+            currentValue: indicator.currentValue
           }
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality indicator');
+      throw new Error('Failed to save quality indicator')
     }
   }
 
@@ -128,7 +128,7 @@ export class QualityPersistenceService {
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'quality_indicator_accessed';
+          action: 'quality_indicator_accessed',
           resourceType: 'quality_indicator';
           resourceId: id;
           userId,
@@ -139,7 +139,7 @@ export class QualityPersistenceService {
       return indicator;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve quality indicator');
+      throw new Error('Failed to retrieve quality indicator')
     }
   }
 
@@ -184,13 +184,13 @@ export class QualityPersistenceService {
 
       if (this.config?.auditAllAccess && userId) {
         await this.auditService.logAuditEvent({
-          action: 'quality_indicators_queried';
+          action: 'quality_indicators_queried',
           resourceType: 'quality_indicator';
           resourceId: 'list';
           userId,
           details: {
             filters,
-            resultCount: indicators.length;
+            resultCount: indicators.length
           }
         });
       }
@@ -198,7 +198,7 @@ export class QualityPersistenceService {
       return indicators;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve quality indicators');
+      throw new Error('Failed to retrieve quality indicators')
     }
   }
 
@@ -221,34 +221,34 @@ export class QualityPersistenceService {
         where: { id: event.id },
         update: {
           ...dataToStore,
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         },
         create: {
           ...dataToStore,
-          createdAt: new Date();
+          createdAt: new Date(),
           createdBy: userId;
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         }
       });
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'quality_event_saved';
+          action: 'quality_event_saved',
           resourceType: 'quality_event';
           resourceId: event.id;
           userId,
           details: {
-            type: event.type;
+            type: event.type,
             severity: event.severity;
-            status: event.status;
+            status: event.status
           }
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality event');
+      throw new Error('Failed to save quality event')
     }
   }
 
@@ -304,13 +304,13 @@ export class QualityPersistenceService {
 
       if (this.config?.auditAllAccess && userId) {
         await this.auditService.logAuditEvent({
-          action: 'quality_events_queried';
+          action: 'quality_events_queried',
           resourceType: 'quality_event';
           resourceId: 'list';
           userId,
           details: {
             filters,
-            resultCount: events.length;
+            resultCount: events.length
           }
         });
       }
@@ -318,7 +318,7 @@ export class QualityPersistenceService {
       return events;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve quality events');
+      throw new Error('Failed to retrieve quality events')
     }
   }
 
@@ -341,34 +341,34 @@ export class QualityPersistenceService {
         where: { id: assessment.id },
         update: {
           ...dataToStore,
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         },
         create: {
           ...dataToStore,
-          createdAt: new Date();
+          createdAt: new Date(),
           createdBy: userId;
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         }
       });
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'quality_assessment_saved';
+          action: 'quality_assessment_saved',
           resourceType: 'quality_assessment';
           resourceId: assessment.id;
           userId,
           details: {
-            type: assessment.type;
+            type: assessment.type,
             status: assessment.status;
-            scope: assessment.scope;
+            scope: assessment.scope
           }
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality assessment');
+      throw new Error('Failed to save quality assessment')
     }
   }
 
@@ -394,35 +394,35 @@ export class QualityPersistenceService {
         where: { id: report.id },
         update: {
           ...dataToStore,
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         },
         create: {
           ...dataToStore,
-          createdAt: new Date();
+          createdAt: new Date(),
           createdBy: userId;
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         }
       });
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'compliance_report_saved';
+          action: 'compliance_report_saved',
           resourceType: 'compliance_report';
           resourceId: report.id;
           userId,
           details: {
-            regulatoryBody: report.regulatoryBody;
+            regulatoryBody: report.regulatoryBody,
             standard: report.standard;
-            status: report.status;
-            overallCompliance: report.overallCompliance;
+            status: report.status,
+            overallCompliance: report.overallCompliance
           }
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save compliance report');
+      throw new Error('Failed to save compliance report')
     }
   }
 
@@ -483,13 +483,13 @@ export class QualityPersistenceService {
 
       if (this.config?.auditAllAccess && userId) {
         await this.auditService.logAuditEvent({
-          action: 'compliance_reports_queried';
+          action: 'compliance_reports_queried',
           resourceType: 'compliance_report';
           resourceId: 'list';
           userId,
           details: {
             filters,
-            resultCount: reports.length;
+            resultCount: reports.length
           }
         });
       }
@@ -497,7 +497,7 @@ export class QualityPersistenceService {
       return reports;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve compliance reports');
+      throw new Error('Failed to retrieve compliance reports')
     }
   }
 
@@ -508,34 +508,34 @@ export class QualityPersistenceService {
         where: { id: actionPlan.id },
         update: {
           ...actionPlan,
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         },
         create: {
           ...actionPlan,
-          createdAt: new Date();
+          createdAt: new Date(),
           createdBy: userId;
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         }
       })
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'action_plan_saved';
+          action: 'action_plan_saved',
           resourceType: 'action_plan';
           resourceId: actionPlan.id;
           userId,
           details: {
-            title: actionPlan.title;
+            title: actionPlan.title,
             status: actionPlan.status;
-            itemCount: actionPlan.items.length;
+            itemCount: actionPlan.items.length
           }
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save action plan');
+      throw new Error('Failed to save action plan')
     }
   }
 
@@ -546,34 +546,34 @@ export class QualityPersistenceService {
         where: { id: metric.id },
         update: {
           ...metric,
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         },
         create: {
           ...metric,
-          createdAt: new Date();
+          createdAt: new Date(),
           createdBy: userId;
-          updatedAt: new Date();
-          updatedBy: userId;
+          updatedAt: new Date(),
+          updatedBy: userId
         }
       })
 
       if (this.config.auditAllAccess) {
         await this.auditService.logAuditEvent({
-          action: 'quality_metric_saved';
+          action: 'quality_metric_saved',
           resourceType: 'quality_metric';
           resourceId: metric.id;
           userId,
           details: {
-            name: metric.name;
+            name: metric.name,
             value: metric.value;
-            trend: metric.trend;
+            trend: metric.trend
           }
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality metric');
+      throw new Error('Failed to save quality metric')
     }
   }
 
@@ -590,10 +590,10 @@ export class QualityPersistenceService {
 
   // Data Retention and Archiving
   async archiveOldRecords(): Promise<{
-    archivedIndicators: number;
+    archivedIndicators: number,
     archivedEvents: number
-    archivedAssessments: number;
-    archivedReports: number;
+    archivedAssessments: number,
+    archivedReports: number
   }> {
     if (!this.config.automaticArchiving) {
       return { archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
@@ -623,14 +623,14 @@ export class QualityPersistenceService {
       ]);
 
       return {
-        archivedIndicators: indicators.count;
+        archivedIndicators: indicators.count,
         archivedEvents: events.count;
-        archivedAssessments: assessments.count;
-        archivedReports: reports.count;
+        archivedAssessments: assessments.count,
+        archivedReports: reports.count
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to archive old records');
+      throw new Error('Failed to archive old records')
     }
   }
 
@@ -651,7 +651,7 @@ export const _getQualityPersistenceService = (
   if (!qualityPersistenceInstance) {
     qualityPersistenceInstance = new QualityPersistenceService(config);
   }
-  return qualityPersistenceInstance;
+  return qualityPersistenceInstance
 };
 
 export { QualityPersistenceService };

@@ -17,33 +17,33 @@ import { validateDispensingVerificationRequest } from '../../../../../lib/valida
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const dispensingRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByStatus: (status: string) => Promise.resolve([]);
-  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByStatus: (status: string) => Promise.resolve([]),
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -87,9 +87,9 @@ export const POST = async (req: NextRequest) => {
     if (data.medicationBarcode !== medication.barcode) {
       return NextResponse.json(
         {
-          error: 'Medication barcode does not match prescription';
+          error: 'Medication barcode does not match prescription',
           expected: medication.barcode;
-          received: data.medicationBarcode;
+          received: data.medicationBarcode
         },
         { status: 400 }
       );
@@ -99,9 +99,9 @@ export const POST = async (req: NextRequest) => {
     if (data?.patientBarcode && data.patientBarcode !== prescription.patientId) {
       return NextResponse.json(
         {
-          error: 'Patient barcode does not match prescription';
+          error: 'Patient barcode does not match prescription',
           expected: prescription.patientId;
-          received: data.patientBarcode;
+          received: data.patientBarcode
         },
         { status: 400 }
       );
@@ -109,14 +109,14 @@ export const POST = async (req: NextRequest) => {
 
     // Create verification record
     const verification = {
-      id: crypto.randomUUID();
+      id: crypto.randomUUID(),
       prescriptionId: data.prescriptionId;
-      medicationBarcode: data.medicationBarcode;
+      medicationBarcode: data.medicationBarcode,
       patientBarcode: data.patientBarcode;
-      verifiedBy: userId;
-      verifiedAt: new Date();
-      status: 'verified';
-      notes: data.notes || '';
+      verifiedBy: userId,
+      verifiedAt: new Date(),
+      status: 'verified',
+      notes: data.notes || ''
     };
 
     // In a real implementation, save verification record
@@ -135,25 +135,25 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DISPENSING', {
-      action: 'VERIFY';
+      action: 'VERIFY',
       resourceType: 'MedicationDispense';
-      userId: userId;
+      userId: userId,
       patientId: prescription.patientId;
       details: {
-        medicationId: prescription.medicationId;
+        medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId;
-        dispensingId: data.dispensingId;
+        dispensingId: data.dispensingId
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        success: true;
+        success: true,
         message: 'Dispensing verification successful';
         verification: {
-          id: verification.id;
-          verifiedAt: verification.verifiedAt;
+          id: verification.id,
+          verifiedAt: verification.verifiedAt
         }
       },
       { status: 200 }

@@ -20,145 +20,145 @@ import { rbacService } from '../security/rbac.service';
  */
 
 export interface EnterpriseServiceStatus {
-  serviceName: string;
+  serviceName: string,
   status: 'running' | 'stopped' | 'error' | 'initializing';
-  uptime: number;
+  uptime: number,
   lastHealthCheck: Date;
-  healthStatus: 'healthy' | 'degraded' | 'unhealthy';
+  healthStatus: 'healthy' | 'degraded' | 'unhealthy',
   errorCount: number;
   performance: {
-    responseTime: number;
+    responseTime: number,
     throughput: number;
-    errorRate: number;
+    errorRate: number
   };
   dependencies: ServiceDependency[]
 export interface ServiceDependency {
-  name: string;
+  name: string,
   status: 'available' | 'unavailable' | 'degraded';
   critical: boolean
 export interface EnterpriseConfiguration {
-  environment: 'development' | 'staging' | 'production';
+  environment: 'development' | 'staging' | 'production',
   features: FeatureFlags;
-  security: SecurityConfiguration;
+  security: SecurityConfiguration,
   performance: PerformanceConfiguration;
-  monitoring: MonitoringConfiguration;
+  monitoring: MonitoringConfiguration,
   compliance: ComplianceConfiguration
 export interface FeatureFlags {
-  rbacEnabled: boolean;
+  rbacEnabled: boolean,
   auditLoggingEnabled: boolean;
-  cachingEnabled: boolean;
+  cachingEnabled: boolean,
   healthMonitoringEnabled: boolean;
-  rateLimitingEnabled: boolean;
+  rateLimitingEnabled: boolean,
   notificationsEnabled: boolean;
-  clinicalDecisionSupportEnabled: boolean;
+  clinicalDecisionSupportEnabled: boolean,
   integrationHubEnabled: boolean;
-  businessIntelligenceEnabled: boolean;
+  businessIntelligenceEnabled: boolean,
   qualityManagementEnabled: boolean;
-  advancedAnalyticsEnabled: boolean;
+  advancedAnalyticsEnabled: boolean,
   predictiveAnalyticsEnabled: boolean
 export interface SecurityConfiguration {
-  jwtSecret: string;
+  jwtSecret: string,
   jwtExpiration: number;
   passwordPolicy: {
-    minLength: number;
+    minLength: number,
     requireSpecialChars: boolean;
-    requireNumbers: boolean;
+    requireNumbers: boolean,
     requireUppercase: boolean;
-    maxAge: number;
+    maxAge: number
   };
-  sessionTimeout: number;
+  sessionTimeout: number,
   mfaRequired: boolean;
   auditRetention: number; // days
 export interface PerformanceConfiguration {
-  cacheSize: number;
+  cacheSize: number,
   cacheTtl: number;
   rateLimits: {
-    api: { requests: number; window: number };
-    user: { requests: number; window: number };
+    api: { requests: number, window: number };
+    user: { requests: number, window: number }
   };
   databaseConnections: {
-    min: number;
+    min: number,
     max: number;
-    timeout: number;
+    timeout: number
   };
 export interface MonitoringConfiguration {
-  healthCheckInterval: number;
+  healthCheckInterval: number,
   metricsCollection: boolean;
-  alertingEnabled: boolean;
+  alertingEnabled: boolean,
   logLevel: 'debug' | 'info' | 'warn' | 'error';
   retentionPeriod: number; // days
 export interface ComplianceConfiguration {
-  hipaaEnabled: boolean;
+  hipaaEnabled: boolean,
   hiTechEnabled: boolean;
-  gdprEnabled: boolean;
+  gdprEnabled: boolean,
   soxEnabled: boolean;
-  encryptionRequired: boolean;
+  encryptionRequired: boolean,
   dataRetention: number; // years
   auditTrailRequired: boolean
 export interface EnterpriseMetrics {
   system: {
-    totalRequests: number;
+    totalRequests: number,
     successRate: number;
-    averageResponseTime: number;
+    averageResponseTime: number,
     activeUsers: number;
-    systemLoad: number;
+    systemLoad: number
   };
   security: {
-    activeLogins: number;
+    activeLogins: number,
     failedLogins: number;
-    securityEvents: number;
-    complianceScore: number;
+    securityEvents: number,
+    complianceScore: number
   };
   quality: {
-    qualityScore: number;
+    qualityScore: number,
     patientSafetyEvents: number;
-    complianceGaps: number;
-    activeAssessments: number;
+    complianceGaps: number,
+    activeAssessments: number
   };
   integration: {
-    activeEndpoints: number;
+    activeEndpoints: number,
     messageVolume: number;
-    integrationHealth: number;
-    dataQuality: number;
+    integrationHealth: number,
+    dataQuality: number
   };
   analytics: {
-    activeReports: number;
+    activeReports: number,
     kpiCount: number;
-    insightCount: number;
-    userEngagement: number;
+    insightCount: number,
+    userEngagement: number
   };
 export interface SystemAlert {
-  id: string;
+  id: string,
   type: 'security' | 'performance' | 'quality' | 'compliance' | 'integration';
-  severity: 'info' | 'warning' | 'error' | 'critical';
+  severity: 'info' | 'warning' | 'error' | 'critical',
   title: string;
-  description: string;
+  description: string,
   service: string;
-  timestamp: Date;
+  timestamp: Date,
   resolved: boolean;
   resolvedAt?: Date;
   acknowledgments: AlertAcknowledgment[]
 export interface AlertAcknowledgment {
-  userId: string;
+  userId: string,
   timestamp: Date;
   action: 'acknowledged' | 'investigating' | 'resolved';
   notes?: string;
 export interface EnterpriseReport {
-  id: string;
+  id: string,
   type: 'security' | 'compliance' | 'performance' | 'quality' | 'integration';
-  period: { start: Date; end: Date };
-  status: 'generating' | 'ready' | 'error';
+  period: { start: Date, end: Date };
+  status: 'generating' | 'ready' | 'error',
   format: 'json' | 'pdf' | 'xlsx' | 'csv';
   url?: string;
   generatedAt?: Date;
-  requestedBy: string;
+  requestedBy: string
 }
 
 class EnterpriseAPIService extends EventEmitter {
   private configuration: EnterpriseConfiguration;
-  private serviceStatuses: Map<string, EnterpriseServiceStatus> = new Map();
-  private alerts: Map<string, SystemAlert> = new Map();
-  private reports: Map<string, EnterpriseReport> = new Map();
+  private serviceStatuses: Map<string, EnterpriseServiceStatus> = new Map(),
+  private alerts: Map<string, SystemAlert> = new Map(),
+  private reports: Map<string, EnterpriseReport> = new Map(),
   private isInitialized = false;
   private startTime = new Date();
   private monitoringInterval: NodeJS.Timeout;
@@ -196,9 +196,9 @@ class EnterpriseAPIService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       this.emit('enterprise_initialized', {
-        timestamp: new Date();
+        timestamp: new Date(),
         services: Array.from(this.serviceStatuses.keys());
-        configuration: this.configuration;
+        configuration: this.configuration
       })
 
     } catch (error) {
@@ -237,8 +237,8 @@ class EnterpriseAPIService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       this.emit('enterprise_shutdown', {
-        timestamp: new Date();
-        uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime();
+        timestamp: new Date(),
+        uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime()
       })
 
     } catch (error) {
@@ -251,11 +251,11 @@ class EnterpriseAPIService extends EventEmitter {
    * Get overall system health;
    */
   async getSystemHealth(): Promise<{
-    overall: 'healthy' | 'degraded' | 'unhealthy';
+    overall: 'healthy' | 'degraded' | 'unhealthy',
     services: EnterpriseServiceStatus[];
-    metrics: EnterpriseMetrics;
+    metrics: EnterpriseMetrics,
     alerts: SystemAlert[];
-    uptime: number;
+    uptime: number
   }> {
     const services = Array.from(this.serviceStatuses.values());
     const alerts = Array.from(this.alerts.values()).filter(a => !a.resolved);
@@ -281,7 +281,7 @@ class EnterpriseAPIService extends EventEmitter {
       services,
       metrics,
       alerts,
-      uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime();
+      uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime()
     };
   }
 
@@ -302,7 +302,7 @@ class EnterpriseAPIService extends EventEmitter {
     await this.applyConfigurationChanges(updates);
 
     this.emit('configuration_updated', {
-      timestamp: new Date();
+      timestamp: new Date(),
       updates;
     });
   }
@@ -327,8 +327,8 @@ class EnterpriseAPIService extends EventEmitter {
   async triggerHealthCheck(): Promise<void> {
     await this.performHealthChecks();
     this.emit('health_check_completed', {
-      timestamp: new Date();
-      services: Array.from(this.serviceStatuses.keys());
+      timestamp: new Date(),
+      services: Array.from(this.serviceStatuses.keys())
     });
   }
 
@@ -336,9 +336,9 @@ class EnterpriseAPIService extends EventEmitter {
    * Generate enterprise report;
    */
   async generateReport(
-    type: EnterpriseReport['type'];
-    period: { start: Date; end: Date },
-    format: EnterpriseReport['format'] = 'json';
+    type: EnterpriseReport['type'],
+    period: { start: Date, end: Date },
+    format: EnterpriseReport['format'] = 'json',
     requestedBy: string;
   ): Promise<string> {
     const reportId = this.generateReportId();
@@ -349,7 +349,7 @@ class EnterpriseAPIService extends EventEmitter {
       period,
       status: 'generating';
       format,
-      requestedBy;
+      requestedBy
     };
 
     this.reports.set(reportId, report);
@@ -393,9 +393,9 @@ class EnterpriseAPIService extends EventEmitter {
 
     const acknowledgment: AlertAcknowledgment = {
       userId,
-      timestamp: new Date();
+      timestamp: new Date(),
       action,
-      notes;
+      notes
     };
 
     alert.acknowledgments.push(acknowledgment);
@@ -415,15 +415,15 @@ class EnterpriseAPIService extends EventEmitter {
    * Get enterprise statistics;
    */
   getEnterpriseStatistics(): {
-    totalUsers: number;
+    totalUsers: number,
     activeServices: number;
-    systemUptime: number;
+    systemUptime: number,
     totalRequests: number;
-    averageResponseTime: number;
+    averageResponseTime: number,
     securityEvents: number;
-    qualityEvents: number;
+    qualityEvents: number,
     integrationMessages: number;
-    analyticsReports: number;
+    analyticsReports: number
   } {
     const rbacStats = rbacService.getStatistics();
     const rateLimiterStats = rateLimiterService.getPerformanceSummary();
@@ -433,15 +433,15 @@ class EnterpriseAPIService extends EventEmitter {
     const integrationStats = integrationHub.getStatistics();
 
     return {
-      totalUsers: rbacStats.totalUsers;
+      totalUsers: rbacStats.totalUsers,
       activeServices: this.serviceStatuses.size;
-      systemUptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime();
+      systemUptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime(),
       totalRequests: rateLimiterStats.totalRequests;
-      averageResponseTime: rateLimiterStats.averageResponseTime;
+      averageResponseTime: rateLimiterStats.averageResponseTime,
       securityEvents: rbacStats.securityEvents;
-      qualityEvents: qualityStats.events.total;
+      qualityEvents: qualityStats.events.total,
       integrationMessages: integrationStats.totalMessages;
-      analyticsReports: biStats.reports.total;
+      analyticsReports: biStats.reports.total
     };
   }
 
@@ -449,63 +449,63 @@ class EnterpriseAPIService extends EventEmitter {
 
   private mergeConfiguration(config?: Partial<EnterpriseConfiguration>): EnterpriseConfiguration {
     const defaultConfig: EnterpriseConfiguration = {
-      environment: 'development';
+      environment: 'development',
       features: {
-        rbacEnabled: true;
+        rbacEnabled: true,
         auditLoggingEnabled: true;
-        cachingEnabled: true;
+        cachingEnabled: true,
         healthMonitoringEnabled: true;
-        rateLimitingEnabled: true;
+        rateLimitingEnabled: true,
         notificationsEnabled: true;
-        clinicalDecisionSupportEnabled: true;
+        clinicalDecisionSupportEnabled: true,
         integrationHubEnabled: true;
-        businessIntelligenceEnabled: true;
+        businessIntelligenceEnabled: true,
         qualityManagementEnabled: true;
-        advancedAnalyticsEnabled: true;
-        predictiveAnalyticsEnabled: false;
+        advancedAnalyticsEnabled: true,
+        predictiveAnalyticsEnabled: false
       },
       security: {
-        jwtSecret: process.env.JWT_SECRET || 'default-secret';
+        jwtSecret: process.env.JWT_SECRET || 'default-secret',
         jwtExpiration: 3600, // 1 hour
         passwordPolicy: {
-          minLength: 8;
+          minLength: 8,
           requireSpecialChars: true;
-          requireNumbers: true;
+          requireNumbers: true,
           requireUppercase: true;
-          maxAge: 90 // days;
+          maxAge: 90 // days
         },
         sessionTimeout: 1800, // 30 minutes
-        mfaRequired: false;
-        auditRetention: 2555 // 7 years in days;
+        mfaRequired: false,
+        auditRetention: 2555 // 7 years in days
       },
       performance: {
-        cacheSize: 1000;
+        cacheSize: 1000,
         cacheTtl: 3600;
         rateLimits: {
           api: { requests: 1000, window: 3600 },
           user: { requests: 100, window: 60 }
         },
         databaseConnections: {
-          min: 5;
+          min: 5,
           max: 20;
-          timeout: 30000;
+          timeout: 30000
         }
       },
       monitoring: {
-        healthCheckInterval: 30;
+        healthCheckInterval: 30,
         metricsCollection: true;
-        alertingEnabled: true;
+        alertingEnabled: true,
         logLevel: 'info';
-        retentionPeriod: 90;
+        retentionPeriod: 90
       },
       compliance: {
-        hipaaEnabled: true;
+        hipaaEnabled: true,
         hiTechEnabled: true;
-        gdprEnabled: false;
+        gdprEnabled: false,
         soxEnabled: false;
-        encryptionRequired: true;
+        encryptionRequired: true,
         dataRetention: 7;
-        auditTrailRequired: true;
+        auditTrailRequired: true
       }
     }
 
@@ -517,41 +517,41 @@ class EnterpriseAPIService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
-      await initFunction();
+      await initFunction(),
       const initTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       this.serviceStatuses.set(name, {
-        serviceName: name;
+        serviceName: name,
         status: 'running';
-        uptime: 0;
-        lastHealthCheck: new Date();
-        healthStatus: 'healthy';
+        uptime: 0,
+        lastHealthCheck: new Date(),
+        healthStatus: 'healthy',
         errorCount: 0;
         performance: {
-          responseTime: initTime;
+          responseTime: initTime,
           throughput: 0;
-          errorRate: 0;
+          errorRate: 0
         },
-        dependencies: [];
+        dependencies: []
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     } catch (error) {
 
       this.serviceStatuses.set(name, {
-        serviceName: name;
+        serviceName: name,
         status: 'error';
-        uptime: 0;
-        lastHealthCheck: new Date();
-        healthStatus: 'unhealthy';
+        uptime: 0,
+        lastHealthCheck: new Date(),
+        healthStatus: 'unhealthy',
         errorCount: 1;
         performance: {
-          responseTime: 0;
+          responseTime: 0,
           throughput: 0;
-          errorRate: 100;
+          errorRate: 100
         },
-        dependencies: [];
+        dependencies: []
       })
 
       throw error;
@@ -563,7 +563,7 @@ class EnterpriseAPIService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       await shutdownFunction()
       this.serviceStatuses.delete(name);
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
     }
@@ -585,14 +585,14 @@ class EnterpriseAPIService extends EventEmitter {
         status.uptime = crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime();
 
         if (!healthCheck?.healthy && status.healthStatus !== 'unhealthy') {
-          this.create/* SECURITY: Alert removed */;
+          this.create/* SECURITY: Alert removed */
         }
 
       } catch (error) {
         status.healthStatus = 'unhealthy';
         status.errorCount++;
 
-        this.create/* SECURITY: Alert removed */;
+        this.create/* SECURITY: Alert removed */
       }
 
       this.serviceStatuses.set(name, status);
@@ -637,35 +637,35 @@ class EnterpriseAPIService extends EventEmitter {
 
     return {
       system: {
-        totalRequests: rateLimiterStats.totalRequests;
+        totalRequests: rateLimiterStats.totalRequests,
         successRate: 100 - rateLimiterStats.errorRate;
-        averageResponseTime: rateLimiterStats.averageResponseTime;
+        averageResponseTime: rateLimiterStats.averageResponseTime,
         activeUsers: rbacStats.activeSessions;
-        systemLoad: 50 // Mock value;
+        systemLoad: 50 // Mock value
       },
       security: {
-        activeLogins: rbacStats.activeSessions;
+        activeLogins: rbacStats.activeSessions,
         failedLogins: rbacStats.failedLogins;
-        securityEvents: rbacStats.securityEvents;
-        complianceScore: 95 // Mock value;
+        securityEvents: rbacStats.securityEvents,
+        complianceScore: 95 // Mock value
       },
       quality: {
         qualityScore: 92, // Mock value
-        patientSafetyEvents: qualityStats.events.critical;
+        patientSafetyEvents: qualityStats.events.critical,
         complianceGaps: qualityStats.compliance.gaps;
-        activeAssessments: qualityStats.assessments.active;
+        activeAssessments: qualityStats.assessments.active
       },
       integration: {
-        activeEndpoints: integrationStats.activeEndpoints;
+        activeEndpoints: integrationStats.activeEndpoints,
         messageVolume: integrationStats.totalMessages;
         integrationHealth: 95, // Mock value
-        dataQuality: 98 // Mock value;
+        dataQuality: 98 // Mock value
       },
       analytics: {
-        activeReports: biStats.reports.active;
+        activeReports: biStats.reports.active,
         kpiCount: biStats.kpis.total;
-        insightCount: biStats.insights.total;
-        userEngagement: 85 // Mock value;
+        insightCount: biStats.insights.total,
+        userEngagement: 85 // Mock value
       }
     }
   }
@@ -680,9 +680,9 @@ class EnterpriseAPIService extends EventEmitter {
       title,
       description,
       service,
-      timestamp: new Date();
+      timestamp: new Date(),
       resolved: false;
-      acknowledgments: [];
+      acknowledgments: []
     };
 
     this.alerts.set(alertId, alert);
@@ -704,21 +704,21 @@ class EnterpriseAPIService extends EventEmitter {
     }
   }
 
-  private async generateReportData(type: EnterpriseReport['type'], period: { start: Date; end: Date }): Promise<unknown> {
+  private async generateReportData(type: EnterpriseReport['type'], period: { start: Date, end: Date }): Promise<unknown> {
     // Generate report data based on type
     switch (type) {
       case 'security':
-        return this.generateSecurityReport(period);
+        return this.generateSecurityReport(period),
       case 'compliance':
-        return this.generateComplianceReport(period);
+        return this.generateComplianceReport(period),
       case 'performance':
-        return this.generatePerformanceReport(period);
+        return this.generatePerformanceReport(period),
       case 'quality':
-        return this.generateQualityReport(period);
+        return this.generateQualityReport(period),
       case 'integration':
-        return this.generateIntegrationReport(period);
+        return this.generateIntegrationReport(period),
       default:
-        throw new Error(`Unknown report type: ${type}`);
+        throw new Error(`Unknown report type: ${type}`),
     }
   }
 
@@ -742,23 +742,23 @@ class EnterpriseAPIService extends EventEmitter {
   }
 
   // Report generation methods (simplified)
-  private async generateSecurityReport(period: { start: Date; end: Date }): Promise<unknown> {
+  private async generateSecurityReport(period: { start: Date, end: Date }): Promise<unknown> {
     return { type: 'security', period, data: 'Security report data' };
   }
 
-  private async generateComplianceReport(period: { start: Date; end: Date }): Promise<unknown> {
+  private async generateComplianceReport(period: { start: Date, end: Date }): Promise<unknown> {
     return { type: 'compliance', period, data: 'Compliance report data' };
   }
 
-  private async generatePerformanceReport(period: { start: Date; end: Date }): Promise<unknown> {
+  private async generatePerformanceReport(period: { start: Date, end: Date }): Promise<unknown> {
     return { type: 'performance', period, data: 'Performance report data' };
   }
 
-  private async generateQualityReport(period: { start: Date; end: Date }): Promise<unknown> {
+  private async generateQualityReport(period: { start: Date, end: Date }): Promise<unknown> {
     return { type: 'quality', period, data: 'Quality report data' };
   }
 
-  private async generateIntegrationReport(period: { start: Date; end: Date }): Promise<unknown> {
+  private async generateIntegrationReport(period: { start: Date, end: Date }): Promise<unknown> {
     return { type: 'integration', period, data: 'Integration report data' };
   }
 }
@@ -768,62 +768,62 @@ export const _enterpriseAPI = new EnterpriseAPIService();
 
 // Export default configuration
 export const _DEFAULT_ENTERPRISE_CONFIG: EnterpriseConfiguration = {
-  environment: 'production';
+  environment: 'production',
   features: {
-    rbacEnabled: true;
+    rbacEnabled: true,
     auditLoggingEnabled: true;
-    cachingEnabled: true;
+    cachingEnabled: true,
     healthMonitoringEnabled: true;
-    rateLimitingEnabled: true;
+    rateLimitingEnabled: true,
     notificationsEnabled: true;
-    clinicalDecisionSupportEnabled: true;
+    clinicalDecisionSupportEnabled: true,
     integrationHubEnabled: true;
-    businessIntelligenceEnabled: true;
+    businessIntelligenceEnabled: true,
     qualityManagementEnabled: true;
-    advancedAnalyticsEnabled: true;
-    predictiveAnalyticsEnabled: true;
+    advancedAnalyticsEnabled: true,
+    predictiveAnalyticsEnabled: true
   },
   security: {
-    jwtSecret: process.env.JWT_SECRET || 'CHANGE_THIS_IN_PRODUCTION';
+    jwtSecret: process.env.JWT_SECRET || 'CHANGE_THIS_IN_PRODUCTION',
     jwtExpiration: 3600;
     passwordPolicy: {
-      minLength: 12;
+      minLength: 12,
       requireSpecialChars: true;
-      requireNumbers: true;
+      requireNumbers: true,
       requireUppercase: true;
-      maxAge: 90;
+      maxAge: 90
     },
-    sessionTimeout: 1800;
+    sessionTimeout: 1800,
     mfaRequired: true;
-    auditRetention: 2555;
+    auditRetention: 2555
   },
   performance: {
-    cacheSize: 10000;
+    cacheSize: 10000,
     cacheTtl: 3600;
     rateLimits: {
       api: { requests: 10000, window: 3600 },
       user: { requests: 1000, window: 60 }
     },
     databaseConnections: {
-      min: 10;
+      min: 10,
       max: 100;
-      timeout: 30000;
+      timeout: 30000
     }
   },
   monitoring: {
-    healthCheckInterval: 30;
+    healthCheckInterval: 30,
     metricsCollection: true;
-    alertingEnabled: true;
+    alertingEnabled: true,
     logLevel: 'info';
-    retentionPeriod: 365;
+    retentionPeriod: 365
   },
   compliance: {
-    hipaaEnabled: true;
+    hipaaEnabled: true,
     hiTechEnabled: true;
-    gdprEnabled: true;
+    gdprEnabled: true,
     soxEnabled: true;
-    encryptionRequired: true;
+    encryptionRequired: true,
     dataRetention: 7;
-    auditTrailRequired: true;
+    auditTrailRequired: true
   }
 };

@@ -28,8 +28,8 @@ export const GET = async (
       return NextResponse.json(contact);
     },
     {
-      requiredPermission: 'marketing.contacts.read';
-      auditAction: 'CONTACT_VIEW';
+      requiredPermission: 'marketing.contacts.read',
+      auditAction: 'CONTACT_VIEW'
     }
   );
 }
@@ -57,8 +57,8 @@ export const PUT = async (
       return NextResponse.json(contact);
     },
     {
-      requiredPermission: 'marketing.contacts.update';
-      auditAction: 'CONTACT_UPDATE';
+      requiredPermission: 'marketing.contacts.update',
+      auditAction: 'CONTACT_UPDATE'
     }
   );
 }
@@ -93,7 +93,7 @@ export const POST = async (
       return NextResponse.json(note, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.contacts.update';
-      auditAction: 'CONTACT_NOTE_ADD';
+      requiredPermission: 'marketing.contacts.update',
+      auditAction: 'CONTACT_NOTE_ADD'
     }
   );

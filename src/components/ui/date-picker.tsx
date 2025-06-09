@@ -22,7 +22,7 @@ export const DatePicker = ({
   const handleSelect = (selectedDate: unknown) => {
     setDate(selectedDate);
     onChange?.(selectedDate);
-    setIsOpen(false);
+    setIsOpen(false)
   };
 
   return (

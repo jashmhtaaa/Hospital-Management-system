@@ -20,11 +20,11 @@ export const GET = async (request: NextRequest) => {
 
       // Parse query parameters
       const filters = {
-        type: searchParams.get('type') || undefined;
+        type: searchParams.get('type') || undefined,
         isActive: searchParams.has('isActive');
           ? searchParams.get('isActive') === 'true';
           : undefined,
-        search: searchParams.get('search') || undefined;
+        search: searchParams.get('search') || undefined,
         page: searchParams.has('page');
           ? parseInt(searchParams.get('page') || '1', 10);
           : 1,
@@ -38,8 +38,8 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.templates.read';
-      auditAction: 'TEMPLATES_LIST';
+      requiredPermission: 'marketing.templates.read',
+      auditAction: 'TEMPLATES_LIST'
     }
   );
 }
@@ -63,7 +63,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(template, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.templates.create';
-      auditAction: 'TEMPLATE_CREATE';
+      requiredPermission: 'marketing.templates.create',
+      auditAction: 'TEMPLATE_CREATE'
     }
   );

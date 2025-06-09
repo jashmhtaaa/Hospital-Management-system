@@ -28,12 +28,12 @@ if (!sessionPassword || sessionPassword.length < 32) {
   // Debug logging removed. Using a default insecure password for development."
   );
 export const sessionOptions: SessionOptions = {
-  password: sessionPassword;
+  password: sessionPassword,
   cookieName: "hms-session";
-  // secure: true should be used in production (HTTPS) but can be false for localhost;
+  // secure: true should be used in production (HTTPS) but can be false for localhost,
   cookieOptions: {
-    secure: process.env.NODE_ENV === "production";
-    maxAge: 60 * 60 * 24 * 7, // 1 week;
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 7, // 1 week
   },
 };
 

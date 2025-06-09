@@ -26,7 +26,7 @@ export interface ProcedureTypeFormData {
 
 // Define the type for the component props
 interface CreateProcedureTypeModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   onSubmit: (data: ProcedureTypeFormData) => Promise<void>
 export default const _CreateProcedureTypeModal = ({
@@ -43,14 +43,14 @@ export default const _CreateProcedureTypeModal = ({
     e.preventDefault();
     if (!name) {
       /* SECURITY: Console statement removed */
-      return;
+      return
     }
     setIsSubmitting(true);
     try {
       await onSubmit({
         name,
         description,
-        modality_type: modalityType || undefined, // Ensure null if empty;
+        modality_type: modalityType || undefined, // Ensure null if empty
       });
       // Reset form on successful submission
       setName(""),
@@ -60,7 +60,7 @@ export default const _CreateProcedureTypeModal = ({
     } catch (error) { // FIX: Added error parameter
 
       // Optionally show an error message to the user
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setIsSubmitting(false);
     }

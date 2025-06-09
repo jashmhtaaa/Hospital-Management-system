@@ -2,10 +2,10 @@
 spring:
   application:
     name: hms-graphql-federation-gateway
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  
+
   # GraphQL Configuration
   graphql:
     websocket:
@@ -13,16 +13,16 @@ spring:
     web:
       path: /graphql
     cors:
-      allowed-origins: "*"
+      allowed-origins: '*'
       allowed-methods: GET, POST
-      allowed-headers: "*"
-    
+      allowed-headers: '*'
+
   # Cache Configuration
   cache:
     type: redis
     redis:
       time-to-live: 300000 # 5 minutes
-  
+
   # Redis Configuration
   data:
     redis:
@@ -30,7 +30,7 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:}
       database: ${REDIS_DATABASE:3}
-  
+
   # Security Configuration
   security:
     oauth2:
@@ -72,7 +72,7 @@ dgs:
     graphiql:
       enabled: ${GRAPHIQL_ENABLED:true}
       path: /graphiql
-    
+
 # GraphQL Federation Gateway Specific Configuration
 graphql:
   federation:
@@ -95,26 +95,26 @@ graphql:
       clinical-decision-support:
         url: http://clinical-decision-support-service/graphql
         health-check: /actuator/health
-    
+
     # Query Optimization
     query:
       max-depth: 15
       max-complexity: 1000
       timeout-seconds: 30
       enable-tracing: true
-    
+
     # Caching
     cache:
       enabled: true
       default-ttl-seconds: 300
       max-entries: 10000
-    
+
     # Security
     security:
       enable-introspection: ${GRAPHQL_INTROSPECTION_ENABLED:true}
       enable-playground: ${GRAPHIQL_ENABLED:true}
       cors-enabled: true
-    
+
     # Performance
     performance:
       enable-data-loader: true
@@ -131,7 +131,7 @@ resilience4j:
         minimum-number-of-calls: 10
         failure-rate-threshold: 50
         wait-duration-in-open-state: 30s
-  
+
   retry:
     instances:
       graphql-federation:
@@ -203,18 +203,18 @@ hms:
       enabled: true
       schema:
         auto-reload: true
-        reload-interval: 300000  # 5 minutes
+        reload-interval: 300000 # 5 minutes
       security:
         hipaa-filtering: true
         audit-logging: true
         authentication-required: true
         role-based-access: true
       performance:
-        query-timeout: 30000  # 30 seconds
+        query-timeout: 30000 # 30 seconds
         max-query-depth: 15
         max-query-complexity: 1000
         caching-enabled: true
-        cache-ttl: 300000  # 5 minutes
+        cache-ttl: 300000 # 5 minutes
       healthcare:
         critical-services:
           - patient-management

@@ -18,11 +18,11 @@ export class BiomedicalService {
    * Create a new biomedical equipment record;
    */
   async createBiomedicalEquipment(data: {
-    serialNumber: string;
+    serialNumber: string,
     modelNumber: string;
     manufacturer: string;
     manufactureDate?: Date;
-    type: string;
+    type: string,
     category: string;
     status: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'RETIRED';
     location?: string;
@@ -37,22 +37,22 @@ export class BiomedicalService {
   }) {
     const result = await prisma.biomedicalEquipment.create({
       data: {
-        serialNumber: data.serialNumber;
+        serialNumber: data.serialNumber,
         modelNumber: data.modelNumber;
-        manufacturer: data.manufacturer;
+        manufacturer: data.manufacturer,
         manufactureDate: data.manufactureDate;
-        type: data.type;
+        type: data.type,
         category: data.category;
-        status: data.status;
+        status: data.status,
         location: data.location;
-        department: data.department;
+        department: data.department,
         purchaseDate: data.purchaseDate;
-        warrantyExpiry: data.warrantyExpiry;
+        warrantyExpiry: data.warrantyExpiry,
         lastCalibrationDate: data.lastCalibrationDate;
-        nextCalibrationDate: data.nextCalibrationDate;
+        nextCalibrationDate: data.nextCalibrationDate,
         calibrationFrequency: data.calibrationFrequency;
-        properties: data.properties;
-        notes: data.notes;
+        properties: data.properties,
+        notes: data.notes
       },
     });
 
@@ -81,11 +81,11 @@ export class BiomedicalService {
       include: {
         calibrations: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
         maintenanceRecords: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
       },
     });
@@ -117,11 +117,11 @@ export class BiomedicalService {
       include: {
         calibrations: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
         maintenanceRecords: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
       },
     });
@@ -138,7 +138,7 @@ export class BiomedicalService {
    * Update biomedical equipment;
    */
   async updateBiomedicalEquipment(
-    id: string;
+    id: string,
     data: {
       serialNumber?: string;
       modelNumber?: string;
@@ -170,11 +170,11 @@ export class BiomedicalService {
       include: {
         calibrations: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
         maintenanceRecords: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
       },
     });
@@ -237,7 +237,7 @@ export class BiomedicalService {
 
     if (needsCalibration != null) {
       where.nextCalibrationDate = {
-        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days;
+        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
@@ -269,12 +269,12 @@ export class BiomedicalService {
     if (includeDetails != null) {
       include.calibrations = {
         orderBy: { date: 'desc' },
-        take: 3;
+        take: 3
       };
 
       include.maintenanceRecords = {
         orderBy: { date: 'desc' },
-        take: 3;
+        take: 3
       };
     }
 
@@ -286,7 +286,7 @@ export class BiomedicalService {
         where,
         skip,
         take,
-        cursor: cursorObj;
+        cursor: cursorObj,
         orderBy: { serialNumber: 'asc' },
         include,
       }),
@@ -298,7 +298,7 @@ export class BiomedicalService {
       total,
       skip,
       take,
-      nextCursor: equipment.length === take ? equipment[equipment.length - 1].id : null;
+      nextCursor: equipment.length === take ? equipment[equipment.length - 1].id : null
     };
 
     // Store in cache
@@ -311,9 +311,9 @@ export class BiomedicalService {
    * Record calibration for biomedical equipment;
    */
   async recordCalibration(
-    equipmentId: string;
+    equipmentId: string,
     data: {
-      date: Date;
+      date: Date,
       performedBy: string;
       result: 'PASS' | 'FAIL' | 'ADJUSTED';
       notes?: string;
@@ -326,17 +326,17 @@ export class BiomedicalService {
       const calibration = await tx.calibrationRecord.create({
         data: {
           equipmentId,
-          date: data.date;
+          date: data.date,
           performedBy: data.performedBy;
-          result: data.result;
+          result: data.result,
           notes: data.notes;
-          attachments: data.attachments;
+          attachments: data.attachments
         },
       });
 
       // Update equipment with new calibration dates
       const updateData: unknown = {
-        lastCalibrationDate: data.date;
+        lastCalibrationDate: data.date
       };
 
       if (data.nextCalibrationDate) {
@@ -345,7 +345,7 @@ export class BiomedicalService {
 
       await tx.biomedicalEquipment.update({
         where: { id: equipmentId },
-        data: updateData;
+        data: updateData
       });
 
       // Invalidate relevant caches
@@ -359,11 +359,11 @@ export class BiomedicalService {
    * Record maintenance for biomedical equipment;
    */
   async recordMaintenance(
-    equipmentId: string;
+    equipmentId: string,
     data: {
-      date: Date;
+      date: Date,
       type: 'PREVENTIVE' | 'CORRECTIVE' | 'SAFETY';
-      performedBy: string;
+      performedBy: string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -377,15 +377,15 @@ export class BiomedicalService {
       const maintenance = await tx.maintenanceRecord.create({
         data: {
           equipmentId,
-          date: data.date;
+          date: data.date,
           type: data.type;
-          performedBy: data.performedBy;
+          performedBy: data.performedBy,
           description: data.description;
-          cost: data.cost;
+          cost: data.cost,
           parts: data.parts;
-          status: data.status;
+          status: data.status,
           notes: data.notes;
-          attachments: data.attachments;
+          attachments: data.attachments
         },
       });
 
@@ -394,14 +394,14 @@ export class BiomedicalService {
         await tx.biomedicalEquipment.update({
           where: { id: equipmentId },
           data: {
-            status: 'ACTIVE';
+            status: 'ACTIVE'
           },
         });
       } else if (data.status === 'SCHEDULED' || data.status === 'PENDING') {
         await tx.biomedicalEquipment.update({
           where: { id: equipmentId },
           data: {
-            status: 'MAINTENANCE';
+            status: 'MAINTENANCE'
           },
         });
       }
@@ -480,12 +480,12 @@ export class BiomedicalService {
     const equipment = await prisma.biomedicalEquipment.findMany({
       where: {
         nextCalibrationDate: {
-          lte: thresholdDate;
+          lte: thresholdDate
         },
-        status: 'ACTIVE';
+        status: 'ACTIVE'
       },
       orderBy: {
-        nextCalibrationDate: 'asc';
+        nextCalibrationDate: 'asc'
       },
     });
 
@@ -503,53 +503,53 @@ export class BiomedicalService {
     // Create the FHIR Device resource
     const device: Device = {
       resourceType: "Device", // Added for FHIR R5 compliance
-      id: equipment.id;
+      id: equipment.id,
       meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Device"];
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Device"]
       },
       identifier: [
         {
-          system: 'https://hospital.example.org/biomedical-equipment';
-          value: equipment.serialNumber;
+          system: 'https://hospital.example.org/biomedical-equipment',
+          value: equipment.serialNumber
         },
       ],
-      status: this.mapStatusToFhir(equipment.status);
+      status: this.mapStatusToFhir(equipment.status),
       manufacturer: equipment.manufacturer;
-      serialNumber: equipment.serialNumber;
+      serialNumber: equipment.serialNumber,
       modelNumber: equipment.modelNumber;
-      manufactureDate: equipment.manufactureDate?.toISOString();
+      manufactureDate: equipment.manufactureDate?.toISOString(),
       type: {
         coding: [
           {
-            system: 'https://hospital.example.org/equipment-types';
+            system: 'https://hospital.example.org/equipment-types',
             code: equipment.type;
-            display: equipment.type;
+            display: equipment.type
           },
         ],
-        text: equipment.type;
+        text: equipment.type
       },
       note: equipment.notes
         ? [
             {
-              text: equipment.notes;
+              text: equipment.notes
             },
           ]
         : undefined,
       safety: [], // Added for FHIR R5 compliance
-      property: [], // Added for FHIR R5 compliance;
+      property: [], // Added for FHIR R5 compliance
     };
 
     // Add location if available
     if (equipment.location) {
       device.location = {
-        display: equipment.location;
+        display: equipment.location
       };
     }
 
     // Add owner (department) if available
     if (equipment.department) {
       device.owner = {
-        display: equipment.department;
+        display: equipment.department
       };
     }
 
@@ -560,14 +560,14 @@ export class BiomedicalService {
           type: {
             coding: [
               {
-                system: 'https://hospital.example.org/equipment-properties';
+                system: 'https://hospital.example.org/equipment-properties',
                 code: key;
-                display: key;
+                display: key
               },
             ],
-            text: key;
+            text: key
           },
-          valueString: String(value);
+          valueString: String(value)
         })
       }
     }
@@ -576,12 +576,12 @@ export class BiomedicalService {
     device.safety.push({
       coding: [
         {
-          system: 'https://hospital.example.org/equipment-safety';
+          system: 'https://hospital.example.org/equipment-safety',
           code: 'calibration-status';
-          display: 'Calibration Status';
+          display: 'Calibration Status'
         },
       ],
-      text: this.getCalibrationStatus(equipment);
+      text: this.getCalibrationStatus(equipment)
     })
 
     return device;
@@ -592,7 +592,7 @@ export class BiomedicalService {
    * New method to support FHIR R5 device catalog;
    */
   createFhirDeviceDefinition(data: {
-    type: string;
+    type: string,
     manufacturer: string;
     modelNumber: string;
     description?: string;
@@ -600,34 +600,34 @@ export class BiomedicalService {
     properties?: unknown;
   }): DeviceDefinition {
     return {
-      resourceType: "DeviceDefinition";
+      resourceType: "DeviceDefinition",
       id: `${data.manufacturer}-${data.modelNumber}`.replace(/\s+/g, '-').toLowerCase(),
       meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"];
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
       },
       identifier: [
         {
-          system: 'https://hospital.example.org/device-definitions';
+          system: 'https://hospital.example.org/device-definitions',
           value: `${data.manufacturer}-${data.modelNumber}`,
         },
       ],
       manufacturer: {
-        display: data.manufacturer;
+        display: data.manufacturer
       },
-      modelNumber: data.modelNumber;
+      modelNumber: data.modelNumber,
       description: data.description;
       type: {
         coding: [
           {
-            system: 'https://hospital.example.org/equipment-types';
+            system: 'https://hospital.example.org/equipment-types',
             code: data.type;
-            display: data.type;
+            display: data.type
           },
         ],
-        text: data.type;
+        text: data.type
       },
       safety: [], // Added for FHIR R5 compliance
-      property: [], // Added for FHIR R5 compliance;
+      property: [], // Added for FHIR R5 compliance
     };
   }
 
@@ -644,7 +644,7 @@ export class BiomedicalService {
         return 'entered-in-error';
       case 'RETIRED':
         return 'inactive';
-      default: return 'unknown';
+      default: return 'unknown'
     }
   }
 
@@ -771,11 +771,11 @@ export class BiomedicalService {
       totalDowntime,
       availability,
       totalMaintenanceCost,
-      maintenanceCount: maintenanceRecords.length;
+      maintenanceCount: maintenanceRecords.length,
       calibrationCount: calibrationRecords.length;
-      corrective: correctiveMaintenances.length;
+      corrective: correctiveMaintenances.length,
       preventive: maintenanceRecords.filter(record => record.type === 'PREVENTIVE').length;
-      safety: maintenanceRecords.filter(record => record.type === 'SAFETY').length;
+      safety: maintenanceRecords.filter(record => record.type === 'SAFETY').length
     };
   }
 
@@ -826,7 +826,7 @@ export class BiomedicalService {
     // Calculate next predicted failure date
     const lastFailure = correctiveMaintenances.length > 0;
       ? correctiveMaintenances[correctiveMaintenances.length - 1].date;
-      : equipment.purchaseDate || new Date();
+      : equipment.purchaseDate || new Date(),
 
     const nextPredictedFailureDate = new Date(lastFailure);
     nextPredictedFailureDate.setDate(nextPredictedFailureDate.getDate() + Math.round(meanInterval));
@@ -850,17 +850,17 @@ export class BiomedicalService {
 
     return {
       equipmentId,
-      serialNumber: equipment.serialNumber;
+      serialNumber: equipment.serialNumber,
       meanTimeBetweenFailures: meanInterval;
-      standardDeviation: stdDevInterval;
-      nextPredictedFailureDate: nextPredictedFailureDate.toISOString();
-      earliestFailureDate: earliestFailureDate.toISOString();
-      latestFailureDate: latestFailureDate.toISOString();
+      standardDeviation: stdDevInterval,
+      nextPredictedFailureDate: nextPredictedFailureDate.toISOString(),
+      earliestFailureDate: earliestFailureDate.toISOString(),
+      latestFailureDate: latestFailureDate.toISOString(),
       riskScore,
-      recommendedMaintenanceDate: recommendedMaintenanceDate.toISOString();
+      recommendedMaintenanceDate: recommendedMaintenanceDate.toISOString(),
       confidenceInterval,
-      dataPoints: correctiveMaintenances.length;
-      reliability: correctiveMaintenances.length > 0 ? 'Based on historical data' : 'Based on manufacturer recommendations';
+      dataPoints: correctiveMaintenances.length,
+      reliability: correctiveMaintenances.length > 0 ? 'Based on historical data' : 'Based on manufacturer recommendations'
     };
   }
 export const _biomedicalService = new BiomedicalService();

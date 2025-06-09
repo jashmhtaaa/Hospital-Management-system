@@ -27,30 +27,30 @@ spec:
                 name: cpu
                 targetAverageUtilization: 80
     ingressGateways:
-    - name: istio-ingressgateway
-      enabled: true
-      k8s:
-        resources:
-          requests:
-            cpu: 500m
-            memory: 1Gi
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-        hpaSpec:
-          minReplicas: 2
-          maxReplicas: 5
+      - name: istio-ingressgateway
+        enabled: true
+        k8s:
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          hpaSpec:
+            minReplicas: 2
+            maxReplicas: 5
     egressGateways:
-    - name: istio-egressgateway
-      enabled: true
-      k8s:
-        resources:
-          requests:
-            cpu: 200m
-            memory: 512Mi
-          limits:
-            cpu: 500m
-            memory: 1Gi
+      - name: istio-egressgateway
+        enabled: true
+        k8s:
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
   meshConfig:
     accessLogFile: /dev/stdout
     enableTracing: true
@@ -61,11 +61,11 @@ spec:
           address: jaeger-collector.observability.svc:9411
       concurrency: 2
     enableAutoMtls: true
-    defaultDestinationRuleExportTo: ["*"]
-    defaultVirtualServiceExportTo: ["*"]
-    defaultServiceExportTo: ["*"]
-    trustDomain: "hms.local"
-    trustDomainAliases: ["hms.local", "cluster.local"]
+    defaultDestinationRuleExportTo: ['*']
+    defaultVirtualServiceExportTo: ['*']
+    defaultServiceExportTo: ['*']
+    trustDomain: 'hms.local'
+    trustDomainAliases: ['hms.local', 'cluster.local']
     outboundTrafficPolicy:
       mode: ALLOW_ANY
     enableEnvoyAccessLogService: true
@@ -90,7 +90,7 @@ spec:
             cpu: 100m
             memory: 50Mi
       logging:
-        level: "default:info"
+        level: 'default:info'
       imagePullPolicy: IfNotPresent
     pilot:
       autoscaleEnabled: true
@@ -104,6 +104,6 @@ spec:
         autoscaleMax: 5
         type: LoadBalancer
         serviceAnnotations:
-          service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+          service.beta.kubernetes.io/aws-load-balancer-type: 'nlb'
     sidecarInjectorWebhook:
       rewriteAppHTTPProbe: true

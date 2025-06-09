@@ -53,7 +53,7 @@ const statusColors: Record<string, string> = {
   'ASSIGNED': 'bg-blue-500',
   'IN_PROGRESS': 'bg-purple-500',
   'COMPLETED': 'bg-green-500',
-  'CANCELLED': 'bg-gray-500';
+  'CANCELLED': 'bg-gray-500'
 };
 
 // Priority badge color mapping
@@ -61,7 +61,7 @@ const priorityColors: Record<string, string> = {
   'LOW': 'bg-blue-500',
   'MEDIUM': 'bg-yellow-500',
   'HIGH': 'bg-orange-500',
-  'URGENT': 'bg-red-500';
+  'URGENT': 'bg-red-500'
 };
 
 export const _HousekeepingDashboard = () => {
@@ -147,9 +147,9 @@ export const _HousekeepingDashboard = () => {
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load housekeeping requests. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -169,7 +169,7 @@ export const _HousekeepingDashboard = () => {
     if (filterPriority != null) params.set('priority', filterPriority);
     if (currentPage > 1) params.set('page', currentPage.toString());
 
-    router.push(`/support-services/housekeeping?${params.toString()}`);
+    router.push(`/support-services/housekeeping?${params.toString()}`)
   };
 
   // Handle tab change
@@ -194,7 +194,7 @@ export const _HousekeepingDashboard = () => {
   // Handle filter changes
   const applyFilters = () => {
     setCurrentPage(1),
-    updateUrlParams();
+    updateUrlParams()
   };
 
   // Reset all filters
@@ -218,12 +218,12 @@ export const _HousekeepingDashboard = () => {
 
   // Navigate to create new request
   const handleCreateRequest = () => {
-    router.push('/support-services/housekeeping/new');
+    router.push('/support-services/housekeeping/new')
   };
 
   // Navigate to request details
   const handleViewRequest = (id: string) => {
-    router.push(`/support-services/housekeeping/${id}`);
+    router.push(`/support-services/housekeeping/${id}`)
   };
 
   // Render status badge
@@ -247,7 +247,7 @@ export const _HousekeepingDashboard = () => {
       case 'CANCELLED':
         icon = <XCircle className="h-3 w-3 mr-1" />
         break;
-      default: icon = null;
+      default: icon = null
     }
 
     return (
@@ -255,7 +255,7 @@ export const _HousekeepingDashboard = () => {
         {icon}
         {status}
       </Badge>
-    );
+    )
   };
 
   // Render priority badge
@@ -268,7 +268,7 @@ export const _HousekeepingDashboard = () => {
         {icon}
         {priority}
       </Badge>
-    );
+    )
   };
 
   // Render loading skeleton

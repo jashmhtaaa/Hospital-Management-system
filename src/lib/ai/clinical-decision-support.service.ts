@@ -10,20 +10,20 @@ import { PrismaClient } from '@prisma/client';
  */
 
 export interface CDSSRecommendation {
-  id: string;
+  id: string,
   type: CDSSRecommendationType;
-  priority: 'low' | 'medium' | 'high' | 'critical';
+  priority: 'low' | 'medium' | 'high' | 'critical',
   title: string;
-  description: string;
+  description: string,
   recommendation: string;
-  evidence: EvidenceBase;
+  evidence: EvidenceBase,
   clinicalContext: ClinicalContext;
-  patientSpecific: boolean;
+  patientSpecific: boolean,
   confidence: number; // 0-100
   riskScore?: number;
-  timeframe: 'immediate' | 'within_hours' | 'within_days' | 'routine';
+  timeframe: 'immediate' | 'within_hours' | 'within_days' | 'routine',
   alerts: CDSSAlert[];
-  references: ClinicalReference[];
+  references: ClinicalReference[],
   createdAt: Date;
   expiresAt?: Date;
   acknowledgedBy?: string;
@@ -51,64 +51,64 @@ export interface EvidenceBase {
   source: 'randomized_trial' | 'observational' | 'expert_opinion' | 'guideline';
   guideline?: string;
   studies?: StudyReference[];
-  lastUpdated: Date;
+  lastUpdated: Date,
   strength: 'strong' | 'moderate' | 'weak'
 export interface ClinicalContext {
   patientId: string;
   encounterId?: string;
-  department: string;
+  department: string,
   provider: string;
-  conditions: string[];
+  conditions: string[],
   medications: MedicationContext[];
   allergies: AllergyContext[];
   vitals?: VitalSigns;
   labResults?: LabResult[];
-  age: number;
+  age: number,
   gender: 'male' | 'female' | 'other';
   weight?: number;
   height?: number;
   kidneyFunction?: number; // eGFR
   liverFunction?: 'normal' | 'mild' | 'moderate' | 'severe';
 export interface MedicationContext {
-  name: string;
+  name: string,
   dose: string;
-  frequency: string;
+  frequency: string,
   route: string;
   startDate: Date;
   endDate?: Date;
   prescriber: string;
   indication?: string;
 export interface AllergyContext {
-  allergen: string;
+  allergen: string,
   reaction: string;
-  severity: 'mild' | 'moderate' | 'severe' | 'life_threatening';
+  severity: 'mild' | 'moderate' | 'severe' | 'life_threatening',
   verified: boolean
 export interface VitalSigns {
   temperature?: number;
   heartRate?: number;
   bloodPressure?: {
-    systolic: number;
-    diastolic: number;
+    systolic: number,
+    diastolic: number
   };
   respiratoryRate?: number;
   oxygenSaturation?: number;
   pain?: number; // 0-10 scale
   timestamp: Date
 export interface LabResult {
-  test: string;
+  test: string,
   value: number;
-  unit: string;
+  unit: string,
   referenceRange: string;
-  abnormal: boolean;
+  abnormal: boolean,
   critical: boolean;
   timestamp: Date
 export interface CDSSAlert {
-  severity: 'info' | 'warning' | 'critical';
+  severity: 'info' | 'warning' | 'critical',
   message: string;
-  actionRequired: boolean;
+  actionRequired: boolean,
   category: 'safety' | 'efficacy' | 'cost' | 'quality'
 export interface ClinicalReference {
-  title: string;
+  title: string,
   authors: string[];
   journal?: string;
   year: number;
@@ -117,74 +117,74 @@ export interface ClinicalReference {
   url?: string;
   type: 'study' | 'guideline' | 'review' | 'meta_analysis'
 export interface StudyReference {
-  title: string;
+  title: string,
   sampleSize: number;
-  outcome: string;
+  outcome: string,
   significance: number; // p-value
   effectSize?: number;
 export interface DrugInteractionCheck {
-  drug1: string;
+  drug1: string,
   drug2: string;
-  severity: 'minor' | 'moderate' | 'major' | 'contraindicated';
+  severity: 'minor' | 'moderate' | 'major' | 'contraindicated',
   mechanism: string;
-  effect: string;
+  effect: string,
   management: string;
   references: ClinicalReference[]
 export interface DosageAdjustment {
-  medication: string;
+  medication: string,
   currentDose: string;
-  recommendedDose: string;
+  recommendedDose: string,
   reason: string;
   factor: 'age' | 'weight' | 'kidney' | 'liver' | 'drug_interaction';
   calculation?: string;
 export interface DiagnosticSuggestion {
-  condition: string;
+  condition: string,
   probability: number;
-  supportingFactors: string[];
+  supportingFactors: string[],
   recommendedTests: string[];
-  differentialDiagnoses: string[];
+  differentialDiagnoses: string[],
   urgency: 'routine' | 'urgent' | 'emergent'
 export interface TreatmentProtocol {
-  condition: string;
+  condition: string,
   protocol: string;
-  steps: ProtocolStep[];
+  steps: ProtocolStep[],
   duration: string;
-  monitoring: string[];
+  monitoring: string[],
   alternatives: string[]
 export interface ProtocolStep {
-  order: number;
+  order: number,
   action: string;
   timing: string;
   criteria?: string;
   alternatives?: string[];
 export interface RiskAssessment {
-  riskFactor: string;
+  riskFactor: string,
   score: number;
-  category: 'low' | 'moderate' | 'high' | 'very_high';
+  category: 'low' | 'moderate' | 'high' | 'very_high',
   interventions: string[];
-  timeline: string;
+  timeline: string,
   reevaluate: string
 export interface QualityMeasure {
-  measure: string;
+  measure: string,
   category: 'process' | 'outcome' | 'structure';
   compliance: boolean;
   gap?: string;
   action: string;
   deadline?: Date;
 export interface PreventiveCare {
-  service: string;
+  service: string,
   indication: string;
   lastPerformed?: Date;
-  nextDue: Date;
+  nextDue: Date,
   overdue: boolean;
-  priority: 'high' | 'medium' | 'low';
+  priority: 'high' | 'medium' | 'low'
 }
 
 class ClinicalDecisionSupportService extends EventEmitter {
   private prisma: PrismaClient;
-  private recommendations: Map<string, CDSSRecommendation> = new Map();
-  private drugDatabase: Map<string, any> = new Map();
-  private guidelineDatabase: Map<string, any> = new Map();
+  private recommendations: Map<string, CDSSRecommendation> = new Map(),
+  private drugDatabase: Map<string, any> = new Map(),
+  private guidelineDatabase: Map<string, any> = new Map(),
   private interactionDatabase: DrugInteractionCheck[] = [];
   private isInitialized = false;
 
@@ -211,7 +211,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       this.isInitialized = true;
       this.emit('initialized');
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
       throw error
@@ -274,9 +274,9 @@ class ClinicalDecisionSupportService extends EventEmitter {
       const criticalRecs = recommendations.filter(r => r.priority === 'critical');
       if (criticalRecs.length > 0) {
         this.emit('critical_recommendations', {
-          patientId: context.patientId;
+          patientId: context.patientId,
           count: criticalRecs.length;
-          recommendations: criticalRecs;
+          recommendations: criticalRecs
         });
       }
 
@@ -302,30 +302,30 @@ class ClinicalDecisionSupportService extends EventEmitter {
         if (interaction != null) {
           const rec: CDSSRecommendation = {
             id: `drug_interaction_${crypto.getRandomValues(new Uint32Array(1))[0]}_${i}_${j}`,
-            type: 'drug_interaction';
-            priority: this.mapSeverityToPriority(interaction.severity);
+            type: 'drug_interaction',
+            priority: this.mapSeverityToPriority(interaction.severity),
             title: `Drug Interaction: ${interaction.drug1} + ${interaction.drug2}`,
             description: `${interaction.severity.toUpperCase()} interaction detected between ${interaction.drug1} and ${interaction.drug2}`,
-            recommendation: interaction.management;
+            recommendation: interaction.management,
             evidence: {
-              level: 'B';
+              level: 'B',
               source: 'guideline';
-              guideline: 'Drug Interaction Database';
-              lastUpdated: new Date();
-              strength: 'strong';
+              guideline: 'Drug Interaction Database',
+              lastUpdated: new Date(),
+              strength: 'strong'
             },
-            clinicalContext: context;
+            clinicalContext: context,
             patientSpecific: true;
-            confidence: 95;
+            confidence: 95,
             timeframe: interaction.severity === 'contraindicated' ? 'immediate' : 'within_hours';
             alerts: [{
-              severity: interaction.severity === 'contraindicated' ? 'critical' : 'warning';
+              severity: interaction.severity === 'contraindicated' ? 'critical' : 'warning',
               message: interaction.effect;
-              actionRequired: true;
-              category: 'safety';
+              actionRequired: true,
+              category: 'safety'
             }],
-            references: interaction.references;
-            createdAt: new Date();
+            references: interaction.references,
+            createdAt: new Date()
           };
 
           recommendations.push(rec);
@@ -347,29 +347,29 @@ class ClinicalDecisionSupportService extends EventEmitter {
         if (this.checkAllergyMatch(medication.name, allergy.allergen)) {
           const rec: CDSSRecommendation = {
             id: `allergy_alert_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
-            type: 'allergy_alert';
+            type: 'allergy_alert',
             priority: allergy.severity === 'life_threatening' ? 'critical' : 'high';
             title: `Allergy Alert: ${medication.name}`,
             description: `Patient has documented ${allergy.severity} allergy to ${allergy.allergen}`,
             recommendation: `STOP ${medication.name} immediately. Consider alternative therapy.`,
             evidence: {
-              level: 'A';
+              level: 'A',
               source: 'expert_opinion';
-              lastUpdated: new Date();
-              strength: 'strong';
+              lastUpdated: new Date(),
+              strength: 'strong'
             },
-            clinicalContext: context;
+            clinicalContext: context,
             patientSpecific: true;
-            confidence: 100;
+            confidence: 100,
             timeframe: 'immediate';
             alerts: [{
-              severity: 'critical';
+              severity: 'critical',
               message: `ALLERGY ALERT: ${allergy.reaction}`,
-              actionRequired: true;
-              category: 'safety';
+              actionRequired: true,
+              category: 'safety'
             }],
-            references: [];
-            createdAt: new Date();
+            references: [],
+            createdAt: new Date()
           };
 
           recommendations.push(rec);
@@ -392,31 +392,31 @@ class ClinicalDecisionSupportService extends EventEmitter {
       if (adjustment != null) {
         const rec: CDSSRecommendation = {
           id: `dosage_adjustment_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
-          type: 'dosage_adjustment';
+          type: 'dosage_adjustment',
           priority: 'medium';
           title: `Dosage Adjustment: ${medication.name}`,
           description: `Current dose may need adjustment based on ${adjustment.reason}`,
           recommendation: `Consider adjusting dose from ${adjustment.currentDose} to ${adjustment.recommendedDose}. ${adjustment.calculation ||
             ''}`,
           evidence: {
-            level: 'B';
+            level: 'B',
             source: 'guideline';
-            guideline: 'Dosing Guidelines';
-            lastUpdated: new Date();
-            strength: 'moderate';
+            guideline: 'Dosing Guidelines',
+            lastUpdated: new Date(),
+            strength: 'moderate'
           },
-          clinicalContext: context;
+          clinicalContext: context,
           patientSpecific: true;
-          confidence: 85;
+          confidence: 85,
           timeframe: 'within_days';
           alerts: [{
-            severity: 'warning';
+            severity: 'warning',
             message: `Dosage adjustment recommended for ${medication.name}`,
-            actionRequired: false;
-            category: 'efficacy';
+            actionRequired: false,
+            category: 'efficacy'
           }],
-          references: [];
-          createdAt: new Date();
+          references: [],
+          createdAt: new Date()
         };
 
         recommendations.push(rec);
@@ -446,30 +446,30 @@ class ClinicalDecisionSupportService extends EventEmitter {
         if (overdueLabs.length > 0) {
           const rec: CDSSRecommendation = {
             id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
-            type: 'lab_monitoring';
+            type: 'lab_monitoring',
             priority: 'medium';
             title: `Lab Monitoring: ${medication.name}`,
             description: `Laboratory monitoring required for ${medication.name}`,
             recommendation: `Order the following labs: ${overdueLabs.map(lab => lab.test).join(', ')}`,
             evidence: {
-              level: 'B';
+              level: 'B',
               source: 'guideline';
-              guideline: 'Drug Monitoring Guidelines';
-              lastUpdated: new Date();
-              strength: 'strong';
+              guideline: 'Drug Monitoring Guidelines',
+              lastUpdated: new Date(),
+              strength: 'strong'
             },
-            clinicalContext: context;
+            clinicalContext: context,
             patientSpecific: true;
-            confidence: 90;
+            confidence: 90,
             timeframe: 'within_days';
             alerts: [{
-              severity: 'info';
+              severity: 'info',
               message: `Lab monitoring due for ${medication.name}`,
-              actionRequired: false;
-              category: 'safety';
+              actionRequired: false,
+              category: 'safety'
             }],
-            references: [];
-            createdAt: new Date();
+            references: [],
+            createdAt: new Date()
           };
 
           recommendations.push(rec);
@@ -504,30 +504,30 @@ class ClinicalDecisionSupportService extends EventEmitter {
       if (protocol != null) {
         const rec: CDSSRecommendation = {
           id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0]}_${condition}`,
-          type: 'treatment_protocol';
+          type: 'treatment_protocol',
           priority: 'medium';
           title: `Treatment Protocol: ${condition}`,
           description: `Evidence-based treatment protocol available for ${condition}`,
           recommendation: `Consider following ${protocol.protocol} protocol for ${condition}`,
           evidence: {
-            level: 'A';
+            level: 'A',
             source: 'guideline';
-            guideline: protocol.protocol;
-            lastUpdated: new Date();
-            strength: 'strong';
+            guideline: protocol.protocol,
+            lastUpdated: new Date(),
+            strength: 'strong'
           },
-          clinicalContext: context;
+          clinicalContext: context,
           patientSpecific: true;
-          confidence: 90;
+          confidence: 90,
           timeframe: 'routine';
           alerts: [{
-            severity: 'info';
+            severity: 'info',
             message: `Treatment protocol available for ${condition}`,
-            actionRequired: false;
-            category: 'quality';
+            actionRequired: false,
+            category: 'quality'
           }],
-          references: [];
-          createdAt: new Date();
+          references: [],
+          createdAt: new Date()
         };
 
         recommendations.push(rec);
@@ -549,30 +549,30 @@ class ClinicalDecisionSupportService extends EventEmitter {
       if (service.overdue) {
         const rec: CDSSRecommendation = {
           id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0]}_${service.service}`,
-          type: 'preventive_care';
+          type: 'preventive_care',
           priority: service.priority === 'high' ? 'medium' : 'low';
           title: `Preventive Care: ${service.service}`,
           description: `${service.service} is overdue for this patient`,
           recommendation: `Schedule ${service.service}. ${service.indication}`,
           evidence: {
-            level: 'A';
+            level: 'A',
             source: 'guideline';
-            guideline: 'USPSTF Guidelines';
-            lastUpdated: new Date();
-            strength: 'strong';
+            guideline: 'USPSTF Guidelines',
+            lastUpdated: new Date(),
+            strength: 'strong'
           },
-          clinicalContext: context;
+          clinicalContext: context,
           patientSpecific: true;
-          confidence: 95;
+          confidence: 95,
           timeframe: 'routine';
           alerts: [{
-            severity: 'info';
+            severity: 'info',
             message: `${service.service} overdue`,
-            actionRequired: false;
-            category: 'quality';
+            actionRequired: false,
+            category: 'quality'
           }],
-          references: [];
-          createdAt: new Date();
+          references: [],
+          createdAt: new Date()
         };
 
         recommendations.push(rec);
@@ -643,7 +643,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
         recommendationId: id;
         providerId,
         action
-      });
+      }),
 
       return true;
     } catch (error) {
@@ -675,7 +675,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
         recommendationId: id;
         providerId,
         reason
-      });
+      }),
 
       return true;
     } catch (error) {
@@ -688,12 +688,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
    * Get CDSS statistics;
    */
   getStatistics(): {
-    totalRecommendations: number;
+    totalRecommendations: number,
     activeRecommendations: number;
-    criticalRecommendations: number;
+    criticalRecommendations: number,
     acknowledgedRecommendations: number;
-    dismissedRecommendations: number;
-    byType: Record<CDSSRecommendationType, number>;
+    dismissedRecommendations: number,
+    byType: Record<CDSSRecommendationType, number>
   } {
     const all = Array.from(this.recommendations.values());
     const active = all.filter(r => !r?.dismissed && (!r.expiresAt || r.expiresAt > new Date()));
@@ -707,12 +707,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
     });
 
     return {
-      totalRecommendations: all.length;
+      totalRecommendations: all.length,
       activeRecommendations: active.length;
-      criticalRecommendations: critical.length;
+      criticalRecommendations: critical.length,
       acknowledgedRecommendations: acknowledged.length;
       dismissedRecommendations: dismissed.length;
-      byType;
+      byType
     };
   }
 
@@ -721,34 +721,34 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private async loadDrugDatabase(): Promise<void> {
     // Load drug database from external source or file
     // This would typically integrate with a drug database like First DataBank or Lexicomp
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async loadClinicalGuidelines(): Promise<void> {
     // Load clinical guidelines from medical societies
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async loadInteractionDatabase(): Promise<void> {
     // Sample drug interactions
     this.interactionDatabase = [
       {
-        drug1: 'warfarin';
+        drug1: 'warfarin',
         drug2: 'aspirin';
-        severity: 'major';
+        severity: 'major',
         mechanism: 'Additive anticoagulant effect';
-        effect: 'Increased bleeding risk';
+        effect: 'Increased bleeding risk',
         management: 'Monitor INR closely. Consider alternative antiplatelet if needed.';
-        references: [];
+        references: []
       },
       {
-        drug1: 'simvastatin';
+        drug1: 'simvastatin',
         drug2: 'clarithromycin';
-        severity: 'contraindicated';
+        severity: 'contraindicated',
         mechanism: 'CYP3A4 inhibition';
         effect: 'Increased statin levels, rhabdomyolysis risk',
-        management: 'Avoid combination. Use alternative antibiotic or suspend statin.';
-        references: [];
+        management: 'Avoid combination. Use alternative antibiotic or suspend statin.',
+        references: []
       }
     ];
   }
@@ -772,21 +772,21 @@ class ClinicalDecisionSupportService extends EventEmitter {
     // Simplified dosage calculation - in production, this would use comprehensive dosing algorithms
     if (context?.kidneyFunction && context.kidneyFunction < 60) {
       return {
-        medication: medication.name;
+        medication: medication.name,
         currentDose: medication.dose;
-        recommendedDose: '50% of current dose';
+        recommendedDose: '50% of current dose',
         reason: 'reduced kidney function';
-        factor: 'kidney';
-        calculation: `eGFR ${context.kidneyFunction} mL/min/1.73m²`;
+        factor: 'kidney',
+        calculation: `eGFR ${context.kidneyFunction} mL/min/1.73m²`
       };
     }
 
     return null;
   }
 
-  private getLabMonitoringRequirements(medication: string): Array<{test: string; frequency: string}> {
+  private getLabMonitoringRequirements(medication: string): Array<{test: string, frequency: string}> {
     // Sample monitoring requirements
-    const monitoringMap: Record<string, Array<{test: string; frequency: string}>> = {
+    const monitoringMap: Record<string, Array<{test: string, frequency: string}>> = {
       'warfarin': [{ test: 'INR', frequency: 'weekly' }],
       'lithium': [{ test: 'lithium level', frequency: 'monthly' }],
       'digoxin': [{ test: 'digoxin level', frequency: 'monthly' }]
@@ -803,7 +803,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       case 'daily': return daysDiff < 1;
       case 'weekly': return daysDiff < 7;
       case 'monthly': return daysDiff < 30;
-      default: return false;
+      default: return false
     }
   }
 
@@ -811,16 +811,16 @@ class ClinicalDecisionSupportService extends EventEmitter {
     // Sample treatment protocols
     const protocols: Record<string, TreatmentProtocol> = {
       'pneumonia': {
-        condition: 'Community-Acquired Pneumonia';
+        condition: 'Community-Acquired Pneumonia',
         protocol: 'CAP Treatment Protocol';
         steps: [
           { order: 1, action: 'Assess severity (CURB-65)', timing: 'Initial assessment' },
           { order: 2, action: 'Start empiric antibiotics', timing: 'Within 4 hours' },
           { order: 3, action: 'Monitor clinical response', timing: '48-72 hours' }
         ],
-        duration: '5-7 days';
+        duration: '5-7 days',
         monitoring: ['Temperature', 'White blood count', 'Chest X-ray'],
-        alternatives: ['Outpatient management for low-risk patients'];
+        alternatives: ['Outpatient management for low-risk patients']
       }
     };
 
@@ -833,21 +833,21 @@ class ClinicalDecisionSupportService extends EventEmitter {
     // Sample preventive care recommendations
     if (age >= 50) {
       services.push({
-        service: 'Colonoscopy';
+        service: 'Colonoscopy',
         indication: 'Colorectal cancer screening';
         nextDue: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-        overdue: true;
-        priority: 'high';
+        overdue: true,
+        priority: 'high'
       });
     }
 
     if (gender === 'female' && age >= 40) {
       services.push({
-        service: 'Mammography';
+        service: 'Mammography',
         indication: 'Breast cancer screening';
         nextDue: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-        overdue: true;
-        priority: 'high';
+        overdue: true,
+        priority: 'high'
       });
     }
 
@@ -860,7 +860,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       case 'major': return 'high';
       case 'moderate': return 'medium';
       case 'minor': return 'low';
-      default: return 'low';
+      default: return 'low'
     }
   }
 
@@ -870,7 +870,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       case 'high': return 3;
       case 'medium': return 2;
       case 'low': return 1;
-      default: return 0;
+      default: return 0
     }
   }
 

@@ -61,13 +61,13 @@ export default const _AttendanceManagement = () {
   const [biometricFilter, setBiometricFilter] = useState('');
   const [departments, setDepartments] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
-    from: startOfMonth(new Date());
-    to: endOfMonth(new Date());
+    from: startOfMonth(new Date()),
+    to: endOfMonth(new Date())
   });
   const [pagination, setPagination] = useState({
-    skip: 0;
+    skip: 0,
     take: 10;
-    total: 0;
+    total: 0
   });
   const [activeTab, setActiveTab] = useState('daily');
 
@@ -77,8 +77,8 @@ export default const _AttendanceManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString();
-          take: pagination.take.toString();
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString()
         });
 
         if (search != null) queryParams.append('search', search);
@@ -110,14 +110,14 @@ export default const _AttendanceManagement = () {
         setAttendanceRecords(data.records || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0
         }));
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -149,7 +149,7 @@ export default const _AttendanceManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -158,7 +158,7 @@ export default const _AttendanceManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -169,8 +169,8 @@ export default const _AttendanceManagement = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Handle tab change
@@ -179,8 +179,8 @@ export default const _AttendanceManagement = () {
     // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Export attendance data
@@ -188,22 +188,22 @@ export default const _AttendanceManagement = () {
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started";
-        description: "Your attendance report is being generated and will download shortly.";
+        title: "Export Started",
+        description: "Your attendance report is being generated and will download shortly."
       });
 
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete";
-          description: "Attendance report has been downloaded.";
+          title: "Export Complete",
+          description: "Attendance report has been downloaded."
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed";
+        title: "Export Failed",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -221,7 +221,7 @@ export default const _AttendanceManagement = () {
         return 'secondary';
       case 'ON_LEAVE':
         return 'outline';
-      default: return 'default';
+      default: return 'default'
     }
   };
 

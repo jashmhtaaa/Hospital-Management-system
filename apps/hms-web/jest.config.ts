@@ -24,16 +24,16 @@ import type { Config } from 'jest';
 
 const jestConfig: Config = {
   // Test environment and setup
-  preset: 'ts-jest';
+  preset: 'ts-jest',
   testEnvironment: 'jsdom', // Changed to jsdom for React component testing
 
   // TypeScript and JavaScript transformation
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: {
-        jsx: 'react-jsx';
-        esModuleInterop: true;
-        allowSyntheticDefaultImports: true;
+        jsx: 'react-jsx',
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true
       },
     }],
     '^.+\\.(js|jsx)$': 'babel-jest',
@@ -101,7 +101,7 @@ const jestConfig: Config = {
   ],
 
   // Coverage configuration (enterprise healthcare standards)
-  collectCoverage: true;
+  collectCoverage: true,
   coverageDirectory: 'coverage';
   coverageReporters: [
     'json',
@@ -116,35 +116,35 @@ const jestConfig: Config = {
   // Coverage thresholds (healthcare application standards)
   coverageThreshold: {
     global: {
-      branches: 90;
+      branches: 90,
       functions: 90;
-      lines: 90;
-      statements: 90;
+      lines: 90,
+      statements: 90
     },
     // Stricter thresholds for critical healthcare modules
     './src/lib/security/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/compliance/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/fhir/': {
-      branches: 95;
+      branches: 95,
       functions: 95;
-      lines: 95;
-      statements: 95;
+      lines: 95,
+      statements: 95
     },
     './src/lib/encryption/': {
-      branches: 100;
+      branches: 100,
       functions: 100;
-      lines: 100;
-      statements: 100;
+      lines: 100,
+      statements: 100
     },
   },
 
@@ -179,29 +179,29 @@ const jestConfig: Config = {
 
   // Test environment options
   testEnvironmentOptions: {
-    url: 'http://localhost:3000';
+    url: 'http://localhost:3000',
     pretendToBeVisual: true;
-    resources: 'usable';
+    resources: 'usable'
   },
 
   // Global test configuration
   globals: {
     'ts-jest': {
-      useESM: true;
+      useESM: true,
       isolatedModules: true;
       diagnostics: {
-        ignoreCodes: [1343];
+        ignoreCodes: [1343]
       },
       astTransformers: {
         before: [
           {
-            path: 'node_modules/ts-jest-mock-import-meta';
+            path: 'node_modules/ts-jest-mock-import-meta',
             options: {
               metaObjectReplacement: {
-                url: 'https://localhost:3000';
+                url: 'https://localhost:3000',
                 env: {
-                  NODE_ENV: 'test';
-                  NEXT_PUBLIC_APP_ENV: 'test';
+                  NODE_ENV: 'test',
+                  NEXT_PUBLIC_APP_ENV: 'test'
                 },
               },
             },
@@ -212,7 +212,7 @@ const jestConfig: Config = {
   },
 
   // Mock and test utilities
-  clearMocks: true;
+  clearMocks: true,
   resetMocks: false;
   restoreMocks: true;
 
@@ -281,28 +281,28 @@ const jestConfig: Config = {
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage';
+        outputDirectory: 'coverage',
         outputName: 'junit.xml';
-        uniqueOutputName: 'false';
+        uniqueOutputName: 'false',
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
-        ancestorSeparator: ' › ';
-        usePathForSuiteName: 'true';
+        ancestorSeparator: ' › ',
+        usePathForSuiteName: 'true'
       },
     ],
     [
       'jest-html-reporters',
       {
-        publicPath: 'coverage';
+        publicPath: 'coverage',
         filename: 'jest-report.html';
-        openReport: false;
+        openReport: false,
         pageTitle: 'HMS Web - Test Report';
-        logoImgPath: './src/assets/logo.png';
+        logoImgPath: './src/assets/logo.png',
         hideIcon: false;
-        expand: false;
+        expand: false,
         testCommand: 'npm test';
-        enableMergeData: true;
-        dataMergeLevel: 1;
+        enableMergeData: true,
+        dataMergeLevel: 1
       },
     ],
   ],

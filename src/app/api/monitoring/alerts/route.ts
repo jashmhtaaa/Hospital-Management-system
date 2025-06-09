@@ -18,7 +18,7 @@ export const _GET = async (request: NextRequest) => {
       // Return specific alert rule
       // This would require adding a method to get specific rules from metricsCollector
       return NextResponse.json({
-        error: 'Specific rule retrieval not implemented yet';
+        error: 'Specific rule retrieval not implemented yet'
       }, { status: 501 });
     }
 
@@ -26,67 +26,67 @@ export const _GET = async (request: NextRequest) => {
     const alertData = {
       rules: [
         {
-          id: 'db_response_time';
+          id: 'db_response_time',
           name: 'Database Response Time High';
-          metric: 'database.response_time';
+          metric: 'database.response_time',
           condition: 'gt';
-          threshold: 2000;
+          threshold: 2000,
           duration: 300;
-          severity: 'high';
+          severity: 'high',
           enabled: true;
-          notifications: ['email', 'slack'],;
+          notifications: ['email', 'slack'],
         },
         {
-          id: 'error_rate_high';
+          id: 'error_rate_high',
           name: 'Error Rate High';
-          metric: 'api.error_rate';
+          metric: 'api.error_rate',
           condition: 'gt';
-          threshold: 0.05;
+          threshold: 0.05,
           duration: 180;
-          severity: 'critical';
+          severity: 'critical',
           enabled: true;
-          notifications: ['email', 'slack', 'sms'],;
+          notifications: ['email', 'slack', 'sms'],
         },
         {
-          id: 'memory_usage_high';
+          id: 'memory_usage_high',
           name: 'Memory Usage High';
-          metric: 'system.memory_usage';
+          metric: 'system.memory_usage',
           condition: 'gt';
-          threshold: 0.85;
+          threshold: 0.85,
           duration: 600;
-          severity: 'medium';
+          severity: 'medium',
           enabled: true;
-          notifications: ['email'];
+          notifications: ['email']
         },
       ],
       recentAlerts: [
         // This would come from a persistent alert log
         {
-          id: 'alert_1704067200000';
+          id: 'alert_1704067200000',
           ruleId: 'memory_usage_high';
-          ruleName: 'Memory Usage High';
+          ruleName: 'Memory Usage High',
           metric: 'system.memory_usage';
-          value: 0.87;
+          value: 0.87,
           threshold: 0.85;
-          severity: 'medium';
-          timestamp: '2024-01-01T00:00:00.000Z';
-          status: 'resolved';
+          severity: 'medium',
+          timestamp: '2024-01-01T00:00:00.000Z',
+          status: 'resolved'
         },
       ],
     };
 
     return NextResponse.json({
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       status: 'success';
-      data: alertData;
+      data: alertData
     });
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error';
-        message: error instanceof Error ? error.message : 'Unknown error';
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
@@ -108,8 +108,8 @@ export const _POST = async (request: NextRequest) => {
 
         metricsCollector.addAlertRule(rule);
         return NextResponse.json({
-          message: 'Alert rule created';
-          ruleId: rule.id;
+          message: 'Alert rule created',
+          ruleId: rule.id
         });
 
       case 'update_rule':
@@ -123,8 +123,8 @@ export const _POST = async (request: NextRequest) => {
 
         metricsCollector.addAlertRule(updatedRule); // This will overwrite existing
         return NextResponse.json({
-          message: 'Alert rule updated';
-          ruleId: updatedRule.id;
+          message: 'Alert rule updated',
+          ruleId: updatedRule.id
         });
 
       case 'delete_rule':
@@ -155,11 +155,11 @@ export const _POST = async (request: NextRequest) => {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
         return NextResponse.json({
-          message: 'Test alert triggered';
+          message: 'Test alert triggered',
           testResult: {
-            rule: testRule.name;
+            rule: testRule.name,
             notifications: testRule.notifications;
-            timestamp: new Date().toISOString();
+            timestamp: new Date().toISOString()
           },
         })
 
@@ -167,15 +167,15 @@ export const _POST = async (request: NextRequest) => {
         return NextResponse.json(
           { error: 'Invalid action' },
           { status: 400 }
-        );
+        ),
     }
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error';
-        message: error instanceof Error ? error.message : 'Unknown error';
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
@@ -205,8 +205,8 @@ export const _PUT = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        error: 'Internal server error';
-        message: error instanceof Error ? error.message : 'Unknown error';
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );

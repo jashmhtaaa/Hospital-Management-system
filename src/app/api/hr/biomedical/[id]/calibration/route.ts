@@ -6,17 +6,17 @@ import { biomedicalService } from '@/lib/hr/biomedical-service';
 // Schema for calibration record
 const calibrationSchema = z.object({
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
-  performedBy: z.string().optional();
+  performedBy: z.string().optional(),
   result: z.enum(['PASS', 'FAIL', 'ADJUSTED'], {
-    errorMap: () => ({ message: "Invalid result" });
+    errorMap: () => ({ message: "Invalid result" }),
   }),
-  notes: z.string().optional();
+  notes: z.string().optional(),
   nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
-  attachments: z.array(z.string()).optional();
+  attachments: z.array(z.string()).optional()
 });
 
 // POST handler for recording calibration
@@ -41,13 +41,13 @@ export const _POST = async (
 
     // Convert date strings to Date objects
     const calibrationData = {
-      biomedicalEquipmentId: params.id;
-      date: new Date(data.date);
-      performedBy: data.performedBy;
+      biomedicalEquipmentId: params.id,
+      date: new Date(data.date),
+      performedBy: data.performedBy,
       result: data.result;
-      notes: data.notes;
+      notes: data.notes,
       nextCalibrationDate: data.nextCalibrationDate ? new Date(data.nextCalibrationDate) : undefined;
-      attachments: data.attachments;
+      attachments: data.attachments
     };
 
     // Record calibration

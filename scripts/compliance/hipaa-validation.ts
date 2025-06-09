@@ -43,34 +43,34 @@ interface HIPAAConfig {
   readonly dataRetentionPolicyRequired: boolean;
   readonly workforceTrainingRequired: boolean;
   readonly securityOfficerDesignated: boolean;
-  readonly incidentResponsePlanRequired: boolean;
+  readonly incidentResponsePlanRequired: boolean
 }
 
 interface ValidationResult {
-  name: string;
+  name: string,
   passed: boolean;
-  details: string;
+  details: string,
   severity: 'critical' | 'high' | 'medium' | 'low';
   regulation: string; // HIPAA regulation reference
   remediation?: string; // Suggested fix
 }
 
 interface ValidationWarning {
-  name: string;
+  name: string,
   details: string
-  recommendation: string;
+  recommendation: string
 }
 
 interface ComplianceResults {
-  totalChecks: number;
+  totalChecks: number,
   passedChecks: number;
-  failedChecks: ValidationResult[];
+  failedChecks: ValidationResult[],
   warnings: ValidationWarning[];
   complianceScore: number; // 0-100
-  criticalIssues: number;
+  criticalIssues: number,
   highPriorityIssues: number
-  lastValidated: Date;
-  validatedBy: string;
+  lastValidated: Date,
+  validatedBy: string
 }
 
 // HIPAA Configuration - Enterprise Healthcare Standards
@@ -78,21 +78,21 @@ const HIPAA_CONFIG: HIPAAConfig = {
   requiredEncryptionStrength: 256, // AES-256 required for PHI
   auditLogRetentionDays: 2190, // 6 years (HIPAA requirement)
   passwordMinLength: 14, // Enhanced from NIST recommendations
-  passwordComplexity: true;
+  passwordComplexity: true,
   mfaRequired: true, // Required for PHI access
   sessionTimeoutMinutes: 10, // Stricter than 15 for healthcare
-  automaticLogoutRequired: true;
+  automaticLogoutRequired: true,
   minimumTlsVersion: 1.3, // Latest TLS for data in transit
-  emergencyAccessProcedureRequired: true;
+  emergencyAccessProcedureRequired: true,
   auditLoggingRequired: true;
-  uniqueUserIdentificationRequired: true;
+  uniqueUserIdentificationRequired: true,
   encryptionAtRestRequired: true, // All PHI must be encrypted at rest
   encryptionInTransitRequired: true, // All PHI transmission encrypted
-  dataBackupRequired: true;
+  dataBackupRequired: true,
   disasterRecoveryRequired: true;
-  businessAssociateAgreementRequired: true;
+  businessAssociateAgreementRequired: true,
   breachNotificationRequired: true;
-  accessControlRequired: true;
+  accessControlRequired: true,
   minimumAuthorizationRoles: [
     'admin', 'doctor', 'nurse', 'receptionist', 'patient',
     'lab_technician', 'pharmacist', 'radiologist', 'security_officer'
@@ -107,30 +107,30 @@ const HIPAA_CONFIG: HIPAAConfig = {
     'authorization_failure', 'system_access', 'data_export',
     'configuration_change', 'emergency_access'
   ] as const,
-  dataRetentionPolicyRequired: true;
+  dataRetentionPolicyRequired: true,
   workforceTrainingRequired: true;
-  securityOfficerDesignated: true;
-  incidentResponsePlanRequired: true;
+  securityOfficerDesignated: true,
+  incidentResponsePlanRequired: true
 } as const
 
 // Results collection with enhanced tracking
 const results: ComplianceResults = {
-  totalChecks: 0;
+  totalChecks: 0,
   passedChecks: 0;
-  failedChecks: [];
+  failedChecks: [],
   warnings: [];
-  complianceScore: 0;
+  complianceScore: 0,
   criticalIssues: 0;
-  highPriorityIssues: 0;
-  lastValidated: new Date();
-  validatedBy: 'HIPAA Validation System';
+  highPriorityIssues: 0,
+  lastValidated: new Date(),
+  validatedBy: 'HIPAA Validation System'
 }
 
 // Enhanced logging functions with severity tracking
 function logCheck(
-  name: string;
+  name: string,
   passed: boolean;
-  details: string;
+  details: string,
   severity: ValidationResult['severity'] = 'medium';
   regulation: string = 'HIPAA Security Rule';
   remediation?: string
@@ -139,7 +139,7 @@ function logCheck(
 
   if (passed != null) {
     results.passedChecks++;
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   } else {
     const result: ValidationResult = {
       name,
@@ -161,7 +161,7 @@ function logCheck(
     const _icon = severity === 'critical' ? '🚨' : severity === 'high' ? '⚠️' : '⚡';
     /* SECURITY: Console statement removed */
     if (remediation != null) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   }
 }
@@ -170,7 +170,7 @@ function logWarning(name: string, details: string, recommendation: string): void
   const warning: ValidationWarning = { name, details, recommendation };
   results.warnings.push(warning);
   /* SECURITY: Console statement removed */
-  /* SECURITY: Console statement removed */;
+  /* SECURITY: Console statement removed */
 }
 
 // Enhanced file system utilities with error handling
@@ -178,7 +178,7 @@ function fileExists(filePath: string): boolean {
   try {
     return fs.existsSync(filePath)
   } catch (error) {
-    /* SECURITY: Console statement removed */return false;
+    /* SECURITY: Console statement removed */return false
   }
 }
 
@@ -195,7 +195,7 @@ function fileContains(filePath: string, searchString: string | RegExp): boolean 
     }
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return false;
+    return false
   }
 }
 
@@ -220,7 +220,7 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {
       }
     }
   } catch (error) {
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   }
 
   return results;
@@ -583,9 +583,9 @@ function generateComplianceReport(): void {
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
       if (check.remediation) {
-        /* SECURITY: Console statement removed */;
+        /* SECURITY: Console statement removed */
       }
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     });
   }
 
@@ -597,7 +597,7 @@ function generateComplianceReport(): void {
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     });
   }
 
@@ -611,9 +611,9 @@ function generateComplianceReport(): void {
     }
 
     fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   } catch (error) {
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   }
 
   /* SECURITY: Console statement removed */);
@@ -638,7 +638,7 @@ function main(): void {
     generateComplianceReport();
   } catch (error) {
     /* SECURITY: Console statement removed */
-    process.exit(1);
+    process.exit(1)
   }
 }
 

@@ -5,19 +5,19 @@ import { z } from 'zod';
 import { employeeService } from '@/lib/hr/employee-service';
 // Schema for employee update
 const updateEmployeeSchema = z.object({
-  firstName: z.string().optional();
-  lastName: z.string().optional();
-  middleName: z.string().optional();
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  middleName: z.string().optional(),
   gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
-  birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  email: z.string().email("Invalid email format").optional();
-  phone: z.string().optional();
-  address: z.any().optional();
-  departmentId: z.string().optional();
-  photo: z.string().optional();
-  emergencyContact: z.any().optional();
-  active: z.boolean().optional();
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  email: z.string().email("Invalid email format").optional(),
+  phone: z.string().optional(),
+  address: z.any().optional(),
+  departmentId: z.string().optional(),
+  photo: z.string().optional(),
+  emergencyContact: z.any().optional(),
+  active: z.boolean().optional(),
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
 });
 
 // GET /api/hr/staff/[id]
@@ -93,8 +93,8 @@ export const _DELETE = async (
   try {
     // Soft delete by setting active to false and recording termination date
     const employee = await employeeService.updateEmployee(params.id, {
-      active: false;
-      terminationDate: new Date();
+      active: false,
+      terminationDate: new Date()
     });
 
     return NextResponse.json({ success: true });

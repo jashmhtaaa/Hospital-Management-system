@@ -23,37 +23,37 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 // Define types for Vitals and Medications (example structure)
 interface VitalReadings {
-  bp_readings: { time: string; value: string }[];
-  pulse_readings: { time: string; value: number }[];
-  o2_saturation_readings: { time: string; value: number }[];
-  temperature_readings: { time: string; value: number }[];
+  bp_readings: { time: string, value: string }[];
+  pulse_readings: { time: string, value: number }[];
+  o2_saturation_readings: { time: string, value: number }[];
+  temperature_readings: { time: string, value: number }[];
 }
 
 interface MedicationAdministered {
-  medication_name: string;
+  medication_name: string,
   dosage: string;
-  time: string;
+  time: string
 }
 
 interface ChecklistResponse {
-  id: string;
+  id: string,
   text: string;
-  checked: boolean;
+  checked: boolean
 }
 
 // Define the OTRecord type
 interface OTRecord {
   id?: string; // Optional ID for existing records
-  procedure_notes: string;
+  procedure_notes: string,
   procedure_start_time: string | Date | null;
-  procedure_end_time: string | Date | null;
+  procedure_end_time: string | Date | null,
   anesthesia_type: string;
-  anesthesia_notes: string;
+  anesthesia_notes: string,
   vitals: VitalReadings;
-  medications_administered: MedicationAdministered[];
+  medications_administered: MedicationAdministered[],
   complications: string;
   blood_loss_ml: number | string | null; // Allow string for input
-  post_op_instructions: string;
+  post_op_instructions: string,
   recovery_notes: string;
   checklist_responses?: ChecklistResponse[]; // Optional checklist responses
 }
@@ -64,9 +64,9 @@ interface OTRecordSaveData;
     OTRecord,
     "id" | "vitals" | "medications_administered" | "checklist_responses";
   > {
-  booking_id: string;
+  booking_id: string,
   procedure_start_time: string | null;
-  procedure_end_time: string | null;
+  procedure_end_time: string | null,
   blood_loss_ml: number | null;
   checklist_responses: ChecklistResponse[];
   // Include vitals and meds if they are saved separately or structured differently for API
@@ -74,7 +74,7 @@ interface OTRecordSaveData;
 
 // Props for the modal - use defined types
 interface OTRecordModalProperties {
-  trigger: React.ReactNode;
+  trigger: React.ReactNode,
   bookingId: string;
   existingRecord?: OTRecord; // Use OTRecord type
   onSave: (recordData: OTRecordSaveData) => Promise<void>; // Use OTRecordSaveData type
@@ -87,26 +87,26 @@ export default const _OTRecordModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("procedure");
   const [formData, setFormData] = useState(() => ({
-    procedure_notes: existingRecord?.procedure_notes || "";
+    procedure_notes: existingRecord?.procedure_notes || "",
     procedure_start_time: existingRecord?.procedure_start_time;
       ? new Date(existingRecord.procedure_start_time).toISOString().slice(0, 16);
       : "",
     procedure_end_time: existingRecord?.procedure_end_time;
       ? new Date(existingRecord.procedure_end_time).toISOString().slice(0, 16);
       : "",
-    anesthesia_type: existingRecord?.anesthesia_type || "";
+    anesthesia_type: existingRecord?.anesthesia_type || "",
     anesthesia_notes: existingRecord?.anesthesia_notes || "";
     vitals: existingRecord?.vitals || {
-      bp_readings: [];
+      bp_readings: [],
       pulse_readings: [];
-      o2_saturation_readings: [];
-      temperature_readings: [];
+      o2_saturation_readings: [],
+      temperature_readings: []
     },
-    medications_administered: existingRecord?.medications_administered || [];
+    medications_administered: existingRecord?.medications_administered || [],
     complications: existingRecord?.complications || "";
-    blood_loss_ml: existingRecord?.blood_loss_ml || "";
+    blood_loss_ml: existingRecord?.blood_loss_ml || "",
     post_op_instructions: existingRecord?.post_op_instructions || "";
-    recovery_notes: existingRecord?.recovery_notes || "";
+    recovery_notes: existingRecord?.recovery_notes || ""
   }));
 
   // Mock data for checklist items - replace with fetched template if applicable
@@ -129,7 +129,7 @@ export default const _OTRecordModal = ({
   useEffect(() => {
     if (isOpen != null) {
       setFormData({
-        procedure_notes: existingRecord?.procedure_notes || "";
+        procedure_notes: existingRecord?.procedure_notes || "",
         procedure_start_time: existingRecord?.procedure_start_time;
           ? new Date(existingRecord.procedure_start_time);
               .toISOString();
@@ -140,19 +140,19 @@ export default const _OTRecordModal = ({
               .toISOString();
               .slice(0, 16);
           : "",
-        anesthesia_type: existingRecord?.anesthesia_type || "";
+        anesthesia_type: existingRecord?.anesthesia_type || "",
         anesthesia_notes: existingRecord?.anesthesia_notes || "";
         vitals: existingRecord?.vitals || {
-          bp_readings: [];
+          bp_readings: [],
           pulse_readings: [];
-          o2_saturation_readings: [];
-          temperature_readings: [];
+          o2_saturation_readings: [],
+          temperature_readings: []
         },
-        medications_administered: existingRecord?.medications_administered || [];
+        medications_administered: existingRecord?.medications_administered || [],
         complications: existingRecord?.complications || "";
-        blood_loss_ml: existingRecord?.blood_loss_ml || "";
+        blood_loss_ml: existingRecord?.blood_loss_ml || "",
         post_op_instructions: existingRecord?.post_op_instructions || "";
-        recovery_notes: existingRecord?.recovery_notes || "";
+        recovery_notes: existingRecord?.recovery_notes || ""
       });
 
       setChecklistItems(
@@ -172,13 +172,13 @@ export default const _OTRecordModal = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleChecklistChange = (id: string, checked: boolean) => {
     setChecklistItems((previous) =>
       previous.map((item) => (item.id === id ? { ...item, checked } : item));
-    );
+    )
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -193,30 +193,30 @@ export default const _OTRecordModal = ({
         (Number.isNaN(bloodLoss as number) || (bloodLoss as number) < 0);
       ) {
         toast({
-          title: "Error";
+          title: "Error",
           description: "Blood loss must be a non-negative number.";
-          variant: "destructive";
+          variant: "destructive"
         }),
         setIsSaving(false);
         return;
       }
 
       const apiData: OTRecordSaveData = {
-        procedure_notes: formData.procedure_notes;
+        procedure_notes: formData.procedure_notes,
         anesthesia_type: formData.anesthesia_type;
-        anesthesia_notes: formData.anesthesia_notes;
+        anesthesia_notes: formData.anesthesia_notes,
         complications: formData.complications;
-        post_op_instructions: formData.post_op_instructions;
+        post_op_instructions: formData.post_op_instructions,
         recovery_notes: formData.recovery_notes;
-        booking_id: bookingId;
+        booking_id: bookingId,
         procedure_start_time: formData.procedure_start_time;
           ? new Date(formData.procedure_start_time).toISOString();
           : null,
         procedure_end_time: formData.procedure_end_time;
           ? new Date(formData.procedure_end_time).toISOString();
           : null,
-        blood_loss_ml: bloodLoss ?? null;
-        checklist_responses: checklistItems;
+        blood_loss_ml: bloodLoss ?? null,
+        checklist_responses: checklistItems
       };
 
       // Replace with actual API call
@@ -239,7 +239,7 @@ export default const _OTRecordModal = ({
       await onSave(apiData); // Call parent callback to refresh data
 
       toast({
-        title: "Success";
+        title: "Success",
         description: `Operation record ${existingRecord ? "updated" : "created"} successfully.`,
       }),
       setIsOpen(false);
@@ -251,9 +251,9 @@ export default const _OTRecordModal = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error";
+        title: "Error",
         description: errorMessage;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSaving(false);

@@ -13,14 +13,14 @@ export interface MaintenanceRequestFilter {
   requestType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
+  page: number,
   limit: number
 export interface CreateMaintenanceRequestData {
   locationId: string;
   assetId?: string;
-  requestType: string;
+  requestType: string,
   description: string;
-  priority: string;
+  priority: string,
   requestedBy: string;
   scheduledDate?: Date;
   estimatedHours?: number;
@@ -57,29 +57,29 @@ export class MaintenanceService {
       prisma.maintenanceRequest.findMany({
         where,
         include: {
-          location: true;
+          location: true,
           asset: true;
           requestedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           workOrders: {
             include: {
               assignedToUser: {
                 select: {
-                  id: true;
+                  id: true,
                   name: true;
-                  email: true;
+                  email: true
                 }
               }
             }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { createdAt: 'desc' }
       }),
       prisma.maintenanceRequest.count({ where })
@@ -89,13 +89,13 @@ export class MaintenanceService {
     const fhirRequests = requests.map(request => toFHIRMaintenanceRequest(request));
 
     return {
-      data: requests;
+      data: requests,
       fhir: fhirRequests;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -152,20 +152,20 @@ export class MaintenanceService {
         requestType,
         description,
         priority,
-        status: 'PENDING';
+        status: 'PENDING',
         requestedById: requestedBy;
         scheduledDate,
         estimatedHours,
         notes;
       },
       include: {
-        location: true;
+        location: true,
         asset: true;
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -173,25 +173,25 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MAINTENANCE_REQUEST';
-      entityId: request.id;
+      entityId: request.id,
       userId: requestedBy;
       details: `Created ${requestType} maintenance request for ${assetId ? request.asset?.name : location.name}`
     });
 
     // Send notification to maintenance staff
     await this.notificationService.sendNotification({
-      type: 'MAINTENANCE_REQUEST';
+      type: 'MAINTENANCE_REQUEST',
       title: `New ${priority} Maintenance Request`,
       message: `A new ${requestType} request has been created for ${assetId ? request.asset?.name : location.name}`,
       recipientRoles: ['MAINTENANCE_MANAGER', 'MAINTENANCE_STAFF'],
-      entityId: request.id;
+      entityId: request.id,
       metadata: {
-        requestId: request.id;
+        requestId: request.id,
         locationId: locationId;
-        assetId: assetId;
-        priority: priority;
+        assetId: assetId,
+        priority: priority
       }
     });
 
@@ -205,25 +205,25 @@ export class MaintenanceService {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id },
       include: {
-        location: true;
+        location: true,
         asset: true;
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         workOrders: {
           include: {
             assignedToUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             },
-            parts: true;
+            parts: true
           }
         }
       }
@@ -235,8 +235,8 @@ export class MaintenanceService {
 
     if (includeFHIR != null) {
       return {
-        data: request;
-        fhir: toFHIRMaintenanceRequest(request);
+        data: request,
+        fhir: toFHIRMaintenanceRequest(request)
       };
     }
 
@@ -250,8 +250,8 @@ export class MaintenanceService {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id },
       include: {
-        location: true;
-        asset: true;
+        location: true,
+        asset: true
       }
     });
 
@@ -266,7 +266,7 @@ export class MaintenanceService {
     if (isCompleting != null) {
       const incompleteWorkOrders = await prisma.maintenanceWorkOrder.count({
         where: {
-          requestId: id;
+          requestId: id,
           status: { notIn: ['COMPLETED', 'CANCELLED'] }
         }
       });
@@ -283,8 +283,8 @@ export class MaintenanceService {
         await prisma.asset.update({
           where: { id: request.assetId },
           data: {
-            status: 'OPERATIONAL';
-            lastMaintenanceDate: new Date();
+            status: 'OPERATIONAL',
+            lastMaintenanceDate: new Date()
           }
         });
       }
@@ -294,22 +294,22 @@ export class MaintenanceService {
       where: { id },
       data,
       include: {
-        location: true;
+        location: true,
         asset: true;
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         workOrders: {
           include: {
             assignedToUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           }
@@ -319,7 +319,7 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MAINTENANCE_REQUEST';
       entityId: id;
       userId,
@@ -328,16 +328,16 @@ export class MaintenanceService {
     // Send notification if status changed
     if (data?.status && data.status !== request.status) {
       await this.notificationService.sendNotification({
-        type: 'MAINTENANCE_STATUS_CHANGE';
+        type: 'MAINTENANCE_STATUS_CHANGE',
         title: `Maintenance Request Status Updated`;
         message: `Request for ${request.asset ? request.asset.name : request.location.name} is now ${data.status}`,
-        recipientRoles: ['MAINTENANCE_MANAGER'];
+        recipientRoles: ['MAINTENANCE_MANAGER'],
         recipientIds: [request.requestedById];
-        entityId: request.id;
+        entityId: request.id,
         metadata: {
-          requestId: request.id;
+          requestId: request.id,
           oldStatus: request.status;
-          newStatus: data.status;
+          newStatus: data.status
         }
       });
     }
@@ -352,8 +352,8 @@ export class MaintenanceService {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id: requestId },
       include: {
-        location: true;
-        asset: true;
+        location: true,
+        asset: true
       }
     });
 
@@ -386,20 +386,20 @@ export class MaintenanceService {
     const workOrder = await prisma.maintenanceWorkOrder.create({
       data: {
         requestId,
-        description: data.description;
+        description: data.description,
         status: 'PENDING';
-        assignedToId: data.assignedToId;
+        assignedToId: data.assignedToId,
         createdById: userId;
-        notes: data.notes;
+        notes: data.notes,
         laborCost: data.laborCost;
-        materialCost: data.materialCost;
+        materialCost: data.materialCost
       },
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -407,7 +407,7 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MAINTENANCE_WORK_ORDER';
       entityId: workOrder.id;
       userId,
@@ -417,16 +417,16 @@ export class MaintenanceService {
     // Send notification to assigned staff
     if (data.assignedToId) {
       await this.notificationService.sendNotification({
-        type: 'MAINTENANCE_WORK_ORDER_ASSIGNED';
+        type: 'MAINTENANCE_WORK_ORDER_ASSIGNED',
         title: `New Maintenance Work Order Assigned`;
         message: `You have been assigned a new work order: ${data.description}`,
-        recipientIds: [data.assignedToId];
+        recipientIds: [data.assignedToId],
         entityId: workOrder.id;
         metadata: {
-          workOrderId: workOrder.id;
+          workOrderId: workOrder.id,
           requestId: requestId;
-          locationId: request.locationId;
-          assetId: request.assetId;
+          locationId: request.locationId,
+          assetId: request.assetId
         }
       });
     }
@@ -443,7 +443,7 @@ export class MaintenanceService {
       include: {
         request: {
           include: {
-            asset: true;
+            asset: true
           }
         }
       }
@@ -495,24 +495,24 @@ export class MaintenanceService {
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         request: {
           include: {
-            location: true;
-            asset: true;
+            location: true,
+            asset: true
           }
         },
-        parts: true;
+        parts: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MAINTENANCE_WORK_ORDER';
       entityId: id;
       userId,
@@ -531,9 +531,9 @@ export class MaintenanceService {
         await prisma.maintenanceRequest.update({
           where: { id: workOrder.requestId },
           data: {
-            status: 'COMPLETED';
-            completedDate: new Date();
-            actualHours: allWorkOrders.reduce((total, wo) => total + (wo.duration || 0), 0);
+            status: 'COMPLETED',
+            completedDate: new Date(),
+            actualHours: allWorkOrders.reduce((total, wo) => total + (wo.duration || 0), 0)
           }
         });
 
@@ -542,23 +542,23 @@ export class MaintenanceService {
           await prisma.asset.update({
             where: { id: workOrder.request.assetId },
             data: {
-              status: 'OPERATIONAL';
-              lastMaintenanceDate: new Date();
+              status: 'OPERATIONAL',
+              lastMaintenanceDate: new Date()
             }
           });
         }
 
         // Send notification that request is complete
         await this.notificationService.sendNotification({
-          type: 'MAINTENANCE_REQUEST_COMPLETED';
+          type: 'MAINTENANCE_REQUEST_COMPLETED',
           title: `Maintenance Request Completed`;
           message: `Request for ${workOrder.request.asset ? workOrder.request.asset.name : workOrder.request.location.name} has been completed`,
-          recipientIds: [workOrder.request.requestedById];
+          recipientIds: [workOrder.request.requestedById],
           entityId: workOrder.requestId;
           metadata: {
-            requestId: workOrder.requestId;
+            requestId: workOrder.requestId,
             locationId: workOrder.request.locationId;
-            assetId: workOrder.request.assetId;
+            assetId: workOrder.request.assetId
           }
         });
       }
@@ -601,7 +601,7 @@ export class MaintenanceService {
         await prisma.maintenanceInventory.update({
           where: { id: part.inventoryItemId },
           data: {
-            currentStock: inventoryItem.currentStock - part.quantity;
+            currentStock: inventoryItem.currentStock - part.quantity
           }
         });
 
@@ -619,9 +619,9 @@ export class MaintenanceService {
       await prisma.maintenancePart.create({
         data: {
           workOrderId,
-          partName: part.partName;
+          partName: part.partName,
           partNumber: part.partNumber;
-          quantity: part.quantity;
+          quantity: part.quantity,
           unitCost: part.unitCost;
           totalCost;
         }
@@ -632,24 +632,24 @@ export class MaintenanceService {
     const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({
       where: { id: workOrderId },
       data: {
-        materialCost: (workOrder.materialCost || 0) + totalMaterialCost;
+        materialCost: (workOrder.materialCost || 0) + totalMaterialCost
       },
       include: {
-        parts: true;
+        parts: true,
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
-        request: true;
+        request: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MAINTENANCE_WORK_ORDER';
       entityId: workOrderId;
       userId,
@@ -675,13 +675,13 @@ export class MaintenanceService {
       prisma.asset.findMany({
         where,
         include: {
-          location: true;
+          location: true,
           _count: {
             select: { maintenanceRequests: true }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { name: 'asc' }
       }),
       prisma.asset.count({ where })
@@ -691,13 +691,13 @@ export class MaintenanceService {
     const fhirAssets = assets.map(asset => toFHIRAsset(asset));
 
     return {
-      data: assets;
+      data: assets,
       fhir: fhirAssets;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -709,12 +709,12 @@ export class MaintenanceService {
     const asset = await prisma.asset.findUnique({
       where: { id },
       include: {
-        location: true;
+        location: true,
         maintenanceRequests: {
-          take: 5;
+          take: 5,
           orderBy: { createdAt: 'desc' }
         },
-        maintenanceSchedules: true;
+        maintenanceSchedules: true
       }
     });
 
@@ -724,8 +724,8 @@ export class MaintenanceService {
 
     if (includeFHIR != null) {
       return {
-        data: asset;
-        fhir: toFHIRAsset(asset);
+        data: asset,
+        fhir: toFHIRAsset(asset)
       };
     }
 
@@ -764,18 +764,18 @@ export class MaintenanceService {
         serialNumber,
         manufacturer,
         model,
-        purchaseDate: purchaseDate ? new Date(purchaseDate) : undefined;
+        purchaseDate: purchaseDate ? new Date(purchaseDate) : undefined,
         warrantyExpiry: warrantyExpiry ? new Date(warrantyExpiry) : undefined;
-        status: 'OPERATIONAL';
+        status: 'OPERATIONAL'
       },
       include: {
-        location: true;
+        location: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'ASSET';
       entityId: asset.id;
       userId,
@@ -801,13 +801,13 @@ export class MaintenanceService {
       where: { id },
       data,
       include: {
-        location: true;
+        location: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'ASSET';
       entityId: id;
       userId,
@@ -831,13 +831,13 @@ export class MaintenanceService {
     return prisma.maintenanceSchedule.findMany({
       where,
       include: {
-        asset: true;
+        asset: true,
         location: true;
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       },
@@ -900,16 +900,16 @@ export class MaintenanceService {
         taskTemplate,
         isActive: true;
         nextRun,
-        createdById: userId;
+        createdById: userId
       },
       include: {
-        asset: true;
+        asset: true,
         location: true;
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -917,7 +917,7 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MAINTENANCE_SCHEDULE';
       entityId: schedule.id;
       userId,
@@ -942,8 +942,8 @@ export class MaintenanceService {
     const schedule = await prisma.maintenanceSchedule.findUnique({
       where: { id },
       include: {
-        asset: true;
-        location: true;
+        asset: true,
+        location: true
       }
     });
 
@@ -972,13 +972,13 @@ export class MaintenanceService {
       where: { id },
       data,
       include: {
-        asset: true;
+        asset: true,
         location: true;
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -986,7 +986,7 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MAINTENANCE_SCHEDULE';
       entityId: id;
       userId,
@@ -1013,14 +1013,14 @@ export class MaintenanceService {
     // Find all active schedules that are due
     const dueSchedules = await prisma.maintenanceSchedule.findMany({
       where: {
-        isActive: true;
+        isActive: true,
         nextRun: {
-          lte: now;
+          lte: now
         }
       },
       include: {
-        asset: true;
-        location: true;
+        asset: true,
+        location: true
       }
     });
 
@@ -1032,14 +1032,14 @@ export class MaintenanceService {
         // Create a new request based on the schedule
         await prisma.maintenanceRequest.create({
           data: {
-            locationId: schedule.locationId || schedule.asset?.locationId || '';
+            locationId: schedule.locationId || schedule.asset?.locationId || '',
             assetId: schedule.assetId;
-            requestType: 'PREVENTIVE';
+            requestType: 'PREVENTIVE',
             description: `Scheduled ${schedule.scheduleType.toLowerCase()} maintenance for ${schedule.asset ? schedule.asset.name : schedule.location?.name}`,
-            priority: 'MEDIUM';
+            priority: 'MEDIUM',
             status: 'PENDING';
-            requestedById: userId;
-            scheduledDate: new Date();
+            requestedById: userId,
+            scheduledDate: new Date(),
             notes: `Automatically generated from schedule ${schedule.id}`;
           }
         });
@@ -1090,7 +1090,7 @@ export class MaintenanceService {
     const where: unknown = {};
     if (specialty != null) {
       where.specialties = {
-        has: specialty;
+        has: specialty
       };
     }
 
@@ -1098,19 +1098,19 @@ export class MaintenanceService {
       prisma.maintenanceVendor.findMany({
         where,
         skip,
-        take: limit;
+        take: limit,
         orderBy: { name: 'asc' }
       }),
       prisma.maintenanceVendor.count({ where })
     ]);
 
     return {
-      data: vendors;
+      data: vendors,
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -1125,7 +1125,7 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MAINTENANCE_VENDOR';
       entityId: vendor.id;
       userId,
@@ -1146,7 +1146,7 @@ export class MaintenanceService {
     if (itemType != null) where.itemType = itemType;
     if (lowStock === true) {
       where.currentStock = {
-        lte: prisma.maintenanceInventory.fields.minimumStock;
+        lte: prisma.maintenanceInventory.fields.minimumStock
       };
     }
 
@@ -1154,19 +1154,19 @@ export class MaintenanceService {
       prisma.maintenanceInventory.findMany({
         where,
         skip,
-        take: limit;
+        take: limit,
         orderBy: { itemName: 'asc' }
       }),
       prisma.maintenanceInventory.count({ where })
     ]);
 
     return {
-      data: items;
+      data: items,
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -1195,7 +1195,7 @@ export class MaintenanceService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MAINTENANCE_INVENTORY';
       entityId: id;
       userId,
@@ -1206,15 +1206,15 @@ export class MaintenanceService {
     // Check if item is low on stock after update
     if (updatedItem.currentStock <= updatedItem.minimumStock) {
       await this.notificationService.sendNotification({
-        type: 'MAINTENANCE_INVENTORY_LOW';
+        type: 'MAINTENANCE_INVENTORY_LOW',
         title: `Low Inventory Alert`;
         message: `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
         recipientRoles: ['MAINTENANCE_MANAGER', 'INVENTORY_MANAGER'],
-        entityId: updatedItem.id;
+        entityId: updatedItem.id,
         metadata: {
-          itemId: updatedItem.id;
+          itemId: updatedItem.id,
           currentStock: updatedItem.currentStock;
-          minimumStock: updatedItem.minimumStock;
+          minimumStock: updatedItem.minimumStock
         }
       });
     }
@@ -1249,24 +1249,24 @@ export class MaintenanceService {
 
     // Get request counts by status
     const requestsByStatus = await prisma.maintenanceRequest.groupBy({
-      by: ['status'];
+      by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get request counts by type
     const requestsByType = await prisma.maintenanceRequest.groupBy({
-      by: ['requestType'];
+      by: ['requestType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get average completion time
@@ -1280,44 +1280,44 @@ export class MaintenanceService {
 
     // Get asset maintenance frequency
     const assetMaintenance = await prisma.maintenanceRequest.groupBy({
-      by: ['assetId'];
+      by: ['assetId'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         assetId: {
-          not: null;
+          not: null
         }
       },
-      _count: true;
+      _count: true,
       orderBy: {
         _count: {
-          assetId: 'desc';
+          assetId: 'desc'
         }
       },
-      take: 10;
+      take: 10
     });
 
     // Get asset details for top assets
     const assetDetails = await prisma.asset.findMany({
       where: {
         id: {
-          in: assetMaintenance.map(am => am.assetId as string);
+          in: assetMaintenance.map(am => am.assetId as string)
         }
       },
       select: {
-        id: true;
+        id: true,
         name: true;
-        assetType: true;
+        assetType: true
       }
     });
 
     // Map asset names to the maintenance frequency
     const assetMaintenanceWithNames = assetMaintenance.map(am => ({
-      assetId: am.assetId;
+      assetId: am.assetId,
       count: am._count;
-      name: assetDetails.find(a => a.id === am.assetId)?.name || 'Unknown';
-      assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || 'Unknown';
+      name: assetDetails.find(a => a.id === am.assetId)?.name || 'Unknown',
+      assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || 'Unknown'
     }));
 
     // Get cost analysis
@@ -1338,7 +1338,7 @@ export class MaintenanceService {
       completionTime,
       assetMaintenance: assetMaintenanceWithNames;
       costAnalysis,
-      period;
+      period
     };
   }
 
@@ -1346,9 +1346,9 @@ export class MaintenanceService {
    * Calculate next run date for a schedule;
    */
   private calculateNextRunDate(
-    scheduleType: string;
+    scheduleType: string,
     frequency: number;
-    dayOfWeek: number | null;
+    dayOfWeek: number | null,
     timeOfDay: Date | null;
     baseDate: Date = new Date();
   ): Date {
@@ -1362,7 +1362,7 @@ export class MaintenanceService {
       result.setMilliseconds(0);
     } else {
       // Default to 9:00 AM
-      result.setHours(9);
+      result.setHours(9),
       result.setMinutes(0);
       result.setSeconds(0);
       result.setMilliseconds(0);

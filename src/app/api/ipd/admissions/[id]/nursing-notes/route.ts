@@ -80,11 +80,11 @@ export const _GET = async (
 
     return NextResponse.json({
       admission,
-      nursing_notes: nursingNotesResult.results || [], // Changed .rows to .results;
+      nursing_notes: nursingNotesResult.results || [], // Changed .rows to .results
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch nursing notes", details: errorMessage },
       { status: 500 }
@@ -137,7 +137,7 @@ export const _POST = async (
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
-        ? (admissionResult.results[0] as { id: string; status: string }) // Changed .rows to .results
+        ? (admissionResult.results[0] as { id: string, status: string }) // Changed .rows to .results
         : undefined;
 
     if (!admission) {
@@ -181,7 +181,7 @@ export const _POST = async (
     );
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create nursing note", details: errorMessage },
       { status: 500 }

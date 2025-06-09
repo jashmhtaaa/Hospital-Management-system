@@ -41,10 +41,10 @@ export const POST = async (
     const amendment = await clinicalDocumentationService.createAmendment(
       params.id,
       {
-        amendmentType: body.amendmentType;
+        amendmentType: body.amendmentType,
         amendmentReason: body.amendmentReason;
-        content: body.content;
-        status: body.status;
+        content: body.content,
+        status: body.status
       },
       session.user.id;
     );

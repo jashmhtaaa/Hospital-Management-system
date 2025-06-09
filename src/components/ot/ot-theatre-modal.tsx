@@ -27,9 +27,9 @@ import { useToast } from "@/components/ui/use-toast";
 // Define Theatre interface
 interface Theatre {
   id?: string; // Optional for new theatres
-  name: string;
+  name: string,
   location: string | null;
-  specialty: string | null;
+  specialty: string | null,
   status: string;
   equipment?: string | null; // Assuming simple text for now
   updated_at?: string; // Optional
@@ -37,11 +37,11 @@ interface Theatre {
 
 // Define the type for data passed to onSave
 interface TheatreSaveData {
-  name: string;
+  name: string,
   location: string | null;
-  specialty: string | null;
+  specialty: string | null,
   status: string;
-  equipment: string | null;
+  equipment: string | null
 }
 
 // Props for the modal - use defined types
@@ -56,11 +56,11 @@ export default const _OTTheatreModal = ({
 }: OTTheatreModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
-    name: theatre?.name || "";
+    name: theatre?.name || "",
     location: theatre?.location || "";
-    specialty: theatre?.specialty || "";
+    specialty: theatre?.specialty || "",
     status: theatre?.status || "available";
-    equipment: theatre?.equipment || "";
+    equipment: theatre?.equipment || ""
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
@@ -69,11 +69,11 @@ export default const _OTTheatreModal = ({
   useEffect(() => {
     if (isOpen != null) {
       setFormData({
-        name: theatre?.name || "";
+        name: theatre?.name || "",
         location: theatre?.location || "";
-        specialty: theatre?.specialty || "";
+        specialty: theatre?.specialty || "",
         status: theatre?.status || "available";
-        equipment: theatre?.equipment || "";
+        equipment: theatre?.equipment || ""
       });
     } else {
       // Optionally clear form when closed
@@ -85,11 +85,11 @@ export default const _OTTheatreModal = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -97,11 +97,11 @@ export default const _OTTheatreModal = ({
     setIsSaving(true);
     try {
       const apiData: TheatreSaveData = {
-        name: formData.name;
+        name: formData.name,
         location: formData.location || null;
-        specialty: formData.specialty || null;
+        specialty: formData.specialty || null,
         status: formData.status;
-        equipment: formData.equipment || null;
+        equipment: formData.equipment || null
       };
 
       // Replace with actual API call
@@ -124,7 +124,7 @@ export default const _OTTheatreModal = ({
       await onSave(apiData); // Call parent callback to refresh list
 
       toast({
-        title: "Success";
+        title: "Success",
         description: `Theatre ${theatre ? "updated" : "created"} successfully.`,
       }),
       setIsOpen(false);
@@ -136,9 +136,9 @@ export default const _OTTheatreModal = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error";
+        title: "Error",
         description: errorMessage;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSaving(false);

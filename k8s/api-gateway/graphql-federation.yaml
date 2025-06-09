@@ -167,49 +167,49 @@ spec:
         app: graphql-federation-gateway
     spec:
       containers:
-      - name: apollo-gateway
-        image: hms-registry.example.com/graphql-federation-gateway:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 4000
-        env:
-        - name: NODE_ENV
-          value: production
-        - name: PORT
-          value: "4000"
-        - name: APOLLO_KEY
-          valueFrom:
-            secretKeyRef:
-              name: apollo-key
-              key: key
-        - name: APOLLO_GRAPH_REF
-          value: hms-graph@production
-        volumeMounts:
-        - name: config-volume
-          mountPath: /app/config
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
-        readinessProbe:
-          httpGet:
-            path: /.well-known/apollo/server-health
-            port: 4000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /.well-known/apollo/server-health
-            port: 4000
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        - name: apollo-gateway
+          image: hms-registry.example.com/graphql-federation-gateway:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: '4000'
+            - name: APOLLO_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: apollo-key
+                  key: key
+            - name: APOLLO_GRAPH_REF
+              value: hms-graph@production
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          readinessProbe:
+            httpGet:
+              path: /.well-known/apollo/server-health
+              port: 4000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /.well-known/apollo/server-health
+              port: 4000
+            initialDelaySeconds: 30
+            periodSeconds: 10
       volumes:
-      - name: config-volume
-        configMap:
-          name: graphql-federation-config
+        - name: config-volume
+          configMap:
+            name: graphql-federation-config
 ---
 apiVersion: v1
 kind: Service
@@ -220,8 +220,8 @@ spec:
   selector:
     app: graphql-federation-gateway
   ports:
-  - port: 80
-    targetPort: 4000
+    - port: 80
+      targetPort: 4000
   type: ClusterIP
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -231,18 +231,18 @@ metadata:
   namespace: hms
 spec:
   hosts:
-  - "graphql.hms.health"
+    - 'graphql.hms.health'
   gateways:
-  - hms-gateway
+    - hms-gateway
   http:
-  - match:
-    - uri:
-        prefix: /graphql
-    route:
-    - destination:
-        host: graphql-federation
-        port:
-          number: 80
+    - match:
+        - uri:
+            prefix: /graphql
+      route:
+        - destination:
+            host: graphql-federation
+            port:
+              number: 80
 ---
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
@@ -254,18 +254,18 @@ spec:
     matchLabels:
       app: graphql-federation-gateway
   rules:
-  - from:
-    - source:
-        principals: ["cluster.local/ns/hms/sa/frontend-service"]
-    to:
-    - operation:
-        methods: ["POST", "OPTIONS"]
-    when:
-    - key: request.auth.claims[iss]
-      values: ["https://auth.hms.health"]
-  - from:
-    - source:
-        namespaces: ["hms"]
-    to:
-    - operation:
-        methods: ["POST", "OPTIONS"]
+    - from:
+        - source:
+            principals: ['cluster.local/ns/hms/sa/frontend-service']
+      to:
+        - operation:
+            methods: ['POST', 'OPTIONS']
+      when:
+        - key: request.auth.claims[iss]
+          values: ['https://auth.hms.health']
+    - from:
+        - source:
+            namespaces: ['hms']
+      to:
+        - operation:
+            methods: ['POST', 'OPTIONS']

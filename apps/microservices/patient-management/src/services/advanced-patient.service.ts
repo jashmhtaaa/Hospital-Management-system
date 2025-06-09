@@ -16,21 +16,21 @@ import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
 
 export interface EnhancedPatient {
   // Core Demographics
-  id: string;
+  id: string,
   medicalRecordNumber: string;
   externalPatientId?: string;
   firstName: string;
   middleName?: string;
-  lastName: string;
+  lastName: string,
   dateOfBirth: Date;
-  age: number;
+  age: number,
   gender: Gender;
   biologicalSex: BiologicalSex;
   preferredName?: string;
   preferredPronouns?: string;
 
   // Contact Information
-  contactInfo: ContactInformation;
+  contactInfo: ContactInformation,
   emergencyContacts: EmergencyContact[];
 
   // Demographics
@@ -40,19 +40,19 @@ export interface EnhancedPatient {
   clinicalProfile: ClinicalProfile;
 
   // Insurance & Financial
-  insurance: InsuranceInformation[];
+  insurance: InsuranceInformation[],
   financialProfile: FinancialProfile;
 
   // Care Team & Relationships
-  careTeam: CareTeamMember[];
+  careTeam: CareTeamMember[],
   relationships: PatientRelationship[];
 
   // Preferences & Directives
-  preferences: PatientPreferences;
+  preferences: PatientPreferences,
   advanceDirectives: AdvanceDirective[];
 
   // Alerts & Flags
-  alerts: PatientAlert[];
+  alerts: PatientAlert[],
   flags: PatientFlag[];
 
   // Risk Assessments
@@ -65,18 +65,18 @@ export interface EnhancedPatient {
   analytics: PatientAnalytics;
 
   // Consent & Privacy
-  consents: ConsentRecord[];
+  consents: ConsentRecord[],
   privacySettings: PrivacySettings;
 
   // Audit Trail
   auditTrail: PatientAuditEvent[];
 
   // System Fields
-  status: PatientStatus;
+  status: PatientStatus,
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date,
   lastActivity: Date;
-  createdBy: string;
+  createdBy: string,
   lastModifiedBy: string;
   version: number;
   mergedWith?: string[];
@@ -97,9 +97,9 @@ export interface ContactInformation {
   primaryPhone?: string;
   secondaryPhone?: string;
   email?: string;
-  preferredContactMethod: ContactMethod;
+  preferredContactMethod: ContactMethod,
   preferredContactTime: ContactTime;
-  addresses: Address[];
+  addresses: Address[],
   communicationPreferences: CommunicationPreferences
 export enum ContactMethod {
   PHONE = 'PHONE',
@@ -109,20 +109,20 @@ export enum ContactMethod {
   PORTAL = 'PORTAL',
   IN_PERSON = 'IN_PERSON',
 export interface ContactTime {
-  preferredTime: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'ANYTIME';
+  preferredTime: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'ANYTIME',
   timeZone: string;
   availableDays: string[];
   restrictions?: string;
 export interface Address {
-  id: string;
+  id: string,
   type: AddressType;
   line1: string;
   line2?: string;
-  city: string;
+  city: string,
   state: string;
-  postalCode: string;
+  postalCode: string,
   country: string;
-  isPrimary: boolean;
+  isPrimary: boolean,
   isActive: boolean;
   period?: DateRange;
   geoCoordinates?: GeoCoordinates;
@@ -135,35 +135,35 @@ export enum AddressType {
   MAILING = 'MAILING',
   OTHER = 'OTHER',
 export interface GeoCoordinates {
-  latitude: number;
+  latitude: number,
   longitude: number;
   accuracy?: number;
 export interface DateRange {
   start?: Date;
   end?: Date;
 export interface CommunicationPreferences {
-  language: string;
+  language: string,
   interpreter: boolean;
   interpreterLanguage?: string;
-  communicationAids: string[];
+  communicationAids: string[],
   specialNeeds: string[];
   contactRestrictions: ContactRestriction[]
 export interface ContactRestriction {
-  type: 'TIME' | 'METHOD' | 'PERSON' | 'CONTENT';
+  type: 'TIME' | 'METHOD' | 'PERSON' | 'CONTENT',
   description: string;
   restriction: string;
   reason?: string;
   effectiveDate: Date;
   expirationDate?: Date;
 export interface EmergencyContact {
-  id: string;
+  id: string,
   name: string;
-  relationship: string;
+  relationship: string,
   phone: string;
   alternatePhone?: string;
   email?: string;
   address?: Address;
-  isPrimary: boolean;
+  isPrimary: boolean,
   canMakeDecisions: boolean;
   restrictions?: string;
   notes?: string;
@@ -177,7 +177,7 @@ export interface Demographics {
   occupation?: string;
   employer?: string;
   education?: EducationLevel;
-  primaryLanguage: string;
+  primaryLanguage: string,
   secondaryLanguages: string[];
   citizenship?: string;
   countryOfBirth?: string;
@@ -204,31 +204,31 @@ export enum EducationLevel {
   UNKNOWN = 'UNKNOWN',
 export interface ClinicalProfile {
   primaryPhysician?: string;
-  allergies: AllergyInformation[];
+  allergies: AllergyInformation[],
   medications: MedicationInformation[];
-  medicalHistory: MedicalHistory[];
+  medicalHistory: MedicalHistory[],
   surgicalHistory: SurgicalHistory[];
-  familyHistory: FamilyHistory[];
+  familyHistory: FamilyHistory[],
   socialHistory: SocialHistory;
-  immunizations: Immunization[];
+  immunizations: Immunization[],
   vitalSignsSummary: VitalSignsSummary;
-  chronicConditions: ChronicCondition[];
+  chronicConditions: ChronicCondition[],
   disabilities: Disability[];
-  functionalStatus: FunctionalStatus;
+  functionalStatus: FunctionalStatus,
   cognitiveStatus: CognitiveStatus;
   mentalHealthStatus: MentalHealthStatus
 export interface AllergyInformation {
-  id: string;
+  id: string,
   allergen: string;
-  allergenType: AllergenType;
+  allergenType: AllergenType,
   reaction: string;
   severity: AllergySeverity;
   onsetDate?: Date;
   endDate?: Date;
-  status: AllergyStatus;
+  status: AllergyStatus,
   verificationStatus: VerificationStatus;
   notes?: string;
-  reportedBy: string;
+  reportedBy: string,
   reportedDate: Date;
   lastReviewed?: Date;
   reviewedBy?: string;
@@ -256,15 +256,15 @@ export enum VerificationStatus {
   REFUTED = 'REFUTED',
   ENTERED_IN_ERROR = 'ENTERED_IN_ERROR',
 export interface MedicationInformation {
-  id: string;
+  id: string,
   name: string;
   genericName?: string;
-  dosage: string;
+  dosage: string,
   route: string;
-  frequency: string;
+  frequency: string,
   startDate: Date;
   endDate?: Date;
-  prescriber: string;
+  prescriber: string,
   indication: string;
   status: MedicationStatus;
   adherence?: AdherenceInformation;
@@ -280,17 +280,17 @@ export enum MedicationStatus {
   NEVER_TAKEN = 'NEVER_TAKEN',
 export interface AdherenceInformation {
   adherenceRate: number; // 0-100%
-  lastAssessment: Date;
+  lastAssessment: Date,
   barriers: string[];
-  interventions: string[];
+  interventions: string[],
   monitoringMethod: 'SELF_REPORT' | 'PILL_COUNT' | 'PHARMACY_REFILL' | 'ELECTRONIC_MONITORING'
 export interface EffectivenessRating {
   rating: number; // 1-10
-  assessmentDate: Date;
+  assessmentDate: Date,
   assessedBy: string;
   notes?: string;
 export interface MedicalHistory {
-  id: string;
+  id: string,
   condition: string;
   icd10Code?: string;
   snomedCode?: string;
@@ -310,17 +310,17 @@ export enum ConditionStatus {
   REMISSION = 'REMISSION',
   RESOLVED = 'RESOLVED',
 export interface SurgicalHistory {
-  id: string;
+  id: string,
   procedure: string;
   cptCode?: string;
-  surgeryDate: Date;
+  surgeryDate: Date,
   surgeon: string;
   facility: string;
   complications?: string[];
   outcome: string;
   notes?: string;
 export interface FamilyHistory {
-  id: string;
+  id: string,
   relationship: FamilyRelationship;
   condition: string;
   ageOfOnset?: number;
@@ -347,14 +347,14 @@ export interface SocialHistory {
   smokingDetails?: SmokingDetails;
   alcoholUse: AlcoholUseStatus;
   alcoholDetails?: AlcoholDetails;
-  substanceUse: SubstanceUse[];
+  substanceUse: SubstanceUse[],
   exerciseHabits: ExerciseHabits;
-  dietaryHabits: DietaryHabits;
+  dietaryHabits: DietaryHabits,
   sleepPatterns: SleepPatterns;
   sexualHistory?: SexualHistory;
-  environmentalExposures: EnvironmentalExposure[];
+  environmentalExposures: EnvironmentalExposure[],
   socialSupport: SocialSupport;
-  stressFactors: string[];
+  stressFactors: string[],
   copingMechanisms: string[]
 export enum SmokingStatus {
   NEVER_SMOKER = 'NEVER_SMOKER',
@@ -381,14 +381,14 @@ export interface AlcoholDetails {
   quitDate?: Date;
   problemDrinking?: boolean;
 export interface SubstanceUse {
-  substance: string;
+  substance: string,
   status: 'CURRENT' | 'FORMER' | 'NEVER';
   frequency?: string;
   route?: string;
   lastUse?: Date;
   treatmentHistory?: string;
 export interface ExerciseHabits {
-  frequency: string;
+  frequency: string,
   type: string[];
   duration?: number; // minutes
   intensity?: 'LOW' | 'MODERATE' | 'HIGH';
@@ -401,7 +401,7 @@ export interface DietaryHabits {
   waterIntake?: number; // glasses per day
   calorieIntake?: number;
 export interface SleepPatterns {
-  averageHours: number;
+  averageHours: number,
   sleepQuality: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT';
   sleepDisorders?: string[];
   sleepAids?: string[];
@@ -415,7 +415,7 @@ export interface SexualHistory {
   lastStiScreening?: Date;
   pregnancyHistory?: PregnancyHistory[];
 export interface PregnancyHistory {
-  pregnancyNumber: number;
+  pregnancyNumber: number,
   outcome: 'LIVE_BIRTH' | 'STILLBIRTH' | 'MISCARRIAGE' | 'ABORTION';
   gestationalAge?: number;
   complications?: string[];
@@ -428,14 +428,14 @@ export interface EnvironmentalExposure {
   protectiveEquipment?: boolean;
   healthEffects?: string[];
 export interface SocialSupport {
-  familySupport: 'STRONG' | 'MODERATE' | 'WEAK' | 'NONE';
+  familySupport: 'STRONG' | 'MODERATE' | 'WEAK' | 'NONE',
   friendSupport: 'STRONG' | 'MODERATE' | 'WEAK' | 'NONE';
   communityInvolvement: string[];
   religiousAffiliation?: string;
   caregiver?: string;
   supportGroups?: string[];
 export interface Immunization {
-  id: string;
+  id: string,
   vaccine: string;
   vaccineCode?: string;
   administrationDate: Date;
@@ -461,49 +461,49 @@ export interface VitalSignsSummary {
   oxygenSaturation?: VitalSignMeasurement;
   painScore?: VitalSignMeasurement;
 export interface VitalSignMeasurement {
-  value: number;
+  value: number,
   unit: string;
-  _timestamp: Date;
+  _timestamp: Date,
   measuredBy: string;
   method?: string;
   position?: string;
 export interface BloodPressureMeasurement {
-  systolic: number;
+  systolic: number,
   diastolic: number;
-  unit: string;
+  unit: string,
   _timestamp: Date;
   measuredBy: string;
   method?: string;
   position?: string;
   cuffSize?: string;
 export interface ChronicCondition {
-  id: string;
+  id: string,
   condition: string;
   icd10Code?: string;
-  diagnosisDate: Date;
+  diagnosisDate: Date,
   severity: 'MILD' | 'MODERATE' | 'SEVERE';
-  controlStatus: 'WELL_CONTROLLED' | 'POORLY_CONTROLLED' | 'UNCONTROLLED';
+  controlStatus: 'WELL_CONTROLLED' | 'POORLY_CONTROLLED' | 'UNCONTROLLED',
   lastAssessment: Date;
   managementPlan: string;
   complications?: string[];
   qualityOfLife: QualityOfLifeAssessment
 export interface QualityOfLifeAssessment {
   score: number; // 0-100
-  assessmentTool: string;
+  assessmentTool: string,
   assessmentDate: Date;
   domains: QoLDomain[]
 export interface QoLDomain {
-  domain: string;
+  domain: string,
   score: number;
   impact: 'LOW' | 'MODERATE' | 'HIGH'
 export interface Disability {
-  id: string;
+  id: string,
   type: DisabilityType;
-  description: string;
+  description: string,
   severity: 'MILD' | 'MODERATE' | 'SEVERE' | 'PROFOUND';
   onset: Date;
   cause?: string;
-  accommodations: string[];
+  accommodations: string[],
   assistiveDevices: string[];
   impairments: string[]
 export enum DisabilityType {
@@ -516,11 +516,11 @@ export enum DisabilityType {
 export interface FunctionalStatus {
   adlScore: number; // Activities of Daily Living
   iadlScore: number; // Instrumental Activities of Daily Living
-  mobilityStatus: MobilityStatus;
+  mobilityStatus: MobilityStatus,
   assistanceNeeded: AssistanceLevel;
-  lastAssessment: Date;
+  lastAssessment: Date,
   assessmentTool: string;
-  limitations: string[];
+  limitations: string[],
   improvements: string[]
 export enum MobilityStatus {
   INDEPENDENT = 'INDEPENDENT',
@@ -538,59 +538,59 @@ export interface CognitiveStatus {
   mentalStatus: string;
   mmseScore?: number; // Mini-Mental State Examination
   mocaScore?: number; // Montreal Cognitive Assessment
-  memoryStatus: 'NORMAL' | 'MILD_IMPAIRMENT' | 'MODERATE_IMPAIRMENT' | 'SEVERE_IMPAIRMENT';
+  memoryStatus: 'NORMAL' | 'MILD_IMPAIRMENT' | 'MODERATE_IMPAIRMENT' | 'SEVERE_IMPAIRMENT',
   orientationStatus: 'ORIENTED' | 'CONFUSED' | 'DISORIENTED';
-  decisionMakingCapacity: 'INTACT' | 'IMPAIRED' | 'NEEDS_ASSESSMENT';
+  decisionMakingCapacity: 'INTACT' | 'IMPAIRED' | 'NEEDS_ASSESSMENT',
   lastAssessment: Date;
-  assessmentTool: string;
+  assessmentTool: string,
   cognitiveImpairments: string[];
   cognitiveStrengths: string[]
 export interface MentalHealthStatus {
-  currentMentalHealth: 'STABLE' | 'IMPROVING' | 'DECLINING' | 'CRISIS';
+  currentMentalHealth: 'STABLE' | 'IMPROVING' | 'DECLINING' | 'CRISIS',
   mentalHealthConditions: MentalHealthCondition[];
-  psychosocialFactors: string[];
+  psychosocialFactors: string[],
   copingSkills: string[];
-  supportSystems: string[];
+  supportSystems: string[],
   riskFactors: RiskFactor[];
-  protectiveFactors: string[];
+  protectiveFactors: string[],
   lastAssessment: Date;
   assessmentTool: string
 export interface MentalHealthCondition {
-  condition: string;
+  condition: string,
   severity: 'MILD' | 'MODERATE' | 'SEVERE';
-  episodic: boolean;
+  episodic: boolean,
   currentEpisode: boolean;
   treatment: MentalHealthTreatment[]
 export interface MentalHealthTreatment {
-  type: 'MEDICATION' | 'THERAPY' | 'COUNSELING' | 'SUPPORT_GROUP' | 'HOSPITALIZATION';
+  type: 'MEDICATION' | 'THERAPY' | 'COUNSELING' | 'SUPPORT_GROUP' | 'HOSPITALIZATION',
   description: string;
-  provider: string;
+  provider: string,
   startDate: Date;
   endDate?: Date;
   effectiveness: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR'
 export interface RiskFactor {
-  factor: string;
+  factor: string,
   level: 'LOW' | 'MODERATE' | 'HIGH';
-  timeframe: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM';
+  timeframe: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM',
   interventions: string[]
 export interface InsuranceInformation {
-  id: string;
+  id: string,
   type: InsuranceType;
-  planName: string;
+  planName: string,
   carrierName: string;
   policyNumber: string;
   groupNumber?: string;
-  subscriberId: string;
+  subscriberId: string,
   subscriberName: string;
-  subscriberRelationship: string;
+  subscriberRelationship: string,
   effectiveDate: Date;
   expirationDate?: Date;
   copayAmount?: number;
   deductibleAmount?: number;
   outOfPocketMax?: number;
-  coverageDetails: CoverageDetails;
+  coverageDetails: CoverageDetails,
   isActive: boolean;
-  isPrimary: boolean;
+  isPrimary: boolean,
   priority: number;
   verificationStatus: InsuranceVerificationStatus;
   lastVerified?: Date;
@@ -607,21 +607,21 @@ export enum InsuranceType {
   CHARITY_CARE = 'CHARITY_CARE',
   OTHER = 'OTHER',
 export interface CoverageDetails {
-  inpatientCoverage: boolean;
+  inpatientCoverage: boolean,
   outpatientCoverage: boolean;
-  emergencyCoverage: boolean;
+  emergencyCoverage: boolean,
   prescriptionCoverage: boolean;
-  mentalHealthCoverage: boolean;
+  mentalHealthCoverage: boolean,
   substanceAbuseCoverage: boolean;
-  maternityC overage: boolean;
+  maternityC overage: boolean,
   preventiveCoverage: boolean;
-  specialtyCareCoverage: boolean;
+  specialtyCareCoverage: boolean,
   homeHealthCoverage: boolean;
-  hospiceCoverage: boolean;
+  hospiceCoverage: boolean,
   dmeCoverage: boolean; // Durable Medical Equipment
-  visionCoverage: boolean;
+  visionCoverage: boolean,
   dentalCoverage: boolean;
-  limitations: string[];
+  limitations: string[],
   exclusions: string[]
 export enum InsuranceVerificationStatus {
   VERIFIED = 'VERIFIED',
@@ -632,60 +632,60 @@ export enum InsuranceVerificationStatus {
 export interface FinancialProfile {
   accountBalance: number;
   creditScore?: number;
-  paymentHistory: PaymentHistory;
+  paymentHistory: PaymentHistory,
   financialAssistance: FinancialAssistance[];
-  paymentPlans: PaymentPlan[];
+  paymentPlans: PaymentPlan[],
   collections: CollectionAccount[];
   guarantor?: Guarantor;
-  financialClass: FinancialClass;
+  financialClass: FinancialClass,
   eligibilityChecks: EligibilityCheck[]
 export interface PaymentHistory {
-  totalPaid: number;
+  totalPaid: number,
   totalCharges: number;
   averagePaymentTime: number; // days
   paymentMethods: PaymentMethod[];
   lastPaymentDate?: Date;
   lastPaymentAmount?: number;
-  missedPayments: number;
+  missedPayments: number,
   onTimePayments: number;
   paymentScore: number; // 0-100
 export interface PaymentMethod {
   type: 'CASH' | 'CHECK' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'BANK_TRANSFER' | 'PAYMENT_PLAN' | 'INSURANCE' | 'OTHER';
   details?: string;
-  frequency: number;
+  frequency: number,
   totalAmount: number;
   isPreferred: boolean
 export interface FinancialAssistance {
-  id: string;
+  id: string,
   programName: string;
-  type: 'CHARITY_CARE' | 'SLIDING_SCALE' | 'PAYMENT_PLAN' | 'GOVERNMENT_PROGRAM' | 'FOUNDATION' | 'OTHER';
+  type: 'CHARITY_CARE' | 'SLIDING_SCALE' | 'PAYMENT_PLAN' | 'GOVERNMENT_PROGRAM' | 'FOUNDATION' | 'OTHER',
   approvalDate: Date;
   expirationDate?: Date;
   discountPercentage?: number;
   maximumBenefit?: number;
   remainingBenefit?: number;
-  status: 'ACTIVE' | 'EXPIRED' | 'EXHAUSTED' | 'SUSPENDED';
+  status: 'ACTIVE' | 'EXPIRED' | 'EXHAUSTED' | 'SUSPENDED',
   requirements: string[];
-  applicationDate: Date;
+  applicationDate: Date,
   approvedBy: string
 export interface PaymentPlan {
-  id: string;
+  id: string,
   planType: 'INTEREST_FREE' | 'LOW_INTEREST' | 'EXTENDED_TERMS' | 'MODIFIED';
-  totalAmount: number;
+  totalAmount: number,
   monthlyPayment: number;
   numberOfPayments: number;
   interestRate?: number;
-  startDate: Date;
+  startDate: Date,
   endDate: Date;
-  status: 'ACTIVE' | 'COMPLETED' | 'DEFAULTED' | 'MODIFIED';
+  status: 'ACTIVE' | 'COMPLETED' | 'DEFAULTED' | 'MODIFIED',
   paymentsMade: number;
   remainingBalance: number;
   lastPaymentDate?: Date;
   missedPayments: number
 export interface CollectionAccount {
-  id: string;
+  id: string,
   agencyName: string;
-  originalBalance: number;
+  originalBalance: number,
   currentBalance: number;
   placementDate: Date;
   lastActivity?: Date;
@@ -694,12 +694,12 @@ export interface CollectionAccount {
   settlementDate?: Date;
   paymentArrangements?: string;
 export interface Guarantor {
-  id: string;
+  id: string,
   name: string;
-  relationship: string;
+  relationship: string,
   contactInfo: ContactInformation;
   financialResponsibility: number; // percentage
-  signatureDate: Date;
+  signatureDate: Date,
   identificationVerified: boolean
 export enum FinancialClass {
   COMMERCIAL_INSURANCE = 'COMMERCIAL_INSURANCE',
@@ -710,9 +710,9 @@ export enum FinancialClass {
   WORKERS_COMPENSATION = 'WORKERS_COMPENSATION',
   OTHER = 'OTHER',
 export interface EligibilityCheck {
-  id: string;
+  id: string,
   checkDate: Date;
-  insuranceId: string;
+  insuranceId: string,
   serviceType: string;
   eligibilityStatus: 'ELIGIBLE' | 'NOT_ELIGIBLE' | 'UNKNOWN' | 'PENDING';
   benefitsRemaining?: number;
@@ -728,16 +728,16 @@ export interface EligibilityCheck {
   exclusions?: string[];
   response: unknown; // Raw eligibility response
 export interface CareTeamMember {
-  id: string;
+  id: string,
   providerId: string;
-  name: string;
+  name: string,
   role: CareTeamRole;
   specialty?: string;
-  contactInfo: ContactInformation;
+  contactInfo: ContactInformation,
   isPrimary: boolean;
   startDate: Date;
   endDate?: Date;
-  status: 'ACTIVE' | 'INACTIVE' | 'TERMINATED';
+  status: 'ACTIVE' | 'INACTIVE' | 'TERMINATED',
   responsibilities: string[];
   communicationPreferences: CommunicationPreferences
 export enum CareTeamRole {
@@ -754,13 +754,13 @@ export enum CareTeamRole {
   CHAPLAIN = 'CHAPLAIN',
   OTHER = 'OTHER',
 export interface PatientRelationship {
-  id: string;
+  id: string,
   relatedPatientId: string;
-  relationshipType: RelationshipType;
+  relationshipType: RelationshipType,
   relationship: string;
-  isEmergencyContact: boolean;
+  isEmergencyContact: boolean,
   canMakeDecisions: boolean;
-  accessLevel: AccessLevel;
+  accessLevel: AccessLevel,
   startDate: Date;
   endDate?: Date;
   status: 'ACTIVE' | 'INACTIVE';
@@ -781,26 +781,26 @@ export enum AccessLevel {
   EMERGENCY_ONLY = 'EMERGENCY_ONLY',
   NO_ACCESS = 'NO_ACCESS',
 export interface PatientPreferences {
-  communicationPreferences: CommunicationPreferences;
+  communicationPreferences: CommunicationPreferences,
   appointmentPreferences: AppointmentPreferences;
-  treatmentPreferences: TreatmentPreferences;
+  treatmentPreferences: TreatmentPreferences,
   culturalPreferences: CulturalPreferences;
   accessibilityNeeds: AccessibilityNeed[]
 export interface AppointmentPreferences {
-  preferredDays: string[];
+  preferredDays: string[],
   preferredTimes: string[];
-  preferredProviders: string[];
+  preferredProviders: string[],
   preferredLocations: string[];
-  reminderPreferences: ReminderPreferences;
+  reminderPreferences: ReminderPreferences,
   cancellationNotice: number; // hours
   reschedulePreferences: string
 export interface ReminderPreferences {
-  enabled: boolean;
+  enabled: boolean,
   methods: ContactMethod[];
   advanceNotice: number[]; // hours before appointment
   customMessage?: string;
 export interface TreatmentPreferences {
-  painManagementPreferences: string[];
+  painManagementPreferences: string[],
   medicationPreferences: string[];
   alternativeTherapies: string[];
   resuscitationPreferences?: ResuscitationPreferences;
@@ -810,21 +810,21 @@ export interface TreatmentPreferences {
   studentInvolvement?: boolean;
   photographyConsent?: boolean;
 export interface ResuscitationPreferences {
-  cpr: boolean;
+  cpr: boolean,
   intubation: boolean;
-  mechanicalVentilation: boolean;
+  mechanicalVentilation: boolean,
   defibrillation: boolean;
-  vasopressors: boolean;
+  vasopressors: boolean,
   artificialNutrition: boolean;
-  artificialHydration: boolean;
+  artificialHydration: boolean,
   dialysis: boolean;
-  antibiotics: boolean;
+  antibiotics: boolean,
   bloodProducts: boolean;
   limitations?: string;
   effectiveDate: Date;
   reviewDate?: Date;
 export interface OrganDonationPreferences {
-  isOrganDonor: boolean;
+  isOrganDonor: boolean,
   organsConsented: string[];
   restrictions?: string[];
   donorRegistryNumber?: string;
@@ -833,11 +833,11 @@ export interface OrganDonationPreferences {
 export interface CulturalPreferences {
   religiousAffiliation?: string;
   culturalBackground?: string;
-  dietaryRestrictions: string[];
+  dietaryRestrictions: string[],
   languagePreferences: string[];
-  interpreterNeeded: boolean;
+  interpreterNeeded: boolean,
   culturalPractices: string[];
-  holidayObservances: string[];
+  holidayObservances: string[],
   genderPreferences: GenderPreferences
 export interface GenderPreferences {
   providerGenderPreference?: 'MALE' | 'FEMALE' | 'NO_PREFERENCE';
@@ -845,23 +845,23 @@ export interface GenderPreferences {
   techniciansGenderPreference?: 'MALE' | 'FEMALE' | 'NO_PREFERENCE';
   chaperonPreference?: boolean;
 export interface AccessibilityNeed {
-  need: string;
+  need: string,
   description: string;
-  accommodations: string[];
+  accommodations: string[],
   equipment: string[];
-  assistanceRequired: boolean;
+  assistanceRequired: boolean,
   priority: 'LOW' | 'MEDIUM' | 'HIGH'
 export interface AdvanceDirective {
-  id: string;
+  id: string,
   type: AdvanceDirectiveType;
-  documentName: string;
+  documentName: string,
   dateExecuted: Date;
   expirationDate?: Date;
   witness1: string;
   witness2?: string;
   notarized: boolean;
   filePath?: string;
-  summary: string;
+  summary: string,
   specificDirectives: SpecificDirective[];
   healthcareAgent?: HealthcareAgent;
   status: 'ACTIVE' | 'REVOKED' | 'SUPERSEDED' | 'EXPIRED';
@@ -876,33 +876,33 @@ export enum AdvanceDirectiveType {
   ORGAN_DONATION_DIRECTIVE = 'ORGAN_DONATION_DIRECTIVE',
   OTHER = 'OTHER',
 export interface SpecificDirective {
-  category: string;
+  category: string,
   directive: string;
-  conditions: string[];
+  conditions: string[],
   instructions: string
 export interface HealthcareAgent {
-  name: string;
+  name: string,
   relationship: string;
-  contactInfo: ContactInformation;
+  contactInfo: ContactInformation,
   authority: string[];
   limitations?: string[];
   alternateAgent?: HealthcareAgent;
 export interface PatientAlert {
-  id: string;
+  id: string,
   alertType: PatientAlertType;
-  priority: AlertPriority;
+  priority: AlertPriority,
   title: string;
-  description: string;
+  description: string,
   category: AlertCategory;
-  triggerConditions: string[];
+  triggerConditions: string[],
   displayLocations: DisplayLocation[];
-  isActive: boolean;
+  isActive: boolean,
   startDate: Date;
   endDate?: Date;
   acknowledgedBy?: string[];
-  overridableBy: string[];
+  overridableBy: string[],
   relatedConditions: string[];
-  actions: AlertAction[];
+  actions: AlertAction[],
   metadata: AlertMetadata
 export enum PatientAlertType {
   ALLERGY = 'ALLERGY',
@@ -945,7 +945,7 @@ export enum DisplayLocation {
   BILLING = 'BILLING',
   ALL_MODULES = 'ALL_MODULES',
 export interface AlertAction {
-  action: string;
+  action: string,
   description: string;
   required: boolean;
   defaultValue?: unknown;
@@ -959,23 +959,23 @@ export interface AlertMetadata {
   calculationFrequency?: string; // how often to recalculate
   escalationRules?: EscalationRule[];
 export interface EscalationRule {
-  condition: string;
+  condition: string,
   timeframe: number; // minutes
-  escalateTo: string[];
+  escalateTo: string[],
   notificationMethod: ContactMethod[]
 export interface PatientFlag {
-  id: string;
+  id: string,
   flagType: PatientFlagType;
-  description: string;
+  description: string,
   severity: FlagSeverity;
   color: string;
   icon?: string;
-  isActive: boolean;
+  isActive: boolean,
   startDate: Date;
   endDate?: Date;
-  createdBy: string;
+  createdBy: string,
   reason: string;
-  documentation: string;
+  documentation: string,
   reviewRequired: boolean;
   reviewDate?: Date;
   reviewedBy?: string;
@@ -1008,21 +1008,21 @@ export enum FlagSeverity {
   ALERT = 'ALERT',
   CRITICAL = 'CRITICAL',
 export interface RiskAssessment {
-  id: string;
+  id: string,
   assessmentType: RiskAssessmentType;
-  riskScore: number;
+  riskScore: number,
   riskLevel: RiskLevel;
-  assessmentDate: Date;
+  assessmentDate: Date,
   assessedBy: string;
   validUntil?: Date;
-  riskFactors: AssessmentRiskFactor[];
+  riskFactors: AssessmentRiskFactor[],
   protectiveFactors: ProtectiveFactor[];
-  interventions: RiskIntervention[];
+  interventions: RiskIntervention[],
   recommendations: string[];
   followUpRequired: boolean;
   followUpDate?: Date;
   notes?: string;
-  assessmentTool: string;
+  assessmentTool: string,
   version: string
 export enum RiskAssessmentType {
   FALL_RISK = 'FALL_RISK',
@@ -1048,48 +1048,48 @@ export enum RiskLevel {
   VERY_HIGH = 'VERY_HIGH',
   EXTREME = 'EXTREME',
 export interface AssessmentRiskFactor {
-  factor: string;
+  factor: string,
   value: unknown;
-  weight: number;
+  weight: number,
   contribution: number; // percentage of total risk score
   modifiable: boolean
 export interface ProtectiveFactor {
-  factor: string;
+  factor: string,
   value: unknown;
-  strength: 'WEAK' | 'MODERATE' | 'STRONG';
+  strength: 'WEAK' | 'MODERATE' | 'STRONG',
   impact: string
 export interface RiskIntervention {
-  intervention: string;
+  intervention: string,
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
   targetRiskFactor: string;
   implementationDate?: Date;
-  responsibleParty: string;
+  responsibleParty: string,
   frequency: string;
   duration?: string;
   effectiveness?: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR';
   status: 'PLANNED' | 'ACTIVE' | 'COMPLETED' | 'DISCONTINUED'
 export interface CarePlan {
-  id: string;
+  id: string,
   planName: string;
-  planType: CarePlanType;
+  planType: CarePlanType,
   status: CarePlanStatus;
-  intent: CarePlanIntent;
+  intent: CarePlanIntent,
   category: CarePlanCategory[];
-  priority: CarePlanPriority;
+  priority: CarePlanPriority,
   description: string;
   subject: string; // patient ID
   encounter?: string; // encounter ID
-  period: DateRange;
+  period: DateRange,
   author: string;
-  careTeam: string[];
+  careTeam: string[],
   addresses: string[]; // condition IDs
-  supportingInfo: string[];
+  supportingInfo: string[],
   goal: CareGoal[];
-  activity: CareActivity[];
+  activity: CareActivity[],
   note: CareNote[];
-  outcomeReference: OutcomeReference[];
+  outcomeReference: OutcomeReference[],
   version: string;
-  lastReviewed: Date;
+  lastReviewed: Date,
   nextReview: Date
 export enum CarePlanType {
   COMPREHENSIVE = 'COMPREHENSIVE',
@@ -1114,7 +1114,7 @@ export enum CarePlanIntent {
   OPTION = 'OPTION',
   DIRECTIVE = 'DIRECTIVE',
 export interface CarePlanCategory {
-  coding: string;
+  coding: string,
   text: string
 export enum CarePlanPriority {
   ROUTINE = 'ROUTINE',
@@ -1122,18 +1122,18 @@ export enum CarePlanPriority {
   ASAP = 'ASAP',
   STAT = 'STAT',
 export interface CareGoal {
-  id: string;
+  id: string,
   description: string;
-  priority: GoalPriority;
+  priority: GoalPriority,
   category: GoalCategory;
   start?: Date;
   target?: GoalTarget;
-  status: GoalStatus;
+  status: GoalStatus,
   statusDate: Date;
   statusReason?: string;
   expressedBy?: string;
   addresses: string[]; // condition IDs
-  note: string[];
+  note: string[],
   outcomeCode: OutcomeCode[];
   outcomeReference: OutcomeReference[]
 export enum GoalPriority {
@@ -1141,7 +1141,7 @@ export enum GoalPriority {
   MEDIUM_PRIORITY = 'MEDIUM_PRIORITY',
   LOW_PRIORITY = 'LOW_PRIORITY',
 export interface GoalCategory {
-  coding: string;
+  coding: string,
   text: string
 export interface GoalTarget {
   measure?: string;
@@ -1154,7 +1154,7 @@ export interface GoalTarget {
   detailRatio?: Ratio;
   due?: Date;
 export interface Quantity {
-  value: number;
+  value: number,
   unit: string;
   system?: string;
   code?: string;
@@ -1175,20 +1175,20 @@ export enum GoalStatus {
   ENTERED_IN_ERROR = 'ENTERED_IN_ERROR',
   REJECTED = 'REJECTED',
 export interface OutcomeCode {
-  coding: string;
+  coding: string,
   text: string
 export interface OutcomeReference {
   reference: string;
   display?: string;
 export interface CareActivity {
-  id: string;
+  id: string,
   outcomeCodeableConcept: OutcomeCode[];
-  outcomeReference: OutcomeReference[];
+  outcomeReference: OutcomeReference[],
   progress: ActivityProgress[];
   reference?: ActivityReference;
   detail?: ActivityDetail;
 export interface ActivityProgress {
-  time: Date;
+  time: Date,
   text: string;
   author?: string;
 export interface ActivityReference {
@@ -1230,51 +1230,51 @@ export interface ActivityProduct {
   productCodeableConcept?: string;
   productReference?: string;
 export interface CareNote {
-  time: Date;
+  time: Date,
   text: string;
   author?: string;
 export interface PatientAnalytics {
-  riskScores: RiskScores;
+  riskScores: RiskScores,
   predictiveModels: PredictiveModel[];
-  utilizationMetrics: UtilizationMetrics;
+  utilizationMetrics: UtilizationMetrics,
   qualityMetrics: PatientQualityMetrics;
-  costMetrics: CostMetrics;
+  costMetrics: CostMetrics,
   outcomeMetrics: PatientOutcomeMetrics;
-  socialDeterminants: SocialDeterminantsMetrics;
+  socialDeterminants: SocialDeterminantsMetrics,
   populationHealth: PopulationHealthMetrics;
   lastUpdated: Date
 export interface RiskScores {
-  readmissionRisk: ScoreMetric;
+  readmissionRisk: ScoreMetric,
   mortalityRisk: ScoreMetric;
-  complicationRisk: ScoreMetric;
+  complicationRisk: ScoreMetric,
   fallRisk: ScoreMetric;
-  infectionRisk: ScoreMetric;
+  infectionRisk: ScoreMetric,
   medicationErrorRisk: ScoreMetric;
-  noShowRisk: ScoreMetric;
+  noShowRisk: ScoreMetric,
   costRisk: ScoreMetric;
-  frailtyScore: ScoreMetric;
+  frailtyScore: ScoreMetric,
   acuityScore: ScoreMetric
 export interface ScoreMetric {
-  score: number;
+  score: number,
   percentile: number;
-  riskLevel: RiskLevel;
+  riskLevel: RiskLevel,
   confidence: number;
-  lastCalculated: Date;
+  lastCalculated: Date,
   modelVersion: string;
   contributing_factors: ContributingFactor[]
 export interface ContributingFactor {
-  factor: string;
+  factor: string,
   weight: number;
-  value: unknown;
+  value: unknown,
   impact: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL'
 export interface PredictiveModel {
-  id: string;
+  id: string,
   modelName: string;
-  modelType: ModelType;
+  modelType: ModelType,
   prediction: string;
-  probability: number;
+  probability: number,
   confidence: number;
-  timeHorizon: string;
+  timeHorizon: string,
   features: ModelFeature[];
   lastRun: Date;
   nextRun?: Date;
@@ -1291,207 +1291,207 @@ export enum ModelType {
   DRUG_INTERACTION = 'DRUG_INTERACTION',
   FALL_RISK = 'FALL_RISK',
 export interface ModelFeature {
-  feature: string;
+  feature: string,
   importance: number;
-  value: unknown;
+  value: unknown,
   category: 'DEMOGRAPHIC' | 'CLINICAL' | 'SOCIAL' | 'BEHAVIORAL' | 'ENVIRONMENTAL'
 export interface ModelAccuracy {
-  accuracy: number;
+  accuracy: number,
   precision: number;
-  recall: number;
+  recall: number,
   f1Score: number;
-  auc: number;
+  auc: number,
   lastValidated: Date
 export interface UtilizationMetrics {
-  totalVisits: number;
+  totalVisits: number,
   inpatientDays: number;
-  outpatientVisits: number;
+  outpatientVisits: number,
   emergencyVisits: number;
-  noShowRate: number;
+  noShowRate: number,
   cancellationRate: number;
-  averageLengthOfStay: number;
+  averageLengthOfStay: number,
   readmissionRate: number;
-  utilizationTrend: UtilizationTrend;
+  utilizationTrend: UtilizationTrend,
   topServices: ServiceUtilization[];
   seasonalPatterns: SeasonalPattern[]
 export interface UtilizationTrend {
-  trend: 'INCREASING' | 'DECREASING' | 'STABLE';
+  trend: 'INCREASING' | 'DECREASING' | 'STABLE',
   changePercentage: number;
-  timeframe: string;
+  timeframe: string,
   significance: 'LOW' | 'MODERATE' | 'HIGH'
 export interface ServiceUtilization {
-  service: string;
+  service: string,
   utilization: number;
-  cost: number;
+  cost: number,
   trend: UtilizationTrend
 export interface SeasonalPattern {
-  season: string;
+  season: string,
   utilizationMultiplier: number;
-  commonConditions: string[];
+  commonConditions: string[],
   recommendations: string[]
 export interface PatientQualityMetrics {
-  overallQualityScore: number;
+  overallQualityScore: number,
   careQualityIndicators: QualityIndicator[];
-  safetyMetrics: SafetyMetric[];
+  safetyMetrics: SafetyMetric[],
   satisfactionScores: SatisfactionScore[];
-  clinicalOutcomes: ClinicalOutcome[];
+  clinicalOutcomes: ClinicalOutcome[],
   processMetrics: ProcessMetric[]
 export interface QualityIndicator {
-  indicator: string;
+  indicator: string,
   value: number;
-  target: number;
+  target: number,
   percentile: number;
-  trend: 'IMPROVING' | 'DECLINING' | 'STABLE';
+  trend: 'IMPROVING' | 'DECLINING' | 'STABLE',
   benchmark: string
 export interface SafetyMetric {
-  metric: string;
+  metric: string,
   incidentCount: number;
-  rate: number;
+  rate: number,
   severity: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL';
-  preventable: boolean;
+  preventable: boolean,
   trend: 'IMPROVING' | 'DECLINING' | 'STABLE'
 export interface SatisfactionScore {
-  domain: string;
+  domain: string,
   score: number;
-  percentile: number;
+  percentile: number,
   responseDate: Date;
   surveyType: string;
   comments?: string[];
 export interface ClinicalOutcome {
-  outcome: string;
+  outcome: string,
   value: number;
   unit: string;
   target?: number;
-  achieved: boolean;
+  achieved: boolean,
   measurementDate: Date;
   trend: 'IMPROVING' | 'DECLINING' | 'STABLE'
 export interface ProcessMetric {
-  process: string;
+  process: string,
   completionRate: number;
-  timeliness: number;
+  timeliness: number,
   accuracy: number;
-  efficiency: number;
+  efficiency: number,
   compliance: number
 export interface CostMetrics {
-  totalCost: number;
+  totalCost: number,
   costPerVisit: number;
-  costTrend: CostTrend;
+  costTrend: CostTrend,
   costByCategory: CostCategory[];
-  costEffectiveness: CostEffectiveness;
+  costEffectiveness: CostEffectiveness,
   wasteMetrics: WasteMetric[];
   valueBasedMetrics: ValueBasedMetric[]
 export interface CostTrend {
-  trend: 'INCREASING' | 'DECREASING' | 'STABLE';
+  trend: 'INCREASING' | 'DECREASING' | 'STABLE',
   changePercentage: number;
-  timeframe: string;
+  timeframe: string,
   projectedCost: number
 export interface CostCategory {
-  category: string;
+  category: string,
   cost: number;
-  percentage: number;
+  percentage: number,
   trend: CostTrend;
   benchmark?: number;
 export interface CostEffectiveness {
   costPerQALY: number; // Quality-Adjusted Life Year
-  costPerOutcome: CostPerOutcome[];
+  costPerOutcome: CostPerOutcome[],
   returnOnInvestment: number;
   avoidedCosts: number
 export interface CostPerOutcome {
-  outcome: string;
+  outcome: string,
   cost: number;
-  effectiveness: number;
+  effectiveness: number,
   ratio: number
 export interface WasteMetric {
-  wasteType: string;
+  wasteType: string,
   amount: number;
-  cost: number;
+  cost: number,
   preventability: number;
   interventions: string[]
 export interface ValueBasedMetric {
-  metric: string;
+  metric: string,
   value: number;
-  target: number;
+  target: number,
   achievement: number;
   incentive?: number;
   penalty?: number;
 export interface PatientOutcomeMetrics {
-  mortalityRates: MortalityRate[];
+  mortalityRates: MortalityRate[],
   functionalOutcomes: FunctionalOutcome[];
-  clinicalOutcomes: ClinicalOutcome[];
+  clinicalOutcomes: ClinicalOutcome[],
   patientReportedOutcomes: PatientReportedOutcome[];
-  qualityOfLife: QualityOfLifeOutcome;
+  qualityOfLife: QualityOfLifeOutcome,
   symptomBurden: SymptomBurden;
   adherenceMetrics: AdherenceMetric[]
 export interface MortalityRate {
-  timeframe: string;
+  timeframe: string,
   rate: number;
-  expectedRate: number;
+  expectedRate: number,
   riskAdjusted: boolean;
   benchmark?: number;
   trend: 'IMPROVING' | 'DECLINING' | 'STABLE'
 export interface FunctionalOutcome {
-  assessment: string;
+  assessment: string,
   baseline: number;
-  current: number;
+  current: number,
   change: number;
-  clinicallySignificant: boolean;
+  clinicallySignificant: boolean,
   assessmentDate: Date
 export interface PatientReportedOutcome {
-  instrument: string;
+  instrument: string,
   domain: string;
-  score: number;
+  score: number,
   minimumImportantDifference: number;
   assessmentDate: Date;
   baseline?: number;
   change?: number;
 export interface QualityOfLifeOutcome {
-  physicalHealth: number;
+  physicalHealth: number,
   mentalHealth: number;
-  socialFunctioning: number;
+  socialFunctioning: number,
   roleFunctioning: number;
-  overallQOL: number;
+  overallQOL: number,
   assessmentDate: Date;
   assessmentTool: string
 export interface SymptomBurden {
-  totalSymptoms: number;
+  totalSymptoms: number,
   severityScore: number;
-  impactScore: number;
+  impactScore: number,
   mostBurdensomeSymptoms: string[];
-  assessmentDate: Date;
+  assessmentDate: Date,
   assessmentTool: string
 export interface AdherenceMetric {
-  medication: string;
+  medication: string,
   adherenceRate: number;
-  adherenceMethod: string;
+  adherenceMethod: string,
   barriers: string[];
-  interventions: string[];
+  interventions: string[],
   lastAssessment: Date
 export interface SocialDeterminantsMetrics {
-  housingStability: SocialDeterminantMetric;
+  housingStability: SocialDeterminantMetric,
   foodSecurity: SocialDeterminantMetric;
-  transportation: SocialDeterminantMetric;
+  transportation: SocialDeterminantMetric,
   socialSupport: SocialDeterminantMetric;
-  financialStability: SocialDeterminantMetric;
+  financialStability: SocialDeterminantMetric,
   education: SocialDeterminantMetric;
-  employment: SocialDeterminantMetric;
+  employment: SocialDeterminantMetric,
   personalSafety: SocialDeterminantMetric;
-  overallSocialRisk: SocialRiskScore;
+  overallSocialRisk: SocialRiskScore,
   interventions: SocialIntervention[]
 export interface SocialDeterminantMetric {
-  status: 'STABLE' | 'AT_RISK' | 'HIGH_RISK' | 'CRISIS';
+  status: 'STABLE' | 'AT_RISK' | 'HIGH_RISK' | 'CRISIS',
   score: number;
-  assessmentDate: Date;
+  assessmentDate: Date,
   details: string;
-  interventions: string[];
+  interventions: string[],
   resources: Resource[]
 export interface SocialRiskScore {
-  totalScore: number;
+  totalScore: number,
   riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
-  primaryRisks: string[];
+  primaryRisks: string[],
   protectiveFactors: string[];
   lastAssessment: Date
 export interface SocialIntervention {
-  intervention: string;
+  intervention: string,
   status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   startDate: Date;
   endDate?: Date;
@@ -1499,65 +1499,65 @@ export interface SocialIntervention {
   provider: string;
   cost?: number;
 export interface Resource {
-  name: string;
+  name: string,
   type: string;
-  contactInfo: string;
+  contactInfo: string,
   eligibility: string;
   status: 'AVAILABLE' | 'WAITLIST' | 'UNAVAILABLE';
   cost?: number;
 export interface PopulationHealthMetrics {
-  riskStratification: RiskStratification;
+  riskStratification: RiskStratification,
   cohortComparisons: CohortComparison[];
-  qualityMeasures: PopulationQualityMeasure[];
+  qualityMeasures: PopulationQualityMeasure[],
   costEffectiveness: PopulationCostEffectiveness;
   interventionEffectiveness: InterventionEffectiveness[]
 export interface RiskStratification {
-  lowRisk: number;
+  lowRisk: number,
   moderateRisk: number;
-  highRisk: number;
+  highRisk: number,
   veryHighRisk: number;
-  riskFactors: string[];
+  riskFactors: string[],
   interventionOpportunities: string[]
 export interface CohortComparison {
-  cohortType: string;
+  cohortType: string,
   patientCohort: string;
-  comparisonCohort: string;
+  comparisonCohort: string,
   metrics: ComparisonMetric[];
-  statisticalSignificance: boolean;
+  statisticalSignificance: boolean,
   clinicalSignificance: boolean
 export interface ComparisonMetric {
-  metric: string;
+  metric: string,
   patientValue: number;
-  cohortValue: number;
+  cohortValue: number,
   difference: number;
-  percentileRank: number;
+  percentileRank: number,
   confidenceInterval: [number, number];
 export interface PopulationQualityMeasure {
-  measure: string;
+  measure: string,
   patientValue: number;
-  populationBenchmark: number;
+  populationBenchmark: number,
   percentileRank: number;
-  gapToTarget: number;
+  gapToTarget: number,
   improvementOpportunity: string
 export interface PopulationCostEffectiveness {
-  costPerCapita: number;
+  costPerCapita: number,
   costRank: number;
-  valueScore: number;
+  valueScore: number,
   efficiency: number;
   wasteReduction: number
 export interface InterventionEffectiveness {
-  intervention: string;
+  intervention: string,
   effectivenessScore: number;
-  outcomeImprovement: number;
+  outcomeImprovement: number,
   costSavings: number;
-  roi: number;
+  roi: number,
   evidenceLevel: 'HIGH' | 'MODERATE' | 'LOW'
 export interface ConsentRecord {
-  id: string;
+  id: string,
   consentType: ConsentType;
-  purpose: string;
+  purpose: string,
   status: ConsentStatus;
-  scope: ConsentScope;
+  scope: ConsentScope,
   category: ConsentCategory[];
   dateTime: Date;
   period?: DateRange;
@@ -1567,7 +1567,7 @@ export interface ConsentRecord {
   sourceAttachment?: string; // reference to signed consent form
   policy: ConsentPolicy[];
   policyRule?: string;
-  securityLabel: SecurityLabel[];
+  securityLabel: SecurityLabel[],
   provision: ConsentProvision;
   verification: ConsentVerification[]
 export enum ConsentType {
@@ -1596,13 +1596,13 @@ export enum ConsentScope {
   TREATMENT = 'TREATMENT',
   ADVANCE_DIRECTIVE = 'ADVANCE_DIRECTIVE',
 export interface ConsentCategory {
-  coding: string;
+  coding: string,
   text: string
 export interface ConsentPolicy {
   authority?: string;
   uri?: string;
 export interface SecurityLabel {
-  system: string;
+  system: string,
   code: string;
   display: string
 export interface ConsentProvision {
@@ -1618,82 +1618,82 @@ export interface ConsentProvision {
   data?: ConsentData[];
   provision?: ConsentProvision[]; // nested provisions
 export interface ConsentActor {
-  role: string;
+  role: string,
   reference: string
 export interface ConsentAction {
-  coding: string;
+  coding: string,
   text: string
 export interface ConsentPurpose {
-  system: string;
+  system: string,
   code: string;
   display: string
 export interface ConsentClass {
-  system: string;
+  system: string,
   code: string;
   display: string
 export interface ConsentCode {
-  system: string;
+  system: string,
   code: string;
   display: string
 export interface ConsentData {
-  meaning: 'INSTANCE' | 'RELATED' | 'DEPENDENTS' | 'AUTHOREDBY';
+  meaning: 'INSTANCE' | 'RELATED' | 'DEPENDENTS' | 'AUTHOREDBY',
   reference: string
 export interface ConsentVerification {
-  verified: boolean;
+  verified: boolean,
   verifiedWith: string;
   verificationDate: Date
 export interface PrivacySettings {
-  directoryOptOut: boolean;
+  directoryOptOut: boolean,
   marketingOptOut: boolean;
-  researchOptOut: boolean;
+  researchOptOut: boolean,
   communicationRestrictions: CommunicationRestriction[];
-  accessRestrictions: AccessRestriction[];
+  accessRestrictions: AccessRestriction[],
   disclosureRestrictions: DisclosureRestriction[];
-  dataRetentionPreferences: DataRetentionPreference;
+  dataRetentionPreferences: DataRetentionPreference,
   rightToBeForget: boolean;
-  dataPortabilityRequest: boolean;
+  dataPortabilityRequest: boolean,
   privacyOfficerContact: string;
-  lastUpdated: Date;
+  lastUpdated: Date,
   updatedBy: string
 export interface CommunicationRestriction {
-  restrictionType: 'EMAIL' | 'PHONE' | 'TEXT' | 'MAIL' | 'PORTAL' | 'ALL';
+  restrictionType: 'EMAIL' | 'PHONE' | 'TEXT' | 'MAIL' | 'PORTAL' | 'ALL',
   purpose: 'APPOINTMENT' | 'BILLING' | 'MARKETING' | 'RESEARCH' | 'EMERGENCY' | 'ALL';
-  restrictions: string[];
+  restrictions: string[],
   exceptions: string[];
   effectiveDate: Date;
   expirationDate?: Date;
 export interface AccessRestriction {
-  restrictedParty: string;
+  restrictedParty: string,
   restrictionType: 'FULL_RECORD' | 'PARTIAL_RECORD' | 'SPECIFIC_DATA' | 'TIME_BASED';
-  restrictedData: string[];
+  restrictedData: string[],
   reason: string;
   effectiveDate: Date;
   expirationDate?: Date;
   overrideConditions: string[]
 export interface DisclosureRestriction {
-  disclosureType: 'INSURANCE' | 'EMPLOYER' | 'FAMILY' | 'LEGAL' | 'RESEARCH' | 'GOVERNMENT' | 'OTHER';
+  disclosureType: 'INSURANCE' | 'EMPLOYER' | 'FAMILY' | 'LEGAL' | 'RESEARCH' | 'GOVERNMENT' | 'OTHER',
   restrictedInformation: string[];
-  reason: string;
+  reason: string,
   effectiveDate: Date;
   expirationDate?: Date;
   exceptions: string[]
 export interface DataRetentionPreference {
   retentionPeriod: number; // years
-  autoDelete: boolean;
+  autoDelete: boolean,
   archiveAfter: number; // years
-  notifyBeforeDeletion: boolean;
+  notifyBeforeDeletion: boolean,
   deletionMethod: 'SECURE_DELETE' | 'ANONYMIZE' | 'ARCHIVE';
   exceptions: string[]
 export interface PatientAuditEvent {
-  id: string;
+  id: string,
   type: AuditEventType;
-  action: AuditAction;
+  action: AuditAction,
   recorded: Date;
   outcome: AuditOutcome;
   outcomeDesc?: string;
-  purposeOfEvent: string[];
+  purposeOfEvent: string[],
   agent: AuditAgent[];
-  source: AuditSource;
+  source: AuditSource,
   entity: AuditEntity[];
   context: AuditContext
 export enum AuditEventType {
@@ -1719,7 +1719,7 @@ export enum AuditOutcome {
   SERIOUS_FAILURE = 'SERIOUS_FAILURE',
   MAJOR_FAILURE = 'MAJOR_FAILURE',
 export interface AuditAgent {
-  type: 'HUMAN_USER' | 'SOFTWARE_APPLICATION' | 'LEGAL_ENTITY' | 'DEVICE';
+  type: 'HUMAN_USER' | 'SOFTWARE_APPLICATION' | 'LEGAL_ENTITY' | 'DEVICE',
   role: string[];
   who: string;
   name?: string;
@@ -1734,7 +1734,7 @@ export interface AuditNetwork {
   type?: 'MACHINE_NAME' | 'IP_ADDRESS' | 'TELEPHONE' | 'EMAIL' | 'URI';
 export interface AuditSource {
   site?: string;
-  observer: string;
+  observer: string,
   type: string[]
 export interface AuditEntity {
   what?: string;
@@ -1807,52 +1807,52 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
       // Create enhanced patient record
       const enhancedPatient: EnhancedPatient = {
         id: `patient-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        medicalRecordNumber: mrn;
+        medicalRecordNumber: mrn,
         firstName: patientData.firstName!;
-        middleName: patientData.middleName;
+        middleName: patientData.middleName,
         lastName: patientData.lastName!;
-        dateOfBirth: patientData.dateOfBirth!;
-        age: this.calculateAge(patientData.dateOfBirth!);
-        gender: patientData.gender || Gender.UNKNOWN;
+        dateOfBirth: patientData.dateOfBirth!,
+        age: this.calculateAge(patientData.dateOfBirth!),
+        gender: patientData.gender || Gender.UNKNOWN,
         biologicalSex: patientData.biologicalSex || BiologicalSex.UNKNOWN;
-        preferredName: patientData.preferredName;
+        preferredName: patientData.preferredName,
         preferredPronouns: patientData.preferredPronouns;
-        contactInfo: enrichedData.contactInfo || this.getDefaultContactInfo();
+        contactInfo: enrichedData.contactInfo || this.getDefaultContactInfo(),
         emergencyContacts: patientData.emergencyContacts || [];
-        demographics: enrichedData.demographics || this.getDefaultDemographics();
-        clinicalProfile: enrichedData.clinicalProfile || this.getDefaultClinicalProfile();
-        insurance: patientData.insurance || [];
-        financialProfile: this.getDefaultFinancialProfile();
-        careTeam: [];
+        demographics: enrichedData.demographics || this.getDefaultDemographics(),
+        clinicalProfile: enrichedData.clinicalProfile || this.getDefaultClinicalProfile(),
+        insurance: patientData.insurance || [],
+        financialProfile: this.getDefaultFinancialProfile(),
+        careTeam: [],
         relationships: [];
-        preferences: this.getDefaultPreferences();
+        preferences: this.getDefaultPreferences(),
         advanceDirectives: [];
-        alerts: [];
-        flags: this.generateInitialFlags(enrichedData);
-        riskAssessments: initialRiskAssessments;
+        alerts: [],
+        flags: this.generateInitialFlags(enrichedData),
+        riskAssessments: initialRiskAssessments,
         carePlans: [];
         analytics,
-        consents: [];
-        privacySettings: this.getDefaultPrivacySettings();
+        consents: [],
+        privacySettings: this.getDefaultPrivacySettings(),
         auditTrail: [{
           id: `audit-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-          type: AuditEventType.CREATE;
+          type: AuditEventType.CREATE,
           action: AuditAction.CREATE;
-          recorded: new Date();
+          recorded: new Date(),
           outcome: AuditOutcome.SUCCESS;
-          purposeOfEvent: ['Patient Registration'];
+          purposeOfEvent: ['Patient Registration'],
           agent: [];
           source: { observer: sourceSystem || 'HMS', type: ['Hospital Management System'] },
-          entity: [];
+          entity: [],
           context: {},
         }],
-        status: PatientStatus.ACTIVE;
-        createdAt: new Date();
-        updatedAt: new Date();
-        lastActivity: new Date();
-        createdBy: patientData.createdBy || 'system';
+        status: PatientStatus.ACTIVE,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lastActivity: new Date(),
+        createdBy: patientData.createdBy || 'system',
         lastModifiedBy: patientData.createdBy || 'system';
-        version: 1;
+        version: 1
       };
 
       // Save to database
@@ -1863,7 +1863,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.PATIENT_REGISTERED, {
-        patientRegistered: enhancedPatient;
+        patientRegistered: enhancedPatient
       });
 
       // Trigger initial care management workflows
@@ -1873,9 +1873,9 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('patient_management.registration_time', duration);
       metricsCollector.incrementCounter('patient_management.patients_registered', 1, {
-        sourceSystem: sourceSystem || 'unknown';
-        hasInsurance: (patientData.insurance?.length || 0 > 0).toString();
-        riskLevel: this.getOverallRiskLevel(initialRiskAssessments);
+        sourceSystem: sourceSystem || 'unknown',
+        hasInsurance: (patientData.insurance?.length || 0 > 0).toString(),
+        riskLevel: this.getOverallRiskLevel(initialRiskAssessments)
       });
 
       return enhancedPatient;
@@ -1935,8 +1935,8 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
       // Record metrics
       metricsCollector.incrementCounter('patient_management.predictive_analytics', 1, {
         patientId,
-        modelCount: models.length.toString();
-        highRiskModels: models.filter(m => m.probability > 0.7).length.toString();
+        modelCount: models.length.toString(),
+        highRiskModels: models.filter(m => m.probability > 0.7).length.toString()
       });
 
       return models;
@@ -2011,7 +2011,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
     const _prefix = 'MRN';
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `/* SECURITY: Template literal eliminated */;
+    return `/* SECURITY: Template literal eliminated */
   }
 
   private calculateAge(dateOfBirth: Date): number {
@@ -2045,36 +2045,36 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
   toFHIR(patient: EnhancedPatient): FHIRPatient {
     return {
-      resourceType: 'Patient';
+      resourceType: 'Patient',
       id: patient.id;
       identifier: [
         this.createIdentifier(FHIR_SYSTEMS.MRN, patient.medicalRecordNumber),
       ],
-      active: patient.status === PatientStatus.ACTIVE;
+      active: patient.status === PatientStatus.ACTIVE,
       name: [{
-        use: 'official';
+        use: 'official',
         family: patient.lastName;
-        given: [patient.firstName, patient.middleName].filter(Boolean),;
+        given: [patient.firstName, patient.middleName].filter(Boolean),
       }],
-      gender: patient.gender.toLowerCase() as any;
+      gender: patient.gender.toLowerCase() as any,
       birthDate: patient.dateOfBirth.toISOString().split('T')[0];
       address: patient.contactInfo.addresses.map(addr => ({
-        use: addr.type.toLowerCase() as any;
+        use: addr.type.toLowerCase() as any,
         line: [addr.line1, addr.line2].filter(Boolean),
-        city: addr.city;
+        city: addr.city,
         state: addr.state;
-        postalCode: addr.postalCode;
-        country: addr.country;
+        postalCode: addr.postalCode,
+        country: addr.country
       })),
       telecom: [
         patient.contactInfo?.primaryPhone && {
-          system: 'phone';
+          system: 'phone',
           value: patient.contactInfo.primaryPhone;
-          use: 'home';
+          use: 'home'
         },
         patient.contactInfo?.email && {
-          system: 'email';
-          value: patient.contactInfo.email;
+          system: 'email',
+          value: patient.contactInfo.email
         },
       ].filter(Boolean),
     };
@@ -2082,11 +2082,11 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
   fromFHIR(fhirResource: FHIRPatient): Partial<EnhancedPatient> {
     return {
-      id: fhirResource.id;
+      id: fhirResource.id,
       medicalRecordNumber: fhirResource.identifier?.[0]?.value || '';
-      firstName: fhirResource.name?.[0]?.given?.[0] || '';
+      firstName: fhirResource.name?.[0]?.given?.[0] || '',
       lastName: fhirResource.name?.[0]?.family || '';
-      gender: fhirResource.gender?.toUpperCase() as Gender;
-      dateOfBirth: fhirResource.birthDate ? new Date(fhirResource.birthDate) : new Date();
+      gender: fhirResource.gender?.toUpperCase() as Gender,
+      dateOfBirth: fhirResource.birthDate ? new Date(fhirResource.birthDate) : new Date()
     };
   }

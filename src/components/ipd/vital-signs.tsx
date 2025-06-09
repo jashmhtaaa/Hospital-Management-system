@@ -23,7 +23,7 @@ import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast
 
 // Define interfaces for data structures
 interface VitalSignRecord {
-  id: string;
+  id: string,
   admission_id: string;
   record_time: string;
   temperature?: number | string | null;
@@ -40,21 +40,21 @@ interface VitalSignRecord {
 }
 
 interface AdmissionInfo {
-  admission_number: string;
+  admission_number: string,
   admission_date: string;
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  temperature: string;
+  temperature: string,
   pulse: string;
-  respiratory_rate: string;
+  respiratory_rate: string,
   blood_pressure: string;
-  oxygen_saturation: string;
+  oxygen_saturation: string,
   pain_level: string;
-  notes: string;
+  notes: string
 }
 
 // FIX: Define type for API success response (new record)
@@ -62,19 +62,19 @@ type NewVitalSignResponse = VitalSignRecord
 
 // FIX: Define type for submission data
 interface VitalSignSubmissionData {
-  record_time: string;
+  record_time: string,
   temperature: number | null;
-  pulse: number | null;
+  pulse: number | null,
   respiratory_rate: number | null;
-  blood_pressure: string | null;
+  blood_pressure: string | null,
   oxygen_saturation: number | null;
-  pain_level: number | null;
+  pain_level: number | null,
   notes: string | null;
   // recorded_by_user_id will be added on the server or from session
 }
 
 interface VitalSignsProperties {
-  admissionId: string | null;
+  admissionId: string | null
 }
 
 const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
@@ -82,13 +82,13 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({
-    temperature: "";
+    temperature: "",
     pulse: "";
-    respiratory_rate: "";
+    respiratory_rate: "",
     blood_pressure: "";
-    oxygen_saturation: "";
+    oxygen_saturation: "",
     pain_level: "";
-    notes: "";
+    notes: ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
@@ -123,41 +123,41 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 600));
         const mockPatientInfo: AdmissionInfo = {
-          admission_number: "ADM123456";
+          admission_number: "ADM123456",
           admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000 * 3).toISOString(), // 3 days ago
-          patient_first_name: "Jane";
+          patient_first_name: "Jane",
           patient_last_name: "Doe";
-          diagnosis: "Pneumonia";
+          diagnosis: "Pneumonia"
         };
         const mockVitalSigns: VitalSignRecord[] = [
           {
-            id: "vs_001";
+            id: "vs_001",
             admission_id: admissionId;
             record_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 4).toISOString(), // 4 hours ago
-            temperature: 37.8;
+            temperature: 37.8,
             pulse: 88;
-            respiratory_rate: 18;
+            respiratory_rate: 18,
             blood_pressure: "122/78";
-            oxygen_saturation: 97;
+            oxygen_saturation: 97,
             pain_level: 2;
-            recorded_by_user_id: "nurse_01";
+            recorded_by_user_id: "nurse_01",
             recorded_by_first_name: "Nurse";
-            recorded_by_last_name: "Joy";
-            notes: "Patient comfortable";
+            recorded_by_last_name: "Joy",
+            notes: "Patient comfortable"
           },
           {
-            id: "vs_002";
+            id: "vs_002",
             admission_id: admissionId;
             record_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 8).toISOString(), // 8 hours ago
-            temperature: 38.1;
+            temperature: 38.1,
             pulse: 92;
-            respiratory_rate: 20;
+            respiratory_rate: 20,
             blood_pressure: "125/80";
-            oxygen_saturation: 96;
+            oxygen_saturation: 96,
             pain_level: 3;
-            recorded_by_user_id: "nurse_02";
+            recorded_by_user_id: "nurse_02",
             recorded_by_first_name: "Nurse";
-            recorded_by_last_name: "Mike";
+            recorded_by_last_name: "Mike"
           },
         ];
 
@@ -187,16 +187,16 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (!admissionId) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Admission ID is missing.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -206,7 +206,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       // Prepare data, converting empty strings to null and numbers where appropriate
       // FIX: Use the defined submission data type
       const submissionData: VitalSignSubmissionData = {
-        record_time: new Date().toISOString();
+        record_time: new Date().toISOString(),
         temperature: formData.temperature;
           ? Number.parseFloat(formData.temperature);
           : null,
@@ -214,14 +214,14 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         respiratory_rate: formData.respiratory_rate;
           ? Number.parseInt(formData.respiratory_rate, 10);
           : null,
-        blood_pressure: formData.blood_pressure || null;
+        blood_pressure: formData.blood_pressure || null,
         oxygen_saturation: formData.oxygen_saturation;
           ? Number.parseFloat(formData.oxygen_saturation);
           : null,
         pain_level: formData.pain_level;
           ? Number.parseInt(formData.pain_level, 10);
           : null,
-        notes: formData.notes || null;
+        notes: formData.notes || null
       };
 
       // Basic validation
@@ -254,7 +254,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       await new Promise((resolve) => setTimeout(resolve, 800));
       const newRecord: NewVitalSignResponse = {
         id: `vs_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        admission_id: admissionId;
+        admission_id: admissionId,
         recorded_by_user_id: "nurse_current", // Replace with actual user ID
         recorded_by_first_name: "Current", // Replace with actual user data
         recorded_by_last_name: "Nurse";
@@ -266,17 +266,17 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
       // Reset form
       setFormData({
-        temperature: "";
+        temperature: "",
         pulse: "";
-        respiratory_rate: "";
+        respiratory_rate: "",
         blood_pressure: "";
-        oxygen_saturation: "";
+        oxygen_saturation: "",
         pain_level: "";
-        notes: "";
+        notes: ""
       }),
       toast({
-        title: "Success";
-        description: "Vital signs recorded successfully!";
+        title: "Success",
+        description: "Vital signs recorded successfully!"
       });
     } catch (error_: unknown) {
       // FIX: Use unknown
@@ -294,12 +294,12 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
     if (!dateString) return "N/A";
     try {
       const options: Intl.DateTimeFormatOptions = {
-        // year: "numeric";
+        // year: "numeric",
         month: "short";
-        day: "numeric";
+        day: "numeric",
         hour: "2-digit";
-        minute: "2-digit";
-        hour12: true;
+        minute: "2-digit",
+        hour12: true
       }
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
@@ -517,7 +517,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default VitalSigns;

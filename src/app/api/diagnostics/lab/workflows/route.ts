@@ -8,7 +8,7 @@ interface TestWorkflowCreateBody {
   name: string;
   description?: string;
   steps: Array<{
-    sequence: number;
+    sequence: number,
     name: string;
     description?: string;
     estimated_time?: number; // in minutes
@@ -149,24 +149,24 @@ export const _GET = async (request: NextRequest) => {
         return {
           ...workflow,
           steps,
-          applicable_tests: tests;
+          applicable_tests: tests
         };
       });
     );
 
     // Return workflows with pagination metadata
     return NextResponse.json({
-      data: workflowsWithDetails;
+      data: workflowsWithDetails,
       pagination: {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch test workflows", details: errorMessage },
       { status: 500 }
@@ -334,7 +334,7 @@ export const _POST = async (request: NextRequest) => {
       const completeWorkflow = {
         ...workflow,
         steps,
-        applicable_tests: tests;
+        applicable_tests: tests
       };
 
       // Return the created workflow
@@ -346,7 +346,7 @@ export const _POST = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create test workflow", details: errorMessage },
       { status: 500 }
@@ -415,14 +415,14 @@ export const _GET_BY_ID = async (
     const completeWorkflow = {
       ...workflow,
       steps,
-      applicable_tests: tests;
+      applicable_tests: tests
     };
 
     // Return the workflow
     return NextResponse.json(completeWorkflow);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch test workflow", details: errorMessage },
       { status: 500 }
@@ -635,7 +635,7 @@ export const _PUT = async (
       const completeWorkflow = {
         ...workflow,
         steps,
-        applicable_tests: tests;
+        applicable_tests: tests
       };
 
       // Return the updated workflow
@@ -647,7 +647,7 @@ export const _PUT = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update test workflow", details: errorMessage },
       { status: 500 }
@@ -702,7 +702,7 @@ export const DELETE = async (
       );
 
       return NextResponse.json({
-        message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead.";
+        message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead."
       });
     }
 
@@ -732,7 +732,7 @@ export const DELETE = async (
       await DB.query("COMMIT", []);
 
       return NextResponse.json({
-        message: "Test workflow deleted successfully";
+        message: "Test workflow deleted successfully"
       });
     } catch (error) {
       // Rollback transaction on error
@@ -741,7 +741,7 @@ export const DELETE = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to delete test workflow", details: errorMessage },
       { status: 500 }

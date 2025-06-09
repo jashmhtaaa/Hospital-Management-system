@@ -27,8 +27,8 @@ export interface ModalityFormData {
 // FIX: Define interface for props, including isOpen
 interface CreateModalityModalProperties {
   isOpen: boolean; // Add isOpen prop
-  onClose: () => void;
-  onSubmit: (data: ModalityFormData) => Promise<void> | void;
+  onClose: () => void,
+  onSubmit: (data: ModalityFormData) => Promise<void> | void
 }
 
 // FIX: Apply props interface
@@ -47,7 +47,7 @@ export default const _CreateModalityModal = ({
     event.preventDefault();
     if (!name) {
       /* SECURITY: Console statement removed */
-      return;
+      return
     }
     setIsSubmitting(true);
     try {
@@ -61,7 +61,7 @@ export default const _CreateModalityModal = ({
     } catch (error) { // FIX: Added error parameter
 
       // Optionally show an error message to the user
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setIsSubmitting(false);
     }

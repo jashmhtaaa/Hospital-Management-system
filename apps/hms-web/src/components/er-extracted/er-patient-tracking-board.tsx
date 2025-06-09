@@ -4,13 +4,13 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface Patient {
-  id: string;
+  id: string,
   name: string;
-  age: number;
+  age: number,
   gender: string;
-  chiefComplaint: string;
+  chiefComplaint: string,
   triageLevel: 1 | 2 | 3 | 4 | 5;
-  arrivalTime: string;
+  arrivalTime: string,
   waitTime: string;
   status: 'waiting' | 'in-progress' | 'ready-for-discharge' | 'discharged';
   assignedTo?: string;
@@ -18,7 +18,7 @@ interface Patient {
 }
 
 interface ERPatientTrackingBoardProps {
-  patients: Patient[];
+  patients: Patient[]
 }
 
 /**
@@ -32,7 +32,7 @@ export const _ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProp
       case 3: return <Badge variant="warning">Level 3</Badge>;
       case 4: return <Badge variant="secondary">Level 4</Badge>;
       case 5: return <Badge variant="secondary">Level 5</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -42,7 +42,7 @@ export const _ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProp
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'ready-for-discharge': return <Badge variant="success">Ready for Discharge</Badge>;
       case 'discharged': return <Badge>Discharged</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

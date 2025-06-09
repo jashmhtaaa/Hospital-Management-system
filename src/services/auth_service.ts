@@ -13,7 +13,7 @@ interface IUserRepository {
 // Placeholder for auth utilities (hashing, token generation)
 interface IAuthUtils {
   verifyPassword(password: string, hash: string): Promise<boolean>
-  generateToken(userId: string, username: string): Promise<string>;
+  generateToken(userId: string, username: string): Promise<string>
 }
 
 // Placeholder for AuditLogService
@@ -26,7 +26,7 @@ export class AuthService {
     private auditLogService: IAuditLogService // To be injected
   ) {}
 
-  async login(credentials: unknown): Promise<{ token: string; user: unknown } | null> {
+  async login(credentials: unknown): Promise<{ token: string, user: unknown } | null> {
     const { username, password } = credentials;
     let userIdForAudit = "unknown_user";
     let _loginStatus = "FAILURE";
@@ -82,7 +82,7 @@ export class AuthService {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       // Placeholder: In a real system, you might add the token to a blacklist here.
       await this.auditLogService.logEvent(userId, "LOGOUT_SUCCESS", "Auth", userId, "SUCCESS")
-      return Promise.resolve();
+      return Promise.resolve()
     } catch (error: unknown) {
 
       await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", { reason: error.message ||

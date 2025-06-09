@@ -11,16 +11,16 @@ import { patientManagementService, PatientCreateSchema } from '@/lib/core/patien
 
 // Search query schema
 const SearchQuerySchema = z.object({
-  firstName: z.string().optional();
-  lastName: z.string().optional();
-  dateOfBirth: z.string().optional();
-  ssn: z.string().optional();
-  mrn: z.string().optional();
-  phone: z.string().optional();
-  email: z.string().optional();
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  ssn: z.string().optional(),
+  mrn: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
   status: z.enum(['active', 'inactive', 'deceased']).optional(),
-  page: z.string().transform(Number).default('1');
-  limit: z.string().transform(Number).default('10');
+  page: z.string().transform(Number).default('1'),
+  limit: z.string().transform(Number).default('10')
 });
 
 /**
@@ -38,15 +38,15 @@ export const GET = async (request: NextRequest) => {
     const result = await patientManagementService.searchPatients(validatedParams);
 
     return NextResponse.json({
-      success: true;
+      success: true,
       data: result;
       message: `Found ${result.total} patients`,
       metadata: {
-        currentPage: result.page;
+        currentPage: result.page,
         totalPages: result.totalPages;
-        totalResults: result.total;
+        totalResults: result.total,
         hasNextPage: result.page < result.totalPages;
-        hasPreviousPage: result.page > 1;
+        hasPreviousPage: result.page > 1
       },
     });
   } catch (error) {
@@ -54,9 +54,9 @@ export const GET = async (request: NextRequest) => {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: 'Invalid search parameters';
-          details: error.errors;
+          details: error.errors
         },
         { status: 400 }
       );
@@ -64,9 +64,9 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        success: false;
+        success: false,
         error: 'Internal server error';
-        message: 'Failed to search patients';
+        message: 'Failed to search patients'
       },
       { status: 500 }
     );
@@ -88,13 +88,13 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        success: true;
+        success: true,
         data: patient;
-        message: 'Patient created successfully';
+        message: 'Patient created successfully',
         metadata: {
-          patientId: patient.id;
+          patientId: patient.id,
           mrn: patient.mrn;
-          createdAt: patient.createdAt;
+          createdAt: patient.createdAt
         },
       },
       { status: 201 }
@@ -104,10 +104,10 @@ export const POST = async (request: NextRequest) => {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: 'Invalid patient data';
-          details: error.errors;
-          message: 'Please check the provided patient information';
+          details: error.errors,
+          message: 'Please check the provided patient information'
         },
         { status: 400 }
       );
@@ -116,9 +116,9 @@ export const POST = async (request: NextRequest) => {
     if (error instanceof Error && error.message.includes('already exists')) {
       return NextResponse.json(
         {
-          success: false;
+          success: false,
           error: 'Duplicate patient';
-          message: error.message;
+          message: error.message
         },
         { status: 409 }
       );
@@ -126,9 +126,9 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        success: false;
+        success: false,
         error: 'Internal server error';
-        message: 'Failed to create patient';
+        message: 'Failed to create patient'
       },
       { status: 500 }
     );

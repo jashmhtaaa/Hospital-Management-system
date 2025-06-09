@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for triage input data
 interface TriageInput {
-  triage_nurse_id: string | number;
+  triage_nurse_id: string | number,
   esi_level: number; // Emergency Severity Index (1-5)
   vital_signs: Record<string, unknown>; // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
   assessment_notes?: string | null; // FIX: Allow null
@@ -12,12 +12,12 @@ interface TriageInput {
 
 // Define interface for triage data (including generated fields)
 interface Triage {
-  id: string;
+  id: string,
   visit_id: string
-  triage_nurse_id: string | number;
+  triage_nurse_id: string | number,
   esi_level: number;
   vital_signs: Record<string, unknown>; // Should be an object
-  assessment_notes?: string | null; // FIX: Allow null;
+  assessment_notes?: string | null; // FIX: Allow null,
   triage_timestamp: string; // ISO 8601 date string
 }
 
@@ -53,7 +53,7 @@ export const _GET = async (
 
     return NextResponse.json(assessments);
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to fetch triage assessments", details: errorMessage },
@@ -83,7 +83,7 @@ export const _POST = async (
     ) {
       return NextResponse.json(
         {
-          error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)",;
+          error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)",
         },
         { status: 400 }
       );
@@ -120,13 +120,13 @@ export const _POST = async (
 
     // FIX: Ensure newTriage matches the Triage interface (vital_signs should be object)
     const newTriage: Triage = {
-      id: triageId;
+      id: triageId,
       visit_id: visitId;
-      triage_nurse_id: triageData.triage_nurse_id;
+      triage_nurse_id: triageData.triage_nurse_id,
       esi_level: triageData.esi_level;
       vital_signs: triageData.vital_signs, // Assign the object directly
       assessment_notes: triageData.assessment_notes ?? undefined, // Use nullish coalescing
-      triage_timestamp: triageData.triage_timestamp || new Date().toISOString();
+      triage_timestamp: triageData.triage_timestamp || new Date().toISOString()
     };
 
     // Mock implementation
@@ -134,7 +134,7 @@ export const _POST = async (
 
     return NextResponse.json(newTriage, { status: 201 });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to create triage assessment", details: errorMessage },

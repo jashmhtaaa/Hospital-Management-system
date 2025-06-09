@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session";
 interface TestPanelCreateBody {
   name: string;
   description?: string;
-  category_id: number;
+  category_id: number,
   loinc_code: string;
   loinc_display?: string;
   panel_items: Array<{
@@ -128,25 +128,25 @@ export const _GET = async (request: NextRequest) => {
 
         return {
           ...panel,
-          panel_items: items;
-          available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+          panel_items: items,
+          available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
         };
       });
     );
 
     // Return panels with pagination metadata
     return NextResponse.json({
-      data: panelsWithItems;
+      data: panelsWithItems,
       pagination: {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch test panels", details: errorMessage },
       { status: 500 }
@@ -297,8 +297,8 @@ export const _POST = async (request: NextRequest) => {
       // Construct complete response
       const completePanel = {
         ...panel,
-        panel_items: items;
-        available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+        panel_items: items,
+        available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
       };
 
       // Return the created panel
@@ -310,7 +310,7 @@ export const _POST = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create test panel", details: errorMessage },
       { status: 500 }
@@ -380,15 +380,15 @@ export const _GET_BY_ID = async (
     // Construct complete response
     const completePanel = {
       ...panel,
-      panel_items: items;
-      available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+      panel_items: items,
+      available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
     };
 
     // Return the panel
     return NextResponse.json(completePanel);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch test panel", details: errorMessage },
       { status: 500 }
@@ -461,7 +461,7 @@ export const _PUT = async (
         // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
         if (!loincRegex.test(body.loinc_code)) {
-          throw new Error("Invalid LOINC code format. Expected format: #####-#");
+          throw new Error("Invalid LOINC code format. Expected format: #####-#")
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
@@ -593,8 +593,8 @@ export const _PUT = async (
       // Construct complete response
       const completePanel = {
         ...panel,
-        panel_items: items;
-        available_priorities: JSON.parse(panel.available_priorities || '["routine"]');
+        panel_items: items,
+        available_priorities: JSON.parse(panel.available_priorities || '["routine"]')
       };
 
       // Return the updated panel
@@ -606,7 +606,7 @@ export const _PUT = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to update test panel", details: errorMessage },
       { status: 500 }
@@ -661,7 +661,7 @@ export const DELETE = async (
       );
 
       return NextResponse.json({
-        message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead.";
+        message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead."
       });
     }
 
@@ -685,7 +685,7 @@ export const DELETE = async (
       await DB.query("COMMIT", []);
 
       return NextResponse.json({
-        message: "Test panel deleted successfully";
+        message: "Test panel deleted successfully"
       });
     } catch (error) {
       // Rollback transaction on error
@@ -694,7 +694,7 @@ export const DELETE = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to delete test panel", details: errorMessage },
       { status: 500 }

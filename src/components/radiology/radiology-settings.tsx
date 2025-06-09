@@ -23,7 +23,7 @@ import CreateModalityModal, { ModalityFormData } from './create-modality-modal.t
 
 // Define interfaces
 interface ProcedureType {
-  id: string;
+  id: string,
   name: string;
   modality_type?: string | null;
   description?: string | null;
@@ -31,7 +31,7 @@ interface ProcedureType {
 }
 
 interface Modality {
-  id: string;
+  id: string,
   name: string;
   location?: string | null;
   description?: string | null;
@@ -68,7 +68,7 @@ export default const _RadiologySettings = () {
         }
         throw new Error(errorMessage);
       }
-      const data: ProcedureType[] = await response.json();
+      const data: ProcedureType[] = await response.json(),
       setProcedureTypes(data || []); // Ensure it's always an array
     } catch (err) { // Changed 'error' to 'err'
       const message = err instanceof Error ? err.message : "Unknown error"; // Use 'err'
@@ -95,7 +95,7 @@ export default const _RadiologySettings = () {
         }
         throw new Error(errorMessage);
       }
-      const data: Modality[] = await response.json();
+      const data: Modality[] = await response.json(),
       setModalities(data || []); // Ensure it's always an array
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
@@ -112,11 +112,11 @@ export default const _RadiologySettings = () {
   ): Promise<void> => {
     try {
       const response = await fetch("/api/radiology/procedure-types", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(procedureData);
+        body: JSON.stringify(procedureData)
       });
 
       if (!response.ok) {
@@ -136,7 +136,7 @@ export default const _RadiologySettings = () {
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
       // Debug logging removed // Use err
-      /* SECURITY: Console statement removed */ // Replace alert with a better notification system (e.g., toast);
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system (e.g., toast)
     }
   };
 
@@ -145,11 +145,11 @@ export default const _RadiologySettings = () {
   ): Promise<void> => {
     try {
       const response = await fetch("/api/radiology/modalities", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(modalityData);
+        body: JSON.stringify(modalityData)
       });
 
       if (!response.ok) {
@@ -169,7 +169,7 @@ export default const _RadiologySettings = () {
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
       // Debug logging removed // Use err
-      /* SECURITY: Console statement removed */ // Replace alert with a better notification system;
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system
     }
   };
 

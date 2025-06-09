@@ -32,13 +32,13 @@ import { SecurityModule } from '@/lib/security/security.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true;
-      envFilePath: ['.env.local', '.env'],;
+      isGlobal: true,
+      envFilePath: ['.env.local', '.env'],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver;
+      driver: ApolloDriver,
       autoSchemaFile: 'schema.gql';
-      sortSchema: true;
+      sortSchema: true,
       playground: process.env.NODE_ENV !== 'production';
       context: ({ req, connection }) =>
         connection ? { req: { headers: connection.context } } : { req },

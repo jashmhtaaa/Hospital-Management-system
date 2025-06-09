@@ -56,7 +56,7 @@ const statusColors: Record<string, string> = {
   'IN_PROGRESS': 'bg-purple-500',
   'ON_HOLD': 'bg-orange-500',
   'COMPLETED': 'bg-green-500',
-  'CANCELLED': 'bg-gray-500';
+  'CANCELLED': 'bg-gray-500'
 };
 
 // Priority badge color mapping
@@ -64,7 +64,7 @@ const priorityColors: Record<string, string> = {
   'LOW': 'bg-blue-500',
   'MEDIUM': 'bg-yellow-500',
   'HIGH': 'bg-orange-500',
-  'EMERGENCY': 'bg-red-500';
+  'EMERGENCY': 'bg-red-500'
 };
 
 // Request type icon mapping
@@ -184,9 +184,9 @@ export const _MaintenanceDashboard = () => {
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load maintenance requests. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -208,7 +208,7 @@ export const _MaintenanceDashboard = () => {
     if (filterType != null) params.set('type', filterType);
     if (currentPage > 1) params.set('page', currentPage.toString());
 
-    router.push(`/support-services/maintenance?${params.toString()}`);
+    router.push(`/support-services/maintenance?${params.toString()}`)
   };
 
   // Handle tab change
@@ -247,7 +247,7 @@ export const _MaintenanceDashboard = () => {
   // Handle filter changes
   const applyFilters = () => {
     setCurrentPage(1),
-    updateUrlParams();
+    updateUrlParams()
   };
 
   // Reset all filters
@@ -273,12 +273,12 @@ export const _MaintenanceDashboard = () => {
 
   // Navigate to create new request
   const handleCreateRequest = () => {
-    router.push('/support-services/maintenance/new');
+    router.push('/support-services/maintenance/new')
   };
 
   // Navigate to request details
   const handleViewRequest = (id: string) => {
-    router.push(`/support-services/maintenance/${id}`);
+    router.push(`/support-services/maintenance/${id}`)
   };
 
   // Render status badge
@@ -305,7 +305,7 @@ export const _MaintenanceDashboard = () => {
       case 'CANCELLED':
         icon = <XCircle className="h-3 w-3 mr-1" />
         break;
-      default: icon = null;
+      default: icon = null
     }
 
     return (
@@ -313,7 +313,7 @@ export const _MaintenanceDashboard = () => {
         {icon}
         {status.replace(/_/g, ' ')}
       </Badge>
-    );
+    )
   };
 
   // Render priority badge
@@ -326,7 +326,7 @@ export const _MaintenanceDashboard = () => {
         {icon}
         {priority}
       </Badge>
-    );
+    )
   };
 
   // Render request type with icon
@@ -338,7 +338,7 @@ export const _MaintenanceDashboard = () => {
         {icon}
         {requestType.replace(/_/g, ' ')}
       </div>
-    );
+    )
   };
 
   // Render loading skeleton

@@ -12,13 +12,13 @@ import { PrismaClient } from '@prisma/client';
  */
 
 export interface User {
-  id: string;
+  id: string,
   email: string;
-  username: string;
+  username: string,
   firstName: string;
-  lastName: string;
+  lastName: string,
   roles: Role[];
-  permissions: Permission[];
+  permissions: Permission[],
   isActive: boolean;
   isLocked: boolean;
   lastLogin?: Date;
@@ -29,44 +29,44 @@ export interface User {
   organizationId: string;
   practitionerId?: string;
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     updatedAt: Date;
     createdBy: string;
     passwordChangedAt?: Date;
     failedLoginAttempts: number;
-    lastFailedLogin?: Date;
+    lastFailedLogin?: Date
   };
 export interface Role {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   permissions: Permission[];
   isSystem: boolean;
   organizationId?: string;
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     updatedAt: Date;
-    createdBy: string;
+    createdBy: string
   };
 export interface Permission {
-  id: string;
+  id: string,
   resource: string;
-  action: string;
+  action: string,
   scope: PermissionScope;
   conditions?: PermissionCondition[];
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     updatedAt: Date;
-    description: string;
+    description: string
   };
 export interface PermissionCondition {
-  field: string;
+  field: string,
   operator: 'equals' | 'not_equals' | 'in' | 'not_in' | 'contains' | 'starts_with' | 'ends_with';
   value: unknown
 export type PermissionScope = 'global' | 'organization' | 'department' | 'self' | 'assigned';
 
 export interface AccessContext {
-  userId: string;
+  userId: string,
   organizationId: string;
   department?: string;
   practitionerId?: string;
@@ -74,41 +74,41 @@ export interface AccessContext {
   userAgent?: string;
   sessionId: string
 export interface AuditLog {
-  id: string;
+  id: string,
   userId: string;
-  action: string;
+  action: string,
   resource: string;
   resourceId?: string;
   organizationId: string;
   department?: string;
-  success: boolean;
+  success: boolean,
   details: unknown;
   ipAddress?: string;
   userAgent?: string;
-  timestamp: Date;
+  timestamp: Date,
   sessionId: string
 export interface Session {
-  id: string;
+  id: string,
   userId: string;
-  token: string;
+  token: string,
   refreshToken: string;
-  expiresAt: Date;
+  expiresAt: Date,
   refreshExpiresAt: Date;
   isActive: boolean;
   ipAddress?: string;
   userAgent?: string;
   metadata: {
-    createdAt: Date;
+    createdAt: Date,
     lastUsed: Date;
     deviceId?: string;
-    deviceName?: string;
+    deviceName?: string
   };
 export class RBACService extends EventEmitter {
   private prisma: PrismaClient;
   private jwtSecret: string;
   private jwtRefreshSecret: string;
-  private sessions: Map<string, Session> = new Map();
-  private permissionCache: Map<string, Permission[]> = new Map();
+  private sessions: Map<string, Session> = new Map(),
+  private permissionCache: Map<string, Permission[]> = new Map(),
   private roleCache: Map<string, Role> = new Map(),
   constructor() {
     super();
@@ -127,11 +127,11 @@ export class RBACService extends EventEmitter {
    * Authenticate user with email/username and password;
    */
   async authenticate(
-    emailOrUsername: string;
+    emailOrUsername: string,
     password: string;
     ipAddress?: string,
     userAgent?: string;
-  ): Promise<{ user: User; session: Session; accessToken: string; refreshToken: string } | null> {
+  ): Promise<{ user: User, session: Session; accessToken: string, refreshToken: string } | null> {
     try {
       // Find user by email or username
       const user = await this.findUser(emailOrUsername);
@@ -193,7 +193,7 @@ export class RBACService extends EventEmitter {
       await this.logAuditEvent('authentication_success', 'user', user.id, {
         ipAddress,
         userAgent,
-        sessionId: session.id;
+        sessionId: session.id
       }, user.id, user.organizationId);
 
       this.emit('user_authenticated', { user, session, ipAddress, userAgent });
@@ -222,13 +222,13 @@ export class RBACService extends EventEmitter {
       session.metadata.lastUsed = new Date();
 
       return {
-        userId: decoded.userId;
+        userId: decoded.userId,
         organizationId: decoded.organizationId;
-        department: decoded.department;
+        department: decoded.department,
         practitionerId: decoded.practitionerId;
-        sessionId: decoded.sessionId;
+        sessionId: decoded.sessionId,
         ipAddress: session.ipAddress;
-        userAgent: session.userAgent;
+        userAgent: session.userAgent
       };
     } catch (error) {
       return null;
@@ -238,7 +238,7 @@ export class RBACService extends EventEmitter {
   /**
    * Refresh access token using refresh token;
    */
-  async refreshAccessToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string } | null> {
+  async refreshAccessToken(refreshToken: string): Promise<{ accessToken: string, refreshToken: string } | null> {
     try {
       const decoded = jwt.verify(refreshToken, this.jwtRefreshSecret) as any;
       const session = this.sessions.get(decoded.sessionId);
@@ -262,8 +262,8 @@ export class RBACService extends EventEmitter {
       session.refreshToken = newRefreshToken;
 
       return {
-        accessToken: newAccessToken;
-        refreshToken: newRefreshToken;
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken
       };
     } catch (error) {
       return null;
@@ -274,7 +274,7 @@ export class RBACService extends EventEmitter {
    * Check if user has permission for specific action on resource;
    */
   async hasPermission(
-    context: AccessContext;
+    context: AccessContext,
     resource: string;
     action: string;
     resourceData?: unknown;
@@ -295,7 +295,7 @@ export class RBACService extends EventEmitter {
       // Log access denied
       await this.logAuditEvent('access_denied', resource, resourceData?.id, {
         action,
-        reason: 'insufficient_permissions';
+        reason: 'insufficient_permissions'
       }, context.userId, context.organizationId);
 
       return false;

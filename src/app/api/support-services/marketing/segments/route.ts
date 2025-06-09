@@ -23,7 +23,7 @@ export const GET = async (request: NextRequest) => {
         isActive: searchParams.has('isActive');
           ? searchParams.get('isActive') === 'true';
           : undefined,
-        search: searchParams.get('search') || undefined;
+        search: searchParams.get('search') || undefined,
         page: searchParams.has('page');
           ? parseInt(searchParams.get('page') || '1', 10);
           : 1,
@@ -37,8 +37,8 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.segments.read';
-      auditAction: 'SEGMENTS_LIST';
+      requiredPermission: 'marketing.segments.read',
+      auditAction: 'SEGMENTS_LIST'
     }
   );
 }
@@ -62,7 +62,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(segment, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.segments.create';
-      auditAction: 'SEGMENT_CREATE';
+      requiredPermission: 'marketing.segments.create',
+      auditAction: 'SEGMENT_CREATE'
     }
   );

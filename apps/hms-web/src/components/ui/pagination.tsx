@@ -4,7 +4,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 }
 interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
-  currentPage: number;
+  currentPage: number,
   totalPages: number;
   onPageChange: (page: number) => void
 export const _Pagination = ({ className,
@@ -57,7 +57,7 @@ export const _Pagination = ({ className,
       pages.push(totalPages);
     }
 
-    return pages;
+    return pages
   };
 
   return (

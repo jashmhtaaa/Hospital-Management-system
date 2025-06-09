@@ -19,12 +19,12 @@ runs:
   steps:
     - name: 🏗️ Base Environment Setup
       uses: ./.github/actions/setup-environment
-      
+
     - name: 📦 Install Test Dependencies
       shell: bash
       run: |
         npm ci --include=dev
-        
+
         # Install additional test dependencies
         npm install -g \
           jest-cli \
@@ -34,7 +34,7 @@ runs:
           postman-collection \
           artillery \
           autocannon
-          
+
     - name: 🎭 Setup E2E Testing (Playwright)
       if: contains(inputs.test-suite, 'e2e')
       shell: bash
@@ -42,7 +42,7 @@ runs:
         # Install Playwright browsers
         npx playwright install --with-deps ${{ inputs.browser }}
         npx playwright install-deps
-        
+
         # Setup browser preferences for healthcare compliance
         mkdir -p ~/.config/playwright
         cat > ~/.config/playwright/config.json << EOF
@@ -55,7 +55,7 @@ runs:
           "trace": "retain-on-failure"
         }
         EOF
-        
+
     - name: ⚡ Setup Performance Testing
       if: contains(inputs.test-suite, 'performance')
       shell: bash
@@ -73,10 +73,10 @@ runs:
           }
         }
         EOF
-        
+
         # Install additional performance tools
         docker pull grafana/k6:latest
-        
+
     - name: 🛡️ Setup Security Testing
       if: contains(inputs.test-suite, 'security')
       shell: bash
@@ -84,7 +84,7 @@ runs:
         # Setup OWASP ZAP
         docker pull owasp/zap2docker-stable
         docker pull owasp/zap2docker-weekly
-        
+
         # Download ZAP rules for healthcare
         mkdir -p ~/.zap/rules
         wget -O ~/.zap/rules/healthcare-rules.conf \
@@ -92,7 +92,7 @@ runs:
           
         # Setup Nuclei templates
         docker pull projectdiscovery/nuclei:latest
-        
+
     - name: ♿ Setup Accessibility Testing
       if: contains(inputs.test-suite, 'accessibility')
       shell: bash
@@ -118,7 +118,7 @@ runs:
           "locale": "en"
         }
         EOF
-        
+
     - name: 🗃️ Setup Database Testing
       if: contains(inputs.test-suite, 'database') || contains(inputs.test-suite, 'integration')
       shell: bash
@@ -134,23 +134,23 @@ runs:
         export DATABASE_URL="${{ inputs.database-url }}"
         npx prisma generate
         npx prisma db push --force-reset
-        
+
         # Run database migrations for testing
         npx prisma migrate deploy
-        
+
         # Seed test data
         npm run db:seed:test || echo "No test seed script found"
-        
+
     - name: 🔗 Setup API Testing
       if: contains(inputs.test-suite, 'api') || contains(inputs.test-suite, 'integration')
       shell: bash
       run: |
         # Setup Newman for Postman collection testing
         newman --version
-        
+
         # Setup API testing environment
         mkdir -p tests/api/environments
-        
+
         # Create test environment file
         cat > tests/api/environments/ci.json << EOF
         {
@@ -175,7 +175,7 @@ runs:
           ]
         }
         EOF
-        
+
     - name: 📊 Setup Test Reporting
       shell: bash
       run: |
@@ -196,7 +196,7 @@ runs:
           jest-html-reporter \
           allure-commandline \
           junit-report-builder
-          
+
     - name: 🔧 Configure Test Environment Variables
       shell: bash
       run: |
@@ -212,13 +212,13 @@ runs:
         PLAYWRIGHT_BROWSERS_PATH=~/.cache/playwright
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
         EOF
-        
+
     - name: 🏥 Setup Healthcare-Specific Test Data
       shell: bash
       run: |
         # Create healthcare test fixtures
         mkdir -p tests/fixtures/healthcare
-        
+
         # Generate FHIR test data
         cat > tests/fixtures/healthcare/patient-test-data.json << EOF
         {
@@ -251,12 +251,12 @@ runs:
           "birthDate": "1990-01-01"
         }
         EOF
-        
+
     - name: ✅ Verify Test Environment
       shell: bash
       run: |
         echo "🔍 Verifying test environment setup..."
-        
+
         # Verify test suite specific tools
         case "${{ inputs.test-suite }}" in
           *e2e*)
@@ -273,9 +273,9 @@ runs:
             lighthouse --version
             ;;
         esac
-        
+
         # Verify common test tools
         jest --version
         npm test -- --version 2>/dev/null || echo "No test script version available"
-        
+
         echo "✅ Test environment setup complete for: ${{ inputs.test-suite }}"

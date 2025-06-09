@@ -31,17 +31,17 @@ import { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Impo
 // const { Option } = Select; // Removed unused variable assignment
 
 interface IPDPharmacyIntegrationProperties {
-  admissionId: string;
-  prescriptions: IPDPrescription[];
+  admissionId: string,
+  prescriptions: IPDPrescription[]
 }
 
 interface MedicationScheduleItem {
   id: string; // Unique ID for the schedule item (e.g., prescriptionItemId + time)
-  prescriptionItemId: string;
+  prescriptionItemId: string,
   medicationName: string
-  dosage: string;
+  dosage: string,
   route: string;
-  frequency: string;
+  frequency: string,
   scheduledTime: string; // ISO 8601 format
   status: "Pending" | "Administered" | "Missed" | "Refused";
   administrationRecordId?: string;
@@ -56,7 +56,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable
   const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable
     MedicationScheduleItem[]
-  >([]);
+  >([]),
 
   const [_administrationRecords, _setAdministrationRecords] = useState<;
     MedicationAdministrationRecord[]
@@ -99,13 +99,13 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             // Only schedule future administrations
             schedule.push({
               id: `${item.id}-${administrationTime.toISOString()}`,
-              prescriptionItemId: item.id;
+              prescriptionItemId: item.id,
               medicationName: item.medication_name;
-              dosage: item.dosage;
+              dosage: item.dosage,
               route: item.route;
-              frequency: item.frequency;
-              scheduledTime: administrationTime.toISOString();
-              status: "Pending";
+              frequency: item.frequency,
+              scheduledTime: administrationTime.toISOString(),
+              status: "Pending"
             });
           }
           administrationTime = administrationTime.add(intervalHours, "hour");
@@ -131,7 +131,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       if (!response.ok) {
         throw new Error("Failed to fetch administration records");
       }
-      const data: AdminRecordsApiResponse = await response.json();
+      const data: AdminRecordsApiResponse = await response.json(),
       _setAdministrationRecords(data.records || []);
 
       // Update schedule status based on fetched records
@@ -145,8 +145,8 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           if (record != null) {
             return {
               ...item,
-              status: record.status;
-              administrationRecordId: record.id;
+              status: record.status,
+              administrationRecordId: record.id
             };
           }
           return item;
@@ -169,7 +169,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   // FIX: Prefix unused function with underscore
   const _handleAdministerMedication = async (
-    scheduleItemId: string;
+    scheduleItemId: string,
     status: "Administered" | "Missed" | "Refused";
     notes?: string;
   ) => {
@@ -184,16 +184,16 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     _setLoading(true);
     try {
       const response = await fetch("/api/pharmacy/administration-records", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          admission_id: admissionId;
+          admission_id: admissionId,
           prescription_item_id: itemToAdminister.prescriptionItemId;
-          medication_name: itemToAdminister.medicationName;
+          medication_name: itemToAdminister.medicationName,
           dosage: itemToAdminister.dosage;
-          route: itemToAdminister.route;
+          route: itemToAdminister.route,
           scheduled_time: itemToAdminister.scheduledTime;
           administration_time: dayjs().toISOString(), // Record actual time
           status,
@@ -203,7 +203,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       });
 
       if (!response.ok) {
-        const errorData: ApiErrorResponse = await response.json();
+        const errorData: ApiErrorResponse = await response.json(),
         throw new Error(errorData.error || "Failed to record administration");
       }
 
@@ -225,7 +225,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   const showAdministrationModal = (item: MedicationScheduleItem) => {
     setSelectedScheduleItem(item);
     form.setFieldsValue({ notes: "" }); // Reset notes field
-    setIsModalVisible(true);
+    setIsModalVisible(true)
   };
 
   const handleModalOk = () => {
@@ -249,45 +249,45 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         );
       });
       .catch((info) => {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       })
   };
 
   const handleModalCancel = () => {
     setIsModalVisible(false),
-    setSelectedScheduleItem(null);
+    setSelectedScheduleItem(null)
   };
 
   const columns = [
     {
-      title: "Time";
+      title: "Time",
       dataIndex: "scheduledTime";
-      key: "time";
-      render: (time: string) => dayjs(time).format("HH:mm");
+      key: "time",
+      render: (time: string) => dayjs(time).format("HH:mm"),
       sorter: (a: MedicationScheduleItem, b: MedicationScheduleItem) =>
         dayjs(a.scheduledTime).diff(dayjs(b.scheduledTime)),
-      defaultSortOrder: "ascend" as const;
+      defaultSortOrder: "ascend" as const
     },
     {
-      title: "Medication";
+      title: "Medication",
       dataIndex: "medicationName";
-      key: "medicationName";
+      key: "medicationName"
     },
     {
-      title: "Dosage";
+      title: "Dosage",
       dataIndex: "dosage";
       key: "dosage";
-      // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId), // Reference removed;
+      // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId), // Reference removed
     },
     {
-      title: "Route";
+      title: "Route",
       dataIndex: "route";
-      key: "route";
+      key: "route"
     },
     {
-      title: "Status";
+      title: "Status",
       dataIndex: "status";
-      key: "status";
+      key: "status",
       render: (status: string) => {
         let color = "default";
         if (status === "Administered") color = "success";
@@ -298,7 +298,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       },
     },
     {
-      title: "Action";
+      title: "Action",
       key: "action";
       render: (_: unknown, record: MedicationScheduleItem) => {
         if (record.status === "Pending") {
@@ -406,7 +406,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         </Form>
       </Modal>
     </Card>
-  );
+  )
 };
 
 export default IPDPharmacyIntegration;

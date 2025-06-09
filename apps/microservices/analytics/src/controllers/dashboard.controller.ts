@@ -39,7 +39,7 @@ export class DashboardController {
       status,
       isPublic: isPublic !== undefined ? isPublic === 'true' : undefined;
       createdBy,
-      isTemplate: isTemplate !== undefined ? isTemplate === 'true' : undefined;
+      isTemplate: isTemplate !== undefined ? isTemplate === 'true' : undefined
     });
   }
 
@@ -189,7 +189,7 @@ export class DashboardController {
     return this.dashboardService.getKPIs({
       category: category as any;
       status,
-      tags: tags ? tags.split(',') : undefined,;
+      tags: tags ? tags.split(',') : undefined,
     });
   }
 

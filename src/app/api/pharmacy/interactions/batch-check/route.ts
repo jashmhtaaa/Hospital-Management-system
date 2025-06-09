@@ -20,12 +20,12 @@ import { validateBatchInteractionCheckRequest } from '../../../../../lib/validat
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 // Initialize services
@@ -81,11 +81,11 @@ export const POST = async (req: NextRequest) => {
       if (labResults.length === 0) {
         const patientLabResults = await getPatientLabResults(data.patientId);
         labResults = patientLabResults.map(lr => ({
-          code: lr.code;
+          code: lr.code,
           value: lr.value;
-          unit: lr.unit;
+          unit: lr.unit,
           referenceRange: lr.referenceRange;
-          abnormalFlag: lr.abnormalFlag;
+          abnormalFlag: lr.abnormalFlag
         }));
       }
     }
@@ -96,21 +96,21 @@ export const POST = async (req: NextRequest) => {
       allergies,
       conditions,
       labResults,
-      includeMonographs: data.includeMonographs || false;
+      includeMonographs: data.includeMonographs || false
     });
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'BATCH_CHECK';
+      action: 'BATCH_CHECK',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       patientId: data.patientId;
       details: {
-        medicationCount: data.medicationIds.length;
+        medicationCount: data.medicationIds.length,
         allergyCount: allergies.length;
-        conditionCount: conditions.length;
+        conditionCount: conditions.length,
         labResultCount: labResults.length;
-        interactionCount: results.totalInteractionCount;
+        interactionCount: results.totalInteractionCount
       }
     });
 
@@ -118,12 +118,12 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
       results,
       metadata: {
-        medicationCount: data.medicationIds.length;
+        medicationCount: data.medicationIds.length,
         allergyCount: allergies.length;
-        conditionCount: conditions.length;
+        conditionCount: conditions.length,
         labResultCount: labResults.length;
-        totalInteractionCount: results.totalInteractionCount;
-        criticalInteractionCount: results.criticalInteractionCount;
+        totalInteractionCount: results.totalInteractionCount,
+        criticalInteractionCount: results.criticalInteractionCount
       }
     }, { status: 200 });
   } catch (error) {

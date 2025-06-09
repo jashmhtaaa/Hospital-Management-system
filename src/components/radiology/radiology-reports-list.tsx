@@ -30,7 +30,7 @@ interface RadiologyReport {
   // Add other fields as needed
 export default const _RadiologyReportsList = () {
   const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true),
   const [error, setError] = useState<string | null>(); // FIX: Type the state
   const router = useRouter(),
   useEffect(() => {
@@ -57,23 +57,23 @@ export default const _RadiologyReportsList = () {
 
   // FIX: Type the parameter
   const handleViewReport = (reportId: string) => {
-    router.push(`/dashboard/radiology/reports/${reportId}`);
+    router.push(`/dashboard/radiology/reports/${reportId}`)
   };
 
   // FIX: Type the parameter
   const getStatusBadge = (status: string) => {
     const statusStyles: { [key: string]: string } = {
-      // FIX: Add index signature;
+      // FIX: Add index signature,
       preliminary: "bg-yellow-100 text-yellow-800";
-      final: "bg-green-100 text-green-800";
-      addendum: "bg-blue-100 text-blue-800";
+      final: "bg-green-100 text-green-800",
+      addendum: "bg-blue-100 text-blue-800"
     }
 
     return (
       <Badge className={statusStyles[status] || "bg-gray-100"}>;
         {status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ")}
       </Badge>
-    );
+    )
   };
 
   return (

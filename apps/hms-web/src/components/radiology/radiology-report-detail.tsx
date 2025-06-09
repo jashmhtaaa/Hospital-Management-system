@@ -6,21 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 }
 interface RadiologyReport {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   reportDate: string;
-  studyType: string;
+  studyType: string,
   modality: string;
-  status: 'draft' | 'preliminary' | 'final' | 'amended';
+  status: 'draft' | 'preliminary' | 'final' | 'amended',
   radiologist: string;
-  findings: string;
+  findings: string,
   impression: string;
-  recommendations: string;
+  recommendations: string
 }
 
 interface RadiologyReportDetailProps {
-  report: RadiologyReport;
+  report: RadiologyReport
 }
 
 /**
@@ -33,7 +33,7 @@ export const _RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) =
       case 'preliminary': return <Badge variant="warning">Preliminary</Badge>;
       case 'final': return <Badge variant="success">Final</Badge>;
       case 'amended': return <Badge variant="info">Amended</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

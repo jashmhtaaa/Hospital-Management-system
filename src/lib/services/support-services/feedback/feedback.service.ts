@@ -13,7 +13,7 @@ export interface FeedbackFilter {
   serviceType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
+  page: number,
   limit: number
 export interface ComplaintFilter {
   category?: string;
@@ -23,10 +23,10 @@ export interface ComplaintFilter {
   assignedToId?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
+  page: number,
   limit: number
 export interface CreateFeedbackData {
-  type: string;
+  type: string,
   source: string;
   rating: number;
   comments?: string;
@@ -39,9 +39,9 @@ export interface CreateFeedbackData {
   anonymous: boolean;
   contactInfo?: unknown;
 export interface CreateComplaintData {
-  title: string;
+  title: string,
   description: string;
-  category: string;
+  category: string,
   severity: string;
   submittedById?: string;
   patientId?: string;
@@ -83,34 +83,34 @@ export class FeedbackService {
         include: {
           submittedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           patient: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              dateOfBirth: true;
-              gender: true;
+              dateOfBirth: true,
+              gender: true
             }
           },
-          department: true;
+          department: true,
           reviewedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           responses: {
             include: {
               respondedByUser: {
                 select: {
-                  id: true;
+                  id: true,
                   name: true;
-                  email: true;
+                  email: true
                 }
               }
             },
@@ -120,9 +120,9 @@ export class FeedbackService {
             include: {
               uploadedByUser: {
                 select: {
-                  id: true;
+                  id: true,
                   name: true;
-                  email: true;
+                  email: true
                 }
               }
             }
@@ -130,22 +130,22 @@ export class FeedbackService {
           followUpActions: {
             where: {
               status: {
-                in: ['PLANNED', 'IN_PROGRESS'];
+                in: ['PLANNED', 'IN_PROGRESS']
               }
             },
             include: {
               assignedToUser: {
                 select: {
-                  id: true;
+                  id: true,
                   name: true;
-                  email: true;
+                  email: true
                 }
               }
             }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { createdAt: 'desc' }
       }),
       prisma.feedback.count({ where })
@@ -155,13 +155,13 @@ export class FeedbackService {
     const fhirFeedback = feedback.map(item => toFHIRFeedback(item));
 
     return {
-      data: feedback;
+      data: feedback,
       fhir: fhirFeedback;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -175,34 +175,34 @@ export class FeedbackService {
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            dateOfBirth: true;
-            gender: true;
+            dateOfBirth: true,
+            gender: true
           }
         },
-        department: true;
+        department: true,
         reviewedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         responses: {
           include: {
             respondedByUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           },
@@ -212,9 +212,9 @@ export class FeedbackService {
           include: {
             uploadedByUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           }
@@ -223,16 +223,16 @@ export class FeedbackService {
           include: {
             assignedToUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             },
             createdByUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           },
@@ -247,8 +247,8 @@ export class FeedbackService {
 
     if (includeFHIR != null) {
       return {
-        data: feedback;
-        fhir: toFHIRFeedback(feedback);
+        data: feedback,
+        fhir: toFHIRFeedback(feedback)
       };
     }
 
@@ -284,42 +284,42 @@ export class FeedbackService {
     // Create the feedback
     const feedback = await prisma.feedback.create({
       data: {
-        type: data.type;
+        type: data.type,
         source: data.source;
-        rating: data.rating;
+        rating: data.rating,
         comments: data.comments;
-        submittedById: data.anonymous ? null : (data.submittedById || userId);
+        submittedById: data.anonymous ? null : (data.submittedById || userId),
         patientId: data.patientId;
-        departmentId: data.departmentId;
+        departmentId: data.departmentId,
         serviceId: data.serviceId;
-        serviceType: data.serviceType;
+        serviceType: data.serviceType,
         status: 'NEW';
-        tags: data.tags || [];
+        tags: data.tags || [],
         anonymous: data.anonymous;
-        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null;
+        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         },
-        department: true;
+        department: true
       }
     });
 
     // Create audit log
     if (userId != null) {
       await createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         entityType: 'FEEDBACK';
         entityId: feedback.id;
         userId,
@@ -343,17 +343,17 @@ export class FeedbackService {
     }
 
     await this.notificationService.sendNotification({
-      type: 'NEW_FEEDBACK';
+      type: 'NEW_FEEDBACK',
       title: notificationTitle;
       message: notificationMessage;
       recipientRoles,
-      entityId: feedback.id;
+      entityId: feedback.id,
       metadata: {
-        feedbackId: feedback.id;
+        feedbackId: feedback.id,
         type: data.type;
-        rating: data.rating;
+        rating: data.rating,
         departmentId: data.departmentId;
-        serviceType: data.serviceType;
+        serviceType: data.serviceType
       }
     });
 
@@ -367,7 +367,7 @@ export class FeedbackService {
     const feedback = await prisma.feedback.findUnique({
       where: { id },
       include: {
-        department: true;
+        department: true
       }
     });
 
@@ -380,30 +380,30 @@ export class FeedbackService {
       where: { id },
       data: {
         status,
-        reviewedById: userId;
-        reviewedAt: new Date();
-        reviewNotes: reviewNotes || undefined;
+        reviewedById: userId,
+        reviewedAt: new Date(),
+        reviewNotes: reviewNotes || undefined
       },
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         },
-        department: true;
+        department: true,
         reviewedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -411,7 +411,7 @@ export class FeedbackService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'FEEDBACK';
       entityId: id;
       userId,
@@ -421,10 +421,10 @@ export class FeedbackService {
     // Send notification to submitter if not anonymous and has user account
     if (!feedback?.anonymous && feedback.submittedById) {
       await this.notificationService.sendNotification({
-        type: 'FEEDBACK_STATUS_UPDATE';
+        type: 'FEEDBACK_STATUS_UPDATE',
         title: 'Feedback Status Updated';
         message: `Your feedback has been ${status.toLowerCase()}`,
-        recipientIds: [feedback.submittedById];
+        recipientIds: [feedback.submittedById],
         entityId: feedback.id;
         metadata: {
           feedbackId: feedback.id;
@@ -445,9 +445,9 @@ export class FeedbackService {
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -468,9 +468,9 @@ export class FeedbackService {
       include: {
         respondedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -478,7 +478,7 @@ export class FeedbackService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'FEEDBACK_RESPONSE';
       entityId: response.id;
       userId,
@@ -488,14 +488,14 @@ export class FeedbackService {
     // Send notification to submitter if not anonymous and has user account
     if (isPublic && !feedback?.anonymous && feedback.submittedById) {
       await this.notificationService.sendNotification({
-        type: 'FEEDBACK_RESPONSE';
+        type: 'FEEDBACK_RESPONSE',
         title: 'Response to Your Feedback';
-        message: 'Your feedback has received a response';
+        message: 'Your feedback has received a response',
         recipientIds: [feedback.submittedById];
-        entityId: feedbackId;
+        entityId: feedbackId,
         metadata: {
           feedbackId,
-          responseId: response.id;
+          responseId: response.id
         }
       });
     }
@@ -523,14 +523,14 @@ export class FeedbackService {
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId;
+        uploadedById: userId
       },
       include: {
         uploadedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -538,7 +538,7 @@ export class FeedbackService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'FEEDBACK_ATTACHMENT';
       entityId: attachment.id;
       userId,
@@ -575,51 +575,51 @@ export class FeedbackService {
         include: {
           submittedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           patient: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              dateOfBirth: true;
-              gender: true;
+              dateOfBirth: true,
+              gender: true
             }
           },
-          department: true;
+          department: true,
           assignedToUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           resolvedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           escalatedToUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           _count: {
             select: {
-              activities: true;
+              activities: true,
               attachments: true;
-              followUpActions: true;
+              followUpActions: true
             }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: [
           { severity: 'desc' },
           { createdAt: 'desc' }
@@ -632,13 +632,13 @@ export class FeedbackService {
     const fhirComplaints = complaints.map(complaint => toFHIRComplaint(complaint));
 
     return {
-      data: complaints;
+      data: complaints,
       fhir: fhirComplaints;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -652,48 +652,48 @@ export class FeedbackService {
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            dateOfBirth: true;
-            gender: true;
+            dateOfBirth: true,
+            gender: true
           }
         },
-        department: true;
+        department: true,
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         resolvedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         escalatedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         activities: {
           include: {
             performedByUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           },
@@ -703,9 +703,9 @@ export class FeedbackService {
           include: {
             uploadedByUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           }
@@ -714,16 +714,16 @@ export class FeedbackService {
           include: {
             assignedToUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             },
             createdByUser: {
               select: {
-                id: true;
+                id: true,
                 name: true;
-                email: true;
+                email: true
               }
             }
           },
@@ -738,8 +738,8 @@ export class FeedbackService {
 
     if (includeFHIR != null) {
       return {
-        data: complaint;
-        fhir: toFHIRComplaint(complaint);
+        data: complaint,
+        fhir: toFHIRComplaint(complaint)
       };
     }
 
@@ -775,54 +775,54 @@ export class FeedbackService {
     // Create the complaint
     const complaint = await prisma.complaint.create({
       data: {
-        title: data.title;
+        title: data.title,
         description: data.description;
-        category: data.category;
+        category: data.category,
         severity: data.severity;
-        status: 'SUBMITTED';
-        submittedById: data.anonymous ? null : (data.submittedById || userId);
-        patientId: data.patientId;
+        status: 'SUBMITTED',
+        submittedById: data.anonymous ? null : (data.submittedById || userId),
+        patientId: data.patientId,
         departmentId: data.departmentId;
-        dueDate: data.dueDate || new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now;
+        dueDate: data.dueDate || new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now,
         anonymous: data.anonymous;
-        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null;
+        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         },
-        department: true;
+        department: true
       }
     })
 
     // Create initial activity
     await prisma.complaintActivity.create({
       data: {
-        complaintId: complaint.id;
+        complaintId: complaint.id,
         activityType: 'STATUS_CHANGE';
-        description: 'Complaint submitted';
-        performedById: userId || 'system';
+        description: 'Complaint submitted',
+        performedById: userId || 'system'
       }
     });
 
     // Create audit log
     if (userId != null) {
       await createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         entityType: 'COMPLAINT';
         entityId: complaint.id;
         userId,
-        details: `Created /* SECURITY: Template literal eliminated */;
+        details: `Created /* SECURITY: Template literal eliminated */
       });
     }
 
@@ -843,16 +843,16 @@ export class FeedbackService {
     }
 
     await this.notificationService.sendNotification({
-      type: 'NEW_COMPLAINT';
+      type: 'NEW_COMPLAINT',
       title: `New ${data.severity} Complaint`,
       message: `New /* SECURITY: Template literal eliminated */
       recipientRoles,
-      entityId: complaint.id;
+      entityId: complaint.id,
       metadata: {
-        complaintId: complaint.id;
+        complaintId: complaint.id,
         severity: data.severity;
-        category: data.category;
-        departmentId: data.departmentId;
+        category: data.category,
+        departmentId: data.departmentId
       }
     });
 
@@ -890,41 +890,41 @@ export class FeedbackService {
     // Update the complaint
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
-      data: updateData;
+      data: updateData,
       include: {
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         },
-        department: true;
+        department: true,
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         resolvedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         escalatedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -933,16 +933,16 @@ export class FeedbackService {
     // Create activity
     await prisma.complaintActivity.create({
       data: {
-        complaintId: id;
+        complaintId: id,
         activityType: 'STATUS_CHANGE';
         description: `Status changed to /* SECURITY: Template literal eliminated */
-        performedById: userId;
+        performedById: userId
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'COMPLAINT';
       entityId: id;
       userId,
@@ -952,10 +952,10 @@ export class FeedbackService {
     // Send notification to submitter if not anonymous and has user account
     if (!complaint?.anonymous && complaint.submittedById) {
       await this.notificationService.sendNotification({
-        type: 'COMPLAINT_STATUS_UPDATE';
+        type: 'COMPLAINT_STATUS_UPDATE',
         title: 'Complaint Status Updated';
         message: `Your complaint has been ${status.toLowerCase()}`,
-        recipientIds: [complaint.submittedById];
+        recipientIds: [complaint.submittedById],
         entityId: id;
         metadata: {
           complaintId: id;
@@ -967,10 +967,10 @@ export class FeedbackService {
     // Send notification to assigned user
     if (complaint.assignedToId) {
       await this.notificationService.sendNotification({
-        type: 'COMPLAINT_STATUS_UPDATE';
+        type: 'COMPLAINT_STATUS_UPDATE',
         title: 'Complaint Status Updated';
         message: `Complaint ${id} has been ${status.toLowerCase()}`,
-        recipientIds: [complaint.assignedToId];
+        recipientIds: [complaint.assignedToId],
         entityId: id;
         metadata: {
           complaintId: id;
@@ -1008,14 +1008,14 @@ export class FeedbackService {
       where: { id },
       data: {
         assignedToId,
-        status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status;
+        status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status
       },
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -1024,16 +1024,16 @@ export class FeedbackService {
     // Create activity
     await prisma.complaintActivity.create({
       data: {
-        complaintId: id;
+        complaintId: id,
         activityType: 'ASSIGNMENT';
         description: `Assigned to ${assignedUser.name}`,
-        performedById: userId;
+        performedById: userId
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'COMPLAINT';
       entityId: id;
       userId,
@@ -1042,15 +1042,15 @@ export class FeedbackService {
 
     // Send notification to assigned user
     await this.notificationService.sendNotification({
-      type: 'COMPLAINT_ASSIGNED';
+      type: 'COMPLAINT_ASSIGNED',
       title: 'Complaint Assigned';
       message: `A ${complaint.severity.toLowerCase()} complaint has been assigned to you`,
-      recipientIds: [assignedToId];
+      recipientIds: [assignedToId],
       entityId: id;
       metadata: {
-        complaintId: id;
+        complaintId: id,
         severity: complaint.severity;
-        category: complaint.category;
+        category: complaint.category
       }
     });
 
@@ -1083,16 +1083,16 @@ export class FeedbackService {
       where: { id },
       data: {
         escalatedToId,
-        escalationReason: reason;
-        escalationDate: new Date();
-        status: 'ESCALATED';
+        escalationReason: reason,
+        escalationDate: new Date(),
+        status: 'ESCALATED'
       },
       include: {
         escalatedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -1101,16 +1101,16 @@ export class FeedbackService {
     // Create activity
     await prisma.complaintActivity.create({
       data: {
-        complaintId: id;
+        complaintId: id,
         activityType: 'ESCALATION';
         description: `Escalated to ${escalatedUser.name}: ${reason}`,
-        performedById: userId;
+        performedById: userId
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'COMPLAINT';
       entityId: id;
       userId,
@@ -1119,13 +1119,13 @@ export class FeedbackService {
 
     // Send notification to escalated user
     await this.notificationService.sendNotification({
-      type: 'COMPLAINT_ESCALATED';
+      type: 'COMPLAINT_ESCALATED',
       title: 'Complaint Escalated';
       message: `A ${complaint.severity.toLowerCase()} complaint has been escalated to you`,
-      recipientIds: [escalatedToId];
+      recipientIds: [escalatedToId],
       entityId: id;
       metadata: {
-        complaintId: id;
+        complaintId: id,
         severity: complaint.severity;
         category: complaint.category;
         reason;
@@ -1150,17 +1150,17 @@ export class FeedbackService {
     // Create activity
     const activity = await prisma.complaintActivity.create({
       data: {
-        complaintId: id;
+        complaintId: id,
         activityType: 'COMMENT';
-        description: comment;
-        performedById: userId;
+        description: comment,
+        performedById: userId
       },
       include: {
         performedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -1168,7 +1168,7 @@ export class FeedbackService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'COMPLAINT_ACTIVITY';
       entityId: activity.id;
       userId,
@@ -1178,14 +1178,14 @@ export class FeedbackService {
     // Send notification to assigned user if comment is from someone else
     if (complaint?.assignedToId && complaint.assignedToId !== userId) {
       await this.notificationService.sendNotification({
-        type: 'COMPLAINT_COMMENT';
+        type: 'COMPLAINT_COMMENT',
         title: 'New Comment on Assigned Complaint';
         message: `A new comment has been added to complaint ${id}`,
-        recipientIds: [complaint.assignedToId];
+        recipientIds: [complaint.assignedToId],
         entityId: id;
         metadata: {
-          complaintId: id;
-          activityId: activity.id;
+          complaintId: id,
+          activityId: activity.id
         }
       });
     }
@@ -1213,14 +1213,14 @@ export class FeedbackService {
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId;
+        uploadedById: userId
       },
       include: {
         uploadedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -1230,15 +1230,15 @@ export class FeedbackService {
     await prisma.complaintActivity.create({
       data: {
         complaintId,
-        activityType: 'COMMENT';
+        activityType: 'COMMENT',
         description: `Attached file: ${fileName}`,
-        performedById: userId;
+        performedById: userId
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'COMPLAINT_ATTACHMENT';
       entityId: attachment.id;
       userId,
@@ -1293,38 +1293,38 @@ export class FeedbackService {
     // Create the follow-up action
     const action = await prisma.followUpAction.create({
       data: {
-        actionType: data.actionType;
+        actionType: data.actionType,
         description: data.description;
-        status: 'PLANNED';
+        status: 'PLANNED',
         dueDate: data.dueDate;
-        assignedToId: data.assignedToId;
+        assignedToId: data.assignedToId,
         feedbackId: data.feedbackId;
-        complaintId: data.complaintId;
-        createdById: userId;
+        complaintId: data.complaintId,
+        createdById: userId
       },
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
-        feedback: true;
-        complaint: true;
+        feedback: true,
+        complaint: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'FOLLOW_UP_ACTION';
       entityId: action.id;
       userId,
@@ -1335,10 +1335,10 @@ export class FeedbackService {
     if (data.complaintId) {
       await prisma.complaintActivity.create({
         data: {
-          complaintId: data.complaintId;
+          complaintId: data.complaintId,
           activityType: 'COMMENT';
           description: `Created follow-up action: ${data.actionType} - ${data.description}`,
-          performedById: userId;
+          performedById: userId
         }
       });
     }
@@ -1346,17 +1346,17 @@ export class FeedbackService {
     // Send notification to assigned user
     if (data.assignedToId) {
       await this.notificationService.sendNotification({
-        type: 'FOLLOW_UP_ACTION_ASSIGNED';
+        type: 'FOLLOW_UP_ACTION_ASSIGNED',
         title: 'Follow-up Action Assigned';
         message: `A ${data.actionType.toLowerCase()} follow-up action has been assigned to you`,
-        recipientIds: [data.assignedToId];
+        recipientIds: [data.assignedToId],
         entityId: action.id;
         metadata: {
-          actionId: action.id;
+          actionId: action.id,
           actionType: data.actionType;
-          feedbackId: data.feedbackId;
+          feedbackId: data.feedbackId,
           complaintId: data.complaintId;
-          dueDate: data.dueDate?.toISOString();
+          dueDate: data.dueDate?.toISOString()
         }
       });
     }
@@ -1371,8 +1371,8 @@ export class FeedbackService {
     const action = await prisma.followUpAction.findUnique({
       where: { id },
       include: {
-        feedback: true;
-        complaint: true;
+        feedback: true,
+        complaint: true
       }
     });
 
@@ -1390,30 +1390,30 @@ export class FeedbackService {
     // Update the action
     const updatedAction = await prisma.followUpAction.update({
       where: { id },
-      data: updateData;
+      data: updateData,
       include: {
         assignedToUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
-        feedback: true;
-        complaint: true;
+        feedback: true,
+        complaint: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'FOLLOW_UP_ACTION';
       entityId: id;
       userId,
@@ -1424,26 +1424,26 @@ export class FeedbackService {
     if (action.complaintId) {
       await prisma.complaintActivity.create({
         data: {
-          complaintId: action.complaintId;
+          complaintId: action.complaintId,
           activityType: 'COMMENT';
           description: `Follow-up action status updated to ${status}: ${action.description}`,
-          performedById: userId;
+          performedById: userId
         }
       });
     }
 
     // Send notification to creator
     await this.notificationService.sendNotification({
-      type: 'FOLLOW_UP_ACTION_STATUS';
+      type: 'FOLLOW_UP_ACTION_STATUS',
       title: 'Follow-up Action Status Updated';
       message: `Follow-up action status updated to ${status.toLowerCase()}`,
-      recipientIds: [action.createdById];
+      recipientIds: [action.createdById],
       entityId: id;
       metadata: {
         actionId: id;
         status,
-        feedbackId: action.feedbackId;
-        complaintId: action.complaintId;
+        feedbackId: action.feedbackId,
+        complaintId: action.complaintId
       }
     });
 
@@ -1457,19 +1457,19 @@ export class FeedbackService {
     // Create the template
     const template = await prisma.feedbackSurveyTemplate.create({
       data: {
-        name: data.name;
+        name: data.name,
         description: data.description;
-        serviceType: data.serviceType;
+        serviceType: data.serviceType,
         questions: data.questions;
-        isActive: data.isActive !== undefined ? data.isActive : true;
-        createdById: userId;
+        isActive: data.isActive !== undefined ? data.isActive : true,
+        createdById: userId
       },
       include: {
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -1477,7 +1477,7 @@ export class FeedbackService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'FEEDBACK_SURVEY_TEMPLATE';
       entityId: template.id;
       userId,
@@ -1520,26 +1520,26 @@ export class FeedbackService {
       data: {
         templateId,
         responses,
-        submittedById: data.anonymous ? null : (data.submittedById || userId);
+        submittedById: data.anonymous ? null : (data.submittedById || userId),
         patientId: data.patientId;
-        serviceId: data.serviceId;
+        serviceId: data.serviceId,
         serviceType: data.serviceType || template.serviceType;
-        anonymous: data.anonymous;
-        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null;
+        anonymous: data.anonymous,
+        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
-        template: true;
+        template: true,
         submittedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         patient: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         }
       }
@@ -1548,7 +1548,7 @@ export class FeedbackService {
     // Create audit log
     if (userId != null) {
       await createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         entityType: 'FEEDBACK_SURVEY';
         entityId: survey.id;
         userId,
@@ -1565,15 +1565,15 @@ export class FeedbackService {
     }
 
     await this.notificationService.sendNotification({
-      type: 'NEW_SURVEY';
+      type: 'NEW_SURVEY',
       title: 'New Survey Submission';
       message: `New survey submitted for ${template.name}`,
       recipientRoles,
-      entityId: survey.id;
+      entityId: survey.id,
       metadata: {
         surveyId: survey.id;
         templateId,
-        serviceType: data.serviceType || template.serviceType;
+        serviceType: data.serviceType || template.serviceType
       }
     });
 
@@ -1607,49 +1607,49 @@ export class FeedbackService {
 
     // Get feedback counts by type
     const feedbackByType = await prisma.feedback.groupBy({
-      by: ['type'];
+      by: ['type'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get feedback counts by source
     const feedbackBySource = await prisma.feedback.groupBy({
-      by: ['source'];
+      by: ['source'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get feedback counts by status
     const feedbackByStatus = await prisma.feedback.groupBy({
-      by: ['status'];
+      by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get feedback counts by service type
     const feedbackByServiceType = await prisma.feedback.groupBy({
-      by: ['serviceType'];
+      by: ['serviceType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         serviceType: {
-          not: null;
+          not: null
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get feedback counts by department
@@ -1666,16 +1666,16 @@ export class FeedbackService {
     const ratings = await prisma.feedback.findMany({
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
       select: {
-        rating: true;
+        rating: true,
         serviceType: true;
-        departmentId: true;
+        departmentId: true,
         department: {
           select: {
-            name: true;
+            name: true
           }
         }
       }
@@ -1730,52 +1730,52 @@ export class FeedbackService {
 
     // Get complaint counts by category
     const complaintsByCategory = await prisma.complaint.groupBy({
-      by: ['category'];
+      by: ['category'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get complaint counts by severity
     const complaintsBySeverity = await prisma.complaint.groupBy({
-      by: ['severity'];
+      by: ['severity'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get complaint counts by status
     const complaintsByStatus = await prisma.complaint.groupBy({
-      by: ['status'];
+      by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get complaint resolution time
     const resolvedComplaints = await prisma.complaint.findMany({
       where: {
-        status: 'RESOLVED';
+        status: 'RESOLVED',
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         resolutionDate: {
-          not: null;
+          not: null
         }
       },
       select: {
-        createdAt: true;
+        createdAt: true,
         resolutionDate: true;
-        severity: true;
+        severity: true
       }
     });
 
@@ -1819,6 +1819,6 @@ export class FeedbackService {
       complaintsBySeverity,
       complaintsByStatus,
       resolutionTimes,
-      period;
+      period
     };
   }

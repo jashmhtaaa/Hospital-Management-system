@@ -36,7 +36,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(results);
   } catch (error: unknown) {
     // FIX: Use unknown instead of any
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to fetch radiology modalities", details: errorMessage },
@@ -92,7 +92,7 @@ export const _POST = async (request: NextRequest) => {
     );
   } catch (error: unknown) {
     // FIX: Use unknown instead of any
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       return NextResponse.json(

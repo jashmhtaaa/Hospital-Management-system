@@ -53,7 +53,7 @@ export interface FHIRPatientCommunication {
   language: FHIRCodeableConcept;
   preferred?: boolean;
 export interface FHIRPatientLink {
-  other: FHIRReference;
+  other: FHIRReference,
   type: 'replaced-by' | 'replaces' | 'refer' | 'seealso'
 export interface FHIRPatient extends FHIRBase {
   resourceType: 'Patient';
@@ -104,32 +104,32 @@ export class FHIRPatientUtils {
    * Create a minimal FHIR Patient resource from basic patient data;
    */
   static createMinimalPatient(data: {
-    firstName: string;
+    firstName: string,
     lastName: string;
-    birthDate: string;
+    birthDate: string,
     gender: 'male' | 'female' | 'other' | 'unknown';
     mrn?: string;
     phone?: string;
     email?: string;
   }): FHIRPatient {
     const patient: FHIRPatient = {
-      resourceType: 'Patient';
+      resourceType: 'Patient',
       active: true;
       name: [{
-        use: 'official';
+        use: 'official',
         family: data.lastName;
-        given: [data.firstName];
+        given: [data.firstName]
       }],
-      gender: data.gender;
-      birthDate: data.birthDate;
+      gender: data.gender,
+      birthDate: data.birthDate
     };
 
     // Add identifiers if provided
     if (data.mrn) {
       patient.identifier = [{
-        use: 'usual';
-        system: 'https://hms.hospital.com/patient-ids';
-        value: data.mrn;
+        use: 'usual',
+        system: 'https://hms.hospital.com/patient-ids',
+        value: data.mrn
       }]
     }
 
@@ -138,17 +138,17 @@ export class FHIRPatientUtils {
       patient.telecom = [];
       if (data.phone) {
         patient.telecom.push({
-          system: 'phone';
+          system: 'phone',
           value: data.phone;
-          use: 'mobile';
-          rank: 1;
+          use: 'mobile',
+          rank: 1
         });
       }
       if (data.email) {
         patient.telecom.push({
-          system: 'email';
+          system: 'email',
           value: data.email;
-          use: 'home';
+          use: 'home'
         });
       }
     }
@@ -168,7 +168,7 @@ export class FHIRPatientUtils {
     const given = officialName.given?.join(' ') || '';
     const family = officialName.family || '';
 
-    return `/* SECURITY: Template literal eliminated */;
+    return `/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -214,7 +214,7 @@ export class FHIRPatientUtils {
   /**
    * Validate FHIR Patient resource;
    */
-  static validatePatient(patient: FHIRPatient): { valid: boolean; errors: string[] } {
+  static validatePatient(patient: FHIRPatient): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (patient.resourceType !== 'Patient') {
@@ -236,12 +236,12 @@ export class FHIRPatientUtils {
     }
 
     if (patient?.gender && !['male', 'female', 'other', 'unknown'].includes(patient.gender)) {
-      errors.push('gender must be one of: male, female, other, unknown');
+      errors.push('gender must be one of: male, female, other, unknown')
     }
 
     return {
       valid: errors.length === 0;
-      errors;
+      errors
     };
   }
 
@@ -250,53 +250,53 @@ export class FHIRPatientUtils {
    */
   static fromHMSPatient(hmsPatient: unknown): FHIRPatient {
     const fhirPatient: FHIRPatient = {
-      resourceType: 'Patient';
+      resourceType: 'Patient',
       id: hmsPatient.id;
-      active: true;
+      active: true,
       identifier: [{
-        use: 'usual';
-        system: 'https://hms.hospital.com/patient-ids';
-        value: hmsPatient.mrn;
+        use: 'usual',
+        system: 'https://hms.hospital.com/patient-ids',
+        value: hmsPatient.mrn
       }],
       name: [{
-        use: 'official';
+        use: 'official',
         family: hmsPatient.lastName;
         given: [hmsPatient.firstName];
         ...(hmsPatient?.middleName && { given: [hmsPatient.firstName, hmsPatient.middleName] })
       }],
-      gender: hmsPatient.gender;
+      gender: hmsPatient.gender,
       birthDate: hmsPatient.dateOfBirth;
-      telecom: [];
+      telecom: []
     };
 
     // Add contact information
     if (hmsPatient.phone) {
       fhirPatient.telecom!.push({
-        system: 'phone';
+        system: 'phone',
         value: hmsPatient.phone;
-        use: 'mobile';
-        rank: 1;
+        use: 'mobile',
+        rank: 1
       });
     }
 
     if (hmsPatient.email) {
       fhirPatient.telecom!.push({
-        system: 'email';
+        system: 'email',
         value: hmsPatient.email;
-        use: 'home';
+        use: 'home'
       });
     }
 
     // Add address if available
     if (hmsPatient.address) {
       fhirPatient.address = [{
-        use: 'home';
+        use: 'home',
         type: 'physical';
-        line: [hmsPatient.address.street];
+        line: [hmsPatient.address.street],
         city: hmsPatient.address.city;
-        state: hmsPatient.address.state;
+        state: hmsPatient.address.state,
         postalCode: hmsPatient.address.zipCode;
-        country: hmsPatient.address.country || 'US';
+        country: hmsPatient.address.country || 'US'
       }];
     }
 
@@ -305,19 +305,19 @@ export class FHIRPatientUtils {
       fhirPatient.contact = [{
         relationship: [{
           coding: [{
-            system: 'https://terminology.hl7.org/CodeSystem/v2-0131';
+            system: 'https://terminology.hl7.org/CodeSystem/v2-0131',
             code: 'EP';
-            display: 'Emergency contact person';
+            display: 'Emergency contact person'
           }],
-          text: hmsPatient.emergencyContact.relationship;
+          text: hmsPatient.emergencyContact.relationship
         }],
         name: {
-          text: hmsPatient.emergencyContact.name;
+          text: hmsPatient.emergencyContact.name
         },
         telecom: [{
-          system: 'phone';
+          system: 'phone',
           value: hmsPatient.emergencyContact.phone;
-          use: 'mobile';
+          use: 'mobile'
         }]
       }]
     }

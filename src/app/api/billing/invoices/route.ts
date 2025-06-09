@@ -21,38 +21,38 @@ import { logger } from '@/lib/core/logging';
 
 // Schema for invoice creation
 const createInvoiceSchema = z.object({
-  patientId: z.string().uuid();
-  visitId: z.string().uuid().optional();
+  patientId: z.string().uuid(),
+  visitId: z.string().uuid().optional(),
   visitType: z.enum(['OPD', 'IPD', 'ER', 'OTHER']),
   billType: z.enum(['Regular', 'Package', 'Consolidated']),
-  packageId: z.string().uuid().optional();
+  packageId: z.string().uuid().optional(),
   items: z.array(z.object({
-    serviceItemId: z.string().uuid();
-    quantity: z.number().int().positive();
-    unitPrice: moneySchema;
-    discount: moneySchema.optional();
-    tax: moneySchema.optional();
-    description: z.string().optional();
+    serviceItemId: z.string().uuid(),
+    quantity: z.number().int().positive(),
+    unitPrice: moneySchema,
+    discount: moneySchema.optional(),
+    tax: moneySchema.optional(),
+    description: z.string().optional()
   })),
-  discountAmount: moneySchema.optional();
-  discountReason: z.string().optional();
-  taxAmount: moneySchema.optional();
-  notes: z.string().optional();
+  discountAmount: moneySchema.optional(),
+  discountReason: z.string().optional(),
+  taxAmount: moneySchema.optional(),
+  notes: z.string().optional()
 });
 
 // Schema for invoice query parameters
 const invoiceQuerySchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1);
-  pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
-  patientId: z.string().uuid().optional();
-  status: invoiceStatusSchema.optional();
-  startDate: z.string().optional();
-  endDate: z.string().optional();
-  minAmount: z.coerce.number().optional();
-  maxAmount: z.coerce.number().optional();
+  page: z.coerce.number().int().positive().optional().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
+  patientId: z.string().uuid().optional(),
+  status: invoiceStatusSchema.optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  minAmount: z.coerce.number().optional(),
+  maxAmount: z.coerce.number().optional(),
   sortBy: z.enum(['createdAt', 'billDate', 'totalAmount', 'status']).optional().default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
-  format: z.enum(['json', 'fhir']).optional().default('json'),;
+  format: z.enum(['json', 'fhir']).optional().default('json'),
 });
 
 // GET handler for retrieving all invoices with filtering and pagination
@@ -77,13 +77,13 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   if (query?.startDate && query.endDate) {
     try {
       const { startDate, endDate } = dateRangeSchema.parse({
-        startDate: new Date(query.startDate);
-        endDate: new Date(query.endDate);
+        startDate: new Date(query.startDate),
+        endDate: new Date(query.endDate)
       });
 
       where.billDate = {
-        gte: startDate;
-        lte: endDate;
+        gte: startDate,
+        lte: endDate
       };
     } catch (error) {
       throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
@@ -93,14 +93,14 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   if (query.minAmount !== undefined) {
     where.totalAmount = {
       ...(where.totalAmount || {}),
-      gte: query.minAmount;
+      gte: query.minAmount
     };
   }
 
   if (query.maxAmount !== undefined) {
     where.totalAmount = {
       ...(where.totalAmount || {}),
-      lte: query.maxAmount;
+      lte: query.maxAmount
     };
   }
 
@@ -111,18 +111,18 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       orderBy: {
         [query.sortBy]: query.sortOrder,
       },
-      skip: (query.page - 1) * query.pageSize;
+      skip: (query.page - 1) * query.pageSize,
       take: query.pageSize;
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             firstName: true;
-            lastName: true;
-            mrn: true;
+            lastName: true,
+            mrn: true
           },
         },
-        billItems: true;
+        billItems: true
       },
     }),
     prisma.bill.count({ where }),
@@ -159,13 +159,13 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     totalTax += itemTax;
 
     return {
-      serviceItemId: item.serviceItemId;
+      serviceItemId: item.serviceItemId,
       quantity: item.quantity;
-      unitPrice: item.unitPrice;
+      unitPrice: item.unitPrice,
       totalPrice: itemTotal;
-      discount: itemDiscount;
+      discount: itemDiscount,
       tax: itemTax;
-      description: item.description;
+      description: item.description
     };
   });
 
@@ -180,33 +180,33 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   // Create invoice in database
   const invoice = await prisma.bill.create({
     data: {
-      billNumber: invoiceNumber;
+      billNumber: invoiceNumber,
       patientId: data.patientId;
-      visitId: data.visitId;
+      visitId: data.visitId,
       visitType: data.visitType;
-      billDate: new Date();
+      billDate: new Date(),
       billType: data.billType;
       packageId: data.packageId;
       totalAmount,
       discountAmount,
-      discountReason: data.discountReason;
+      discountReason: data.discountReason,
       taxAmount: totalTax;
-      netAmount: totalAmount;
+      netAmount: totalAmount,
       outstandingAmount: totalAmount;
-      status: 'draft';
+      status: 'draft',
       createdBy: 'system', // In a real app, this would be the authenticated user ID
       billItems: {
-        create: billItems;
+        create: billItems
       },
     },
     include: {
-      billItems: true;
+      billItems: true,
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
     },

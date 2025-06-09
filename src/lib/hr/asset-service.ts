@@ -17,10 +17,10 @@ export class AssetService {
    * Create a new asset;
    */
   async createAsset(data: {
-    assetId: string;
+    assetId: string,
     name: string;
     description?: string;
-    category: string;
+    category: string,
     type: string;
     status: 'AVAILABLE' | 'IN_USE' | 'MAINTENANCE' | 'DISPOSED';
     location?: string;
@@ -64,16 +64,16 @@ export class AssetService {
       include: {
         maintenanceRecords: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
         assignments: {
           include: {
-            employee: true;
+            employee: true
           },
           where: {
-            endDate: null, // Only current assignment;
+            endDate: null, // Only current assignment
           },
-          take: 1;
+          take: 1
         },
       },
     });
@@ -105,16 +105,16 @@ export class AssetService {
       include: {
         maintenanceRecords: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
         assignments: {
           include: {
-            employee: true;
+            employee: true
           },
           where: {
-            endDate: null, // Only current assignment;
+            endDate: null, // Only current assignment
           },
-          take: 1;
+          take: 1
         },
       },
     });
@@ -131,7 +131,7 @@ export class AssetService {
    * Update asset;
    */
   async updateAsset(
-    id: string;
+    id: string,
     data: {
       name?: string;
       description?: string;
@@ -163,16 +163,16 @@ export class AssetService {
       include: {
         maintenanceRecords: {
           orderBy: { date: 'desc' },
-          take: 5;
+          take: 5
         },
         assignments: {
           include: {
-            employee: true;
+            employee: true
           },
           where: {
-            endDate: null, // Only current assignment;
+            endDate: null, // Only current assignment
           },
-          take: 1;
+          take: 1
         },
       },
     });
@@ -235,7 +235,7 @@ export class AssetService {
 
     if (needsMaintenance != null) {
       where.nextMaintenanceDate = {
-        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days;
+        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
@@ -267,17 +267,17 @@ export class AssetService {
     if (includeDetails != null) {
       include.maintenanceRecords = {
         orderBy: { date: 'desc' },
-        take: 3;
+        take: 3
       };
 
       include.assignments = {
         include: {
-          employee: true;
+          employee: true
         },
         where: {
-          endDate: null, // Only current assignment;
+          endDate: null, // Only current assignment
         },
-        take: 1;
+        take: 1
       };
     }
 
@@ -289,7 +289,7 @@ export class AssetService {
         where,
         skip,
         take,
-        cursor: cursorObj;
+        cursor: cursorObj,
         orderBy: { assetId: 'asc' },
         include,
       }),
@@ -301,7 +301,7 @@ export class AssetService {
       total,
       skip,
       take,
-      nextCursor: assets.length === take ? assets[assets.length - 1].id : null;
+      nextCursor: assets.length === take ? assets[assets.length - 1].id : null
     };
 
     // Store in cache
@@ -314,11 +314,11 @@ export class AssetService {
    * Record maintenance for asset;
    */
   async recordMaintenance(
-    assetId: string;
+    assetId: string,
     data: {
-      date: Date;
+      date: Date,
       type: 'PREVENTIVE' | 'CORRECTIVE' | 'INSPECTION';
-      performedBy: string;
+      performedBy: string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -333,15 +333,15 @@ export class AssetService {
       const maintenance = await tx.assetMaintenance.create({
         data: {
           assetId,
-          date: data.date;
+          date: data.date,
           type: data.type;
-          performedBy: data.performedBy;
+          performedBy: data.performedBy,
           description: data.description;
-          cost: data.cost;
+          cost: data.cost,
           parts: data.parts;
-          status: data.status;
+          status: data.status,
           notes: data.notes;
-          attachments: data.attachments;
+          attachments: data.attachments
         },
       });
 
@@ -361,7 +361,7 @@ export class AssetService {
       if (Object.keys(updateData).length > 0) {
         await tx.asset.update({
           where: { id: assetId },
-          data: updateData;
+          data: updateData
         });
       }
 
@@ -376,9 +376,9 @@ export class AssetService {
    * Assign asset to employee;
    */
   async assignAsset(
-    assetId: string;
+    assetId: string,
     data: {
-      employeeId: string;
+      employeeId: string,
       startDate: Date;
       endDate?: Date;
       notes?: string;
@@ -389,10 +389,10 @@ export class AssetService {
       await tx.assetAssignment.updateMany({
         where: {
           assetId,
-          endDate: null;
+          endDate: null
         },
         data: {
-          endDate: new Date();
+          endDate: new Date()
         },
       });
 
@@ -400,13 +400,13 @@ export class AssetService {
       const assignment = await tx.assetAssignment.create({
         data: {
           assetId,
-          employeeId: data.employeeId;
+          employeeId: data.employeeId,
           startDate: data.startDate;
-          endDate: data.endDate;
-          notes: data.notes;
+          endDate: data.endDate,
+          notes: data.notes
         },
         include: {
-          employee: true;
+          employee: true
         },
       });
 
@@ -414,7 +414,7 @@ export class AssetService {
       await tx.asset.update({
         where: { id: assetId },
         data: {
-          status: 'IN_USE';
+          status: 'IN_USE'
         },
       });
 
@@ -429,7 +429,7 @@ export class AssetService {
    * End asset assignment;
    */
   async endAssignment(
-    assignmentId: string;
+    assignmentId: string,
     endDate: Date;
     notes?: string;
   ) {
@@ -448,7 +448,7 @@ export class AssetService {
           notes: notes ? { set: notes } : undefined,
         },
         include: {
-          employee: true;
+          employee: true
         },
       });
 
@@ -457,7 +457,7 @@ export class AssetService {
         await tx.asset.update({
           where: { id: assignment.assetId },
           data: {
-            status: 'AVAILABLE';
+            status: 'AVAILABLE'
           },
         });
 
@@ -509,7 +509,7 @@ export class AssetService {
     const history = await prisma.assetAssignment.findMany({
       where: { assetId },
       include: {
-        employee: true;
+        employee: true
       },
       orderBy: { startDate: 'desc' },
     });
@@ -539,14 +539,14 @@ export class AssetService {
     const assets = await prisma.asset.findMany({
       where: {
         nextMaintenanceDate: {
-          lte: thresholdDate;
+          lte: thresholdDate
         },
         status: {
-          not: 'DISPOSED';
+          not: 'DISPOSED'
         },
       },
       orderBy: {
-        nextMaintenanceDate: 'asc';
+        nextMaintenanceDate: 'asc'
       },
     });
 
@@ -587,7 +587,7 @@ export class AssetService {
     let totalTimeInUse = 0
     for (const assignment of assignments) {
       const startDate = new Date(assignment.startDate);
-      const endDate = assignment.endDate ? new Date(assignment.endDate) : new Date();
+      const endDate = assignment.endDate ? new Date(assignment.endDate) : new Date(),
       const assignmentDuration = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
       totalTimeInUse += assignmentDuration;
     }
@@ -622,7 +622,7 @@ export class AssetService {
       : totalMaintenanceCost / totalLifetime;
 
     return {
-      assetId: asset.id;
+      assetId: asset.id,
       assetIdentifier: asset.assetId;
       totalLifetime,
       totalTimeInUse,
@@ -631,9 +631,9 @@ export class AssetService {
       availabilityRate,
       totalMaintenanceCost,
       costPerDay,
-      assignmentCount: assignments.length;
+      assignmentCount: assignments.length,
       maintenanceCount: maintenanceRecords.length;
-      purchasePrice: asset.purchasePrice || 0;
+      purchasePrice: asset.purchasePrice || 0
     };
   }
 
@@ -651,8 +651,8 @@ export class AssetService {
     const maintenanceRecords = await prisma.assetMaintenance.findMany({
       where: {
         assetId,
-        type: 'PREVENTIVE';
-        status: 'COMPLETED';
+        type: 'PREVENTIVE',
+        status: 'COMPLETED'
       },
       orderBy: { date: 'asc' },
     });
@@ -661,8 +661,8 @@ export class AssetService {
     const correctiveRecords = await prisma.assetMaintenance.findMany({
       where: {
         assetId,
-        type: 'CORRECTIVE';
-        status: 'COMPLETED';
+        type: 'CORRECTIVE',
+        status: 'COMPLETED'
       },
       orderBy: { date: 'asc' },
     });
@@ -719,7 +719,7 @@ export class AssetService {
 
         // Set confidence level based on data points
         confidenceLevel = timeToFailureAfterMaintenance.length >= 5 ? 'HIGH' :
-                         (timeToFailureAfterMaintenance.length >= 3 ? 'MEDIUM' : 'LOW');
+                         (timeToFailureAfterMaintenance.length >= 3 ? 'MEDIUM' : 'LOW'),
       }
     }
 
@@ -736,14 +736,14 @@ export class AssetService {
                                Math.max(1, correctiveRecords.length);
 
     return {
-      assetId: asset.id;
+      assetId: asset.id,
       assetIdentifier: asset.assetId;
-      currentMaintenanceInterval: averagePreventiveInterval;
-      recommendedMaintenanceInterval: Math.round(optimalInterval);
-      nextRecommendedMaintenanceDate: nextMaintenanceDate.toISOString();
+      currentMaintenanceInterval: averagePreventiveInterval,
+      recommendedMaintenanceInterval: Math.round(optimalInterval),
+      nextRecommendedMaintenanceDate: nextMaintenanceDate.toISOString(),
       failureRisk,
       confidenceLevel,
-      preventiveMaintenanceCount: maintenanceRecords.length;
+      preventiveMaintenanceCount: maintenanceRecords.length,
       correctiveMaintenanceCount: correctiveRecords.length;
       potentialCostSavings,
       recommendation: optimalInterval < averagePreventiveInterval ?
@@ -751,7 +751,7 @@ export class AssetService {
                     (optimalInterval > averagePreventiveInterval ?
                      'Decrease maintenance frequency' :
                      'Maintain current schedule'),
-      dataPoints: maintenanceRecords.length + correctiveRecords.length;
+      dataPoints: maintenanceRecords.length + correctiveRecords.length
     };
   }
 

@@ -18,7 +18,7 @@ export class EligibilityCheckService {
      * @throws {Error} If patient or policy not found, or if eligibility check fails.
      */
     async checkEligibility(
-        patientId: string;
+        patientId: string,
         policyId: string;
         serviceId?: string;
     ): Promise<EligibilityStatus> {
@@ -43,22 +43,22 @@ export class EligibilityCheckService {
         // Mock data for demonstration
         const _mockPatient: unknown = { id: patientId, name: "Jane Doe" };
         const mockPolicy: unknown = {
-            id: policyId;
+            id: policyId,
             patientId: patientId;
-            provider: "HealthFirst Insurance";
+            provider: "HealthFirst Insurance",
             policyNumber: "HF123456789";
-            isActive: true;
-            coverageStartDate: new Date("2023-01-01");
+            isActive: true,
+            coverageStartDate: new Date("2023-01-01"),
             coverageEndDate: new Date("2025-12-31");
-            // Example: specific services covered or general coverage rules;
+            // Example: specific services covered or general coverage rules,
             coveredServices: ["SVC001", "SVC003"],
-            coPayPercentage: 20;
+            coPayPercentage: 20
         }
 
         // 2. Basic checks
         if (!mockPolicy.isActive) {
             return {
-                eligible: false;
+                eligible: false,
                 reason: "Policy is not active.";
                 details: { policyStatus: "Inactive" },
             };
@@ -67,11 +67,11 @@ export class EligibilityCheckService {
         const currentDate = new Date();
         if (currentDate < mockPolicy.coverageStartDate || currentDate > mockPolicy.coverageEndDate) {
             return {
-                eligible: false;
+                eligible: false,
                 reason: "Policy is not within the coverage period.";
                 details: {
-                    coverageStartDate: mockPolicy.coverageStartDate.toISOString();
-                    coverageEndDate: mockPolicy.coverageEndDate.toISOString();
+                    coverageStartDate: mockPolicy.coverageStartDate.toISOString(),
+                    coverageEndDate: mockPolicy.coverageEndDate.toISOString()
                 },
             };
         }
@@ -81,21 +81,21 @@ export class EligibilityCheckService {
             if (mockPolicy?.coveredServices && mockPolicy.coveredServices.includes(serviceId)) {
                 // Simulate a successful eligibility check for a specific service
                 return {
-                    eligible: true;
+                    eligible: true,
                     reason: "Eligible for the specified service under the current policy.";
                     details: {
-                        policyProvider: mockPolicy.provider;
+                        policyProvider: mockPolicy.provider,
                         policyNumber: mockPolicy.policyNumber;
-                        coPayPercentage: mockPolicy.coPayPercentage;
+                        coPayPercentage: mockPolicy.coPayPercentage
                     },
                 };
             } else {
                 return {
-                    eligible: false;
+                    eligible: false,
                     reason: `Service ID ${serviceId} is not covered under this policy.`,
                     details: {
-                        policyProvider: mockPolicy.provider;
-                        policyNumber: mockPolicy.policyNumber;
+                        policyProvider: mockPolicy.provider,
+                        policyNumber: mockPolicy.policyNumber
                     },
                 };
             }
@@ -104,12 +104,12 @@ export class EligibilityCheckService {
         // 4. General eligibility check (if no serviceId is provided)
         // For this mock, we'll assume general eligibility if active and within date range
         return {
-            eligible: true;
+            eligible: true,
             reason: "Patient is generally eligible under the current active policy.";
             details: {
-                policyProvider: mockPolicy.provider;
+                policyProvider: mockPolicy.provider,
                 policyNumber: mockPolicy.policyNumber;
-                coPayPercentage: mockPolicy.coPayPercentage, // General co-pay if applicable;
+                coPayPercentage: mockPolicy.coPayPercentage, // General co-pay if applicable
             },
         };
     }

@@ -17,36 +17,36 @@ import { pubsub } from '@/lib/graphql/schema-base';
 
 // Predictive model models
 export interface PredictiveModel {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: ModelType;
-  category: ModelCategory;
+  category: ModelCategory,
   target: string;
-  features: ModelFeature[];
+  features: ModelFeature[],
   algorithm: Algorithm;
-  hyperparameters: Record<string, any>;
+  hyperparameters: Record<string, any>,
   performanceMetrics: PerformanceMetrics;
   trainingData: {
-    source: string;
+    source: string,
     startDate: Date;
-    endDate: Date;
+    endDate: Date,
     rowCount: number;
-    description: string;
+    description: string
   };
-  validationStrategy: 'cross_validation' | 'train_test_split' | 'time_series_split';
+  validationStrategy: 'cross_validation' | 'train_test_split' | 'time_series_split',
   validationParameters: Record<string, any>;
-  created: Date;
+  created: Date,
   updated: Date;
-  createdBy: string;
+  createdBy: string,
   updatedBy: string;
-  version: string;
+  version: string,
   status: ModelStatus;
   deploymentStatus: DeploymentStatus;
   lastTraining?: Date;
   lastEvaluation?: Date;
   lastDeployment?: Date;
-  mlOpsInfo: MLOpsInfo;
+  mlOpsInfo: MLOpsInfo,
   metadata: ModelMetadata
 export enum ModelType {
   CLASSIFICATION = 'CLASSIFICATION',
@@ -74,12 +74,12 @@ export enum ModelCategory {
   FINANCIAL = 'FINANCIAL',
   CUSTOM = 'CUSTOM',
 export interface ModelFeature {
-  name: string;
+  name: string,
   description: string;
-  dataType: 'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image';
+  dataType: 'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image',
   source: string;
   importance?: number; // 0-100
-  transformations: string[];
+  transformations: string[],
   statistics: {
     min?: number;
     max?: number;
@@ -88,7 +88,7 @@ export interface ModelFeature {
     stdDev?: number;
     uniqueValues?: number;
     missingPercentage: number;
-    distribution?: Record<string, number>;
+    distribution?: Record<string, number>
   };
   engineeringNotes?: string;
 export enum Algorithm {
@@ -117,65 +117,65 @@ export enum Algorithm {
   CUSTOM = 'CUSTOM',
 export interface PerformanceMetrics {
   classificationMetrics?: {
-    accuracy: number;
+    accuracy: number,
     precision: number;
-    recall: number;
+    recall: number,
     f1Score: number;
-    auc: number;
+    auc: number,
     aucPR: number;
     specificity: number;
     sensitivityAtSpecificity?: Record<string, number>;
     confusionMatrix: number[][];
-    rocCurve?: { fpr: number[]; tpr: number[] };
-    prCurve?: { precision: number[]; recall: number[] };
-    calibrationCurve?: { predicted: number[]; actual: number[] };
+    rocCurve?: { fpr: number[], tpr: number[] };
+    prCurve?: { precision: number[], recall: number[] };
+    calibrationCurve?: { predicted: number[], actual: number[] }
   };
   regressionMetrics?: {
-    mse: number;
+    mse: number,
     rmse: number;
     mae: number;
     mape?: number;
     r2: number;
     adjustedR2?: number;
-    residualPlot?: { predicted: number[]; residuals: number[] };
+    residualPlot?: { predicted: number[], residuals: number[] }
   };
   timeSeriesMetrics?: {
-    mse: number;
+    mse: number,
     rmse: number;
     mae: number;
     mape?: number;
     smape?: number;
     forecastBias?: number;
     theilU?: number;
-    autocorrelation?: Record<string, number>;
+    autocorrelation?: Record<string, number>
   };
   clusteringMetrics?: {
     silhouette: number;
     daviesBouldin?: number;
     calinskiHarabasz?: number;
-    inertia?: number;
+    inertia?: number
   };
   anomalyDetectionMetrics?: {
-    precision: number;
+    precision: number,
     recall: number;
-    f1Score: number;
+    f1Score: number,
     auc: number;
-    averagePrecision?: number;
+    averagePrecision?: number
   };
   naturalLanguageMetrics?: {
-    accuracy: number;
+    accuracy: number,
     precision: number;
-    recall: number;
+    recall: number,
     f1Score: number;
     bleu?: number;
     rouge?: Record<string, number>;
-    perplexity?: number;
+    perplexity?: number
   };
   crossValidationResults?: {
-    folds: number;
+    folds: number,
     mean: Record<string, number>;
-    std: Record<string, number>;
-    foldResults: Record<string, number[]>;
+    std: Record<string, number>,
+    foldResults: Record<string, number[]>
   };
 export enum ModelStatus {
   DRAFT = 'DRAFT',
@@ -198,7 +198,7 @@ export enum DeploymentStatus {
   UNDEPLOYING = 'UNDEPLOYING',
   FAILED = 'FAILED',
 export interface MLOpsInfo {
-  environment: 'development' | 'staging' | 'production';
+  environment: 'development' | 'staging' | 'production',
   runtime: string;
   framework: string;
   containerImage?: string;
@@ -207,33 +207,33 @@ export interface MLOpsInfo {
     batch?: string;
     explain?: string;
     health?: string;
-    metrics?: string;
+    metrics?: string
   };
   resources: {
-    cpu: string;
+    cpu: string,
     memory: string;
-    gpu?: string;
+    gpu?: string
   };
   scaling: {
-    minReplicas: number;
+    minReplicas: number,
     maxReplicas: number;
-    targetCPUUtilization?: number;
+    targetCPUUtilization?: number
   };
   monitoring: {
-    dataQuality: boolean;
+    dataQuality: boolean,
     modelDrift: boolean;
-    performance: boolean;
+    performance: boolean,
     explainability: boolean;
-    alerts: boolean;
+    alerts: boolean
   };
   version: {
-    current: string;
+    current: string,
     history: {
-      version: string;
+      version: string,
       date: Date;
-      changedBy: string;
-      changes: string;
-    }[];
+      changedBy: string,
+      changes: string
+    }[]
   };
   deploymentPipeline: string;
   cicdStatus?: 'success' | 'failure' | 'in_progress';
@@ -242,110 +242,110 @@ export interface MLOpsInfo {
       approved: boolean;
       by?: string;
       date?: Date;
-      comments?: string;
+      comments?: string
     };
     clinical?: {
       approved: boolean;
       by?: string;
       date?: Date;
-      comments?: string;
+      comments?: string
     };
     compliance?: {
       approved: boolean;
       by?: string;
       date?: Date;
-      comments?: string;
+      comments?: string
     };
   };
 export interface ModelMetadata {
-  repository: string;
+  repository: string,
   artifactLocation: string;
-  datasetVersions: Record<string, string>;
+  datasetVersions: Record<string, string>,
   preprocessingPipeline: string;
   references: {
     papers?: string[];
     documentation?: string[];
-    codebase?: string;
+    codebase?: string
   };
-  tags: string[];
+  tags: string[],
   owner: {
-    team: string;
-    contact: string;
+    team: string,
+    contact: string
   };
-  reviewers: string[];
+  reviewers: string[],
   usageNotes: string;
-  limitations: string[];
+  limitations: string[],
   ethicalConsiderations: string[];
-  regulatoryStatus: string;
-  customFields: Record<string, any>;
+  regulatoryStatus: string,
+  customFields: Record<string, any>
 }
 
 // Readmission risk models
 export interface ReadmissionRisk {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  timestamp: Date;
+  timestamp: Date,
   riskScore: number; // 0-100
   probability: number; // 0-1
-  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
+  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH',
   timeHorizon: number; // days
-  confidenceInterval: [number, number];
+  confidenceInterval: [number, number],
   riskFactors: RiskFactor[];
-  protectiveFactors: ProtectiveFactor[];
+  protectiveFactors: ProtectiveFactor[],
   recommendedInterventions: Intervention[];
-  modelId: string;
+  modelId: string,
   modelVersion: string;
   explanations: PredictionExplanation;
   historicalPredictions?: {
-    timestamp: Date;
+    timestamp: Date,
     riskScore: number;
-    riskLevel: string;
+    riskLevel: string
   }[];
   actualOutcome?: {
     readmitted: boolean;
     daysToReadmission?: number;
     readmissionReason?: string;
-    preventable?: boolean;
+    preventable?: boolean
   };
   clinicalValidation?: {
     validatedBy?: string;
     validationTimestamp?: Date;
     clinicalAssessment?: string;
     agreement?: boolean;
-    notes?: string;
+    notes?: string
   };
 export interface RiskFactor {
-  name: string;
+  name: string,
   category: string;
   value: unknown;
   normalRange?: string;
   impact: number; // 0-100
   trend?: 'IMPROVING' | 'WORSENING' | 'STABLE';
-  description: string;
+  description: string,
   actionable: boolean;
   source: string;
   lastUpdated?: Date;
 export interface ProtectiveFactor {
-  name: string;
+  name: string,
   category: string;
-  value: unknown;
+  value: unknown,
   impact: number; // 0-100
-  description: string;
+  description: string,
   source: string;
   lastUpdated?: Date;
 export interface Intervention {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'MEDICATION' | 'PROCEDURE' | 'REFERRAL' | 'EDUCATION' | 'MONITORING' | 'FOLLOW_UP' | 'CARE_COORDINATION' | 'CUSTOM';
-  targetRiskFactors: string[];
+  targetRiskFactors: string[],
   expectedImpact: number; // 0-100
-  evidence: 'HIGH' | 'MODERATE' | 'LOW' | 'EXPERIMENTAL';
+  evidence: 'HIGH' | 'MODERATE' | 'LOW' | 'EXPERIMENTAL',
   costCategory: 'LOW' | 'MEDIUM' | 'HIGH';
-  timeToImplement: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM';
+  timeToImplement: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM',
   implementationComplexity: 'LOW' | 'MEDIUM' | 'HIGH';
-  requiredResources: string[];
+  requiredResources: string[],
   recommendationStrength: 'STRONG' | 'MODERATE' | 'WEAK';
   workflow?: string;
   orderId?: string;
@@ -354,102 +354,102 @@ export interface PredictionExplanation {
   method: 'SHAP' | 'LIME' | 'PARTIAL_DEPENDENCE' | 'FEATURE_IMPORTANCE' | 'CUSTOM';
   globalExplanation?: {
     featureImportance: {
-      feature: string;
-      importance: number;
+      feature: string,
+      importance: number
     }[];
-    featureInteractions?: Record<string, number>;
+    featureInteractions?: Record<string, number>
   };
   localExplanation: {
-    feature: string;
+    feature: string,
     contribution: number;
-    baseValue: number;
+    baseValue: number
   }[];
   counterfactuals?: {
-    feature: string;
+    feature: string,
     currentValue: unknown;
-    requiredValue: unknown;
+    requiredValue: unknown,
     feasibility: number; // 0-100
   }[];
   similarCases?: {
-    encounterId: string;
+    encounterId: string,
     similarity: number;
-    outcome: string;
+    outcome: string
   }[];
 }
 
 // Length of stay models
 export interface LengthOfStayPrediction {
-  id: string;
+  id: string,
   patientId: string;
-  encounterId: string;
+  encounterId: string,
   timestamp: Date;
   predictedLOS: number; // days
-  confidenceInterval: [number, number];
+  confidenceInterval: [number, number],
   predictionCategory: 'SHORT' | 'EXPECTED' | 'EXTENDED' | 'PROLONGED';
   riskOfExtendedStay: number; // 0-100
   optimizedLOS: number; // days with interventions
-  factors: LOSFactor[];
+  factors: LOSFactor[],
   interventions: LOSIntervention[];
-  targetDischargeDate: Date;
+  targetDischargeDate: Date,
   dischargeBarriers: DischargeBarrier[];
-  resourceImplications: ResourceImplication[];
+  resourceImplications: ResourceImplication[],
   modelId: string;
-  modelVersion: string;
+  modelVersion: string,
   explanations: PredictionExplanation;
   historicalPredictions?: {
-    timestamp: Date;
+    timestamp: Date,
     predictedLOS: number;
-    predictionCategory: string;
+    predictionCategory: string
   }[];
   actualOutcome?: {
     actualLOS?: number;
     dischargeDate?: Date;
     dischargeDisposition?: string;
-    readmittedWithin30Days?: boolean;
+    readmittedWithin30Days?: boolean
   };
   clinicalValidation?: {
     validatedBy?: string;
     validationTimestamp?: Date;
     clinicalAssessment?: string;
     agreement?: boolean;
-    notes?: string;
+    notes?: string
   };
 export interface LOSFactor {
-  name: string;
+  name: string,
   category: 'CLINICAL' | 'DEMOGRAPHIC' | 'ADMINISTRATIVE' | 'SOCIAL' | 'PROCEDURAL' | 'CUSTOM';
-  value: unknown;
+  value: unknown,
   impact: number; // 0-100
   trend?: 'IMPROVING' | 'WORSENING' | 'STABLE';
-  description: string;
+  description: string,
   actionable: boolean;
   source: string;
   lastUpdated?: Date;
 export interface LOSIntervention {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'CLINICAL' | 'CARE_COORDINATION' | 'ADMINISTRATIVE' | 'SOCIAL' | 'CUSTOM';
-  targetFactors: string[];
+  targetFactors: string[],
   expectedLOSReduction: number; // days
-  confidence: 'HIGH' | 'MODERATE' | 'LOW';
+  confidence: 'HIGH' | 'MODERATE' | 'LOW',
   implementationTimeframe: 'IMMEDIATE' | 'TODAY' | 'TOMORROW' | 'THIS_WEEK';
   status?: 'RECOMMENDED' | 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'DECLINED';
   assignedTo?: string;
   priority: 'HIGH' | 'MEDIUM' | 'LOW';
   notes?: string;
 export interface DischargeBarrier {
-  id: string;
+  id: string,
   name: string;
-  category: 'CLINICAL' | 'SOCIAL' | 'ADMINISTRATIVE' | 'FINANCIAL' | 'CUSTOM';
+  category: 'CLINICAL' | 'SOCIAL' | 'ADMINISTRATIVE' | 'FINANCIAL' | 'CUSTOM',
   description: string;
-  severity: 'HIGH' | 'MEDIUM' | 'LOW';
+  severity: 'HIGH' | 'MEDIUM' | 'LOW',
   estimatedDelayDays: number;
   status: 'ACTIVE' | 'ADDRESSING' | 'RESOLVED';
   resolutionPlan?: string;
   responsibleParty?: string;
   expectedResolutionDate?: Date;
 export interface ResourceImplication {
-  resourceType: string;
+  resourceType: string,
   expectedUtilization: number;
   unit: string;
   costEstimate?: number;
@@ -459,191 +459,191 @@ export interface ResourceImplication {
 
 // Census forecasting models
 export interface CensusForecast {
-  id: string;
+  id: string,
   facilityId: string;
   unitId?: string;
   serviceLineId?: string;
-  forecastDate: Date;
+  forecastDate: Date,
   generatedAt: Date;
   forecastHorizon: number; // days
-  intervals: CensusForecastInterval[];
+  intervals: CensusForecastInterval[],
   aggregation: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
-  trends: CensusTrend[];
+  trends: CensusTrend[],
   anomalies: CensusAnomaly[];
-  seasonalPatterns: SeasonalPattern[];
+  seasonalPatterns: SeasonalPattern[],
   modelId: string;
-  modelVersion: string;
+  modelVersion: string,
   modelPerformance: {
-    mape: number;
+    mape: number,
     rmse: number;
-    mae: number;
-    accuracyLastMonth: number;
+    mae: number,
+    accuracyLastMonth: number
   };
   confidenceLevel: number; // 0-100
-  forecastType: 'BASELINE' | 'OPTIMISTIC' | 'PESSIMISTIC' | 'CUSTOM';
+  forecastType: 'BASELINE' | 'OPTIMISTIC' | 'PESSIMISTIC' | 'CUSTOM',
   externalFactors: ExternalFactor[];
   historicalData: {
-    startDate: Date;
+    startDate: Date,
     endDate: Date;
-    observations: number;
+    observations: number,
     averageCensus: number;
-    peakCensus: number;
-    minCensus: number;
+    peakCensus: number,
+    minCensus: number
   };
 export interface CensusForecastInterval {
-  startDateTime: Date;
+  startDateTime: Date,
   endDateTime: Date;
-  predictedCensus: number;
+  predictedCensus: number,
   admissions: number;
-  discharges: number;
+  discharges: number,
   transfers: {
-    in: number;
-    out: number;
+    in: number,
+    out: number
   };
-  confidenceInterval: [number, number];
+  confidenceInterval: [number, number],
   occupancyRate: number;
-  bedDemand: number;
+  bedDemand: number,
   staffingDemand: {
-    nurses: number;
+    nurses: number,
     physicians: number;
-    techs: number;
-    others: number;
+    techs: number,
+    others: number
   };
   bedCapacity: number;
   staffingCapacity?: {
-    nurses: number;
+    nurses: number,
     physicians: number;
-    techs: number;
-    others: number;
+    techs: number,
+    others: number
   };
   resourceUtilization: number; // 0-100
-  overflow: number;
+  overflow: number,
   status: 'NORMAL' | 'NEAR_CAPACITY' | 'AT_CAPACITY' | 'OVER_CAPACITY'
 export interface CensusTrend {
-  trendType: 'INCREASING' | 'DECREASING' | 'STABLE' | 'FLUCTUATING';
+  trendType: 'INCREASING' | 'DECREASING' | 'STABLE' | 'FLUCTUATING',
   startDate: Date;
-  endDate: Date;
+  endDate: Date,
   magnitude: number;
-  rate: number;
+  rate: number,
   description: string;
   confidence: number; // 0-100
   factors: {
-    factor: string;
-    contribution: number;
+    factor: string,
+    contribution: number
   }[];
 export interface CensusAnomaly {
-  date: Date;
+  date: Date,
   expected: number;
-  actual: number;
+  actual: number,
   deviation: number;
-  deviationPercent: number;
+  deviationPercent: number,
   type: 'SPIKE' | 'DROP' | 'SUSTAINED_INCREASE' | 'SUSTAINED_DECREASE';
   severity: 'LOW' | 'MEDIUM' | 'HIGH';
   explanation?: string;
   relatedEvents?: string[];
 export interface SeasonalPattern {
-  patternType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL';
+  patternType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL',
   description: string;
   strength: number; // 0-100
   peakTimes?: string[];
   lowTimes?: string[];
   visualData?: {
-    x: string[];
-    y: number[];
+    x: string[],
+    y: number[]
   };
 export interface ExternalFactor {
-  name: string;
+  name: string,
   type: 'WEATHER' | 'HOLIDAY' | 'EVENT' | 'EPIDEMIC' | 'CONSTRUCTION' | 'OTHER';
   startDate: Date;
   endDate?: Date;
   impact: number; // -100 to 100
-  description: string;
+  description: string,
   source: string;
   confidence: number; // 0-100
 }
 
 // Cost prediction models
 export interface CostPrediction {
-  id: string;
+  id: string,
   patientId: string;
   encounterId?: string;
-  timestamp: Date;
+  timestamp: Date,
   predictedTotalCost: number;
-  confidenceInterval: [number, number];
+  confidenceInterval: [number, number],
   costBreakdown: CostCategory[];
-  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
+  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH',
   costDrivers: CostDriver[];
-  potentialSavings: SavingsOpportunity[];
+  potentialSavings: SavingsOpportunity[],
   benchmarkComparison: {
-    average: number;
+    average: number,
     percentile: number;
     peerComparison: number; // % above/below peer average
   };
-  modelId: string;
+  modelId: string,
   modelVersion: string;
-  explanations: PredictionExplanation;
+  explanations: PredictionExplanation,
   scenarioAnalysis: CostScenario[];
   reimbursementEstimate?: {
-    expected: number;
+    expected: number,
     method: string;
-    variance: number;
-    marginEstimate: number;
+    variance: number,
+    marginEstimate: number
   };
   historicalCosts?: {
     previousEncounters: {
-      encounterId: string;
+      encounterId: string,
       totalCost: number;
-      date: Date;
+      date: Date
     }[];
-    averageAnnualCost: number;
-    costTrend: 'INCREASING' | 'DECREASING' | 'STABLE';
+    averageAnnualCost: number,
+    costTrend: 'INCREASING' | 'DECREASING' | 'STABLE'
   };
   actualOutcome?: {
     actualCost?: number;
     actualCostBreakdown?: Record<string, number>;
     varianceFromPrediction?: number;
-    variancePercent?: number;
+    variancePercent?: number
   };
 export interface CostCategory {
-  category: string;
+  category: string,
   amount: number;
-  percentage: number;
+  percentage: number,
   confidenceInterval: [number, number];
   comparisonToBenchmark: number; // % above/below benchmark
   trend: 'INCREASING' | 'DECREASING' | 'STABLE';
   subcategories?: {
-    name: string;
+    name: string,
     amount: number;
-    percentage: number;
+    percentage: number
   }[];
 export interface CostDriver {
-  name: string;
+  name: string,
   category: 'CLINICAL' | 'OPERATIONAL' | 'ADMINISTRATIVE' | 'SUPPLY' | 'PHARMACY' | 'CUSTOM';
-  impact: number;
+  impact: number,
   description: string;
-  actionable: boolean;
+  actionable: boolean,
   evidence: 'HIGH' | 'MODERATE' | 'LOW';
   interventions: string[]
 export interface SavingsOpportunity {
-  id: string;
+  id: string,
   category: string;
-  description: string;
+  description: string,
   potentialSavings: number;
-  implementationDifficulty: 'EASY' | 'MODERATE' | 'DIFFICULT';
+  implementationDifficulty: 'EASY' | 'MODERATE' | 'DIFFICULT',
   timeframe: 'IMMEDIATE' | 'SHORT_TERM' | 'LONG_TERM';
-  qualityImpact: 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE' | 'UNKNOWN';
+  qualityImpact: 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE' | 'UNKNOWN',
   requiredActions: string[];
   evidenceLevel: 'HIGH' | 'MODERATE' | 'LOW';
   status?: 'IDENTIFIED' | 'PLANNED' | 'IN_PROGRESS' | 'IMPLEMENTED' | 'DECLINED';
 export interface CostScenario {
-  name: string;
+  name: string,
   description: string;
-  assumptions: string[];
+  assumptions: string[],
   predictedCost: number;
-  changeToPrediction: number;
+  changeToPrediction: number,
   changePercentage: number;
   probability: number; // 0-100
-  triggers: string[];
+  triggers: string[]
 }
 
 @Injectable();
@@ -685,9 +685,9 @@ export class PredictiveAnalyticsService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.model_queries', 1, {
-        type: filters?.type || 'ALL';
+        type: filters?.type || 'ALL',
         category: filters?.category || 'ALL';
-        status: filters?.status || 'ALL';
+        status: filters?.status || 'ALL'
       });
 
       return models as PredictiveModel[];
@@ -739,28 +739,28 @@ export class PredictiveAnalyticsService {
       const newModel: PredictiveModel = {
         ...model,
         id: `model-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        created: new Date();
-        updated: new Date();
-        createdBy: userId;
-        updatedBy: userId;
+        created: new Date(),
+        updated: new Date(),
+        createdBy: userId,
+        updatedBy: userId
       };
 
       // Save model
       await this.prisma.predictiveModel.create({
-        data: newModel as any;
+        data: newModel as any
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: newModel.id;
         userId,
         details: {
-          name: model.name;
+          name: model.name,
           type: model.type;
-          category: model.category;
-          algorithm: model.algorithm;
+          category: model.category,
+          algorithm: model.algorithm
         },
       });
 
@@ -769,14 +769,14 @@ export class PredictiveAnalyticsService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.models_created', 1, {
-        type: model.type;
+        type: model.type,
         category: model.category;
-        algorithm: model.algorithm;
+        algorithm: model.algorithm
       });
 
       // Publish event
       await pubsub.publish('MODEL_CREATED', {
-        modelCreated: newModel;
+        modelCreated: newModel
       });
 
       return newModel;
@@ -790,7 +790,7 @@ export class PredictiveAnalyticsService {
    * Update predictive model;
    */
   async updateModel(
-    id: string;
+    id: string,
     updates: Partial<PredictiveModel>;
     userId: string;
   ): Promise<PredictiveModel> {
@@ -809,21 +809,21 @@ export class PredictiveAnalyticsService {
         where: { id },
         data: {
           ...updates,
-          updated: new Date();
-          updatedBy: userId;
+          updated: new Date(),
+          updatedBy: userId
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'UPDATE';
+        action: 'UPDATE',
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: id;
         userId,
         details: {
-          name: currentModel.name;
+          name: currentModel.name,
           previousStatus: currentModel.status;
-          newStatus: updates.status || currentModel.status;
+          newStatus: updates.status || currentModel.status
         },
       });
 
@@ -831,10 +831,10 @@ export class PredictiveAnalyticsService {
       if (updates?.version && updates.version !== currentModel.version) {
         const versionHistory = [...(currentModel.mlOpsInfo.version.history || [])];
         versionHistory.unshift({
-          version: updates.version;
-          date: new Date();
-          changedBy: userId;
-          changes: 'Model updated';
+          version: updates.version,
+          date: new Date(),
+          changedBy: userId,
+          changes: 'Model updated'
         });
 
         await this.prisma.predictiveModel.update({
@@ -843,8 +843,8 @@ export class PredictiveAnalyticsService {
             mlOpsInfo: {
               ...updatedModel.mlOpsInfo,
               version: {
-                current: updates.version;
-                history: versionHistory;
+                current: updates.version,
+                history: versionHistory
               },
             },
           },
@@ -857,7 +857,7 @@ export class PredictiveAnalyticsService {
 
       // Publish event
       await pubsub.publish('MODEL_UPDATED', {
-        modelUpdated: updatedModel;
+        modelUpdated: updatedModel
       });
 
       return updatedModel as PredictiveModel;
@@ -871,7 +871,7 @@ export class PredictiveAnalyticsService {
    * Train predictive model;
    */
   async trainModel(
-    id: string;
+    id: string,
     trainingConfig: {
       dataSource: string;
       startDate?: Date;
@@ -893,40 +893,40 @@ export class PredictiveAnalyticsService {
       await this.updateModel(
         id,
         {
-          status: ModelStatus.TRAINING;
+          status: ModelStatus.TRAINING
         },
         userId;
       );
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'TRAIN';
+        action: 'TRAIN',
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: id;
         userId,
         details: {
-          name: model.name;
+          name: model.name,
           dataSource: trainingConfig.dataSource;
-          startDate: trainingConfig.startDate;
-          endDate: trainingConfig.endDate;
+          startDate: trainingConfig.startDate,
+          endDate: trainingConfig.endDate
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.model_training_started', 1, {
-        modelId: id;
+        modelId: id,
         modelType: model.type;
-        modelCategory: model.category;
+        modelCategory: model.category
       });
 
       // Publish event
       await pubsub.publish('MODEL_TRAINING_STARTED', {
         modelTrainingStarted: {
-          modelId: id;
+          modelId: id,
           modelName: model.name;
-          timestamp: new Date();
+          timestamp: new Date(),
           userId,
-          config: trainingConfig;
+          config: trainingConfig
         },
       });
 
@@ -934,10 +934,10 @@ export class PredictiveAnalyticsService {
       const trainingJob = await this.startModelTrainingJob(model, trainingConfig)
 
       return {
-        modelId: id;
+        modelId: id,
         jobId: trainingJob.jobId;
-        status: 'STARTED';
-        estimatedCompletionTime: trainingJob.estimatedCompletionTime;
+        status: 'STARTED',
+        estimatedCompletionTime: trainingJob.estimatedCompletionTime
       };
     } catch (error) {
 
@@ -945,7 +945,7 @@ export class PredictiveAnalyticsService {
       await this.updateModel(
         id,
         {
-          status: ModelStatus.ERROR;
+          status: ModelStatus.ERROR
         },
         userId;
       );
@@ -958,25 +958,25 @@ export class PredictiveAnalyticsService {
    * Deploy predictive model;
    */
   async deployModel(
-    id: string;
+    id: string,
     deploymentConfig: {
       environment: 'development' | 'staging' | 'production';
       resources?: {
         cpu?: string;
         memory?: string;
-        gpu?: string;
+        gpu?: string
       };
       scaling?: {
         minReplicas?: number;
         maxReplicas?: number;
-        targetCPUUtilization?: number;
+        targetCPUUtilization?: number
       };
       monitoring?: {
         dataQuality?: boolean;
         modelDrift?: boolean;
         performance?: boolean;
         explainability?: boolean;
-        alerts?: boolean;
+        alerts?: boolean
       };
     },
     userId: string;
@@ -1004,14 +1004,14 @@ export class PredictiveAnalyticsService {
       await this.updateModel(
         id,
         {
-          status: ModelStatus.DEPLOYING;
+          status: ModelStatus.DEPLOYING,
           deploymentStatus: DeploymentStatus.DEPLOYING;
           mlOpsInfo: {
             ...model.mlOpsInfo,
-            environment: deploymentConfig.environment;
+            environment: deploymentConfig.environment,
             resources: deploymentConfig.resources || model.mlOpsInfo.resources;
-            scaling: deploymentConfig.scaling || model.mlOpsInfo.scaling;
-            monitoring: deploymentConfig.monitoring || model.mlOpsInfo.monitoring;
+            scaling: deploymentConfig.scaling || model.mlOpsInfo.scaling,
+            monitoring: deploymentConfig.monitoring || model.mlOpsInfo.monitoring
           },
         },
         userId;
@@ -1019,33 +1019,33 @@ export class PredictiveAnalyticsService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'DEPLOY';
+        action: 'DEPLOY',
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: id;
         userId,
         details: {
-          name: model.name;
+          name: model.name,
           environment: deploymentConfig.environment;
-          resources: deploymentConfig.resources;
-          scaling: deploymentConfig.scaling;
+          resources: deploymentConfig.resources,
+          scaling: deploymentConfig.scaling
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.model_deployment_started', 1, {
-        modelId: id;
+        modelId: id,
         modelType: model.type;
-        environment: deploymentConfig.environment;
+        environment: deploymentConfig.environment
       });
 
       // Publish event
       await pubsub.publish('MODEL_DEPLOYMENT_STARTED', {
         modelDeploymentStarted: {
-          modelId: id;
+          modelId: id,
           modelName: model.name;
-          timestamp: new Date();
+          timestamp: new Date(),
           userId,
-          environment: deploymentConfig.environment;
+          environment: deploymentConfig.environment
         },
       });
 
@@ -1053,10 +1053,10 @@ export class PredictiveAnalyticsService {
       const deploymentJob = await this.startModelDeploymentJob(model, deploymentConfig)
 
       return {
-        modelId: id;
+        modelId: id,
         jobId: deploymentJob.jobId;
-        status: 'STARTED';
-        estimatedCompletionTime: deploymentJob.estimatedCompletionTime;
+        status: 'STARTED',
+        estimatedCompletionTime: deploymentJob.estimatedCompletionTime
       };
     } catch (error) {
 
@@ -1065,7 +1065,7 @@ export class PredictiveAnalyticsService {
         id,
         {
           status: model.status, // Maintain previous status
-          deploymentStatus: DeploymentStatus.FAILED;
+          deploymentStatus: DeploymentStatus.FAILED
         },
         userId;
       );
@@ -1078,7 +1078,7 @@ export class PredictiveAnalyticsService {
    * Predict readmission risk;
    */
   async predictReadmissionRisk(
-    patientId: string;
+    patientId: string,
     options: {
       encounterId?: string;
       modelId?: string;
@@ -1123,31 +1123,31 @@ export class PredictiveAnalyticsService {
       const readmissionRisk: ReadmissionRisk = {
         id: `readmission-risk-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
-        encounterId: options.encounterId;
-        timestamp: new Date();
-        riskScore: prediction.riskScore;
+        encounterId: options.encounterId,
+        timestamp: new Date(),
+        riskScore: prediction.riskScore,
         probability: prediction.probability;
-        riskLevel: this.getRiskLevel(prediction.riskScore);
+        riskLevel: this.getRiskLevel(prediction.riskScore),
         timeHorizon,
         confidenceInterval: prediction.confidenceInterval || [
           Math.max(0, prediction.probability - 0.1),
           Math.min(1, prediction.probability + 0.1),
         ],
-        riskFactors: prediction.riskFactors || [];
+        riskFactors: prediction.riskFactors || [],
         protectiveFactors: prediction.protectiveFactors || [];
         recommendedInterventions: prediction.recommendedInterventions || [];
         modelId,
-        modelVersion: model.version;
+        modelVersion: model.version,
         explanations: prediction.explanations || {
-          method: 'FEATURE_IMPORTANCE';
-          localExplanation: [];
+          method: 'FEATURE_IMPORTANCE',
+          localExplanation: []
         },
-        historicalPredictions: await this.getHistoricalReadmissionPredictions(patientId, options.encounterId),;
+        historicalPredictions: await this.getHistoricalReadmissionPredictions(patientId, options.encounterId),
       };
 
       // Save prediction to database
       await this.prisma.readmissionRisk.create({
-        data: readmissionRisk as any;
+        data: readmissionRisk as any
       });
 
       // Cache the result
@@ -1160,8 +1160,8 @@ export class PredictiveAnalyticsService {
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.readmission_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.readmission_predictions', 1, {
-        riskLevel: readmissionRisk.riskLevel;
-        timeHorizon: timeHorizon.toString();
+        riskLevel: readmissionRisk.riskLevel,
+        timeHorizon: timeHorizon.toString()
       });
 
       // If high risk, publish alert event
@@ -1169,10 +1169,10 @@ export class PredictiveAnalyticsService {
         await pubsub.publish('HIGH_READMISSION_RISK', {
           highReadmissionRisk: {
             patientId,
-            encounterId: options.encounterId;
+            encounterId: options.encounterId,
             riskScore: readmissionRisk.riskScore;
-            riskLevel: readmissionRisk.riskLevel;
-            timestamp: new Date();
+            riskLevel: readmissionRisk.riskLevel,
+            timestamp: new Date()
           },
         });
       }
@@ -1183,7 +1183,7 @@ export class PredictiveAnalyticsService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.readmission_prediction_errors', 1, {
         patientId,
-        errorType: error.name;
+        errorType: error.name
       });
 
       throw error;
@@ -1194,7 +1194,7 @@ export class PredictiveAnalyticsService {
    * Predict length of stay;
    */
   async predictLengthOfStay(
-    patientId: string;
+    patientId: string,
     encounterId: string;
     options: {
       modelId?: string;
@@ -1245,32 +1245,32 @@ export class PredictiveAnalyticsService {
         id: `los-prediction-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId,
-        timestamp: new Date();
+        timestamp: new Date(),
         predictedLOS: prediction.predictedLOS;
         confidenceInterval: prediction.confidenceInterval || [
           Math.max(0, prediction.predictedLOS - 1),
           prediction.predictedLOS + 2,
         ],
         predictionCategory: this.getLOSCategory(prediction.predictedLOS, patientData),
-        riskOfExtendedStay: prediction.riskOfExtendedStay || 0;
+        riskOfExtendedStay: prediction.riskOfExtendedStay || 0,
         optimizedLOS: prediction.optimizedLOS || prediction.predictedLOS;
-        factors: prediction.factors || [];
+        factors: prediction.factors || [],
         interventions: prediction.interventions || [];
         targetDischargeDate,
-        dischargeBarriers: prediction.dischargeBarriers || [];
+        dischargeBarriers: prediction.dischargeBarriers || [],
         resourceImplications: prediction.resourceImplications || [];
         modelId,
-        modelVersion: model.version;
+        modelVersion: model.version,
         explanations: prediction.explanations || {
-          method: 'FEATURE_IMPORTANCE';
-          localExplanation: [];
+          method: 'FEATURE_IMPORTANCE',
+          localExplanation: []
         },
-        historicalPredictions: await this.getHistoricalLOSPredictions(patientId, encounterId),;
+        historicalPredictions: await this.getHistoricalLOSPredictions(patientId, encounterId),
       };
 
       // Save prediction to database
       await this.prisma.lengthOfStayPrediction.create({
-        data: losPrediction as any;
+        data: losPrediction as any
       });
 
       // Cache the result
@@ -1283,7 +1283,7 @@ export class PredictiveAnalyticsService {
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.los_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.los_predictions', 1, {
-        category: losPrediction.predictionCategory;
+        category: losPrediction.predictionCategory
       });
 
       // If extended stay risk is high, publish alert event
@@ -1292,9 +1292,9 @@ export class PredictiveAnalyticsService {
           highExtendedStayRisk: {
             patientId,
             encounterId,
-            predictedLOS: losPrediction.predictedLOS;
+            predictedLOS: losPrediction.predictedLOS,
             riskOfExtendedStay: losPrediction.riskOfExtendedStay;
-            timestamp: new Date();
+            timestamp: new Date()
           },
         });
       }
@@ -1305,7 +1305,7 @@ export class PredictiveAnalyticsService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.los_prediction_errors', 1, {
         patientId,
-        errorType: error.name;
+        errorType: error.name
       });
 
       throw error;
@@ -1320,7 +1320,7 @@ export class PredictiveAnalyticsService {
       facilityId: string;
       unitId?: string;
       serviceLineId?: string;
-      startDate: Date;
+      startDate: Date,
       endDate: Date;
       aggregation?: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
       modelId?: string;
@@ -1361,9 +1361,9 @@ export class PredictiveAnalyticsService {
 
       // Select model to use
       const modelId = options.modelId || await this.selectBestModel(ModelCategory.PATIENT_FLOW, {
-        facilityId: options.facilityId;
+        facilityId: options.facilityId,
         unitId: options.unitId;
-        serviceLineId: options.serviceLineId;
+        serviceLineId: options.serviceLineId
       });
 
       // Get model
@@ -1374,7 +1374,7 @@ export class PredictiveAnalyticsService {
 
       // Call prediction API
       const prediction = await this.callPredictionAPI(model, 'census_forecast', {
-        facilityId: options.facilityId;
+        facilityId: options.facilityId,
         unitId: options.unitId;
         serviceLineId: options.serviceLineId;
         startDate,
@@ -1388,41 +1388,41 @@ export class PredictiveAnalyticsService {
       // Create CensusForecast object
       const censusForecast: CensusForecast = {
         id: `census-forecast-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        facilityId: options.facilityId;
+        facilityId: options.facilityId,
         unitId: options.unitId;
-        serviceLineId: options.serviceLineId;
+        serviceLineId: options.serviceLineId,
         forecastDate: startDate;
-        generatedAt: new Date();
+        generatedAt: new Date(),
         forecastHorizon,
         intervals: prediction.intervals || [];
         aggregation,
-        trends: prediction.trends || [];
+        trends: prediction.trends || [],
         anomalies: prediction.anomalies || [];
         seasonalPatterns: prediction.seasonalPatterns || [];
         modelId,
-        modelVersion: model.version;
+        modelVersion: model.version,
         modelPerformance: prediction.modelPerformance || {
-          mape: 0;
+          mape: 0,
           rmse: 0;
-          mae: 0;
-          accuracyLastMonth: 0;
+          mae: 0,
+          accuracyLastMonth: 0
         },
         confidenceLevel: prediction.confidenceLevel || 95;
         forecastType,
-        externalFactors: prediction.externalFactors || [];
+        externalFactors: prediction.externalFactors || [],
         historicalData: prediction.historicalData || {
           startDate: new Date(new Date().setDate(new Date().getDate() - 90)), // 90 days ago
-          endDate: new Date();
+          endDate: new Date(),
           observations: 0;
-          averageCensus: 0;
+          averageCensus: 0,
           peakCensus: 0;
-          minCensus: 0;
+          minCensus: 0
         },
       };
 
       // Save forecast to database
       await this.prisma.censusForecast.create({
-        data: censusForecast as any;
+        data: censusForecast as any
       });
 
       // Cache the result
@@ -1437,10 +1437,10 @@ export class PredictiveAnalyticsService {
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.census_forecast_time', duration);
       metricsCollector.incrementCounter('analytics.census_forecasts', 1, {
-        facilityId: options.facilityId;
+        facilityId: options.facilityId,
         unitId: options.unitId || 'all';
         aggregation,
-        horizon: forecastHorizon.toString();
+        horizon: forecastHorizon.toString()
       });
 
       // If capacity issues predicted, publish alert event
@@ -1451,13 +1451,13 @@ export class PredictiveAnalyticsService {
       if (capacityIssues.length > 0) {
         await pubsub.publish('CAPACITY_ALERT', {
           capacityAlert: {
-            facilityId: options.facilityId;
+            facilityId: options.facilityId,
             unitId: options.unitId;
-            serviceLineId: options.serviceLineId;
+            serviceLineId: options.serviceLineId,
             issueCount: capacityIssues.length;
-            firstIssueDate: capacityIssues[0].startDateTime;
+            firstIssueDate: capacityIssues[0].startDateTime,
             maxOverflow: Math.max(...capacityIssues.map(i => i.overflow));
-            timestamp: new Date();
+            timestamp: new Date()
           },
         });
       }
@@ -1467,8 +1467,8 @@ export class PredictiveAnalyticsService {
 
       // Record error metric
       metricsCollector.incrementCounter('analytics.census_forecast_errors', 1, {
-        facilityId: options.facilityId;
-        errorType: error.name;
+        facilityId: options.facilityId,
+        errorType: error.name
       });
 
       throw error;
@@ -1479,7 +1479,7 @@ export class PredictiveAnalyticsService {
    * Predict cost;
    */
   async predictCost(
-    patientId: string;
+    patientId: string,
     options: {
       encounterId?: string;
       modelId?: string;
@@ -1527,36 +1527,36 @@ export class PredictiveAnalyticsService {
       const costPrediction: CostPrediction = {
         id: `cost-prediction-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
-        encounterId: options.encounterId;
-        timestamp: new Date();
-        predictedTotalCost: prediction.predictedTotalCost;
+        encounterId: options.encounterId,
+        timestamp: new Date(),
+        predictedTotalCost: prediction.predictedTotalCost,
         confidenceInterval: prediction.confidenceInterval || [
           prediction.predictedTotalCost * 0.8,
           prediction.predictedTotalCost * 1.2,
         ],
-        costBreakdown: prediction.costBreakdown || [];
+        costBreakdown: prediction.costBreakdown || [],
         riskLevel: this.getCostRiskLevel(prediction.predictedTotalCost, patientData),
-        costDrivers: prediction.costDrivers || [];
+        costDrivers: prediction.costDrivers || [],
         potentialSavings: prediction.potentialSavings || [];
         benchmarkComparison: prediction.benchmarkComparison || {
-          average: 0;
+          average: 0,
           percentile: 0;
-          peerComparison: 0;
+          peerComparison: 0
         },
         modelId,
-        modelVersion: model.version;
+        modelVersion: model.version,
         explanations: prediction.explanations || {
-          method: 'FEATURE_IMPORTANCE';
-          localExplanation: [];
+          method: 'FEATURE_IMPORTANCE',
+          localExplanation: []
         },
-        scenarioAnalysis: prediction.scenarioAnalysis || [];
+        scenarioAnalysis: prediction.scenarioAnalysis || [],
         reimbursementEstimate: includeReimbursement ? prediction.reimbursementEstimate : undefined;
-        historicalCosts: await this.getHistoricalCosts(patientId);
+        historicalCosts: await this.getHistoricalCosts(patientId)
       };
 
       // Save prediction to database
       await this.prisma.costPrediction.create({
-        data: costPrediction as any;
+        data: costPrediction as any
       });
 
       // Cache the result
@@ -1569,7 +1569,7 @@ export class PredictiveAnalyticsService {
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.cost_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.cost_predictions', 1, {
-        riskLevel: costPrediction.riskLevel;
+        riskLevel: costPrediction.riskLevel
       });
 
       // If high cost risk, publish alert event
@@ -1577,10 +1577,10 @@ export class PredictiveAnalyticsService {
         await pubsub.publish('HIGH_COST_RISK', {
           highCostRisk: {
             patientId,
-            encounterId: options.encounterId;
+            encounterId: options.encounterId,
             predictedCost: costPrediction.predictedTotalCost;
-            riskLevel: costPrediction.riskLevel;
-            timestamp: new Date();
+            riskLevel: costPrediction.riskLevel,
+            timestamp: new Date()
           },
         });
       }
@@ -1591,7 +1591,7 @@ export class PredictiveAnalyticsService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.cost_prediction_errors', 1, {
         patientId,
-        errorType: error.name;
+        errorType: error.name
       });
 
       throw error;
@@ -1602,24 +1602,24 @@ export class PredictiveAnalyticsService {
    * Record prediction outcome;
    */
   async recordPredictionOutcome(
-    predictionType: 'readmission' | 'length_of_stay' | 'cost';
+    predictionType: 'readmission' | 'length_of_stay' | 'cost',
     predictionId: string;
-    outcome: unknown;
+    outcome: unknown,
     userId: string;
   ): Promise<void> {
     try {
       switch (predictionType) {
         case 'readmission':
-          await this.recordReadmissionOutcome(predictionId, outcome, userId);
-          break;
+          await this.recordReadmissionOutcome(predictionId, outcome, userId),
+          break,
         case 'length_of_stay':
-          await this.recordLOSOutcome(predictionId, outcome, userId);
-          break;
+          await this.recordLOSOutcome(predictionId, outcome, userId),
+          break,
         case 'cost':
-          await this.recordCostOutcome(predictionId, outcome, userId);
-          break;
+          await this.recordCostOutcome(predictionId, outcome, userId),
+          break,
         default:
-          throw new Error(`Unsupported prediction type: ${predictionType}`);
+          throw new Error(`Unsupported prediction type: ${predictionType}`),
       }
 
       // Record metrics
@@ -1636,7 +1636,7 @@ export class PredictiveAnalyticsService {
    * Record clinical validation;
    */
   async recordClinicalValidation(
-    predictionType: 'readmission' | 'length_of_stay' | 'cost';
+    predictionType: 'readmission' | 'length_of_stay' | 'cost',
     predictionId: string;
     validation: {
       agreement: boolean;
@@ -1646,11 +1646,11 @@ export class PredictiveAnalyticsService {
   ): Promise<void> {
     try {
       const validationData = {
-        validatedBy: userId;
-        validationTimestamp: new Date();
-        clinicalAssessment: validation.notes || '';
+        validatedBy: userId,
+        validationTimestamp: new Date(),
+        clinicalAssessment: validation.notes || '',
         agreement: validation.agreement;
-        notes: validation.notes;
+        notes: validation.notes
       };
 
       switch (predictionType) {
@@ -1658,46 +1658,46 @@ export class PredictiveAnalyticsService {
           await this.prisma.readmissionRisk.update({
             where: { id: predictionId },
             data: {
-              clinicalValidation: validationData;
+              clinicalValidation: validationData
             },
-          });
+          }),
           break;
         case 'length_of_stay':
           await this.prisma.lengthOfStayPrediction.update({
             where: { id: predictionId },
             data: {
-              clinicalValidation: validationData;
+              clinicalValidation: validationData
             },
-          });
+          }),
           break;
         case 'cost':
           await this.prisma.costPrediction.update({
             where: { id: predictionId },
             data: {
-              clinicalValidation: validationData;
+              clinicalValidation: validationData
             },
-          });
+          }),
           break;
         default:
-          throw new Error(`Unsupported prediction type: ${predictionType}`);
+          throw new Error(`Unsupported prediction type: ${predictionType}`),
       }
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CLINICAL_VALIDATION';
+        action: 'CLINICAL_VALIDATION',
         resourceType: 'PREDICTION';
         resourceId: predictionId;
         userId,
         details: {
           predictionType,
-          agreement: validation.agreement;
+          agreement: validation.agreement
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.prediction_validations', 1, {
         predictionType,
-        agreement: validation.agreement.toString();
+        agreement: validation.agreement.toString()
       });
 
       // Publish event
@@ -1705,9 +1705,9 @@ export class PredictiveAnalyticsService {
         predictionValidated: {
           predictionType,
           predictionId,
-          agreement: validation.agreement;
+          agreement: validation.agreement,
           validatedBy: userId;
-          timestamp: new Date();
+          timestamp: new Date()
         },
       });
     } catch (error) {
@@ -1720,7 +1720,7 @@ export class PredictiveAnalyticsService {
    * Get model performance metrics;
    */
   async getModelPerformanceMetrics(
-    modelId: string;
+    modelId: string,
     options: {
       startDate?: Date;
       endDate?: Date;
@@ -1747,13 +1747,13 @@ export class PredictiveAnalyticsService {
 
       switch (model.type) {
         case ModelType.CLASSIFICATION:
-          performanceMetrics = this.calculateClassificationMetrics(predictions);
+          performanceMetrics = this.calculateClassificationMetrics(predictions),
           break;
         case ModelType.REGRESSION:
-          performanceMetrics = this.calculateRegressionMetrics(predictions);
+          performanceMetrics = this.calculateRegressionMetrics(predictions),
           break;
         case ModelType.TIME_SERIES:
-          performanceMetrics = this.calculateTimeSeriesMetrics(predictions);
+          performanceMetrics = this.calculateTimeSeriesMetrics(predictions),
           break;
         default:
           performanceMetrics = {};
@@ -1768,20 +1768,20 @@ export class PredictiveAnalyticsService {
       // Combine metrics
       const result = {
         modelId,
-        modelName: model.name;
+        modelName: model.name,
         modelType: model.type;
-        modelCategory: model.category;
+        modelCategory: model.category,
         timeRange: {
           startDate,
           endDate,
         },
-        predictionsCount: predictions.length;
+        predictionsCount: predictions.length,
         outcomeAvailable: predictions.filter(p => p.outcome !== undefined).length;
         validationAvailable: predictions.filter(p => p.validation !== undefined).length;
         performanceMetrics,
         driftMetrics,
         dataQualityMetrics,
-        segment: options.segment;
+        segment: options.segment
       };
 
       return result;
@@ -1801,9 +1801,9 @@ export class PredictiveAnalyticsService {
   }
 
   private async startModelTrainingJob(
-    model: PredictiveModel;
+    model: PredictiveModel,
     trainingConfig: unknown
-  ): Promise<{ jobId: string; estimatedCompletionTime: Date }> {
+  ): Promise<{ jobId: string, estimatedCompletionTime: Date }> {
     // This would be implemented to start an actual training job
     // Here we just simulate a job
     const jobId = `training-job-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
@@ -1814,9 +1814,9 @@ export class PredictiveAnalyticsService {
   }
 
   private async startModelDeploymentJob(
-    model: PredictiveModel;
+    model: PredictiveModel,
     deploymentConfig: unknown;
-  ): Promise<{ jobId: string; estimatedCompletionTime: Date }> {
+  ): Promise<{ jobId: string, estimatedCompletionTime: Date }> {
     // This would be implemented to start an actual deployment job
     // Here we just simulate a job
     const jobId = `deployment-job-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
@@ -1845,12 +1845,12 @@ export class PredictiveAnalyticsService {
     const models = await this.prisma.predictiveModel.findMany({
       where: {
         category,
-        status: ModelStatus.DEPLOYED;
+        status: ModelStatus.DEPLOYED
       },
       orderBy: {
-        updated: 'desc';
+        updated: 'desc'
       },
-      take: 1;
+      take: 1
     });
 
     if (models.length === 0) {
@@ -1861,7 +1861,7 @@ export class PredictiveAnalyticsService {
   }
 
   private async callPredictionAPI(
-    model: PredictiveModel;
+    model: PredictiveModel,
     endpoint: string;
     payload: unknown;
   ): Promise<any> {
@@ -1871,15 +1871,15 @@ export class PredictiveAnalyticsService {
     // For demonstration purposes, return mock prediction data
     switch (endpoint) {
       case 'readmission':
-        return this.generateMockReadmissionPrediction(payload);
+        return this.generateMockReadmissionPrediction(payload),
       case 'length_of_stay':
-        return this.generateMockLOSPrediction(payload);
+        return this.generateMockLOSPrediction(payload),
       case 'census_forecast':
-        return this.generateMockCensusForecast(payload);
+        return this.generateMockCensusForecast(payload),
       case 'cost_prediction':
-        return this.generateMockCostPrediction(payload);
+        return this.generateMockCostPrediction(payload),
       default:
-        throw new Error(`Unsupported prediction endpoint: ${endpoint}`);
+        throw new Error(`Unsupported prediction endpoint: ${endpoint}`),
     }
   }
 
@@ -1911,15 +1911,15 @@ export class PredictiveAnalyticsService {
   private async getHistoricalReadmissionPredictions(
     patientId: string;
     encounterId?: string;
-  ): Promise<{ timestamp: Date; riskScore: number; riskLevel: string }[]> {
+  ): Promise<{ timestamp: Date, riskScore: number; riskLevel: string }[]> {
     // Implementation to get historical predictions
     return [];
   }
 
   private async getHistoricalLOSPredictions(
-    patientId: string;
+    patientId: string,
     encounterId: string;
-  ): Promise<{ timestamp: Date; predictedLOS: number; predictionCategory: string }[]> {
+  ): Promise<{ timestamp: Date, predictedLOS: number; predictionCategory: string }[]> {
     // Implementation to get historical predictions
     return [];
   }
@@ -1931,22 +1931,22 @@ export class PredictiveAnalyticsService {
   ): Promise<any> {
     // Implementation to get historical census data
     return {
-      days: 90;
-      data: [];
+      days: 90,
+      data: []
     };
   }
 
   private async getHistoricalCosts(patientId: string): Promise<any> {
     // Implementation to get historical costs
     return {
-      previousEncounters: [];
+      previousEncounters: [],
       averageAnnualCost: 0;
-      costTrend: 'STABLE';
+      costTrend: 'STABLE'
     };
   }
 
   private async recordReadmissionOutcome(
-    predictionId: string;
+    predictionId: string,
     outcome: unknown;
     userId: string;
   ): Promise<void> {
@@ -1954,7 +1954,7 @@ export class PredictiveAnalyticsService {
   }
 
   private async recordLOSOutcome(
-    predictionId: string;
+    predictionId: string,
     outcome: unknown;
     userId: string;
   ): Promise<void> {
@@ -1962,7 +1962,7 @@ export class PredictiveAnalyticsService {
   }
 
   private async recordCostOutcome(
-    predictionId: string;
+    predictionId: string,
     outcome: unknown;
     userId: string;
   ): Promise<void> {
@@ -1970,7 +1970,7 @@ export class PredictiveAnalyticsService {
   }
 
   private async getModelPredictions(
-    modelId: string;
+    modelId: string,
     startDate: Date;
     endDate: Date;
     segment?: string;
@@ -2015,78 +2015,78 @@ export class PredictiveAnalyticsService {
       confidenceInterval: [Math.max(0, probability - 0.1), Math.min(1, probability + 0.1)],
       riskFactors: [
         {
-          name: 'Previous Admissions';
+          name: 'Previous Admissions',
           category: 'Administrative';
-          value: '3 in last 6 months';
+          value: '3 in last 6 months',
           impact: 85;
-          trend: 'STABLE';
+          trend: 'STABLE',
           description: 'Patient has had multiple recent admissions';
-          actionable: false;
-          source: 'EHR';
+          actionable: false,
+          source: 'EHR'
         },
         {
-          name: 'Medication Adherence';
+          name: 'Medication Adherence',
           category: 'Behavioral';
-          value: 'Poor';
+          value: 'Poor',
           impact: 75;
-          trend: 'WORSENING';
+          trend: 'WORSENING',
           description: 'Patient has history of missed medications';
-          actionable: true;
-          source: 'Medication History';
+          actionable: true,
+          source: 'Medication History'
         },
         {
-          name: 'Chronic Conditions';
+          name: 'Chronic Conditions',
           category: 'Clinical';
-          value: 'Multiple';
+          value: 'Multiple',
           impact: 65;
-          trend: 'STABLE';
+          trend: 'STABLE',
           description: 'Patient has 3+ chronic conditions';
-          actionable: false;
-          source: 'Problem List';
+          actionable: false,
+          source: 'Problem List'
         },
       ],
       protectiveFactors: [
         {
-          name: 'Strong Social Support';
+          name: 'Strong Social Support',
           category: 'Social';
-          value: 'Present';
+          value: 'Present',
           impact: 40;
-          description: 'Patient has strong family support system';
-          source: 'Social Work Assessment';
+          description: 'Patient has strong family support system',
+          source: 'Social Work Assessment'
         },
       ],
       recommendedInterventions: [
         {
           id: `intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
-          name: 'Medication Reconciliation';
+          name: 'Medication Reconciliation',
           description: 'Complete thorough medication reconciliation before discharge';
-          type: 'MEDICATION';
+          type: 'MEDICATION',
           targetRiskFactors: ['Medication Adherence'];
-          expectedImpact: 65;
+          expectedImpact: 65,
           evidence: 'HIGH';
-          costCategory: 'LOW';
+          costCategory: 'LOW',
           timeToImplement: 'IMMEDIATE';
-          implementationComplexity: 'LOW';
+          implementationComplexity: 'LOW',
           requiredResources: ['Pharmacist'];
-          recommendationStrength: 'STRONG';
+          recommendationStrength: 'STRONG'
         },
         {
           id: `intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
-          name: 'Follow-up Appointment';
+          name: 'Follow-up Appointment',
           description: 'Schedule follow-up appointment within 7 days of discharge';
-          type: 'FOLLOW_UP';
+          type: 'FOLLOW_UP',
           targetRiskFactors: ['Previous Admissions', 'Chronic Conditions'],
-          expectedImpact: 55;
+          expectedImpact: 55,
           evidence: 'HIGH';
-          costCategory: 'LOW';
+          costCategory: 'LOW',
           timeToImplement: 'IMMEDIATE';
-          implementationComplexity: 'LOW';
+          implementationComplexity: 'LOW',
           requiredResources: ['Discharge Planner'];
-          recommendationStrength: 'STRONG';
+          recommendationStrength: 'STRONG'
         },
       ],
       explanations: {
-        method: 'SHAP';
+        method: 'SHAP',
         globalExplanation: {
           featureImportance: [
             { feature: 'Previous Admissions', importance: 0.35 },
@@ -2118,89 +2118,89 @@ export class PredictiveAnalyticsService {
       optimizedLOS,
       factors: [
         {
-          name: 'Diagnosis Complexity';
+          name: 'Diagnosis Complexity',
           category: 'CLINICAL';
-          value: 'High';
+          value: 'High',
           impact: 80;
-          trend: 'STABLE';
+          trend: 'STABLE',
           description: 'Patient has complex medical condition';
-          actionable: false;
-          source: 'Diagnosis';
+          actionable: false,
+          source: 'Diagnosis'
         },
         {
-          name: 'Discharge Planning';
+          name: 'Discharge Planning',
           category: 'ADMINISTRATIVE';
-          value: 'Delayed';
+          value: 'Delayed',
           impact: 70;
-          trend: 'WORSENING';
+          trend: 'WORSENING',
           description: 'Discharge planning not initiated early';
-          actionable: true;
-          source: 'Care Management';
+          actionable: true,
+          source: 'Care Management'
         },
         {
-          name: 'Post-Acute Care Availability';
+          name: 'Post-Acute Care Availability',
           category: 'SOCIAL';
-          value: 'Limited';
+          value: 'Limited',
           impact: 60;
-          trend: 'STABLE';
+          trend: 'STABLE',
           description: 'Limited SNF bed availability in region';
-          actionable: true;
-          source: 'Care Management';
+          actionable: true,
+          source: 'Care Management'
         },
       ],
       interventions: [
         {
           id: `los-intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
-          name: 'Early Discharge Planning';
+          name: 'Early Discharge Planning',
           description: 'Initiate discharge planning on admission';
-          type: 'CARE_COORDINATION';
+          type: 'CARE_COORDINATION',
           targetFactors: ['Discharge Planning'];
-          expectedLOSReduction: 1.5;
+          expectedLOSReduction: 1.5,
           confidence: 'HIGH';
-          implementationTimeframe: 'IMMEDIATE';
-          priority: 'HIGH';
+          implementationTimeframe: 'IMMEDIATE',
+          priority: 'HIGH'
         },
         {
           id: `los-intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
-          name: 'SNF Pre-Booking';
+          name: 'SNF Pre-Booking',
           description: 'Pre-book SNF bed for anticipated needs';
-          type: 'ADMINISTRATIVE';
+          type: 'ADMINISTRATIVE',
           targetFactors: ['Post-Acute Care Availability'];
-          expectedLOSReduction: 1.0;
+          expectedLOSReduction: 1.0,
           confidence: 'MODERATE';
-          implementationTimeframe: 'TODAY';
-          priority: 'MEDIUM';
+          implementationTimeframe: 'TODAY',
+          priority: 'MEDIUM'
         },
       ],
       dischargeBarriers: [
         {
           id: `barrier-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
-          name: 'Insurance Authorization';
+          name: 'Insurance Authorization',
           category: 'ADMINISTRATIVE';
-          description: 'Pending insurance authorization for SNF';
+          description: 'Pending insurance authorization for SNF',
           severity: 'HIGH';
-          estimatedDelayDays: 2;
+          estimatedDelayDays: 2,
           status: 'ACTIVE';
-          resolutionPlan: 'Expedite authorization request';
-          responsibleParty: 'Case Manager';
+          resolutionPlan: 'Expedite authorization request',
+          responsibleParty: 'Case Manager'
         },
       ],
       resourceImplications: [
         {
-          resourceType: 'Nurse Hours';
+          resourceType: 'Nurse Hours',
           expectedUtilization: predictedLOS * 24;
-          unit: 'hours';
-          costEstimate: predictedLOS * 24 * 75;
+          unit: 'hours',
+          costEstimate: predictedLOS * 24 * 75
         },
         {
-          resourceType: 'Bed Days';
+          resourceType: 'Bed Days',
           expectedUtilization: predictedLOS;
-          unit: 'days';
-          costEstimate: predictedLOS * 2500;
+          unit: 'days',
+          costEstimate: predictedLOS * 2500
         },
       ],
       explanations: {
-        method: 'FEATURE_IMPORTANCE';
+        method: 'FEATURE_IMPORTANCE',
         localExplanation: [
           { feature: 'Diagnosis Complexity', contribution: 2.1, baseValue: 4.2 },
           { feature: 'Discharge Planning', contribution: 1.8, baseValue: 4.2 },
@@ -2251,32 +2251,32 @@ export class PredictiveAnalyticsService {
       }
 
       const interval: CensusForecastInterval = {
-        startDateTime: new Date(currentDate);
-        endDateTime: new Date(currentDate);
+        startDateTime: new Date(currentDate),
+        endDateTime: new Date(currentDate),
         predictedCensus,
         admissions,
         discharges,
         transfers: {
-          in: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5);
-          out: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5);
+          in: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5),
+          out: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5)
         },
         confidenceInterval: [Math.max(40, predictedCensus - 10), Math.min(130, predictedCensus + 10)],
-        occupancyRate: (predictedCensus / bedCapacity) * 100;
+        occupancyRate: (predictedCensus / bedCapacity) * 100,
         bedDemand: predictedCensus;
         staffingDemand: {
-          nurses: Math.ceil(predictedCensus / 4);
-          physicians: Math.ceil(predictedCensus / 15);
-          techs: Math.ceil(predictedCensus / 8);
-          others: Math.ceil(predictedCensus / 10);
+          nurses: Math.ceil(predictedCensus / 4),
+          physicians: Math.ceil(predictedCensus / 15),
+          techs: Math.ceil(predictedCensus / 8),
+          others: Math.ceil(predictedCensus / 10)
         },
         bedCapacity,
         staffingCapacity: {
-          nurses: Math.ceil(bedCapacity / 4);
-          physicians: Math.ceil(bedCapacity / 15);
-          techs: Math.ceil(bedCapacity / 8);
-          others: Math.ceil(bedCapacity / 10);
+          nurses: Math.ceil(bedCapacity / 4),
+          physicians: Math.ceil(bedCapacity / 15),
+          techs: Math.ceil(bedCapacity / 8),
+          others: Math.ceil(bedCapacity / 10)
         },
-        resourceUtilization: (predictedCensus / bedCapacity) * 100;
+        resourceUtilization: (predictedCensus / bedCapacity) * 100,
         overflow: Math.max(0, predictedCensus - bedCapacity),
         status,
       };
@@ -2290,13 +2290,13 @@ export class PredictiveAnalyticsService {
     // Generate trends
     const trends: CensusTrend[] = [
       {
-        trendType: 'STABLE';
-        startDate: new Date(startDate);
-        endDate: new Date(endDate);
+        trendType: 'STABLE',
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
         magnitude: 2;
-        rate: 0.5;
+        rate: 0.5,
         description: 'Census is relatively stable over the forecast period';
-        confidence: 85;
+        confidence: 85,
         factors: [
           { factor: 'Seasonal Pattern', contribution: 0.4 },
           { factor: 'Historical Trend', contribution: 0.3 },
@@ -2308,11 +2308,11 @@ export class PredictiveAnalyticsService {
     // Generate seasonal patterns
     const seasonalPatterns: SeasonalPattern[] = [
       {
-        patternType: 'WEEKLY';
+        patternType: 'WEEKLY',
         description: 'Lower census on weekends, higher during mid-week',
-        strength: 75;
+        strength: 75,
         peakTimes: ['Tuesday', 'Wednesday', 'Thursday'],
-        lowTimes: ['Saturday', 'Sunday'],;
+        lowTimes: ['Saturday', 'Sunday'],
       },
     ];
 
@@ -2325,14 +2325,14 @@ export class PredictiveAnalyticsService {
 
       if (Math.abs(diff) > 15) {
         anomalies.push({
-          date: intervals[i].startDateTime;
-          expected: prevCensus + (diff > 0 ? 5 : -5);
-          actual: currCensus;
+          date: intervals[i].startDateTime,
+          expected: prevCensus + (diff > 0 ? 5 : -5),
+          actual: currCensus,
           deviation: diff;
-          deviationPercent: (diff / prevCensus) * 100;
+          deviationPercent: (diff / prevCensus) * 100,
           type: diff > 0 ? 'SPIKE' : 'DROP';
-          severity: Math.abs(diff) > 20 ? 'HIGH' : 'MEDIUM';
-          explanation: diff > 0 ? 'Unexpected surge in admissions' : 'Unexpected increase in discharges';
+          severity: Math.abs(diff) > 20 ? 'HIGH' : 'MEDIUM',
+          explanation: diff > 0 ? 'Unexpected surge in admissions' : 'Unexpected increase in discharges'
         });
       }
     }
@@ -2343,31 +2343,31 @@ export class PredictiveAnalyticsService {
       anomalies,
       seasonalPatterns,
       modelPerformance: {
-        mape: 8.5;
+        mape: 8.5,
         rmse: 4.2;
-        mae: 3.1;
-        accuracyLastMonth: 91.5;
+        mae: 3.1,
+        accuracyLastMonth: 91.5
       },
-      confidenceLevel: 95;
+      confidenceLevel: 95,
       externalFactors: [
         {
-          name: 'Local Festival';
+          name: 'Local Festival',
           type: 'EVENT';
-          startDate: new Date(startDate.getTime() + 5 * 24 * 60 * 60 * 1000);
+          startDate: new Date(startDate.getTime() + 5 * 24 * 60 * 60 * 1000),
           endDate: new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000);
-          impact: 15;
+          impact: 15,
           description: 'Annual city festival may increase ED visits';
-          source: 'Local Events Calendar';
-          confidence: 70;
+          source: 'Local Events Calendar',
+          confidence: 70
         },
       ],
       historicalData: {
-        startDate: new Date(new Date().setDate(new Date().getDate() - 90));
-        endDate: new Date();
-        observations: 90;
+        startDate: new Date(new Date().setDate(new Date().getDate() - 90)),
+        endDate: new Date(),
+        observations: 90,
         averageCensus: baseCensus - 2;
-        peakCensus: baseCensus + 12;
-        minCensus: baseCensus - 15;
+        peakCensus: baseCensus + 12,
+        minCensus: baseCensus - 15
       },
     };
   }
@@ -2380,135 +2380,135 @@ export class PredictiveAnalyticsService {
       confidenceInterval: [predictedTotalCost * 0.8, predictedTotalCost * 1.2],
       costBreakdown: [
         {
-          category: 'Room & Board';
+          category: 'Room & Board',
           amount: predictedTotalCost * 0.35;
-          percentage: 35;
+          percentage: 35,
           confidenceInterval: [predictedTotalCost * 0.3, predictedTotalCost * 0.4],
-          comparisonToBenchmark: 5;
-          trend: 'STABLE';
+          comparisonToBenchmark: 5,
+          trend: 'STABLE'
         },
         {
-          category: 'Pharmacy';
+          category: 'Pharmacy',
           amount: predictedTotalCost * 0.25;
-          percentage: 25;
+          percentage: 25,
           confidenceInterval: [predictedTotalCost * 0.2, predictedTotalCost * 0.3],
-          comparisonToBenchmark: 10;
-          trend: 'INCREASING';
+          comparisonToBenchmark: 10,
+          trend: 'INCREASING'
         },
         {
-          category: 'Laboratory';
+          category: 'Laboratory',
           amount: predictedTotalCost * 0.15;
-          percentage: 15;
+          percentage: 15,
           confidenceInterval: [predictedTotalCost * 0.1, predictedTotalCost * 0.2],
-          comparisonToBenchmark: -5;
-          trend: 'STABLE';
+          comparisonToBenchmark: -5,
+          trend: 'STABLE'
         },
         {
-          category: 'Imaging';
+          category: 'Imaging',
           amount: predictedTotalCost * 0.10;
-          percentage: 10;
+          percentage: 10,
           confidenceInterval: [predictedTotalCost * 0.05, predictedTotalCost * 0.15],
-          comparisonToBenchmark: 0;
-          trend: 'STABLE';
+          comparisonToBenchmark: 0,
+          trend: 'STABLE'
         },
         {
-          category: 'Other';
+          category: 'Other',
           amount: predictedTotalCost * 0.15;
-          percentage: 15;
+          percentage: 15,
           confidenceInterval: [predictedTotalCost * 0.1, predictedTotalCost * 0.2],
-          comparisonToBenchmark: 0;
-          trend: 'STABLE';
+          comparisonToBenchmark: 0,
+          trend: 'STABLE'
         },
       ],
       costDrivers: [
         {
-          name: 'Length of Stay';
+          name: 'Length of Stay',
           category: 'CLINICAL';
-          impact: 80;
+          impact: 80,
           description: 'Extended length of stay is the primary cost driver';
-          actionable: true;
+          actionable: true,
           evidence: 'HIGH';
-          interventions: ['Early discharge planning', 'Care coordination'],;
+          interventions: ['Early discharge planning', 'Care coordination'],
         },
         {
-          name: 'Medication Costs';
+          name: 'Medication Costs',
           category: 'PHARMACY';
-          impact: 60;
+          impact: 60,
           description: 'High-cost medications contributing significantly to total cost';
-          actionable: true;
+          actionable: true,
           evidence: 'HIGH';
-          interventions: ['Formulary alternatives', 'Dosage optimization'],;
+          interventions: ['Formulary alternatives', 'Dosage optimization'],
         },
       ],
       potentialSavings: [
         {
           id: `saving-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
-          category: 'Length of Stay';
+          category: 'Length of Stay',
           description: 'Reduce LOS by 1 day through early discharge planning';
-          potentialSavings: predictedTotalCost * 0.1;
+          potentialSavings: predictedTotalCost * 0.1,
           implementationDifficulty: 'MODERATE';
-          timeframe: 'IMMEDIATE';
+          timeframe: 'IMMEDIATE',
           qualityImpact: 'NEUTRAL';
           requiredActions: ['Initiate discharge planning on admission', 'Coordinate with post-acute care'],
-          evidenceLevel: 'HIGH';
+          evidenceLevel: 'HIGH'
         },
         {
           id: `saving-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
-          category: 'Pharmacy';
+          category: 'Pharmacy',
           description: 'Use formulary alternatives for high-cost medications';
-          potentialSavings: predictedTotalCost * 0.05;
+          potentialSavings: predictedTotalCost * 0.05,
           implementationDifficulty: 'EASY';
-          timeframe: 'IMMEDIATE';
+          timeframe: 'IMMEDIATE',
           qualityImpact: 'NEUTRAL';
           requiredActions: ['Pharmacy review', 'Prescriber approval'],
-          evidenceLevel: 'MODERATE';
+          evidenceLevel: 'MODERATE'
         },
       ],
       benchmarkComparison: {
-        average: predictedTotalCost * 0.9;
+        average: predictedTotalCost * 0.9,
         percentile: 65;
-        peerComparison: 10;
+        peerComparison: 10
       },
       scenarioAnalysis: [
         {
-          name: 'Base Case';
+          name: 'Base Case',
           description: 'Current projected cost with standard care path';
           assumptions: ['Standard LOS', 'Current medication regimen'],
-          predictedCost: predictedTotalCost;
+          predictedCost: predictedTotalCost,
           changeToPrediction: 0;
-          changePercentage: 0;
+          changePercentage: 0,
           probability: 60;
-          triggers: ['Standard care progression'];
+          triggers: ['Standard care progression']
         },
         {
-          name: 'Complication Scenario';
+          name: 'Complication Scenario',
           description: 'Cost with potential complications';
           assumptions: ['Extended LOS due to complications', 'Additional testing and treatment'],
-          predictedCost: predictedTotalCost * 1.4;
+          predictedCost: predictedTotalCost * 1.4,
           changeToPrediction: predictedTotalCost * 0.4;
-          changePercentage: 40;
+          changePercentage: 40,
           probability: 20;
-          triggers: ['Infection', 'Adverse medication reaction'],;
+          triggers: ['Infection', 'Adverse medication reaction'],
         },
         {
-          name: 'Optimized Care Scenario';
+          name: 'Optimized Care Scenario',
           description: 'Cost with all optimization recommendations implemented';
           assumptions: ['Reduced LOS', 'Optimized medication regimen'],
-          predictedCost: predictedTotalCost * 0.8;
+          predictedCost: predictedTotalCost * 0.8,
           changeToPrediction: -predictedTotalCost * 0.2;
-          changePercentage: -20;
+          changePercentage: -20,
           probability: 40;
-          triggers: ['Early intervention', 'Effective care coordination'],;
+          triggers: ['Early intervention', 'Effective care coordination'],
         },
       ],
       reimbursementEstimate: payload.includeReimbursement ? {
-        expected: predictedTotalCost * 0.85;
+        expected: predictedTotalCost * 0.85,
         method: 'DRG-Based';
-        variance: predictedTotalCost * 0.15;
-        marginEstimate: predictedTotalCost * -0.15;
+        variance: predictedTotalCost * 0.15,
+        marginEstimate: predictedTotalCost * -0.15
       } : undefined,
       explanations: {
-        method: 'SHAP';
+        method: 'SHAP',
         globalExplanation: {
           featureImportance: [
             { feature: 'Length of Stay', importance: 0.40 },

@@ -11,7 +11,7 @@ import { z } from 'zod';
 export const AdmissionSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
   admitting_physician_id: z.string().min(1, 'Admitting physician is required'),
-  referring_physician_id: z.string().optional();
+  referring_physician_id: z.string().optional(),
   admission_type: z.enum(['elective', 'emergency', 'urgent', 'newborn', 'observation']),
   admission_source: z.enum(['emergency_room', 'physician_referral', 'transfer', 'direct_admission', 'birth']),
   chief_complaint: z.string().min(1, 'Chief complaint is required'),
@@ -21,31 +21,31 @@ export const AdmissionSchema = z.object({
   risk_of_mortality: z.enum(['minor', 'moderate', 'major', 'extreme']),
   admission_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid admission date'),
   admission_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-  room_preference: z.string().optional();
-  bed_preference: z.string().optional();
-  isolation_required: z.boolean().default(false);
-  isolation_type: z.string().optional();
-  fall_risk: z.boolean().default(false);
-  suicide_risk: z.boolean().default(false);
-  advance_directive: z.boolean().default(false);
-  dnr_status: z.boolean().default(false);
+  room_preference: z.string().optional(),
+  bed_preference: z.string().optional(),
+  isolation_required: z.boolean().default(false),
+  isolation_type: z.string().optional(),
+  fall_risk: z.boolean().default(false),
+  suicide_risk: z.boolean().default(false),
+  advance_directive: z.boolean().default(false),
+  dnr_status: z.boolean().default(false),
   emergency_contact: z.object({
-    name: z.string();
-    relationship: z.string();
-    phone: z.string();
-    address: z.string().optional();
+    name: z.string(),
+    relationship: z.string(),
+    phone: z.string(),
+    address: z.string().optional()
   }),
-  insurance_verification: z.boolean().default(false);
-  estimated_length_of_stay: z.number().optional();
-  attending_physician_id: z.string().optional();
-  consulting_physicians: z.array(z.string()).default([]);
-  special_needs: z.array(z.string()).default([]);
-  allergies: z.array(z.string()).default([]);
-  current_medications: z.array(z.string()).default([]);
-  diet_restrictions: z.array(z.string()).default([]);
-  activity_restrictions: z.string().optional();
-  precautions: z.array(z.string()).default([]);
-  nursing_instructions: z.string().optional();
+  insurance_verification: z.boolean().default(false),
+  estimated_length_of_stay: z.number().optional(),
+  attending_physician_id: z.string().optional(),
+  consulting_physicians: z.array(z.string()).default([]),
+  special_needs: z.array(z.string()).default([]),
+  allergies: z.array(z.string()).default([]),
+  current_medications: z.array(z.string()).default([]),
+  diet_restrictions: z.array(z.string()).default([]),
+  activity_restrictions: z.string().optional(),
+  precautions: z.array(z.string()).default([]),
+  nursing_instructions: z.string().optional()
 });
 
 export const BedAssignmentSchema = z.object({
@@ -58,8 +58,8 @@ export const BedAssignmentSchema = z.object({
   assigned_by: z.string().min(1, 'Staff ID is required'),
   assignment_reason: z.enum(['admission', 'transfer', 'upgrade', 'downgrade', 'isolation', 'patient_request']),
   priority: z.enum(['stat', 'urgent', 'routine']).default('routine'),
-  special_requirements: z.array(z.string()).default([]);
-  expected_duration: z.number().optional(), // days;
+  special_requirements: z.array(z.string()).default([]),
+  expected_duration: z.number().optional(), // days
 });
 
 export const NursingAssessmentSchema = z.object({
@@ -71,94 +71,94 @@ export const NursingAssessmentSchema = z.object({
 
   // Vital signs
   vital_signs: z.object({
-    temperature: z.number().optional();
-    blood_pressure_systolic: z.number().optional();
-    blood_pressure_diastolic: z.number().optional();
-    heart_rate: z.number().optional();
-    respiratory_rate: z.number().optional();
-    oxygen_saturation: z.number().optional();
-    pain_scale: z.number().min(0).max(10).optional();
-    weight: z.number().optional();
-    height: z.number().optional();
+    temperature: z.number().optional(),
+    blood_pressure_systolic: z.number().optional(),
+    blood_pressure_diastolic: z.number().optional(),
+    heart_rate: z.number().optional(),
+    respiratory_rate: z.number().optional(),
+    oxygen_saturation: z.number().optional(),
+    pain_scale: z.number().min(0).max(10).optional(),
+    weight: z.number().optional(),
+    height: z.number().optional()
   }),
 
   // Nursing assessments
   neurological: z.object({
     level_of_consciousness: z.enum(['alert', 'drowsy', 'lethargic', 'stuporous', 'unconscious']).optional(),
     orientation: z.enum(['oriented_x3', 'oriented_x2', 'oriented_x1', 'disoriented']).optional(),
-    pupils: z.string().optional();
-    motor_response: z.string().optional();
-    speech: z.string().optional();
+    pupils: z.string().optional(),
+    motor_response: z.string().optional(),
+    speech: z.string().optional()
   }).optional(),
 
   cardiovascular: z.object({
-    heart_rhythm: z.string().optional();
-    peripheral_pulses: z.string().optional();
-    capillary_refill: z.string().optional();
-    edema: z.string().optional();
-    chest_pain: z.boolean().optional();
+    heart_rhythm: z.string().optional(),
+    peripheral_pulses: z.string().optional(),
+    capillary_refill: z.string().optional(),
+    edema: z.string().optional(),
+    chest_pain: z.boolean().optional()
   }).optional(),
 
   respiratory: z.object({
-    breathing_pattern: z.string().optional();
-    lung_sounds: z.string().optional();
-    cough: z.string().optional();
-    sputum: z.string().optional();
-    shortness_of_breath: z.boolean().optional();
+    breathing_pattern: z.string().optional(),
+    lung_sounds: z.string().optional(),
+    cough: z.string().optional(),
+    sputum: z.string().optional(),
+    shortness_of_breath: z.boolean().optional()
   }).optional(),
 
   gastrointestinal: z.object({
     appetite: z.enum(['good', 'fair', 'poor', 'none']).optional(),
-    nausea_vomiting: z.boolean().optional();
-    bowel_sounds: z.string().optional();
-    last_bowel_movement: z.string().optional();
-    abdominal_distension: z.boolean().optional();
+    nausea_vomiting: z.boolean().optional(),
+    bowel_sounds: z.string().optional(),
+    last_bowel_movement: z.string().optional(),
+    abdominal_distension: z.boolean().optional()
   }).optional(),
 
   genitourinary: z.object({
-    urination_pattern: z.string().optional();
-    urine_characteristics: z.string().optional();
-    catheter_present: z.boolean().optional();
-    catheter_type: z.string().optional();
+    urination_pattern: z.string().optional(),
+    urine_characteristics: z.string().optional(),
+    catheter_present: z.boolean().optional(),
+    catheter_type: z.string().optional()
   }).optional(),
 
   skin_integrity: z.object({
-    skin_condition: z.string().optional();
-    wounds_present: z.boolean().optional();
-    wound_description: z.string().optional();
-    pressure_areas: z.string().optional();
-    braden_score: z.number().min(6).max(23).optional();
+    skin_condition: z.string().optional(),
+    wounds_present: z.boolean().optional(),
+    wound_description: z.string().optional(),
+    pressure_areas: z.string().optional(),
+    braden_score: z.number().min(6).max(23).optional()
   }).optional(),
 
   mobility: z.object({
     mobility_level: z.enum(['independent', 'assist_1', 'assist_2', 'total_care']).optional(),
-    gait: z.string().optional();
-    fall_risk_score: z.number().optional();
-    assistive_devices: z.array(z.string()).default([]);
+    gait: z.string().optional(),
+    fall_risk_score: z.number().optional(),
+    assistive_devices: z.array(z.string()).default([])
   }).optional(),
 
   psychosocial: z.object({
-    mood: z.string().optional();
+    mood: z.string().optional(),
     anxiety_level: z.enum(['none', 'mild', 'moderate', 'severe']).optional(),
-    support_system: z.string().optional();
-    coping_mechanisms: z.string().optional();
+    support_system: z.string().optional(),
+    coping_mechanisms: z.string().optional()
   }).optional(),
 
   safety_assessment: z.object({
-    fall_risk: z.boolean().default(false);
-    suicide_risk: z.boolean().default(false);
-    confusion: z.boolean().default(false);
-    restraints_needed: z.boolean().default(false);
-    isolation_precautions: z.array(z.string()).default([]);
+    fall_risk: z.boolean().default(false),
+    suicide_risk: z.boolean().default(false),
+    confusion: z.boolean().default(false),
+    restraints_needed: z.boolean().default(false),
+    isolation_precautions: z.array(z.string()).default([])
   }),
 
-  nursing_diagnosis: z.array(z.string()).default([]);
-  nursing_interventions: z.array(z.string()).default([]);
-  patient_goals: z.array(z.string()).default([]);
-  patient_education_provided: z.array(z.string()).default([]);
-  family_education_provided: z.array(z.string()).default([]);
-  discharge_planning_needs: z.array(z.string()).default([]);
-  notes: z.string().optional();
+  nursing_diagnosis: z.array(z.string()).default([]),
+  nursing_interventions: z.array(z.string()).default([]),
+  patient_goals: z.array(z.string()).default([]),
+  patient_education_provided: z.array(z.string()).default([]),
+  family_education_provided: z.array(z.string()).default([]),
+  discharge_planning_needs: z.array(z.string()).default([]),
+  notes: z.string().optional()
 });
 
 export const DischargePlanningSchema = z.object({
@@ -166,83 +166,83 @@ export const DischargePlanningSchema = z.object({
   discharge_planner_id: z.string().min(1, 'Discharge planner ID is required'),
   anticipated_discharge_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid discharge date'),
   discharge_disposition: z.enum(['home', 'home_health', 'snf', 'rehab', 'ltac', 'hospice', 'ama', 'expired', 'transfer']),
-  discharge_location: z.string().optional();
+  discharge_location: z.string().optional(),
   transportation_needs: z.enum(['self', 'family', 'ambulance', 'wheelchair_van', 'medical_transport']),
 
   // Post-discharge needs
-  home_health_services: z.array(z.string()).default([]);
-  medical_equipment_needed: z.array(z.string()).default([]);
+  home_health_services: z.array(z.string()).default([]),
+  medical_equipment_needed: z.array(z.string()).default([]),
   follow_up_appointments: z.array(z.object({
-    specialty: z.string();
-    timeframe: z.string();
-    provider: z.string().optional();
-    scheduled: z.boolean().default(false);
+    specialty: z.string(),
+    timeframe: z.string(),
+    provider: z.string().optional(),
+    scheduled: z.boolean().default(false)
   })).default([]),
 
   // Medication reconciliation
   discharge_medications: z.array(z.object({
-    medication: z.string();
-    dosage: z.string();
-    frequency: z.string();
-    duration: z.string();
-    new_medication: z.boolean().default(false);
+    medication: z.string(),
+    dosage: z.string(),
+    frequency: z.string(),
+    duration: z.string(),
+    new_medication: z.boolean().default(false)
   })).default([]),
 
-  discontinued_medications: z.array(z.string()).default([]);
+  discontinued_medications: z.array(z.string()).default([]),
   medication_changes: z.array(z.object({
-    medication: z.string();
+    medication: z.string(),
     change_type: z.enum(['dose_change', 'frequency_change', 'formulation_change']),
-    old_value: z.string();
-    new_value: z.string();
-    reason: z.string();
+    old_value: z.string(),
+    new_value: z.string(),
+    reason: z.string()
   })).default([]),
 
   // Care coordination
-  primary_care_provider_notified: z.boolean().default(false);
-  specialists_notified: z.boolean().default(false);
+  primary_care_provider_notified: z.boolean().default(false),
+  specialists_notified: z.boolean().default(false),
   insurance_authorization: z.boolean().default(false);
 
   // Patient education
-  discharge_instructions_provided: z.boolean().default(false);
-  patient_understanding_verified: z.boolean().default(false);
-  diet_instructions: z.string().optional();
-  activity_restrictions: z.string().optional();
+  discharge_instructions_provided: z.boolean().default(false),
+  patient_understanding_verified: z.boolean().default(false),
+  diet_instructions: z.string().optional(),
+  activity_restrictions: z.string().optional(),
   warning_signs: z.array(z.string()).default([]);
 
   // Social factors
-  caregiver_available: z.boolean().default(false);
-  caregiver_name: z.string().optional();
-  home_safety_assessment: z.boolean().default(false);
-  financial_concerns: z.boolean().default(false);
+  caregiver_available: z.boolean().default(false),
+  caregiver_name: z.string().optional(),
+  home_safety_assessment: z.boolean().default(false),
+  financial_concerns: z.boolean().default(false),
 
-  barriers_to_discharge: z.array(z.string()).default([]);
-  discharge_readiness_score: z.number().min(1).max(10).optional();
-  notes: z.string().optional();
+  barriers_to_discharge: z.array(z.string()).default([]),
+  discharge_readiness_score: z.number().min(1).max(10).optional(),
+  notes: z.string().optional()
 });
 
 export const TransferSchema = z.object({
   admission_id: z.string().min(1, 'Admission ID is required'),
   from_unit: z.string().min(1, 'From unit is required'),
   to_unit: z.string().min(1, 'To unit is required'),
-  from_bed: z.string().optional();
-  to_bed: z.string().optional();
+  from_bed: z.string().optional(),
+  to_bed: z.string().optional(),
   transfer_reason: z.enum(['clinical_deterioration', 'clinical_improvement', 'bed_availability', 'patient_request', 'isolation', 'procedure']),
   urgency: z.enum(['stat', 'urgent', 'routine']).default('routine'),
   transfer_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid transfer date'),
   transfer_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
   ordered_by: z.string().min(1, 'Ordering physician is required'),
-  nursing_report: z.string();
-  special_equipment: z.array(z.string()).default([]);
-  isolation_requirements: z.array(z.string()).default([]);
-  family_notified: z.boolean().default(false);
-  accepting_nurse: z.string().optional();
+  nursing_report: z.string(),
+  special_equipment: z.array(z.string()).default([]),
+  isolation_requirements: z.array(z.string()).default([]),
+  family_notified: z.boolean().default(false),
+  accepting_nurse: z.string().optional(),
   transport_method: z.enum(['wheelchair', 'stretcher', 'bed', 'walking']),
-  accompanist: z.string().optional();
-  notes: z.string().optional();
+  accompanist: z.string().optional(),
+  notes: z.string().optional()
 });
 
 export type Admission = z.infer<typeof AdmissionSchema> & {
-  id: string;
+  id: string,
   admission_number: string;
   status: 'active' | 'discharged' | 'transferred' | 'deceased' | 'ama';
   current_bed?: string;
@@ -252,56 +252,56 @@ export type Admission = z.infer<typeof AdmissionSchema> & {
   discharge_date?: Date;
   discharge_time?: Date;
   total_charges?: number;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   admitting_physician_name?: string;
-  attending_physician_name?: string;
+  attending_physician_name?: string
 };
 
 export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
-  id: string;
+  id: string,
   status: 'active' | 'completed';
   start_time: Date;
   end_time?: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type NursingAssessment = z.infer<typeof NursingAssessmentSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
   updated_at: Date;
-  nurse_name?: string;
+  nurse_name?: string
 };
 
 export type DischargePlanning = z.infer<typeof DischargePlanningSchema> & {
-  id: string;
+  id: string,
   planning_started_date: Date;
-  discharge_ready: boolean;
+  discharge_ready: boolean,
   barriers_resolved: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type Transfer = z.infer<typeof TransferSchema> & {
-  id: string;
+  id: string,
   transfer_number: string;
   status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   actual_transfer_time?: Date;
   completed_by?: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export interface BedOccupancy {
-  bed_id: string;
+  bed_id: string,
   room_id: string;
-  unit_id: string;
+  unit_id: string,
   bed_number: string;
-  room_number: string;
+  room_number: string,
   unit_name: string;
-  bed_type: string;
+  bed_type: string,
   occupancy_status: 'occupied' | 'available' | 'maintenance' | 'isolation' | 'blocked';
   patient_id?: string;
   patient_name?: string;
@@ -313,49 +313,49 @@ export interface BedOccupancy {
   last_cleaned?: Date;
   maintenance_due?: Date;
 export interface UnitCapacity {
-  unit_id: string;
+  unit_id: string,
   unit_name: string;
-  total_beds: number;
+  total_beds: number,
   occupied_beds: number;
-  available_beds: number;
+  available_beds: number,
   blocked_beds: number;
-  maintenance_beds: number;
+  maintenance_beds: number,
   occupancy_rate: number;
-  average_length_of_stay: number;
+  average_length_of_stay: number,
   admission_pending: number;
-  discharge_pending: number;
+  discharge_pending: number,
   transfer_requests: number
 export interface CensusSummary {
-  total_admissions: number;
+  total_admissions: number,
   total_discharges: number;
-  total_transfers: number;
+  total_transfers: number,
   current_census: number;
-  available_beds: number;
+  available_beds: number,
   occupancy_rate: number;
-  average_length_of_stay: number;
+  average_length_of_stay: number,
   readmission_rate: number;
-  by_unit: UnitCapacity[];
+  by_unit: UnitCapacity[],
   by_admission_type: {
-    elective: number;
+    elective: number,
     emergency: number;
-    urgent: number;
-    observation: number;
+    urgent: number,
+    observation: number
   };
   by_discharge_disposition: {
-    home: number;
+    home: number,
     snf: number;
-    rehab: number;
+    rehab: number,
     hospice: number;
-    expired: number;
-    ama: number;
+    expired: number,
+    ama: number
   };
 export class InpatientManagementService {
-  private admissions: Map<string, Admission> = new Map();
-  private bedAssignments: Map<string, BedAssignment[]> = new Map();
-  private nursingAssessments: Map<string, NursingAssessment[]> = new Map();
-  private dischargePlans: Map<string, DischargePlanning> = new Map();
-  private transfers: Map<string, Transfer> = new Map();
-  private beds: Map<string, BedOccupancy> = new Map();
+  private admissions: Map<string, Admission> = new Map(),
+  private bedAssignments: Map<string, BedAssignment[]> = new Map(),
+  private nursingAssessments: Map<string, NursingAssessment[]> = new Map(),
+  private dischargePlans: Map<string, DischargePlanning> = new Map(),
+  private transfers: Map<string, Transfer> = new Map(),
+  private beds: Map<string, BedOccupancy> = new Map(),
   private units: Map<string, any> = new Map(),
   constructor() {
     this.initializeUnitsAndBeds();
@@ -391,15 +391,15 @@ export class InpatientManagementService {
         const roomId = `${unit.id}-R${roomNumber}`;
 
         const bed: BedOccupancy = {
-          bed_id: bedId;
+          bed_id: bedId,
           room_id: roomId;
-          unit_id: unit.id;
+          unit_id: unit.id,
           bed_number: bedNumber;
-          room_number: roomNumber;
+          room_number: roomNumber,
           unit_name: unit.name;
-          bed_type: unit.bed_type;
+          bed_type: unit.bed_type,
           occupancy_status: 'available';
-          last_cleaned: new Date();
+          last_cleaned: new Date()
         };
 
         this.beds.set(bedId, bed);
@@ -418,11 +418,11 @@ export class InpatientManagementService {
 
     const admission: Admission = {
       ...validatedData,
-      id: admissionId;
+      id: admissionId,
       admission_number: admissionNumber;
-      status: 'active';
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'active',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.admissions.set(admissionId, admission);
@@ -445,7 +445,7 @@ export class InpatientManagementService {
   private generateAdmissionNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `ADM/* SECURITY: Template literal eliminated */;
+    return `ADM/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -510,21 +510,21 @@ export class InpatientManagementService {
 
     // Create bed assignment record
     const assignment: BedAssignment = {
-      id: uuidv4();
+      id: uuidv4(),
       admission_id: admissionId;
-      bed_id: bedId;
+      bed_id: bedId,
       room_id: bed.room_id;
-      unit_id: bed.unit_id;
+      unit_id: bed.unit_id,
       assignment_date: new Date().toISOString().split('T')[0];
       assignment_time: new Date().toTimeString().slice(0, 5),
-      assigned_by: 'system';
+      assigned_by: 'system',
       assignment_reason: 'admission';
-      priority: 'routine';
+      priority: 'routine',
       special_requirements: [];
-      status: 'active';
-      start_time: new Date();
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'active',
+      start_time: new Date(),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     const admissionAssignments = this.bedAssignments.get(admissionId) || [];
@@ -545,11 +545,11 @@ export class InpatientManagementService {
 
     const transfer: Transfer = {
       ...validatedData,
-      id: transferId;
+      id: transferId,
       transfer_number: transferNumber;
-      status: 'pending';
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'pending',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.transfers.set(transferId, transfer);
@@ -568,7 +568,7 @@ export class InpatientManagementService {
   private generateTransferNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, '0');
-    return `TXF/* SECURITY: Template literal eliminated */;
+    return `TXF/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -637,9 +637,9 @@ export class InpatientManagementService {
 
     const assessment: NursingAssessment = {
       ...validatedData,
-      id: assessmentId;
-      created_at: new Date();
-      updated_at: new Date();
+      id: assessmentId,
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     const admissionAssessments = this.nursingAssessments.get(validatedData.admission_id) || [];
@@ -665,12 +665,12 @@ export class InpatientManagementService {
 
     const planning: DischargePlanning = {
       ...validatedData,
-      id: planningId;
-      planning_started_date: new Date();
-      discharge_ready: dischargeReady;
+      id: planningId,
+      planning_started_date: new Date(),
+      discharge_ready: dischargeReady,
       barriers_resolved: validatedData.barriers_to_discharge.length === 0;
-      created_at: new Date();
-      updated_at: new Date();
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.dischargePlans.set(planningId, planning);
@@ -681,15 +681,15 @@ export class InpatientManagementService {
    * Discharge patient;
    */
   async dischargePatient(
-    admissionId: string;
+    admissionId: string,
     dischargeData: {
-      discharge_disposition: DischargePlanning['discharge_disposition'];
+      discharge_disposition: DischargePlanning['discharge_disposition'],
       discharge_date: string;
-      discharge_time: string;
+      discharge_time: string,
       discharging_physician: string;
-      discharge_instructions: string;
+      discharge_instructions: string,
       follow_up_instructions: string;
-      condition_at_discharge: 'stable' | 'improved' | 'unchanged' | 'worse';
+      condition_at_discharge: 'stable' | 'improved' | 'unchanged' | 'worse'
     }
   ): Promise<Admission> {
     const admission = this.admissions.get(admissionId);
@@ -784,55 +784,55 @@ export class InpatientManagementService {
       const unitMaintenance = unitBeds.filter(b => b.occupancy_status === 'maintenance').length;
 
       unitStats.set(unit.id, {
-        unit_id: unit.id;
+        unit_id: unit.id,
         unit_name: unit.name;
-        total_beds: unitBeds.length;
+        total_beds: unitBeds.length,
         occupied_beds: unitOccupied;
-        available_beds: unitAvailable;
+        available_beds: unitAvailable,
         blocked_beds: unitBlocked;
-        maintenance_beds: unitMaintenance;
+        maintenance_beds: unitMaintenance,
         occupancy_rate: unitBeds.length > 0 ? (unitOccupied / unitBeds.length) * 100 : 0;
         average_length_of_stay: averageLengthOfStay, // Simplified
         admission_pending: 0, // Simplified
         discharge_pending: 0, // Simplified
-        transfer_requests: 0, // Simplified;
+        transfer_requests: 0, // Simplified
       });
     });
 
     // Admission type breakdown
     const byAdmissionType = {
-      elective: todaysAdmissions.filter(a => a.admission_type === 'elective').length;
+      elective: todaysAdmissions.filter(a => a.admission_type === 'elective').length,
       emergency: todaysAdmissions.filter(a => a.admission_type === 'emergency').length;
-      urgent: todaysAdmissions.filter(a => a.admission_type === 'urgent').length;
-      observation: todaysAdmissions.filter(a => a.admission_type === 'observation').length;
+      urgent: todaysAdmissions.filter(a => a.admission_type === 'urgent').length,
+      observation: todaysAdmissions.filter(a => a.admission_type === 'observation').length
     };
 
     // Discharge disposition breakdown
     const byDischargeDisposition = {
       home: todaysDischarges.filter(a => a.status === 'discharged').length * 0.7, // Simplified
-      snf: todaysDischarges.filter(a => a.status === 'discharged').length * 0.1;
+      snf: todaysDischarges.filter(a => a.status === 'discharged').length * 0.1,
       rehab: todaysDischarges.filter(a => a.status === 'discharged').length * 0.1;
-      hospice: todaysDischarges.filter(a => a.status === 'discharged').length * 0.05;
+      hospice: todaysDischarges.filter(a => a.status === 'discharged').length * 0.05,
       expired: admissions.filter(a => a.status === 'deceased').length;
-      ama: admissions.filter(a => a.status === 'ama').length;
+      ama: admissions.filter(a => a.status === 'ama').length
     };
 
     return {
-      total_admissions: todaysAdmissions.length;
+      total_admissions: todaysAdmissions.length,
       total_discharges: todaysDischarges.length;
-      total_transfers: todaysTransfers.length;
+      total_transfers: todaysTransfers.length,
       current_census: currentCensus;
-      available_beds: availableBeds;
+      available_beds: availableBeds,
       occupancy_rate: Math.round(occupancyRate * 100) / 100;
-      average_length_of_stay: Math.round(averageLengthOfStay * 100) / 100;
+      average_length_of_stay: Math.round(averageLengthOfStay * 100) / 100,
       readmission_rate: readmissionRate;
       by_unit: Array.from(unitStats.values()).map(u => ({
         ...u,
-        occupancy_rate: Math.round(u.occupancy_rate * 100) / 100;
-        average_length_of_stay: Math.round(u.average_length_of_stay * 100) / 100;
+        occupancy_rate: Math.round(u.occupancy_rate * 100) / 100,
+        average_length_of_stay: Math.round(u.average_length_of_stay * 100) / 100
       })),
-      by_admission_type: byAdmissionType;
-      by_discharge_disposition: byDischargeDisposition;
+      by_admission_type: byAdmissionType,
+      by_discharge_disposition: byDischargeDisposition
     };
   }
 
@@ -875,7 +875,7 @@ export class InpatientManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ admissions: Admission[]; total: number; totalPages: number }> {
+  }): Promise<{ admissions: Admission[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredAdmissions = Array.from(this.admissions.values());
@@ -902,7 +902,7 @@ export class InpatientManagementService {
     // Sort by admission date (newest first)
     filteredAdmissions.sort((a, b) => {
       const dateA = new Date(`/* SECURITY: Template literal eliminated */
-      return dateB.getTime() - dateA.getTime();
+      return dateB.getTime() - dateA.getTime()
     });
 
     // Pagination
@@ -942,7 +942,7 @@ export class InpatientManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ transfers: Transfer[]; total: number; totalPages: number }> {
+  }): Promise<{ transfers: Transfer[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredTransfers = Array.from(this.transfers.values());
@@ -963,7 +963,7 @@ export class InpatientManagementService {
     // Sort by transfer date (newest first)
     filteredTransfers.sort((a, b) => {
       const dateA = new Date(`/* SECURITY: Template literal eliminated */
-      return dateB.getTime() - dateA.getTime();
+      return dateB.getTime() - dateA.getTime()
     });
 
     // Pagination

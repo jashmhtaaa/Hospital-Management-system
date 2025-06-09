@@ -15,24 +15,24 @@ import { validateInventoryTransferRequest } from '../../../../../lib/validation/
 
 // Initialize repositories (in production, use dependency injection)
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
-  adjustStock: () => Promise.resolve(true);
-  transferStock: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true),
+  adjustStock: () => Promise.resolve(true),
+  transferStock: () => Promise.resolve(true)
 }
 
 const transferRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findBySourceLocationId: (locationId: string) => Promise.resolve([]);
-  findByDestinationLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (transfer: unknown) => Promise.resolve(transfer.id || 'new-id');
+  findById: (id: string) => Promise.resolve(null),
+  findBySourceLocationId: (locationId: string) => Promise.resolve([]),
+  findByDestinationLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (transfer: unknown) => Promise.resolve(transfer.id || 'new-id')
 };
 
 /**
@@ -75,18 +75,18 @@ export const POST = async (req: NextRequest) => {
 
     // Create transfer record
     const transfer = {
-      id: crypto.randomUUID();
+      id: crypto.randomUUID(),
       sourceInventoryId: data.sourceInventoryId;
-      sourceLocationId: sourceInventory.locationId;
+      sourceLocationId: sourceInventory.locationId,
       destinationLocationId: data.destinationLocationId;
-      medicationId: sourceInventory.medicationId;
+      medicationId: sourceInventory.medicationId,
       quantity: data.quantity;
-      batchNumber: sourceInventory.batchNumber;
+      batchNumber: sourceInventory.batchNumber,
       expiryDate: sourceInventory.expiryDate;
-      transferredBy: userId;
-      transferredAt: new Date();
-      notes: data.notes || '';
-      status: 'completed';
+      transferredBy: userId,
+      transferredAt: new Date(),
+      notes: data.notes || '',
+      status: 'completed'
     };
 
     // Save transfer record
@@ -103,39 +103,39 @@ export const POST = async (req: NextRequest) => {
     if (sourceInventory.isControlled) {
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'TRANSFER';
+        action: 'TRANSFER',
         resourceType: 'Inventory';
-        resourceId: data.sourceInventoryId;
+        resourceId: data.sourceInventoryId,
         userId: userId;
         details: {
           transferId,
-          medicationId: sourceInventory.medicationId;
+          medicationId: sourceInventory.medicationId,
           sourceLocationId: sourceInventory.locationId;
-          destinationLocationId: data.destinationLocationId;
-          quantity: data.quantity;
+          destinationLocationId: data.destinationLocationId,
+          quantity: data.quantity
         }
       });
     }
 
     // Regular audit logging
     await auditLog('INVENTORY', {
-      action: 'TRANSFER';
+      action: 'TRANSFER',
       resourceType: 'Inventory';
-      resourceId: transferId;
+      resourceId: transferId,
       userId: userId;
       details: {
-        sourceInventoryId: data.sourceInventoryId;
+        sourceInventoryId: data.sourceInventoryId,
         destinationLocationId: data.destinationLocationId;
-        medicationId: sourceInventory.medicationId;
-        quantity: data.quantity;
+        medicationId: sourceInventory.medicationId,
+        quantity: data.quantity
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: transferId;
-        message: 'Inventory transferred successfully';
+        id: transferId,
+        message: 'Inventory transferred successfully'
       },
       { status: 201 }
     );

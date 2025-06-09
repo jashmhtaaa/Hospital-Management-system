@@ -7,21 +7,21 @@ import {
   TableBody,
   TableCell,
   Button,
-  // Badge, // FIX: Removed unused import;
+  // Badge, // FIX: Removed unused import
 } from "@/components/ui"
 
 // FIX: Define an interface for the patient data structure
 interface Inpatient {
   id: string; // Assuming this is the admission ID (string)
-  patient_id: string; // FIX: Add patient_id field;
+  patient_id: string; // FIX: Add patient_id field,
   patient_first_name: string
-  patient_last_name: string;
+  patient_last_name: string,
   admission_number: string;
   bed_number: string;
   room_number?: string | null;
-  ward: string;
+  ward: string,
   doctor_first_name: string;
-  doctor_last_name: string;
+  doctor_last_name: string,
   admission_date: string; // Assuming ISO date string
   // Add other relevant fields if needed
 }
@@ -34,7 +34,7 @@ type InpatientsApiResponse = Inpatient[]
 // FIX: Define props for IPDPatientList
 interface IPDPatientListProperties {
   // FIX: Ensure prop types match usage in parent (ipd/page.tsx)
-  onViewPatient: (admissionId: number, patientId: number) => void;
+  onViewPatient: (admissionId: number, patientId: number) => void
 }
 
 // FIX: Update component to accept props
@@ -42,10 +42,10 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   onViewPatient,
 }) => {
   // FIX: Add type annotation for the patients state
-  const [patients, setPatients] = useState<Inpatient[]>([]);
+  const [patients, setPatients] = useState<Inpatient[]>([]),
   const [loading, setLoading] = useState(true);
   // FIX: Add type annotation for the error state
-  const [error, setError] = useState<string | null>();
+  const [error, setError] = useState<string | null>(),
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -88,11 +88,11 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
 
   // FIX: Handler for the button click
   const handleViewClick = (
-    admissionIdString: string;
+    admissionIdString: string,
     patientIdString: string;
   ) => {
     // FIX: Parse IDs as numbers before calling onViewPatient
-    const admissionId = Number.parseInt(admissionIdString, 10);
+    const admissionId = Number.parseInt(admissionIdString, 10),
     const patientId = Number.parseInt(patientIdString, 10);
     if (!Number.isNaN(admissionId) && !Number.isNaN(patientId)) {
       onViewPatient(admissionId, patientId);
@@ -167,7 +167,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
         </Table>
       )}
     </div>
-  );
+  )
 };
 
 export default IPDPatientList;

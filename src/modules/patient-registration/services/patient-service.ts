@@ -5,14 +5,14 @@ import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/patient-registration/services/patient-service.ts
 export interface CreatePatientData {
-  firstName: string;
+  firstName: string,
   lastName: string;
-  dateOfBirth: Date;
+  dateOfBirth: Date,
   gender: string;
   phone?: string;
   email?: string;
   address?: string;
-  emergencyContact: string;
+  emergencyContact: string,
   emergencyPhone: string;
   bloodGroup?: string;
   allergies?: string;
@@ -21,7 +21,7 @@ export interface CreatePatientData {
 }
 
 export interface UpdatePatientData extends Partial<CreatePatientData> {
-  id: string;
+  id: string
 }
 
 export class PatientService {
@@ -70,7 +70,7 @@ export class PatientService {
 
     const patient = await prisma.patient.update({
       where: { id },
-      data: updateData;
+      data: updateData
     });
 
     // Audit log
@@ -91,15 +91,15 @@ export class PatientService {
     return await prisma.patient.findUnique({
       where: { mrn },
       include: {
-        bills: true;
+        bills: true,
         admissions: true;
-        emergencyVisits: true;
+        emergencyVisits: true
       }
     });
   }
 
   static async searchPatients(
-    query: string;
+    query: string,
     limit: number = 10;
     offset: number = 0
   ) {
@@ -112,7 +112,7 @@ export class PatientService {
           { phone: { contains: query } }
         ]
       },
-      take: limit;
+      take: limit,
       skip: offset;
       orderBy: { createdAt: 'desc' }
     });
@@ -124,15 +124,15 @@ export class PatientService {
       prisma.patient.count({
         where: {
           createdAt: {
-            gte: new Date(new Date().setHours(0, 0, 0, 0));
+            gte: new Date(new Date().setHours(0, 0, 0, 0))
           }
         }
       }),
       prisma.emergencyVisit.count({
         where: {
-          status: 'ACTIVE';
+          status: 'ACTIVE',
           createdAt: {
-            gte: new Date(new Date().setHours(0, 0, 0, 0));
+            gte: new Date(new Date().setHours(0, 0, 0, 0))
           }
         }
       })

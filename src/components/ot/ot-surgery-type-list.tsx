@@ -17,11 +17,11 @@ import { Edit, Trash2 } from "lucide-react";
 
 // Mock data structure - replace with actual API response type
 interface SurgeryType {
-  id: string;
+  id: string,
   name: string;
-  description: string | null;
+  description: string | null,
   specialty: string | null;
-  estimated_duration_minutes: number | null;
+  estimated_duration_minutes: number | null,
   updated_at: string
 export default const _OTSurgeryTypeList = () {
   const [surgeryTypes, setSurgeryTypes] = useState<SurgeryType[]>([]);
@@ -46,36 +46,36 @@ export default const _OTSurgeryTypeList = () {
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: SurgeryType[] = [
           {
-            id: "st-1";
+            id: "st-1",
             name: "Appendectomy";
-            description: "Surgical removal of the appendix.";
+            description: "Surgical removal of the appendix.",
             specialty: "General Surgery";
-            estimated_duration_minutes: 60;
-            updated_at: "2025-04-27T10:00:00Z";
+            estimated_duration_minutes: 60,
+            updated_at: "2025-04-27T10:00:00Z"
           },
           {
-            id: "st-2";
+            id: "st-2",
             name: "Cholecystectomy (Laparoscopic)";
-            description: "Surgical removal of the gallbladder via laparoscopy.";
+            description: "Surgical removal of the gallbladder via laparoscopy.",
             specialty: "General Surgery";
-            estimated_duration_minutes: 90;
-            updated_at: "2025-04-27T11:00:00Z";
+            estimated_duration_minutes: 90,
+            updated_at: "2025-04-27T11:00:00Z"
           },
           {
-            id: "st-3";
+            id: "st-3",
             name: "Knee Arthroscopy";
-            description: "Minimally invasive surgical procedure on a joint.";
+            description: "Minimally invasive surgical procedure on a joint.",
             specialty: "Orthopedics";
-            estimated_duration_minutes: 120;
-            updated_at: "2025-04-28T08:00:00Z";
+            estimated_duration_minutes: 120,
+            updated_at: "2025-04-28T08:00:00Z"
           },
           {
-            id: "st-4";
+            id: "st-4",
             name: "Coronary Artery Bypass Graft (CABG)";
-            description: "Surgical procedure to restore normal blood flow to an obstructed coronary artery.";
+            description: "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
             specialty: "Cardiology";
-            estimated_duration_minutes: 240;
-            updated_at: "2025-04-26T14:00:00Z";
+            estimated_duration_minutes: 240,
+            updated_at: "2025-04-26T14:00:00Z"
           },
         ];
         setSurgeryTypes(mockData),

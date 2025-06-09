@@ -12,19 +12,19 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 // Quality Indicator Schema
 export const QualityIndicatorSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   category: z.enum(['clinical', 'patient_safety', 'operational', 'financial']),
   source: z.enum(['jcaho_core_measures', 'nabh', 'jci', 'internal']),
   dataSource: z.enum(['manual', 'automated', 'integrated']).default('manual'),
   numeratorDefinition: z.string().min(1, 'Numerator definition is required'),
   denominatorDefinition: z.string().min(1, 'Denominator definition is required'),
-  targetValue: z.number().optional();
+  targetValue: z.number().optional(),
   targetOperator: z.enum(['>=', '<=', '=', '>', '<']).optional(),
   frequency: z.enum(['daily', 'weekly', 'monthly', 'quarterly', 'annually']),
   reportingLevel: z.enum(['department', 'hospital', 'system']),
   status: z.enum(['active', 'inactive', 'retired']).default('active'),
-  stratificationCriteria: z.record(z.any()).optional();
-  createdBy: z.string();
+  stratificationCriteria: z.record(z.any()).optional(),
+  createdBy: z.string()
 })
 
 // Quality Event Schema
@@ -34,43 +34,43 @@ export const QualityEventSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   severity: z.enum(['low', 'medium', 'high', 'critical']),
   status: z.enum(['open', 'investigating', 'resolved', 'closed']).default('open'),
-  patientId: z.string().optional();
-  departmentId: z.string().optional();
-  locationId: z.string().optional();
-  eventDateTime: z.date();
-  reportedBy: z.string();
-  categoryCode: z.string().optional();
-  subcategoryCode: z.string().optional();
-  rootCause: z.string().optional();
-  contributingFactors: z.array(z.string()).optional();
-  investigationNotes: z.string().optional();
-  correctiveActions: z.array(z.string()).optional();
-  preventiveActions: z.array(z.string()).optional();
-  lessonsLearned: z.string().optional();
-  qualityIndicatorId: z.string().optional();
+  patientId: z.string().optional(),
+  departmentId: z.string().optional(),
+  locationId: z.string().optional(),
+  eventDateTime: z.date(),
+  reportedBy: z.string(),
+  categoryCode: z.string().optional(),
+  subcategoryCode: z.string().optional(),
+  rootCause: z.string().optional(),
+  contributingFactors: z.array(z.string()).optional(),
+  investigationNotes: z.string().optional(),
+  correctiveActions: z.array(z.string()).optional(),
+  preventiveActions: z.array(z.string()).optional(),
+  lessonsLearned: z.string().optional(),
+  qualityIndicatorId: z.string().optional()
 })
 
 // Quality Assessment Schema
 export const QualityAssessmentSchema = z.object({
   type: z.enum(['nabh', 'jci', 'internal_audit', 'peer_review']),
   title: z.string().min(1, 'Title is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   scope: z.enum(['department', 'hospital', 'service_line']),
-  standardVersion: z.string().optional();
-  assessmentDate: z.date();
-  dueDate: z.date().optional();
-  leadAssessor: z.string();
-  assessors: z.array(z.string()).default([]);
-  overallScore: z.number().optional();
-  maxScore: z.number().optional();
-  overallCompliance: z.number().min(0).max(100).optional();
-  findings: z.array(z.record(z.any())).optional();
-  recommendations: z.array(z.record(z.any())).optional();
-  certificationBody: z.string().optional();
+  standardVersion: z.string().optional(),
+  assessmentDate: z.date(),
+  dueDate: z.date().optional(),
+  leadAssessor: z.string(),
+  assessors: z.array(z.string()).default([]),
+  overallScore: z.number().optional(),
+  maxScore: z.number().optional(),
+  overallCompliance: z.number().min(0).max(100).optional(),
+  findings: z.array(z.record(z.any())).optional(),
+  recommendations: z.array(z.record(z.any())).optional(),
+  certificationBody: z.string().optional(),
   certificationStatus: z.enum(['pending', 'achieved', 'expired', 'suspended']).optional(),
-  certificationDate: z.date().optional();
-  expiryDate: z.date().optional();
-  createdBy: z.string();
+  certificationDate: z.date().optional(),
+  expiryDate: z.date().optional(),
+  createdBy: z.string()
 })
 
 // Compliance Report Schema
@@ -80,52 +80,52 @@ export const ComplianceReportSchema = z.object({
   regulatoryBody: z.string().min(1, 'Regulatory body is required'),
   standard: z.string().min(1, 'Standard is required'),
   reportingPeriod: z.string().min(1, 'Reporting period is required'),
-  overallCompliance: z.number().min(0).max(100);
+  overallCompliance: z.number().min(0).max(100),
   status: z.enum(['compliant', 'non_compliant', 'conditional']),
-  requirements: z.array(z.record(z.any())).default([]);
-  findings: z.array(z.record(z.any())).optional();
-  gaps: z.array(z.record(z.any())).optional();
-  assessmentId: z.string().optional();
-  actionPlanId: z.string().optional();
-  submissionDate: z.date().optional();
-  submittedBy: z.string().optional();
+  requirements: z.array(z.record(z.any())).default([]),
+  findings: z.array(z.record(z.any())).optional(),
+  gaps: z.array(z.record(z.any())).optional(),
+  assessmentId: z.string().optional(),
+  actionPlanId: z.string().optional(),
+  submissionDate: z.date().optional(),
+  submittedBy: z.string().optional(),
   approvalStatus: z.enum(['draft', 'submitted', 'approved', 'rejected']).default('draft'),
-  createdBy: z.string();
+  createdBy: z.string()
 })
 
 // Action Plan Schema
 export const ActionPlanSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   type: z.enum(['corrective', 'preventive', 'improvement']),
   priority: z.enum(['low', 'medium', 'high', 'critical']),
   status: z.enum(['planning', 'approved', 'in_progress', 'completed', 'cancelled']).default('planning'),
-  departmentId: z.string().optional();
-  impactedAreas: z.array(z.string()).optional();
-  targetDate: z.date();
-  startDate: z.date().optional();
-  ownerId: z.string();
-  teamMembers: z.array(z.string()).optional();
-  estimatedCost: z.number().optional();
-  actualCost: z.number().optional();
-  budgetApproved: z.boolean().default(false);
-  createdBy: z.string();
+  departmentId: z.string().optional(),
+  impactedAreas: z.array(z.string()).optional(),
+  targetDate: z.date(),
+  startDate: z.date().optional(),
+  ownerId: z.string(),
+  teamMembers: z.array(z.string()).optional(),
+  estimatedCost: z.number().optional(),
+  actualCost: z.number().optional(),
+  budgetApproved: z.boolean().default(false),
+  createdBy: z.string()
 })
 
 // Action Item Schema
 export const ActionItemSchema = z.object({
-  actionPlanId: z.string();
+  actionPlanId: z.string(),
   title: z.string().min(1, 'Title is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   status: z.enum(['not_started', 'in_progress', 'completed', 'cancelled', 'on_hold']).default('not_started'),
-  assignedTo: z.string();
-  estimatedHours: z.number().optional();
-  actualHours: z.number().optional();
-  dueDate: z.date();
-  dependencies: z.array(z.string()).optional();
-  blockers: z.array(z.string()).optional();
-  progressPercentage: z.number().min(0).max(100).default(0);
-  notes: z.string().optional();
+  assignedTo: z.string(),
+  estimatedHours: z.number().optional(),
+  actualHours: z.number().optional(),
+  dueDate: z.date(),
+  dependencies: z.array(z.string()).optional(),
+  blockers: z.array(z.string()).optional(),
+  progressPercentage: z.number().min(0).max(100).default(0),
+  notes: z.string().optional()
 })
 
 // Type definitions
@@ -137,9 +137,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 export interface QualityMetrics {
   id?: string;
-  indicatorId: string;
+  indicatorId: string,
   measurementPeriod: Date;
-  periodType: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annually';
+  periodType: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annually',
   numeratorValue: number;
   denominatorValue: number;
   rate?: number;
@@ -148,7 +148,7 @@ export interface QualityMetrics {
   stratificationData?: Record<string, unknown>;
   dataQualityScore?: number;
   dataCompletenessRate?: number;
-  dataSource: 'manual' | 'automated' | 'integrated';
+  dataSource: 'manual' | 'automated' | 'integrated',
   verificationStatus: 'pending' | 'verified' | 'rejected';
   enteredBy: string;
   verifiedBy?: string;
@@ -188,7 +188,7 @@ export class PersistentQualityManagementService {
 
       return {
         ...validated,
-        id: indicator.id;
+        id: indicator.id
       };
     } catch (error) {
       throw new Error(`Failed to create quality indicator: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -240,7 +240,7 @@ export class PersistentQualityManagementService {
           ...encryptedUpdates,
           stratificationCriteria: updates.stratificationCriteria ?
             JSON.stringify(updates.stratificationCriteria) : undefined,
-          updatedBy: updates.createdBy, // Use createdBy as updatedBy for now;
+          updatedBy: updates.createdBy, // Use createdBy as updatedBy for now
         }
       })
 
@@ -270,7 +270,7 @@ export class PersistentQualityManagementService {
 
       return {
         ...validated,
-        id: event.id;
+        id: event.id
       };
     } catch (error) {
       throw new Error(`Failed to create quality event: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -330,16 +330,16 @@ export class PersistentQualityManagementService {
       const assessment = await this.prisma.qualityAssessment.create({
         data: {
           ...encryptedData,
-          assessors: JSON.stringify(validated.assessors);
+          assessors: JSON.stringify(validated.assessors),
           findings: validated.findings ? JSON.stringify(validated.findings) : null;
-          recommendations: validated.recommendations ? JSON.stringify(validated.recommendations) : null;
-          status: 'planned';
+          recommendations: validated.recommendations ? JSON.stringify(validated.recommendations) : null,
+          status: 'planned'
         }
       });
 
       return {
         ...validated,
-        id: assessment.id;
+        id: assessment.id
       };
     } catch (error) {
       throw new Error(`Failed to create quality assessment: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -351,9 +351,9 @@ export class PersistentQualityManagementService {
       const assessment = await this.prisma.qualityAssessment.findUnique({
         where: { id },
         include: {
-          criteria: true;
+          criteria: true,
           reports: true;
-          actionPlans: true;
+          actionPlans: true
         }
       });
 
@@ -378,9 +378,9 @@ export class PersistentQualityManagementService {
       const assessments = await this.prisma.qualityAssessment.findMany({
         where,
         include: {
-          criteria: true;
+          criteria: true,
           reports: true;
-          actionPlans: true;
+          actionPlans: true
         },
         orderBy: { assessmentDate: 'desc' }
       });
@@ -406,9 +406,9 @@ export class PersistentQualityManagementService {
 
       const metrics = await this.prisma.qualityMetrics.create({
         data: {
-          indicatorId: data.indicatorId;
+          indicatorId: data.indicatorId,
           measurementPeriod: data.measurementPeriod;
-          periodType: data.periodType;
+          periodType: data.periodType,
           numeratorValue: data.numeratorValue;
           denominatorValue: data.denominatorValue;
           rate,
@@ -416,12 +416,12 @@ export class PersistentQualityManagementService {
           varianceFromTarget,
           stratificationData: data.stratificationData ?
             JSON.stringify(data.stratificationData) : null,
-          dataQualityScore: data.dataQualityScore;
+          dataQualityScore: data.dataQualityScore,
           dataCompletenessRate: data.dataCompletenessRate;
-          dataSource: data.dataSource;
+          dataSource: data.dataSource,
           verificationStatus: data.verificationStatus;
-          enteredBy: data.enteredBy;
-          verifiedBy: data.verifiedBy;
+          enteredBy: data.enteredBy,
+          verifiedBy: data.verifiedBy
         }
       });
 
@@ -456,23 +456,23 @@ export class PersistentQualityManagementService {
       });
 
       return metrics.map(metric => ({
-        id: metric.id;
+        id: metric.id,
         indicatorId: metric.indicatorId;
-        measurementPeriod: metric.measurementPeriod;
+        measurementPeriod: metric.measurementPeriod,
         periodType: metric.periodType as any;
-        numeratorValue: metric.numeratorValue;
+        numeratorValue: metric.numeratorValue,
         denominatorValue: metric.denominatorValue;
-        rate: metric.rate || undefined;
+        rate: metric.rate || undefined,
         targetValue: metric.targetValue || undefined;
-        varianceFromTarget: metric.varianceFromTarget || undefined;
+        varianceFromTarget: metric.varianceFromTarget || undefined,
         stratificationData: metric.stratificationData ?
           JSON.parse(metric.stratificationData) : undefined,
-        dataQualityScore: metric.dataQualityScore || undefined;
+        dataQualityScore: metric.dataQualityScore || undefined,
         dataCompletenessRate: metric.dataCompletenessRate || undefined;
-        dataSource: metric.dataSource as any;
+        dataSource: metric.dataSource as any,
         verificationStatus: metric.verificationStatus as any;
-        enteredBy: metric.enteredBy;
-        verifiedBy: metric.verifiedBy || undefined;
+        enteredBy: metric.enteredBy,
+        verifiedBy: metric.verifiedBy || undefined
       }));
     } catch (error) {
       throw new Error(`Failed to get quality metrics: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -488,15 +488,15 @@ export class PersistentQualityManagementService {
       const report = await this.prisma.complianceReport.create({
         data: {
           ...encryptedData,
-          requirements: JSON.stringify(validated.requirements);
+          requirements: JSON.stringify(validated.requirements),
           findings: validated.findings ? JSON.stringify(validated.findings) : null;
-          gaps: validated.gaps ? JSON.stringify(validated.gaps) : null;
+          gaps: validated.gaps ? JSON.stringify(validated.gaps) : null
         }
       });
 
       return {
         ...validated,
-        id: report.id;
+        id: report.id
       };
     } catch (error) {
       throw new Error(`Failed to create compliance report: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -534,7 +534,7 @@ export class PersistentQualityManagementService {
 
       return {
         ...validated,
-        id: actionPlan.id;
+        id: actionPlan.id
       };
     } catch (error) {
       throw new Error(`Failed to create action plan: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -546,7 +546,7 @@ export class PersistentQualityManagementService {
       const actionPlan = await this.prisma.actionPlan.findUnique({
         where: { id },
         include: {
-          actionItems: true;
+          actionItems: true
         }
       });
 
@@ -575,7 +575,7 @@ export class PersistentQualityManagementService {
 
       return {
         ...validated,
-        id: actionItem.id;
+        id: actionItem.id
       };
     } catch (error) {
       throw new Error(`Failed to create action item: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -594,7 +594,7 @@ export class PersistentQualityManagementService {
             JSON.stringify(updates.dependencies) : undefined,
           blockers: updates.blockers ?
             JSON.stringify(updates.blockers) : undefined,
-          completedDate: updates.status === 'completed' ? new Date() : undefined;
+          completedDate: updates.status === 'completed' ? new Date() : undefined
         }
       });
 
@@ -605,33 +605,33 @@ export class PersistentQualityManagementService {
   }
 
   // Analytics and Reporting
-  async getQualityDashboardData(indicatorIds: string[], dateRange: { from: Date; to: Date }) {
+  async getQualityDashboardData(indicatorIds: string[], dateRange: { from: Date, to: Date }) {
     try {
       const metrics = await this.prisma.qualityMetrics.findMany({
         where: {
           indicatorId: { in: indicatorIds },
           measurementPeriod: {
-            gte: dateRange.from;
-            lte: dateRange.to;
+            gte: dateRange.from,
+            lte: dateRange.to
           }
         },
         include: {
-          indicator: true;
+          indicator: true
         },
         orderBy: { measurementPeriod: 'asc' }
       });
 
       return metrics.map(metric => ({
         indicator: {
-          id: metric.indicator.id;
+          id: metric.indicator.id,
           name: metric.indicator.name;
-          category: metric.indicator.category;
-          targetValue: metric.indicator.targetValue;
+          category: metric.indicator.category,
+          targetValue: metric.indicator.targetValue
         },
-        measurementPeriod: metric.measurementPeriod;
+        measurementPeriod: metric.measurementPeriod,
         rate: metric.rate;
-        targetValue: metric.targetValue;
-        varianceFromTarget: metric.varianceFromTarget;
+        targetValue: metric.targetValue,
+        varianceFromTarget: metric.varianceFromTarget
       }));
     } catch (error) {
       throw new Error(`Failed to get dashboard data: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -668,9 +668,9 @@ export class PersistentQualityManagementService {
 
     return {
       ...decrypted,
-      assessors: JSON.parse(assessment.assessors);
+      assessors: JSON.parse(assessment.assessors),
       findings: assessment.findings ? JSON.parse(assessment.findings) : undefined;
-      recommendations: assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined;
+      recommendations: assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined
     };
   }
 
@@ -679,9 +679,9 @@ export class PersistentQualityManagementService {
 
     return {
       ...decrypted,
-      requirements: JSON.parse(report.requirements);
+      requirements: JSON.parse(report.requirements),
       findings: report.findings ? JSON.parse(report.findings) : undefined;
-      gaps: report.gaps ? JSON.parse(report.gaps) : undefined;
+      gaps: report.gaps ? JSON.parse(report.gaps) : undefined
     };
   }
 
@@ -722,7 +722,7 @@ export const _getQualityManagementService = (prismaClient?: PrismaClient): Persi
   if (!qualityServiceInstance) {
     qualityServiceInstance = new PersistentQualityManagementService(prismaClient);
   }
-  return qualityServiceInstance;
+  return qualityServiceInstance
 };
 
 // For backward compatibility

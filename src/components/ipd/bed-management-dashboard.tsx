@@ -24,12 +24,12 @@ import { Button } from "@/components/ui/button"; // Assuming Button is correctly
 
 // Define interfaces
 interface Bed {
-  id: string;
+  id: string,
   bed_number: string;
   room_number?: string | null;
-  ward: string;
+  ward: string,
   category: "general" | "semi-private" | "private" | "icu";
-  status: "available" | "occupied" | "reserved" | "maintenance";
+  status: "available" | "occupied" | "reserved" | "maintenance",
   price_per_day: number;
   features?: string | null; // Comma-separated string
   // Add other bed properties if any
@@ -89,7 +89,7 @@ const BedManagementDashboard: React.FC = () => {
 
         const parameters = new URLSearchParams();
         // FIX: Rely on falsiness of "" for "All" filter
-        if (filterWard != null) parameters.append("ward", filterWard);
+        if (filterWard != null) parameters.append("ward", filterWard),
         if (filterCategory != null) parameters.append("category", filterCategory);
         if (filterStatus != null) parameters.append("status", filterStatus);
 
@@ -99,7 +99,7 @@ const BedManagementDashboard: React.FC = () => {
           let errorMessage = `Failed to fetch beds (status: ${response.status})`;
           try {
             // FIX: Add type for errorData
-            const errorData: ApiErrorResponse = await response.json();
+            const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             // Ignore if response is not JSON
@@ -108,7 +108,7 @@ const BedManagementDashboard: React.FC = () => {
         }
 
         // FIX: Use defined type for success response
-        const data: BedsApiResponse = await response.json();
+        const data: BedsApiResponse = await response.json(),
         setBeds(Array.isArray(data) ? data : []); // Ensure beds is always an array
       } catch (error_: unknown) {
         // FIX: Use unknown for catch block
@@ -151,7 +151,7 @@ const BedManagementDashboard: React.FC = () => {
   };
 
   const handleFilterChange = (
-    value: string;
+    value: string,
     filterType: "ward" | "category" | "status";
   ) => {
     const actualValue = value === "All" ? "" : value;
@@ -379,7 +379,7 @@ const BedManagementDashboard: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default BedManagementDashboard;

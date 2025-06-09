@@ -18,32 +18,32 @@ import { validateReactionRequest } from '../../../../../lib/validation/pharmacy-
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const reactionRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  save: (reaction: unknown) => Promise.resolve(reaction.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  save: (reaction: unknown) => Promise.resolve(reaction.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -93,23 +93,23 @@ export const POST = async (req: NextRequest) => {
 
     // Create reaction record
     const reaction = {
-      id: data.id || crypto.randomUUID();
+      id: data.id || crypto.randomUUID(),
       patientId: data.patientId;
-      medicationId: data.medicationId;
+      medicationId: data.medicationId,
       prescriptionId: data.prescriptionId;
-      reactionType: data.reactionType;
+      reactionType: data.reactionType,
       severity: data.severity || 'moderate';
-      symptoms: data.symptoms || [];
-      onset: data.onset ? new Date(data.onset) : new Date();
-      duration: data.duration;
+      symptoms: data.symptoms || [],
+      onset: data.onset ? new Date(data.onset) : new Date(),
+      duration: data.duration,
       actionTaken: data.actionTaken || [];
-      outcome: data.outcome;
+      outcome: data.outcome,
       notes: data.notes || '';
-      reportedBy: userId;
-      reportedAt: new Date();
-      isSerious: data.isSerious || false;
+      reportedBy: userId,
+      reportedAt: new Date(),
+      isSerious: data.isSerious || false,
       requiresFollowUp: data.requiresFollowUp || false;
-      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null;
+      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null
     };
 
     // Save reaction record
@@ -122,31 +122,31 @@ export const POST = async (req: NextRequest) => {
 
       // In a real implementation, update patient allergies if needed
       if (data.updateAllergies) {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     }
 
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
-      action: 'CREATE';
+      action: 'CREATE',
       resourceType: 'MedicationReaction';
-      resourceId: reactionId;
+      resourceId: reactionId,
       userId: userId;
-      patientId: data.patientId;
+      patientId: data.patientId,
       details: {
-        medicationId: data.medicationId;
+        medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
-        severity: data.severity;
-        isSerious: data.isSerious;
+        severity: data.severity,
+        isSerious: data.isSerious
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: reactionId;
+        id: reactionId,
         message: 'Adverse reaction recorded successfully';
-        requiresImmediateAttention: data.severity === 'severe' || data.isSerious;
+        requiresImmediateAttention: data.severity === 'severe' || data.isSerious
       },
       { status: 201 }
     );
@@ -212,16 +212,16 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Group by severity for reporting
     const severityCounts = {
-      mild: filteredRecords.filter(r => r.severity === 'mild').length;
+      mild: filteredRecords.filter(r => r.severity === 'mild').length,
       moderate: filteredRecords.filter(r => r.severity === 'moderate').length;
-      severe: filteredRecords.filter(r => r.severity === 'severe').length;
+      severe: filteredRecords.filter(r => r.severity === 'severe').length
     };
 
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
-      action: 'LIST';
+      action: 'LIST',
       resourceType: 'MedicationReaction';
-      userId: userId;
+      userId: userId,
       patientId: patientId;
       details: {
         medicationId,
@@ -239,7 +239,7 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

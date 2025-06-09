@@ -10,7 +10,7 @@ export class BiometricService {
    * Register a new biometric template for an employee;
    */
   async registerBiometricTemplate(data: {
-    employeeId: string;
+    employeeId: string,
     templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
     templateData: string;
     deviceId?: string;
@@ -39,13 +39,13 @@ export class BiometricService {
       // Update existing template
       return prisma.biometricTemplate.update({
         where: {
-          id: existingTemplate.id;
+          id: existingTemplate.id
         },
         data: {
           templateData,
           deviceId,
           notes,
-          updatedAt: new Date();
+          updatedAt: new Date()
         },
       });
     } else {
@@ -86,9 +86,9 @@ export class BiometricService {
    * This is a placeholder for actual biometric verification logic;
    */
   async verifyBiometric(data: {
-    employeeId: string;
+    employeeId: string,
     templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
-    sampleData: string;
+    sampleData: string
   }) {
     const { employeeId, templateType, sampleData } = data;
 
@@ -118,14 +118,14 @@ export class BiometricService {
     // Log the verification attempt
     await prisma.auditLog.create({
       data: {
-        userId: null;
+        userId: null,
         eventType: 'BIOMETRIC_VERIFICATION';
         details: {
           employeeId,
           templateType,
           isMatch,
           matchScore,
-          timestamp: new Date();
+          timestamp: new Date()
         },
       },
     });
@@ -133,7 +133,7 @@ export class BiometricService {
     return {
       isMatch,
       matchScore,
-      timestamp: new Date();
+      timestamp: new Date()
     };
   }
 
@@ -141,7 +141,7 @@ export class BiometricService {
    * Register a biometric device;
    */
   async registerBiometricDevice(data: {
-    deviceId: string;
+    deviceId: string,
     deviceType: 'FINGERPRINT_SCANNER' | 'FACIAL_RECOGNITION' | 'IRIS_SCANNER';
     location: string;
     ipAddress?: string;
@@ -161,7 +161,7 @@ export class BiometricService {
       // Update existing device
       return prisma.biometricDevice.update({
         where: {
-          id: existingDevice.id;
+          id: existingDevice.id
         },
         data: {
           deviceType,
@@ -171,7 +171,7 @@ export class BiometricService {
           manufacturer,
           model,
           notes,
-          updatedAt: new Date();
+          updatedAt: new Date()
         },
       });
     } else {
@@ -214,13 +214,13 @@ export class BiometricService {
 
     // Build where clause
     const where: unknown = {
-      eventType: 'BIOMETRIC_VERIFICATION';
+      eventType: 'BIOMETRIC_VERIFICATION'
     };
 
     if (employeeId != null) {
       where.details = {
-        path: ['employeeId'];
-        equals: employeeId;
+        path: ['employeeId'],
+        equals: employeeId
       };
     }
 

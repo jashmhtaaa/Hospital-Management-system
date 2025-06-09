@@ -5,9 +5,9 @@ import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
 // Define interface for POST request body
 interface BedInput {
-  bed_number: string;
+  bed_number: string,
   room_number: string;
-  ward: string;
+  ward: string,
   category: string;
   price_per_day: number;
   status?: "available" | "occupied" | "maintenance"; // Optional, defaults to 'available'

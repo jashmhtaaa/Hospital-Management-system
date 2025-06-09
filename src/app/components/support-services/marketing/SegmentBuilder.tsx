@@ -21,12 +21,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const [segment, setSegment] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
-    name: '';
+    name: '',
     description: '';
-    isActive: true;
+    isActive: true,
     criteria: {
-      type: 'AND';
-      conditions: [];
+      type: 'AND',
+      conditions: []
     }
   });
   const [members, setMembers] = useState<any[]>([]);
@@ -34,9 +34,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const [criteriaPreview, setCriteriaPreview] = useState<string>('');
   const [estimatedSize, setEstimatedSize] = useState<number>(0);
   const [newCondition, setNewCondition] = useState({
-    field: 'email';
+    field: 'email',
     operator: 'contains';
-    value: '';
+    value: ''
   });
 
   // Fetch segment data if editing an existing segment
@@ -54,12 +54,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
         // Set form values from segment data
         setFormData({
-          name: data.name || '';
+          name: data.name || '',
           description: data.description || '';
-          isActive: data.isActive !== undefined ? data.isActive : true;
+          isActive: data.isActive !== undefined ? data.isActive : true,
           criteria: data.criteria || {
-            type: 'AND';
-            conditions: [];
+            type: 'AND',
+            conditions: []
           }
         });
 
@@ -76,9 +76,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load segment data. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -115,11 +115,11 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     const conditionStrings = criteria.conditions.map((condition: unknown) => {
       const _fieldLabel = getFieldLabel(condition.field);
       const _operatorLabel = getOperatorLabel(condition.operator);
-      return `/* SECURITY: Template literal eliminated */;
+      return `/* SECURITY: Template literal eliminated */
     });
 
     const joinWord = criteria.type === 'AND' ? 'AND' : 'OR';
-    setCriteriaPreview(conditionStrings.join(` ${joinWord} `));
+    setCriteriaPreview(conditionStrings.join(` ${joinWord} `))
   };
 
   // Get estimated size
@@ -163,7 +163,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         return 'Country';
       case 'createdAt':
         return 'Created Date';
-      default: return field;
+      default: return field
     }
   };
 
@@ -194,7 +194,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         return 'is empty';
       case 'isNotNull':
         return 'is not empty';
-      default: return operator;
+      default: return operator
     }
   };
 
@@ -204,63 +204,63 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     setFormData({
       ...formData,
       [name]: value;
-    });
+    })
   };
 
   // Handle switch changes
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked;
-    });
+      isActive: checked
+    })
   };
 
   // Handle criteria type change
   const handleCriteriaTypeChange = (value: string) => {
     const newCriteria = {
       ...formData.criteria,
-      type: value;
+      type: value
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria
     }),
     updateCriteriaPreview(newCriteria);
-    fetchEstimatedSize(newCriteria);
+    fetchEstimatedSize(newCriteria)
   };
 
   // Handle new condition field change
   const handleConditionFieldChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      field: value;
-    });
+      field: value
+    })
   };
 
   // Handle new condition operator change
   const handleConditionOperatorChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      operator: value;
-    });
+      operator: value
+    })
   };
 
   // Handle new condition value change
   const handleConditionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCondition({
       ...newCondition,
-      value: e.target.value;
-    });
+      value: e.target.value
+    })
   };
 
   // Add condition to criteria
   const handleAddCondition = () => {
     if (!newCondition?.value && !['isTrue', 'isFalse', 'isNull', 'isNotNull'].includes(newCondition.operator)) {
       toast({
-        title: "Validation Error";
+        title: "Validation Error",
         description: "Please enter a value for the condition.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -272,17 +272,17 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria
     });
 
     // Reset new condition
     setNewCondition({
-      field: 'email';
+      field: 'email',
       operator: 'contains';
-      value: '';
+      value: ''
     }),
     updateCriteriaPreview(newCriteria);
-    fetchEstimatedSize(newCriteria);
+    fetchEstimatedSize(newCriteria)
   };
 
   // Remove condition from criteria
@@ -292,15 +292,15 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     const newCriteria = {
       ...formData.criteria,
-      conditions: newConditions;
+      conditions: newConditions
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria
     }),
     updateCriteriaPreview(newCriteria);
-    fetchEstimatedSize(newCriteria);
+    fetchEstimatedSize(newCriteria)
   };
 
   // Handle form submission
@@ -320,14 +320,14 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) throw new Error('Failed to save segment');
 
       const savedSegment = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Segment ${segmentId ? 'updated' : 'created'} successfully.`,
       });
 
@@ -339,9 +339,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to save segment. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -355,7 +355,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     setIsLoading(true);
     try {
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/apply-criteria`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         }
@@ -365,7 +365,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
       const result = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`,
       });
 
@@ -380,9 +380,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to apply criteria. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -395,7 +395,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     try {
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -411,15 +411,15 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       }
 
       toast({
-        title: "Success";
-        description: "Contact added to segment successfully.";
+        title: "Success",
+        description: "Contact added to segment successfully."
       });
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to add contact. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -430,7 +430,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     try {
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members/${contactId}`, {
-        method: 'DELETE';
+        method: 'DELETE'
       });
 
       if (!response.ok) throw new Error('Failed to remove contact');
@@ -439,15 +439,15 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       setMembers(members.filter(m => m.id !== contactId));
 
       toast({
-        title: "Success";
-        description: "Contact removed from segment successfully.";
+        title: "Success",
+        description: "Contact removed from segment successfully."
       });
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to remove contact. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };

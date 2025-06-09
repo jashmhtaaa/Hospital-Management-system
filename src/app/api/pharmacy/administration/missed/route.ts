@@ -16,34 +16,34 @@ import { getMedicationById, getPrescriptionById } from '../../../../../lib/servi
 
 // Initialize repositories (in production, use dependency injection)
 const _medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null);
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriptionId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: (administration) => Promise.resolve(administration.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: () => Promise.resolve(null),
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriptionId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -98,32 +98,32 @@ export const POST = async (req: NextRequest) => {
     // For certain reason codes, create alerts or notifications
     if (data.reasonCode === 'medication-unavailable') {
       // In a real implementation, notify pharmacy about stock issue
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } else if (data.reasonCode === 'adverse-reaction') {
       // In a real implementation, create alert for clinical staff
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'MISSED_DOSE';
+      action: 'MISSED_DOSE',
       resourceType: 'MedicationAdministration';
-      resourceId: administrationId;
+      resourceId: administrationId,
       userId: userId;
-      patientId: data.patientId;
+      patientId: data.patientId,
       details: {
-        medicationId: data.medicationId;
+        medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
-        reasonCode: data.reasonCode;
-        reason: data.reason;
+        reasonCode: data.reasonCode,
+        reason: data.reason
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: administrationId;
-        message: 'Missed dose recorded successfully';
+        id: administrationId,
+        message: 'Missed dose recorded successfully'
       },
       { status: 201 }
     );

@@ -30,9 +30,9 @@ export class PredictiveAnalyticsResolver {
     @Args('status') status?: string;
   ) {
     return this.predictiveAnalyticsService.getAllModels({
-      type: type as any;
+      type: type as any,
       category: category as any;
-      status: status as any;
+      status: status as any
     });
   }
 
@@ -162,7 +162,7 @@ export class PredictiveAnalyticsResolver {
     @Args('segment') segment?: string;
   ) {
     return this.predictiveAnalyticsService.getModelPerformanceMetrics(id, {
-      startDate: startDate ? new Date(startDate) : undefined;
+      startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined;
       segment,
     });

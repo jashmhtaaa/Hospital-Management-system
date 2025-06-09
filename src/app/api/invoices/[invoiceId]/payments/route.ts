@@ -20,30 +20,30 @@ const getInvoiceId = (pathname: string): number | null {
 
 // POST handler for recording a payment for an invoice
 const AddPaymentSchema = z.object({
-    amount_paid: z.number().positive("Amount paid must be positive");
-    payment_method: z.nativeEnum(PaymentMethod);
+    amount_paid: z.number().positive("Amount paid must be positive"),
+    payment_method: z.nativeEnum(PaymentMethod),
     payment_date: z.string().datetime().optional(), // Default is CURRENT_TIMESTAMP
-    transaction_reference: z.string().optional().nullable();
-    notes: z.string().optional().nullable();
+    transaction_reference: z.string().optional().nullable(),
+    notes: z.string().optional().nullable()
 });
 
 export const _POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
-    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (invoiceId === null) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -54,7 +54,7 @@ export const _POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -69,7 +69,7 @@ export const _POST = async (request: Request) => {
         // 2. Get current invoice details (total_amount, paid_amount, patient_id)
         const invoiceCheck = await DB.prepare(
             "SELECT invoice_id, patient_id, total_amount, paid_amount, status FROM Invoices WHERE invoice_id = ?"
-        ).bind(invoiceId).first<{ invoice_id: number; patient_id: number; total_amount: number; paid_amount: number; status: string }>();
+        ).bind(invoiceId).first<{ invoice_id: number, patient_id: number; total_amount: number, paid_amount: number; status: string }>();
 
         if (!invoiceCheck) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
@@ -130,7 +130,7 @@ export const _POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

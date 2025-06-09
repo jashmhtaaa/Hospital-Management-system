@@ -46,7 +46,7 @@ import { cn } from "@/lib/utils"; // Assuming you have this utility
 
 // --- INTERFACES ---
 interface Patient {
-  id: number;
+  id: number,
   name: string; // Combined first/last or display name
   mrn: string;
   first_name?: string; // Optional if 'name' is primary display
@@ -54,16 +54,16 @@ interface Patient {
 }
 
 interface ServiceItem {
-  id: number;
+  id: number,
   item_code: string;
-  item_name: string;
+  item_name: string,
   category: string;
-  unit_price: number;
+  unit_price: number
 }
 
 interface InvoiceItem extends ServiceItem {
-  quantity: number;
-  subtotal: number;
+  quantity: number,
+  subtotal: number
 }
 
 // --- API Response Interfaces ---
@@ -217,13 +217,13 @@ export default const _CreateInvoicePage = () {
         const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1
         return {
           ...item,
-          quantity: newQuantity;
-          subtotal: newQuantity * item.unit_price;
+          quantity: newQuantity,
+          subtotal: newQuantity * item.unit_price
         };
       }
       return item;
     });
-    setInvoiceItems(updatedItems);
+    setInvoiceItems(updatedItems)
   };
 
   // Remove item from invoice
@@ -249,23 +249,23 @@ export default const _CreateInvoicePage = () {
 
     try {
       const invoiceData = {
-        patient_id: selectedPatient.id;
+        patient_id: selectedPatient.id,
         items: invoiceItems.map((item) => ({
-          service_item_id: item.id;
+          service_item_id: item.id,
           item_name: item.item_name, // Consider if description should be different
           description: item.item_name, // Using item_name as description for now
-          quantity: item.quantity;
+          quantity: item.quantity,
           unit_price: item.unit_price;
-          subtotal: item.subtotal;
+          subtotal: item.subtotal
         })),
-        total_amount: invoiceTotal;
-        status: "pending", // Assuming a default status;
+        total_amount: invoiceTotal,
+        status: "pending", // Assuming a default status
       };
 
       const response = await fetch("/api/billing/invoices", {
-        method: "POST";
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(invoiceData);
+        body: JSON.stringify(invoiceData)
       });
 
       if (!response.ok) {
@@ -394,7 +394,7 @@ export default const _CreateInvoicePage = () {
                         <CommandItem>
                           key={patient.id}
                           value={`/* SECURITY: Template literal eliminated */
-                            setIsPatientPopoverOpen(false);
+                            setIsPatientPopoverOpen(false),
                             setPatientSearchTerm(""); // Clear search after selection
                           }}
                           className="cursor-pointer" // Added cursor
@@ -482,7 +482,7 @@ export default const _CreateInvoicePage = () {
                               key={service.id}
                               value={`/* SECURITY: Template literal eliminated */ // Don't set here, add directly
                                 addInvoiceItem(service),
-                                setIsServicePopoverOpen(false);
+                                setIsServicePopoverOpen(false),
                                 setServiceSearchTerm(""); // Clear search
                               }}
                               className="cursor-pointer"

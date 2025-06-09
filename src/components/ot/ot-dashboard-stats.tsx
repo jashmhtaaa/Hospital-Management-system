@@ -10,11 +10,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default const _OTDashboardStats = () {
   const [stats, setStats] = useState({
-    todayBookings: 0;
+    todayBookings: 0,
     upcomingBookings: 0;
-    availableTheatres: 0;
+    availableTheatres: 0,
     inProgressSurgeries: 0;
-    pendingChecklists: 0;
+    pendingChecklists: 0
   });
   const [loading, setLoading] = useState(true),
   useEffect(() => {
@@ -47,16 +47,16 @@ export default const _OTDashboardStats = () {
 
         // Mock data for demonstration
         setStats({
-          todayBookings: 5;
+          todayBookings: 5,
           upcomingBookings: 12;
-          availableTheatres: 3;
+          availableTheatres: 3,
           inProgressSurgeries: 2;
-          pendingChecklists: 4;
+          pendingChecklists: 4
         }),
         setLoading(false);
       } catch (error) { // FIX: Added error parameter to catch block
 
-        setLoading(false);
+        setLoading(false)
       }
     };
 

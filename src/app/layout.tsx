@@ -6,25 +6,25 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"; // Added ThemeProvider
 import { Toaster } from "@/components/ui/sonner"; // Added Toaster for notifications
 const _geistSans = Geist({
-  variable: "--font-geist-sans";
-  subsets: ["latin"];
+  variable: "--font-geist-sans",
+  subsets: ["latin"]
 });
 
 const _geistMono = Geist_Mono({
-  variable: "--font-geist-mono";
-  subsets: ["latin"];
+  variable: "--font-geist-mono",
+  subsets: ["latin"]
 });
 
 // Use metadata from HEAD
 export const _metadata: Metadata = {
-  title: "Hospital Management System";
-  description: "Comprehensive HMS";
+  title: "Hospital Management System",
+  description: "Comprehensive HMS"
 };
 
 export default const _RootLayout = ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     // Keep lang="en" and dark class from origin/master

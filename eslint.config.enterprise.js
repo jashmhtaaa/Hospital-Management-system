@@ -3,18 +3,15 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: true
+    node: true,
   },
-  extends: [
-    'next/core-web-vitals',
-    '@typescript-eslint/recommended'
-  ],
+  extends: ['next/core-web-vitals', '@typescript-eslint/recommended'],
   plugins: ['@typescript-eslint', 'security'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
   rules: {
     // TypeScript Security
@@ -42,7 +39,7 @@ module.exports = {
     'no-sequences': 'error',
     'no-throw-literal': 'error',
     'no-with': 'error',
-    'radix': 'error',
+    radix: 'error',
     'wrap-iife': 'error',
 
     // Production Code Quality
@@ -50,14 +47,14 @@ module.exports = {
     'no-debugger': 'error',
     'no-alert': 'error',
     'no-confirm': 'error',
-    'no-prompt': 'error'
+    'no-prompt': 'error',
   },
   overrides: [
     {
       files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
       rules: {
-        'no-console': 'off'
-      }
-    }
-  ]
+        'no-console': 'off',
+      },
+    },
+  ],
 };

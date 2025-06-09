@@ -25,7 +25,7 @@ export class InvoiceService {
         //     throw new Error(`Patient with ID ${patientId} not found.`)
         // }
         const mockPatient: PatientDetails = {
-            id: patientId;
+            id: patientId,
             name: 'John Doe';
             address: '123 Main St, Anytown, USA',
             // ... other details
@@ -70,9 +70,9 @@ export class InvoiceService {
         // 7. Fetch Insurance Details (if applicable, placeholder)
         // const _insurancePolicy = await prisma.insurancePolicy.findFirst({ where: { patientId: patientId, isActive: true } })
         const mockInsurancePolicy: InsurancePolicy | null = {
-            policyId: 'POL987';
+            policyId: 'POL987',
             patientId: patientId;
-            tpaId: 'TPA001';
+            tpaId: 'TPA001',
             policyNumber: 'INS-12345';
             coverageDetails: '80% coverage for inpatient services';
             // ... other details
@@ -81,16 +81,16 @@ export class InvoiceService {
         // 8. Construct the Invoice Object
         const newInvoice: Invoice = {
             id: `inv_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            patientId: mockPatient.id;
+            patientId: mockPatient.id,
             patientName: mockPatient.name, // Denormalized for easy display
-            invoiceDate: new Date();
+            invoiceDate: new Date(),
             dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Due in 30 days
             lineItems: chargesToInvoice.map(charge => ({
-                chargeId: charge.id;
+                chargeId: charge.id,
                 serviceName: charge.serviceName;
-                quantity: charge.quantity;
+                quantity: charge.quantity,
                 unitPrice: charge.unitPrice;
-                totalPrice: charge.totalAmount;
+                totalPrice: charge.totalAmount
             })),
             subtotal,
             discountAmount,
@@ -99,8 +99,8 @@ export class InvoiceService {
             amountPaid: 0, // Initially no amount paid
             status: 'DRAFT', // Initial status
             invoiceType,
-            notes: 'Please pay by the due date.';
-            insurancePolicyId: mockInsurancePolicy?.policyId;
+            notes: 'Please pay by the due date.',
+            insurancePolicyId: mockInsurancePolicy?.policyId
         };
 
         // 9. Save the Invoice to Database (placeholder)

@@ -12,16 +12,16 @@ server:
 spring:
   application:
     name: hms-provider-mobile-backend
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:development}
-  
+
   datasource:
     url: jdbc:postgresql://localhost:5432/hms_provider_mobile
     username: ${DB_USERNAME:hms_user}
     password: ${DB_PASSWORD:hms_password}
     driver-class-name: org.postgresql.Driver
-    
+
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -39,7 +39,7 @@ eureka:
 hms:
   provider-mobile:
     security:
-      session-timeout-minutes: 480  # 8 hours
+      session-timeout-minutes: 480 # 8 hours
       idle-timeout-minutes: 30
       max-concurrent-sessions: 3
       require-biometric-auth: true
@@ -68,7 +68,7 @@ hms:
 ---
 # HMS Provider Mobile Backend Enhanced Configuration
 
-# Database Configuration  
+# Database Configuration
 spring:
   datasource:
     hikari:
@@ -79,7 +79,7 @@ spring:
       connection-timeout: 20000
       validation-timeout: 5000
       leak-detection-threshold: 60000
-  
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -104,7 +104,7 @@ spring:
   cache:
     type: redis
     redis:
-      time-to-live: 300000  # 5 minutes
+      time-to-live: 300000 # 5 minutes
       cache-null-values: false
     cache-names:
       - validSessions
@@ -157,8 +157,8 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: WARN
     root: WARN
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
   file:
     name: logs/provider-mobile-backend.log
     max-size: 100MB
@@ -170,13 +170,13 @@ hms:
     # Security Configuration
     security:
       session-management:
-        session-timeout-minutes: 480  # 8 hours
+        session-timeout-minutes: 480 # 8 hours
         refresh-token-duration-days: 30
         idle-timeout-minutes: 30
         max-concurrent-sessions: 3
         cleanup-expired-sessions-hours: 24
       authentication:
-        require-biometric-auth: false  # Optional biometric
+        require-biometric-auth: false # Optional biometric
         max-failed-attempts: 5
         lockout-duration-minutes: 30
         password-complexity-enabled: true
@@ -295,7 +295,7 @@ hms:
         enabled: true
         log-all-access: true
         log-failed-attempts: true
-        retention-days: 2555  # 7 years
+        retention-days: 2555 # 7 years
       data-protection:
         field-level-encryption: true
         phi-masking: true
@@ -369,7 +369,7 @@ spring:
   config:
     activate:
       on-profile: development
-  
+
 hms:
   provider-mobile:
     security:
@@ -378,7 +378,7 @@ hms:
         two-factor-auth-enabled: false
     mobile-features:
       clinical-workflow:
-        drug-interaction-checking: false  # Disable for dev testing
+        drug-interaction-checking: false # Disable for dev testing
 
 ---
 spring:
@@ -404,4 +404,4 @@ hms:
     performance:
       api-rate-limiting:
         enabled: true
-        requests-per-minute: 60  # Stricter in production
+        requests-per-minute: 60 # Stricter in production

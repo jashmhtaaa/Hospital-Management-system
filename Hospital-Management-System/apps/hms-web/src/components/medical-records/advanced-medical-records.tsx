@@ -18,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 } from 'lucide-react';
 
 interface ICD10Code {
-  code: string;
+  code: string,
   description: string;
   type: string;
   category?: string;
@@ -26,13 +26,13 @@ interface ICD10Code {
 }
 
 interface MedicalRecord {
-  id: string;
+  id: string,
   patientId: string;
-  visitDate: string;
+  visitDate: string,
   chiefComplaint: string;
-  diagnoses: string[];
+  diagnoses: string[],
   icdCodes: string[];
-  status: 'DRAFT' | 'CODED' | 'FINAL' | 'ARCHIVED';
+  status: 'DRAFT' | 'CODED' | 'FINAL' | 'ARCHIVED'
 }
 
 const AdvancedMedicalRecords: React.FC = () => {
@@ -53,7 +53,7 @@ const AdvancedMedicalRecords: React.FC = () => {
       const data = await response.json();
       setIcdResults(data.results);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -65,10 +65,10 @@ const AdvancedMedicalRecords: React.FC = () => {
     setLoading(true);
     try {
       const response = await fetch('/api/medical-records/auto-code', {
-        method: 'POST';
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          patientId: selectedRecord.patientId;
+          patientId: selectedRecord.patientId,
           visitId: selectedRecord.id;
           clinicalNotes,
           diagnoses
@@ -77,7 +77,7 @@ const AdvancedMedicalRecords: React.FC = () => {
       const data = await response.json();
       setSuggestedCodes(data.suggestedCodes);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -90,7 +90,7 @@ const AdvancedMedicalRecords: React.FC = () => {
       return data.results[0];
     } catch (error) {
       /* SECURITY: Console statement removed */
-      return null;
+      return null
     }
   };
 
@@ -312,7 +312,7 @@ const AdvancedMedicalRecords: React.FC = () => {
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 };
 
 export default AdvancedMedicalRecords;

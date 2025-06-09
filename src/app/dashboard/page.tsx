@@ -44,22 +44,22 @@ interface PharmacyStatsResponse {
 
 // Interface for the combined stats state (from HEAD)
 interface DashboardStats {
-  totalPatients: number;
+  totalPatients: number,
   todayAppointments: number
-  activeAdmissions: number;
+  activeAdmissions: number,
   availableBeds: number;
-  pendingBills: number;
-  lowStockItems: number;
+  pendingBills: number,
+  lowStockItems: number
 }
 
 const Dashboard = () {
   const [stats, setStats] = useState<DashboardStats>({
-    totalPatients: 0;
+    totalPatients: 0,
     todayAppointments: 0;
-    activeAdmissions: 0;
+    activeAdmissions: 0,
     availableBeds: 0;
-    pendingBills: 0;
-    lowStockItems: 0;
+    pendingBills: 0,
+    lowStockItems: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -107,12 +107,12 @@ const Dashboard = () {
           (await pharmacyResponse.json()) as PharmacyStatsResponse;
 
         setStats({
-          totalPatients: opdData?.totalPatients ?? 0;
+          totalPatients: opdData?.totalPatients ?? 0,
           todayAppointments: opdData?.todayAppointments ?? 0;
-          activeAdmissions: ipdData?.activeAdmissions ?? 0;
+          activeAdmissions: ipdData?.activeAdmissions ?? 0,
           availableBeds: ipdData?.availableBeds ?? 0;
-          pendingBills: billingData?.pendingBills ?? 0;
-          lowStockItems: pharmacyData?.lowStockItems ?? 0;
+          pendingBills: billingData?.pendingBills ?? 0,
+          lowStockItems: pharmacyData?.lowStockItems ?? 0
         });
       } catch (error_) {
 
@@ -122,12 +122,12 @@ const Dashboard = () {
             : "Failed to load dashboard statistics. Please try again later.";
         ),
         setStats({
-          totalPatients: 0;
+          totalPatients: 0,
           todayAppointments: 0;
-          activeAdmissions: 0;
+          activeAdmissions: 0,
           availableBeds: 0;
-          pendingBills: 0;
-          lowStockItems: 0;
+          pendingBills: 0,
+          lowStockItems: 0
         });
       } finally {
         setLoading(false);
@@ -139,7 +139,7 @@ const Dashboard = () {
 
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---
   interface StatCardProperties {
-    title: string;
+    title: string,
     value: number
     icon: React.ElementType; // Use React.ElementType for lucide icons
     link?: string;
@@ -191,7 +191,7 @@ const Dashboard = () {
           )}
         </CardContent>
       </Card>
-    );
+    )
   };
   StatCard.displayName = "StatCard";
 
@@ -364,10 +364,10 @@ Dashboard.displayName = "Dashboard";
 
 // --- Helper Component for Activity Lists (from HEAD) ---
 interface ActivityItemProperties {
-  name: string;
+  name: string,
   detail: string
-  time: string;
-  doctor: string;
+  time: string,
+  doctor: string
 }
 
 const ActivityItem: React.FC<ActivityItemProperties> = ({

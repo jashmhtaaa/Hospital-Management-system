@@ -17,28 +17,28 @@ import { pubsub } from '@/lib/graphql/schema-base';
 
 // Report models
 export interface ReportTemplate {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: ReportCategory;
-  type: ReportType;
+  type: ReportType,
   dataSource: ReportDataSource;
-  layout: LayoutConfig;
+  layout: LayoutConfig,
   components: ReportComponent[];
-  filters: ReportFilter[];
+  filters: ReportFilter[],
   parameters: ReportParameter[];
-  sorting: ReportSorting[];
+  sorting: ReportSorting[],
   grouping: ReportGrouping[];
-  calculations: ReportCalculation[];
+  calculations: ReportCalculation[],
   formatSettings: FormatSettings;
   schedule?: ReportSchedule;
-  permissions: ReportPermissions;
+  permissions: ReportPermissions,
   createdBy: string;
-  updatedBy: string;
+  updatedBy: string,
   created: Date;
-  updated: Date;
+  updated: Date,
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  version: string;
+  version: string,
   tags: string[];
   metadata: ReportMetadata
 export enum ReportCategory {
@@ -72,42 +72,42 @@ export enum ReportDataSource {
   CUSTOM = 'CUSTOM',
   MULTI_SOURCE = 'MULTI_SOURCE',
 export interface LayoutConfig {
-  orientation: 'PORTRAIT' | 'LANDSCAPE';
+  orientation: 'PORTRAIT' | 'LANDSCAPE',
   pageSize: 'LETTER' | 'LEGAL' | 'A4' | 'CUSTOM';
   customPageSize?: {
-    width: number;
+    width: number,
     height: number;
-    unit: 'MM' | 'CM' | 'INCH';
+    unit: 'MM' | 'CM' | 'INCH'
   };
   margins: {
-    top: number;
+    top: number,
     right: number;
-    bottom: number;
+    bottom: number,
     left: number;
-    unit: 'MM' | 'CM' | 'INCH';
+    unit: 'MM' | 'CM' | 'INCH'
   };
   header: {
-    height: number;
-    content: string;
+    height: number,
+    content: string
   };
   footer: {
-    height: number;
-    content: string;
+    height: number,
+    content: string
   };
   grid: {
-    columns: number;
-    gutter: number;
+    columns: number,
+    gutter: number
   };
   sections: LayoutSection[]
 export interface LayoutSection {
-  id: string;
+  id: string,
   name: string;
   title?: string;
-  showTitle: boolean;
+  showTitle: boolean,
   columns: number;
-  startRow: number;
+  startRow: number,
   startColumn: number;
-  width: number;
+  width: number,
   height: number;
   components: string[]; // Array of component IDs
   background?: string;
@@ -118,25 +118,25 @@ export interface LayoutSection {
   defaultCollapsed?: boolean;
   conditionalDisplay?: string;
 export interface ReportComponent {
-  id: string;
+  id: string,
   name: string;
-  type: ComponentType;
+  type: ComponentType,
   dataSource: string;
   query?: string;
   fields: ComponentField[];
   visualization?: VisualizationType;
-  settings: ComponentSettings;
+  settings: ComponentSettings,
   conditionalFormatting: ConditionalFormatting[];
-  interactivity: InteractivityOptions;
+  interactivity: InteractivityOptions,
   position: {
-    row: number;
+    row: number,
     column: number;
-    width: number;
-    height: number;
+    width: number,
+    height: number
   };
   visible: boolean;
   conditionalVisibility?: string;
-  exportable: boolean;
+  exportable: boolean,
   printable: boolean;
   drillThrough?: DrillThroughTarget[];
 export enum ComponentType {
@@ -180,17 +180,17 @@ export enum VisualizationType {
   TEXT = 'TEXT',
   CUSTOM = 'CUSTOM',
 export interface ComponentField {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   formula?: string;
   description?: string;
-  visible: boolean;
+  visible: boolean,
   sortable: boolean;
-  filterable: boolean;
+  filterable: boolean,
   groupable: boolean;
   width?: number;
   alignment?: 'LEFT' | 'CENTER' | 'RIGHT';
@@ -207,9 +207,9 @@ export interface ComponentSettings {
   map?: MapSettings;
   custom?: Record<string, any>;
 export interface TableSettings {
-  showHeader: boolean;
+  showHeader: boolean,
   showFooter: boolean;
-  showRowNumbers: boolean;
+  showRowNumbers: boolean,
   alternateRowColors: boolean;
   rowColor?: string;
   alternateRowColor?: string;
@@ -239,7 +239,7 @@ export interface ChartSettings {
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
     style?: 'normal' | 'italic' | 'oblique';
-    color?: string;
+    color?: string
   };
   subtitle?: string;
   showSubtitle: boolean;
@@ -248,32 +248,32 @@ export interface ChartSettings {
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
     style?: 'normal' | 'italic' | 'oblique';
-    color?: string;
+    color?: string
   };
   legend: {
-    show: boolean;
+    show: boolean,
     position: 'top' | 'right' | 'bottom' | 'left';
-    orientation: 'horizontal' | 'vertical';
+    orientation: 'horizontal' | 'vertical'
   };
   axes: {
     xAxis: {
       title?: string,
-      showTitle: boolean;
+      showTitle: boolean,
       showLabels: boolean;
       labelRotation?: number;
       min?: number;
       max?: number;
-      gridLines: boolean;
+      gridLines: boolean
     };
     yAxis: {
       title?: string,
-      showTitle: boolean;
+      showTitle: boolean,
       showLabels: boolean;
       labelRotation?: number;
       min?: number;
       max?: number;
-      gridLines: boolean;
-    };
+      gridLines: boolean
+    }
   };
   colors?: string[];
   background?: string;
@@ -281,17 +281,17 @@ export interface ChartSettings {
   dataLabels: {
     show: boolean;
     position?: 'inside' | 'outside' | 'auto';
-    format?: string;
+    format?: string
   };
   tooltips: {
     show: boolean;
-    format?: string;
+    format?: string
   };
   animation: boolean;
   animationDuration?: number;
   interaction: {
     zoomType?: 'x' | 'y' | 'xy' | 'none',
-    selectable: boolean;
+    selectable: boolean
   };
   dimensionAxis?: 'x' | 'y';
   stacked?: boolean;
@@ -301,7 +301,7 @@ export interface ChartSettings {
     cornerRadius?: number;
     startAngle?: number;
     endAngle?: number;
-    sortOrder?: 'none' | 'ascending' | 'descending';
+    sortOrder?: 'none' | 'ascending' | 'descending'
   };
 export interface MetricSettings {
   title?: string;
@@ -311,14 +311,14 @@ export interface MetricSettings {
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
     style?: 'normal' | 'italic' | 'oblique';
-    color?: string;
+    color?: string
   };
   valueFont?: {
     family?: string;
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
     style?: 'normal' | 'italic' | 'oblique';
-    color?: string;
+    color?: string
   };
   format?: string;
   prefix?: string;
@@ -333,7 +333,7 @@ export interface MetricSettings {
   sparklineHeight?: number;
   sparklineColor?: string;
   thresholds?: {
-    value: number;
+    value: number,
     color: string;
     icon?: string;
   }[];
@@ -349,7 +349,7 @@ export interface TextSettings {
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
     style?: 'normal' | 'italic' | 'oblique';
-    color?: string;
+    color?: string
   };
   alignment?: 'left' | 'center' | 'right' | 'justify';
   background?: string;
@@ -382,7 +382,7 @@ export interface ImageSettings {
       size?: number;
       weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
       style?: 'normal' | 'italic' | 'oblique';
-      color?: string;
+      color?: string
     };
   };
   overlay?: {
@@ -390,24 +390,24 @@ export interface ImageSettings {
     color?: string;
     opacity?: number;
     text?: string;
-    textColor?: string;
+    textColor?: string
   };
 export interface MatrixSettings {
-  rows: string[];
+  rows: string[],
   columns: string[];
-  values: string[];
+  values: string[],
   showTotals: boolean;
   totalPosition: 'top' | 'bottom' | 'left' | 'right';
   totalLabel?: string;
   showSubtotals: boolean;
   subtotalPosition?: 'top' | 'bottom';
-  conditionalFormatting: boolean;
+  conditionalFormatting: boolean,
   heatmap: boolean;
   heatmapSettings?: {
     startColor?: string;
     endColor?: string;
     nullColor?: string;
-    colorScale?: 'linear' | 'logarithmic';
+    colorScale?: 'linear' | 'logarithmic'
   };
   cellPadding?: number;
   borderStyle?: string;
@@ -415,25 +415,25 @@ export interface MatrixSettings {
   headerTextColor?: string;
   wrapText?: boolean;
 export interface PivotSettings {
-  rows: string[];
+  rows: string[],
   columns: string[];
-  values: string[];
+  values: string[],
   filters: string[];
-  showTotals: boolean;
+  showTotals: boolean,
   showRowTotals: boolean;
-  showColumnTotals: boolean;
+  showColumnTotals: boolean,
   totalPosition: 'top' | 'bottom' | 'left' | 'right';
   totalLabel?: string;
   showSubtotals: boolean;
   subtotalPosition?: 'top' | 'bottom';
   expandedLevels?: number[];
-  conditionalFormatting: boolean;
+  conditionalFormatting: boolean,
   heatmap: boolean;
   heatmapSettings?: {
     startColor?: string;
     endColor?: string;
     nullColor?: string;
-    colorScale?: 'linear' | 'logarithmic';
+    colorScale?: 'linear' | 'logarithmic'
   };
   cellPadding?: number;
   borderStyle?: string;
@@ -475,7 +475,7 @@ export interface MapSettings {
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
     style?: 'normal' | 'italic' | 'oblique';
-    color?: string;
+    color?: string
   };
   zoom?: number;
   center?: [number, number];
@@ -485,42 +485,42 @@ export interface MapSettings {
   navigation?: boolean;
   tooltip?: {
     show: boolean;
-    template?: string;
+    template?: string
   };
 export interface ConditionalFormatting {
-  id: string;
+  id: string,
   name: string;
-  field: string;
+  field: string,
   format: {
     backgroundColor?: string;
     textColor?: string;
     bold?: boolean;
     italic?: boolean;
     underline?: boolean;
-    icon?: string;
+    icon?: string
   };
   condition: {
-    operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
+    operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in',
     value: unknown;
     value2?: unknown; // For 'between' and 'not_between'
   }
   applyTo?: 'cell' | 'row' | 'column';
-  priority: number;
+  priority: number,
   enabled: boolean
 export interface InteractivityOptions {
-  drillDown: boolean;
+  drillDown: boolean,
   drillThrough: boolean;
-  filtering: boolean;
+  filtering: boolean,
   sorting: boolean;
-  selection: boolean;
+  selection: boolean,
   exporting: boolean;
   linkedFiltering?: boolean;
   linkedSelection?: boolean;
-  tooltips: boolean;
+  tooltips: boolean,
   contextMenu: boolean;
   actions?: ReportAction[];
 export interface ReportAction {
-  id: string;
+  id: string,
   name: string;
   icon?: string;
   type: 'NAVIGATION' | 'API_CALL' | 'EXPORT' | 'CUSTOM';
@@ -529,35 +529,35 @@ export interface ReportAction {
   condition?: string;
   confirmationMessage?: string;
 export interface DrillThroughTarget {
-  id: string;
+  id: string,
   name: string;
   type: 'REPORT' | 'DASHBOARD' | 'URL' | 'DETAIL';
   targetId?: string;
   url?: string;
   parameters: {
-    source: string;
-    target: string;
+    source: string,
+    target: string
   }[];
   openInNewWindow: boolean
 export interface ReportFilter {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'MULTI_SELECT';
-  field: string;
+  field: string,
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
   value?: unknown;
   value2?: unknown; // For 'between' and 'not_between'
   required: boolean
   defaultValue?: unknown,
-  visible: boolean;
+  visible: boolean,
   order: number;
   controlType: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'DROPDOWN' | 'MULTI_SELECT' | 'CHECKBOX' | 'RADIO' | 'SLIDER' | 'ADVANCED';
   controlSettings?: {
     placeholder?: string;
     options?: {
-      value: unknown;
-      label: string;
+      value: unknown,
+      label: string
     }[];
     optionsUrl?: string;
     minValue?: number;
@@ -567,7 +567,7 @@ export interface ReportFilter {
     showTime?: boolean;
     width?: number;
     height?: number;
-    style?: Record<string, any>;
+    style?: Record<string, any>
   };
   validations?: {
     minLength?: number;
@@ -575,30 +575,30 @@ export interface ReportFilter {
     minValue?: number;
     maxValue?: number;
     pattern?: string;
-    custom?: string;
+    custom?: string
   };
   cascadingFilter?: {
-    parentFilterId: string;
+    parentFilterId: string,
     dependencyField: string;
-    valueMapping?: Record<string, any>;
+    valueMapping?: Record<string, any>
   };
 export interface ReportParameter {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'ARRAY' | 'OBJECT';
   description?: string;
   required: boolean;
   defaultValue?: unknown;
-  allowMultiple: boolean;
+  allowMultiple: boolean,
   visible: boolean;
-  order: number;
+  order: number,
   controlType: 'TEXT' | 'NUMBER' | 'DATE' | 'DATE_RANGE' | 'DROPDOWN' | 'MULTI_SELECT' | 'CHECKBOX' | 'RADIO' | 'SLIDER' | 'ADVANCED';
   controlSettings?: {
     placeholder?: string;
     options?: {
-      value: unknown;
-      label: string;
+      value: unknown,
+      label: string
     }[];
     optionsUrl?: string;
     minValue?: number;
@@ -608,7 +608,7 @@ export interface ReportParameter {
     showTime?: boolean;
     width?: number;
     height?: number;
-    style?: Record<string, any>;
+    style?: Record<string, any>
   };
   validations?: {
     minLength?: number;
@@ -616,55 +616,55 @@ export interface ReportParameter {
     minValue?: number;
     maxValue?: number;
     pattern?: string;
-    custom?: string;
+    custom?: string
   };
 export interface ReportSorting {
-  field: string;
+  field: string,
   direction: 'ASC' | 'DESC';
   order: number
 export interface ReportGrouping {
-  field: string;
+  field: string,
   enabled: boolean;
   order: number;
   groupingFunction?: string;
-  showSubtotals: boolean;
+  showSubtotals: boolean,
   collapsed: boolean
 export interface ReportCalculation {
-  id: string;
+  id: string,
   name: string;
-  displayName: string;
+  displayName: string,
   formula: string;
   dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN';
   format?: string;
   description?: string;
-  visible: boolean;
+  visible: boolean,
   scope: 'ROW' | 'GROUP' | 'OVERALL'
 export interface FormatSettings {
   numbers: {
-    decimalSeparator: '.' | ',';
+    decimalSeparator: '.' | ',',
     thousandsSeparator: ',' | '.' | ' ' | 'none';
-    currency: string;
+    currency: string,
     currencyPosition: 'prefix' | 'suffix';
-    decimalPlaces: number;
+    decimalPlaces: number,
     showZeroValues: boolean;
-    useGrouping: boolean;
+    useGrouping: boolean,
     negativeFormat: 'minus' | 'parentheses' | 'color';
     negativeColor?: string;
-    nullDisplay?: string;
+    nullDisplay?: string
   };
   dates: {
     format: string;
     timeFormat?: string;
-    showTime: boolean;
+    showTime: boolean,
     calendarType: 'gregorian' | 'lunar';
-    firstDayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-    locale: string;
+    firstDayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6,
+    locale: string
   };
   text: {
     nullDisplay?: string;
     maxLength?: number;
     truncation?: 'none' | 'ellipsis' | 'character_limit';
-    case?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+    case?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
   };
   colors: {
     positive?: string;
@@ -672,10 +672,10 @@ export interface FormatSettings {
     neutral?: string;
     highlight?: string;
     nullColor?: string;
-    alternateRowColor?: string;
+    alternateRowColor?: string
   };
 export interface ReportSchedule {
-  enabled: boolean;
+  enabled: boolean,
   frequency: 'ONCE' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY' | 'CUSTOM';
   customExpression?: string; // Cron expression
   startDate: Date;
@@ -690,53 +690,53 @@ export interface ReportSchedule {
     email?: string[];
     users?: string[];
     roles?: string[];
-    departments?: string[];
+    departments?: string[]
   };
-  outputFormats: ('PDF' | 'EXCEL' | 'CSV' | 'HTML' | 'JSON')[];
+  outputFormats: ('PDF' | 'EXCEL' | 'CSV' | 'HTML' | 'JSON')[],
   deliveryMethod: 'EMAIL' | 'FILE_SHARE' | 'API' | 'PORTAL' | 'CUSTOM';
   deliverySettings?: Record<string, any>;
   dynamicParameters?: Record<string, string>;
-  notifyOnEmpty: boolean;
+  notifyOnEmpty: boolean,
   includeAttachment: boolean;
   parameters?: Record<string, any>;
   lastRun?: Date;
   nextRun?: Date;
   status: 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'ERROR'
 export interface ReportPermissions {
-  owner: string;
+  owner: string,
   viewRoles: string[];
-  editRoles: string[];
+  editRoles: string[],
   viewUsers: string[];
-  editUsers: string[];
+  editUsers: string[],
   viewDepartments: string[];
-  editDepartments: string[];
+  editDepartments: string[],
   public: boolean;
   shareLink?: string;
   shareLinkExpiration?: Date;
   exportPermissions: {
-    pdf: boolean;
+    pdf: boolean,
     excel: boolean;
-    csv: boolean;
+    csv: boolean,
     image: boolean;
-    allowedRoles?: string[];
+    allowedRoles?: string[]
   };
 export interface ReportMetadata {
   templateSource: 'CUSTOM' | 'PREDEFINED' | 'DUPLICATE';
   sourceId?: string;
-  version: string;
+  version: string,
   versionHistory: {
-    version: string;
+    version: string,
     date: Date;
-    user: string;
-    changes: string;
+    user: string,
+    changes: string
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
   lastViewedDate?: Date;
   lastModifiedDate?: Date;
-  viewCount: number;
+  viewCount: number,
   exportCount: number;
-  scheduleCount: number;
+  scheduleCount: number,
   categories: string[];
   keywords: string[];
   customMetadata?: Record<string, any>;
@@ -744,42 +744,42 @@ export interface ReportMetadata {
 
 // Report data models
 export interface ReportData {
-  reportId: string;
+  reportId: string,
   timestamp: Date;
-  parameters: Record<string, any>;
+  parameters: Record<string, any>,
   filterValues: Record<string, any>;
-  components: Record<string, ComponentData>;
+  components: Record<string, ComponentData>,
   metadata: {
-    executionTime: number;
+    executionTime: number,
     status: 'SUCCESS' | 'PARTIAL' | 'ERROR';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED';
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED',
     rowCount: number;
-    dataTimestamp: Date;
+    dataTimestamp: Date
   };
-  totalPages: number;
+  totalPages: number,
   currentPage: number;
   hasMoreData: boolean
 export interface ComponentData {
-  componentId: string;
+  componentId: string,
   data: unknown[];
   columns: ColumnMetadata[];
   aggregations?: Record<string, any>;
-  totalRowCount: number;
+  totalRowCount: number,
   status: 'SUCCESS' | 'ERROR' | 'NO_DATA';
   errorMessage?: string;
   executionTime: number;
   paging?: {
-    page: number;
+    page: number,
     pageSize: number;
-    totalPages: number;
-    totalRows: number;
+    totalPages: number,
+    totalRows: number
   };
 export interface ColumnMetadata {
-  name: string;
+  name: string,
   displayName: string;
-  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY';
+  dataType: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'OBJECT' | 'ARRAY',
   role: 'DIMENSION' | 'MEASURE' | 'CALCULATED' | 'PARAMETER' | 'ATTRIBUTE';
   format?: string;
   description?: string;
@@ -791,81 +791,81 @@ export interface ColumnMetadata {
     count?: number;
     distinctCount?: number;
     nullCount?: number;
-    nullPercentage?: number;
+    nullPercentage?: number
   };
 }
 
 // Regulatory reporting models
 export interface RegulatoryReport {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   reportType: 'CMS' | 'JCAHO' | 'STATE' | 'FEDERAL' | 'CUSTOM';
-  reportCode: string;
+  reportCode: string,
   regulatoryBody: string;
   frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'ONE_TIME' | 'CUSTOM';
   dueDate?: Date;
   submissionPeriod: {
-    startDate: Date;
-    endDate: Date;
+    startDate: Date,
+    endDate: Date
   };
   reportingPeriod: {
-    startDate: Date;
-    endDate: Date;
+    startDate: Date,
+    endDate: Date
   };
-  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'PENDING_APPROVAL' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMPLETED';
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'PENDING_APPROVAL' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMPLETED',
   dataValidation: DataValidation[];
-  metrics: RegulatoryMetric[];
+  metrics: RegulatoryMetric[],
   attachments: Attachment[];
-  assignedTo: string[];
+  assignedTo: string[],
   approvers: string[];
   submittedBy?: string;
   submittedDate?: Date;
   approvedBy?: string;
   approvedDate?: Date;
-  certifications: Certification[];
+  certifications: Certification[],
   validationStatus: 'NOT_VALIDATED' | 'VALIDATION_IN_PROGRESS' | 'VALIDATION_FAILED' | 'VALIDATION_PASSED';
   submissionMethod: 'ELECTRONIC' | 'MANUAL' | 'API' | 'FILE_UPLOAD';
   submissionUrl?: string;
   submissionCredentials?: {
-    username: string;
-    encryptedPassword: string;
+    username: string,
+    encryptedPassword: string
   };
-  lastUpdated: Date;
+  lastUpdated: Date,
   comments: Comment[];
-  history: HistoryEntry[];
+  history: HistoryEntry[],
   template: boolean;
-  created: Date;
+  created: Date,
   createdBy: string;
-  version: string;
+  version: string,
   metadata: Record<string, any>;
 export interface DataValidation {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'COMPLETENESS' | 'CONSISTENCY' | 'ACCURACY' | 'TIMELINESS' | 'CUSTOM';
-  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'FAILED' | 'PASSED';
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'FAILED' | 'PASSED',
   rules: ValidationRule[];
-  errorCount: number;
+  errorCount: number,
   warningCount: number;
   lastValidated?: Date;
   validatedBy?: string;
 export interface ValidationRule {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   type: 'REQUIRED' | 'FORMAT' | 'RANGE' | 'COMPARISON' | 'DUPLICATE' | 'REFERENCE' | 'FORMULA' | 'CUSTOM';
-  severity: 'ERROR' | 'WARNING' | 'INFO';
+  severity: 'ERROR' | 'WARNING' | 'INFO',
   expression: string;
   field?: string;
-  status: 'NOT_EXECUTED' | 'PASSED' | 'FAILED';
+  status: 'NOT_EXECUTED' | 'PASSED' | 'FAILED',
   errorCount: number;
   errorMessage?: string;
   errorRecords?: unknown[];
 export interface RegulatoryMetric {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   category: string;
   value: unknown;
   format?: string;
@@ -876,35 +876,35 @@ export interface RegulatoryMetric {
   trend?: 'IMPROVING' | 'STABLE' | 'WORSENING';
   previousValue?: unknown;
   previousPeriod?: {
-    startDate: Date;
-    endDate: Date;
+    startDate: Date,
+    endDate: Date
   };
   historyAvailable: boolean
 export interface Attachment {
-  id: string;
+  id: string,
   name: string;
   description?: string;
-  fileType: string;
+  fileType: string,
   fileSize: number;
-  uploadDate: Date;
+  uploadDate: Date,
   uploadedBy: string;
-  url: string;
+  url: string,
   category: 'REPORT' | 'SUPPORTING' | 'CERTIFICATION' | 'SUBMISSION' | 'OTHER';
   status: 'TEMPORARY' | 'PERMANENT';
   expirationDate?: Date;
 export interface Certification {
-  id: string;
+  id: string,
   type: 'ELECTRONIC_SIGNATURE' | 'ATTESTATION' | 'LEGAL_DOCUMENT' | 'CUSTOM';
-  text: string;
+  text: string,
   certifiedBy: string;
   certificationDate: Date;
   ipAddress?: string;
   attachmentId?: string;
   validUntil?: Date;
 export interface Comment {
-  id: string;
+  id: string,
   text: string;
-  createdBy: string;
+  createdBy: string,
   createdDate: Date;
   updatedDate?: Date;
   attachments?: string[];
@@ -912,57 +912,57 @@ export interface Comment {
   mentions?: string[];
   status: 'ACTIVE' | 'DELETED'
 export interface HistoryEntry {
-  id: string;
+  id: string,
   action: 'CREATED' | 'UPDATED' | 'STATUS_CHANGED' | 'ASSIGNED' | 'VALIDATED' | 'APPROVED' | 'SUBMITTED' | 'REJECTED' | 'COMMENTED' | 'ATTACHMENT_ADDED' | 'ATTACHMENT_REMOVED' | 'CERTIFIED' | 'CUSTOM';
-  actionBy: string;
+  actionBy: string,
   actionDate: Date;
-  details: Record<string, any>;
+  details: Record<string, any>
 }
 
 // Natural language query models
 export interface NaturalLanguageQuery {
-  id: string;
+  id: string,
   query: string;
   interpretedQuery: {
-    fields: string[];
+    fields: string[],
     filters: {
-      field: string;
+      field: string,
       operator: string;
-      value: unknown;
+      value: unknown
     }[];
     sortBy?: {
-      field: string;
-      direction: 'ASC' | 'DESC';
+      field: string,
+      direction: 'ASC' | 'DESC'
     }[];
     limit?: number;
     groupBy?: string[];
     calculations?: {
-      field: string;
-      function: string;
+      field: string,
+      function: string
     }[];
     timeRange?: {
       period?: string;
       start?: Date;
-      end?: Date;
+      end?: Date
     };
-    customFunctions?: Record<string, any>;
+    customFunctions?: Record<string, any>
   };
-  queryType: 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN';
+  queryType: 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN',
   confidence: number; // 0-100
   alternativeInterpretations?: {
-    interpretedQuery: unknown;
-    confidence: number;
+    interpretedQuery: unknown,
+    confidence: number
   }[];
-  dataSource: string;
+  dataSource: string,
   executionTime: number;
   error?: string;
-  resultCount: number;
+  resultCount: number,
   timestamp: Date;
   userId: string;
   feedback?: {
     rating: 'POSITIVE' | 'NEGATIVE';
     comments?: string;
-    correctedQuery?: string;
+    correctedQuery?: string
   };
   relatedQueries?: string[];
   context?: Record<string, any>;
@@ -1012,9 +1012,9 @@ export class CustomReportService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.report_template_queries', 1, {
-        category: filters?.category || 'ALL';
+        category: filters?.category || 'ALL',
         type: filters?.type || 'ALL';
-        status: filters?.status || 'ACTIVE';
+        status: filters?.status || 'ACTIVE'
       });
 
       return templates as ReportTemplate[];
@@ -1050,8 +1050,8 @@ export class CustomReportService {
         data: {
           metadata: {
             ...template.metadata,
-            viewCount: template.metadata.viewCount + 1;
-            lastViewedDate: new Date();
+            viewCount: template.metadata.viewCount + 1,
+            lastViewedDate: new Date()
           },
         },
       });
@@ -1077,10 +1077,10 @@ export class CustomReportService {
       // Initialize metadata
       const metadata = {
         ...template.metadata,
-        viewCount: 0;
+        viewCount: 0,
         exportCount: 0;
-        scheduleCount: 0;
-        lastModifiedDate: new Date();
+        scheduleCount: 0,
+        lastModifiedDate: new Date()
       };
 
       // Create template
@@ -1088,9 +1088,9 @@ export class CustomReportService {
         data: {
           ...template,
           id: `report-template-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-          created: new Date();
-          updated: new Date();
-          createdBy: userId;
+          created: new Date(),
+          updated: new Date(),
+          createdBy: userId,
           updatedBy: userId;
           metadata,
         },
@@ -1098,14 +1098,14 @@ export class CustomReportService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         resourceType: 'REPORT_TEMPLATE';
         resourceId: newTemplate.id;
         userId,
         details: {
-          name: template.name;
+          name: template.name,
           category: template.category;
-          type: template.type;
+          type: template.type
         },
       });
 
@@ -1114,14 +1114,14 @@ export class CustomReportService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.report_templates_created', 1, {
-        category: template.category;
+        category: template.category,
         type: template.type;
         userId,
       });
 
       // Publish event
       await pubsub.publish('REPORT_TEMPLATE_CREATED', {
-        reportTemplateCreated: newTemplate;
+        reportTemplateCreated: newTemplate
       });
 
       return newTemplate as ReportTemplate;
@@ -1135,7 +1135,7 @@ export class CustomReportService {
    * Update report template;
    */
   async updateReportTemplate(
-    id: string;
+    id: string,
     updates: Partial<ReportTemplate>;
     userId: string;
   ): Promise<ReportTemplate> {
@@ -1152,17 +1152,17 @@ export class CustomReportService {
       // Update metadata
       const metadata = {
         ...currentTemplate.metadata,
-        lastModifiedDate: new Date();
+        lastModifiedDate: new Date()
       };
 
       // Update version history if version changed
       if (updates?.version && updates.version !== currentTemplate.version) {
         const versionHistory = [...(currentTemplate.metadata.versionHistory || [])];
         versionHistory.unshift({
-          version: updates.version;
-          date: new Date();
-          user: userId;
-          changes: 'Template updated';
+          version: updates.version,
+          date: new Date(),
+          user: userId,
+          changes: 'Template updated'
         });
 
         metadata.versionHistory = versionHistory;
@@ -1173,7 +1173,7 @@ export class CustomReportService {
         where: { id },
         data: {
           ...updates,
-          updated: new Date();
+          updated: new Date(),
           updatedBy: userId;
           metadata,
         },
@@ -1181,14 +1181,14 @@ export class CustomReportService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'UPDATE';
+        action: 'UPDATE',
         resourceType: 'REPORT_TEMPLATE';
         resourceId: id;
         userId,
         details: {
-          name: currentTemplate.name;
+          name: currentTemplate.name,
           previousVersion: currentTemplate.version;
-          newVersion: updates.version || currentTemplate.version;
+          newVersion: updates.version || currentTemplate.version
         },
       });
 
@@ -1198,7 +1198,7 @@ export class CustomReportService {
 
       // Publish event
       await pubsub.publish('REPORT_TEMPLATE_UPDATED', {
-        reportTemplateUpdated: updatedTemplate;
+        reportTemplateUpdated: updatedTemplate
       });
 
       return updatedTemplate as ReportTemplate;
@@ -1212,7 +1212,7 @@ export class CustomReportService {
    * Generate report data;
    */
   async generateReportData(
-    templateId: string;
+    templateId: string,
     options: {
       parameters?: Record<string, any>;
       filters?: Record<string, any>;
@@ -1241,7 +1241,7 @@ export class CustomReportService {
             ...cached,
             metadata: {
               ...cached.metadata,
-              cacheStatus: 'CACHED';
+              cacheStatus: 'CACHED'
             },
           };
         }
@@ -1297,13 +1297,13 @@ export class CustomReportService {
             } catch (error) {
 
               components[component.id] = {
-                componentId: component.id;
+                componentId: component.id,
                 data: [];
-                columns: [];
+                columns: [],
                 totalRowCount: 0;
-                status: 'ERROR';
+                status: 'ERROR',
                 errorMessage: error.message;
-                executionTime: 0;
+                executionTime: 0
               };
 
               reportStatus = 'PARTIAL';
@@ -1317,22 +1317,22 @@ export class CustomReportService {
 
       // Create report data
       const reportData: ReportData = {
-        reportId: templateId;
-        timestamp: new Date();
+        reportId: templateId,
+        timestamp: new Date(),
         parameters: options.parameters || {},
         filterValues: options.filters || {},
         components,
         metadata: {
-          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: reportStatus;
-          warningMessages: warningMessages.length > 0 ? warningMessages : undefined;
+          warningMessages: warningMessages.length > 0 ? warningMessages : undefined,
           cacheStatus: 'FRESH';
-          rowCount: totalRowCount;
-          dataTimestamp: new Date();
+          rowCount: totalRowCount,
+          dataTimestamp: new Date()
         },
         totalPages,
-        currentPage: page;
-        hasMoreData: page < totalPages;
+        currentPage: page,
+        hasMoreData: page < totalPages
       };
 
       // Cache the result
@@ -1349,19 +1349,19 @@ export class CustomReportService {
         data: {
           metadata: {
             ...template.metadata,
-            exportCount: template.metadata.exportCount + 1;
+            exportCount: template.metadata.exportCount + 1
           },
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'GENERATE_REPORT';
+        action: 'GENERATE_REPORT',
         resourceType: 'REPORT';
         resourceId: templateId;
         userId,
         details: {
-          templateName: template.name;
+          templateName: template.name,
           status: reportStatus;
           parameters: JSON.stringify(options.parameters || {}),
           filters: JSON.stringify(options.filters || {}),
@@ -1372,9 +1372,9 @@ export class CustomReportService {
       metricsCollector.recordTimer('analytics.report_generation_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.reports_generated', 1, {
         templateId,
-        templateName: template.name;
+        templateName: template.name,
         category: template.category;
-        status: reportStatus;
+        status: reportStatus
       });
 
       return reportData;
@@ -1383,27 +1383,27 @@ export class CustomReportService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.report_generation_errors', 1, {
         templateId,
-        errorType: error.name;
+        errorType: error.name
       });
 
       // Return error report data
       return {
-        reportId: templateId;
-        timestamp: new Date();
+        reportId: templateId,
+        timestamp: new Date(),
         parameters: options.parameters || {},
         filterValues: options.filters || {},
         components: {},
         metadata: {
-          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR';
-          errorMessage: error.message;
+          errorMessage: error.message,
           cacheStatus: 'FRESH';
-          rowCount: 0;
-          dataTimestamp: new Date();
+          rowCount: 0,
+          dataTimestamp: new Date()
         },
-        totalPages: 0;
+        totalPages: 0,
         currentPage: options.page || 1;
-        hasMoreData: false;
+        hasMoreData: false
       };
     }
   }
@@ -1412,7 +1412,7 @@ export class CustomReportService {
    * Export report;
    */
   async exportReport(
-    templateId: string;
+    templateId: string,
     options: {
       format: 'PDF' | 'EXCEL' | 'CSV' | 'HTML' | 'JSON';
       parameters?: Record<string, any>;
@@ -1422,7 +1422,7 @@ export class CustomReportService {
       landscape?: boolean;
     },
     userId: string;
-  ): Promise<{ url: string; expiresAt: Date }> {
+  ): Promise<{ url: string, expiresAt: Date }> {
     try {
       // Get report template
       const template = await this.getReportTemplateById(templateId);
@@ -1439,11 +1439,11 @@ export class CustomReportService {
       const reportData = await this.generateReportData(
         templateId,
         {
-          parameters: options.parameters;
+          parameters: options.parameters,
           filters: options.filters;
-          page: 1;
+          page: 1,
           pageSize: 10000, // Get all data for export
-          caching: true;
+          caching: true
         },
         userId;
       );
@@ -1468,12 +1468,12 @@ export class CustomReportService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'EXPORT_REPORT';
+        action: 'EXPORT_REPORT',
         resourceType: 'REPORT';
         resourceId: templateId;
         userId,
         details: {
-          templateName: template.name;
+          templateName: template.name,
           format: options.format;
           parameters: JSON.stringify(options.parameters || {}),
           filters: JSON.stringify(options.filters || {}),
@@ -1483,8 +1483,8 @@ export class CustomReportService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.reports_exported', 1, {
         templateId,
-        templateName: template.name;
-        format: options.format;
+        templateName: template.name,
+        format: options.format
       });
 
       return {
@@ -1496,8 +1496,8 @@ export class CustomReportService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.report_export_errors', 1, {
         templateId,
-        format: options.format;
-        errorType: error.name;
+        format: options.format,
+        errorType: error.name
       });
 
       throw error;
@@ -1508,7 +1508,7 @@ export class CustomReportService {
    * Schedule report;
    */
   async scheduleReport(
-    templateId: string;
+    templateId: string,
     schedule: Omit<ReportSchedule, 'lastRun' | 'nextRun' | 'status'>,
     userId: string;
   ): Promise<ReportSchedule> {
@@ -1530,32 +1530,32 @@ export class CustomReportService {
         ...schedule,
         lastRun: undefined;
         nextRun,
-        status: 'ACTIVE';
+        status: 'ACTIVE'
       };
 
       // Update template with schedule
       const updatedTemplate = await this.prisma.reportTemplate.update({
         where: { id: templateId },
         data: {
-          schedule: newSchedule;
+          schedule: newSchedule,
           metadata: {
             ...template.metadata,
-            scheduleCount: template.metadata.scheduleCount + 1;
+            scheduleCount: template.metadata.scheduleCount + 1
           },
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'SCHEDULE_REPORT';
+        action: 'SCHEDULE_REPORT',
         resourceType: 'REPORT';
         resourceId: templateId;
         userId,
         details: {
-          templateName: template.name;
+          templateName: template.name,
           frequency: schedule.frequency;
-          recipients: JSON.stringify(schedule.recipients);
-          outputFormats: schedule.outputFormats.join(','),;
+          recipients: JSON.stringify(schedule.recipients),
+          outputFormats: schedule.outputFormats.join(','),
         },
       });
 
@@ -1565,18 +1565,18 @@ export class CustomReportService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.reports_scheduled', 1, {
         templateId,
-        templateName: template.name;
-        frequency: schedule.frequency;
+        templateName: template.name,
+        frequency: schedule.frequency
       });
 
       // Publish event
       await pubsub.publish('REPORT_SCHEDULED', {
         reportScheduled: {
-          reportId: templateId;
+          reportId: templateId,
           reportName: template.name;
           schedule: newSchedule;
           userId,
-          timestamp: new Date();
+          timestamp: new Date()
         },
       });
 
@@ -1593,7 +1593,7 @@ export class CustomReportService {
   async getRegulatoryReports(filters?: {
     reportType?: string;
     status?: string;
-    dueDate?: { start: Date; end: Date };
+    dueDate?: { start: Date, end: Date };
     assignedTo?: string;
   }): Promise<RegulatoryReport[]> {
     try {
@@ -1603,13 +1603,13 @@ export class CustomReportService {
       if (filters?.status) where.status = filters.status;
       if (filters?.dueDate) {
         where.dueDate = {
-          gte: filters.dueDate.start;
-          lte: filters.dueDate.end;
+          gte: filters.dueDate.start,
+          lte: filters.dueDate.end
         };
       }
       if (filters?.assignedTo) {
         where.assignedTo = {
-          has: filters.assignedTo;
+          has: filters.assignedTo
         };
       }
 
@@ -1624,8 +1624,8 @@ export class CustomReportService {
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.regulatory_report_queries', 1, {
-        reportType: filters?.reportType || 'ALL';
-        status: filters?.status || 'ALL';
+        reportType: filters?.reportType || 'ALL',
+        status: filters?.status || 'ALL'
       });
 
       return reports as RegulatoryReport[];
@@ -1649,12 +1649,12 @@ export class CustomReportService {
       // Create history entry
       const historyEntry: HistoryEntry = {
         id: `history-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        action: 'CREATED';
+        action: 'CREATED',
         actionBy: userId;
-        actionDate: new Date();
+        actionDate: new Date(),
         details: {
-          reportType: report.reportType;
-          status: report.status;
+          reportType: report.reportType,
+          status: report.status
         },
       };
 
@@ -1663,35 +1663,35 @@ export class CustomReportService {
         data: {
           ...report,
           id: `regulatory-report-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-          created: new Date();
-          lastUpdated: new Date();
-          history: [historyEntry];
+          created: new Date(),
+          lastUpdated: new Date(),
+          history: [historyEntry]
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         resourceType: 'REGULATORY_REPORT';
         resourceId: newReport.id;
         userId,
         details: {
-          name: report.name;
+          name: report.name,
           reportType: report.reportType;
-          reportCode: report.reportCode;
-          dueDate: report.dueDate;
+          reportCode: report.reportCode,
+          dueDate: report.dueDate
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.regulatory_reports_created', 1, {
-        reportType: report.reportType;
-        status: report.status;
+        reportType: report.reportType,
+        status: report.status
       });
 
       // Publish event
       await pubsub.publish('REGULATORY_REPORT_CREATED', {
-        regulatoryReportCreated: newReport;
+        regulatoryReportCreated: newReport
       });
 
       return newReport as RegulatoryReport;
@@ -1705,13 +1705,13 @@ export class CustomReportService {
    * Natural language query;
    */
   async naturalLanguageQuery(
-    query: string;
+    query: string,
     options: {
       dataSource?: string;
       context?: Record<string, any>;
     },
     userId: string;
-  ): Promise<{ query: NaturalLanguageQuery; data: unknown[] }> {
+  ): Promise<{ query: NaturalLanguageQuery, data: unknown[] }> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
@@ -1729,54 +1729,54 @@ export class CustomReportService {
       const nlQuery: NaturalLanguageQuery = {
         id: `nl-query-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         query,
-        interpretedQuery: processedQuery;
-        queryType: this.determineQueryType(processedQuery);
-        confidence: queryResults.confidence;
+        interpretedQuery: processedQuery,
+        queryType: this.determineQueryType(processedQuery),
+        confidence: queryResults.confidence,
         alternativeInterpretations: queryResults.alternativeInterpretations;
-        dataSource: options.dataSource || 'default';
+        dataSource: options.dataSource || 'default',
         executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
-        resultCount: queryResults.data.length;
-        timestamp: new Date();
+        resultCount: queryResults.data.length,
+        timestamp: new Date(),
         userId,
-        relatedQueries: await this.findRelatedQueries(query);
-        context: options.context;
+        relatedQueries: await this.findRelatedQueries(query),
+        context: options.context
       };
 
       await this.prisma.naturalLanguageQuery.create({
-        data: nlQuery as any;
+        data: nlQuery as any
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'NATURAL_LANGUAGE_QUERY';
+        action: 'NATURAL_LANGUAGE_QUERY',
         resourceType: 'QUERY';
         resourceId: nlQuery.id;
         userId,
         details: {
           query,
-          dataSource: options.dataSource;
+          dataSource: options.dataSource,
           resultCount: queryResults.data.length;
-          executionTime: nlQuery.executionTime;
+          executionTime: nlQuery.executionTime
         },
       });
 
       // Record metrics
       metricsCollector.recordTimer('analytics.nlq_execution_time', nlQuery.executionTime);
       metricsCollector.incrementCounter('analytics.natural_language_queries', 1, {
-        queryType: nlQuery.queryType;
+        queryType: nlQuery.queryType,
         dataSource: nlQuery.dataSource;
-        resultSize: queryResults.data.length < 10 ? 'small' : queryResults.data.length < 100 ? 'medium' : 'large';
+        resultSize: queryResults.data.length < 10 ? 'small' : queryResults.data.length < 100 ? 'medium' : 'large'
       });
 
       return {
-        query: nlQuery;
-        data: queryResults.data;
+        query: nlQuery,
+        data: queryResults.data
       };
     } catch (error) {
 
       // Record error metric
       metricsCollector.incrementCounter('analytics.nlq_errors', 1, {
-        errorType: error.name;
+        errorType: error.name
       });
 
       // Create error query record
@@ -1784,19 +1784,19 @@ export class CustomReportService {
         id: `nl-query-error-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         query,
         interpretedQuery: { fields: [], filters: [] },
-        queryType: 'UNKNOWN';
+        queryType: 'UNKNOWN',
         confidence: 0;
-        dataSource: options.dataSource || 'default';
+        dataSource: options.dataSource || 'default',
         executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
-        error: error.message;
+        error: error.message,
         resultCount: 0;
-        timestamp: new Date();
+        timestamp: new Date(),
         userId,
-        context: options.context;
+        context: options.context
       };
 
       await this.prisma.naturalLanguageQuery.create({
-        data: errorQuery as any;
+        data: errorQuery as any
       });
 
       throw error;
@@ -1807,7 +1807,7 @@ export class CustomReportService {
    * Provide feedback for natural language query;
    */
   async provideQueryFeedback(
-    queryId: string;
+    queryId: string,
     feedback: {
       rating: 'POSITIVE' | 'NEGATIVE';
       comments?: string;
@@ -1826,21 +1826,21 @@ export class CustomReportService {
 
       // Create audit log
       await this.auditService.createAuditLog({
-        action: 'QUERY_FEEDBACK';
+        action: 'QUERY_FEEDBACK',
         resourceType: 'QUERY';
         resourceId: queryId;
         userId,
         details: {
-          rating: feedback.rating;
+          rating: feedback.rating,
           comments: feedback.comments;
-          correctedQuery: feedback.correctedQuery;
+          correctedQuery: feedback.correctedQuery
         },
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.query_feedback', 1, {
-        rating: feedback.rating;
-        hasCorrectedQuery: feedback.correctedQuery ? 'true' : 'false';
+        rating: feedback.rating,
+        hasCorrectedQuery: feedback.correctedQuery ? 'true' : 'false'
       });
 
       // If negative feedback with corrected query, use it for learning
@@ -1863,7 +1863,7 @@ export class CustomReportService {
   }
 
   private applyFiltersToComponent(
-    component: ReportComponent;
+    component: ReportComponent,
     filters: Record<string, any>
   ): Record<string, any> {
     // Implementation to apply filters to component query
@@ -1872,7 +1872,7 @@ export class CustomReportService {
   }
 
   private applyParametersToComponent(
-    component: ReportComponent;
+    component: ReportComponent,
     parameters: Record<string, any>;
   ): Record<string, any> {
     // Implementation to apply parameters to component query
@@ -1881,10 +1881,10 @@ export class CustomReportService {
   }
 
   private async generateComponentData(
-    component: ReportComponent;
+    component: ReportComponent,
     filters: Record<string, any>,
     parameters: Record<string, any>,
-    pagination: { page: number; pageSize: number }
+    pagination: { page: number, pageSize: number }
   ): Promise<ComponentData> {
     // This would be implemented to fetch actual data from the data source
     // Here we just simulate component data
@@ -1899,21 +1899,21 @@ export class CustomReportService {
       switch (component.type) {
         case ComponentType.TABLE:
           columns = component.fields.map(field => ({
-            name: field.name;
+            name: field.name,
             displayName: field.displayName;
-            dataType: field.dataType;
+            dataType: field.dataType,
             role: field.role;
-            format: field.format;
+            format: field.format,
             description: field.description;
             statistics: {
-              min: null;
+              min: null,
               max: null;
-              avg: null;
+              avg: null,
               sum: null;
-              count: 0;
+              count: 0,
               distinctCount: 0;
-              nullCount: 0;
-              nullPercentage: 0;
+              nullCount: 0,
+              nullPercentage: 0
             },
           }));
 
@@ -1931,7 +1931,7 @@ export class CustomReportService {
               } else if (field.dataType === 'BOOLEAN') {
                 row[field.name] = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5;
               } else {
-                row[field.name] = `Sample /* SECURITY: Template literal eliminated */;
+                row[field.name] = `Sample /* SECURITY: Template literal eliminated */
               }
             });
             data.push(row);
@@ -1945,8 +1945,8 @@ export class CustomReportService {
               aggregations[field.name] = {
                 sum: data.reduce((sum, row) => sum + (row[field.name] || 0), 0),
                 avg: data.reduce((sum, row) => sum + (row[field.name] || 0), 0) / data.length,
-                min: Math.min(...data.map(row => row[field.name] || 0));
-                max: Math.max(...data.map(row => row[field.name] || 0));
+                min: Math.min(...data.map(row => row[field.name] || 0)),
+                max: Math.max(...data.map(row => row[field.name] || 0))
               };
             }
           });
@@ -1956,17 +1956,17 @@ export class CustomReportService {
           // For chart, generate categorical data
           columns = [
             {
-              name: 'category';
+              name: 'category',
               displayName: 'Category';
-              dataType: 'STRING';
-              role: 'DIMENSION';
+              dataType: 'STRING',
+              role: 'DIMENSION'
             },
             {
-              name: 'value';
+              name: 'value',
               displayName: 'Value';
-              dataType: 'NUMBER';
+              dataType: 'NUMBER',
               role: 'MEASURE';
-              format: '#,##0',;
+              format: '#,##0',
             },
           ];
 
@@ -1975,7 +1975,7 @@ export class CustomReportService {
 
           data = categories.map(category => ({
             category,
-            value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+            value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)
           }));
 
           totalRowCount = data.length;
@@ -1985,8 +1985,8 @@ export class CustomReportService {
             value: {
               sum: data.reduce((sum, row) => sum + row.value, 0),
               avg: data.reduce((sum, row) => sum + row.value, 0) / data.length,
-              min: Math.min(...data.map(row => row.value));
-              max: Math.max(...data.map(row => row.value));
+              min: Math.min(...data.map(row => row.value)),
+              max: Math.max(...data.map(row => row.value))
             },
           };
           break;
@@ -1995,30 +1995,30 @@ export class CustomReportService {
           // For metric, generate a single value
           columns = [
             {
-              name: 'metric';
+              name: 'metric',
               displayName: 'Metric';
-              dataType: 'STRING';
-              role: 'DIMENSION';
+              dataType: 'STRING',
+              role: 'DIMENSION'
             },
             {
-              name: 'value';
+              name: 'value',
               displayName: 'Value';
-              dataType: 'NUMBER';
+              dataType: 'NUMBER',
               role: 'MEASURE';
-              format: '#,##0',;
+              format: '#,##0',
             },
             {
-              name: 'previousValue';
+              name: 'previousValue',
               displayName: 'Previous Value';
-              dataType: 'NUMBER';
+              dataType: 'NUMBER',
               role: 'MEASURE';
-              format: '#,##0',;
+              format: '#,##0',
             },
             {
-              name: 'trend';
+              name: 'trend',
               displayName: 'Trend';
-              dataType: 'STRING';
-              role: 'DIMENSION';
+              dataType: 'STRING',
+              role: 'DIMENSION'
             },
           ];
 
@@ -2042,17 +2042,17 @@ export class CustomReportService {
           // Default sample data
           columns = [
             {
-              name: 'key';
+              name: 'key',
               displayName: 'Key';
-              dataType: 'STRING';
-              role: 'DIMENSION';
+              dataType: 'STRING',
+              role: 'DIMENSION'
             },
             {
-              name: 'value';
+              name: 'value',
               displayName: 'Value';
-              dataType: 'NUMBER';
+              dataType: 'NUMBER',
               role: 'MEASURE';
-              format: '#,##0',;
+              format: '#,##0',
             },
           ];
 
@@ -2068,13 +2068,13 @@ export class CustomReportService {
     } catch (error) {
 
       return {
-        componentId: component.id;
+        componentId: component.id,
         data: [];
-        columns: [];
+        columns: [],
         totalRowCount: 0;
-        status: 'ERROR';
+        status: 'ERROR',
         errorMessage: error.message;
-        executionTime: 0;
+        executionTime: 0
       };
     }
 
@@ -2084,19 +2084,19 @@ export class CustomReportService {
       columns,
       totalRowCount,
       aggregations,
-      status: 'SUCCESS';
+      status: 'SUCCESS',
       executionTime: 50, // simulated execution time in ms
       paging: {
-        page: pagination.page;
+        page: pagination.page,
         pageSize: pagination.pageSize;
-        totalPages: Math.ceil(totalRowCount / pagination.pageSize);
-        totalRows: totalRowCount;
+        totalPages: Math.ceil(totalRowCount / pagination.pageSize),
+        totalRows: totalRowCount
       },
     };
   }
 
   private checkExportPermissions(
-    template: ReportTemplate;
+    template: ReportTemplate,
     format: string;
     userId: string;
   ): boolean {
@@ -2105,7 +2105,7 @@ export class CustomReportService {
   }
 
   private formatReportForExport(
-    template: ReportTemplate;
+    template: ReportTemplate,
     reportData: ReportData;
     options: unknown;
   ): unknown {
@@ -2118,7 +2118,7 @@ export class CustomReportService {
   }
 
   private async generateExportFile(
-    data: unknown;
+    data: unknown,
     format: string;
     filename: string;
   ): Promise<string> {
@@ -2157,7 +2157,7 @@ export class CustomReportService {
         // This would be a complex implementation
         nextRun.setDate(nextRun.getDate() + 1);
         break;
-      default: nextRun.setDate(nextRun.getDate() + 1);
+      default: nextRun.setDate(nextRun.getDate() + 1)
     }
 
     return nextRun;
@@ -2178,18 +2178,18 @@ export class CustomReportService {
       fields: ['category', 'value'],
       filters: [
         {
-          field: 'date';
+          field: 'date',
           operator: 'GREATER_THAN';
-          value: new Date(new Date().setMonth(new Date().getMonth() - 3));
+          value: new Date(new Date().setMonth(new Date().getMonth() - 3))
         },
       ],
       sortBy: [
         {
-          field: 'value';
-          direction: 'DESC';
+          field: 'value',
+          direction: 'DESC'
         },
       ],
-      limit: 10;
+      limit: 10
     };
   }
 
@@ -2204,20 +2204,20 @@ export class CustomReportService {
         { category: 'Category D', value: 250 },
         { category: 'Category E', value: 100 },
       ],
-      confidence: 0.85;
+      confidence: 0.85,
       alternativeInterpretations: [
         {
           interpretedQuery: {
             fields: ['category', 'count'],
             filters: [
               {
-                field: 'date';
+                field: 'date',
                 operator: 'GREATER_THAN';
-                value: new Date(new Date().setMonth(new Date().getMonth() - 3));
+                value: new Date(new Date().setMonth(new Date().getMonth() - 3))
               },
             ],
           },
-          confidence: 0.70;
+          confidence: 0.70
         },
       ],
     };
@@ -2251,5 +2251,5 @@ export class CustomReportService {
   private async learnFromCorrectedQuery(queryId: string, correctedQuery: string): Promise<void> {
     // Implementation to improve NLP model from corrected queries
     // This would typically be used to train or fine-tune the model
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }

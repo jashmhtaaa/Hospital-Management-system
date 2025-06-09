@@ -27,30 +27,30 @@ import { useToast } from "@/components/ui/use-toast";
 // Define the Booking type based on usage
 interface Booking {
   id?: string; // Optional ID for existing bookings
-  patient_id: string;
+  patient_id: string,
   surgery_type_id: string;
-  theatre_id: string;
+  theatre_id: string,
   lead_surgeon_id: string;
-  anesthesiologist_id: string;
+  anesthesiologist_id: string,
   scheduled_start_time: string | Date; // Can be string or Date
   scheduled_end_time: string | Date; // Can be string or Date
-  booking_type: string;
+  booking_type: string,
   priority: string;
-  booking_notes: string;
+  booking_notes: string
 }
 
 // Define the type for data passed to onSave
 interface BookingSaveData {
-  patient_id: string;
+  patient_id: string,
   surgery_type_id: string;
-  theatre_id: string;
+  theatre_id: string,
   lead_surgeon_id: string;
-  anesthesiologist_id: string;
+  anesthesiologist_id: string,
   scheduled_start_time: string | null;
-  scheduled_end_time: string | null;
+  scheduled_end_time: string | null,
   booking_type: string;
-  priority: string;
-  booking_notes: string;
+  priority: string,
+  booking_notes: string
 }
 
 // Props for the modal - use defined types
@@ -97,20 +97,20 @@ export default const _OTBookingModal = ({
   const [isOpen, setIsOpen] = useState(false);
   // Initialize form data state, handling potential Date objects for time
   const [formData, setFormData] = useState(() => ({
-    patient_id: booking?.patient_id || "";
+    patient_id: booking?.patient_id || "",
     surgery_type_id: booking?.surgery_type_id || "";
-    theatre_id: booking?.theatre_id || "";
+    theatre_id: booking?.theatre_id || "",
     lead_surgeon_id: booking?.lead_surgeon_id || "";
-    anesthesiologist_id: booking?.anesthesiologist_id || "";
+    anesthesiologist_id: booking?.anesthesiologist_id || "",
     scheduled_start_time: booking?.scheduled_start_time;
       ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16);
       : "",
     scheduled_end_time: booking?.scheduled_end_time;
       ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
       : "",
-    booking_type: booking?.booking_type || "elective";
+    booking_type: booking?.booking_type || "elective",
     priority: booking?.priority || "routine";
-    booking_notes: booking?.booking_notes || "";
+    booking_notes: booking?.booking_notes || ""
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
@@ -119,20 +119,20 @@ export default const _OTBookingModal = ({
   useEffect(() => {
     if (isOpen != null) {
       setFormData({
-        patient_id: booking?.patient_id || "";
+        patient_id: booking?.patient_id || "",
         surgery_type_id: booking?.surgery_type_id || "";
-        theatre_id: booking?.theatre_id || "";
+        theatre_id: booking?.theatre_id || "",
         lead_surgeon_id: booking?.lead_surgeon_id || "";
-        anesthesiologist_id: booking?.anesthesiologist_id || "";
+        anesthesiologist_id: booking?.anesthesiologist_id || "",
         scheduled_start_time: booking?.scheduled_start_time;
           ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16);
           : "",
         scheduled_end_time: booking?.scheduled_end_time;
           ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
           : "",
-        booking_type: booking?.booking_type || "elective";
+        booking_type: booking?.booking_type || "elective",
         priority: booking?.priority || "routine";
-        booking_notes: booking?.booking_notes || "";
+        booking_notes: booking?.booking_notes || ""
       });
     } else {
       // Optionally clear form when closed, or keep last state
@@ -144,11 +144,11 @@ export default const _OTBookingModal = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   ) => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -186,7 +186,7 @@ export default const _OTBookingModal = ({
       await onSave(apiData); // Call parent callback to refresh list
 
       toast({
-        title: "Success";
+        title: "Success",
         description: `Booking ${booking ? "updated" : "created"} successfully.`,
       }),
       setIsOpen(false);
@@ -198,9 +198,9 @@ export default const _OTBookingModal = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error";
+        title: "Error",
         description: errorMessage;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSaving(false);

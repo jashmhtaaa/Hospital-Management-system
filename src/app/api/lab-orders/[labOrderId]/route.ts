@@ -14,41 +14,41 @@ const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // R
 
 // Define interface for lab order query result
 interface LabOrderQueryResult {
-    lab_order_id: number;
+    lab_order_id: number,
     consultation_id: number | null;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
-    order_datetime: string;
+    order_datetime: string,
     status: LabOrderStatus;
-    notes: string | null;
+    notes: string | null,
     created_at: string;
-    updated_at: string;
+    updated_at: string,
     patient_first_name: string;
-    patient_last_name: string;
-    doctor_full_name: string | null;
+    patient_last_name: string,
+    doctor_full_name: string | null
 }
 
 // Define interface for lab order item query result
 interface LabOrderItemQueryResult {
-    lab_order_item_id: number;
+    lab_order_item_id: number,
     lab_order_id: number;
-    billable_item_id: number;
+    billable_item_id: number,
     test_name: string;
-    sample_type: string | null;
+    sample_type: string | null,
     sample_id: string | null;
-    sample_collection_datetime: string | null;
+    sample_collection_datetime: string | null,
     sample_collected_by_user_id: number | null;
-    result_value: string | null;
+    result_value: string | null,
     result_unit: string | null;
-    reference_range: string | null;
+    reference_range: string | null,
     result_notes: string | null;
-    result_datetime: string | null;
+    result_datetime: string | null,
     result_verified_by_user_id: number | null;
-    status: string;
+    status: string,
     created_at: string;
-    updated_at: string;
+    updated_at: string,
     billable_item_code: string;
-    sample_collected_by_user_full_name: string | null;
+    sample_collected_by_user_full_name: string | null,
     result_verified_by_user_full_name: string | null
 export const _GET = async (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
     // Pass cookies() directly
@@ -117,54 +117,54 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
 
         // 5. Format the final response
         const labOrder: LabOrder = {
-            lab_order_id: orderResult.lab_order_id;
+            lab_order_id: orderResult.lab_order_id,
             consultation_id: orderResult.consultation_id!;
-            patient_id: orderResult.patient_id;
+            patient_id: orderResult.patient_id,
             doctor_id: orderResult.doctor_id!, // Add non-null assertion
-            order_datetime: orderResult.order_datetime;
+            order_datetime: orderResult.order_datetime,
             status: orderResult.status!;
-            notes: orderResult.notes;
+            notes: orderResult.notes,
             created_at: orderResult.created_at;
             updated_at: orderResult.updated_at;
             // Include patient and doctor info if needed in detail view
             patient: {
-                patient_id: orderResult.patient_id;
+                patient_id: orderResult.patient_id,
                 first_name: orderResult.patient_first_name;
-                last_name: orderResult.patient_last_name;
+                last_name: orderResult.patient_last_name
             },
             doctor: {
-                doctor_id: orderResult.doctor_id;
+                doctor_id: orderResult.doctor_id,
                 user: { fullName: orderResult.doctor_full_name }
             },
             items: itemsResult.results?.map((item: LabOrderItemQueryResult) => ({
-                lab_order_item_id: item.lab_order_item_id;
+                lab_order_item_id: item.lab_order_item_id,
                 lab_order_id: item.lab_order_id;
-                billable_item_id: item.billable_item_id;
+                billable_item_id: item.billable_item_id,
                 test_name: item.test_name;
-                sample_type: item.sample_type;
+                sample_type: item.sample_type,
                 sample_id: item.sample_id;
-                sample_collection_datetime: item.sample_collection_datetime;
+                sample_collection_datetime: item.sample_collection_datetime,
                 sample_collected_by_user_id: item.sample_collected_by_user_id;
-                result_value: item.result_value;
+                result_value: item.result_value,
                 result_unit: item.result_unit;
-                reference_range: item.reference_range;
+                reference_range: item.reference_range,
                 result_notes: item.result_notes;
-                result_datetime: item.result_datetime;
+                result_datetime: item.result_datetime,
                 result_verified_by_user_id: item.result_verified_by_user_id;
                 status: item.status as LabOrderItemStatus, // Cast string to enum
-                created_at: item.created_at;
+                created_at: item.created_at,
                 updated_at: item.updated_at;
                 billable_item: {
-                    item_id: item.billable_item_id;
-                    item_code: item.billable_item_code;
+                    item_id: item.billable_item_id,
+                    item_code: item.billable_item_code
                 },
                 sample_collected_by_user: item.sample_collected_by_user_id ? {
-                    user_id: item.sample_collected_by_user_id;
-                    full_name: item.sample_collected_by_user_full_name;
+                    user_id: item.sample_collected_by_user_id,
+                    full_name: item.sample_collected_by_user_full_name
                 } : null,
                 result_verified_by_user: item.result_verified_by_user_id ? {
-                    user_id: item.result_verified_by_user_id;
-                    full_name: item.result_verified_by_user_full_name;
+                    user_id: item.result_verified_by_user_id,
+                    full_name: item.result_verified_by_user_full_name
                 } : null;
             })) as LabOrderItem[] || [],
         };
@@ -181,7 +181,7 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
 
 // PUT handler for updating a lab order (e.g., overall status)
 const UpdateLabOrderSchema = z.object({
-    status: z.nativeEnum(LabOrderStatus).optional();
+    status: z.nativeEnum(LabOrderStatus).optional(),
     notes: z.string().optional().nullable();
     // Other fields? Usually status is updated based on item statuses
 });
@@ -260,7 +260,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

@@ -12,7 +12,7 @@ export interface ApiResponse<T = any> {
     total?: number;
     page?: number;
     limit?: number;
-    timestamp: string;
+    timestamp: string
   };
 }
 
@@ -24,7 +24,7 @@ export class ApiResponseBuilder {
       message,
       meta: {
         ...meta,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     };
 
@@ -32,14 +32,14 @@ export class ApiResponseBuilder {
   }
 
   static error(
-    error: string;
+    error: string,
     statusCode: number = 400;
     details?: unknown): NextResponse {
     const response: ApiResponse = {
       success: false;
       error,
       meta: {
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     };
 
@@ -94,9 +94,9 @@ export class PaginationBuilder {
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit);
+      totalPages: Math.ceil(total / limit),
       hasNext: page * limit < total;
-      hasPrev: page > 1;
+      hasPrev: page > 1
     };
   }
 }

@@ -79,11 +79,11 @@ export const _DietaryDashboard = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({
-    status: '';
+    status: '',
     requestType: '';
-    patientId: '';
+    patientId: '',
     startDate: null as Date | null;
-    endDate: null as Date | null;
+    endDate: null as Date | null
   });
   const [selectedRequest, setSelectedRequest] = useState<unknown>(null);
   const [selectedMealPlan, setSelectedMealPlan] = useState<unknown>(null);
@@ -130,9 +130,9 @@ export const _DietaryDashboard = () => {
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to load dietary requests. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -150,9 +150,9 @@ export const _DietaryDashboard = () => {
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to load analytics data. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -166,22 +166,22 @@ export const _DietaryDashboard = () => {
   // Reset filters
   const resetFilters = () => {
     setFilters({
-      status: '';
+      status: '',
       requestType: '';
-      patientId: '';
+      patientId: '',
       startDate: null;
-      endDate: null;
+      endDate: null
     }),
-    setPage(1);
+    setPage(1)
   };
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (page > 1) setPage(page - 1);
+    if (page > 1) setPage(page - 1)
   };
 
   const handleNextPage = () => {
-    if (page < totalPages) setPage(page + 1);
+    if (page < totalPages) setPage(page + 1)
   };
 
   // View request details
@@ -196,9 +196,9 @@ export const _DietaryDashboard = () => {
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to load request details. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -215,9 +215,9 @@ export const _DietaryDashboard = () => {
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to load meal plan details. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -226,7 +226,7 @@ export const _DietaryDashboard = () => {
   const updateRequestStatus = async (requestId: string, status: string) => {
     try {
       const response = await fetch(`/api/support-services/dietary/${requestId}`, {
-        method: 'PUT';
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -235,7 +235,7 @@ export const _DietaryDashboard = () => {
 
       if (!response.ok) throw new Error('Failed to update request status'),
       toast({
-        title: "Status Updated";
+        title: "Status Updated",
         description: `Request status has been updated to ${status}.`,
       });
 
@@ -249,9 +249,9 @@ export const _DietaryDashboard = () => {
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to update request status. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -262,7 +262,7 @@ export const _DietaryDashboard = () => {
       <Badge className={statusColors[status] || 'bg-gray-100 text-gray-800'}>;
         {status.replace(/_/g, ' ')}
       </Badge>
-    );
+    )
   };
 
   // Render request type badge
@@ -271,7 +271,7 @@ export const _DietaryDashboard = () => {
       <Badge className={requestTypeColors[type] || 'bg-gray-100 text-gray-800'}>;
         {type.replace(/_/g, ' ')}
       </Badge>
-    );
+    )
   };
 
   // Render dietary requests table
@@ -377,7 +377,7 @@ export const _DietaryDashboard = () => {
           ))}
         </TableBody>
       </Table>
-    );
+    )
   };
 
   // Render meal plans tab
@@ -396,7 +396,7 @@ export const _DietaryDashboard = () => {
           <p className="text-muted-foreground">Meal plans feature is under development.</p>
         </div>
       </div>
-    );
+    )
   };
 
   // Render nutritional profiles tab
@@ -421,7 +421,7 @@ export const _DietaryDashboard = () => {
           <p className="text-muted-foreground">Nutritional profiles feature is under development.</p>
         </div>
       </div>
-    );
+    )
   };
 
   // Render analytics tab
@@ -578,7 +578,7 @@ export const _DietaryDashboard = () => {
           </Card>
         </div>
       </div>
-    );
+    )
   };
 
   // Render request details dialog
@@ -722,7 +722,7 @@ export const _DietaryDashboard = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    );
+    )
   };
 
   return (

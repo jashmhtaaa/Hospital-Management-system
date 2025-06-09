@@ -10,26 +10,26 @@ import { cache } from '@/lib/cache';
  */
 
 interface CacheHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: 'healthy' | 'degraded' | 'unhealthy',
   timestamp: string;
-  responseTime: number;
+  responseTime: number,
   operations: {
-    read: { success: boolean; time: number };
-    write: { success: boolean; time: number };
-    delete: { success: boolean; time: number };
+    read: { success: boolean, time: number };
+    write: { success: boolean, time: number };
+    delete: { success: boolean, time: number }
   };
   memory: {
-    used: string;
+    used: string,
     peak: string;
-    fragmentation: number;
+    fragmentation: number
   };
   connections: {
-    active: number;
-    blocked: number;
+    active: number,
+    blocked: number
   };
   keyspace: {
-    keys: number;
-    expires: number;
+    keys: number,
+    expires: number
   };
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -45,19 +45,19 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
 
     const cacheHealth: CacheHealth = {
       status: determineCacheStatus(operations, responseTime),
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       responseTime,
       operations,
-      memory: stats.memory;
+      memory: stats.memory,
       connections: stats.connections;
-      keyspace: stats.keyspace;
+      keyspace: stats.keyspace
     };
 
     const httpStatus = cacheHealth.status === 'healthy' ? 200 :
                       cacheHealth.status === 'degraded' ? 200 : 503;
 
     return NextResponse.json(cacheHealth, {
-      status: httpStatus;
+      status: httpStatus,
       headers: {
         'Cache-Control': 'no-cache',
         'X-Response-Time': `${responseTime}ms`;
@@ -67,11 +67,11 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy';
-      timestamp: new Date().toISOString();
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       error: 'Cache system unavailable';
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -123,9 +123,9 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
 }
 
 async const getCacheStats = (): Promise<{
-  memory: CacheHealth['memory'];
+  memory: CacheHealth['memory'],
   connections: CacheHealth['connections'];
-  keyspace: CacheHealth['keyspace'];
+  keyspace: CacheHealth['keyspace']
 }> {
   try {
     // These stats would come from your actual cache implementation
@@ -134,41 +134,41 @@ async const getCacheStats = (): Promise<{
     // Simulated stats - replace with actual cache metrics
     return {
       memory: {
-        used: '45.2MB';
+        used: '45.2MB',
         peak: '67.8MB';
-        fragmentation: 1.15;
+        fragmentation: 1.15
       },
       connections: {
-        active: 12;
-        blocked: 0;
+        active: 12,
+        blocked: 0
       },
       keyspace: {
-        keys: 2847;
-        expires: 1234;
+        keys: 2847,
+        expires: 1234
       }
     };
   } catch (error) {
 
     return {
       memory: {
-        used: 'unknown';
+        used: 'unknown',
         peak: 'unknown';
-        fragmentation: 0;
+        fragmentation: 0
       },
       connections: {
-        active: 0;
-        blocked: 0;
+        active: 0,
+        blocked: 0
       },
       keyspace: {
-        keys: 0;
-        expires: 0;
+        keys: 0,
+        expires: 0
       }
     };
   }
 }
 
 const determineCacheStatus = (
-  operations: CacheHealth['operations'];
+  operations: CacheHealth['operations'],
   responseTime: number;
 ): 'healthy' | 'degraded' | 'unhealthy' {
   // Check if any operation failed

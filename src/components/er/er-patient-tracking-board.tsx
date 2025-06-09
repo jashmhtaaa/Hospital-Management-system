@@ -38,17 +38,17 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for load
 // Interface for API data
 interface ERPatient {
   id: string; // visit_id
-  patient_id: string;
+  patient_id: string,
   patient_name: string;
-  mrn: string;
+  mrn: string,
   age: number;
-  sex: string;
+  sex: string,
   chief_complaint: string;
-  arrival_time: string;
+  arrival_time: string,
   location: string;
-  esi: number;
+  esi: number,
   assigned_physician: string | null;
-  assigned_nurse: string | null;
+  assigned_nurse: string | null,
   status: string; // Triage, Assessment, Treatment, Awaiting Disposition, Discharged, Admitted
   indicators: {
     lab_pending?: boolean;
@@ -59,7 +59,7 @@ interface ERPatient {
     consult_pending?: boolean;
     critical_alert?: string; // e.g., Sepsis, Stroke
     isolation?: string; // e.g., Contact, Droplet
-    fall_risk?: boolean;
+    fall_risk?: boolean
   };
 }
 
@@ -128,87 +128,87 @@ export default const _ERPatientTrackingBoard = () {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
         const mockData: ERPatient[] = [
           {
-            id: "visit_1";
+            id: "visit_1",
             patient_id: "p1";
-            patient_name: "John Doe";
+            patient_name: "John Doe",
             mrn: "MRN001";
-            age: 45;
+            age: 45,
             sex: "M";
-            chief_complaint: "Chest Pain";
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 125 * 60 * 1000).toISOString();
-            location: "Room 3";
+            chief_complaint: "Chest Pain",
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 125 * 60 * 1000).toISOString(),
+            location: "Room 3",
             esi: 2;
-            assigned_physician: "Dr. Smith";
+            assigned_physician: "Dr. Smith",
             assigned_nurse: "Nurse Joy";
-            status: "Treatment";
+            status: "Treatment",
             indicators: {
-              lab_pending: true;
+              lab_pending: true,
               rad_pending: true;
-              critical_alert: "STEMI";
+              critical_alert: "STEMI"
             },
           },
           {
-            id: "visit_2";
+            id: "visit_2",
             patient_id: "p2";
-            patient_name: "Jane Smith";
+            patient_name: "Jane Smith",
             mrn: "MRN002";
-            age: 68;
+            age: 68,
             sex: "F";
-            chief_complaint: "Shortness of Breath";
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString();
-            location: "Room 5";
+            chief_complaint: "Shortness of Breath",
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(),
+            location: "Room 5",
             esi: 3;
-            assigned_physician: "Dr. Jones";
+            assigned_physician: "Dr. Jones",
             assigned_nurse: "Nurse Kim";
-            status: "Assessment";
+            status: "Assessment",
             indicators: { lab_ready: true, fall_risk: true },
           },
           {
-            id: "visit_3";
+            id: "visit_3",
             patient_id: "p3";
-            patient_name: "Peter Pan";
+            patient_name: "Peter Pan",
             mrn: "MRN003";
-            age: 32;
+            age: 32,
             sex: "M";
-            chief_complaint: "Abdominal Pain";
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 65 * 60 * 1000).toISOString();
-            location: "Hallway Bed 1";
+            chief_complaint: "Abdominal Pain",
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 65 * 60 * 1000).toISOString(),
+            location: "Hallway Bed 1",
             esi: 4;
-            assigned_physician: null;
+            assigned_physician: null,
             assigned_nurse: "Nurse Lee";
-            status: "Awaiting Disposition";
+            status: "Awaiting Disposition",
             indicators: { rad_ready: true, consult_pending: true },
           },
           {
-            id: "visit_4";
+            id: "visit_4",
             patient_id: "p4";
-            patient_name: "Alice Wonderland";
+            patient_name: "Alice Wonderland",
             mrn: "MRN004";
-            age: 75;
+            age: 75,
             sex: "F";
-            chief_complaint: "Weakness";
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString();
-            location: "Triage Room 2";
+            chief_complaint: "Weakness",
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString(),
+            location: "Triage Room 2",
             esi: 2;
-            assigned_physician: null;
+            assigned_physician: null,
             assigned_nurse: null;
-            status: "Triage";
+            status: "Triage",
             indicators: { critical_alert: "Stroke" },
           },
           {
-            id: "visit_5";
+            id: "visit_5",
             patient_id: "p5";
-            patient_name: "Bob Builder";
+            patient_name: "Bob Builder",
             mrn: "MRN005";
-            age: 50;
+            age: 50,
             sex: "M";
-            chief_complaint: "Laceration";
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 200 * 60 * 1000).toISOString();
-            location: "Room 1";
+            chief_complaint: "Laceration",
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 200 * 60 * 1000).toISOString(),
+            location: "Room 1",
             esi: 5;
-            assigned_physician: "Dr. Smith";
+            assigned_physician: "Dr. Smith",
             assigned_nurse: "Nurse Joy";
-            status: "Discharged";
+            status: "Discharged",
             indicators: {},
           }, // Example discharged patient (might be filtered out by API)
         ];
@@ -396,10 +396,10 @@ export default const _ERPatientTrackingBoard = () {
                       {calculateTimeDiff(patient.arrival_time)}
                     </TableCell>
                     <TableCell>
-                      <div className="text-sm text-gray-700 dark: text-gray-300">;
+                      <div className="text-sm text-gray-700 dark: text-gray-300">,
                         MD: {patient.assigned_physician || "N/A"}
                       </div>
-                      <div className="text-sm text-gray-700 dark: text-gray-300">;
+                      <div className="text-sm text-gray-700 dark: text-gray-300">,
                         RN: {patient.assigned_nurse || "N/A"}
                       </div>
                     </TableCell>

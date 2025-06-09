@@ -83,7 +83,7 @@ export class CacheInvalidation {
     }
 
     // Invalidate panel lists
-    await RedisCache.deletePattern('diagnostic: lab: panel:list:*');
+    await RedisCache.deletePattern('diagnostic: lab: panel:list:*')
   }
 
   /**

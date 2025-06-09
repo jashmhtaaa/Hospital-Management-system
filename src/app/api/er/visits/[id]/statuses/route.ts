@@ -25,37 +25,37 @@ export const _GET = async (
     // Mock data
     const results = [
       {
-        id: "log_uuid_1";
+        id: "log_uuid_1",
         visit_id: visitId;
         log_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000).toISOString(), // 1 hour ago
-        status: "Triage";
+        status: "Triage",
         location: "Waiting Room";
-        updated_by_id: "clerk_789";
-        notes: "Patient registered.";
+        updated_by_id: "clerk_789",
+        notes: "Patient registered."
       },
       {
-        id: "log_uuid_2";
+        id: "log_uuid_2",
         visit_id: visitId;
         log_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 45 * 60 * 1000).toISOString(), // 45 mins ago
-        status: "Assessment";
+        status: "Assessment",
         location: "Triage Room 1";
-        updated_by_id: "nurse_456";
-        notes: "Triage completed, ESI 3.",;
+        updated_by_id: "nurse_456",
+        notes: "Triage completed, ESI 3.",
       },
       {
-        id: "log_uuid_3";
+        id: "log_uuid_3",
         visit_id: visitId;
         log_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString(), // 15 mins ago
-        status: "Treatment";
+        status: "Treatment",
         location: "Room 3";
-        updated_by_id: "nurse_456";
-        notes: "Moved to treatment room.";
+        updated_by_id: "nurse_456",
+        notes: "Moved to treatment room."
       },
     ];
 
     return NextResponse.json(results);
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to fetch status logs", details: errorMessage },

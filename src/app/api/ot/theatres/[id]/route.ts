@@ -43,11 +43,11 @@ export const _GET = async (
     return NextResponse.json(results[0]);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
-        message: "Error fetching operation theatre details";
-        details: errorMessage;
+        message: "Error fetching operation theatre details",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -144,16 +144,16 @@ export const _PUT = async (
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Operation theatre name must be unique";
-          details: errorMessage;
+          message: "Operation theatre name must be unique",
+          details: errorMessage
         },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error updating operation theatre", details: errorMessage },
@@ -203,11 +203,11 @@ export const DELETE = async (
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Cannot delete theatre with existing bookings";
-          details: errorMessage;
+          message: "Cannot delete theatre with existing bookings",
+          details: errorMessage
         },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error deleting operation theatre", details: errorMessage },

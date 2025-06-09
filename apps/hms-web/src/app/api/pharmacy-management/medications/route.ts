@@ -1,6 +1,5 @@
 import { NextRequest } from 'next/server';
 
-
 import { ApiResponseBuilder, PaginationBuilder } from '@/utils/api-response';
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
@@ -11,13 +10,13 @@ export async function POST(request: NextRequest): unknown {
     const medicationData = body;
 
     const medication = await prisma.medication.create({
-      data: medicationData;
+      data: medicationData,
     });
 
     await AuditService.logUserAction(
       {
-        userId: request.headers.get('x-user-id') || undefined;
-        ipAddress: request.ip;
+        userId: request.headers.get('x-user-id') || undefined,
+        ipAddress: request.ip,
       },
       'CREATE',
       'MEDICATION',
@@ -26,7 +25,6 @@ export async function POST(request: NextRequest): unknown {
     );
 
     return ApiResponseBuilder.success(medication, 'Medication added successfully');
-
   } catch (error) {
     return ApiResponseBuilder.internalError(error.message);
   }
@@ -49,7 +47,7 @@ export async function GET(request: NextRequest): unknown {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { genericName: { contains: search, mode: 'insensitive' } },
-        { manufacturer: { contains: search, mode: 'insensitive' } }
+        { manufacturer: { contains: search, mode: 'insensitive' } },
       ];
     }
 
@@ -64,15 +62,14 @@ export async function GET(request: NextRequest): unknown {
         where,
         skip,
         take,
-        orderBy
+        orderBy,
       }),
-      prisma.medication.count({ where })
+      prisma.medication.count({ where }),
     ]);
 
     const meta = PaginationBuilder.buildMeta(total, page, limit);
 
     return ApiResponseBuilder.success(medications, 'Medications retrieved successfully', meta);
-
   } catch (error) {
     return ApiResponseBuilder.internalError(error.message);
   }

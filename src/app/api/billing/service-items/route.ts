@@ -6,58 +6,58 @@ import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth hel
 // Mock data store for service items (replace with actual DB interaction)
 const mockServiceItems = [
   {
-    id: "si_001";
+    id: "si_001",
     item_code: "CONSULT";
-    item_name: "Doctor Consultation";
+    item_name: "Doctor Consultation",
     description: "Standard consultation fee";
-    category: "Consultation";
+    category: "Consultation",
     unit_price: 500;
-    is_taxable: 0;
+    is_taxable: 0,
     is_discountable: 1;
-    is_active: 1;
+    is_active: 1
   },
   {
-    id: "si_002";
+    id: "si_002",
     item_code: "XRAY_CHEST";
-    item_name: "X-Ray Chest PA View";
+    item_name: "X-Ray Chest PA View",
     description: "";
-    category: "Radiology";
+    category: "Radiology",
     unit_price: 800;
-    is_taxable: 1;
+    is_taxable: 1,
     is_discountable: 0;
-    is_active: 1;
+    is_active: 1
   },
   {
-    id: "si_003";
+    id: "si_003",
     item_code: "CBC";
-    item_name: "Complete Blood Count";
+    item_name: "Complete Blood Count",
     description: "";
-    category: "Laboratory";
+    category: "Laboratory",
     unit_price: 350;
-    is_taxable: 1;
+    is_taxable: 1,
     is_discountable: 0;
-    is_active: 1;
+    is_active: 1
   },
   {
-    id: "si_004";
+    id: "si_004",
     item_code: "ROOM_GEN";
-    item_name: "General Ward Room Charge";
+    item_name: "General Ward Room Charge",
     description: "Per day charge";
-    category: "Room Charge";
+    category: "Room Charge",
     unit_price: 2000;
-    is_taxable: 0;
+    is_taxable: 0,
     is_discountable: 0;
-    is_active: 1;
+    is_active: 1
   },
 ]
 let nextItemId = 5;
 
 // Define interface for service item input
 interface ServiceItemInput {
-  item_code: string;
+  item_code: string,
   item_name: string;
   description?: string;
-  category: string;
+  category: string,
   unit_price: number;
   is_taxable?: boolean;
   is_discountable?: boolean;
@@ -71,7 +71,7 @@ export const _GET = async (request: NextRequest) => {
     if (!(await hasPermission(request, ["billing:read", "admin"]))) {
       return NextResponse.json(
         {
-          error: "Forbidden: You do not have permission to view service items.";
+          error: "Forbidden: You do not have permission to view service items."
         },
         { status: 403 }
       )
@@ -113,7 +113,7 @@ export const _GET = async (request: NextRequest) => {
     const paginatedItems = filteredItems.slice(startIndex, endIndex);
 
     return NextResponse.json({
-      serviceItems: paginatedItems;
+      serviceItems: paginatedItems,
       total: filteredItems.length, // Total matching items before pagination
       page,
       limit,
@@ -138,7 +138,7 @@ export const _POST = async (request: NextRequest) => {
     if (!(await hasPermission(request, ["billing:manage", "admin"]))) {
       return NextResponse.json(
         {
-          error: "Forbidden: You do not have permission to create service items.";
+          error: "Forbidden: You do not have permission to create service items."
         },
         { status: 403 }
       )
@@ -167,7 +167,7 @@ export const _POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error: "Missing required fields (item_code, item_name, category, unit_price)",;
+          error: "Missing required fields (item_code, item_name, category, unit_price)",
         },
         { status: 400 }
       );
@@ -219,16 +219,16 @@ export const _POST = async (request: NextRequest) => {
     // Create the new service item in mock data
     const newItem = {
       id: `si_${String(nextItemId++).padStart(3, "0")}`,
-      item_code: itemData.item_code;
+      item_code: itemData.item_code,
       item_name: itemData.item_name;
-      description: itemData.description || "";
+      description: itemData.description || "",
       category: itemData.category;
-      unit_price: itemData.unit_price;
+      unit_price: itemData.unit_price,
       is_taxable: itemData.is_taxable ? 1 : 0;
-      is_discountable: itemData.is_discountable ? 1 : 0;
+      is_discountable: itemData.is_discountable ? 1 : 0,
       is_active: 1, // Default to active
       // created_by: user.id, // Would use user.id in real implementation
-      // created_at: new Date().toISOString() // Would use current time;
+      // created_at: new Date().toISOString() // Would use current time
     }
 
     mockServiceItems.push(newItem);

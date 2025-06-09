@@ -45,16 +45,16 @@ const labOrderFormSchema = z.object({
     .array(z.string());
     .min(1, { message: "Select at least one test." }),
   priority: z.literal("STAT"), // Default to STAT for ER
-  clinicalNotes: z.string().optional();
+  clinicalNotes: z.string().optional()
 });
 
 type LabOrderFormValues = z.infer<typeof labOrderFormSchema>;
 
 interface ERLabOrderModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   visitData?: {
-    id: string;
+    id: string,
     patientName: string;
     assignedDoctorId?: string; // Pass assigned doctor if available
   };
@@ -63,7 +63,7 @@ interface ERLabOrderModalProperties {
 
 // FIX: Define interface for expected API error response
 interface ApiErrorResponse {
-  error: string;
+  error: string
 }
 
 // FIX: Define interface for expected API success response
@@ -95,14 +95,14 @@ export default const _ERLabOrderModal = ({
   const { toast } = useToast(); // Use the hook to get the toast function
 
   const form = useForm<LabOrderFormValues>({
-    resolver: zodResolver(labOrderFormSchema);
+    resolver: zodResolver(labOrderFormSchema),
     defaultValues: {
-      visitId: visitData?.id || "";
+      visitId: visitData?.id || "",
       patientName: visitData?.patientName || "";
       orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
-      selectedTests: [];
+      selectedTests: [],
       priority: "STAT";
-      clinicalNotes: "";
+      clinicalNotes: ""
     },
   });
 
@@ -110,12 +110,12 @@ export default const _ERLabOrderModal = ({
   useEffect(() => {
     if (visitData != null) {
       form.reset({
-        visitId: visitData.id;
+        visitId: visitData.id,
         patientName: visitData.patientName;
-        orderingDoctorId: visitData.assignedDoctorId || "";
+        orderingDoctorId: visitData.assignedDoctorId || "",
         selectedTests: [], // Reset tests when visit changes
-        priority: "STAT";
-        clinicalNotes: "";
+        priority: "STAT",
+        clinicalNotes: ""
       });
     }
   }, [visitData, form]);
@@ -127,17 +127,17 @@ export default const _ERLabOrderModal = ({
     try {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const response = await fetch("/api/lab/orders", {
-        method: "POST";
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           // Ensure payload matches backend expectations,
           patient_id: visitData?.id, // Assuming visit ID links to patient
-          visit_id: data.visitId;
+          visit_id: data.visitId,
           ordering_doctor_id: data.orderingDoctorId;
-          test_ids: data.selectedTests;
+          test_ids: data.selectedTests,
           priority: data.priority;
-          clinical_notes: data.clinicalNotes || undefined;
-          source: "ER", // Indicate order source;
+          clinical_notes: data.clinicalNotes || undefined,
+          source: "ER", // Indicate order source
         }),
       });
 
@@ -172,7 +172,7 @@ export default const _ERLabOrderModal = ({
 
       toast({
         title: "Lab Order Submitted";
-        // FIX: Safely access newOrder.id;
+        // FIX: Safely access newOrder.id,
         description: `STAT order ${newOrder?.id || "(ID not returned)"} placed successfully.`,
       })
 
@@ -182,19 +182,19 @@ export default const _ERLabOrderModal = ({
       form.reset({
         ...form.getValues(), // Keep visit/patient info
         selectedTests: [], // Clear selected tests
-        clinicalNotes: "";
+        clinicalNotes: ""
       });
       onClose();
     } catch (error: unknown) {
       // Use unknown for catch block error
 
       toast({
-        title: "Order Failed";
+        title: "Order Failed",
         description:
           error instanceof Error;
             ? error.message;
             : "An unexpected error occurred.",
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

@@ -86,7 +86,7 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
     try {
       setDeleting(true)
       const response = await fetch(`/api/hr/staff/${params.id}`, {
-        method: 'DELETE';
+        method: 'DELETE'
       });
 
       if (!response.ok) {
@@ -94,17 +94,17 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
       }
 
       toast({
-        title: "Employee Deactivated";
-        description: "The employee has been successfully deactivated.";
+        title: "Employee Deactivated",
+        description: "The employee has been successfully deactivated."
       });
 
       // Navigate back to staff list
       router.push('/dashboard/hr/staff');
     } catch (error) {
       toast({
-        title: "Error";
+        title: "Error",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setDeleting(false),
@@ -114,17 +114,17 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
 
   // Handle edit navigation
   const handleEdit = () => {
-    router.push(`/dashboard/hr/staff/${params.id}/edit`);
+    router.push(`/dashboard/hr/staff/${params.id}/edit`)
   };
 
   // Handle add position
   const handleAddPosition = () => {
-    router.push(`/dashboard/hr/staff/${params.id}/positions/new`);
+    router.push(`/dashboard/hr/staff/${params.id}/positions/new`)
   };
 
   // Handle add qualification
   const handleAddQualification = () => {
-    router.push(`/dashboard/hr/staff/${params.id}/qualifications/new`);
+    router.push(`/dashboard/hr/staff/${params.id}/qualifications/new`)
   };
 
   if (loading != null) {

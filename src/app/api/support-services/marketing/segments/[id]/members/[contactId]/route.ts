@@ -37,8 +37,8 @@ export const POST = async (
       return NextResponse.json(member, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.segments.update';
-      auditAction: 'SEGMENT_MEMBER_ADD';
+      requiredPermission: 'marketing.segments.update',
+      auditAction: 'SEGMENT_MEMBER_ADD'
     }
   );
 }
@@ -49,7 +49,7 @@ export const POST = async (
  */
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string; contactId: string } }
+  { params }: { params: { id: string, contactId: string } }
 ) => {
   return withErrorHandling(
     request,
@@ -65,7 +65,7 @@ export const DELETE = async (
       return NextResponse.json(member);
     },
     {
-      requiredPermission: 'marketing.segments.update';
-      auditAction: 'SEGMENT_MEMBER_REMOVE';
+      requiredPermission: 'marketing.segments.update',
+      auditAction: 'SEGMENT_MEMBER_REMOVE'
     }
   );

@@ -79,14 +79,14 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Enterprise React/TypeScript configuration
   {
-    name: 'hms-react-typescript';
+    name: 'hms-react-typescript',
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
       react: reactPlugin;
       'react-hooks': reactHooksPlugin,
       'jsx-a11y': accessibilityPlugin,
-      security: securityPlugin;
-      import: importPlugin;
+      security: securityPlugin,
+      import: importPlugin
     },
     languageOptions: {
       globals: {
@@ -95,24 +95,24 @@ const eslintConfig: Linter.FlatConfig[] = [
       },
       parserOptions: {
         project: ['./tsconfig.json', './apps/*/tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname;
+        tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
-          jsx: true;
+          jsx: true
         },
-        ecmaVersion: 'latest';
-        sourceType: 'module';
+        ecmaVersion: 'latest',
+        sourceType: 'module'
       },
     },
     settings: {
       react: {
-        version: 'detect';
+        version: 'detect'
       },
       'import/resolver': {
         typescript: {
-          project: ['./tsconfig.json', './apps/*/tsconfig.json'],;
+          project: ['./tsconfig.json', './apps/*/tsconfig.json'],
         },
         node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],;
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },
     },
@@ -129,8 +129,8 @@ const eslintConfig: Linter.FlatConfig[] = [
       'react/function-component-definition': [
         'error',
         {
-          namedComponents: 'arrow-function';
-          unnamedComponents: 'arrow-function';
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function'
         },
       ],
 
@@ -150,9 +150,9 @@ const eslintConfig: Linter.FlatConfig[] = [
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
-          argsIgnorePattern: '^_';
+          argsIgnorePattern: '^_',
           varsIgnorePattern: '^_';
-          caughtErrorsIgnorePattern: '^_';
+          caughtErrorsIgnorePattern: '^_'
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -193,8 +193,8 @@ const eslintConfig: Linter.FlatConfig[] = [
           ],
           'newlines-between': 'always',
           alphabetize: {
-            order: 'asc';
-            caseInsensitive: true;
+            order: 'asc',
+            caseInsensitive: true
           },
         },
       ],
@@ -220,13 +220,13 @@ const eslintConfig: Linter.FlatConfig[] = [
       'max-len': [
         'warn',
         {
-          code: 120;
+          code: 120,
           tabWidth: 2;
-          ignoreUrls: true;
+          ignoreUrls: true,
           ignoreComments: true;
-          ignoreRegExpLiterals: true;
+          ignoreRegExpLiterals: true,
           ignoreStrings: true;
-          ignoreTemplateLiterals: true;
+          ignoreTemplateLiterals: true
         },
       ],
       'max-lines': ['warn', { max: 500, skipComments: true, skipBlankLines: true }],
@@ -238,7 +238,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Node.js backend and API routes configuration
   {
-    name: 'hms-node-backend';
+    name: 'hms-node-backend',
     files: [
       'src/app/api/**/*.ts',
       'src/lib/**/*.ts',
@@ -247,8 +247,8 @@ const eslintConfig: Linter.FlatConfig[] = [
       'scripts/**/*.ts',
     ],
     plugins: {
-      security: securityPlugin;
-      import: importPlugin;
+      security: securityPlugin,
+      import: importPlugin
     },
     languageOptions: {
       globals: {
@@ -256,8 +256,8 @@ const eslintConfig: Linter.FlatConfig[] = [
         ...globals.es2022,
       },
       parserOptions: {
-        project: ['./tsconfig.json'];
-        tsconfigRootDir: import.meta.dirname;
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname
       },
     },
     rules: {
@@ -288,7 +288,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Test files configuration (TypeScript)
   {
-    name: 'hms-typescript-tests';
+    name: 'hms-typescript-tests',
     files: [
       '**/*.test.ts',
       '**/*.spec.ts',
@@ -300,8 +300,8 @@ const eslintConfig: Linter.FlatConfig[] = [
       'tests/**/*.tsx',
     ],
     plugins: {
-      jest: jestPlugin;
-      security: securityPlugin;
+      jest: jestPlugin,
+      security: securityPlugin
     },
     languageOptions: {
       globals: {
@@ -309,8 +309,8 @@ const eslintConfig: Linter.FlatConfig[] = [
         ...globals.node,
       },
       parserOptions: {
-        project: ['./tsconfig.json'];
-        tsconfigRootDir: import.meta.dirname;
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname
       },
     },
     rules: {
@@ -342,7 +342,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Legacy JavaScript test files (will be deprecated)
   {
-    name: 'hms-javascript-tests-legacy';
+    name: 'hms-javascript-tests-legacy',
     files: [
       'tests/**/*.test.js',
       'tests/**/*.spec.js',
@@ -350,17 +350,17 @@ const eslintConfig: Linter.FlatConfig[] = [
       'tests/api/*api-tests.js',
     ],
     plugins: {
-      jest: jestPlugin;
+      jest: jestPlugin
     },
     languageOptions: {
       globals: {
         ...globals.jest,
         ...globals.node,
-        fetch: 'readonly', // For API tests;
+        fetch: 'readonly', // For API tests
       },
       parserOptions: {
-        ecmaVersion: 'latest';
-        sourceType: 'module';
+        ecmaVersion: 'latest',
+        sourceType: 'module'
       },
     },
     rules: {
@@ -376,7 +376,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Configuration files
   {
-    name: 'hms-config-files';
+    name: 'hms-config-files',
     files: [
       '*.config.js',
       '*.config.ts',
@@ -394,8 +394,8 @@ const eslintConfig: Linter.FlatConfig[] = [
         ...globals.node,
       },
       parserOptions: {
-        ecmaVersion: 'latest';
-        sourceType: 'module';
+        ecmaVersion: 'latest',
+        sourceType: 'module'
       },
     },
     rules: {
@@ -409,18 +409,18 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // API scripts and non-test JavaScript files
   {
-    name: 'hms-api-scripts';
+    name: 'hms-api-scripts',
     files: ['tests/api/**/*.js'];
     languageOptions: {
       globals: {
         ...globals.node,
-        fetch: 'readonly';
+        fetch: 'readonly',
         console: 'readonly';
-        process: 'readonly';
+        process: 'readonly'
       },
       parserOptions: {
-        ecmaVersion: 'latest';
-        sourceType: 'module';
+        ecmaVersion: 'latest',
+        sourceType: 'module'
       },
     },
     rules: {
@@ -432,7 +432,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // FHIR and healthcare standards specific rules
   {
-    name: 'hms-fhir-standards';
+    name: 'hms-fhir-standards',
     files: [
       'src/lib/fhir/**/*.ts',
       'src/lib/fhir/**/*.tsx',
@@ -457,7 +457,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Security and compliance modules
   {
-    name: 'hms-security-compliance';
+    name: 'hms-security-compliance',
     files: [
       'src/lib/security/**/*.ts',
       'src/lib/compliance/**/*.ts',
@@ -468,7 +468,7 @@ const eslintConfig: Linter.FlatConfig[] = [
       '**/audit/**/*.ts',
     ],
     plugins: {
-      security: securityPlugin;
+      security: securityPlugin
     },
     rules: {
       // Strictest rules for security modules

@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   error?: string;
   options: Array<{
-    value: string;
-    label: string;
+    value: string,
+    label: string
   }>;
 }
 

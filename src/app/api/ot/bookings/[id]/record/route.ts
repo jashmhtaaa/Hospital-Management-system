@@ -76,7 +76,7 @@ export const _GET = async (
     return NextResponse.json(record);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching operation record", details: errorMessage },
       { status: 500 }
@@ -285,7 +285,7 @@ export const _POST = async (
 
       }
       return NextResponse.json(finalRecord, {
-        status: isNewRecord ? 201 : 200;
+        status: isNewRecord ? 201 : 200
       });
     } else {
       return NextResponse.json(
@@ -297,7 +297,7 @@ export const _POST = async (
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error saving operation record", details: errorMessage },
       { status: 500 }

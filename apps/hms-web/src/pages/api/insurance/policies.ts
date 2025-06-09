@@ -143,7 +143,7 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
     try {
         switch (method) {
             case "POST":
-                const { patientId: bodyPatientId, policyDetails } = req.body as { patientId: string; policyDetails: Omit<InsurancePolicy, "id" | "patientId"> };
+                const { patientId: bodyPatientId, policyDetails } = req.body as { patientId: string, policyDetails: Omit<InsurancePolicy, "id" | "patientId"> };
                 if (!bodyPatientId || !policyDetails) {
                     return res.status(400).json({ message: "Patient ID and policy details are required." });
                 }
@@ -174,7 +174,7 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
                 }
 
             default:
-                res.setHeader("Allow", ["POST", "GET", "PUT"]);
+                res.setHeader("Allow", ["POST", "GET", "PUT"]),
                 return res.status(405).end(`Method ${method} Not Allowed`);
         }
     } catch (error: unknown) {

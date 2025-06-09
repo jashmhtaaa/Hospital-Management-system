@@ -26,35 +26,35 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces for data types
 interface Patient {
-  id: string;
+  id: string,
   name: string; // Assuming patient object has a name property
   // Add other relevant patient fields if needed
 }
 
 interface ProcedureType {
-  id: string;
+  id: string,
   name: string;
   // Add other relevant procedure type fields if needed
 }
 
 interface Doctor {
-  id: string;
+  id: string,
   name: string; // Assuming user/doctor object has a name property
   // Add other relevant doctor fields if needed
 }
 
 // FIX: Export the payload type
 export interface OrderPayload {
-  patient_id: string;
+  patient_id: string,
   procedure_type_id: string;
-  clinical_indication: string;
+  clinical_indication: string,
   priority: "routine" | "stat";
-  referring_doctor_id: string | null;
+  referring_doctor_id: string | null
 }
 
 interface CreateRadiologyOrderModalProperties {
   isOpen: boolean; // Add isOpen prop to control visibility from parent
-  onClose: () => void;
+  onClose: () => void,
   onSubmit: (payload: OrderPayload) => Promise<void>
 export default const _CreateRadiologyOrderModal = ({
   isOpen,
@@ -150,11 +150,11 @@ export default const _CreateRadiologyOrderModal = ({
     setError(undefined); // Clear previous errors
     try {
       await onSubmit({
-        patient_id: patientId;
+        patient_id: patientId,
         procedure_type_id: procedureTypeId;
-        clinical_indication: clinicalIndication;
+        clinical_indication: clinicalIndication,
         priority: priority;
-        referring_doctor_id: referringDoctorId || null, // Convert empty string to null;
+        referring_doctor_id: referringDoctorId || null, // Convert empty string to null
       });
       // Reset form state after successful submission
       setPatientId(""),

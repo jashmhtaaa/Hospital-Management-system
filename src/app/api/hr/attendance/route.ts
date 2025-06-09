@@ -7,13 +7,13 @@ import { attendanceService } from '@/lib/hr/attendance-service';
 const checkInSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   checkInTime: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid time format";
+    message: "Invalid time format"
   }),
-  biometricData: z.string().optional();
-  notes: z.string().optional();
+  biometricData: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // POST handler for check-in
@@ -48,8 +48,8 @@ export const _POST = async (request: NextRequest) => {
     // Record check-in
     const attendance = await attendanceService.recordCheckIn({
       employeeId,
-      date: new Date(date);
-      checkInTime: new Date(checkInTime);
+      date: new Date(date),
+      checkInTime: new Date(checkInTime),
       biometricVerified,
       notes,
     });

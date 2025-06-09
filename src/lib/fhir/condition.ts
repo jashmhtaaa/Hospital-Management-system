@@ -72,10 +72,10 @@ export class FHIRConditionUtils {
    * Create a basic condition/diagnosis;
    */
   static createBasicCondition(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     encounterId?: string;
-    conditionCode: string;
+    conditionCode: string,
     conditionDisplay: string;
     category?: 'problem-list-item' | 'encounter-diagnosis';
     clinicalStatus?: 'active' | 'recurrence' | 'relapse' | 'inactive' | 'remission' | 'resolved';
@@ -86,10 +86,10 @@ export class FHIRConditionUtils {
     notes?: string;
   }): FHIRCondition {
     const condition: FHIRCondition = {
-      resourceType: 'Condition';
+      resourceType: 'Condition',
       clinicalStatus: {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/condition-clinical';
+          system: 'https://terminology.hl7.org/CodeSystem/condition-clinical',
           code: data.clinicalStatus || 'active';
           display: (data.clinicalStatus ||
             'active').charAt(0).toUpperCase() + (data.clinicalStatus ||
@@ -98,7 +98,7 @@ export class FHIRConditionUtils {
       },
       verificationStatus: {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/condition-ver-status';
+          system: 'https://terminology.hl7.org/CodeSystem/condition-ver-status',
           code: data.verificationStatus || 'confirmed';
           display: (data.verificationStatus ||
             'confirmed').charAt(0).toUpperCase() + (data.verificationStatus ||
@@ -107,34 +107,34 @@ export class FHIRConditionUtils {
       },
       category: [{
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/condition-category';
+          system: 'https://terminology.hl7.org/CodeSystem/condition-category',
           code: data.category || 'encounter-diagnosis';
-          display: data.category === 'problem-list-item' ? 'Problem List Item' : 'Encounter Diagnosis';
+          display: data.category === 'problem-list-item' ? 'Problem List Item' : 'Encounter Diagnosis'
         }]
       }],
       code: {
         coding: [{
-          system: 'https://snomed.info/sct';
+          system: 'https://snomed.info/sct',
           code: data.conditionCode;
-          display: data.conditionDisplay;
+          display: data.conditionDisplay
         }]
       },
       subject: {
         reference: `Patient/${data.patientId}`,
-        type: 'Patient';
+        type: 'Patient'
       },
       asserter: {
         reference: `Practitioner/${data.practitionerId}`,
-        type: 'Practitioner';
+        type: 'Practitioner'
       },
-      recordedDate: data.recordedDate || new Date().toISOString();
+      recordedDate: data.recordedDate || new Date().toISOString()
     }
 
     // Add encounter if provided
     if (data.encounterId) {
       condition.encounter = {
         reference: `Encounter/${data.encounterId}`,
-        type: 'Encounter';
+        type: 'Encounter'
       };
     }
 
@@ -142,9 +142,9 @@ export class FHIRConditionUtils {
     if (data.severity) {
       condition.severity = {
         coding: [{
-          system: 'https://snomed.info/sct';
-          code: this.getSeverityCode(data.severity);
-          display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1);
+          system: 'https://snomed.info/sct',
+          code: this.getSeverityCode(data.severity),
+          display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1)
         }]
       }
     }
@@ -157,8 +157,8 @@ export class FHIRConditionUtils {
     // Add notes if provided
     if (data.notes) {
       condition.note = [{
-        text: data.notes;
-        time: new Date().toISOString();
+        text: data.notes,
+        time: new Date().toISOString()
       }];
     }
 
@@ -169,9 +169,9 @@ export class FHIRConditionUtils {
    * Create a chronic condition;
    */
   static createChronicCondition(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
-    conditionCode: string;
+    conditionCode: string,
     conditionDisplay: string;
     onsetDate: string;
     severity?: 'mild' | 'moderate' | 'severe';
@@ -179,11 +179,11 @@ export class FHIRConditionUtils {
   }): FHIRCondition {
     return this.createBasicCondition({
       ...data,
-      category: 'problem-list-item';
+      category: 'problem-list-item',
       clinicalStatus: 'active';
-      verificationStatus: 'confirmed';
-      recordedDate: new Date().toISOString();
-      notes: data.managementNotes;
+      verificationStatus: 'confirmed',
+      recordedDate: new Date().toISOString(),
+      notes: data.managementNotes
     });
   }
 
@@ -191,9 +191,9 @@ export class FHIRConditionUtils {
    * Create an acute condition;
    */
   static createAcuteCondition(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
-    encounterId: string;
+    encounterId: string,
     conditionCode: string;
     conditionDisplay: string;
     severity?: 'mild' | 'moderate' | 'severe';
@@ -202,11 +202,11 @@ export class FHIRConditionUtils {
   }): FHIRCondition {
     return this.createBasicCondition({
       ...data,
-      category: 'encounter-diagnosis';
+      category: 'encounter-diagnosis',
       clinicalStatus: 'active';
-      verificationStatus: 'confirmed';
-      recordedDate: new Date().toISOString();
-      notes: data.clinicalNotes;
+      verificationStatus: 'confirmed',
+      recordedDate: new Date().toISOString(),
+      notes: data.clinicalNotes
     });
   }
 
@@ -214,21 +214,21 @@ export class FHIRConditionUtils {
    * Create a resolved condition;
    */
   static createResolvedCondition(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
-    conditionCode: string;
+    conditionCode: string,
     conditionDisplay: string;
-    onsetDate: string;
+    onsetDate: string,
     abatementDate: string;
     resolutionNotes?: string;
   }): FHIRCondition {
     const condition = this.createBasicCondition({
       ...data,
-      category: 'problem-list-item';
+      category: 'problem-list-item',
       clinicalStatus: 'resolved';
-      verificationStatus: 'confirmed';
-      recordedDate: new Date().toISOString();
-      notes: data.resolutionNotes;
+      verificationStatus: 'confirmed',
+      recordedDate: new Date().toISOString(),
+      notes: data.resolutionNotes
     });
 
     condition.abatement = data.abatementDate;
@@ -242,7 +242,7 @@ export class FHIRConditionUtils {
     const severityCodes: Record<string, string> = {
       'mild': '255604002',
       'moderate': '6736007',
-      'severe': '24484000';
+      'severe': '24484000'
     };
     return severityCodes[severity] || '255604002';
   }
@@ -353,36 +353,36 @@ export class FHIRConditionUtils {
    * Format condition for display;
    */
   static formatForDisplay(condition: FHIRCondition): {
-    condition: string;
+    condition: string,
     clinicalStatus: string;
-    verificationStatus: string;
+    verificationStatus: string,
     category: string;
     severity: string;
     onsetDate?: string;
     duration?: string;
-    isActive: boolean;
-    isChronic: boolean;
+    isActive: boolean,
+    isChronic: boolean
   } {
     const onsetDate = this.getOnsetDate(condition);
     const duration = this.getConditionDuration(condition);
 
     return {
-      condition: this.getConditionDisplay(condition);
-      clinicalStatus: this.getClinicalStatusDisplay(condition);
-      verificationStatus: this.getVerificationStatusDisplay(condition);
-      category: this.getCategoryDisplay(condition);
-      severity: this.getSeverityDisplay(condition);
+      condition: this.getConditionDisplay(condition),
+      clinicalStatus: this.getClinicalStatusDisplay(condition),
+      verificationStatus: this.getVerificationStatusDisplay(condition),
+      category: this.getCategoryDisplay(condition),
+      severity: this.getSeverityDisplay(condition),
       onsetDate: onsetDate ? onsetDate.toLocaleDateString() : undefined;
       duration: duration ? `${duration} days` : undefined,
-      isActive: this.isActive(condition);
-      isChronic: this.isChronic(condition);
+      isActive: this.isActive(condition),
+      isChronic: this.isChronic(condition)
     };
   }
 
   /**
    * Validate FHIR Condition resource;
    */
-  static validateCondition(condition: FHIRCondition): { valid: boolean; errors: string[] } {
+  static validateCondition(condition: FHIRCondition): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (condition.resourceType !== 'Condition') {
@@ -418,7 +418,7 @@ export class FHIRConditionUtils {
 
     return {
       valid: errors.length === 0;
-      errors;
+      errors
     };
   }
 
@@ -427,18 +427,18 @@ export class FHIRConditionUtils {
    */
   static fromHMSDiagnosis(hmsDiagnosis: unknown): FHIRCondition {
     return this.createBasicCondition({
-      patientId: hmsDiagnosis.patientId;
+      patientId: hmsDiagnosis.patientId,
       practitionerId: hmsDiagnosis.practitionerId || hmsDiagnosis.diagnosedBy;
-      encounterId: hmsDiagnosis.encounterId || hmsDiagnosis.visitId;
+      encounterId: hmsDiagnosis.encounterId || hmsDiagnosis.visitId,
       conditionCode: hmsDiagnosis.icdCode || hmsDiagnosis.code || 'unknown';
-      conditionDisplay: hmsDiagnosis.diagnosis || hmsDiagnosis.name || hmsDiagnosis.description;
+      conditionDisplay: hmsDiagnosis.diagnosis || hmsDiagnosis.name || hmsDiagnosis.description,
       category: hmsDiagnosis.type === 'chronic' ? 'problem-list-item' : 'encounter-diagnosis';
-      clinicalStatus: hmsDiagnosis.status === 'resolved' ? 'resolved' : 'active';
+      clinicalStatus: hmsDiagnosis.status === 'resolved' ? 'resolved' : 'active',
       verificationStatus: hmsDiagnosis.confirmed ? 'confirmed' : 'provisional';
-      severity: hmsDiagnosis.severity;
+      severity: hmsDiagnosis.severity,
       onsetDate: hmsDiagnosis.onsetDate || hmsDiagnosis.diagnosedAt;
-      recordedDate: hmsDiagnosis.recordedAt || hmsDiagnosis.createdAt;
-      notes: hmsDiagnosis.notes || hmsDiagnosis.description;
+      recordedDate: hmsDiagnosis.recordedAt || hmsDiagnosis.createdAt,
+      notes: hmsDiagnosis.notes || hmsDiagnosis.description
     });
   }
 
@@ -590,7 +590,7 @@ export class FHIRConditionCodes {
     const allConditions = {
       ...this.CHRONIC_CONDITIONS,
       ...this.ACUTE_CONDITIONS,
-      ...this.EMERGENCY_CONDITIONS;
+      ...this.EMERGENCY_CONDITIONS
     };
 
     const condition = Object.values(allConditions).find(cond => cond.code === code);

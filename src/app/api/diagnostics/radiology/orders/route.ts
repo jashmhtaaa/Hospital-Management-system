@@ -138,9 +138,9 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'radiology_orders';
+          resource: 'radiology_orders',
           details: { patientId, status, priority, modality, page, pageSize }
         });
 
@@ -161,8 +161,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch radiology orders';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch radiology orders',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -211,7 +211,7 @@ export const POST = async (request: NextRequest) => {
     // Validate required fields
     if (!patientId || !modality || !procedureCode || !procedureName) {
       return NextResponse.json({
-        error: 'Patient ID, modality, procedure code, and procedure name are required';
+        error: 'Patient ID, modality, procedure code, and procedure name are required'
       }, { status: 400 });
     }
 
@@ -295,9 +295,9 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'radiology_orders';
+      resource: 'radiology_orders',
       resourceId: result.insertId;
       details: {
         orderNumber,
@@ -305,7 +305,7 @@ export const POST = async (request: NextRequest) => {
         patientId,
         modality,
         procedureCode,
-        priority: priority || 'routine';
+        priority: priority || 'routine'
       }
     });
 
@@ -325,13 +325,13 @@ export const POST = async (request: NextRequest) => {
     // Notify radiologist if assigned
     if (radiologistId != null) {
       await notifyUsers({
-        userIds: [radiologistId];
+        userIds: [radiologistId],
         title: 'New Radiology Order Assignment';
         message: `You have been assigned to radiology order ${orderNumber}`,
-        type: 'radiology_order';
+        type: 'radiology_order',
         resourceId: result.insertId;
-        resourceType: 'radiology_orders';
-        priority: priority === 'stat' ? 'high' : 'medium';
+        resourceType: 'radiology_orders',
+        priority: priority === 'stat' ? 'high' : 'medium'
       });
     } else {
       // Notify radiology department
@@ -344,13 +344,13 @@ export const POST = async (request: NextRequest) => {
 
       if (staffIds.length > 0) {
         await notifyUsers({
-          userIds: staffIds;
+          userIds: staffIds,
           title: 'New Radiology Order';
           message: `A new ${priority || 'routine'} radiology order has been created`,
-          type: 'radiology_order';
+          type: 'radiology_order',
           resourceId: result.insertId;
-          resourceType: 'radiology_orders';
-          priority: priority === 'stat' ? 'high' : 'medium';
+          resourceType: 'radiology_orders',
+          priority: priority === 'stat' ? 'high' : 'medium'
         });
       }
     }
@@ -389,8 +389,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create radiology order';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to create radiology order',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -643,7 +643,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
           trackingNote = 'Procedure in progress';
           break;
         case 'completed':
-          updateFields.push('completed_date = ?');
+          updateFields.push('completed_date = ?'),
           updateParams.push(completedDate || new Date().toISOString().split('T')[0]);
           trackingNote = 'Procedure completed';
           break;
@@ -732,15 +732,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id;
+        userId: session.user.id,
         action: 'update';
-        resource: 'radiology_orders';
+        resource: 'radiology_orders',
         resourceId: id;
         details: {
           ...body,
           statusChanged,
-          _oldStatus: statusChanged ? _oldStatus : undefined;
-          newStatus: statusChanged ? status : undefined;
+          _oldStatus: statusChanged ? _oldStatus : undefined,
+          newStatus: statusChanged ? status : undefined
         }
       });
 
@@ -764,39 +764,39 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         // Notify orderer
         if (existingOrder.ordered_by !== session.user.id) {
           await notifyUsers({
-            userIds: [existingOrder.ordered_by];
+            userIds: [existingOrder.ordered_by],
             title: 'Radiology Order Status Update';
             message: `Order ${existingOrder.order_number} status changed to ${status}`,
-            type: 'radiology_order_update';
+            type: 'radiology_order_update',
             resourceId: id;
-            resourceType: 'radiology_orders';
-            priority: 'medium';
+            resourceType: 'radiology_orders',
+            priority: 'medium'
           });
         }
 
         // Notify radiologist if assigned
         if (existingOrder?.radiologist_id && existingOrder.radiologist_id !== session.user.id) {
           await notifyUsers({
-            userIds: [existingOrder.radiologist_id];
+            userIds: [existingOrder.radiologist_id],
             title: 'Radiology Order Status Update';
             message: `Order ${existingOrder.order_number} status changed to ${status}`,
-            type: 'radiology_order_update';
+            type: 'radiology_order_update',
             resourceId: id;
-            resourceType: 'radiology_orders';
-            priority: 'medium';
+            resourceType: 'radiology_orders',
+            priority: 'medium'
           });
         }
 
         // Notify technician if assigned
         if (existingOrder?.technician_id && existingOrder.technician_id !== session.user.id) {
           await notifyUsers({
-            userIds: [existingOrder.technician_id];
+            userIds: [existingOrder.technician_id],
             title: 'Radiology Order Status Update';
             message: `Order ${existingOrder.order_number} status changed to ${status}`,
-            type: 'radiology_order_update';
+            type: 'radiology_order_update',
             resourceId: id;
-            resourceType: 'radiology_orders';
-            priority: 'medium';
+            resourceType: 'radiology_orders',
+            priority: 'medium'
           });
         }
       }
@@ -805,13 +805,13 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (radiologistId !== undefined && radiologistId !== existingOrder.radiologist_id) {
         if (radiologistId != null) {
           await notifyUsers({
-            userIds: [radiologistId];
+            userIds: [radiologistId],
             title: 'Radiology Order Assignment';
             message: `You have been assigned to radiology order ${existingOrder.order_number}`,
-            type: 'radiology_order';
+            type: 'radiology_order',
             resourceId: id;
-            resourceType: 'radiology_orders';
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium';
+            resourceType: 'radiology_orders',
+            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
           });
         }
       }
@@ -819,19 +819,19 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (technicianId !== undefined && technicianId !== existingOrder.technician_id) {
         if (technicianId != null) {
           await notifyUsers({
-            userIds: [technicianId];
+            userIds: [technicianId],
             title: 'Radiology Order Assignment';
             message: `You have been assigned to radiology order ${existingOrder.order_number}`,
-            type: 'radiology_order';
+            type: 'radiology_order',
             resourceId: id;
-            resourceType: 'radiology_orders';
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium';
+            resourceType: 'radiology_orders',
+            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
           });
         }
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*')
     }
 
     // Get the updated order
@@ -867,8 +867,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update radiology order';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to update radiology order',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -916,9 +916,9 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'radiology_order_tracking';
+          resource: 'radiology_order_tracking',
           details: { orderId: id }
         });
 
@@ -931,7 +931,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch order tracking';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch order tracking',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

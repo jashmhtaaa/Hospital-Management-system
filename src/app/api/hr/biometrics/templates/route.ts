@@ -7,11 +7,11 @@ import { biometricService } from '@/lib/hr/biometric-service';
 const biometricTemplateSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
-    errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" });
+    errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" }),
   }),
   templateData: z.string().min(1, "Template data is required"),
-  deviceId: z.string().optional();
-  notes: z.string().optional();
+  deviceId: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // POST handler for registering biometric template

@@ -23,10 +23,10 @@ export const GET = async (request: NextRequest) => {
 
     // Build filters
     const filters = {
-      templateType: searchParams.get('templateType') || undefined;
+      templateType: searchParams.get('templateType') || undefined,
       specialtyType: searchParams.get('specialtyType') || undefined;
       page: searchParams.has('page') ? parseInt(searchParams.get('page') as string, 10) : 1,
-      pageSize: searchParams.has('pageSize') ? parseInt(searchParams.get('pageSize') as string, 10) : 20,;
+      pageSize: searchParams.has('pageSize') ? parseInt(searchParams.get('pageSize') as string, 10) : 20,
     };
 
     // Get templates

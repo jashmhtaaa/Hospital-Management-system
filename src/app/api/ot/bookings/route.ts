@@ -86,7 +86,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(results);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching OT bookings", details: errorMessage },
       { status: 500 }
@@ -130,7 +130,7 @@ export const _POST = async (request: NextRequest) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
-    const id = crypto.randomUUID();
+    const id = crypto.randomUUID(),
     const now = new Date().toISOString();
 
     await DB.prepare(
@@ -187,7 +187,7 @@ export const _POST = async (request: NextRequest) => {
         NextResponse.json(
           { message: "Booking created, but failed to fetch details" },
           { status: 201 }
-        );
+        ),
   } catch (error: unknown) {
     // FIX: Remove explicit any
 

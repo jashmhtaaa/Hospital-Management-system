@@ -11,21 +11,21 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 interface DatabaseHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: 'healthy' | 'degraded' | 'unhealthy',
   timestamp: string;
-  responseTime: number;
+  responseTime: number,
   connectionPool: {
-    active: number;
+    active: number,
     idle: number;
-    total: number;
+    total: number
   };
   queries: {
-    slow: number;
-    failed: number;
+    slow: number,
+    failed: number
   };
   migrations: {
-    applied: number;
-    pending: number;
+    applied: number,
+    pending: number
   };
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -46,29 +46,29 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     // Simulate connection pool status (adjust based on your actual connection pool)
     const connectionPool = {
       active: 5, // These would come from actual pool metrics
-      idle: 3;
-      total: 8;
+      idle: 3,
+      total: 8
     };
 
     const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
     const dbHealth: DatabaseHealth = {
       status: determineDbStatus(responseTime, slowQueries),
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       responseTime,
       connectionPool,
       queries: {
-        slow: slowQueries;
-        failed: 0 // This would come from monitoring;
+        slow: slowQueries,
+        failed: 0 // This would come from monitoring
       },
-      migrations: migrationStatus;
+      migrations: migrationStatus
     }
 
     const httpStatus = dbHealth.status === 'healthy' ? 200 :
                       dbHealth.status === 'degraded' ? 200 : 503;
 
     return NextResponse.json(dbHealth, {
-      status: httpStatus;
+      status: httpStatus,
       headers: {
         'Cache-Control': 'no-cache',
         'X-Response-Time': `${responseTime}ms`;
@@ -78,11 +78,11 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy';
-      timestamp: new Date().toISOString();
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       error: 'Database connection failed';
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -104,7 +104,7 @@ async const checkSlowQueries = (): Promise<number> {
   }
 }
 
-async const checkMigrations = (): Promise<{ applied: number; pending: number }> {
+async const checkMigrations = (): Promise<{ applied: number, pending: number }> {
   try {
     // Check applied migrations
     const applied = await prisma.$queryRaw`;
@@ -121,14 +121,14 @@ async const checkMigrations = (): Promise<{ applied: number; pending: number }> 
     ` as any[];
 
     return {
-      applied: applied[0]?.count || 0;
-      pending: pending[0]?.count || 0;
+      applied: applied[0]?.count || 0,
+      pending: pending[0]?.count || 0
     };
   } catch (error) {
     // If migration table doesn't exist or is inaccessible
     return {
-      applied: 0;
-      pending: 0;
+      applied: 0,
+      pending: 0
     };
   }
 }

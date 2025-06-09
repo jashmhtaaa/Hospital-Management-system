@@ -30,13 +30,13 @@ const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
 type SidebarContext = {
-  state: "expanded" | "collapsed";
+  state: "expanded" | "collapsed",
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: (open: boolean) => void,
   openMobile: boolean;
-  setOpenMobile: (open: boolean) => void;
+  setOpenMobile: (open: boolean) => void,
   isMobile: boolean;
-  toggleSidebar: () => void;
+  toggleSidebar: () => void
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -61,7 +61,7 @@ const SidebarProvider = React.forwardRef<;
   (
     {
       defaultOpen = true,
-      open: openProp;
+      open: openProp,
       onOpenChange: setOpenProp;
       className,
       style,
@@ -519,18 +519,18 @@ const sidebarMenuButtonVariants = cva(
   {
     variants: {
       variant: {
-        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
-        outline: "bg-background shadow-[0_0_0_1px_hsl(const(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(const(--sidebar-accent))]";
+        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        outline: "bg-background shadow-[0_0_0_1px_hsl(const(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(const(--sidebar-accent))]"
       },
       size: {
-        default: "h-8 text-sm";
+        default: "h-8 text-sm",
         sm: "h-7 text-xs";
-        lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0";
+        lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0"
       },
     },
     defaultVariants: {
-      variant: "default";
-      size: "default";
+      variant: "default",
+      size: "default"
     },
   }
 );
@@ -575,7 +575,7 @@ const SidebarMenuButton = React.forwardRef<;
 
     if (typeof tooltip === "string") {
       tooltip = {
-        children: tooltip;
+        children: tooltip
       }
     }
 

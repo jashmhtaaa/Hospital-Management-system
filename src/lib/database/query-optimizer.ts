@@ -42,30 +42,30 @@ export class QueryOptimizer {
 
     const result = await this.client.patient.findMany({
       where: {
-        isActive: filters?.active ?? true;
+        isActive: filters?.active ?? true
       },
       include: {
         bills: {
           select: {
-            id: true;
+            id: true,
             billNumber: true;
-            totalAmount: true;
+            totalAmount: true,
             outstandingAmount: true;
-            status: true;
-            billDate: true;
+            status: true,
+            billDate: true
           },
           orderBy: { billDate: 'desc' },
-          take: 10, // Limit related records;
+          take: 10, // Limit related records
         },
         _count: {
           select: {
-            bills: true;
+            bills: true,
             appointments: true;
-            admissions: true;
+            admissions: true
           },
         },
       },
-      take: filters?.limit ?? 50;
+      take: filters?.limit ?? 50,
       skip: filters?.offset ?? 0;
       orderBy: { createdAt: 'desc' },
     });
@@ -85,15 +85,15 @@ export class QueryOptimizer {
 
     const result = await this.client.patient.findMany({
       where: {
-        isActive: true;
+        isActive: true,
         appointments: {
           some: {
             appointmentDate: {
-              gte: new Date();
-              lte: futureDate;
+              gte: new Date(),
+              lte: futureDate
             },
             status: {
-              in: ['SCHEDULED', 'CONFIRMED'],;
+              in: ['SCHEDULED', 'CONFIRMED'],
             },
           },
         },
@@ -102,21 +102,21 @@ export class QueryOptimizer {
         appointments: {
           where: {
             appointmentDate: {
-              gte: new Date();
-              lte: futureDate;
+              gte: new Date(),
+              lte: futureDate
             },
             status: {
-              in: ['SCHEDULED', 'CONFIRMED'],;
+              in: ['SCHEDULED', 'CONFIRMED'],
             },
           },
           select: {
-            id: true;
+            id: true,
             appointmentDate: true;
-            startTime: true;
+            startTime: true,
             endTime: true;
-            type: true;
+            type: true,
             status: true;
-            doctorId: true;
+            doctorId: true
           },
           orderBy: { appointmentDate: 'asc' },
         },
@@ -154,21 +154,21 @@ export class QueryOptimizer {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             mrn: true;
-            firstName: true;
+            firstName: true,
             lastName: true;
-            phone: true;
+            phone: true
           },
         },
         billItems: {
           include: {
             serviceItem: {
               select: {
-                id: true;
+                id: true,
                 code: true;
-                name: true;
-                category: true;
+                name: true,
+                category: true
               },
             },
           },
@@ -176,25 +176,25 @@ export class QueryOptimizer {
         },
         payments: {
           select: {
-            id: true;
+            id: true,
             amount: true;
-            paymentMethod: true;
+            paymentMethod: true,
             paymentDate: true;
-            status: true;
+            status: true
           },
           orderBy: { paymentDate: 'desc' },
         },
         insuranceClaim: {
           select: {
-            id: true;
+            id: true,
             claimNumber: true;
-            status: true;
+            status: true,
             totalAmount: true;
-            approvedAmount: true;
+            approvedAmount: true
           },
         },
       },
-      take: filters?.limit ?? 100;
+      take: filters?.limit ?? 100,
       orderBy: { billDate: 'desc' },
     });
 
@@ -240,21 +240,21 @@ export class QueryOptimizer {
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.date && {
           appointmentDate: {
-            gte: filters.date;
-            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000);
+            gte: filters.date,
+            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000)
           },
         }),
       },
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             mrn: true;
-            firstName: true;
+            firstName: true,
             lastName: true;
-            phone: true;
+            phone: true,
             dateOfBirth: true;
-            gender: true;
+            gender: true
           },
         },
       },
@@ -266,7 +266,7 @@ export class QueryOptimizer {
 
   // Doctor's schedule optimization
   async getDoctorScheduleOptimized(
-    doctorId: string;
+    doctorId: string,
     startDate: Date;
     endDate: Date;
   ) {
@@ -278,21 +278,21 @@ export class QueryOptimizer {
       where: {
         doctorId,
         appointmentDate: {
-          gte: startDate;
-          lte: endDate;
+          gte: startDate,
+          lte: endDate
         },
         status: {
-          notIn: ['CANCELLED', 'NO_SHOW'],;
+          notIn: ['CANCELLED', 'NO_SHOW'],
         },
       },
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             mrn: true;
-            firstName: true;
+            firstName: true,
             lastName: true;
-            phone: true;
+            phone: true
           },
         },
       },
@@ -323,51 +323,51 @@ export class QueryOptimizer {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             mrn: true;
-            firstName: true;
+            firstName: true,
             lastName: true;
-            dateOfBirth: true;
+            dateOfBirth: true,
             gender: true;
-            bloodType: true;
-            allergies: true;
+            bloodType: true,
+            allergies: true
           },
         },
         vitalSigns: {
           select: {
-            id: true;
+            id: true,
             recordedAt: true;
-            temperature: true;
+            temperature: true,
             bloodPressureSys: true;
-            bloodPressureDia: true;
+            bloodPressureDia: true,
             heartRate: true;
-            respiratoryRate: true;
-            oxygenSaturation: true;
+            respiratoryRate: true,
+            oxygenSaturation: true
           },
           orderBy: { recordedAt: 'desc' },
-          take: 5, // Latest 5 vital signs;
+          take: 5, // Latest 5 vital signs
         },
         medications: {
           select: {
-            id: true;
+            id: true,
             medicationName: true;
-            dosage: true;
+            dosage: true,
             administeredAt: true;
-            administeredBy: true;
+            administeredBy: true
           },
           orderBy: { administeredAt: 'desc' },
-          take: 10, // Latest 10 medications;
+          take: 10, // Latest 10 medications
         },
         _count: {
           select: {
-            vitalSigns: true;
+            vitalSigns: true,
             medications: true;
-            nursingNotes: true;
-            progressNotes: true;
+            nursingNotes: true,
+            progressNotes: true
           },
         },
       },
-      take: filters?.limit ?? 50;
+      take: filters?.limit ?? 50,
       orderBy: { admissionDate: 'desc' },
     });
 
@@ -423,33 +423,33 @@ export class QueryOptimizer {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             mrn: true;
-            firstName: true;
+            firstName: true,
             lastName: true;
-            dateOfBirth: true;
-            gender: true;
+            dateOfBirth: true,
+            gender: true
           },
         },
         labTests: {
           select: {
-            id: true;
+            id: true,
             code: true;
-            name: true;
+            name: true,
             category: true;
-            normalRange: true;
-            unit: true;
+            normalRange: true,
+            unit: true
           },
         },
         labResults: {
           include: {
             labTest: {
               select: {
-                id: true;
+                id: true,
                 code: true;
-                name: true;
+                name: true,
                 normalRange: true;
-                unit: true;
+                unit: true
               },
             },
           },
@@ -473,34 +473,34 @@ export class QueryOptimizer {
     const result = await this.client.labResult.findMany({
       where: {
         flag: {
-          in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],;
+          in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],
         },
         reportedDate: {
-          gte: sinceDate;
+          gte: sinceDate
         },
-        status: 'VERIFIED';
+        status: 'VERIFIED'
       },
       include: {
         labOrder: {
           include: {
             patient: {
               select: {
-                id: true;
+                id: true,
                 mrn: true;
-                firstName: true;
+                firstName: true,
                 lastName: true;
-                phone: true;
+                phone: true
               },
             },
           },
         },
         labTest: {
           select: {
-            id: true;
+            id: true,
             code: true;
-            name: true;
+            name: true,
             normalRange: true;
-            unit: true;
+            unit: true
           },
         },
       },
@@ -520,53 +520,53 @@ export class QueryOptimizer {
     const result = await this.client.insurancePolicy.findMany({
       where: {
         ...(patientId && { patientId }),
-        status: 'active';
+        status: 'active'
       },
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             mrn: true;
-            firstName: true;
-            lastName: true;
+            firstName: true,
+            lastName: true
           },
         },
         insuranceProvider: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            code: true;
-            phone: true;
+            code: true,
+            phone: true
           },
         },
         claims: {
           select: {
-            id: true;
+            id: true,
             claimNumber: true;
-            status: true;
+            status: true,
             totalAmount: true;
-            approvedAmount: true;
+            approvedAmount: true,
             deniedAmount: true;
-            submittedAt: true;
-            lastResponseDate: true;
+            submittedAt: true,
+            lastResponseDate: true
           },
           orderBy: { submittedAt: 'desc' },
-          take: 10, // Latest 10 claims;
+          take: 10, // Latest 10 claims
         },
         verifications: {
           select: {
-            id: true;
+            id: true,
             verifiedAt: true;
-            eligibilityStatus: true;
-            verifiedBy: true;
+            eligibilityStatus: true,
+            verifiedBy: true
           },
           orderBy: { verifiedAt: 'desc' },
-          take: 3, // Latest 3 verifications;
+          take: 3, // Latest 3 verifications
         },
         _count: {
           select: {
-            claims: true;
-            verifications: true;
+            claims: true,
+            verifications: true
           },
         },
       },
@@ -581,7 +581,7 @@ export class QueryOptimizer {
    */
 
   async bulkUpdateBillStatus(
-    billIds: string[];
+    billIds: string[],
     status: string;
     updatedBy: string;
   ) {
@@ -590,16 +590,16 @@ export class QueryOptimizer {
         id: { in: billIds },
       },
       data: {
-        status: status as any;
-        updatedAt: new Date();
+        status: status as any,
+        updatedAt: new Date()
       },
     });
   }
 
   async bulkCreateBillItems(billItems: unknown[]) {
     return this.client.billItem.createMany({
-      data: billItems;
-      skipDuplicates: true;
+      data: billItems,
+      skipDuplicates: true
     });
   }
 
@@ -616,10 +616,10 @@ export class QueryOptimizer {
         include: {
           _count: {
             select: {
-              bills: true;
+              bills: true,
               appointments: true;
-              admissions: true;
-              labOrders: true;
+              admissions: true,
+              labOrders: true
             },
           },
         },
@@ -663,10 +663,10 @@ export class QueryOptimizer {
     if (cached != null) return cached;
 
     const stats = {
-      totalQueries: 0;
+      totalQueries: 0,
       slowQueries: 0;
-      averageResponseTime: 0;
-      cacheHitRate: 0;
+      averageResponseTime: 0,
+      cacheHitRate: 0
     };
 
     // This would be populated with actual metrics
@@ -682,7 +682,7 @@ export const queryOptimizer = QueryOptimizer.getInstance();
 export const _getOptimizedPatientData = async (patientId: string) => {
   return queryOptimizer.getPatientOptimized(patientId)
 export const _getOptimizedBillsForPatient = async (
-  patientId: string;
+  patientId: string,
   limit: number = 10;
 ) => {
   return queryOptimizer.getBillsWithItems({
@@ -690,7 +690,7 @@ export const _getOptimizedBillsForPatient = async (
     limit,
   });
 export const _getOptimizedAppointmentsForDoctor = async (
-  doctorId: string;
+  doctorId: string,
   date: Date;
 ) => {
   return queryOptimizer.getAppointmentsWithDetails({

@@ -65,7 +65,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(
           { error: `Unsupported action type: ${body.actionType}` },
           { status: 400 }
-        );
+        ),
     }
   } catch (error) {
     return handleApiError(error);

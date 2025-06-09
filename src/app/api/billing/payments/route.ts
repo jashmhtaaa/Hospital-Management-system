@@ -19,30 +19,30 @@ import { logger } from '@/lib/core/logging';
 
 // Schema for payment creation
 const createPaymentSchema = z.object({
-  invoiceId: z.string().uuid();
+  invoiceId: z.string().uuid(),
   amount: moneySchema;
-  paymentMethod: paymentMethodSchema;
+  paymentMethod: paymentMethodSchema,
   paymentDate: z.coerce.date().default(() => new Date());
-  referenceNumber: z.string().optional();
-  notes: z.string().optional();
-  paidBy: z.string().optional();
-  receiptRequired: z.boolean().default(true);
+  referenceNumber: z.string().optional(),
+  notes: z.string().optional(),
+  paidBy: z.string().optional(),
+  receiptRequired: z.boolean().default(true)
 });
 
 // Schema for payment query parameters
 const paymentQuerySchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1);
-  pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
-  invoiceId: z.string().uuid().optional();
-  patientId: z.string().uuid().optional();
-  paymentMethod: paymentMethodSchema.optional();
-  status: paymentStatusSchema.optional();
-  startDate: z.string().optional();
-  endDate: z.string().optional();
-  minAmount: z.coerce.number().optional();
-  maxAmount: z.coerce.number().optional();
+  page: z.coerce.number().int().positive().optional().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
+  invoiceId: z.string().uuid().optional(),
+  patientId: z.string().uuid().optional(),
+  paymentMethod: paymentMethodSchema.optional(),
+  status: paymentStatusSchema.optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  minAmount: z.coerce.number().optional(),
+  maxAmount: z.coerce.number().optional(),
   sortBy: z.enum(['createdAt', 'paymentDate', 'amount']).optional().default('paymentDate'),
-  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),;
+  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
 });
 
 // GET handler for retrieving all payments with filtering and pagination
@@ -62,7 +62,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
   if (query.patientId) {
     where.invoice = {
-      patientId: query.patientId;
+      patientId: query.patientId
     };
   }
 
@@ -84,8 +84,8 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       }
 
       where.paymentDate = {
-        gte: startDate;
-        lte: endDate;
+        gte: startDate,
+        lte: endDate
       };
     } catch (error) {
       throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
@@ -95,14 +95,14 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   if (query.minAmount !== undefined) {
     where.amount = {
       ...(where.amount || {}),
-      gte: query.minAmount;
+      gte: query.minAmount
     };
   }
 
   if (query.maxAmount !== undefined) {
     where.amount = {
       ...(where.amount || {}),
-      lte: query.maxAmount;
+      lte: query.maxAmount
     };
   }
 
@@ -113,20 +113,20 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       orderBy: {
         [query.sortBy]: query.sortOrder,
       },
-      skip: (query.page - 1) * query.pageSize;
+      skip: (query.page - 1) * query.pageSize,
       take: query.pageSize;
       include: {
         invoice: {
           select: {
-            id: true;
+            id: true,
             billNumber: true;
-            patientId: true;
+            patientId: true,
             patient: {
               select: {
-                id: true;
+                id: true,
                 firstName: true;
-                lastName: true;
-                mrn: true;
+                lastName: true,
+                mrn: true
               },
             },
           },
@@ -175,8 +175,8 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
       'Payment amount cannot exceed outstanding amount',
       'PAYMENT_EXCEEDS_OUTSTANDING',
       {
-        paymentAmount: data.amount;
-        outstandingAmount: invoice.outstandingAmount;
+        paymentAmount: data.amount,
+        outstandingAmount: invoice.outstandingAmount
       }
     );
   }
@@ -190,14 +190,14 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     // Create payment record
     const newPayment = await prisma.payment.create({
       data: {
-        invoiceId: data.invoiceId;
+        invoiceId: data.invoiceId,
         amount: data.amount;
-        paymentMethod: data.paymentMethod;
+        paymentMethod: data.paymentMethod,
         paymentDate: data.paymentDate;
         referenceNumber,
-        notes: data.notes;
+        notes: data.notes,
         paidBy: data.paidBy;
-        status: 'completed';
+        status: 'completed'
       },
     });
 
@@ -216,9 +216,9 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     await prisma.bill.update({
       where: { id: data.invoiceId },
       data: {
-        paidAmount: newPaidAmount;
+        paidAmount: newPaidAmount,
         outstandingAmount: newOutstandingAmount;
-        status: newStatus;
+        status: newStatus
       },
     });
 
@@ -226,10 +226,10 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   });
 
   logger.info('Payment created', {
-    paymentId: payment.id;
+    paymentId: payment.id,
     invoiceId: data.invoiceId;
-    amount: data.amount;
-    method: data.paymentMethod;
+    amount: data.amount,
+    method: data.paymentMethod
   });
 
   // Generate receipt if required

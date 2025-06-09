@@ -16,34 +16,34 @@ import { getMedicationById, getPrescriptionById } from '../../../../../../lib/se
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null);
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriptionId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: (administration) => Promise.resolve(administration.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: () => Promise.resolve(null),
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriptionId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -74,7 +74,7 @@ export const GET = async (
     const url = new URL(req.url);
     const startDate = url.searchParams.get('startDate');
       ? new Date(url.searchParams.get('startDate') as string);
-      : new Date();
+      : new Date(),
     const endDate = url.searchParams.get('endDate');
       ? new Date(url.searchParams.get('endDate') as string);
       : new Date(startDate.getTime() + 24 * 60 * 60 * 1000); // Default to 24 hours from start
@@ -125,18 +125,18 @@ export const GET = async (
         }
 
         schedule.push({
-          prescriptionId: prescription.id;
+          prescriptionId: prescription.id,
           medicationId: medication.id;
-          medicationName: medication.name;
+          medicationName: medication.name,
           dose: prescription.dosage.value;
-          unit: prescription.dosage.unit;
+          unit: prescription.dosage.unit,
           route: prescription.dosage.route;
           scheduledTime: scheduleTime;
           status,
-          administrationId: matchingAdministration?.id;
+          administrationId: matchingAdministration?.id,
           administeredAt: matchingAdministration?.administeredAt;
-          administeredBy: matchingAdministration?.administeredBy;
-          notes: matchingAdministration?.notes;
+          administeredBy: matchingAdministration?.administeredBy,
+          notes: matchingAdministration?.notes
         });
       }
     }
@@ -146,14 +146,14 @@ export const GET = async (
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'SCHEDULE_VIEW';
+      action: 'SCHEDULE_VIEW',
       resourceType: 'MedicationAdministration';
-      userId: userId;
+      userId: userId,
       patientId: patientId;
       details: {
-        count: schedule.length;
-        startDate: startDate.toISOString();
-        endDate: endDate.toISOString();
+        count: schedule.length,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString()
       }
     });
 

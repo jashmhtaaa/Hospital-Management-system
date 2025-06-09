@@ -19,9 +19,9 @@ export interface AuditLogContext {
   url?: string;
   ipAddress?: string;
 export interface AuditLogEntry {
-  action: string;
+  action: string,
   resourceId: string;
-  userId: string;
+  userId: string,
   details: Record<string, unknown>;
   severity?: 'info' | 'warning' | 'error' | 'critical';
 export class AuditLogger {
@@ -29,13 +29,13 @@ export class AuditLogger {
 
   constructor(context: AuditLogContext) {
     this.context = {
-      requestId: context.requestId || crypto.randomUUID();
+      requestId: context.requestId || crypto.randomUUID(),
       userId: context.userId || 'anonymous';
-      userRoles: context.userRoles || [];
+      userRoles: context.userRoles || [],
       userAgent: context.userAgent;
-      method: context.method;
+      method: context.method,
       url: context.url ? SecurityService.sanitizeUrl(context.url) : undefined;
-      ipAddress: context.ipAddress;
+      ipAddress: context.ipAddress
     };
   }
 
@@ -60,7 +60,7 @@ export class AuditLogger {
 
       // Also log to console for development/debugging
       if (process.env.NODE_ENV !== 'production') {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
 
       return logEntry
@@ -163,11 +163,11 @@ export class AuditLogger {
     // For this example, we'll just log to console
 
     // console.log removed for production.toISOString(),
-      requestId: this.context.requestId;
+      requestId: this.context.requestId,
       action: entry.action;
-      resourceId: entry.resourceId;
+      resourceId: entry.resourceId,
       userId: entry.userId;
-      severity: entry.severity || this.determineSeverity(entry.action);
-      details: this.sanitizeDetails(entry.details);
+      severity: entry.severity || this.determineSeverity(entry.action),
+      details: this.sanitizeDetails(entry.details)
     }))
   }

@@ -41,9 +41,9 @@ export const _ERTriageForm = () => {
 
           <div className="space-y-2">;
             <Label htmlFor="vitalSigns">Vital Signs</Label>;
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">;
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 <div
-                <Label htmlFor="temperature" className="text-xs">Temperature</Label>;
+                <Label htmlFor="temperature" className="text-xs">Temperature</Label>
                 <Input id="temperature" placeholder="°C" />
               </div>
 <div

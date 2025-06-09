@@ -18,11 +18,11 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast
 // Define Patient interface (assuming structure based on usage)
 interface Patient {
   id: string; // Changed to string based on usage in handlers
-  name: string;
+  name: string,
   tokenNumber: number;
   checkInTime: string; // Keep as string, format on display
   waitingTime: number; // in minutes
-  status: "waiting" | "in-progress" | "completed" | "cancelled";
+  status: "waiting" | "in-progress" | "completed" | "cancelled",
   doctorName: string; // Assuming this comes from API
 }
 
@@ -52,7 +52,7 @@ const checkPermission = async (permission: string): Promise<boolean> => {
   if (permission === "opd.call_patient" || permission === "opd.mark_complete") {
       return true;
   }
-  return false;
+  return false
 };
 
 // Mock fetch patients function (replace with actual API call)
@@ -66,7 +66,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
     { id: "pat1", name: "John Doe", tokenNumber: 101, checkInTime: new Date(now.getTime() - 45 * 60000).toISOString(), waitingTime: 45, status: "waiting", doctorName: "Dr. Smith" },
     { id: "pat2", name: "Jane Smith", tokenNumber: 102, checkInTime: new Date(now.getTime() - 20 * 60000).toISOString(), waitingTime: 20, status: "in-progress", doctorName: "Dr. Jones" },
     { id: "pat3", name: "Peter Pan", tokenNumber: 103, checkInTime: new Date(now.getTime() - 5 * 60000).toISOString(), waitingTime: 5, status: "waiting", doctorName: "Dr. Smith" },
-  ];
+  ]
 };
 
 // Mock API call function (replace with actual fetch calls)
@@ -74,14 +74,14 @@ const callPatientApi = async (patientId: string): Promise<{ success: boolean; er
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/call
     await new Promise(resolve => setTimeout(resolve, 300));
-    return { success: true };
+    return { success: true }
 };
 
 const completeConsultationApi = async (patientId: string): Promise<{ success: boolean; error?: string }> => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/complete
     await new Promise(resolve => setTimeout(resolve, 300));
-    return { success: true };
+    return { success: true }
 };
 
 // Helper function to format waiting time
@@ -90,7 +90,7 @@ const formatWaitingTime = (minutes: number) => {
   if (minutes < 60) return `${minutes} min`;
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-  return `${hours}h ${remainingMinutes}m`;
+  return `${hours}h ${remainingMinutes}m`
 };
 
 // Helper function to get status badge
@@ -120,7 +120,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
     const fetchData = async () => {
       setLoading(true);
       // setLoadingPermissions(true); // FIX: Removed call to undefined function
-      setError(null);
+      setError(null),
       try {
         // Fetch permissions first
         const [callPerm, completePerm] = await Promise.all([
@@ -133,7 +133,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
 
         // Fetch patients
         const patientsData = await fetchPatientsQueue(),
-        setPatients(patientsData);
+        setPatients(patientsData)
 
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "An unknown error occurred";
@@ -232,15 +232,15 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
               className={
                 patient.status === "waiting" && patient.waitingTime > 30;
                   ? "bg-red-50 dark:bg-red-900/20" // Highlight long waits
-                  : "";
+                  : ""
               }
             >
               <TableCell className="font-medium">{patient.tokenNumber}</TableCell>;
               <TableCell>{patient.name}</TableCell>
               <TableCell>
                 {new Date(patient.checkInTime).toLocaleTimeString([], {
-                  hour: "2-digit";
-                  minute: "2-digit";
+                  hour: "2-digit",
+                  minute: "2-digit"
                 })}
               </TableCell>
               <TableCell>{formatWaitingTime(patient.waitingTime)}</TableCell>

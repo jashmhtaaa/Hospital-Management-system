@@ -8,27 +8,27 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures
 interface PrescriptionItem {
-  id: string;
+  id: string,
   medication_id: string;
-  medication_name: string;
+  medication_name: string,
   dosage: string;
-  frequency: string;
+  frequency: string,
   duration: string;
-  dispensed_quantity: number;
-  quantity: number;
+  dispensed_quantity: number,
+  quantity: number
 }
 
 interface Prescription {
-  id: string;
+  id: string,
   date: string;
   status: string; // e.g., 'active', 'partially_dispensed', 'completed'
-  items: PrescriptionItem[];
+  items: PrescriptionItem[]
 }
 
 interface MedicationScheduleItem {
-  id: string;
+  id: string,
   prescription_item_id: string;
-  medication_name: string;
+  medication_name: string,
   scheduled_time: string;
   status: "pending" | "administered" | "skipped" | "held";
   condition?: string;
@@ -38,15 +38,15 @@ interface AdministrationRecord {
   id: string;
   schedule_id?: string; // Link to schedule if applicable
   prescription_item_id?: string; // Link to prescription item
-  medication_name: string;
+  medication_name: string,
   administered_at: string;
   administered_by: string; // Name or ID of the nurse
   notes?: string;
 }
 
 interface IPDPharmacyIntegrationProperties {
-  admissionId: string | null;
-  patientId: string | null;
+  admissionId: string | null,
+  patientId: string | null
 }
 
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
@@ -54,7 +54,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   patientId,
 }) => {
   // const _router = useRouter(); // FIX: Removed unused router
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true),
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [medicationSchedule, setMedicationSchedule] = useState<;
     MedicationScheduleItem[]
@@ -100,66 +100,66 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPrescriptions: Prescription[] = [
           {
-            id: "presc_002";
+            id: "presc_002",
             date: "2025-04-25";
-            status: "partially_dispensed";
+            status: "partially_dispensed",
             items: [
               {
-                id: "item_003";
+                id: "item_003",
                 medication_id: "med_002";
-                medication_name: "Amoxicillin 250mg";
+                medication_name: "Amoxicillin 250mg",
                 dosage: "1 capsule";
-                frequency: "BID";
+                frequency: "BID",
                 duration: "7 days";
-                dispensed_quantity: 10;
-                quantity: 14;
+                dispensed_quantity: 10,
+                quantity: 14
               },
               {
-                id: "item_004";
+                id: "item_004",
                 medication_id: "med_001";
-                medication_name: "Paracetamol 500mg";
+                medication_name: "Paracetamol 500mg",
                 dosage: "1 tablet";
-                frequency: "PRN";
+                frequency: "PRN",
                 duration: "N/A";
-                dispensed_quantity: 5;
-                quantity: 10;
+                dispensed_quantity: 5,
+                quantity: 10
               },
             ],
           },
         ];
         const mockSchedule: MedicationScheduleItem[] = [
           {
-            id: "sched_001";
+            id: "sched_001",
             prescription_item_id: "item_003";
-            medication_name: "Amoxicillin 250mg";
-            scheduled_time: "08:00";
-            status: "pending";
+            medication_name: "Amoxicillin 250mg",
+            scheduled_time: "08:00",
+            status: "pending"
           },
           {
-            id: "sched_002";
+            id: "sched_002",
             prescription_item_id: "item_003";
-            medication_name: "Amoxicillin 250mg";
-            scheduled_time: "20:00";
-            status: "pending";
+            medication_name: "Amoxicillin 250mg",
+            scheduled_time: "20:00",
+            status: "pending"
           },
           {
-            id: "sched_003";
+            id: "sched_003",
             prescription_item_id: "item_004";
-            medication_name: "Paracetamol 500mg";
-            scheduled_time: "12:00";
+            medication_name: "Paracetamol 500mg",
+            scheduled_time: "12:00",
             status: "pending";
-            condition: "If fever > 101F";
+            condition: "If fever > 101F"
           },
         ];
         const mockRecords: AdministrationRecord[] = [
           {
-            id: "admin_001";
+            id: "admin_001",
             schedule_id: "sched_001";
-            prescription_item_id: "item_003";
+            prescription_item_id: "item_003",
             medication_name: "Amoxicillin 250mg";
-            administered_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString();
+            administered_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(),
             administered_by: "Nurse Jane";
-            notes: "Patient took medication without issues.";
+            notes: "Patient took medication without issues."
           },
         ];
 
@@ -186,7 +186,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   ): Promise<void> => {
     if (!admissionId) {
       /* SECURITY: Console statement removed */
-      return;
+      return
     }
     setLoading(true); // Use a specific loading state for this action if needed
     try {
@@ -213,12 +213,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newRecord: AdministrationRecord = {
         id: `admin_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        schedule_id: scheduleItem.id;
+        schedule_id: scheduleItem.id,
         prescription_item_id: scheduleItem.prescription_item_id;
-        medication_name: scheduleItem.medication_name;
-        administered_at: new Date().toISOString();
+        medication_name: scheduleItem.medication_name,
+        administered_at: new Date().toISOString(),
         administered_by: "Current Nurse", // Replace with actual user data
-        notes: "Administered as scheduled.";
+        notes: "Administered as scheduled."
       };
 
       setAdministrationRecords((previousRecords) => [
@@ -235,12 +235,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         );
       );
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -255,7 +255,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         return item.dosage;
       }
     }
-    return "N/A";
+    return "N/A"
   };
 
   // Format date for display
@@ -264,10 +264,10 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       const options: Intl.DateTimeFormatOptions = {
         // year: "numeric";
         // month: "short";
-        // day: "numeric";
+        // day: "numeric",
         hour: "2-digit";
-        minute: "2-digit";
-        hour12: true;
+        minute: "2-digit",
+        hour12: true
       }
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
@@ -441,7 +441,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default IPDPharmacyIntegration;

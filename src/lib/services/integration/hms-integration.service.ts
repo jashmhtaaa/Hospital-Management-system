@@ -22,7 +22,7 @@ export class HMSIntegrationService {
    * @returns Patient information;
    */
   public static async getPatientInfo(
-    patientId: string;
+    patientId: string,
     userId: string;
     userRoles: string[]
   ): Promise<unknown> {
@@ -40,7 +40,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.patient.info.request';
+        action: 'integration.patient.info.request',
         resourceId: patientId;
         userId,
         details: { patientId }
@@ -51,19 +51,19 @@ export class HMSIntegrationService {
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
         select: {
-          id: true;
+          id: true,
           mrn: true;
-          firstName: true;
+          firstName: true,
           lastName: true;
-          dateOfBirth: true;
+          dateOfBirth: true,
           gender: true;
           contactInformation: true;
           // Exclude sensitive medical information based on roles
           ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, { fullMedicalData: true });
             ? {
-                allergies: true;
+                allergies: true,
                 diagnoses: true;
-                medications: true;
+                medications: true
               }
             : {});
         }
@@ -75,7 +75,7 @@ export class HMSIntegrationService {
 
       // Audit the successful retrieval
       await auditLogger.log({
-        action: 'integration.patient.info.success';
+        action: 'integration.patient.info.success',
         resourceId: patientId;
         userId,
         details: { patientId }
@@ -100,7 +100,7 @@ export class HMSIntegrationService {
    * @returns Location information;
    */
   public static async getLocationInfo(
-    locationId: string;
+    locationId: string,
     userId: string;
     userRoles: string[]
   ): Promise<unknown> {
@@ -118,7 +118,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.location.info.request';
+        action: 'integration.location.info.request',
         resourceId: locationId;
         userId,
         details: { locationId }
@@ -129,14 +129,14 @@ export class HMSIntegrationService {
       const location = await prisma.location.findUnique({
         where: { id: locationId },
         select: {
-          id: true;
+          id: true,
           name: true;
-          type: true;
+          type: true,
           floor: true;
-          building: true;
+          building: true,
           status: true;
-          capacity: true;
-          currentOccupancy: true;
+          capacity: true,
+          currentOccupancy: true
         }
       });
 
@@ -146,7 +146,7 @@ export class HMSIntegrationService {
 
       // Audit the successful retrieval
       await auditLogger.log({
-        action: 'integration.location.info.success';
+        action: 'integration.location.info.success',
         resourceId: locationId;
         userId,
         details: { locationId }
@@ -175,12 +175,12 @@ export class HMSIntegrationService {
    * @returns The created notification;
    */
   public static async sendNotification(
-    recipientId: string;
+    recipientId: string,
     notificationType: 'EMAIL' | 'SMS' | 'PUSH' | 'IN_APP';
-    title: string;
+    title: string,
     message: string;
     metadata: Record<string, unknown>,
-    userId: string;
+    userId: string,
     userRoles: string[]
   ): Promise<unknown> {
     // Enforce RBAC
@@ -197,7 +197,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.notification.send.request';
+        action: 'integration.notification.send.request',
         resourceId: recipientId;
         userId,
         details: {
@@ -216,20 +216,20 @@ export class HMSIntegrationService {
           title,
           message,
           metadata,
-          status: 'PENDING';
-          createdById: userId;
+          status: 'PENDING',
+          createdById: userId
         }
       });
 
       // Audit the successful notification creation
       await auditLogger.log({
-        action: 'integration.notification.send.success';
+        action: 'integration.notification.send.success',
         resourceId: notification.id;
         userId,
         details: {
           recipientId,
           notificationType,
-          notificationId: notification.id;
+          notificationId: notification.id
         }
       });
 
@@ -252,7 +252,7 @@ export class HMSIntegrationService {
    * @returns User information;
    */
   public static async getUserInfo(
-    targetUserId: string;
+    targetUserId: string,
     userId: string;
     userRoles: string[]
   ): Promise<unknown> {
@@ -270,7 +270,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.user.info.request';
+        action: 'integration.user.info.request',
         resourceId: targetUserId;
         userId,
         details: { targetUserId }
@@ -281,21 +281,21 @@ export class HMSIntegrationService {
       const user = await prisma.user.findUnique({
         where: { id: targetUserId },
         select: {
-          id: true;
+          id: true,
           username: true;
-          email: true;
+          email: true,
           firstName: true;
-          lastName: true;
+          lastName: true,
           roles: true;
-          department: true;
+          department: true,
           position: true;
           status: true;
           // Only include sensitive fields for self or admin
           ...(targetUserId === userId || userRoles.includes('admin');
             ? {
-                lastLogin: true;
+                lastLogin: true,
                 createdAt: true;
-                updatedAt: true;
+                updatedAt: true
               }
             : {});
         }
@@ -307,7 +307,7 @@ export class HMSIntegrationService {
 
       // Audit the successful retrieval
       await auditLogger.log({
-        action: 'integration.user.info.success';
+        action: 'integration.user.info.success',
         resourceId: targetUserId;
         userId,
         details: { targetUserId }
@@ -333,9 +333,9 @@ export class HMSIntegrationService {
    * @returns The created report;
    */
   public static async submitReportData(
-    reportType: string;
+    reportType: string,
     reportData: Record<string, unknown>,
-    userId: string;
+    userId: string,
     userRoles: string[]
   ): Promise<unknown> {
     // Enforce RBAC
@@ -351,7 +351,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.report.submit.request';
+        action: 'integration.report.submit.request',
         resourceId: `report-${reportType}`,
         userId,
         details: { reportType }
@@ -361,21 +361,21 @@ export class HMSIntegrationService {
       // For this example, we'll simulate the API call with a database insert
       const report = await prisma.report.create({
         data: {
-          type: reportType;
+          type: reportType,
           data: reportData;
-          status: 'SUBMITTED';
-          submittedById: userId;
+          status: 'SUBMITTED',
+          submittedById: userId
         }
       });
 
       // Audit the successful report submission
       await auditLogger.log({
-        action: 'integration.report.submit.success';
+        action: 'integration.report.submit.success',
         resourceId: report.id;
         userId,
         details: {
           reportType,
-          reportId: report.id;
+          reportId: report.id
         }
       });
 
@@ -400,9 +400,9 @@ export class HMSIntegrationService {
    * @returns The updated request with patient link;
    */
   public static async linkRequestToPatient(
-    serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE' | 'FEEDBACK';
+    serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE' | 'FEEDBACK',
     requestId: string;
-    patientId: string;
+    patientId: string,
     userId: string;
     userRoles: string[]
   ): Promise<unknown> {
@@ -412,7 +412,7 @@ export class HMSIntegrationService {
       'MAINTENANCE': Resource.MAINTENANCE,
       'DIETARY': Resource.DIETARY,
       'AMBULANCE': Resource.AMBULANCE,
-      'FEEDBACK': Resource.FEEDBACK;
+      'FEEDBACK': Resource.FEEDBACK
     };
 
     const resource = resourceMap[serviceType];
@@ -431,7 +431,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.request.patient.link.request';
+        action: 'integration.request.patient.link.request',
         resourceId: requestId;
         userId,
         details: {
@@ -453,13 +453,13 @@ export class HMSIntegrationService {
         where: { id: requestId },
         data: {
           patientId,
-          updatedById: userId;
+          updatedById: userId
         }
       });
 
       // Audit the successful link
       await auditLogger.log({
-        action: 'integration.request.patient.link.success';
+        action: 'integration.request.patient.link.success',
         resourceId: requestId;
         userId,
         details: {
@@ -490,9 +490,9 @@ export class HMSIntegrationService {
    * @returns The updated request with location link;
    */
   public static async linkRequestToLocation(
-    serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE';
+    serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE',
     requestId: string;
-    locationId: string;
+    locationId: string,
     userId: string;
     userRoles: string[]
   ): Promise<unknown> {
@@ -501,7 +501,7 @@ export class HMSIntegrationService {
       'HOUSEKEEPING': Resource.HOUSEKEEPING,
       'MAINTENANCE': Resource.MAINTENANCE,
       'DIETARY': Resource.DIETARY,
-      'AMBULANCE': Resource.AMBULANCE;
+      'AMBULANCE': Resource.AMBULANCE
     };
 
     const resource = resourceMap[serviceType];
@@ -520,7 +520,7 @@ export class HMSIntegrationService {
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.request.location.link.request';
+        action: 'integration.request.location.link.request',
         resourceId: requestId;
         userId,
         details: {
@@ -542,13 +542,13 @@ export class HMSIntegrationService {
         where: { id: requestId },
         data: {
           locationId,
-          updatedById: userId;
+          updatedById: userId
         }
       });
 
       // Audit the successful link
       await auditLogger.log({
-        action: 'integration.request.location.link.success';
+        action: 'integration.request.location.link.success',
         resourceId: requestId;
         userId,
         details: {

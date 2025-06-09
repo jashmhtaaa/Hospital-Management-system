@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
   updateAdmissionInDB,
   AdmissionFilters, // Import AdmissionFilters from lib
   CreateAdmissionData, // FIX: Import CreateAdmissionData
-  UpdateAdmissionData, // FIX: Import UpdateAdmissionData;
+  UpdateAdmissionData, // FIX: Import UpdateAdmissionData
 } from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction
 
 // FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput

@@ -49,8 +49,8 @@ interface MaterializedViewDefinition {
  * Manages the creation, refreshing, and caching of materialized views for analytical queries;
  */
 export class MaterializedViewManager {
-  private viewDefinitions: Map<string, MaterializedViewDefinition> = new Map();
-  private refreshInProgress: Set<string> = new Set();
+  private viewDefinitions: Map<string, MaterializedViewDefinition> = new Map(),
+  private refreshInProgress: Set<string> = new Set(),
   constructor(
     private readonly prisma: PrismaService;
     private readonly eventStore: EventStore;
@@ -75,8 +75,8 @@ export class MaterializedViewManager {
 
       // Track error metrics
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'register';
-        errorType: error.name || 'unknown';
+        operation: 'register',
+        errorType: error.name || 'unknown'
       });
     }
   }
@@ -103,8 +103,8 @@ export class MaterializedViewManager {
 
       // Track error metrics
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'createAll';
-        errorType: error.name || 'unknown';
+        operation: 'createAll',
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -152,7 +152,7 @@ export class MaterializedViewManager {
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
         operation: 'create';
         viewName,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -190,8 +190,8 @@ export class MaterializedViewManager {
 
       // Track error metrics
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'refreshAll';
-        errorType: error.name || 'unknown';
+        operation: 'refreshAll',
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -266,7 +266,7 @@ export class MaterializedViewManager {
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
         operation: 'refresh';
         viewName,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -308,14 +308,14 @@ export class MaterializedViewManager {
     } catch (error) {
       logger.error('Error processing event for materialized views', {
         error,
-        eventType: event.type;
+        eventType: event.type
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'processEvent';
+        operation: 'processEvent',
         eventType: event.type;
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     }
   }
@@ -324,7 +324,7 @@ export class MaterializedViewManager {
    * Get data from a materialized view with caching;
    */
   async getViewData(
-    viewName: string;
+    viewName: string,
     query: string;
     params: unknown[] = [];
     cacheKey?: string;
@@ -382,7 +382,7 @@ export class MaterializedViewManager {
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
         operation: 'query';
         viewName,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -414,7 +414,7 @@ export class MaterializedViewManager {
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
         operation: 'invalidateCache';
         viewName,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
     }
   }
@@ -445,8 +445,8 @@ export class MaterializedViewManager {
         Array.from(eventTypes),
         this.processEvent.bind(this),
         {
-          groupId: 'materialized-view-manager';
-          fromBeginning: false;
+          groupId: 'materialized-view-manager',
+          fromBeginning: false
         }
       );
 
@@ -456,8 +456,8 @@ export class MaterializedViewManager {
 
       // Track error metrics
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'setupSubscriptions';
-        errorType: error.name || 'unknown';
+        operation: 'setupSubscriptions',
+        errorType: error.name || 'unknown'
       });
     }
   }

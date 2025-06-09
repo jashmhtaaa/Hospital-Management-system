@@ -47,7 +47,7 @@ export const _GET = async (
     return NextResponse.json(order);
   } catch (error: unknown) {
     // FIX: Use unknown instead of any
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to fetch radiology order", details: errorMessage },
@@ -122,18 +122,18 @@ export const _PUT = async (
       }
       // If it exists but no changes were made (e.g., same data sent), return success
       return NextResponse.json({
-        id: orderId;
-        status: "Radiology order update processed (no changes detected)";
+        id: orderId,
+        status: "Radiology order update processed (no changes detected)"
       });
     }
 
     return NextResponse.json({
-      id: orderId;
-      status: "Radiology order updated";
+      id: orderId,
+      status: "Radiology order updated"
     });
   } catch (error: unknown) {
     // FIX: Use unknown instead of any
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to update radiology order", details: errorMessage },
@@ -191,8 +191,8 @@ export const _DELETE = async (
         existingOrder.status === "cancelled";
       ) {
         return NextResponse.json({
-          id: orderId;
-          status: "Radiology order already cancelled";
+          id: orderId,
+          status: "Radiology order already cancelled"
         });
       }
       return NextResponse.json(
@@ -202,12 +202,12 @@ export const _DELETE = async (
     }
 
     return NextResponse.json({
-      id: orderId;
-      status: "Radiology order cancelled";
+      id: orderId,
+      status: "Radiology order cancelled"
     });
   } catch (error: unknown) {
     // FIX: Use unknown instead of any
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to cancel radiology order", details: errorMessage },

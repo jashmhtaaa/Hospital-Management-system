@@ -67,9 +67,9 @@ export default const _BiomedicalEquipment = () {
   const [calibrationDueFilter, setCalibrationDueFilter] = useState(false);
   const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
-    skip: 0;
+    skip: 0,
     take: 10;
-    total: 0;
+    total: 0
   });
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
@@ -80,8 +80,8 @@ export default const _BiomedicalEquipment = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString();
-          take: pagination.take.toString();
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString()
         });
 
         if (search != null) queryParams.append('search', search);
@@ -102,14 +102,14 @@ export default const _BiomedicalEquipment = () {
         setEquipment(data.equipment || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0
         }));
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -160,7 +160,7 @@ export default const _BiomedicalEquipment = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -169,7 +169,7 @@ export default const _BiomedicalEquipment = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -180,8 +180,8 @@ export default const _BiomedicalEquipment = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Handle tab change
@@ -190,7 +190,7 @@ export default const _BiomedicalEquipment = () {
     // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
 
     // Set appropriate filters based on tab
@@ -203,7 +203,7 @@ export default const _BiomedicalEquipment = () {
 
   // Create new biomedical equipment
   const handleCreateEquipment = () => {
-    router.push('/dashboard/hr/biomedical/new');
+    router.push('/dashboard/hr/biomedical/new')
   };
 
   // Export equipment data
@@ -211,22 +211,22 @@ export default const _BiomedicalEquipment = () {
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started";
-        description: "Your biomedical equipment report is being generated and will download shortly.";
+        title: "Export Started",
+        description: "Your biomedical equipment report is being generated and will download shortly."
       });
 
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete";
-          description: "Biomedical equipment report has been downloaded.";
+          title: "Export Complete",
+          description: "Biomedical equipment report has been downloaded."
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed";
+        title: "Export Failed",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -244,7 +244,7 @@ export default const _BiomedicalEquipment = () {
         return 'destructive';
       case 'LOST':
         return 'outline';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
@@ -263,7 +263,7 @@ export default const _BiomedicalEquipment = () {
         return <Scissors className="h-4 w-4" />
       case 'LIFE_SUPPORT':
         return <Heart className="h-4 w-4" />
-      default: return <Stethoscope className="h-4 w-4" />;
+      default: return <Stethoscope className="h-4 w-4" />
     }
   };
 
@@ -276,7 +276,7 @@ export default const _BiomedicalEquipment = () {
         return 'secondary';
       case 'CLASS_III':
         return 'destructive';
-      default: return 'outline';
+      default: return 'outline'
     }
   };
 
@@ -291,7 +291,7 @@ export default const _BiomedicalEquipment = () {
         return 'warning';
       case 'CRITICAL':
         return 'destructive';
-      default: return 'outline';
+      default: return 'outline'
     }
   };
 
@@ -299,20 +299,20 @@ export default const _BiomedicalEquipment = () {
   const _formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
-      style: 'currency';
-      currency: 'USD';
-    }).format(amount);
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount)
   };
 
   // Format date or show placeholder
   const formatDateOrPlaceholder = (date: unknown) => {
-    return date ? format(new Date(date), 'PPP') : '—';
+    return date ? format(new Date(date), 'PPP') : '—'
   };
 
   // Check if calibration is due
   const isCalibrationDue = (nextCalibrationDate: unknown) => {
     if (!nextCalibrationDate) return false;
-    return new Date(nextCalibrationDate) <= new Date();
+    return new Date(nextCalibrationDate) <= new Date()
   };
 
   return (

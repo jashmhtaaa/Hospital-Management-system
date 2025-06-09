@@ -35,16 +35,16 @@ export class CacheMetrics {
    * Get cache metrics;
    */
   static getMetrics(): {
-    hits: number;
+    hits: number,
     misses: number;
-    totalRequests: number;
-    hitRate: number;
+    totalRequests: number,
+    hitRate: number
   } {
     return {
-      hits: this.hits;
+      hits: this.hits,
       misses: this.misses;
-      totalRequests: this.totalRequests;
-      hitRate: this.getHitRate();
+      totalRequests: this.totalRequests,
+      hitRate: this.getHitRate()
     };
   }
 
@@ -67,5 +67,5 @@ RedisCache.get = async function<T>(key: string): Promise<T | null> {
   } else {
     CacheMetrics.recordMiss();
   }
-  return result;
+  return result
 };

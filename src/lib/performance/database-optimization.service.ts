@@ -13,55 +13,55 @@ import { performance } from 'perf_hooks';
  */
 
 export interface QueryPerformanceMetric {
-  queryId: string;
+  queryId: string,
   sql: string;
-  executionTime: number;
+  executionTime: number,
   timestamp: Date;
   rowsAffected?: number;
-  database: string;
+  database: string,
   operation: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE';
   table?: string;
 export interface IndexRecommendation {
-  table: string;
+  table: string,
   columns: string[];
-  reason: string;
+  reason: string,
   estimatedImprovement: number; // percentage
-  priority: 'high' | 'medium' | 'low';
+  priority: 'high' | 'medium' | 'low',
   queries: string[]; // affected queries
 export interface PerformanceAlert {
-  type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan';
+  type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan',
   severity: 'critical' | 'warning' | 'info'
-  message: string;
+  message: string,
   details: unknown;
-  timestamp: Date;
+  timestamp: Date,
   resolved: boolean
 export interface DatabaseStats {
   connectionPool: {
-    total: number;
+    total: number,
     active: number;
-    idle: number;
-    utilization: number;
+    idle: number,
+    utilization: number
   };
   queryMetrics: {
-    totalQueries: number;
+    totalQueries: number,
     averageExecutionTime: number;
-    slowQueries: number;
-    queriesPerSecond: number;
+    slowQueries: number,
+    queriesPerSecond: number
   };
   indexUsage: {
-    totalIndexes: number;
+    totalIndexes: number,
     unusedIndexes: number;
-    indexHitRatio: number;
+    indexHitRatio: number
   };
   tableStats: Array<{
-    table: string;
+    table: string,
     rowCount: number;
-    sizeKB: number;
-    indexSizeKB: number;
+    sizeKB: number,
+    indexSizeKB: number
   }>;
 export class DatabaseOptimizationService {
   private prisma: PrismaClient;
-  private performanceMetrics: Map<string, QueryPerformanceMetric[]> = new Map();
+  private performanceMetrics: Map<string, QueryPerformanceMetric[]> = new Map(),
   private alerts: PerformanceAlert[] = [];
   private isMonitoring = false;
   private slowQueryThreshold = 1000; // milliseconds
@@ -101,7 +101,7 @@ export class DatabaseOptimizationService {
     if (this.monitoringInterval) {
       clearInterval(this.monitoringInterval);
     }
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */
   }
 
   /**
@@ -122,18 +122,18 @@ export class DatabaseOptimizationService {
           queryId,
           sql: `${params.model}.${params.action}`, // Simplified for Prisma
           executionTime,
-          timestamp: new Date();
+          timestamp: new Date(),
           database: 'primary';
-          operation: this.mapPrismaActionToSql(params.action);
-          table: params.model;
+          operation: this.mapPrismaActionToSql(params.action),
+          table: params.model
         })
 
         // Check for slow queries
         if (executionTime > this.slowQueryThreshold) {
           await this.create/* SECURITY: Alert removed */}ms`,
             details: { queryId, executionTime, model: params.model, action: params.action },
-            timestamp: new Date();
-            resolved: false;
+            timestamp: new Date(),
+            resolved: false
           })
         }
 
@@ -145,10 +145,10 @@ export class DatabaseOptimizationService {
           queryId,
           sql: `${params.model}.${params.action}`,
           executionTime,
-          timestamp: new Date();
+          timestamp: new Date(),
           database: 'primary';
-          operation: this.mapPrismaActionToSql(params.action);
-          table: params.model;
+          operation: this.mapPrismaActionToSql(params.action),
+          table: params.model
         });
 
         throw error;
@@ -206,7 +206,7 @@ export class DatabaseOptimizationService {
       const tableStats = await this.getTableStatistics()
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -221,7 +221,7 @@ export class DatabaseOptimizationService {
       await this.checkIndexUsage();
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -241,12 +241,12 @@ export class DatabaseOptimizationService {
 
           if (avgTime > 2000) { // Average > 2 seconds
             recommendations.push({
-              table: slowQueries[0].table || 'unknown';
+              table: slowQueries[0].table || 'unknown',
               columns: ['id'], // Would need query analysis to determine actual columns
               reason: `${slowQueries.length} slow queries detected with average time ${avgTime.toFixed(2)}ms`,
-              estimatedImprovement: 70;
+              estimatedImprovement: 70,
               priority: 'high';
-              queries: slowQueries.map(q => q.sql).slice(0, 3);
+              queries: slowQueries.map(q => q.sql).slice(0, 3)
             })
           }
         }
@@ -257,11 +257,11 @@ export class DatabaseOptimizationService {
       recommendations.push(...missingFkIndexes);
 
       /* SECURITY: Console statement removed */
-      return recommendations;
+      return recommendations
 
     } catch (error) {
       /* SECURITY: Console statement removed */
-      return [];
+      return []
     }
   }
 
@@ -283,7 +283,7 @@ export class DatabaseOptimizationService {
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to collect database statistics');
+      throw new Error('Failed to collect database statistics')
     }
   }
 
@@ -300,7 +300,7 @@ export class DatabaseOptimizationService {
   async resolve/* SECURITY: Alert removed */: Promise<void> {
     if (alertIndex >= 0 && alertIndex < this.alerts.length) {
       this.alerts[alertIndex].resolved = true;
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -325,12 +325,12 @@ export class DatabaseOptimizationService {
    * Apply automatic optimizations
    */
   async applyAutomaticOptimizations(): Promise<{
-    indexesCreated: number;
-    optimizationsApplied: string[];
+    indexesCreated: number,
+    optimizationsApplied: string[]
   }> {
     const result = {
-      indexesCreated: 0;
-      optimizationsApplied: [] as string[];
+      indexesCreated: 0,
+      optimizationsApplied: [] as string[]
     };
 
     try {
@@ -344,17 +344,17 @@ export class DatabaseOptimizationService {
             result.indexesCreated++;
             result.optimizationsApplied.push(`Created index on ${rec.table}(${rec.columns.join(', ')})`);
           } catch (error) {
-            /* SECURITY: Console statement removed */;
+            /* SECURITY: Console statement removed */
           }
         }
       }
 
       /* SECURITY: Console statement removed */
-      return result;
+      return result
 
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to apply automatic optimizations');
+      throw new Error('Failed to apply automatic optimizations')
     }
   }
 
@@ -376,7 +376,7 @@ export class DatabaseOptimizationService {
       case 'delete':
       case 'deleteMany':
         return 'DELETE';
-      default: return 'SELECT';
+      default: return 'SELECT'
     }
   }
 
@@ -394,10 +394,10 @@ export class DatabaseOptimizationService {
   private async getConnectionPoolStats(): Promise<DatabaseStats['connectionPool']> {
     // Mock implementation - would need actual database driver stats
     return {
-      total: 20;
+      total: 20,
       active: 5;
-      idle: 15;
-      utilization: 25;
+      idle: 15,
+      utilization: 25
     }
   }
 
@@ -409,10 +409,10 @@ export class DatabaseOptimizationService {
 
     if (allMetrics.length === 0) {
       return {
-        totalQueries: 0;
+        totalQueries: 0,
         averageExecutionTime: 0;
-        slowQueries: 0;
-        queriesPerSecond: 0;
+        slowQueries: 0,
+        queriesPerSecond: 0
       };
     }
 
@@ -445,16 +445,16 @@ export class DatabaseOptimizationService {
       ]
     } catch (error) {
       /* SECURITY: Console statement removed */
-      return [];
+      return []
     }
   }
 
   private async getIndexStatistics(): Promise<DatabaseStats['indexUsage']> {
     // Mock implementation - would need actual database queries
     return {
-      totalIndexes: 45;
+      totalIndexes: 45,
       unusedIndexes: 3;
-      indexHitRatio: 94.5;
+      indexHitRatio: 94.5
     }
   }
 
@@ -470,8 +470,8 @@ export class DatabaseOptimizationService {
     )
 
     if (recentSlowQueries.length > 10) {
-      await this.create/* SECURITY: Alert removed */;
-        resolved: false;
+      await this.create/* SECURITY: Alert removed */,
+        resolved: false
       });
     }
   }
@@ -480,8 +480,8 @@ export class DatabaseOptimizationService {
     const stats = await this.getConnectionPoolStats();
 
     if (stats.utilization > 90) {
-      await this.create/* SECURITY: Alert removed */;
-        resolved: false;
+      await this.create/* SECURITY: Alert removed */,
+        resolved: false
       });
     }
   }
@@ -490,8 +490,8 @@ export class DatabaseOptimizationService {
     const indexStats = await this.getIndexStatistics();
 
     if (indexStats.indexHitRatio < 85) {
-      await this.create/* SECURITY: Alert removed */;
-        resolved: false;
+      await this.create/* SECURITY: Alert removed */,
+        resolved: false
       });
     }
   }
@@ -500,12 +500,12 @@ export class DatabaseOptimizationService {
     // Mock implementation - would analyze schema for missing FK indexes
     return [
       {
-        table: 'ClinicalNote';
+        table: 'ClinicalNote',
         columns: ['patientId'];
-        reason: 'Foreign key without index detected';
+        reason: 'Foreign key without index detected',
         estimatedImprovement: 60;
-        priority: 'medium';
-        queries: ['SELECT * FROM ClinicalNote WHERE patientId = ?'];
+        priority: 'medium',
+        queries: ['SELECT * FROM ClinicalNote WHERE patientId = ?']
       }
     ]
   }
@@ -516,7 +516,7 @@ export class DatabaseOptimizationService {
     const recommendations = await this.generateRecommendations()
 
     if (recommendations.length > 0) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -542,7 +542,7 @@ export const _getDatabaseOptimizationService = (): DatabaseOptimizationService =
   if (!dbOptimizationServiceInstance) {
     dbOptimizationServiceInstance = new DatabaseOptimizationService();
   }
-  return dbOptimizationServiceInstance;
+  return dbOptimizationServiceInstance
 };
 
 export { DatabaseOptimizationService };

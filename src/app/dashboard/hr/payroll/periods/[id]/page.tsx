@@ -69,9 +69,9 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -86,7 +86,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       setProcessingAction(true);
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {
-        method: 'POST';
+        method: 'POST'
       });
 
       if (!response.ok) {
@@ -95,7 +95,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 
       const data = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Generated ${data.entriesGenerated} payroll entries`,
       });
 
@@ -107,9 +107,9 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }
     } catch (err) {
       toast({
-        title: "Error";
+        title: "Error",
         description: err.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setProcessingAction(false);
@@ -121,7 +121,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       setProcessingAction(true);
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {
-        method: 'POST';
+        method: 'POST'
       });
 
       if (!response.ok) {
@@ -130,7 +130,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 
       const data = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Approved ${data.entriesApproved} payroll entries`,
       });
 
@@ -142,9 +142,9 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }
     } catch (err) {
       toast({
-        title: "Error";
+        title: "Error",
         description: err.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setProcessingAction(false);
@@ -156,12 +156,12 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       setProcessingAction(true);
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/pay`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          paymentDate: new Date();
+          paymentDate: new Date()
         }),
       });
 
@@ -171,7 +171,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 
       const data = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Marked ${data.entriesPaid} payroll entries as paid`,
       });
 
@@ -183,9 +183,9 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }
     } catch (err) {
       toast({
-        title: "Error";
+        title: "Error",
         description: err.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setProcessingAction(false);
@@ -197,22 +197,22 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started";
-        description: "Your payroll report is being generated and will download shortly.";
+        title: "Export Started",
+        description: "Your payroll report is being generated and will download shortly."
       });
 
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete";
-          description: "Payroll report has been downloaded.";
+          title: "Export Complete",
+          description: "Payroll report has been downloaded."
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed";
+        title: "Export Failed",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -228,16 +228,16 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         return 'default';
       case 'PAID':
         return 'success';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
   // Format currency
   const formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat('en-US', {
-      style: 'currency';
-      currency: 'USD';
-    }).format(amount);
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount)
   };
 
   if (loading != null) {

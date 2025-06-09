@@ -10,42 +10,42 @@ const campaignService = new MarketingCampaignService();
 
 // Campaign filter schema
 const campaignFilterSchema = z.object({
-  type: z.string().optional();
-  status: z.string().optional();
-  startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  type: z.string().optional(),
+  status: z.string().optional(),
+  startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   startDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  page: z.string().default('1').transform(Number);
-  limit: z.string().default('10').transform(Number);
+  page: z.string().default('1').transform(Number),
+  limit: z.string().default('10').transform(Number)
 });
 
 // Create campaign schema
 const createCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters"),
-  description: z.string().optional();
-  type: z.string();
-  status: z.string().default('DRAFT');
+  description: z.string().optional(),
+  type: z.string(),
+  status: z.string().default('DRAFT'),
   startDate: z.string().transform(val => new Date(val));
-  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  budget: z.number().optional();
-  targetAudience: z.any().optional();
-  goals: z.array(z.string()).optional();
-  kpis: z.any().optional();
+  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  budget: z.number().optional(),
+  targetAudience: z.any().optional(),
+  goals: z.array(z.string()).optional(),
+  kpis: z.any().optional()
 });
 
 // Update campaign schema
 const updateCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters").optional(),
-  description: z.string().optional();
-  type: z.string().optional();
-  status: z.string().optional();
-  startDate: z.string().transform(val => new Date(val)).optional();
-  endDate: z.string().transform(val => val ? new Date(val) : undefined).optional();
-  budget: z.number().optional();
-  targetAudience: z.any().optional();
-  goals: z.array(z.string()).optional();
-  kpis: z.any().optional();
+  description: z.string().optional(),
+  type: z.string().optional(),
+  status: z.string().optional(),
+  startDate: z.string().transform(val => new Date(val)).optional(),
+  endDate: z.string().transform(val => val ? new Date(val) : undefined).optional(),
+  budget: z.number().optional(),
+  targetAudience: z.any().optional(),
+  goals: z.array(z.string()).optional(),
+  kpis: z.any().optional()
 });
 
 // GET /api/support-services/marketing/campaigns
@@ -279,7 +279,7 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string, segmentId: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);

@@ -31,7 +31,7 @@ export class CustomReportResolver {
     @Args('createdBy') createdBy?: string;
   ) {
     return this.customReportService.getAllReportTemplates({
-      category: category as any;
+      category: category as any,
       type: type as any;
       status,
       createdBy,
@@ -99,8 +99,8 @@ export class CustomReportResolver {
     @Args('assignedTo') assignedTo?: string;
   ) {
     const dueDate = dueStartDate && dueEndDate ? {
-      start: new Date(dueStartDate);
-      end: new Date(dueEndDate);
+      start: new Date(dueStartDate),
+      end: new Date(dueEndDate)
     } : undefined;
 
     return this.customReportService.getRegulatoryReports({
@@ -131,7 +131,7 @@ export class CustomReportResolver {
       query,
       {
         dataSource,
-        context: queryContext;
+        context: queryContext
       },
       context.req.user.id;
     );

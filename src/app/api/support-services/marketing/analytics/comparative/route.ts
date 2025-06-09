@@ -48,7 +48,7 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.analytics.read';
-      auditAction: 'CAMPAIGN_ANALYTICS_COMPARATIVE';
+      requiredPermission: 'marketing.analytics.read',
+      auditAction: 'CAMPAIGN_ANALYTICS_COMPARATIVE'
     }
   );

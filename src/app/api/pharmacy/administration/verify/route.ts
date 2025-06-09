@@ -18,34 +18,34 @@ import { validateBarcodeVerificationRequest } from '../../../../../lib/validatio
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null);
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriptionId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: (administration) => Promise.resolve(administration.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: () => Promise.resolve(null),
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriptionId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services
@@ -93,7 +93,7 @@ export const POST = async (req: NextRequest) => {
     if (!verificationResult.success) {
       return NextResponse.json(
         {
-          error: 'Verification failed';
+          error: 'Verification failed',
           details: verificationResult.errors;
           verificationResult;
         },
@@ -104,7 +104,7 @@ export const POST = async (req: NextRequest) => {
     // If verification succeeded but with warnings, include them in response
     const response: unknown = {
       success: true;
-      verificationResult;
+      verificationResult
     };
 
     if (verificationResult?.warnings && verificationResult.warnings.length > 0) {
@@ -113,15 +113,15 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'VERIFY';
+      action: 'VERIFY',
       resourceType: 'MedicationAdministration';
-      userId: userId;
+      userId: userId,
       patientId: verificationResult.patientId;
       details: {
-        medicationId: verificationResult.medicationId;
+        medicationId: verificationResult.medicationId,
         prescriptionId: data.prescriptionId;
-        success: verificationResult.success;
-        warningCount: verificationResult.warnings?.length || 0;
+        success: verificationResult.success,
+        warningCount: verificationResult.warnings?.length || 0
       }
     });
 

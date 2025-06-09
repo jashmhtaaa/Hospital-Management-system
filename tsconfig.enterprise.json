@@ -4,7 +4,7 @@
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "useDefineForClassFields": true,
-    
+
     /* Modules */
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -12,11 +12,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": false,
-    
+
     /* JavaScript Support */
     "allowJs": false,
     "checkJs": false,
-    
+
     /* Emit */
     "declaration": true,
     "declarationMap": true,
@@ -28,12 +28,12 @@
     "importHelpers": true,
     "downlevelIteration": true,
     "sourceRoot": "",
-    
+
     /* Interop Constraints */
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    
+
     /* Type Checking - ULTRA STRICT */
     "strict": true,
     "noImplicitAny": true,
@@ -44,7 +44,7 @@
     "noImplicitThis": true,
     "useUnknownInCatchVariables": true,
     "alwaysStrict": true,
-    
+
     /* Additional Checks */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -54,32 +54,32 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    
+
     /* Completeness */
     "skipLibCheck": false,
-    
+
     /* Enterprise Security */
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitUseStrict": false,
-    
+
     /* Performance */
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
     "composite": false,
-    
+
     /* Advanced */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "preserveConstEnums": true,
     "preserveValueImports": false,
-    
+
     /* JSX */
     "jsx": "preserve",
     "jsxFactory": "React.createElement",
     "jsxFragmentFactory": "React.Fragment",
     "jsxImportSource": "react",
-    
+
     /* Base URL and Path Mapping */
     "baseUrl": ".",
     "paths": {
@@ -101,7 +101,7 @@
       "@monitoring/*": ["./src/lib/monitoring/*"],
       "@analytics/*": ["./src/lib/analytics/*"]
     },
-    
+
     /* Type Roots */
     "typeRoots": [
       "./node_modules/@types",
@@ -109,7 +109,7 @@
       "./shared/types",
       "./microservices/shared/types"
     ],
-    
+
     /* Types */
     "types": [
       "node",
@@ -120,7 +120,7 @@
       "@cloudflare/workers-types"
     ]
   },
-  
+
   /* Include Patterns */
   "include": [
     "src/**/*.ts",
@@ -142,7 +142,7 @@
     "next-env.d.ts",
     "env.d.ts"
   ],
-  
+
   /* Exclude Patterns */
   "exclude": [
     "node_modules",
@@ -159,7 +159,7 @@
     "**/*.test.js",
     "**/*.spec.js"
   ],
-  
+
   /* TypeScript ESLint Parser Options */
   "ts-node": {
     "esm": true,
@@ -168,7 +168,7 @@
       "moduleResolution": "node"
     }
   },
-  
+
   /* Watch Options */
   "watchOptions": {
     "watchFile": "useFsEvents",

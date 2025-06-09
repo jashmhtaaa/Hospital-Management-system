@@ -72,36 +72,36 @@ export class FHIRAppointmentUtils {
    * Create a basic FHIR Appointment resource;
    */
   static createBasicAppointment(data: {
-    patientId: string;
+    patientId: string,
     practitionerId: string;
     locationId?: string;
-    start: string;
+    start: string,
     end: string;
     appointmentType?: string;
     description?: string;
     status?: 'proposed' | 'pending' | 'booked';
   }): FHIRAppointment {
     const appointment: FHIRAppointment = {
-      resourceType: 'Appointment';
+      resourceType: 'Appointment',
       status: data.status || 'booked';
-      start: data.start;
+      start: data.start,
       end: data.end;
       participant: [
         {
           actor: {
             reference: `Patient/${data.patientId}`,
-            type: 'Patient';
+            type: 'Patient'
           },
-          required: 'required';
-          status: 'accepted';
+          required: 'required',
+          status: 'accepted'
         },
         {
           actor: {
             reference: `Practitioner/${data.practitionerId}`,
-            type: 'Practitioner';
+            type: 'Practitioner'
           },
-          required: 'required';
-          status: 'accepted';
+          required: 'required',
+          status: 'accepted'
         }
       ]
     };
@@ -111,10 +111,10 @@ export class FHIRAppointmentUtils {
       appointment.participant.push({
         actor: {
           reference: `Location/${data.locationId}`,
-          type: 'Location';
+          type: 'Location'
         },
-        required: 'required';
-        status: 'accepted';
+        required: 'required',
+        status: 'accepted'
       });
     }
 
@@ -122,9 +122,9 @@ export class FHIRAppointmentUtils {
     if (data.appointmentType) {
       appointment.appointmentType = {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0276';
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
           code: data.appointmentType;
-          display: data.appointmentType;
+          display: data.appointmentType
         }]
       }
     }
@@ -222,9 +222,9 @@ export class FHIRAppointmentUtils {
     const endTime = appointment.end ? new Date(appointment.end) : null;
 
     const timeFormat: Intl.DateTimeFormatOptions = {
-      hour: '2-digit';
+      hour: '2-digit',
       minute: '2-digit';
-      hour12: true;
+      hour12: true
     };
 
     const startTimeStr = startTime.toLocaleTimeString('en-US', timeFormat);
@@ -251,7 +251,7 @@ export class FHIRAppointmentUtils {
       'noshow': 'No Show',
       'entered-in-error': 'Error',
       'checked-in': 'Checked In',
-      'waitlist': 'Waitlisted';
+      'waitlist': 'Waitlisted'
     };
 
     return statusMap[status] || status;
@@ -260,7 +260,7 @@ export class FHIRAppointmentUtils {
   /**
    * Validate FHIR Appointment resource;
    */
-  static validateAppointment(appointment: FHIRAppointment): { valid: boolean; errors: string[] } {
+  static validateAppointment(appointment: FHIRAppointment): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (appointment.resourceType !== 'Appointment') {
@@ -295,7 +295,7 @@ export class FHIRAppointmentUtils {
 
     return {
       valid: errors.length === 0;
-      errors;
+      errors
     };
   }
 
@@ -304,13 +304,13 @@ export class FHIRAppointmentUtils {
    */
   static fromHMSAppointment(hmsAppointment: unknown): FHIRAppointment {
     const fhirAppointment: FHIRAppointment = {
-      resourceType: 'Appointment';
+      resourceType: 'Appointment',
       id: hmsAppointment.id;
-      status: hmsAppointment.status || 'booked';
+      status: hmsAppointment.status || 'booked',
       start: hmsAppointment.startTime || hmsAppointment.appointmentDate;
-      end: hmsAppointment.endTime;
+      end: hmsAppointment.endTime,
       description: hmsAppointment.reason || hmsAppointment.notes;
-      participant: [];
+      participant: []
     };
 
     // Add patient participant
@@ -318,10 +318,10 @@ export class FHIRAppointmentUtils {
       fhirAppointment.participant.push({
         actor: {
           reference: `Patient/${hmsAppointment.patientId}`,
-          type: 'Patient';
+          type: 'Patient'
         },
-        required: 'required';
-        status: 'accepted';
+        required: 'required',
+        status: 'accepted'
       });
     }
 
@@ -330,10 +330,10 @@ export class FHIRAppointmentUtils {
       fhirAppointment.participant.push({
         actor: {
           reference: `Practitioner/${hmsAppointment.doctorId || hmsAppointment.practitionerId}`,
-          type: 'Practitioner';
+          type: 'Practitioner'
         },
-        required: 'required';
-        status: 'accepted';
+        required: 'required',
+        status: 'accepted'
       });
     }
 
@@ -342,10 +342,10 @@ export class FHIRAppointmentUtils {
       fhirAppointment.participant.push({
         actor: {
           reference: `Location/${hmsAppointment.locationId}`,
-          type: 'Location';
+          type: 'Location'
         },
-        required: 'required';
-        status: 'accepted';
+        required: 'required',
+        status: 'accepted'
       });
     }
 
@@ -353,9 +353,9 @@ export class FHIRAppointmentUtils {
     if (hmsAppointment.appointmentType || hmsAppointment.visitType) {
       fhirAppointment.appointmentType = {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0276';
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
           code: hmsAppointment.appointmentType || hmsAppointment.visitType;
-          display: hmsAppointment.appointmentType || hmsAppointment.visitType;
+          display: hmsAppointment.appointmentType || hmsAppointment.visitType
         }]
       }
     }
@@ -421,6 +421,6 @@ export class FHIRAppointmentWorkflow {
       case 'arrived':
       case 'checked-in':
         return 'fulfilled';
-      default: return null;
+      default: return null
     }
   }

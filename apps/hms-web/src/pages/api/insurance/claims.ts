@@ -81,12 +81,12 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceCodes, diagnosisCodes, totalAmount, notes } = req.body as {
-                patientId: string;
+                patientId: string,
                 policyId: string;
-                serviceCodes: string[];
+                serviceCodes: string[],
                 diagnosisCodes: string[];
                 totalAmount: number;
-                notes?: string;
+                notes?: string
             };
 
             if (!patientId || !policyId || !serviceCodes || !diagnosisCodes || totalAmount === undefined) {

@@ -121,8 +121,8 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
             // For example, mark the invoice as paid, record the transaction, etc.
 
             return res.status(200).json({
-                message: "Payment processed successfully";
-                transactionId: transactionId;
+                message: "Payment processed successfully",
+                transactionId: transactionId
             })
 
         } catch (error: unknown) {

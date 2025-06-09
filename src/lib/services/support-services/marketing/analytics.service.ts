@@ -12,7 +12,7 @@ export class AnalyticsService {
   /**
    * Record campaign analytics data;
    */
-  async recordAnalytics(campaignId: string, data: { date: Date; metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
+  async recordAnalytics(campaignId: string, data: { date: Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
     try {
       // Validate analytics data
       this.validateAnalyticsData(data);
@@ -30,7 +30,7 @@ export class AnalyticsService {
       const existingAnalytics = await prisma.campaignAnalytics.findFirst({
         where: {
           campaignId,
-          date: data.date;
+          date: data.date
         }
       });
 
@@ -41,8 +41,8 @@ export class AnalyticsService {
         analytics = await prisma.campaignAnalytics.update({
           where: { id: existingAnalytics.id },
           data: {
-            metrics: data.metrics;
-            updatedAt: new Date();
+            metrics: data.metrics,
+            updatedAt: new Date()
           }
         });
       } else {
@@ -50,21 +50,21 @@ export class AnalyticsService {
         analytics = await prisma.campaignAnalytics.create({
           data: {
             campaignId,
-            date: data.date;
-            metrics: data.metrics;
+            date: data.date,
+            metrics: data.metrics
           }
         });
       }
 
       // Log audit event
       await this.auditLogger.log({
-        action: existingAnalytics ? 'analytics.update' : 'analytics.create';
+        action: existingAnalytics ? 'analytics.update' : 'analytics.create',
         resourceId: campaignId;
         userId,
         details: {
-          analyticsId: analytics.id;
+          analyticsId: analytics.id,
           date: data.date.toISOString().split('T')[0];
-          metricKeys: Object.keys(data.metrics);
+          metricKeys: Object.keys(data.metrics)
         }
       });
 
@@ -114,7 +114,7 @@ export class AnalyticsService {
       const analyticsData = await prisma.campaignAnalytics.findMany({
         where,
         orderBy: {
-          date: 'asc';
+          date: 'asc'
         }
       });
 
@@ -122,7 +122,7 @@ export class AnalyticsService {
       if (metrics && metrics.length > 0) {
         return analyticsData.map(item => ({
           ...item,
-          metrics: this.filterMetrics(item.metrics, metrics);
+          metrics: this.filterMetrics(item.metrics, metrics)
         }));
       }
 
@@ -170,7 +170,7 @@ export class AnalyticsService {
         timeSeriesData: groupedData;
         totals,
         averages,
-        trends;
+        trends
       };
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -198,10 +198,10 @@ export class AnalyticsService {
             const campaign = await prisma.marketingCampaign.findUnique({
               where: { id: campaignId },
               select: {
-                id: true;
+                id: true,
                 name: true;
-                type: true;
-                status: true;
+                type: true,
+                status: true
               }
             });
 
@@ -220,7 +220,7 @@ export class AnalyticsService {
             return {
               campaign,
               totals,
-              analyticsCount: analytics.length;
+              analyticsCount: analytics.length
             };
           } catch (error) {
 
@@ -236,8 +236,8 @@ export class AnalyticsService {
       const sortedData = this.sortCampaignsByPerformance(validCampaignsData)
 
       return {
-        campaigns: sortedData;
-        comparisonDate: new Date();
+        campaigns: sortedData,
+        comparisonDate: new Date()
       };
     } catch (error) {
       throw new DatabaseError('Failed to retrieve comparative analytics', error);
@@ -271,7 +271,7 @@ export class AnalyticsService {
       return []
     }
 
-    const groupedData: Map<string, any> = new Map();
+    const groupedData: Map<string, any> = new Map(),
 
     analytics.forEach(item => {
       const date = new Date(item.date);
@@ -283,7 +283,7 @@ export class AnalyticsService {
           break;
         case 'week':
           // Get the Monday of the week
-          const day = date.getDay();
+          const day = date.getDay(),
           const diff = date.getDate() - day + (day === 0 ? -6 : 1);
           const monday = new Date(date);
           monday.setDate(diff);
@@ -298,7 +298,7 @@ export class AnalyticsService {
 
       if (!groupedData.has(groupKey)) {
         groupedData.set(groupKey, {
-          interval: groupKey;
+          interval: groupKey,
           metrics: { ...item.metrics }
         });
       } else {
@@ -306,7 +306,7 @@ export class AnalyticsService {
         const updatedMetrics = this.mergeMetrics(existing.metrics, item.metrics);
         groupedData.set(groupKey, {
           ...existing,
-          metrics: updatedMetrics;
+          metrics: updatedMetrics
         });
       }
     });
@@ -402,7 +402,7 @@ export class AnalyticsService {
         trends[key] = {
           change,
           percentChange,
-          direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable';
+          direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable'
         };
       }
     });
@@ -440,7 +440,7 @@ export class AnalyticsService {
   /**
    * Validate analytics data;
    */
-  private validateAnalyticsData(data: { date: Date; metrics: unknown }): void {
+  private validateAnalyticsData(data: { date: Date, metrics: unknown }): void {
     const errors: string[] = [];
 
     // Date is required

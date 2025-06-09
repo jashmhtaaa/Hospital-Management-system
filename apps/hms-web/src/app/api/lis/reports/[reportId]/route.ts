@@ -11,13 +11,13 @@ const prisma = new PrismaClient();
 
 interface RouteContext {
   params: {
-    reportId: string;
+    reportId: string
   };
 }
 
 const labReportStatusValues = Object.values(LabReportStatus);
 
-export async const _GET = (request: NextRequest, { params }: RouteContext) => {
+export const GET = (request: NextRequest, { params }: RouteContext) => {
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
   const { reportId } = params;
@@ -31,13 +31,13 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canViewReport = await hasPermission(userId, "LIS_VIEW_SPECIFIC_REPORT");
     if (!canViewReport) {
       await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_ATTEMPT_DENIED", { reportId, path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to view this LIS report.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to view this LIS report.", 403)
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -82,11 +82,11 @@ const updateLabReportSchema = z.object({
       return { message: ctx.defaultError };
     },
   }).optional(),
-  observations: z.string().max(5000).optional().nullable();
-  fileName: z.string().min(1).max(255).optional().nullable();
-  fileType: z.string().min(1).max(100).optional().nullable();
-  fileSize: z.number().int().positive().optional().nullable();
-  storagePath: z.string().min(1).max(1024).optional().nullable();
+  observations: z.string().max(5000).optional().nullable(),
+  fileName: z.string().min(1).max(255).optional().nullable(),
+  fileType: z.string().min(1).max(100).optional().nullable(),
+  fileSize: z.number().int().positive().optional().nullable(),
+  storagePath: z.string().min(1).max(1024).optional().nullable()
 });
 
 export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
@@ -103,13 +103,13 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canUpdateReport = await hasPermission(userId, "LIS_UPDATE_REPORT_METADATA");
     if (!canUpdateReport) {
       await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_ATTEMPT_DENIED", { reportId, path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to update this LIS report.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to update this LIS report.", 403)
     }
 
     const body: unknown = await request.json();
@@ -148,16 +148,16 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
 
     const dataToUpdate: Prisma.LabReportUpdateInput = {
         ...validation.data,
-        updatedById: userId;
-        updatedAt: new Date();
+        updatedById: userId,
+        updatedAt: new Date()
       };
 
     const updatedLabReport = await prisma.labReport.update({
       where: { id: reportId },
-      data: dataToUpdate;
+      data: dataToUpdate,
       include: {
         labOrder: { include: { patient: true, testItems: true } },
-        reportedBy: true;
+        reportedBy: true
       },
     });
 
@@ -208,13 +208,13 @@ export async const _DELETE = (request: NextRequest, { params }: RouteContext) =>
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canDeleteReport = await hasPermission(userId, "LIS_DELETE_REPORT_METADATA");
     if (!canDeleteReport) {
       await auditLogService.logEvent(userId, "LIS_DELETE_REPORT_METADATA_ATTEMPT_DENIED", { reportId, path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to delete this LIS report metadata.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to delete this LIS report metadata.", 403)
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement

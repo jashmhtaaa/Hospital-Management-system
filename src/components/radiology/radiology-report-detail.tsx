@@ -18,15 +18,15 @@ import { useSession } from "next-auth/react";
 
 // Define interfaces for data structures
 interface RadiologyReport {
-  id: string;
+  id: string,
   patient_id: string;
   patient_name: string; // Assuming this comes from a join or is added
-  study_id: string;
+  study_id: string,
   procedure_name: string; // Assuming this comes from a join or is added
   accession_number?: string;
-  report_datetime: string;
+  report_datetime: string,
   status: "preliminary" | "final" | "addendum";
-  radiologist_id: string;
+  radiologist_id: string,
   radiologist_name: string; // Assuming this comes from a join or is added
   verified_by_id?: string;
   verified_by_name?: string; // Assuming this comes from a join or is added
@@ -37,7 +37,7 @@ interface RadiologyReport {
 }
 
 interface SessionUser {
-  id: string;
+  id: string,
   role: string; // Define specific roles if possible, e.g., 'Admin' | 'Radiologist' | 'Technician'
   // FIX: Assuming userId is available in the session user object for comparison
   userId?: string | number;
@@ -91,19 +91,19 @@ const RadiologyReportDetail: React.FC = () => {
       // Mock data
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
       const mockReport: RadiologyReport = {
-        id: reportId;
+        id: reportId,
         patient_id: "PAT12345";
-        patient_name: "John Doe";
+        patient_name: "John Doe",
         study_id: "STUDY9876";
         procedure_name: "Chest X-Ray, 2 Views",
-        accession_number: "ACC00123";
-        report_datetime: new Date().toISOString();
-        status: "preliminary";
+        accession_number: "ACC00123",
+        report_datetime: new Date().toISOString(),
+        status: "preliminary",
         radiologist_id: "RAD001";
-        radiologist_name: "Dr. Emily Carter";
+        radiologist_name: "Dr. Emily Carter",
         findings: "Lungs are clear. No acute cardiopulmonary process identified. Mild degenerative changes in the thoracic spine.";
-        impression: "No acute findings.";
-        recommendations: "Clinical correlation recommended.";
+        impression: "No acute findings.",
+        recommendations: "Clinical correlation recommended."
       };
       setReport(mockReport);
     } catch (error_) {
@@ -120,7 +120,7 @@ const RadiologyReportDetail: React.FC = () => {
     if (reportId != null) {
       fetchReportDetails();
     }
-    // FIX: Add fetchReportDetails to dependency array;
+    // FIX: Add fetchReportDetails to dependency array
   }, [reportId, fetchReportDetails])
 
   const handleVerifyReport = async (): Promise<void> => {
@@ -163,7 +163,7 @@ const RadiologyReportDetail: React.FC = () => {
   };
 
   const handlePrintReport = (): void => {
-    globalThis.print();
+    globalThis.print()
   };
 
   const getStatusBadge = (
@@ -171,9 +171,9 @@ const RadiologyReportDetail: React.FC = () => {
   ): React.ReactNode => {
     if (!status) return undefined;
     const statusStyles: Record<RadiologyReport["status"], string> = {
-      preliminary: "bg-yellow-100 text-yellow-800";
+      preliminary: "bg-yellow-100 text-yellow-800",
       final: "bg-green-100 text-green-800";
-      addendum: "bg-blue-100 text-blue-800";
+      addendum: "bg-blue-100 text-blue-800"
     };
     return (
       <Badge>
@@ -181,7 +181,7 @@ const RadiologyReportDetail: React.FC = () => {
       >
         {status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ")}
       </Badge>
-    );
+    )
   };
 
   if (loading != null) {
@@ -355,7 +355,7 @@ const RadiologyReportDetail: React.FC = () => {
         />
       )} */}
     </div>
-  );
+  )
 };
 
 export default RadiologyReportDetail;

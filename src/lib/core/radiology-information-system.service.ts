@@ -16,75 +16,75 @@ export const ImagingStudySchema = z.object({
   body_part: z.string().min(1, 'Body part is required'),
   clinical_indication: z.string().min(1, 'Clinical indication is required'),
   urgency: z.enum(['routine', 'urgent', 'stat', 'add_on']).default('routine'),
-  contrast_used: z.boolean().default(false);
-  contrast_type: z.string().optional();
-  contrast_volume: z.number().optional();
+  contrast_used: z.boolean().default(false),
+  contrast_type: z.string().optional(),
+  contrast_volume: z.number().optional(),
   pregnancy_status: z.enum(['not_pregnant', 'pregnant', 'unknown', 'n_a']).default('unknown'),
-  last_menstrual_period: z.string().optional();
-  allergies: z.array(z.string()).default([]);
-  previous_reactions: z.array(z.string()).default([]);
-  special_instructions: z.string().optional();
+  last_menstrual_period: z.string().optional(),
+  allergies: z.array(z.string()).default([]),
+  previous_reactions: z.array(z.string()).default([]),
+  special_instructions: z.string().optional(),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid scheduled date'),
   scheduled_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
   estimated_duration: z.number().min(5).max(240), // 5 minutes to 4 hours
-  room_preference: z.string().optional();
-  equipment_preference: z.string().optional();
-  radiologist_preference: z.string().optional();
-  transport_required: z.boolean().default(false);
-  isolation_required: z.boolean().default(false);
-  interpreter_needed: z.boolean().default(false);
-  language: z.string().optional();
+  room_preference: z.string().optional(),
+  equipment_preference: z.string().optional(),
+  radiologist_preference: z.string().optional(),
+  transport_required: z.boolean().default(false),
+  isolation_required: z.boolean().default(false),
+  interpreter_needed: z.boolean().default(false),
+  language: z.string().optional()
 });
 
 export const ImagingReportSchema = z.object({
   study_id: z.string().min(1, 'Study ID is required'),
   radiologist_id: z.string().min(1, 'Radiologist ID is required'),
   report_type: z.enum(['preliminary', 'final', 'addendum', 'corrected']).default('preliminary'),
-  clinical_history: z.string();
-  technique: z.string();
+  clinical_history: z.string(),
+  technique: z.string(),
   findings: z.string().min(1, 'Findings are required'),
   impression: z.string().min(1, 'Impression is required'),
-  recommendations: z.string().optional();
-  comparison_studies: z.array(z.string()).default([]);
-  critical_result: z.boolean().default(false);
-  critical_result_communicated: z.boolean().default(false);
-  critical_result_communication_time: z.string().optional();
-  critical_result_communicated_to: z.string().optional();
+  recommendations: z.string().optional(),
+  comparison_studies: z.array(z.string()).default([]),
+  critical_result: z.boolean().default(false),
+  critical_result_communicated: z.boolean().default(false),
+  critical_result_communication_time: z.string().optional(),
+  critical_result_communicated_to: z.string().optional(),
   birads_score: z.enum(['0', '1', '2', '3', '4', '4A', '4B', '4C', '5', '6']).optional(), // For mammography
-  followup_required: z.boolean().default(false);
-  followup_timeframe: z.string().optional();
-  dictation_time: z.string().optional();
-  transcription_time: z.string().optional();
-  voice_recognition_confidence: z.number().min(0).max(1).optional();
-  structured_data: z.record(z.any()).optional();
-  template_id: z.string().optional();
+  followup_required: z.boolean().default(false),
+  followup_timeframe: z.string().optional(),
+  dictation_time: z.string().optional(),
+  transcription_time: z.string().optional(),
+  voice_recognition_confidence: z.number().min(0).max(1).optional(),
+  structured_data: z.record(z.any()).optional(),
+  template_id: z.string().optional()
 });
 
 export const DicomSeriesSchema = z.object({
   study_id: z.string().min(1, 'Study ID is required'),
-  series_number: z.number().min(1);
-  series_description: z.string();
-  modality: z.string();
-  body_part_examined: z.string();
-  view_position: z.string().optional();
-  image_count: z.number().min(1);
-  series_date: z.string();
-  series_time: z.string();
-  protocol_name: z.string().optional();
-  slice_thickness: z.number().optional();
-  pixel_spacing: z.string().optional();
-  image_orientation: z.string().optional();
-  contrast_agent: z.string().optional();
-  radiation_dose: z.number().optional();
+  series_number: z.number().min(1),
+  series_description: z.string(),
+  modality: z.string(),
+  body_part_examined: z.string(),
+  view_position: z.string().optional(),
+  image_count: z.number().min(1),
+  series_date: z.string(),
+  series_time: z.string(),
+  protocol_name: z.string().optional(),
+  slice_thickness: z.number().optional(),
+  pixel_spacing: z.string().optional(),
+  image_orientation: z.string().optional(),
+  contrast_agent: z.string().optional(),
+  radiation_dose: z.number().optional(),
   kvp: z.number().optional(), // X-ray tube voltage
   mas: z.number().optional(), // Milliampere-seconds
-  exposure_time: z.number().optional();
-  manufacturer: z.string().optional();
-  model: z.string().optional();
-  software_version: z.string().optional();
-  pacs_location: z.string().optional();
-  archived: z.boolean().default(false);
-  archive_location: z.string().optional();
+  exposure_time: z.number().optional(),
+  manufacturer: z.string().optional(),
+  model: z.string().optional(),
+  software_version: z.string().optional(),
+  pacs_location: z.string().optional(),
+  archived: z.boolean().default(false),
+  archive_location: z.string().optional()
 });
 
 export const QualityAssuranceSchema = z.object({
@@ -93,26 +93,26 @@ export const QualityAssuranceSchema = z.object({
   image_quality: z.enum(['excellent', 'good', 'acceptable', 'poor', 'non_diagnostic']),
   positioning: z.enum(['excellent', 'good', 'acceptable', 'poor']),
   exposure_factors: z.enum(['optimal', 'acceptable', 'suboptimal']),
-  artifacts_present: z.boolean().default(false);
-  artifact_types: z.array(z.string()).default([]);
-  motion_artifact: z.boolean().default(false);
+  artifacts_present: z.boolean().default(false),
+  artifact_types: z.array(z.string()).default([]),
+  motion_artifact: z.boolean().default(false),
   contrast_adequacy: z.enum(['excellent', 'good', 'adequate', 'poor', 'n_a']).default('n_a'),
-  repeat_required: z.boolean().default(false);
-  repeat_reason: z.string().optional();
-  additional_views_needed: z.boolean().default(false);
-  additional_views_reason: z.string().optional();
-  patient_preparation_adequate: z.boolean().default(true);
-  equipment_functioning: z.boolean().default(true);
-  equipment_issues: z.string().optional();
-  comments: z.string().optional();
-  review_date: z.string();
-  reviewed_by: z.string();
+  repeat_required: z.boolean().default(false),
+  repeat_reason: z.string().optional(),
+  additional_views_needed: z.boolean().default(false),
+  additional_views_reason: z.string().optional(),
+  patient_preparation_adequate: z.boolean().default(true),
+  equipment_functioning: z.boolean().default(true),
+  equipment_issues: z.string().optional(),
+  comments: z.string().optional(),
+  review_date: z.string(),
+  reviewed_by: z.string()
 });
 
 export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
-  id: string;
+  id: string,
   accession_number: string;
-  study_instance_uid: string;
+  study_instance_uid: string,
   status: 'scheduled' | 'arrived' | 'in_progress' | 'completed' | 'cancelled' | 'no_show';
   arrival_time?: Date;
   start_time?: Date;
@@ -124,16 +124,16 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
   total_images?: number;
   study_size_mb?: number;
   radiation_dose_total?: number;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   patient_age?: number;
   patient_gender?: string;
-  ordering_provider_name?: string;
+  ordering_provider_name?: string
 };
 
 export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
-  id: string;
+  id: string,
   report_number: string;
   status: 'draft' | 'preliminary' | 'final' | 'amended';
   dictated_at?: Date;
@@ -144,78 +144,78 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
   amended_by?: string;
   amendment_reason?: string;
   read_time_minutes?: number;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
-  radiologist_name?: string;
+  radiologist_name?: string
 };
 
 export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
-  id: string;
+  id: string,
   series_instance_uid: string;
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   transfer_syntax: string;
   compression_type?: string;
-  file_size_mb: number;
+  file_size_mb: number,
   verification_status: 'pending' | 'verified' | 'failed';
   last_accessed?: Date;
-  access_count: number;
+  access_count: number
 };
 
 export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
-  id: string;
+  id: string,
   overall_score: number; // 1-100
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export interface RadiologyWorklistItem {
-  study: ImagingStudy;
+  study: ImagingStudy,
   priority_score: number;
-  estimated_read_time: number;
+  estimated_read_time: number,
   complexity_level: 'low' | 'medium' | 'high';
   subspecialty_required?: string;
-  prior_studies_count: number;
+  prior_studies_count: number,
   critical_finding_likelihood: number
 export interface RadiologyMetrics {
-  daily_volume: number;
+  daily_volume: number,
   average_read_time: number;
   turnaround_time_stat: number; // minutes
   turnaround_time_routine: number; // minutes
-  critical_results_percentage: number;
+  critical_results_percentage: number,
   repeat_rate: number;
-  no_show_rate: number;
+  no_show_rate: number,
   equipment_utilization: number;
   radiologist_productivity: {
-    radiologist_id: string;
+    radiologist_id: string,
     studies_read: number;
-    average_read_time: number;
+    average_read_time: number,
     critical_results: number;
-    amendments: number;
+    amendments: number
   }[];
   modality_distribution: {
-    modality: string;
+    modality: string,
     count: number;
-    percentage: number;
+    percentage: number
   }[];
 export interface PACSIntegration {
-  study_id: string;
+  study_id: string,
   pacs_server: string;
   transfer_status: 'pending' | 'in_progress' | 'completed' | 'failed';
   transfer_start_time?: Date;
   transfer_completion_time?: Date;
   error_message?: string;
-  retry_count: number;
+  retry_count: number,
   file_count: number;
   total_size_mb: number;
   verification_hash?: string;
 export class RadiologyInformationSystemService {
-  private imagingStudies: Map<string, ImagingStudy> = new Map();
-  private imagingReports: Map<string, ImagingReport> = new Map();
-  private dicomSeries: Map<string, DicomSeries[]> = new Map();
-  private qualityAssurance: Map<string, QualityAssurance> = new Map();
-  private pacsIntegrations: Map<string, PACSIntegration> = new Map();
-  private reportTemplates: Map<string, any> = new Map();
+  private imagingStudies: Map<string, ImagingStudy> = new Map(),
+  private imagingReports: Map<string, ImagingReport> = new Map(),
+  private dicomSeries: Map<string, DicomSeries[]> = new Map(),
+  private qualityAssurance: Map<string, QualityAssurance> = new Map(),
+  private pacsIntegrations: Map<string, PACSIntegration> = new Map(),
+  private reportTemplates: Map<string, any> = new Map(),
   private equipmentSchedule: Map<string, any[]> = new Map(),
   constructor() {
     this.initializeReportTemplates();
@@ -228,40 +228,40 @@ export class RadiologyInformationSystemService {
   private initializeReportTemplates(): void {
     const templates = [
       {
-        id: 'chest-xray';
+        id: 'chest-xray',
         name: 'Chest X-Ray Report';
-        modality: 'x_ray';
+        modality: 'x_ray',
         body_part: 'chest';
         template: {
-          technique: 'PA and lateral chest radiographs were obtained.';
+          technique: 'PA and lateral chest radiographs were obtained.',
           findings_sections: [
             'Lungs and pleura',
             'Heart and mediastinum',
             'Bones and soft tissues';
           ],
-          impression_guidelines: 'Provide clear, concise impression with actionable recommendations.',;
+          impression_guidelines: 'Provide clear, concise impression with actionable recommendations.',
         },
       },
       {
-        id: 'ct-head';
+        id: 'ct-head',
         name: 'CT Head Report';
-        modality: 'ct_scan';
+        modality: 'ct_scan',
         body_part: 'head';
         template: {
-          technique: 'Axial CT images of the head were obtained without intravenous contrast.';
+          technique: 'Axial CT images of the head were obtained without intravenous contrast.',
           findings_sections: [
             'Brain parenchyma',
             'Ventricular system',
             'Extra-axial spaces',
             'Skull and scalp';
           ],
-          impression_guidelines: 'Comment on acute findings, mass effect, and need for follow-up.',;
+          impression_guidelines: 'Comment on acute findings, mass effect, and need for follow-up.',
         },
       },
       {
-        id: 'mri-brain';
+        id: 'mri-brain',
         name: 'MRI Brain Report';
-        modality: 'mri';
+        modality: 'mri',
         body_part: 'brain';
         template: {
           technique: 'Multiplanar, multisequence MRI of the brain was performed.',
@@ -272,7 +272,7 @@ export class RadiologyInformationSystemService {
             'Posterior fossa',
             'Extra-axial spaces';
           ],
-          impression_guidelines: 'Correlate with clinical presentation and prior imaging.';
+          impression_guidelines: 'Correlate with clinical presentation and prior imaging.'
         },
       },
     ];
@@ -304,12 +304,12 @@ export class RadiologyInformationSystemService {
 
     const study: ImagingStudy = {
       ...validatedData,
-      id: studyId;
+      id: studyId,
       accession_number: accessionNumber;
-      study_instance_uid: studyInstanceUID;
+      study_instance_uid: studyInstanceUID,
       status: 'scheduled';
-      created_at: new Date();
-      updated_at: new Date();
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.imagingStudies.set(studyId, study);
@@ -326,7 +326,7 @@ export class RadiologyInformationSystemService {
   private generateAccessionNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-8);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, '0');
-    return `/* SECURITY: Template literal eliminated */;
+    return `/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -350,7 +350,7 @@ export class RadiologyInformationSystemService {
 
       // Check if equipment is available
       const isAvailable = !schedule.some(appointment => {
-        const appointmentStart = new Date(appointment.start_time);
+        const appointmentStart = new Date(appointment.start_time),
         const appointmentEnd = new Date(appointment.end_time);
         const studyEnd = new Date(scheduledDateTime.getTime() + study.estimated_duration * 60000);
 
@@ -361,11 +361,11 @@ export class RadiologyInformationSystemService {
       if (isAvailable != null) {
         // Schedule the equipment
         schedule.push({
-          study_id: study.id;
-          start_time: scheduledDateTime.toISOString();
-          end_time: new Date(scheduledDateTime.getTime() + study.estimated_duration * 60000).toISOString();
+          study_id: study.id,
+          start_time: scheduledDateTime.toISOString(),
+          end_time: new Date(scheduledDateTime.getTime() + study.estimated_duration * 60000).toISOString(),
           study_type: study.study_type;
-          patient_id: study.patient_id;
+          patient_id: study.patient_id
         });
 
         this.equipmentSchedule.set(equipmentId, schedule);
@@ -443,9 +443,9 @@ export class RadiologyInformationSystemService {
    * Complete imaging study;
    */
   async completeImagingStudy(
-    studyId: string;
+    studyId: string,
     completionData: {
-      total_images: number;
+      total_images: number,
       study_size_mb: number;
       radiation_dose_total?: number;
       notes?: string;
@@ -483,12 +483,12 @@ export class RadiologyInformationSystemService {
     if (!study) return;
 
     const pacsIntegration: PACSIntegration = {
-      study_id: studyId;
+      study_id: studyId,
       pacs_server: 'PACS-MAIN';
-      transfer_status: 'pending';
+      transfer_status: 'pending',
       retry_count: 0;
-      file_count: study.total_images || 0;
-      total_size_mb: study.study_size_mb || 0;
+      file_count: study.total_images || 0,
+      total_size_mb: study.study_size_mb || 0
     };
 
     this.pacsIntegrations.set(studyId, pacsIntegration);
@@ -536,11 +536,11 @@ export class RadiologyInformationSystemService {
 
     const report: ImagingReport = {
       ...validatedData,
-      id: reportId;
+      id: reportId,
       report_number: reportNumber;
-      status: 'draft';
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'draft',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.imagingReports.set(reportId, report);
@@ -559,7 +559,7 @@ export class RadiologyInformationSystemService {
   private generateReportNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `RPT/* SECURITY: Template literal eliminated */;
+    return `RPT/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -602,11 +602,11 @@ export class RadiologyInformationSystemService {
   private async handleCriticalResult(report: ImagingReport): Promise<void> {
     // In real implementation, this would trigger alerts and notifications
 
-      report_id: report.id;
+      report_id: report.id,
       study_id: report.study_id;
-      radiologist: report.radiologist_id;
+      radiologist: report.radiologist_id,
       findings: report.findings;
-      impression: report.impression;
+      impression: report.impression
     });
 
     // Mark as communicated (simplified)
@@ -627,14 +627,14 @@ export class RadiologyInformationSystemService {
 
     const series: DicomSeries = {
       ...validatedData,
-      id: seriesId;
+      id: seriesId,
       series_instance_uid: seriesInstanceUID;
-      created_at: new Date();
-      updated_at: new Date();
+      created_at: new Date(),
+      updated_at: new Date(),
       transfer_syntax: '1.2.840.10008.1.2.1', // Explicit VR Little Endian
       file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image
-      verification_status: 'pending';
-      access_count: 0;
+      verification_status: 'pending',
+      access_count: 0
     };
 
     // Add to study's series list
@@ -662,13 +662,13 @@ export class RadiologyInformationSystemService {
 
     // Calculate overall score
     const scores = {
-      excellent: 100;
+      excellent: 100,
       good: 85;
-      acceptable: 70;
+      acceptable: 70,
       poor: 50;
-      non_diagnostic: 0;
+      non_diagnostic: 0,
       optimal: 100;
-      suboptimal: 60;
+      suboptimal: 60
     };
 
     const imageQualityScore = scores[validatedData.image_quality as keyof typeof scores] || 0;
@@ -688,10 +688,10 @@ export class RadiologyInformationSystemService {
 
     const qa: QualityAssurance = {
       ...validatedData,
-      id: qaId;
-      overall_score: Math.round(overallScore);
-      created_at: new Date();
-      updated_at: new Date();
+      id: qaId,
+      overall_score: Math.round(overallScore),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.qualityAssurance.set(qaId, qa);
@@ -755,11 +755,11 @@ export class RadiologyInformationSystemService {
 
       return {
         study,
-        priority_score: priorityScore;
+        priority_score: priorityScore,
         estimated_read_time: estimatedReadTime;
-        complexity_level: complexityLevel;
+        complexity_level: complexityLevel,
         prior_studies_count: 0, // Simplified
-        critical_finding_likelihood: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20, // Simplified percentage;
+        critical_finding_likelihood: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20, // Simplified percentage
       };
     });
 
@@ -854,11 +854,11 @@ export class RadiologyInformationSystemService {
       if (!report.radiologist_id) return;
 
       const current = radiologistStats.get(report.radiologist_id) || {
-        radiologist_id: report.radiologist_id;
+        radiologist_id: report.radiologist_id,
         studies_read: 0;
-        total_read_time: 0;
+        total_read_time: 0,
         critical_results: 0;
-        amendments: 0;
+        amendments: 0
       };
 
       current.studies_read++;
@@ -870,11 +870,11 @@ export class RadiologyInformationSystemService {
     });
 
     const _radiologistProductivity = Array.from(radiologistStats.values()).map(stats => ({
-      radiologist_id: stats.radiologist_id;
+      radiologist_id: stats.radiologist_id,
       studies_read: stats.studies_read;
-      average_read_time: stats.studies_read > 0 ? stats.total_read_time / stats.studies_read : 0;
+      average_read_time: stats.studies_read > 0 ? stats.total_read_time / stats.studies_read : 0,
       critical_results: stats.critical_results;
-      amendments: stats.amendments;
+      amendments: stats.amendments
     }));
 
     // Modality distribution
@@ -886,22 +886,22 @@ export class RadiologyInformationSystemService {
     const modalityDistribution = Array.from(modalityCount.entries()).map(([modality, count]) => ({
       modality,
       count,
-      percentage: (count / filteredStudies.length) * 100;
+      percentage: (count / filteredStudies.length) * 100
     }));
 
     return {
-      daily_volume: dailyVolume;
+      daily_volume: dailyVolume,
       average_read_time: Math.round(averageReadTime * 100) / 100;
-      turnaround_time_stat: Math.round(turnaroundTimeStat * 100) / 100;
+      turnaround_time_stat: Math.round(turnaroundTimeStat * 100) / 100,
       turnaround_time_routine: Math.round(turnaroundTimeRoutine * 100) / 100;
-      critical_results_percentage: Math.round(criticalResultsPercentage * 100) / 100;
+      critical_results_percentage: Math.round(criticalResultsPercentage * 100) / 100,
       repeat_rate: Math.round(repeatRate * 100) / 100;
-      no_show_rate: Math.round(noShowRate * 100) / 100;
+      no_show_rate: Math.round(noShowRate * 100) / 100,
       equipment_utilization: equipmentUtilization;
       radiologist_productivity,
       modality_distribution: modalityDistribution.map(m => ({
         ...m,
-        percentage: Math.round(m.percentage * 100) / 100;
+        percentage: Math.round(m.percentage * 100) / 100
       })),
     };
   }
@@ -918,7 +918,7 @@ export class RadiologyInformationSystemService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ studies: ImagingStudy[]; total: number; totalPages: number }> {
+  }): Promise<{ studies: ImagingStudy[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredStudies = Array.from(this.imagingStudies.values());
@@ -940,7 +940,7 @@ export class RadiologyInformationSystemService {
     filteredStudies.sort((a, b) => {
       const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */
       const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */
-      return dateTimeB.getTime() - dateTimeA.getTime();
+      return dateTimeB.getTime() - dateTimeA.getTime()
     });
 
     // Pagination

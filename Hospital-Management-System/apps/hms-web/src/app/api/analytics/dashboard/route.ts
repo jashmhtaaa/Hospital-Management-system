@@ -26,18 +26,18 @@ class AdvancedAnalytics {
 
     return {
       summary: {
-        totalPatients: patientMetrics.totalPatients;
-        totalRevenue: financialMetrics.totalRevenue;
-        averageStayDuration: clinicalMetrics.averageStayDuration;
-        bedOccupancyRate: operationalMetrics.bedOccupancyRate;
-        patientSatisfactionScore: clinicalMetrics.patientSatisfactionScore;
+        totalPatients: patientMetrics.totalPatients,
+        totalRevenue: financialMetrics.totalRevenue,
+        averageStayDuration: clinicalMetrics.averageStayDuration,
+        bedOccupancyRate: operationalMetrics.bedOccupancyRate,
+        patientSatisfactionScore: clinicalMetrics.patientSatisfactionScore,
       },
       patientMetrics,
       financialMetrics,
       clinicalMetrics,
       operationalMetrics,
       predictions,
-      generatedAt: new Date().toISOString();
+      generatedAt: new Date().toISOString(),
     };
   }
 
@@ -61,7 +61,7 @@ class AdvancedAnalytics {
       newPatients,
       returningPatients,
       demographics,
-      trends: await this.getPatientTrends(startDate);
+      trends: await this.getPatientTrends(startDate),
     };
   }
 
@@ -69,18 +69,18 @@ class AdvancedAnalytics {
     const billingData = await prisma.bill.aggregate({
       where: {
         createdAt: { gte: startDate },
-        status: 'PAID';
+        status: 'PAID',
       },
       _sum: { totalAmount: true },
       _avg: { totalAmount: true },
-      _count: true;
+      _count: true,
     });
 
     const departmentRevenue = await prisma.bill.groupBy({
-      by: ['departmentId'];
+      by: ['departmentId'],
       where: {
         createdAt: { gte: startDate },
-        status: 'PAID';
+        status: 'PAID',
       },
       _sum: { totalAmount: true }
     });
@@ -91,13 +91,13 @@ class AdvancedAnalytics {
     });
 
     return {
-      totalRevenue: billingData._sum.totalAmount || 0;
-      averageBillAmount: billingData._avg.totalAmount || 0;
-      totalBills: billingData._count;
+      totalRevenue: billingData._sum.totalAmount || 0,
+      averageBillAmount: billingData._avg.totalAmount || 0,
+      totalBills: billingData._count,
       departmentRevenue,
-      insuranceClaimsTotal: insurance._sum.claimAmount || 0;
-      revenueGrowth: await this.calculateRevenueGrowth(startDate);
-      profitMargins: await this.calculateProfitMargins(startDate);
+      insuranceClaimsTotal: insurance._sum.claimAmount || 0,
+      revenueGrowth: await this.calculateRevenueGrowth(startDate),
+      profitMargins: await this.calculateProfitMargins(startDate),
     };
   }
 
@@ -109,7 +109,7 @@ class AdvancedAnalytics {
       prisma.admission.count({
         where: {
           dischargeDate: { gte: startDate },
-          status: 'DISCHARGED';
+          status: 'DISCHARGED',
         }
       }),
       prisma.admission.aggregate({
@@ -125,13 +125,13 @@ class AdvancedAnalytics {
     ]);
 
     return {
-      totalAdmissions: admissions;
-      totalDischarges: discharges;
-      averageStayDuration: await this.calculateAverageStayDuration(startDate);
-      readmissionRate: readmissions;
-      mortalityRate: await this.getMortalityRate(startDate);
-      patientSatisfactionScore: await this.getPatientSatisfactionScore(startDate);
-      clinicalOutcomes: await this.getClinicalOutcomes(startDate);
+      totalAdmissions: admissions,
+      totalDischarges: discharges,
+      averageStayDuration: await this.calculateAverageStayDuration(startDate),
+      readmissionRate: readmissions,
+      mortalityRate: await this.getMortalityRate(startDate),
+      patientSatisfactionScore: await this.getPatientSatisfactionScore(startDate),
+      clinicalOutcomes: await this.getClinicalOutcomes(startDate),
     };
   }
 
@@ -151,19 +151,19 @@ class AdvancedAnalytics {
       availableBeds: totalBeds - occupiedBeds;
       staffMetrics,
       equipmentUtilization,
-      turnoverRate: await this.getBedTurnoverRate(startDate);
-      emergencyResponseTime: await this.getEmergencyResponseTime(startDate);
+      turnoverRate: await this.getBedTurnoverRate(startDate),
+      emergencyResponseTime: await this.getEmergencyResponseTime(startDate)
     };
   }
 
   static async getPredictiveAnalytics(startDate: Date) {
     // AI/ML predictions based on historical data
     return {
-      predictedAdmissions: await this.predictAdmissions();
-      capacityForecast: await this.forecastCapacity();
-      revenueProjection: await this.projectRevenue();
-      riskPatients: await this.identifyRiskPatients();
-      resourceOptimization: await this.optimizeResources();
+      predictedAdmissions: await this.predictAdmissions(),
+      capacityForecast: await this.forecastCapacity(),
+      revenueProjection: await this.projectRevenue(),
+      riskPatients: await this.identifyRiskPatients(),
+      resourceOptimization: await this.optimizeResources()
     };
   }
 
@@ -175,7 +175,7 @@ class AdvancedAnalytics {
       case '30d': return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
       case '90d': return new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
       case '1y': return new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
-      default: return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      default: return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
     }
   }
 
@@ -186,8 +186,8 @@ class AdvancedAnalytics {
         dischargeDate: { not: null }
       },
       select: {
-        admissionDate: true;
-        dischargeDate: true;
+        admissionDate: true,
+        dischargeDate: true
       }
     });
 
@@ -207,25 +207,25 @@ class AdvancedAnalytics {
     const lastMonth = await prisma.admission.count({
       where: {
         admissionDate: {
-          gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000);
+          gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000)
         }
       }
     });
 
     return {
       nextWeek: Math.round(lastMonth * 0.25 * 1.1), // 10% growth assumption
-      nextMonth: Math.round(lastMonth * 1.1);
-      confidence: 0.75;
+      nextMonth: Math.round(lastMonth * 1.1),
+      confidence: 0.75
     };
   }
 
   static async getReturningPatientIds(startDate: Date): Promise<string[]> {
     const patients = await prisma.admission.groupBy({
-      by: ['patientId'];
+      by: ['patientId'],
       having: {
         patientId: {
           _count: {
-            gt: 1;
+            gt: 1
           }
         }
       }
@@ -245,8 +245,8 @@ class AdvancedAnalytics {
         '65+': 203
       },
       gender: {
-        male: 48.2;
-        female: 51.8;
+        male: 48.2,
+        female: 51.8
       }
     };
   }
@@ -286,7 +286,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json({ analytics });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Analytics generation failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Analytics generation failed' }, { status: 500 }),
   }
 };
 
@@ -305,16 +305,16 @@ export const _GET = async (request: NextRequest) => {
       activeOperations: await prisma.surgery.count({ where: { status: 'IN_PROGRESS' } }),
       criticalPatients: await prisma.admission.count({
         where: {
-          status: 'ADMITTED';
-          patientCondition: 'CRITICAL';
+          status: 'ADMITTED',
+          patientCondition: 'CRITICAL'
         }
       }),
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString()
     };
 
     return NextResponse.json({ realTimeData });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Real-time data fetch failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Real-time data fetch failed' }, { status: 500 }),
   }
 };

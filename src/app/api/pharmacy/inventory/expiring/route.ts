@@ -15,14 +15,14 @@ import { errorHandler } from '../../../../../lib/error-handler';
 
 // Initialize repositories (in production, use dependency injection)
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  findExpiring: (daysThreshold: number) => Promise.resolve([]);
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  findExpiring: (daysThreshold: number) => Promise.resolve([]),
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 /**
@@ -75,28 +75,28 @@ export const GET = async (req: NextRequest) => {
 
     // Group by expiry timeframe for reporting
     const expiryGroups = {
-      expired: filteredItems.filter(item => new Date(item.expiryDate) < new Date()).length;
+      expired: filteredItems.filter(item => new Date(item.expiryDate) < new Date()).length,
       next30Days: filteredItems.filter(item => {
-        const expiryDate = new Date(item.expiryDate);
+        const expiryDate = new Date(item.expiryDate),
         const thirtyDaysFromNow = new Date();
         thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
         return expiryDate >= new Date() && expiryDate <= thirtyDaysFromNow;
       }).length,
       next90Days: filteredItems.filter(item => {
-        const expiryDate = new Date(item.expiryDate);
+        const expiryDate = new Date(item.expiryDate),
         const thirtyDaysFromNow = new Date();
         thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
         const ninetyDaysFromNow = new Date();
         ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90);
         return expiryDate > thirtyDaysFromNow && expiryDate <= ninetyDaysFromNow;
-      }).length;
+      }).length
     };
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'LIST_EXPIRING';
+      action: 'LIST_EXPIRING',
       resourceType: 'Inventory';
-      userId: userId;
+      userId: userId,
       details: {
         daysThreshold,
         filter,
@@ -115,7 +115,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

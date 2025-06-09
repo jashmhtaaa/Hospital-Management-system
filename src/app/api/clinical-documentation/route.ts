@@ -28,13 +28,13 @@ export const GET = async (request: NextRequest) => {
 
     // Build filters
     const filters = {
-      documentType: searchParams.get('documentType') || undefined;
+      documentType: searchParams.get('documentType') || undefined,
       status: searchParams.get('status') || undefined;
-      authorId: searchParams.get('authorId') || undefined;
+      authorId: searchParams.get('authorId') || undefined,
       dateFrom: searchParams.get('dateFrom') || undefined;
-      dateTo: searchParams.get('dateTo') || undefined;
+      dateTo: searchParams.get('dateTo') || undefined,
       page: searchParams.has('page') ? parseInt(searchParams.get('page') as string, 10) : 1,
-      pageSize: searchParams.has('pageSize') ? parseInt(searchParams.get('pageSize') as string, 10) : 20,;
+      pageSize: searchParams.has('pageSize') ? parseInt(searchParams.get('pageSize') as string, 10) : 20,
     };
 
     // Get documents

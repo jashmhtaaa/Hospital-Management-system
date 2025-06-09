@@ -36,9 +36,9 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       // Check role-based access
       if (routePermission?.roles && !routePermission.roles.includes(user.role)) {
         logger.warn('Access denied - insufficient role', {
-          userId: user.id;
+          userId: user.id,
           userRole: user.role;
-          requiredRoles: routePermission.roles;
+          requiredRoles: routePermission.roles
         });
 
         return NextResponse.json(
@@ -55,9 +55,9 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
 
         if (!hasPermissions) {
           logger.warn('Access denied - insufficient permissions', {
-            userId: user.id;
+            userId: user.id,
             userPermissions: user.permissions;
-            requiredPermissions: routePermission.permissions;
+            requiredPermissions: routePermission.permissions
           });
 
           return NextResponse.json(
@@ -75,7 +75,7 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
 
       return NextResponse.next({
         request: {
-          headers: requestHeaders;
+          headers: requestHeaders
         }
       });
 
@@ -91,17 +91,17 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
 
 // Predefined permission checkers
 export const _requireAdmin = createRBACMiddleware({
-  roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN];
+  roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN]
 });
 
 export const _requireDoctor = createRBACMiddleware({
-  roles: [UserRole.DOCTOR, UserRole.ADMIN, UserRole.SUPER_ADMIN];
+  roles: [UserRole.DOCTOR, UserRole.ADMIN, UserRole.SUPER_ADMIN]
 });
 
 export const _requireMedicalStaff = createRBACMiddleware({
-  roles: [UserRole.DOCTOR, UserRole.NURSE, UserRole.ADMIN, UserRole.SUPER_ADMIN];
+  roles: [UserRole.DOCTOR, UserRole.NURSE, UserRole.ADMIN, UserRole.SUPER_ADMIN]
 });
 
 export const _requirePatientAccess = createRBACMiddleware({
-  permissions: ['patient:read'];
+  permissions: ['patient:read']
 });

@@ -9,7 +9,7 @@ export interface D1ResultWithMeta<T = unknown> extends D1Result<T> {
     served_by?: string;
     size_after?: number;
     rows_read?: number;
-    rows_written?: number;
+    rows_written?: number
   };
 }
 

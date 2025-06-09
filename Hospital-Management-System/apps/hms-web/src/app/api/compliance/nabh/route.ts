@@ -48,10 +48,10 @@ export const _GET = async (request: NextRequest) => {
     const standards = await prisma.complianceStandard.findMany({
       where: { type: 'NABH' },
       include: {
-        checklistItems: true;
+        checklistItems: true,
         assessments: {
           orderBy: { createdAt: 'desc' },
-          take: 1;
+          take: 1
         }
       }
     });
@@ -59,7 +59,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json({ standards });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 }),
   }
 };
 
@@ -79,15 +79,15 @@ export const _POST = async (request: NextRequest) => {
     const assessment = await prisma.complianceAssessment.create({
       data: {
         standardId,
-        assessorId: user.id;
-        assessmentDate: new Date();
-        status: assessmentData.status;
+        assessorId: user.id,
+        assessmentDate: new Date(),
+        status: assessmentData.status,
         score: assessmentData.score;
-        findings: assessmentData.findings;
+        findings: assessmentData.findings,
         recommendations: assessmentData.recommendations;
         notes,
-        evidenceDocuments: assessmentData.evidenceDocuments || [];
-        correctiveActions: assessmentData.correctiveActions || [];
+        evidenceDocuments: assessmentData.evidenceDocuments || [],
+        correctiveActions: assessmentData.correctiveActions || []
       }
     });
 
@@ -97,7 +97,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json({ assessment });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 }),
   }
 };
 
@@ -115,9 +115,9 @@ async function updateDepartmentComplianceScore(standardId: string): unknown {
     await prisma.complianceStandard.update({
       where: { id: standardId },
       data: {
-        currentScore: averageScore;
+        currentScore: averageScore,
         lastAssessmentDate: latestAssessment.assessmentDate;
-        status: averageScore >= 80 ? 'COMPLIANT' : averageScore >= 60 ? 'PARTIAL' : 'NON_COMPLIANT';
+        status: averageScore >= 80 ? 'COMPLIANT' : averageScore >= 60 ? 'PARTIAL' : 'NON_COMPLIANT'
       }
     });
   }

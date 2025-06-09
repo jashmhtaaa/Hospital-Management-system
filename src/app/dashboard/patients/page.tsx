@@ -43,15 +43,15 @@ export default const _PatientsPage = () {
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
         }
-        const data: Patient[] = await response.json();
+        const data: Patient[] = await response.json(),
         setPatients(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Patients";
+          title: "Error Fetching Patients",
           description: message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);

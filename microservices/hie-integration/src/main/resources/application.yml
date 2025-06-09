@@ -4,10 +4,10 @@
 spring:
   application:
     name: hie-integration-service
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  
+
   # Database Configuration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/hie_integration_db}
@@ -21,7 +21,7 @@ spring:
       connection-timeout: ${DB_CONNECTION_TIMEOUT:20000}
       max-lifetime: ${DB_MAX_LIFETIME:1200000}
       leak-detection-threshold: ${DB_LEAK_DETECTION:60000}
-  
+
   # JPA Configuration
   jpa:
     hibernate:
@@ -42,14 +42,14 @@ spring:
           use_query_cache: true
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-  
+
   # Cache Configuration
   cache:
     type: redis
     redis:
       time-to-live: ${CACHE_TTL:600000}
       cache-null-values: false
-  
+
   # Redis Configuration
   data:
     redis:
@@ -64,7 +64,7 @@ spring:
           max-idle: ${REDIS_POOL_MAX_IDLE:10}
           min-idle: ${REDIS_POOL_MIN_IDLE:2}
           max-wait: ${REDIS_POOL_MAX_WAIT:1000}
-  
+
   # Security Configuration
   security:
     oauth2:
@@ -82,7 +82,7 @@ spring:
         provider:
           hie-provider:
             issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/auth/realms/hms}
-  
+
   # Server Configuration
 server:
   port: ${SERVER_PORT:8084}
@@ -162,8 +162,8 @@ logging:
     org.springframework.cache: ${CACHE_LOG_LEVEL:WARN}
     root: ${ROOT_LOG_LEVEL:INFO}
   pattern:
-    console: "%d{HH:mm:ss.SSS} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    console: '%d{HH:mm:ss.SSS} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n'
   file:
     name: ${LOG_FILE_PATH:logs/hie-integration-service.log}
     max-size: ${LOG_FILE_MAX_SIZE:10MB}
@@ -207,7 +207,7 @@ resilience4j:
         failure-rate-threshold: 30
         slow-call-rate-threshold: 80
         slow-call-duration-threshold: 10s
-  
+
   retry:
     instances:
       hie-service:
@@ -222,7 +222,7 @@ resilience4j:
         max-attempts: 5
         wait-duration: 2s
         exponential-backoff-multiplier: 2
-  
+
   timelimiter:
     instances:
       hie-service:
@@ -242,14 +242,14 @@ hie:
       timeout-seconds: ${HIE_CONNECTION_TEST_TIMEOUT:30}
       retry-attempts: ${HIE_CONNECTION_TEST_RETRIES:3}
       parallel-tests: ${HIE_CONNECTION_TEST_PARALLEL:5}
-    
+
     # Performance Monitoring
     performance:
       metrics-calculation-interval-minutes: ${HIE_PERFORMANCE_METRICS_INTERVAL:60}
       uptime-threshold-percentage: ${HIE_UPTIME_THRESHOLD:95.0}
       response-time-threshold-ms: ${HIE_RESPONSE_TIME_THRESHOLD:5000}
       success-rate-threshold-percentage: ${HIE_SUCCESS_RATE_THRESHOLD:90.0}
-    
+
     # Data Exchange
     exchange:
       max-records-per-request: ${HIE_MAX_RECORDS_PER_REQUEST:1000}
@@ -258,14 +258,14 @@ hie:
       batch-size: ${HIE_BATCH_SIZE:100}
       parallel-processing: ${HIE_PARALLEL_PROCESSING:true}
       thread-pool-size: ${HIE_THREAD_POOL_SIZE:10}
-    
+
     # Security
     security:
       encryption-algorithm: ${HIE_ENCRYPTION_ALGORITHM:AES-256-GCM}
       key-rotation-days: ${HIE_KEY_ROTATION_DAYS:90}
       audit-enabled: ${HIE_AUDIT_ENABLED:true}
       sensitive-data-masking: ${HIE_SENSITIVE_DATA_MASKING:true}
-    
+
     # External System Integration
     external:
       fhir:
@@ -276,7 +276,7 @@ hie:
         enabled: ${HL7_INTEGRATION_ENABLED:true}
         default-version: ${HL7_DEFAULT_VERSION:2.5.1}
         encoding: ${HL7_ENCODING:UTF-8}
-    
+
     # Feature Flags
     features:
       real-time-monitoring: ${HIE_FEATURE_REAL_TIME_MONITORING:true}
@@ -291,18 +291,18 @@ spring:
   config:
     activate:
       on-profile: dev
-  
+
   datasource:
     url: jdbc:h2:mem:hie_integration_dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-  
+
   h2:
     console:
       enabled: true
@@ -327,18 +327,18 @@ spring:
   config:
     activate:
       on-profile: test
-  
+
   datasource:
     url: jdbc:h2:mem:hie_integration_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: false
-  
+
   cache:
     type: none
 
@@ -361,7 +361,7 @@ spring:
   config:
     activate:
       on-profile: prod
-  
+
   jpa:
     hibernate:
       ddl-auto: validate

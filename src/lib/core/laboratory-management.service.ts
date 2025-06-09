@@ -11,31 +11,31 @@ import { z } from 'zod';
 export const LabTestSchema = z.object({
   code: z.string().min(1, 'Test code is required'),
   name: z.string().min(1, 'Test name is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   category: z.enum(['chemistry', 'hematology', 'microbiology', 'serology', 'molecular', 'pathology']),
   specimen_type: z.enum(['blood', 'urine', 'stool', 'sputum', 'csf', 'tissue', 'swab']),
-  collection_instructions: z.string().optional();
-  preparation_instructions: z.string().optional();
-  turnaround_time_hours: z.number().min(1);
+  collection_instructions: z.string().optional(),
+  preparation_instructions: z.string().optional(),
+  turnaround_time_hours: z.number().min(1),
   reference_ranges: z.array(z.object({
-    age_min: z.number().optional();
-    age_max: z.number().optional();
+    age_min: z.number().optional(),
+    age_max: z.number().optional(),
     gender: z.enum(['male', 'female', 'both']).default('both'),
-    range_min: z.number().optional();
-    range_max: z.number().optional();
-    unit: z.string();
-    normal_text: z.string().optional();
+    range_min: z.number().optional(),
+    range_max: z.number().optional(),
+    unit: z.string(),
+    normal_text: z.string().optional()
   })),
   critical_values: z.object({
-    low_critical: z.number().optional();
-    high_critical: z.number().optional();
-    panic_low: z.number().optional();
-    panic_high: z.number().optional();
+    low_critical: z.number().optional(),
+    high_critical: z.number().optional(),
+    panic_low: z.number().optional(),
+    panic_high: z.number().optional()
   }).optional(),
-  cost: z.number().min(0);
-  cpt_code: z.string().optional();
-  loinc_code: z.string().optional();
-  is_active: z.boolean().default(true);
+  cost: z.number().min(0),
+  cpt_code: z.string().optional(),
+  loinc_code: z.string().optional(),
+  is_active: z.boolean().default(true)
 });
 
 export const LabOrderSchema = z.object({
@@ -43,106 +43,106 @@ export const LabOrderSchema = z.object({
   ordering_provider_id: z.string().min(1, 'Ordering provider is required'),
   test_codes: z.array(z.string()).min(1, 'At least one test must be ordered'),
   priority: z.enum(['routine', 'urgent', 'stat', 'asap']).default('routine'),
-  clinical_info: z.string().optional();
-  diagnosis_code: z.string().optional();
-  collection_date: z.string().optional();
-  fasting_required: z.boolean().default(false);
-  special_instructions: z.string().optional();
+  clinical_info: z.string().optional(),
+  diagnosis_code: z.string().optional(),
+  collection_date: z.string().optional(),
+  fasting_required: z.boolean().default(false),
+  special_instructions: z.string().optional()
 });
 
 export const SampleCollectionSchema = z.object({
   order_id: z.string().min(1, 'Order ID is required'),
   collected_by: z.string().min(1, 'Collector ID is required'),
   collection_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid collection date'),
-  collection_time: z.string();
-  specimen_type: z.string();
-  container_type: z.string();
-  volume_collected: z.number().optional();
-  collection_site: z.string().optional();
-  fasting_status: z.boolean().optional();
-  patient_condition: z.string().optional();
-  quality_issues: z.array(z.string()).default([]);
-  barcode: z.string().optional();
+  collection_time: z.string(),
+  specimen_type: z.string(),
+  container_type: z.string(),
+  volume_collected: z.number().optional(),
+  collection_site: z.string().optional(),
+  fasting_status: z.boolean().optional(),
+  patient_condition: z.string().optional(),
+  quality_issues: z.array(z.string()).default([]),
+  barcode: z.string().optional()
 });
 
 export const LabResultSchema = z.object({
-  order_id: z.string();
-  test_code: z.string();
-  result_value: z.string();
-  numeric_value: z.number().optional();
-  unit: z.string().optional();
-  reference_range: z.string().optional();
+  order_id: z.string(),
+  test_code: z.string(),
+  result_value: z.string(),
+  numeric_value: z.number().optional(),
+  unit: z.string().optional(),
+  reference_range: z.string().optional(),
   abnormal_flag: z.enum(['normal', 'high', 'low', 'critical_high', 'critical_low', 'panic']).default('normal'),
   result_status: z.enum(['preliminary', 'final', 'corrected', 'amended']).default('preliminary'),
-  performed_by: z.string();
-  verified_by: z.string().optional();
-  equipment_id: z.string().optional();
-  method: z.string().optional();
-  comments: z.string().optional();
-  resulted_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid result date'),;
+  performed_by: z.string(),
+  verified_by: z.string().optional(),
+  equipment_id: z.string().optional(),
+  method: z.string().optional(),
+  comments: z.string().optional(),
+  resulted_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid result date'),
 });
 
 export type LabTest = z.infer<typeof LabTestSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type LabOrder = z.infer<typeof LabOrderSchema> & {
-  id: string;
+  id: string,
   order_number: string;
-  status: 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled';
+  status: 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled',
   created_at: Date;
   updated_at: Date;
   tests?: LabTest[];
   patient_name?: string;
-  provider_name?: string;
+  provider_name?: string
 };
 
 export type SampleCollection = z.infer<typeof SampleCollectionSchema> & {
-  id: string;
+  id: string,
   sample_id: string;
-  status: 'collected' | 'received' | 'processing' | 'resulted' | 'rejected';
+  status: 'collected' | 'received' | 'processing' | 'resulted' | 'rejected',
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type LabResult = z.infer<typeof LabResultSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
   updated_at: Date;
   test_name?: string;
-  patient_name?: string;
+  patient_name?: string
 };
 
 export interface EquipmentInterface {
-  id: string;
+  id: string,
   name: string;
-  model: string;
+  model: string,
   serial_number: string;
-  status: 'online' | 'offline' | 'maintenance' | 'error';
+  status: 'online' | 'offline' | 'maintenance' | 'error',
   supported_tests: string[];
-  last_calibration: Date;
+  last_calibration: Date,
   next_maintenance: Date;
   connection_status: 'connected' | 'disconnected'
 export interface QualityControlResult {
-  id: string;
+  id: string,
   equipment_id: string;
-  test_code: string;
+  test_code: string,
   control_level: 'low' | 'normal' | 'high';
-  expected_value: number;
+  expected_value: number,
   actual_value: number;
-  variance_percentage: number;
+  variance_percentage: number,
   status: 'pass' | 'fail' | 'warning';
-  performed_by: string;
+  performed_by: string,
   performed_date: Date;
   comments?: string;
 export class LaboratoryManagementService {
-  private labTests: Map<string, LabTest> = new Map();
-  private labOrders: Map<string, LabOrder> = new Map();
-  private sampleCollections: Map<string, SampleCollection> = new Map();
-  private labResults: Map<string, LabResult[]> = new Map();
-  private equipment: Map<string, EquipmentInterface> = new Map();
+  private labTests: Map<string, LabTest> = new Map(),
+  private labOrders: Map<string, LabOrder> = new Map(),
+  private sampleCollections: Map<string, SampleCollection> = new Map(),
+  private labResults: Map<string, LabResult[]> = new Map(),
+  private equipment: Map<string, EquipmentInterface> = new Map(),
   private qcResults: Map<string, QualityControlResult[]> = new Map(),
   constructor() {
     this.initializeDefaultTests();
@@ -155,84 +155,84 @@ export class LaboratoryManagementService {
   private initializeDefaultTests(): void {
     const defaultTests: Omit<LabTest, 'id' | 'created_at' | 'updated_at'>[] = [
       {
-        code: 'CBC';
+        code: 'CBC',
         name: 'Complete Blood Count';
-        description: 'Complete blood count with differential';
+        description: 'Complete blood count with differential',
         category: 'hematology';
-        specimen_type: 'blood';
+        specimen_type: 'blood',
         collection_instructions: 'Collect in EDTA tube';
-        turnaround_time_hours: 2;
+        turnaround_time_hours: 2,
         reference_ranges: [
           { gender: 'male', range_min: 13.5, range_max: 17.5, unit: 'g/dL', normal_text: 'Hemoglobin' },
           { gender: 'female', range_min: 12.0, range_max: 15.5, unit: 'g/dL', normal_text: 'Hemoglobin' },
         ],
         critical_values: { low_critical: 7.0, high_critical: 20.0 },
-        cost: 25.00;
+        cost: 25.00,
         cpt_code: '85025';
-        loinc_code: '58410-2';
-        is_active: true;
+        loinc_code: '58410-2',
+        is_active: true
       },
       {
-        code: 'BMP';
+        code: 'BMP',
         name: 'Basic Metabolic Panel';
-        description: 'Basic metabolic panel (8 tests)';
+        description: 'Basic metabolic panel (8 tests)',
         category: 'chemistry';
-        specimen_type: 'blood';
+        specimen_type: 'blood',
         collection_instructions: 'Collect in SST tube, fasting preferred',
-        preparation_instructions: 'Patient should fast for 8-12 hours';
+        preparation_instructions: 'Patient should fast for 8-12 hours',
         turnaround_time_hours: 1;
         reference_ranges: [
           { gender: 'both', range_min: 70, range_max: 100, unit: 'mg/dL', normal_text: 'Glucose' },
           { gender: 'both', range_min: 0.6, range_max: 1.2, unit: 'mg/dL', normal_text: 'Creatinine' },
         ],
         critical_values: { low_critical: 50, high_critical: 400 },
-        cost: 35.00;
+        cost: 35.00,
         cpt_code: '80048';
-        loinc_code: '24323-8';
-        is_active: true;
+        loinc_code: '24323-8',
+        is_active: true
       },
       {
-        code: 'LIPID';
+        code: 'LIPID',
         name: 'Lipid Panel';
         description: 'Total cholesterol, HDL, LDL, triglycerides',
-        category: 'chemistry';
+        category: 'chemistry',
         specimen_type: 'blood';
         collection_instructions: 'Collect in SST tube, fasting required',
-        preparation_instructions: 'Patient must fast for 12 hours';
+        preparation_instructions: 'Patient must fast for 12 hours',
         turnaround_time_hours: 2;
         reference_ranges: [
           { gender: 'both', range_min: 0, range_max: 200, unit: 'mg/dL', normal_text: 'Total Cholesterol' },
           { gender: 'both', range_min: 40, range_max: 999, unit: 'mg/dL', normal_text: 'HDL' },
         ],
-        cost: 45.00;
+        cost: 45.00,
         cpt_code: '80061';
-        loinc_code: '24331-1';
-        is_active: true;
+        loinc_code: '24331-1',
+        is_active: true
       },
       {
-        code: 'UA';
+        code: 'UA',
         name: 'Urinalysis';
-        description: 'Complete urinalysis with microscopy';
+        description: 'Complete urinalysis with microscopy',
         category: 'chemistry';
-        specimen_type: 'urine';
+        specimen_type: 'urine',
         collection_instructions: 'Clean catch midstream urine';
-        turnaround_time_hours: 1;
+        turnaround_time_hours: 1,
         reference_ranges: [
           { gender: 'both', normal_text: 'Negative for protein, glucose, blood' },
         ],
-        cost: 20.00;
+        cost: 20.00,
         cpt_code: '81001';
-        loinc_code: '24357-6';
-        is_active: true;
+        loinc_code: '24357-6',
+        is_active: true
       },
     ];
 
     defaultTests.forEach(test => {
       const labTest: LabTest = {
         ...test,
-        id: uuidv4();
-        created_at: new Date();
-        updated_at: new Date();
+        id: uuidv4(),
+        created_at: new Date(),
+        updated_at: new Date()
       };
       this.labTests.set(labTest.code, labTest);
     });
@@ -244,26 +244,26 @@ export class LaboratoryManagementService {
   private initializeEquipment(): void {
     const defaultEquipment: EquipmentInterface[] = [
       {
-        id: uuidv4();
+        id: uuidv4(),
         name: 'Hematology Analyzer';
-        model: 'Sysmex XN-1000';
+        model: 'Sysmex XN-1000',
         serial_number: 'SN123456';
-        status: 'online';
+        status: 'online',
         supported_tests: ['CBC', 'DIFF'],
         last_calibration: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
         next_maintenance: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now
-        connection_status: 'connected';
+        connection_status: 'connected'
       },
       {
-        id: uuidv4();
+        id: uuidv4(),
         name: 'Chemistry Analyzer';
-        model: 'Roche Cobas 6000';
+        model: 'Roche Cobas 6000',
         serial_number: 'SN789012';
-        status: 'online';
+        status: 'online',
         supported_tests: ['BMP', 'LIPID', 'LFT'],
         last_calibration: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         next_maintenance: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now
-        connection_status: 'connected';
+        connection_status: 'connected'
       },
     ];
 
@@ -284,9 +284,9 @@ export class LaboratoryManagementService {
 
     const labTest: LabTest = {
       ...validatedData,
-      id: uuidv4();
-      created_at: new Date();
-      updated_at: new Date();
+      id: uuidv4(),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.labTests.set(labTest.code, labTest);
@@ -323,11 +323,11 @@ export class LaboratoryManagementService {
 
     const labOrder: LabOrder = {
       ...validatedData,
-      id: orderId;
+      id: orderId,
       order_number: orderNumber;
-      status: 'pending';
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'pending',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.labOrders.set(orderId, labOrder);
@@ -340,7 +340,7 @@ export class LaboratoryManagementService {
   private generateOrderNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `LAB/* SECURITY: Template literal eliminated */;
+    return `LAB/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -354,7 +354,7 @@ export class LaboratoryManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ orders: LabOrder[]; total: number; totalPages: number }> {
+  }): Promise<{ orders: LabOrder[], total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredOrders = Array.from(this.labOrders.values());
@@ -409,11 +409,11 @@ export class LaboratoryManagementService {
 
     const sampleCollection: SampleCollection = {
       ...validatedData,
-      id: uuidv4();
+      id: uuidv4(),
       sample_id: sampleId;
-      status: 'collected';
-      created_at: new Date();
-      updated_at: new Date();
+      status: 'collected',
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.sampleCollections.set(sampleCollection.id, sampleCollection);
@@ -432,7 +432,7 @@ export class LaboratoryManagementService {
   private generateSampleId(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `S/* SECURITY: Template literal eliminated */;
+    return `S/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -459,10 +459,10 @@ export class LaboratoryManagementService {
 
       const labResult: LabResult = {
         ...validatedData,
-        id: uuidv4();
+        id: uuidv4(),
         abnormal_flag: abnormalFlag;
-        created_at: new Date();
-        updated_at: new Date();
+        created_at: new Date(),
+        updated_at: new Date()
       };
 
       // Store result
@@ -474,7 +474,7 @@ export class LaboratoryManagementService {
 
       // Check for critical values and send alerts
       if (abnormalFlag.includes('critical') || abnormalFlag === 'panic') {
-        await this.sendCritical/* SECURITY: Alert removed */;
+        await this.sendCritical/* SECURITY: Alert removed */
       }
     }
 
@@ -534,11 +534,11 @@ export class LaboratoryManagementService {
   private async sendCritical/* SECURITY: Alert removed */: Promise<void> {
     // In real implementation, this would send notifications via email, SMS, etc.
 
-      patient_id: order.patient_id;
+      patient_id: order.patient_id,
       test: test.name;
-      value: result.result_value;
+      value: result.result_value,
       flag: result.abnormal_flag;
-      provider: order.ordering_provider_id;
+      provider: order.ordering_provider_id
     })
   }
 
@@ -553,11 +553,11 @@ export class LaboratoryManagementService {
    * Run quality control;
    */
   async runQualityControl(
-    equipmentId: string;
+    equipmentId: string,
     testCode: string;
-    controlLevel: 'low' | 'normal' | 'high';
+    controlLevel: 'low' | 'normal' | 'high',
     expectedValue: number;
-    actualValue: number;
+    actualValue: number,
     performedBy: string;
   ): Promise<QualityControlResult> {
     const variance = Math.abs((actualValue - expectedValue) / expectedValue) * 100;
@@ -570,16 +570,16 @@ export class LaboratoryManagementService {
     }
 
     const qcResult: QualityControlResult = {
-      id: uuidv4();
+      id: uuidv4(),
       equipment_id: equipmentId;
-      test_code: testCode;
+      test_code: testCode,
       control_level: controlLevel;
-      expected_value: expectedValue;
+      expected_value: expectedValue,
       actual_value: actualValue;
       variance_percentage: variance;
       status,
-      performed_by: performedBy;
-      performed_date: new Date();
+      performed_by: performedBy,
+      performed_date: new Date()
     };
 
     const equipmentQC = this.qcResults.get(equipmentId) || [];
@@ -593,12 +593,12 @@ export class LaboratoryManagementService {
    * Get laboratory statistics;
    */
   async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    totalOrders: number;
+    totalOrders: number,
     completedOrders: number;
-    pendingOrders: number;
+    pendingOrders: number,
     averageTurnaroundTime: number;
-    criticalResults: number;
-    qcFailures: number;
+    criticalResults: number,
+    qcFailures: number
   }> {
     const orders = Array.from(this.labOrders.values());
 

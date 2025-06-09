@@ -48,15 +48,15 @@ export default const _AppointmentsPage = () {
           const errorData: { error?: string } = await response.json(); // Add type annotation
           throw new Error(errorData.error || "Failed to fetch appointments");
         }
-        const data: Appointment[] = await response.json();
+        const data: Appointment[] = await response.json(),
         setAppointments(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Appointments";
+          title: "Error Fetching Appointments",
           description: message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);

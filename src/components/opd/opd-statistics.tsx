@@ -6,17 +6,17 @@ import React, { useState, useEffect } from "react";
 "use client";
 
 interface OPDStatisticsProperties {
-  date: Date;
+  date: Date
 }
 
 interface StatisticsData {
-  totalAppointments: number;
+  totalAppointments: number,
   checkedIn: number;
-  completed: number;
+  completed: number,
   cancelled: number;
   averageWaitTime: number; // in minutes
   doctorPerformance: {
-    doctorName: string;
+    doctorName: string,
     patientsServed: number;
     averageConsultationTime: number; // in minutes
   }[];
@@ -47,7 +47,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         if (!response.ok) {
           let errorMessage = "Failed to fetch statistics";
           try {
-            const errorData: ApiErrorResponse = await response.json();
+            const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */

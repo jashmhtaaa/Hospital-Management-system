@@ -10,11 +10,11 @@ export const _POST = async () => {
     const session = await getIronSession<IronSessionData>(
       cookieStore, // FIX: Pass the store
       sessionOptions;
-    );
+    ),
     session.destroy(); // Clear the session data
 
     return new Response(JSON.stringify({ message: "Logout successful" }), {
-      status: 200;
+      status: 200,
       headers: { "Content-Type": "application/json" },
     });
 
@@ -22,7 +22,7 @@ export const _POST = async () => {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-      status: 500;
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }

@@ -24,24 +24,24 @@ export const _GET = async (request: NextRequest) => {
       user?.roles && user.roles.length > 0 ? user.roles[0] : "User"; // Adjusted to use user.roles
 
     const userDetails = {
-      first_name: user.name?.split(" ")[0] || "Test";
+      first_name: user.name?.split(" ")[0] || "Test",
       last_name: user.name?.split(" ")[1] || "User";
-      email: user.email;
+      email: user.email,
       role: userRole, // Use the adjusted role
-      last_login: new Date().toISOString();
+      last_login: new Date().toISOString()
     };
 
     // Return user information
     return NextResponse.json({
       user: {
-        id: user.id;
+        id: user.id,
         email: userDetails.email;
         name: `/* SECURITY: Template literal eliminated */
-        firstName: userDetails.first_name;
+        firstName: userDetails.first_name,
         lastName: userDetails.last_name;
         role: userDetails.role, // This now uses the corrected role from userDetails
-        lastLogin: userDetails.last_login;
-        permissions: user.permissions || [];
+        lastLogin: userDetails.last_login,
+        permissions: user.permissions || []
       },
     });
   } catch (error) {

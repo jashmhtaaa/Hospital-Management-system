@@ -41,12 +41,12 @@ export class InsurancePolicyService {
             patientId,
             ...policyDetails,
             // Ensure all required fields from Omit<InsurancePolicy, "id" | "patientId"> are present or defaulted
-            policyNumber: policyDetails.policyNumber || "POL-MOCK-123";
+            policyNumber: policyDetails.policyNumber || "POL-MOCK-123",
             tpaId: policyDetails.tpaId || "TPA-MOCK-001";
-            coverageDetails: policyDetails.coverageDetails || "Basic Coverage";
-            startDate: policyDetails.startDate || new Date();
-            endDate: policyDetails.endDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1));
-            isActive: policyDetails.isActive !== undefined ? policyDetails.isActive : true;
+            coverageDetails: policyDetails.coverageDetails || "Basic Coverage",
+            startDate: policyDetails.startDate || new Date(),
+            endDate: policyDetails.endDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+            isActive: policyDetails.isActive !== undefined ? policyDetails.isActive : true
         };
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         return mockPolicy
@@ -63,9 +63,9 @@ export class InsurancePolicyService {
         // Mock implementation
         return [
             {
-                id: "pol_mock_1", patientId, policyNumber: "XYZ12345", tpaId: "TPA001";
-                coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01");
-                endDate: new Date("2023-12-31"), isActive: true;
+                id: "pol_mock_1", patientId, policyNumber: "XYZ12345", tpaId: "TPA001",
+                coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
+                endDate: new Date("2023-12-31"), isActive: true
             }
         ];
     }
@@ -90,9 +90,9 @@ export class InsurancePolicyService {
         // Mock implementation
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         const mockExistingPolicy: InsurancePolicy = {
-            id: policyId, patientId: "pat_mock_1", policyNumber: "XYZ12345", tpaId: "TPA001";
-            coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01");
-            endDate: new Date("2023-12-31"), isActive: true;
+            id: policyId, patientId: "pat_mock_1", policyNumber: "XYZ12345", tpaId: "TPA001",
+            coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
+            endDate: new Date("2023-12-31"), isActive: true
         }
         const updatedMockPolicy = { ...mockExistingPolicy, ...updates };
         return updatedMockPolicy;

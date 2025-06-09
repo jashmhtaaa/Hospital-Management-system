@@ -6,25 +6,25 @@
  */
 
 export interface Permission {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   resource: string;
   action: string;
   conditions?: Record<string, unknown>;
 export interface Role {
-  id: string;
+  id: string,
   name: string;
-  description: string;
+  description: string,
   permissions: Permission[];
   inherits?: string[]; // Role inheritance
   priority: number; // Higher number = higher priority
   isActive: boolean;
   metadata?: Record<string, unknown>;
 export interface UserRole {
-  userId: string;
+  userId: string,
   roleId: string;
-  assignedBy: string;
+  assignedBy: string,
   assignedAt: Date;
   expiresAt?: Date;
   isActive: boolean;
@@ -107,156 +107,156 @@ export enum Action {
 export const PERMISSIONS: Record<string, Permission> = {
   // Patient Management Permissions
   PATIENT_CREATE: {
-    id: 'patient:create';
+    id: 'patient:create',
     name: 'Create Patient';
-    description: 'Create new patient records';
+    description: 'Create new patient records',
     resource: Resource.PATIENT;
-    action: Action.CREATE;
+    action: Action.CREATE
   },
   PATIENT_READ: {
-    id: 'patient:read';
+    id: 'patient:read',
     name: 'Read Patient';
-    description: 'View patient information';
+    description: 'View patient information',
     resource: Resource.PATIENT;
-    action: Action.READ;
+    action: Action.READ
   },
   PATIENT_UPDATE: {
-    id: 'patient:update';
+    id: 'patient:update',
     name: 'Update Patient';
-    description: 'Modify patient information';
+    description: 'Modify patient information',
     resource: Resource.PATIENT;
-    action: Action.UPDATE;
+    action: Action.UPDATE
   },
   PATIENT_DELETE: {
-    id: 'patient:delete';
+    id: 'patient:delete',
     name: 'Delete Patient';
-    description: 'Delete patient records';
+    description: 'Delete patient records',
     resource: Resource.PATIENT;
-    action: Action.DELETE;
+    action: Action.DELETE
   },
 
   // Medical Records (PHI/PII)
   MEDICAL_RECORD_READ: {
-    id: 'patient.medical_record:read';
+    id: 'patient.medical_record:read',
     name: 'Read Medical Records';
-    description: 'Access patient medical records';
+    description: 'Access patient medical records',
     resource: Resource.PATIENT_MEDICAL_RECORD;
-    action: Action.READ;
+    action: Action.READ
   },
   MEDICAL_RECORD_UPDATE: {
-    id: 'patient.medical_record:update';
+    id: 'patient.medical_record:update',
     name: 'Update Medical Records';
-    description: 'Modify patient medical records';
+    description: 'Modify patient medical records',
     resource: Resource.PATIENT_MEDICAL_RECORD;
-    action: Action.UPDATE;
+    action: Action.UPDATE
   },
 
   // Clinical Operations
   APPOINTMENT_MANAGE: {
-    id: 'appointment:manage';
+    id: 'appointment:manage',
     name: 'Manage Appointments';
     description: 'Create, update, and cancel appointments',
-    resource: Resource.APPOINTMENT;
-    action: Action.UPDATE;
+    resource: Resource.APPOINTMENT,
+    action: Action.UPDATE
   },
   PRESCRIPTION_CREATE: {
-    id: 'prescription:create';
+    id: 'prescription:create',
     name: 'Create Prescription';
-    description: 'Create new prescriptions';
+    description: 'Create new prescriptions',
     resource: Resource.PRESCRIPTION;
-    action: Action.CREATE;
+    action: Action.CREATE
   },
   PRESCRIPTION_APPROVE: {
-    id: 'prescription:approve';
+    id: 'prescription:approve',
     name: 'Approve Prescription';
-    description: 'Approve prescription requests';
+    description: 'Approve prescription requests',
     resource: Resource.PRESCRIPTION;
-    action: Action.APPROVE;
+    action: Action.APPROVE
   },
 
   // Laboratory
   LAB_ORDER_CREATE: {
-    id: 'lab.order:create';
+    id: 'lab.order:create',
     name: 'Create Lab Order';
-    description: 'Order laboratory tests';
+    description: 'Order laboratory tests',
     resource: Resource.LAB_ORDER;
-    action: Action.CREATE;
+    action: Action.CREATE
   },
   LAB_RESULT_UPDATE: {
-    id: 'lab.result:update';
+    id: 'lab.result:update',
     name: 'Update Lab Results';
-    description: 'Enter and modify lab results';
+    description: 'Enter and modify lab results',
     resource: Resource.LAB_RESULT;
-    action: Action.UPDATE;
+    action: Action.UPDATE
   },
   LAB_RESULT_APPROVE: {
-    id: 'lab.result:approve';
+    id: 'lab.result:approve',
     name: 'Approve Lab Results';
-    description: 'Approve and release lab results';
+    description: 'Approve and release lab results',
     resource: Resource.LAB_RESULT;
-    action: Action.APPROVE;
+    action: Action.APPROVE
   },
 
   // Financial Management
   BILLING_CREATE: {
-    id: 'billing:create';
+    id: 'billing:create',
     name: 'Create Bills';
-    description: 'Generate patient bills';
+    description: 'Generate patient bills',
     resource: Resource.BILLING;
-    action: Action.CREATE;
+    action: Action.CREATE
   },
   BILLING_APPROVE: {
-    id: 'billing:approve';
+    id: 'billing:approve',
     name: 'Approve Bills';
-    description: 'Approve billing charges';
+    description: 'Approve billing charges',
     resource: Resource.BILLING;
-    action: Action.APPROVE;
+    action: Action.APPROVE
   },
   PAYMENT_PROCESS: {
-    id: 'payment:create';
+    id: 'payment:create',
     name: 'Process Payments';
-    description: 'Process patient payments';
+    description: 'Process patient payments',
     resource: Resource.PAYMENT;
-    action: Action.CREATE;
+    action: Action.CREATE
   },
   FINANCIAL_REPORT_READ: {
-    id: 'financial.report:read';
+    id: 'financial.report:read',
     name: 'View Financial Reports';
-    description: 'Access financial reports and analytics';
+    description: 'Access financial reports and analytics',
     resource: Resource.FINANCIAL_REPORT;
-    action: Action.READ;
+    action: Action.READ
   },
 
   // Administration
   USER_MANAGEMENT: {
-    id: 'user.management:*';
+    id: 'user.management:*',
     name: 'User Management';
-    description: 'Full user management capabilities';
+    description: 'Full user management capabilities',
     resource: Resource.USER_MANAGEMENT;
-    action: Action.UPDATE;
+    action: Action.UPDATE
   },
   SYSTEM_CONFIG: {
-    id: 'system.config:*';
+    id: 'system.config:*',
     name: 'System Configuration';
-    description: 'Configure system settings';
+    description: 'Configure system settings',
     resource: Resource.SYSTEM_CONFIG;
-    action: Action.CONFIGURE;
+    action: Action.CONFIGURE
   },
   AUDIT_LOG_READ: {
-    id: 'audit.log:read';
+    id: 'audit.log:read',
     name: 'View Audit Logs';
-    description: 'Access system audit logs';
+    description: 'Access system audit logs',
     resource: Resource.AUDIT_LOG;
-    action: Action.READ;
+    action: Action.READ
   },
 
   // Emergency Access
   EMERGENCY_OVERRIDE: {
-    id: 'emergency:override';
+    id: 'emergency:override',
     name: 'Emergency Override';
-    description: 'Emergency access to all systems';
+    description: 'Emergency access to all systems',
     resource: Resource.EMERGENCY;
-    action: Action.EMERGENCY_ACCESS;
+    action: Action.EMERGENCY_ACCESS
   },
 };
 
@@ -264,18 +264,18 @@ export const PERMISSIONS: Record<string, Permission> = {
 export const ROLES: Record<string, Role> = {
   // Administrative Roles
   SUPER_ADMIN: {
-    id: 'super_admin';
+    id: 'super_admin',
     name: 'Super Administrator';
-    description: 'Full system access with all permissions';
-    permissions: Object.values(PERMISSIONS);
-    priority: 1000;
-    isActive: true;
+    description: 'Full system access with all permissions',
+    permissions: Object.values(PERMISSIONS),
+    priority: 1000,
+    isActive: true
   },
 
   HOSPITAL_ADMIN: {
-    id: 'hospital_admin';
+    id: 'hospital_admin',
     name: 'Hospital Administrator';
-    description: 'Hospital-wide administrative access';
+    description: 'Hospital-wide administrative access',
     permissions: [
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
@@ -287,15 +287,15 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.USER_MANAGEMENT,
       PERMISSIONS.AUDIT_LOG_READ,
     ],
-    priority: 900;
-    isActive: true;
+    priority: 900,
+    isActive: true
   },
 
   // Clinical Roles
   CHIEF_MEDICAL_OFFICER: {
-    id: 'chief_medical_officer';
+    id: 'chief_medical_officer',
     name: 'Chief Medical Officer';
-    description: 'Senior medical staff with oversight responsibilities';
+    description: 'Senior medical staff with oversight responsibilities',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
@@ -307,14 +307,14 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.LAB_RESULT_APPROVE,
       PERMISSIONS.EMERGENCY_OVERRIDE,
     ],
-    priority: 850;
-    isActive: true;
+    priority: 850,
+    isActive: true
   },
 
   DOCTOR: {
-    id: 'doctor';
+    id: 'doctor',
     name: 'Doctor';
-    description: 'Licensed physician with clinical privileges';
+    description: 'Licensed physician with clinical privileges',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
@@ -324,69 +324,69 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.LAB_ORDER_CREATE,
       PERMISSIONS.APPOINTMENT_MANAGE,
     ],
-    priority: 800;
-    isActive: true;
+    priority: 800,
+    isActive: true
   },
 
   NURSE: {
-    id: 'nurse';
+    id: 'nurse',
     name: 'Nurse';
-    description: 'Registered nurse with patient care responsibilities';
+    description: 'Registered nurse with patient care responsibilities',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.MEDICAL_RECORD_READ,
       PERMISSIONS.MEDICAL_RECORD_UPDATE,
       PERMISSIONS.APPOINTMENT_MANAGE,
     ],
-    priority: 700;
-    isActive: true;
+    priority: 700,
+    isActive: true
   },
 
   // Laboratory Roles
   LAB_TECHNICIAN: {
-    id: 'lab_technician';
+    id: 'lab_technician',
     name: 'Laboratory Technician';
-    description: 'Laboratory staff for sample processing';
+    description: 'Laboratory staff for sample processing',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE,
     ],
-    priority: 600;
-    isActive: true;
+    priority: 600,
+    isActive: true
   },
 
   LAB_MANAGER: {
-    id: 'lab_manager';
+    id: 'lab_manager',
     name: 'Laboratory Manager';
-    description: 'Laboratory management with approval authority';
+    description: 'Laboratory management with approval authority',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE,
       PERMISSIONS.LAB_RESULT_APPROVE,
     ],
-    inherits: ['lab_technician'];
+    inherits: ['lab_technician'],
     priority: 650;
-    isActive: true;
+    isActive: true
   },
 
   // Financial Roles
   BILLING_CLERK: {
-    id: 'billing_clerk';
+    id: 'billing_clerk',
     name: 'Billing Clerk';
-    description: 'Billing and payment processing staff';
+    description: 'Billing and payment processing staff',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
       PERMISSIONS.PAYMENT_PROCESS,
     ],
-    priority: 500;
-    isActive: true;
+    priority: 500,
+    isActive: true
   },
 
   FINANCE_MANAGER: {
-    id: 'finance_manager';
+    id: 'finance_manager',
     name: 'Finance Manager';
-    description: 'Financial management and reporting';
+    description: 'Financial management and reporting',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
@@ -394,60 +394,60 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.PAYMENT_PROCESS,
       PERMISSIONS.FINANCIAL_REPORT_READ,
     ],
-    inherits: ['billing_clerk'];
+    inherits: ['billing_clerk'],
     priority: 750;
-    isActive: true;
+    isActive: true
   },
 
   // Support Roles
   RECEPTIONIST: {
-    id: 'receptionist';
+    id: 'receptionist',
     name: 'Receptionist';
-    description: 'Front desk and appointment management';
+    description: 'Front desk and appointment management',
     permissions: [
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
       PERMISSIONS.APPOINTMENT_MANAGE,
     ],
-    priority: 400;
-    isActive: true;
+    priority: 400,
+    isActive: true
   },
 
   PHARMACIST: {
-    id: 'pharmacist';
+    id: 'pharmacist',
     name: 'Pharmacist';
-    description: 'Licensed pharmacist with medication authority';
+    description: 'Licensed pharmacist with medication authority',
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PRESCRIPTION_APPROVE,
       // Additional pharmacy-specific permissions would be added
     ],
-    priority: 600;
-    isActive: true;
+    priority: 600,
+    isActive: true
   },
 
   // Limited Access Roles
   PATIENT_PORTAL: {
-    id: 'patient_portal';
+    id: 'patient_portal',
     name: 'Patient Portal User';
-    description: 'Patient self-service portal access';
+    description: 'Patient self-service portal access',
     permissions: [
       // Limited patient read access to own records only
     ],
-    priority: 100;
-    isActive: true;
+    priority: 100,
+    isActive: true
   },
 
   AUDIT_VIEWER: {
-    id: 'audit_viewer';
+    id: 'audit_viewer',
     name: 'Audit Viewer';
-    description: 'Read-only access to audit logs';
+    description: 'Read-only access to audit logs',
     permissions: [
       PERMISSIONS.AUDIT_LOG_READ,
     ],
-    priority: 300;
-    isActive: true;
+    priority: 300,
+    isActive: true
   },
 };
 
@@ -469,13 +469,13 @@ export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
 
   return {
     ...role,
-    permissions: [...role.permissions, ...inheritedPermissions],;
+    permissions: [...role.permissions, ...inheritedPermissions],
   };
 }
 
 // Permission checker helper
 export const hasPermission = (
-  userPermissions: Permission[];
+  userPermissions: Permission[],
   resource: string;
   action: string;
   context?: Record<string, unknown>

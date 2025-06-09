@@ -15,11 +15,11 @@ describe("ChargeCaptureService", () => {
     it("should create a charge successfully with valid data", async () => {
       // Arrange: Setup your test data and mocks
       const _chargeData = {
-        patientId: "patient-123";
+        patientId: "patient-123",
         serviceId: "service-456";
-        amount: 100.00;
-        dateOfService: new Date();
-        providerId: "provider-789";
+        amount: 100.00,
+        dateOfService: new Date(),
+        providerId: "provider-789"
       };
       // Mock the repository or other dependencies to return expected values
 

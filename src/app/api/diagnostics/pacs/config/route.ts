@@ -43,32 +43,32 @@ export const GET = async (request: NextRequest) => {
 
         if (result.results.length === 0) {
           return {
-            configured: false;
-            message: 'PACS not configured';
+            configured: false,
+            message: 'PACS not configured'
           };
         }
 
         // Decrypt sensitive data
         const config = {
           ...result.results[0],
-          aetitle: decryptSensitiveData(result.results[0].aetitle);
-          hostname: decryptSensitiveData(result.results[0].hostname);
+          aetitle: decryptSensitiveData(result.results[0].aetitle),
+          hostname: decryptSensitiveData(result.results[0].hostname),
           username: result.results[0].username ? decryptSensitiveData(result.results[0].username) : null;
           // Don't include password in response
-          password: null;
+          password: null
         };
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'pacs_configuration';
+          resource: 'pacs_configuration',
           details: { configId: config.id }
         });
 
         return {
           configured: true;
-          config;
+          config
         };
       },
       3600 // 1 hour cache
@@ -78,8 +78,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch PACS configuration';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch PACS configuration',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -121,7 +121,7 @@ export const POST = async (request: NextRequest) => {
     // Validate required fields
     if (!aetitle || !hostname || !port) {
       return NextResponse.json({
-        error: 'AE Title, hostname, and port are required';
+        error: 'AE Title, hostname, and port are required'
       }, { status: 400 });
     }
 
@@ -168,19 +168,19 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'pacs_configuration';
+      resource: 'pacs_configuration',
       resourceId: result.insertId;
       details: {
         aetitle,
         hostname,
         port,
-        hasUsername: !!username;
+        hasUsername: !!username,
         hasPassword: !!password;
-        modality_worklist_enabled: modality_worklist_enabled || false;
+        modality_worklist_enabled: modality_worklist_enabled || false,
         auto_send_enabled: auto_send_enabled || false;
-        auto_retrieve_enabled: auto_retrieve_enabled || false;
+        auto_retrieve_enabled: auto_retrieve_enabled || false
       }
     });
 
@@ -205,11 +205,11 @@ export const POST = async (request: NextRequest) => {
     // Decrypt sensitive data for response
     const config = {
       ...createdConfig.results[0],
-      aetitle: decryptSensitiveData(createdConfig.results[0].aetitle);
-      hostname: decryptSensitiveData(createdConfig.results[0].hostname);
+      aetitle: decryptSensitiveData(createdConfig.results[0].aetitle),
+      hostname: decryptSensitiveData(createdConfig.results[0].hostname),
       username: createdConfig.results[0].username ? decryptSensitiveData(createdConfig.results[0].username) : null;
       // Don't include password in response
-      password: null;
+      password: null
     };
 
     return NextResponse.json({
@@ -219,8 +219,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create PACS configuration';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to create PACS configuration',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -268,24 +268,24 @@ export const _POST_TEST = async (request: NextRequest) => {
 
       if (configResult.results.length === 0) {
         return NextResponse.json({
-          error: 'No active PACS configuration found';
+          error: 'No active PACS configuration found'
         }, { status: 404 });
       }
 
       const config = configResult.results[0];
 
       connectionParams = {
-        aetitle: decryptSensitiveData(config.aetitle);
-        hostname: decryptSensitiveData(config.hostname);
-        port: config.port;
+        aetitle: decryptSensitiveData(config.aetitle),
+        hostname: decryptSensitiveData(config.hostname),
+        port: config.port,
         username: config.username ? decryptSensitiveData(config.username) : null;
-        password: config.password ? decryptSensitiveData(config.password) : null;
+        password: config.password ? decryptSensitiveData(config.password) : null
       };
     } else {
       // Validate required fields
       if (!aetitle || !hostname || !port) {
         return NextResponse.json({
-          error: 'AE Title, hostname, and port are required';
+          error: 'AE Title, hostname, and port are required'
         }, { status: 400 });
       }
 
@@ -294,7 +294,7 @@ export const _POST_TEST = async (request: NextRequest) => {
         hostname,
         port,
         username,
-        password;
+        password
       };
     }
 
@@ -303,12 +303,12 @@ export const _POST_TEST = async (request: NextRequest) => {
 
     // Log test
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'test';
-      resource: 'pacs_connection';
+      resource: 'pacs_connection',
       details: {
         useExisting,
-        success: connectionTest.success;
+        success: connectionTest.success
       }
     });
 
@@ -316,8 +316,8 @@ export const _POST_TEST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to test PACS connection';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to test PACS connection',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -326,7 +326,7 @@ export const _POST_TEST = async (request: NextRequest) => {
  * Helper function to test PACS connection;
  */
 async const testPacsConnection = (params: {
-  aetitle: string;
+  aetitle: string,
   hostname: string;
   port: number;
   username?: string | null;
@@ -341,42 +341,42 @@ async const testPacsConnection = (params: {
 
     // Simulate successful connection
     return {
-      success: true;
+      success: true,
       message: 'Successfully connected to PACS server';
       details: {
-        aetitle: params.aetitle;
+        aetitle: params.aetitle,
         hostname: params.hostname;
-        port: params.port;
+        port: params.port,
         association: 'Established';
-        echo: 'Successful';
-        timestamp: new Date().toISOString();
+        echo: 'Successful',
+        timestamp: new Date().toISOString()
       }
     };
 
     // For a real implementation, you would handle connection failures like:
     /*
     return {
-      success: false;
+      success: false,
       message: 'Failed to connect to PACS server';
       details: {
-        aetitle: params.aetitle;
+        aetitle: params.aetitle,
         hostname: params.hostname;
-        port: params.port;
+        port: params.port,
         error: 'Connection refused';
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     }
     */
   } catch (error) {
     return {
-      success: false;
+      success: false,
       message: 'Error testing PACS connection';
       details: {
-        aetitle: params.aetitle;
+        aetitle: params.aetitle,
         hostname: params.hostname;
-        port: params.port;
+        port: params.port,
         error: error instanceof Error ? error.message : 'Unknown error';
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     };
   }

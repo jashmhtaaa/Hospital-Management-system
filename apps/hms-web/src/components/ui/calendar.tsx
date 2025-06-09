@@ -29,7 +29,7 @@ export const Calendar = ({
 
   // Get days in month
   const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate();
+    return new Date(year, month + 1, 0).getDate()
   };
 
   // Get day of week for first day of month (0 = Sunday, 6 = Saturday)
@@ -41,19 +41,19 @@ export const Calendar = ({
     const previousMonth = new Date(currentMonth);
     previousMonth.setMonth(previousMonth.getMonth() - 1);
     setCurrentMonth(previousMonth);
-    onMonthChange?.(previousMonth);
+    onMonthChange?.(previousMonth)
   };
 
   const handleNextMonth = () => {
     const nextMonth = new Date(currentMonth);
     nextMonth.setMonth(nextMonth.getMonth() + 1);
     setCurrentMonth(nextMonth);
-    onMonthChange?.(nextMonth);
+    onMonthChange?.(nextMonth)
   };
 
   const handleSelectDate = (day: number) => {
     const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    onSelect?.(selectedDate);
+    onSelect?.(selectedDate)
   };
 
   const renderCalendarDays = () => {
@@ -103,7 +103,7 @@ export const Calendar = ({
       );
     }
 
-    return days;
+    return days
   };
 
   return (

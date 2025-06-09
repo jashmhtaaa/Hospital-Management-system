@@ -22,19 +22,19 @@ import { logAuditEvent } from '@/lib/audit';
 } from './roles.ts';
 
 export interface RBACContext {
-  userId: string;
+  userId: string,
   sessionId: string;
-  ipAddress: string;
+  ipAddress: string,
   userAgent: string;
   department?: string;
   location?: string;
   emergencyAccess?: boolean;
 export interface PermissionCheck {
-  resource: string;
+  resource: string,
   action: string;
   context?: Record<string, unknown>;
 export interface RoleAssignment {
-  userId: string;
+  userId: string,
   roleId: string;
   assignedBy: string;
   context?: Record<string, unknown>;
@@ -59,7 +59,7 @@ export class RBACService {
    * Check if user has specific permission;
    */
   async hasPermission(
-    userId: string;
+    userId: string,
     resource: string;
     action: string;
     context?: RBACContext;
@@ -91,8 +91,8 @@ export class RBACService {
         userId,
         resource,
         details: { error: (error as Error).message, resource, action },
-        ipAddress: context?.ipAddress;
-        userAgent: context?.userAgent;
+        ipAddress: context?.ipAddress,
+        userAgent: context?.userAgent
       });
 
       return false;
@@ -103,7 +103,7 @@ export class RBACService {
    * Check multiple permissions at once;
    */
   async hasPermissions(
-    userId: string;
+    userId: string,
     permissions: PermissionCheck[];
     context?: RBACContext;
   ): Promise<Record<string, boolean>> {
@@ -175,7 +175,7 @@ export class RBACService {
       const userRoles = await this.prisma.userRole.findMany({
         where: {
           userId,
-          isActive: true;
+          isActive: true,
           OR: [
             { expiresAt: null },
             { expiresAt: { gt: new Date() } }
@@ -210,9 +210,9 @@ export class RBACService {
       // Check if user already has this role
       const existingRole = await this.prisma.userRole.findFirst({
         where: {
-          userId: assignment.userId;
+          userId: assignment.userId,
           roleId: assignment.roleId;
-          isActive: true;
+          isActive: true
         }
       });
 
@@ -223,13 +223,13 @@ export class RBACService {
       // Create role assignment
       await this.prisma.userRole.create({
         data: {
-          userId: assignment.userId;
+          userId: assignment.userId,
           roleId: assignment.roleId;
-          assignedBy: assignment.assignedBy;
-          assignedAt: new Date();
-          expiresAt: assignment.expiresAt;
+          assignedBy: assignment.assignedBy,
+          assignedAt: new Date(),
+          expiresAt: assignment.expiresAt,
           isActive: true;
-          context: assignment.context;
+          context: assignment.context
         }
       });
 
@@ -238,33 +238,33 @@ export class RBACService {
 
       // Log audit event
       await logAuditEvent({
-        eventType: 'ROLE_ASSIGNED';
+        eventType: 'ROLE_ASSIGNED',
         userId: assignment.assignedBy;
-        targetUserId: assignment.userId;
+        targetUserId: assignment.userId,
         resource: 'user_role';
         details: {
-          roleId: assignment.roleId;
+          roleId: assignment.roleId,
           roleName: role.name;
-          expiresAt: assignment.expiresAt;
-          context: assignment.context;
+          expiresAt: assignment.expiresAt,
+          context: assignment.context
         },
-        ipAddress: context?.ipAddress;
-        userAgent: context?.userAgent;
+        ipAddress: context?.ipAddress,
+        userAgent: context?.userAgent
       });
 
     } catch (error) {
 
       await logAuditEvent({
-        eventType: 'ROLE_ASSIGNMENT_ERROR';
+        eventType: 'ROLE_ASSIGNMENT_ERROR',
         userId: assignment.assignedBy;
-        targetUserId: assignment.userId;
+        targetUserId: assignment.userId,
         resource: 'user_role';
         details: {
-          error: (error as Error).message;
-          roleId: assignment.roleId;
+          error: (error as Error).message,
+          roleId: assignment.roleId
         },
-        ipAddress: context?.ipAddress;
-        userAgent: context?.userAgent;
+        ipAddress: context?.ipAddress,
+        userAgent: context?.userAgent
       });
 
       throw error;
@@ -275,7 +275,7 @@ export class RBACService {
    * Remove role from user;
    */
   async removeRole(
-    userId: string;
+    userId: string,
     roleId: string;
     removedBy: string;
     context?: RBACContext;
@@ -291,11 +291,11 @@ export class RBACService {
         where: {
           userId,
           roleId,
-          isActive: true;
+          isActive: true
         },
         data: {
-          isActive: false;
-          updatedAt: new Date();
+          isActive: false,
+          updatedAt: new Date()
         }
       });
 
@@ -308,31 +308,31 @@ export class RBACService {
 
       // Log audit event
       await logAuditEvent({
-        eventType: 'ROLE_REMOVED';
+        eventType: 'ROLE_REMOVED',
         userId: removedBy;
-        targetUserId: userId;
+        targetUserId: userId,
         resource: 'user_role';
         details: {
           roleId,
-          roleName: role.name;
+          roleName: role.name
         },
-        ipAddress: context?.ipAddress;
-        userAgent: context?.userAgent;
+        ipAddress: context?.ipAddress,
+        userAgent: context?.userAgent
       });
 
     } catch (error) {
 
       await logAuditEvent({
-        eventType: 'ROLE_REMOVAL_ERROR';
+        eventType: 'ROLE_REMOVAL_ERROR',
         userId: removedBy;
-        targetUserId: userId;
+        targetUserId: userId,
         resource: 'user_role';
         details: {
           error: (error as Error).message;
           roleId;
         },
-        ipAddress: context?.ipAddress;
-        userAgent: context?.userAgent;
+        ipAddress: context?.ipAddress,
+        userAgent: context?.userAgent
       });
 
       throw error;
@@ -364,9 +364,9 @@ export class RBACService {
    * Emergency access - bypass normal permissions (with heavy logging)
    */
   async grantEmergencyAccess(
-    userId: string;
+    userId: string,
     resource: string;
-    action: string;
+    action: string,
     reason: string;
     approvedBy: string;
     context?: RBACContext;
@@ -374,24 +374,24 @@ export class RBACService {
     try {
       // Log emergency access request
       await logAuditEvent({
-        eventType: 'EMERGENCY_ACCESS_GRANTED';
+        eventType: 'EMERGENCY_ACCESS_GRANTED',
         userId: approvedBy;
         targetUserId: userId;
         resource,
         details: {
           action,
           reason,
-          emergencyAccess: true;
+          emergencyAccess: true
         },
-        ipAddress: context?.ipAddress;
+        ipAddress: context?.ipAddress,
         userAgent: context?.userAgent;
-        severity: 'HIGH';
+        severity: 'HIGH'
       });
 
       // Grant temporary emergency role
       await this.assignRole({
         userId,
-        roleId: 'emergency_access';
+        roleId: 'emergency_access',
         assignedBy: approvedBy;
         expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 60 * 1000), // 30 minutes
         context: { emergency: true, reason }
@@ -423,9 +423,9 @@ export class RBACService {
    * Log permission check for audit purposes;
    */
   private async logPermissionCheck(
-    userId: string;
+    userId: string,
     resource: string;
-    action: string;
+    action: string,
     granted: boolean;
     context?: RBACContext;
   ): Promise<void> {
@@ -445,9 +445,9 @@ export class RBACService {
           granted,
           resource;
         },
-        ipAddress: context?.ipAddress;
+        ipAddress: context?.ipAddress,
         userAgent: context?.userAgent;
-        severity: granted ? 'LOW' : 'MEDIUM';
+        severity: granted ? 'LOW' : 'MEDIUM'
       });
     }
   }
@@ -460,17 +460,17 @@ export class RBACService {
       // Deactivate expired roles
       await this.prisma.userRole.updateMany({
         where: {
-          isActive: true;
+          isActive: true,
           expiresAt: {
-            lte: new Date();
+            lte: new Date()
           }
         },
         data: {
-          isActive: false;
+          isActive: false
         }
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
     }
@@ -491,7 +491,7 @@ export {
   Action,
   type RBACContext,
   type PermissionCheck,
-  type RoleAssignment;
+  type RoleAssignment
 };
 
 export default rbacService;

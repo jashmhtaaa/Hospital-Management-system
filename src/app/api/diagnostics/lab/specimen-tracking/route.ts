@@ -6,7 +6,7 @@ import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption 
 import { getSession } from "@/lib/session";
 // Interface for the request body when creating a specimen tracking entry
 interface SpecimenTrackingCreateBody {
-  specimen_id: number;
+  specimen_id: number,
   status: string;
   location: string;
   notes?: string;
@@ -122,17 +122,17 @@ export const _GET = async (request: NextRequest) => {
 
     // Return tracking history with pagination metadata
     return NextResponse.json({
-      data: tracking;
+      data: tracking,
       pagination: {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize);
+        totalPages: Math.ceil(totalCount / pageSize)
       }
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch specimen tracking", details: errorMessage },
       { status: 500 }
@@ -190,7 +190,7 @@ export const _POST = async (request: NextRequest) => {
     try {
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes
       });
 
       // Insert tracking entry
@@ -271,7 +271,7 @@ export const _POST = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create specimen tracking", details: errorMessage },
       { status: 500 }
@@ -304,7 +304,7 @@ export const _GET_LOCATIONS = async (request: NextRequest) => {
     return NextResponse.json(locations.map(item => item.location));
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch specimen locations", details: errorMessage },
       { status: 500 }
@@ -324,11 +324,11 @@ export const _POST_SCAN = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json() as {
-      barcode: string;
+      barcode: string,
       scan_type: "barcode" | "rfid";
       location: string;
       status?: string;
-      notes?: string;
+      notes?: string
     };
 
     // Validate required fields
@@ -377,7 +377,7 @@ export const _POST_SCAN = async (request: NextRequest) => {
     try {
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes;
+        notes: body.notes
       });
 
       // Insert tracking entry
@@ -460,15 +460,15 @@ export const _POST_SCAN = async (request: NextRequest) => {
       return NextResponse.json({
         tracking,
         specimen: {
-          id: specimen.id;
+          id: specimen.id,
           barcode: specimen.barcode;
           sample_type: specimen.sample_type;
           status,
-          location: body.location;
+          location: body.location,
           order_id: specimen.order_id;
-          patient_id: tracking.patient_id;
+          patient_id: tracking.patient_id,
           patient_name: `/* SECURITY: Template literal eliminated */
-          patient_mrn: tracking.patient_mrn;
+          patient_mrn: tracking.patient_mrn
         }
       }, { status: 201 });
     } catch (error) {
@@ -478,7 +478,7 @@ export const _POST_SCAN = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to process specimen scan", details: errorMessage },
       { status: 500 }
@@ -498,10 +498,10 @@ export const _POST_BATCH = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json() as {
-      barcodes: string[];
+      barcodes: string[],
       status: string;
       location: string;
-      notes?: string;
+      notes?: string
     };
 
     // Validate required fields
@@ -530,7 +530,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
         if (!specimenCheckResult.results || specimenCheckResult.results.length === 0) {
           errors.push({
             barcode,
-            error: "Specimen not found";
+            error: "Specimen not found"
           });
           continue;
         }
@@ -539,7 +539,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
 
         // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
-          notes: body.notes;
+          notes: body.notes
         });
 
         // Insert tracking entry
@@ -584,10 +584,10 @@ export const _POST_BATCH = async (request: NextRequest) => {
 
         results.push({
           barcode,
-          specimen_id: specimen.id;
+          specimen_id: specimen.id,
           tracking_id: trackingId;
-          status: body.status;
-          location: body.location;
+          status: body.status,
+          location: body.location
         });
       }
 
@@ -596,7 +596,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
 
       // Return the results
       return NextResponse.json({
-        success: results.length;
+        success: results.length,
         failed: errors.length;
         results,
         errors;
@@ -608,7 +608,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
     }
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to process batch specimens", details: errorMessage },
       { status: 500 }

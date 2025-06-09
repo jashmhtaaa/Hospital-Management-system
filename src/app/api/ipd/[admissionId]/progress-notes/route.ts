@@ -8,7 +8,7 @@ import { getSession } from "@/lib/session";
 // Zod schema for creating a progress note
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid note datetime format";
+        message: "Invalid note datetime format"
     }),
     notes: z.string().min(1, "Progress note content cannot be empty"),
     // Assuming doctor_id is derived from the session
@@ -76,12 +76,12 @@ export const _GET = async (
         const total = countResult?.total || 0;
 
         return NextResponse.json({
-            data: results;
+            data: results,
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit)
             },
         });
 

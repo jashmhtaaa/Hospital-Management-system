@@ -6,20 +6,20 @@ import { salaryService } from '@/lib/hr/salary-service';
 // Schema for salary structure creation
 const salaryStructureSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  description: z.string().optional();
+  description: z.string().optional(),
   components: z.array(
     z.object({
       name: z.string().min(1, "Component name is required"),
       type: z.enum(['EARNING', 'DEDUCTION', 'TAX'], {
-        errorMap: () => ({ message: "Type must be EARNING, DEDUCTION, or TAX" });
+        errorMap: () => ({ message: "Type must be EARNING, DEDUCTION, or TAX" }),
       }),
       calculationType: z.enum(['FIXED', 'PERCENTAGE', 'FORMULA'], {
-        errorMap: () => ({ message: "Calculation type must be FIXED, PERCENTAGE, or FORMULA" });
+        errorMap: () => ({ message: "Calculation type must be FIXED, PERCENTAGE, or FORMULA" }),
       }),
-      value: z.number();
-      formula: z.string().optional();
-      taxable: z.boolean();
-      isBase: z.boolean().optional();
+      value: z.number(),
+      formula: z.string().optional(),
+      taxable: z.boolean(),
+      isBase: z.boolean().optional()
     });
   ).min(1, "At least one component is required"),
 });

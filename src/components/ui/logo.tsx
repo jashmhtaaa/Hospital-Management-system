@@ -41,7 +41,7 @@ const Logo: React.FC<LogoProperties> = ({
       {showText && (
         <div className="ml-2 flex flex-col">;
 <span
-            className={`font-bold /* SECURITY: Template literal eliminated */;
+            className={`font-bold /* SECURITY: Template literal eliminated */
 };
 
 export default Logo;

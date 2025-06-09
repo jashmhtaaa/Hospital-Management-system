@@ -7,15 +7,15 @@ import { payrollService } from '@/lib/hr/payroll-service';
 const payrollPeriodSchema = z.object({
   name: z.string().min(1, "Name is required"),
   startDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid start date format";
+    message: "Invalid start date format"
   }),
   endDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid end date format";
+    message: "Invalid end date format"
   }),
   paymentDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid payment date format";
+    message: "Invalid payment date format"
   }),
-  notes: z.string().optional();
+  notes: z.string().optional()
 });
 
 // POST handler for creating payroll period
@@ -38,9 +38,9 @@ export const _POST = async (request: NextRequest) => {
     // Create payroll period
     const payrollPeriod = await payrollService.createPayrollPeriod({
       name,
-      startDate: new Date(startDate);
-      endDate: new Date(endDate);
-      paymentDate: new Date(paymentDate);
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+      paymentDate: new Date(paymentDate),
       status: 'DRAFT';
       notes,
     });

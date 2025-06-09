@@ -4,7 +4,7 @@ metadata:
   name: hms-global-circuit-breaker
   namespace: hms
 spec:
-  host: "*.hms.svc.cluster.local"
+  host: '*.hms.svc.cluster.local'
   trafficPolicy:
     connectionPool:
       http:

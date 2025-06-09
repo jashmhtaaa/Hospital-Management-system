@@ -12,7 +12,7 @@ export interface AuditContext {
 }
 
 export interface AuditData {
-  action: string;
+  action: string,
   resource: string;
   resourceId?: string;
   oldValues?: unknown;
@@ -26,25 +26,25 @@ export class AuditService {
     try {
       await prisma.auditLog.create({
         data: {
-          userId: context.userId;
+          userId: context.userId,
           userEmail: context.userEmail;
-          ipAddress: context.ipAddress;
+          ipAddress: context.ipAddress,
           userAgent: context.userAgent;
-          action: data.action;
+          action: data.action,
           resource: data.resource;
-          resourceId: data.resourceId;
+          resourceId: data.resourceId,
           oldValues: data.oldValues;
-          newValues: data.newValues;
+          newValues: data.newValues,
           description: data.description;
-          severity: data.severity || LogSeverity.INFO;
+          severity: data.severity || LogSeverity.INFO
         }
       });
 
       // Also log to application logger for immediate monitoring
       logger.info('Audit log created', {
-        action: data.action;
+        action: data.action,
         resource: data.resource;
-        userId: context.userId;
+        userId: context.userId
       });
 
     } catch (error) {
@@ -53,7 +53,7 @@ export class AuditService {
   }
 
   static async logUserAction(
-    context: AuditContext;
+    context: AuditContext,
     action: string;
     resource: string;
     resourceId?: string,
@@ -64,14 +64,14 @@ export class AuditService {
       resource,
       resourceId,
       description,
-      severity: LogSeverity.INFO;
+      severity: LogSeverity.INFO
     });
   }
 
   static async logDataChange(
-    context: AuditContext;
+    context: AuditContext,
     resource: string;
-    resourceId: string;
+    resourceId: string,
     oldValues: unknown;
     newValues: unknown): Promise<void> {
     await this.log(context, {
@@ -81,14 +81,14 @@ export class AuditService {
       oldValues,
       newValues,
       description: `${resource} data updated`,
-      severity: LogSeverity.INFO;
+      severity: LogSeverity.INFO
     });
   }
 
   static async logSecurityEvent(
-    context: AuditContext;
+    context: AuditContext,
     action: string;
-    description: string;
+    description: string,
     severity: LogSeverity = LogSeverity.WARN
   ): Promise<void> {
     await this.log(context, {
@@ -116,14 +116,14 @@ export class AuditService {
       include: {
         user: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            email: true;
+            email: true
           }
         }
       },
       orderBy: { timestamp: 'desc' },
-      take: limit;
+      take: limit
     });
   }
 }
@@ -146,17 +146,17 @@ export function withAudit(resource: string): unknown {
           result?.id,
           `/* SECURITY: Template literal eliminated */
 
-        return result;
+        return result
       } catch (error) {
         await AuditService.log(context, {
-          action: propertyName.toUpperCase();
+          action: propertyName.toUpperCase(),
           resource,
           description: `/* SECURITY: Template literal eliminated */
-          severity: LogSeverity.ERROR;
+          severity: LogSeverity.ERROR
         });
 
         throw error;
       }
-    };
+    }
   };
 }

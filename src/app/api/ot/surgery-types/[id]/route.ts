@@ -72,7 +72,7 @@ export const _GET = async (
     return NextResponse.json(surgeryType);
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching surgery type details", details: errorMessage },
       { status: 500 }
@@ -174,7 +174,7 @@ export const _PUT = async (
     if (!results || results.length === 0) {
       return NextResponse.json(
         {
-          message: "Failed to fetch updated surgery type details after update";
+          message: "Failed to fetch updated surgery type details after update"
         },
         { status: 500 }
       );
@@ -207,13 +207,13 @@ export const _PUT = async (
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       // FIX: Check errorMessage
       return NextResponse.json(
         { message: "Surgery type name must be unique", details: errorMessage },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error updating surgery type", details: errorMessage },
@@ -263,11 +263,11 @@ export const DELETE = async (
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Cannot delete surgery type with existing bookings";
-          details: errorMessage;
+          message: "Cannot delete surgery type with existing bookings",
+          details: errorMessage
         },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error deleting surgery type", details: errorMessage },

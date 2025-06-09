@@ -54,9 +54,9 @@ export default const _StaffManagement = () {
   const [departments, setDepartments] = useState<any[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
-    skip: 0;
+    skip: 0,
     take: 10;
-    total: 0;
+    total: 0
   });
 
   // Fetch employees
@@ -65,8 +65,8 @@ export default const _StaffManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString();
-          take: pagination.take.toString();
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString()
         });
 
         if (search != null) queryParams.append('search', search);
@@ -83,7 +83,7 @@ export default const _StaffManagement = () {
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total;
+          total: data.total
         }));
       } catch (err) {
         setError(err.message);
@@ -125,7 +125,7 @@ export default const _StaffManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -134,7 +134,7 @@ export default const _StaffManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -145,18 +145,18 @@ export default const _StaffManagement = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Navigate to employee details
   const handleViewEmployee = (id: unknown) => {
-    router.push(`/dashboard/hr/staff/${id}`);
+    router.push(`/dashboard/hr/staff/${id}`)
   };
 
   // Navigate to add employee form
   const handleAddEmployee = () => {
-    router.push('/dashboard/hr/staff/new');
+    router.push('/dashboard/hr/staff/new')
   };
 
   return (

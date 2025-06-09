@@ -52,55 +52,55 @@ import * as z from 'zod';
 const patientFormSchema = z.object({
   // Personal Information
   firstName: z.string().min(1, "First name is required"),
-  middleName: z.string().optional();
+  middleName: z.string().optional(),
   lastName: z.string().min(1, "Last name is required"),
-  preferredName: z.string().optional();
+  preferredName: z.string().optional(),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   gender: z.string().min(1, "Gender is required"),
-  biologicalSex: z.string().optional();
-  genderIdentity: z.string().optional();
-  pronouns: z.string().optional();
+  biologicalSex: z.string().optional(),
+  genderIdentity: z.string().optional(),
+  pronouns: z.string().optional(),
   maritalStatus: z.string().optional();
 
   // Contact Information
-  phoneHome: z.string().optional();
-  phoneMobile: z.string().optional();
-  phoneWork: z.string().optional();
+  phoneHome: z.string().optional(),
+  phoneMobile: z.string().optional(),
+  phoneWork: z.string().optional(),
   phonePreferred: z.string().min(1, "Preferred phone type is required"),
-  email: z.string().email().optional().or(z.literal(''));
-  emailOptIn: z.boolean().default(false);
-  smsOptIn: z.boolean().default(false);
+  email: z.string().email().optional().or(z.literal('')),
+  emailOptIn: z.boolean().default(false),
+  smsOptIn: z.boolean().default(false),
   mailOptIn: z.boolean().default(true);
 
   // Address
-  addressLine1: z.string().optional();
-  addressLine2: z.string().optional();
-  city: z.string().optional();
-  state: z.string().optional();
-  postalCode: z.string().optional();
+  addressLine1: z.string().optional(),
+  addressLine2: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  postalCode: z.string().optional(),
   country: z.string().default("USA");
 
   // Demographics
-  language: z.string().default("English");
-  interpreter: z.boolean().default(false);
-  ethnicity: z.string().optional();
-  race: z.string().optional();
-  nationality: z.string().optional();
-  religion: z.string().optional();
-  educationLevel: z.string().optional();
+  language: z.string().default("English"),
+  interpreter: z.boolean().default(false),
+  ethnicity: z.string().optional(),
+  race: z.string().optional(),
+  nationality: z.string().optional(),
+  religion: z.string().optional(),
+  educationLevel: z.string().optional(),
   occupation: z.string().optional();
 
   // Medical
-  bloodType: z.string().optional();
-  rh: z.string().optional();
+  bloodType: z.string().optional(),
+  rh: z.string().optional(),
   organDonor: z.boolean().default(false);
 
   // Administrative
-  mrn: z.string().optional();
-  status: z.string().default("Active");
-  vip: z.boolean().default(false);
-  confidential: z.boolean().default(false);
-  notes: z.string().optional();
+  mrn: z.string().optional(),
+  status: z.string().default("Active"),
+  vip: z.boolean().default(false),
+  confidential: z.boolean().default(false),
+  notes: z.string().optional()
 });
 
 type PatientFormValues = z.infer<typeof patientFormSchema>;
@@ -117,25 +117,25 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
   // Default values for the form
   const defaultValues: Partial<PatientFormValues> = initialData ? {
     // Personal Information,
-    firstName: initialData.firstName || '';
+    firstName: initialData.firstName || '',
     middleName: initialData.middleName || '';
-    lastName: initialData.lastName || '';
+    lastName: initialData.lastName || '',
     preferredName: initialData.preferredName || '';
     dateOfBirth: initialData.dateOfBirth ? format(new Date(initialData.dateOfBirth), 'yyyy-MM-dd') : '',
-    gender: initialData.gender || '';
+    gender: initialData.gender || '',
     biologicalSex: initialData.biologicalSex || '';
-    genderIdentity: initialData.genderIdentity || '';
+    genderIdentity: initialData.genderIdentity || '',
     pronouns: initialData.pronouns || '';
     maritalStatus: initialData.maritalStatus || '';
 
     // Contact Information
-    phoneHome: initialData.contact?.phoneHome || '';
+    phoneHome: initialData.contact?.phoneHome || '',
     phoneMobile: initialData.contact?.phoneMobile || '';
-    phoneWork: initialData.contact?.phoneWork || '';
+    phoneWork: initialData.contact?.phoneWork || '',
     phonePreferred: initialData.contact?.phonePreferred || 'Mobile';
-    email: initialData.contact?.email || '';
+    email: initialData.contact?.email || '',
     emailOptIn: initialData.contact?.emailOptIn || false;
-    smsOptIn: initialData.contact?.smsOptIn || false;
+    smsOptIn: initialData.contact?.smsOptIn || false,
     mailOptIn: initialData.contact?.mailOptIn || true;
 
     // Address
@@ -143,43 +143,43 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine1 : '',
     addressLine2: initialData?.addresses &&
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine2 : '',
-    city: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : '';
+    city: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : '',
     state: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].state : '';
-    postalCode: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '';
+    postalCode: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '',
     country: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].country : 'USA';
 
     // Demographics
-    language: initialData.language || 'English';
+    language: initialData.language || 'English',
     interpreter: initialData.interpreter || false;
-    ethnicity: initialData.ethnicity || '';
+    ethnicity: initialData.ethnicity || '',
     race: initialData.race || '';
-    nationality: initialData.nationality || '';
+    nationality: initialData.nationality || '',
     religion: initialData.religion || '';
-    educationLevel: initialData.educationLevel || '';
+    educationLevel: initialData.educationLevel || '',
     occupation: initialData.occupation || '';
 
     // Medical
-    bloodType: initialData.bloodType || '';
+    bloodType: initialData.bloodType || '',
     rh: initialData.rh || '';
     organDonor: initialData.organDonor || false;
 
     // Administrative
-    mrn: initialData.mrn || '';
+    mrn: initialData.mrn || '',
     status: initialData.status || 'Active';
-    vip: initialData.vip || false;
+    vip: initialData.vip || false,
     confidential: initialData.confidential || false;
-    notes: initialData.notes || '';
+    notes: initialData.notes || ''
   } : {
-    phonePreferred: 'Mobile';
+    phonePreferred: 'Mobile',
     language: 'English';
-    country: 'USA';
+    country: 'USA',
     status: 'Active';
-    mailOptIn: true;
+    mailOptIn: true
   };
 
   // Form definition
   const form = useForm<PatientFormValues>({
-    resolver: zodResolver(patientFormSchema);
+    resolver: zodResolver(patientFormSchema),
     defaultValues,
   });
 
@@ -190,55 +190,55 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
     try {
       // Format the request data
       const requestData = {
-        firstName: data.firstName;
+        firstName: data.firstName,
         middleName: data.middleName || undefined;
-        lastName: data.lastName;
+        lastName: data.lastName,
         preferredName: data.preferredName || undefined;
-        dateOfBirth: new Date(data.dateOfBirth).toISOString();
+        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
         gender: data.gender;
-        biologicalSex: data.biologicalSex || undefined;
+        biologicalSex: data.biologicalSex || undefined,
         genderIdentity: data.genderIdentity || undefined;
-        pronouns: data.pronouns || undefined;
+        pronouns: data.pronouns || undefined,
         maritalStatus: data.maritalStatus || undefined;
-        language: data.language;
+        language: data.language,
         interpreter: data.interpreter;
-        ethnicity: data.ethnicity || undefined;
+        ethnicity: data.ethnicity || undefined,
         race: data.race || undefined;
-        nationality: data.nationality || undefined;
+        nationality: data.nationality || undefined,
         religion: data.religion || undefined;
-        educationLevel: data.educationLevel || undefined;
+        educationLevel: data.educationLevel || undefined,
         occupation: data.occupation || undefined;
-        bloodType: data.bloodType || undefined;
+        bloodType: data.bloodType || undefined,
         rh: data.rh || undefined;
-        organDonor: data.organDonor;
+        organDonor: data.organDonor,
         mrn: data.mrn || undefined;
-        status: data.status;
+        status: data.status,
         vip: data.vip;
-        confidential: data.confidential;
+        confidential: data.confidential,
         notes: data.notes || undefined;
 
         // Contact information
         contact: {
-          phoneHome: data.phoneHome || undefined;
+          phoneHome: data.phoneHome || undefined,
           phoneMobile: data.phoneMobile || undefined;
-          phoneWork: data.phoneWork || undefined;
+          phoneWork: data.phoneWork || undefined,
           phonePreferred: data.phonePreferred;
-          email: data.email || undefined;
+          email: data.email || undefined,
           emailOptIn: data.emailOptIn;
-          smsOptIn: data.smsOptIn;
-          mailOptIn: data.mailOptIn;
+          smsOptIn: data.smsOptIn,
+          mailOptIn: data.mailOptIn
         },
 
         // Address (only if values provided)
         address: data.addressLine1 ? {
-          addressType: 'Home';
+          addressType: 'Home',
           isPrimary: true;
-          addressLine1: data.addressLine1;
+          addressLine1: data.addressLine1,
           addressLine2: data.addressLine2 || undefined;
-          city: data.city || '';
+          city: data.city || '',
           state: data.state || undefined;
-          postalCode: data.postalCode || '';
-          country: data.country;
+          postalCode: data.postalCode || '',
+          country: data.country
         } : undefined,
       }
 
@@ -247,20 +247,20 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       if (isEditing && initialData?.id) {
         // Update existing patient
         response = await fetch(`/api/patients/${initialData.id}`, {
-          method: 'PUT';
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(requestData);
+          body: JSON.stringify(requestData)
         });
       } else {
         // Create new patient
         response = await fetch('/api/patients', {
-          method: 'POST';
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(requestData);
+          body: JSON.stringify(requestData)
         });
       }
 
@@ -273,8 +273,8 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
       // Show success message
       toast({
-        title: isEditing ? 'Patient Updated' : 'Patient Created';
-        description: `/* SECURITY: Template literal eliminated */;
+        title: isEditing ? 'Patient Updated' : 'Patient Created',
+        description: `/* SECURITY: Template literal eliminated */
       });
 
       // Navigate to patient detail
@@ -282,9 +282,9 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
     } catch (error: unknown) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: error.message || 'An error occurred while saving the patient.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setIsSubmitting(false);
@@ -1190,7 +1190,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                 <Save className="h-4 w-4 mr-2" />
                 {isSubmitting;
                   ? (isEditing ? 'Updating...' : 'Saving...');
-                  : (isEditing ? 'Update Patient' : 'Save Patient');
+                  : (isEditing ? 'Update Patient' : 'Save Patient'),
                 }
               </Button>
             </CardFooter>

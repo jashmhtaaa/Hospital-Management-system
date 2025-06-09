@@ -20,30 +20,30 @@ import { useSession } from 'next-auth/react';
 // Form schema
 const feedbackFormSchema = z.object({
   type: z.string({
-    required_error: "Please select a feedback type";
+    required_error: "Please select a feedback type"
   }),
   source: z.string({
-    required_error: "Please select a feedback source";
+    required_error: "Please select a feedback source"
   }),
   rating: z.number({
-    required_error: "Please provide a rating";
+    required_error: "Please provide a rating"
   }).min(1).max(5),
-  comments: z.string().optional();
-  departmentId: z.string().optional();
-  serviceType: z.string().optional();
-  serviceId: z.string().optional();
-  anonymous: z.boolean().default(false);
+  comments: z.string().optional(),
+  departmentId: z.string().optional(),
+  serviceType: z.string().optional(),
+  serviceId: z.string().optional(),
+  anonymous: z.boolean().default(false),
   contactInfo: z.object({
-    name: z.string().optional();
-    email: z.string().email().optional();
-    phone: z.string().optional();
+    name: z.string().optional(),
+    email: z.string().email().optional(),
+    phone: z.string().optional()
   }).optional(),
 });
 
 type FeedbackFormValues = z.infer<typeof feedbackFormSchema>;
 
 interface FeedbackFormProps {
-  departments?: { id: string; name: string }[];
+  departments?: { id: string, name: string }[];
   serviceTypes?: string[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<FeedbackFormValues>;
@@ -54,20 +54,20 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 
   // Initialize form
   const form = useForm<FeedbackFormValues>({
-    resolver: zodResolver(feedbackFormSchema);
+    resolver: zodResolver(feedbackFormSchema),
     defaultValues: {
-      type: defaultValues?.type || '';
+      type: defaultValues?.type || '',
       source: defaultValues?.source || '';
-      rating: defaultValues?.rating || 0;
+      rating: defaultValues?.rating || 0,
       comments: defaultValues?.comments || '';
-      departmentId: defaultValues?.departmentId || '';
+      departmentId: defaultValues?.departmentId || '',
       serviceType: defaultValues?.serviceType || '';
-      serviceId: defaultValues?.serviceId || '';
+      serviceId: defaultValues?.serviceId || '',
       anonymous: defaultValues?.anonymous || false;
       contactInfo: defaultValues?.contactInfo || {
-        name: '';
+        name: '',
         email: '';
-        phone: '';
+        phone: ''
       },
     },
   });
@@ -83,11 +83,11 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
     setIsSubmitting(true);
     try {
       const response = await fetch('/api/support-services/feedback', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values);
+        body: JSON.stringify(values)
       });
 
       if (!response.ok) {
@@ -97,8 +97,8 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 
       const data = await response.json(),
       toast({
-        title: "Feedback Submitted";
-        description: "Thank you for your feedback!";
+        title: "Feedback Submitted",
+        description: "Thank you for your feedback!"
       });
 
       // Reset form
@@ -110,9 +110,9 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
       }
     } catch (error: unknown) {
       toast({
-        title: "Error";
+        title: "Error",
         description: error.message || "An error occurred while submitting feedback";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);

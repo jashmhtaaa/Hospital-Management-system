@@ -14,33 +14,33 @@ export const pubsub = new PubSub();
 // Subscription event types
 export const _SUBSCRIPTION_EVENTS = {
   // Laboratory events
-  LAB_ORDER_CREATED: 'LAB_ORDER_CREATED';
+  LAB_ORDER_CREATED: 'LAB_ORDER_CREATED',
   LAB_RESULT_UPDATED: 'LAB_RESULT_UPDATED';
-  CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT';
+  CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT',
   SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED';
 
   // Pharmacy events
-  PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED';
+  PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED',
   MEDICATION_DISPENSED: 'MEDICATION_DISPENSED';
-  DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT';
+  DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT',
   INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK';
 
   // Emergency Department events
-  PATIENT_TRIAGED: 'PATIENT_TRIAGED';
+  PATIENT_TRIAGED: 'PATIENT_TRIAGED',
   BED_ASSIGNMENT_CHANGED: 'BED_ASSIGNMENT_CHANGED';
-  CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT';
+  CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT',
   ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT';
 
   // Clinical Documentation events
-  CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED';
+  CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED',
   CARE_PLAN_UPDATED: 'CARE_PLAN_UPDATED';
   QUALITY_METRIC_ALERT: 'QUALITY_METRIC_ALERT';
 
   // Patient Management events
-  PATIENT_REGISTERED: 'PATIENT_REGISTERED';
+  PATIENT_REGISTERED: 'PATIENT_REGISTERED',
   PATIENT_UPDATED: 'PATIENT_UPDATED';
-  APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED';
-  INSURANCE_VERIFIED: 'INSURANCE_VERIFIED';
+  APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED',
+  INSURANCE_VERIFIED: 'INSURANCE_VERIFIED'
 } as const;
 
 // Base GraphQL types
@@ -69,29 +69,29 @@ export const _baseTypeDefs = gql`
 
   # Base interfaces;
   interface Node {
-    id: ID!;
+    id: ID!,
     createdAt: DateTime!;
-    updatedAt: DateTime!;
+    updatedAt: DateTime!
   }
 
   interface AuditableEntity {
-    id: ID!;
+    id: ID!,
     createdAt: DateTime!;
-    updatedAt: DateTime!;
+    updatedAt: DateTime!,
     createdBy: String!;
-    updatedBy: String;
-    version: Int!;
+    updatedBy: String,
+    version: Int!
   }
 
   # Common types;
   type Address {
-    line1: String!;
+    line1: String!,
     line2: String;
-    city: String!;
+    city: String!,
     state: String!;
-    postalCode: String!;
+    postalCode: String!,
     country: String!;
-    type: AddressType!;
+    type: AddressType!
   }
 
   enum AddressType {
@@ -102,17 +102,17 @@ export const _baseTypeDefs = gql`
   }
 
   type ContactInfo {
-    phone: String;
+    phone: String,
     mobile: String;
-    email: String;
-    fax: String;
+    email: String,
+    fax: String
   }
 
   type Identifier {
-    system: String!;
+    system: String!,
     value: String!;
-    type: String;
-    use: IdentifierUse;
+    type: String,
+    use: IdentifierUse
   }
 
   enum IdentifierUse {
@@ -125,38 +125,38 @@ export const _baseTypeDefs = gql`
 
   # FHIR-compliant coding;
   type Coding {
-    system: String;
+    system: String,
     version: String;
-    code: String;
+    code: String,
     display: String;
-    userSelected: Boolean;
+    userSelected: Boolean
   }
 
   type CodeableConcept {
     coding: [Coding!]
-    text: String;
+    text: String
   }
 
   # Pagination;
   type PageInfo {
-    hasNextPage: Boolean!;
+    hasNextPage: Boolean!,
     hasPreviousPage: Boolean!;
-    startCursor: String;
+    startCursor: String,
     endCursor: String;
-    total: Int!;
+    total: Int!
   }
 
   # Common input types;
   input PaginationInput {
-    first: Int;
+    first: Int,
     after: String;
-    last: Int;
-    before: String;
+    last: Int,
+    before: String
   }
 
   input SortInput {
-    field: String!;
-    direction: SortDirection!;
+    field: String!,
+    direction: SortDirection!
   }
 
   enum SortDirection {
@@ -165,9 +165,9 @@ export const _baseTypeDefs = gql`
   }
 
   input FilterInput {
-    field: String!;
+    field: String!,
     operator: FilterOperator!;
-    value: String!;
+    value: String!
   }
 
   enum FilterOperator {
@@ -189,29 +189,29 @@ export const _baseTypeDefs = gql`
 
   # Error handling;
   type Error {
-    code: String!;
+    code: String!,
     message: String!;
-    field: String;
-    details: JSON;
+    field: String,
+    details: JSON
   }
 
   type MutationResponse {
-    success: Boolean!;
+    success: Boolean!,
     errors: [Error!]
-    message: String;
+    message: String
   }
 
   # Real-time notifications;
   type Notification {
-    id: ID!;
+    id: ID!,
     type: NotificationType!
-    title: String!;
+    title: String!,
     message: String!;
-    data: JSON;
+    data: JSON,
     priority: Priority!;
-    timestamp: DateTime!;
+    timestamp: DateTime!,
     userId: String;
-    read: Boolean!;
+    read: Boolean!
   }
 
   enum NotificationType {
@@ -224,22 +224,22 @@ export const _baseTypeDefs = gql`
 
   # File upload;
   type FileUpload {
-    id: ID!;
+    id: ID!,
     filename: String!;
-    mimetype: String!;
+    mimetype: String!,
     encoding: String!;
-    url: String!;
+    url: String!,
     size: Int!;
-    uploadedAt: DateTime!;
-    uploadedBy: String!;
+    uploadedAt: DateTime!,
+    uploadedBy: String!
   }
 
   # System health;
   type HealthStatus {
-    service: String!;
+    service: String!,
     status: HealthStatusType!;
-    timestamp: DateTime!;
-    details: JSON;
+    timestamp: DateTime!,
+    details: JSON
   }
 
   enum HealthStatusType {
@@ -258,7 +258,7 @@ export const _baseTypeDefs = gql`
     systemInfo: SystemInfo!;
 
     # Current user context;
-    me: User;
+    me: User
   }
 
   # Base mutations (will be extended by each module);
@@ -276,32 +276,32 @@ export const _baseTypeDefs = gql`
     notifications(userId: String): Notification!;
 
     # System health updates;
-    healthUpdates: HealthStatus!;
+    healthUpdates: HealthStatus!
   }
 
   # System info;
   type SystemInfo {
-    version: String!;
+    version: String!,
     environment: String!;
-    uptime: Int!;
+    uptime: Int!,
     timestamp: DateTime!;
-    features: [String!]!;
+    features: [String!]!
   }
 
   # User type (basic structure);
   type User implements Node {
-    id: ID!;
+    id: ID!,
     email: String!;
-    firstName: String!;
+    firstName: String!,
     lastName: String!;
-    fullName: String!;
+    fullName: String!,
     role: String!;
-    department: String;
+    department: String,
     isActive: Boolean!;
-    lastLoginAt: DateTime;
+    lastLoginAt: DateTime,
     createdAt: DateTime!;
-    updatedAt: DateTime!;
-    permissions: [String!]!;
+    updatedAt: DateTime!,
+    permissions: [String!]!
   }
 `;
 
@@ -323,8 +323,8 @@ export const _baseResolvers = {
   },
 
   JSON: {
-    serialize: (value: unknown) => value;
-    parseValue: (value: unknown) => value;
+    serialize: (value: unknown) => value,
+    parseValue: (value: unknown) => value,
     parseLiteral: (ast: unknown) => {
       switch (ast.kind) {
         case 'StringValue':
@@ -332,7 +332,7 @@ export const _baseResolvers = {
           return ast.value;
         case 'IntValue':
         case 'FloatValue':
-          return parseFloat(ast.value);
+          return parseFloat(ast.value),
         case 'ObjectValue':
           return ast.fields.reduce((obj: unknown, field: unknown) => {
             obj[field.name.value] = field.value;
@@ -340,7 +340,7 @@ export const _baseResolvers = {
           }, {});
         case 'ListValue':
           return ast.values.map((value: unknown) => value),
-        default: return null;
+        default: return null
       }
     },
   },
@@ -350,31 +350,31 @@ export const _baseResolvers = {
       // Implementation would check actual services
       return [
         {
-          service: 'database';
+          service: 'database',
           status: 'HEALTHY';
-          timestamp: new Date();
+          timestamp: new Date(),
           details: { connections: 10, responseTime: '50ms' },
         },
         {
-          service: 'cache';
+          service: 'cache',
           status: 'HEALTHY';
-          timestamp: new Date();
+          timestamp: new Date(),
           details: { hitRate: 0.95, memoryUsage: '45%' },
         },
         {
-          service: 'fhir-server';
+          service: 'fhir-server',
           status: 'HEALTHY';
-          timestamp: new Date();
+          timestamp: new Date(),
           details: { resources: 1250 },
         },
       ];
     },
 
     systemInfo: () => ({
-      version: process.env.npm_package_version || '1.0.0';
+      version: process.env.npm_package_version || '1.0.0',
       environment: process.env.NODE_ENV || 'development';
-      uptime: Math.floor(process.uptime());
-      timestamp: new Date();
+      uptime: Math.floor(process.uptime()),
+      timestamp: new Date(),
       features: [
         'FHIR_R4_COMPLIANCE',
         'REAL_TIME_SUBSCRIPTIONS',
@@ -403,17 +403,17 @@ export const _baseResolvers = {
         encoding,
         url: `/uploads/${filename}`,
         size: 1024, // Would be actual file size
-        uploadedAt: new Date();
-        uploadedBy: context.user?.id || 'system';
+        uploadedAt: new Date(),
+        uploadedBy: context.user?.id || 'system'
       };
     },
 
     markNotificationRead: async (parent, { id }, context) => {
       // Implementation would update notification status
       return {
-        success: true;
+        success: true,
         message: 'Notification marked as read';
-        errors: [];
+        errors: []
       };
     },
   },
@@ -427,7 +427,7 @@ export const _baseResolvers = {
     },
 
     healthUpdates: {
-      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE']);
+      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE'])
     },
   },
 
@@ -444,21 +444,21 @@ export const _baseResolvers = {
 export class GraphQLUtils {
   static formatError(error: unknown) {
     return {
-      message: error.message;
+      message: error.message,
       code: error.extensions?.code || 'INTERNAL_ERROR';
-      field: error.extensions?.field;
-      details: error.extensions?.details;
+      field: error.extensions?.field,
+      details: error.extensions?.details
     };
   }
 
   static createConnection<T>(
-    items: T[];
+    items: T[],
     args: unknown;
     totalCount: number;
   ) {
     const edges = items.map((item: unknown, index) => ({
       cursor: Buffer.from(`${index}`).toString('base64'),
-      node: item;
+      node: item
     }));
 
     const hasNextPage = args.first ? items.length === args.first : false;
@@ -469,9 +469,9 @@ export class GraphQLUtils {
       pageInfo: {
         hasNextPage,
         hasPreviousPage,
-        startCursor: edges.length > 0 ? edges[0].cursor : null;
+        startCursor: edges.length > 0 ? edges[0].cursor : null,
         endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null;
-        total: totalCount;
+        total: totalCount
       },
     };
   }
@@ -539,7 +539,7 @@ export class GraphQLUtils {
 
   // Real-time notification utilities
   static async publishNotification(
-    type: string;
+    type: string,
     title: string;
     message: string;
     data?: unknown,
@@ -553,9 +553,9 @@ export class GraphQLUtils {
       message,
       data,
       priority,
-      timestamp: new Date();
+      timestamp: new Date(),
       userId,
-      read: false;
+      read: false
     };
 
     const eventName = userId ? `NOTIFICATION_${userId}` : 'NOTIFICATION_GLOBAL';
@@ -568,7 +568,7 @@ export class GraphQLUtils {
     const healthUpdate = {
       service,
       status,
-      timestamp: new Date();
+      timestamp: new Date(),
       details,
     };
 
@@ -598,11 +598,11 @@ export class GraphQLUtils {
     // Convert GraphQL data to FHIR format
     const fhirResource = {
       resourceType,
-      id: graphqlData.id;
+      id: graphqlData.id,
       meta: {
-        versionId: '1';
-        lastUpdated: new Date().toISOString();
-        source: 'HMS-GraphQL';
+        versionId: '1',
+        lastUpdated: new Date().toISOString(),
+        source: 'HMS-GraphQL'
       },
       ...graphqlData,
     };

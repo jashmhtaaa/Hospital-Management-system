@@ -42,27 +42,27 @@ const employeeFormSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  middleName: z.string().optional();
+  middleName: z.string().optional(),
   gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
-  birthDate: z.date().optional();
+  birthDate: z.date().optional(),
   email: z.string().email("Invalid email format").optional().or(z.literal(''));
-  phone: z.string().optional();
+  phone: z.string().optional(),
   address: z.object({
-    line: z.array(z.string()).optional();
-    city: z.string().optional();
-    state: z.string().optional();
-    postalCode: z.string().optional();
-    country: z.string().optional();
+    line: z.array(z.string()).optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    postalCode: z.string().optional(),
+    country: z.string().optional()
   }).optional(),
-  joiningDate: z.date();
-  departmentId: z.string().optional();
-  userId: z.string().optional();
-  photo: z.string().optional();
+  joiningDate: z.date(),
+  departmentId: z.string().optional(),
+  userId: z.string().optional(),
+  photo: z.string().optional(),
   emergencyContact: z.object({
-    name: z.string().optional();
-    relationship: z.string().optional();
-    phone: z.string().optional();
-    email: z.string().optional();
+    name: z.string().optional(),
+    relationship: z.string().optional(),
+    phone: z.string().optional(),
+    email: z.string().optional()
   }).optional(),
 });
 
@@ -74,32 +74,32 @@ export default const _NewEmployee = () {
 
   // Initialize form
   const form = useForm({
-    resolver: zodResolver(employeeFormSchema);
+    resolver: zodResolver(employeeFormSchema),
     defaultValues: {
-      employeeId: '';
+      employeeId: '',
       firstName: '';
-      lastName: '';
+      lastName: '',
       middleName: '';
-      gender: undefined;
+      gender: undefined,
       birthDate: undefined;
-      email: '';
+      email: '',
       phone: '';
       address: {
-        line: [''];
+        line: [''],
         city: '';
-        state: '';
+        state: '',
         postalCode: '';
-        country: '';
+        country: ''
       },
-      joiningDate: new Date();
+      joiningDate: new Date(),
       departmentId: '';
-      userId: '';
+      userId: '',
       photo: '';
       emergencyContact: {
-        name: '';
+        name: '',
         relationship: '';
-        phone: '';
-        email: '';
+        phone: '',
+        email: ''
       },
     },
   });
@@ -143,15 +143,15 @@ export default const _NewEmployee = () {
       const formattedData = {
         ...data,
         birthDate: data.birthDate ? format(data.birthDate, 'yyyy-MM-dd') : undefined,
-        joiningDate: format(data.joiningDate, 'yyyy-MM-dd'),;
+        joiningDate: format(data.joiningDate, 'yyyy-MM-dd'),
       };
 
       const response = await fetch('/api/hr/staff', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData);
+        body: JSON.stringify(formattedData)
       });
 
       if (!response.ok) {
@@ -161,17 +161,17 @@ export default const _NewEmployee = () {
 
       const _newEmployee = await response.json(),
       toast({
-        title: "Employee Created";
-        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */;
+        title: "Employee Created",
+        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */
       });
 
       // Navigate back to staff list
       router.push('/dashboard/hr/staff');
     } catch (error) {
       toast({
-        title: "Error";
+        title: "Error",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);

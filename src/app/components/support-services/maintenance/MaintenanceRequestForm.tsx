@@ -34,34 +34,34 @@ import { useRouter } from 'next/navigation';
 // Define the form schema with Zod
 const formSchema = z.object({
   locationId: z.string({
-    required_error: "Please select a location";
+    required_error: "Please select a location"
   }),
-  assetId: z.string().optional();
+  assetId: z.string().optional(),
   requestType: z.string({
-    required_error: "Please select a request type";
+    required_error: "Please select a request type"
   }),
   description: z.string();
     .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
   priority: z.string({
-    required_error: "Please select a priority level";
+    required_error: "Please select a priority level"
   }),
-  scheduledDate: z.date().optional();
-  estimatedHours: z.number().optional();
+  scheduledDate: z.date().optional(),
+  estimatedHours: z.number().optional(),
   notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface Location {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Asset {
-  id: string;
+  id: string,
   name: string;
-  assetType: string;
+  assetType: string
 }
 
 interface MaintenanceRequestFormProps {
@@ -82,11 +82,11 @@ export const _MaintenanceRequestForm = ({ onSuccess,
 
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema);
+    resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      description: "";
+      description: "",
       estimatedHours: undefined;
-      notes: "";
+      notes: ""
     },
   });
 
@@ -101,9 +101,9 @@ export const _MaintenanceRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load locations. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     };
@@ -131,9 +131,9 @@ export const _MaintenanceRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load assets. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     };
@@ -152,7 +152,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
     }
 
     // Filter assets by location
-    setFilteredAssets(assets.filter(asset => asset.locationId === locationId));
+    setFilteredAssets(assets.filter(asset => asset.locationId === locationId))
   };
 
   // Handle form submission
@@ -170,7 +170,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values);
+        body: JSON.stringify(values)
       });
 
       if (!response.ok) {
@@ -178,7 +178,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
       }
 
       toast({
-        title: isEditing ? "Request Updated" : "Request Created";
+        title: isEditing ? "Request Updated" : "Request Created",
         description: isEditing;
           ? "The maintenance request has been updated successfully."
           : "Your maintenance request has been submitted successfully.",
@@ -193,9 +193,9 @@ export const _MaintenanceRequestForm = ({ onSuccess,
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "There was a problem submitting your request. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

@@ -11,13 +11,13 @@ import { z } from 'zod';
 
 // Define domain models using ES2015 module syntax instead of namespace
 export interface Medication {
-  id: string;
+  id: string,
   name: string;
-  brandName: string;
+  brandName: string,
   ndc: string;
-  form: string;
+  form: string,
   strength: number;
-  unit: string;
+  unit: string,
   isControlled: boolean;
   isHighAlert: boolean;
   controlledSubstanceSchedule?: string;
@@ -32,31 +32,31 @@ export interface Medication {
   requiresRefrigeration?: boolean;
   requiresControlledStorage?: boolean;
 export interface MedicationInventory {
-  id: string;
+  id: string,
   medicationId: string;
-  locationId: string;
+  locationId: string,
   batchNumber: string;
-  lotNumber: string;
+  lotNumber: string,
   expirationDate: Date;
-  quantity: number;
+  quantity: number,
   reorderThreshold: number;
-  reorderQuantity: number;
+  reorderQuantity: number,
   lastCountDate: Date;
-  status: 'active' | 'expired' | 'recalled' | 'depleted';
+  status: 'active' | 'expired' | 'recalled' | 'depleted',
   cost: number;
-  supplier: string;
+  supplier: string,
   receivedDate: Date;
   notes?: string;
 export interface MedicationOrder {
-  id: string;
+  id: string,
   patientId: string;
-  providerId: string;
+  providerId: string,
   medicationId: string;
-  status: 'draft' | 'active' | 'on-hold' | 'cancelled' | 'completed' | 'entered-in-error' | 'stopped' | 'unknown';
+  status: 'draft' | 'active' | 'on-hold' | 'cancelled' | 'completed' | 'entered-in-error' | 'stopped' | 'unknown',
   orderDate: Date;
-  dosage: Record<string, unknown>;
+  dosage: Record<string, unknown>,
   frequency: string;
-  route: string;
+  route: string,
   duration: string;
   startDate?: Date;
   endDate?: Date;
@@ -67,15 +67,15 @@ export interface MedicationOrder {
   prnReason?: string;
   reconciliationId?: string;
 export interface MedicationDispense {
-  id: string;
+  id: string,
   patientId: string;
-  providerId: string;
+  providerId: string,
   medicationId: string;
-  prescriptionId: string;
+  prescriptionId: string,
   dispenserId: string;
-  status: 'preparation' | 'in-progress' | 'cancelled' | 'on-hold' | 'completed' | 'entered-in-error' | 'stopped' | 'declined' | 'unknown';
+  status: 'preparation' | 'in-progress' | 'cancelled' | 'on-hold' | 'completed' | 'entered-in-error' | 'stopped' | 'declined' | 'unknown',
   dispenseDate: Date;
-  quantity: number;
+  quantity: number,
   daysSupply: number;
   batchNumber?: string;
   lotNumber?: string;
@@ -89,15 +89,15 @@ export interface MedicationDispense {
   labelInstructions?: string;
   patientInstructions?: string;
 export interface MedicationAdministration {
-  id: string;
+  id: string,
   patientId: string;
-  providerId: string;
+  providerId: string,
   medicationId: string;
-  prescriptionId: string;
+  prescriptionId: string,
   status: 'in-progress' | 'not-done' | 'on-hold' | 'completed' | 'entered-in-error' | 'stopped' | 'unknown';
-  administrationDate: Date;
+  administrationDate: Date,
   dosage: number;
-  unit: string;
+  unit: string,
   route: string;
   site?: string;
   notes?: string;
@@ -107,87 +107,87 @@ export interface MedicationAdministration {
   adverseReaction?: boolean;
   adverseReactionDetails?: string;
 export interface MedicationReconciliation {
-  id: string;
+  id: string,
   patientId: string;
-  providerId: string;
+  providerId: string,
   sourceType: 'admission' | 'discharge' | 'transfer';
-  targetType: 'inpatient' | 'outpatient';
+  targetType: 'inpatient' | 'outpatient',
   reconciliationDate: Date;
-  status: 'in-progress' | 'completed' | 'cancelled';
+  status: 'in-progress' | 'completed' | 'cancelled',
   discrepancies: MedicationDiscrepancy[];
   actions: ReconciliationAction[]
 export interface MedicationDiscrepancy {
-  id: string;
+  id: string,
   medicationId: string;
   relatedMedicationId?: string;
-  discrepancyType: 'omission' | 'addition' | 'dosing' | 'frequency' | 'route' | 'duplication';
+  discrepancyType: 'omission' | 'addition' | 'dosing' | 'frequency' | 'route' | 'duplication',
   description: string;
-  severity: 'high' | 'medium' | 'low';
+  severity: 'high' | 'medium' | 'low',
   status: 'unresolved' | 'resolved';
   resolution?: {
-    action: 'continue' | 'discontinue' | 'modify' | 'substitute';
+    action: 'continue' | 'discontinue' | 'modify' | 'substitute',
     providerId: string;
-    timestamp: Date;
-    notes: string;
+    timestamp: Date,
+    notes: string
   };
 export interface ReconciliationAction {
-  id: string;
+  id: string,
   discrepancyId: string;
-  action: 'continue' | 'discontinue' | 'modify' | 'substitute';
+  action: 'continue' | 'discontinue' | 'modify' | 'substitute',
   providerId: string;
-  timestamp: Date;
+  timestamp: Date,
   notes: string
 export interface MedicationReconciliationResult {
-  reconciliation: MedicationReconciliation;
+  reconciliation: MedicationReconciliation,
   sourceMedications: Medication[];
-  targetMedications: Medication[];
+  targetMedications: Medication[],
   discrepancies: MedicationDiscrepancy[]
 export interface MedicationReconciliationSummary {
-  id: string;
+  id: string,
   patientId: string;
-  providerId: string;
+  providerId: string,
   sourceType: 'admission' | 'discharge' | 'transfer';
-  targetType: 'inpatient' | 'outpatient';
+  targetType: 'inpatient' | 'outpatient',
   reconciliationDate: Date;
-  status: 'in-progress' | 'completed' | 'cancelled';
+  status: 'in-progress' | 'completed' | 'cancelled',
   discrepancyCount: number;
   resolvedCount: number
 export interface MedicationReconciliationReport {
-  reconciliationId: string;
+  reconciliationId: string,
   patientId: string;
-  patientName: string;
+  patientName: string,
   providerId: string;
-  providerName: string;
+  providerName: string,
   reconciliationDate: Date;
-  sourceType: 'admission' | 'discharge' | 'transfer';
+  sourceType: 'admission' | 'discharge' | 'transfer',
   targetType: 'inpatient' | 'outpatient';
-  status: 'in-progress' | 'completed' | 'cancelled';
+  status: 'in-progress' | 'completed' | 'cancelled',
   summary: {
-    totalDiscrepancies: number;
+    totalDiscrepancies: number,
     resolvedDiscrepancies: number;
-    highSeverityCount: number;
+    highSeverityCount: number,
     mediumSeverityCount: number;
-    lowSeverityCount: number;
+    lowSeverityCount: number
   };
   discrepancies: Array<MedicationDiscrepancy & {
     resolution?: {
-      action: 'continue' | 'discontinue' | 'modify' | 'substitute';
+      action: 'continue' | 'discontinue' | 'modify' | 'substitute',
       providerId: string;
-      timestamp: Date;
-      notes: string;
+      timestamp: Date,
+      notes: string
     };
   }>;
 export interface DrugInteractionResult {
   hasInteraction: boolean;
   isOverridden?: boolean;
   overrideReason?: string;
-  medications: Medication[];
+  medications: Medication[],
   interactionType: 'drug-drug';
   severity?: 'severe' | 'moderate' | 'mild';
   description?: string;
   reference?: string;
 export interface DrugAllergyInteractionResult {
-  hasInteraction: boolean;
+  hasInteraction: boolean,
   medication: Medication;
   interactionType: 'drug-allergy';
   allergen?: string;
@@ -195,7 +195,7 @@ export interface DrugAllergyInteractionResult {
   severity?: 'severe' | 'moderate' | 'mild';
   reaction?: string;
 export interface DrugConditionInteractionResult {
-  hasInteraction: boolean;
+  hasInteraction: boolean,
   medication: Medication;
   condition?: Record<string, unknown>;
   interactionType: 'drug-condition';
@@ -203,7 +203,7 @@ export interface DrugConditionInteractionResult {
   description?: string;
   reference?: string;
 export interface DrugLabInteractionResult {
-  hasInteraction: boolean;
+  hasInteraction: boolean,
   medication: Medication;
   labResult?: Record<string, unknown>;
   interactionType: 'drug-lab';
@@ -211,88 +211,88 @@ export interface DrugLabInteractionResult {
   description?: string;
   reference?: string;
 export interface BatchInteractionResult {
-  patientId: string;
+  patientId: string,
   medicationIds: string[];
-  drugDrugInteractions: DrugInteractionResult[];
+  drugDrugInteractions: DrugInteractionResult[],
   drugAllergyInteractions: DrugAllergyInteractionResult[];
-  drugConditionInteractions: DrugConditionInteractionResult[];
+  drugConditionInteractions: DrugConditionInteractionResult[],
   drugLabInteractions: DrugLabInteractionResult[];
-  hasSevereInteractions: boolean;
+  hasSevereInteractions: boolean,
   interactionCount: number
 export interface InteractionOverride {
-  id: string;
+  id: string,
   interactionId: string;
-  patientId: string;
+  patientId: string,
   providerId: string;
-  reason: string;
+  reason: string,
   expiresAt: Date;
-  createdAt: Date;
+  createdAt: Date
 }
 
 // Validation schemas using Zod
 export const MedicationSchema = z.object({
-  id: z.string();
-  name: z.string();
-  brandName: z.string();
-  ndc: z.string();
-  form: z.string();
-  strength: z.number().positive();
-  unit: z.string();
-  isControlled: z.boolean();
-  isHighAlert: z.boolean();
-  controlledSubstanceSchedule: z.string().optional();
-  therapeuticClass: z.string().optional();
-  manufacturer: z.string().optional();
-  description: z.string().optional();
-  warnings: z.array(z.string()).optional();
-  contraindications: z.array(z.string()).optional();
-  interactions: z.array(z.string()).optional();
-  sideEffects: z.array(z.string()).optional();
-  storageRequirements: z.string().optional();
-  requiresRefrigeration: z.boolean().optional();
-  requiresControlledStorage: z.boolean().optional();
+  id: z.string(),
+  name: z.string(),
+  brandName: z.string(),
+  ndc: z.string(),
+  form: z.string(),
+  strength: z.number().positive(),
+  unit: z.string(),
+  isControlled: z.boolean(),
+  isHighAlert: z.boolean(),
+  controlledSubstanceSchedule: z.string().optional(),
+  therapeuticClass: z.string().optional(),
+  manufacturer: z.string().optional(),
+  description: z.string().optional(),
+  warnings: z.array(z.string()).optional(),
+  contraindications: z.array(z.string()).optional(),
+  interactions: z.array(z.string()).optional(),
+  sideEffects: z.array(z.string()).optional(),
+  storageRequirements: z.string().optional(),
+  requiresRefrigeration: z.boolean().optional(),
+  requiresControlledStorage: z.boolean().optional()
 });
 
 export const MedicationInventorySchema = z.object({
-  id: z.string();
-  medicationId: z.string();
-  locationId: z.string();
-  batchNumber: z.string();
-  lotNumber: z.string();
-  expirationDate: z.date();
-  quantity: z.number().int().nonnegative();
-  reorderThreshold: z.number().int().nonnegative();
-  reorderQuantity: z.number().int().positive();
-  lastCountDate: z.date();
+  id: z.string(),
+  medicationId: z.string(),
+  locationId: z.string(),
+  batchNumber: z.string(),
+  lotNumber: z.string(),
+  expirationDate: z.date(),
+  quantity: z.number().int().nonnegative(),
+  reorderThreshold: z.number().int().nonnegative(),
+  reorderQuantity: z.number().int().positive(),
+  lastCountDate: z.date(),
   status: z.enum(['active', 'expired', 'recalled', 'depleted']),
-  cost: z.number().nonnegative();
-  supplier: z.string();
-  receivedDate: z.date();
-  notes: z.string().optional();
+  cost: z.number().nonnegative(),
+  supplier: z.string(),
+  receivedDate: z.date(),
+  notes: z.string().optional()
 });
 
 export const MedicationOrderSchema = z.object({
-  id: z.string();
-  patientId: z.string();
-  providerId: z.string();
-  medicationId: z.string();
+  id: z.string(),
+  patientId: z.string(),
+  providerId: z.string(),
+  medicationId: z.string(),
   status: z.enum([
     'draft', 'active', 'on-hold', 'cancelled', 'completed',
     'entered-in-error', 'stopped', 'unknown';
   ]),
-  orderDate: z.date();
+  orderDate: z.date(),
   dosage: z.record(z.unknown());
-  frequency: z.string();
-  route: z.string();
-  duration: z.string();
-  startDate: z.date().optional();
-  endDate: z.date().optional();
-  indication: z.string().optional();
-  notes: z.string().optional();
-  isStatOrder: z.boolean().optional();
-  prn: z.boolean().optional();
-  prnReason: z.string().optional();
-  reconciliationId: z.string().optional();
+  frequency: z.string(),
+  route: z.string(),
+  duration: z.string(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  indication: z.string().optional(),
+  notes: z.string().optional(),
+  isStatOrder: z.boolean().optional(),
+  prn: z.boolean().optional(),
+  prnReason: z.string().optional(),
+  reconciliationId: z.string().optional()
 });
 
 // Factory functions to create domain objects with validation

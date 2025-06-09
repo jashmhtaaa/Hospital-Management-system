@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -46,16 +45,16 @@ const NABHComplianceChecklist: React.FC = () => {
         setSelectedStandard(data.standards[0]);
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
   };
 
   const updateChecklistItem = (itemId: string, status: string, evidence: string) => {
-    setAssessmentData(prev => ({
+    setAssessmentData((prev) => ({
       ...prev,
-      [itemId]: { status, evidence }
+      [itemId]: { status, evidence },
     }));
   };
 
@@ -66,7 +65,7 @@ const NABHComplianceChecklist: React.FC = () => {
     const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
     let achievedWeight = 0;
 
-    items.forEach(item => {
+    items.forEach((item) => {
       const assessment = assessmentData[item.id];
       if (assessment?.status === 'COMPLIANT') {
         achievedWeight += item.weight;
@@ -85,21 +84,21 @@ const NABHComplianceChecklist: React.FC = () => {
       const score = calculateComplianceScore();
       const findings = Object.entries(assessmentData).map(([itemId, data]: [string, any]) => ({
         itemId,
-        status: data.status;
-        evidence: data.evidence;
+        status: data.status,
+        evidence: data.evidence,
       }));
 
       const response = await fetch('/api/compliance/nabh/assessment', {
-        method: 'POST';
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          standardId: selectedStandard.id;
+          standardId: selectedStandard.id,
           assessmentData: {
             score,
             findings,
-            status: score >= 80 ? 'COMPLIANT' : score >= 60 ? 'PARTIAL' : 'NON_COMPLIANT';
-          }
-        })
+            status: score >= 80 ? 'COMPLIANT' : score >= 60 ? 'PARTIAL' : 'NON_COMPLIANT',
+          },
+        }),
       });
 
       if (response.ok) {
@@ -107,16 +106,20 @@ const NABHComplianceChecklist: React.FC = () => {
         fetchNABHStandards();
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLIANT': return 'bg-green-100 text-green-800';
-      case 'PARTIAL': return 'bg-yellow-100 text-yellow-800';
-      case 'NON_COMPLIANT': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'COMPLIANT':
+        return 'bg-green-100 text-green-800';
+      case 'PARTIAL':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'NON_COMPLIANT':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -139,7 +142,7 @@ const NABHComplianceChecklist: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {standards.map(standard => (
+              {standards.map((standard) => (
                 <div
                   key={standard.id}
                   className={`p-3 rounded cursor-pointer transition-colors $'{
@@ -174,7 +177,7 @@ const NABHComplianceChecklist: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent>
-            {selectedStandard?.checklistItems.map(item => (
+            {selectedStandard?.checklistItems.map((item) => (
               <Card key={item.id} className="mb-4">
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-3">
@@ -188,7 +191,7 @@ const NABHComplianceChecklist: React.FC = () => {
                     <div>
                       <label className="text-sm font-medium">Compliance Status:</label>
                       <div className="flex space-x-4 mt-1">
-                        {['COMPLIANT', 'PARTIAL', 'NON_COMPLIANT'].map(status => (
+                        {['COMPLIANT', 'PARTIAL', 'NON_COMPLIANT'].map((status) => (
                           <label key={status} className="flex items-center space-x-2">
                             <Checkbox
                               checked={assessmentData[item.id]?.status === status}

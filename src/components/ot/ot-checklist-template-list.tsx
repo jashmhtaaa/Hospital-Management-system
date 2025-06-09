@@ -18,14 +18,14 @@ import { Edit, Trash2 } from "lucide-react";
 
 // Mock data structure - replace with actual API response type
 interface ChecklistItem {
-  id: string;
-  text: string;
+  id: string,
+  text: string
 }
 
 interface ChecklistTemplate {
-  id: string;
+  id: string,
   name: string;
-  phase: string;
+  phase: string,
   items: ChecklistItem[];
   updated_at: string
 export default const _OTChecklistTemplateList = () {
@@ -51,66 +51,66 @@ export default const _OTChecklistTemplateList = () {
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: ChecklistTemplate[] = [
           {
-            id: "clt-1";
+            id: "clt-1",
             name: "WHO Surgical Safety Checklist (Pre-Op)";
-            phase: "pre-op";
+            phase: "pre-op",
             items: [
               {
-                id: "item-1";
-                text: "Patient confirmed identity, site, procedure, consent?",;
+                id: "item-1",
+                text: "Patient confirmed identity, site, procedure, consent?",
               },
               { id: "item-2", text: "Site marked?" },
               { id: "item-3", text: "Anesthesia safety check completed?" },
               {
-                id: "item-4";
-                text: "Pulse oximeter on patient and functioning?";
+                id: "item-4",
+                text: "Pulse oximeter on patient and functioning?"
               },
               { id: "item-5", text: "Does patient have known allergies?" },
             ],
-            updated_at: "2025-04-25T10:00:00Z";
+            updated_at: "2025-04-25T10:00:00Z"
           },
           {
-            id: "clt-2";
+            id: "clt-2",
             name: "WHO Surgical Safety Checklist (Intra-Op - Before Skin Incision)";
-            phase: "intra-op";
+            phase: "intra-op",
             items: [
               {
-                id: "item-1";
-                text: "Confirm all team members introduced by name and role?";
+                id: "item-1",
+                text: "Confirm all team members introduced by name and role?"
               },
               {
-                id: "item-2";
-                text: "Confirm patient name, procedure, incision site?",;
+                id: "item-2",
+                text: "Confirm patient name, procedure, incision site?",
               },
               {
-                id: "item-3";
-                text: "Antibiotic prophylaxis given within last 60 minutes?";
+                id: "item-3",
+                text: "Antibiotic prophylaxis given within last 60 minutes?"
               },
               { id: "item-4", text: "Anticipated critical events reviewed?" },
             ],
-            updated_at: "2025-04-25T11:00:00Z";
+            updated_at: "2025-04-25T11:00:00Z"
           },
           {
-            id: "clt-3";
+            id: "clt-3",
             name: "WHO Surgical Safety Checklist (Post-Op - Before Patient Leaves OR)";
-            phase: "post-op";
+            phase: "post-op",
             items: [
               {
-                id: "item-1";
-                text: "Nurse confirms name of procedure recorded?";
+                id: "item-1",
+                text: "Nurse confirms name of procedure recorded?"
               },
               {
-                id: "item-2";
-                text: "Instrument, sponge, needle counts correct?",;
+                id: "item-2",
+                text: "Instrument, sponge, needle counts correct?",
               },
               { id: "item-3", text: "Specimen labelling correct?" },
               { id: "item-4", text: "Equipment problems identified?" },
               {
-                id: "item-5";
-                text: "Key concerns for recovery and management reviewed?";
+                id: "item-5",
+                text: "Key concerns for recovery and management reviewed?"
               },
             ],
-            updated_at: "2025-04-26T09:00:00Z";
+            updated_at: "2025-04-26T09:00:00Z"
           },
         ];
         setTemplates(mockData),

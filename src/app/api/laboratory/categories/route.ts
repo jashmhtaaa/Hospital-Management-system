@@ -34,8 +34,8 @@ export const _GET = async () => {
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       {
-        error: "Failed to fetch laboratory test categories";
-        details: errorMessage;
+        error: "Failed to fetch laboratory test categories",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -106,8 +106,8 @@ export const _POST = async (request: NextRequest) => {
     // }
     return NextResponse.json(
       {
-        error: "Failed to create laboratory test category";
-        details: errorMessage;
+        error: "Failed to create laboratory test category",
+        details: errorMessage
       },
       { status: 500 }
     )

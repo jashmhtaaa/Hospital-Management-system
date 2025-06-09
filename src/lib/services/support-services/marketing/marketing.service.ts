@@ -25,24 +25,24 @@ export class MarketingCampaignService {
       // Create campaign in database
       const campaign = await prisma.marketingCampaign.create({
         data: {
-          name: data.name;
+          name: data.name,
           description: data.description;
-          type: data.type;
+          type: data.type,
           status: data.status || 'DRAFT';
-          startDate: data.startDate;
+          startDate: data.startDate,
           endDate: data.endDate;
-          budget: data.budget;
+          budget: data.budget,
           targetAudience: data.targetAudience;
-          goals: data.goals;
+          goals: data.goals,
           kpis: data.kpis;
-          createdById: userId;
-          updatedById: userId;
+          createdById: userId,
+          updatedById: userId
         },
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.create';
+        action: 'campaign.create',
         resourceId: campaign.id;
         userId,
         details: { campaignName: campaign.name, campaignType: campaign.type }
@@ -50,7 +50,7 @@ export class MarketingCampaignService {
 
       // Notify relevant users
       await this.notificationService.sendNotification({
-        type: 'CAMPAIGN_CREATED';
+        type: 'CAMPAIGN_CREATED',
         title: 'New Marketing Campaign Created';
         message: `A new marketing campaign "${campaign.name}" has been created`,
         recipientRoles: ['MARKETING_MANAGER', 'MARKETING_STAFF'],
@@ -74,29 +74,29 @@ export class MarketingCampaignService {
       const campaign = await prisma.marketingCampaign.findUnique({
         where: { id },
         include: {
-          channels: true;
+          channels: true,
           segments: {
             include: {
-              segment: true;
+              segment: true
             }
           },
           leads: {
-            take: 10;
+            take: 10,
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             }
           },
           analytics: {
-            take: 5;
+            take: 5,
             orderBy: {
-              date: 'desc';
+              date: 'desc'
             }
           },
           createdByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         }
@@ -133,7 +133,7 @@ export class MarketingCampaignService {
     endDateTo?: Date;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingCampaign[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: MarketingCampaign[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         type,
@@ -184,39 +184,39 @@ export class MarketingCampaignService {
       const campaigns = await prisma.marketingCampaign.findMany({
         where,
         include: {
-          channels: true;
+          channels: true,
           segments: {
             include: {
-              segment: true;
+              segment: true
             }
           },
           _count: {
             select: {
-              leads: true;
-              activities: true;
+              leads: true,
+              activities: true
             }
           },
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
       return {
-        data: campaigns;
+        data: campaigns,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -243,18 +243,18 @@ export class MarketingCampaignService {
         where: { id },
         data: {
           ...data,
-          updatedById: userId;
+          updatedById: userId
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.update';
+        action: 'campaign.update',
         resourceId: id;
         userId,
         details: {
-          campaignName: updatedCampaign.name;
-          updatedFields: Object.keys(data);
+          campaignName: updatedCampaign.name,
+          updatedFields: Object.keys(data)
         }
       });
 
@@ -288,12 +288,12 @@ export class MarketingCampaignService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.delete';
+        action: 'campaign.delete',
         resourceId: id;
         userId,
         details: {
-          campaignName: existingCampaign.name;
-          campaignType: existingCampaign.type;
+          campaignName: existingCampaign.name,
+          campaignType: existingCampaign.type
         }
       });
     } catch (error) {
@@ -322,24 +322,24 @@ export class MarketingCampaignService {
       const channel = await prisma.campaignChannel.create({
         data: {
           campaignId,
-          channelType: channelData.channelType;
+          channelType: channelData.channelType,
           channelName: channelData.channelName;
-          content: channelData.content;
+          content: channelData.content,
           schedule: channelData.schedule;
-          status: channelData.status || 'DRAFT';
-          metrics: channelData.metrics;
+          status: channelData.status || 'DRAFT',
+          metrics: channelData.metrics
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.channel.add';
+        action: 'campaign.channel.add',
         resourceId: campaignId;
         userId,
         details: {
-          channelId: channel.id;
+          channelId: channel.id,
           channelType: channel.channelType;
-          channelName: channel.channelName;
+          channelName: channel.channelName
         }
       });
 
@@ -380,7 +380,7 @@ export class MarketingCampaignService {
             include: {
               _count: {
                 select: {
-                  interactions: true;
+                  interactions: true
                 }
               }
             }
@@ -392,9 +392,9 @@ export class MarketingCampaignService {
       const leads = await prisma.lead.findMany({
         where: { campaignId },
         select: {
-          status: true;
+          status: true,
           convertedToPatientId: true;
-          conversionDate: true;
+          conversionDate: true
         }
       });
 
@@ -406,30 +406,30 @@ export class MarketingCampaignService {
       // Aggregate analytics data
       const aggregatedData = {
         campaign: {
-          id: campaignId;
+          id: campaignId,
           name: existingCampaign.name;
-          type: existingCampaign.type;
+          type: existingCampaign.type,
           startDate: existingCampaign.startDate;
-          endDate: existingCampaign.endDate;
-          status: existingCampaign.status;
+          endDate: existingCampaign.endDate,
+          status: existingCampaign.status
         },
-        metrics: analytics.map(item => item.metrics);
+        metrics: analytics.map(item => item.metrics),
         channels: channels.map(channel => ({
-          id: channel.id;
+          id: channel.id,
           type: channel.channelType;
-          name: channel.channelName;
+          name: channel.channelName,
           status: channel.status;
-          messageCount: channel.messages.length;
+          messageCount: channel.messages.length,
           interactionCount: channel.messages.reduce((sum, msg) => sum + msg._count.interactions, 0),
-          metrics: channel.metrics;
+          metrics: channel.metrics
         })),
         leads: {
-          total: totalLeads;
+          total: totalLeads,
           converted: convertedLeads;
-          conversionRate: conversionRate.toFixed(2) + '%';
-          byStatus: this.groupLeadsByStatus(leads);
+          conversionRate: conversionRate.toFixed(2) + '%',
+          byStatus: this.groupLeadsByStatus(leads)
         },
-        timeSeriesData: this.aggregateTimeSeriesData(analytics);
+        timeSeriesData: this.aggregateTimeSeriesData(analytics)
       };
 
       return aggregatedData;
@@ -486,12 +486,12 @@ export class MarketingCampaignService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.segment.add';
+        action: 'campaign.segment.add',
         resourceId: campaignId;
         userId,
         details: {
           segmentId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name
         }
       });
 
@@ -511,34 +511,34 @@ export class MarketingCampaignService {
   private generateCampaignFHIR(campaign: unknown): unknown {
     // Create FHIR Communication resource for the campaign
     const communicationResource = {
-      resourceType: 'Communication';
+      resourceType: 'Communication',
       id: `marketing-campaign-${campaign.id}`,
-      status: this.mapCampaignStatusToFHIR(campaign.status);
+      status: this.mapCampaignStatusToFHIR(campaign.status),
       category: [
         {
           coding: [
             {
-              system: 'https://terminology.hl7.org/CodeSystem/communication-category';
+              system: 'https://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing';
-              display: 'Marketing';
+              display: 'Marketing'
             }
           ]
         }
       ],
       subject: {
-        reference: 'Group/marketing-segment';
-        display: 'Marketing Target Audience';
+        reference: 'Group/marketing-segment',
+        display: 'Marketing Target Audience'
       },
-      sent: campaign.startDate;
+      sent: campaign.startDate,
       received: campaign.endDate;
-      recipient: [];
+      recipient: [],
       sender: {
-        reference: `Organization/hospital`;
-        display: 'Hospital Marketing Department';
+        reference: `Organization/hospital`,
+        display: 'Hospital Marketing Department'
       },
       payload: [
         {
-          contentString: campaign.description;
+          contentString: campaign.description
         }
       ],
       note: [
@@ -550,45 +550,45 @@ export class MarketingCampaignService {
 
     // Create FHIR CommunicationRequest resource for campaign planning
     const communicationRequestResource = {
-      resourceType: 'CommunicationRequest';
+      resourceType: 'CommunicationRequest',
       id: `marketing-campaign-request-${campaign.id}`,
-      status: this.mapCampaignStatusToFHIRRequest(campaign.status);
+      status: this.mapCampaignStatusToFHIRRequest(campaign.status),
       category: [
         {
           coding: [
             {
-              system: 'https://terminology.hl7.org/CodeSystem/communication-category';
+              system: 'https://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing';
-              display: 'Marketing';
+              display: 'Marketing'
             }
           ]
         }
       ],
-      priority: 'routine';
+      priority: 'routine',
       subject: {
-        reference: 'Group/marketing-segment';
-        display: 'Marketing Target Audience';
+        reference: 'Group/marketing-segment',
+        display: 'Marketing Target Audience'
       },
       requester: {
         reference: `Practitioner/${campaign.createdById}`,
-        display: campaign.createdByUser?.name || 'Marketing Staff';
+        display: campaign.createdByUser?.name || 'Marketing Staff'
       },
-      recipient: [];
+      recipient: [],
       occurrencePeriod: {
-        start: campaign.startDate;
-        end: campaign.endDate;
+        start: campaign.startDate,
+        end: campaign.endDate
       },
-      authoredOn: campaign.createdAt;
+      authoredOn: campaign.createdAt,
       payload: [
         {
-          contentString: campaign.description;
+          contentString: campaign.description
         }
       ]
     }
 
     return {
-      communication: communicationResource;
-      communicationRequest: communicationRequestResource;
+      communication: communicationResource,
+      communicationRequest: communicationRequestResource
     };
   }
 
@@ -609,7 +609,7 @@ export class MarketingCampaignService {
         return 'completed';
       case 'CANCELLED':
         return 'stopped';
-      default: return 'unknown';
+      default: return 'unknown'
     }
   }
 
@@ -630,7 +630,7 @@ export class MarketingCampaignService {
         return 'completed';
       case 'CANCELLED':
         return 'revoked';
-      default: return 'unknown';
+      default: return 'unknown'
     }
   }
 
@@ -639,11 +639,11 @@ export class MarketingCampaignService {
    */
   private groupLeadsByStatus(leads: unknown[]): Record<string, number> {
     const result: Record<string, number> = {
-      NEW: 0;
+      NEW: 0,
       CONTACTED: 0;
-      QUALIFIED: 0;
+      QUALIFIED: 0,
       CONVERTED: 0;
-      LOST: 0;
+      LOST: 0
     };
 
     leads.forEach(lead => {
@@ -714,17 +714,17 @@ export class ContactService {
 
       // Create contact in database
       const contact = await prisma.contact.create({
-        data: encryptedData;
+        data: encryptedData
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.create';
+        action: 'contact.create',
         resourceId: contact.id;
         userId,
         details: {
-          contactEmail: data.email;
-          contactSource: data.source;
+          contactEmail: data.email,
+          contactSource: data.source
         }
       });
 
@@ -747,38 +747,38 @@ export class ContactService {
         include: {
           patient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
-              dateOfBirth: true;
+              lastName: true,
+              dateOfBirth: true
             }
           },
           notes: {
             include: {
               createdByUser: {
                 select: {
-                  id: true;
-                  name: true;
+                  id: true,
+                  name: true
                 }
               }
             },
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             }
           },
           segmentMembers: {
             where: {
-              isActive: true;
+              isActive: true
             },
             include: {
-              segment: true;
+              segment: true
             }
           },
           _count: {
             select: {
-              interactions: true;
+              interactions: true,
               activities: true;
-              leads: true;
+              leads: true
             }
           }
         }
@@ -807,7 +807,7 @@ export class ContactService {
     tags?: string[];
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: Contact[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         search,
@@ -840,7 +840,7 @@ export class ContactService {
 
       if (tags && tags.length > 0) {
         where.tags = {
-          hasSome: tags;
+          hasSome: tags
         };
       }
 
@@ -853,22 +853,22 @@ export class ContactService {
         include: {
           patient: {
             select: {
-              id: true;
+              id: true
             }
           },
           _count: {
             select: {
-              interactions: true;
+              interactions: true,
               activities: true;
-              leads: true;
-              segmentMembers: true;
+              leads: true,
+              segmentMembers: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
@@ -876,12 +876,12 @@ export class ContactService {
       const decryptedContacts = contacts.map(contact => this.decryptSensitiveData(contact));
 
       return {
-        data: decryptedContacts;
+        data: decryptedContacts,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -909,16 +909,16 @@ export class ContactService {
       // Update contact
       const updatedContact = await prisma.contact.update({
         where: { id },
-        data: encryptedData;
+        data: encryptedData
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.update';
+        action: 'contact.update',
         resourceId: id;
         userId,
         details: {
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
 
@@ -952,11 +952,11 @@ export class ContactService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.delete';
+        action: 'contact.delete',
         resourceId: id;
         userId,
         details: {
-          contactEmail: existingContact.email;
+          contactEmail: existingContact.email
         }
       });
     } catch (error) {
@@ -986,13 +986,13 @@ export class ContactService {
         data: {
           contactId,
           content,
-          createdById: userId;
+          createdById: userId
         },
         include: {
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         }
@@ -1000,11 +1000,11 @@ export class ContactService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.note.add';
+        action: 'contact.note.add',
         resourceId: contactId;
         userId,
         details: {
-          noteId: note.id;
+          noteId: note.id
         }
       });
 
@@ -1030,21 +1030,21 @@ export class ContactService {
       // Create segment in database
       const segment = await prisma.contactSegment.create({
         data: {
-          name: data.name;
+          name: data.name,
           description: data.description;
-          criteria: data.criteria;
+          criteria: data.criteria,
           isActive: data.isActive !== undefined ? data.isActive : true;
-          createdById: userId;
+          createdById: userId
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.create';
+        action: 'segment.create',
         resourceId: segment.id;
         userId,
         details: {
-          segmentName: segment.name;
+          segmentName: segment.name
         }
       });
 
@@ -1064,7 +1064,7 @@ export class ContactService {
     isActive?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: ContactSegment[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         isActive,
@@ -1088,31 +1088,31 @@ export class ContactService {
         include: {
           _count: {
             select: {
-              members: true;
-              campaigns: true;
+              members: true,
+              campaigns: true
             }
           },
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
       return {
-        data: segments;
+        data: segments,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -1148,7 +1148,7 @@ export class ContactService {
         where: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
 
@@ -1161,7 +1161,7 @@ export class ContactService {
         where: {
           segmentId,
           contactId,
-          isActive: false;
+          isActive: false
         }
       });
 
@@ -1169,19 +1169,19 @@ export class ContactService {
         const updatedMembership = await prisma.segmentMember.update({
           where: { id: inactiveMemebership.id },
           data: {
-            isActive: true;
-            removedAt: null;
+            isActive: true,
+            removedAt: null
           }
         });
 
         // Log audit event
         await this.auditLogger.log({
-          action: 'segment.contact.reactivate';
+          action: 'segment.contact.reactivate',
           resourceId: segmentId;
           userId,
           details: {
             contactId,
-            segmentName: existingSegment.name;
+            segmentName: existingSegment.name
           }
         });
 
@@ -1193,18 +1193,18 @@ export class ContactService {
         data: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.contact.add';
+        action: 'segment.contact.add',
         resourceId: segmentId;
         userId,
         details: {
           contactId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name
         }
       });
 
@@ -1245,7 +1245,7 @@ export class ContactService {
         where: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
 
@@ -1257,19 +1257,19 @@ export class ContactService {
       const updatedMembership = await prisma.segmentMember.update({
         where: { id: membership.id },
         data: {
-          isActive: false;
-          removedAt: new Date();
+          isActive: false,
+          removedAt: new Date()
         }
       })
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.contact.remove';
+        action: 'segment.contact.remove',
         resourceId: segmentId;
         userId,
         details: {
           contactId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name
         }
       });
 
@@ -1376,24 +1376,24 @@ export class LeadService {
       // Create lead in database
       const lead = await prisma.lead.create({
         data: {
-          contactId: data.contactId;
+          contactId: data.contactId,
           campaignId: data.campaignId;
-          source: data.source;
+          source: data.source,
           status: data.status || 'NEW';
-          score: data.score;
+          score: data.score,
           assignedToId: data.assignedToId;
-          notes: data.notes;
+          notes: data.notes,
           convertedToPatientId: data.convertedToPatientId;
-          conversionDate: data.conversionDate;
+          conversionDate: data.conversionDate
         },
         include: {
-          contact: true;
+          contact: true,
           campaign: true;
           assignedToUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         }
@@ -1401,23 +1401,23 @@ export class LeadService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.create';
+        action: 'lead.create',
         resourceId: lead.id;
         userId,
         details: {
-          contactId: lead.contactId;
+          contactId: lead.contactId,
           source: lead.source;
-          status: lead.status;
+          status: lead.status
         }
       });
 
       // Notify assigned user if applicable
       if (lead.assignedToId) {
         await this.notificationService.sendNotification({
-          type: 'LEAD_ASSIGNED';
+          type: 'LEAD_ASSIGNED',
           title: 'New Lead Assigned';
           message: `A new lead has been assigned to you: /* SECURITY: Template literal eliminated */
-          recipientIds: [lead.assignedToId];
+          recipientIds: [lead.assignedToId],
           metadata: { leadId: lead.id }
         });
       }
@@ -1439,34 +1439,34 @@ export class LeadService {
       const lead = await prisma.lead.findUnique({
         where: { id },
         include: {
-          contact: true;
+          contact: true,
           campaign: true;
           assignedToUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           convertedToPatient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
-              dateOfBirth: true;
+              lastName: true,
+              dateOfBirth: true
             }
           },
           activities: {
             include: {
               performedByUser: {
                 select: {
-                  id: true;
-                  name: true;
+                  id: true,
+                  name: true
                 }
               }
             },
             orderBy: {
-              timestamp: 'desc';
+              timestamp: 'desc'
             }
           }
         }
@@ -1495,7 +1495,7 @@ export class LeadService {
     assignedToId?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Lead[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: Lead[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         status,
@@ -1534,45 +1534,45 @@ export class LeadService {
         include: {
           contact: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
+              lastName: true,
               email: true;
-              phone: true;
+              phone: true
             }
           },
           campaign: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           },
           assignedToUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           },
           _count: {
             select: {
-              activities: true;
+              activities: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
       return {
-        data: leads;
+        data: leads,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -1591,9 +1591,9 @@ export class LeadService {
         include: {
           assignedToUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         }
@@ -1613,13 +1613,13 @@ export class LeadService {
         where: { id },
         data,
         include: {
-          contact: true;
+          contact: true,
           campaign: true;
           assignedToUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         }
@@ -1627,30 +1627,30 @@ export class LeadService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.update';
+        action: 'lead.update',
         resourceId: id;
         userId,
         details: {
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
 
       // Create activity for status change if applicable
       if (data?.status && data.status !== existingLead.status) {
         await this.addLeadActivity(id, {
-          activityType: 'STATUS_CHANGE';
+          activityType: 'STATUS_CHANGE',
           description: `Status changed from ${existingLead.status} to ${data.status}`,
-          performedById: userId;
+          performedById: userId
         });
       }
 
       // Notify newly assigned user if applicable
       if (data?.assignedToId && data.assignedToId !== existingLead.assignedToId) {
         await this.notificationService.sendNotification({
-          type: 'LEAD_ASSIGNED';
+          type: 'LEAD_ASSIGNED',
           title: 'Lead Assigned';
           message: `A lead has been assigned to you: /* SECURITY: Template literal eliminated */
-          recipientIds: [data.assignedToId];
+          recipientIds: [data.assignedToId],
           metadata: { leadId: id }
         });
       }
@@ -1667,7 +1667,7 @@ export class LeadService {
   /**
    * Add an activity to a lead;
    */
-  async addLeadActivity(leadId: string, data: { activityType: string; description: string; performedById: string; metadata?: unknown }): Promise<unknown> {
+  async addLeadActivity(leadId: string, data: { activityType: string, description: string; performedById: string; metadata?: unknown }): Promise<unknown> {
     try {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
@@ -1682,16 +1682,16 @@ export class LeadService {
       const activity = await prisma.leadActivity.create({
         data: {
           leadId,
-          activityType: data.activityType;
+          activityType: data.activityType,
           description: data.description;
-          performedById: data.performedById;
-          metadata: data.metadata;
+          performedById: data.performedById,
+          metadata: data.metadata
         },
         include: {
           performedByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         }
@@ -1699,12 +1699,12 @@ export class LeadService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.activity.add';
+        action: 'lead.activity.add',
         resourceId: leadId;
-        userId: data.performedById;
+        userId: data.performedById,
         details: {
-          activityId: activity.id;
-          activityType: data.activityType;
+          activityId: activity.id,
+          activityType: data.activityType
         }
       });
 
@@ -1726,7 +1726,7 @@ export class LeadService {
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId },
         include: {
-          contact: true;
+          contact: true
         }
       });
 
@@ -1742,11 +1742,11 @@ export class LeadService {
       // Create patient from lead data
       const patient = await prisma.patient.create({
         data: {
-          firstName: patientData.firstName || existingLead.contact.firstName;
+          firstName: patientData.firstName || existingLead.contact.firstName,
           lastName: patientData.lastName || existingLead.contact.lastName;
-          email: patientData.email || existingLead.contact.email;
+          email: patientData.email || existingLead.contact.email,
           phone: patientData.phone || existingLead.contact.phone;
-          dateOfBirth: patientData.dateOfBirth || existingLead.contact.dateOfBirth;
+          dateOfBirth: patientData.dateOfBirth || existingLead.contact.dateOfBirth,
           gender: patientData.gender || existingLead.contact.gender;
           address: patientData.address || existingLead.contact.address;
           // Add other patient fields as needed
@@ -1757,33 +1757,33 @@ export class LeadService {
       const updatedLead = await prisma.lead.update({
         where: { id: leadId },
         data: {
-          status: 'CONVERTED';
+          status: 'CONVERTED',
           convertedToPatientId: patient.id;
-          conversionDate: new Date();
+          conversionDate: new Date()
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.convert';
+        action: 'lead.convert',
         resourceId: leadId;
         userId,
         details: {
-          patientId: patient.id;
+          patientId: patient.id
         }
       });
 
       // Add lead activity
       await this.addLeadActivity(leadId, {
-        activityType: 'CONVERSION';
+        activityType: 'CONVERSION',
         description: `Lead converted to patient`;
-        performedById: userId;
+        performedById: userId,
         metadata: { patientId: patient.id }
       });
 
       return {
         lead: updatedLead;
-        patient;
+        patient
       };
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ValidationError) {

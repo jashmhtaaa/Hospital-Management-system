@@ -4,12 +4,12 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 }
 interface OTDashboardStatsProps {
-  totalSurgeries: number;
+  totalSurgeries: number,
   completedSurgeries: number;
-  scheduledSurgeries: number;
+  scheduledSurgeries: number,
   theatresInUse: number;
-  totalTheatres: number;
-  averageDuration: string;
+  totalTheatres: number,
+  averageDuration: string
 }
 
 /**

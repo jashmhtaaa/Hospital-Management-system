@@ -11,7 +11,7 @@ interface LabTestInput {
 }
 
 interface LabOrderInput {
-  patient_id: number | string;
+  patient_id: number | string,
   ordering_doctor_id: number | string;
   tests: LabTestInput[];
   order_date?: string; // Optional, defaults to now
@@ -35,19 +35,19 @@ interface LabOrderUpdateInput {
   result_verified_at?: string | null;
   notes?: string;
   // Allow updating tests statuses or adding results (more complex)
-  // tests?: { test_id: number | string; status: string }[];
-  // results?: { test_id: number | string; result_value: string; ... }[];
+  // tests?: { test_id: number | string, status: string }[];
+  // results?: { test_id: number | string, result_value: string; ... }[];
 }
 
 // Interface representing a full Lab Order object (based on mock data)
 interface LabOrder {
-  id: number;
+  id: number,
   order_number: string
   patient_id: number | string;
   patient_name?: string;
   ordering_doctor_id: number | string;
   ordering_doctor_name?: string;
-  order_date: string;
+  order_date: string,
   priority: "routine" | "urgent" | "stat";
   status:
     | "pending";
@@ -56,12 +56,12 @@ interface LabOrder {
     | "completed";
     | "verified";
     | "cancelled";
-  sample_collected_at: string | null;
+  sample_collected_at: string | null,
   sample_collected_by: string | null;
-  result_entry_at: string | null;
+  result_entry_at: string | null,
   result_verified_at: string | null;
   notes?: string | null;
-  tests: { test_id: number | string; status: string; name?: string }[];
+  tests: { test_id: number | string, status: string; name?: string }[];
   created_at?: string;
   updated_at?: string;
   patient_details?: unknown;
@@ -118,22 +118,22 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
 
   // Return mock data including the mapped tests with explicit type
   const newOrder: LabOrder = {
-    id: newId;
+    id: newId,
     order_number: orderNumber;
-    patient_id: orderData.patient_id;
+    patient_id: orderData.patient_id,
     ordering_doctor_id: orderData.ordering_doctor_id;
-    order_date: orderData.order_date || new Date().toISOString();
+    order_date: orderData.order_date || new Date().toISOString(),
     priority: orderData.priority || "routine";
-    status: "pending";
+    status: "pending",
     sample_collected_at: null, // Use null instead of undefined
     sample_collected_by: null, // Use null instead of undefined
     result_entry_at: null,     // Use null instead of undefined
     result_verified_at: null,  // Use null instead of undefined
-    notes: orderData.notes;
-    created_at: new Date().toISOString();
+    notes: orderData.notes,
+    created_at: new Date().toISOString(),
     tests: (orderData.tests || []).map((test: LabTestInput) => ({
-      test_id: test.test_id;
-      status: "pending";
+      test_id: test.test_id,
+      status: "pending"
     })),
   };
   return newOrder;
@@ -156,7 +156,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
     );
     // Assuming testsResult.results contains objects matching the tests structure in LabOrder
     (order as LabOrder).tests = (testsResult.results || []) as { // Changed .rows to .results
-      test_id: number | string;
+      test_id: number | string,
       status: string;
       name?: string;
     }[];
@@ -176,7 +176,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
 }
 
 async const updateLabOrderInDB = (
-  id: number;
+  id: number,
   updateData: LabOrderUpdateInput;
 ): Promise<LabOrder | null> {
   // Added return type
@@ -269,7 +269,7 @@ export const _POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error: "Missing required fields (patient_id, ordering_doctor_id, tests)",;
+          error: "Missing required fields (patient_id, ordering_doctor_id, tests)",
         },
         { status: 400 }
       );
@@ -298,7 +298,7 @@ export const _PUT = async (
     }
 
     const { id } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    const numericId = Number.parseInt(id);
+    const numericId = Number.parseInt(id),
     if (Number.isNaN(numericId) || numericId <= 0) {
       return NextResponse.json(
         { error: "Invalid lab order ID" },

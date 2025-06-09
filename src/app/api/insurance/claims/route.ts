@@ -20,39 +20,39 @@ import { logger } from '@/lib/core/logging';
 
 // Schema for claim creation
 const createClaimSchema = z.object({
-  invoiceId: z.string().uuid();
-  insurancePolicyId: z.string().uuid();
+  invoiceId: z.string().uuid(),
+  insurancePolicyId: z.string().uuid(),
   diagnoses: z.array(z.object({
-    code: icd10CodeSchema;
-    description: z.string();
-    primary: z.boolean().default(false);
+    code: icd10CodeSchema,
+    description: z.string(),
+    primary: z.boolean().default(false)
   })).min(1),
   items: z.array(z.object({
-    serviceItemId: z.string().uuid();
-    serviceDate: z.coerce.date();
-    cptCode: cptCodeSchema.optional();
-    unitPrice: z.number().positive();
-    quantity: z.number().int().positive();
-    totalPrice: z.number().positive();
-    notes: z.string().optional();
+    serviceItemId: z.string().uuid(),
+    serviceDate: z.coerce.date(),
+    cptCode: cptCodeSchema.optional(),
+    unitPrice: z.number().positive(),
+    quantity: z.number().int().positive(),
+    totalPrice: z.number().positive(),
+    notes: z.string().optional()
   })).min(1),
-  preAuthorizationNumber: z.string().optional();
-  notes: z.string().optional();
+  preAuthorizationNumber: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // Schema for claim query parameters
 const claimQuerySchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1);
-  pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
-  patientId: z.string().uuid().optional();
-  invoiceId: z.string().uuid().optional();
-  insurancePolicyId: z.string().uuid().optional();
-  status: claimStatusSchema.optional();
-  startDate: z.string().optional();
-  endDate: z.string().optional();
+  page: z.coerce.number().int().positive().optional().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
+  patientId: z.string().uuid().optional(),
+  invoiceId: z.string().uuid().optional(),
+  insurancePolicyId: z.string().uuid().optional(),
+  status: claimStatusSchema.optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
   sortBy: z.enum(['createdAt', 'updatedAt', 'status']).optional().default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
-  format: z.enum(['json', 'fhir']).optional().default('json'),;
+  format: z.enum(['json', 'fhir']).optional().default('json'),
 });
 
 // GET handler for retrieving all claims with filtering and pagination
@@ -68,7 +68,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
   if (query.patientId) {
     where.invoice = {
-      patientId: query.patientId;
+      patientId: query.patientId
     };
   }
 
@@ -94,8 +94,8 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       }
 
       where.createdAt = {
-        gte: startDate;
-        lte: endDate;
+        gte: startDate,
+        lte: endDate
       };
     } catch (error) {
       throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
@@ -109,43 +109,43 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       orderBy: {
         [query.sortBy]: query.sortOrder,
       },
-      skip: (query.page - 1) * query.pageSize;
+      skip: (query.page - 1) * query.pageSize,
       take: query.pageSize;
       include: {
         invoice: {
           select: {
-            id: true;
+            id: true,
             billNumber: true;
-            patientId: true;
+            patientId: true,
             patient: {
               select: {
-                id: true;
+                id: true,
                 firstName: true;
-                lastName: true;
-                mrn: true;
+                lastName: true,
+                mrn: true
               },
             },
           },
         },
         insurancePolicy: {
           select: {
-            id: true;
+            id: true,
             policyNumber: true;
             insuranceProvider: {
               select: {
-                id: true;
-                name: true;
+                id: true,
+                name: true
               },
             },
           },
         },
-        diagnoses: true;
+        diagnoses: true,
         items: {
           include: {
-            serviceItem: true;
+            serviceItem: true
           },
         },
-        followUps: true;
+        followUps: true
       },
     }),
     prisma.insuranceClaim.count({ where }),
@@ -191,7 +191,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const insurancePolicy = await prisma.insurancePolicy.findUnique({
     where: { id: data.insurancePolicyId },
     include: {
-      insuranceProvider: true;
+      insuranceProvider: true
     },
   });
 
@@ -214,8 +214,8 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
       'Invoice patient does not match insurance policy beneficiary',
       'PATIENT_MISMATCH',
       {
-        invoicePatientId: invoice.patientId;
-        policyPatientId: insurancePolicy.patientId;
+        invoicePatientId: invoice.patientId,
+        policyPatientId: insurancePolicy.patientId
       }
     );
   }
@@ -233,59 +233,59 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     const newClaim = await prisma.insuranceClaim.create({
       data: {
         claimNumber,
-        invoiceId: data.invoiceId;
+        invoiceId: data.invoiceId,
         insurancePolicyId: data.insurancePolicyId;
         status: 'draft';
         totalAmount,
-        preAuthorizationNumber: data.preAuthorizationNumber;
+        preAuthorizationNumber: data.preAuthorizationNumber,
         notes: data.notes;
         diagnoses: {
-          create: data.diagnoses;
+          create: data.diagnoses
         },
         items: {
           create: data.items.map(item => ({
-            serviceItemId: item.serviceItemId;
+            serviceItemId: item.serviceItemId,
             serviceDate: item.serviceDate;
-            cptCode: item.cptCode;
+            cptCode: item.cptCode,
             unitPrice: item.unitPrice;
-            quantity: item.quantity;
+            quantity: item.quantity,
             totalPrice: item.totalPrice;
-            notes: item.notes;
+            notes: item.notes
           })),
         },
       },
       include: {
         invoice: {
           select: {
-            id: true;
+            id: true,
             billNumber: true;
-            patientId: true;
+            patientId: true,
             patient: {
               select: {
-                id: true;
+                id: true,
                 firstName: true;
-                lastName: true;
-                mrn: true;
+                lastName: true,
+                mrn: true
               },
             },
           },
         },
         insurancePolicy: {
           select: {
-            id: true;
+            id: true,
             policyNumber: true;
             insuranceProvider: {
               select: {
-                id: true;
-                name: true;
+                id: true,
+                name: true
               },
             },
           },
         },
-        diagnoses: true;
+        diagnoses: true,
         items: {
           include: {
-            serviceItem: true;
+            serviceItem: true
           },
         },
       },
@@ -295,7 +295,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     await prisma.bill.update({
       where: { id: data.invoiceId },
       data: {
-        insuranceClaimId: newClaim.id;
+        insuranceClaimId: newClaim.id
       },
     });
 
@@ -305,8 +305,8 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   logger.info('Insurance claim created', {
     claimId: claim.id;
     claimNumber,
-    invoiceId: data.invoiceId;
-    insurancePolicyId: data.insurancePolicyId;
+    invoiceId: data.invoiceId,
+    insurancePolicyId: data.insurancePolicyId
   });
 
   return createSuccessResponse(claim);

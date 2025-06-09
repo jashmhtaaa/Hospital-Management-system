@@ -10,22 +10,22 @@ import { PrismaClient } from '@prisma/client';
  */
 
 export interface IntegrationEndpoint {
-  id: string;
+  id: string,
   name: string;
-  type: IntegrationType;
+  type: IntegrationType,
   status: 'active' | 'inactive' | 'error' | 'testing';
-  configuration: EndpointConfiguration;
+  configuration: EndpointConfiguration,
   credentials: EndpointCredentials;
-  mappings: DataMapping[];
+  mappings: DataMapping[],
   lastSync: Date | null;
-  nextSync: Date | null;
+  nextSync: Date | null,
   syncFrequency: number; // in minutes
-  errorCount: number;
+  errorCount: number,
   successCount: number;
   lastError?: string;
-  healthCheck: HealthCheckConfig;
+  healthCheck: HealthCheckConfig,
   version: string;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date
 export type IntegrationType =
   | 'fhir_r4';
@@ -50,11 +50,11 @@ export type IntegrationType =
 export interface EndpointConfiguration {
   baseUrl?: string;
   apiVersion?: string;
-  timeout: number;
+  timeout: number,
   retryAttempts: number;
   retryDelay: number;
   rateLimit?: {
-    requests: number;
+    requests: number,
     window: number; // in seconds
   };
   headers?: Record<string, string>;
@@ -63,10 +63,10 @@ export interface EndpointConfiguration {
     enabled: boolean;
     certificate?: string;
     key?: string;
-    ca?: string;
+    ca?: string
   };
   compression?: boolean;
-  format: 'json' | 'xml' | 'hl7' | 'dicom' | 'csv' | 'pipe_delimited';
+  format: 'json' | 'xml' | 'hl7' | 'dicom' | 'csv' | 'pipe_delimited',
   encoding: 'utf8' | 'utf16' | 'ascii'
 export interface EndpointCredentials {
   type: 'basic' | 'bearer' | 'oauth2' | 'api_key' | 'certificate' | 'none';
@@ -83,7 +83,7 @@ export interface EndpointCredentials {
   expiresAt?: Date;
   refreshToken?: string;
 export interface DataMapping {
-  sourceField: string;
+  sourceField: string,
   targetField: string;
   transformation?: DataTransformation;
   required: boolean;
@@ -101,24 +101,24 @@ export interface ValidationRule {
   value?: unknown;
   message: string
 export interface HealthCheckConfig {
-  enabled: boolean;
+  enabled: boolean,
   interval: number; // in minutes
   endpoint?: string;
-  method: 'GET' | 'POST' | 'HEAD';
+  method: 'GET' | 'POST' | 'HEAD',
   timeout: number;
   expectedStatus: number[];
   expectedContent?: string;
 export interface IntegrationMessage {
-  id: string;
+  id: string,
   endpointId: string;
-  direction: 'inbound' | 'outbound';
+  direction: 'inbound' | 'outbound',
   messageType: string;
-  status: 'pending' | 'processing' | 'success' | 'failed' | 'retry';
+  status: 'pending' | 'processing' | 'success' | 'failed' | 'retry',
   priority: 'low' | 'normal' | 'high' | 'critical';
   sourceData: unknown;
   transformedData?: unknown;
   errorMessage?: string;
-  retryCount: number;
+  retryCount: number,
   maxRetries: number;
   createdAt: Date;
   processedAt?: Date;
@@ -139,75 +139,75 @@ export interface MessageMetadata {
   version?: string;
   custom?: Record<string, unknown>;
 export interface IntegrationEvent {
-  id: string;
+  id: string,
   endpointId: string;
-  type: 'sync_started' | 'sync_completed' | 'sync_failed' | 'message_received' | 'message_sent' | 'error' | 'status_change';
+  type: 'sync_started' | 'sync_completed' | 'sync_failed' | 'message_received' | 'message_sent' | 'error' | 'status_change',
   severity: 'info' | 'warning' | 'error' | 'critical';
   message: string;
   data?: unknown;
-  timestamp: Date;
+  timestamp: Date,
   resolved: boolean;
   resolvedAt?: Date;
   resolvedBy?: string;
 export interface SyncResult {
-  endpointId: string;
+  endpointId: string,
   startTime: Date;
-  endTime: Date;
+  endTime: Date,
   success: boolean;
-  recordsProcessed: number;
+  recordsProcessed: number,
   recordsSuccess: number;
-  recordsFailed: number;
+  recordsFailed: number,
   errors: string[];
-  warnings: string[];
+  warnings: string[],
   metadata: unknown
 export interface MessageTransformer {
-  name: string;
+  name: string,
   version: string;
-  inputFormat: string;
+  inputFormat: string,
   outputFormat: string;
   transform(data: unknown, mapping: DataMapping[], context?: unknown): Promise<unknown>;
   validate(data: unknown, rules: ValidationRule[]): Promise<ValidationResult>
 export interface ValidationResult {
-  valid: boolean;
+  valid: boolean,
   errors: string[];
   warnings: string[]
 export interface IntegrationStatistics {
-  totalEndpoints: number;
+  totalEndpoints: number,
   activeEndpoints: number;
-  totalMessages: number;
+  totalMessages: number,
   successfulMessages: number;
-  failedMessages: number;
+  failedMessages: number,
   averageProcessingTime: number;
-  uptime: number;
+  uptime: number,
   lastSync: Date | null;
-  errorRate: number;
+  errorRate: number,
   throughput: number; // messages per hour
-  byEndpoint: EndpointStats[];
+  byEndpoint: EndpointStats[],
   byMessageType: MessageTypeStats[]
 export interface EndpointStats {
-  endpointId: string;
+  endpointId: string,
   name: string;
-  type: IntegrationType;
+  type: IntegrationType,
   status: string;
-  messagesProcessed: number;
+  messagesProcessed: number,
   successRate: number;
-  averageResponseTime: number;
+  averageResponseTime: number,
   lastActivity: Date | null
 export interface MessageTypeStats {
-  messageType: string;
+  messageType: string,
   count: number;
-  successRate: number;
-  averageProcessingTime: number;
+  successRate: number,
+  averageProcessingTime: number
 }
 
 class IntegrationHubService extends EventEmitter {
   private prisma: PrismaClient;
-  private endpoints: Map<string, IntegrationEndpoint> = new Map();
-  private messages: Map<string, IntegrationMessage> = new Map();
+  private endpoints: Map<string, IntegrationEndpoint> = new Map(),
+  private messages: Map<string, IntegrationMessage> = new Map(),
   private events: IntegrationEvent[] = [];
-  private transformers: Map<string, MessageTransformer> = new Map();
-  private syncJobs: Map<string, NodeJS.Timeout> = new Map();
-  private healthChecks: Map<string, NodeJS.Timeout> = new Map();
+  private transformers: Map<string, MessageTransformer> = new Map(),
+  private syncJobs: Map<string, NodeJS.Timeout> = new Map(),
+  private healthChecks: Map<string, NodeJS.Timeout> = new Map(),
   private isRunning = false;
   private startTime = new Date(),
   constructor() {
@@ -272,13 +272,13 @@ class IntegrationHubService extends EventEmitter {
   async registerEndpoint(config: Omit<IntegrationEndpoint, 'id' | 'createdAt' | 'updatedAt' | 'errorCount' | 'successCount' | 'lastSync' | 'nextSync'>): Promise<string> {
     const endpoint: IntegrationEndpoint = {
       ...config,
-      id: uuidv4();
+      id: uuidv4(),
       errorCount: 0;
-      successCount: 0;
+      successCount: 0,
       lastSync: null;
-      nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + config.syncFrequency * 60 * 1000);
-      createdAt: new Date();
-      updatedAt: new Date();
+      nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + config.syncFrequency * 60 * 1000),
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     this.endpoints.set(endpoint.id, endpoint);
@@ -296,7 +296,7 @@ class IntegrationHubService extends EventEmitter {
     // Persist to database
     try {
       // In production, save to database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
     }
@@ -315,7 +315,7 @@ class IntegrationHubService extends EventEmitter {
     const updatedEndpoint = {
       ...endpoint,
       ...updates,
-      updatedAt: new Date();
+      updatedAt: new Date()
     };
 
     this.endpoints.set(endpointId, updatedEndpoint);
@@ -357,7 +357,7 @@ class IntegrationHubService extends EventEmitter {
     // Remove from database
     try {
       // In production, delete from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
     }
@@ -380,18 +380,18 @@ class IntegrationHubService extends EventEmitter {
     }
 
     const message: IntegrationMessage = {
-      id: uuidv4();
+      id: uuidv4(),
       endpointId,
       direction: 'outbound';
       messageType,
-      status: 'pending';
+      status: 'pending',
       priority: metadata?.custom?.priority || 'normal';
-      sourceData: data;
+      sourceData: data,
       retryCount: 0;
-      maxRetries: endpoint.configuration.retryAttempts;
-      createdAt: new Date();
+      maxRetries: endpoint.configuration.retryAttempts,
+      createdAt: new Date(),
       metadata: {
-        correlationId: metadata?.correlationId || uuidv4();
+        correlationId: metadata?.correlationId || uuidv4(),
         userId: metadata?.userId;
         organizationId: metadata?.organizationId;
         ...metadata;
@@ -416,16 +416,16 @@ class IntegrationHubService extends EventEmitter {
     }
 
     const message: IntegrationMessage = {
-      id: uuidv4();
+      id: uuidv4(),
       endpointId,
-      direction: 'inbound';
+      direction: 'inbound',
       messageType: this.detectMessageType(rawData, endpoint.type),
-      status: 'pending';
+      status: 'pending',
       priority: 'normal';
-      sourceData: rawData;
+      sourceData: rawData,
       retryCount: 0;
-      maxRetries: 3;
-      createdAt: new Date();
+      maxRetries: 3,
+      createdAt: new Date(),
       metadata: {
         correlationId: metadata?.correlationId || uuidv4();
         ...metadata;
@@ -449,18 +449,18 @@ class IntegrationHubService extends EventEmitter {
     const failedMessages = allMessages.filter(m => m.status === 'failed');
 
     const endpointStats: EndpointStats[] = Array.from(this.endpoints.values()).map(endpoint => {
-      const endpointMessages = allMessages.filter(m => m.endpointId === endpoint.id);
+      const endpointMessages = allMessages.filter(m => m.endpointId === endpoint.id),
       const successfulEndpointMessages = endpointMessages.filter(m => m.status === 'success');
 
       return {
-        endpointId: endpoint.id;
+        endpointId: endpoint.id,
         name: endpoint.name;
-        type: endpoint.type;
+        type: endpoint.type,
         status: endpoint.status;
-        messagesProcessed: endpointMessages.length;
+        messagesProcessed: endpointMessages.length,
         successRate: endpointMessages.length > 0 ? (successfulEndpointMessages.length / endpointMessages.length) * 100 : 0;
-        averageResponseTime: this.calculateAverageProcessingTime(endpointMessages);
-        lastActivity: endpoint.lastSync;
+        averageResponseTime: this.calculateAverageProcessingTime(endpointMessages),
+        lastActivity: endpoint.lastSync
       };
     });
 
@@ -475,25 +475,25 @@ class IntegrationHubService extends EventEmitter {
       const successful = messages.filter(m => m.status === 'success');
       messageTypeStats.push({
         messageType,
-        count: messages.length;
+        count: messages.length,
         successRate: (successful.length / messages.length) * 100;
-        averageProcessingTime: this.calculateAverageProcessingTime(messages);
+        averageProcessingTime: this.calculateAverageProcessingTime(messages)
       });
     });
 
     return {
-      totalEndpoints: this.endpoints.size;
+      totalEndpoints: this.endpoints.size,
       activeEndpoints: Array.from(this.endpoints.values()).filter(e => e.status === 'active').length;
-      totalMessages: allMessages.length;
+      totalMessages: allMessages.length,
       successfulMessages: successfulMessages.length;
-      failedMessages: failedMessages.length;
-      averageProcessingTime: this.calculateAverageProcessingTime(allMessages);
-      uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime();
+      failedMessages: failedMessages.length,
+      averageProcessingTime: this.calculateAverageProcessingTime(allMessages),
+      uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime(),
       lastSync: Math.max(...Array.from(this.endpoints.values()).map(e => e.lastSync?.getTime() || 0)) || null;
-      errorRate: allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0;
-      throughput: this.calculateThroughput(allMessages);
-      byEndpoint: endpointStats;
-      byMessageType: messageTypeStats;
+      errorRate: allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
+      throughput: this.calculateThroughput(allMessages),
+      byEndpoint: endpointStats,
+      byMessageType: messageTypeStats
     };
   }
 
@@ -540,7 +540,7 @@ class IntegrationHubService extends EventEmitter {
   /**
    * Test endpoint connection;
    */
-  async testEndpoint(endpointId: string): Promise<{ success: boolean; message: string; responseTime: number }> {
+  async testEndpoint(endpointId: string): Promise<{ success: boolean, message: string; responseTime: number }> {
     const endpoint = this.endpoints.get(endpointId);
     if (!endpoint) {
       return { success: false, message: 'Endpoint not found', responseTime: 0 };
@@ -571,9 +571,9 @@ class IntegrationHubService extends EventEmitter {
   private async initializeTransformers(): Promise<void> {
     // Initialize FHIR transformer
     this.transformers.set('fhir_r4', {
-      name: 'FHIR R4 Transformer';
+      name: 'FHIR R4 Transformer',
       version: '1.0.0';
-      inputFormat: 'json';
+      inputFormat: 'json',
       outputFormat: 'json';
       transform: async (data, mappings) => {
         return this.transformFHIRData(data, mappings);
@@ -585,9 +585,9 @@ class IntegrationHubService extends EventEmitter {
 
     // Initialize HL7 v2 transformer
     this.transformers.set('hl7_v2', {
-      name: 'HL7 v2 Transformer';
+      name: 'HL7 v2 Transformer',
       version: '1.0.0';
-      inputFormat: 'pipe_delimited';
+      inputFormat: 'pipe_delimited',
       outputFormat: 'json';
       transform: async (data, mappings) => {
         return this.transformHL7Data(data, mappings);
@@ -599,9 +599,9 @@ class IntegrationHubService extends EventEmitter {
 
     // Initialize DICOM transformer
     this.transformers.set('dicom', {
-      name: 'DICOM Transformer';
+      name: 'DICOM Transformer',
       version: '1.0.0';
-      inputFormat: 'dicom';
+      inputFormat: 'dicom',
       outputFormat: 'json';
       transform: async (data, mappings) => {
         return this.transformDICOMData(data, mappings);
@@ -619,36 +619,36 @@ class IntegrationHubService extends EventEmitter {
 
       // Sample endpoints for demo
       await this.registerEndpoint({
-        name: 'Epic MyChart API';
+        name: 'Epic MyChart API',
         type: 'epic_api';
-        status: 'active';
+        status: 'active',
         configuration: {
-          baseUrl: 'https://api.epic.example.com';
+          baseUrl: 'https://api.epic.example.com',
           apiVersion: '2021';
-          timeout: 30000;
+          timeout: 30000,
           retryAttempts: 3;
-          retryDelay: 1000;
+          retryDelay: 1000,
           format: 'json';
-          encoding: 'utf8';
+          encoding: 'utf8'
         },
         credentials: {
-          type: 'oauth2';
+          type: 'oauth2',
           clientId: 'epic_client_id';
-          clientSecret: process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret';
-          tokenUrl: 'https://api.epic.example.com/oauth2/token';
-          scope: 'patient.read observation.read';
+          clientSecret: process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret',
+          tokenUrl: 'https://api.epic.example.com/oauth2/token',
+          scope: 'patient.read observation.read'
         },
-        mappings: [];
+        mappings: [],
         syncFrequency: 60;
         healthCheck: {
-          enabled: true;
+          enabled: true,
           interval: 5;
-          endpoint: '/api/health';
+          endpoint: '/api/health',
           method: 'GET';
-          timeout: 10000;
-          expectedStatus: [200];
+          timeout: 10000,
+          expectedStatus: [200]
         },
-        version: '1.0.0';
+        version: '1.0.0'
       })
 
     } catch (error) {
@@ -701,9 +701,9 @@ class IntegrationHubService extends EventEmitter {
       const result = await this.performHealthCheck(endpoint);
       if (!result.success) {
         await this.updateEndpoint(endpoint.id, {
-          status: 'error';
+          status: 'error',
           lastError: result.error;
-          errorCount: endpoint.errorCount + 1;
+          errorCount: endpoint.errorCount + 1
         });
 
         this.logEvent(endpoint.id, 'error', 'Health check failed', result.error);
@@ -739,10 +739,10 @@ class IntegrationHubService extends EventEmitter {
 
       // Update endpoint
       await this.updateEndpoint(endpoint.id, {
-        lastSync: new Date();
+        lastSync: new Date(),
         nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + endpoint.syncFrequency * 60 * 1000);
-        successCount: endpoint.successCount + result.recordsSuccess;
-        errorCount: endpoint.errorCount + result.recordsFailed;
+        successCount: endpoint.successCount + result.recordsSuccess,
+        errorCount: endpoint.errorCount + result.recordsFailed
       });
 
       this.logEvent(endpoint.id, 'sync_completed', `Sync completed: ${result.recordsProcessed} records processed`);
@@ -753,19 +753,19 @@ class IntegrationHubService extends EventEmitter {
       const result: SyncResult = {
         endpointId: endpoint.id;
         startTime,
-        endTime: new Date();
+        endTime: new Date(),
         success: false;
-        recordsProcessed: 0;
+        recordsProcessed: 0,
         recordsSuccess: 0;
-        recordsFailed: 0;
+        recordsFailed: 0,
         errors: [error.message];
-        warnings: [];
+        warnings: [],
         metadata: {}
       };
 
       await this.updateEndpoint(endpoint.id, {
-        errorCount: endpoint.errorCount + 1;
-        lastError: error.message;
+        errorCount: endpoint.errorCount + 1,
+        lastError: error.message
       });
 
       this.logEvent(endpoint.id, 'sync_failed', 'Synchronization failed', error.message);
@@ -780,15 +780,15 @@ class IntegrationHubService extends EventEmitter {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     return {
-      endpointId: endpoint.id;
-      startTime: new Date();
-      endTime: new Date();
+      endpointId: endpoint.id,
+      startTime: new Date(),
+      endTime: new Date(),
       success: true;
-      recordsProcessed: 150;
+      recordsProcessed: 150,
       recordsSuccess: 148;
-      recordsFailed: 2;
+      recordsFailed: 2,
       errors: [];
-      warnings: ['2 records had validation warnings'];
+      warnings: ['2 records had validation warnings'],
       metadata: { syncType: 'incremental' }
     };
   }
@@ -884,12 +884,12 @@ class IntegrationHubService extends EventEmitter {
 
   private async sendToEndpoint(endpoint: IntegrationEndpoint, message: IntegrationMessage): Promise<void> {
     // Implement actual sending logic based on endpoint type
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async processTransformedData(data: unknown, metadata: MessageMetadata): Promise<void> {
     // Process the transformed data (save to database, trigger workflows, etc.)
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private processRetryMessages(): void {
@@ -927,20 +927,20 @@ class IntegrationHubService extends EventEmitter {
         return data.resourceType || 'Unknown';
       case 'hl7_v2':
         return data.substring(0, 3) || 'Unknown'; // MSH, ADT, etc.
-      default: return 'Unknown';
+      default: return 'Unknown'
     }
   }
 
   private logEvent(endpointId: string, type: IntegrationEvent['type'], message: string, data?: unknown): void {
     const event: IntegrationEvent = {
-      id: uuidv4();
+      id: uuidv4(),
       endpointId,
       type,
       severity: type === 'error' || type === 'sync_failed' ? 'error' : 'info';
       message,
       data,
-      timestamp: new Date();
-      resolved: false;
+      timestamp: new Date(),
+      resolved: false
     };
 
     this.events.push(event);

@@ -8,53 +8,53 @@ const createEmployeeSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  middleName: z.string().optional();
+  middleName: z.string().optional(),
   gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
-  birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  email: z.string().email("Invalid email format").optional();
-  phone: z.string().optional();
-  address: z.any().optional();
-  joiningDate: z.string().transform(val => new Date(val));
-  departmentId: z.string().optional();
-  userId: z.string().optional();
-  photo: z.string().optional();
-  emergencyContact: z.any().optional();
+  birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  email: z.string().email("Invalid email format").optional(),
+  phone: z.string().optional(),
+  address: z.any().optional(),
+  joiningDate: z.string().transform(val => new Date(val)),
+  departmentId: z.string().optional(),
+  userId: z.string().optional(),
+  photo: z.string().optional(),
+  emergencyContact: z.any().optional(),
   qualifications: z.array(
     z.object({
-      code: z.string();
-      name: z.string();
-      issuer: z.string().optional();
-      identifier: z.string().optional();
-      startDate: z.string().transform(val => new Date(val));
+      code: z.string(),
+      name: z.string(),
+      issuer: z.string().optional(),
+      identifier: z.string().optional(),
+      startDate: z.string().transform(val => new Date(val)),
       endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-      attachment: z.string().optional();
+      attachment: z.string().optional()
     });
   ).optional(),
   positions: z.array(
     z.object({
-      positionId: z.string();
-      isPrimary: z.boolean();
-      startDate: z.string().transform(val => new Date(val));
-      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+      positionId: z.string(),
+      isPrimary: z.boolean(),
+      startDate: z.string().transform(val => new Date(val)),
+      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
     });
   ).optional(),
 });
 
 // Schema for employee update
 const _updateEmployeeSchema = z.object({
-  firstName: z.string().optional();
-  lastName: z.string().optional();
-  middleName: z.string().optional();
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  middleName: z.string().optional(),
   gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
-  birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  email: z.string().email("Invalid email format").optional();
-  phone: z.string().optional();
-  address: z.any().optional();
-  departmentId: z.string().optional();
-  photo: z.string().optional();
-  emergencyContact: z.any().optional();
-  active: z.boolean().optional();
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  email: z.string().email("Invalid email format").optional(),
+  phone: z.string().optional(),
+  address: z.any().optional(),
+  departmentId: z.string().optional(),
+  photo: z.string().optional(),
+  emergencyContact: z.any().optional(),
+  active: z.boolean().optional(),
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
 });
 
 // GET /api/hr/staff

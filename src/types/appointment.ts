@@ -13,7 +13,7 @@ export enum AppointmentStatus {
     Cancelled = "Cancelled",
     NoShow = "NoShow",
 export interface Appointment {
-    appointment_id: number;
+    appointment_id: number,
     patient_id: number;
     doctor_id: number;
     schedule_id?: number | null;
@@ -33,7 +33,7 @@ export interface Appointment {
 
 // Need User type if not already globally available
 interface User {
-    userId: number;
+    userId: number,
     username: string;
     fullName?: string | null;
     email: string

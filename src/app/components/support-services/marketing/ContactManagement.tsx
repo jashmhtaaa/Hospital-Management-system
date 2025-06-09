@@ -21,23 +21,23 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   const [contact, setContact] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
-    name: '';
+    name: '',
     email: '';
-    phone: '';
+    phone: '',
     source: 'WEBSITE';
-    status: 'ACTIVE';
+    status: 'ACTIVE',
     address: {
-      street: '';
+      street: '',
       city: '';
-      state: '';
+      state: '',
       postalCode: '';
-      country: '';
+      country: ''
     },
     preferences: {
-      emailOptIn: true;
+      emailOptIn: true,
       smsOptIn: false;
-      preferredContactMethod: 'EMAIL';
-      preferredLanguage: 'English';
+      preferredContactMethod: 'EMAIL',
+      preferredLanguage: 'English'
     },
     customFields: {}
   });
@@ -64,23 +64,23 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
         // Set form values from contact data
         setFormData({
-          name: data.name || '';
+          name: data.name || '',
           email: data.email || '';
-          phone: data.phone || '';
+          phone: data.phone || '',
           source: data.source || 'WEBSITE';
-          status: data.status || 'ACTIVE';
+          status: data.status || 'ACTIVE',
           address: data.address || {
-            street: '';
+            street: '',
             city: '';
-            state: '';
+            state: '',
             postalCode: '';
-            country: '';
+            country: ''
           },
           preferences: data.preferences || {
-            emailOptIn: true;
+            emailOptIn: true,
             smsOptIn: false;
-            preferredContactMethod: 'EMAIL';
-            preferredLanguage: 'English';
+            preferredContactMethod: 'EMAIL',
+            preferredLanguage: 'English'
           },
           customFields: data.customFields || {}
         });
@@ -106,9 +106,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       } catch (error) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load contact data. Please try again.";
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -237,14 +237,14 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) throw new Error('Failed to save contact');
 
       const savedContact = await response.json(),
       toast({
-        title: "Success";
+        title: "Success",
         description: `Contact ${contactId ? 'updated' : 'created'} successfully.`,
       });
 
@@ -256,9 +256,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to save contact. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -271,7 +271,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
       const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/notes`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -284,15 +284,15 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       setNotes([...notes, addedNote]);
       setNewNote(''),
       toast({
-        title: "Success";
-        description: "Note added successfully.";
+        title: "Success",
+        description: "Note added successfully."
       });
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to add note. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -303,7 +303,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
       const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/link-patient`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -316,15 +316,15 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       setContact(updatedContact);
       fetchPatientData(patientId),
       toast({
-        title: "Success";
-        description: "Patient linked successfully.";
+        title: "Success",
+        description: "Patient linked successfully."
       });
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to link patient. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -335,7 +335,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -351,15 +351,15 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       }
 
       toast({
-        title: "Success";
-        description: "Added to segment successfully.";
+        title: "Success",
+        description: "Added to segment successfully."
       });
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to add to segment. Please try again.";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };

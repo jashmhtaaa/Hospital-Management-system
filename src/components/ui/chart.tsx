@@ -22,7 +22,7 @@ export type ChartConfig = {
 }
 
 type ChartContextProps = {
-  config: ChartConfig;
+  config: ChartConfig
 }
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
@@ -40,7 +40,7 @@ const useChart = () {
 const ChartContainer = React.forwardRef<;
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    config: ChartConfig;
+    config: ChartConfig,
     children: React.ComponentProps<;
       typeof RechartsPrimitive.ResponsiveContainer;
     >["children"]
@@ -70,7 +70,7 @@ const ChartContainer = React.forwardRef<;
 });
 ChartContainer.displayName = "Chart";
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+const ChartStyle = ({ id, config }: { id: string, config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color;
   );
@@ -304,7 +304,7 @@ const ChartLegendContent = React.forwardRef<;
               ) : (
 <div className="h-2 w-2 shrink-0 rounded-[2px]"
                   style={{
-                    backgroundColor: item.color;
+                    backgroundColor: item.color
                   }}
                 />
               )}
@@ -320,7 +320,7 @@ ChartLegendContent.displayName = "ChartLegend";
 
 // Helper to extract item config from a payload.
 const getPayloadConfigFromPayload = (
-  config: ChartConfig;
+  config: ChartConfig,
   payload: unknown;
   key: string
 ) {

@@ -11,21 +11,21 @@ import { z } from 'zod';
 export const idSchema = z.string().uuid();
 
 export const paginationSchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1);
-  pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
+  page: z.coerce.number().int().positive().optional().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).optional().default(20)
 });
 
 export const _sortSchema = z.object({
-  field: z.string();
-  direction: z.enum(['asc', 'desc']).default('asc'),;
+  field: z.string(),
+  direction: z.enum(['asc', 'desc']).default('asc'),
 });
 
 export const dateRangeSchema = z.object({
-  startDate: z.coerce.date();
-  endDate: z.coerce.date();
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date()
 }).refine(data => data.startDate <= data.endDate, {
-  message: "End date must be after start date";
-  path: ["endDate"];
+  message: "End date must be after start date",
+  path: ["endDate"]
 });
 
 // Financial validation schemas
@@ -107,8 +107,8 @@ export const _validateId = (id: string): string {
   return idSchema.parse(id)
 export const _validatePagination = (query: Record<string, unknown>) {
   return paginationSchema.parse({
-    page: query.page;
-    pageSize: query.pageSize;
+    page: query.page,
+    pageSize: query.pageSize
   });
 export const _validateDateRange = (startDate: string, endDate: string) {
   return dateRangeSchema.parse({
@@ -124,6 +124,6 @@ export const _validatePercentage = (percentage: number | string): number {
 // Validation error formatter
 export const _formatZodError = (error: z.ZodError) {
   return error.errors.map(err => ({
-    path: err.path.join('.');
-    message: err.message;
+    path: err.path.join('.'),
+    message: err.message
   }));

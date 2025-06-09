@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for ER Visit data
 interface ERVisit {
-  id: string;
+  id: string,
   patient_id: string | number;
   arrival_timestamp: string; // ISO string
   chief_complaint: string;
@@ -73,9 +73,9 @@ export const _GET = async (
       );
     }
     // FIX: Return type matches ERVisit, no 'any' needed
-    return NextResponse.json(visit);
+    return NextResponse.json(visit)
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to fetch ER visit details", details: errorMessage },
@@ -156,28 +156,28 @@ export const _PUT = async (
     if (updateData.current_status || updateData.current_location) {
       // FIX: Define type for log entry
       interface StatusLogEntry {
-        id: string;
+        id: string,
         visit_id: string;
-        status: string | null | undefined;
+        status: string | null | undefined,
         location: string | null | undefined;
-        updated_by_id: string | number | undefined;
-        timestamp: string;
+        updated_by_id: string | number | undefined,
+        timestamp: string
       }
       const _logEntry: StatusLogEntry = {
-        id: uuidv4();
+        id: uuidv4(),
         visit_id: visitId;
-        status: updateData.current_status;
+        status: updateData.current_status,
         location: updateData.current_location;
         updated_by_id: updateData.updated_by_id, // Assuming updated_by_id is passed
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       };
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
 
     // Return the updated visit
     return NextResponse.json(updatedVisit);
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to update ER visit", details: errorMessage },
@@ -250,7 +250,7 @@ export const DELETE = async (
       { status: 200 }
     )
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       { error: "Failed to delete ER visit", details: errorMessage },

@@ -57,9 +57,9 @@ export class IntegratedQualityService {
     // Get the full indicator from the service and persist it
     const fullIndicator = {
       ...indicator,
-      id: indicatorId;
-      createdAt: new Date();
-      updatedAt: new Date();
+      id: indicatorId,
+      createdAt: new Date(),
+      updatedAt: new Date()
     } as QualityIndicator
 
     await this.persistenceService.saveQualityIndicator(fullIndicator, userId);
@@ -91,11 +91,11 @@ export class IntegratedQualityService {
     // Get the full event from the service and persist it
     const fullEvent = {
       ...event,
-      id: eventId;
+      id: eventId,
       status: 'reported' as const;
-      notifications: [];
-      createdAt: new Date();
-      updatedAt: new Date();
+      notifications: [],
+      createdAt: new Date(),
+      updatedAt: new Date()
     } as QualityEvent
 
     await this.persistenceService.saveQualityEvent(fullEvent, userId);
@@ -104,7 +104,7 @@ export class IntegratedQualityService {
   }
 
   async updateQualityEvent(
-    eventId: string;
+    eventId: string,
     updates: Partial<QualityEvent>;
     userId: string
   ): Promise<boolean> {
@@ -114,8 +114,8 @@ export class IntegratedQualityService {
       // Update in persistence layer
       const updatedEvent = {
         ...updates,
-        id: eventId;
-        updatedAt: new Date();
+        id: eventId,
+        updatedAt: new Date()
       } as QualityEvent
 
       await this.persistenceService.saveQualityEvent(updatedEvent, userId);
@@ -145,9 +145,9 @@ export class IntegratedQualityService {
     // The quality service should have calculated compliance, but we need to get it
     const fullReport = {
       ...reportData,
-      id: reportId;
-      overallCompliance: this.calculateOverallCompliance(reportData.requirements || []);
-      status: this.determineComplianceStatus(reportData.requirements || []);
+      id: reportId,
+      overallCompliance: this.calculateOverallCompliance(reportData.requirements || []),
+      status: this.determineComplianceStatus(reportData.requirements || [])
     } as ComplianceReport
 
     await this.persistenceService.saveComplianceReport(fullReport, userId);
@@ -167,10 +167,10 @@ export class IntegratedQualityService {
 
   // Quality Statistics (now with persistent data)
   async getQualityStatistics(): Promise<{
-    indicators: { total: number; active: number; core: number };
-    events: { total: number; open: number; critical: number };
-    assessments: { total: number; active: number; completed: number };
-    compliance: { reports: number; compliant: number; gaps: number };
+    indicators: { total: number, active: number; core: number };
+    events: { total: number, open: number; critical: number };
+    assessments: { total: number, active: number; completed: number };
+    compliance: { reports: number, compliant: number; gaps: number };
   }> {
     const indicators = await this.persistenceService.getQualityIndicators({}, 'system');
     const events = await this.persistenceService.getQualityEvents({}, 'system');
@@ -178,74 +178,74 @@ export class IntegratedQualityService {
 
     return {
       indicators: {
-        total: indicators.length;
+        total: indicators.length,
         active: indicators.filter(i => i.isActive).length;
-        core: indicators.filter(i => i.isCore).length;
+        core: indicators.filter(i => i.isCore).length
       },
       events: {
-        total: events.length;
+        total: events.length,
         open: events.filter(e => !['closed'].includes(e.status)).length;
-        critical: events.filter(e => e.severity === 'severe' || e.severity === 'catastrophic').length;
+        critical: events.filter(e => e.severity === 'severe' || e.severity === 'catastrophic').length
       },
       assessments: {
         total: 0, // Would need assessment persistence
-        active: 0;
-        completed: 0;
+        active: 0,
+        completed: 0
       },
       compliance: {
-        reports: reports.length;
+        reports: reports.length,
         compliant: reports.filter(r => r.status === 'compliant').length;
-        gaps: reports.reduce((sum, r) => sum + (r.gaps?.length || 0), 0);
+        gaps: reports.reduce((sum, r) => sum + (r.gaps?.length || 0), 0)
       }
     }
   }
 
   // Quality Dashboard (integrated version)
   async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{
-    overview: unknown;
+    overview: unknown,
     trends: unknown[]
-    events: unknown;
+    events: unknown,
     assessments: unknown[];
-    alerts: unknown[];
+    alerts: unknown[]
   }> {
     // Get statistics from persistent data
     const stats = await this.getQualityStatistics()
 
     // Get recent events for overview
     const recentEvents = await this.persistenceService.getQualityEvents({
-      dateFrom: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
+      dateFrom: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
     }, 'system')
 
     return {
       overview: {
-        totalIndicators: stats.indicators.total;
+        totalIndicators: stats.indicators.total,
         activeEvents: stats.events.open;
         complianceRate: stats.compliance.reports > 0
           ? (stats.compliance.compliant / stats.compliance.reports * 100).toFixed(1)
           : '0.0',
-        criticalAlerts: stats.events.critical;
+        criticalAlerts: stats.events.critical
       },
       trends: [], // Would need time-series data
       events: {
         recent: recentEvents.slice(0, 10),
-        byType: this.groupEventsByType(recentEvents);
-        bySeverity: this.groupEventsBySeverity(recentEvents);
+        byType: this.groupEventsByType(recentEvents),
+        bySeverity: this.groupEventsBySeverity(recentEvents)
       },
       assessments: [], // Would need assessment data
-      alerts: this.generateAlerts(stats, recentEvents);
+      alerts: this.generateAlerts(stats, recentEvents)
     }
   }
 
   // Data Migration (for existing in-memory data)
   async migrateExistingData(userId: string): Promise<{
-    indicatorsMigrated: number;
+    indicatorsMigrated: number,
     eventsMigrated: number
-    reportsMigrated: number;
+    reportsMigrated: number
   }> {
     let migratedCounts = {
-      indicatorsMigrated: 0;
+      indicatorsMigrated: 0,
       eventsMigrated: 0;
-      reportsMigrated: 0;
+      reportsMigrated: 0
     };
 
     try {
@@ -253,19 +253,19 @@ export class IntegratedQualityService {
       // This would require access to the private Maps in the quality service
       // For now, return zeros as the persistence is now the primary storage
 
-      /* SECURITY: Console statement removed */return migratedCounts;
+      /* SECURITY: Console statement removed */return migratedCounts
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to migrate existing quality data');
+      throw new Error('Failed to migrate existing quality data')
     }
   }
 
   // Data Archival and Cleanup
   async archiveOldData(): Promise<{
-    archivedIndicators: number;
+    archivedIndicators: number,
     archivedEvents: number
-    archivedAssessments: number;
-    archivedReports: number;
+    archivedAssessments: number,
+    archivedReports: number
   }> {
     return await this.persistenceService.archiveOldRecords();
   }
@@ -306,10 +306,10 @@ export class IntegratedQualityService {
     // Critical events alert
     if (stats.events.critical > 0) {
       alerts.push({
-        type: 'critical_events';
+        type: 'critical_events',
         severity: 'high';
         message: `${stats.events.critical} critical quality events require immediate attention`,
-        actionRequired: true;
+        actionRequired: true
       })
     }
 
@@ -320,10 +320,10 @@ export class IntegratedQualityService {
 
     if (todayEvents > 5) {
       alerts.push({
-        type: 'high_event_frequency';
+        type: 'high_event_frequency',
         severity: 'medium';
         message: `${todayEvents} quality events reported today - higher than usual`,
-        actionRequired: false;
+        actionRequired: false
       });
     }
 
@@ -334,33 +334,33 @@ export class IntegratedQualityService {
    * Health check for the integrated service
    */
   async healthCheck(): Promise<{
-    status: 'healthy' | 'degraded' | 'unhealthy';
+    status: 'healthy' | 'degraded' | 'unhealthy',
     services: {
-      qualityService: boolean;
-      persistenceService: boolean;
+      qualityService: boolean,
+      persistenceService: boolean
     };
-    lastChecked: Date;
+    lastChecked: Date
   }> {
     try {
       // Check if services are responsive
       const stats = await this.getQualityStatistics()
 
       return {
-        status: 'healthy';
+        status: 'healthy',
         services: {
-          qualityService: true;
-          persistenceService: true;
+          qualityService: true,
+          persistenceService: true
         },
-        lastChecked: new Date();
+        lastChecked: new Date()
       };
     } catch (error) {
       return {
-        status: 'unhealthy';
+        status: 'unhealthy',
         services: {
-          qualityService: false;
-          persistenceService: false;
+          qualityService: false,
+          persistenceService: false
         },
-        lastChecked: new Date();
+        lastChecked: new Date()
       };
     }
   }
@@ -373,7 +373,7 @@ export const _getIntegratedQualityService = (): IntegratedQualityService => {
   if (!integratedQualityServiceInstance) {
     integratedQualityServiceInstance = new IntegratedQualityService();
   }
-  return integratedQualityServiceInstance;
+  return integratedQualityServiceInstance
 };
 
 export { IntegratedQualityService };

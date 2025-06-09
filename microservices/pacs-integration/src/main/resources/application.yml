@@ -13,7 +13,7 @@ spring:
     name: pacs-integration-service
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  
+
   # Database Configuration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/hms_pacs}
@@ -80,7 +80,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "com.hospital.hms.pacs.dto"
+        spring.json.trusted.packages: 'com.hospital.hms.pacs.dto'
 
   # Security Configuration
   security:
@@ -113,7 +113,7 @@ eureka:
     lease-expiration-duration-in-seconds: 90
     metadata-map:
       version: 1.0.0
-      description: "PACS Integration Service for medical imaging"
+      description: 'PACS Integration Service for medical imaging'
 
 # Logging Configuration
 logging:
@@ -124,8 +124,8 @@ logging:
     org.hibernate.SQL: ${SQL_LOG_LEVEL:WARN}
     org.hibernate.type.descriptor.sql.BasicBinder: ${SQL_PARAM_LOG_LEVEL:WARN}
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%logger{36}] - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%logger{36}] - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%logger{36}] - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%logger{36}] - %msg%n'
   file:
     name: ${LOG_FILE_NAME:logs/pacs-integration-service.log}
 
@@ -178,7 +178,7 @@ springdoc:
     disable-swagger-default-url: true
   group-configs:
     - group: pacs-integration-api
-      display-name: "PACS Integration API"
+      display-name: 'PACS Integration API'
       paths-to-match: /api/v1/pacs/**
 
 # Resilience4j Configuration
@@ -231,7 +231,7 @@ pacs:
     encryption:
       enabled: ${PACS_ENCRYPTION_ENABLED:true}
       algorithm: AES-256-GCM
-  
+
   dicom:
     validation:
       strict-mode: ${PACS_STRICT_VALIDATION:false}
@@ -245,7 +245,7 @@ pacs:
       enabled: ${PACS_ANONYMIZATION_ENABLED:false}
       keep-patient-id: false
       keep-study-date: true
-  
+
   imaging:
     quality-assessment:
       enabled: true
@@ -256,7 +256,7 @@ pacs:
       max-size: 256x256
       format: JPEG
       quality: 85
-  
+
   integration:
     fhir:
       enabled: ${PACS_FHIR_ENABLED:true}
@@ -268,14 +268,14 @@ pacs:
     worklist:
       enabled: ${PACS_WORKLIST_ENABLED:true}
       auto-import: true
-      schedule: "0 */5 * * * *" # Every 5 minutes
+      schedule: '0 */5 * * * *' # Every 5 minutes
 
   archival:
     enabled: ${PACS_ARCHIVAL_ENABLED:true}
     retention-days: ${PACS_RETENTION_DAYS:2555} # 7 years
     auto-archive-days: ${PACS_AUTO_ARCHIVE_DAYS:90}
-    schedule: "0 0 2 * * *" # Daily at 2 AM
-  
+    schedule: '0 0 2 * * *' # Daily at 2 AM
+
   monitoring:
     metrics:
       enabled: true

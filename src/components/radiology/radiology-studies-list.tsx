@@ -20,9 +20,9 @@ import { useRouter } from "next/navigation";
 
 // Define interface for Radiology Study data
 interface RadiologyStudy {
-  id: string;
+  id: string,
   patient_name: string;
-  procedure_name: string;
+  procedure_name: string,
   accession_number: string | null;
   study_datetime: string; // Assuming ISO string format
   status: "scheduled" | "acquired" | "reported" | "verified"
@@ -60,17 +60,17 @@ export default const _RadiologyStudiesList = () {
   };
 
   const handleViewStudy = (studyId: string): void => {
-    router.push(`/dashboard/radiology/studies/${studyId}`);
+    router.push(`/dashboard/radiology/studies/${studyId}`)
   };
 
   const getStatusBadge = (
     status: RadiologyStudy["status"]
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyStudy["status"]]: string } = {
-      scheduled: "bg-yellow-100 text-yellow-800";
+      scheduled: "bg-yellow-100 text-yellow-800",
       acquired: "bg-blue-100 text-blue-800";
-      reported: "bg-purple-100 text-purple-800";
-      verified: "bg-green-100 text-green-800";
+      reported: "bg-purple-100 text-purple-800",
+      verified: "bg-green-100 text-green-800"
     };
 
     const statusText =;
@@ -80,7 +80,7 @@ export default const _RadiologyStudiesList = () {
       <Badge className={statusStyles[status] || "bg-gray-100"}>;
         {statusText}
       </Badge>
-    );
+    )
   };
 
   return (

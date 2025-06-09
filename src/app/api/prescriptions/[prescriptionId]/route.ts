@@ -11,33 +11,33 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "Pharmacist", "Patient"]
 
 // Define the expected shape of the main prescription query result
 interface PrescriptionQueryResult {
-    prescription_id: number;
+    prescription_id: number,
     consultation_id: number | null;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
     prescription_date: string; // Assuming date is returned as string
-    notes: string | null;
+    notes: string | null,
     created_at: string;
-    updated_at: string;
+    updated_at: string,
     patient_first_name: string;
-    patient_last_name: string;
-    doctor_full_name: string;
+    patient_last_name: string,
+    doctor_full_name: string
 }
 
 // Define the expected shape of the prescription items query result
 interface PrescriptionItemQueryResult {
-    prescription_item_id: number;
+    prescription_item_id: number,
     prescription_id: number;
-    inventory_item_id: number;
+    inventory_item_id: number,
     drug_name: string;
-    dosage: string;
+    dosage: string,
     frequency: string;
-    duration: string;
+    duration: string,
     route: string;
-    instructions: string | null;
+    instructions: string | null,
     quantity_prescribed: number;
-    created_at: string;
-    inventory_unit_of_measure: string;
+    created_at: string,
+    inventory_unit_of_measure: string
 }
 
 // Helper function to get prescription ID from URL
@@ -110,32 +110,32 @@ export const _GET = async (request: Request) => {
 
         // 5. Format the final response
         const prescription: Prescription = {
-            prescription_id: presResult.prescription_id;
+            prescription_id: presResult.prescription_id,
             consultation_id: presResult.consultation_id ?? null, // Handle potential null
-            patient_id: presResult.patient_id;
+            patient_id: presResult.patient_id,
             doctor_id: presResult.doctor_id;
-            prescription_date: presResult.prescription_date;
+            prescription_date: presResult.prescription_date,
             notes: presResult.notes;
-            created_at: presResult.created_at;
+            created_at: presResult.created_at,
             updated_at: presResult.updated_at;
             // Include patient and doctor info if needed in detail view
             // patient: { ... },
             // doctor: { ... },
             items: itemsResult.results?.map((item: PrescriptionItemQueryResult) => ({ // Use defined interface,
-                prescription_item_id: item.prescription_item_id;
+                prescription_item_id: item.prescription_item_id,
                 prescription_id: item.prescription_id;
-                inventory_item_id: item.inventory_item_id;
+                inventory_item_id: item.inventory_item_id,
                 drug_name: item.drug_name;
-                dosage: item.dosage;
+                dosage: item.dosage,
                 frequency: item.frequency;
-                duration: item.duration;
+                duration: item.duration,
                 route: item.route;
-                instructions: item.instructions;
+                instructions: item.instructions,
                 quantity_prescribed: item.quantity_prescribed;
-                created_at: item.created_at;
+                created_at: item.created_at,
                 inventory_item: {
-                    inventory_item_id: item.inventory_item_id;
-                    unit_of_measure: item.inventory_unit_of_measure;
+                    inventory_item_id: item.inventory_item_id,
+                    unit_of_measure: item.inventory_unit_of_measure
                 }
             })) || [],
         }

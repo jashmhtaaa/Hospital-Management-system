@@ -16,38 +16,38 @@ import { convertToFHIRCoverage } from '@/lib/core/fhir';
 
 // Schema for insurance policy creation
 const createPolicySchema = z.object({
-  patientId: z.string().uuid();
-  insuranceProviderId: z.string().uuid();
-  policyNumber: z.string();
-  groupNumber: z.string().optional();
-  groupName: z.string().optional();
-  subscriberId: z.string().uuid().optional();
+  patientId: z.string().uuid(),
+  insuranceProviderId: z.string().uuid(),
+  policyNumber: z.string(),
+  groupNumber: z.string().optional(),
+  groupName: z.string().optional(),
+  subscriberId: z.string().uuid().optional(),
   relationship: z.enum(['self', 'spouse', 'child', 'other']).default('self'),
-  startDate: z.coerce.date();
-  endDate: z.coerce.date().optional();
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
   coverageType: z.enum(['primary', 'secondary', 'tertiary']).default('primary'),
   planType: z.enum(['HMO', 'PPO', 'EPO', 'POS', 'HDHP', 'other']),
-  copayAmount: z.number().optional();
-  coinsurancePercentage: z.number().optional();
-  deductibleAmount: z.number().optional();
-  deductibleMet: z.number().optional();
-  outOfPocketMax: z.number().optional();
-  outOfPocketMet: z.number().optional();
-  notes: z.string().optional();
+  copayAmount: z.number().optional(),
+  coinsurancePercentage: z.number().optional(),
+  deductibleAmount: z.number().optional(),
+  deductibleMet: z.number().optional(),
+  outOfPocketMax: z.number().optional(),
+  outOfPocketMet: z.number().optional(),
+  notes: z.string().optional()
 });
 
 // Schema for insurance policy query parameters
 const policyQuerySchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1);
-  pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
-  patientId: z.string().uuid().optional();
-  insuranceProviderId: z.string().uuid().optional();
+  page: z.coerce.number().int().positive().optional().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
+  patientId: z.string().uuid().optional(),
+  insuranceProviderId: z.string().uuid().optional(),
   status: z.enum(['active', 'inactive', 'expired']).optional(),
   coverageType: z.enum(['primary', 'secondary', 'tertiary']).optional(),
   planType: z.enum(['HMO', 'PPO', 'EPO', 'POS', 'HDHP', 'other']).optional(),
   sortBy: z.enum(['startDate', 'endDate', 'createdAt']).optional().default('startDate'),
   sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
-  format: z.enum(['json', 'fhir']).optional().default('json'),;
+  format: z.enum(['json', 'fhir']).optional().default('json'),
 });
 
 // GET handler for retrieving all insurance policies with filtering and pagination
@@ -100,26 +100,26 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       orderBy: {
         [query.sortBy]: query.sortOrder,
       },
-      skip: (query.page - 1) * query.pageSize;
+      skip: (query.page - 1) * query.pageSize,
       take: query.pageSize;
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             firstName: true;
-            lastName: true;
+            lastName: true,
             mrn: true;
-            dateOfBirth: true;
+            dateOfBirth: true
           },
         },
         subscriber: {
           select: {
-            id: true;
+            id: true,
             firstName: true;
-            lastName: true;
+            lastName: true
           },
         },
-        insuranceProvider: true;
+        insuranceProvider: true
       },
     }),
     prisma.insurancePolicy.count({ where }),
@@ -189,51 +189,51 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   // Create policy in database
   const policy = await prisma.insurancePolicy.create({
     data: {
-      patientId: data.patientId;
+      patientId: data.patientId,
       insuranceProviderId: data.insuranceProviderId;
-      policyNumber: data.policyNumber;
+      policyNumber: data.policyNumber,
       groupNumber: data.groupNumber;
-      groupName: data.groupName;
+      groupName: data.groupName,
       subscriberId: data.subscriberId;
-      relationship: data.relationship;
+      relationship: data.relationship,
       startDate: data.startDate;
-      endDate: data.endDate;
+      endDate: data.endDate,
       coverageType: data.coverageType;
-      planType: data.planType;
+      planType: data.planType,
       copayAmount: data.copayAmount;
-      coinsurancePercentage: data.coinsurancePercentage;
+      coinsurancePercentage: data.coinsurancePercentage,
       deductibleAmount: data.deductibleAmount;
-      deductibleMet: data.deductibleMet;
+      deductibleMet: data.deductibleMet,
       outOfPocketMax: data.outOfPocketMax;
       outOfPocketMet: data.outOfPocketMet;
       status,
-      notes: data.notes;
+      notes: data.notes
     },
     include: {
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
       subscriber: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
+          lastName: true
         },
       },
-      insuranceProvider: true;
+      insuranceProvider: true
     },
   });
 
   logger.info('Insurance policy created', {
-    policyId: policy.id;
+    policyId: policy.id,
     policyNumber: policy.policyNumber;
-    patientId: policy.patientId;
-    providerId: policy.insuranceProviderId;
+    patientId: policy.patientId,
+    providerId: policy.insuranceProviderId
   });
 
   return createSuccessResponse(policy);

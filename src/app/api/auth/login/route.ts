@@ -11,7 +11,7 @@ import { sessionOptions, IronSessionData } from "@/lib/session";
 // Input validation schema
 const LoginSchema = z.object({
   identifier: z.string().min(1, "Username or email is required"), // Can be username or email
-  password: z.string().min(1, "Password is required"),;
+  password: z.string().min(1, "Password is required"),
 });
 export const _POST = async (request: Request) => {
   try {
@@ -20,7 +20,7 @@ export const _POST = async (request: Request) => {
 
     if (!validation.success) {
       return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-        status: 400;
+        status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -44,14 +44,14 @@ export const _POST = async (request: Request) => {
       .bind(identifier, identifier);
       // Define the expected result type more accurately
       .first<{
-          userId: number;
+          userId: number,
           username: string;
-          email: string;
+          email: string,
           password_hash: string;
-          fullName: string | null;
+          fullName: string | null,
           roleId: number;
-          isActive: boolean;
-          roleName: string;
+          isActive: boolean,
+          roleName: string
       }>();
 
     if (!userResult) {
@@ -78,14 +78,14 @@ export const _POST = async (request: Request) => {
     // Prepare user data for session (exclude sensitive info)
     // Initialize permissions as empty array for now
     const sessionUser: User = {
-        userId: userResult.userId;
+        userId: userResult.userId,
         username: userResult.username;
-        email: userResult.email;
+        email: userResult.email,
         fullName: userResult.fullName;
-        roleId: userResult.roleId;
+        roleId: userResult.roleId,
         roleName: userResult.roleName, // Include roleName from query
-        isActive: userResult.isActive;
-        permissions: [], // Initialize permissions as empty array;
+        isActive: userResult.isActive,
+        permissions: [], // Initialize permissions as empty array
     };
 
     session.user = sessionUser;
@@ -93,7 +93,7 @@ export const _POST = async (request: Request) => {
 
     // 4. Return success response (maybe with user info, excluding sensitive data)
     return new Response(JSON.stringify({ message: "Login successful", user: sessionUser }), {
-      status: 200;
+      status: 200,
       headers: { "Content-Type": "application/json" },
     })
 
@@ -101,7 +101,7 @@ export const _POST = async (request: Request) => {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-      status: 500;
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }

@@ -14,18 +14,18 @@ import { errorHandler } from '../../../../../lib/error-handler';
 
 // Initialize repositories (in production, use dependency injection)
 const administrationRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findByStatus: (status: string) => Promise.resolve([]);
-  findByDateRange: (startDate: Date, endDate: Date) => Promise.resolve([]);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByAdministeredBy: (userId: string) => Promise.resolve([]);
+  findById: (id: string) => Promise.resolve(null),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findByStatus: (status: string) => Promise.resolve([]),
+  findByDateRange: (startDate: Date, endDate: Date) => Promise.resolve([]),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByAdministeredBy: (userId: string) => Promise.resolve([]),
   generateReport: (criteria: unknown) => Promise.resolve({ data: [], summary: {} }),
-  save: (administration: unknown) => Promise.resolve(administration.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  save: (administration: unknown) => Promise.resolve(administration.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 /**
@@ -69,9 +69,9 @@ export const GET = async (req: NextRequest) => {
     // Build report criteria
     const criteria: unknown = {
       reportType,
-      startDate: new Date(startDate);
-      endDate: new Date(endDate);
-      groupBy;
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+      groupBy
     };
 
     if (locationId != null) criteria.locationId = locationId;
@@ -98,20 +98,20 @@ export const GET = async (req: NextRequest) => {
 
       // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
-        action: 'EXPORT_REPORT';
+        action: 'EXPORT_REPORT',
         resourceType: 'MedicationAdministration';
-        userId: userId;
+        userId: userId,
         details: {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length;
+          recordCount: report.data.length
         }
       });
 
       // Return CSV response
       return new NextResponse(formattedReport, {
-        status: 200;
+        status: 200,
         headers: {
           'Content-Type': 'text/csv',
           'Content-Disposition': `attachment; filename="med_admin_report_${startDate}_to_${endDate}.csv"`;
@@ -122,14 +122,14 @@ export const GET = async (req: NextRequest) => {
 
       // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
-        action: 'GENERATE_REPORT';
+        action: 'GENERATE_REPORT',
         resourceType: 'MedicationAdministration';
-        userId: userId;
+        userId: userId,
         details: {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length;
+          recordCount: report.data.length
         }
       });
 
@@ -147,17 +147,17 @@ export const GET = async (req: NextRequest) => {
 const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
   // Calculate various metrics based on the report data
   const metrics = {
-    totalAdministrations: data.length;
+    totalAdministrations: data.length,
     onTimeAdministrations: 0;
-    lateAdministrations: 0;
+    lateAdministrations: 0,
     missedAdministrations: 0;
-    documentedAdministrations: 0;
+    documentedAdministrations: 0,
     highAlertMedications: 0;
-    controlledSubstances: 0;
+    controlledSubstances: 0,
     administrationsByShift: {
-      morning: 0;
+      morning: 0,
       afternoon: 0;
-      night: 0;
+      night: 0
     },
     administrationsByRoute: {}
   };

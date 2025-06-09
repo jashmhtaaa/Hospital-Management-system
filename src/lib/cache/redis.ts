@@ -4,8 +4,8 @@ import { createClient } from 'redis';
 import { config } from '@/config';
 // Create Redis client
 const redisClient = createClient({
-  url: config.redis.url;
-  password: config.redis.password;
+  url: config.redis.url,
+  password: config.redis.password
 });
 
 // Connect to Redis
@@ -73,7 +73,7 @@ export class RedisCache {
    * Get data from cache or fetch from source;
    */
   static async getOrSet<T>(
-    key: string;
+    key: string,
     fetchFn: () => Promise<T>;
     ttlSeconds: number = 3600;
   ): Promise<T> {

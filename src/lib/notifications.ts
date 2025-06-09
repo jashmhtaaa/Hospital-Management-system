@@ -13,9 +13,9 @@ import { DB } from './database.ts';
  * Notification type definition;
  */
 export interface Notification {
-  userId: number;
+  userId: number,
   type: 'critical_value' | 'critical_finding' | 'result_available' | 'specimen_rejected' | 'order_status';
-  title: string;
+  title: string,
   message: string;
   resourceType: string;
   resourceId?: number;
@@ -31,7 +31,7 @@ export interface Notification {
  * @returns Promise resolving to array of created notification IDs;
  */
 export const _notifyUsers = async (
-  userIds: number[];
+  userIds: number[],
   notification: Omit<Notification, 'userId'>;
 ): Promise<number[]> {
   try {
@@ -76,7 +76,7 @@ export const _notifyUsers = async (
  * @returns Promise resolving to boolean indicating success;
  */
 export const _markNotificationRead = async (
-  notificationId: number;
+  notificationId: number,
   userId: number;
 ): Promise<boolean> {
   try {
@@ -105,7 +105,7 @@ export const _markNotificationRead = async (
  * @returns Promise resolving to array of notifications;
  */
 export const _getUserNotifications = async (
-  userId: number;
+  userId: number,
   unreadOnly: boolean = false;
   limit: number = 50;
 ): Promise<any[]> {
@@ -131,7 +131,7 @@ export const _getUserNotifications = async (
 
     return result.results.map((notification: unknown) => ({
       ...notification,
-      metadata: notification.metadata ? JSON.parse(notification.metadata) : null;
+      metadata: notification.metadata ? JSON.parse(notification.metadata) : null
     }));
   } catch (error) {
 

@@ -10,21 +10,21 @@ import { sessionOptions } from "@/lib/session";
 // app/api/opd-visits/[visitId]/route.ts
 // Define the expected shape of the database query result
 interface OPDVisitQueryResult {
-  opd_visit_id: number;
+  opd_visit_id: number,
   patient_id: number;
-  appointment_id: number | null;
+  appointment_id: number | null,
   visit_datetime: string; // Assuming ISO string format
   visit_type: string; // Should ideally be an enum
-  doctor_id: number;
+  doctor_id: number,
   department: string;
   status: OPDVisitStatus; // Use the existing enum
-  notes: string | null;
+  notes: string | null,
   created_by_user_id: number;
   created_at: string; // Assuming ISO string format
   updated_at: string; // Assuming ISO string format
-  patient_first_name: string;
+  patient_first_name: string,
   patient_last_name: string;
-  doctor_full_name: string;
+  doctor_full_name: string
 }
 
 // Define roles allowed to view/manage OPD visits (adjust as needed)
@@ -49,14 +49,14 @@ export const _GET = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (visitId === null) {
         return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -80,40 +80,40 @@ export const _GET = async (request: Request) => {
 
         if (!visitResult) {
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
-                status: 404;
+                status: 404,
                 headers: { "Content-Type": "application/json" },
             });
         }
 
         // 3. Format the response
         const visit: OPDVisit = {
-            opd_visit_id: visitResult.opd_visit_id;
+            opd_visit_id: visitResult.opd_visit_id,
             patient_id: visitResult.patient_id;
-            appointment_id: visitResult.appointment_id;
+            appointment_id: visitResult.appointment_id,
             visit_datetime: visitResult.visit_datetime;
             visit_type: visitResult.visit_type as OPDVisitType, // Cast to enum
-            doctor_id: visitResult.doctor_id;
+            doctor_id: visitResult.doctor_id,
             department: visitResult.department;
-            status: visitResult.status;
+            status: visitResult.status,
             notes: visitResult.notes;
-            created_by_user_id: visitResult.created_by_user_id;
+            created_by_user_id: visitResult.created_by_user_id,
             created_at: visitResult.created_at;
-            updated_at: visitResult.updated_at;
+            updated_at: visitResult.updated_at,
             patient: {
-                patient_id: visitResult.patient_id;
+                patient_id: visitResult.patient_id,
                 first_name: visitResult.patient_first_name;
-                last_name: visitResult.patient_last_name;
+                last_name: visitResult.patient_last_name
             },
             doctor: {
                 doctor_id: visitResult.doctor_id, // No longer need non-null assertion
                 user: { fullName: visitResult.doctor_full_name } // No longer need non-null assertion
             }
-            // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+            // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         }
 
         // 4. Return the detailed visit
         return new Response(JSON.stringify(visit), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -121,7 +121,7 @@ export const _GET = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -129,7 +129,7 @@ export const _GET = async (request: Request) => {
 
 // PUT handler for updating an OPD visit (e.g., status, notes)
 const UpdateVisitSchema = z.object({
-    status: z.nativeEnum(OPDVisitStatus).optional();
+    status: z.nativeEnum(OPDVisitStatus).optional(),
     notes: z.string().optional().nullable();
     // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration)
 })
@@ -142,14 +142,14 @@ export const _PUT = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_UPDATE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (visitId === null) {
         return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -160,7 +160,7 @@ export const _PUT = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -184,7 +184,7 @@ export const _PUT = async (request: Request) => {
                                    .first<{ opd_visit_id: number }>();
         if (!visitCheck) {
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
-                status: 404;
+                status: 404,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -214,7 +214,7 @@ export const _PUT = async (request: Request) => {
 
         // 5. Return success response
         return new Response(JSON.stringify({ message: "OPD Visit updated successfully" }), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -222,7 +222,7 @@ export const _PUT = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

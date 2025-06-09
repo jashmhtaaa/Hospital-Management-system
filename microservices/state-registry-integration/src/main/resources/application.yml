@@ -6,7 +6,7 @@ server:
 spring:
   application:
     name: state-registry-integration-service
-  
+
   # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/hms_state_registry
@@ -19,7 +19,7 @@ spring:
       idle-timeout: 300000
       max-lifetime: 1800000
       connection-timeout: 20000
-      
+
   # JPA Configuration
   jpa:
     hibernate:
@@ -34,15 +34,15 @@ spring:
           batch_size: 25
         order_inserts: true
         order_updates: true
-        
+
   # Cache Configuration (Redis)
   cache:
     type: redis
     redis:
-      time-to-live: 600000  # 10 minutes
-      key-prefix: "state-registry:"
+      time-to-live: 600000 # 10 minutes
+      key-prefix: 'state-registry:'
       use-key-prefix: true
-      
+
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -54,7 +54,7 @@ spring:
           max-active: 20
           max-idle: 10
           min-idle: 5
-          
+
   # Security Configuration
   security:
     oauth2:
@@ -62,7 +62,7 @@ spring:
         jwt:
           issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/auth/realms/hms}
           jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8080/auth/realms/hms/protocol/openid_connect/certs}
-          
+
   # Kafka Configuration
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
@@ -76,7 +76,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "com.hospital.hms.registry.dto"
+        spring.json.trusted.packages: 'com.hospital.hms.registry.dto'
 
 # Service Discovery (Eureka)
 eureka:
@@ -139,14 +139,14 @@ resilience4j:
         failure-rate-threshold: 50
         slow-call-rate-threshold: 50
         slow-call-duration-threshold: 5s
-      
+
   retry:
     instances:
       registry-submission:
         max-attempts: 3
         wait-duration: 1s
         exponential-backoff-multiplier: 2
-        
+
   timelimiter:
     instances:
       registry-submission:
@@ -182,33 +182,33 @@ hms:
         auth-token: ${CANCER_REGISTRY_TOKEN:}
         timeout: 120s
         format: FHIR
-        
+
     # Validation Configuration
     validation:
       enabled: true
       strict-mode: false
       quality-threshold: 80.0
-      
+
     # Compliance Configuration
     compliance:
       monitoring-enabled: true
       alert-overdue-reports: true
       overdue-threshold-hours: 24
       mandatory-report-tracking: true
-      
+
     # Submission Configuration
     submission:
       retry-attempts: 3
       retry-delay: 5s
       batch-size: 50
       async-processing: true
-      
+
     # FHIR Configuration
     fhir:
       enabled: true
       server-url: ${FHIR_SERVER_URL:http://localhost:8080/fhir}
       version: R4
-      
+
     # External Services
     external-services:
       patient-service:
@@ -227,8 +227,8 @@ logging:
     org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql.BasicBinder: INFO
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
   file:
     name: logs/state-registry-service.log
     max-size: 100MB
@@ -240,15 +240,15 @@ spring:
   config:
     activate:
       on-profile: dev
-      
+
   datasource:
     url: jdbc:postgresql://localhost:5432/hms_state_registry_dev
-    
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-    
+
 logging:
   level:
     com.hospital.hms.registry: DEBUG
@@ -268,23 +268,23 @@ spring:
   config:
     activate:
       on-profile: prod
-      
+
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:hms_state_registry_prod}
     hikari:
       maximum-pool-size: 50
-      
+
   jpa:
     hibernate:
       ddl-auto: validate
     show-sql: false
-    
+
 logging:
   level:
     com.hospital.hms.registry: INFO
     org.springframework.security: WARN
     root: WARN
-    
+
 hms:
   state-registry:
     validation:

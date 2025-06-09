@@ -26,10 +26,10 @@ type CarouselProps = {
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0]
   api: ReturnType<typeof useEmblaCarousel>[1]
-  scrollPrev: () => void;
+  scrollPrev: () => void,
   scrollNext: () => void;
-  canScrollPrev: boolean;
-  canScrollNext: boolean;
+  canScrollPrev: boolean,
+  canScrollNext: boolean
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -63,7 +63,7 @@ const Carousel = React.forwardRef<;
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
-        axis: orientation === "horizontal" ? "x" : "y";
+        axis: orientation === "horizontal" ? "x" : "y"
       },
       plugins;
     );
@@ -128,7 +128,7 @@ const Carousel = React.forwardRef<;
           carouselRef,
           api: api;
           opts,
-          orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal");
+          orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
           canScrollPrev,

@@ -21,24 +21,24 @@ import { validatePrescriptionRequest } from '../../../../lib/validation/pharmacy
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByPrescriberId: (prescriberId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  findByStatus: (status: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByPrescriberId: (prescriberId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  findByStatus: (status: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 // Initialize services
@@ -115,25 +115,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('PRESCRIPTION', {
-      action: 'LIST';
+      action: 'LIST',
       resourceType: 'MedicationRequest';
-      userId: userId;
+      userId: userId,
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedPrescriptions.length;
+        resultCount: paginatedPrescriptions.length
       }
     });
 
     // Return response
     return NextResponse.json({
-      prescriptions: fhirPrescriptions;
+      prescriptions: fhirPrescriptions,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -213,9 +213,9 @@ export const POST = async (req: NextRequest) => {
     if (severeInteractions.length > 0 && !data.interactionOverride) {
       return NextResponse.json(
         {
-          error: 'Severe drug interactions detected';
+          error: 'Severe drug interactions detected',
           interactions: severeInteractions;
-          requiresOverride: true;
+          requiresOverride: true
         },
         { status: 409 }
       );
@@ -249,9 +249,9 @@ export const POST = async (req: NextRequest) => {
       // Encrypt controlled substance data
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
-          dea: data.dea;
+          dea: data.dea,
           refills: data.refills || 0;
-          writtenDate: new Date();
+          writtenDate: new Date()
         });
       );
     }
@@ -262,30 +262,30 @@ export const POST = async (req: NextRequest) => {
     // If interaction override was provided, save it
     if (data?.interactionOverride && severeInteractions.length > 0) {
       // In a real implementation, save override record
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
 
     // Audit logging
     await auditLog('PRESCRIPTION', {
-      action: 'CREATE';
+      action: 'CREATE',
       resourceType: 'MedicationRequest';
-      resourceId: prescriptionId;
+      resourceId: prescriptionId,
       userId: userId;
-      patientId: data.patientId;
+      patientId: data.patientId,
       details: {
-        medicationId: data.medicationId;
+        medicationId: data.medicationId,
         interactionCount: allInteractions.length;
-        severeInteractionCount: severeInteractions.length;
-        overrideProvided: !!data.interactionOverride;
+        severeInteractionCount: severeInteractions.length,
+        overrideProvided: !!data.interactionOverride
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: prescriptionId;
+        id: prescriptionId,
         message: 'Prescription created successfully';
-        interactions: allInteractions.length > 0 ? allInteractions : undefined;
+        interactions: allInteractions.length > 0 ? allInteractions : undefined
       },
       { status: 201 }
     );

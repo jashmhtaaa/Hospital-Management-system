@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const checkConnectivity = () => {
-    setIsOffline(offlineData.isOffline);
+    setIsOffline(offlineData.isOffline)
   };
 
   return (
@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
         ))}
       </View>
     </ScrollView>
-  );
+  )
 };
 
 const styles = StyleSheet.create({

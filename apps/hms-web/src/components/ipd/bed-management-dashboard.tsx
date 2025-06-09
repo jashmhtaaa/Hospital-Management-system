@@ -6,25 +6,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface Bed {
-  id: string;
+  id: string,
   number: string;
-  ward: string;
+  ward: string,
   type: string;
   status: 'available' | 'occupied' | 'reserved' | 'maintenance';
   patient?: {
-    id: string;
+    id: string,
     name: string;
-    admissionDate: string;
+    admissionDate: string
   };
 }
 
 interface BedManagementDashboardProps {
-  beds: Bed[];
+  beds: Bed[],
   wardStats: {
-    totalBeds: number;
+    totalBeds: number,
     occupiedBeds: number;
-    availableBeds: number;
-    occupancyRate: number;
+    availableBeds: number,
+    occupancyRate: number
   };
 }
 
@@ -38,7 +38,7 @@ export const _BedManagementDashboard = ({ beds, wardStats }: BedManagementDashbo
       case 'occupied': return <Badge variant="danger">Occupied</Badge>;
       case 'reserved': return <Badge variant="warning">Reserved</Badge>;
       case 'maintenance': return <Badge variant="secondary">Maintenance</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -135,7 +135,7 @@ export const _BedManagementDashboard = ({ beds, wardStats }: BedManagementDashbo
                       </Button>
                     </TableCell>
                   </TableRow>
-                ));
+                })}
               )}
             </TableBody>
           </Table>

@@ -6,16 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 }
 interface ChecklistTemplate {
-  id: string;
+  id: string,
   name: string;
-  surgeryType: string;
+  surgeryType: string,
   itemCount: number;
-  lastUpdated: string;
-  status: 'active' | 'draft' | 'archived';
+  lastUpdated: string,
+  status: 'active' | 'draft' | 'archived'
 }
 
 interface OTChecklistTemplateListProps {
-  templates: ChecklistTemplate[];
+  templates: ChecklistTemplate[]
 }
 
 /**
@@ -27,7 +27,7 @@ export const _OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListP
       case 'active': return <Badge variant="success">Active</Badge>;
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
       case 'archived': return <Badge>Archived</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

@@ -10,42 +10,42 @@ interface PreparedStatement {
   // FIX: Replaced any[] with unknown[]
   bind(...parameters: unknown[]): {
     run(): Promise<{
-      success: boolean;
+      success: boolean,
       meta: { duration: number; changes?: number };
     }>;
     // FIX: Replaced any with unknown
     all<T = unknown>(): Promise<{
-      results: T[];
+      results: T[],
       success: boolean;
       meta: { duration: number };
     }>;
     // FIX: Replaced any with unknown
-    first<T = unknown>(colName?: string): Promise<T | null>;
+    first<T = unknown>(colName?: string): Promise<T | null>
   };
   run(): Promise<{
-    success: boolean;
+    success: boolean,
     meta: { duration: number; changes?: number };
   }>;
   // FIX: Replaced any with unknown
   all<T = unknown>(): Promise<{
-    results: T[];
+    results: T[],
     success: boolean;
     meta: { duration: number };
   }>;
   // FIX: Replaced any with unknown
-  first<T = unknown>(colName?: string): Promise<T | null>;
+  first<T = unknown>(colName?: string): Promise<T | null>
 }
 
 interface Database {
   prepare(sql: string): PreparedStatement;
-  exec(sql: string): Promise<{ count: number; duration: number }>;
+  exec(sql: string): Promise<{ count: number, duration: number }>;
 }
 
 // Define interfaces
 interface RadiologyStudy {
-  id: string;
+  id: string,
   order_id: string;
-  accession_number: string;
+  accession_number: string,
   study_datetime: string; // ISO date string
   modality_id?: string | null;
   technician_id?: string | null;
@@ -264,8 +264,8 @@ export const _PUT = async (
           .first<RadiologyStudy>(); // Use generic type argument
         return NextResponse.json(
           currentStudy || {
-            id: studyId;
-            message: "Radiology study update processed (no changes detected)";
+            id: studyId,
+            message: "Radiology study update processed (no changes detected)"
           }
         );
       }
@@ -307,8 +307,8 @@ export const _PUT = async (
         .first<RadiologyStudy>(); // Use generic type argument
       return NextResponse.json(
         updatedStudy || {
-          id: studyId;
-          message: "Radiology study updated successfully";
+          id: studyId,
+          message: "Radiology study updated successfully"
         }
       );
     } catch (databaseError) {
@@ -370,7 +370,7 @@ export const DELETE = async (
     if (associatedReports != null) {
       return NextResponse.json(
         {
-          error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.";
+          error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first."
         },
         { status: 400 }
       );
@@ -397,8 +397,8 @@ export const DELETE = async (
     }
 
     return NextResponse.json({
-      id: studyId;
-      status: "Radiology study deleted";
+      id: studyId,
+      status: "Radiology study deleted"
     });
   } catch (error: unknown) {
     const message =;

@@ -15,30 +15,30 @@ import { logger } from '@/lib/core/logging';
 
 // Schema for claim update
 const updateClaimSchema = z.object({
-  status: claimStatusSchema.optional();
-  notes: z.string().optional();
-  preAuthorizationNumber: z.string().optional();
+  status: claimStatusSchema.optional(),
+  notes: z.string().optional(),
+  preAuthorizationNumber: z.string().optional()
 });
 
 // Schema for claim submission
 const submitClaimSchema = z.object({
-  submittedBy: z.string();
+  submittedBy: z.string(),
   submissionMethod: z.enum(['electronic', 'paper', 'fax', 'portal']),
-  submissionReference: z.string().optional();
-  notes: z.string().optional();
+  submissionReference: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // Schema for claim response
 const claimResponseSchema = z.object({
-  responseDate: z.coerce.date();
-  responseReference: z.string();
+  responseDate: z.coerce.date(),
+  responseReference: z.string(),
   status: z.enum(['approved', 'partially_approved', 'denied', 'pending_additional_info']),
-  approvedAmount: z.number().optional();
-  deniedAmount: z.number().optional();
-  denialReason: z.string().optional();
-  notes: z.string().optional();
-  paymentExpectedDate: z.coerce.date().optional();
-  additionalInfoRequested: z.string().optional();
+  approvedAmount: z.number().optional(),
+  deniedAmount: z.number().optional(),
+  denialReason: z.string().optional(),
+  notes: z.string().optional(),
+  paymentExpectedDate: z.coerce.date().optional(),
+  additionalInfoRequested: z.string().optional()
 });
 
 // GET handler for retrieving a specific claim
@@ -56,39 +56,39 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
     include: {
       invoice: {
         select: {
-          id: true;
+          id: true,
           billNumber: true;
-          patientId: true;
+          patientId: true,
           patient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
-              mrn: true;
+              lastName: true,
+              mrn: true
             },
           },
         },
       },
       insurancePolicy: {
         select: {
-          id: true;
+          id: true,
           policyNumber: true;
           insuranceProvider: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
       },
-      diagnoses: true;
+      diagnoses: true,
       items: {
         include: {
-          serviceItem: true;
+          serviceItem: true
         },
       },
-      followUps: true;
-      responses: true;
+      followUps: true,
+      responses: true
     },
   });
 
@@ -142,39 +142,39 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Update claim
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: params.id },
-    data: updateData;
+    data: updateData,
     include: {
       invoice: {
         select: {
-          id: true;
+          id: true,
           billNumber: true;
-          patientId: true;
+          patientId: true,
           patient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
-              mrn: true;
+              lastName: true,
+              mrn: true
             },
           },
         },
       },
       insurancePolicy: {
         select: {
-          id: true;
+          id: true,
           policyNumber: true;
           insuranceProvider: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
       },
-      diagnoses: true;
+      diagnoses: true,
       items: {
         include: {
-          serviceItem: true;
+          serviceItem: true
         },
       },
     },
@@ -269,11 +269,11 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   // Handle different operations
   switch (operation) {
     case 'submit':
-      return submitClaim(req, params.id, existingClaim);
+      return submitClaim(req, params.id, existingClaim),
     case 'respond':
-      return recordClaimResponse(req, params.id, existingClaim);
+      return recordClaimResponse(req, params.id, existingClaim),
     default:
-      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION');
+      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION'),
   }
 });
 
@@ -298,45 +298,45 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: claimId },
     data: {
-      status: 'submitted';
+      status: 'submitted',
       submittedBy: data.submittedBy;
-      submittedAt: new Date();
+      submittedAt: new Date(),
       submissionMethod: data.submissionMethod;
-      submissionReference: data.submissionReference;
-      notes: data.notes;
+      submissionReference: data.submissionReference,
+      notes: data.notes
     },
     include: {
       invoice: {
         select: {
-          id: true;
+          id: true,
           billNumber: true;
-          patientId: true;
+          patientId: true,
           patient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
-              mrn: true;
+              lastName: true,
+              mrn: true
             },
           },
         },
       },
       insurancePolicy: {
         select: {
-          id: true;
+          id: true,
           policyNumber: true;
           insuranceProvider: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             },
           },
         },
       },
-      diagnoses: true;
+      diagnoses: true,
       items: {
         include: {
-          serviceItem: true;
+          serviceItem: true
         },
       },
     },
@@ -344,8 +344,8 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
 
   logger.info('Claim submitted', {
     claimId,
-    submittedBy: data.submittedBy;
-    method: data.submissionMethod;
+    submittedBy: data.submittedBy,
+    method: data.submissionMethod
   });
 
   return createSuccessResponse(updatedClaim);
@@ -383,7 +383,7 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
     case 'pending_additional_info':
       newClaimStatus = 'additional_info_needed';
       break;
-    default: newClaimStatus = existingClaim.status;
+    default: newClaimStatus = existingClaim.status
   }
 
   // Create response and update claim in a transaction
@@ -392,15 +392,15 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
     const response = await prisma.claimResponse.create({
       data: {
         claimId,
-        responseDate: data.responseDate;
+        responseDate: data.responseDate,
         responseReference: data.responseReference;
-        status: data.status;
+        status: data.status,
         approvedAmount: data.approvedAmount;
-        deniedAmount: data.deniedAmount;
+        deniedAmount: data.deniedAmount,
         denialReason: data.denialReason;
-        notes: data.notes;
+        notes: data.notes,
         paymentExpectedDate: data.paymentExpectedDate;
-        additionalInfoRequested: data.additionalInfoRequested;
+        additionalInfoRequested: data.additionalInfoRequested
       },
     });
 
@@ -408,45 +408,45 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
     const updatedClaim = await prisma.insuranceClaim.update({
       where: { id: claimId },
       data: {
-        status: newClaimStatus;
+        status: newClaimStatus,
         lastResponseId: response.id;
-        lastResponseDate: data.responseDate;
+        lastResponseDate: data.responseDate
       },
       include: {
         invoice: {
           select: {
-            id: true;
+            id: true,
             billNumber: true;
-            patientId: true;
+            patientId: true,
             patient: {
               select: {
-                id: true;
+                id: true,
                 firstName: true;
-                lastName: true;
-                mrn: true;
+                lastName: true,
+                mrn: true
               },
             },
           },
         },
         insurancePolicy: {
           select: {
-            id: true;
+            id: true,
             policyNumber: true;
             insuranceProvider: {
               select: {
-                id: true;
-                name: true;
+                id: true,
+                name: true
               },
             },
           },
         },
-        diagnoses: true;
+        diagnoses: true,
         items: {
           include: {
-            serviceItem: true;
+            serviceItem: true
           },
         },
-        responses: true;
+        responses: true
       },
     });
 
@@ -455,8 +455,8 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
 
   logger.info('Claim response recorded', {
     claimId,
-    responseId: result.response.id;
-    status: data.status;
+    responseId: result.response.id,
+    status: data.status
   });
 
   return createSuccessResponse(result.updatedClaim);

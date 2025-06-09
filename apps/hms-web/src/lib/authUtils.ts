@@ -6,9 +6,9 @@ import { NextRequest } from "next/server";
 // /home/ubuntu/Hms/apps/hms-web/src/lib/authUtils.ts
 // --- AUTH PLACEHOLDERS (To be replaced by actual Auth Module from Manus 9) ---
 export interface User {
-  id: string;
+  id: string,
   name: string
-  // roles: string[]; // Example: ["admin", "doctor", "lab_technician"];
+  // roles: string[]; // Example: ["admin", "doctor", "lab_technician"]
 }
 
 /**
@@ -18,7 +18,7 @@ export interface User {
 export const getCurrentUser = async (_req: NextRequest): Promise<User | null> => {
   // Debug logging removed: Using MOCK user. Replace with actual implementation.")
   // Simulate different users for different contexts if needed for testing, or a generic one
-  return { id: "mockUserId-shared", name: "Mock Shared User" };
+  return { id: "mockUserId-shared", name: "Mock Shared User" }
 };
 
 /**

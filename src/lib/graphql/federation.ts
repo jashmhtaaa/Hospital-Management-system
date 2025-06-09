@@ -42,8 +42,8 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       'graphql.federation.service_response_time',
       context.startTime ? crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime : 0,
       {
-        service: serviceName;
-        operation: operationName;
+        service: serviceName,
+        operation: operationName
       }
     );
 
@@ -56,19 +56,19 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     const serviceName = this.url.split('/').pop() || 'unknown';
 
     logger.error(`GraphQL federation error in service ${serviceName} for operation ${operationName}:`, {
-      error: error.message;
+      error: error.message,
       stack: error.stack;
       operationName,
       serviceName,
-      userId: context.user?.id;
+      userId: context.user?.id,
       requestId: context.requestId;
-      correlationId: context.correlationId;
+      correlationId: context.correlationId
     });
 
     metricsCollector.incrementCounter('graphql.federation.errors', 1, {
-      service: serviceName;
+      service: serviceName,
       operation: operationName;
-      errorType: error.name || 'UnknownError';
+      errorType: error.name || 'UnknownError'
     });
   }
 export const _createGraphQLFederationServer = async (app: express.Application) => {
@@ -91,7 +91,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   // Create the gateway
   const gateway = new ApolloGateway({
     supergraphSdl: new IntrospectAndCompose({
-      subgraphs: serviceList;
+      subgraphs: serviceList,
       pollIntervalInMs: 60000, // Poll for schema changes every minute
       introspectionHeaders: {
         'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key'
@@ -104,27 +104,27 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
       // Log when schema composition is updated
       logger.info(`GraphQL federation schema ${isInitialComposition ? 'initialized' : 'updated'}`, {
         graphRef,
-        schemaLength: supergraphSdl.length;
-        timestamp: new Date().toISOString();
+        schemaLength: supergraphSdl.length,
+        timestamp: new Date().toISOString()
       });
 
       // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_updates', 1, {
-        isInitial: isInitialComposition.toString();
+        isInitial: isInitialComposition.toString()
       });
     },
     experimental_didFailComposition: ({ graphRef, errors, isInitialComposition }) => {
       // Log schema composition errors
       logger.error(`GraphQL federation schema composition failed`, {
         graphRef,
-        errors: errors.map(e => e.message);
+        errors: errors.map(e => e.message),
         isInitialComposition,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       });
 
       // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_errors', 1, {
-        isInitial: isInitialComposition.toString();
+        isInitial: isInitialComposition.toString()
       });
     }
   });
@@ -149,7 +149,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
           logger.warn('Invalid auth token in GraphQL request', {
             requestId,
             correlationId,
-            error: error.message;
+            error: error.message
           });
         }
       }
@@ -159,7 +159,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
         user,
         requestId,
         correlationId,
-        startTime;
+        startTime
       };
     },
     plugins: [
@@ -171,9 +171,9 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
 
           logger.debug(`GraphQL federation request started: ${operationName}`, {
             operationName,
-            requestId: context.requestId;
+            requestId: context.requestId,
             correlationId: context.correlationId;
-            userId: context.user?.id;
+            userId: context.user?.id
           });
 
           return {
@@ -182,17 +182,17 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
               const duration = crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime;
 
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
-                operation: operationName;
-                hasErrors: (response.errors?.length > 0).toString();
+                operation: operationName,
+                hasErrors: (response.errors?.length > 0).toString()
               });
 
               // Log completion
               logger.debug(`GraphQL federation request completed: ${operationName}`, {
                 operationName,
                 duration: `${duration.toFixed(2)}ms`,
-                hasErrors: response.errors?.length > 0;
+                hasErrors: response.errors?.length > 0,
                 requestId: context.requestId;
-                correlationId: context.correlationId;
+                correlationId: context.correlationId
               });
             }
           };
@@ -201,8 +201,8 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
     ],
     introspection: process.env.NODE_ENV !== 'production';
     // Cache control directives
-    csrfPrevention: true;
-    cache: 'bounded';
+    csrfPrevention: true,
+    cache: 'bounded'
   });
 
   // Start the server
@@ -211,12 +211,12 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   // Apply the Apollo middleware to the Express app
   server.applyMiddleware({
     app,
-    path: '/graphql';
+    path: '/graphql',
     cors: {
       origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
-      credentials: true;
+      credentials: true,
       methods: ['GET', 'POST', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Federation-Include-Trace'];
+      allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Federation-Include-Trace']
     }
   });
 

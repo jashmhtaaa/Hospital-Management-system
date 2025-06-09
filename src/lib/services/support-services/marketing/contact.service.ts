@@ -25,40 +25,40 @@ export class ContactService {
       // Encrypt sensitive data
       const encryptedData = {
         ...data,
-        email: data.email ? encryptData(data.email) : undefined;
+        email: data.email ? encryptData(data.email) : undefined,
         phone: data.phone ? encryptData(data.phone) : undefined;
-        address: data.address ? encryptData(JSON.stringify(data.address)) : undefined;
-        dateOfBirth: data.dateOfBirth;
+        address: data.address ? encryptData(JSON.stringify(data.address)) : undefined,
+        dateOfBirth: data.dateOfBirth
       };
 
       // Create contact in database
       const contact = await prisma.contact.create({
         data: {
-          firstName: encryptedData.firstName;
+          firstName: encryptedData.firstName,
           lastName: encryptedData.lastName;
-          email: encryptedData.email;
+          email: encryptedData.email,
           phone: encryptedData.phone;
-          address: encryptedData.address;
+          address: encryptedData.address,
           dateOfBirth: encryptedData.dateOfBirth;
-          gender: encryptedData.gender;
+          gender: encryptedData.gender,
           occupation: encryptedData.occupation;
-          organization: encryptedData.organization;
+          organization: encryptedData.organization,
           source: encryptedData.source;
-          status: encryptedData.status || ContactStatus.ACTIVE;
+          status: encryptedData.status || ContactStatus.ACTIVE,
           tags: encryptedData.tags || [];
-          preferences: encryptedData.preferences;
-          patientId: encryptedData.patientId;
+          preferences: encryptedData.preferences,
+          patientId: encryptedData.patientId
         },
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.create';
+        action: 'contact.create',
         resourceId: contact.id;
         userId,
         details: {
-          contactSource: contact.source;
-          hasPatientRecord: !!contact.patientId;
+          contactSource: contact.source,
+          hasPatientRecord: !!contact.patientId
         }
       });
 
@@ -82,31 +82,31 @@ export class ContactService {
         include: {
           notes: {
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             },
-            take: 10;
+            take: 10,
             include: {
               createdByUser: {
                 select: {
-                  id: true;
-                  name: true;
+                  id: true,
+                  name: true
                 }
               }
             }
           },
-          patient: includeFHIR ? true : false;
+          patient: includeFHIR ? true : false,
           segmentMembers: {
             where: {
-              isActive: true;
+              isActive: true
             },
             include: {
-              segment: true;
+              segment: true
             }
           },
           leads: {
-            take: 5;
+            take: 5,
             orderBy: {
-              createdAt: 'desc';
+              createdAt: 'desc'
             }
           }
         }
@@ -145,7 +145,7 @@ export class ContactService {
     hasPatient?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: Contact[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         status,
@@ -189,7 +189,7 @@ export class ContactService {
           segmentMembers: {
             some: {
               segmentId,
-              isActive: true;
+              isActive: true
             }
           }
         };
@@ -205,23 +205,23 @@ export class ContactService {
         include: {
           patient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
+              lastName: true
             }
           },
           _count: {
             select: {
-              notes: true;
+              notes: true,
               leads: true;
-              segmentMembers: true;
+              segmentMembers: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
@@ -229,12 +229,12 @@ export class ContactService {
       const decryptedContacts = contacts.map(contact => this.decryptContactData(contact));
 
       return {
-        data: decryptedContacts;
+        data: decryptedContacts,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -274,16 +274,16 @@ export class ContactService {
       // Update contact
       const updatedContact = await prisma.contact.update({
         where: { id },
-        data: updateData;
+        data: updateData
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.update';
+        action: 'contact.update',
         resourceId: id;
         userId,
         details: {
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data)
         }
       });
 
@@ -316,13 +316,13 @@ export class ContactService {
         data: {
           contactId,
           content,
-          createdById: userId;
+          createdById: userId
         },
         include: {
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         }
@@ -330,11 +330,11 @@ export class ContactService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.note.add';
+        action: 'contact.note.add',
         resourceId: contactId;
         userId,
         details: {
-          noteId: note.id;
+          noteId: note.id
         }
       });
 
@@ -379,9 +379,9 @@ export class ContactService {
         include: {
           patient: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
+              lastName: true
             }
           }
         }
@@ -389,7 +389,7 @@ export class ContactService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.link.patient';
+        action: 'contact.link.patient',
         resourceId: contactId;
         userId,
         details: {
@@ -415,69 +415,69 @@ export class ContactService {
     // If contact is linked to a patient, use Patient resource
     if (contact?.patientId && contact.patient) {
       return {
-        resourceType: 'Patient';
+        resourceType: 'Patient',
         id: `patient-${contact.patientId}`,
         identifier: [
           {
-            system: 'urn:oid:2.16.840.1.113883.2.4.6.3';
-            value: contact.patientId;
+            system: 'urn:oid:2.16.840.1.113883.2.4.6.3',
+            value: contact.patientId
           }
         ],
         name: [
           {
-            use: 'official';
+            use: 'official',
             family: contact.lastName || '';
-            given: [contact.firstName || ''];
+            given: [contact.firstName || '']
           }
         ],
         telecom: [
           {
-            system: 'email';
+            system: 'email',
             value: contact.email || '';
-            use: 'home';
+            use: 'home'
           },
           {
-            system: 'phone';
+            system: 'phone',
             value: contact.phone || '';
-            use: 'mobile';
+            use: 'mobile'
           }
         ],
-        gender: contact.gender?.toLowerCase() || 'unknown';
-        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined;
+        gender: contact.gender?.toLowerCase() || 'unknown',
+        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined
       };
     }
 
     // Otherwise use RelatedPerson resource
     return {
-      resourceType: 'RelatedPerson';
+      resourceType: 'RelatedPerson',
       id: `contact-${contact.id}`,
       identifier: [
         {
-          system: 'urn:oid:2.16.840.1.113883.2.4.6.3';
-          value: contact.id;
+          system: 'urn:oid:2.16.840.1.113883.2.4.6.3',
+          value: contact.id
         }
       ],
       name: [
         {
-          use: 'official';
+          use: 'official',
           family: contact.lastName || '';
-          given: [contact.firstName || ''];
+          given: [contact.firstName || '']
         }
       ],
       telecom: [
         {
-          system: 'email';
+          system: 'email',
           value: contact.email || '';
-          use: 'home';
+          use: 'home'
         },
         {
-          system: 'phone';
+          system: 'phone',
           value: contact.phone || '';
-          use: 'mobile';
+          use: 'mobile'
         }
       ],
-      gender: contact.gender?.toLowerCase() || 'unknown';
-      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined;
+      gender: contact.gender?.toLowerCase() || 'unknown',
+      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined
     };
   }
 

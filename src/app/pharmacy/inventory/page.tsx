@@ -16,7 +16,7 @@ const PharmacyInventoryPage = () => {
       </p>
       {/* TODO: Implement Pharmacy Inventory features (Stock, Billing, Expiry, etc.) */}
     </div>
-  );
+  )
 };
 
 export default PharmacyInventoryPage;

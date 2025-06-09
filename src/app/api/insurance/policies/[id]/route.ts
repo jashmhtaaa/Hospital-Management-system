@@ -14,34 +14,34 @@ import { convertToFHIRCoverage } from '@/lib/core/fhir';
 
 // Schema for insurance policy update
 const updatePolicySchema = z.object({
-  insuranceProviderId: z.string().uuid().optional();
-  policyNumber: z.string().optional();
-  groupNumber: z.string().optional();
-  groupName: z.string().optional();
-  subscriberId: z.string().uuid().optional();
+  insuranceProviderId: z.string().uuid().optional(),
+  policyNumber: z.string().optional(),
+  groupNumber: z.string().optional(),
+  groupName: z.string().optional(),
+  subscriberId: z.string().uuid().optional(),
   relationship: z.enum(['self', 'spouse', 'child', 'other']).optional(),
-  startDate: z.coerce.date().optional();
-  endDate: z.coerce.date().optional();
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
   coverageType: z.enum(['primary', 'secondary', 'tertiary']).optional(),
   planType: z.enum(['HMO', 'PPO', 'EPO', 'POS', 'HDHP', 'other']).optional(),
-  copayAmount: z.number().optional();
-  coinsurancePercentage: z.number().optional();
-  deductibleAmount: z.number().optional();
-  deductibleMet: z.number().optional();
-  outOfPocketMax: z.number().optional();
-  outOfPocketMet: z.number().optional();
+  copayAmount: z.number().optional(),
+  coinsurancePercentage: z.number().optional(),
+  deductibleAmount: z.number().optional(),
+  deductibleMet: z.number().optional(),
+  outOfPocketMax: z.number().optional(),
+  outOfPocketMet: z.number().optional(),
   status: z.enum(['active', 'inactive', 'expired']).optional(),
-  notes: z.string().optional();
+  notes: z.string().optional()
 });
 
 // Schema for policy verification
 const verifyPolicySchema = z.object({
   verificationMethod: z.enum(['phone', 'portal', 'api', 'fax', 'email']),
-  verificationReference: z.string().optional();
-  verifiedBy: z.string();
+  verificationReference: z.string().optional(),
+  verifiedBy: z.string(),
   eligibilityStatus: z.enum(['eligible', 'ineligible', 'pending']),
-  coverageDetails: z.string().optional();
-  notes: z.string().optional();
+  coverageDetails: z.string().optional(),
+  notes: z.string().optional()
 });
 
 // GET handler for retrieving a specific insurance policy
@@ -59,33 +59,33 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
     include: {
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
+          lastName: true,
           mrn: true;
-          dateOfBirth: true;
+          dateOfBirth: true,
           gender: true;
-          address: true;
+          address: true,
           phone: true;
-          email: true;
+          email: true
         },
       },
       subscriber: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
+          lastName: true,
           dateOfBirth: true;
-          gender: true;
+          gender: true,
           address: true;
-          phone: true;
-          email: true;
+          phone: true,
+          email: true
         },
       },
-      insuranceProvider: true;
+      insuranceProvider: true,
       verifications: {
         orderBy: {
-          verifiedAt: 'desc';
+          verifiedAt: 'desc'
         },
       },
     },
@@ -163,42 +163,42 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: params.id },
     data: {
-      insuranceProviderId: data.insuranceProviderId;
+      insuranceProviderId: data.insuranceProviderId,
       policyNumber: data.policyNumber;
-      groupNumber: data.groupNumber;
+      groupNumber: data.groupNumber,
       groupName: data.groupName;
-      subscriberId: data.subscriberId;
+      subscriberId: data.subscriberId,
       relationship: data.relationship;
-      startDate: data.startDate;
+      startDate: data.startDate,
       endDate: data.endDate;
-      coverageType: data.coverageType;
+      coverageType: data.coverageType,
       planType: data.planType;
-      copayAmount: data.copayAmount;
+      copayAmount: data.copayAmount,
       coinsurancePercentage: data.coinsurancePercentage;
-      deductibleAmount: data.deductibleAmount;
+      deductibleAmount: data.deductibleAmount,
       deductibleMet: data.deductibleMet;
-      outOfPocketMax: data.outOfPocketMax;
+      outOfPocketMax: data.outOfPocketMax,
       outOfPocketMet: data.outOfPocketMet;
       status,
-      notes: data.notes;
+      notes: data.notes
     },
     include: {
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
       subscriber: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
+          lastName: true
         },
       },
-      insuranceProvider: true;
+      insuranceProvider: true
     },
   });
 
@@ -216,7 +216,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
     include: {
-      verifications: true;
+      verifications: true
     },
   });
 
@@ -277,9 +277,9 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   // Handle different operations
   switch (operation) {
     case 'verify':
-      return verifyPolicy(req, params.id, existingPolicy);
+      return verifyPolicy(req, params.id, existingPolicy),
     default:
-      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION');
+      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION'),
   }
 });
 
@@ -295,13 +295,13 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
   const verification = await prisma.policyVerification.create({
     data: {
       policyId,
-      verificationMethod: data.verificationMethod;
+      verificationMethod: data.verificationMethod,
       verificationReference: data.verificationReference;
-      verifiedBy: data.verifiedBy;
-      verifiedAt: new Date();
-      eligibilityStatus: data.eligibilityStatus;
+      verifiedBy: data.verifiedBy,
+      verifiedAt: new Date(),
+      eligibilityStatus: data.eligibilityStatus,
       coverageDetails: data.coverageDetails;
-      notes: data.notes;
+      notes: data.notes
     },
   });
 
@@ -309,41 +309,41 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: policyId },
     data: {
-      lastVerificationId: verification.id;
+      lastVerificationId: verification.id,
       lastVerifiedAt: verification.verifiedAt;
-      lastEligibilityStatus: verification.eligibilityStatus;
+      lastEligibilityStatus: verification.eligibilityStatus
     },
     include: {
       patient: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
-          mrn: true;
+          lastName: true,
+          mrn: true
         },
       },
       subscriber: {
         select: {
-          id: true;
+          id: true,
           firstName: true;
-          lastName: true;
+          lastName: true
         },
       },
-      insuranceProvider: true;
+      insuranceProvider: true,
       verifications: {
         orderBy: {
-          verifiedAt: 'desc';
+          verifiedAt: 'desc'
         },
-        take: 5;
+        take: 5
       },
     },
   });
 
   logger.info('Insurance policy verified', {
     policyId,
-    verificationId: verification.id;
+    verificationId: verification.id,
     status: data.eligibilityStatus;
-    method: data.verificationMethod;
+    method: data.verificationMethod
   });
 
   return createSuccessResponse(updatedPolicy);

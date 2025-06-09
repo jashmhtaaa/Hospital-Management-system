@@ -81,15 +81,15 @@ export class AccountsReceivableService {
 
         const statement: AccountStatement = {
             statementId: `stmt_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            patientId: mockPatient.id;
+            patientId: mockPatient.id,
             patientName: mockPatient.name;
-            statementDate: new Date();
+            statementDate: new Date(),
             periodStartDate: startDate;
-            periodEndDate: endDate;
+            periodEndDate: endDate,
             openingBalance: openingBalance, // Calculation needed for real scenario
-            invoices: mockInvoices as Invoice[];
+            invoices: mockInvoices as Invoice[],
             _payments: mockPayments as any[], // Cast as Payment type in real scenario
-            closingBalance: closingBalance, // Calculation needed;
+            closingBalance: closingBalance, // Calculation needed
         };
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -119,9 +119,9 @@ export class AccountsReceivableService {
 
         const notice: OverdueNotice = {
             noticeId: `notice_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            invoiceId: mockOverdueInvoice.id!;
+            invoiceId: mockOverdueInvoice.id!,
             patientId: mockPatientForReminder.id;
-            sentDate: new Date();
+            sentDate: new Date(),
             method: "EMAIL", // or SMS
             message: `Dear ${mockPatientForReminder.name}, your invoice ${mockOverdueInvoice.id} for ${mockOverdueInvoice.totalAmount} was due on ${mockOverdueInvoice.dueDate?.toDateString()}. Please make a payment at your earliest convenience.`,
         };

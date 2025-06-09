@@ -7,16 +7,16 @@ import { departmentService } from '@/lib/hr/department-service';
 const createDepartmentSchema = z.object({
   name: z.string().min(1, "Department name is required"),
   code: z.string().min(1, "Department code is required"),
-  description: z.string().optional();
-  parentId: z.string().optional();
+  description: z.string().optional(),
+  parentId: z.string().optional()
 });
 
 // Schema for department update
 const _updateDepartmentSchema = z.object({
-  name: z.string().optional();
-  code: z.string().optional();
-  description: z.string().optional();
-  parentId: z.string().optional();
+  name: z.string().optional(),
+  code: z.string().optional(),
+  description: z.string().optional(),
+  parentId: z.string().optional()
 });
 
 // GET /api/hr/departments

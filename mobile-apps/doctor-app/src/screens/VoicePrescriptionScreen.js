@@ -30,12 +30,12 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
     Voice.onSpeechResults = onSpeechResults;
 
     return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
+      Voice.destroy().then(Voice.removeAllListeners)
     };
   }, []);
 
   const onSpeechStart = () => {
-    setIsRecording(true);
+    setIsRecording(true)
   };
 
   const onSpeechRecognized = () => {
@@ -43,19 +43,19 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
   };
 
   const onSpeechEnd = () => {
-    setIsRecording(false);
+    setIsRecording(false)
   };
 
   const onSpeechError = (error) => {
     /* SECURITY: Console statement removed */
-    setIsRecording(false);
+    setIsRecording(false),
     Alert./* SECURITY: Console statement removed */
   };
 
   const onSpeechResults = (event) => {
     const result = event.value[0];
     setTranscription(result);
-    processMedicalTranscription(result);
+    processMedicalTranscription(result)
   };
 
   const startRecording = async () => {
@@ -78,7 +78,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
     // AI-powered medical transcription processing
     // This would integrate with medical NLP API
     const processedPrescription = parseMedicalText(text);
-    setPrescription(processedPrescription);
+    setPrescription(processedPrescription)
   };
 
   const parseMedicalText = (text) => {
@@ -104,7 +104,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
       instructions: text,
       duration: '7 days',
       notes: 'Generated from voice input'
-    };
+    }
   };
 
   const savePrescription = async () => {
@@ -124,7 +124,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
 
       if (response.ok) {
         Alert./* SECURITY: Console statement removed */
-        navigation.goBack();
+        navigation.goBack()
       } else {
         Alert./* SECURITY: Console statement removed */
       }
@@ -184,7 +184,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+  )
 };
 
 const styles = StyleSheet.create({

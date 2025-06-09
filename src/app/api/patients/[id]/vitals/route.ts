@@ -7,21 +7,21 @@ import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 // Zod schema for creating patient vitals
 const vitalCreateSchema = z.object({
-    visit_id: z.number().optional().nullable();
+    visit_id: z.number().optional().nullable(),
     record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid record datetime format";
+        message: "Invalid record datetime format"
     }),
-    temperature_celsius: z.number().optional().nullable();
-    heart_rate_bpm: z.number().int().positive().optional().nullable();
-    respiratory_rate_bpm: z.number().int().positive().optional().nullable();
-    systolic_bp_mmhg: z.number().int().positive().optional().nullable();
-    diastolic_bp_mmhg: z.number().int().positive().optional().nullable();
-    oxygen_saturation_percent: z.number().min(0).max(100).optional().nullable();
-    height_cm: z.number().positive().optional().nullable();
-    weight_kg: z.number().positive().optional().nullable();
-    bmi: z.number().positive().optional().nullable();
-    pain_scale_0_10: z.number().int().min(0).max(10).optional().nullable();
-    notes: z.string().optional().nullable();
+    temperature_celsius: z.number().optional().nullable(),
+    heart_rate_bpm: z.number().int().positive().optional().nullable(),
+    respiratory_rate_bpm: z.number().int().positive().optional().nullable(),
+    systolic_bp_mmhg: z.number().int().positive().optional().nullable(),
+    diastolic_bp_mmhg: z.number().int().positive().optional().nullable(),
+    oxygen_saturation_percent: z.number().min(0).max(100).optional().nullable(),
+    height_cm: z.number().positive().optional().nullable(),
+    weight_kg: z.number().positive().optional().nullable(),
+    bmi: z.number().positive().optional().nullable(),
+    pain_scale_0_10: z.number().int().min(0).max(10).optional().nullable(),
+    notes: z.string().optional().nullable()
 });
 
 // GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
@@ -101,7 +101,7 @@ export const _GET = async (
         }
 
         query += ` ORDER BY pv./* SECURITY: Template literal eliminated */
-        queryParameters.push(limit, offset);
+        queryParameters.push(limit, offset),
 
         const [vitalsResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(...queryParameters).all<{ recorded_by_user_name?: string }>(),
@@ -112,12 +112,12 @@ export const _GET = async (
         const total = countResult?.total || 0;
 
         return NextResponse.json({
-            data: results;
+            data: results,
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit)
             },
         });
 
@@ -222,7 +222,7 @@ export const _POST = async (
         const newVitalId = insertResult.meta.last_row_id;
 
         return new Response(JSON.stringify({ message: "Vitals recorded successfully", vital_id: newVitalId }), {
-            status: 201;
+            status: 201,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -233,7 +233,7 @@ export const _POST = async (
             errorMessage = error.message;
         }
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

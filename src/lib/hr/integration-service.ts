@@ -20,34 +20,34 @@ export class IntegrationService {
   async getEmployeesForClinical() {
     return this.prisma.employee.findMany({
       where: {
-        isActive: true;
+        isActive: true,
         positions: {
           some: {
             endDate: null, // Current positions
             department: {
-              type: 'CLINICAL';
+              type: 'CLINICAL'
             }
           }
         }
       },
       select: {
-        id: true;
+        id: true,
         employeeId: true;
-        firstName: true;
+        firstName: true,
         lastName: true;
-        email: true;
+        email: true,
         phone: true;
         positions: {
           where: {
-            endDate: null;
+            endDate: null
           },
           select: {
-            id: true;
+            id: true,
             title: true;
             department: {
               select: {
-                id: true;
-                name: true;
+                id: true,
+                name: true
               }
             }
           }
@@ -55,16 +55,16 @@ export class IntegrationService {
         qualifications: {
           where: {
             expiryDate: {
-              gt: new Date();
+              gt: new Date()
             }
           },
           select: {
-            id: true;
+            id: true,
             type: true;
-            name: true;
+            name: true,
             issuedBy: true;
-            issuedDate: true;
-            expiryDate: true;
+            issuedDate: true,
+            expiryDate: true
           }
         }
       }
@@ -79,29 +79,29 @@ export class IntegrationService {
     return this.prisma.biomedicalEquipment.findMany({
       where: {
         asset: {
-          status: 'AVAILABLE';
+          status: 'AVAILABLE'
         }
       },
       select: {
-        id: true;
+        id: true,
         equipmentType: true;
-        deviceIdentifier: true;
+        deviceIdentifier: true,
         regulatoryClass: true;
-        riskLevel: true;
+        riskLevel: true,
         lastCalibrationDate: true;
-        nextCalibrationDate: true;
+        nextCalibrationDate: true,
         asset: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            serialNumber: true;
+            serialNumber: true,
             manufacturer: true;
-            model: true;
+            model: true,
             location: true;
             department: {
               select: {
-                id: true;
-                name: true;
+                id: true,
+                name: true
               }
             }
           }
@@ -118,27 +118,27 @@ export class IntegrationService {
     return this.prisma.asset.findMany({
       where: {
         status: {
-          not: 'DISPOSED';
+          not: 'DISPOSED'
         }
       },
       select: {
-        id: true;
+        id: true,
         name: true;
-        assetType: true;
+        assetType: true,
         serialNumber: true;
-        manufacturer: true;
+        manufacturer: true,
         model: true;
-        purchaseDate: true;
+        purchaseDate: true,
         purchasePrice: true;
-        warrantyExpiryDate: true;
+        warrantyExpiryDate: true,
         location: true;
         department: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         },
-        status: true;
+        status: true
       }
     });
   }
@@ -150,38 +150,38 @@ export class IntegrationService {
   async getPayrollForFinance(periodId: string) {
     return this.prisma.payrollPeriod.findUnique({
       where: {
-        id: periodId;
-        status: 'PAID';
+        id: periodId,
+        status: 'PAID'
       },
       select: {
-        id: true;
+        id: true,
         name: true;
-        startDate: true;
+        startDate: true,
         endDate: true;
-        paymentDate: true;
+        paymentDate: true,
         status: true;
         payrollEntries: {
           select: {
-            id: true;
+            id: true,
             employee: {
               select: {
-                id: true;
+                id: true,
                 employeeId: true;
-                firstName: true;
+                firstName: true,
                 lastName: true;
                 department: {
                   select: {
-                    id: true;
-                    name: true;
+                    id: true,
+                    name: true
                   }
                 }
               }
             },
-            baseSalary: true;
+            baseSalary: true,
             grossSalary: true;
-            deductions: true;
+            deductions: true,
             netSalary: true;
-            components: true;
+            components: true
           }
         }
       }
@@ -197,12 +197,12 @@ export class IntegrationService {
       where: {
         employeeId,
         date: {
-          gte: startDate;
-          lte: endDate;
+          gte: startDate,
+          lte: endDate
         }
       },
       orderBy: {
-        date: 'asc';
+        date: 'asc'
       }
     });
   }
@@ -216,15 +216,15 @@ export class IntegrationService {
       where: {
         employeeId,
         startDate: {
-          lte: endDate;
+          lte: endDate
         },
         endDate: {
-          gte: startDate;
+          gte: startDate
         },
-        status: 'APPROVED';
+        status: 'APPROVED'
       },
       orderBy: {
-        startDate: 'asc';
+        startDate: 'asc'
       }
     });
   }
@@ -257,15 +257,15 @@ export class IntegrationService {
         notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email})` : undefined,
         assetHistory: {
           create: {
-            type: 'STATUS_CHANGE';
-            date: new Date();
+            type: 'STATUS_CHANGE',
+            date: new Date(),
             details: {
               previousStatus: 'UNKNOWN', // Will be replaced in service layer
               newStatus: status;
               notes,
-              updatedBy: session.user.email;
+              updatedBy: session.user.email,
               updatedByName: session.user.name;
-              source: 'CLINICAL_MODULE';
+              source: 'CLINICAL_MODULE'
             }
           }
         }
@@ -278,7 +278,7 @@ export class IntegrationService {
    * This allows clinical modules to record equipment maintenance;
    */
   async recordMaintenanceFromClinical(assetId: string, data: {
-    maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'CALIBRATION' | 'INSPECTION';
+    maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'CALIBRATION' | 'INSPECTION',
     date: Date;
     performedBy?: string;
     cost?: number;
@@ -304,12 +304,12 @@ export class IntegrationService {
     const maintenanceRecord = await this.prisma.maintenanceRecord.create({
       data: {
         assetId,
-        maintenanceType: data.maintenanceType;
+        maintenanceType: data.maintenanceType,
         date: data.date;
         performedBy: data.performedBy || `${session.user.name} (${session.user.email})`,
-        cost: data.cost;
+        cost: data.cost,
         description: data.description;
-        nextMaintenanceDate: data.nextMaintenanceDate;
+        nextMaintenanceDate: data.nextMaintenanceDate
       },
     });
 
@@ -317,17 +317,17 @@ export class IntegrationService {
     await this.prisma.assetHistory.create({
       data: {
         assetId,
-        type: 'MAINTENANCE';
-        date: new Date();
+        type: 'MAINTENANCE',
+        date: new Date(),
         details: {
-          maintenanceRecordId: maintenanceRecord.id;
+          maintenanceRecordId: maintenanceRecord.id,
           maintenanceType: data.maintenanceType;
-          description: data.description;
+          description: data.description,
           source: 'CLINICAL_MODULE';
-          updatedBy: session.user.email;
-          updatedByName: session.user.name;
+          updatedBy: session.user.email,
+          updatedByName: session.user.name
         },
-        employeeId: session.user.employeeId || null;
+        employeeId: session.user.employeeId || null
       },
     });
 
@@ -335,9 +335,9 @@ export class IntegrationService {
     await this.prisma.asset.update({
       where: { id: assetId },
       data: {
-        status: 'AVAILABLE';
+        status: 'AVAILABLE',
         lastMaintenanceDate: data.date;
-        nextMaintenanceDate: data.nextMaintenanceDate;
+        nextMaintenanceDate: data.nextMaintenanceDate
       },
     });
 
@@ -351,15 +351,15 @@ export class IntegrationService {
   async getDepartmentsForAllModules() {
     return this.prisma.department.findMany({
       select: {
-        id: true;
+        id: true,
         name: true;
-        type: true;
+        type: true,
         description: true;
-        parentDepartmentId: true;
+        parentDepartmentId: true,
         parentDepartment: {
           select: {
-            id: true;
-            name: true;
+            id: true,
+            name: true
           }
         }
       }

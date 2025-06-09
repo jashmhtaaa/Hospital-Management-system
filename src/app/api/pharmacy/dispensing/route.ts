@@ -20,41 +20,41 @@ import { validateDispensingRequest } from '../../../../lib/validation/pharmacy-v
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const dispensingRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByStatus: (status: string) => Promise.resolve([]);
-  findAll: () => Promise.resolve([]);
-  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByStatus: (status: string) => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByLocationId: (locationId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByLocationId: (locationId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
 };
 
 /**
@@ -120,25 +120,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DISPENSING', {
-      action: 'LIST';
+      action: 'LIST',
       resourceType: 'MedicationDispense';
-      userId: userId;
+      userId: userId,
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length;
+        resultCount: paginatedRecords.length
       }
     });
 
     // Return response
     return NextResponse.json({
-      dispensingRecords: fhirDispensingRecords;
+      dispensingRecords: fhirDispensingRecords,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {
@@ -205,19 +205,19 @@ export const POST = async (req: NextRequest) => {
 
     // Create dispensing record
     const dispensing = {
-      id: data.id || crypto.randomUUID();
+      id: data.id || crypto.randomUUID(),
       prescriptionId: data.prescriptionId;
-      patientId: prescription.patientId;
+      patientId: prescription.patientId,
       medicationId: prescription.medicationId;
-      inventoryId: availableInventory.id;
+      inventoryId: availableInventory.id,
       quantityDispensed: data.quantityDispensed;
-      daysSupply: data.daysSupply;
+      daysSupply: data.daysSupply,
       dispensedBy: userId;
-      dispensedAt: new Date();
+      dispensedAt: new Date(),
       status: data.status || 'completed';
-      notes: data.notes || '';
+      notes: data.notes || '',
       location: data.location || 'main-pharmacy';
-      dispensingType: data.dispensingType || 'outpatient';
+      dispensingType: data.dispensingType || 'outpatient'
     };
 
     // Special handling for controlled substances
@@ -225,23 +225,23 @@ export const POST = async (req: NextRequest) => {
       // Encrypt controlled substance data
       dispensing.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
-          witnessId: data.witnessId;
+          witnessId: data.witnessId,
           lockboxNumber: data.lockboxNumber;
-          wastage: data.wastage || 0;
+          wastage: data.wastage || 0
         });
       );
 
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'DISPENSE';
+        action: 'DISPENSE',
         resourceType: 'MedicationDispense';
-        userId: userId;
+        userId: userId,
         patientId: prescription.patientId;
         details: {
-          medicationId: prescription.medicationId;
+          medicationId: prescription.medicationId,
           prescriptionId: data.prescriptionId;
-          quantity: data.quantityDispensed;
-          witnessId: data.witnessId;
+          quantity: data.quantityDispensed,
+          witnessId: data.witnessId
         }
       });
     }
@@ -257,24 +257,24 @@ export const POST = async (req: NextRequest) => {
 
     // Regular audit logging
     await auditLog('DISPENSING', {
-      action: 'CREATE';
+      action: 'CREATE',
       resourceType: 'MedicationDispense';
-      resourceId: dispensingId;
+      resourceId: dispensingId,
       userId: userId;
-      patientId: prescription.patientId;
+      patientId: prescription.patientId,
       details: {
-        medicationId: prescription.medicationId;
+        medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId;
-        quantity: data.quantityDispensed;
-        location: data.location;
+        quantity: data.quantityDispensed,
+        location: data.location
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: dispensingId;
-        message: 'Medication dispensed successfully';
+        id: dispensingId,
+        message: 'Medication dispensed successfully'
       },
       { status: 201 }
     );

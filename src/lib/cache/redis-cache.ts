@@ -11,39 +11,39 @@ import { cache } from '../cache';
 
 // Cache configuration
 interface CacheConfig {
-  host: string;
+  host: string,
   port: number;
   password?: string;
-  db: number;
+  db: number,
   retryAttempts: number;
-  retryDelay: number;
+  retryDelay: number,
   keyPrefix: string;
-  defaultTTL: number;
-  maxRetriesPerRequest: number;
+  defaultTTL: number,
+  maxRetriesPerRequest: number
 }
 
 // Cache key patterns for different data types
 export const CACHE_PATTERNS = {
-  PATIENT: 'patient:';
-  PATIENT_LIST: 'patients:list:';
-  PATIENT_SEARCH: 'patients:search:';
-  BILL: 'bill:';
-  BILL_LIST: 'bills:list:';
-  OUTSTANDING_BILLS: 'bills:outstanding';
-  APPOINTMENT: 'appointment:';
-  APPOINTMENT_LIST: 'appointments:list:';
-  DOCTOR_SCHEDULE: 'doctor:schedule:';
-  LAB_ORDER: 'lab:order:';
-  LAB_RESULTS: 'lab:results:';
-  CRITICAL_RESULTS: 'lab:critical:';
-  IPD_ADMISSION: 'ipd:admission:';
-  WARD_OCCUPANCY: 'ipd:ward:occupancy';
-  INSURANCE_POLICY: 'insurance:policy:';
-  USER_PERMISSIONS: 'user:permissions:';
-  SESSION: 'session:';
-  AUDIT: 'audit:';
-  STATS: 'stats:';
-  DASHBOARD: 'dashboard:';
+  PATIENT: 'patient:',
+  PATIENT_LIST: 'patients:list:',
+  PATIENT_SEARCH: 'patients:search:',
+  BILL: 'bill:',
+  BILL_LIST: 'bills:list:',
+  OUTSTANDING_BILLS: 'bills:outstanding',
+  APPOINTMENT: 'appointment:',
+  APPOINTMENT_LIST: 'appointments:list:',
+  DOCTOR_SCHEDULE: 'doctor:schedule:',
+  LAB_ORDER: 'lab:order:',
+  LAB_RESULTS: 'lab:results:',
+  CRITICAL_RESULTS: 'lab:critical:',
+  IPD_ADMISSION: 'ipd:admission:',
+  WARD_OCCUPANCY: 'ipd:ward:occupancy',
+  INSURANCE_POLICY: 'insurance:policy:',
+  USER_PERMISSIONS: 'user:permissions:',
+  SESSION: 'session:',
+  AUDIT: 'audit:',
+  STATS: 'stats:',
+  DASHBOARD: 'dashboard:'
 } as const;
 
 // TTL constants (in seconds)
@@ -52,7 +52,7 @@ export const CACHE_TTL = {
   MEDIUM: 1800,    // 30 minutes
   LONG: 3600,      // 1 hour
   VERY_LONG: 86400, // 24 hours
-  PERMANENT: -1,   // No expiration;
+  PERMANENT: -1,   // No expiration
 } as const;
 
 class RedisCacheManager {
@@ -76,32 +76,32 @@ class RedisCacheManager {
 
   private getConfig(): CacheConfig {
     return {
-      host: process.env.REDIS_HOST || 'localhost';
-      port: parseInt(process.env.REDIS_PORT || '6379');
-      password: process.env.REDIS_PASSWORD;
-      db: parseInt(process.env.REDIS_DB || '0');
-      retryAttempts: 3;
+      host: process.env.REDIS_HOST || 'localhost',
+      port: parseInt(process.env.REDIS_PORT || '6379'),
+      password: process.env.REDIS_PASSWORD,
+      db: parseInt(process.env.REDIS_DB || '0'),
+      retryAttempts: 3,
       retryDelay: 1000;
-      keyPrefix: process.env.REDIS_KEY_PREFIX || 'hms:';
-      defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || '1800');
-      maxRetriesPerRequest: 3;
+      keyPrefix: process.env.REDIS_KEY_PREFIX || 'hms:',
+      defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || '1800'),
+      maxRetriesPerRequest: 3
     };
   }
 
   private createRedisClient(): Redis {
     const redisConfig = {
-      host: this.config.host;
+      host: this.config.host,
       port: this.config.port;
-      password: this.config.password;
+      password: this.config.password,
       db: this.config.db;
-      keyPrefix: this.config.keyPrefix;
+      keyPrefix: this.config.keyPrefix,
       retryDelayOnFailover: this.config.retryDelay;
-      maxRetriesPerRequest: this.config.maxRetriesPerRequest;
+      maxRetriesPerRequest: this.config.maxRetriesPerRequest,
       lazyConnect: true;
-      keepAlive: 30000;
+      keepAlive: 30000,
       family: 4;
-      connectTimeout: 10000;
-      commandTimeout: 5000;
+      connectTimeout: 10000,
+      commandTimeout: 5000
     };
 
     return new Redis(redisConfig);
@@ -114,7 +114,7 @@ class RedisCacheManager {
     })
 
     this.redis.on('ready', () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     })
 
     this.redis.on('error', (error) => {
@@ -128,7 +128,7 @@ class RedisCacheManager {
     })
 
     this.redis.on('reconnecting', () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     })
   }
 
@@ -416,19 +416,19 @@ class RedisCacheManager {
       return {
         connected: this.isConnected;
         dbSize,
-        memoryInfo: this.parseRedisInfo(info);
+        memoryInfo: this.parseRedisInfo(info),
         config: {
-          host: this.config.host;
+          host: this.config.host,
           port: this.config.port;
-          db: this.config.db;
-          keyPrefix: this.config.keyPrefix;
+          db: this.config.db,
+          keyPrefix: this.config.keyPrefix
         },
       };
     } catch (error) {
 
       return {
-        connected: false;
-        error: error instanceof Error ? error.message : 'Unknown error';
+        connected: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -467,7 +467,7 @@ class RedisCacheManager {
     try {
       await this.redis.quit();
       this.isConnected = false;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
     }
@@ -483,26 +483,26 @@ export class CacheService {
 
   // Patient caching
   async cachePatient(patientId: string, patient: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ patient, ttl);
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ patient, ttl)
   }
 
   async getPatient(patientId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */
   }
 
   async invalidatePatient(patientId: string): Promise<void> {
     await this.redis.del(`/* SECURITY: Template literal eliminated */
-    await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_LIST}*`);
+    await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_LIST}*`),
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
   }
 
   // Bill caching
   async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl);
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl)
   }
 
   async getBill(billId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */
   }
 
   async invalidateBills(patientId?: string): Promise<void> {
@@ -513,49 +513,49 @@ export class CacheService {
 
   // Appointment caching
   async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl);
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl)
   }
 
   async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */
   }
 
   async invalidateDoctorSchedule(doctorId: string): Promise<void> {
     await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */
-    await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`);
+    await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`),
   }
 
   // User session caching
   async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl);
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl)
   }
 
   async getUserSession(sessionId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */
   }
 
   async invalidateUserSession(sessionId: string): Promise<void> {
-    await this.redis.del(`/* SECURITY: Template literal eliminated */;
+    await this.redis.del(`/* SECURITY: Template literal eliminated */
   }
 
   // Dashboard statistics caching
   async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl);
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl)
   }
 
   async getDashboardStats(userId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */
   }
 
   // General purpose caching with automatic key generation
   async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     const key = `/* SECURITY: Template literal eliminated */
-    await this.redis.set(key, data, ttl);
+    await this.redis.set(key, data, ttl)
   }
 
   async getCachedResult<T>(pattern: string, identifier: string): Promise<T | null> {
     const key = `/* SECURITY: Template literal eliminated */
-    return await this.redis.get<T>(key);
+    return await this.redis.get<T>(key)
   }
 
   async invalidatePattern(pattern: string): Promise<void> {
@@ -569,7 +569,7 @@ export class CacheService {
     // Warm frequently accessed data
     // This would typically be called during application startup
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   // Cache health and stats
@@ -580,7 +580,7 @@ export class CacheService {
     return {
       healthy: isHealthy;
       stats,
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString()
     };
   }
 }

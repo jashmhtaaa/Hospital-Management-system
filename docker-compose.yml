@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
       target: runner
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/hospital_management
@@ -27,16 +27,16 @@ services:
       - hms-network
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hms-web.rule=Host(`localhost`)"
-      - "traefik.http.services.hms-web.loadbalancer.server.port=3000"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.hms-web.rule=Host(`localhost`)'
+      - 'traefik.http.services.hms-web.loadbalancer.server.port=3000'
 
   # API Gateway
   api-gateway:
     image: nginx:alpine
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
@@ -56,7 +56,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -64,7 +64,7 @@ services:
       - hms-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d hospital_management"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d hospital_management']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -82,7 +82,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
       - ./redis/redis.conf:/etc/redis/redis.conf:ro
@@ -90,14 +90,14 @@ services:
       - hms-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
     command: redis-server /etc/redis/redis.conf
 
   # Microservices
-  
+
   # User Management Service
   user-service:
     build:
@@ -173,12 +173,12 @@ services:
     restart: unless-stopped
 
   # Monitoring and Observability
-  
+
   # Prometheus
   prometheus:
     image: prom/prometheus:latest
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
@@ -197,7 +197,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "3001:3000"
+      - '3001:3000'
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
@@ -214,9 +214,9 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - 'ES_JAVA_OPTS=-Xms1g -Xmx1g'
     ports:
-      - "9200:9200"
+      - '9200:9200'
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     networks:
@@ -227,7 +227,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:8.11.0
     ports:
-      - "5601:5601"
+      - '5601:5601'
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:
@@ -248,7 +248,7 @@ services:
     restart: unless-stopped
 
   # Security and Authentication
-  
+
   # Vault for Secrets Management
   vault:
     image: vault:latest
@@ -258,7 +258,7 @@ services:
       - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_ROOT_TOKEN}
       - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
     ports:
-      - "8200:8200"
+      - '8200:8200'
     volumes:
       - vault_data:/vault/data
     networks:

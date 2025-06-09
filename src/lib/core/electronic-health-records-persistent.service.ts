@@ -18,127 +18,127 @@ export const ClinicalNoteSchema = z.object({
   template_id: z.string().optional();
 
   // SOAP components
-  subjective: z.string().optional();
-  objective: z.string().optional();
-  assessment: z.string().optional();
+  subjective: z.string().optional(),
+  objective: z.string().optional(),
+  assessment: z.string().optional(),
   plan: z.string().optional();
 
   // Structured data
-  chief_complaint: z.string().optional();
-  history_of_present_illness: z.string().optional();
-  review_of_systems: z.string().optional();
-  past_medical_history: z.string().optional();
-  medications: z.string().optional();
-  allergies: z.string().optional();
-  social_history: z.string().optional();
-  family_history: z.string().optional();
-  physical_examination: z.string().optional();
+  chief_complaint: z.string().optional(),
+  history_of_present_illness: z.string().optional(),
+  review_of_systems: z.string().optional(),
+  past_medical_history: z.string().optional(),
+  medications: z.string().optional(),
+  allergies: z.string().optional(),
+  social_history: z.string().optional(),
+  family_history: z.string().optional(),
+  physical_examination: z.string().optional(),
   vital_signs: z.object({
-    temperature: z.number().optional();
-    blood_pressure_systolic: z.number().optional();
-    blood_pressure_diastolic: z.number().optional();
-    heart_rate: z.number().optional();
-    respiratory_rate: z.number().optional();
-    oxygen_saturation: z.number().optional();
-    weight: z.number().optional();
-    height: z.number().optional();
-    bmi: z.number().optional();
+    temperature: z.number().optional(),
+    blood_pressure_systolic: z.number().optional(),
+    blood_pressure_diastolic: z.number().optional(),
+    heart_rate: z.number().optional(),
+    respiratory_rate: z.number().optional(),
+    oxygen_saturation: z.number().optional(),
+    weight: z.number().optional(),
+    height: z.number().optional(),
+    bmi: z.number().optional()
   }).optional(),
 
   // Clinical coding
-  icd10_codes: z.array(z.string()).optional();
-  snomed_codes: z.array(z.string()).optional();
+  icd10_codes: z.array(z.string()).optional(),
+  snomed_codes: z.array(z.string()).optional(),
   cpt_codes: z.array(z.string()).optional();
 
   // Metadata
-  free_text_content: z.string().optional();
-  audio_recording_id: z.string().optional();
-  created_by: z.string();
-  status: z.enum(['draft', 'final', 'amended', 'corrected']).default('draft'),;
+  free_text_content: z.string().optional(),
+  audio_recording_id: z.string().optional(),
+  created_by: z.string(),
+  status: z.enum(['draft', 'final', 'amended', 'corrected']).default('draft'),
 })
 
 export const CarePlanSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
-  encounter_id: z.string().optional();
+  encounter_id: z.string().optional(),
   title: z.string().min(1, 'Title is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   status: z.enum(['draft', 'active', 'on_hold', 'completed', 'cancelled']).default('draft'),
   intent: z.enum(['proposal', 'plan', 'order', 'option']).default('plan'),
 
   // Goals and objectives
   goals: z.array(z.object({
-    id: z.string();
-    description: z.string();
-    target_date: z.date().optional();
+    id: z.string(),
+    description: z.string(),
+    target_date: z.date().optional(),
     status: z.enum(['proposed', 'accepted', 'active', 'on_hold', 'completed', 'cancelled']).default('proposed'),
-    priority: z.enum(['low', 'medium', 'high']).default('medium'),;
+    priority: z.enum(['low', 'medium', 'high']).default('medium'),
   })).default([]),
 
   // Activities/Interventions
   activities: z.array(z.object({
-    id: z.string();
-    title: z.string();
-    description: z.string().optional();
+    id: z.string(),
+    title: z.string(),
+    description: z.string().optional(),
     status: z.enum(['not_started', 'scheduled', 'in_progress', 'on_hold', 'completed', 'cancelled']).default('not_started'),
-    scheduled_date: z.date().optional();
-    category: z.enum(['medication', 'procedure', 'encounter', 'observation', 'other']).default('other'),;
+    scheduled_date: z.date().optional(),
+    category: z.enum(['medication', 'procedure', 'encounter', 'observation', 'other']).default('other'),
   })).default([]),
 
   // Care team
   care_team: z.array(z.object({
-    provider_id: z.string();
-    role: z.string();
-    period_start: z.date();
-    period_end: z.date().optional();
+    provider_id: z.string(),
+    role: z.string(),
+    period_start: z.date(),
+    period_end: z.date().optional()
   })).default([]),
 
   // Clinical coding
-  icd10_codes: z.array(z.string()).optional();
+  icd10_codes: z.array(z.string()).optional(),
   snomed_codes: z.array(z.string()).optional();
 
   // Metadata
-  created_by: z.string();
-  period_start: z.date();
-  period_end: z.date().optional();
+  created_by: z.string(),
+  period_start: z.date(),
+  period_end: z.date().optional()
 })
 
 export const ProblemListSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
-  encounter_id: z.string().optional();
+  encounter_id: z.string().optional(),
   problem_description: z.string().min(1, 'Problem description is required'),
-  icd10_code: z.string().optional();
-  snomed_code: z.string().optional();
+  icd10_code: z.string().optional(),
+  snomed_code: z.string().optional(),
   status: z.enum(['active', 'inactive', 'resolved']).default('active'),
   severity: z.enum(['mild', 'moderate', 'severe']).default('moderate'),
-  onset_date: z.date().optional();
-  resolution_date: z.date().optional();
-  notes: z.string().optional();
-  created_by: z.string();
+  onset_date: z.date().optional(),
+  resolution_date: z.date().optional(),
+  notes: z.string().optional(),
+  created_by: z.string()
 });
 
 export const ClinicalGuidelineSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   version: z.string().min(1, 'Version is required'),
   status: z.enum(['draft', 'active', 'retired']).default('draft'),
 
   // Applicable conditions
-  icd10_codes: z.array(z.string()).optional();
+  icd10_codes: z.array(z.string()).optional(),
   snomed_codes: z.array(z.string()).optional();
 
   // Decision support rules
   decision_support_rules: z.array(z.object({
-    id: z.string();
-    condition: z.string();
-    recommendation: z.string();
-    evidence_level: z.string();
-    recommendation_strength: z.enum(['strong', 'conditional']),;
+    id: z.string(),
+    condition: z.string(),
+    recommendation: z.string(),
+    evidence_level: z.string(),
+    recommendation_strength: z.enum(['strong', 'conditional']),
   })).default([]),
 
   // Metadata
-  created_by: z.string();
-  published_date: z.date().optional();
-  review_date: z.date().optional();
+  created_by: z.string(),
+  published_date: z.date().optional(),
+  review_date: z.date().optional()
 })
 
 // Type definitions
@@ -148,24 +148,24 @@ export type ProblemListItem = z.infer<typeof ProblemListSchema>;
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema>;
 
 export interface ClinicalDecisionSupport {
-  id: string;
+  id: string,
   title: string;
-  description: string;
+  description: string,
   trigger_conditions: {
     icd10_codes?: string[];
     snomed_codes?: string[];
-    lab_values?: { name: string; operator: string; value: number }[];
-    medication_interactions?: string[];
+    lab_values?: { name: string, operator: string; value: number }[];
+    medication_interactions?: string[]
   };
   recommendations: {
-    type: 'alert' | 'suggestion' | 'warning' | 'info';
+    type: 'alert' | 'suggestion' | 'warning' | 'info',
     message: string;
     actions?: string[];
   }[];
-  status: 'active' | 'inactive';
+  status: 'active' | 'inactive',
   created_by: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 }
 
 /**
@@ -210,24 +210,24 @@ export class PersistentElectronicHealthRecordsService {
 
     const soapNote = await this.prisma.soapNote.create({
       data: {
-        encounterId: data.encounter_id;
+        encounterId: data.encounter_id,
         patientId: data.patient_id;
-        providerId: data.provider_id;
-        noteDateTime: new Date();
-        subjective: encryptedData.subjective || '';
+        providerId: data.provider_id,
+        noteDateTime: new Date(),
+        subjective: encryptedData.subjective || '',
         objective: encryptedData.objective || '';
-        assessment: encryptedData.assessment || '';
+        assessment: encryptedData.assessment || '',
         plan: encryptedData.plan || '';
-        additionalNotes: encryptedData.free_text_content;
+        additionalNotes: encryptedData.free_text_content,
         status: data.status;
-        signedBy: data.created_by;
-        signatureDateTime: data.status === 'final' ? new Date() : null;
+        signedBy: data.created_by,
+        signatureDateTime: data.status === 'final' ? new Date() : null
       }
     });
 
     return {
       ...data,
-      id: soapNote.id;
+      id: soapNote.id
     };
   }
 
@@ -236,21 +236,21 @@ export class PersistentElectronicHealthRecordsService {
 
     const progressNote = await this.prisma.progressNote.create({
       data: {
-        encounterId: data.encounter_id;
+        encounterId: data.encounter_id,
         patientId: data.patient_id;
-        providerId: data.provider_id;
-        noteDateTime: new Date();
-        noteType: data.note_type;
-        content: JSON.stringify(encryptedData);
-        status: data.status;
+        providerId: data.provider_id,
+        noteDateTime: new Date(),
+        noteType: data.note_type,
+        content: JSON.stringify(encryptedData),
+        status: data.status,
         signedBy: data.created_by;
-        signatureDateTime: data.status === 'final' ? new Date() : null;
+        signatureDateTime: data.status === 'final' ? new Date() : null
       }
     });
 
     return {
       ...data,
-      id: progressNote.id;
+      id: progressNote.id
     };
   }
 
@@ -313,15 +313,15 @@ export class PersistentElectronicHealthRecordsService {
 
       const carePlan = await this.prisma.carePlan.create({
         data: {
-          patientId: validated.patient_id;
+          patientId: validated.patient_id,
           encounterId: validated.encounter_id;
-          title: validated.title;
+          title: validated.title,
           description: validated.description;
-          status: validated.status;
+          status: validated.status,
           intent: validated.intent;
-          periodStart: validated.period_start;
+          periodStart: validated.period_start,
           periodEnd: validated.period_end;
-          createdBy: validated.created_by;
+          createdBy: validated.created_by
         }
       });
 
@@ -329,11 +329,11 @@ export class PersistentElectronicHealthRecordsService {
       for (const goal of validated.goals) {
         await this.prisma.carePlanGoal.create({
           data: {
-            carePlanId: carePlan.id;
+            carePlanId: carePlan.id,
             description: goal.description;
-            targetDate: goal.target_date;
+            targetDate: goal.target_date,
             status: goal.status;
-            priority: goal.priority;
+            priority: goal.priority
           }
         })
       }
@@ -342,19 +342,19 @@ export class PersistentElectronicHealthRecordsService {
       for (const activity of validated.activities) {
         await this.prisma.carePlanIntervention.create({
           data: {
-            carePlanId: carePlan.id;
+            carePlanId: carePlan.id,
             title: activity.title;
-            description: activity.description;
+            description: activity.description,
             status: activity.status;
-            scheduledDate: activity.scheduled_date;
-            category: activity.category;
+            scheduledDate: activity.scheduled_date,
+            category: activity.category
           }
         })
       }
 
       return {
         ...validated,
-        id: carePlan.id;
+        id: carePlan.id
       };
     } catch (error) {
       throw new Error(`Failed to create care plan: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -366,41 +366,41 @@ export class PersistentElectronicHealthRecordsService {
       const carePlan = await this.prisma.carePlan.findUnique({
         where: { id },
         include: {
-          goals: true;
-          interventions: true;
+          goals: true,
+          interventions: true
         }
       });
 
       if (!carePlan) return null;
 
       return {
-        patient_id: carePlan.patientId;
+        patient_id: carePlan.patientId,
         encounter_id: carePlan.encounterId || undefined;
-        title: carePlan.title;
+        title: carePlan.title,
         description: carePlan.description || undefined;
-        status: carePlan.status as any;
+        status: carePlan.status as any,
         intent: carePlan.intent as any;
         goals: carePlan.goals.map(goal => ({
-          id: goal.id;
+          id: goal.id,
           description: goal.description;
-          target_date: goal.targetDate || undefined;
+          target_date: goal.targetDate || undefined,
           status: goal.status as any;
-          priority: goal.priority as any;
+          priority: goal.priority as any
         })),
         activities: carePlan.interventions.map(intervention => ({
-          id: intervention.id;
+          id: intervention.id,
           title: intervention.title;
-          description: intervention.description || undefined;
+          description: intervention.description || undefined,
           status: intervention.status as any;
-          scheduled_date: intervention.scheduledDate || undefined;
-          category: intervention.category as any;
+          scheduled_date: intervention.scheduledDate || undefined,
+          category: intervention.category as any
         })),
         care_team: [], // Would need to implement care team relationship
         icd10_codes: undefined, // Would need to add to schema
         snomed_codes: undefined, // Would need to add to schema
-        created_by: carePlan.createdBy;
+        created_by: carePlan.createdBy,
         period_start: carePlan.periodStart;
-        period_end: carePlan.periodEnd || undefined;
+        period_end: carePlan.periodEnd || undefined
       }
     } catch (error) {
       throw new Error(`Failed to get care plan: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -412,40 +412,40 @@ export class PersistentElectronicHealthRecordsService {
       const carePlans = await this.prisma.carePlan.findMany({
         where: { patientId },
         include: {
-          goals: true;
-          interventions: true;
+          goals: true,
+          interventions: true
         },
         orderBy: { createdAt: 'desc' }
       });
 
       return carePlans.map(carePlan => ({
-        patient_id: carePlan.patientId;
+        patient_id: carePlan.patientId,
         encounter_id: carePlan.encounterId || undefined;
-        title: carePlan.title;
+        title: carePlan.title,
         description: carePlan.description || undefined;
-        status: carePlan.status as any;
+        status: carePlan.status as any,
         intent: carePlan.intent as any;
         goals: carePlan.goals.map(goal => ({
-          id: goal.id;
+          id: goal.id,
           description: goal.description;
-          target_date: goal.targetDate || undefined;
+          target_date: goal.targetDate || undefined,
           status: goal.status as any;
-          priority: goal.priority as any;
+          priority: goal.priority as any
         })),
         activities: carePlan.interventions.map(intervention => ({
-          id: intervention.id;
+          id: intervention.id,
           title: intervention.title;
-          description: intervention.description || undefined;
+          description: intervention.description || undefined,
           status: intervention.status as any;
-          scheduled_date: intervention.scheduledDate || undefined;
-          category: intervention.category as any;
+          scheduled_date: intervention.scheduledDate || undefined,
+          category: intervention.category as any
         })),
-        care_team: [];
+        care_team: [],
         icd10_codes: undefined;
-        snomed_codes: undefined;
+        snomed_codes: undefined,
         created_by: carePlan.createdBy;
-        period_start: carePlan.periodStart;
-        period_end: carePlan.periodEnd || undefined;
+        period_start: carePlan.periodStart,
+        period_end: carePlan.periodEnd || undefined
       }));
     } catch (error) {
       throw new Error(`Failed to get care plans for patient: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -460,23 +460,23 @@ export class PersistentElectronicHealthRecordsService {
 
       const problem = await this.prisma.problemEntry.create({
         data: {
-          patientId: validated.patient_id;
+          patientId: validated.patient_id,
           encounterId: validated.encounter_id;
-          problemDescription: encryptedData.problem_description;
+          problemDescription: encryptedData.problem_description,
           icd10Code: validated.icd10_code;
-          snomedCode: validated.snomed_code;
+          snomedCode: validated.snomed_code,
           status: validated.status;
-          severity: validated.severity;
+          severity: validated.severity,
           onsetDate: validated.onset_date;
-          resolutionDate: validated.resolution_date;
+          resolutionDate: validated.resolution_date,
           notes: encryptedData.notes;
-          createdBy: validated.created_by;
+          createdBy: validated.created_by
         }
       });
 
       return {
         ...validated,
-        id: problem.id;
+        id: problem.id
       };
     } catch (error) {
       throw new Error(`Failed to create problem list item: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -493,17 +493,17 @@ export class PersistentElectronicHealthRecordsService {
       return Promise.all(problems.map(async (problem) => {
         const decrypted = await this.encryptionService.decryptObject(problem, this.encryptedFields);
         return {
-          patient_id: problem.patientId;
+          patient_id: problem.patientId,
           encounter_id: problem.encounterId || undefined;
-          problem_description: decrypted.problemDescription;
+          problem_description: decrypted.problemDescription,
           icd10_code: problem.icd10Code || undefined;
-          snomed_code: problem.snomedCode || undefined;
+          snomed_code: problem.snomedCode || undefined,
           status: problem.status as any;
-          severity: problem.severity as any;
+          severity: problem.severity as any,
           onset_date: problem.onsetDate || undefined;
-          resolution_date: problem.resolutionDate || undefined;
+          resolution_date: problem.resolutionDate || undefined,
           notes: decrypted.notes || undefined;
-          created_by: problem.createdBy;
+          created_by: problem.createdBy
         };
       }));
     } catch (error) {
@@ -518,22 +518,22 @@ export class PersistentElectronicHealthRecordsService {
 
       const guideline = await this.prisma.clinicalDecisionSupport.create({
         data: {
-          title: validated.title;
+          title: validated.title,
           description: validated.description || '';
-          ruleType: 'guideline';
+          ruleType: 'guideline',
           triggerConditions: JSON.stringify({
-            icd10_codes: validated.icd10_codes;
-            snomed_codes: validated.snomed_codes;
+            icd10_codes: validated.icd10_codes,
+            snomed_codes: validated.snomed_codes
           }),
-          recommendations: JSON.stringify(validated.decision_support_rules);
+          recommendations: JSON.stringify(validated.decision_support_rules),
           status: validated.status;
-          createdBy: validated.created_by;
+          createdBy: validated.created_by
         }
       });
 
       return {
         ...validated,
-        id: guideline.id;
+        id: guideline.id
       };
     } catch (error) {
       throw new Error(`Failed to create clinical guideline: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -561,16 +561,16 @@ export class PersistentElectronicHealthRecordsService {
         const recommendations = JSON.parse(guideline.recommendations);
 
         return {
-          title: guideline.title;
+          title: guideline.title,
           description: guideline.description || undefined;
           version: '1.0', // Would need to add version tracking
-          status: guideline.status as any;
+          status: guideline.status as any,
           icd10_codes: triggerConditions.icd10_codes;
-          snomed_codes: triggerConditions.snomed_codes;
+          snomed_codes: triggerConditions.snomed_codes,
           decision_support_rules: recommendations;
-          created_by: guideline.createdBy;
+          created_by: guideline.createdBy,
           published_date: guideline.createdAt;
-          review_date: undefined, // Would need to add to schema;
+          review_date: undefined, // Would need to add to schema
         }
       });
     } catch (error) {
@@ -583,19 +583,19 @@ export class PersistentElectronicHealthRecordsService {
     const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields)
 
     return {
-      patient_id: note.patientId;
+      patient_id: note.patientId,
       encounter_id: note.encounterId;
-      provider_id: note.providerId;
+      provider_id: note.providerId,
       note_type: 'soap_note';
-      subjective: decrypted.subjective;
+      subjective: decrypted.subjective,
       objective: decrypted.objective;
-      assessment: decrypted.assessment;
+      assessment: decrypted.assessment,
       plan: decrypted.plan;
-      free_text_content: decrypted.additionalNotes;
+      free_text_content: decrypted.additionalNotes,
       created_by: note.signedBy || note.createdBy;
-      status: note.status;
+      status: note.status,
       created_at: note.createdAt;
-      updated_at: note.updatedAt;
+      updated_at: note.updatedAt
     };
   }
 
@@ -604,15 +604,15 @@ export class PersistentElectronicHealthRecordsService {
     const decrypted = await this.encryptionService.decryptObject(content, this.encryptedFields);
 
     return {
-      patient_id: note.patientId;
+      patient_id: note.patientId,
       encounter_id: note.encounterId;
-      provider_id: note.providerId;
+      provider_id: note.providerId,
       note_type: note.noteType || 'progress_note';
       ...decrypted,
-      created_by: note.signedBy || note.createdBy;
+      created_by: note.signedBy || note.createdBy,
       status: note.status;
-      created_at: note.createdAt;
-      updated_at: note.updatedAt;
+      created_at: note.createdAt,
+      updated_at: note.updatedAt
     };
   }
 
@@ -666,11 +666,11 @@ export class PersistentElectronicHealthRecordsService {
 
   // Clinical Decision Support
   async evaluateClinicalDecisionSupport(
-    patientId: string;
+    patientId: string,
     context: {
       icd10_codes?: string[]
       snomed_codes?: string[];
-      lab_values?: { name: string; value: number }[];
+      lab_values?: { name: string, value: number }[];
       medications?: string[];
     }
   ): Promise<ClinicalDecisionSupport[]> {
@@ -703,15 +703,15 @@ export class PersistentElectronicHealthRecordsService {
 
         if (triggered != null) {
           triggeredRules.push({
-            id: rule.id;
+            id: rule.id,
             title: rule.title;
-            description: rule.description;
+            description: rule.description,
             trigger_conditions: triggerConditions;
-            recommendations: JSON.parse(rule.recommendations);
+            recommendations: JSON.parse(rule.recommendations),
             status: rule.status as 'active' | 'inactive';
-            created_by: rule.createdBy;
+            created_by: rule.createdBy,
             created_at: rule.createdAt;
-            updated_at: rule.updatedAt;
+            updated_at: rule.updatedAt
           })
         }
       }
@@ -735,7 +735,7 @@ export const _getEHRService = (prismaClient?: PrismaClient): PersistentElectroni
   if (!ehrServiceInstance) {
     ehrServiceInstance = new PersistentElectronicHealthRecordsService(prismaClient);
   }
-  return ehrServiceInstance;
+  return ehrServiceInstance
 };
 
 // For backward compatibility

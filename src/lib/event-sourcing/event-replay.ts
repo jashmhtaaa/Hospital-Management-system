@@ -23,7 +23,7 @@ export class EventReplayService {
    * @param handler The function to handle each event during replay;
    */
   async replayAggregate(
-    aggregateId: string;
+    aggregateId: string,
     aggregateType: string;
     handler: (event: unknown) => Promise<void>;
   ): Promise<void> {
@@ -68,7 +68,7 @@ export class EventReplayService {
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
+        errorType: error.name || 'unknown'
       });
 
       throw error;
@@ -83,8 +83,8 @@ export class EventReplayService {
    * @param options Options for replay;
    */
   async replayAllAggregates(
-    aggregateType: string;
-    handler: (event: unknown) => Promise<void>;
+    aggregateType: string,
+    handler: (event: unknown) => Promise<void>,
     options: {
       batchSize?: number;
       concurrency?: number;
@@ -137,8 +137,8 @@ export class EventReplayService {
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
-        replayType: 'full';
+        errorType: error.name || 'unknown',
+        replayType: 'full'
       });
 
       throw error;
@@ -153,7 +153,7 @@ export class EventReplayService {
    * @param handler Handler function for processing events;
    */
   async rebuildMaterializedView(
-    viewName: string;
+    viewName: string,
     eventTypes: string[];
     handler: (event: unknown) => Promise<void>;
   ): Promise<void> {
@@ -220,8 +220,8 @@ export class EventReplayService {
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         viewName,
-        errorType: error.name || 'unknown';
-        replayType: 'view';
+        errorType: error.name || 'unknown',
+        replayType: 'view'
       });
 
       throw error;
@@ -235,10 +235,10 @@ export class EventReplayService {
    * @param handlers Map of handlers for each aggregate type;
    */
   async performDisasterRecovery(
-    aggregateTypes: string[];
+    aggregateTypes: string[],
     handlers: Record<string, (event: unknown) => Promise<void>>,
     options: {
-      notifyProgress?: (progress: { step: string; aggregateType: string; processed: number; total?: number }) => Promise<void>;
+      notifyProgress?: (progress: { step: string, aggregateType: string; processed: number; total?: number }) => Promise<void>;
     } = {}
   ): Promise<void> {
     const { notifyProgress } = options;
@@ -271,7 +271,7 @@ export class EventReplayService {
             await notifyProgress({
               step: 'start';
               aggregateType,
-              processed: 0;
+              processed: 0
             });
           }
 
@@ -280,7 +280,7 @@ export class EventReplayService {
             aggregateType,
             handlers[aggregateType],
             {
-              batchSize: 100;
+              batchSize: 100,
               concurrency: 3;
               notifyProgress: async (progress) => {
                 if (notifyProgress != null) {
@@ -299,7 +299,7 @@ export class EventReplayService {
             await notifyProgress({
               step: 'complete';
               aggregateType,
-              processed: 0;
+              processed: 0
             });
           }
 
@@ -313,7 +313,7 @@ export class EventReplayService {
 
         logger.info(`Completed disaster recovery process`, {
           duration: `${duration.toFixed(2)}ms`,
-          aggregateTypesProcessed: aggregateTypes.length;
+          aggregateTypesProcessed: aggregateTypes.length
         });
       } finally {
         // Release lock when done
@@ -327,8 +327,8 @@ export class EventReplayService {
 
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
-        errorType: error.name || 'unknown';
-        replayType: 'disaster-recovery';
+        errorType: error.name || 'unknown',
+        replayType: 'disaster-recovery'
       });
 
       throw error;
@@ -345,10 +345,10 @@ export class EventReplayService {
    * @param buildState Function to build state from events;
    */
   async validateConsistency<T>(
-    aggregateId: string;
+    aggregateId: string,
     aggregateType: string;
-    getCurrentState: () => Promise<T>;
-    buildState: (events: unknown[]) => Promise<T>;
+    getCurrentState: () => Promise<T>,
+    buildState: (events: unknown[]) => Promise<T>,
     compareStates: (current: T, rebuilt: T) => { isConsistent: boolean; differences?: unknown }
   ): Promise<{ isConsistent: boolean; differences?: unknown }> {
     try {
@@ -369,12 +369,12 @@ export class EventReplayService {
       // Track metrics
       metricsCollector.incrementCounter('event_replay.consistency_checks', 1, {
         aggregateType,
-        isConsistent: result.isConsistent.toString();
+        isConsistent: result.isConsistent.toString()
       });
 
       logger.info(`Completed consistency validation for ${aggregateType}:${aggregateId}`, {
-        isConsistent: result.isConsistent;
-        hasDifferences: !!result.differences;
+        isConsistent: result.isConsistent,
+        hasDifferences: !!result.differences
       });
 
       return result;
@@ -388,8 +388,8 @@ export class EventReplayService {
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown';
-        operationType: 'consistency-validation';
+        errorType: error.name || 'unknown',
+        operationType: 'consistency-validation'
       });
 
       throw error;

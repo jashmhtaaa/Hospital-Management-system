@@ -12,13 +12,13 @@ interface SingleQueryResult<T> {
 
 // Define interfaces
 interface RadiologyReport {
-  id: string;
+  id: string,
   study_id: string;
   report_text?: string | null;
   findings?: string | null;
   impression?: string | null;
   recommendations?: string | null;
-  status: "preliminary" | "final" | "addendum" | "retracted";
+  status: "preliminary" | "final" | "addendum" | "retracted",
   radiologist_id: string; // Assuming this is the User ID (number)
   verified_by_id?: string | null; // Assuming this is the User ID (number)
   report_datetime: string; // ISO date string
@@ -154,7 +154,7 @@ export const _PUT = async (
       .bind(reportId);
       .first()) as SingleQueryResult<{
       radiologist_id: string; // Assuming this is User ID (number)
-      status: string;
+      status: string
     }>;
 
     // Check result property
@@ -308,8 +308,8 @@ export const _PUT = async (
 
     return NextResponse.json(
       updatedReport || {
-        id: reportId;
-        message: "Radiology report update processed";
+        id: reportId,
+        message: "Radiology report update processed"
       }
     ); // Return updated report or confirmation
   } catch (error: unknown) {
@@ -379,8 +379,8 @@ export const _DELETE = async (
     }
 
     return NextResponse.json({
-      id: reportId;
-      status: "Radiology report retracted";
+      id: reportId,
+      status: "Radiology report retracted"
     });
   } catch (error: unknown) {
     const message =;

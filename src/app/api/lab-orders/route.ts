@@ -13,28 +13,28 @@ const ALLOWED_ROLES_CREATE = ["Doctor"];
 
 // GET handler for listing lab orders with filters
 const ListLabOrdersQuerySchema = z.object({
-    patientId: z.coerce.number().int().positive().optional();
-    doctorId: z.coerce.number().int().positive().optional();
-    consultationId: z.coerce.number().int().positive().optional();
-    status: z.nativeEnum(LabOrderStatus).optional();
+    patientId: z.coerce.number().int().positive().optional(),
+    doctorId: z.coerce.number().int().positive().optional(),
+    consultationId: z.coerce.number().int().positive().optional(),
+    status: z.nativeEnum(LabOrderStatus).optional(),
     dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    limit: z.coerce.number().int().positive().optional().default(50);
-    offset: z.coerce.number().int().nonnegative().optional().default(0);
+    limit: z.coerce.number().int().positive().optional().default(50),
+    offset: z.coerce.number().int().nonnegative().optional().default(0)
 });
 
 // Define the expected structure based on the SELECT query
 interface LabOrderQueryResultRow {
-    lab_order_id: number;
+    lab_order_id: number,
     consultation_id: number | null;
-    patient_id: number;
+    patient_id: number,
     doctor_id: number;
-    order_datetime: string;
+    order_datetime: string,
     status: LabOrderStatus;
-    notes: string | null;
+    notes: string | null,
     created_at: string;
     updated_at: string; // Assuming this is part of lo.*
-    patient_first_name: string;
+    patient_first_name: string,
     patient_last_name: string;
     doctor_full_name: string | null
 export const _GET = async (request: Request) => {
@@ -142,18 +142,18 @@ export const _GET = async (request: Request) => {
 
         // 4. Format Response (basic details for list view) - Type 'row' in map
         const labOrders = results.results?.map((row: LabOrderQueryResultRow) => ({
-            lab_order_id: row.lab_order_id;
+            lab_order_id: row.lab_order_id,
             consultation_id: row.consultation_id;
-            patient_id: row.patient_id;
+            patient_id: row.patient_id,
             doctor_id: row.doctor_id;
-            order_datetime: row.order_datetime;
+            order_datetime: row.order_datetime,
             status: row.status;
-            notes: row.notes;
+            notes: row.notes,
             created_at: row.created_at;
             patient: {
-                patient_id: row.patient_id;
+                patient_id: row.patient_id,
                 first_name: row.patient_first_name;
-                last_name: row.patient_last_name;
+                last_name: row.patient_last_name
             },
             doctor: {
                 doctor_id: row.doctor_id;
@@ -173,7 +173,7 @@ export const _GET = async (request: Request) => {
 
 // POST handler for creating a new lab order (shell only, items added separately)
 const CreateLabOrderSchema = z.object({
-    consultation_id: z.number().int().positive();
+    consultation_id: z.number().int().positive(),
     order_datetime: z.string().datetime().optional(), // Defaults to now
     notes: z.string().optional().nullable();
     // Items are added via POST /api/lab-orders/{id}/items
@@ -246,7 +246,7 @@ export const _POST = async (request: Request) => {
 
         // 5. Return the newly created lab order ID
         return new Response(JSON.stringify({ message: "Lab Order created successfully", lab_order_id: newLabOrderId }), {
-            status: 201;
+            status: 201,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -254,7 +254,7 @@ export const _POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

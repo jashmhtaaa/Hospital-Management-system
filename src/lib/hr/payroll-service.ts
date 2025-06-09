@@ -12,9 +12,9 @@ export class PayrollService {
    * Create a new payroll period;
    */
   async createPayrollPeriod(data: {
-    name: string;
+    name: string,
     startDate: Date;
-    endDate: Date;
+    endDate: Date,
     paymentDate: Date;
     status: 'DRAFT' | 'PROCESSING' | 'APPROVED' | 'PAID';
     notes?: string;
@@ -54,10 +54,10 @@ export class PayrollService {
           include: {
             employee: {
               select: {
-                firstName: true;
+                firstName: true,
                 lastName: true;
-                employeeId: true;
-                department: true;
+                employeeId: true,
+                department: true
               },
             },
           },
@@ -108,7 +108,7 @@ export class PayrollService {
         include: {
           _count: {
             select: {
-              payrollEntries: true;
+              payrollEntries: true
             },
           },
         },
@@ -183,7 +183,7 @@ export class PayrollService {
 
     // Get active employees
     const whereClause: unknown = {
-      active: true;
+      active: true
     };
 
     if (departmentId != null) {
@@ -191,12 +191,12 @@ export class PayrollService {
     }
 
     const employees = await prisma.employee.findMany({
-      where: whereClause;
+      where: whereClause,
       select: {
-        id: true;
+        id: true,
         firstName: true;
-        lastName: true;
-        employeeId: true;
+        lastName: true,
+        employeeId: true
       },
     });
 
@@ -214,10 +214,10 @@ export class PayrollService {
         // Get attendance for the period
         const attendance = await prisma.attendance.findMany({
           where: {
-            employeeId: employee.id;
+            employeeId: employee.id,
             date: {
-              gte: payrollPeriod.startDate;
-              lte: payrollPeriod.endDate;
+              gte: payrollPeriod.startDate,
+              lte: payrollPeriod.endDate
             },
           },
         });
@@ -245,9 +245,9 @@ export class PayrollService {
         const entry = await prisma.payrollEntry.create({
           data: {
             payrollPeriodId,
-            employeeId: employee.id;
+            employeeId: employee.id,
             baseSalary: salaryCalculation.baseSalary;
-            grossSalary: salaryCalculation.grossSalary;
+            grossSalary: salaryCalculation.grossSalary,
             deductions: attendanceDeduction;
             netSalary,
             workingDays,
@@ -256,8 +256,8 @@ export class PayrollService {
             halfDays,
             lateDays,
             leaveDays,
-            status: 'PENDING';
-            componentBreakdown: salaryCalculation.componentBreakdown;
+            status: 'PENDING',
+            componentBreakdown: salaryCalculation.componentBreakdown
           },
         });
 
@@ -272,14 +272,14 @@ export class PayrollService {
     await prisma.payrollPeriod.update({
       where: { id: payrollPeriodId },
       data: {
-        status: 'PROCESSING';
+        status: 'PROCESSING'
       },
     });
 
     return {
       payrollPeriodId,
-      entriesGenerated: entries.length;
-      totalEmployees: employees.length;
+      entriesGenerated: entries.length,
+      totalEmployees: employees.length
     };
   }
 
@@ -292,13 +292,13 @@ export class PayrollService {
       include: {
         employee: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            employeeId: true;
-            department: true;
+            employeeId: true,
+            department: true
           },
         },
-        payrollPeriod: true;
+        payrollPeriod: true
       },
     });
   }
@@ -328,7 +328,7 @@ export class PayrollService {
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },
       include: {
-        payrollEntries: true;
+        payrollEntries: true
       },
     });
 
@@ -344,10 +344,10 @@ export class PayrollService {
     await prisma.payrollEntry.updateMany({
       where: {
         payrollPeriodId,
-        status: 'PENDING';
+        status: 'PENDING'
       },
       data: {
-        status: 'APPROVED';
+        status: 'APPROVED'
       },
     });
 
@@ -355,14 +355,14 @@ export class PayrollService {
     await prisma.payrollPeriod.update({
       where: { id: payrollPeriodId },
       data: {
-        status: 'APPROVED';
+        status: 'APPROVED'
       },
     });
 
     return {
       payrollPeriodId,
-      entriesApproved: payrollPeriod.payrollEntries.filter(e => e.status === 'PENDING').length;
-      totalEntries: payrollPeriod.payrollEntries.length;
+      entriesApproved: payrollPeriod.payrollEntries.filter(e => e.status === 'PENDING').length,
+      totalEntries: payrollPeriod.payrollEntries.length
     };
   }
 
@@ -374,7 +374,7 @@ export class PayrollService {
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },
       include: {
-        payrollEntries: true;
+        payrollEntries: true
       },
     });
 
@@ -390,7 +390,7 @@ export class PayrollService {
     await prisma.payrollEntry.updateMany({
       where: {
         payrollPeriodId,
-        status: 'APPROVED';
+        status: 'APPROVED'
       },
       data: {
         status: 'PAID';
@@ -409,7 +409,7 @@ export class PayrollService {
 
     return {
       payrollPeriodId,
-      entriesPaid: payrollPeriod.payrollEntries.filter(e => e.status === 'APPROVED').length;
+      entriesPaid: payrollPeriod.payrollEntries.filter(e => e.status === 'APPROVED').length,
       totalEntries: payrollPeriod.payrollEntries.length;
       paymentDate,
     };
@@ -436,7 +436,7 @@ export class PayrollService {
       include: {
         employee: {
           select: {
-            department: true;
+            department: true
           },
         },
       },
@@ -453,11 +453,11 @@ export class PayrollService {
         departmentSummary[departmentId] = {
           departmentId,
           departmentName,
-          employeeCount: 0;
+          employeeCount: 0,
           totalBaseSalary: 0;
-          totalGrossSalary: 0;
+          totalGrossSalary: 0,
           totalDeductions: 0;
-          totalNetSalary: 0;
+          totalNetSalary: 0
         };
       }
 
@@ -470,16 +470,16 @@ export class PayrollService {
 
     return {
       payrollPeriodId,
-      periodName: payrollPeriod.name;
+      periodName: payrollPeriod.name,
       startDate: payrollPeriod.startDate;
-      endDate: payrollPeriod.endDate;
+      endDate: payrollPeriod.endDate,
       status: payrollPeriod.status;
-      departments: Object.values(departmentSummary);
+      departments: Object.values(departmentSummary),
       totalEmployees: entries.length;
       totalBaseSalary: entries.reduce((sum, entry) => sum + entry.baseSalary, 0),
       totalGrossSalary: entries.reduce((sum, entry) => sum + entry.grossSalary, 0),
       totalDeductions: entries.reduce((sum, entry) => sum + entry.deductions, 0),
-      totalNetSalary: entries.reduce((sum, entry) => sum + entry.netSalary, 0),;
+      totalNetSalary: entries.reduce((sum, entry) => sum + entry.netSalary, 0),
     };
   }
 
@@ -513,9 +513,9 @@ export class PayrollService {
    * This is a simplified implementation and would be more complex in a real system;
    */
   private calculateAttendanceDeduction(
-    baseSalary: number;
+    baseSalary: number,
     workingDays: number;
-    absentDays: number;
+    absentDays: number,
     halfDays: number;
   ): number {
     // Calculate daily rate

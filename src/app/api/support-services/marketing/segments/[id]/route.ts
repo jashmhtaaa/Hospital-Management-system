@@ -28,8 +28,8 @@ export const GET = async (
       return NextResponse.json(segment);
     },
     {
-      requiredPermission: 'marketing.segments.read';
-      auditAction: 'SEGMENT_VIEW';
+      requiredPermission: 'marketing.segments.read',
+      auditAction: 'SEGMENT_VIEW'
     }
   );
 }
@@ -57,7 +57,7 @@ export const PUT = async (
       return NextResponse.json(segment);
     },
     {
-      requiredPermission: 'marketing.segments.update';
-      auditAction: 'SEGMENT_UPDATE';
+      requiredPermission: 'marketing.segments.update',
+      auditAction: 'SEGMENT_UPDATE'
     }
   );

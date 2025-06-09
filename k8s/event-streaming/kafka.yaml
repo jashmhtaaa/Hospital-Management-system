@@ -32,7 +32,7 @@ spec:
       transaction.state.log.min.isr: 2
       default.replication.factor: 3
       min.insync.replicas: 2
-      inter.broker.protocol.version: "3.4"
+      inter.broker.protocol.version: '3.4'
       auto.create.topics.enable: false
       log.retention.hours: 168
       log.retention.bytes: 1073741824
@@ -42,10 +42,10 @@ spec:
     storage:
       type: jbod
       volumes:
-      - id: 0
-        type: persistent-claim
-        size: 100Gi
-        deleteClaim: false
+        - id: 0
+          type: persistent-claim
+          size: 100Gi
+          deleteClaim: false
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
@@ -73,7 +73,7 @@ spec:
                       operator: In
                       values:
                         - hms-kafka-cluster-kafka
-                topologyKey: "kubernetes.io/hostname"
+                topologyKey: 'kubernetes.io/hostname'
         terminationGracePeriodSeconds: 120
   zookeeper:
     replicas: 3
@@ -102,7 +102,7 @@ spec:
                       operator: In
                       values:
                         - hms-kafka-cluster-zookeeper
-                topologyKey: "kubernetes.io/hostname"
+                topologyKey: 'kubernetes.io/hostname'
         terminationGracePeriodSeconds: 120
   entityOperator:
     topicOperator: {}
@@ -119,7 +119,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 604800000  # 7 days
+    retention.ms: 604800000 # 7 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -134,7 +134,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 2592000000  # 30 days
+    retention.ms: 2592000000 # 30 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -149,7 +149,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 604800000  # 7 days
+    retention.ms: 604800000 # 7 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -164,7 +164,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 604800000  # 7 days
+    retention.ms: 604800000 # 7 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -179,7 +179,7 @@ spec:
   partitions: 24
   replicas: 3
   config:
-    retention.ms: 7776000000  # 90 days
+    retention.ms: 7776000000 # 90 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -194,7 +194,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 259200000  # 3 days
+    retention.ms: 259200000 # 3 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -209,7 +209,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 604800000  # 7 days
+    retention.ms: 604800000 # 7 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -224,7 +224,7 @@ spec:
   partitions: 12
   replicas: 3
   config:
-    retention.ms: 604800000  # 7 days
+    retention.ms: 604800000 # 7 days
     segment.bytes: 1073741824
     cleanup.policy: delete
 ---
@@ -247,54 +247,54 @@ spec:
           name: patient-events
           patternType: literal
         operation: Write
-        host: "*"
+        host: '*'
       # Consume from patient-events
       - resource:
           type: topic
           name: patient-events
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'
       # Consume from other services' events
       - resource:
           type: topic
           name: billing-events
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'
       - resource:
           type: topic
           name: pharmacy-events
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'
       - resource:
           type: topic
           name: clinical-events
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'
       # Produce to notification-events
       - resource:
           type: topic
           name: notification-events
           patternType: literal
         operation: Write
-        host: "*"
+        host: '*'
       # Produce to audit-events
       - resource:
           type: topic
           name: audit-events
           patternType: literal
         operation: Write
-        host: "*"
+        host: '*'
       # Consumer group
       - resource:
           type: group
           name: patient-service
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
@@ -312,28 +312,28 @@ spec:
       # Analytics service can read from all event streams for analysis
       - resource:
           type: topic
-          name: "*"
+          name: '*'
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'
       # Produce to analytics-events
       - resource:
           type: topic
           name: analytics-events
           patternType: literal
         operation: Write
-        host: "*"
+        host: '*'
       # Produce to audit-events
       - resource:
           type: topic
           name: audit-events
           patternType: literal
         operation: Write
-        host: "*"
+        host: '*'
       # Consumer group
       - resource:
           type: group
           name: analytics-service
           patternType: literal
         operation: Read
-        host: "*"
+        host: '*'

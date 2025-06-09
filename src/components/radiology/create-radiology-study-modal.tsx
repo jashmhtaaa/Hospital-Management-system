@@ -26,31 +26,31 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces
 interface Modality {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 interface Technician {
-  id: string;
-  name: string;
+  id: string,
+  name: string
 }
 
 // FIX: Export StudyPayload interface
 export interface StudyPayload {
-  order_id: string;
+  order_id: string,
   accession_number: string | null;
-  study_datetime: string;
+  study_datetime: string,
   modality_id: string | null;
-  technician_id: string;
+  technician_id: string,
   protocol: string | null;
-  series_description: string | null;
+  series_description: string | null,
   number_of_images: number | null;
   status: string; // e.g., "acquired"
 }
 
 interface CreateRadiologyStudyModalProperties {
-  onClose: () => void;
-  onSubmit: (payload: StudyPayload) => Promise<void>;
+  onClose: () => void,
+  onSubmit: (payload: StudyPayload) => Promise<void>,
   orderId: string
 export default const _CreateRadiologyStudyModal = ({
   onClose,
@@ -58,7 +58,7 @@ export default const _CreateRadiologyStudyModal = ({
   orderId,
 }: CreateRadiologyStudyModalProperties) {
   // FIX: Type props
-  const [accessionNumber, setAccessionNumber] = useState("");
+  const [accessionNumber, setAccessionNumber] = useState(""),
   const [studyDatetime, setStudyDatetime] = useState("");
   const [modalityId, setModalityId] = useState("");
   const [technicianId, setTechnicianId] = useState("");
@@ -68,7 +68,7 @@ export default const _CreateRadiologyStudyModal = ({
 
   const [modalities, setModalities] = useState<Modality[]>([]); // FIX: Type state
   const [technicians, setTechnicians] = useState<Technician[]>([]); // FIX: Type state
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true),
   const [error, setError] = useState<string | null>(); // FIX: Type state
   const [isSubmitting, setIsSubmitting] = useState(false),
   useEffect(() => {
@@ -85,7 +85,7 @@ export default const _CreateRadiologyStudyModal = ({
         if (!techniciansResponse.ok) throw new Error("Failed to fetch technicians");
 
         // FIX: Type the fetched data before setting state
-        const modalitiesData: Modality[] = await modalitiesResponse.json();
+        const modalitiesData: Modality[] = await modalitiesResponse.json(),
         const techniciansData: Technician[] = await techniciansResponse.json();
 
         // Assuming API returns array directly, adjust if it returns { results: [...] }
@@ -93,7 +93,7 @@ export default const _CreateRadiologyStudyModal = ({
         setTechnicians(techniciansData)
 
         // Set default study datetime to now
-        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM;
+        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM
       } catch (error_) {
 
         setError("Failed to load necessary data. Please try again.")
@@ -114,19 +114,19 @@ export default const _CreateRadiologyStudyModal = ({
     }
     setIsSubmitting(true);
     await onSubmit({
-      order_id: orderId;
+      order_id: orderId,
       accession_number: accessionNumber || null;
-      study_datetime: studyDatetime;
+      study_datetime: studyDatetime,
       modality_id: modalityId || null;
-      technician_id: technicianId;
+      technician_id: technicianId,
       protocol: protocol || null;
-      series_description: seriesDescription || null;
+      series_description: seriesDescription || null,
       number_of_images: numberOfImages;
         ? Number.parseInt(numberOfImages, 10);
         : null,
-      status: "acquired", // Default status for new study;
+      status: "acquired", // Default status for new study
     });
-    setIsSubmitting(false);
+    setIsSubmitting(false)
   };
 
   return (

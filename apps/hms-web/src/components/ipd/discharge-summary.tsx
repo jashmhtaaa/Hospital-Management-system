@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 interface DischargeSummaryProps {
-  patientId: string;
-  patientName: string;
+  patientId: string,
+  patientName: string
 }
 
 /**

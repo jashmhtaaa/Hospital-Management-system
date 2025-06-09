@@ -34,16 +34,16 @@ import { ArrowUpDown } from "lucide-react"; // Icon for sorting
 // Define the interface for a single medication object
 interface Medication {
   id: string; // Assuming ID is a string (like nanoid)
-  item_code: string;
+  item_code: string,
   generic_name: string;
   brand_name?: string | null;
-  dosage_form: string;
+  dosage_form: string,
   strength: string;
   category_name?: string | null;
   manufacturer_name?: string | null;
   total_stock?: number | null;
   unit_of_measure?: string | null;
-  prescription_required: boolean;
+  prescription_required: boolean
 }
 
 // Define API response types
@@ -64,7 +64,7 @@ type MedicationTableInstance = TableInstance<Medication> &
     // State includes parts from different hooks
     state: UsePaginationState<Medication> &;
       UseGlobalFiltersState<Medication> &;
-      UseSortByState<Medication>;
+      UseSortByState<Medication>
   };
 
 // Extend ColumnInstance type to include sorting props for type safety in headers
@@ -87,14 +87,14 @@ export default const _MedicationsListPage = () {
         if (!response.ok) {
           let errorMessage = "Failed to fetch medications";
           try {
-            const errorData: ApiErrorResponse = await response.json();
+            const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */
           }
           throw new Error(errorMessage);
         }
-        const data: MedicationsApiResponse = await response.json();
+        const data: MedicationsApiResponse = await response.json(),
         setMedicationsData(data.medications || []);
       } catch (error_: unknown) {
         setError(
@@ -111,11 +111,11 @@ export default const _MedicationsListPage = () {
   const columns = useMemo<Column<Medication>[]>( // Type the columns
     () => [
       {
-        Header: "Item Code";
-        accessor: "item_code";
+        Header: "Item Code",
+        accessor: "item_code"
       },
       {
-        Header: "Medication";
+        Header: "Medication",
         accessor: "generic_name";
         Cell: (
           { row }: CellProps<Medication> // Type the row
@@ -133,7 +133,7 @@ export default const _MedicationsListPage = () {
         ),
       },
       {
-        Header: "Form & Strength";
+        Header: "Form & Strength",
         accessor: "dosage_form";
         Cell: (
           { row }: CellProps<Medication> // Type the row
@@ -147,19 +147,19 @@ export default const _MedicationsListPage = () {
         ),
       },
       {
-        Header: "Category";
+        Header: "Category",
         accessor: "category_name";
         Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
-        Header: "Manufacturer";
+        Header: "Manufacturer",
         accessor: "manufacturer_name";
         Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
-        Header: "Stock";
+        Header: "Stock",
         accessor: "total_stock";
         Cell: ({
           value,
@@ -179,7 +179,7 @@ export default const _MedicationsListPage = () {
         },
       },
       {
-        Header: "Prescription";
+        Header: "Prescription",
         accessor: "prescription_required";
         Cell: (
           { value }: CellProps<Medication, boolean> // Type the value
@@ -192,7 +192,7 @@ export default const _MedicationsListPage = () {
         ),
       },
       {
-        Header: "Actions";
+        Header: "Actions",
         id: "actions";
         disableSortBy: true, // Actions column usually not sortable
         Cell: (
@@ -216,18 +216,18 @@ export default const _MedicationsListPage = () {
 
   // FIX: Remove sortBy from initialState as it's not part of TableState
   const initialState: Partial<TableState<Medication>> = {
-    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState;
+    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState
   };
 
   const tableInstance = useTable<Medication>( // Specify the type argument
     {
       columns,
-      data: medicationsData;
+      data: medicationsData,
       initialState: initialState;
       // FIX: Remove autoReset properties as they are not valid TableOptions in v7
       // autoResetPage: false;
       // autoResetFilters: false;
-      // autoResetSortBy: false;
+      // autoResetSortBy: false
     },
     useGlobalFilter,
     useSortBy,
@@ -249,7 +249,7 @@ export default const _MedicationsListPage = () {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize }, // pageSize is correctly accessed from state here
-    setGlobalFilter: setTableGlobalFilter;
+    setGlobalFilter: setTableGlobalFilter
   } = tableInstance;
 
   // Set initial page size after instance creation
@@ -282,7 +282,7 @@ export default const _MedicationsListPage = () {
 
   if (error != null) {
     return (
-      <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">;
+      <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">,
         Error: {error}
       </div>
     );

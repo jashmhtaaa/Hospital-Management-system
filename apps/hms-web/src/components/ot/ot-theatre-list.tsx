@@ -6,16 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 }
 interface Theatre {
-  id: string;
+  id: string,
   name: string;
-  type: string;
+  type: string,
   status: 'available' | 'occupied' | 'maintenance';
   currentProcedure?: string;
   nextAvailable?: string;
 }
 
 interface OTTheatreListProps {
-  theatres: Theatre[];
+  theatres: Theatre[]
 }
 
 /**
@@ -27,7 +27,7 @@ export const _OTTheatreList = ({ theatres }: OTTheatreListProps) => {
       case 'available': return <Badge variant="success">Available</Badge>;
       case 'occupied': return <Badge variant="danger">Occupied</Badge>;
       case 'maintenance': return <Badge variant="warning">Maintenance</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

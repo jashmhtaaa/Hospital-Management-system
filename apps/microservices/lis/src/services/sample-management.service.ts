@@ -15,28 +15,28 @@ import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
  */
 
 export interface Sample {
-  id: string;
+  id: string,
   barcode: string;
   rfidTag?: string;
-  labOrderId: string;
+  labOrderId: string,
   patientId: string;
-  collectedBy: string;
+  collectedBy: string,
   collectedAt: Date;
-  sampleType: SampleType;
+  sampleType: SampleType,
   containerType: string;
   volume?: number;
   unit?: string;
-  status: SampleStatus;
+  status: SampleStatus,
   location: string;
   temperature?: number;
-  priority: Priority;
+  priority: Priority,
   chainOfCustody: ChainOfCustodyEntry[];
   qualityControl: QualityControlResult[];
   processingNotes?: string;
   expiresAt?: Date;
   rejectionReason?: string;
   batchId?: string;
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date
 export enum SampleType {
   BLOOD = 'BLOOD',
@@ -64,37 +64,37 @@ export enum Priority {
   STAT = 'STAT',
   CRITICAL = 'CRITICAL',
 export interface ChainOfCustodyEntry {
-  id: string;
+  id: string,
   sampleId: string;
-  fromUserId: string;
+  fromUserId: string,
   toUserId: string;
-  fromLocation: string;
+  fromLocation: string,
   toLocation: string;
   transferredAt: Date;
   notes?: string;
   verified: boolean;
   signature?: string;
 export interface QualityControlResult {
-  id: string;
+  id: string,
   sampleId: string;
-  testType: string;
+  testType: string,
   parameter: string;
-  value: number;
+  value: number,
   unit: string;
-  expectedRange: string;
+  expectedRange: string,
   status: 'PASS' | 'FAIL' | 'WARNING';
-  performedBy: string;
+  performedBy: string,
   performedAt: Date;
   notes?: string;
 export interface SampleRouting {
-  sampleId: string;
+  sampleId: string,
   workflowId: string;
-  currentStep: string;
+  currentStep: string,
   nextSteps: string[];
-  estimatedCompletion: Date;
+  estimatedCompletion: Date,
   priority: Priority;
   assignedTo?: string;
-  department: string;
+  department: string
 }
 
 @Injectable();
@@ -118,22 +118,22 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         data: {
           ...data,
           barcode,
-          status: SampleStatus.COLLECTED;
+          status: SampleStatus.COLLECTED,
           chainOfCustody: {
             create: {
-              fromUserId: data.collectedBy!;
+              fromUserId: data.collectedBy!,
               toUserId: data.collectedBy!;
-              fromLocation: 'Collection Point';
+              fromLocation: 'Collection Point',
               toLocation: data.location || 'Laboratory';
-              transferredAt: new Date();
+              transferredAt: new Date(),
               verified: true;
-              notes: 'Initial collection';
+              notes: 'Initial collection'
             },
           },
         },
         include: {
-          chainOfCustody: true;
-          qualityControl: true;
+          chainOfCustody: true,
+          qualityControl: true
         },
       });
 
@@ -150,13 +150,13 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
-        sampleStatusChanged: sample;
+        sampleStatusChanged: sample
       });
 
       // Record metrics
       metricsCollector.incrementCounter('lab.samples_created', 1, {
-        sampleType: sample.sampleType;
-        priority: sample.priority;
+        sampleType: sample.sampleType,
+        priority: sample.priority
       });
 
       const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
@@ -173,7 +173,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Update sample status with chain of custody tracking;
    */
   async updateSampleStatus(
-    sampleId: string;
+    sampleId: string,
     newStatus: SampleStatus;
     userId: string;
     location?: string,
@@ -188,11 +188,11 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       // Create chain of custody entry if location changed
       const chainOfCustodyData = location !== sample.location ? {
         create: {
-          fromUserId: sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId;
+          fromUserId: sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId,
           toUserId: userId;
-          fromLocation: sample.location;
+          fromLocation: sample.location,
           toLocation: location || sample.location;
-          transferredAt: new Date();
+          transferredAt: new Date(),
           verified: false;
           notes: notes || `Status changed to ${newStatus}`,
         },
@@ -202,14 +202,14 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const updatedSample = await this.prisma.sample.update({
         where: { id: sampleId },
         data: {
-          status: newStatus;
+          status: newStatus,
           location: location || sample.location;
-          updatedAt: new Date();
-          chainOfCustody: chainOfCustodyData;
+          updatedAt: new Date(),
+          chainOfCustody: chainOfCustodyData
         },
         include: {
-          chainOfCustody: true;
-          qualityControl: true;
+          chainOfCustody: true,
+          qualityControl: true
         },
       });
 
@@ -221,14 +221,14 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
-        sampleStatusChanged: updatedSample;
+        sampleStatusChanged: updatedSample
       });
 
       // Record metrics
       metricsCollector.incrementCounter('lab.sample_status_updates', 1, {
-        fromStatus: sample.status;
+        fromStatus: sample.status,
         toStatus: newStatus;
-        sampleType: sample.sampleType;
+        sampleType: sample.sampleType
       });
 
       return updatedSample as Sample;
@@ -242,7 +242,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Perform quality control check;
    */
   async performQualityControl(
-    sampleId: string;
+    sampleId: string,
     qcData: Omit<QualityControlResult, 'id' | 'sampleId'>;
   ): Promise<QualityControlResult> {
     try {
@@ -266,8 +266,8 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       // Record metrics
       metricsCollector.incrementCounter('lab.quality_control_checks', 1, {
-        testType: qcData.testType;
-        status: qcResult.status;
+        testType: qcData.testType,
+        status: qcResult.status
       });
 
       return qcResult as QualityControlResult;
@@ -295,12 +295,12 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       // Create routing record
       const routing: SampleRouting = {
         sampleId,
-        workflowId: workflow.id;
+        workflowId: workflow.id,
         currentStep: workflow.steps[0];
-        nextSteps: workflow.steps.slice(1);
+        nextSteps: workflow.steps.slice(1),
         estimatedCompletion: this.calculateEstimatedCompletion(workflow, sample.priority),
-        priority: sample.priority;
-        department: workflow.department;
+        priority: sample.priority,
+        department: workflow.department
       };
 
       // Assign to appropriate technician if available
@@ -314,8 +314,8 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       // Record metrics
       metricsCollector.incrementCounter('lab.samples_routed', 1, {
-        department: workflow.department;
-        priority: sample.priority;
+        department: workflow.department,
+        priority: sample.priority
       });
 
       return routing;
@@ -329,10 +329,10 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Track sample location in real-time;
    */
   async trackSampleLocation(barcode: string): Promise<{
-    sample: Sample;
+    sample: Sample,
     currentLocation: string;
-    history: ChainOfCustodyEntry[];
-    estimatedNextUpdate: Date;
+    history: ChainOfCustodyEntry[],
+    estimatedNextUpdate: Date
   }> {
     try {
       // Try cache first
@@ -347,7 +347,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
           chainOfCustody: {
             orderBy: { transferredAt: 'desc' },
           },
-          qualityControl: true;
+          qualityControl: true
         },
       });
 
@@ -356,10 +356,10 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       }
 
       const result = {
-        sample: sample as Sample;
+        sample: sample as Sample,
         currentLocation: sample.location;
-        history: sample.chainOfCustody as ChainOfCustodyEntry[];
-        estimatedNextUpdate: this.estimateNextUpdate(sample as Sample);
+        history: sample.chainOfCustody as ChainOfCustodyEntry[],
+        estimatedNextUpdate: this.estimateNextUpdate(sample as Sample)
       };
 
       // Cache for 2 minutes
@@ -376,11 +376,11 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Batch sample processing;
    */
   async processBatch(
-    sampleIds: string[];
+    sampleIds: string[],
     batchId: string;
-    processingType: string;
+    processingType: string,
     performedBy: string;
-  ): Promise<{ successful: string[]; failed: string[]; errors: unknown[] }> {
+  ): Promise<{ successful: string[], failed: string[]; errors: unknown[] }> {
     const successful: string[] = [];
     const failed: string[] = [];
     const errors: unknown[] = [];
@@ -429,9 +429,9 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       // Record metrics
       metricsCollector.incrementCounter('lab.batch_processing', 1, {
         processingType,
-        totalSamples: sampleIds.length;
+        totalSamples: sampleIds.length,
         successful: successful.length;
-        failed: failed.length;
+        failed: failed.length
       });
 
       return { successful, failed, errors };
@@ -454,8 +454,8 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       department?: string;
       assignedTo?: string;
     },
-    pagination?: { limit: number; offset: number }
-  ): Promise<{ samples: Sample[]; total: number }> {
+    pagination?: { limit: number, offset: number }
+  ): Promise<{ samples: Sample[], total: number }> {
     try {
       const where: unknown = { status };
 
@@ -471,15 +471,15 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         this.prisma.sample.findMany({
           where,
           include: {
-            chainOfCustody: true;
-            qualityControl: true;
+            chainOfCustody: true,
+            qualityControl: true
           },
           orderBy: [
             { priority: 'desc' },
             { createdAt: 'asc' },
           ],
-          take: pagination?.limit || 50;
-          skip: pagination?.offset || 0;
+          take: pagination?.limit || 50,
+          skip: pagination?.offset || 0
         }),
         this.prisma.sample.count({ where }),
       ]);
@@ -498,13 +498,13 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Generate statistical process control data;
    */
   async getStatisticalProcessControl(
-    testType: string;
+    testType: string,
     parameter: string;
     days: number = 30;
   ): Promise<{
-    data: { date: Date; value: number; controlLimits: { upper: number; lower: number } }[];
-    trends: { slope: number; rSquared: number };
-    outliers: QualityControlResult[];
+    data: { date: Date, value: number; controlLimits: { upper: number, lower: number } }[];
+    trends: { slope: number, rSquared: number };
+    outliers: QualityControlResult[]
   }> {
     try {
       const startDate = new Date();
@@ -541,11 +541,11 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const data = Array.from(dailyData.entries()).map(([dateStr, values]) => {
         const dailyMean = values.reduce((sum, val) => sum + val, 0) / values.length;
         return {
-          date: new Date(dateStr);
+          date: new Date(dateStr),
           value: dailyMean;
           controlLimits: {
-            upper: upperControlLimit;
-            lower: lowerControlLimit;
+            upper: upperControlLimit,
+            lower: lowerControlLimit
           },
         };
       });
@@ -577,7 +577,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       return {
         data,
         trends: { slope, rSquared },
-        outliers: outliers as QualityControlResult[];
+        outliers: outliers as QualityControlResult[]
       };
     } catch (error) {
 
@@ -590,7 +590,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     const _prefix = 'LAB';
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `/* SECURITY: Template literal eliminated */;
+    return `/* SECURITY: Template literal eliminated */
   }
 
   private async getSampleById(id: string): Promise<Sample | null> {
@@ -600,13 +600,13 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     const sample = await this.prisma.sample.findUnique({
       where: { id },
       include: {
-        chainOfCustody: true;
-        qualityControl: true;
+        chainOfCustody: true,
+        qualityControl: true
       },
     });
 
     if (sample != null) {
-      await cacheService.cacheResult('sample:', id, sample, 300);
+      await cacheService.cacheResult('sample:', id, sample, 300)
     }
 
     return sample as Sample | null;
@@ -623,9 +623,9 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   private async determineWorkflow(tests: unknown[]): Promise<any> {
     // Implementation to determine workflow based on tests
     return {
-      id: 'workflow-1';
+      id: 'workflow-1',
       steps: ['Collection', 'Processing', 'Analysis', 'Verification'],
-      department: 'Hematology';
+      department: 'Hematology'
     };
   }
 
@@ -668,20 +668,20 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   toFHIR(sample: Sample): FHIRObservation {
     // Convert internal sample data to FHIR Observation
     return {
-      resourceType: 'Observation';
+      resourceType: 'Observation',
       id: sample.id;
-      status: 'registered';
+      status: 'registered',
       code: this.createCodeableConcept([
         this.createCoding(FHIR_SYSTEMS.SNOMED_CT, '123456', 'Sample Collection'),
       ]),
-      subject: this.createReference('Patient', sample.patientId),;
+      subject: this.createReference('Patient', sample.patientId),
     };
   }
 
   fromFHIR(fhirResource: FHIRObservation): Partial<Sample> {
     // Convert FHIR Observation to internal sample format
     return {
-      id: fhirResource.id;
-      patientId: fhirResource.subject?.reference?.split('/')[1] || '';
+      id: fhirResource.id,
+      patientId: fhirResource.subject?.reference?.split('/')[1] || ''
     };
   }

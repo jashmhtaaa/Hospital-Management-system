@@ -109,7 +109,7 @@ export const GET = async (request: NextRequest) => {
           WHERE 1=1;
           /* SECURITY: Template literal eliminated */
 
-        const countParams = params.slice(0, -2);
+        const countParams = params.slice(0, -2),
         const countResult = await DB.query(countQuery, countParams);
 
         const totalCount = countResult.results[0].total;
@@ -117,14 +117,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'pacs_images';
+          resource: 'pacs_images',
           details: { patientId, studyInstanceUid, modality, page, pageSize }
         });
 
         return {
-          images: result.results;
+          images: result.results,
           pagination: {
             page,
             pageSize,
@@ -140,8 +140,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch PACS images';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch PACS images',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -189,9 +189,9 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'pacs_images';
+          resource: 'pacs_images',
           resourceId: id;
           details: { id }
         });
@@ -205,8 +205,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch PACS image';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch PACS image',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -241,7 +241,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     // Validate required fields
     if (!patientId && !accessionNumber && !studyInstanceUid) {
       return NextResponse.json({
-        error: 'At least one of patientId, accessionNumber, or studyInstanceUid is required';
+        error: 'At least one of patientId, accessionNumber, or studyInstanceUid is required'
       }, { status: 400 });
     }
 
@@ -256,7 +256,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
 
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured';
+        error: 'PACS not configured'
       }, { status: 400 });
     }
 
@@ -285,11 +285,11 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
             studyInstanceUid,
             seriesInstanceUid,
             sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
-            instanceNumber: j + 1;
+            instanceNumber: j + 1,
             modality: modality || 'CT';
-            studyDate: studyDate || new Date().toISOString().split('T')[0];
+            studyDate: studyDate || new Date().toISOString().split('T')[0],
             studyTime: new Date().toISOString().split('T')[1].split('.')[0];
-            seriesNumber: i + 1;
+            seriesNumber: i + 1,
             seriesDescription: `Series ${i + 1}`,
             patientId,
             accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
@@ -314,11 +314,11 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
               studyInstanceUid,
               seriesInstanceUid,
               sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
-              instanceNumber: j + 1;
+              instanceNumber: j + 1,
               modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3)],
               studyDate: studyDate ||
                 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              studyTime: new Date().toISOString().split('T')[1].split('.')[0];
+              studyTime: new Date().toISOString().split('T')[1].split('.')[0],
               seriesNumber: i + 1;
               seriesDescription: `Series ${i + 1}`,
               patientId,
@@ -334,30 +334,30 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
 
     // Log retrieval
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'retrieve';
-      resource: 'pacs_images';
+      resource: 'pacs_images',
       details: {
         patientId,
         accessionNumber,
         studyInstanceUid,
-        imagesRetrieved: retrievedImages.length;
+        imagesRetrieved: retrievedImages.length
       }
     });
 
     return NextResponse.json({
-      success: true;
+      success: true,
       message: `Successfully retrieved ${retrievedImages.length} images`,
       retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity
-      totalImages: retrievedImages.length;
+      totalImages: retrievedImages.length,
       uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size;
-      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size;
+      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
     });
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to retrieve images from PACS';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to retrieve images from PACS',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -395,7 +395,7 @@ export const _POST_STORE = async (request: NextRequest) => {
     // Validate required fields
     if (!patientId || !modality || !studyInstanceUid || !seriesInstanceUid || !sopInstanceUid || !imageData) {
       return NextResponse.json({
-        error: 'Patient ID, modality, study instance UID, series instance UID, SOP instance UID, and image data are required';
+        error: 'Patient ID, modality, study instance UID, series instance UID, SOP instance UID, and image data are required'
       }, { status: 400 });
     }
 
@@ -410,7 +410,7 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured';
+        error: 'PACS not configured'
       }, { status: 400 });
     }
 
@@ -464,9 +464,9 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     // Log storage
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'store';
-      resource: 'pacs_images';
+      resource: 'pacs_images',
       resourceId: result.insertId;
       details: {
         patientId,
@@ -481,7 +481,7 @@ export const _POST_STORE = async (request: NextRequest) => {
     await CacheInvalidation.invalidatePattern('diagnostic:pacs:images:*');
 
     return NextResponse.json({
-      success: true;
+      success: true,
       message: 'Image successfully stored to PACS';
       imageId: result.insertId;
       studyInstanceUid,
@@ -491,8 +491,8 @@ export const _POST_STORE = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to store image to PACS';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to store image to PACS',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -533,7 +533,7 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     // Validate required fields
     if (!annotationType || !coordinates) {
       return NextResponse.json({
-        error: 'Annotation type and coordinates are required';
+        error: 'Annotation type and coordinates are required'
       }, { status: 400 });
     }
 
@@ -567,15 +567,15 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
 
     // Log annotation
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'create';
-      resource: 'pacs_image_annotations';
+      resource: 'pacs_image_annotations',
       resourceId: result.insertId;
       details: {
         imageId: id;
         annotationType,
-        hasText: !!text;
-        hasMeasurements: !!measurements;
+        hasText: !!text,
+        hasMeasurements: !!measurements
       }
     });
 
@@ -588,7 +588,7 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     // Parse JSON fields
     const annotation = {
       ...createdAnnotation.results[0],
-      coordinates: JSON.parse(createdAnnotation.results[0].coordinates);
+      coordinates: JSON.parse(createdAnnotation.results[0].coordinates),
       measurements: createdAnnotation.results[0].measurements ?
         JSON.parse(createdAnnotation.results[0].measurements) : null
     };
@@ -597,8 +597,8 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to add annotation';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to add annotation',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -647,15 +647,15 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
         // Parse JSON fields
         const annotations = result.results.map(annotation => ({
           ...annotation,
-          coordinates: JSON.parse(annotation.coordinates);
-          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null;
+          coordinates: JSON.parse(annotation.coordinates),
+          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null
         }));
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'pacs_image_annotations';
+          resource: 'pacs_image_annotations',
           details: { imageId: id }
         });
 
@@ -668,7 +668,7 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch annotations';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch annotations',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

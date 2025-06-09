@@ -17,9 +17,9 @@ export class DrugInteractionService {
   private auditLogger: AuditLogger;
 
   // Reference data for drug classes and interactions
-  private allergyClasses: Array<{id: string; name: string; medications: string[]}>;
-  private conditionInteractions: Array<{id: string; medicationName: string; conditionCode: string; severity: string; description: string; reference: string}>;
-  private labInteractions: Array<{id: string; medicationName: string; labCode: string; abnormalFlag: string; severity: string; description: string; reference: string}>;
+  private allergyClasses: Array<{id: string, name: string; medications: string[]}>;
+  private conditionInteractions: Array<{id: string, medicationName: string; conditionCode: string, severity: string; description: string, reference: string}>;
+  private labInteractions: Array<{id: string, medicationName: string; labCode: string, abnormalFlag: string; severity: string, description: string; reference: string}>;
 
   constructor(prisma: PrismaClient, auditLogger: AuditLogger) {
     this.prisma = prisma;
@@ -37,83 +37,83 @@ export class DrugInteractionService {
     // Initialize allergy classes
     this.allergyClasses = [
       {
-        id: 'class1';
+        id: 'class1',
         name: 'Penicillins';
-        medications: ['Amoxicillin', 'Ampicillin', 'Penicillin G', 'Piperacillin'];
+        medications: ['Amoxicillin', 'Ampicillin', 'Penicillin G', 'Piperacillin']
       },
       {
-        id: 'class2';
+        id: 'class2',
         name: 'Cephalosporins';
-        medications: ['Cefazolin', 'Ceftriaxone', 'Cefuroxime', 'Cephalexin'];
+        medications: ['Cefazolin', 'Ceftriaxone', 'Cefuroxime', 'Cephalexin']
       },
       {
-        id: 'class3';
+        id: 'class3',
         name: 'Sulfonamides';
-        medications: ['Sulfamethoxazole', 'Sulfadiazine', 'Sulfasalazine'];
+        medications: ['Sulfamethoxazole', 'Sulfadiazine', 'Sulfasalazine']
       },
       {
-        id: 'class4';
+        id: 'class4',
         name: 'NSAIDs';
-        medications: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Celecoxib'];
+        medications: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Celecoxib']
       }
     ];
 
     // Initialize condition interactions
     this.conditionInteractions = [
       {
-        id: 'condint1';
+        id: 'condint1',
         medicationName: 'Metformin';
         conditionCode: 'N17.9', // Acute kidney failure
-        severity: 'severe';
+        severity: 'severe',
         description: 'Metformin is contraindicated in acute kidney failure due to increased risk of lactic acidosis';
-        reference: 'https://example.com/interactions/metformin-kidney-failure';
+        reference: 'https://example.com/interactions/metformin-kidney-failure'
       },
       {
-        id: 'condint2';
+        id: 'condint2',
         medicationName: 'Warfarin';
         conditionCode: 'K92.2', // Gastrointestinal hemorrhage
-        severity: 'severe';
+        severity: 'severe',
         description: 'Warfarin may exacerbate gastrointestinal bleeding';
-        reference: 'https://example.com/interactions/warfarin-gi-bleeding';
+        reference: 'https://example.com/interactions/warfarin-gi-bleeding'
       },
       {
-        id: 'condint3';
+        id: 'condint3',
         medicationName: 'Propranolol';
         conditionCode: 'J45.909', // Asthma
-        severity: 'severe';
+        severity: 'severe',
         description: 'Non-selective beta-blockers can cause bronchospasm in patients with asthma';
-        reference: 'https://example.com/interactions/propranolol-asthma';
+        reference: 'https://example.com/interactions/propranolol-asthma'
       }
     ]
 
     // Initialize lab interactions
     this.labInteractions = [
       {
-        id: 'labint1';
+        id: 'labint1',
         medicationName: 'Digoxin';
         labCode: '2823-3', // Potassium
         abnormalFlag: 'L', // Low
-        severity: 'severe';
+        severity: 'severe',
         description: 'Hypokalemia increases risk of digoxin toxicity';
-        reference: 'https://example.com/interactions/digoxin-hypokalemia';
+        reference: 'https://example.com/interactions/digoxin-hypokalemia'
       },
       {
-        id: 'labint2';
+        id: 'labint2',
         medicationName: 'Warfarin';
         labCode: '6301-6', // INR
         abnormalFlag: 'H', // High
-        severity: 'severe';
+        severity: 'severe',
         description: 'Elevated INR indicates increased bleeding risk with warfarin';
-        reference: 'https://example.com/interactions/warfarin-inr';
+        reference: 'https://example.com/interactions/warfarin-inr'
       },
       {
-        id: 'labint3';
+        id: 'labint3',
         medicationName: 'Lithium';
         labCode: '2951-2', // Sodium
         abnormalFlag: 'L', // Low
-        severity: 'severe';
+        severity: 'severe',
         description: 'Hyponatremia can increase lithium levels and toxicity';
-        reference: 'https://example.com/interactions/lithium-hyponatremia';
+        reference: 'https://example.com/interactions/lithium-hyponatremia'
       }
     ]
   }
@@ -127,18 +127,18 @@ export class DrugInteractionService {
    * @returns Interaction result with details;
    */
   async checkDrugDrugInteraction(
-    medicationId1: string;
+    medicationId1: string,
     medicationId2: string;
     patientId?: string;
   ): Promise<PharmacyDomain.DrugInteractionResult> {
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_CHECK';
+        eventType: 'INTERACTION_CHECK',
         resourceType: 'Medication';
         resourceId: `${medicationId1},${medicationId2}`,
         details: `Checking drug-drug interaction between medications ${medicationId1} and ${medicationId2}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
 
       // Get medication details
@@ -177,18 +177,18 @@ export class DrugInteractionService {
       // If no interactions found, return negative result
       if (interactions.length === 0) {
         return {
-          hasInteraction: false;
+          hasInteraction: false,
           medications: [medication1, medication2],
-          interactionType: 'drug-drug';
+          interactionType: 'drug-drug'
         };
       }
 
       // Get the most severe interaction
       const interaction = interactions.reduce((prev, current) => {
         const severityRank: Record<string, number> = {
-          severe: 3;
+          severe: 3,
           moderate: 2;
-          mild: 1;
+          mild: 1
         };
 
         return severityRank[current.severity] > severityRank[prev.severity] ? current : prev;
@@ -204,7 +204,7 @@ export class DrugInteractionService {
             interactionId: interaction.id;
             patientId,
             expiresAt: {
-              gt: new Date() // Only active overrides;
+              gt: new Date() // Only active overrides
             }
           }
         })
@@ -215,28 +215,28 @@ export class DrugInteractionService {
 
           // Log the override application
           this.auditLogger.logEvent({
-            eventType: 'INTERACTION_OVERRIDE_APPLIED';
+            eventType: 'INTERACTION_OVERRIDE_APPLIED',
             resourceType: 'Medication';
             resourceId: `${medicationId1},${medicationId2}`,
             details: `Applied override for interaction between medications ${medicationId1} and ${medicationId2}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
         } else if (await this.prisma.interactionOverride.findFirst({
           where: {
             interactionId: interaction.id;
             patientId,
             expiresAt: {
-              lte: new Date() // Expired overrides;
+              lte: new Date() // Expired overrides
             }
           }
         })) {
           // Log expired override
           this.auditLogger.logEvent({
-            eventType: 'EXPIRED_OVERRIDE_IGNORED';
+            eventType: 'EXPIRED_OVERRIDE_IGNORED',
             resourceType: 'Medication';
             resourceId: `${medicationId1},${medicationId2}`,
             details: `Expired override found for interaction between medications ${medicationId1} and ${medicationId2}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
         }
       }
@@ -247,19 +247,19 @@ export class DrugInteractionService {
         isOverridden,
         overrideReason,
         medications: [medication1, medication2],
-        interactionType: 'drug-drug';
+        interactionType: 'drug-drug',
         severity: interaction.severity;
-        description: interaction.description;
-        reference: interaction.reference;
+        description: interaction.description,
+        reference: interaction.reference
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_CHECK_ERROR';
+        eventType: 'INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
         resourceId: `${medicationId1},${medicationId2}`,
         details: `Error checking drug-drug interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
 
       throw error;
@@ -274,17 +274,17 @@ export class DrugInteractionService {
    * @returns Interaction result with details;
    */
   async checkDrugAllergyInteraction(
-    medicationId: string;
+    medicationId: string,
     patientId: string;
   ): Promise<PharmacyDomain.DrugAllergyInteractionResult> {
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'ALLERGY_INTERACTION_CHECK';
+        eventType: 'ALLERGY_INTERACTION_CHECK',
         resourceType: 'Medication';
-        resourceId: medicationId;
+        resourceId: medicationId,
         details: `Checking drug-allergy interaction for medication ${medicationId} and patient ${patientId}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
 
       // Get medication details
@@ -300,7 +300,7 @@ export class DrugInteractionService {
       const allergies = await this.prisma.allergy.findMany({
         where: {
           patientId,
-          status: 'active';
+          status: 'active'
         }
       });
 
@@ -312,20 +312,20 @@ export class DrugInteractionService {
       if (directMatch != null) {
         // Log the interaction detection
         this.auditLogger.logEvent({
-          eventType: 'ALLERGY_INTERACTION_DETECTED';
+          eventType: 'ALLERGY_INTERACTION_DETECTED',
           resourceType: 'Medication';
-          resourceId: medicationId;
+          resourceId: medicationId,
           details: `Direct allergy match detected for ${medication.name}`,
-          severity: 'WARNING';
+          severity: 'WARNING'
         });
 
         return {
           hasInteraction: true;
           medication,
-          interactionType: 'drug-allergy';
+          interactionType: 'drug-allergy',
           allergen: directMatch.allergen;
-          severity: directMatch.severity;
-          reaction: directMatch.reaction;
+          severity: directMatch.severity,
+          reaction: directMatch.reaction
         };
       }
 
@@ -340,21 +340,21 @@ export class DrugInteractionService {
         )) {
           // Log the interaction detection
           this.auditLogger.logEvent({
-            eventType: 'ALLERGY_INTERACTION_DETECTED';
+            eventType: 'ALLERGY_INTERACTION_DETECTED',
             resourceType: 'Medication';
-            resourceId: medicationId;
+            resourceId: medicationId,
             details: `Class-based allergy match detected for ${medication.name} in class ${allergyClass.name}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
 
           return {
             hasInteraction: true;
             medication,
-            interactionType: 'drug-allergy';
+            interactionType: 'drug-allergy',
             allergen: allergy.allergen;
-            severity: allergy.severity;
+            severity: allergy.severity,
             reaction: allergy.reaction;
-            allergyClass: allergyClass.name;
+            allergyClass: allergyClass.name
           };
         }
       }
@@ -363,16 +363,16 @@ export class DrugInteractionService {
       return {
         hasInteraction: false;
         medication,
-        interactionType: 'drug-allergy';
+        interactionType: 'drug-allergy'
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'ALLERGY_INTERACTION_CHECK_ERROR';
+        eventType: 'ALLERGY_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
-        resourceId: medicationId;
+        resourceId: medicationId,
         details: `Error checking drug-allergy interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
 
       throw error;
@@ -387,17 +387,17 @@ export class DrugInteractionService {
    * @returns Interaction result with details;
    */
   async checkDrugConditionInteraction(
-    medicationId: string;
+    medicationId: string,
     patientId: string;
   ): Promise<PharmacyDomain.DrugConditionInteractionResult> {
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'CONDITION_INTERACTION_CHECK';
+        eventType: 'CONDITION_INTERACTION_CHECK',
         resourceType: 'Medication';
-        resourceId: medicationId;
+        resourceId: medicationId,
         details: `Checking drug-condition interaction for medication ${medicationId} and patient ${patientId}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
 
       // Get medication details
@@ -413,7 +413,7 @@ export class DrugInteractionService {
       const conditions = await this.prisma.condition.findMany({
         where: {
           patientId,
-          status: 'active';
+          status: 'active'
         }
       });
 
@@ -427,21 +427,21 @@ export class DrugInteractionService {
         if (interaction != null) {
           // Log the interaction detection
           this.auditLogger.logEvent({
-            eventType: 'CONDITION_INTERACTION_DETECTED';
+            eventType: 'CONDITION_INTERACTION_DETECTED',
             resourceType: 'Medication';
-            resourceId: medicationId;
+            resourceId: medicationId,
             details: `Condition interaction detected for ${medication.name} with condition ${condition.name}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
 
           return {
             hasInteraction: true;
             medication,
             condition,
-            interactionType: 'drug-condition';
+            interactionType: 'drug-condition',
             severity: interaction.severity;
-            description: interaction.description;
-            reference: interaction.reference;
+            description: interaction.description,
+            reference: interaction.reference
           };
         }
       }
@@ -450,16 +450,16 @@ export class DrugInteractionService {
       return {
         hasInteraction: false;
         medication,
-        interactionType: 'drug-condition';
+        interactionType: 'drug-condition'
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'CONDITION_INTERACTION_CHECK_ERROR';
+        eventType: 'CONDITION_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
-        resourceId: medicationId;
+        resourceId: medicationId,
         details: `Error checking drug-condition interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
 
       throw error;
@@ -474,17 +474,17 @@ export class DrugInteractionService {
    * @returns Interaction result with details;
    */
   async checkDrugLabInteraction(
-    medicationId: string;
+    medicationId: string,
     patientId: string;
   ): Promise<PharmacyDomain.DrugLabInteractionResult> {
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'LAB_INTERACTION_CHECK';
+        eventType: 'LAB_INTERACTION_CHECK',
         resourceType: 'Medication';
-        resourceId: medicationId;
+        resourceId: medicationId,
         details: `Checking drug-lab interaction for medication ${medicationId} and patient ${patientId}`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
 
       // Get medication details
@@ -501,14 +501,14 @@ export class DrugInteractionService {
         where: {
           patientId,
           abnormalFlag: {
-            in: ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags;
+            in: ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags
           },
           collectedDate: {
-            gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
+            gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
           }
         },
         orderBy: {
-          collectedDate: 'desc';
+          collectedDate: 'desc'
         }
       })
 
@@ -523,21 +523,21 @@ export class DrugInteractionService {
         if (interaction != null) {
           // Log the interaction detection
           this.auditLogger.logEvent({
-            eventType: 'LAB_INTERACTION_DETECTED';
+            eventType: 'LAB_INTERACTION_DETECTED',
             resourceType: 'Medication';
-            resourceId: medicationId;
+            resourceId: medicationId,
             details: `Lab interaction detected for ${medication.name} with abnormal ${labResult.name}`,
-            severity: 'WARNING';
+            severity: 'WARNING'
           });
 
           return {
             hasInteraction: true;
             medication,
             labResult,
-            interactionType: 'drug-lab';
+            interactionType: 'drug-lab',
             severity: interaction.severity;
-            description: interaction.description;
-            reference: interaction.reference;
+            description: interaction.description,
+            reference: interaction.reference
           };
         }
       }
@@ -546,16 +546,16 @@ export class DrugInteractionService {
       return {
         hasInteraction: false;
         medication,
-        interactionType: 'drug-lab';
+        interactionType: 'drug-lab'
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'LAB_INTERACTION_CHECK_ERROR';
+        eventType: 'LAB_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
-        resourceId: medicationId;
+        resourceId: medicationId,
         details: `Error checking drug-lab interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
 
       throw error;
@@ -573,21 +573,21 @@ export class DrugInteractionService {
    * @returns The created override;
    */
   async createInteractionOverride(
-    interactionId: string;
+    interactionId: string,
     patientId: string;
-    providerId: string;
+    providerId: string,
     reason: string;
     durationDays: number;
   ): Promise<PharmacyDomain.InteractionOverride> {
     try {
       // Log the override creation
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_OVERRIDE_CREATED';
+        eventType: 'INTERACTION_OVERRIDE_CREATED',
         userId: providerId;
-        resourceType: 'Interaction';
+        resourceType: 'Interaction',
         resourceId: interactionId;
         details: `Creating override for interaction ${interactionId} for patient ${patientId}`,
-        severity: 'WARNING';
+        severity: 'WARNING'
       });
 
       // Calculate expiration date
@@ -602,7 +602,7 @@ export class DrugInteractionService {
           providerId,
           reason,
           expiresAt,
-          createdAt: new Date();
+          createdAt: new Date()
         }
       });
 
@@ -610,12 +610,12 @@ export class DrugInteractionService {
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_OVERRIDE_ERROR';
+        eventType: 'INTERACTION_OVERRIDE_ERROR',
         userId: providerId;
-        resourceType: 'Interaction';
+        resourceType: 'Interaction',
         resourceId: interactionId;
         details: `Error creating interaction override: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
 
       throw error;
@@ -630,17 +630,17 @@ export class DrugInteractionService {
    * @returns Comprehensive interaction results;
    */
   async batchInteractionCheck(
-    medicationIds: string[];
+    medicationIds: string[],
     patientId: string;
   ): Promise<PharmacyDomain.BatchInteractionResult> {
     try {
       // Log the batch check
       this.auditLogger.logEvent({
-        eventType: 'BATCH_INTERACTION_CHECK';
+        eventType: 'BATCH_INTERACTION_CHECK',
         resourceType: 'Patient';
-        resourceId: patientId;
+        resourceId: patientId,
         details: `Performing batch interaction check for ${medicationIds.length} medications`,
-        severity: 'INFO';
+        severity: 'INFO'
       });
 
       const drugDrugInteractions: PharmacyDomain.DrugInteractionResult[] = [];
@@ -709,16 +709,16 @@ export class DrugInteractionService {
         interactionCount: drugDrugInteractions.length +;
                          drugAllergyInteractions.length +
                          drugConditionInteractions.length +
-                         drugLabInteractions.length;
+                         drugLabInteractions.length
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'BATCH_INTERACTION_CHECK_ERROR';
+        eventType: 'BATCH_INTERACTION_CHECK_ERROR',
         resourceType: 'Patient';
-        resourceId: patientId;
+        resourceId: patientId,
         details: `Error performing batch interaction check: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'ERROR';
+        severity: 'ERROR'
       });
 
       throw error;

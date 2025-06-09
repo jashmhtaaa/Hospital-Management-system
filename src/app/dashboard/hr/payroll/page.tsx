@@ -57,13 +57,13 @@ export default const _PayrollManagement = () {
   const [error, setError] = useState<any | null>(null);
   const [statusFilter, setStatusFilter] = useState('');
   const [dateRange, setDateRange] = useState({
-    from: null;
-    to: null;
+    from: null,
+    to: null
   });
   const [pagination, setPagination] = useState({
-    skip: 0;
+    skip: 0,
     take: 10;
-    total: 0;
+    total: 0
   });
   const [activeTab, setActiveTab] = useState('periods');
 
@@ -73,8 +73,8 @@ export default const _PayrollManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString();
-          take: pagination.take.toString();
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString()
         });
 
         if (statusFilter != null) queryParams.append('status', statusFilter);
@@ -97,14 +97,14 @@ export default const _PayrollManagement = () {
         setPayrollPeriods(data.periods || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0
         }));
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -121,7 +121,7 @@ export default const _PayrollManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -130,7 +130,7 @@ export default const _PayrollManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -141,13 +141,13 @@ export default const _PayrollManagement = () {
     // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Create new payroll period
   const handleCreatePeriod = () => {
-    router.push('/dashboard/hr/payroll/periods/new');
+    router.push('/dashboard/hr/payroll/periods/new')
   };
 
   // Export payroll data
@@ -155,22 +155,22 @@ export default const _PayrollManagement = () {
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started";
-        description: "Your payroll report is being generated and will download shortly.";
+        title: "Export Started",
+        description: "Your payroll report is being generated and will download shortly."
       });
 
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete";
-          description: "Payroll report has been downloaded.";
+          title: "Export Complete",
+          description: "Payroll report has been downloaded."
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed";
+        title: "Export Failed",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -186,16 +186,16 @@ export default const _PayrollManagement = () {
         return 'default';
       case 'PAID':
         return 'success';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
   // Format currency
   const _formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat('en-US', {
-      style: 'currency';
-      currency: 'USD';
-    }).format(amount);
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount)
   };
 
   return (

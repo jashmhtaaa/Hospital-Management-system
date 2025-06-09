@@ -11,25 +11,25 @@ import { z } from 'zod';
 export const NotificationConfigSchema = z.object({
   sms: z.object({
     provider: z.enum(['twilio', 'aws_sns', 'messagebird']),
-    config: z.record(z.string());
-    enabled: z.boolean().default(true);
+    config: z.record(z.string()),
+    enabled: z.boolean().default(true)
   }).optional(),
   email: z.object({
     provider: z.enum(['sendgrid', 'aws_ses', 'mailgun', 'smtp']),
-    config: z.record(z.string());
-    enabled: z.boolean().default(true);
+    config: z.record(z.string()),
+    enabled: z.boolean().default(true)
   }).optional(),
   whatsapp: z.object({
     provider: z.enum(['twilio', 'whatsapp_business', 'messagebird']),
-    config: z.record(z.string());
-    enabled: z.boolean().default(true);
+    config: z.record(z.string()),
+    enabled: z.boolean().default(true)
   }).optional(),
 })
 
 // Notification Template Schema
 export const NotificationTemplateSchema = z.object({
   name: z.string().min(1, 'Template name is required'),
-  description: z.string().optional();
+  description: z.string().optional(),
   type: z.enum(['sms', 'email', 'whatsapp', 'push']),
   category: z.enum([
     'appointment_reminder',
@@ -47,27 +47,27 @@ export const NotificationTemplateSchema = z.object({
   variables: z.array(z.string()).default([]), // Available variables for substitution
   priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
   status: z.enum(['active', 'inactive', 'draft']).default('active'),
-  createdBy: z.string();
+  createdBy: z.string()
 })
 
 // Notification Request Schema
 export const NotificationRequestSchema = z.object({
-  templateId: z.string().optional();
+  templateId: z.string().optional(),
   type: z.enum(['sms', 'email', 'whatsapp', 'push']),
   recipient: z.object({
-    id: z.string().optional();
-    name: z.string().optional();
-    phone: z.string().optional();
-    email: z.string().optional();
-    whatsappNumber: z.string().optional();
+    id: z.string().optional(),
+    name: z.string().optional(),
+    phone: z.string().optional(),
+    email: z.string().optional(),
+    whatsappNumber: z.string().optional()
   }),
-  subject: z.string().optional();
+  subject: z.string().optional(),
   message: z.string().min(1, 'Message is required'),
   variables: z.record(z.string()).optional(), // Variables for template substitution
   priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
   scheduledAt: z.date().optional(), // For scheduled notifications
-  metadata: z.record(z.any()).optional();
-  sender: z.string();
+  metadata: z.record(z.any()).optional(),
+  sender: z.string()
 })
 
 // Type definitions
@@ -76,7 +76,7 @@ export type NotificationTemplate = z.infer<typeof NotificationTemplateSchema> & 
 export type NotificationRequest = z.infer<typeof NotificationRequestSchema>;
 
 export interface NotificationResult {
-  id: string;
+  id: string,
   status: 'sent' | 'failed' | 'pending' | 'scheduled';
   providerId?: string; // External provider's message ID
   errorMessage?: string
@@ -84,18 +84,18 @@ export interface NotificationResult {
   deliveredAt?: Date;
   cost?: number;
 export interface NotificationStats {
-  total: number;
+  total: number,
   sent: number;
-  failed: number;
+  failed: number,
   pending: number;
-  deliveryRate: number;
-  totalCost: number;
+  deliveryRate: number,
+  totalCost: number
 }
 
 // SMS Provider Interface
 interface ISMSProvider {
   sendSMS(to: string, message: string, metadata?: Record<string, unknown>): Promise<{
-    id: string;
+    id: string,
     status: 'sent' | 'failed'
     errorMessage?: string;
     cost?: number;
@@ -105,7 +105,7 @@ interface ISMSProvider {
 // Email Provider Interface
 interface IEmailProvider {
   sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, unknown>): Promise<{
-    id: string;
+    id: string,
     status: 'sent' | 'failed'
     errorMessage?: string;
     cost?: number;
@@ -115,7 +115,7 @@ interface IEmailProvider {
 // WhatsApp Provider Interface
 interface IWhatsAppProvider {
   sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>): Promise<{
-    id: string;
+    id: string,
     status: 'sent' | 'failed'
     errorMessage?: string;
     cost?: number;
@@ -151,24 +151,24 @@ class TwilioSMSProvider implements ISMSProvider {
       // Mock implementation for demonstration
       const result = {
         sid: `SM/* SECURITY: Template literal eliminated */
-        status: 'sent' as const;
+        status: 'sent' as const,
         errorCode: null;
-        price: '-0.0075', // Typical SMS cost;
+        price: '-0.0075', // Typical SMS cost
       }
 
       /* SECURITY: Console statement removed */}...`);
 
       return {
-        id: result.sid;
+        id: result.sid,
         status: result.status;
-        cost: Math.abs(parseFloat(result.price || '0'));
+        cost: Math.abs(parseFloat(result.price || '0'))
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
       return {
-        id: '';
+        id: '',
         status: 'failed' as const;
-        errorMessage: error instanceof Error ? error.message : 'Unknown error';
+        errorMessage: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -207,20 +207,20 @@ class SendGridEmailProvider implements IEmailProvider {
       // Mock implementation for demonstration
       const result = {
         messageId: `${crypto.getRandomValues(new Uint32Array(1))[0]}.${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}@sendgrid.net`,
-        statusCode: 202;
+        statusCode: 202
       }
 
       return {
-        id: result.messageId;
+        id: result.messageId,
         status: 'sent' as const;
-        cost: 0.001, // Typical email cost;
+        cost: 0.001, // Typical email cost
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
       return {
-        id: '';
+        id: '',
         status: 'failed' as const;
-        errorMessage: error instanceof Error ? error.message : 'Unknown error';
+        errorMessage: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -255,24 +255,24 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       // Mock implementation for demonstration
       const result = {
         sid: `WA/* SECURITY: Template literal eliminated */
-        status: 'sent' as const;
+        status: 'sent' as const,
         errorCode: null;
-        price: '-0.005', // Typical WhatsApp cost;
+        price: '-0.005', // Typical WhatsApp cost
       }
 
       /* SECURITY: Console statement removed */}...`);
 
       return {
-        id: result.sid;
+        id: result.sid,
         status: result.status;
-        cost: Math.abs(parseFloat(result.price || '0'));
+        cost: Math.abs(parseFloat(result.price || '0'))
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
       return {
-        id: '';
+        id: '',
         status: 'failed' as const;
-        errorMessage: error instanceof Error ? error.message : 'Unknown error';
+        errorMessage: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -307,7 +307,7 @@ export class ExternalNotificationService {
           /* SECURITY: Console statement removed */break;
         case 'messagebird':
           // Initialize MessageBird provider
-          /* SECURITY: Console statement removed */break;
+          /* SECURITY: Console statement removed */break
       }
     }
 
@@ -325,7 +325,7 @@ export class ExternalNotificationService {
           /* SECURITY: Console statement removed */break;
         case 'smtp':
           // Initialize SMTP provider
-          /* SECURITY: Console statement removed */break;
+          /* SECURITY: Console statement removed */break
       }
     }
 
@@ -340,7 +340,7 @@ export class ExternalNotificationService {
           /* SECURITY: Console statement removed */break;
         case 'messagebird':
           // Initialize MessageBird WhatsApp provider
-          /* SECURITY: Console statement removed */break;
+          /* SECURITY: Console statement removed */break
       }
     }
   }
@@ -370,14 +370,14 @@ export class ExternalNotificationService {
     // For now, return mock template
     return {
       id,
-      name: 'Appointment Reminder';
+      name: 'Appointment Reminder',
       type: 'sms';
-      category: 'appointment_reminder';
+      category: 'appointment_reminder',
       body: 'Dear {{patientName}}, your appointment is scheduled for {{appointmentDate}} at {{appointmentTime}}.',
       variables: ['patientName', 'appointmentDate', 'appointmentTime'],
-      priority: 'medium';
+      priority: 'medium',
       status: 'active';
-      createdBy: 'system';
+      createdBy: 'system'
     }
   }
 
@@ -413,14 +413,14 @@ export class ExternalNotificationService {
   }
 
   private async sendImmediateNotification(
-    request: NotificationRequest;
+    request: NotificationRequest,
     message: string;
     subject?: string
   ): Promise<NotificationResult> {
     const notificationId = `notif_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
     try {
-      let result: { id: string; status: 'sent' | 'failed'; errorMessage?: string; cost?: number };
+      let result: { id: string, status: 'sent' | 'failed'; errorMessage?: string; cost?: number };
 
       switch (request.type) {
         case 'sms':
@@ -471,41 +471,41 @@ export class ExternalNotificationService {
           throw new Error('Push notifications not implemented yet')
 
         default:
-          throw new Error(`Unsupported notification type: ${request.type}`);
+          throw new Error(`Unsupported notification type: ${request.type}`),
       }
 
       // Log notification in database (implement actual storage)
       await this.logNotification(notificationId, request, result)
 
       return {
-        id: notificationId;
+        id: notificationId,
         status: result.status;
-        providerId: result.id;
+        providerId: result.id,
         errorMessage: result.errorMessage;
-        sentAt: result.status === 'sent' ? new Date() : undefined;
-        cost: result.cost;
+        sentAt: result.status === 'sent' ? new Date() : undefined,
+        cost: result.cost
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
       // Log failed notification
       await this.logNotification(notificationId, request, {
-        id: '';
+        id: '',
         status: 'failed';
         errorMessage,
       })
 
       return {
-        id: notificationId;
+        id: notificationId,
         status: 'failed';
         errorMessage,
-        sentAt: new Date();
+        sentAt: new Date()
       };
     }
   }
 
   private async scheduleNotification(
-    request: NotificationRequest;
+    request: NotificationRequest,
     message: string;
     subject?: string
   ): Promise<NotificationResult> {
@@ -513,9 +513,9 @@ export class ExternalNotificationService {
 
     // In production, store in database and use a job queue (Bull, Agenda, etc.)
     /* SECURITY: Console statement removed */return {
-      id: notificationId;
+      id: notificationId,
       status: 'scheduled';
-      sentAt: undefined;
+      sentAt: undefined
     };
   }
 
@@ -536,8 +536,8 @@ export class ExternalNotificationService {
         } else {
           results.push({
             id: `bulk_error_${crypto.getRandomValues(new Uint32Array(1))[0]}_${index}`,
-            status: 'failed';
-            errorMessage: result.reason?.message || 'Unknown error';
+            status: 'failed',
+            errorMessage: result.reason?.message || 'Unknown error'
           });
         }
       });
@@ -553,14 +553,14 @@ export class ExternalNotificationService {
 
   // Common notification scenarios
   async sendAppointmentReminder(
-    patientPhone: string;
+    patientPhone: string,
     patientEmail: string;
     appointmentDetails: {
-      patientName: string;
+      patientName: string,
       appointmentDate: string
-      appointmentTime: string;
+      appointmentTime: string,
       doctorName: string;
-      location: string;
+      location: string
     }
   ): Promise<NotificationResult[]> {
     const results: NotificationResult[] = [];
@@ -568,11 +568,11 @@ export class ExternalNotificationService {
     // SMS Reminder
     if (patientPhone != null) {
       const smsResult = await this.sendNotification({
-        type: 'sms';
+        type: 'sms',
         recipient: { phone: patientPhone },
         message: `Dear ${appointmentDetails.patientName}, your appointment with Dr. ${appointmentDetails.doctorName} is scheduled for ${appointmentDetails.appointmentDate} at ${appointmentDetails.appointmentTime}. Location: ${appointmentDetails.location}`,
-        priority: 'medium';
-        sender: 'appointment_system';
+        priority: 'medium',
+        sender: 'appointment_system'
       })
       results.push(smsResult);
     }
@@ -580,9 +580,9 @@ export class ExternalNotificationService {
     // Email Reminder
     if (patientEmail != null) {
       const emailResult = await this.sendNotification({
-        type: 'email';
+        type: 'email',
         recipient: { email: patientEmail },
-        subject: 'Appointment Reminder';
+        subject: 'Appointment Reminder',
         message: `
           <h2>Appointment Reminder</h2>
           <p>Dear ${appointmentDetails.patientName},</p>
@@ -596,8 +596,8 @@ export class ExternalNotificationService {
           <p>Please arrive 15 minutes early for check-in.</p>
           <p>Thank you!</p>
         `,
-        priority: 'medium';
-        sender: 'appointment_system';
+        priority: 'medium',
+        sender: 'appointment_system'
       })
       results.push(emailResult);
     }
@@ -611,11 +611,11 @@ export class ExternalNotificationService {
     // SMS Alert
     if (doctorPhone != null) {
       const smsResult = await this.sendNotification({
-        type: 'sms';
+        type: 'sms',
         recipient: { phone: doctorPhone },
         message: `CRITICAL LAB ALERT: ${alertDetails.patientName} - ${alertDetails.labTest}: ${alertDetails.criticalValue} (Normal: ${alertDetails.normalRange}). Immediate attention required.`,
-        priority: alertDetails.urgency;
-        sender: 'lab_system';
+        priority: alertDetails.urgency,
+        sender: 'lab_system'
       })
       results.push(smsResult);
     }
@@ -623,7 +623,7 @@ export class ExternalNotificationService {
     // Email Alert
     if (doctorEmail != null) {
       const emailResult = await this.sendNotification({
-        type: 'email';
+        type: 'email',
         recipient: { email: doctorEmail },
         subject: `CRITICAL LAB ALERT - ${alertDetails.patientName}`,
         message: `
@@ -634,8 +634,8 @@ export class ExternalNotificationService {
           <p><strong>Normal Range:</strong> ${alertDetails.normalRange}</p>
           <p style="color: red;"><strong>This requires immediate attention!</strong></p>
         `,
-        priority: alertDetails.urgency;
-        sender: 'lab_system';
+        priority: alertDetails.urgency,
+        sender: 'lab_system'
       });
       results.push(emailResult);
     }
@@ -653,12 +653,12 @@ export class ExternalNotificationService {
     // In production, query actual database
     // For now, return mock stats
     return {
-      total: 1000;
+      total: 1000,
       sent: 950;
-      failed: 30;
+      failed: 30,
       pending: 20;
-      deliveryRate: 95.0;
-      totalCost: 45.50;
+      deliveryRate: 95.0,
+      totalCost: 45.50
     }
   }
 
@@ -673,9 +673,9 @@ export class ExternalNotificationService {
   }
 
   private async logNotification(
-    id: string;
+    id: string,
     request: NotificationRequest;
-    result: { id: string; status: string; errorMessage?: string; cost?: number }
+    result: { id: string, status: string; errorMessage?: string; cost?: number }
   ): Promise<void> {
     // In production, store in database
     /* SECURITY: Console statement removed */}
@@ -690,36 +690,36 @@ export class ExternalNotificationService {
 export const createNotificationService = (config?: Partial<NotificationConfig>): ExternalNotificationService => {
   const defaultConfig: NotificationConfig = {
     sms: {
-      provider: 'twilio';
+      provider: 'twilio',
       config: {
-        accountSid: process.env.TWILIO_ACCOUNT_SID || '';
+        accountSid: process.env.TWILIO_ACCOUNT_SID || '',
         authToken: process.env.TWILIO_AUTH_TOKEN || '';
-        fromNumber: process.env.TWILIO_PHONE_NUMBER || '';
+        fromNumber: process.env.TWILIO_PHONE_NUMBER || ''
       },
-      enabled: true;
+      enabled: true
     },
     email: {
-      provider: 'sendgrid';
+      provider: 'sendgrid',
       config: {
-        apiKey: process.env.SENDGRID_API_KEY || '';
+        apiKey: process.env.SENDGRID_API_KEY || '',
         fromEmail: process.env.SENDGRID_FROM_EMAIL || '';
-        fromName: process.env.SENDGRID_FROM_NAME || 'Hospital Management System';
+        fromName: process.env.SENDGRID_FROM_NAME || 'Hospital Management System'
       },
-      enabled: true;
+      enabled: true
     },
     whatsapp: {
-      provider: 'twilio';
+      provider: 'twilio',
       config: {
-        accountSid: process.env.TWILIO_ACCOUNT_SID || '';
+        accountSid: process.env.TWILIO_ACCOUNT_SID || '',
         authToken: process.env.TWILIO_AUTH_TOKEN || '';
-        fromNumber: process.env.TWILIO_WHATSAPP_NUMBER || '';
+        fromNumber: process.env.TWILIO_WHATSAPP_NUMBER || ''
       },
-      enabled: true;
+      enabled: true
     },
   }
 
   const mergedConfig = { ...defaultConfig, ...config };
-  return new ExternalNotificationService(mergedConfig);
+  return new ExternalNotificationService(mergedConfig)
 };
 
 // Export singleton instance
@@ -729,5 +729,5 @@ export const _getNotificationService = (config?: Partial<NotificationConfig>): E
   if (!notificationServiceInstance) {
     notificationServiceInstance = createNotificationService(config);
   }
-  return notificationServiceInstance;
+  return notificationServiceInstance
 };

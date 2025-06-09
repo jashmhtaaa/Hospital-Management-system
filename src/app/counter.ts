@@ -25,8 +25,8 @@ export const _incrementAndLog = async () => {
 
   // Store updated count in cookie (expires in 1 year)
   cookieStore.set('page_views', currentCount.toString(), {
-    expires: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 365 * 24 * 60 * 60 * 1000);
-    path: '/';
+    expires: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 365 * 24 * 60 * 60 * 1000),
+    path: '/'
   })
 
   // Log this access in memory (will be lost on restart)
@@ -39,7 +39,7 @@ export const _incrementAndLog = async () => {
   // Store recent access list in cookie
   cookieStore.set('recent_access', JSON.stringify(recentAccessList), {
     expires: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 1 week
-    path: '/';
+    path: '/'
   });
 
   // Database operation example (commented out):
@@ -59,8 +59,8 @@ export const _incrementAndLog = async () => {
   // const { results: logs } = await cf.env.DB.prepare('SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5').all()
 
   return {
-    count: currentCount;
-    recentAccess: recentAccessList;
+    count: currentCount,
+    recentAccess: recentAccessList
   }
 }
 
@@ -78,5 +78,5 @@ export const _getStats = async () => {
 \1;
   // Get recent access list from cookie or default to empty array
 \1;
-    recentAccess: recentAccessList;
+    recentAccess: recentAccessList
   }

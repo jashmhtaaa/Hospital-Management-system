@@ -21,30 +21,30 @@ import { FileUploader } from '@/components/shared/FileUploader';
 // Form schema
 const complaintFormSchema = z.object({
   title: z.string().min(5, {
-    message: "Title must be at least 5 characters";
+    message: "Title must be at least 5 characters"
   }),
   description: z.string().min(10, {
-    message: "Description must be at least 10 characters";
+    message: "Description must be at least 10 characters"
   }),
   category: z.string({
-    required_error: "Please select a complaint category";
+    required_error: "Please select a complaint category"
   }),
   severity: z.string({
-    required_error: "Please select a severity level";
+    required_error: "Please select a severity level"
   }),
-  departmentId: z.string().optional();
-  anonymous: z.boolean().default(false);
+  departmentId: z.string().optional(),
+  anonymous: z.boolean().default(false),
   contactInfo: z.object({
-    name: z.string().optional();
-    email: z.string().email().optional();
-    phone: z.string().optional();
+    name: z.string().optional(),
+    email: z.string().email().optional(),
+    phone: z.string().optional()
   }).optional(),
 });
 
 type ComplaintFormValues = z.infer<typeof complaintFormSchema>;
 
 interface ComplaintFormProps {
-  departments?: { id: string; name: string }[];
+  departments?: { id: string, name: string }[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<ComplaintFormValues>;
 export default const _ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
@@ -57,18 +57,18 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
   // Initialize form
   const form = useForm<ComplaintFormValues>({
-    resolver: zodResolver(complaintFormSchema);
+    resolver: zodResolver(complaintFormSchema),
     defaultValues: {
-      title: defaultValues?.title || '';
+      title: defaultValues?.title || '',
       description: defaultValues?.description || '';
-      category: defaultValues?.category || '';
+      category: defaultValues?.category || '',
       severity: defaultValues?.severity || '';
-      departmentId: defaultValues?.departmentId || '';
+      departmentId: defaultValues?.departmentId || '',
       anonymous: defaultValues?.anonymous || false;
       contactInfo: defaultValues?.contactInfo || {
-        name: '';
+        name: '',
         email: '';
-        phone: '';
+        phone: ''
       },
     },
   });
@@ -89,7 +89,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       return;
     }
 
-    await submitComplaint(values);
+    await submitComplaint(values)
   };
 
   const submitComplaint = async (values: ComplaintFormValues) => {
@@ -97,11 +97,11 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
     try {
       // Submit complaint
       const response = await fetch('/api/support-services/feedback/complaint', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values);
+        body: JSON.stringify(values)
       });
 
       if (!response.ok) {
@@ -117,8 +117,8 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       }
 
       toast({
-        title: "Complaint Submitted";
-        description: "Your complaint has been submitted successfully.";
+        title: "Complaint Submitted",
+        description: "Your complaint has been submitted successfully."
       });
 
       // Reset form
@@ -131,9 +131,9 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       }
     } catch (error: unknown) {
       toast({
-        title: "Error";
+        title: "Error",
         description: error.message || "An error occurred while submitting complaint";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false),
@@ -148,8 +148,8 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
       try {
         await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
-          method: 'POST';
-          body: formData;
+          method: 'POST',
+          body: formData
         });
       } catch (error) {
 

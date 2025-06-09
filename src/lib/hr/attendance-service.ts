@@ -10,9 +10,9 @@ export class AttendanceService {
    * Record employee check-in;
    */
   async recordCheckIn(data: {
-    employeeId: string;
+    employeeId: string,
     date: Date;
-    checkInTime: Date;
+    checkInTime: Date,
     biometricVerified: boolean;
     notes?: string;
   }) {
@@ -27,7 +27,7 @@ export class AttendanceService {
       where: {
         employeeId_date: {
           employeeId,
-          date: formattedDate;
+          date: formattedDate
         },
       },
     });
@@ -36,20 +36,20 @@ export class AttendanceService {
       // Update existing record with check-in time
       return prisma.attendance.update({
         where: {
-          id: existingRecord.id;
+          id: existingRecord.id
         },
         data: {
           checkInTime,
           biometricVerified,
           notes,
-          status: this.determineAttendanceStatus(checkInTime, null),;
+          status: this.determineAttendanceStatus(checkInTime, null),
         },
         include: {
           employee: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              employeeId: true;
+              employeeId: true
             },
           },
         },
@@ -63,14 +63,14 @@ export class AttendanceService {
           checkInTime,
           biometricVerified,
           notes,
-          status: this.determineAttendanceStatus(checkInTime, null),;
+          status: this.determineAttendanceStatus(checkInTime, null),
         },
         include: {
           employee: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              employeeId: true;
+              employeeId: true
             },
           },
         },
@@ -82,9 +82,9 @@ export class AttendanceService {
    * Record employee check-out;
    */
   async recordCheckOut(data: {
-    employeeId: string;
+    employeeId: string,
     date: Date;
-    checkOutTime: Date;
+    checkOutTime: Date,
     biometricVerified: boolean;
     notes?: string;
   }) {
@@ -99,7 +99,7 @@ export class AttendanceService {
       where: {
         employeeId_date: {
           employeeId,
-          date: formattedDate;
+          date: formattedDate
         },
       },
     });
@@ -111,20 +111,20 @@ export class AttendanceService {
     // Update record with check-out time
     return prisma.attendance.update({
       where: {
-        id: existingRecord.id;
+        id: existingRecord.id
       },
       data: {
         checkOutTime,
-        biometricVerified: existingRecord.biometricVerified || biometricVerified;
+        biometricVerified: existingRecord.biometricVerified || biometricVerified,
         notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
-        status: this.determineAttendanceStatus(existingRecord.checkInTime, checkOutTime),;
+        status: this.determineAttendanceStatus(existingRecord.checkInTime, checkOutTime),
       },
       include: {
         employee: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            employeeId: true;
+            employeeId: true
           },
         },
       },
@@ -140,11 +140,11 @@ export class AttendanceService {
       include: {
         employee: {
           select: {
-            id: true;
+            id: true,
             firstName: true;
-            lastName: true;
+            lastName: true,
             employeeId: true;
-            department: true;
+            department: true
           },
         },
       },
@@ -173,9 +173,9 @@ export class AttendanceService {
       include: {
         employee: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            employeeId: true;
+            employeeId: true
           },
         },
       },
@@ -250,11 +250,11 @@ export class AttendanceService {
         include: {
           employee: {
             select: {
-              id: true;
+              id: true,
               firstName: true;
-              lastName: true;
+              lastName: true,
               employeeId: true;
-              department: true;
+              department: true
             },
           },
         },
@@ -274,7 +274,7 @@ export class AttendanceService {
    * Update attendance record;
    */
   async updateAttendance(
-    id: string;
+    id: string,
     data: {
       checkInTime?: Date;
       checkOutTime?: Date;
@@ -298,9 +298,9 @@ export class AttendanceService {
       include: {
         employee: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            employeeId: true;
+            employeeId: true
           },
         },
       },
@@ -311,7 +311,7 @@ export class AttendanceService {
    * Mark employee as absent;
    */
   async markAbsent(data: {
-    employeeId: string;
+    employeeId: string,
     date: Date;
     notes?: string;
   }) {
@@ -326,7 +326,7 @@ export class AttendanceService {
       where: {
         employeeId_date: {
           employeeId,
-          date: formattedDate;
+          date: formattedDate
         },
       },
     });
@@ -335,18 +335,18 @@ export class AttendanceService {
       // Update existing record
       return prisma.attendance.update({
         where: {
-          id: existingRecord.id;
+          id: existingRecord.id
         },
         data: {
-          status: 'ABSENT';
+          status: 'ABSENT',
           notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
         },
         include: {
           employee: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              employeeId: true;
+              employeeId: true
             },
           },
         },
@@ -356,17 +356,17 @@ export class AttendanceService {
       return prisma.attendance.create({
         data: {
           employeeId,
-          date: formattedDate;
+          date: formattedDate,
           status: 'ABSENT';
           notes,
-          biometricVerified: false;
+          biometricVerified: false
         },
         include: {
           employee: {
             select: {
-              firstName: true;
+              firstName: true,
               lastName: true;
-              employeeId: true;
+              employeeId: true
             },
           },
         },
@@ -382,10 +382,10 @@ export class AttendanceService {
     const employees = await prisma.employee.findMany({
       where: {
         departmentId,
-        active: true;
+        active: true
       },
       select: {
-        id: true;
+        id: true
       },
     });
 
@@ -395,11 +395,11 @@ export class AttendanceService {
     const attendanceRecords = await prisma.attendance.findMany({
       where: {
         employeeId: {
-          in: employeeIds;
+          in: employeeIds
         },
         date: {
-          gte: startDate;
-          lte: endDate;
+          gte: startDate,
+          lte: endDate
         },
       },
     });
@@ -461,12 +461,12 @@ export class AttendanceService {
     // Log the verification attempt
     await prisma.auditLog.create({
       data: {
-        userId: null;
+        userId: null,
         eventType: 'BIOMETRIC_VERIFICATION';
         details: {
           employeeId,
-          success: randomSuccess;
-          timestamp: new Date();
+          success: randomSuccess,
+          timestamp: new Date()
         },
       },
     });
@@ -479,7 +479,7 @@ export class AttendanceService {
    * This is a simplified implementation and would be more complex in a real system;
    */
   private determineAttendanceStatus(
-    checkInTime: Date | null;
+    checkInTime: Date | null,
     checkOutTime: Date | null;
   ): 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE' {
     if (!checkInTime) {

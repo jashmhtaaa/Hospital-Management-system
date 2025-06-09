@@ -23,11 +23,11 @@ import { Calculator } from "lucide-react";
 
 // FIX: Define interface for billing item
 interface BillingItem {
-  id: string;
+  id: string,
   date: string;
-  description: string;
+  description: string,
   category: string;
-  amount: number;
+  amount: number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses
   surgery_id: string;
   invoice_id?: string;
@@ -50,10 +50,10 @@ interface OTBillingItemsProperties {
 // Helper function to format currency
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-IN", {
-    style: "currency";
+    style: "currency",
     currency: "INR";
-    maximumFractionDigits: 0;
-  }).format(amount);
+    maximumFractionDigits: 0
+  }).format(amount)
 };
 
 // Helper function to get status badge
@@ -81,7 +81,7 @@ export default const _OTBillingItems = ({
   readOnly = false,
 }: OTBillingItemsProperties) {
   // FIX: Type the state correctly
-  const [billingItems, setBillingItems] = useState<BillingItem[]>([]);
+  const [billingItems, setBillingItems] = useState<BillingItem[]>([]),
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -94,40 +94,40 @@ export default const _OTBillingItems = ({
 
         // Replace with actual API call
         // const _response = await fetch(`/api/ot/billing-items?patientId=/* SECURITY: Template literal eliminated */
-            date: "2025-04-28T09:00:00Z";
+            date: "2025-04-28T09:00:00Z",
             description: "Appendectomy - Surgical Procedure";
-            category: "Surgery";
+            category: "Surgery",
             amount: 25_000;
-            status: "unbilled";
-            surgery_id: "booking-1";
+            status: "unbilled",
+            surgery_id: "booking-1"
           },
           {
-            id: "bill-item-2";
-            date: "2025-04-28T09:00:00Z";
+            id: "bill-item-2",
+            date: "2025-04-28T09:00:00Z",
             description: "Operation Theatre Charges (OT-1)";
-            category: "Facility";
+            category: "Facility",
             amount: 10_000;
-            status: "unbilled";
-            surgery_id: "booking-1";
+            status: "unbilled",
+            surgery_id: "booking-1"
           },
           {
-            id: "bill-item-3";
-            date: "2025-04-28T09:00:00Z";
+            id: "bill-item-3",
+            date: "2025-04-28T09:00:00Z",
             description: "Anesthesia Charges";
-            category: "Anesthesia";
+            category: "Anesthesia",
             amount: 8000;
-            status: "unbilled";
-            surgery_id: "booking-1";
+            status: "unbilled",
+            surgery_id: "booking-1"
           },
           {
-            id: "bill-item-4";
-            date: "2025-04-28T09:00:00Z";
+            id: "bill-item-4",
+            date: "2025-04-28T09:00:00Z",
             description: "Surgical Consumables";
-            category: "Consumables";
+            category: "Consumables",
             amount: 5000;
-            status: "billed";
+            status: "billed",
             surgery_id: "booking-1";
-            invoice_id: "INV-001";
+            invoice_id: "INV-001"
           },
         ]
         setBillingItems(mockData),
@@ -153,7 +153,7 @@ export default const _OTBillingItems = ({
       return previous.includes(itemId);
         ? previous.filter((id) => id !== itemId);
         : [...previous, itemId];
-    });
+    })
   };
 
   const handleAddToBill = () => {

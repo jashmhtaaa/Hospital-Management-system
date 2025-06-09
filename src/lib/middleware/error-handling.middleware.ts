@@ -22,7 +22,7 @@ import { AuditLogger } from '@/lib/audit';
 import { SecurityService } from '@/lib/security.service';
 
 export const _errorHandlingMiddleware = async (
-  request: NextRequest;
+  request: NextRequest,
   handler: (request: NextRequest) => Promise<NextResponse>;
 ): Promise<NextResponse> {
   try {
@@ -62,14 +62,14 @@ export const _errorHandlingMiddleware = async (
 
     // Log request (sanitizing sensitive data)
     await auditLogger.log({
-      action: 'api.request';
+      action: 'api.request',
       resourceId: requestId;
       userId,
       details: {
         method,
-        url: SecurityService.sanitizeUrl(url);
+        url: SecurityService.sanitizeUrl(url),
         contentType,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       }
     })
 
@@ -86,12 +86,12 @@ export const _errorHandlingMiddleware = async (
 
     // Log successful response (excluding sensitive data)
     await auditLogger.log({
-      action: 'api.response';
+      action: 'api.response',
       resourceId: requestId;
       userId,
       details: {
-        status: response.status;
-        timestamp: new Date().toISOString();
+        status: response.status,
+        timestamp: new Date().toISOString()
       }
     })
 
@@ -142,24 +142,24 @@ export const _errorHandlingMiddleware = async (
     // Log error with appropriate sanitization for HIPAA compliance
     try {
       const auditLogger = new AuditLogger({
-        requestId: crypto.randomUUID();
+        requestId: crypto.randomUUID(),
         userId: 'system';
-        method: request.method;
-        url: request.url;
+        method: request.method,
+        url: request.url
       });
 
       await auditLogger.log({
-        action: 'api.error';
-        resourceId: crypto.randomUUID();
-        userId: 'system';
+        action: 'api.error',
+        resourceId: crypto.randomUUID(),
+        userId: 'system',
         details: {
-          errorType: error.constructor.name;
+          errorType: error.constructor.name,
           errorCode: code;
-          errorMessage: SecurityService.sanitizeErrorMessage(message);
+          errorMessage: SecurityService.sanitizeErrorMessage(message),
           status,
-          url: SecurityService.sanitizeUrl(request.url);
+          url: SecurityService.sanitizeUrl(request.url),
           method: request.method;
-          timestamp: new Date().toISOString();
+          timestamp: new Date().toISOString()
         }
       });
     } catch (loggingError) {
@@ -169,11 +169,11 @@ export const _errorHandlingMiddleware = async (
     // Return standardized error response
     return NextResponse.json(
       {
-        success: false;
+        success: false,
         error: {
           code,
           message,
-          details: Object.keys(details).length > 0 ? details : undefined;
+          details: Object.keys(details).length > 0 ? details : undefined
         }
       },
       { status }

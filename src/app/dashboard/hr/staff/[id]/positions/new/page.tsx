@@ -39,9 +39,9 @@ import { toast } from '@/components/ui/use-toast';
 // Form schema for position assignment
 const positionAssignmentSchema = z.object({
   positionId: z.string().min(1, "Position is required"),
-  isPrimary: z.boolean().default(false);
-  startDate: z.date();
-  endDate: z.date().optional();
+  isPrimary: z.boolean().default(false),
+  startDate: z.date(),
+  endDate: z.date().optional()
 });
 
 export default const _AssignPosition = ({ params }: { params: { id: string } }) {
@@ -52,12 +52,12 @@ export default const _AssignPosition = ({ params }: { params: { id: string } }) 
 
   // Initialize form
   const form = useForm({
-    resolver: zodResolver(positionAssignmentSchema);
+    resolver: zodResolver(positionAssignmentSchema),
     defaultValues: {
-      positionId: '';
+      positionId: '',
       isPrimary: false;
-      startDate: new Date();
-      endDate: undefined;
+      startDate: new Date(),
+      endDate: undefined
     },
   });
 
@@ -81,9 +81,9 @@ export default const _AssignPosition = ({ params }: { params: { id: string } }) 
       } catch (err) {
 
         toast({
-          title: "Error";
+          title: "Error",
           description: "Failed to load required data";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     };
@@ -100,15 +100,15 @@ export default const _AssignPosition = ({ params }: { params: { id: string } }) 
       const formattedData = {
         ...data,
         startDate: format(data.startDate, 'yyyy-MM-dd'),
-        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,;
+        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,
       };
 
       const response = await fetch(`/api/hr/staff/${params.id}/positions`, {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData);
+        body: JSON.stringify(formattedData)
       });
 
       if (!response.ok) {
@@ -117,17 +117,17 @@ export default const _AssignPosition = ({ params }: { params: { id: string } }) 
       }
 
       toast({
-        title: "Position Assigned";
-        description: "Successfully assigned position to employee";
+        title: "Position Assigned",
+        description: "Successfully assigned position to employee"
       });
 
       // Navigate back to employee profile
       router.push(`/dashboard/hr/staff/${params.id}`);
     } catch (error) {
       toast({
-        title: "Error";
+        title: "Error",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);

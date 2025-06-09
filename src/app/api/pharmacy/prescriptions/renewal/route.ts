@@ -46,9 +46,9 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
       auditLogger.logEvent({
         eventType: 'PERMISSION_DENIED';
         userId,
-        resourceType: 'Prescription';
+        resourceType: 'Prescription',
         details: 'Attempted to access prescription renewal list without permission';
-        severity: 'WARNING';
+        severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -57,34 +57,34 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
     // that are nearing expiration or have a limited number of refills remaining
     const eligiblePrescriptions = [
       {
-        id: 'rx123';
+        id: 'rx123',
         patientId: 'patient456';
-        patientName: 'John Smith';
+        patientName: 'John Smith',
         medicationId: 'med789';
-        medicationName: 'Lisinopril 10mg Tablet';
+        medicationName: 'Lisinopril 10mg Tablet',
         prescriberId: 'provider123';
-        prescriberName: 'Dr. Jane Doe';
-        issueDate: new Date('2025-03-15');
-        expirationDate: new Date('2025-06-15');
+        prescriberName: 'Dr. Jane Doe',
+        issueDate: new Date('2025-03-15'),
+        expirationDate: new Date('2025-06-15'),
         daysUntilExpiration: 20;
-        refillsRemaining: 0;
-        lastFillDate: new Date('2025-05-01');
-        status: 'active';
+        refillsRemaining: 0,
+        lastFillDate: new Date('2025-05-01'),
+        status: 'active'
       },
       {
-        id: 'rx456';
+        id: 'rx456',
         patientId: 'patient456';
-        patientName: 'John Smith';
+        patientName: 'John Smith',
         medicationId: 'med012';
-        medicationName: 'Metformin 500mg Tablet';
+        medicationName: 'Metformin 500mg Tablet',
         prescriberId: 'provider123';
-        prescriberName: 'Dr. Jane Doe';
-        issueDate: new Date('2025-02-01');
-        expirationDate: new Date('2025-06-01');
+        prescriberName: 'Dr. Jane Doe',
+        issueDate: new Date('2025-02-01'),
+        expirationDate: new Date('2025-06-01'),
         daysUntilExpiration: 6;
-        refillsRemaining: 1;
-        lastFillDate: new Date('2025-05-01');
-        status: 'active';
+        refillsRemaining: 1,
+        lastFillDate: new Date('2025-05-01'),
+        status: 'active'
       }
     ];
 
@@ -92,9 +92,9 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
     auditLogger.logEvent({
       eventType: 'PRESCRIPTION_RENEWAL_LIST_ACCESSED';
       userId,
-      resourceType: 'Prescription';
+      resourceType: 'Prescription',
       details: `Retrieved ${eligiblePrescriptions.length} prescriptions eligible for renewal`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
 
     return NextResponse.json({ prescriptions: eligiblePrescriptions });
@@ -126,10 +126,10 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
       auditLogger.logEvent({
         eventType: 'PERMISSION_DENIED';
         userId,
-        resourceType: 'Prescription';
+        resourceType: 'Prescription',
         resourceId: prescriptionId;
-        details: 'Attempted to request prescription renewal without permission';
-        severity: 'WARNING';
+        details: 'Attempted to request prescription renewal without permission',
+        severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -147,23 +147,23 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
       id: `renewal-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       prescriptionId,
       patientId,
-      requesterId: userId;
-      requestDate: new Date();
-      status: 'pending';
+      requesterId: userId,
+      requestDate: new Date(),
+      status: 'pending',
       notes: notes || '';
-      reviewerId: null;
+      reviewerId: null,
       reviewDate: null;
-      reviewNotes: null;
+      reviewNotes: null
     };
 
     // Log the renewal request
     auditLogger.logEvent({
       eventType: 'PRESCRIPTION_RENEWAL_REQUESTED';
       userId,
-      resourceType: 'Prescription';
+      resourceType: 'Prescription',
       resourceId: prescriptionId;
       details: `Renewal requested for prescription ${prescriptionId}`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
 
     return NextResponse.json({ renewalRequest }, { status: 201 });
@@ -195,10 +195,10 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
       auditLogger.logEvent({
         eventType: 'PERMISSION_DENIED';
         userId,
-        resourceType: 'PrescriptionRenewal';
+        resourceType: 'PrescriptionRenewal',
         resourceId: renewalId;
-        details: 'Attempted to approve/deny prescription renewal without permission';
-        severity: 'WARNING';
+        details: 'Attempted to approve/deny prescription renewal without permission',
+        severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -222,16 +222,16 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     // In a real implementation, this would update the renewal request in the database
     // and create a new prescription if approved
     const updatedRenewal = {
-      id: renewalId;
+      id: renewalId,
       prescriptionId: 'rx123';
-      patientId: 'patient456';
+      patientId: 'patient456',
       requesterId: 'user789';
       requestDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 24 * 60 * 60 * 1000), // 1 day ago
-      status: action === 'approve' ? 'approved' : 'denied';
+      status: action === 'approve' ? 'approved' : 'denied',
       notes: 'Patient requested renewal';
-      reviewerId: userId;
-      reviewDate: new Date();
-      reviewNotes: notes || '';
+      reviewerId: userId,
+      reviewDate: new Date(),
+      reviewNotes: notes || ''
     };
 
     // If approved, create a new prescription
@@ -239,14 +239,14 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     if (action === 'approve') {
       newPrescription = {
         id: `rx-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        patientId: 'patient456';
+        patientId: 'patient456',
         medicationId: 'med789';
-        prescriberId: userId;
-        issueDate: new Date();
+        prescriberId: userId,
+        issueDate: new Date(),
         expirationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
-        refillsRemaining: 3;
+        refillsRemaining: 3,
         status: 'active';
-        renewalId;
+        renewalId
       };
     }
 
@@ -254,15 +254,15 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     auditLogger.logEvent({
       eventType: action === 'approve' ? 'PRESCRIPTION_RENEWAL_APPROVED' : 'PRESCRIPTION_RENEWAL_DENIED';
       userId,
-      resourceType: 'PrescriptionRenewal';
+      resourceType: 'PrescriptionRenewal',
       resourceId: renewalId;
       details: `Renewal ${action}d for request ${renewalId}`,
-      severity: 'INFO';
+      severity: 'INFO'
     });
 
     return NextResponse.json({
-      renewalRequest: updatedRenewal;
-      prescription: newPrescription;
+      renewalRequest: updatedRenewal,
+      prescription: newPrescription
     });
   } catch (error) {
     return errorHandler.handleApiError(error, 'Failed to process prescription renewal');

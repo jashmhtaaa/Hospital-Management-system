@@ -7,21 +7,21 @@ import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 // src/lib/auth/auth-service.ts
 export interface AuthUser {
-  id: string;
+  id: string,
   email: string;
-  role: UserRole;
-  permissions: string[];
+  role: UserRole,
+  permissions: string[]
 }
 
 export interface LoginCredentials {
-  email: string;
-  password: string;
+  email: string,
+  password: string
 }
 
 export interface RegisterData {
-  email: string;
+  email: string,
   password: string;
-  firstName: string;
+  firstName: string,
   lastName: string;
   role?: UserRole;
 }
@@ -32,9 +32,9 @@ export class AuthService {
   private static readonly REFRESH_EXPIRES_IN = '7d';
 
   static async login(credentials: LoginCredentials): Promise<{
-    user: AuthUser;
+    user: AuthUser,
     accessToken: string;
-    refreshToken: string;
+    refreshToken: string
   }> {
     const { email, password } = credentials;
 
@@ -42,8 +42,8 @@ export class AuthService {
     const user = await prisma.user.findUnique({
       where: { email, isActive: true },
       include: {
-        permissions: true;
-        department: true;
+        permissions: true,
+        department: true
       }
     });
 
@@ -67,9 +67,9 @@ export class AuthService {
 
     // Generate tokens
     const authUser: AuthUser = {
-      id: user.id;
+      id: user.id,
       email: user.email;
-      role: user.role;
+      role: user.role,
       permissions: user.permissions.map(p => `${p.resource}:${p.action}`)
     };
 
@@ -79,10 +79,10 @@ export class AuthService {
     // Create session
     await prisma.userSession.create({
       data: {
-        userId: user.id;
+        userId: user.id,
         sessionToken: accessToken;
         refreshToken,
-        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000) // 24 hours;
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000) // 24 hours
       }
     });
 
@@ -116,16 +116,16 @@ export class AuthService {
         role
       },
       include: {
-        permissions: true;
+        permissions: true
       }
     });
 
     logger.info('User registered successfully', { userId: user.id, email });
 
     return {
-      id: user.id;
+      id: user.id,
       email: user.email;
-      role: user.role;
+      role: user.role,
       permissions: user.permissions.map(p => `${p.resource}:${p.action}`)
     };
   }
@@ -140,7 +140,7 @@ export class AuthService {
         include: {
           user: {
             include: {
-              permissions: true;
+              permissions: true
             }
           }
         }
@@ -151,9 +151,9 @@ export class AuthService {
       }
 
       return {
-        id: session.user.id;
+        id: session.user.id,
         email: session.user.email;
-        role: session.user.role;
+        role: session.user.role,
         permissions: session.user.permissions.map(p => `${p.resource}:${p.action}`)
       };
     } catch (error) {
@@ -172,10 +172,10 @@ export class AuthService {
   private static generateAccessToken(user: AuthUser): string {
     return jwt.sign(
       {
-        userId: user.id;
+        userId: user.id,
         email: user.email;
-        role: user.role;
-        permissions: user.permissions;
+        role: user.role,
+        permissions: user.permissions
       },
       this.JWT_SECRET,
       { expiresIn: this.JWT_EXPIRES_IN }

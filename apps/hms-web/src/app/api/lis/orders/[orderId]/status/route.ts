@@ -20,12 +20,12 @@ const updateLabOrderStatusSchema = z.object({
       return { message: ctx.defaultError };
     },
   }),
-  notes: z.string().max(1000).optional().nullable();
+  notes: z.string().max(1000).optional().nullable()
 });
 
 interface RouteContext {
   params: {
-    orderId: string;
+    orderId: string
   };
 }
 
@@ -43,13 +43,13 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canUpdateStatus = await hasPermission(userId, "LIS_UPDATE_ORDER_STATUS");
     if (!canUpdateStatus) {
       await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_ATTEMPT_DENIED", { orderId, path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to update LIS order status.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to update LIS order status.", 403)
     }
 
     const body: unknown = await request.json();
@@ -79,7 +79,7 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     }
 
     const dataForUpdate: Prisma.LabOrderUpdateInput = {
-      status: status;
+      status: status
     };
 
     if (notes !== undefined) {
@@ -88,7 +88,7 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
 
     const updatedLabOrder = await prisma.labOrder.update({
       where: { id: orderId },
-      data: dataForUpdate;
+      data: dataForUpdate,
       include: {
         patient: { select: { id: true, firstName: true, lastName: true } },
         orderedBy: { select: { id: true, name: true } },
@@ -99,9 +99,9 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_SUCCESS", {
       orderId,
-      oldStatus: existingOrder.status;
-      newStatus: status;
-      updatedData: updatedLabOrder;
+      oldStatus: existingOrder.status,
+      newStatus: status,
+      updatedData: updatedLabOrder
     })
     const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement

@@ -6,13 +6,13 @@ server:
 spring:
   application:
     name: payer-integration-service
-  
+
   datasource:
     url: jdbc:postgresql://localhost:5432/hms_payer_integration
     username: ${DB_USERNAME:hms_user}
     password: ${DB_PASSWORD:hms_password}
     driver-class-name: org.postgresql.Driver
-    
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -20,7 +20,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        
+
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -54,7 +54,7 @@ hms:
   payer-integration:
     edi:
       enabled: true
-      transaction-sets: ["837", "835", "270", "271"]
+      transaction-sets: ['837', '835', '270', '271']
     clearinghouses:
       primary:
         endpoint: ${CLEARINGHOUSE_ENDPOINT:}

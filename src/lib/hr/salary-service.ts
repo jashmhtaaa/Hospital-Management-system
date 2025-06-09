@@ -13,9 +13,9 @@ export class SalaryService {
     name: string;
     description?: string;
     components: {
-      name: string;
+      name: string,
       type: 'EARNING' | 'DEDUCTION' | 'TAX';
-      calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
+      calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA',
       value: number;
       formula?: string;
       taxable: boolean;
@@ -31,18 +31,18 @@ export class SalaryService {
         description,
         components: {
           create: components.map(component => ({
-            name: component.name;
+            name: component.name,
             type: component.type;
-            calculationType: component.calculationType;
+            calculationType: component.calculationType,
             value: component.value;
-            formula: component.formula;
+            formula: component.formula,
             taxable: component.taxable;
-            isBase: component.isBase || false;
+            isBase: component.isBase || false
           })),
         },
       },
       include: {
-        components: true;
+        components: true
       },
     });
   }
@@ -54,7 +54,7 @@ export class SalaryService {
     return prisma.salaryStructure.findUnique({
       where: { id },
       include: {
-        components: true;
+        components: true
       },
     });
   }
@@ -65,10 +65,10 @@ export class SalaryService {
   async listSalaryStructures() {
     return prisma.salaryStructure.findMany({
       include: {
-        components: true;
+        components: true,
         _count: {
           select: {
-            employees: true;
+            employees: true
           },
         },
       },
@@ -93,9 +93,9 @@ export class SalaryService {
    * Add a component to a salary structure;
    */
   async addSalaryComponent(structureId: string, data: {
-    name: string;
+    name: string,
     type: 'EARNING' | 'DEDUCTION' | 'TAX';
-    calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
+    calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA',
     value: number;
     formula?: string;
     taxable: boolean;
@@ -104,7 +104,7 @@ export class SalaryService {
     return prisma.salaryComponent.create({
       data: {
         ...data,
-        salaryStructureId: structureId;
+        salaryStructureId: structureId
       },
     });
   }
@@ -141,9 +141,9 @@ export class SalaryService {
    * Assign a salary structure to an employee;
    */
   async assignSalaryStructure(data: {
-    employeeId: string;
+    employeeId: string,
     salaryStructureId: string;
-    baseSalary: number;
+    baseSalary: number,
     effectiveDate: Date;
     endDate?: Date;
     notes?: string;
@@ -173,7 +173,7 @@ export class SalaryService {
       const existingAssignment = await prisma.employeeSalary.findFirst({
         where: {
           employeeId,
-          endDate: null;
+          endDate: null
         },
       });
 
@@ -181,7 +181,7 @@ export class SalaryService {
         await prisma.employeeSalary.update({
           where: { id: existingAssignment.id },
           data: {
-            endDate: new Date(effectiveDate);
+            endDate: new Date(effectiveDate),
             notes: existingAssignment.notes;
               ? `${existingAssignment.notes}; Automatically ended due to new assignment.`
               : 'Automatically ended due to new assignment.',
@@ -203,14 +203,14 @@ export class SalaryService {
       include: {
         employee: {
           select: {
-            firstName: true;
+            firstName: true,
             lastName: true;
-            employeeId: true;
+            employeeId: true
           },
         },
         salaryStructure: {
           include: {
-            components: true;
+            components: true
           },
         },
       },
@@ -224,12 +224,12 @@ export class SalaryService {
     return prisma.employeeSalary.findFirst({
       where: {
         employeeId,
-        endDate: null;
+        endDate: null
       },
       include: {
         salaryStructure: {
           include: {
-            components: true;
+            components: true
           },
         },
       },
@@ -245,10 +245,10 @@ export class SalaryService {
         employeeId,
       },
       orderBy: {
-        effectiveDate: 'desc';
+        effectiveDate: 'desc'
       },
       include: {
-        salaryStructure: true;
+        salaryStructure: true
       },
     });
   }
@@ -262,7 +262,7 @@ export class SalaryService {
       where: {
         employeeId,
         effectiveDate: {
-          lte: date;
+          lte: date
         },
         OR: [
           { endDate: null },
@@ -272,7 +272,7 @@ export class SalaryService {
       include: {
         salaryStructure: {
           include: {
-            components: true;
+            components: true
           },
         },
       },
@@ -298,12 +298,12 @@ export class SalaryService {
           componentValue = component.value;
           break;
         case 'PERCENTAGE':
-          componentValue = baseSalary * (component.value / 100);
+          componentValue = baseSalary * (component.value / 100),
           break;
         case 'FORMULA':
           // In a real implementation, this would evaluate the formula
           // For simplicity, we'll just use the value as a percentage of base salary
-          componentValue = baseSalary * (component.value / 100);
+          componentValue = baseSalary * (component.value / 100),
           break;
       }
 
@@ -315,10 +315,10 @@ export class SalaryService {
       }
 
       componentBreakdown.push({
-        componentId: component.id;
+        componentId: component.id,
         name: component.name;
-        type: component.type;
-        value: componentValue;
+        type: component.type,
+        value: componentValue
       });
     }
 
@@ -327,7 +327,7 @@ export class SalaryService {
       baseSalary,
       grossSalary,
       componentBreakdown,
-      calculationDate: date;
+      calculationDate: date
     };
   }
 export const _salaryService = new SalaryService();

@@ -10,29 +10,29 @@ const maintenanceService = new MaintenanceService();
 
 // Request validation schemas
 const createRequestSchema = z.object({
-  assetId: z.string().uuid();
+  assetId: z.string().uuid(),
   requestType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'EMERGENCY', 'INSPECTION', 'INSTALLATION', 'OTHER']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
-  description: z.string().min(5).max(500);
+  description: z.string().min(5).max(500),
   scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional();
-  requestedById: z.string().uuid();
-  departmentId: z.string().uuid().optional();
-  estimatedDuration: z.number().min(1).optional(), // in minutes;
+  notes: z.string().max(1000).optional(),
+  requestedById: z.string().uuid(),
+  departmentId: z.string().uuid().optional(),
+  estimatedDuration: z.number().min(1).optional(), // in minutes
 });
 
 const updateRequestSchema = z.object({
   requestType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'EMERGENCY', 'INSPECTION', 'INSTALLATION', 'OTHER']).optional(),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
-  description: z.string().min(5).max(500).optional();
-  scheduledTime: z.string().transform(val => new Date(val)).optional();
-  notes: z.string().max(1000).optional();
+  description: z.string().min(5).max(500).optional(),
+  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'ON_HOLD', 'COMPLETED', 'CANCELLED']).optional(),
-  assignedToId: z.string().uuid().optional();
-  estimatedDuration: z.number().min(1).optional();
+  assignedToId: z.string().uuid().optional(),
+  estimatedDuration: z.number().min(1).optional(),
   partsRequired: z.array(z.object({
-    partId: z.string().uuid();
-    quantity: z.number().min(1);
+    partId: z.string().uuid(),
+    quantity: z.number().min(1)
   })).optional(),
 });
 
@@ -44,16 +44,16 @@ export const _GET = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         priority: searchParams.get('priority') || undefined;
-        assetId: searchParams.get('assetId') || undefined;
+        assetId: searchParams.get('assetId') || undefined,
         requestType: searchParams.get('requestType') || undefined;
-        departmentId: searchParams.get('departmentId') || undefined;
+        departmentId: searchParams.get('departmentId') || undefined,
         fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
-        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
+        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
         assignedToId: searchParams.get('assignedToId') || undefined;
-        page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        page: parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get maintenance requests with filters
@@ -62,8 +62,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:read';
-      auditAction: 'MAINTENANCE_REQUESTS_VIEW';
+      requiredPermission: 'maintenance:read',
+      auditAction: 'MAINTENANCE_REQUESTS_VIEW'
     }
   );
 }
@@ -86,8 +86,8 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(result, { status: 201 });
     },
     {
-      requiredPermission: 'maintenance:create';
-      auditAction: 'MAINTENANCE_REQUEST_CREATE';
+      requiredPermission: 'maintenance:create',
+      auditAction: 'MAINTENANCE_REQUEST_CREATE'
     }
   );
 }
@@ -104,8 +104,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:read';
-      auditAction: 'MAINTENANCE_REQUEST_VIEW';
+      requiredPermission: 'maintenance:read',
+      auditAction: 'MAINTENANCE_REQUEST_VIEW'
     }
   );
 }
@@ -128,8 +128,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:update';
-      auditAction: 'MAINTENANCE_REQUEST_UPDATE';
+      requiredPermission: 'maintenance:update',
+      auditAction: 'MAINTENANCE_REQUEST_UPDATE'
     }
   );
 }
@@ -145,8 +145,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json({ success: true });
     },
     {
-      requiredPermission: 'maintenance:delete';
-      auditAction: 'MAINTENANCE_REQUEST_DELETE';
+      requiredPermission: 'maintenance:delete',
+      auditAction: 'MAINTENANCE_REQUEST_DELETE'
     }
   );
 }
@@ -170,8 +170,8 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:assign';
-      auditAction: 'MAINTENANCE_REQUEST_ASSIGN';
+      requiredPermission: 'maintenance:assign',
+      auditAction: 'MAINTENANCE_REQUEST_ASSIGN'
     }
   );
 }
@@ -199,8 +199,8 @@ export const _START = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:update';
-      auditAction: 'MAINTENANCE_WORK_START';
+      requiredPermission: 'maintenance:update',
+      auditAction: 'MAINTENANCE_WORK_START'
     }
   );
 }
@@ -230,8 +230,8 @@ export const _COMPLETE = async (request: NextRequest, { params }: { params: { id
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:update';
-      auditAction: 'MAINTENANCE_REQUEST_COMPLETE';
+      requiredPermission: 'maintenance:update',
+      auditAction: 'MAINTENANCE_REQUEST_COMPLETE'
     }
   );
 }
@@ -244,12 +244,12 @@ export const _GET_ASSETS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        type: searchParams.get('type') || undefined;
+        type: searchParams.get('type') || undefined,
         status: searchParams.get('status') || undefined;
-        locationId: searchParams.get('locationId') || undefined;
+        locationId: searchParams.get('locationId') || undefined,
         departmentId: searchParams.get('departmentId') || undefined;
-        page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        page: parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get maintenance assets with filters
@@ -258,8 +258,8 @@ export const _GET_ASSETS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:read';
-      auditAction: 'MAINTENANCE_ASSETS_VIEW';
+      requiredPermission: 'maintenance:read',
+      auditAction: 'MAINTENANCE_ASSETS_VIEW'
     }
   );
 }
@@ -280,7 +280,7 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'maintenance:analytics';
-      auditAction: 'MAINTENANCE_ANALYTICS_VIEW';
+      requiredPermission: 'maintenance:analytics',
+      auditAction: 'MAINTENANCE_ANALYTICS_VIEW'
     }
   );

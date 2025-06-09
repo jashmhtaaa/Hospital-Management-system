@@ -25,28 +25,28 @@ export default const _AmbulanceTripRequestForm = () {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('');
   const [formData, setFormData] = useState({
-    tripType: 'NON_EMERGENCY';
+    tripType: 'NON_EMERGENCY',
     priority: 'MEDIUM';
-    ambulanceId: '';
+    ambulanceId: '',
     patientId: '';
-    pickupLocationId: '';
+    pickupLocationId: '',
     dropLocationId: '';
-    notes: '';
+    notes: '',
     medicalDetails: {}
   });
   const [medicalDetails, setMedicalDetails] = useState({
-    chiefComplaint: '';
+    chiefComplaint: '',
     vitalSigns: {
-      bloodPressure: '';
+      bloodPressure: '',
       heartRate: '';
-      respiratoryRate: '';
+      respiratoryRate: '',
       temperature: '';
-      oxygenSaturation: '';
+      oxygenSaturation: ''
     },
-    requiresOxygen: false;
+    requiresOxygen: false,
     requiresIV: false;
-    requiresMonitoring: false;
-    additionalNotes: '';
+    requiresMonitoring: false,
+    additionalNotes: ''
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -64,17 +64,17 @@ export default const _AmbulanceTripRequestForm = () {
         setAmbulances(data.data);
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to fetch ambulances";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to fetch ambulances";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -90,17 +90,17 @@ export default const _AmbulanceTripRequestForm = () {
         setLocations(data.data);
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to fetch locations";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to fetch locations";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -114,17 +114,17 @@ export default const _AmbulanceTripRequestForm = () {
         setPatients(data.data);
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to fetch patients";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to fetch patients";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -134,7 +134,7 @@ export default const _AmbulanceTripRequestForm = () {
     setFormData({
       ...formData,
       [name]: value;
-    });
+    })
   };
 
   const handleMedicalDetailsChange = (e: unknown) => {
@@ -162,36 +162,36 @@ export default const _AmbulanceTripRequestForm = () {
 
     if (!formData.ambulanceId) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Please select an ambulance";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
 
     if (!formData.pickupLocationId) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Please select a pickup location";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
 
     if (!formData.dropLocationId) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Please select a destination location";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
 
     if (!selectedTime) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Please select a time";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -211,34 +211,34 @@ export default const _AmbulanceTripRequestForm = () {
       };
 
       const response = await fetch('/api/support-services/ambulance/trips', {
-        method: 'POST';
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload);
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json();
 
       if (data.success) {
         toast({
-          title: "Success";
-          description: "Ambulance trip scheduled successfully";
+          title: "Success",
+          description: "Ambulance trip scheduled successfully"
         });
         router.push('/support-services/ambulance');
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to schedule ambulance trip";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to schedule ambulance trip";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setSubmitting(false);
@@ -248,9 +248,9 @@ export default const _AmbulanceTripRequestForm = () {
   const handleFindAvailableAmbulances = async () => {
     if (!selectedDate || !selectedTime || !formData.tripType || !formData.pickupLocationId) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Please select date, time, trip type, and pickup location",
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -271,29 +271,29 @@ export default const _AmbulanceTripRequestForm = () {
 
         if (data.data.length === 0) {
           toast({
-            title: "No Ambulances Available";
+            title: "No Ambulances Available",
             description: "No suitable ambulances are available for the selected time and trip type";
-            variant: "destructive";
+            variant: "destructive"
           });
         } else {
           toast({
-            title: "Success";
+            title: "Success",
             description: `Found ${data.data.length} available ambulance(s)`,
           });
         }
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to find available ambulances";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to find available ambulances";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);

@@ -64,9 +64,9 @@ export default const _RadiologyOrderList = () {
         `Failed to load radiology orders: ${message}. Please try again later.`;
       ),
       toast({
-        title: "Error Loading Orders";
+        title: "Error Loading Orders",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -75,18 +75,18 @@ export default const _RadiologyOrderList = () {
 
   // Correctly type the parameter
   const handleViewOrder = (orderId: string) => {
-    router.push(`/dashboard/radiology/orders/${orderId}`);
+    router.push(`/dashboard/radiology/orders/${orderId}`)
   };
 
   // Correctly type the parameter using the imported OrderPayload
   const handleCreateOrder = async (orderData: OrderPayload) => {
     try {
       const response = await fetch("/api/radiology/orders", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderData);
+        body: JSON.stringify(orderData)
       });
 
       if (!response.ok) {
@@ -104,8 +104,8 @@ export default const _RadiologyOrderList = () {
       }
 
       toast({
-        title: "Success";
-        description: "Radiology order created successfully.";
+        title: "Success",
+        description: "Radiology order created successfully."
       }),
       setShowCreateModal(false);
       fetchOrders(); // Refresh the list
@@ -114,9 +114,9 @@ export default const _RadiologyOrderList = () {
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       toast({
-        title: "Error Creating Order";
+        title: "Error Creating Order",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
       // Keep the modal open on error so the user can retry or correct input
     }
@@ -126,11 +126,11 @@ export default const _RadiologyOrderList = () {
   const getStatusBadge = (status: RadiologyOrder["status"]) => {
     // Define styles for specific statuses
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
-      pending: "bg-yellow-100 text-yellow-800 border-yellow-200";
+      pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
       scheduled: "bg-blue-100 text-blue-800 border-blue-200";
-      in_progress: "bg-purple-100 text-purple-800 border-purple-200";
+      in_progress: "bg-purple-100 text-purple-800 border-purple-200",
       completed: "bg-green-100 text-green-800 border-green-200";
-      cancelled: "bg-red-100 text-red-800 border-red-200";
+      cancelled: "bg-red-100 text-red-800 border-red-200"
     };
 
     // Format status text (capitalize first letter, replace underscores)
@@ -146,7 +146,7 @@ export default const _RadiologyOrderList = () {
       >
         {formattedStatus}
       </Badge>
-    );
+    )
   };
 
   return (

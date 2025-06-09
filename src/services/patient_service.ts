@@ -30,7 +30,7 @@ export class PatientService {
       // Encrypt PHI fields
       const encryptedPatientData: PatientInputData = {
         ...patientInputData,
-        name: this.encryptionService.encrypt(patientInputData.name);
+        name: this.encryptionService.encrypt(patientInputData.name),
         dateOfBirth: typeof patientInputData.dateOfBirth === 'string';
           ? this.encryptionService.encrypt(patientInputData.dateOfBirth);
           : this.encryptionService.encrypt(patientInputData.dateOfBirth.toISOString()),
@@ -86,8 +86,8 @@ export class PatientService {
       // Decrypt PHI fields
       const decryptedPatient: Patient = {
         ...patientFromRepo,
-        name: this.encryptionService.decrypt(patientFromRepo.name);
-        dateOfBirth: new Date(this.encryptionService.decrypt(patientFromRepo.dateOfBirth.toString()));
+        name: this.encryptionService.decrypt(patientFromRepo.name),
+        dateOfBirth: new Date(this.encryptionService.decrypt(patientFromRepo.dateOfBirth.toString()))
       };
 
       await this.auditLogService.logEvent(

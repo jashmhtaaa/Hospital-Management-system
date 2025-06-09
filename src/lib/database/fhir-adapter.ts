@@ -22,7 +22,7 @@ export interface FHIRSearchParams {
   _revinclude?: string[];
   [key: string]: unknown
 export interface FHIRSearchResult<T> {
-  resources: T[];
+  resources: T[],
   total: number;
   hasMore: boolean
 export class FHIRDatabaseAdapter {
@@ -43,8 +43,8 @@ export class FHIRDatabaseAdapter {
     resource.id = resourceId;
     resource.meta = {
       ...resource.meta,
-      lastUpdated: new Date().toISOString();
-      versionId: resource.meta?.versionId || '1';
+      lastUpdated: new Date().toISOString(),
+      versionId: resource.meta?.versionId || '1'
     };
 
     switch (resourceType) {
@@ -56,7 +56,7 @@ export class FHIRDatabaseAdapter {
         return this.storeEncounter(resource as FHIREncounter) as Promise<T>;
       case 'MedicationRequest':
         return this.storeMedicationRequest(resource as FHIRMedicationRequest) as Promise<T>;
-      default: return this.storeGenericResource(resource);
+      default: return this.storeGenericResource(resource)
     }
   }
 
@@ -74,7 +74,7 @@ export class FHIRDatabaseAdapter {
       case 'MedicationRequest':
         return this.retrieveMedicationRequest(id) as Promise<T | null>;
       default:
-        return this.retrieveGenericResource<T>(resourceType, id);
+        return this.retrieveGenericResource<T>(resourceType, id)
     }
   }
 
@@ -93,8 +93,8 @@ export class FHIRDatabaseAdapter {
     resource.id = id;
     resource.meta = {
       ...resource.meta,
-      lastUpdated: new Date().toISOString();
-      versionId: (currentVersion + 1).toString();
+      lastUpdated: new Date().toISOString(),
+      versionId: (currentVersion + 1).toString()
     };
 
     return this.storeResource(resource);
@@ -106,15 +106,15 @@ export class FHIRDatabaseAdapter {
   async deleteResource(resourceType: string, id: string): Promise<boolean> {
     switch (resourceType) {
       case 'Patient':
-        return this.deletePatient(id);
+        return this.deletePatient(id),
       case 'Appointment':
-        return this.deleteAppointment(id);
+        return this.deleteAppointment(id),
       case 'Encounter':
-        return this.deleteEncounter(id);
+        return this.deleteEncounter(id),
       case 'MedicationRequest':
-        return this.deleteMedicationRequest(id);
+        return this.deleteMedicationRequest(id),
       default:
-        return this.deleteGenericResource(resourceType, id);
+        return this.deleteGenericResource(resourceType, id)
     }
   }
 
@@ -122,7 +122,7 @@ export class FHIRDatabaseAdapter {
    * Search FHIR resources;
    */
   async searchResources<T extends FHIRBase>(
-    resourceType: string;
+    resourceType: string,
     searchParams: FHIRSearchParams;
   ): Promise<FHIRSearchResult<T>> {
     switch (resourceType) {
@@ -135,7 +135,7 @@ export class FHIRDatabaseAdapter {
       case 'MedicationRequest':
         return this.searchMedicationRequests(searchParams) as Promise<FHIRSearchResult<T>>;
       default:
-        return this.searchGenericResources<T>(resourceType, searchParams);
+        return this.searchGenericResources<T>(resourceType, searchParams)
     }
   }
 
@@ -160,21 +160,21 @@ export class FHIRDatabaseAdapter {
         mrn,
         firstName,
         lastName,
-        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date();
+        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
         gender: fhirPatient.gender || 'unknown';
-        phone: phone || '';
+        phone: phone || '',
         email: email || '';
-        updatedAt: new Date();
+        updatedAt: new Date()
       },
       create: {
         id: fhirPatient.id!;
         mrn,
         firstName,
         lastName,
-        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date();
+        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
         gender: fhirPatient.gender || 'unknown';
-        phone: phone || '';
-        email: email || '';
+        phone: phone || '',
+        email: email || ''
       }
     });
 
@@ -195,14 +195,14 @@ export class FHIRDatabaseAdapter {
 
     // Convert HMS patient to FHIR patient
     const fhirPatient = FHIRPatientUtils.fromHMSPatient({
-      id: patient.id;
+      id: patient.id,
       mrn: patient.mrn;
-      firstName: patient.firstName;
+      firstName: patient.firstName,
       lastName: patient.lastName;
-      dateOfBirth: patient.dateOfBirth.toISOString().split('T')[0];
+      dateOfBirth: patient.dateOfBirth.toISOString().split('T')[0],
       gender: patient.gender;
-      phone: patient.phone;
-      email: patient.email;
+      phone: patient.phone,
+      email: patient.email
     });
 
     // Get stored FHIR resource for additional data
@@ -212,7 +212,7 @@ export class FHIRDatabaseAdapter {
       return {
         ...storedFhir,
         ...fhirPatient,
-        meta: storedFhir.meta;
+        meta: storedFhir.meta
       };
     }
 
@@ -275,7 +275,7 @@ export class FHIRDatabaseAdapter {
     const [patients, total] = await Promise.all([
       this.prisma.patient.findMany({
         where,
-        skip: _offset;
+        skip: _offset,
         take: _count;
         orderBy: { lastName: 'asc' }
       }),
@@ -289,7 +289,7 @@ export class FHIRDatabaseAdapter {
     return {
       resources: fhirPatients.filter(Boolean) as FHIRPatient[];
       total,
-      hasMore: _offset + _count < total;
+      hasMore: _offset + _count < total
     };
   }
 
@@ -439,7 +439,7 @@ export class FHIRDatabaseAdapter {
   }
 
   private async searchGenericResources<T extends FHIRBase>(
-    resourceType: string;
+    resourceType: string,
     searchParams: FHIRSearchParams;
   ): Promise<FHIRSearchResult<T>> {
     const { _count = 20, _offset = 0 } = searchParams;
@@ -463,13 +463,13 @@ export class FHIRDatabaseAdapter {
       return {
         resources: resources.map(r => r.content) as T[];
         total,
-        hasMore: _offset + _count < total;
+        hasMore: _offset + _count < total
       };
     } catch (error) {
       return {
-        resources: [];
+        resources: [],
         total: 0;
-        hasMore: false;
+        hasMore: false
       };
     }
   }
@@ -480,7 +480,7 @@ export class FHIRDatabaseAdapter {
   private generateMRN(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
     const _random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 8).toUpperCase();
-    return `MRN/* SECURITY: Template literal eliminated */;
+    return `MRN/* SECURITY: Template literal eliminated */
   }
 
   /**

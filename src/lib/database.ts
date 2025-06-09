@@ -11,8 +11,8 @@
  * Database connection interface;
  */
 export interface DBConnection {
-  query: (sql: string, params?: unknown[]) => Promise<unknown>;
-  close: () => Promise<void>;
+  query: (sql: string, params?: unknown[]) => Promise<unknown>,
+  close: () => Promise<void>
 }
 
 /**
@@ -30,9 +30,9 @@ export const DB = (): DBConnection {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
         return {
-          results: [];
+          results: [],
           insertId: 0;
-          affectedRows: 0;
+          affectedRows: 0
         }
       } catch (error) {
 

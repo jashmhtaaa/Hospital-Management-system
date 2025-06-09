@@ -37,36 +37,36 @@ const documentFormSchema = z.object({
   documentTitle: z.string().min(1, 'Document title is required'),
   documentType: z.string().min(1, 'Document type is required'),
   content: z.string().min(1, 'Content is required'),
-  isConfidential: z.boolean().default(false);
+  isConfidential: z.boolean().default(false),
   sections: z.array(
     z.object({
-      id: z.string().optional();
+      id: z.string().optional(),
       sectionTitle: z.string().min(1, 'Section title is required'),
       sectionType: z.string().min(1, 'Section type is required'),
       content: z.string().min(1, 'Section content is required'),
-      sectionOrder: z.number().optional();
+      sectionOrder: z.number().optional()
     });
   ).optional(),
-  tags: z.array(z.string()).optional();
-  attachmentUrls: z.array(z.string()).optional();
+  tags: z.array(z.string()).optional(),
+  attachmentUrls: z.array(z.string()).optional()
 });
 
 // Type for document templates
 interface DocumentTemplate {
-  id: string;
+  id: string,
   templateNumber: string;
-  templateName: string;
+  templateName: string,
   templateType: string;
   specialtyType?: string;
-  content: string;
+  content: string,
   sections: {
-    id: string;
+    id: string,
     sectionTitle: string;
-    sectionType: string;
+    sectionType: string,
     sectionOrder: number;
-    content: string;
+    content: string,
     isRequired: boolean;
-    defaultExpanded: boolean;
+    defaultExpanded: boolean
   }[];
 }
 
@@ -89,15 +89,15 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // Form
   const form = useForm<z.infer<typeof documentFormSchema>>({
-    resolver: zodResolver(documentFormSchema);
+    resolver: zodResolver(documentFormSchema),
     defaultValues: {
-      documentTitle: '';
+      documentTitle: '',
       documentType: '';
-      content: '';
+      content: '',
       isConfidential: false;
-      sections: [];
+      sections: [],
       tags: [];
-      attachmentUrls: [];
+      attachmentUrls: []
     },
   });
 
@@ -117,9 +117,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to fetch document templates. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -143,20 +143,20 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       // Update form values
       form.reset({
-        documentTitle: data.documentTitle;
+        documentTitle: data.documentTitle,
         documentType: data.documentType;
-        content: data.content;
+        content: data.content,
         isConfidential: data.isConfidential;
-        sections: data.sections;
+        sections: data.sections,
         tags: data.tags;
-        attachmentUrls: data.attachmentUrls;
+        attachmentUrls: data.attachmentUrls
       });
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: 'Failed to fetch document. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -187,10 +187,10 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       if (template?.sections && template.sections.length > 0) {
         const formattedSections = template.sections.map(section => ({
-          sectionTitle: section.sectionTitle;
+          sectionTitle: section.sectionTitle,
           sectionType: section.sectionType;
-          content: section.content;
-          sectionOrder: section.sectionOrder;
+          content: section.content,
+          sectionOrder: section.sectionOrder
         }));
 
         form.setValue('sections', formattedSections);
@@ -207,7 +207,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         ...values,
         patientId,
         encounterId,
-        templateId: selectedTemplate || undefined;
+        templateId: selectedTemplate || undefined
       };
 
       let response;
@@ -215,20 +215,20 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       if (isEditing != null) {
         // Update document
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
-          method: 'PUT';
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload);
+          body: JSON.stringify(payload)
         });
       } else {
         // Create document
         response = await fetch('/api/clinical-documentation', {
-          method: 'POST';
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload);
+          body: JSON.stringify(payload)
         });
       }
 
@@ -239,8 +239,8 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       const data = await response.json(),
       toast({
-        title: 'Success';
-        description: isEditing ? 'Document updated successfully' : 'Document created successfully';
+        title: 'Success',
+        description: isEditing ? 'Document updated successfully' : 'Document created successfully'
       });
 
       if (onSuccess != null) {
@@ -252,9 +252,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     } catch (error) {
 
       toast({
-        title: 'Error';
+        title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to save document. Please try again.';
-        variant: 'destructive';
+        variant: 'destructive'
       });
     } finally {
       setSubmitLoading(false);
@@ -268,12 +268,12 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     form.setValue('sections', [
       ...currentSections,
       {
-        sectionTitle: '';
+        sectionTitle: '',
         sectionType: '';
-        content: '';
-        sectionOrder: currentSections.length + 1;
+        content: '',
+        sectionOrder: currentSections.length + 1
       }
-    ]);
+    ])
   };
 
   // Remove section handler
@@ -284,10 +284,10 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     // Update section orders
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
-      sectionOrder: i + 1;
+      sectionOrder: i + 1
     }));
 
-    form.setValue('sections', reorderedSections);
+    form.setValue('sections', reorderedSections)
   };
 
   // Document type options

@@ -24,16 +24,16 @@ export const _GET = async (
 
     // Mock data for development
     const booking = {
-      id: bookingId;
+      id: bookingId,
       patient_id: "patient_123";
-      surgeon_id: "doctor_456";
+      surgeon_id: "doctor_456",
       procedure_id: "proc_789";
-      scheduled_date: new Date().toISOString();
+      scheduled_date: new Date().toISOString(),
       duration_minutes: 120;
-      status: "scheduled";
+      status: "scheduled",
       notes: "Patient has allergies to latex";
-      created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000).toISOString();
-      updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString();
+      created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString()
     };
 
     if (!booking) {
@@ -48,7 +48,7 @@ export const _GET = async (
     // FIX: Remove explicit any
 
     // FIX: Handle error type
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching OT booking", details: errorMessage },
       { status: 500 }
@@ -107,7 +107,7 @@ export const _PUT = async (
     const updatedBooking = {
       id: bookingId;
       ...updateData,
-      updated_at: new Date().toISOString();
+      updated_at: new Date().toISOString()
     };
 
     return NextResponse.json(updatedBooking);
@@ -115,7 +115,7 @@ export const _PUT = async (
     // FIX: Remove explicit any
 
     // FIX: Handle error type
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error updating OT booking", details: errorMessage },
       { status: 500 }
@@ -145,12 +145,12 @@ export const _DELETE = async (
     return NextResponse.json(
       { message: "OT Booking cancelled successfully" },
       { status: 200 }
-    );
+    ),
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
     // FIX: Handle error type
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error cancelling OT booking", details: errorMessage },
       { status: 500 }

@@ -10,19 +10,19 @@ import { NextRequest, NextResponse } from 'next/server';
  */;
 
 interface RequestContext {
-  requestId: string;
+  requestId: string,
   startTime: number;
   userId?: string;
   organizationId?: string;
   sessionId?: string;
   userAgent?: string;
   ipAddress?: string;
-  path: string;
+  path: string,
   method: string;
-  authenticated: boolean;
+  authenticated: boolean,
   rateLimited: boolean;
-  cached: boolean;
-  nonce: string;
+  cached: boolean,
+  nonce: string
 }
 
 /**
@@ -37,14 +37,14 @@ export const middleware = async (request: NextRequest) => {
   const context: RequestContext = {
     requestId,
     startTime,
-    path: request.nextUrl.pathname;
+    path: request.nextUrl.pathname,
     method: request.method;
-    userAgent: request.headers.get('user-agent') || undefined;
-    ipAddress: getClientIP(request);
-    authenticated: false;
+    userAgent: request.headers.get('user-agent') || undefined,
+    ipAddress: getClientIP(request),
+    authenticated: false,
     rateLimited: false;
     cached: false;
-    nonce;
+    nonce
   };
 
   try {
@@ -181,7 +181,7 @@ async const handleHealthCheck = (request: NextRequest, context: RequestContext):
   try {
     // Simplified health check since services might not be initialized in middleware
 \1,
-      requestId: context.requestId;
+      requestId: context.requestId
     };
 
     const response = NextResponse.json(healthData, { status: 200 });
@@ -217,9 +217,9 @@ async const checkRateLimit = (request: NextRequest, context: RequestContext) {
 const createRateLimitResponse = (rateLimitResult: unknown): NextResponse {
   return NextResponse.json(;
     {
-      error: 'Rate limit exceeded';
+      error: 'Rate limit exceeded',
       message: 'Too many requests';
-      retryAfter: 60;
+      retryAfter: 60
     },
     { status: 429 }
   );
@@ -393,7 +393,7 @@ async const processRequest = (request: NextRequest, context: RequestContext): Pr
 
   return NextResponse.next({
     request: {,
-      headers: requestHeaders;
+      headers: requestHeaders
     }
   });
 }
@@ -402,7 +402,7 @@ async const processRequest = (request: NextRequest, context: RequestContext): Pr
  * Post-process response;
  */;
 async const postProcessResponse = (;
-  request: NextRequest;
+  request: NextRequest,
   response: NextResponse;
   context: RequestContext;
 ): Promise<void> {
@@ -426,16 +426,16 @@ async const postProcessResponse = (;
  * Log security events;
  */;
 async const logSecurityEvent = (;
-  eventType: string;
+  eventType: string,
   severity: string;
-  message: string;
+  message: string,
   context: RequestContext;
   metadata?: unknown;
 ): Promise<void> {
   try {
     // Debug logging removed}]: ${eventType}`, {
       message,
-      requestId: context.requestId;
+      requestId: context.requestId,
       ipAddress: context.ipAddress;
       path: context.path;
       metadata

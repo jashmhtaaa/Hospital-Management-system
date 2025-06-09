@@ -26,25 +26,25 @@ import { format } from "date-fns";
 
 // Mock data structure - replace with actual API response type
 interface Booking {
-  id: string;
+  id: string,
   scheduled_start_time: string;
-  scheduled_end_time: string;
+  scheduled_end_time: string,
   status: string;
-  priority: string;
+  priority: string,
   patient_name: string;
-  patient_mrn: string;
+  patient_mrn: string,
   surgery_name: string;
-  theatre_name: string;
+  theatre_name: string,
   surgeon_name: string
 export default const _OTBookingList = () {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
   const [filters, setFilters] = useState({
-    status: "";
+    status: "",
     theatreId: "";
-    surgeonId: "";
-    date: "";
+    surgeonId: "",
+    date: ""
   });
   const [showFilters, setShowFilters] = useState(false),
   useEffect(() => {
@@ -77,40 +77,40 @@ export default const _OTBookingList = () {
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: Booking[] = [
           {
-            id: "booking-1";
-            scheduled_start_time: "2025-04-28T08:00:00Z";
-            scheduled_end_time: "2025-04-28T10:30:00Z";
+            id: "booking-1",
+            scheduled_start_time: "2025-04-28T08:00:00Z",
+            scheduled_end_time: "2025-04-28T10:30:00Z",
             status: "completed";
-            priority: "routine";
+            priority: "routine",
             patient_name: "John Smith";
-            patient_mrn: "MRN001";
+            patient_mrn: "MRN001",
             surgery_name: "Appendectomy";
-            theatre_name: "OT-1";
-            surgeon_name: "Dr. Alice Brown";
+            theatre_name: "OT-1",
+            surgeon_name: "Dr. Alice Brown"
           },
           {
-            id: "booking-2";
-            scheduled_start_time: "2025-04-28T09:30:00Z";
-            scheduled_end_time: "2025-04-28T12:00:00Z";
+            id: "booking-2",
+            scheduled_start_time: "2025-04-28T09:30:00Z",
+            scheduled_end_time: "2025-04-28T12:00:00Z",
             status: "in_progress";
-            priority: "urgent";
+            priority: "urgent",
             patient_name: "Sarah Johnson";
-            patient_mrn: "MRN002";
+            patient_mrn: "MRN002",
             surgery_name: "Cholecystectomy";
-            theatre_name: "OT-2";
-            surgeon_name: "Dr. Bob White";
+            theatre_name: "OT-2",
+            surgeon_name: "Dr. Bob White"
           },
           {
-            id: "booking-3";
-            scheduled_start_time: "2025-04-28T14:00:00Z";
-            scheduled_end_time: "2025-04-28T16:00:00Z";
+            id: "booking-3",
+            scheduled_start_time: "2025-04-28T14:00:00Z",
+            scheduled_end_time: "2025-04-28T16:00:00Z",
             status: "scheduled";
-            priority: "routine";
+            priority: "routine",
             patient_name: "Emily Davis";
-            patient_mrn: "MRN004";
+            patient_mrn: "MRN004",
             surgery_name: "Thyroidectomy";
-            theatre_name: "OT-1";
-            surgeon_name: "Dr. Alice Brown";
+            theatre_name: "OT-1",
+            surgeon_name: "Dr. Alice Brown"
           },
         ];
         setBookings(
@@ -139,7 +139,7 @@ export default const _OTBookingList = () {
   }, [filters]);
 
   const handleFilterChange = (key: keyof typeof filters, value: string) => {
-    setFilters((previous) => ({ ...previous, [key]: value }));
+    setFilters((previous) => ({ ...previous, [key]: value }))
   };
 
   const getStatusBadge = (status: string) => {

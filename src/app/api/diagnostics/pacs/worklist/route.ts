@@ -121,14 +121,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id;
+          userId: session.user.id,
           action: 'read';
-          resource: 'modality_worklist';
+          resource: 'modality_worklist',
           details: { patientId, modality, status, scheduledDate, page, pageSize }
         });
 
         return {
-          worklist: result.results;
+          worklist: result.results,
           pagination: {
             page,
             pageSize,
@@ -144,8 +144,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch modality worklist';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to fetch modality worklist',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -178,7 +178,7 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured or modality worklist not enabled';
+        error: 'PACS not configured or modality worklist not enabled'
       }, { status: 400 });
     }
 
@@ -255,11 +255,11 @@ export const _POST_SYNC = async (request: NextRequest) => {
       const insertResult = await DB.query(insertQuery, insertParams);
 
       newEntries.push({
-        id: insertResult.insertId;
+        id: insertResult.insertId,
         accessionNumber: order.accession_number;
         patientName: `/* SECURITY: Template literal eliminated */
-        modality: order.modality;
-        procedureName: order.procedure_name;
+        modality: order.modality,
+        procedureName: order.procedure_name
       });
     }
 
@@ -293,10 +293,10 @@ export const _POST_SYNC = async (request: NextRequest) => {
       await DB.query(updateQuery, updateParams);
 
       updatedEntries.push({
-        id: entry.id;
+        id: entry.id,
         accessionNumber: entry.accession_number;
-        status: entry.order_status;
-        scheduledDate: entry.order_scheduled_date;
+        status: entry.order_status,
+        scheduledDate: entry.order_scheduled_date
       });
     }
 
@@ -306,20 +306,20 @@ export const _POST_SYNC = async (request: NextRequest) => {
       await DB.query('DELETE FROM modality_worklist WHERE id = ?', [entry.id]);
 
       removedEntries.push({
-        id: entry.id;
-        accessionNumber: entry.accession_number;
+        id: entry.id,
+        accessionNumber: entry.accession_number
       });
     }
 
     // Log synchronization
     await auditLog({
-      userId: session.user.id;
+      userId: session.user.id,
       action: 'sync';
-      resource: 'modality_worklist';
+      resource: 'modality_worklist',
       details: {
-        added: newEntries.length;
+        added: newEntries.length,
         updated: updatedEntries.length;
-        removed: removedEntries.length;
+        removed: removedEntries.length
       }
     });
 
@@ -327,21 +327,21 @@ export const _POST_SYNC = async (request: NextRequest) => {
     await CacheInvalidation.invalidatePattern('diagnostic:pacs:worklist:*');
 
     return NextResponse.json({
-      success: true;
+      success: true,
       added: newEntries.length;
-      updated: updatedEntries.length;
+      updated: updatedEntries.length,
       removed: removedEntries.length;
       details: {
-        added: newEntries;
+        added: newEntries,
         updated: updatedEntries;
-        removed: removedEntries;
+        removed: removedEntries
       }
     });
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to synchronize modality worklist';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to synchronize modality worklist',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -463,15 +463,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id;
+        userId: session.user.id,
         action: 'update';
-        resource: 'modality_worklist';
+        resource: 'modality_worklist',
         resourceId: id;
         details: {
           ...body,
           statusChanged,
-          _oldStatus: statusChanged ? _oldStatus : undefined;
-          newStatus: statusChanged ? status : undefined;
+          _oldStatus: statusChanged ? _oldStatus : undefined,
+          newStatus: statusChanged ? status : undefined
         }
       });
 
@@ -496,11 +496,11 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         );
 
         // Invalidate order cache
-        await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*');
+        await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*')
       }
 
       // Invalidate worklist cache
-      await CacheInvalidation.invalidatePattern('diagnostic: pacs: worklist:*');
+      await CacheInvalidation.invalidatePattern('diagnostic: pacs: worklist:*')
     }
 
     // Get the updated worklist entry
@@ -525,7 +525,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update worklist entry';
-      details: error instanceof Error ? error.message : 'Unknown error';
+      error: 'Failed to update worklist entry',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

@@ -9,14 +9,14 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
 
 // Basic Patient interface (could be expanded from a models/entities directory)
 export interface Patient {
-  id: string;
+  id: string,
   name: string
   dateOfBirth: Date; // Or string, depending on how it's handled
   // other relevant fields like contactInfo, medicalHistoryId, etc.
-  createdAt: Date;
+  createdAt: Date,
   updatedAt: Date
 export interface PatientInputData {
-  name: string;
+  name: string,
   dateOfBirth: Date | string
   // other fields...
 export interface IPatientRepository {
@@ -50,9 +50,9 @@ export class PatientRepository implements IPatientRepository {
       const dbPatient = result.rows[0];
       return {
         ...dbPatient,
-        dateOfBirth: new Date(dbPatient.dateOfBirth);
-        createdAt: new Date(dbPatient.createdAt);
-        updatedAt: new Date(dbPatient.updatedAt);
+        dateOfBirth: new Date(dbPatient.dateOfBirth),
+        createdAt: new Date(dbPatient.createdAt),
+        updatedAt: new Date(dbPatient.updatedAt)
       };
     } else {
       // This case means DB execution was successful (no error thrown from execute)
@@ -70,14 +70,14 @@ export class PatientRepository implements IPatientRepository {
         const dbPatient = result.rows[0];
         return {
           ...dbPatient,
-          dateOfBirth: new Date(dbPatient.dateOfBirth);
-          createdAt: new Date(dbPatient.createdAt);
-          updatedAt: new Date(dbPatient.updatedAt);
+          dateOfBirth: new Date(dbPatient.dateOfBirth),
+          createdAt: new Date(dbPatient.createdAt),
+          updatedAt: new Date(dbPatient.updatedAt)
         };
       }
       return null; // Not found
     } catch (error: unknown) {
       // Debug logging removed in repository:`, error)
-      throw new Error("Failed to find patient by ID.");
+      throw new Error("Failed to find patient by ID.")
     }
   }

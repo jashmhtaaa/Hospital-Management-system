@@ -79,13 +79,13 @@ describe('SecureEncryptionService', () => {
   describe('Object Encryption', () => {
     test('should encrypt/decrypt specific fields in object', async () => {
       const patientRecord = {
-        id: '12345';
+        id: '12345',
         name: 'John Doe';
-        ssn: '123-45-6789';
+        ssn: '123-45-6789',
         email: 'john.doe@example.com';
-        diagnosis: 'Hypertension';
+        diagnosis: 'Hypertension',
         notes: 'Patient shows improvement';
-        created_at: '2023-01-01T00:00:00Z';
+        created_at: '2023-01-01T00:00:00Z'
       };
 
       const sensitiveFields = ['ssn', 'email', 'diagnosis', 'notes'];
@@ -221,15 +221,15 @@ describe('Integration Tests', () => {
     const service = new SecureEncryptionService();
 
     const patientData = {
-      patient_id: 'P123456';
+      patient_id: 'P123456',
       first_name: 'John';
-      last_name: 'Doe';
+      last_name: 'Doe',
       ssn: '123-45-6789';
-      dob: '1980-01-01';
+      dob: '1980-01-01',
       phone: '+1-555-123-4567';
-      email: 'john.doe@email.com';
+      email: 'john.doe@email.com',
       address: '123 Main St, Anytown, ST 12345',
-      insurance_id: 'INS987654321';
+      insurance_id: 'INS987654321',
       emergency_contact: 'Jane Doe, +1-555-987-6543',
       medical_history: [
         'Hypertension diagnosed 2020',
@@ -241,9 +241,9 @@ describe('Integration Tests', () => {
         'Lisinopril 10mg once daily'
       ],
       lab_results: {
-        glucose: '95 mg/dL';
+        glucose: '95 mg/dL',
         a1c: '6.8%';
-        blood_pressure: '125/80 mmHg';
+        blood_pressure: '125/80 mmHg'
       }
     };
 

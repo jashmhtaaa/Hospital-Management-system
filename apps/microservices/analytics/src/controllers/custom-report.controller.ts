@@ -33,7 +33,7 @@ export class CustomReportController {
     @Query('createdBy') createdBy?: string,
   ) {
     return this.customReportService.getAllReportTemplates({
-      category: category as any;
+      category: category as any,
       type: type as any;
       status,
       createdBy,
@@ -132,8 +132,8 @@ export class CustomReportController {
     @Query('assignedTo') assignedTo?: string,
   ) {
     const dueDate = dueStart && dueEnd ? {
-      start: new Date(dueStart);
-      end: new Date(dueEnd);
+      start: new Date(dueStart),
+      end: new Date(dueEnd)
     } : undefined;
 
     return this.customReportService.getRegulatoryReports({
@@ -164,8 +164,8 @@ export class CustomReportController {
     return this.customReportService.naturalLanguageQuery(
       data.query,
       {
-        dataSource: data.dataSource;
-        context: data.context;
+        dataSource: data.dataSource,
+        context: data.context
       },
       req.user.id;
     );

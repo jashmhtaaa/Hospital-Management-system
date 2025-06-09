@@ -46,7 +46,7 @@ interface HealthConfig {
   readonly retryCount: number;
   readonly continuous: boolean;
   readonly verbose: boolean;
-  readonly environment: 'development' | 'staging' | 'production';
+  readonly environment: 'development' | 'staging' | 'production'
 }
 
 interface HealthThresholds {
@@ -89,9 +89,9 @@ class HealthCheckResult {
   public readonly alertLevel: AlertLevel;
 
   constructor(
-    component: string;
+    component: string,
     type: ComponentType;
-    status: HealthStatus;
+    status: HealthStatus,
     duration: number;
     details: HealthCheckDetails = {},
     alertLevel: AlertLevel = 'info'
@@ -108,43 +108,43 @@ class HealthCheckResult {
 }
 
 interface SystemMetrics {
-  cpuUsage: number;
+  cpuUsage: number,
   memoryUsage: number;
-  diskUsage: number;
+  diskUsage: number,
   uptime: number;
-  loadAverage: number[];
-  networkConnections: number;
+  loadAverage: number[],
+  networkConnections: number
 }
 
 interface AlertPayload {
-  timestamp: string;
+  timestamp: string,
   level: AlertLevel;
-  component: string;
+  component: string,
   status: HealthStatus;
-  message: string;
+  message: string,
   details: HealthCheckDetails;
-  environment: string;
-  checkId: string;
+  environment: string,
+  checkId: string
 }
 
 // Configuration with healthcare-specific defaults
 const CONFIG: HealthConfig = {
-  baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000';
+  baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000',
   databaseUrl: process.env.DATABASE_URL || '';
-  redisUrl: process.env.REDIS_URL || '';
+  redisUrl: process.env.REDIS_URL || '',
   alertWebhook: process.env.ALERT_WEBHOOK_URL || '';
   checkInterval: parseInt(process.env.HEALTH_CHECK_INTERVAL || '60000'), // 1 minute
   timeoutMs: parseInt(process.env.HEALTH_CHECK_TIMEOUT || '10000'), // 10 seconds
-  retryCount: parseInt(process.env.HEALTH_CHECK_RETRIES || '3');
-  continuous: process.argv.includes('--continuous');
-  verbose: process.argv.includes('--verbose') || process.env.NODE_ENV === 'development';
-  environment: (process.env.NODE_ENV as 'development' | 'staging' | 'production') || 'development';
+  retryCount: parseInt(process.env.HEALTH_CHECK_RETRIES || '3'),
+  continuous: process.argv.includes('--continuous'),
+  verbose: process.argv.includes('--verbose') || process.env.NODE_ENV === 'development',
+  environment: (process.env.NODE_ENV as 'development' | 'staging' | 'production') || 'development'
 } as const
 
 // Healthcare-specific monitoring class
 class HealthMonitor {
   private results: HealthCheckResult[] = []
-  private alertsSent = new Set<string>();
+  private alertsSent = new Set<string>(),
   private lastHealthyTimestamp = new Date();
   private consecutiveFailures = 0;
 
@@ -159,7 +159,7 @@ class HealthMonitor {
     hipaaComplianceScore: 95, // 95% - regulatory requirement
     emergencyResponseTime: 500, // 500ms - emergency department priority
     labIntegrationResponseTime: 3000, // 3 seconds - lab results
-    pharmacyIntegrationResponseTime: 2500 // 2.5 seconds - medication orders;
+    pharmacyIntegrationResponseTime: 2500 // 2.5 seconds - medication orders
   } as const
 
   // Critical endpoints for healthcare operations
@@ -257,7 +257,7 @@ class HealthMonitor {
   }
 
   private collectResults(
-    currentResults: HealthCheckResult[];
+    currentResults: HealthCheckResult[],
     promiseResult: PromiseSettledResult<HealthCheckResult | HealthCheckResult[]>;
     componentName: string
   ): void {
@@ -305,13 +305,13 @@ class HealthMonitor {
         status,
         duration,
         {
-          cpuUsage: metrics.cpuUsage;
+          cpuUsage: metrics.cpuUsage,
           memoryUsage: metrics.memoryUsage;
-          diskUsage: metrics.diskUsage;
+          diskUsage: metrics.diskUsage,
           additionalInfo: {
-            uptime: metrics.uptime;
+            uptime: metrics.uptime,
             loadAverage: metrics.loadAverage;
-            networkConnections: metrics.networkConnections;
+            networkConnections: metrics.networkConnections
           }
         },
         alertLevel
@@ -365,8 +365,8 @@ class HealthMonitor {
           status,
           duration,
           {
-            responseTime: duration;
-            statusCode: response.statusCode;
+            responseTime: duration,
+            statusCode: response.statusCode
           },
           alertLevel
         ));
@@ -408,8 +408,8 @@ class HealthMonitor {
         status,
         duration,
         {
-          responseTime: duration;
-          connectionCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50) + 10 // Simulated;
+          responseTime: duration,
+          connectionCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50) + 10 // Simulated
         },
         alertLevel
       )
@@ -489,8 +489,8 @@ class HealthMonitor {
           status,
           duration,
           {
-            responseTime: duration;
-            statusCode: response.statusCode;
+            responseTime: duration,
+            statusCode: response.statusCode
           },
           alertLevel
         ));
@@ -531,9 +531,9 @@ class HealthMonitor {
         duration,
         {
           additionalInfo: {
-            authService: securityChecks[0];
+            authService: securityChecks[0],
             encryptionService: securityChecks[1];
-            auditService: securityChecks[2];
+            auditService: securityChecks[2]
           }
         },
         allSecure ? 'info' : 'warning'
@@ -605,15 +605,15 @@ class HealthMonitor {
 
     return {
       cpuUsage,
-      memoryUsage: (usedMemory / totalMemory) * 100;
+      memoryUsage: (usedMemory / totalMemory) * 100,
       diskUsage: 45, // Simulated - in real implementation, check actual disk usage
-      uptime: os.uptime();
-      loadAverage: os.loadavg();
-      networkConnections: 0 // Simulated;
+      uptime: os.uptime(),
+      loadAverage: os.loadavg(),
+      networkConnections: 0 // Simulated
     }
   }
 
-  private async makeHttpRequest(url: string): Promise<{ statusCode: number; data: string }> {
+  private async makeHttpRequest(url: string): Promise<{ statusCode: number, data: string }> {
     return new Promise((resolve, reject) => {
       const urlObj = new URL(url);
       const module = urlObj.protocol === 'https:' ? https : http;
@@ -654,16 +654,16 @@ class HealthMonitor {
 
   private async generateHealthSummary(): Promise<void> {
     const summary = {
-      timestamp: new Date().toISOString();
-      overallStatus: this.calculateOverallStatus();
-      totalChecks: this.results.length;
+      timestamp: new Date().toISOString(),
+      overallStatus: this.calculateOverallStatus(),
+      totalChecks: this.results.length,
       healthyCount: this.results.filter(r => r.status === 'healthy').length;
-      degradedCount: this.results.filter(r => r.status === 'degraded').length;
+      degradedCount: this.results.filter(r => r.status === 'degraded').length,
       unhealthyCount: this.results.filter(r => r.status === 'unhealthy').length;
-      criticalCount: this.results.filter(r => r.status === 'critical').length;
-      averageResponseTime: this.calculateAverageResponseTime();
-      environment: CONFIG.environment;
-      results: this.results;
+      criticalCount: this.results.filter(r => r.status === 'critical').length,
+      averageResponseTime: this.calculateAverageResponseTime(),
+      environment: CONFIG.environment,
+      results: this.results
     };
 
     // Save summary to file
@@ -707,7 +707,7 @@ class HealthMonitor {
     const warningAlerts = results.filter(r => r.alertLevel === 'warning');
 
     for (const alert of criticalAlerts) {
-      await this.send/* SECURITY: Alert removed */;
+      await this.send/* SECURITY: Alert removed */
     }
 
     // Only send warning alerts if not too many recent alerts
@@ -728,14 +728,14 @@ class HealthMonitor {
     }
 
     const _payload: AlertPayload = {
-      timestamp: result.timestamp;
+      timestamp: result.timestamp,
       level: result.alertLevel;
-      component: result.component;
+      component: result.component,
       status: result.status;
       message: `Health check failed for ${result.component}`,
-      details: result.details;
+      details: result.details,
       environment: CONFIG.environment;
-      checkId: result.checkId;
+      checkId: result.checkId
     }
 
     try {
@@ -749,10 +749,10 @@ class HealthMonitor {
 
   private logHealthSummary(summary: unknown): void {
     const _statusIcon = {
-      healthy: '🟢';
+      healthy: '🟢',
       degraded: '🟡';
-      unhealthy: '🟠';
-      critical: '🔴';
+      unhealthy: '🟠',
+      critical: '🔴'
     }[summary.overallStatus];
 
     /* SECURITY: Console statement removed */);
@@ -774,8 +774,8 @@ class HealthMonitor {
       /* SECURITY: Console statement removed */this.results
         .filter(r => r.status === 'critical')
         .forEach(r => {
-          /* SECURITY: Console statement removed */;
-        });
+          /* SECURITY: Console statement removed */
+        }),
     }
 
     // Show degraded services
@@ -783,8 +783,8 @@ class HealthMonitor {
       /* SECURITY: Console statement removed */this.results
         .filter(r => r.status === 'degraded')
         .forEach(r => {
-          /* SECURITY: Console statement removed */;
-        });
+          /* SECURITY: Console statement removed */
+        }),
     }
   }
 
@@ -792,7 +792,7 @@ class HealthMonitor {
     if (CONFIG.verbose || level !== 'info') {
       const timestamp = new Date().toISOString();
       const _icon = level === 'error' ? '🚨' : level === 'warning' ? '⚠️' : 'ℹ️';
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -833,6 +833,6 @@ async function main(): Promise<void> {
 // Execute if run directly
 if (require.main === module) {
   main().catch((error) => {
-    /* SECURITY: Console statement removed */process.exit(1);
+    /* SECURITY: Console statement removed */process.exit(1)
   });
 export { HealthMonitor, type HealthCheckResult, type HealthConfig };

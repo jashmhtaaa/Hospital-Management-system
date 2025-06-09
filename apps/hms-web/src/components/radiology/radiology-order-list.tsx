@@ -7,19 +7,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 }
 interface RadiologyOrder {
-  id: string;
+  id: string,
   patientName: string;
-  patientId: string;
+  patientId: string,
   orderDate: string;
-  studyType: string;
+  studyType: string,
   priority: 'routine' | 'urgent' | 'stat';
-  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported';
-  requestedBy: string;
+  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
+  requestedBy: string
 }
 
 interface RadiologyOrderListProps {
-  orders: RadiologyOrder[];
-  onViewOrder: (orderId: string) => void;
+  orders: RadiologyOrder[],
+  onViewOrder: (orderId: string) => void
 }
 
 /**
@@ -31,7 +31,7 @@ export const _RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListP
       case 'routine': return <Badge variant="secondary">Routine</Badge>;
       case 'urgent': return <Badge variant="warning">Urgent</Badge>;
       case 'stat': return <Badge variant="danger">STAT</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 
@@ -42,7 +42,7 @@ export const _RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListP
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'reported': return <Badge variant="success">Reported</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

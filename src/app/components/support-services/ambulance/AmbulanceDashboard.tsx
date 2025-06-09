@@ -24,10 +24,10 @@ export default const _AmbulanceDashboard = () {
   const [selectedAmbulance, setSelectedAmbulance] = useState<any | null>(null);
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null);
   const [filters, setFilters] = useState({
-    status: '';
+    status: '',
     vehicleType: '';
-    tripType: '';
-    priority: '';
+    tripType: '',
+    priority: ''
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -45,23 +45,23 @@ export default const _AmbulanceDashboard = () {
       const _vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : '';
 
       const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */
-      const data = await response.json();
+      const data = await response.json(),
 
       if (data.success) {
         setAmbulances(data.data);
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to fetch ambulances";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to fetch ambulances";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -84,23 +84,23 @@ export default const _AmbulanceDashboard = () {
       const _priorityFilter = filters.priority ? `&priority=${filters.priority}` : '';
 
       const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */
-      const data = await response.json();
+      const data = await response.json(),
 
       if (data.success) {
         setTrips(data.data);
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to fetch trips";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to fetch trips";
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -110,7 +110,7 @@ export default const _AmbulanceDashboard = () {
   const handleUpdateTripStatus = async (tripId, newStatus) => {
     try {
       const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {
-        method: 'PUT';
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -121,24 +121,24 @@ export default const _AmbulanceDashboard = () {
 
       if (data.success) {
         toast({
-          title: "Success";
+          title: "Success",
           description: `Trip status updated to ${newStatus}`,
         }),
         fetchTrips();
         fetchAmbulances();
       } else {
         toast({
-          title: "Error";
+          title: "Error",
           description: data.message || "Failed to update trip status";
-          variant: "destructive";
+          variant: "destructive"
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error";
+        title: "Error",
         description: "Failed to update trip status";
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -167,7 +167,7 @@ export default const _AmbulanceDashboard = () {
         return 'bg-green-500';
       case 'CANCELLED':
         return 'bg-red-500';
-      default: return 'bg-gray-500';
+      default: return 'bg-gray-500'
     }
   };
 
@@ -179,7 +179,7 @@ export default const _AmbulanceDashboard = () {
         return 'bg-yellow-500';
       case 'LOW':
         return 'bg-green-500';
-      default: return 'bg-gray-500';
+      default: return 'bg-gray-500'
     }
   };
 
@@ -272,7 +272,7 @@ export default const _AmbulanceDashboard = () {
           </div>
         </CardContent>
       </Card>
-    );
+    )
   };
 
   const renderTripDetails = () => {
@@ -390,7 +390,7 @@ export default const _AmbulanceDashboard = () {
           )}
         </CardContent>
       </Card>
-    );
+    )
   };
 
   return (

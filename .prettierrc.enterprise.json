@@ -19,7 +19,6 @@
   "embeddedLanguageFormatting": "auto",
   "singleAttributePerLine": true,
   "experimentalTernaries": false,
-  
   "overrides": [
     {
       "files": "*.json",

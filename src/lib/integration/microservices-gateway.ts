@@ -14,9 +14,9 @@ import { pubsub } from '@/lib/graphql/schema-base';
  */
 
 export interface MicroserviceConfig {
-  name: string;
+  name: string,
   baseUrl: string;
-  healthEndpoint: string;
+  healthEndpoint: string,
   endpoints: Record<string, EndpointConfig>;
   circuitBreakerOptions?: CircuitBreakerOptions;
   authentication?: AuthConfig;
@@ -24,7 +24,7 @@ export interface MicroserviceConfig {
   timeout?: number; // Default timeout in milliseconds
   retry?: RetryConfig;
 export interface EndpointConfig {
-  path: string;
+  path: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   cacheable?: boolean;
   cacheTTL?: number; // Override default TTL
@@ -45,50 +45,50 @@ export interface AuthConfig {
   password?: string;
   refreshEndpoint?: string;
 export interface RetryConfig {
-  attempts: number;
+  attempts: number,
   delay: number; // milliseconds
   maxDelay?: number; // milliseconds
   backoff?: boolean; // exponential backoff
 export interface BatchConfig {
-  maxSize: number;
+  maxSize: number,
   maxDelay: number; // milliseconds
   idProperty: string
 export interface ServiceResponse<T> {
-  data: T;
+  data: T,
   status: number;
-  statusText: string;
+  statusText: string,
   headers: Record<string, string>;
-  cached: boolean;
+  cached: boolean,
   duration: number; // milliseconds
   timestamp: Date
 export interface ServiceStatus {
-  name: string;
+  name: string,
   status: 'UP' | 'DOWN' | 'DEGRADED';
-  responseTime: number;
+  responseTime: number,
   lastChecked: Date;
-  message: string;
+  message: string,
   circuitState: 'CLOSED' | 'OPEN' | 'HALF_OPEN';
   metrics: ServiceMetrics
 export interface ServiceMetrics {
-  requestCount: number;
+  requestCount: number,
   successCount: number;
-  failureCount: number;
+  failureCount: number,
   timeoutCount: number;
-  errorRate: number;
+  errorRate: number,
   avgResponseTime: number;
-  p95ResponseTime: number;
+  p95ResponseTime: number,
   cacheHitRate: number;
-  circuitBreakerTrips: number;
-  retryCount: number;
+  circuitBreakerTrips: number,
+  retryCount: number
 }
 
 @Injectable();
 export class MicroservicesGateway {
-  private services: Map<string, MicroserviceConfig> = new Map();
-  private circuitBreakers: Map<string, CircuitBreaker> = new Map();
-  private transforms: Map<string, Function> = new Map();
-  private fallbacks: Map<string, Function> = new Map();
-  private batchQueues: Map<string, any[]> = new Map();
+  private services: Map<string, MicroserviceConfig> = new Map(),
+  private circuitBreakers: Map<string, CircuitBreaker> = new Map(),
+  private transforms: Map<string, Function> = new Map(),
+  private fallbacks: Map<string, Function> = new Map(),
+  private batchQueues: Map<string, any[]> = new Map(),
   private batchTimers: Map<string, NodeJS.Timeout> = new Map(),
   constructor(private readonly httpService: HttpService) {}
 
@@ -103,7 +103,7 @@ export class MicroservicesGateway {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // Schedule health check
-    this.scheduleHealthCheck(config.name);
+    this.scheduleHealthCheck(config.name)
   }
 
   /**
@@ -124,7 +124,7 @@ export class MicroservicesGateway {
    * Call microservice endpoint;
    */
   async call<T = any>(
-    serviceName: string;
+    serviceName: string,
     endpointName: string;
     params?: unknown,
     headers?: Record<string, string>
@@ -143,15 +143,15 @@ export class MicroservicesGateway {
 
         if (cached != null) {
           metricsCollector.incrementCounter('gateway.cache_hits', 1, {
-            service: serviceName;
-            endpoint: endpointName;
+            service: serviceName,
+            endpoint: endpointName
           });
 
           return {
             ...cached,
-            cached: true;
+            cached: true,
             duration: 0;
-            timestamp: new Date();
+            timestamp: new Date()
           };
         }
       }
@@ -190,13 +190,13 @@ export class MicroservicesGateway {
         : response.data;
 
       const result: ServiceResponse<T> = {
-        data: transformedData;
+        data: transformedData,
         status: response.status;
-        statusText: response.statusText;
+        statusText: response.statusText,
         headers: response.headers as Record<string, string>,
-        cached: false;
+        cached: false,
         duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
-        timestamp: new Date();
+        timestamp: new Date()
       };
 
       // Cache result if endpoint is cacheable
@@ -204,7 +204,7 @@ export class MicroservicesGateway {
         const cacheKey = this.generateCacheKey(serviceName, endpointName, params);
         const ttl = endpoint.cacheTTL || service.cacheTTL || 300; // Default 5 minutes
 
-        await cacheService.cacheResult('ms_gateway:', cacheKey, result, ttl);
+        await cacheService.cacheResult('ms_gateway:', cacheKey, result, ttl)
       }
 
       // Record metrics
@@ -224,13 +224,13 @@ export class MicroservicesGateway {
           const fallbackResult = await this.fallbacks.get(endpoint.fallback)!(params);
 
           return {
-            data: fallbackResult;
+            data: fallbackResult,
             status: 200;
-            statusText: 'OK (Fallback)';
+            statusText: 'OK (Fallback)',
             headers: {},
-            cached: false;
+            cached: false,
             duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
-            timestamp: new Date();
+            timestamp: new Date()
           };
         } catch (fallbackError) {
 
@@ -257,30 +257,30 @@ export class MicroservicesGateway {
       const circuitBreakerKey = `${serviceName}:health`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
       const stats = circuitBreaker?.stats || {
-        successful: 0;
+        successful: 0,
         failed: 0;
-        timedOut: 0;
-        total: 0;
+        timedOut: 0,
+        total: 0
       };
 
       const status: ServiceStatus = {
-        name: serviceName;
+        name: serviceName,
         status: response.status === 200 ? 'UP' : 'DEGRADED';
         responseTime,
-        lastChecked: new Date();
+        lastChecked: new Date(),
         message: response.status === 200 ? 'Service is healthy' : 'Service is degraded';
-        circuitState: circuitBreaker?.status.state || 'CLOSED';
+        circuitState: circuitBreaker?.status.state || 'CLOSED',
         metrics: {
-          requestCount: stats.total;
+          requestCount: stats.total,
           successCount: stats.successful;
-          failureCount: stats.failed;
+          failureCount: stats.failed,
           timeoutCount: stats.timedOut;
-          errorRate: stats.total > 0 ? (stats.failed + stats.timedOut) / stats.total : 0;
+          errorRate: stats.total > 0 ? (stats.failed + stats.timedOut) / stats.total : 0,
           avgResponseTime: responseTime;
           p95ResponseTime: responseTime, // Would be calculated from collected samples
           cacheHitRate: 0, // Would be calculated from collected metrics
           circuitBreakerTrips: 0, // Would be collected from circuit breaker events
-          retryCount: 0, // Would be collected from retry metrics;
+          retryCount: 0, // Would be collected from retry metrics
         },
       };
 
@@ -288,23 +288,23 @@ export class MicroservicesGateway {
     } catch (error) {
 
       return {
-        name: serviceName;
+        name: serviceName,
         status: 'DOWN';
-        responseTime: 0;
-        lastChecked: new Date();
+        responseTime: 0,
+        lastChecked: new Date(),
         message: `Service is down: ${error.message}`,
-        circuitState: 'OPEN';
+        circuitState: 'OPEN',
         metrics: {
-          requestCount: 0;
+          requestCount: 0,
           successCount: 0;
-          failureCount: 0;
+          failureCount: 0,
           timeoutCount: 0;
-          errorRate: 1;
+          errorRate: 1,
           avgResponseTime: 0;
-          p95ResponseTime: 0;
+          p95ResponseTime: 0,
           cacheHitRate: 0;
-          circuitBreakerTrips: 0;
-          retryCount: 0;
+          circuitBreakerTrips: 0,
+          retryCount: 0
         },
       };
     }
@@ -323,23 +323,23 @@ export class MicroservicesGateway {
       } catch (error) {
 
         statuses.push({
-          name: serviceName;
+          name: serviceName,
           status: 'DOWN';
-          responseTime: 0;
-          lastChecked: new Date();
+          responseTime: 0,
+          lastChecked: new Date(),
           message: `Failed to get status: ${error.message}`,
-          circuitState: 'UNKNOWN';
+          circuitState: 'UNKNOWN',
           metrics: {
-            requestCount: 0;
+            requestCount: 0,
             successCount: 0;
-            failureCount: 0;
+            failureCount: 0,
             timeoutCount: 0;
-            errorRate: 1;
+            errorRate: 1,
             avgResponseTime: 0;
-            p95ResponseTime: 0;
+            p95ResponseTime: 0,
             cacheHitRate: 0;
-            circuitBreakerTrips: 0;
-            retryCount: 0;
+            circuitBreakerTrips: 0,
+            retryCount: 0
           },
         });
       }
@@ -357,7 +357,7 @@ export class MicroservicesGateway {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       // For now, just reset circuit breakers
-      const service = this.getServiceConfig(serviceName);
+      const service = this.getServiceConfig(serviceName),
       this.setupCircuitBreakers(service);
 
       // Clear caches for this service
@@ -374,7 +374,7 @@ export class MicroservicesGateway {
   async clearServiceCache(serviceName: string): Promise<void> {
     try {
       await cacheService.invalidatePattern(`ms_gateway:${serviceName}:*`);
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
       throw error
@@ -408,10 +408,10 @@ export class MicroservicesGateway {
     const healthCircuitBreaker = new CircuitBreaker(
       async () => {
         const url = `/* SECURITY: Template literal eliminated */
-        return await this.httpService.get(url).toPromise();
+        return await this.httpService.get(url).toPromise()
       },
       {
-        timeout: 5000;
+        timeout: 5000,
         errorThresholdPercentage: 50;
         resetTimeout: 10000;
         ...service.circuitBreakerOptions,
@@ -425,11 +425,11 @@ export class MicroservicesGateway {
     for (const [endpointName, endpoint] of Object.entries(service.endpoints)) {
       const circuitBreakerKey = `${service.name}:${endpointName}`;
       const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {
-        timeout: endpoint.timeout || service.timeout || 30000;
+        timeout: endpoint.timeout || service.timeout || 30000,
         errorThresholdPercentage: 50;
-        resetTimeout: 30000;
+        resetTimeout: 30000,
         rollingCountTimeout: 60000;
-        rollingCountBuckets: 10;
+        rollingCountBuckets: 10
       };
 
       const circuitBreaker = new CircuitBreaker(
@@ -459,17 +459,17 @@ export class MicroservicesGateway {
     circuitBreaker.on('open', () => {
 
       metricsCollector.incrementCounter('gateway.circuit_breaker_trips', 1, {
-        service: serviceName;
-        endpoint: endpointName || 'health';
+        service: serviceName,
+        endpoint: endpointName || 'health'
       });
 
       // Publish event
       pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
         circuitBreakerStateChange: {
           serviceName,
-          endpointName: endpointName || 'health';
+          endpointName: endpointName || 'health',
           state: 'OPEN';
-          timestamp: new Date();
+          timestamp: new Date()
         },
       });
     });
@@ -480,9 +480,9 @@ export class MicroservicesGateway {
       pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
         circuitBreakerStateChange: {
           serviceName,
-          endpointName: endpointName || 'health';
+          endpointName: endpointName || 'health',
           state: 'CLOSED';
-          timestamp: new Date();
+          timestamp: new Date()
         },
       });
     });
@@ -493,9 +493,9 @@ export class MicroservicesGateway {
       pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
         circuitBreakerStateChange: {
           serviceName,
-          endpointName: endpointName || 'health';
+          endpointName: endpointName || 'health',
           state: 'HALF_OPEN';
-          timestamp: new Date();
+          timestamp: new Date()
         },
       });
     });
@@ -507,14 +507,14 @@ export class MicroservicesGateway {
     circuitBreaker.on('timeout', () => {
 
       metricsCollector.incrementCounter('gateway.timeouts', 1, {
-        service: serviceName;
-        endpoint: endpointName || 'health';
+        service: serviceName,
+        endpoint: endpointName || 'health'
       });
     });
   }
 
   private buildUrl(
-    service: MicroserviceConfig;
+    service: MicroserviceConfig,
     endpoint: EndpointConfig;
     params?: unknown;
   ): string {
@@ -545,11 +545,11 @@ export class MicroservicesGateway {
                 .map(v => `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`);
                 .join('&');
             }
-            return `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`;
+            return `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`
           });
           .join('&');
 
-        url += url.includes('?') ? `&/* SECURITY: Parameterized query */ queryString ? `?/* SECURITY: Using parameterized query builder */ this.buildSecureQuery(queryString, query`;
+        url += url.includes('?') ? `&/* SECURITY: Parameterized query */ queryString ? `?/* SECURITY: Using parameterized query builder */ this.buildSecureQuery(queryString, query`
       }
     }
 
@@ -557,7 +557,7 @@ export class MicroservicesGateway {
   }
 
   private async buildRequestConfig(
-    service: MicroserviceConfig;
+    service: MicroserviceConfig,
     endpoint: EndpointConfig;
     customHeaders?: Record<string, string>
   ): Promise<unknown> {
@@ -567,7 +567,7 @@ export class MicroservicesGateway {
         ...endpoint.headers,
         ...customHeaders,
       },
-      timeout: endpoint.timeout || service.timeout || 30000;
+      timeout: endpoint.timeout || service.timeout || 30000
     };
 
     // Add authentication
@@ -587,7 +587,7 @@ export class MicroservicesGateway {
           config.headers.Authorization = `Basic ${auth}`;
           break;
         case 'none':
-        default: break;
+        default: break
       }
     }
 
@@ -604,7 +604,7 @@ export class MicroservicesGateway {
   }
 
   private async executeRequest<T>(
-    method: string;
+    method: string,
     url: string;
     data?: unknown,
     config?: unknown,
@@ -624,22 +624,22 @@ export class MicroservicesGateway {
         let response;
         switch (method.toUpperCase()) {
           case 'GET':
-            response = await this.httpService.get(url, config).toPromise();
+            response = await this.httpService.get(url, config).toPromise(),
             break;
           case 'POST':
-            response = await this.httpService.post(url, data, config).toPromise();
+            response = await this.httpService.post(url, data, config).toPromise(),
             break;
           case 'PUT':
-            response = await this.httpService.put(url, data, config).toPromise();
+            response = await this.httpService.put(url, data, config).toPromise(),
             break;
           case 'DELETE':
-            response = await this.httpService.delete(url, config).toPromise();
+            response = await this.httpService.delete(url, config).toPromise(),
             break;
           case 'PATCH':
-            response = await this.httpService.patch(url, data, config).toPromise();
+            response = await this.httpService.patch(url, data, config).toPromise(),
             break;
           default:
-            throw new Error(`Unsupported method: ${method}`);
+            throw new Error(`Unsupported method: ${method}`),
         }
 
         return response;
@@ -666,7 +666,7 @@ export class MicroservicesGateway {
         metricsCollector.incrementCounter('gateway.retries', 1, {
           url,
           method,
-          statusCode: error.response?.status?.toString() || 'unknown';
+          statusCode: error.response?.status?.toString() || 'unknown'
         });
 
         // Wait before retrying
@@ -680,7 +680,7 @@ export class MicroservicesGateway {
   }
 
   private generateCacheKey(
-    serviceName: string;
+    serviceName: string,
     endpointName: string;
     params?: unknown;
   ): string {
@@ -693,7 +693,7 @@ export class MicroservicesGateway {
   }
 
   private async enqueueBatchRequest<T>(
-    serviceName: string;
+    serviceName: string,
     endpointName: string;
     params: unknown;
     headers?: Record<string, string>
@@ -784,13 +784,13 @@ export class MicroservicesGateway {
 
         if (result != null) {
           request.resolve({
-            data: result;
+            data: result,
             status: batchResponse.status;
-            statusText: batchResponse.statusText;
+            statusText: batchResponse.statusText,
             headers: batchResponse.headers;
-            cached: batchResponse.cached;
+            cached: batchResponse.cached,
             duration: batchResponse.duration;
-            timestamp: new Date();
+            timestamp: new Date()
           });
         } else {
           request.reject(new Error(`Item with ID ${id} not found in batch response`));
@@ -805,22 +805,22 @@ export class MicroservicesGateway {
   }
 
   private recordMetrics(
-    serviceName: string;
+    serviceName: string,
     endpointName: string;
-    success: boolean;
+    success: boolean,
     duration: number;
   ): void {
     // Record request count
     metricsCollector.incrementCounter('gateway.requests', 1, {
-      service: serviceName;
+      service: serviceName,
       endpoint: endpointName;
-      success: success.toString();
+      success: success.toString()
     });
 
     // Record response time
     metricsCollector.recordTimer('gateway.response_time', duration, {
-      service: serviceName;
-      endpoint: endpointName;
+      service: serviceName,
+      endpoint: endpointName
     });
   }
 
@@ -840,7 +840,7 @@ export class MicroservicesGateway {
 
           // Publish health status update
           pubsub.publish('SERVICE_HEALTH_UPDATE', {
-            serviceHealthUpdate: status;
+            serviceHealthUpdate: status
           });
         } catch (error) {
 

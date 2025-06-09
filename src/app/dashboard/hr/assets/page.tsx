@@ -64,13 +64,13 @@ export default const _AssetManagement = () {
   const [departments, setDepartments] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
-    from: null;
-    to: null;
+    from: null,
+    to: null
   });
   const [pagination, setPagination] = useState({
-    skip: 0;
+    skip: 0,
     take: 10;
-    total: 0;
+    total: 0
   });
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
@@ -81,8 +81,8 @@ export default const _AssetManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString();
-          take: pagination.take.toString();
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString()
         });
 
         if (search != null) queryParams.append('search', search);
@@ -109,14 +109,14 @@ export default const _AssetManagement = () {
         setAssets(data.assets || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0
         }));
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -175,7 +175,7 @@ export default const _AssetManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -184,7 +184,7 @@ export default const _AssetManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -195,8 +195,8 @@ export default const _AssetManagement = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Handle tab change
@@ -205,7 +205,7 @@ export default const _AssetManagement = () {
     // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0
     }));
 
     // Set appropriate filters based on tab
@@ -218,7 +218,7 @@ export default const _AssetManagement = () {
 
   // Create new asset
   const handleCreateAsset = () => {
-    router.push('/dashboard/hr/assets/new');
+    router.push('/dashboard/hr/assets/new')
   };
 
   // Export asset data
@@ -226,22 +226,22 @@ export default const _AssetManagement = () {
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started";
-        description: "Your asset report is being generated and will download shortly.";
+        title: "Export Started",
+        description: "Your asset report is being generated and will download shortly."
       });
 
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete";
-          description: "Asset report has been downloaded.";
+          title: "Export Complete",
+          description: "Asset report has been downloaded."
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed";
+        title: "Export Failed",
         description: error.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
@@ -259,7 +259,7 @@ export default const _AssetManagement = () {
         return 'destructive';
       case 'LOST':
         return 'outline';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
@@ -276,7 +276,7 @@ export default const _AssetManagement = () {
         return <Truck className="h-4 w-4" />
       case 'BUILDING':
         return <Building className="h-4 w-4" />
-      default: return <Package className="h-4 w-4" />;
+      default: return <Package className="h-4 w-4" />
     }
   };
 
@@ -284,9 +284,9 @@ export default const _AssetManagement = () {
   const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
-      style: 'currency';
-      currency: 'USD';
-    }).format(amount);
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount)
   };
 
   return (

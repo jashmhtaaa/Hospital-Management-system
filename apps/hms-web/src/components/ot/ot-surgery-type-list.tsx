@@ -6,17 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 }
 interface SurgeryType {
-  id: string;
+  id: string,
   name: string;
-  category: string;
+  category: string,
   averageDuration: string;
-  specialEquipment: string[];
+  specialEquipment: string[],
   specialistRequired: string;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: 'low' | 'medium' | 'high'
 }
 
 interface OTSurgeryTypeListProps {
-  surgeryTypes: SurgeryType[];
+  surgeryTypes: SurgeryType[]
 }
 
 /**
@@ -28,7 +28,7 @@ export const _OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) => 
       case 'low': return <Badge variant="secondary">Low Risk</Badge>;
       case 'medium': return <Badge variant="warning">Medium Risk</Badge>;
       case 'high': return <Badge variant="danger">High Risk</Badge>;
-      default: return <Badge>Unknown</Badge>;
+      default: return <Badge>Unknown</Badge>
     }
   };
 

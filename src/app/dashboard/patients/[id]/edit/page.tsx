@@ -20,27 +20,27 @@ export const dynamic = 'force-dynamic';
 
 // Re-use or import the schema if defined elsewhere
 const PatientUpdateSchema = z.object({
-    first_name: z.string().min(1).optional();
-    last_name: z.string().min(1).optional();
+    first_name: z.string().min(1).optional(),
+    last_name: z.string().min(1).optional(),
     date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]).optional(),
-    phone_number: z.string().min(1).optional();
+    phone_number: z.string().min(1).optional(),
     email: z.string().email().optional().or(z.literal("").optional());
-    address_line1: z.string().optional();
-    address_line2: z.string().optional();
-    city: z.string().optional();
-    state: z.string().optional();
-    postal_code: z.string().optional();
-    country: z.string().optional();
-    emergency_contact_name: z.string().optional();
-    emergency_contact_relation: z.string().optional();
-    emergency_contact_phone: z.string().optional();
-    blood_group: z.string().optional();
-    allergies: z.string().optional();
-    past_medical_history: z.string().optional();
-    current_medications: z.string().optional();
-    insurance_provider: z.string().optional();
-    insurance_policy_number: z.string().optional();
+    address_line1: z.string().optional(),
+    address_line2: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    postal_code: z.string().optional(),
+    country: z.string().optional(),
+    emergency_contact_name: z.string().optional(),
+    emergency_contact_relation: z.string().optional(),
+    emergency_contact_phone: z.string().optional(),
+    blood_group: z.string().optional(),
+    allergies: z.string().optional(),
+    past_medical_history: z.string().optional(),
+    current_medications: z.string().optional(),
+    insurance_provider: z.string().optional(),
+    insurance_policy_number: z.string().optional()
 }).partial().refine(obj => Object.keys(obj).length > 0, { message: "At least one field must be provided for update" });
 
 type FormData = Partial<Patient>; // Use Partial<Patient> for form state
@@ -69,16 +69,16 @@ export default const _EditPatientPage = () {
         // Format date for input type="date"
         const formattedData = {
             ...data,
-            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "";
+            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : ""
         }
         setFormData(formattedData);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
         toast({
-          title: "Error Fetching Patient";
+          title: "Error Fetching Patient",
           description: message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -93,11 +93,11 @@ export default const _EditPatientPage = () {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }))
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }))
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -116,9 +116,9 @@ export default const _EditPatientPage = () {
       setErrors(validation.error.errors),
       setIsSaving(false);
       toast({
-        title: "Validation Error";
+        title: "Validation Error",
         description: "Please check the form for errors.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -143,11 +143,11 @@ export default const _EditPatientPage = () {
 
     try {
       const response = await fetch(`/api/patients/${patientId}`, {
-        method: "PUT";
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend);
+        body: JSON.stringify(dataToSend)
       });
 
       const result: { error?: string } = await response.json();
@@ -157,8 +157,8 @@ export default const _EditPatientPage = () {
       }
 
       toast({
-        title: "Patient Updated";
-        description: `/* SECURITY: Template literal eliminated */;
+        title: "Patient Updated",
+        description: `/* SECURITY: Template literal eliminated */
       });
 
       router.push(`/dashboard/patients/${patientId}`); // Redirect back to patient detail view
@@ -167,9 +167,9 @@ export default const _EditPatientPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
-        title: "Update Failed";
+        title: "Update Failed",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSaving(false);

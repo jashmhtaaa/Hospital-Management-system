@@ -19,12 +19,12 @@ import { validateDrugConditionInteractionRequest } from '../../../../../lib/vali
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 // Initialize services
@@ -75,14 +75,14 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_DRUG_CONDITION';
+      action: 'CHECK_DRUG_CONDITION',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       patientId: data.patientId;
       details: {
-        medicationIds: data.medicationIds;
+        medicationIds: data.medicationIds,
         conditionCount: conditions.length;
-        contraindicationCount: contraindications.length;
+        contraindicationCount: contraindications.length
       }
     });
 
@@ -90,11 +90,11 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
       contraindications,
       metadata: {
-        totalCount: contraindications.length;
+        totalCount: contraindications.length,
         severityCounts: {
-          absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length;
+          absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length,
           relative: contraindications.filter(c => c.contraindicationType === 'relative').length;
-          caution: contraindications.filter(c => c.contraindicationType === 'caution').length;
+          caution: contraindications.filter(c => c.contraindicationType === 'caution').length
         }
       }
     }, { status: 200 });

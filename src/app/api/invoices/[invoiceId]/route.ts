@@ -23,60 +23,60 @@ const getInvoiceId = (pathname: string): number | null {
 
 // Define interfaces for the complex query results
 interface InvoiceQueryResult {
-    invoice_id: number;
+    invoice_id: number,
     invoice_number: string;
-    patient_id: number;
+    patient_id: number,
     appointment_id: number | null;
-    admission_id: number | null;
+    admission_id: number | null,
     invoice_date: string; // ISO String
     due_date: string | null; // ISO String
-    total_amount: number;
+    total_amount: number,
     paid_amount: number;
-    discount_amount: number;
+    discount_amount: number,
     tax_amount: number;
-    status: InvoiceStatus;
+    status: InvoiceStatus,
     notes: string | null;
-    created_by_user_id: number;
+    created_by_user_id: number,
     created_at: string; // ISO String
     updated_at: string; // ISO String
-    patient_first_name: string;
-    patient_last_name: string;
+    patient_first_name: string,
+    patient_last_name: string
 }
 
 interface InvoiceItemQueryResult {
-    invoice_item_id: number;
+    invoice_item_id: number,
     invoice_id: number;
-    billable_item_id: number;
+    billable_item_id: number,
     batch_id: number | null;
-    description: string;
+    description: string,
     quantity: number;
-    unit_price: number;
+    unit_price: number,
     discount_amount: number;
-    tax_amount: number;
+    tax_amount: number,
     total_amount: number;
     created_at: string; // ISO String
-    billable_item_name: string;
+    billable_item_name: string,
     billable_item_type: string; // Assuming ItemType is string-based enum
 }
 
 // GET handler for retrieving a specific invoice with details
 export const _GET = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
-    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (invoiceId === null) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -98,7 +98,7 @@ export const _GET = async (request: Request) => {
 
         if (!invoiceResult) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), {
-                status: 404;
+                status: 404,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -108,7 +108,7 @@ export const _GET = async (request: Request) => {
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>()
             if (!patientProfile || patientProfile.patient_id !== invoiceResult.patient_id) {
                  return new Response(JSON.stringify({ error: "Forbidden: You can only view your own invoices" }), {
-                    status: 403;
+                    status: 403,
                     headers: { "Content-Type": "application/json" },
                 });
             }
@@ -129,51 +129,51 @@ export const _GET = async (request: Request) => {
 
         // 6. Format the final response
         const invoice: Invoice = {
-            invoice_id: invoiceResult.invoice_id;
+            invoice_id: invoiceResult.invoice_id,
             invoice_number: invoiceResult.invoice_number;
-            patient_id: invoiceResult.patient_id;
+            patient_id: invoiceResult.patient_id,
             appointment_id: invoiceResult.appointment_id;
-            admission_id: invoiceResult.admission_id;
+            admission_id: invoiceResult.admission_id,
             invoice_date: invoiceResult.invoice_date;
-            due_date: invoiceResult.due_date;
+            due_date: invoiceResult.due_date,
             total_amount: invoiceResult.total_amount;
-            paid_amount: invoiceResult.paid_amount;
+            paid_amount: invoiceResult.paid_amount,
             discount_amount: invoiceResult.discount_amount;
-            tax_amount: invoiceResult.tax_amount;
+            tax_amount: invoiceResult.tax_amount,
             status: invoiceResult.status;
-            notes: invoiceResult.notes;
+            notes: invoiceResult.notes,
             created_by_user_id: invoiceResult.created_by_user_id;
-            created_at: invoiceResult.created_at;
+            created_at: invoiceResult.created_at,
             updated_at: invoiceResult.updated_at;
             patient: {
-                patient_id: invoiceResult.patient_id;
+                patient_id: invoiceResult.patient_id,
                 first_name: invoiceResult.patient_first_name;
-                last_name: invoiceResult.patient_last_name;
+                last_name: invoiceResult.patient_last_name
             },
             items: itemsResult.results?.map(item => ({
-                invoice_item_id: item.invoice_item_id;
+                invoice_item_id: item.invoice_item_id,
                 invoice_id: item.invoice_id;
-                billable_item_id: item.billable_item_id;
+                billable_item_id: item.billable_item_id,
                 batch_id: item.batch_id;
-                description: item.description;
+                description: item.description,
                 quantity: item.quantity;
-                unit_price: item.unit_price;
+                unit_price: item.unit_price,
                 discount_amount: item.discount_amount;
-                tax_amount: item.tax_amount;
+                tax_amount: item.tax_amount,
                 total_amount: item.total_amount;
-                created_at: item.created_at;
+                created_at: item.created_at,
                 billable_item: {
-                    item_id: item.billable_item_id;
+                    item_id: item.billable_item_id,
                     item_name: item.billable_item_name;
-                    item_type: item.billable_item_type as ItemType, // Cast to ItemType enum;
+                    item_type: item.billable_item_type as ItemType, // Cast to ItemType enum
                 }
             })) as InvoiceItem[] || [],
-            payments: paymentsResult.results || [];
+            payments: paymentsResult.results || []
         };
 
         // 7. Return the detailed invoice
         return new Response(JSON.stringify(invoice), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -181,7 +181,7 @@ export const _GET = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -190,7 +190,7 @@ export const _GET = async (request: Request) => {
 // PUT handler for updating an invoice (e.g., status, notes, due date)
 const UpdateInvoiceSchema = z.object({
     due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
-    status: z.nativeEnum(InvoiceStatus).optional();
+    status: z.nativeEnum(InvoiceStatus).optional(),
     notes: z.string().optional().nullable();
     // Other fields like total_amount, paid_amount are usually updated via items/payments
 });
@@ -204,14 +204,14 @@ export const _PUT = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401;
+            status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (invoiceId === null) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400;
+            status: 400,
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -222,7 +222,7 @@ export const _PUT = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400;
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -247,7 +247,7 @@ export const _PUT = async (request: Request) => {
                                    .first<{ invoice_id: number, status: string }>();
         if (!invoiceCheck) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), {
-                status: 404;
+                status: 404,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -281,7 +281,7 @@ export const _PUT = async (request: Request) => {
 
         // 5. Return success response
         return new Response(JSON.stringify({ message: "Invoice updated successfully" }), {
-            status: 200;
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -289,7 +289,7 @@ export const _PUT = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

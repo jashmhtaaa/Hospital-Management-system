@@ -12,13 +12,13 @@ interface AlertInput {
 
 // Define interface for alert data (including generated fields)
 interface Alert {
-  id: string;
+  id: string,
   visit_id: string
-  alert_type: string;
+  alert_type: string,
   activated_by_id: string | number;
-  details?: string | null; // FIX: Changed to allow null to match usage;
+  details?: string | null; // FIX: Changed to allow null to match usage,
   activation_timestamp: string; // ISO 8601 date string
-  status: string;
+  status: string
 }
 
 // Mock data store for alerts (replace with actual DB interaction)
@@ -57,8 +57,8 @@ export const _GET = async (
     })
     return NextResponse.json(
       {
-        error: "Failed to fetch critical alerts";
-        details: error instanceof Error ? error.message : String(error);
+        error: "Failed to fetch critical alerts",
+        details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }
     );
@@ -107,13 +107,13 @@ export const _POST = async (
 
     // FIX: Explicitly type newAlert to match interface Alert
     const newAlert: Alert = {
-      id: alertId;
+      id: alertId,
       visit_id: visitId;
-      alert_type: alertData.alert_type;
+      alert_type: alertData.alert_type,
       activated_by_id: alertData.activated_by_id;
       details: alertData.details ?? undefined, // Use nullish coalescing
-      activation_timestamp: alertData.activation_timestamp || new Date().toISOString();
-      status: alertData.status || "Active";
+      activation_timestamp: alertData.activation_timestamp || new Date().toISOString(),
+      status: alertData.status || "Active"
     };
 
     // Mock implementation
@@ -128,8 +128,8 @@ export const _POST = async (
     })
     return NextResponse.json(
       {
-        error: "Failed to create critical alert";
-        details: error instanceof Error ? error.message : String(error);
+        error: "Failed to create critical alert",
+        details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }
     );

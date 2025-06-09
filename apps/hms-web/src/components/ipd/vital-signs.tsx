@@ -6,21 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 }
 interface VitalSign {
-  id: string;
+  id: string,
   date: string;
-  time: string;
+  time: string,
   temperature: string;
-  pulse: string;
+  pulse: string,
   respiration: string;
-  bloodPressure: string;
+  bloodPressure: string,
   oxygenSaturation: string;
-  recordedBy: string;
+  recordedBy: string
 }
 
 interface VitalSignsProps {
-  patientId: string;
+  patientId: string,
   patientName: string;
-  vitalSigns: VitalSign[];
+  vitalSigns: VitalSign[]
 }
 
 /**

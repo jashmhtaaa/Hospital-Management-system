@@ -27,19 +27,19 @@ import { PlusCircle, Trash2, Users } from "lucide-react";
 
 // Props for the component
 interface OTStaffAssignmentProperties {
-  bookingId: string;
+  bookingId: string
 }
 
 // Mock data structures
 interface AssignedStaff {
-  assignment_id: string;
+  assignment_id: string,
   user_id: string;
-  user_name: string;
-  role: string;
+  user_name: string,
+  role: string
 }
 
 interface User {
-  id: string;
+  id: string,
   name: string;
   role: string; // Assuming user object has a role
 }
@@ -83,22 +83,22 @@ export default const _OTStaffAssignment = ({
       // Mock data for demonstration
       const mockAssigned: AssignedStaff[] = [
         {
-          assignment_id: "assign-1";
+          assignment_id: "assign-1",
           user_id: "user-1";
-          user_name: "Dr. Alice Brown";
-          role: "Lead Surgeon";
+          user_name: "Dr. Alice Brown",
+          role: "Lead Surgeon"
         },
         {
-          assignment_id: "assign-2";
+          assignment_id: "assign-2",
           user_id: "user-3";
-          user_name: "Dr. Charlie Green";
-          role: "Anesthesiologist";
+          user_name: "Dr. Charlie Green",
+          role: "Anesthesiologist"
         },
         {
-          assignment_id: "assign-3";
+          assignment_id: "assign-3",
           user_id: "user-5";
-          user_name: "Nurse Eve Adams";
-          role: "Scrub Nurse";
+          user_name: "Nurse Eve Adams",
+          role: "Scrub Nurse"
         },
       ];
       setAssignedStaff(mockAssigned),
@@ -123,9 +123,9 @@ export default const _OTStaffAssignment = ({
   const handleAddStaff = async () => {
     if (!selectedUser || !selectedRole) {
       toast({
-        title: "Error";
+        title: "Error",
         description: "Please select a user and assign a role.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -156,9 +156,9 @@ export default const _OTStaffAssignment = ({
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newAssignment: AssignedStaff = {
         assignment_id: `assign-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        user_id: selectedUser;
+        user_id: selectedUser,
         user_name: userData.name;
-        role: selectedRole;
+        role: selectedRole
       };
 
       setAssignedStaff((previous) => [...previous, newAssignment]);
@@ -172,9 +172,9 @@ export default const _OTStaffAssignment = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error";
+        title: "Error",
         description: errorMessage;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsAdding(false);
@@ -206,9 +206,9 @@ export default const _OTStaffAssignment = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error";
+        title: "Error",
         description: errorMessage;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };

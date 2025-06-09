@@ -11,10 +11,10 @@ server:
 spring:
   application:
     name: billing-service
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  
+
   # Database Configuration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/billing_db}
@@ -137,24 +137,24 @@ billing:
     auto-generate-number: true
     default-due-days: 30
     late-fee-percentage: 5.0
-    
+
   payment:
     processor:
       timeout-seconds: 30
       retry-attempts: 3
       supported-methods: CASH,CREDIT_CARD,DEBIT_CARD,INSURANCE,CHECK
-    
+
   insurance:
     verification:
       enabled: true
       auto-verify: false
       timeout-seconds: 15
-      
+
   collections:
     reminder-days: [7, 14, 30]
     auto-send-reminders: true
     collection-agency-days: 90
-    
+
   reporting:
     revenue-cycle:
       enabled: true
@@ -163,12 +163,12 @@ billing:
     financial-dashboard:
       enabled: true
       real-time-updates: true
-      
+
   taxation:
     enabled: true
     default-tax-rate: 8.5
     tax-calculation-service: internal
-    
+
   integration:
     accounting-system:
       enabled: false
@@ -192,7 +192,7 @@ resilience4j:
         minimum-number-of-calls: 5
         failure-rate-threshold: 30
         wait-duration-in-open-state: 60s
-  
+
   retry:
     instances:
       billing-service:
@@ -202,7 +202,7 @@ resilience4j:
       payment-processor:
         max-attempts: 2
         wait-duration: 2s
-  
+
   timelimiter:
     instances:
       billing-service:

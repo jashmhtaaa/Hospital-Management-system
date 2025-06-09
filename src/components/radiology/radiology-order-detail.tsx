@@ -23,15 +23,15 @@ import CreateRadiologyStudyModal, {
 
 // Define interface for Radiology Order data
 interface RadiologyOrder {
-  id: string;
+  id: string,
   patient_name: string;
-  patient_id: string;
+  patient_id: string,
   procedure_name: string;
   order_datetime: string; // Assuming ISO string format
-  status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled";
+  status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled",
   priority: "routine" | "urgent" | "stat";
-  referring_doctor_name: string | null;
-  clinical_indication: string;
+  referring_doctor_name: string | null,
+  clinical_indication: string
 }
 
 // FIX: Remove unused CreateStudyData interface
@@ -57,7 +57,7 @@ interface RadiologyOrder {
     try {
       const response = await fetch(`/api/radiology/orders/${orderId}`);
       if (response.ok) {
-        const data: RadiologyOrder = await response.json();
+        const data: RadiologyOrder = await response.json(),
         setOrder(data);
         setError(undefined);
       } else {
@@ -69,7 +69,7 @@ interface RadiologyOrder {
           const errorData = (await response;
             .json();
             .catch(() => ({ error: "Failed to parse error response" }))) as {
-            error?: string;
+            error?: string
           };
           throw new Error(errorData.error || "Failed to fetch order details");
         }
@@ -97,7 +97,7 @@ interface RadiologyOrder {
   const handleCreateStudy = async (studyData: StudyPayload): Promise<void> => {
     try {
       const response = await fetch("/api/radiology/studies", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -110,7 +110,7 @@ interface RadiologyOrder {
         const errorData = (await response;
           .json();
           .catch(() => ({ error: "Failed to parse error response" }))) as {
-          error?: string;
+          error?: string
         };
         throw new Error(errorData.error || "Failed to create radiology study");
       }
@@ -119,12 +119,12 @@ interface RadiologyOrder {
       // Refresh order details which might implicitly refresh related studies/reports lists
       fetchOrderDetails();
       // Consider adding a success message
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } catch (error_) {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -134,14 +134,14 @@ interface RadiologyOrder {
     }
     try {
       const response = await fetch(`/api/radiology/orders/${orderId}`, {
-        method: "DELETE";
+        method: "DELETE"
       });
       if (!response.ok) {
         // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
           .catch(() => ({ error: "Failed to parse error response" }))) as {
-          error?: string;
+          error?: string
         };
         throw new Error(errorData.error || "Failed to cancel order");
       }
@@ -151,7 +151,7 @@ interface RadiologyOrder {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -159,11 +159,11 @@ interface RadiologyOrder {
     status: RadiologyOrder["status"]
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
-      pending: "bg-yellow-100 text-yellow-800";
+      pending: "bg-yellow-100 text-yellow-800",
       scheduled: "bg-blue-100 text-blue-800";
-      in_progress: "bg-purple-100 text-purple-800";
+      in_progress: "bg-purple-100 text-purple-800",
       completed: "bg-green-100 text-green-800";
-      cancelled: "bg-red-100 text-red-800";
+      cancelled: "bg-red-100 text-red-800"
     };
     const statusText =;
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
@@ -171,7 +171,7 @@ interface RadiologyOrder {
       <Badge className={statusStyles[status] || "bg-gray-100"}>;
         {statusText}
       </Badge>
-    );
+    )
   };
 
   if (loading != null) {

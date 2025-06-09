@@ -37,15 +37,15 @@ import { PlusCircle, Edit, Search } from "lucide-react";
 
 // --- INTERFACES ---
 interface ServiceItem {
-  id: number;
+  id: number,
   item_code: string
   item_name: string;
   description?: string;
-  category: string;
+  category: string,
   unit_price: number;
-  is_taxable: boolean;
+  is_taxable: boolean,
   is_discountable: boolean;
-  is_active: boolean;
+  is_active: boolean
 }
 
 // FIX: Define interface for API response
@@ -75,14 +75,14 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 }) => {
   const [formData, setFormData] = useState<Partial<ServiceItem>>(
     item || {
-      item_code: "";
+      item_code: "",
       item_name: "";
-      description: "";
+      description: "",
       category: "";
-      unit_price: 0;
+      unit_price: 0,
       is_taxable: true;
-      is_discountable: true;
-      is_active: true;
+      is_discountable: true,
+      is_active: true
     }
   )
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,14 +94,14 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
     } else {
       // Reset form for creating new item
       setFormData({
-        item_code: "";
+        item_code: "",
         item_name: "";
-        description: "";
+        description: "",
         category: "";
-        unit_price: 0;
+        unit_price: 0,
         is_taxable: true;
-        is_discountable: true;
-        is_active: true;
+        is_discountable: true,
+        is_active: true
       });
     }
   }, [item]);
@@ -124,7 +124,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   };
 
   const handleSelectChange = (name: string, value: string | boolean) => {
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -266,7 +266,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         </Button>
       </DialogFooter>
     </form>
-  );
+  )
 };
 
 // --- Main Page Component ---
@@ -291,7 +291,7 @@ export default const _ServiceItemsPage = () {
       // FIX: Ensure data.serviceItems is an array
       setServiceItems(
         Array.isArray(data?.serviceItems) ? data.serviceItems : []
-      );
+      )
     } catch (error_) {
 
       setError(
@@ -316,9 +316,9 @@ export default const _ServiceItemsPage = () {
 
     try {
       const response = await fetch(url, {
-        method: method;
+        method: method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) {
@@ -356,12 +356,12 @@ export default const _ServiceItemsPage = () {
 
   const openCreateModal = () => {
     setEditingItem(null),
-    setIsModalOpen(true);
+    setIsModalOpen(true)
   };
 
   const openEditModal = (item: ServiceItem) => {
     setEditingItem(item),
-    setIsModalOpen(true);
+    setIsModalOpen(true)
   };
 
   // Filter items based on search term

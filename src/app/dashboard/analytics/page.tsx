@@ -74,140 +74,140 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 } from 'lucide-react';
 
 interface AnalyticsData {
-  realTimeMetrics: RealTimeMetrics;
+  realTimeMetrics: RealTimeMetrics,
   operationalKPIs: OperationalKPI[];
-  departmentPerformance: DepartmentMetrics[];
+  departmentPerformance: DepartmentMetrics[],
   patientFlow: PatientFlowData[];
-  financialMetrics: FinancialMetrics;
+  financialMetrics: FinancialMetrics,
   qualityIndicators: QualityMetrics[];
-  resourceUtilization: ResourceMetrics[];
+  resourceUtilization: ResourceMetrics[],
   predictiveInsights: PredictiveData[];
-  alerts: SystemAlert[];
-  complianceStatus: ComplianceMetrics;
+  alerts: SystemAlert[],
+  complianceStatus: ComplianceMetrics
 }
 
 interface RealTimeMetrics {
-  currentPatients: number;
+  currentPatients: number,
   admissions24h: number;
-  discharges24h: number;
+  discharges24h: number,
   erVisits: number;
-  surgeries: number;
+  surgeries: number,
   bedOccupancy: number;
-  staffOnDuty: number;
+  staffOnDuty: number,
   avgWaitTime: number;
-  criticalAlerts: number;
-  systemHealth: 'excellent' | 'good' | 'warning' | 'critical';
+  criticalAlerts: number,
+  systemHealth: 'excellent' | 'good' | 'warning' | 'critical'
 }
 
 interface OperationalKPI {
-  metric: string;
+  metric: string,
   value: number;
-  target: number;
+  target: number,
   trend: 'up' | 'down' | 'stable';
-  changePercent: number;
+  changePercent: number,
   status: 'excellent' | 'good' | 'warning' | 'critical';
-  unit: string;
-  category: 'patient_care' | 'efficiency' | 'quality' | 'financial';
+  unit: string,
+  category: 'patient_care' | 'efficiency' | 'quality' | 'financial'
 }
 
 interface DepartmentMetrics {
-  department: string;
+  department: string,
   patientVolume: number;
-  efficiency: number;
+  efficiency: number,
   satisfaction: number;
-  revenue: number;
+  revenue: number,
   staffUtilization: number;
-  qualityScore: number;
+  qualityScore: number,
   alerts: number;
-  trend: 'improving' | 'stable' | 'declining';
+  trend: 'improving' | 'stable' | 'declining'
 }
 
 interface PatientFlowData {
-  time: string;
+  time: string,
   admissions: number;
-  discharges: number;
+  discharges: number,
   transfers: number;
-  erVisits: number;
+  erVisits: number,
   outpatient: number;
-  occupancy: number;
+  occupancy: number
 }
 
 interface FinancialMetrics {
-  revenue24h: number;
+  revenue24h: number,
   revenueMonth: number;
-  revenueYear: number;
+  revenueYear: number,
   costPerPatient: number;
-  profitMargin: number;
+  profitMargin: number,
   collectionsRate: number;
-  outstandingAR: number;
+  outstandingAR: number,
   budgetVariance: number;
-  revenuePerBed: number;
-  operatingRatio: number;
+  revenuePerBed: number,
+  operatingRatio: number
 }
 
 interface QualityMetrics {
-  indicator: string;
+  indicator: string,
   score: number;
-  benchmark: number;
+  benchmark: number,
   compliance: number;
-  trend: 'improving' | 'stable' | 'declining';
+  trend: 'improving' | 'stable' | 'declining',
   priority: 'high' | 'medium' | 'low';
-  lastUpdated: string;
+  lastUpdated: string
 }
 
 interface ResourceMetrics {
-  resource: string;
+  resource: string,
   capacity: number;
-  utilized: number;
+  utilized: number,
   utilization: number;
-  peak: number;
+  peak: number,
   efficiency: number;
-  availability: number;
-  cost: number;
+  availability: number,
+  cost: number
 }
 
 interface PredictiveData {
-  prediction: string;
+  prediction: string,
   probability: number;
-  impact: 'high' | 'medium' | 'low';
+  impact: 'high' | 'medium' | 'low',
   timeframe: string;
-  confidence: number;
+  confidence: number,
   recommendation: string;
-  category: 'capacity' | 'quality' | 'financial' | 'staff';
+  category: 'capacity' | 'quality' | 'financial' | 'staff'
 }
 
 interface SystemAlert {
-  id: string;
+  id: string,
   type: 'critical' | 'warning' | 'info';
-  title: string;
+  title: string,
   message: string;
   department?: string;
-  timestamp: string;
+  timestamp: string,
   acknowledged: boolean;
-  priority: number;
+  priority: number
 }
 
 interface ComplianceMetrics {
-  overall: number;
+  overall: number,
   hipaa: number;
-  hitech: number;
+  hitech: number,
   jacho: number;
-  cms: number;
+  cms: number,
   osha: number;
-  lastAudit: string;
+  lastAudit: string,
   nextAudit: string;
-  criticalFindings: number;
+  criticalFindings: number
 }
 
 const COLORS = {
-  primary: '#3b82f6';
+  primary: '#3b82f6',
   secondary: '#10b981';
-  warning: '#f59e0b';
+  warning: '#f59e0b',
   danger: '#ef4444';
-  success: '#22c55e';
+  success: '#22c55e',
   info: '#06b6d4';
-  purple: '#8b5cf6';
-  pink: '#ec4899';
+  purple: '#8b5cf6',
+  pink: '#ec4899'
 };
 
 const CHART_COLORS = [COLORS.primary, COLORS.secondary, COLORS.warning, COLORS.danger, COLORS.purple, COLORS.pink];
@@ -251,7 +251,7 @@ export default const _AdvancedAnalyticsDashboard = () {
       setData(generateMockAnalyticsData());
       setLastRefresh(new Date());
       setLoading(false);
-    }, 500);
+    }, 500)
   };
 
   const getStatusColor = (status: string) => {
@@ -260,7 +260,7 @@ export default const _AdvancedAnalyticsDashboard = () {
       case 'good': return 'bg-blue-100 text-blue-800';
       case 'warning': return 'bg-yellow-100 text-yellow-800';
       case 'critical': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800'
     }
   };
 
@@ -272,7 +272,7 @@ export default const _AdvancedAnalyticsDashboard = () {
       case 'down':
       case 'declining':
         return <ChevronDown className="h-4 w-4 text-red-500" />
-      default: return <div className="h-4 w-4" />;
+      default: return <div className="h-4 w-4" />
     }
   };
 
@@ -1010,103 +1010,103 @@ export default const _AdvancedAnalyticsDashboard = () {
 const generateMockAnalyticsData = (): AnalyticsData {
   return {
     realTimeMetrics: {
-      currentPatients: 1247;
+      currentPatients: 1247,
       admissions24h: 89;
-      discharges24h: 76;
+      discharges24h: 76,
       erVisits: 134;
-      surgeries: 23;
+      surgeries: 23,
       bedOccupancy: 87;
-      staffOnDuty: 342;
+      staffOnDuty: 342,
       avgWaitTime: 24;
-      criticalAlerts: 3;
-      systemHealth: 'good';
+      criticalAlerts: 3,
+      systemHealth: 'good'
     },
     operationalKPIs: [
       {
-        metric: 'Avg Wait Time';
+        metric: 'Avg Wait Time',
         value: 24;
-        target: 30;
+        target: 30,
         trend: 'down';
-        changePercent: -8;
+        changePercent: -8,
         status: 'good';
-        unit: 'min';
-        category: 'efficiency';
+        unit: 'min',
+        category: 'efficiency'
       },
       {
-        metric: 'Patient Satisfaction';
+        metric: 'Patient Satisfaction',
         value: 94;
-        target: 90;
+        target: 90,
         trend: 'up';
-        changePercent: 3;
+        changePercent: 3,
         status: 'excellent';
-        unit: '%';
-        category: 'patient_care';
+        unit: '%',
+        category: 'patient_care'
       },
       {
-        metric: 'Staff Utilization';
+        metric: 'Staff Utilization',
         value: 78;
-        target: 80;
+        target: 80,
         trend: 'stable';
-        changePercent: 0;
+        changePercent: 0,
         status: 'good';
-        unit: '%';
-        category: 'efficiency';
+        unit: '%',
+        category: 'efficiency'
       },
       {
-        metric: 'Revenue per Patient';
+        metric: 'Revenue per Patient',
         value: 4250;
-        target: 4000;
+        target: 4000,
         trend: 'up';
-        changePercent: 6;
+        changePercent: 6,
         status: 'excellent';
-        unit: '$';
-        category: 'financial';
+        unit: '$',
+        category: 'financial'
       }
     ],
     departmentPerformance: [
       {
-        department: 'Emergency';
+        department: 'Emergency',
         patientVolume: 134;
-        efficiency: 89;
+        efficiency: 89,
         satisfaction: 87;
-        revenue: 125000;
+        revenue: 125000,
         staffUtilization: 94;
-        qualityScore: 91;
+        qualityScore: 91,
         alerts: 2;
-        trend: 'improving';
+        trend: 'improving'
       },
       {
-        department: 'ICU';
+        department: 'ICU',
         patientVolume: 45;
-        efficiency: 95;
+        efficiency: 95,
         satisfaction: 92;
-        revenue: 280000;
+        revenue: 280000,
         staffUtilization: 88;
-        qualityScore: 96;
+        qualityScore: 96,
         alerts: 1;
-        trend: 'stable';
+        trend: 'stable'
       },
       {
-        department: 'Surgery';
+        department: 'Surgery',
         patientVolume: 23;
-        efficiency: 93;
+        efficiency: 93,
         satisfaction: 96;
-        revenue: 450000;
+        revenue: 450000,
         staffUtilization: 91;
-        qualityScore: 97;
+        qualityScore: 97,
         alerts: 0;
-        trend: 'improving';
+        trend: 'improving'
       },
       {
-        department: 'Radiology';
+        department: 'Radiology',
         patientVolume: 178;
-        efficiency: 86;
+        efficiency: 86,
         satisfaction: 89;
-        revenue: 89000;
+        revenue: 89000,
         staffUtilization: 82;
-        qualityScore: 88;
+        qualityScore: 88,
         alerts: 1;
-        trend: 'stable';
+        trend: 'stable'
       }
     ],
     patientFlow: [
@@ -1118,110 +1118,110 @@ const generateMockAnalyticsData = (): AnalyticsData {
       { time: '20:00', admissions: 18, discharges: 24, transfers: 6, erVisits: 29, outpatient: 67, occupancy: 85 }
     ],
     financialMetrics: {
-      revenue24h: 1250000;
+      revenue24h: 1250000,
       revenueMonth: 28500000;
-      revenueYear: 342000000;
+      revenueYear: 342000000,
       costPerPatient: 3200;
-      profitMargin: 23;
+      profitMargin: 23,
       collectionsRate: 94;
-      outstandingAR: 4200000;
+      outstandingAR: 4200000,
       budgetVariance: -2.3;
-      revenuePerBed: 925;
-      operatingRatio: 91;
+      revenuePerBed: 925,
+      operatingRatio: 91
     },
     qualityIndicators: [
       {
-        indicator: 'Patient Safety Score';
+        indicator: 'Patient Safety Score',
         score: 96;
-        benchmark: 95;
+        benchmark: 95,
         compliance: 98;
-        trend: 'improving';
+        trend: 'improving',
         priority: 'high';
-        lastUpdated: '2024-01-15';
+        lastUpdated: '2024-01-15'
       },
       {
-        indicator: 'Clinical Excellence';
+        indicator: 'Clinical Excellence',
         score: 94;
-        benchmark: 90;
+        benchmark: 90,
         compliance: 96;
-        trend: 'stable';
+        trend: 'stable',
         priority: 'medium';
-        lastUpdated: '2024-01-15';
+        lastUpdated: '2024-01-15'
       },
       {
-        indicator: 'Infection Control';
+        indicator: 'Infection Control',
         score: 98;
-        benchmark: 95;
+        benchmark: 95,
         compliance: 99;
-        trend: 'improving';
+        trend: 'improving',
         priority: 'high';
-        lastUpdated: '2024-01-15';
+        lastUpdated: '2024-01-15'
       }
     ],
     resourceUtilization: [
       {
-        resource: 'Operating Rooms';
+        resource: 'Operating Rooms',
         capacity: 12;
-        utilized: 9;
+        utilized: 9,
         utilization: 75;
-        peak: 11;
+        peak: 11,
         efficiency: 92;
-        availability: 98;
-        cost: 25000;
+        availability: 98,
+        cost: 25000
       }
     ],
     predictiveInsights: [
       {
-        prediction: 'ICU capacity will reach 95% in next 24 hours';
+        prediction: 'ICU capacity will reach 95% in next 24 hours',
         probability: 85;
-        impact: 'high';
+        impact: 'high',
         timeframe: 'Next 24 hours';
-        confidence: 92;
+        confidence: 92,
         recommendation: 'Consider discharge planning for stable patients and prepare overflow protocols';
-        category: 'capacity';
+        category: 'capacity'
       },
       {
-        prediction: 'Emergency department volume spike expected';
+        prediction: 'Emergency department volume spike expected',
         probability: 72;
-        impact: 'medium';
+        impact: 'medium',
         timeframe: 'Next 6 hours';
-        confidence: 78;
+        confidence: 78,
         recommendation: 'Increase triage staff and prepare fast-track protocols';
-        category: 'capacity';
+        category: 'capacity'
       }
     ],
     alerts: [
       {
-        id: '1';
+        id: '1',
         type: 'critical';
-        title: 'ICU Bed Shortage';
+        title: 'ICU Bed Shortage',
         message: 'Only 2 ICU beds available. Consider discharge planning.';
-        department: 'ICU';
-        timestamp: '2024-01-15T14:30:00Z';
+        department: 'ICU',
+        timestamp: '2024-01-15T14:30:00Z',
         acknowledged: false;
-        priority: 1;
+        priority: 1
       },
       {
-        id: '2';
+        id: '2',
         type: 'warning';
-        title: 'High ER Wait Times';
+        title: 'High ER Wait Times',
         message: 'Average wait time exceeding 45 minutes.';
-        department: 'Emergency';
-        timestamp: '2024-01-15T14:25:00Z';
+        department: 'Emergency',
+        timestamp: '2024-01-15T14:25:00Z',
         acknowledged: false;
-        priority: 2;
+        priority: 2
       }
     ],
     complianceStatus: {
-      overall: 96;
+      overall: 96,
       hipaa: 98;
-      hitech: 95;
+      hitech: 95,
       jacho: 94;
-      cms: 97;
+      cms: 97,
       osha: 92;
-      lastAudit: '2023-11-15';
+      lastAudit: '2023-11-15',
       nextAudit: '2024-05-15';
-      criticalFindings: 2;
+      criticalFindings: 2
     }
   };
 }

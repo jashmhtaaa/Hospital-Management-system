@@ -18,32 +18,32 @@ import { validateEducationRequest } from '../../../../../lib/validation/pharmacy
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const educationRepository = {
-  findById: (id: string) => Promise.resolve(null);
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByMedicationId: (medicationId: string) => Promise.resolve([]);
-  save: (education: unknown) => Promise.resolve(education.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: (id: string) => Promise.resolve(null),
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByMedicationId: (medicationId: string) => Promise.resolve([]),
+  save: (education: unknown) => Promise.resolve(education.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -95,22 +95,22 @@ export const POST = async (req: NextRequest) => {
 
     // Create education record
     const education = {
-      id: data.id || crypto.randomUUID();
+      id: data.id || crypto.randomUUID(),
       patientId: data.patientId;
-      medicationId: data.medicationId;
+      medicationId: data.medicationId,
       prescriptionId: data.prescriptionId;
-      educationType: data.educationType || 'verbal';
+      educationType: data.educationType || 'verbal',
       topics: data.topics || [];
-      materials: data.materials || [];
+      materials: data.materials || [],
       notes: data.notes || '';
-      patientUnderstanding: data.patientUnderstanding || 'good';
+      patientUnderstanding: data.patientUnderstanding || 'good',
       educatedBy: userId;
-      educatedAt: new Date();
+      educatedAt: new Date(),
       followUpRequired: data.followUpRequired || false;
-      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null;
+      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null,
       language: data.language || 'English';
-      interpreter: data.interpreter || false;
-      interpreterName: data.interpreterName;
+      interpreter: data.interpreter || false,
+      interpreterName: data.interpreterName
     };
 
     // Save education record
@@ -118,24 +118,24 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
-      action: 'CREATE';
+      action: 'CREATE',
       resourceType: 'MedicationEducation';
-      resourceId: educationId;
+      resourceId: educationId,
       userId: userId;
-      patientId: data.patientId;
+      patientId: data.patientId,
       details: {
-        medicationId: data.medicationId;
+        medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
-        educationType: data.educationType;
-        topics: data.topics;
+        educationType: data.educationType,
+        topics: data.topics
       }
     });
 
     // Return response
     return NextResponse.json(
       {
-        id: educationId;
-        message: 'Patient education recorded successfully';
+        id: educationId,
+        message: 'Patient education recorded successfully'
       },
       { status: 201 }
     );
@@ -221,26 +221,26 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
-      action: 'LIST';
+      action: 'LIST',
       resourceType: 'MedicationEducation';
-      userId: userId;
+      userId: userId,
       patientId: patientId;
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length;
+        resultCount: paginatedRecords.length
       }
     });
 
     // Return response
     return NextResponse.json({
-      educationRecords: paginatedRecords;
+      educationRecords: paginatedRecords,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

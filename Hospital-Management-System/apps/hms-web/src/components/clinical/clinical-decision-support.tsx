@@ -15,10 +15,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 } from 'lucide-react';
 
 interface CDSAlert {
-  type: string;
+  type: string,
   severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  message: string;
-  recommendation: string;
+  message: string,
+  recommendation: string
 }
 
 interface CDSRecommendation {
@@ -31,17 +31,17 @@ interface CDSRecommendation {
 }
 
 interface CDSAnalysis {
-  alerts: CDSAlert[];
+  alerts: CDSAlert[],
   recommendations: CDSRecommendation[];
-  riskScore: number;
-  confidence: number;
+  riskScore: number,
+  confidence: number
 }
 
 const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId }) => {
   const [analysis, setAnalysis] = useState<CDSAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [prescriptionData, setPrescriptionData] = useState({
-    medications: [];
+    medications: []
   });
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       const data = await response.json();
       setAnalysis(data.analysis);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -67,14 +67,14 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
     setLoading(true);
     try {
       const response = await fetch('/api/clinical-decision-support/prescription-check', {
-        method: 'POST';
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patientId, medications })
       });
       const data = await response.json();
       setAnalysis(data.analysis);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -86,7 +86,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       case 'HIGH': return 'bg-orange-100 text-orange-800 border-orange-200';
       case 'MEDIUM': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'LOW': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   };
 
@@ -96,7 +96,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       case 'HIGH': return <AlertTriangle className="h-5 w-5 text-orange-600" />;
       case 'MEDIUM': return <Activity className="h-5 w-5 text-yellow-600" />;
       case 'LOW': return <Activity className="h-5 w-5 text-blue-600" />;
-      default: return <Activity className="h-5 w-5 text-gray-600" />;
+      default: return <Activity className="h-5 w-5 text-gray-600" />
     }
   };
 
@@ -104,7 +104,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
     if (score >= 80) return 'text-red-600';
     if (score >= 60) return 'text-orange-600';
     if (score >= 40) return 'text-yellow-600';
-    return 'text-green-600';
+    return 'text-green-600'
   };
 
   if (loading != null) {
@@ -263,7 +263,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
         </Button>
       </div>
     </div>
-  );
+  )
 };
 
 export default ClinicalDecisionSupport;

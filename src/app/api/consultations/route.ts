@@ -13,29 +13,29 @@ const ALLOWED_ROLES_CREATE = ["Doctor"];
 
 // GET handler for listing consultations with filters
 const ListConsultationsQuerySchema = z.object({
-    patientId: z.coerce.number().int().positive().optional();
-    doctorId: z.coerce.number().int().positive().optional();
-    opdVisitId: z.coerce.number().int().positive().optional();
-    admissionId: z.coerce.number().int().positive().optional();
+    patientId: z.coerce.number().int().positive().optional(),
+    doctorId: z.coerce.number().int().positive().optional(),
+    opdVisitId: z.coerce.number().int().positive().optional(),
+    admissionId: z.coerce.number().int().positive().optional(),
     dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    limit: z.coerce.number().int().positive().optional().default(50);
-    offset: z.coerce.number().int().nonnegative().optional().default(0);
+    limit: z.coerce.number().int().positive().optional().default(50),
+    offset: z.coerce.number().int().nonnegative().optional().default(0)
 });
 
 // Define type for the query result row
 interface ConsultationListQueryResult {
-    consultation_id: number;
+    consultation_id: number,
     patient_id: number;
-    doctor_id: number;
+    doctor_id: number,
     opd_visit_id: number | null;
-    admission_id: number | null;
+    admission_id: number | null,
     consultation_datetime: string;
-    chief_complaint: string | null;
+    chief_complaint: string | null,
     diagnosis: string | null;
-    created_at: string;
+    created_at: string,
     updated_at: string;
-    patient_first_name: string;
+    patient_first_name: string,
     patient_last_name: string;
     doctor_full_name: string
 export const _GET = async (request: Request) => {
@@ -129,23 +129,23 @@ export const _GET = async (request: Request) => {
 
         // 4. Format Response
         const consultations: Consultation[] = results.results?.map((row: ConsultationListQueryResult) => ({
-            consultation_id: row.consultation_id;
+            consultation_id: row.consultation_id,
             patient_id: row.patient_id;
-            doctor_id: row.doctor_id;
+            doctor_id: row.doctor_id,
             opd_visit_id: row.opd_visit_id;
-            admission_id: row.admission_id;
+            admission_id: row.admission_id,
             consultation_datetime: row.consultation_datetime;
-            chief_complaint: row.chief_complaint;
+            chief_complaint: row.chief_complaint,
             diagnosis: row.diagnosis;
-            created_at: row.created_at;
+            created_at: row.created_at,
             updated_at: row.updated_at;
             patient: {
-                patient_id: row.patient_id;
+                patient_id: row.patient_id,
                 first_name: row.patient_first_name;
-                last_name: row.patient_last_name;
+                last_name: row.patient_last_name
             },
             doctor: {
-                doctor_id: row.doctor_id;
+                doctor_id: row.doctor_id,
                 user: { fullName: row.doctor_full_name }
             }
         })) || [];
@@ -161,20 +161,20 @@ export const _GET = async (request: Request) => {
 
 // POST handler for creating a new consultation
 const CreateConsultationSchema = z.object({
-    patient_id: z.number().int().positive();
-    opd_visit_id: z.number().int().positive().optional().nullable();
-    admission_id: z.number().int().positive().optional().nullable();
-    consultation_datetime: z.string().datetime().optional();
-    chief_complaint: z.string().optional().nullable();
-    history_of_present_illness: z.string().optional().nullable();
-    physical_examination: z.string().optional().nullable();
-    diagnosis: z.string().optional().nullable();
-    treatment_plan: z.string().optional().nullable();
-    follow_up_instructions: z.string().optional().nullable();
-    notes: z.string().optional().nullable();
+    patient_id: z.number().int().positive(),
+    opd_visit_id: z.number().int().positive().optional().nullable(),
+    admission_id: z.number().int().positive().optional().nullable(),
+    consultation_datetime: z.string().datetime().optional(),
+    chief_complaint: z.string().optional().nullable(),
+    history_of_present_illness: z.string().optional().nullable(),
+    physical_examination: z.string().optional().nullable(),
+    diagnosis: z.string().optional().nullable(),
+    treatment_plan: z.string().optional().nullable(),
+    follow_up_instructions: z.string().optional().nullable(),
+    notes: z.string().optional().nullable()
 }).refine(data => data.opd_visit_id || data.admission_id, {
-    message: "Consultation must be linked to either an OPD Visit or an Admission.";
-    path: ["opd_visit_id", "admission_id"],;
+    message: "Consultation must be linked to either an OPD Visit or an Admission.",
+    path: ["opd_visit_id", "admission_id"],
 });
 
 export const _POST = async (request: Request) => {
@@ -268,7 +268,7 @@ export const _POST = async (request: Request) => {
 
         // 5. Return the newly created consultation ID
         return new Response(JSON.stringify({ message: "Consultation created successfully", consultation_id: newConsultationId }), {
-            status: 201;
+            status: 201,
             headers: { "Content-Type": "application/json" },
         });
 
@@ -276,7 +276,7 @@ export const _POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

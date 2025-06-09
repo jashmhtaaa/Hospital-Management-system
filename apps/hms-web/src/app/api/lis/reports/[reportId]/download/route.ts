@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 
 interface RouteContext {
   params: {
-    reportId: string;
+    reportId: string
   };
 }
 
@@ -29,13 +29,13 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
     userId = currentUser?.id;
 
     if (!currentUser || !userId) {
-      return sendErrorResponse("Unauthorized: User not authenticated.", 401);
+      return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canDownloadReport = await hasPermission(userId, "LIS_DOWNLOAD_REPORT");
     if (!canDownloadReport) {
       await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_ATTEMPT_DENIED", { reportId, path: request.nextUrl.pathname });
-      return sendErrorResponse("Forbidden: You do not have permission to download this LIS report.", 403);
+      return sendErrorResponse("Forbidden: You do not have permission to download this LIS report.", 403)
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -43,9 +43,9 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
     const labReport = await prisma.labReport.findUnique({
       where: { id: reportId },
       select: {
-        fileName: true;
-        fileType: true;
-        storagePath: true;
+        fileName: true,
+        fileType: true,
+        storagePath: true,
         labOrder: { select: { patientId: true } }
       },
     })
@@ -56,10 +56,10 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
     }
 
     const responsePayload = {
-      message: "File metadata retrieved. Client should initiate download from storage provider.";
+      message: "File metadata retrieved. Client should initiate download from storage provider.",
       fileName: labReport.fileName;
-      fileType: labReport.fileType;
-      storagePath: labReport.storagePath;
+      fileType: labReport.fileType,
+      storagePath: labReport.storagePath
     };
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_METADATA_SUCCESS", { reportId, data: responsePayload });

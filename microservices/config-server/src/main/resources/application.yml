@@ -7,7 +7,7 @@ server:
 spring:
   application:
     name: hms-config-server
-  
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:native}
 
@@ -23,7 +23,7 @@ spring:
           refresh-rate: 60
           timeout: 10
           default-label: main
-          search-paths: 
+          search-paths:
             - '{application}'
             - '{application}/{profile}'
             - 'shared'
@@ -37,17 +37,17 @@ spring:
               pattern: '*/production'
               uri: ${CONFIG_GIT_URI:https://github.com/your-org/hms-config-repo.git}
               search-paths: 'production'
-              
+
         # Native file system configuration (fallback/development)
         native:
-          search-locations: 
+          search-locations:
             - classpath:/config/
             - classpath:/config/{application}/
             - classpath:/config/{profile}/
             - file:./config/
             - file:./config/{application}/
             - file:./config/{profile}/
-            
+
         # Health check configuration
         health:
           repositories:
@@ -59,7 +59,7 @@ spring:
               label: main
               name: production
               profiles: production
-              
+
         # Configuration encryption
         encrypt:
           enabled: true
@@ -68,7 +68,7 @@ spring:
             password: ${CONFIG_KEYSTORE_PASSWORD:changeme}
             alias: ${CONFIG_KEYSTORE_ALIAS:mytestkey}
             secret: ${CONFIG_KEYSTORE_SECRET:changeme}
-            
+
         # Configuration overrides (system-level defaults)
         overrides:
           spring:
@@ -84,7 +84,7 @@ spring:
               web:
                 exposure:
                   include: health,info,metrics,prometheus
-                  
+
         # Fail fast if config server is not available
         fail-fast: true
         retry:
@@ -180,8 +180,8 @@ logging:
     org.springframework.web: INFO
     org.eclipse.jgit: WARN
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n'
   file:
     name: logs/config-server.log
     max-size: 100MB
@@ -202,7 +202,6 @@ spring:
           password: ${CONFIG_GIT_PASSWORD:}
           clone-on-start: true
           force-pull: true
-
 ---
 spring:
   config:
@@ -215,7 +214,7 @@ spring:
           uri: ${CONFIG_GIT_URI:https://github.com/your-org/hms-config-repo.git}
           clone-on-start: true
         native:
-          search-locations: 
+          search-locations:
             - file:/config/
             - file:/config/{application}/
             - file:/config/{profile}/
@@ -242,7 +241,6 @@ spring:
           profile-separator: ${VAULT_PROFILE_SEPARATOR:/}
           token: ${VAULT_TOKEN:}
           kv-version: 2
-
 ---
 spring:
   config:
@@ -257,13 +255,13 @@ spring:
         git:
           force-pull: false
           refresh-rate: 300 # 5 minutes in production
-          
+
 logging:
   level:
     com.hospital.hms: INFO
     org.springframework.cloud.config: WARN
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss} %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n'
 
 management:
   endpoint:
@@ -286,7 +284,7 @@ spring:
           clone-on-start: false
           force-pull: true
           refresh-rate: 10 # Fast refresh in development
-          
+
 logging:
   level:
     com.hospital.hms: DEBUG
@@ -302,11 +300,10 @@ spring:
     config:
       server:
         native:
-          search-locations: 
+          search-locations:
             - classpath:/config/
             - classpath:/config/{application}/
             - file:./config/
-
 ---
 # HMS-specific Configuration Management Settings
 hms:
@@ -314,7 +311,7 @@ hms:
     security:
       encryption-key: ${HMS_CONFIG_ENCRYPTION_KEY:hms-config-encryption-key-2024}
       jwt-secret: ${HMS_CONFIG_JWT_SECRET:hms-config-jwt-secret-2024}
-      jwt-expiration: 86400000  # 24 hours
+      jwt-expiration: 86400000 # 24 hours
     validation:
       hipaa-compliance: true
       sensitive-property-validation: true

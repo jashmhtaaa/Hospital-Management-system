@@ -7,58 +7,58 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 
 // Define interfaces for data structures
 interface Patient {
-  id: string;
+  id: string,
   first_name: string;
-  last_name: string;
+  last_name: string,
   gender: string;
-  age: number;
-  phone: string;
+  age: number,
+  phone: string
 }
 
 interface Medication {
-  id: string;
+  id: string,
   generic_name: string;
-  brand_name: string;
+  brand_name: string,
   strength: string;
-  dosage_form: string;
+  dosage_form: string
 }
 
 interface PrescriptionItemInput {
-  medication_id: string;
+  medication_id: string,
   dosage: string;
-  frequency: string;
+  frequency: string,
   duration: string;
   quantity: number | string; // Allow string for input, parse later
-  instructions: string;
+  instructions: string
 }
 
 interface SelectedMedication extends Medication {
-  dosage: string;
+  dosage: string,
   frequency: string;
-  duration: string;
+  duration: string,
   quantity: string; // Keep as string for input state
-  instructions: string;
+  instructions: string
 }
 
 interface PrescriptionItemDisplay {
-  medication: string;
+  medication: string,
   dosage: string;
-  frequency: string;
-  duration: string;
+  frequency: string,
+  duration: string
 }
 
 interface Prescription {
-  id: string;
+  id: string,
   date: string;
-  status: "pending" | "dispensed" | "cancelled";
-  items: PrescriptionItemDisplay[];
+  status: "pending" | "dispensed" | "cancelled",
+  items: PrescriptionItemDisplay[]
 }
 
 interface PrescriptionFormData {
-  patient_id: string;
+  patient_id: string,
   doctor_id: string;
-  notes: string;
-  items: PrescriptionItemInput[];
+  notes: string,
+  items: PrescriptionItemInput[]
 }
 
 // Component to integrate Pharmacy with OPD module
@@ -73,9 +73,9 @@ const OPDPharmacyIntegration: React.FC = () => {
   >([]);
   const [formData, setFormData] = useState<Omit<PrescriptionFormData, "items">>(
     {
-      patient_id: "";
+      patient_id: "",
       doctor_id: "", // This should ideally come from auth context
-      notes: "";
+      notes: ""
     }
   );
 
@@ -85,18 +85,18 @@ const OPDPharmacyIntegration: React.FC = () => {
       try {
         // Simulate fetching active patient
         const simulatedPatient: Patient = {
-          id: "pat_12345";
+          id: "pat_12345",
           first_name: "John";
-          last_name: "Smith";
+          last_name: "Smith",
           gender: "Male";
-          age: 45;
-          phone: "555-1234";
+          age: 45,
+          phone: "555-1234"
         };
         setActivePatient(simulatedPatient),
         setFormData((previous) => ({
           ...previous,
-          patient_id: simulatedPatient.id;
-          doctor_id: "doc_67890", // Simulate logged-in doctor ID;
+          patient_id: simulatedPatient.id,
+          doctor_id: "doc_67890", // Simulate logged-in doctor ID
         }));
       } catch (error) { // Debug logging removed
         // Handle error appropriately (e.g., show message)
@@ -109,39 +109,39 @@ const OPDPharmacyIntegration: React.FC = () => {
         // Simulate fetching medications
         const simulatedMedications: Medication[] = [
           {
-            id: "med_001";
+            id: "med_001",
             generic_name: "Paracetamol";
-            brand_name: "Calpol";
+            brand_name: "Calpol",
             strength: "500mg";
-            dosage_form: "Tablet";
+            dosage_form: "Tablet"
           },
           {
-            id: "med_002";
+            id: "med_002",
             generic_name: "Amoxicillin";
-            brand_name: "Amoxil";
+            brand_name: "Amoxil",
             strength: "250mg";
-            dosage_form: "Capsule";
+            dosage_form: "Capsule"
           },
           {
-            id: "med_003";
+            id: "med_003",
             generic_name: "Cetirizine";
-            brand_name: "Zyrtec";
+            brand_name: "Zyrtec",
             strength: "10mg";
-            dosage_form: "Tablet";
+            dosage_form: "Tablet"
           },
           {
-            id: "med_004";
+            id: "med_004",
             generic_name: "Ibuprofen";
-            brand_name: "Brufen";
+            brand_name: "Brufen",
             strength: "400mg";
-            dosage_form: "Tablet";
+            dosage_form: "Tablet"
           },
           {
-            id: "med_005";
+            id: "med_005",
             generic_name: "Omeprazole";
-            brand_name: "Prilosec";
+            brand_name: "Prilosec",
             strength: "20mg";
-            dosage_form: "Capsule";
+            dosage_form: "Capsule"
           },
         ];
         setMedications(simulatedMedications);
@@ -167,34 +167,34 @@ const OPDPharmacyIntegration: React.FC = () => {
 
         const simulatedPrescriptions: Prescription[] = [
           {
-            id: "presc_001";
+            id: "presc_001",
             date: "2025-04-20";
-            status: "dispensed";
+            status: "dispensed",
             items: [
               {
-                medication: "Paracetamol 500mg";
+                medication: "Paracetamol 500mg",
                 dosage: "1 tablet";
-                frequency: "TID";
-                duration: "5 days";
+                frequency: "TID",
+                duration: "5 days"
               },
               {
-                medication: "Cetirizine 10mg";
+                medication: "Cetirizine 10mg",
                 dosage: "1 tablet";
-                frequency: "OD";
-                duration: "7 days";
+                frequency: "OD",
+                duration: "7 days"
               },
             ],
           },
           {
-            id: "presc_002";
+            id: "presc_002",
             date: "2025-04-25";
-            status: "pending";
+            status: "pending",
             items: [
               {
-                medication: "Amoxicillin 250mg";
+                medication: "Amoxicillin 250mg",
                 dosage: "1 capsule";
-                frequency: "BID";
-                duration: "7 days";
+                frequency: "BID",
+                duration: "7 days"
               },
             ],
           },
@@ -224,11 +224,11 @@ const OPDPharmacyIntegration: React.FC = () => {
     if (!selectedMedications.some((med) => med.id === medication.id)) {
       const newMed: SelectedMedication = {
         ...medication,
-        dosage: "";
+        dosage: "",
         frequency: "";
-        duration: "";
+        duration: "",
         quantity: "";
-        instructions: "";
+        instructions: ""
       };
       setSelectedMedications([...selectedMedications, newMed]);
     }
@@ -237,11 +237,11 @@ const OPDPharmacyIntegration: React.FC = () => {
   const handleRemoveMedication = (index: number): void => {
     const updatedMeds = [...selectedMedications];
     updatedMeds.splice(index, 1),
-    setSelectedMedications(updatedMeds);
+    setSelectedMedications(updatedMeds)
   };
 
   const handleMedicationChange = (
-    index: number;
+    index: number,
     field: keyof SelectedMedication;
     value: string;
   ): void => {
@@ -251,7 +251,7 @@ const OPDPharmacyIntegration: React.FC = () => {
       // Assuming value is always string and the target property accepts string
       updatedMeds[index][field] = value;
     }
-    setSelectedMedications(updatedMeds);
+    setSelectedMedications(updatedMeds)
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -259,7 +259,7 @@ const OPDPharmacyIntegration: React.FC = () => {
 
     if (selectedMedications.length === 0) {
       /* SECURITY: Console statement removed */
-      return;
+      return
     }
 
     setLoading(true);
@@ -274,12 +274,12 @@ const OPDPharmacyIntegration: React.FC = () => {
           );
         }
         return {
-          medication_id: med.id;
+          medication_id: med.id,
           dosage: med.dosage;
-          frequency: med.frequency;
+          frequency: med.frequency,
           duration: med.duration;
-          quantity: quantity;
-          instructions: med.instructions;
+          quantity: quantity,
+          instructions: med.instructions
         };
       });
 
@@ -287,7 +287,7 @@ const OPDPharmacyIntegration: React.FC = () => {
         ...formData,
         items,
         // source: 'opd', // Add if API expects it
-        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it;
+        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it
       }
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -311,13 +311,13 @@ const OPDPharmacyIntegration: React.FC = () => {
       // Add the new prescription to the local state for display
       const newPrescription: Prescription = {
         id: `presc_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        date: new Date().toISOString().split("T")[0];
+        date: new Date().toISOString().split("T")[0],
         status: "pending";
         items: selectedMedications.map((med) => ({
           medication: `/* SECURITY: Template literal eliminated */
-          dosage: med.dosage;
+          dosage: med.dosage,
           frequency: med.frequency;
-          duration: med.duration;
+          duration: med.duration
         })),
       };
       setPrescriptions([newPrescription, ...prescriptions]);
@@ -328,7 +328,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     } catch (error) { // FIX: Added error parameter
       const _message =;
         error instanceof Error ? error._message : "An unknown error occurred.";
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -448,7 +448,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 index,
                                 "dosage",
                                 event.target.value;
-                              );
+                              ),
                             }
                             placeholder="e.g., 1 tablet"
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
@@ -462,7 +462,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 index,
                                 "frequency",
                                 event.target.value;
-                              );
+                              ),
                             }
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           >
@@ -485,7 +485,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 index,
                                 "duration",
                                 event.target.value;
-                              );
+                              ),
                             }
                             placeholder="e.g., 7 days"
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
@@ -500,7 +500,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 index,
                                 "quantity",
                                 event.target.value;
-                              );
+                              ),
                             }
                             placeholder="Qty"
                             className="w-16 p-1 text-sm border border-gray-300 rounded-md"
@@ -514,7 +514,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                                 index,
                                 "instructions",
                                 event.target.value;
-                              );
+                              ),
                             }
                             placeholder="e.g., Take with food"
                             rows={1}
@@ -554,7 +554,7 @@ const OPDPharmacyIntegration: React.FC = () => {
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                 setFormData((previous) => ({
                   ...previous,
-                  notes: event.target.value;
+                  notes: event.target.value
                 }));
               }
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -620,7 +620,7 @@ const OPDPharmacyIntegration: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default OPDPharmacyIntegration;

@@ -354,49 +354,49 @@ spec:
     spec:
       serviceAccountName: prometheus
       containers:
-      - name: prometheus
-        image: prom/prometheus:v2.45.0
-        args:
-        - "--config.file=/etc/prometheus/prometheus.yml"
-        - "--storage.tsdb.path=/prometheus"
-        - "--storage.tsdb.retention.time=15d"
-        - "--web.console.libraries=/usr/share/prometheus/console_libraries"
-        - "--web.console.templates=/usr/share/prometheus/consoles"
-        - "--web.enable-lifecycle"
-        - "--web.route-prefix=/"
-        ports:
-        - containerPort: 9090
-        readinessProbe:
-          httpGet:
-            path: /-/ready
-            port: 9090
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        livenessProbe:
-          httpGet:
-            path: /-/healthy
-            port: 9090
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        resources:
-          requests:
-            cpu: 500m
-            memory: 2Gi
-          limits:
-            cpu: 1000m
-            memory: 4Gi
-        volumeMounts:
-        - name: config-volume
-          mountPath: /etc/prometheus
-        - name: prometheus-storage
-          mountPath: /prometheus
+        - name: prometheus
+          image: prom/prometheus:v2.45.0
+          args:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/prometheus'
+            - '--storage.tsdb.retention.time=15d'
+            - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+            - '--web.console.templates=/usr/share/prometheus/consoles'
+            - '--web.enable-lifecycle'
+            - '--web.route-prefix=/'
+          ports:
+            - containerPort: 9090
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9090
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9090
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus
+            - name: prometheus-storage
+              mountPath: /prometheus
       volumes:
-      - name: config-volume
-        configMap:
-          name: prometheus-config
-      - name: prometheus-storage
-        persistentVolumeClaim:
-          claimName: prometheus-storage
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+        - name: prometheus-storage
+          persistentVolumeClaim:
+            claimName: prometheus-storage
 ---
 apiVersion: v1
 kind: Service
@@ -404,14 +404,14 @@ metadata:
   name: prometheus
   namespace: monitoring
   annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9090"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9090'
 spec:
   selector:
     app: prometheus
   ports:
-  - port: 9090
-    targetPort: 9090
+    - port: 9090
+      targetPort: 9090
   type: ClusterIP
 ---
 apiVersion: v1
@@ -421,7 +421,7 @@ metadata:
   namespace: monitoring
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi
@@ -438,21 +438,21 @@ kind: ClusterRole
 metadata:
   name: prometheus
 rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - nodes/proxy
-  - services
-  - endpoints
-  - pods
-  verbs: ["get", "list", "watch"]
-- apiGroups:
-  - extensions
-  resources:
-  - ingresses
-  verbs: ["get", "list", "watch"]
-- nonResourceURLs: ["/metrics"]
-  verbs: ["get"]
+  - apiGroups: ['']
+    resources:
+      - nodes
+      - nodes/proxy
+      - services
+      - endpoints
+      - pods
+    verbs: ['get', 'list', 'watch']
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs: ['get', 'list', 'watch']
+  - nonResourceURLs: ['/metrics']
+    verbs: ['get']
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -463,9 +463,9 @@ roleRef:
   kind: ClusterRole
   name: prometheus
 subjects:
-- kind: ServiceAccount
-  name: prometheus
-  namespace: monitoring
+  - kind: ServiceAccount
+    name: prometheus
+    namespace: monitoring
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -483,70 +483,70 @@ spec:
         app: grafana
     spec:
       containers:
-      - name: grafana
-        image: grafana/grafana:10.0.0
-        ports:
-        - containerPort: 3000
-        readinessProbe:
-          httpGet:
-            path: /api/health
-            port: 3000
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        livenessProbe:
-          httpGet:
-            path: /api/health
-            port: 3000
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        resources:
-          requests:
-            cpu: 200m
-            memory: 512Mi
-          limits:
-            cpu: 500m
-            memory: 1Gi
-        env:
-        - name: GF_SECURITY_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: grafana-admin
-              key: password
-        - name: GF_USERS_ALLOW_SIGN_UP
-          value: "false"
-        - name: GF_SERVER_ROOT_URL
-          value: "https://grafana.hms.local"
-        - name: GF_INSTALL_PLUGINS
-          value: "grafana-piechart-panel,grafana-worldmap-panel,grafana-clock-panel,grafana-kubernetes-app"
-        - name: GF_AUTH_GENERIC_OAUTH_ENABLED
-          value: "true"
-        - name: GF_AUTH_GENERIC_OAUTH_NAME
-          value: "HMS OAuth"
-        - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
-          value: "grafana"
-        - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: grafana-oauth
-              key: client-secret
-        - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
-          value: "https://auth.hms.local/oauth/authorize"
-        - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
-          value: "https://auth.hms.local/oauth/token"
-        - name: GF_AUTH_GENERIC_OAUTH_API_URL
-          value: "https://auth.hms.local/oauth/userinfo"
-        volumeMounts:
-        - name: grafana-storage
-          mountPath: /var/lib/grafana
-        - name: grafana-provisioning
-          mountPath: /etc/grafana/provisioning
+        - name: grafana
+          image: grafana/grafana:10.0.0
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-admin
+                  key: password
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: 'false'
+            - name: GF_SERVER_ROOT_URL
+              value: 'https://grafana.hms.local'
+            - name: GF_INSTALL_PLUGINS
+              value: 'grafana-piechart-panel,grafana-worldmap-panel,grafana-clock-panel,grafana-kubernetes-app'
+            - name: GF_AUTH_GENERIC_OAUTH_ENABLED
+              value: 'true'
+            - name: GF_AUTH_GENERIC_OAUTH_NAME
+              value: 'HMS OAuth'
+            - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+              value: 'grafana'
+            - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-oauth
+                  key: client-secret
+            - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
+              value: 'https://auth.hms.local/oauth/authorize'
+            - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+              value: 'https://auth.hms.local/oauth/token'
+            - name: GF_AUTH_GENERIC_OAUTH_API_URL
+              value: 'https://auth.hms.local/oauth/userinfo'
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+            - name: grafana-provisioning
+              mountPath: /etc/grafana/provisioning
       volumes:
-      - name: grafana-storage
-        persistentVolumeClaim:
-          claimName: grafana-storage
-      - name: grafana-provisioning
-        configMap:
-          name: grafana-provisioning
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-storage
+        - name: grafana-provisioning
+          configMap:
+            name: grafana-provisioning
 ---
 apiVersion: v1
 kind: Service
@@ -557,8 +557,8 @@ spec:
   selector:
     app: grafana
   ports:
-  - port: 3000
-    targetPort: 3000
+    - port: 3000
+      targetPort: 3000
   type: ClusterIP
 ---
 apiVersion: v1
@@ -568,7 +568,7 @@ metadata:
   namespace: monitoring
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
@@ -608,7 +608,7 @@ metadata:
   namespace: monitoring
 type: Opaque
 data:
-  password: UGFzc3dvcmQxMjMh  # Password123!
+  password: UGFzc3dvcmQxMjMh # Password123!
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -626,44 +626,44 @@ spec:
         app: alertmanager
     spec:
       containers:
-      - name: alertmanager
-        image: prom/alertmanager:v0.25.0
-        args:
-        - "--config.file=/etc/alertmanager/alertmanager.yml"
-        - "--storage.path=/alertmanager"
-        ports:
-        - containerPort: 9093
-        readinessProbe:
-          httpGet:
-            path: /-/ready
-            port: 9093
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        livenessProbe:
-          httpGet:
-            path: /-/healthy
-            port: 9093
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 200m
-            memory: 512Mi
-        volumeMounts:
-        - name: alertmanager-config
-          mountPath: /etc/alertmanager
-        - name: alertmanager-storage
-          mountPath: /alertmanager
+        - name: alertmanager
+          image: prom/alertmanager:v0.25.0
+          args:
+            - '--config.file=/etc/alertmanager/alertmanager.yml'
+            - '--storage.path=/alertmanager'
+          ports:
+            - containerPort: 9093
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9093
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9093
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 200m
+              memory: 512Mi
+          volumeMounts:
+            - name: alertmanager-config
+              mountPath: /etc/alertmanager
+            - name: alertmanager-storage
+              mountPath: /alertmanager
       volumes:
-      - name: alertmanager-config
-        configMap:
-          name: alertmanager-config
-      - name: alertmanager-storage
-        persistentVolumeClaim:
-          claimName: alertmanager-storage
+        - name: alertmanager-config
+          configMap:
+            name: alertmanager-config
+        - name: alertmanager-storage
+          persistentVolumeClaim:
+            claimName: alertmanager-storage
 ---
 apiVersion: v1
 kind: Service
@@ -674,8 +674,8 @@ spec:
   selector:
     app: alertmanager
   ports:
-  - port: 9093
-    targetPort: 9093
+    - port: 9093
+      targetPort: 9093
   type: ClusterIP
 ---
 apiVersion: v1
@@ -821,7 +821,7 @@ metadata:
   namespace: monitoring
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi

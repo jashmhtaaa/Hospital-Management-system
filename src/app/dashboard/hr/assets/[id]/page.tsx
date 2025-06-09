@@ -75,9 +75,9 @@ export default const _AssetDetail = ({ params }: { params: { id: string } }) {
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error";
+          title: "Error",
           description: err.message;
-          variant: "destructive";
+          variant: "destructive"
         });
       } finally {
         setLoading(false);
@@ -89,14 +89,14 @@ export default const _AssetDetail = ({ params }: { params: { id: string } }) {
 
   // Handle edit navigation
   const handleEdit = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/edit`);
+    router.push(`/dashboard/hr/assets/${params.id}/edit`)
   };
 
   // Handle delete
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/hr/assets/${params.id}`, {
-        method: 'DELETE';
+        method: 'DELETE'
       });
 
       if (!response.ok) {
@@ -104,33 +104,33 @@ export default const _AssetDetail = ({ params }: { params: { id: string } }) {
       }
 
       toast({
-        title: "Success";
-        description: "Asset has been deleted";
+        title: "Success",
+        description: "Asset has been deleted"
       });
 
       router.push('/dashboard/hr/assets');
     } catch (err) {
       toast({
-        title: "Error";
+        title: "Error",
         description: err.message;
-        variant: "destructive";
+        variant: "destructive"
       });
     }
   };
 
   // Handle maintenance record
   const handleAddMaintenance = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/maintenance/new`);
+    router.push(`/dashboard/hr/assets/${params.id}/maintenance/new`)
   };
 
   // Handle asset transfer
   const handleTransfer = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/transfer`);
+    router.push(`/dashboard/hr/assets/${params.id}/transfer`)
   };
 
   // Handle asset assignment
   const handleAssign = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/assign`);
+    router.push(`/dashboard/hr/assets/${params.id}/assign`)
   };
 
   // Get status badge variant
@@ -146,7 +146,7 @@ export default const _AssetDetail = ({ params }: { params: { id: string } }) {
         return 'destructive';
       case 'LOST':
         return 'outline';
-      default: return 'default';
+      default: return 'default'
     }
   };
 
@@ -154,14 +154,14 @@ export default const _AssetDetail = ({ params }: { params: { id: string } }) {
   const formatCurrency = (amount: unknown) => {
     if (amount === null || amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
-      style: 'currency';
-      currency: 'USD';
-    }).format(amount);
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount)
   };
 
   // Format date or show placeholder
   const formatDateOrPlaceholder = (date: unknown) => {
-    return date ? format(new Date(date), 'PPP') : '—';
+    return date ? format(new Date(date), 'PPP') : '—'
   };
 
   if (loading != null) {

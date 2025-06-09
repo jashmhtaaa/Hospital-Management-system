@@ -47,7 +47,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(results || []); // Ensure empty array if results is null/undefined
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { message: "Error fetching surgery types", details: errorMessage },
       { status: 500 }
@@ -139,8 +139,8 @@ export const _POST = async (request: NextRequest) => {
           estimated_duration_minutes,
           required_staff,
           required_equipment,
-          created_at: now;
-          updated_at: now;
+          created_at: now,
+          updated_at: now
         },
         { status: 201 }
       );
@@ -148,13 +148,13 @@ export const _POST = async (request: NextRequest) => {
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       // FIX: Check errorMessage
       return NextResponse.json(
         { message: "Surgery type name must be unique", details: errorMessage },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       { message: "Error creating surgery type", details: errorMessage },

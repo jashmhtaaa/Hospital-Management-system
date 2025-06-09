@@ -13,29 +13,29 @@ export const TriageAssessmentSchema = z.object({
   arrival_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid arrival time'),
   arrival_mode: z.enum(['ambulance', 'walk_in', 'helicopter', 'police', 'other']),
   chief_complaint: z.string().min(1, 'Chief complaint is required'),
-  pain_scale: z.number().min(0).max(10).optional();
+  pain_scale: z.number().min(0).max(10).optional(),
   vital_signs: z.object({
-    temperature: z.number().optional();
-    blood_pressure_systolic: z.number().optional();
-    blood_pressure_diastolic: z.number().optional();
-    heart_rate: z.number().optional();
-    respiratory_rate: z.number().optional();
-    oxygen_saturation: z.number().optional();
-    glasgow_coma_scale: z.number().min(3).max(15).optional();
+    temperature: z.number().optional(),
+    blood_pressure_systolic: z.number().optional(),
+    blood_pressure_diastolic: z.number().optional(),
+    heart_rate: z.number().optional(),
+    respiratory_rate: z.number().optional(),
+    oxygen_saturation: z.number().optional(),
+    glasgow_coma_scale: z.number().min(3).max(15).optional()
   }),
-  allergies: z.array(z.string()).default([]);
-  current_medications: z.array(z.string()).default([]);
-  medical_history: z.array(z.string()).default([]);
-  presenting_symptoms: z.array(z.string()).default([]);
-  onset_time: z.string().optional();
-  duration: z.string().optional();
+  allergies: z.array(z.string()).default([]),
+  current_medications: z.array(z.string()).default([]),
+  medical_history: z.array(z.string()).default([]),
+  presenting_symptoms: z.array(z.string()).default([]),
+  onset_time: z.string().optional(),
+  duration: z.string().optional(),
   severity: z.enum(['mild', 'moderate', 'severe']).optional(),
   pregnancy_status: z.enum(['not_pregnant', 'pregnant', 'unknown', 'n_a']).default('unknown'),
-  last_menstrual_period: z.string().optional();
-  fall_risk_factors: z.array(z.string()).default([]);
-  isolation_required: z.boolean().default(false);
-  isolation_type: z.string().optional();
-  triaged_by: z.string().min(1, 'Triage nurse ID is required'),;
+  last_menstrual_period: z.string().optional(),
+  fall_risk_factors: z.array(z.string()).default([]),
+  isolation_required: z.boolean().default(false),
+  isolation_type: z.string().optional(),
+  triaged_by: z.string().min(1, 'Triage nurse ID is required'),
 });
 
 export const BedAssignmentSchema = z.object({
@@ -44,64 +44,64 @@ export const BedAssignmentSchema = z.object({
   room_type: z.enum(['triage', 'acute', 'trauma', 'observation', 'isolation', 'psychiatric']),
   assigned_by: z.string().min(1, 'Staff ID is required'),
   assignment_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid assignment time'),
-  special_requirements: z.array(z.string()).default([]);
+  special_requirements: z.array(z.string()).default([])
 });
 
 export const PhysicianAssessmentSchema = z.object({
   ed_visit_id: z.string().min(1, 'ED visit ID is required'),
   physician_id: z.string().min(1, 'Physician ID is required'),
   assessment_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid assessment time'),
-  history_of_present_illness: z.string();
-  review_of_systems: z.string().optional();
-  physical_examination: z.string();
-  assessment_and_plan: z.string();
-  differential_diagnosis: z.array(z.string()).default([]);
+  history_of_present_illness: z.string(),
+  review_of_systems: z.string().optional(),
+  physical_examination: z.string(),
+  assessment_and_plan: z.string(),
+  differential_diagnosis: z.array(z.string()).default([]),
   orders: z.array(z.object({
     type: z.enum(['lab', 'imaging', 'medication', 'procedure', 'consultation']),
-    description: z.string();
+    description: z.string(),
     priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
-    ordered_time: z.string();
+    ordered_time: z.string()
   })).default([]),
   disposition: z.enum(['discharge', 'admit', 'transfer', 'observe', 'ama', 'expired']).optional(),
-  follow_up_instructions: z.string().optional();
+  follow_up_instructions: z.string().optional()
 });
 
 export const EDDischargeSchema = z.object({
   ed_visit_id: z.string().min(1, 'ED visit ID is required'),
   discharge_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid discharge time'),
   discharge_disposition: z.enum(['home', 'admit_observation', 'admit_inpatient', 'transfer', 'ama', 'expired', 'psych_hold']),
-  discharge_diagnosis: z.array(z.string());
+  discharge_diagnosis: z.array(z.string()),
   medications_prescribed: z.array(z.object({
-    medication: z.string();
-    dosage: z.string();
-    instructions: z.string();
+    medication: z.string(),
+    dosage: z.string(),
+    instructions: z.string()
   })).default([]),
   follow_up_appointments: z.array(z.object({
-    specialty: z.string();
-    timeframe: z.string();
-    instructions: z.string();
+    specialty: z.string(),
+    timeframe: z.string(),
+    instructions: z.string()
   })).default([]),
-  discharge_instructions: z.string();
-  patient_education_provided: z.array(z.string()).default([]);
+  discharge_instructions: z.string(),
+  patient_education_provided: z.array(z.string()).default([]),
   discharged_by: z.string().min(1, 'Physician ID is required'),
   patient_condition_at_discharge: z.enum(['stable', 'improved', 'unchanged', 'worse']),
-  transportation_arranged: z.boolean().default(false);
-  transportation_type: z.string().optional();
+  transportation_arranged: z.boolean().default(false),
+  transportation_type: z.string().optional()
 });
 
 export type TriageAssessment = z.infer<typeof TriageAssessmentSchema> & {
-  id: string;
+  id: string,
   esi_level: 1 | 2 | 3 | 4 | 5; // Emergency Severity Index
-  acuity_score: number;
+  acuity_score: number,
   estimated_wait_time: number; // in minutes
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type EDVisit = {
-  id: string;
+  id: string,
   patient_id: string;
-  visit_number: string;
+  visit_number: string,
   arrival_time: Date;
   triage_time?: Date;
   bed_assignment_time?: Date;
@@ -114,53 +114,53 @@ export type EDVisit = {
   chief_complaint: string;
   esi_level?: 1 | 2 | 3 | 4 | 5;
   total_length_of_stay?: number; // in minutes
-  created_at: Date;
+  created_at: Date,
   updated_at: Date;
   patient_name?: string;
   patient_age?: number;
-  patient_gender?: string;
+  patient_gender?: string
 };
 
 export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
-  id: string;
+  id: string,
   start_time: Date;
   end_time?: Date;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date,
+  updated_at: Date
 };
 
 export type PhysicianAssessment = z.infer<typeof PhysicianAssessmentSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
-  id: string;
+  id: string,
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date
 };
 
 export interface EDCapacity {
-  total_beds: number;
+  total_beds: number,
   occupied_beds: number;
-  available_beds: number;
+  available_beds: number,
   beds_by_type: {
     [key in BedAssignmentSchema['_type']['room_type']]: {
-      total: number;
+      total: number,
       occupied: number;
-      available: number;
-    };
+      available: number
+    }
   };
-  waiting_patients: number;
+  waiting_patients: number,
   patients_by_esi: {
-    level_1: number;
+    level_1: number,
     level_2: number;
-    level_3: number;
+    level_3: number,
     level_4: number;
-    level_5: number;
+    level_5: number
   };
-  average_wait_time: number;
+  average_wait_time: number,
   longest_wait_time: number
 export interface EDMetrics {
   door_to_provider_time: number; // minutes
@@ -172,26 +172,26 @@ export interface EDMetrics {
   time_to_pain_medication: number; // minutes (for appropriate patients)
   throughput_per_hour: number
 export interface CriticalAlert {
-  id: string;
+  id: string,
   ed_visit_id: string
-  patient_id: string;
+  patient_id: string,
   alert_type: 'esi_1' | 'esi_2' | 'deterioration' | 'long_wait' | 'fall_risk' | 'isolation' | 'trauma_activation';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   message: string;
-  triggered_time: Date;
+  triggered_time: Date,
   acknowledged: boolean;
   acknowledged_by?: string;
   acknowledged_time?: Date;
   resolved: boolean;
   resolved_time?: Date;
 export class EmergencyDepartmentService {
-  private edVisits: Map<string, EDVisit> = new Map();
-  private triageAssessments: Map<string, TriageAssessment> = new Map();
-  private bedAssignments: Map<string, BedAssignment[]> = new Map();
-  private physicianAssessments: Map<string, PhysicianAssessment[]> = new Map();
-  private discharges: Map<string, EDDischarge> = new Map();
-  private criticalAlerts: Map<string, CriticalAlert[]> = new Map();
-  private edBeds: Map<string, { type: BedAssignmentSchema['_type']['room_type']; occupied: boolean; patient_id?: string }> = new Map(),
+  private edVisits: Map<string, EDVisit> = new Map(),
+  private triageAssessments: Map<string, TriageAssessment> = new Map(),
+  private bedAssignments: Map<string, BedAssignment[]> = new Map(),
+  private physicianAssessments: Map<string, PhysicianAssessment[]> = new Map(),
+  private discharges: Map<string, EDDischarge> = new Map(),
+  private criticalAlerts: Map<string, CriticalAlert[]> = new Map(),
+  private edBeds: Map<string, { type: BedAssignmentSchema['_type']['room_type'], occupied: boolean; patient_id?: string }> = new Map(),
   constructor() {
     this.initializeEDBeds();
   }
@@ -233,8 +233,8 @@ export class EmergencyDepartmentService {
 
     bedConfiguration.forEach(bed => {
       this.edBeds.set(bed.number, {
-        type: bed.type;
-        occupied: false;
+        type: bed.type,
+        occupied: false
       });
     });
   }
@@ -243,7 +243,7 @@ export class EmergencyDepartmentService {
    * Register patient arrival;
    */
   async registerArrival(
-    patientId: string;
+    patientId: string,
     arrivalMode: TriageAssessmentSchema['_type']['arrival_mode'];
     chiefComplaint: string;
   ): Promise<EDVisit> {
@@ -251,14 +251,14 @@ export class EmergencyDepartmentService {
     const visitNumber = this.generateVisitNumber();
 
     const edVisit: EDVisit = {
-      id: visitId;
+      id: visitId,
       patient_id: patientId;
-      visit_number: visitNumber;
-      arrival_time: new Date();
-      status: 'arrived';
+      visit_number: visitNumber,
+      arrival_time: new Date(),
+      status: 'arrived',
       chief_complaint: chiefComplaint;
-      created_at: new Date();
-      updated_at: new Date();
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.edVisits.set(visitId, edVisit);
@@ -271,7 +271,7 @@ export class EmergencyDepartmentService {
   private generateVisitNumber(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `ED/* SECURITY: Template literal eliminated */;
+    return `ED/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -291,12 +291,12 @@ export class EmergencyDepartmentService {
 
     const triageAssessment: TriageAssessment = {
       ...validatedData,
-      id: uuidv4();
+      id: uuidv4(),
       esi_level: esiLevel;
-      acuity_score: acuityScore;
+      acuity_score: acuityScore,
       estimated_wait_time: estimatedWaitTime;
-      created_at: new Date();
-      updated_at: new Date();
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.triageAssessments.set(triageAssessment.id, triageAssessment);
@@ -317,7 +317,7 @@ export class EmergencyDepartmentService {
   /**
    * Calculate Emergency Severity Index (ESI) level;
    */
-  private calculateESILevel(assessment: z.infer<typeof TriageAssessmentSchema>): { esiLevel: 1 | 2 | 3 | 4 | 5; acuityScore: number } {
+  private calculateESILevel(assessment: z.infer<typeof TriageAssessmentSchema>): { esiLevel: 1 | 2 | 3 | 4 | 5, acuityScore: number } {
     let acuityScore = 0;
 
     // Life-threatening conditions (ESI 1)
@@ -399,10 +399,10 @@ export class EmergencyDepartmentService {
 
     const bedAssignment: BedAssignment = {
       ...validatedData,
-      id: uuidv4();
-      start_time: new Date(validatedData.assignment_time);
-      created_at: new Date();
-      updated_at: new Date();
+      id: uuidv4(),
+      start_time: new Date(validatedData.assignment_time),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     // Store bed assignment
@@ -434,9 +434,9 @@ export class EmergencyDepartmentService {
 
     const assessment: PhysicianAssessment = {
       ...validatedData,
-      id: uuidv4();
-      created_at: new Date();
-      updated_at: new Date();
+      id: uuidv4(),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     // Store assessment
@@ -469,9 +469,9 @@ export class EmergencyDepartmentService {
 
     const discharge: EDDischarge = {
       ...validatedData,
-      id: uuidv4();
-      created_at: new Date();
-      updated_at: new Date();
+      id: uuidv4(),
+      created_at: new Date(),
+      updated_at: new Date()
     };
 
     this.discharges.set(validatedData.ed_visit_id, discharge);
@@ -556,14 +556,14 @@ export class EmergencyDepartmentService {
     const longestWaitTime = waitTimes.length > 0 ? Math.max(...waitTimes) : 0;
 
     return {
-      total_beds: totalBeds;
+      total_beds: totalBeds,
       occupied_beds: occupiedBeds;
-      available_beds: availableBeds;
+      available_beds: availableBeds,
       beds_by_type: bedsByType;
-      waiting_patients: waitingPatients;
+      waiting_patients: waitingPatients,
       patients_by_esi: patientsByESI;
-      average_wait_time: Math.round(averageWaitTime);
-      longest_wait_time: Math.round(longestWaitTime);
+      average_wait_time: Math.round(averageWaitTime),
+      longest_wait_time: Math.round(longestWaitTime)
     };
   }
 
@@ -617,14 +617,14 @@ export class EmergencyDepartmentService {
     const throughputPerHour = totalVisits / 24; // Assuming 24-hour period
 
     return {
-      door_to_provider_time: Math.round(averageDoorToProvider);
-      length_of_stay: Math.round(averageLengthOfStay);
-      left_without_being_seen_rate: Math.round(leftWithoutBeingSeenRate * 100) / 100;
+      door_to_provider_time: Math.round(averageDoorToProvider),
+      length_of_stay: Math.round(averageLengthOfStay),
+      left_without_being_seen_rate: Math.round(leftWithoutBeingSeenRate * 100) / 100,
       patient_satisfaction_score: Math.round(patientSatisfactionScore * 100) / 100;
-      admit_rate: Math.round(admitRate * 100) / 100;
+      admit_rate: Math.round(admitRate * 100) / 100,
       return_rate_72h: Math.round(returnRate72h * 100) / 100;
-      time_to_pain_medication: Math.round(timeToPainMedication);
-      throughput_per_hour: Math.round(throughputPerHour * 100) / 100;
+      time_to_pain_medication: Math.round(timeToPainMedication),
+      throughput_per_hour: Math.round(throughputPerHour * 100) / 100
     };
   }
 
@@ -637,60 +637,60 @@ export class EmergencyDepartmentService {
     // ESI Level 1 alert
     if (triage.esi_level === 1) {
       alerts.push({
-        id: uuidv4();
+        id: uuidv4(),
         ed_visit_id: visit.id;
-        patient_id: visit.patient_id;
+        patient_id: visit.patient_id,
         alert_type: 'esi_1';
-        severity: 'critical';
+        severity: 'critical',
         message: 'ESI Level 1 - Immediate life-threatening condition';
-        triggered_time: new Date();
+        triggered_time: new Date(),
         acknowledged: false;
-        resolved: false;
+        resolved: false
       });
     }
 
     // ESI Level 2 alert
     if (triage.esi_level === 2) {
       alerts.push({
-        id: uuidv4();
+        id: uuidv4(),
         ed_visit_id: visit.id;
-        patient_id: visit.patient_id;
+        patient_id: visit.patient_id,
         alert_type: 'esi_2';
-        severity: 'high';
+        severity: 'high',
         message: 'ESI Level 2 - High-risk situation requiring urgent attention';
-        triggered_time: new Date();
+        triggered_time: new Date(),
         acknowledged: false;
-        resolved: false;
+        resolved: false
       });
     }
 
     // Fall risk alert
     if (triage.fall_risk_factors.length > 0) {
       alerts.push({
-        id: uuidv4();
+        id: uuidv4(),
         ed_visit_id: visit.id;
-        patient_id: visit.patient_id;
+        patient_id: visit.patient_id,
         alert_type: 'fall_risk';
-        severity: 'medium';
+        severity: 'medium',
         message: `Fall risk factors identified: ${triage.fall_risk_factors.join(', ')}`,
-        triggered_time: new Date();
+        triggered_time: new Date(),
         acknowledged: false;
-        resolved: false;
+        resolved: false
       });
     }
 
     // Isolation alert
     if (triage.isolation_required) {
       alerts.push({
-        id: uuidv4();
+        id: uuidv4(),
         ed_visit_id: visit.id;
-        patient_id: visit.patient_id;
+        patient_id: visit.patient_id,
         alert_type: 'isolation';
-        severity: 'high';
+        severity: 'high',
         message: `Isolation required: ${triage.isolation_type || 'Standard precautions'}`,
-        triggered_time: new Date();
+        triggered_time: new Date(),
         acknowledged: false;
-        resolved: false;
+        resolved: false
       });
     }
 
@@ -740,10 +740,10 @@ export class EmergencyDepartmentService {
   async getEDVisitDetails(visitId: string): Promise<{
     visit: EDVisit;
     triage?: TriageAssessment;
-    bedAssignments: BedAssignment[];
+    bedAssignments: BedAssignment[],
     assessments: PhysicianAssessment[];
     discharge?: EDDischarge;
-    alerts: CriticalAlert[];
+    alerts: CriticalAlert[]
   } | null> {
     const visit = this.edVisits.get(visitId);
     if (!visit) {
@@ -772,9 +772,9 @@ export class EmergencyDepartmentService {
    * Get waiting room status;
    */
   async getWaitingRoomStatus(): Promise<{
-    patients: EDVisit[];
+    patients: EDVisit[],
     totalWaiting: number;
-    averageWaitTime: number;
+    averageWaitTime: number,
     longestWaitTime: number;
     patientsByESI: { [key: string]: number };
   }> {
@@ -796,10 +796,10 @@ export class EmergencyDepartmentService {
     }, {} as { [key: string]: number });
 
     return {
-      patients: waitingPatients;
+      patients: waitingPatients,
       totalWaiting: waitingPatients.length;
-      averageWaitTime: Math.round(averageWaitTime);
-      longestWaitTime: Math.round(longestWaitTime);
+      averageWaitTime: Math.round(averageWaitTime),
+      longestWaitTime: Math.round(longestWaitTime),
       patientsByESI,
     };
   }

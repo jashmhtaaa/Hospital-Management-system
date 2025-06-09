@@ -20,25 +20,25 @@ export class TemplateService {
       // Create template in database
       const template = await prisma.marketingTemplate.create({
         data: {
-          name: data.name;
+          name: data.name,
           description: data.description;
-          type: data.type;
+          type: data.type,
           content: data.content;
-          variables: data.variables;
+          variables: data.variables,
           previewImage: data.previewImage;
-          isActive: data.isActive !== undefined ? data.isActive : true;
-          createdById: userId;
+          isActive: data.isActive !== undefined ? data.isActive : true,
+          createdById: userId
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'template.create';
+        action: 'template.create',
         resourceId: template.id;
         userId,
         details: {
-          templateName: template.name;
-          templateType: template.type;
+          templateName: template.name,
+          templateType: template.type
         }
       });
 
@@ -61,8 +61,8 @@ export class TemplateService {
         include: {
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         }
@@ -90,7 +90,7 @@ export class TemplateService {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingTemplate[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: MarketingTemplate[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         type,
@@ -127,25 +127,25 @@ export class TemplateService {
         include: {
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
       return {
-        data: templates;
+        data: templates,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -175,12 +175,12 @@ export class TemplateService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'template.update';
+        action: 'template.update',
         resourceId: id;
         userId,
         details: {
-          templateName: updatedTemplate.name;
-          updatedFields: Object.keys(data);
+          templateName: updatedTemplate.name,
+          updatedFields: Object.keys(data)
         }
       });
 
@@ -214,12 +214,12 @@ export class TemplateService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'template.delete';
+        action: 'template.delete',
         resourceId: id;
         userId,
         details: {
-          templateName: existingTemplate.name;
-          templateType: existingTemplate.type;
+          templateName: existingTemplate.name,
+          templateType: existingTemplate.type
         }
       });
     } catch (error) {

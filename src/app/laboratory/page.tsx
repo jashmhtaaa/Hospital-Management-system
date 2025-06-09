@@ -15,7 +15,7 @@ const LaboratoryPage = () => {
       </p>
       {/* TODO: Implement Laboratory features (Test Booking, Barcode Tracking, Report Uploading) */}
     </div>
-  );
+  )
 };
 
 export default LaboratoryPage;

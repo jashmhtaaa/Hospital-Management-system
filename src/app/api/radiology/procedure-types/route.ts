@@ -37,12 +37,12 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(results);
   } catch (error: unknown) {
     // FIX: Replaced any with unknown
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       {
-        error: "Failed to fetch radiology procedure types";
-        details: errorMessage;
+        error: "Failed to fetch radiology procedure types",
+        details: errorMessage
       },
       { status: 500 }
     );
@@ -105,12 +105,12 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(
         { error: "Procedure type with this name already exists" },
         { status: 409 }
-      );
+      ),
     }
     return NextResponse.json(
       {
-        error: "Failed to create radiology procedure type";
-        details: errorMessage;
+        error: "Failed to create radiology procedure type",
+        details: errorMessage
       },
       { status: 500 }
     );

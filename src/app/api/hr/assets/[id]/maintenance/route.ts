@@ -6,16 +6,16 @@ import { assetService } from '@/lib/hr/asset-service';
 // Schema for maintenance record
 const maintenanceSchema = z.object({
   maintenanceType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'CALIBRATION', 'INSPECTION'], {
-    errorMap: () => ({ message: "Invalid maintenance type" });
+    errorMap: () => ({ message: "Invalid maintenance type" }),
   }),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
-  performedBy: z.string().optional();
-  cost: z.number().optional();
+  performedBy: z.string().optional(),
+  cost: z.number().optional(),
   description: z.string().min(1, "Description is required"),
   nextMaintenanceDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
 });
 
@@ -41,13 +41,13 @@ export const _POST = async (
 
     // Convert date strings to Date objects
     const maintenanceData = {
-      assetId: params.id;
+      assetId: params.id,
       maintenanceType: data.maintenanceType;
-      date: new Date(data.date);
+      date: new Date(data.date),
       performedBy: data.performedBy;
-      cost: data.cost;
+      cost: data.cost,
       description: data.description;
-      nextMaintenanceDate: data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined;
+      nextMaintenanceDate: data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined
     };
 
     // Record maintenance

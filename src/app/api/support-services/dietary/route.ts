@@ -10,28 +10,28 @@ const dietaryService = new DietaryService();
 
 // Request validation schemas
 const createDietaryRequestSchema = z.object({
-  patientId: z.string().uuid();
+  patientId: z.string().uuid(),
   mealType: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK']),
   dietType: z.enum(['REGULAR', 'VEGETARIAN', 'VEGAN', 'GLUTEN_FREE', 'DIABETIC', 'LOW_SODIUM', 'LIQUID', 'SOFT', 'CUSTOM']),
-  customDietDetails: z.string().max(500).optional();
-  allergies: z.array(z.string()).optional();
-  preferences: z.array(z.string()).optional();
+  customDietDetails: z.string().max(500).optional(),
+  allergies: z.array(z.string()).optional(),
+  preferences: z.array(z.string()).optional(),
   scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional();
-  requestedById: z.string().uuid();
-  locationId: z.string().uuid();
+  notes: z.string().max(1000).optional(),
+  requestedById: z.string().uuid(),
+  locationId: z.string().uuid()
 });
 
 const updateDietaryRequestSchema = z.object({
   mealType: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK']).optional(),
   dietType: z.enum(['REGULAR', 'VEGETARIAN', 'VEGAN', 'GLUTEN_FREE', 'DIABETIC', 'LOW_SODIUM', 'LIQUID', 'SOFT', 'CUSTOM']).optional(),
-  customDietDetails: z.string().max(500).optional();
-  allergies: z.array(z.string()).optional();
-  preferences: z.array(z.string()).optional();
-  scheduledTime: z.string().transform(val => new Date(val)).optional();
-  notes: z.string().max(1000).optional();
+  customDietDetails: z.string().max(500).optional(),
+  allergies: z.array(z.string()).optional(),
+  preferences: z.array(z.string()).optional(),
+  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'PREPARING', 'READY', 'DELIVERED', 'COMPLETED', 'CANCELLED']).optional(),
-  locationId: z.string().uuid().optional();
+  locationId: z.string().uuid().optional()
 });
 
 // GET /api/support-services/dietary/requests
@@ -42,15 +42,15 @@ export const _GET = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined;
+        status: searchParams.get('status') || undefined,
         patientId: searchParams.get('patientId') || undefined;
-        mealType: searchParams.get('mealType') || undefined;
+        mealType: searchParams.get('mealType') || undefined,
         dietType: searchParams.get('dietType') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
+        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        locationId: searchParams.get('locationId') || undefined;
+        locationId: searchParams.get('locationId') || undefined,
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary requests with filters
@@ -59,8 +59,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:read';
-      auditAction: 'DIETARY_REQUESTS_VIEW';
+      requiredPermission: 'dietary:read',
+      auditAction: 'DIETARY_REQUESTS_VIEW'
     }
   );
 }
@@ -83,8 +83,8 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(result, { status: 201 });
     },
     {
-      requiredPermission: 'dietary:create';
-      auditAction: 'DIETARY_REQUEST_CREATE';
+      requiredPermission: 'dietary:create',
+      auditAction: 'DIETARY_REQUEST_CREATE'
     }
   );
 }
@@ -101,8 +101,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:read';
-      auditAction: 'DIETARY_REQUEST_VIEW';
+      requiredPermission: 'dietary:read',
+      auditAction: 'DIETARY_REQUEST_VIEW'
     }
   );
 }
@@ -125,8 +125,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:update';
-      auditAction: 'DIETARY_REQUEST_UPDATE';
+      requiredPermission: 'dietary:update',
+      auditAction: 'DIETARY_REQUEST_UPDATE'
     }
   );
 }
@@ -142,8 +142,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json({ success: true });
     },
     {
-      requiredPermission: 'dietary:delete';
-      auditAction: 'DIETARY_REQUEST_DELETE';
+      requiredPermission: 'dietary:delete',
+      auditAction: 'DIETARY_REQUEST_DELETE'
     }
   );
 }
@@ -171,8 +171,8 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:update';
-      auditAction: 'DIETARY_REQUEST_PREPARE';
+      requiredPermission: 'dietary:update',
+      auditAction: 'DIETARY_REQUEST_PREPARE'
     }
   );
 }
@@ -200,8 +200,8 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:update';
-      auditAction: 'DIETARY_REQUEST_DELIVER';
+      requiredPermission: 'dietary:update',
+      auditAction: 'DIETARY_REQUEST_DELIVER'
     }
   );
 }
@@ -214,11 +214,11 @@ export const _GET_MENUS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        dietType: searchParams.get('dietType') || undefined;
+        dietType: searchParams.get('dietType') || undefined,
         mealType: searchParams.get('mealType') || undefined;
-        isActive: searchParams.get('isActive') === 'true';
+        isActive: searchParams.get('isActive') === 'true',
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10');
+        limit: parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary menus with filters
@@ -227,8 +227,8 @@ export const _GET_MENUS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:read';
-      auditAction: 'DIETARY_MENUS_VIEW';
+      requiredPermission: 'dietary:read',
+      auditAction: 'DIETARY_MENUS_VIEW'
     }
   );
 }
@@ -249,7 +249,7 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'dietary:analytics';
-      auditAction: 'DIETARY_ANALYTICS_VIEW';
+      requiredPermission: 'dietary:analytics',
+      auditAction: 'DIETARY_ANALYTICS_VIEW'
     }
   );

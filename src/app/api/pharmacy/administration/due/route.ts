@@ -17,35 +17,35 @@ import { getMedicationById, getPrescriptionById } from '../../../../../lib/servi
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null);
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriptionId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  findDue: (timeWindow: number) => Promise.resolve([]);
-  save: (administration) => Promise.resolve(administration.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: () => Promise.resolve(null),
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriptionId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  findDue: (timeWindow: number) => Promise.resolve([]),
+  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -126,15 +126,15 @@ export const GET = async (req: NextRequest) => {
 
         // Add to due administrations
         dueAdministrations.push({
-          prescriptionId: prescription.id;
+          prescriptionId: prescription.id,
           patientId: prescription.patientId;
-          medicationId: medication.id;
+          medicationId: medication.id,
           medicationName: medication.name;
-          dose: prescription.dosage.value;
+          dose: prescription.dosage.value,
           unit: prescription.dosage.unit;
-          route: prescription.dosage.route;
+          route: prescription.dosage.route,
           scheduledTime: scheduleTime;
-          status: 'due';
+          status: 'due'
         });
       }
     }
@@ -151,30 +151,30 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'LIST_DUE';
+      action: 'LIST_DUE',
       resourceType: 'MedicationAdministration';
-      userId: userId;
+      userId: userId,
       details: {
         timeWindow,
         locationId,
         patientId,
         unitId,
-        resultCount: paginatedAdministrations.length;
+        resultCount: paginatedAdministrations.length
       }
     });
 
     // Return response
     return NextResponse.json({
-      dueAdministrations: paginatedAdministrations;
+      dueAdministrations: paginatedAdministrations,
       timeWindow: {
-        start: startTime;
-        end: endTime;
+        start: startTime,
+        end: endTime
       },
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

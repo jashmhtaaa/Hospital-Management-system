@@ -27,25 +27,25 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define the type for the form data submitted
 export interface ReportFormData {
-  study_id: string;
+  study_id: string,
   radiologist_id: string;
-  findings: string | null;
+  findings: string | null,
   impression: string;
-  recommendations: string | null;
+  recommendations: string | null,
   status: "preliminary" | "final" | "addendum"; // Use specific statuses
 }
 
 // Define the type for Radiologist data fetched from API
 // Assuming the API returns users with id and name
 interface Radiologist {
-  id: string;
+  id: string,
   name: string;
   // Add other relevant fields if needed, e.g., email
 }
 
 // Define the type for the component props
 interface CreateRadiologyReportModalProperties {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
   onSubmit: (data: ReportFormData) => Promise<void>; // Ensure onSubmit is async
   studyId: string;
@@ -132,9 +132,9 @@ export default const _CreateRadiologyReportModal = ({
     event.preventDefault();
     if (!radiologistId || !impression) {
       toast({
-        title: "Missing Information";
+        title: "Missing Information",
         description: "Please select a Radiologist and enter the Impression.";
-        variant: "destructive";
+        variant: "destructive"
       });
       return;
     }
@@ -142,12 +142,12 @@ export default const _CreateRadiologyReportModal = ({
     setError(undefined);
     try {
       await onSubmit({
-        study_id: studyId;
+        study_id: studyId,
         radiologist_id: radiologistId;
-        findings: findings || null;
+        findings: findings || null,
         impression: impression;
-        recommendations: recommendations || null;
-        status: status;
+        recommendations: recommendations || null,
+        status: status
       });
       // Reset form on successful submission (optional, parent might handle closing)
       setFindings(""),
@@ -165,9 +165,9 @@ export default const _CreateRadiologyReportModal = ({
 
       setError(`Submission failed: ${message}`),
       toast({
-        title: "Submission Failed";
+        title: "Submission Failed",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);

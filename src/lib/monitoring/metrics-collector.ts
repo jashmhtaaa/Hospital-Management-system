@@ -12,35 +12,35 @@ import { getDatabaseHealth } from '../database/connection-pool';
 
 // Metric types
 export interface Metric {
-  name: string;
+  name: string,
   value: number;
   timestamp: Date;
   tags?: Record<string, string>;
   type: 'counter' | 'gauge' | 'histogram' | 'timer'
 export interface HealthMetric {
-  service: string;
+  service: string,
   status: 'healthy' | 'degraded' | 'unhealthy';
   responseTime?: number;
   errorRate?: number;
   details?: unknown;
   timestamp: Date
 export interface AlertRule {
-  id: string;
+  id: string,
   name: string;
-  metric: string;
+  metric: string,
   condition: 'gt' | 'lt' | 'eq' | 'gte' | 'lte';
-  threshold: number;
+  threshold: number,
   duration: number; // seconds
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: 'low' | 'medium' | 'high' | 'critical',
   enabled: boolean;
-  notifications: string[]; // channels: email, slack, sms;
+  notifications: string[]; // channels: email, slack, sms
 }
 
 class MetricsCollector {
   private static instance: MetricsCollector;
-  private metrics: Map<string, Metric[]> = new Map();
-  private healthMetrics: Map<string, HealthMetric> = new Map();
-  private alertRules: Map<string, AlertRule> = new Map();
+  private metrics: Map<string, Metric[]> = new Map(),
+  private healthMetrics: Map<string, HealthMetric> = new Map(),
+  private alertRules: Map<string, AlertRule> = new Map(),
   private isCollecting: boolean = false;
   private collectionInterval?: NodeJS.Timeout;
 
@@ -58,67 +58,67 @@ class MetricsCollector {
   private initializeAlertRules(): void {
     // Database response time alert
     this.addAlertRule({
-      id: 'db_response_time';
+      id: 'db_response_time',
       name: 'Database Response Time High';
-      metric: 'database.response_time';
+      metric: 'database.response_time',
       condition: 'gt';
       threshold: 2000, // 2 seconds
       duration: 300, // 5 minutes
-      severity: 'high';
+      severity: 'high',
       enabled: true;
-      notifications: ['email', 'slack'],;
+      notifications: ['email', 'slack'],
     });
 
     // Error rate alert
     this.addAlertRule({
-      id: 'error_rate_high';
+      id: 'error_rate_high',
       name: 'Error Rate High';
-      metric: 'api.error_rate';
+      metric: 'api.error_rate',
       condition: 'gt';
       threshold: 0.05, // 5%
       duration: 180, // 3 minutes
-      severity: 'critical';
+      severity: 'critical',
       enabled: true;
-      notifications: ['email', 'slack', 'sms'],;
+      notifications: ['email', 'slack', 'sms'],
     });
 
     // Memory usage alert
     this.addAlertRule({
-      id: 'memory_usage_high';
+      id: 'memory_usage_high',
       name: 'Memory Usage High';
-      metric: 'system.memory_usage';
+      metric: 'system.memory_usage',
       condition: 'gt';
       threshold: 0.85, // 85%
       duration: 600, // 10 minutes
-      severity: 'medium';
+      severity: 'medium',
       enabled: true;
-      notifications: ['email'];
+      notifications: ['email']
     });
 
     // Active sessions alert
     this.addAlertRule({
-      id: 'active_sessions_high';
+      id: 'active_sessions_high',
       name: 'Active Sessions High';
-      metric: 'auth.active_sessions';
+      metric: 'auth.active_sessions',
       condition: 'gt';
-      threshold: 500;
+      threshold: 500,
       duration: 300, // 5 minutes
-      severity: 'medium';
+      severity: 'medium',
       enabled: true;
-      notifications: ['email', 'slack'],;
+      notifications: ['email', 'slack'],
     });
 
     // Cache hit rate low
     this.addAlertRule({
-      id: 'cache_hit_rate_low';
+      id: 'cache_hit_rate_low',
       name: 'Cache Hit Rate Low';
-      metric: 'cache.hit_rate';
+      metric: 'cache.hit_rate',
       condition: 'lt';
       threshold: 0.70, // 70%
       duration: 900, // 15 minutes
-      severity: 'low';
+      severity: 'low',
       enabled: true;
-      notifications: ['email'];
+      notifications: ['email']
     });
   }
 
@@ -127,7 +127,7 @@ class MetricsCollector {
     const metric: Metric = {
       name,
       value,
-      timestamp: new Date();
+      timestamp: new Date(),
       tags,
       type,
     };
@@ -162,7 +162,7 @@ class MetricsCollector {
 
   // Performance timing decorator
   async measurePerformance<T>(
-    operationName: string;
+    operationName: string,
     operation: () => Promise<T>;
     tags?: Record<string, string>
   ): Promise<T> {
@@ -191,11 +191,11 @@ class MetricsCollector {
       const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       this.healthMetrics.set('database', {
-        service: 'database';
+        service: 'database',
         status: dbHealth?.prisma && dbHealth.pool ? 'healthy' : 'unhealthy';
         responseTime,
-        details: dbHealth;
-        timestamp: new Date();
+        details: dbHealth,
+        timestamp: new Date()
       });
 
       this.recordGauge('database.response_time', responseTime);
@@ -205,10 +205,10 @@ class MetricsCollector {
 
     } catch (error) {
       this.healthMetrics.set('database', {
-        service: 'database';
+        service: 'database',
         status: 'unhealthy';
         details: { error: error instanceof Error ? error.message : 'Unknown error' },
-        timestamp: new Date();
+        timestamp: new Date()
       });
     }
 
@@ -219,11 +219,11 @@ class MetricsCollector {
       const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       this.healthMetrics.set('cache', {
-        service: 'cache';
+        service: 'cache',
         status: cacheHealth.healthy ? 'healthy' : 'unhealthy';
         responseTime,
-        details: cacheHealth;
-        timestamp: new Date();
+        details: cacheHealth,
+        timestamp: new Date()
       });
 
       this.recordGauge('cache.response_time', responseTime);
@@ -237,10 +237,10 @@ class MetricsCollector {
 
     } catch (error) {
       this.healthMetrics.set('cache', {
-        service: 'cache';
+        service: 'cache',
         status: 'unhealthy';
         details: { error: error instanceof Error ? error.message : 'Unknown error' },
-        timestamp: new Date();
+        timestamp: new Date()
       });
     }
 
@@ -345,7 +345,7 @@ class MetricsCollector {
         const shouldAlert = this.evaluateCondition(value, rule.condition, rule.threshold);
 
         if (shouldAlert != null) {
-          this.trigger/* SECURITY: Alert removed */;
+          this.trigger/* SECURITY: Alert removed */
         }
       }
     }
@@ -358,20 +358,20 @@ class MetricsCollector {
       case 'lt': return value < threshold;
       case 'lte': return value <= threshold;
       case 'eq': return value === threshold;
-      default: return false;
+      default: return false
     }
   }
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {
     const alert = {
       id: `alert_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-      ruleId: rule.id;
+      ruleId: rule.id,
       ruleName: rule.name;
       metric: rule.metric;
       value,
-      threshold: rule.threshold;
+      threshold: rule.threshold,
       severity: rule.severity;
-      timestamp: new Date();
+      timestamp: new Date()
     };
 
     // Send notifications
@@ -385,14 +385,14 @@ class MetricsCollector {
       switch (channel) {
         case 'email':
           await this.sendEmail/* SECURITY: Alert removed */
-          break;
+          break,
         case 'slack':
           await this.sendSlack/* SECURITY: Alert removed */
-          break;
+          break,
         case 'sms':
           await this.sendSms/* SECURITY: Alert removed */
-          break;
-        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+          break,
+        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     } catch (error) {
 
@@ -401,17 +401,17 @@ class MetricsCollector {
 
   private async sendEmail/* SECURITY: Alert removed */: Promise<void> {
     // Email alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async sendSlack/* SECURITY: Alert removed */: Promise<void> {
     // Slack alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   private async sendSms/* SECURITY: Alert removed */: Promise<void> {
     // SMS alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   }
 
   // Data access methods
@@ -453,17 +453,17 @@ class MetricsCollector {
     return {
       // System health
       health: {
-        database: this.healthMetrics.get('database')?.status || 'unknown';
+        database: this.healthMetrics.get('database')?.status || 'unknown',
         cache: this.healthMetrics.get('cache')?.status || 'unknown';
-        overall: this.calculateOverallHealth();
+        overall: this.calculateOverallHealth()
       },
 
       // Performance metrics
       performance: {
         avgResponseTime: this.getMetricAverage('api.response_time', 300),
-        errorRate: this.getLatestMetric('api.error_rate')?.value || 0;
+        errorRate: this.getLatestMetric('api.error_rate')?.value || 0,
         requestsPerMinute: this.getMetricSum('api.requests_total', 60),
-        databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0;
+        databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0
       },
 
       // Business metrics
@@ -471,15 +471,15 @@ class MetricsCollector {
         patientsRegisteredToday: this.getMetricSum('business.patient_registrations', 86400),
         appointmentsBookedToday: this.getMetricSum('business.appointments_booked', 86400),
         billsGeneratedToday: this.getMetricSum('business.bills_generated', 86400),
-        labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),;
+        labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),
       },
 
       // System metrics
       system: {
-        memoryUsage: this.getLatestMetric('system.memory_usage')?.value || 0;
+        memoryUsage: this.getLatestMetric('system.memory_usage')?.value || 0,
         activeSessions: this.getLatestMetric('auth.active_sessions')?.value || 0;
-        uptime: this.getLatestMetric('system.uptime')?.value || 0;
-        eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0;
+        uptime: this.getLatestMetric('system.uptime')?.value || 0,
+        eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0
       },
     };
   }
@@ -537,9 +537,9 @@ class MetricsCollector {
     }
 
     return JSON.stringify({
-      timestamp: new Date().toISOString();
-      metrics: Object.fromEntries(this.metrics);
-      health: Object.fromEntries(this.healthMetrics);
+      timestamp: new Date().toISOString(),
+      metrics: Object.fromEntries(this.metrics),
+      health: Object.fromEntries(this.healthMetrics)
     }, null, 2)
   }
 
@@ -579,6 +579,6 @@ export const _createMetricsMiddleware = () {
       );
     });
 
-    next();
+    next()
   };
 export default metricsCollector;

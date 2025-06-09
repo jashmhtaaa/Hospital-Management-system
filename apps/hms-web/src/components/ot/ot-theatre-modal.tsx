@@ -9,9 +9,9 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 }
 interface OTTheatreModalProps {
-  isOpen: boolean;
+  isOpen: boolean,
   onClose: () => void;
-  onSubmit: (data: unknown) => void;
+  onSubmit: (data: unknown) => void
 }
 
 /**
@@ -21,7 +21,7 @@ export const _OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalPro
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here
-    onSubmit({});
+    onSubmit({})
   };
 
   return (

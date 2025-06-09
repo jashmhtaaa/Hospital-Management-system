@@ -16,35 +16,35 @@ import { getMedicationById, getPrescriptionById } from '../../../../../lib/servi
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById;
-  findByPatientId: (patientId: string) => Promise.resolve([]);
-  findByPrescriberId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getPrescriptionById,
+  findByPatientId: (patientId: string) => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null);
-  findByPatientId: () => Promise.resolve([]);
-  findByPrescriptionId: () => Promise.resolve([]);
-  findByMedicationId: () => Promise.resolve([]);
-  findByStatus: () => Promise.resolve([]);
-  findOverdue: (overdueThreshold: number) => Promise.resolve([]);
-  save: (administration) => Promise.resolve(administration.id || 'new-id');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: () => Promise.resolve(null),
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriptionId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  findOverdue: (overdueThreshold: number) => Promise.resolve([]),
+  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 };
 
 /**
@@ -148,18 +148,18 @@ export const GET = async (req: NextRequest) => {
 
         // Add to overdue administrations
         overdueAdministrations.push({
-          prescriptionId: prescription.id;
+          prescriptionId: prescription.id,
           patientId: prescription.patientId;
-          medicationId: medication.id;
+          medicationId: medication.id,
           medicationName: medication.name;
-          dose: prescription.dosage.value;
+          dose: prescription.dosage.value,
           unit: prescription.dosage.unit;
-          route: prescription.dosage.route;
+          route: prescription.dosage.route,
           scheduledTime: scheduleTime;
           overdueMinutes,
           severity,
-          isHighAlert: medication.isHighAlert;
-          status: 'overdue';
+          isHighAlert: medication.isHighAlert,
+          status: 'overdue'
         });
       }
     }
@@ -181,17 +181,17 @@ export const GET = async (req: NextRequest) => {
 
     // Group by severity for reporting
     const severityCounts = {
-      critical: overdueAdministrations.filter(a => a.severity === 'critical').length;
+      critical: overdueAdministrations.filter(a => a.severity === 'critical').length,
       high: overdueAdministrations.filter(a => a.severity === 'high').length;
-      medium: overdueAdministrations.filter(a => a.severity === 'medium').length;
-      normal: overdueAdministrations.filter(a => a.severity === 'normal').length;
+      medium: overdueAdministrations.filter(a => a.severity === 'medium').length,
+      normal: overdueAdministrations.filter(a => a.severity === 'normal').length
     };
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'LIST_OVERDUE';
+      action: 'LIST_OVERDUE',
       resourceType: 'MedicationAdministration';
-      userId: userId;
+      userId: userId,
       details: {
         overdueThreshold,
         locationId,
@@ -212,7 +212,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit)
       }
     }, { status: 200 });
   } catch (error) {

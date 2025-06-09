@@ -35,7 +35,7 @@ export default const _LoginPage = () {
 
     try {
       const response = await fetch("/api/auth/login", {
-        method: "POST";
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -51,21 +51,21 @@ export default const _LoginPage = () {
 
       // Login successful
       toast({
-        title: "Login Successful";
+        title: "Login Successful",
         description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining
       });
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       // For now, redirect to a placeholder dashboard
-      router.push("/dashboard");
+      router.push("/dashboard")
 
     } catch (err: unknown) { // Use unknown
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setError(message),
       toast({
-        title: "Login Failed";
+        title: "Login Failed",
         description: message;
-        variant: "destructive";
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

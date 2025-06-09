@@ -32,46 +32,46 @@ export const _GET = async (
 const biomedicalUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   equipmentType: z.enum(['DIAGNOSTIC', 'THERAPEUTIC', 'MONITORING', 'LABORATORY', 'SURGICAL', 'LIFE_SUPPORT', 'OTHER'], {
-    errorMap: () => ({ message: "Invalid equipment type" });
+    errorMap: () => ({ message: "Invalid equipment type" }),
   }).optional(),
-  serialNumber: z.string().optional();
-  manufacturer: z.string().optional();
-  model: z.string().optional();
+  serialNumber: z.string().optional(),
+  manufacturer: z.string().optional(),
+  model: z.string().optional(),
   purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
-  purchasePrice: z.number().optional();
+  purchasePrice: z.number().optional(),
   warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
-  location: z.string().optional();
-  departmentId: z.string().optional().nullable();
-  assignedToId: z.string().optional().nullable();
+  location: z.string().optional(),
+  departmentId: z.string().optional().nullable(),
+  assignedToId: z.string().optional().nullable(),
   status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
-    errorMap: () => ({ message: "Invalid status" });
+    errorMap: () => ({ message: "Invalid status" }),
   }).optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
   tags: z.array(z.string()).optional();
   // Biomedical specific fields
-  deviceIdentifier: z.string().optional();
+  deviceIdentifier: z.string().optional(),
   regulatoryClass: z.enum(['CLASS_I', 'CLASS_II', 'CLASS_III'], {
-    errorMap: () => ({ message: "Invalid regulatory class" });
+    errorMap: () => ({ message: "Invalid regulatory class" }),
   }).optional(),
   riskLevel: z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
-    errorMap: () => ({ message: "Invalid risk level" });
+    errorMap: () => ({ message: "Invalid risk level" }),
   }).optional(),
   lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
   nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
-  calibrationFrequency: z.number().optional();
-  certifications: z.array(z.string()).optional();
-  isReusable: z.boolean().optional();
-  sterilizationRequired: z.boolean().optional();
+  calibrationFrequency: z.number().optional(),
+  certifications: z.array(z.string()).optional(),
+  isReusable: z.boolean().optional(),
+  sterilizationRequired: z.boolean().optional(),
   lastSterilizationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format";
+    message: "Invalid date format"
   }),
 });
 
@@ -98,11 +98,11 @@ export const _PUT = async (
     // Convert date strings to Date objects
     const biomedicalData = {
       ...data,
-      purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined;
+      purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
       warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined;
-      lastCalibrationDate: data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined;
+      lastCalibrationDate: data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined,
       nextCalibrationDate: data.nextCalibrationDate ? new Date(data.nextCalibrationDate) : undefined;
-      lastSterilizationDate: data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined;
+      lastSterilizationDate: data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined
     };
 
     // Update biomedical equipment

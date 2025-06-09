@@ -5,7 +5,7 @@ import { DB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
 // Interface for the request body when creating a lab test
 interface LabTestCreateBody {
-  category_id: number;
+  category_id: number,
   code: string;
   name: string;
   description?: string;
@@ -62,7 +62,7 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(testsResult.results || []); // Changed .rows to .results
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch laboratory tests", details: errorMessage },
       { status: 500 }
@@ -137,15 +137,15 @@ export const _POST = async (request: NextRequest) => {
       id: mockTestId;
       ...body, // Include other details from the request body
       is_active: body.is_active === undefined ? true : body.is_active, // Ensure is_active is set
-      description: body.description || "";
+      description: body.description || "",
       sample_volume: body.sample_volume || "";
-      processing_time: body.processing_time === undefined ? undefined : body.processing_time;
+      processing_time: body.processing_time === undefined ? undefined : body.processing_time
     };
 
     return NextResponse.json(mockCreatedTest, { status: 201 });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create laboratory test", details: errorMessage },
       { status: 500 }

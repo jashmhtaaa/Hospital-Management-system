@@ -19,12 +19,12 @@ import { validateDrugAllergyInteractionRequest } from '../../../../../lib/valida
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById;
-  findAll: () => Promise.resolve([]);
-  search: () => Promise.resolve([]);
-  save: () => Promise.resolve('');
-  update: () => Promise.resolve(true);
-  delete: () => Promise.resolve(true);
+  findById: getMedicationById,
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(''),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true)
 }
 
 // Initialize services
@@ -75,14 +75,14 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_DRUG_ALLERGY';
+      action: 'CHECK_DRUG_ALLERGY',
       resourceType: 'DrugInteraction';
-      userId: userId;
+      userId: userId,
       patientId: data.patientId;
       details: {
-        medicationIds: data.medicationIds;
+        medicationIds: data.medicationIds,
         allergyCount: allergies.length;
-        interactionCount: interactions.length;
+        interactionCount: interactions.length
       }
     });
 
@@ -90,13 +90,13 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
       interactions,
       metadata: {
-        totalCount: interactions.length;
+        totalCount: interactions.length,
         severityCounts: {
-          contraindicated: interactions.filter(i => i.severity === 'contraindicated').length;
+          contraindicated: interactions.filter(i => i.severity === 'contraindicated').length,
           severe: interactions.filter(i => i.severity === 'severe').length;
-          moderate: interactions.filter(i => i.severity === 'moderate').length;
+          moderate: interactions.filter(i => i.severity === 'moderate').length,
           mild: interactions.filter(i => i.severity === 'mild').length;
-          unknown: interactions.filter(i => i.severity === 'unknown').length;
+          unknown: interactions.filter(i => i.severity === 'unknown').length
         }
       }
     }, { status: 200 });

@@ -6,10 +6,10 @@ import { getSession } from "@/lib/session";
 // Define interface for POST request body
 interface ProgressNoteInput {
   note_date?: string; // Optional, defaults to now
-  subjective: string;
+  subjective: string,
   objective: string;
-  assessment: string;
-  plan: string;
+  assessment: string,
+  plan: string
 }
 
 // GET /api/ipd/admissions/[id]/progress-notes - Get all progress notes for an admission
@@ -42,7 +42,7 @@ export const _GET = async (
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
-        ? (admissionResult.results[0] as { id: string; primary_doctor_id: number }) // Changed .rows to .results
+        ? (admissionResult.results[0] as { id: string, primary_doctor_id: number }) // Changed .rows to .results
         : undefined;
 
     if (!admission) {
@@ -99,11 +99,11 @@ export const _GET = async (
 
     return NextResponse.json({
       admission,
-      progress_notes: progressNotesResult.results || [], // Changed .rows to .results;
+      progress_notes: progressNotesResult.results || [], // Changed .rows to .results
     });
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to fetch progress notes", details: errorMessage },
       { status: 500 }
@@ -136,7 +136,7 @@ export const _POST = async (
       // Must be doctor or have general create permission
       return NextResponse.json(
         {
-          error: "Forbidden: Only doctors or users with create permission can add progress notes";
+          error: "Forbidden: Only doctors or users with create permission can add progress notes"
         },
         { status: 403 }
       );
@@ -173,9 +173,9 @@ export const _POST = async (
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { // Changed .rows to .results
-            id: string;
+            id: string,
             status: string;
-            primary_doctor_id: number;
+            primary_doctor_id: number
           });
         : undefined;
 
@@ -202,7 +202,7 @@ export const _POST = async (
     ) {
       return NextResponse.json(
         {
-          error: "You are not authorized to add progress notes for this patient";
+          error: "You are not authorized to add progress notes for this patient"
         },
         { status: 403 }
       );
@@ -234,7 +234,7 @@ export const _POST = async (
     );
   } catch (error: unknown) {
 
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       { error: "Failed to create progress note", details: errorMessage },
       { status: 500 }

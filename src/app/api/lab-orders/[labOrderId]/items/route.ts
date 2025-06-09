@@ -22,9 +22,9 @@ const getLabOrderId = (pathname: string): number | null {
 // POST handler for adding an item (test) to a lab order
 const AddLabOrderItemSchema = z.object({
     billable_item_id: z.number().int().positive(), // Link to the specific test in BillableItems
-    test_name: z.string().min(1).optional(), // Optional: Can be fetched from BillableItems;
-    sample_type: z.string().optional().nullable();
-    notes: z.string().optional().nullable(), // Specific notes for this test;
+    test_name: z.string().min(1).optional(), // Optional: Can be fetched from BillableItems,
+    sample_type: z.string().optional().nullable(),
+    notes: z.string().optional().nullable(), // Specific notes for this test
 });
 
 export const _POST = async (request: Request) => {
@@ -88,7 +88,7 @@ export const _POST = async (request: Request) => {
 
         // 5. Prepare batch insert for all items
         const batchActions: D1PreparedStatement[] = itemsData.map(item => {
-            const billableDetails = foundBillableItems.get(item.billable_item_id);
+            const billableDetails = foundBillableItems.get(item.billable_item_id),
             const testName = item.test_name || billableDetails?.name || "Unknown Test";
             const sampleType = item.sample_type || billableDetails?.sampleType || null;
 
@@ -122,7 +122,7 @@ export const _POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500;
+            status: 500,
             headers: { "Content-Type": "application/json" },
         });
     }

@@ -22,28 +22,28 @@ export class SegmentService {
       // Create segment in database
       const segment = await prisma.contactSegment.create({
         data: {
-          name: data.name;
+          name: data.name,
           description: data.description;
-          criteria: data.criteria;
+          criteria: data.criteria,
           isActive: data.isActive !== undefined ? data.isActive : true;
-          createdById: userId;
+          createdById: userId
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.create';
+        action: 'segment.create',
         resourceId: segment.id;
         userId,
         details: {
-          segmentName: segment.name;
-          hasCriteria: !!segment.criteria;
+          segmentName: segment.name,
+          hasCriteria: !!segment.criteria
         }
       });
 
       // Notify relevant users
       await this.notificationService.sendNotification({
-        type: 'SEGMENT_CREATED';
+        type: 'SEGMENT_CREATED',
         title: 'New Contact Segment Created';
         message: `A new contact segment "${segment.name}" has been created`,
         recipientRoles: ['MARKETING_MANAGER', 'MARKETING_STAFF'],
@@ -69,26 +69,26 @@ export class SegmentService {
         include: {
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           },
           members: includeMembers ? {
             where: {
-              isActive: true;
+              isActive: true
             },
             include: {
-              contact: true;
+              contact: true
             }
           } : false,
           _count: {
             select: {
               members: {
                 where: {
-                  isActive: true;
+                  isActive: true
                 }
               },
-              campaigns: true;
+              campaigns: true
             }
           }
         }
@@ -115,7 +115,7 @@ export class SegmentService {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
+  }): Promise<{ data: ContactSegment[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
     try {
       const {
         isActive,
@@ -147,35 +147,35 @@ export class SegmentService {
         include: {
           createdByUser: {
             select: {
-              id: true;
-              name: true;
+              id: true,
+              name: true
             }
           },
           _count: {
             select: {
               members: {
                 where: {
-                  isActive: true;
+                  isActive: true
                 }
               },
-              campaigns: true;
+              campaigns: true
             }
           }
         },
-        skip: (page - 1) * limit;
+        skip: (page - 1) * limit,
         take: limit;
         orderBy: {
-          createdAt: 'desc';
+          createdAt: 'desc'
         }
       });
 
       return {
-        data: segments;
+        data: segments,
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit)
         }
       };
     } catch (error) {
@@ -205,12 +205,12 @@ export class SegmentService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.update';
+        action: 'segment.update',
         resourceId: id;
         userId,
         details: {
-          segmentName: updatedSegment.name;
-          updatedFields: Object.keys(data);
+          segmentName: updatedSegment.name,
+          updatedFields: Object.keys(data)
         }
       });
 
@@ -260,19 +260,19 @@ export class SegmentService {
           const updatedMember = await prisma.segmentMember.update({
             where: { id: existingMember.id },
             data: {
-              isActive: true;
-              removedAt: null;
+              isActive: true,
+              removedAt: null
             }
           });
 
           // Log audit event
           await this.auditLogger.log({
-            action: 'segment.member.reactivate';
+            action: 'segment.member.reactivate',
             resourceId: segmentId;
             userId,
             details: {
               contactId,
-              memberId: updatedMember.id;
+              memberId: updatedMember.id
             }
           });
 
@@ -287,18 +287,18 @@ export class SegmentService {
         data: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.member.add';
+        action: 'segment.member.add',
         resourceId: segmentId;
         userId,
         details: {
           contactId,
-          memberId: member.id;
+          memberId: member.id
         }
       });
 
@@ -339,7 +339,7 @@ export class SegmentService {
         where: {
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true
         }
       });
 
@@ -351,19 +351,19 @@ export class SegmentService {
       const updatedMember = await prisma.segmentMember.update({
         where: { id: existingMember.id },
         data: {
-          isActive: false;
-          removedAt: new Date();
+          isActive: false,
+          removedAt: new Date()
         }
       })
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.member.remove';
+        action: 'segment.member.remove',
         resourceId: segmentId;
         userId,
         details: {
           contactId,
-          memberId: existingMember.id;
+          memberId: existingMember.id
         }
       });
 
@@ -379,7 +379,7 @@ export class SegmentService {
   /**
    * Apply segment criteria to find matching contacts;
    */
-  async applySegmentCriteria(segmentId: string, userId: string): Promise<{ added: number; total: number }> {
+  async applySegmentCriteria(segmentId: string, userId: string): Promise<{ added: number, total: number }> {
     try {
       // Get segment with criteria
       const segment = await prisma.contactSegment.findUnique({
@@ -401,7 +401,7 @@ export class SegmentService {
       const matchingContacts = await prisma.contact.findMany({
         where,
         select: {
-          id: true;
+          id: true
         }
       });
 
@@ -414,7 +414,7 @@ export class SegmentService {
           const existingMember = await prisma.segmentMember.findFirst({
             where: {
               segmentId,
-              contactId: contact.id;
+              contactId: contact.id
             }
           });
 
@@ -424,8 +424,8 @@ export class SegmentService {
               await prisma.segmentMember.update({
                 where: { id: existingMember.id },
                 data: {
-                  isActive: true;
-                  removedAt: null;
+                  isActive: true,
+                  removedAt: null
                 }
               });
               addedCount++;
@@ -435,8 +435,8 @@ export class SegmentService {
             await prisma.segmentMember.create({
               data: {
                 segmentId,
-                contactId: contact.id;
-                isActive: true;
+                contactId: contact.id,
+                isActive: true
               }
             });
             addedCount++;
@@ -449,18 +449,18 @@ export class SegmentService {
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.criteria.apply';
+        action: 'segment.criteria.apply',
         resourceId: segmentId;
         userId,
         details: {
-          matchedContacts: matchingContacts.length;
-          addedContacts: addedCount;
+          matchedContacts: matchingContacts.length,
+          addedContacts: addedCount
         }
       });
 
       return {
-        added: addedCount;
-        total: matchingContacts.length;
+        added: addedCount,
+        total: matchingContacts.length
       };
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ValidationError) {

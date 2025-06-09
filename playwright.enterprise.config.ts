@@ -29,16 +29,16 @@ export default defineConfig({
 
   // Expect timeout
   expect: {
-    timeout: 10000;
+    timeout: 10000
   },
 
   // Action timeout
   use: {
-    actionTimeout: 15000;
+    actionTimeout: 15000,
     navigationTimeout: 30000;
 
     // Global test settings
-    trace: 'retain-on-failure';
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure';
     video: 'retain-on-failure';
 
@@ -46,7 +46,7 @@ export default defineConfig({
     baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
 
     // Browser context options
-    ignoreHTTPSErrors: false;
+    ignoreHTTPSErrors: false,
     acceptDownloads: true;
 
     // Viewport
@@ -62,7 +62,7 @@ export default defineConfig({
     },
 
     // Storage state for authenticated tests
-    storageState: process.env.STORAGE_STATE_PATH;
+    storageState: process.env.STORAGE_STATE_PATH
   },
 
   // Reporter configuration
@@ -72,25 +72,25 @@ export default defineConfig({
 
     // HTML reporter
     ['html', {
-      outputFolder: 'test-results/playwright-report';
-      open: process.env.CI ? 'never' : 'on-failure';
+      outputFolder: 'test-results/playwright-report',
+      open: process.env.CI ? 'never' : 'on-failure'
     }],
 
     // JUnit reporter for CI
     ['junit', {
-      outputFile: 'test-results/junit/playwright-results.xml';
+      outputFile: 'test-results/junit/playwright-results.xml'
     }],
 
     // JSON reporter
     ['json', {
-      outputFile: 'test-results/playwright-results.json';
+      outputFile: 'test-results/playwright-results.json'
     }],
 
     // Allure reporter
     ['allure-playwright', {
-      detail: true;
+      detail: true,
       outputFolder: 'test-results/allure-results';
-      suiteTitle: true;
+      suiteTitle: true
     }],
 
     // GitHub Actions reporter
@@ -101,7 +101,7 @@ export default defineConfig({
   outputDir: 'test-results/playwright-output';
 
   // Global setup and teardown
-  globalSetup: require.resolve('./tests/setup/global-setup-e2e.ts');
+  globalSetup: require.resolve('./tests/setup/global-setup-e2e.ts'),
   globalTeardown: require.resolve('./tests/setup/global-teardown-e2e.ts');
 
   // Test projects for different browsers and scenarios
@@ -110,11 +110,11 @@ export default defineConfig({
     // SETUP PROJECTS
     // ================================================================
     {
-      name: 'setup-auth';
+      name: 'setup-auth',
       testMatch: /.*\.setup\.ts/;
       use: {
         ...devices['Desktop Chrome'],
-        storageState: undefined;
+        storageState: undefined
       },
     },
 
@@ -122,171 +122,171 @@ export default defineConfig({
     // DESKTOP BROWSERS - CRITICAL FLOWS
     // ================================================================
     {
-      name: 'chromium-critical';
+      name: 'chromium-critical',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.critical\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.critical\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     {
-      name: 'firefox-critical';
+      name: 'firefox-critical',
       use: {
         ...devices['Desktop Firefox'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.critical\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.critical\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     {
-      name: 'webkit-critical';
+      name: 'webkit-critical',
       use: {
         ...devices['Desktop Safari'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.critical\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.critical\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     // ================================================================
     // HEALTHCARE WORKFLOW TESTS
     // ================================================================
     {
-      name: 'healthcare-workflows-chrome';
+      name: 'healthcare-workflows-chrome',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/healthcare-provider.json';
+        storageState: 'tests/auth/healthcare-provider.json'
       },
-      testMatch: /.*\.healthcare\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.healthcare\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     {
-      name: 'patient-portal-chrome';
+      name: 'patient-portal-chrome',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/patient.json';
+        storageState: 'tests/auth/patient.json'
       },
-      testMatch: /.*\.patient-portal\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.patient-portal\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     // ================================================================
     // MOBILE BROWSERS
     // ================================================================
     {
-      name: 'mobile-chrome';
+      name: 'mobile-chrome',
       use: {
         ...devices['Pixel 5'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.mobile\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.mobile\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     {
-      name: 'mobile-safari';
+      name: 'mobile-safari',
       use: {
         ...devices['iPhone 12'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.mobile\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.mobile\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     // ================================================================
     // ACCESSIBILITY TESTS
     // ================================================================
     {
-      name: 'accessibility';
+      name: 'accessibility',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.accessibility\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.accessibility\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     // ================================================================
     // PERFORMANCE TESTS
     // ================================================================
     {
-      name: 'performance';
+      name: 'performance',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.performance\.spec\.ts/;
+      testMatch: /.*\.performance\.spec\.ts/,
       dependencies: ['setup-auth'];
-      timeout: 120000;
+      timeout: 120000
     },
 
     // ================================================================
     // SECURITY TESTS
     // ================================================================
     {
-      name: 'security';
+      name: 'security',
       use: {
         ...devices['Desktop Chrome'],
         // No auth for security tests
       },
-      testMatch: /.*\.security\.spec\.ts/;
+      testMatch: /.*\.security\.spec\.ts/
     },
 
     // ================================================================
     // FHIR COMPLIANCE TESTS
     // ================================================================
     {
-      name: 'fhir-compliance';
+      name: 'fhir-compliance',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/fhir-user.json';
+        storageState: 'tests/auth/fhir-user.json'
       },
-      testMatch: /.*\.fhir\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.fhir\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     // ================================================================
     // CROSS-BROWSER COMPATIBILITY
     // ================================================================
     {
-      name: 'edge';
+      name: 'edge',
       use: {
         ...devices['Desktop Edge'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.compatibility\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.compatibility\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
 
     // ================================================================
     // TABLET TESTS
     // ================================================================
     {
-      name: 'tablet';
+      name: 'tablet',
       use: {
         ...devices['iPad Pro'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      testMatch: /.*\.tablet\.spec\.ts/;
-      dependencies: ['setup-auth'];
+      testMatch: /.*\.tablet\.spec\.ts/,
+      dependencies: ['setup-auth']
     },
   ],
 
   // Web server configuration
   webServer: process.env.CI ? undefined : {
-    command: 'npm run dev';
-    url: 'http://localhost:3000';
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI;
-    timeout: 120000;
+    timeout: 120000,
     env: {
-      NODE_ENV: 'test';
-      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/hms_test';
+      NODE_ENV: 'test',
+      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/hms_test',
       NEXTAUTH_SECRET: process.env.TEST_SECRET || 'secure-test-secret';
-      NEXTAUTH_URL: 'http://localhost:3000';
+      NEXTAUTH_URL: 'http://localhost:3000'
     },
   },
 
@@ -309,15 +309,15 @@ export const _stagingConfig = defineConfig({
   ...module.exports,
   use: {
     ...module.exports.use,
-    baseURL: 'https://hms-staging.example.com';
+    baseURL: 'https://hms-staging.example.com',
     ignoreHTTPSErrors: false;
     extraHTTPHeaders: {
       ...module.exports.use.extraHTTPHeaders,
       'X-Environment': 'staging',
     },
   },
-  retries: 2;
-  timeout: 90000;
+  retries: 2,
+  timeout: 90000
 })
 
 // Production environment configuration
@@ -325,34 +325,34 @@ export const _productionConfig = defineConfig({
   ...module.exports,
   use: {
     ...module.exports.use,
-    baseURL: 'https://hms.example.com';
+    baseURL: 'https://hms.example.com',
     ignoreHTTPSErrors: false;
     extraHTTPHeaders: {
       ...module.exports.use.extraHTTPHeaders,
       'X-Environment': 'production',
     },
   },
-  retries: 3;
+  retries: 3,
   timeout: 120000;
-  testMatch: /.*\.(smoke|critical)\.spec\.ts/;
+  testMatch: /.*\.(smoke|critical)\.spec\.ts/
 })
 
 // Critical flows configuration
 export const _criticalConfig = defineConfig({
   ...module.exports,
-  testMatch: /.*\.critical\.spec\.ts/;
+  testMatch: /.*\.critical\.spec\.ts/,
   fullyParallel: false;
-  workers: 1;
+  workers: 1,
   retries: 3;
-  timeout: 90000;
+  timeout: 90000,
   projects: [
     {
-      name: 'critical-chromium';
+      name: 'critical-chromium',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/user.json';
+        storageState: 'tests/auth/user.json'
       },
-      dependencies: ['setup-auth'];
+      dependencies: ['setup-auth']
     },
   ],
 });
@@ -360,16 +360,16 @@ export const _criticalConfig = defineConfig({
 // Healthcare workflows configuration
 export const _healthcareConfig = defineConfig({
   ...module.exports,
-  testMatch: /.*\.healthcare\.spec\.ts/;
+  testMatch: /.*\.healthcare\.spec\.ts/,
   timeout: 90000;
   projects: [
     {
-      name: 'healthcare-chromium';
+      name: 'healthcare-chromium',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/healthcare-provider.json';
+        storageState: 'tests/auth/healthcare-provider.json'
       },
-      dependencies: ['setup-auth'];
+      dependencies: ['setup-auth']
     },
   ],
 });
@@ -377,14 +377,14 @@ export const _healthcareConfig = defineConfig({
 // Smoke tests configuration
 export const _smokeConfig = defineConfig({
   ...module.exports,
-  testMatch: /.*\.smoke\.spec\.ts/;
+  testMatch: /.*\.smoke\.spec\.ts/,
   fullyParallel: true;
-  workers: 2;
+  workers: 2,
   retries: 1;
-  timeout: 30000;
+  timeout: 30000,
   projects: [
     {
-      name: 'smoke-chromium';
+      name: 'smoke-chromium',
       use: {
         ...devices['Desktop Chrome'],
       },

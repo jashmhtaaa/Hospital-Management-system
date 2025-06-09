@@ -52,9 +52,9 @@ export default const _StaffScheduling = () {
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
-    skip: 0;
+    skip: 0,
     take: 10;
-    total: 0;
+    total: 0
   });
   const [scheduleView, setScheduleView] = useState('week');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -66,8 +66,8 @@ export default const _StaffScheduling = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString();
-          take: pagination.take.toString();
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString()
         });
 
         if (search != null) queryParams.append('search', search);
@@ -83,7 +83,7 @@ export default const _StaffScheduling = () {
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total;
+          total: data.total
         }));
       } catch (err) {
         setError(err.message);
@@ -122,9 +122,9 @@ export default const _StaffScheduling = () {
 
       employees.forEach(employee => {
         const employeeSchedule = {
-          employeeId: employee.id;
+          employeeId: employee.id,
           employeeName: `/* SECURITY: Template literal eliminated */
-          department: employee.department?.name || 'Unassigned';
+          department: employee.department?.name || 'Unassigned',
           position: employee.positions?.length > 0
             ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title);
             : 'Unassigned',
@@ -150,7 +150,7 @@ export default const _StaffScheduling = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take
       }));
     }
   };
@@ -159,7 +159,7 @@ export default const _StaffScheduling = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take
       }));
     }
   };
@@ -170,8 +170,8 @@ export default const _StaffScheduling = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0;
-    }));
+      skip: 0
+    }))
   };
 
   // Get days of the week for the current date
@@ -187,30 +187,30 @@ export default const _StaffScheduling = () {
       date.setDate(date.getDate() + i);
       days.push({
         name: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i],
-        date: date;
+        date: date
       });
     }
 
-    return days;
+    return days
   };
 
   // Navigate to previous/next week
   const navigatePreviousWeek = () => {
     const newDate = new Date(currentDate);
     newDate.setDate(newDate.getDate() - 7);
-    setCurrentDate(newDate);
+    setCurrentDate(newDate)
   };
 
   const navigateNextWeek = () => {
     const newDate = new Date(currentDate);
     newDate.setDate(newDate.getDate() + 7);
-    setCurrentDate(newDate);
+    setCurrentDate(newDate)
   };
 
   // Get the week range string
   const getWeekRangeString = () => {
     const days = getDaysOfWeek();
-    return `${format(days[0].date, 'MMM d')} - ${format(days[6].date, 'MMM d, yyyy')}`;
+    return `${format(days[0].date, 'MMM d')} - ${format(days[6].date, 'MMM d, yyyy')}`
   };
 
   return (

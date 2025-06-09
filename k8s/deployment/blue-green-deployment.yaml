@@ -36,29 +36,29 @@ spec:
         app: hms-frontend
     spec:
       containers:
-      - name: hms-frontend
-        image: hms-registry.example.com/hms-frontend:stable
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          initialDelaySeconds: 15
-          periodSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        - name: hms-frontend
+          image: hms-registry.example.com/hms-frontend:stable
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
   strategy:
     blueGreen:
       # Active service that points to the active ReplicaSet
@@ -70,17 +70,17 @@ spec:
       # Analysis to run after preview service promotion
       postPromotionAnalysis:
         templates:
-        - templateName: hms-frontend-analysis
+          - templateName: hms-frontend-analysis
         args:
-        - name: service-name
-          value: hms-frontend-preview
+          - name: service-name
+            value: hms-frontend-preview
       # Analysis to run before auto-promotion
       prePromotionAnalysis:
         templates:
-        - templateName: hms-frontend-analysis
+          - templateName: hms-frontend-analysis
         args:
-        - name: service-name
-          value: hms-frontend-preview
+          - name: service-name
+            value: hms-frontend-preview
       # Configuration for the preview service
       previewReplicaCount: 1
       # How many old ReplicaSets to keep
@@ -95,10 +95,10 @@ metadata:
   namespace: hms
 spec:
   ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
-    name: http
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
   selector:
     app: hms-frontend
     # Blue/Green selector controlled by Argo Rollouts
@@ -110,10 +110,10 @@ metadata:
   namespace: hms
 spec:
   ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
-    name: http
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
   selector:
     app: hms-frontend
     # Blue/Green selector controlled by Argo Rollouts
@@ -125,39 +125,39 @@ metadata:
   namespace: hms
 spec:
   metrics:
-  - name: success-rate
-    interval: 30s
-    count: 5
-    # success criteria
-    successCondition: result[0] >= 0.95
-    provider:
-      prometheus:
-        address: http://prometheus.monitoring.svc.cluster.local:9090
-        query: |
-          sum(rate(http_requests_total{service="{{args.service-name}}",status=~"2.."}[5m])) 
-          / 
-          sum(rate(http_requests_total{service="{{args.service-name}}"}[5m]))
-  - name: response-time
-    interval: 30s
-    count: 5
-    # success criteria
-    successCondition: result[0] <= 300
-    provider:
-      prometheus:
-        address: http://prometheus.monitoring.svc.cluster.local:9090
-        query: |
-          histogram_quantile(0.95, 
-            sum(rate(http_request_duration_ms_bucket{service="{{args.service-name}}"}[5m])) by (le)
-          )
-  - name: error-logs
-    interval: 30s
-    count: 5
-    successCondition: result[0] <= 5
-    provider:
-      prometheus:
-        address: http://prometheus.monitoring.svc.cluster.local:9090
-        query: |
-          sum(increase(log_messages_total{service="{{args.service-name}}",level="error"}[5m]))
+    - name: success-rate
+      interval: 30s
+      count: 5
+      # success criteria
+      successCondition: result[0] >= 0.95
+      provider:
+        prometheus:
+          address: http://prometheus.monitoring.svc.cluster.local:9090
+          query: |
+            sum(rate(http_requests_total{service="{{args.service-name}}",status=~"2.."}[5m])) 
+            / 
+            sum(rate(http_requests_total{service="{{args.service-name}}"}[5m]))
+    - name: response-time
+      interval: 30s
+      count: 5
+      # success criteria
+      successCondition: result[0] <= 300
+      provider:
+        prometheus:
+          address: http://prometheus.monitoring.svc.cluster.local:9090
+          query: |
+            histogram_quantile(0.95, 
+              sum(rate(http_request_duration_ms_bucket{service="{{args.service-name}}"}[5m])) by (le)
+            )
+    - name: error-logs
+      interval: 30s
+      count: 5
+      successCondition: result[0] <= 5
+      provider:
+        prometheus:
+          address: http://prometheus.monitoring.svc.cluster.local:9090
+          query: |
+            sum(increase(log_messages_total{service="{{args.service-name}}",level="error"}[5m]))
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -165,26 +165,26 @@ metadata:
   name: hms-frontend-ingress
   namespace: hms
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/proxy-body-size: '50m'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
 spec:
   tls:
-  - hosts:
-    - app.hms.health
-    secretName: hms-frontend-tls
+    - hosts:
+        - app.hms.health
+      secretName: hms-frontend-tls
   rules:
-  - host: app.hms.health
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: hms-frontend-active
-            port:
-              number: 80
+    - host: app.hms.health
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hms-frontend-active
+                port:
+                  number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -192,25 +192,25 @@ metadata:
   name: hms-frontend-preview-ingress
   namespace: hms
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: preview-basic-auth
-    nginx.ingress.kubernetes.io/auth-realm: "Preview Environment - Authentication Required"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/auth-realm: 'Preview Environment - Authentication Required'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
 spec:
   tls:
-  - hosts:
-    - preview.hms.health
-    secretName: hms-frontend-preview-tls
+    - hosts:
+        - preview.hms.health
+      secretName: hms-frontend-preview-tls
   rules:
-  - host: preview.hms.health
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: hms-frontend-preview
-            port:
-              number: 80
+    - host: preview.hms.health
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hms-frontend-preview
+                port:
+                  number: 80

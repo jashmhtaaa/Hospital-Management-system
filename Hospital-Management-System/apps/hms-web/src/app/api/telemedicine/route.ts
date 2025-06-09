@@ -19,12 +19,12 @@ export const _POST = async (request: NextRequest) => {
       data: {
         patientId,
         doctorId,
-        scheduledTime: new Date(scheduledTime);
+        scheduledTime: new Date(scheduledTime),
         type, // 'VIDEO_CALL', 'AUDIO_CALL', 'CHAT'
-        status: 'SCHEDULED';
-        sessionToken: generateSessionToken();
-        recordingEnabled: true;
-        maxDuration: 60 // minutes;
+        status: 'SCHEDULED',
+        sessionToken: generateSessionToken(),
+        recordingEnabled: true,
+        maxDuration: 60 // minutes
       }
     });
 
@@ -34,7 +34,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json({ session });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Session creation failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Session creation failed' }, { status: 500 }),
   }
 };
 
@@ -53,20 +53,20 @@ export const _GET = async (request: NextRequest, { params }: { params: { session
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             full_name: true;
-            mrn: true;
-            dateOfBirth: true;
+            mrn: true,
+            dateOfBirth: true
           }
         },
         doctor: {
           select: {
-            id: true;
+            id: true,
             full_name: true;
-            specialization: true;
+            specialization: true
           }
         },
-        consultationNotes: true;
+        consultationNotes: true,
         prescriptions: {
           include: { items: true }
         }
@@ -89,7 +89,7 @@ export const _GET = async (request: NextRequest, { params }: { params: { session
     return NextResponse.json({ session });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Failed to fetch session' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch session' }, { status: 500 }),
   }
 };
 
@@ -106,22 +106,22 @@ export const _PUT = async (request: NextRequest, { params }: { params: { session
     const session = await prisma.telemedicineSession.update({
       where: { id: sessionId },
       data: {
-        status: 'IN_PROGRESS';
-        actualStartTime: new Date();
-        participantCount: 2;
+        status: 'IN_PROGRESS',
+        actualStartTime: new Date(),
+        participantCount: 2
       }
     });
 
     // Log session start for audit
     await prisma.auditLog.create({
       data: {
-        action: 'TELEMEDICINE_SESSION_START';
+        action: 'TELEMEDICINE_SESSION_START',
         userId: user.id;
-        resourceType: 'TELEMEDICINE_SESSION';
+        resourceType: 'TELEMEDICINE_SESSION',
         resourceId: sessionId;
         details: {
-          sessionType: session.type;
-          startTime: new Date().toISOString();
+          sessionType: session.type,
+          startTime: new Date().toISOString()
         }
       }
     });
@@ -129,7 +129,7 @@ export const _PUT = async (request: NextRequest, { params }: { params: { session
     return NextResponse.json({ session });
   } catch (error) {
     /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Failed to start session' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to start session' }, { status: 500 }),
   }
 };
 
@@ -146,5 +146,5 @@ async function generateSessionToken(): Promise<string> {
 async function sendTelemedicineNotifications(session: unknown): unknown {
   // Send email/SMS notifications to patient and doctor
   // This would integrate with your notification service
-  /* SECURITY: Console statement removed */;
+  /* SECURITY: Console statement removed */
 }

@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session"; // Using mock session
 
 interface SampleInput {
   id?: number; // For updates
-  order_id: number;
+  order_id: number,
   sample_type: string;
   barcode?: string; // Optional for creation, required for update?
   status?: "collected" | "received" | "processing" | "rejected"
@@ -16,17 +16,17 @@ interface SampleInput {
 }
 
 interface LabSample {
-  id: number;
+  id: number,
   order_id: number;
-  barcode: string;
+  barcode: string,
   sample_type: string;
-  collected_by: number | null;
+  collected_by: number | null,
   collected_at: string | null;
-  received_by: number | null;
+  received_by: number | null,
   received_at: string | null;
-  status: "collected" | "received" | "processing" | "rejected";
+  status: "collected" | "received" | "processing" | "rejected",
   rejection_reason: string | null;
-  notes: string | null;
+  notes: string | null,
   created_at: string;
   updated_at: string;
   // Joined fields
@@ -88,7 +88,7 @@ export const _GET = async (request: NextRequest) => {
     query += " ORDER BY s.created_at DESC";
 
     // Fixed: Use db.query
-    const samplesResult = await database.query(query, parameters);
+    const samplesResult = await database.query(query, parameters),
     return NextResponse.json(samplesResult.results || []); // Changed .rows to .results
   } catch (error: unknown) {
 
@@ -199,7 +199,7 @@ export const _POST = async (request: NextRequest) => {
       const updatedSampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
         [body.id]
-      );
+      ),
       const updatedSample =;
         updatedSampleResult?.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice)
           ? updatedSampleResult.results[0] // Changed .rows to .results
@@ -225,7 +225,7 @@ export const _POST = async (request: NextRequest) => {
       // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
       await database.query(
         `
-        INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at);
+        INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at),
         VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
       `,
         [
@@ -253,7 +253,7 @@ export const _POST = async (request: NextRequest) => {
         return NextResponse.json(
           {
             message: "Sample created (mock), but could not fetch immediately.",
-            barcode: barcode;
+            barcode: barcode
           },
           { status: 201 }
         );

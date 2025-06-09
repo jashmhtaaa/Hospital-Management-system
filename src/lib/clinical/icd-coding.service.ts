@@ -19,26 +19,26 @@ export const ICDCodeSchema = z.object({
   code: z.string().min(3, 'ICD code must be at least 3 characters'),
   version: z.enum(['ICD-10', 'ICD-11']).default('ICD-10'),
   description: z.string().min(1, 'Description is required'),
-  longDescription: z.string().optional();
-  category: z.string().optional();
-  subcategory: z.string().optional();
-  parentCode: z.string().optional();
-  isLeaf: z.boolean().default(true);
-  isValid: z.boolean().default(true);
-  effectiveDate: z.date().optional();
-  expirationDate: z.date().optional();
-  notes: z.string().optional();
-  synonyms: z.array(z.string()).default([]);
-  excludes: z.array(z.string()).default([]);
-  includes: z.array(z.string()).default([]);
-  seeAlso: z.array(z.string()).default([]);
-  modifiers: z.array(z.string()).default([]);
-  billable: z.boolean().default(true);
+  longDescription: z.string().optional(),
+  category: z.string().optional(),
+  subcategory: z.string().optional(),
+  parentCode: z.string().optional(),
+  isLeaf: z.boolean().default(true),
+  isValid: z.boolean().default(true),
+  effectiveDate: z.date().optional(),
+  expirationDate: z.date().optional(),
+  notes: z.string().optional(),
+  synonyms: z.array(z.string()).default([]),
+  excludes: z.array(z.string()).default([]),
+  includes: z.array(z.string()).default([]),
+  seeAlso: z.array(z.string()).default([]),
+  modifiers: z.array(z.string()).default([]),
+  billable: z.boolean().default(true),
   sex: z.enum(['male', 'female', 'both']).default('both'),
   ageRange: z.object({
-    min: z.number().optional();
-    max: z.number().optional();
-    units: z.enum(['days', 'months', 'years']).default('years');
+    min: z.number().optional(),
+    max: z.number().optional(),
+    units: z.enum(['days', 'months', 'years']).default('years')
   }).optional()
 })
 
@@ -49,25 +49,25 @@ export const CodingRequestSchema = z.object({
   codeType: z.enum(['diagnosis', 'procedure', 'symptom']),
   priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
   coderId: z.string().min(1, 'Coder ID is required'),
-  requestDate: z.date().default(() => new Date());
-  dueDate: z.date().optional();
+  requestDate: z.date().default(() => new Date()),
+  dueDate: z.date().optional(),
   status: z.enum(['pending', 'in_progress', 'completed', 'rejected']).default('pending'),
-  specialInstructions: z.string().optional();
+  specialInstructions: z.string().optional()
 });
 
 export const CodingResultSchema = z.object({
-  requestId: z.string();
+  requestId: z.string(),
   primaryCodes: z.array(z.string());
-  secondaryCodes: z.array(z.string()).default([]);
-  coderId: z.string();
-  codingDate: z.date();
-  confidence: z.number().min(0).max(1).default(1);
+  secondaryCodes: z.array(z.string()).default([]),
+  coderId: z.string(),
+  codingDate: z.date(),
+  confidence: z.number().min(0).max(1).default(1),
   methodology: z.enum(['manual', 'assisted', 'automated']),
-  reviewRequired: z.boolean().default(false);
-  notes: z.string().optional();
+  reviewRequired: z.boolean().default(false),
+  notes: z.string().optional(),
   validationStatus: z.enum(['pending', 'validated', 'rejected']).default('pending'),
-  validatedBy: z.string().optional();
-  validationDate: z.date().optional();
+  validatedBy: z.string().optional(),
+  validationDate: z.date().optional()
 });
 
 export type ICDCode = z.infer<typeof ICDCodeSchema>;
@@ -108,37 +108,37 @@ export class ICDCodingService {
       // For now, providing mock results with realistic data
       const mockResults: ICDCode[] = [
         {
-          code: 'I25.10';
+          code: 'I25.10',
           version: 'ICD-10';
-          description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris';
+          description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris',
           longDescription: 'Atherosclerotic heart disease of native coronary artery without angina pectoris';
-          category: 'Diseases of the circulatory system';
+          category: 'Diseases of the circulatory system',
           subcategory: 'Ischemic heart diseases';
-          parentCode: 'I25.1';
+          parentCode: 'I25.1',
           isLeaf: true;
-          isValid: true;
+          isValid: true,
           billable: true;
-          sex: 'both';
+          sex: 'both',
           synonyms: ['Coronary atherosclerosis', 'CAD'],
-          excludes: ['I25.11'];
+          excludes: ['I25.11'],
           includes: ['Atherosclerotic cardiovascular disease'];
-          seeAlso: ['I25.11', 'I25.700'];
+          seeAlso: ['I25.11', 'I25.700']
         },
         {
-          code: 'E11.9';
+          code: 'E11.9',
           version: 'ICD-10';
-          description: 'Type 2 diabetes mellitus without complications';
+          description: 'Type 2 diabetes mellitus without complications',
           longDescription: 'Type 2 diabetes mellitus without complications';
           category: 'Endocrine, nutritional and metabolic diseases',
-          subcategory: 'Diabetes mellitus';
+          subcategory: 'Diabetes mellitus',
           parentCode: 'E11';
-          isLeaf: true;
+          isLeaf: true,
           isValid: true;
-          billable: true;
+          billable: true,
           sex: 'both';
           synonyms: ['DM Type 2', 'NIDDM'],
           excludes: ['E11.0', 'E11.1'],
-          includes: ['Adult-onset diabetes'];
+          includes: ['Adult-onset diabetes']
         }
       ]
 
@@ -161,9 +161,9 @@ export class ICDCodingService {
 
       // Log search activity
       await this.auditService.logAuditEvent({
-        action: 'icd_code_search';
+        action: 'icd_code_search',
         resourceType: 'icd_coding';
-        resourceId: query;
+        resourceId: query,
         userId: 'system';
         details: { query, version, resultsCount: filteredResults.length }
       })
@@ -171,7 +171,7 @@ export class ICDCodingService {
       return filteredResults;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to search ICD codes');
+      throw new Error('Failed to search ICD codes')
     }
   }
 
@@ -179,40 +179,40 @@ export class ICDCodingService {
    * Get ICD code hierarchy (parent/child relationships)
    */
   async getCodeHierarchy(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
-    parents: ICDCode[];
+    parents: ICDCode[],
     children: ICDCode[];
-    siblings: ICDCode[];
+    siblings: ICDCode[]
   }> {
     try {
       // Mock hierarchy data
       const mockHierarchy = {
         parents: [{
-          code: 'I25';
+          code: 'I25',
           version: 'ICD-10' as const;
-          description: 'Chronic ischemic heart disease';
+          description: 'Chronic ischemic heart disease',
           category: 'Diseases of the circulatory system';
-          isLeaf: false;
+          isLeaf: false,
           isValid: true;
-          billable: false;
-          sex: 'both' as const;
+          billable: false,
+          sex: 'both' as const
         }],
-        children: [];
+        children: [],
         siblings: [{
-          code: 'I25.11';
+          code: 'I25.11',
           version: 'ICD-10' as const;
-          description: 'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm';
+          description: 'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm',
           category: 'Diseases of the circulatory system';
-          isLeaf: true;
+          isLeaf: true,
           isValid: true;
-          billable: true;
-          sex: 'both' as const;
+          billable: true,
+          sex: 'both' as const
         }]
       }
 
       await this.auditService.logAuditEvent({
-        action: 'icd_hierarchy_lookup';
+        action: 'icd_hierarchy_lookup',
         resourceType: 'icd_coding';
-        resourceId: code;
+        resourceId: code,
         userId: 'system';
         details: { code, version }
       });
@@ -220,7 +220,7 @@ export class ICDCodingService {
       return mockHierarchy;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to get code hierarchy');
+      throw new Error('Failed to get code hierarchy')
     }
   }
 
@@ -228,20 +228,20 @@ export class ICDCodingService {
    * Validate ICD code
    */
   async validateCode(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
-    isValid: boolean;
+    isValid: boolean,
     code: ICDCode | null;
-    validationErrors: string[];
-    suggestions: string[];
+    validationErrors: string[],
+    suggestions: string[]
   }> {
     try {
       const searchResults = await this.searchCodes({ query: code, version, limit: 1 });
       const foundCode = searchResults.find(c => c.code === code);
 
       const result = {
-        isValid: !!foundCode && foundCode.isValid;
+        isValid: !!foundCode && foundCode.isValid,
         code: foundCode || null;
-        validationErrors: [] as string[];
-        suggestions: [] as string[];
+        validationErrors: [] as string[],
+        suggestions: [] as string[]
       };
 
       if (!foundCode) {
@@ -257,9 +257,9 @@ export class ICDCodingService {
       }
 
       await this.auditService.logAuditEvent({
-        action: 'icd_code_validation';
+        action: 'icd_code_validation',
         resourceType: 'icd_coding';
-        resourceId: code;
+        resourceId: code,
         userId: 'system';
         details: { code, version, isValid: result.isValid }
       });
@@ -267,7 +267,7 @@ export class ICDCodingService {
       return result;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to validate ICD code');
+      throw new Error('Failed to validate ICD code')
     }
   }
 
@@ -281,21 +281,21 @@ export class ICDCodingService {
 
       // In production, store in database
       /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({
-        action: 'coding_request_submitted';
+        action: 'coding_request_submitted',
         resourceType: 'coding_request';
-        resourceId: requestId;
+        resourceId: requestId,
         userId: validatedRequest.coderId;
         details: {
-          patientId: validatedRequest.patientId;
+          patientId: validatedRequest.patientId,
           encounterId: validatedRequest.encounterId;
-          codeType: validatedRequest.codeType;
+          codeType: validatedRequest.codeType
         }
-      });
+      }),
 
       return requestId;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to submit coding request');
+      throw new Error('Failed to submit coding request')
     }
   }
 
@@ -308,20 +308,20 @@ export class ICDCodingService {
 
       // In production, update database record
       /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({
-        action: 'coding_request_completed';
+        action: 'coding_request_completed',
         resourceType: 'coding_request';
-        resourceId: requestId;
+        resourceId: requestId,
         userId: validatedResult.coderId;
         details: {
-          primaryCodes: validatedResult.primaryCodes;
+          primaryCodes: validatedResult.primaryCodes,
           secondaryCodes: validatedResult.secondaryCodes;
-          methodology: validatedResult.methodology;
-          confidence: validatedResult.confidence;
+          methodology: validatedResult.methodology,
+          confidence: validatedResult.confidence
         }
-      });
+      }),
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to complete coding request');
+      throw new Error('Failed to complete coding request')
     }
   }
 
@@ -329,17 +329,17 @@ export class ICDCodingService {
    * Get coding assistance suggestions
    */
   async getCodingSuggestions(
-    clinicalText: string;
+    clinicalText: string,
     codeType: 'diagnosis' | 'procedure' | 'symptom';
     options: CodingAssistanceOptions = {}
   ): Promise<{
     suggestions: Array<{
-      code: string;
+      code: string,
       description: string;
-      confidence: number;
-      reasoning: string;
+      confidence: number,
+      reasoning: string
     }>;
-    confidence: number;
+    confidence: number
   }> {
     try {
       const { suggestionLimit = 5, confidenceThreshold = 0.7 } = options;
@@ -347,16 +347,16 @@ export class ICDCodingService {
       // Mock AI-powered coding suggestions
       const mockSuggestions = [
         {
-          code: 'I25.10';
+          code: 'I25.10',
           description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris';
-          confidence: 0.85;
-          reasoning: 'Keywords: "coronary", "atherosclerotic", "without angina" found in clinical text';
+          confidence: 0.85,
+          reasoning: 'Keywords: "coronary", "atherosclerotic", "without angina" found in clinical text'
         },
         {
-          code: 'I25.700';
+          code: 'I25.700',
           description: 'Atherosclerosis of coronary artery bypass graft(s), unspecified, with unstable angina pectoris',
-          confidence: 0.72;
-          reasoning: 'Keywords: "coronary", "atherosclerosis" found, but confidence lower due to "unstable angina" not mentioned';
+          confidence: 0.72,
+          reasoning: 'Keywords: "coronary", "atherosclerosis" found, but confidence lower due to "unstable angina" not mentioned'
         }
       ]
 
@@ -369,47 +369,47 @@ export class ICDCodingService {
         : 0;
 
       await this.auditService.logAuditEvent({
-        action: 'coding_assistance_requested';
+        action: 'coding_assistance_requested',
         resourceType: 'icd_coding';
-        resourceId: 'suggestion_request';
+        resourceId: 'suggestion_request',
         userId: 'system';
         details: {
           codeType,
-          textLength: clinicalText.length;
+          textLength: clinicalText.length,
           suggestionCount: filteredSuggestions.length;
-          confidence: overallConfidence;
+          confidence: overallConfidence
         }
       });
 
       return {
-        suggestions: filteredSuggestions;
-        confidence: overallConfidence;
+        suggestions: filteredSuggestions,
+        confidence: overallConfidence
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to get coding suggestions');
+      throw new Error('Failed to get coding suggestions')
     }
   }
 
   /**
    * Get coding statistics and metrics
    */
-  async getCodingMetrics(dateRange: { from: Date; to: Date }): Promise<{
-    totalRequests: number;
+  async getCodingMetrics(dateRange: { from: Date, to: Date }): Promise<{
+    totalRequests: number,
     completedRequests: number;
-    averageCompletionTime: number;
-    topCodes: Array<{ code: string; count: number; description: string }>;
-    coderPerformance: Array<{ coderId: string; requestsCompleted: number; averageConfidence: number }>;
+    averageCompletionTime: number,
+    topCodes: Array<{ code: string, count: number; description: string }>;
+    coderPerformance: Array<{ coderId: string, requestsCompleted: number; averageConfidence: number }>;
     qualityMetrics: {
-      validationRate: number;
+      validationRate: number,
       rejectionRate: number;
-      averageConfidence: number;
+      averageConfidence: number
     };
   }> {
     try {
       // Mock metrics data
       const mockMetrics = {
-        totalRequests: 245;
+        totalRequests: 245,
         completedRequests: 232;
         averageCompletionTime: 2.5, // hours
         topCodes: [
@@ -423,16 +423,16 @@ export class ICDCodingService {
           { coderId: 'coder003', requestsCompleted: 35, averageConfidence: 0.89 }
         ],
         qualityMetrics: {
-          validationRate: 0.94;
+          validationRate: 0.94,
           rejectionRate: 0.03;
-          averageConfidence: 0.85;
+          averageConfidence: 0.85
         }
       }
 
       await this.auditService.logAuditEvent({
-        action: 'coding_metrics_accessed';
+        action: 'coding_metrics_accessed',
         resourceType: 'icd_coding';
-        resourceId: 'metrics';
+        resourceId: 'metrics',
         userId: 'system';
         details: { dateRange }
       });
@@ -440,7 +440,7 @@ export class ICDCodingService {
       return mockMetrics;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to get coding metrics');
+      throw new Error('Failed to get coding metrics')
     }
   }
 
@@ -459,7 +459,7 @@ export const _getICDCodingService = (): ICDCodingService => {
   if (!icdCodingServiceInstance) {
     icdCodingServiceInstance = new ICDCodingService();
   }
-  return icdCodingServiceInstance;
+  return icdCodingServiceInstance
 };
 
 export { ICDCodingService };

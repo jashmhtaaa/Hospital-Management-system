@@ -20,21 +20,21 @@ import { Textarea } from '@/components/ui/textarea';
 } from 'lucide-react';
 
 interface TelemedicineSession {
-  id: string;
+  id: string,
   patientId: string;
-  doctorId: string;
+  doctorId: string,
   type: 'VIDEO_CALL' | 'AUDIO_CALL' | 'CHAT';
-  status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+  status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED',
   scheduledTime: string;
   patient: {
-    id: string;
+    id: string,
     full_name: string;
-    mrn: string;
+    mrn: string
   };
   doctor: {
-    id: string;
+    id: string,
     full_name: string;
-    specialization: string;
+    specialization: string
   };
 }
 
@@ -64,7 +64,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
 
     return () => {
       clearInterval(timer);
-      cleanupWebRTC();
+      cleanupWebRTC()
     };
   }, [sessionId]);
 
@@ -74,7 +74,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       const data = await response.json();
       setSession(data.session);
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -82,8 +82,8 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
     try {
       // Get user media
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true;
-        audio: true;
+        video: true,
+        audio: true
       });
 
       localStreamRef.current = stream;
@@ -116,12 +116,12 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
           // Send candidate to remote peer via signaling server
-          /* SECURITY: Console statement removed */;
+          /* SECURITY: Console statement removed */
         }
       };
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -157,8 +157,8 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
   const startScreenShare = async () => {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true;
-        audio: true;
+        video: true,
+        audio: true
       });
 
       // Replace video track with screen share
@@ -189,35 +189,35 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         }
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
   const endSession = async () => {
     try {
       await fetch(`/api/telemedicine/sessions/${sessionId}/end`, {
-        method: 'PUT';
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           consultationNotes,
-          duration: sessionDuration;
+          duration: sessionDuration
         })
       });
 
       cleanupWebRTC();
       // Navigate away or show end session UI
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */
     }
   };
 
   const sendMessage = () => {
     if (newMessage.trim()) {
       const message = {
-        id: crypto.getRandomValues(new Uint32Array(1))[0].toString();
+        id: crypto.getRandomValues(new Uint32Array(1))[0].toString(),
         text: newMessage;
         sender: 'doctor', // or 'patient' based on user role
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
       };
       setChatMessages([...chatMessages, message]);
       setNewMessage('');
@@ -227,7 +227,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   };
 
   if (!session) {
@@ -371,7 +371,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default TelemedicineConsultation;

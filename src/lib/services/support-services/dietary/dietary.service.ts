@@ -11,14 +11,14 @@ export interface DietaryRequestFilter {
   requestType?: string;
   startDate?: Date;
   endDate?: Date;
-  page: number;
+  page: number,
   limit: number
 export interface CreateDietaryRequestData {
-  patientId: string;
+  patientId: string,
   requestType: string;
   startDate: Date;
   endDate?: Date;
-  mealPreferences: string[];
+  mealPreferences: string[],
   dietaryRestrictions: string[];
   allergies: string[];
   specialInstructions?: string;
@@ -55,33 +55,33 @@ export class DietaryService {
         include: {
           patient: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              dateOfBirth: true;
-              gender: true;
+              dateOfBirth: true,
+              gender: true
             }
           },
           requestedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           approvedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           },
           mealPlans: {
-            take: 5;
+            take: 5,
             orderBy: { date: 'desc' }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { createdAt: 'desc' }
       }),
       prisma.dietaryRequest.count({ where })
@@ -91,13 +91,13 @@ export class DietaryService {
     const fhirRequests = requests.map(request => toFHIRDietaryRequest(request));
 
     return {
-      data: requests;
+      data: requests,
       fhir: fhirRequests;
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -139,22 +139,22 @@ export class DietaryService {
         dietaryRestrictions,
         allergies,
         specialInstructions,
-        requestedById: requestedBy;
+        requestedById: requestedBy
       },
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            dateOfBirth: true;
-            gender: true;
+            dateOfBirth: true,
+            gender: true
           }
         },
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -162,24 +162,24 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'DIETARY_REQUEST';
-      entityId: request.id;
+      entityId: request.id,
       userId: requestedBy;
       details: `Created ${requestType} dietary request for patient ${patient.name}`;
     });
 
     // Send notification to dietary staff
     await this.notificationService.sendNotification({
-      type: 'DIETARY_REQUEST';
+      type: 'DIETARY_REQUEST',
       title: `New Dietary Request`;
       message: `A new ${requestType} request has been created for patient ${patient.name}`,
       recipientRoles: ['DIETARY_MANAGER', 'NUTRITIONIST'],
-      entityId: request.id;
+      entityId: request.id,
       metadata: {
-        requestId: request.id;
+        requestId: request.id,
         patientId: patientId;
-        requestType: requestType;
+        requestType: requestType
       }
     });
 
@@ -195,31 +195,31 @@ export class DietaryService {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            dateOfBirth: true;
-            gender: true;
+            dateOfBirth: true,
+            gender: true
           }
         },
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         approvedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         mealPlans: {
           include: {
             meals: {
               include: {
-                menuItems: true;
+                menuItems: true
               }
             }
           },
@@ -234,8 +234,8 @@ export class DietaryService {
 
     if (includeFHIR != null) {
       return {
-        data: request;
-        fhir: toFHIRDietaryRequest(request);
+        data: request,
+        fhir: toFHIRDietaryRequest(request)
       };
     }
 
@@ -249,7 +249,7 @@ export class DietaryService {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id },
       include: {
-        patient: true;
+        patient: true
       }
     });
 
@@ -268,33 +268,33 @@ export class DietaryService {
       include: {
         patient: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            dateOfBirth: true;
-            gender: true;
+            dateOfBirth: true,
+            gender: true
           }
         },
         requestedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
         approvedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         },
-        mealPlans: true;
+        mealPlans: true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'DIETARY_REQUEST';
       entityId: id;
       userId,
@@ -303,16 +303,16 @@ export class DietaryService {
     // Send notification if status changed
     if (data?.status && data.status !== request.status) {
       await this.notificationService.sendNotification({
-        type: 'DIETARY_STATUS_CHANGE';
+        type: 'DIETARY_STATUS_CHANGE',
         title: `Dietary Request Status Updated`;
         message: `Request for patient ${request.patient.name} is now ${data.status}`,
-        recipientRoles: ['DIETARY_MANAGER'];
+        recipientRoles: ['DIETARY_MANAGER'],
         recipientIds: [request.requestedById];
-        entityId: request.id;
+        entityId: request.id,
         metadata: {
-          requestId: request.id;
+          requestId: request.id,
           oldStatus: request.status;
-          newStatus: data.status;
+          newStatus: data.status
         }
       });
     }
@@ -327,7 +327,7 @@ export class DietaryService {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id: requestId },
       include: {
-        patient: true;
+        patient: true
       }
     });
 
@@ -339,7 +339,7 @@ export class DietaryService {
     const existingMealPlan = await prisma.mealPlan.findFirst({
       where: {
         requestId,
-        date: new Date(data.date);
+        date: new Date(data.date)
       }
     });
 
@@ -351,23 +351,23 @@ export class DietaryService {
     const mealPlan = await prisma.mealPlan.create({
       data: {
         requestId,
-        date: new Date(data.date);
+        date: new Date(data.date),
         status: 'PLANNED';
-        notes: data.notes;
+        notes: data.notes,
         nutritionalSummary: data.nutritionalSummary || {},
-        createdById: userId;
+        createdById: userId
       },
       include: {
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         },
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -375,7 +375,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MEAL_PLAN';
       entityId: mealPlan.id;
       userId,
@@ -394,7 +394,7 @@ export class DietaryService {
       include: {
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         }
       }
@@ -408,7 +408,7 @@ export class DietaryService {
     const existingMeal = await prisma.meal.findFirst({
       where: {
         mealPlanId,
-        mealType: data.mealType;
+        mealType: data.mealType
       }
     });
 
@@ -420,14 +420,14 @@ export class DietaryService {
     const meal = await prisma.meal.create({
       data: {
         mealPlanId,
-        mealType: data.mealType;
+        mealType: data.mealType,
         calories: data.calories;
-        protein: data.protein;
+        protein: data.protein,
         carbohydrates: data.carbohydrates;
-        fat: data.fat;
+        fat: data.fat,
         status: 'PLANNED';
-        deliveryTime: data.deliveryTime ? new Date(data.deliveryTime) : undefined;
-        notes: data.notes;
+        deliveryTime: data.deliveryTime ? new Date(data.deliveryTime) : undefined,
+        notes: data.notes
       }
     });
 
@@ -436,17 +436,17 @@ export class DietaryService {
       for (const item of data.menuItems) {
         await prisma.menuItem.create({
           data: {
-            mealId: meal.id;
+            mealId: meal.id,
             name: item.name;
-            description: item.description;
+            description: item.description,
             category: item.category;
-            ingredients: item.ingredients || [];
+            ingredients: item.ingredients || [],
             calories: item.calories;
-            protein: item.protein;
+            protein: item.protein,
             carbohydrates: item.carbohydrates;
-            fat: item.fat;
+            fat: item.fat,
             isSpecialDiet: item.isSpecialDiet || false;
-            dietaryFlags: item.dietaryFlags || [];
+            dietaryFlags: item.dietaryFlags || []
           }
         });
       }
@@ -457,7 +457,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MEAL';
       entityId: meal.id;
       userId,
@@ -468,7 +468,7 @@ export class DietaryService {
     return prisma.meal.findUnique({
       where: { id: meal.id },
       include: {
-        menuItems: true;
+        menuItems: true
       }
     }) as Promise<Meal>;
   }
@@ -481,7 +481,7 @@ export class DietaryService {
     const meals = await prisma.meal.findMany({
       where: { mealPlanId },
       include: {
-        menuItems: true;
+        menuItems: true
       }
     });
 
@@ -502,11 +502,11 @@ export class DietaryService {
     const mealSummary: Record<string, unknown> = {};
     for (const meal of meals) {
       mealSummary[meal.mealType] = {
-        calories: meal.calories || 0;
+        calories: meal.calories || 0,
         protein: meal.protein || 0;
-        carbohydrates: meal.carbohydrates || 0;
+        carbohydrates: meal.carbohydrates || 0,
         fat: meal.fat || 0;
-        menuItems: meal.menuItems.length;
+        menuItems: meal.menuItems.length
       };
     }
 
@@ -534,7 +534,7 @@ export class DietaryService {
       include: {
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         }
       }
@@ -550,19 +550,19 @@ export class DietaryService {
       include: {
         request: {
           include: {
-            patient: true;
+            patient: true
           }
         },
         meals: {
           include: {
-            menuItems: true;
+            menuItems: true
           }
         },
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -570,7 +570,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MEAL_PLAN';
       entityId: id;
       userId,
@@ -579,15 +579,15 @@ export class DietaryService {
     // Send notification if status changed to PREPARED
     if (data.status === 'PREPARED' && mealPlan.status !== 'PREPARED') {
       await this.notificationService.sendNotification({
-        type: 'MEAL_PLAN_PREPARED';
+        type: 'MEAL_PLAN_PREPARED',
         title: `Meal Plan Prepared`;
         message: `Meal plan for patient ${mealPlan.request.patient.name} on ${mealPlan.date.toISOString().split('T')[0]} is ready for delivery`,
         recipientRoles: ['DIETARY_STAFF', 'NURSE'],
-        entityId: mealPlan.id;
+        entityId: mealPlan.id,
         metadata: {
-          mealPlanId: mealPlan.id;
+          mealPlanId: mealPlan.id,
           requestId: mealPlan.requestId;
-          patientId: mealPlan.request.patientId;
+          patientId: mealPlan.request.patientId
         }
       });
     }
@@ -606,7 +606,7 @@ export class DietaryService {
           include: {
             request: {
               include: {
-                patient: true;
+                patient: true
               }
             }
           }
@@ -622,12 +622,12 @@ export class DietaryService {
       where: { id },
       data,
       include: {
-        menuItems: true;
+        menuItems: true,
         mealPlan: {
           include: {
             request: {
               include: {
-                patient: true;
+                patient: true
               }
             }
           }
@@ -643,7 +643,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'MEAL';
       entityId: id;
       userId,
@@ -665,15 +665,15 @@ export class DietaryService {
 
         // Send notification that all meals are delivered
         await this.notificationService.sendNotification({
-          type: 'MEALS_DELIVERED';
+          type: 'MEALS_DELIVERED',
           title: `All Meals Delivered`;
           message: `All meals for patient ${meal.mealPlan.request.patient.name} on ${meal.mealPlan.date.toISOString().split('T')[0]} have been delivered`,
-          recipientRoles: ['NURSE'];
+          recipientRoles: ['NURSE'],
           entityId: meal.mealPlanId;
           metadata: {
-            mealPlanId: meal.mealPlanId;
+            mealPlanId: meal.mealPlanId,
             requestId: meal.mealPlan.requestId;
-            patientId: meal.mealPlan.request.patientId;
+            patientId: meal.mealPlan.request.patientId
           }
         });
       }
@@ -690,12 +690,12 @@ export class DietaryService {
     let profile = await prisma.nutritionalProfile.findUnique({
       where: { patientId },
       include: {
-        patient: true;
+        patient: true,
         lastUpdatedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -715,19 +715,19 @@ export class DietaryService {
       profile = await prisma.nutritionalProfile.create({
         data: {
           patientId,
-          dietaryPreferences: [];
+          dietaryPreferences: [],
           dietaryRestrictions: [];
-          allergies: [];
+          allergies: [],
           medicalConditions: [];
-          lastUpdatedById: userId;
+          lastUpdatedById: userId
         },
         include: {
-          patient: true;
+          patient: true,
           lastUpdatedByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         }
@@ -735,7 +735,7 @@ export class DietaryService {
 
       // Create audit log
       await createAuditLog({
-        action: 'CREATE';
+        action: 'CREATE',
         entityType: 'NUTRITIONAL_PROFILE';
         entityId: profile.id;
         userId,
@@ -753,7 +753,7 @@ export class DietaryService {
     const profile = await prisma.nutritionalProfile.findUnique({
       where: { id },
       include: {
-        patient: true;
+        patient: true
       }
     });
 
@@ -780,12 +780,12 @@ export class DietaryService {
       where: { id },
       data,
       include: {
-        patient: true;
+        patient: true,
         lastUpdatedByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -793,7 +793,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'NUTRITIONAL_PROFILE';
       entityId: id;
       userId,
@@ -821,26 +821,26 @@ export class DietaryService {
         include: {
           createdByUser: {
             select: {
-              id: true;
+              id: true,
               name: true;
-              email: true;
+              email: true
             }
           }
         },
         skip,
-        take: limit;
+        take: limit,
         orderBy: { name: 'asc' }
       }),
       prisma.menuTemplate.count({ where })
     ]);
 
     return {
-      data: templates;
+      data: templates,
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -851,20 +851,20 @@ export class DietaryService {
   async createMenuTemplate(data: unknown, userId: string): Promise<unknown> {
     const template = await prisma.menuTemplate.create({
       data: {
-        name: data.name;
+        name: data.name,
         description: data.description;
-        mealType: data.mealType;
+        mealType: data.mealType,
         category: data.category;
-        items: data.items || [];
+        items: data.items || [],
         isActive: true;
-        createdById: userId;
+        createdById: userId
       },
       include: {
         createdByUser: {
           select: {
-            id: true;
+            id: true,
             name: true;
-            email: true;
+            email: true
           }
         }
       }
@@ -872,7 +872,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE';
+      action: 'CREATE',
       entityType: 'MENU_TEMPLATE';
       entityId: template.id;
       userId,
@@ -893,7 +893,7 @@ export class DietaryService {
     if (category != null) where.category = category;
     if (lowStock === true) {
       where.currentStock = {
-        lte: prisma.dietaryInventory.fields.minimumStock;
+        lte: prisma.dietaryInventory.fields.minimumStock
       };
     }
 
@@ -901,19 +901,19 @@ export class DietaryService {
       prisma.dietaryInventory.findMany({
         where,
         skip,
-        take: limit;
+        take: limit,
         orderBy: { itemName: 'asc' }
       }),
       prisma.dietaryInventory.count({ where })
     ]);
 
     return {
-      data: items;
+      data: items,
       pagination: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit)
       }
     };
   }
@@ -942,7 +942,7 @@ export class DietaryService {
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE';
+      action: 'UPDATE',
       entityType: 'DIETARY_INVENTORY';
       entityId: id;
       userId,
@@ -953,15 +953,15 @@ export class DietaryService {
     // Check if item is low on stock after update
     if (updatedItem.currentStock <= updatedItem.minimumStock) {
       await this.notificationService.sendNotification({
-        type: 'DIETARY_INVENTORY_LOW';
+        type: 'DIETARY_INVENTORY_LOW',
         title: `Low Inventory Alert`;
         message: `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
         recipientRoles: ['DIETARY_MANAGER', 'INVENTORY_MANAGER'],
-        entityId: updatedItem.id;
+        entityId: updatedItem.id,
         metadata: {
-          itemId: updatedItem.id;
+          itemId: updatedItem.id,
           currentStock: updatedItem.currentStock;
-          minimumStock: updatedItem.minimumStock;
+          minimumStock: updatedItem.minimumStock
         }
       });
     }
@@ -996,49 +996,49 @@ export class DietaryService {
 
     // Get request counts by status
     const requestsByStatus = await prisma.dietaryRequest.groupBy({
-      by: ['status'];
+      by: ['status'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get request counts by type
     const requestsByType = await prisma.dietaryRequest.groupBy({
-      by: ['requestType'];
+      by: ['requestType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get meal counts by type
     const mealsByType = await prisma.meal.groupBy({
-      by: ['mealType'];
+      by: ['mealType'],
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         }
       },
-      _count: true;
+      _count: true
     });
 
     // Get average nutritional values
     const mealPlans = await prisma.mealPlan.findMany({
       where: {
         createdAt: {
-          gte: startDate;
+          gte: startDate
         },
         nutritionalSummary: {
-          not: null;
+          not: null
         }
       },
       select: {
-        nutritionalSummary: true;
+        nutritionalSummary: true
       }
     });
 
@@ -1063,17 +1063,17 @@ export class DietaryService {
     }
 
     const averageNutrition = count > 0 ? {
-      calories: Math.round(totalCalories / count);
-      protein: Math.round(totalProtein / count);
-      carbohydrates: Math.round(totalCarbs / count);
-      fat: Math.round(totalFat / count);
+      calories: Math.round(totalCalories / count),
+      protein: Math.round(totalProtein / count),
+      carbohydrates: Math.round(totalCarbs / count),
+      fat: Math.round(totalFat / count)
     } : null;
 
     // Get most common dietary restrictions
     const profiles = await prisma.nutritionalProfile.findMany({
       select: {
-        dietaryRestrictions: true;
-        allergies: true;
+        dietaryRestrictions: true,
+        allergies: true
       }
     });
 
@@ -1108,6 +1108,6 @@ export class DietaryService {
       averageNutrition,
       topRestrictions,
       topAllergies,
-      period;
+      period
     };
   }
